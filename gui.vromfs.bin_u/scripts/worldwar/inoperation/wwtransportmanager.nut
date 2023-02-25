@@ -1,16 +1,18 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let DataBlock  = require("DataBlock")
 
 local cachedLoadedTransport = null
 let function getLoadedTransport() {
   if (cachedLoadedTransport != null)
     return cachedLoadedTransport?.loadedTransport ?? {}
 
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   ::ww_get_loaded_transport(blk)
   cachedLoadedTransport = blk
   return cachedLoadedTransport?.loadedTransport ?? {}
@@ -30,22 +32,20 @@ subscriptions.addListenersWithoutEnv({
   WWLoadOperation = @(_p) clearCacheLoadedTransport()
 })
 
-let function getTransportedArmiesData(formation)
-{
+let function getTransportedArmiesData(formation) {
   let armies = []
   let loadedTransport = getLoadedTransport()
   let transportedArmies = loadedTransport?[formation.name].armies ?? formation?.loadedArmies
   local totalUnitsNum = 0
-  if(transportedArmies != null)
-    for(local i=0; i< transportedArmies.blockCount(); i++)
-    {
+  if (transportedArmies != null)
+    for (local i = 0; i < transportedArmies.blockCount(); i++) {
       let armyBlk = transportedArmies.getBlock(i)
       let army  = ::WwArmy(armyBlk.getBlockName(), armyBlk)
       armies.append(army)
       totalUnitsNum += army.getUnits().len()
     }
 
-  return {armies, totalUnitsNum}
+  return { armies, totalUnitsNum }
 }
 
 return {

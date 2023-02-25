@@ -549,18 +549,7 @@
         1000.0
       ],
       "explodeTreshold": 0.01,
-      "explodeHitPower": 70.0,
-      "explodeArmorPower": 5.0,
-      "explodeRadius": [
-        0.8,
-        1.7
-      ],
       "fuseDelayDist": 1.0,
-      "shutterDamage": true,
-      "shutterDamageRadius": 6.5,
-      "shutterAmount": 70,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 5.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_39_58mm_metal_he",
       "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -613,6 +602,67 @@
           1.0,
           1500.0
         ]
+      },
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.4,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                74.0
+              ],
+              "countPortion": 0.3
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                75.0,
+                100.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                101.0,
+                260.0
+              ],
+              "countPortion": 0.3
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                261.0,
+                285.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                286.0,
+                359.0
+              ],
+              "countPortion": 0.3
+            }
+          ]
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -1191,18 +1241,7 @@
         1000.0
       ],
       "explodeTreshold": 0.01,
-      "explodeHitPower": 70.0,
-      "explodeArmorPower": 5.0,
-      "explodeRadius": [
-        0.8,
-        1.7
-      ],
       "fuseDelayDist": 1.0,
-      "shutterDamage": true,
-      "shutterDamageRadius": 6.5,
-      "shutterAmount": 70,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 5.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_39_58mm_metal_he",
       "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -1255,6 +1294,67 @@
           1.0,
           1500.0
         ]
+      },
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.4,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                74.0
+              ],
+              "countPortion": 0.3
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                75.0,
+                100.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                101.0,
+                260.0
+              ],
+              "countPortion": 0.3
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                261.0,
+                285.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                286.0,
+                359.0
+              ],
+              "countPortion": 0.3
+            }
+          ]
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [

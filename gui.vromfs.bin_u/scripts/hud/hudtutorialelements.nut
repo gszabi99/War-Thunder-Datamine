@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let hudElementsAabb = require("%scripts/hud/hudElementsAabb.nut")
@@ -27,8 +29,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   debugLastModified = -1
 }
 
-::g_hud_tutorial_elements.init <- function init(v_nest)
-{
+::g_hud_tutorial_elements.init <- function init(v_nest) {
   let blkPath = this.getCurBlkName()
   this.active = !!blkPath
 
@@ -44,8 +45,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   if (!this.active)
     return
 
-  if (::u.isEmpty(blkOptFromPath(blkPath)))
-  {
+  if (::u.isEmpty(blkOptFromPath(blkPath))) {
     let msg = $"Hud_tutorial_elements: blk file is empty. (blkPath = {blkPath})"
     log(msg)
     assert(false, msg)
@@ -57,8 +57,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   let guiScene = this.scene.getScene()
   guiScene.replaceContent(this.scene, blkPath, this)
 
-  for (local i = 0; i < this.scene.childrenCount(); i++)
-  {
+  for (local i = 0; i < this.scene.childrenCount(); i++) {
     let childObj = this.scene.getChild(i)
     if (this.isDebugMode && childObj?.id)
       this.updateVisibleObject(childObj.id, childObj.isVisible(), -1)
@@ -76,23 +75,20 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
     }, this)
 }
 
-::g_hud_tutorial_elements.initNestObjects <- function initNestObjects()
-{
+::g_hud_tutorial_elements.initNestObjects <- function initNestObjects() {
   this.scene = this.nest.findObject("tutorial_elements_nest")
   this.timersNest = this.nest.findObject("hud_message_timers")
 }
 
-::g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName()
-{
+::g_hud_tutorial_elements.getCurBlkName <- function getCurBlkName() {
   if (this.isDebugMode)
     return this.debugBlkName
 
   return this.getBlkNameByCurMission()
 }
 
-::g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission()
-{
-  let misBlk = ::DataBlock()
+::g_hud_tutorial_elements.getBlkNameByCurMission <- function getBlkNameByCurMission() {
+  let misBlk = DataBlock()
   ::get_current_mission_desc(misBlk)
 
   let fullMisBlk = misBlk?.mis_file ? blkOptFromPath(misBlk.mis_file) : null
@@ -100,8 +96,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   return ::u.isString(res) ? res : null
 }
 
-::g_hud_tutorial_elements.reinit <- function reinit()
-{
+::g_hud_tutorial_elements.reinit <- function reinit() {
   if (!this.active || !checkObj(this.nest))
     return
 
@@ -109,21 +104,17 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   this.refreshObjects()
 }
 
-::g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1)
-{
+::g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1) {
   local htObj = getTblValue(id, this.visibleHTObjects)
-  if (!show)
-  {
-    if (htObj)
-    {
+  if (!show) {
+    if (htObj) {
       htObj.show(false)
       delete this.visibleHTObjects[id]
     }
     return null
   }
 
-  if (!htObj || !htObj.isValid())
-  {
+  if (!htObj || !htObj.isValid()) {
     htObj = ::HudTutorialObject(id, this.scene)
     if (!htObj.isValid())
       return null
@@ -136,13 +127,10 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   return htObj
 }
 
-::g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj)
-{
+::g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj) {
   let curTimer = getTblValue(objId, this.timers)
-  if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime())
-  {
-    if (curTimer)
-    {
+  if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime()) {
+    if (curTimer) {
       curTimer.destroy()
       delete this.timers[objId]
     }
@@ -150,8 +138,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   }
 
   let timeLeft = htObj.getTimeLeft()
-  if (curTimer && curTimer.isValid())
-  {
+  if (curTimer && curTimer.isValid()) {
     curTimer.setDelay(timeLeft)
     return
   }
@@ -166,8 +153,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   })(objId), this)
 }
 
-::g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data)
-{
+::g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data) {
   if (!this.active || !checkObj(this.scene))
     return
 
@@ -179,16 +165,13 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   this.updateObjTimer(objId, htObj)
 }
 
-::g_hud_tutorial_elements.getAABB <- function getAABB(name)
-{
+::g_hud_tutorial_elements.getAABB <- function getAABB(name) {
   return hudElementsAabb(name)
 }
 
-::g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
-{
+::g_hud_tutorial_elements.refreshObjects <- function refreshObjects() {
   let invalidObjects = []
-  foreach(id, htObj in this.visibleHTObjects)
-  {
+  foreach (id, htObj in this.visibleHTObjects) {
     let isVisible = htObj.isVisibleByTime()
     if (isVisible)
       if (!htObj.isValid())
@@ -200,8 +183,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
       invalidObjects.append(id)
   }
 
-  foreach(id in invalidObjects)
-  {
+  foreach (id in invalidObjects) {
     let htObj = this.visibleHTObjects[id]
     delete this.visibleHTObjects[id]
     this.updateObjTimer(id, htObj)
@@ -210,13 +192,11 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   this.needUpdateAabb = false
 }
 
-::g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(_params)
-{
+::g_hud_tutorial_elements.onEventHudIndicatorChangedSize <- function onEventHudIndicatorChangedSize(_params) {
   this.needUpdateAabb = true
 }
 
-::g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(_params)
-{
+::g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStateChange(_params) {
   if (::is_in_flight())
     return
 
@@ -226,26 +206,22 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   this.isDebugMode = false
 }
 
-::g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer()
-{
+::g_hud_tutorial_elements.addDebugTimer <- function addDebugTimer() {
   SecondsUpdater(this.scene,
-                   function(...)
-                   {
+                   function(...) {
                      return ::g_hud_tutorial_elements.onDbgUpdate()
                    },
                    false)
 }
 
-::g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate()
-{
+::g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate() {
   if (!this.isDebugMode)
     return true
   let modified = ::get_file_modify_time_sec(this.debugBlkName)
   if (modified < 0)
     return
 
-  if (this.debugLastModified < 0)
-  {
+  if (this.debugLastModified < 0) {
     this.debugLastModified = modified
     return
   }
@@ -258,8 +234,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 }
 
  //blkName = null to switchOff, blkName = "" to autodetect
-::g_hud_tutorial_elements.debug <- function debug(blkName = "")
-{
+::g_hud_tutorial_elements.debug <- function debug(blkName = "") {
   if (blkName == "")
     blkName = this.getBlkNameByCurMission()
 

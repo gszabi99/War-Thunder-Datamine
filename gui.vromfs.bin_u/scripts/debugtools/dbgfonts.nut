@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -41,17 +42,14 @@ let function debug_fonts_list(isActiveColor = true, needBorder = true) {
     scene = null
     guiScene = null
 
-    function onCreate(obj)
-    {
+    function onCreate(obj) {
       this.scene = obj
       this.guiScene = obj.getScene()
     }
 
-    function updateAllObjs(func)
-    {
+    function updateAllObjs(func) {
       this.guiScene.setUpdatesEnabled(false, false)
-      foreach (id in fonts.getFontsList())
-      {
+      foreach (id in fonts.getFontsList()) {
         let obj = this.scene.findObject(id)
         if (checkObj(obj))
           func(obj)
@@ -59,22 +57,19 @@ let function debug_fonts_list(isActiveColor = true, needBorder = true) {
       this.guiScene.setUpdatesEnabled(true, true)
     }
 
-    function onColorChange(obj)
-    {
+    function onColorChange(obj) {
       isActiveColor = obj.getValue()
       let color = this.guiScene.getConstantValue(getColor())
       this.updateAllObjs(function(obj) { obj.color = color })
     }
 
-    function onBorderChange(obj)
-    {
+    function onBorderChange(obj) {
       needBorder = obj.getValue()
       let borderText = needBorder ? "yes" : "no"
       this.updateAllObjs(function(obj) { obj.border = borderText })
     }
 
-    function onTextChange(obj)
-    {
+    function onTextChange(obj) {
       let text = obj.getValue()
       fontsAdditionalText = text.len() ? "\n" + text : ""
       this.updateAllObjs(function(obj) { obj.setValue(obj.id + fontsAdditionalText) })

@@ -1,9 +1,10 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let hasMultiplayerRestritionByBalance =@() ::get_cur_rank_info().gold < 0
+let hasMultiplayerRestritionByBalance = @() ::get_cur_rank_info().gold < 0
 
 let function isShowGoldBalanceWarning() {
   if (!hasMultiplayerRestritionByBalance())

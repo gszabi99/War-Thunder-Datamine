@@ -6,8 +6,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")
 
-::Timer <- class
-{
+::Timer <- class {
   onTimeOut   = null
   cycled      = false
   isDelayed   = false
@@ -16,8 +15,7 @@ g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")
 
   static timeNowPID = ::dagui_propid.add_name_id("timer-timenow")
 
-  constructor(parentObj, delay, onTimeOut_, handler = null, cycled_ = false, isDelayed_ = false)
-  {
+  constructor(parentObj, delay, onTimeOut_, handler = null, cycled_ = false, isDelayed_ = false) {
     if (!onTimeOut_)
       return assert(false, "Error: no onTimeOut in Timer.")
 
@@ -32,47 +30,39 @@ g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")
     this.timerGuiObj.setUserData(this)
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     this.performAction()
 
     if (!this.cycled)
       this.destroy()
   }
 
-  function performAction()
-  {
+  function performAction() {
     if (!this.isDelayed)
       this.onTimeOut()
     else
       this.guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(this.onTimeOut))
   }
 
-  function setDelay(newDelay)
-  {
-    if (check_obj(this.timerGuiObj))
-    {
+  function setDelay(newDelay) {
+    if (check_obj(this.timerGuiObj)) {
       this.timerGuiObj.timer_interval_msec = (newDelay * 1000.0).tointeger().tostring()
       this.timerGuiObj.setIntProp(this.timeNowPID, 0)
     }
   }
 
-  function setCb(onTimeOut_)
-  {
+  function setCb(onTimeOut_) {
     this.onTimeOut = onTimeOut_
   }
 
-  function destroy()
-  {
-    if (check_obj(this.timerGuiObj))
-    {
+  function destroy() {
+    if (check_obj(this.timerGuiObj)) {
       this.timerGuiObj.setUserData(null)
       this.guiScene.destroyElement(this.timerGuiObj)
     }
   }
 
-  function isValid()
-  {
+  function isValid() {
     return check_obj(this.timerGuiObj)
   }
 }

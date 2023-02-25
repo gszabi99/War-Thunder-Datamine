@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let CollectionSet = require("collectionSet.nut")
+let DataBlock = require("DataBlock")
 
 let collectionsList = []
 local isInited = false
@@ -15,9 +17,9 @@ let function initOnce() {
   isInited = true
   collectionsList.clear()
 
-  let cBlk = ::DataBlock()
+  let cBlk = DataBlock()
   cBlk.load("config/collections.blk")
-  for(local i = 0; i < cBlk.blockCount(); i++) {
+  for (local i = 0; i < cBlk.blockCount(); i++) {
     let set = CollectionSet(cBlk.getBlock(i))
     if (!set.isValid())
       continue

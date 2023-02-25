@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
@@ -14,8 +16,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 let knownTournamentInvites = []
 
-::g_invites_classes.TournamentBattle <- class extends ::BaseInvite
-{
+::g_invites_classes.TournamentBattle <- class extends ::BaseInvite {
   //custom class params, not exist in base invite
   battleId = ""
   inviteTime = -1
@@ -24,29 +25,25 @@ let knownTournamentInvites = []
   isAccepted = false
   needCheckSystemRestriction = true
 
-  static function getUidByParams(params)
-  {
+  static function getUidByParams(params) {
     return "TB_" + getTblValue("battleId", params, "")
   }
 
-  function updateCustomParams(params, _initial = false)
-  {
+  function updateCustomParams(params, _initial = false) {
     this.battleId = getTblValue("battleId", params, this.battleId)
     this.inviteTime = getTblValue("inviteTime", params, this.inviteTime)
     this.startTime = getTblValue("startTime", params, this.startTime)
     this.endTime = getTblValue("endTime", params, this.endTime)
     this.isAccepted = false
 
-    this.setTimedParams( this.inviteTime, this.startTime )
+    this.setTimedParams(this.inviteTime, this.startTime)
   }
 
-  function getTournamentBattleLink()
-  {
+  function getTournamentBattleLink() {
     return $"{::BaseInvite.chatLinkPrefix}TB_{this.battleId}"
   }
 
-  function getChatInviteText()
-  {
+  function getChatInviteText() {
     return "<Link={0}>{1}</Link>".subst(
       this.getTournamentBattleLink(),
       colorize(this.inviteActiveColor,
@@ -58,59 +55,50 @@ let knownTournamentInvites = []
     )
   }
 
-  function getInviteText()
-  {
+  function getInviteText() {
     return getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("multiplayer/invite_to_tournament_battle_message"))
   }
 
-  function getPopupText()
-  {
+  function getPopupText() {
     return this.getInviteText()
   }
 
-  function getIcon()
-  {
+  function getIcon() {
     return "#ui/gameuiskin#lb_each_player_session.svg"
   }
 
-  function disableCurInviteUserlog()
-  {
+  function disableCurInviteUserlog() {
     local needSave = false
 
     let total = ::get_user_logs_count()
-    for (local i = total-1; i >= 0; i--)
-    {
-      let blk = ::DataBlock()
+    for (local i = total - 1; i >= 0; i--) {
+      let blk = DataBlock()
       ::get_user_log_blk_body(i, blk)
 
-      if ( (blk.type == EULT_INVITE_TO_TOURNAMENT) &&
+      if ((blk.type == EULT_INVITE_TO_TOURNAMENT) &&
            (getTblValue("battleId", blk.body, "")  == this.battleId) &&
-           (::disable_user_log_entry(i)) )
+           (::disable_user_log_entry(i)))
         needSave = true
     }
     return needSave
   }
 
-  function remove()
-  {
+  function remove() {
     let needSave = this.disableCurInviteUserlog()
 
     base.remove()
 
-    if (needSave)
-    {
+    if (needSave) {
       log("Invites: Tournament: invite - needSave")
       saveOnlineJob()
     }
   }
 
-  function haveRestrictions()
-  {
+  function haveRestrictions() {
     return !::isInMenu() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
   }
 
-  function getRestrictionText()
-  {
+  function getRestrictionText() {
     if (!this.haveRestrictions())
       return ""
 
@@ -124,15 +112,14 @@ let knownTournamentInvites = []
     return loc("invite/session/cant_apply_in_flight")
   }
 
-  function accept()
-  {
+  function accept() {
     if (this.isOutdated())
       return ::g_invites.showExpiredInvitePopup()
 
-    if ( !::isInMenu() )
+    if (!::isInMenu())
       return ::g_invites.showLeaveSessionFirstPopup()
 
-    if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
+    if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
       return
 
     if (!isMultiplayerPrivilegeAvailable.value) {
@@ -167,14 +154,14 @@ let knownTournamentInvites = []
   let startTime = blk?.body.startTime ?? -1
   let endTime = blk?.body.endTime ?? -1
 
-  log( $"checking battle invite ulog ({ulogId}) : battleId '{battleId}'");
+  log($"checking battle invite ulog ({ulogId}) : battleId '{battleId}'");
   if (startTime <= ::get_charserver_time_sec()
     || isInArray(ulogId, knownTournamentInvites))
     return
 
   knownTournamentInvites.append(ulogId)
 
-  log( $"Got userlog EULT_INVITE_TO_TOURNAMENT: battleId '{battleId}'");
+  log($"Got userlog EULT_INVITE_TO_TOURNAMENT: battleId '{battleId}'");
   ::g_invites.addTournamentBattleInvite(battleId, inviteTime, startTime, endTime)
   return true
 })

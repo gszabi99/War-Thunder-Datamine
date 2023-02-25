@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,12 +9,10 @@ local refreshActiveAppTask = -1
 let callbacksArray = []
 local isAppActive = true
 
-let function callIsAppActiveOrRegisterTask( _dt = 0 )
-{
+let function callIsAppActiveOrRegisterTask(_dt = 0) {
   let self = callee()
-  if ( refreshActiveAppTask >= 0 )
-  {
-    ::periodic_task_unregister( refreshActiveAppTask )
+  if (refreshActiveAppTask >= 0) {
+    ::periodic_task_unregister(refreshActiveAppTask)
     refreshActiveAppTask = -1
   }
 
@@ -26,8 +25,7 @@ let function callIsAppActiveOrRegisterTask( _dt = 0 )
     needUpdateTimer = true
 
   isAppActive = isActive
-  if (needUpdateTimer)
-  {
+  if (needUpdateTimer) {
     refreshActiveAppTask = ::periodic_task_register(this,
       self, FREQUENCY_APP_STATE_UPDATE_SEC)
 
@@ -36,12 +34,11 @@ let function callIsAppActiveOrRegisterTask( _dt = 0 )
 
   let list = clone callbacksArray
   callbacksArray.clear()
-  foreach(cb in list)
+  foreach (cb in list)
     cb()
 }
 
-let function callbackWhenAppWillActive(cb)
-{
+let function callbackWhenAppWillActive(cb) {
   callbacksArray.append(cb)
   callIsAppActiveOrRegisterTask()
 }

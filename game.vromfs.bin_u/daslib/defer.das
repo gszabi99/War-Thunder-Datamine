@@ -41,10 +41,14 @@ class DeferMacro : AstFunctionAnnotation
                 success = false
             else
                 var scope = astc.scopes[astc.scopes.length-1] as ExprBlock
-                var c_arg <- clone_expression(call.arguments[0])
-                var from_block <- move_unquote_block(c_arg)
-                from_block.blockFlags ^= ExprBlockFlags isClosure
-                scope.finalList |> emplace(from_block,0)
+                if scope.blockFlags.inTheLoop
+                    compiling_program() |>macro_error(call.at,"defer can't be used in the loop. finally section of the loop only runs one. enclose in `if true` to ensure scope")
+                    success = false
+                else
+                    var c_arg <- clone_expression(call.arguments[0])
+                    var from_block <- move_unquote_block(c_arg)
+                    from_block.blockFlags ^= ExprBlockFlags isClosure
+                    scope.finalList |> emplace(from_block,0)
         return !success ? [[ExpressionPtr]] : quote() <| nada()
 
 [call_macro(name="defer_delete")]
@@ -53,6 +57,7 @@ class DeferDeleteMacro : AstCallMacro
     //! into {}, and add delete expression to the finally section of the current block
     def override visit ( prog:ProgramPtr; mod:Module?; var call:smart_ptr<ExprCallMacro> ) : ExpressionPtr
         macro_verify(call.arguments.length==1,prog,call.at,"expecting defer_delete(expr)")
+        to_compiler_log("{describe(call.at)}: *warning* defer_delete is deprecated. use var inscope instead\n")
         var success = true
         prog |> get_ast_context(call) <| $(valid, astc)
             if !valid
@@ -63,8 +68,12 @@ class DeferDeleteMacro : AstCallMacro
                 success = false
             else
                 var scope = astc.scopes[astc.scopes.length-1] as ExprBlock
-                var e_del <- new [[ExprDelete() at=call.at,
-                    subexpr <- clone_expression(call.arguments[0])
-                ]]
-                scope.finalList |> emplace(e_del,0)
+                if scope.blockFlags.inTheLoop
+                    compiling_program() |>macro_error(call.at,"defer_delete can't be used in the loop. finally section of the loop only runs one. enclose in `if true` to ensure scope")
+                    success = false
+                else
+                    var e_del <- new [[ExprDelete() at=call.at,
+                        subexpr <- clone_expression(call.arguments[0])
+                    ]]
+                    scope.finalList |> emplace(e_del,0)
         return !success ? [[ExpressionPtr]] : quote() <| nada()

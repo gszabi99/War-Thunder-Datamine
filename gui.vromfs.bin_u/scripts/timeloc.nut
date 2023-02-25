@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -19,7 +20,7 @@ let timeBase = require("%sqstd/time.nut")
 let stdStr = require("string")
 let math = require("math")
 
-let {TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS} = timeBase
+let { TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS } = timeBase
 
 local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = loc) {
   let res = []
@@ -31,39 +32,39 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
   let mm = (time * TIME_MINUTE_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
   let ss = (time * TIME_HOUR_IN_SECONDS % TIME_MINUTE_IN_SECONDS).tointeger()
 
-  if (dd>0) {
+  if (dd > 0) {
     res.append(fullUnits ? i18n("measureUnits/full/days", { n = dd }) :
-      "{0}{1}".subst(dd,i18n("measureUnits/days")))
+      "{0}{1}".subst(dd, i18n("measureUnits/days")))
     if (dontShowZeroParam && hh == 0) {
       return "".join([sign].extend(res))
     }
   }
 
-  if (hh && (full || time<24*7)) {
-    if (res.len()>0)
+  if (hh && (full || time < 24 * 7)) {
+    if (res.len() > 0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/hours", { n = hh }) :
-      stdStr.format((time >= 24)? "%02d%s" : "%d%s", hh, i18n("measureUnits/hours")))
+      stdStr.format((time >= 24) ? "%02d%s" : "%d%s", hh, i18n("measureUnits/hours")))
     if (dontShowZeroParam && mm == 0) {
       return "".join([sign].extend(res))
     }
   }
 
-  if ((mm || (!res.len() && !useSeconds)) && (full || time<24)) {
-    if (res.len()>0)
+  if ((mm || (!res.len() && !useSeconds)) && (full || time < 24)) {
+    if (res.len() > 0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/minutes", { n = mm }) :
-      stdStr.format((time >= 1)? "%02d%s" : "%d%s", mm, i18n("measureUnits/minutes")))
+      stdStr.format((time >= 1) ? "%02d%s" : "%d%s", mm, i18n("measureUnits/minutes")))
   }
 
-  if ((((ss > 0 || !dontShowZeroParam) && useSeconds) || res.len()==0) && (time < 1.0 / 6)) { // < 10min
-    if (res.len()>0)
+  if ((((ss > 0 || !dontShowZeroParam) && useSeconds) || res.len() == 0) && (time < 1.0 / 6)) { // < 10min
+    if (res.len() > 0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/seconds", { n = ss }) :
       stdStr.format("%02d%s", ss, i18n("measureUnits/seconds")))
   }
 
-  if (res.len()==0)
+  if (res.len() == 0)
     return ""
   return "".join([sign].extend(res))
 }
@@ -86,26 +87,26 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
 
   if (!dontShowZeroParam || minutesNum != 0) {
     let fStr = res.len() > 0 ? "%02d%s" : "%d%s"
-    if (res.len()>0)
+    if (res.len() > 0)
       res.append(separator)
     res.append(
       stdStr.format(fStr, minutesNum, useAbbreviations ? i18n("measureUnits/minutes") : "")
     )
   }
 
-  if (!dontShowZeroParam || secondsNum != 0 || res.len()==0) {
+  if (!dontShowZeroParam || secondsNum != 0 || res.len() == 0) {
     let symbolsNum = res.len() ? 2 : 1
     let fStr = secondsFraction > 0
       ? $"%0{secondsFraction + 1 + symbolsNum}.{secondsFraction}f%s"
       : $"%0{symbolsNum}d%s"
-    if (res.len()>0)
+    if (res.len() > 0)
       res.append(separator)
     res.append(
       stdStr.format(fStr, secondsNum, useAbbreviations ? i18n("measureUnits/seconds") : "")
     )
   }
 
-  if (res.len()==0)
+  if (res.len() == 0)
     return ""
   return "".join([sign].extend(res))
 }
@@ -117,8 +118,8 @@ let function buildDateStr(timeTable) {
   return loc(locId, {
     year = year
     day = timeTable?.day ?? -1
-    month = loc("sm_month_{0}".subst((timeTable?.month ?? -1)+1))
-    dayOfWeek = loc("weekday_{0}".subst((timeTable?.dayOfWeek ?? -1)+1))
+    month = loc("sm_month_{0}".subst((timeTable?.month ?? -1) + 1))
+    dayOfWeek = loc("weekday_{0}".subst((timeTable?.dayOfWeek ?? -1) + 1))
   })
 }
 
@@ -131,7 +132,7 @@ let function buildTimeStr(timeTable, showZeroSeconds = false, showSeconds = true
 }
 
 let buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") //warning disable: -forgot-subst
-  formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds)})
+  formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds) })
 
 return timeBase.__merge({
   secondsToString

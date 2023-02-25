@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let DataBlock = require("DataBlock")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let stdMath = require("%sqstd/math.nut")
 let crewSkillsPageHandler = require("%scripts/crew/crewSkillsPageHandler.nut")
@@ -24,12 +26,11 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 }
 
-::gui_handlers.CrewModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.CrewModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/crew/crew.blk"
 
-  slotbarActions = ["aircraft","sec_weapons", "weapons", "showroom", "repair" ]
+  slotbarActions = ["aircraft", "sec_weapons", "weapons", "showroom", "repair" ]
 
   countryId = -1
   idInCountry = -1
@@ -59,8 +60,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
   needHideSlotbar = false
   curUnit = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.scene)
       return this.goBack()
     this.crew = this.getSlotCrew()
@@ -74,7 +74,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.initMainParams(true, true)
     if (!this.needHideSlotbar)
       this.createSlotbar({
-        emptyText="#shop/aircraftNotSelected",
+        emptyText = "#shop/aircraftNotSelected",
         beforeSlotbarSelect = @(onOk, onCancel, _slotData) this.checkSkillPointsAndDo(onOk, onCancel)
         afterSlotbarSelect = this.openSelectedCrew
         onSlotDblClick = this.onSlotDblClick
@@ -91,14 +91,12 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 
   getSlotbarParams = @() {
     crewId = this.crew.id
-    showNewSlot=false
+    showNewSlot = false
   }
 
-  function updateCrewInfo()
-  {
+  function updateCrewInfo() {
     local text = ""
-    if (this.curUnit != null && this.curUnit.getCrewUnitType() == this.curCrewUnitType)
-    {
+    if (this.curUnit != null && this.curUnit.getCrewUnitType() == this.curCrewUnitType) {
       text = ::g_string.implode([
         loc("crew/currentAircraft") + loc("ui/colon")
           + colorize("activeTextColor", ::getUnitName(this.curUnit))
@@ -112,8 +110,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.scene.findObject("crew-info-text").setValue(text)
   }
 
-  function initMainParams(reloadSkills=true, reinitUnitType = false)
-  {
+  function initMainParams(reloadSkills = true, reinitUnitType = false) {
     if (!checkObj(this.scene))
       return
 
@@ -130,14 +127,12 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.updateButtons()
   }
 
-  function countSkills()
-  {
-    this.curPoints = ("skillPoints" in this.crew)? this.crew.skillPoints : 0
+  function countSkills() {
+    this.curPoints = ("skillPoints" in this.crew) ? this.crew.skillPoints : 0
     this.crewCurLevel = ::g_crew.getCrewLevel(this.crew, this.curUnit, this.curCrewUnitType)
     this.crewLevelInc = ::g_crew.getCrewLevel(this.crew, this.curUnit, this.curCrewUnitType, true) - this.crewCurLevel
-    foreach(page in ::crew_skills)
-      foreach(item in page.items)
-      {
+    foreach (page in ::crew_skills)
+      foreach (item in page.items) {
         let value = getSkillValue(this.crew.id, this.curUnit, page.id, item.name)
         let newValue = getTblValue("newValue", item, value)
         if (newValue > value)
@@ -150,8 +145,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.updateAvailableSkillsIcons()
   }
 
-  function onSkillRowChange(item, newValue)
-  {
+  function onSkillRowChange(item, newValue) {
     let wasValue = ::g_crew.getSkillNewValue(item, this.crew, this.curUnit)
     let changeCost = ::g_crew.getSkillCost(item, newValue, wasValue)
     let crewLevelChange = ::g_crew.getSkillCrewLevel(item, newValue, wasValue)
@@ -167,27 +161,24 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::broadcastEvent("CrewNewSkillsChanged", { crew = this.crew })
   }
 
-  function getCurCountryName()
-  {
+  function getCurCountryName() {
     return ::g_crews_list.get()[this.countryId].country
   }
 
-  function updateUnitTypeRadioButtons()
-  {
+  function updateUnitTypeRadioButtons() {
     let rbObj = this.scene.findObject("rb_unit_type")
     if (!checkObj(rbObj))
       return
 
     local data = ""
     let crewUnitTypes = []
-    local isVisibleCurCrewTypeButton =false
-    foreach(unitType in unitTypes.types)
-    {
+    local isVisibleCurCrewTypeButton = false
+    foreach (unitType in unitTypes.types) {
       if (!unitType.isVisibleInShop())
         continue
 
       let crewUnitType = unitType.crewUnitType
-      if (isInArray(crewUnitType,crewUnitTypes))
+      if (isInArray(crewUnitType, crewUnitTypes))
         continue
 
       if (!isCountryHaveUnitType(this.getCurCountryName(), unitType.esUnitType))
@@ -207,25 +198,23 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.updateUnitType()
   }
 
-  function updateUnitType()
-  {
+  function updateUnitType() {
     this.countSkills()
     this.updateCrewInfo()
     this.initPages()
   }
 
-  function initPages()
-  {
+  function initPages() {
     this.updateDiscountInfo()
 
     this.pages = []
-    foreach(page in ::crew_skills)
+    foreach (page in ::crew_skills)
       if (page.isVisible(this.curCrewUnitType))
         this.pages.append(page)
     this.pages.append({ id = "trained" })
 
     let maxDiscount = ::g_crew.getMaxDiscountByInfo(this.discountInfo, false)
-    let discountText = maxDiscount > 0? ("-" + maxDiscount + "%") : ""
+    let discountText = maxDiscount > 0 ? ("-" + maxDiscount + "%") : ""
     let discountTooltip = ::g_crew.getDiscountsTooltipByInfo(this.discountInfo, false)
 
     this.curPage = 0
@@ -234,14 +223,13 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     let view = {
       tabs = []
     }
-    foreach(index, page in this.pages)
-    {
+    foreach (index, page in this.pages) {
       if (page.id == this.curPageId)
         this.curPage = index
 
       let tabData = {
         id = page.id
-        tabName = loc("crew/"+ page.id)
+        tabName = loc("crew/" + page.id)
         navImagesText = ::get_navigation_images_text(index, this.pages.len())
       }
 
@@ -267,63 +255,54 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.updateAvailableSkillsIcons()
   }
 
-  function needSmallerHeaderFont(targetSize, viewTabs)
-  {
+  function needSmallerHeaderFont(targetSize, viewTabs) {
     local width = 0
-    foreach(tab in viewTabs)
+    foreach (tab in viewTabs)
       width += daguiFonts.getStringWidthPx(tab.tabName, "fontNormal", this.guiScene)
 
     width += viewTabs.len() * to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
     if (::show_console_buttons)
-      width += 2*targetSize[1] //gamepad navigation icons width = ph
+      width += 2 * targetSize[1] //gamepad navigation icons width = ph
 
     return width > targetSize[0]
   }
 
-  function onChangeUnitType(obj)
-  {
+  function onChangeUnitType(obj) {
     this.curCrewUnitType = obj.getValue()
     this.updateUnitType()
   }
 
-  function onCrewPage(obj)
-  {
+  function onCrewPage(obj) {
     if (!obj)
       return
     let value = obj.getValue()
-    if (value in this.pages)
-    {
+    if (value in this.pages) {
       this.curPage = value
       this.curPageId = obj.getChild(value).id
       this.fillPage()
     }
   }
 
-  function getCrewSkillTooltipLocId(skillName, pageName)
-  {
+  function getCrewSkillTooltipLocId(skillName, pageName) {
     return "crew/" + pageName + "/" + skillName + "/tooltip"
   }
 
-  function isSkillsPage(page)
-  {
+  function isSkillsPage(page) {
     return "items" in page
   }
 
-  function fillPage()
-  {
+  function fillPage() {
     this.updatePage()
   }
 
-  function updatePointsText()
-  {
+  function updatePointsText() {
     let isMaxLevel = ::g_crew.isCrewMaxLevel(this.crew, this.curUnit, this.getCurCountryName(), this.curCrewUnitType)
     let curPointsText = ::get_crew_sp_text(this.curPoints)
     this.scene.findObject("crew_cur_points").setValue(isMaxLevel ? "" : curPointsText)
 
     local levelIncText = ""
     local levelIncTooltip = loc("crew/usedSkills/tooltip")
-    if (isMaxLevel)
-    {
+    if (isMaxLevel) {
       levelIncText = loc("ui/parentheses/space", { text = loc("options/quality_max") })
       levelIncTooltip += "\n" + loc("crew/availablePoints") + curPointsText
     }
@@ -337,8 +316,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.showSceneBtn("btn_buy", hasFeature("SpendGold") && !isMaxLevel && this.crew.id != -1)
   }
 
-  function updatePointsAdvice()
-  {
+  function updatePointsAdvice() {
     let page = this.pages[this.curPage]
     let isSkills = this.isSkillsPage(page)
     this.scene.findObject("crew_points_advice_block").show(isSkills)
@@ -349,8 +327,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.scene.findObject("crew_points_advice_text")["crewStatus"] = statusType.style
   }
 
-  function updateBuyAllButton()
-  {
+  function updateBuyAllButton() {
     if (!hasFeature("CrewBuyAllSkills"))
       return
 
@@ -360,25 +337,21 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     setColoredDoubleTextToButton(this.scene, "btn_buy_all", text)
   }
 
-  function onBuyAll()
-  {
+  function onBuyAll() {
     ::g_crew.buyAllSkills(this.crew, this.curUnit, this.curCrewUnitType)
   }
 
-  function getCornerImgId(page)
-  {
+  function getCornerImgId(page) {
     return page.id + "_available"
   }
 
-  function updateAvailableSkillsIcons()
-  {
+  function updateAvailableSkillsIcons() {
     if (!this.pages)
       return
 
     this.guiScene.setUpdatesEnabled(false, false)
     let pagesObj = this.scene.findObject("crew_pages_list")
-    foreach(page in this.pages)
-    {
+    foreach (page in this.pages) {
       if (!this.isSkillsPage(page))
         continue
       let obj = pagesObj.findObject(this.getCornerImgId(page))
@@ -395,8 +368,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  function updateDiscountInfo()
-  {
+  function updateDiscountInfo() {
     this.discountInfo = ::g_crew.getDiscountInfo(this.countryId, this.idInCountry)
     this.updateAirList()
 
@@ -405,21 +377,18 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::showCurBonus(obj, buyPointsDiscount, "buyPoints", true, true)
   }
 
-  function updateAirList()
-  {
+  function updateAirList() {
     this.airList = []
     if (!("trainedSpec" in this.crew))
       return
 
     let sortData = [] // { unit, locname }
-    foreach(unit in ::all_units)
-      if (unit.name in this.crew.trainedSpec && unit.getCrewUnitType() == this.curCrewUnitType)
-      {
+    foreach (unit in ::all_units)
+      if (unit.name in this.crew.trainedSpec && unit.getCrewUnitType() == this.curCrewUnitType) {
         let isCurrent = getTblValue("aircraft", this.crew, "") == unit.name
         if (isCurrent)
           this.airList.append(unit)
-        else
-        {
+        else {
           sortData.append({
             unit = unit
             locname = ::g_string.utf8ToLower(::getUnitName(unit))
@@ -427,20 +396,17 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
         }
       }
 
-    sortData.sort(function(a,b)
-    {
+    sortData.sort(function(a, b) {
       return a.locname > b.locname ? 1 : (a.locname < b.locname ? -1 : 0)
     })
 
-    foreach(data in sortData)
+    foreach (data in sortData)
       this.airList.append(data.unit)
   }
 
-  function updatePage()
-  {
+  function updatePage() {
     let page = this.pages[this.curPage]
-    if (this.isSkillsPage(page))
-    {
+    if (this.isSkillsPage(page)) {
       let skillsHandlerParams = {
         scene = this.scene.findObject("skills_table")
         curPage = page
@@ -459,14 +425,12 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
       if (this.skillsPageHandler != null)
         this.skillsPageHandler.setHandlerVisible(true)
     }
-    else if (page.id=="trained")
-    {
+    else if (page.id == "trained") {
       if (this.skillsPageHandler != null)
         this.skillsPageHandler.setHandlerVisible(false)
       if (this.unitSpecHandler == null)
         this.unitSpecHandler = ::g_crew.createCrewUnitSpecHandler(this.scene)
-      if (this.unitSpecHandler != null)
-      {
+      if (this.unitSpecHandler != null) {
         this.unitSpecHandler.setHandlerVisible(true)
         this.unitSpecHandler.setHandlerData(this.crew, this.crewCurLevel, this.airList, this.curCrewUnitType)
       }
@@ -475,16 +439,14 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.updateUnitTypeWarning(this.isSkillsPage(page))
   }
 
-  function updateUnitTypeWarning(skillsVisible)
-  {
+  function updateUnitTypeWarning(skillsVisible) {
     local show = false
     if (skillsVisible)
       show = this.curUnit != null && this.curUnit.getCrewUnitType() != this.curCrewUnitType
     this.scene.findObject("skills_unit_type_warning").show(show)
   }
 
-  function onBuyPoints()
-  {
+  function onBuyPoints() {
     if (!checkObj(this.scene))
       return
 
@@ -492,32 +454,27 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::g_crew.createCrewBuyPointsHandler(this.crew)
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.checkSkillPointsAndDo(base.goBack)
   }
 
-  function onEventSetInQueue(_params)
-  {
+  function onEventSetInQueue(_params) {
     base.goBack()
   }
 
-  function onApply()
-  {
+  function onApply() {
     if (this.progressBox)
       return
 
-    let blk = ::DataBlock()
-    foreach(page in ::crew_skills)
-      if (this.isSkillsPage(page))
-      {
-        let typeBlk = ::DataBlock()
-        foreach(_idx, item in page.items)
-          if ("newValue" in item)
-          {
+    let blk = DataBlock()
+    foreach (page in ::crew_skills)
+      if (this.isSkillsPage(page)) {
+        let typeBlk = DataBlock()
+        foreach (_idx, item in page.items)
+          if ("newValue" in item) {
             let value = getSkillValue(this.crew.id, this.curUnit, page.id, item.name)
-            if (value<item.newValue)
-              typeBlk[item.name] = item.newValue-value
+            if (value < item.newValue)
+              typeBlk[item.name] = item.newValue - value
           }
         blk[page.id] = typeBlk
       }
@@ -526,12 +483,10 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     let isTaskCreated = ::g_tasker.addTask(
       ::shop_upgrade_crew(this.crew.id, blk),
       { showProgressBox = true },
-      function()
-      {
+      function() {
         ::broadcastEvent("CrewSkillsChanged",
           { crew = curHandler.crew, unit = curHandler.curUnit })
-        if (curHandler.isValid() && curHandler.afterApplyAction)
-        {
+        if (curHandler.isValid() && curHandler.afterApplyAction) {
           curHandler.afterApplyAction()
           curHandler.afterApplyAction = null
         }
@@ -544,13 +499,11 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
       ::g_crews_list.suspendSlotbarUpdates()
   }
 
-  function onSelect()
-  {
+  function onSelect() {
     this.onApply()
   }
 
-  function checkSkillPointsAndDo(action, cancelAction = function() {}, updateAfterApply = true)
-  {
+  function checkSkillPointsAndDo(action, cancelAction = function() {}, updateAfterApply = true) {
     let crewPoints = getTblValue("skillPoints", this.crew, 0)
     if (this.curPoints == crewPoints)
       return action()
@@ -570,29 +523,24 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     })
   }
 
-  function baseGoForward(startFunc, needFade)
-  {
+  function baseGoForward(startFunc, needFade) {
     base.goForward(startFunc, needFade)
   }
 
-  function goForward(startFunc, needFade=true)
-  {
+  function goForward(startFunc, needFade = true) {
     this.checkSkillPointsAndDo(Callback(@() this.baseGoForward(startFunc, needFade), this))
   }
 
-  function onSlotDblClick(_slotCrew)
-  {
+  function onSlotDblClick(_slotCrew) {
     if (this.curUnit != null)
       this.checkSkillPointsAndDo(@() ::open_weapons_for_unit(this.curUnit))
   }
 
-  function beforeSlotbarChange(action, cancelAction)
-  {
+  function beforeSlotbarChange(action, cancelAction) {
     this.checkSkillPointsAndDo(action, cancelAction)
   }
 
-  function openSelectedCrew()
-  {
+  function openSelectedCrew() {
     let newCrew = this.getCurCrew()
     if (!newCrew)
       return
@@ -603,8 +551,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.initMainParams(true, true)
   }
 
-  function onUpgrCrewSkillsTutorial()
-  {
+  function onUpgrCrewSkillsTutorial() {
     let steps = [
       {
         obj = ["crew_cur_points_block"]
@@ -657,8 +604,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::gui_modal_tutor(steps, this)
   }
 
-  function canUpgradeCrewSpec(upgCrew)
-  {
+  function canUpgradeCrewSpec(upgCrew) {
     if (this.curUnit == null)
       return false
 
@@ -672,8 +618,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
            crewLevel >= reqLevel
   }
 
-  function onUpgrCrewSpec1Tutorial()
-  {
+  function onUpgrCrewSpec1Tutorial() {
     let tblObj = this.scene.findObject("skills_table")
     if (!checkObj(tblObj))
       return
@@ -681,8 +626,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     local skillRowObj = null
     local btnSpecObj = null
 
-    for(local i = 0; i < tblObj.childrenCount(); i++)
-    {
+    for (local i = 0; i < tblObj.childrenCount(); i++) {
       skillRowObj = tblObj.findObject("skill_row" + i)
       if (!checkObj(skillRowObj))
         continue
@@ -710,12 +654,10 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::gui_modal_tutor(steps, this)
   }
 
-  function onUpgrCrewSpec1ConfirmTutorial()
-  {
+  function onUpgrCrewSpec1ConfirmTutorial() {
     ::g_crew.upgradeUnitSpec(this.crew, this.curUnit, null, ::g_crew_spec_type.EXPERT)
 
-    if (::scene_msg_boxes_list.len() == 0)
-    {
+    if (::scene_msg_boxes_list.len() == 0) {
       let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
       let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
@@ -744,8 +686,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::saveLocalByAccount("upgradeCrewSpecTutorialPassed", true)
   }
 
-  function onUpgrCrewTutorFinalStep()
-  {
+  function onUpgrCrewTutorFinalStep() {
     let steps = [
       {
         text = loc("tutorials/upg_crew/final_massage")
@@ -757,76 +698,64 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     ::gui_modal_tutor(steps, this)
   }
 
-  function onEventCrewSkillsChanged(params)
-  {
+  function onEventCrewSkillsChanged(params) {
     this.crew = this.getSlotCrew()
     this.initMainParams(!getTblValue("isOnlyPointsChanged", params, false))
   }
 
   /** Triggered from CrewUnitSpecHandler. */
-  function onEventQualificationIncreased(_params)
-  {
+  function onEventQualificationIncreased(_params) {
     this.crew = this.getSlotCrew()
     this.initMainParams()
   }
 
-  function onEventCrewTakeUnit(p)
-  {
+  function onEventCrewTakeUnit(p) {
     if (!p?.unit)
       return
 
     if (!p?.prevUnit)
       this.openSelectedCrew()
-    else
-    {
+    else {
       this.crew = this.getSlotCrew()
       this.initMainParams(false, true)
     }
     this.updatePage()
   }
 
-  function onEventSlotbarPresetLoaded(_params)
-  {
+  function onEventSlotbarPresetLoaded(_params) {
     this.openSelectedCrew()
     this.updatePage()
   }
 
-  function onButtonInc(obj)
-  {
+  function onButtonInc(obj) {
     if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonInc(obj)
   }
 
-  function onButtonIncRepeat(obj)
-  {
+  function onButtonIncRepeat(obj) {
     if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonIncRepeat(obj)
   }
 
-  function onButtonDec(obj)
-  {
+  function onButtonDec(obj) {
     if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonDec(obj)
   }
 
-  function onButtonDecRepeat(obj)
-  {
+  function onButtonDecRepeat(obj) {
     if (::handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonDecRepeat(obj)
   }
 
-  function getCrewLevel()
-  {
+  function getCrewLevel() {
     return this.crewCurLevel
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     return this.curEdiff == -1 ? ::get_current_ediff() : this.curEdiff
   }
 
-  function updateSkillsHandlerPoints()
-  {
+  function updateSkillsHandlerPoints() {
     if (this.skillsPageHandler != null)
       this.skillsPageHandler.setCurPoints(this.curPoints)
   }
@@ -835,8 +764,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
   getSlotCrew = @() getCrew(this.countryId, this.idInCountry)
   onRecruitCrew = @() null
 
-  function updateButtons()
-  {
+  function updateButtons() {
     this.scene.findObject("btn_apply").show(true)
   }
 }

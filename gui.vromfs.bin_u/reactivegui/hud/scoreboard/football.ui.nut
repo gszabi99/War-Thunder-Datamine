@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {localTeam, scoreTeamA, scoreTeamB, roundTimeLeft} = require("%rGui/missionState.nut")
+let { localTeam, scoreTeamA, scoreTeamB, roundTimeLeft } = require("%rGui/missionState.nut")
 let teamColors = require("%rGui/style/teamColors.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
@@ -51,7 +51,7 @@ return {
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       color = Color(0, 0, 0, 102)
-      children = @(){
+      children = @() {
         watch = roundTimeLeft
         rendObj = ROBJ_TEXT
         font = Fonts.medium_text_hud

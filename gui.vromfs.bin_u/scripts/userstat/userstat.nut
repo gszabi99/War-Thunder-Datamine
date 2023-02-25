@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,6 +9,8 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
 let { APP_ID_CUSTOM_LEADERBOARD
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
+let DataBlock = require("DataBlock")
+let { json_to_string } = require("json")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -48,13 +51,13 @@ let function makeUpdatable(persistName, request, defValue, forceRefreshEvents = 
 
     prepareToRequest()
 
-    request(function(result){
+    request(function(result) {
       processResult(result, cb)
     })
   }
 
   let function forceRefresh(cb = null) {
-    lastTime.mutate(@(v) v.__update({ update = 0, request = 0}))
+    lastTime.mutate(@(v) v.__update({ update = 0, request = 0 }))
     refresh(cb)
   }
 
@@ -128,12 +131,12 @@ let function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, 
     unlocksUpdatable.processResult(result, cb)
   }
 
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.addInt("appid", APP_ID)
 
   let taskId = ::char_send_custom_action("cln_userstat_grant_rewards",
     EATT_JSON_REQUEST, blk,
-    ::json_to_string({ unlock = unlockName, stage = stage }, false),
+    json_to_string({ unlock = unlockName, stage }, false),
     -1)
   ::g_tasker.addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
 }
@@ -155,7 +158,7 @@ let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && hasFe
 
 local validateTaskTimer = -1
 let function validateUserstatData(_dt = 0) {
-  if ( validateTaskTimer >= 0 ) {
+  if (validateTaskTimer >= 0) {
     ::periodic_task_unregister(validateTaskTimer)
     validateTaskTimer = -1
   }

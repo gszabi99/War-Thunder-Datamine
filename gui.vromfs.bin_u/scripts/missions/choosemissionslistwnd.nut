@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -33,11 +34,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   missionDescWeak = null
   curMission = null
 
-  static function open(config)
-  {
+  static function open(config) {
     let misList = getTblValue("missionsList", config)
-    if (!::u.isArray(misList) || !misList.len())
-    {
+    if (!::u.isArray(misList) || !misList.len()) {
       ::script_net_assert_once(" bad_missions_list",
         "Bad missions list to choose: " + toString(misList))
       return
@@ -45,8 +44,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::handlersManager.loadHandler(::gui_handlers.ChooseMissionsListWnd, config)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.misListObj = this.scene.findObject("items_list")
     this.scene.findObject("wnd_title").setValue(this.headerText)
 
@@ -58,49 +56,43 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
-  function initDescHandler()
-  {
+  function initDescHandler() {
     let descHandler = ::gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
     this.registerSubHandler(descHandler)
     this.missionDescWeak = descHandler.weakref()
   }
 
-  function selMissionsToMap(fullList, selList)
-  {
+  function selMissionsToMap(fullList, selList) {
     let res = {}
-    foreach(mission in fullList)
+    foreach (mission in fullList)
       res[mission.id] <- false
-    foreach(mission in selList)
+    foreach (mission in selList)
       res[mission.id] <- true
     return res
   }
 
-  function mapToSelectedMissions(fullList, misMap)
-  {
+  function mapToSelectedMissions(fullList, misMap) {
     let res = []
-    foreach(mission in fullList)
+    foreach (mission in fullList)
       if (getTblValue(mission.id, misMap, false))
         res.append(mission)
     return res
   }
 
-  function isMissionSelected(mission)
-  {
+  function isMissionSelected(mission) {
     return getTblValue(mission.id, this.selMissionsMap, false)
   }
 
-  function isAllMissionsSelected()
-  {
-    foreach(value in this.selMissionsMap)
+  function isAllMissionsSelected() {
+    foreach (value in this.selMissionsMap)
       if (!value)
         return false
     return true
   }
 
-  function fillMissionsList()
-  {
+  function fillMissionsList() {
     let view = { items = [] }
-    foreach(mission in this.missionsList)
+    foreach (mission in this.missionsList)
       view.items.append({
         id = mission.id
         itemText = mission.getNameText()
@@ -113,8 +105,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.misListObj.setValue(0)
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let chooseBtn = this.showSceneBtn("btn_choose", !!this.curMission)
     if (this.curMission)
       chooseBtn.setValue(this.isMissionSelected(this.curMission) ? loc("misList/unselectMission") : loc("misList/selectMission"))
@@ -123,8 +114,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.scene.findObject("btn_choose_all").setValue(chooseAllText)
   }
 
-  function markSelected(mission, isSelected)
-  {
+  function markSelected(mission, isSelected) {
     if (isSelected == this.isMissionSelected(mission))
       return
 
@@ -134,8 +124,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       checkBoxObj.setValue(isSelected)
   }
 
-  function onMissionSelect(obj)
-  {
+  function onMissionSelect(obj) {
     let mission = getTblValue(obj.getValue(), this.missionsList)
     if (mission == this.curMission)
       return
@@ -146,8 +135,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateButtons()
   }
 
-  function onChooseMission()
-  {
+  function onChooseMission() {
     if (!this.curMission)
       return
 
@@ -155,22 +143,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateButtons()
   }
 
-  function onChooseAll()
-  {
+  function onChooseAll() {
     let needSelect = !this.isAllMissionsSelected()
-    foreach(mission in this.missionsList)
+    foreach (mission in this.missionsList)
       this.markSelected(mission, needSelect)
     this.updateButtons()
   }
 
-  function onMissionCheckBox(obj)
-  {
+  function onMissionCheckBox(obj) {
     let id = ::getObjIdByPrefix(obj, "checkbox_")
     if (!id)
       return
 
-    if (!this.curMission || this.curMission.id != id)
-    {
+    if (!this.curMission || this.curMission.id != id) {
       let idx = this.missionsList.findindex(@(m) m.id == id)
       if (idx == null)
         return
@@ -179,15 +164,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     let value = obj.getValue()
-    if (this.isMissionSelected(this.curMission) != obj.getValue())
-    {
+    if (this.isMissionSelected(this.curMission) != obj.getValue()) {
       this.markSelected(this.curMission, value)
       this.updateButtons()
     }
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (this.onApplyListCb && !::u.isEqual(this.selMissionsMap, this.initialSelMissionsMap))
       this.onApplyListCb(this.mapToSelectedMissions(this.missionsList, this.selMissionsMap))
   }

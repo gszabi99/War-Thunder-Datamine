@@ -1,3 +1,4 @@
+//checked for plus_string
 global const WW_SKIP_BATTLE_WARNINGS_SAVE_ID = "worldWar/skipBattleWarnings"
 
 global enum WW_ARMY_ACTION_STATUS {

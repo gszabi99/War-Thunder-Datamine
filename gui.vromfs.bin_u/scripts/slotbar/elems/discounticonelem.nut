@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -25,8 +26,7 @@ elemViewType.addTypes({
   COUNTRY_DISCOUN_ICON = {
     model = elemModelType.COUNTRY_DISCOUN_ICON
 
-    updateView = function(obj, _params)
-    {
+    updateView = function(obj, _params) {
       let discountData = ::g_discount.generateDiscountInfo(
         ::g_discount.getUnitDiscountList(obj.countryId))
       let maxDiscount = discountData?.maxDiscount ?? 0

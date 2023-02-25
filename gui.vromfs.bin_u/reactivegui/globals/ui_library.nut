@@ -12,7 +12,7 @@ global enum Layers {
 }
 
 global const LINE_WIDTH = 1.6
-global const INVALID_ENTITY_ID = 0//ecs.INVALID_ENTITY_ID
+global const INVALID_ENTITY_ID = 0 //ecs.INVALID_ENTITY_ID
 /*scale px by font size*/
 let fontsState = require("%rGui/style/fontsState.nut")
 return {

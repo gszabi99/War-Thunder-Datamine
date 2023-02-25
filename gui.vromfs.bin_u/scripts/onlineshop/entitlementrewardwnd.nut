@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd
-{
+::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd {
   wndType = handlerType.MODAL
 
   entitlementConfig = null
@@ -41,18 +41,15 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let skinsNames = this.entitlementConfig?.skinGift ?? []
     local resourceType = ""
     local resource = ""
-    if (decalsNames.len())
-    {
+    if (decalsNames.len()) {
       resourceType = "decal"
       resource = decalsNames[0]
     }
-    else if (attachablesNames.len())
-    {
+    else if (attachablesNames.len()) {
       resourceType = "attachable"
       resource = attachablesNames[0]
     }
-    else if (skinsNames.len())
-    {
+    else if (skinsNames.len()) {
       resourceType = "skin"
       resource = skinsNames[0]
     }
@@ -97,8 +94,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 return {
   showEntitlement = function(entitlementId, params = {}) {
     let config = getEntitlementConfig(entitlementId)
-    if (!config)
-    {
+    if (!config) {
       logerr($"Entitlement Reward: Could not find entitlement config {entitlementId}")
       return
     }

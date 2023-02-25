@@ -1,63 +1,54 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-::EventChapter <- class
-{
+::EventChapter <- class {
   name = ""
   eventIds = []
   sortValid = true
   sortPriority = -1
 
-  constructor(chapter_id)
-  {
+  constructor(chapter_id) {
     this.name = chapter_id
     this.eventIds = []
     this.update()
   }
 
-  function getLocName()
-  {
+  function getLocName() {
     return loc("events/chapter/" + this.name)
   }
 
-  function getEvents()
-  {
-    if (!this.sortValid)
-    {
+  function getEvents() {
+    if (!this.sortValid) {
       this.sortValid = true
       this.eventIds.sort(this.sortChapterEvents)
     }
     return this.eventIds
   }
 
-  function getSortPriority()
-  {
-    if(this.sortPriority == -1)
+  function getSortPriority() {
+    if (this.sortPriority == -1)
       this.updateSortPriority()
     return this.sortPriority
   }
 
-  function updateSortPriority()
-  {
+  function updateSortPriority() {
     this.sortPriority = 0
-    foreach (eventName in this.getEvents())
-    {
+    foreach (eventName in this.getEvents()) {
       let event = ::events.getEvent(eventName)
       if (event)
         this.sortPriority = max(this.sortPriority, ::events.getEventUiSortPriority(event))
     }
   }
 
-  function isEmpty()
-  {
+  function isEmpty() {
     return this.eventIds.len() == 0
   }
 
-  function update()
-  {
+  function update() {
     this.eventIds = ::events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) {
       return ::events.getEventsChapter(event) == name
              && ::events.isEventVisibleInEventsWindow(event)
@@ -66,8 +57,7 @@ from "%scripts/dagui_library.nut" import *
     this.sortPriority = -1
   }
 
-  function sortChapterEvents(eventId1, eventId2) // warning disable: -return-different-types
-  {
+  function sortChapterEvents(eventId1, eventId2) { // warning disable: -return-different-types
     let event1 = ::events.getEvent(eventId1)
     let event2 = ::events.getEvent(eventId2)
     if (event1 == null && event2 == null)
@@ -80,13 +70,11 @@ from "%scripts/dagui_library.nut" import *
   }
 }
 
-::EventChaptersManager <- class
-{
+::EventChaptersManager <- class {
   chapters = []
   chapterIndexByName = {}
 
-  constructor()
-  {
+  constructor() {
     this.chapters = []
     this.chapterIndexByName = {}
 
@@ -98,12 +86,10 @@ from "%scripts/dagui_library.nut" import *
   * Then calls all chapters to update
   * And when some chapters are empty, removes them
   */
-  function updateChapters()
-  {
+  function updateChapters() {
     let eventsList = ::events.getEventsList(EVENT_TYPE.ANY, ::events.isEventVisibleInEventsWindow)
 
-    foreach (eventName in eventsList)
-    {
+    foreach (eventName in eventsList) {
       let event = ::events.getEvent(eventName)
       if (event == null)
         continue
@@ -122,44 +108,37 @@ from "%scripts/dagui_library.nut" import *
     this.sortChapters()
   }
 
-  function getChapter(chapter_name)
-  {
+  function getChapter(chapter_name) {
     let chapterIndex = this.chapterIndexByName?[chapter_name] ?? -1
     return chapterIndex < 0 ? null : this.chapters[chapterIndex]
   }
 
-  function sortChapters()
-  {
+  function sortChapters() {
     this.chapters.sort(@(a, b) b.getSortPriority() <=> a.getSortPriority())
     this.reindexChapters()
   }
 
-  function addChapter(chapter_name)
-  {
+  function addChapter(chapter_name) {
     this.chapters.append(::EventChapter(chapter_name))
     this.sortChapters()
   }
 
-  function deleteChapter(chapter_name)
-  {
+  function deleteChapter(chapter_name) {
     this.chapters.remove(this.chapterIndexByName[chapter_name])
     this.sortChapters()
   }
 
-  function reindexChapters()
-  {
+  function reindexChapters() {
     this.chapterIndexByName.clear()
     foreach (idx, chapter in this.chapters)
       this.chapterIndexByName[chapter.name] <- idx
   }
 
-  function getChapters()
-  {
+  function getChapters() {
     return this.chapters
   }
 
-  function onEventGameLocalizationChanged(_params)
-  {
+  function onEventGameLocalizationChanged(_params) {
     foreach (chapter in this.chapters)
       chapter.sortValid = false
   }

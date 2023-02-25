@@ -19,7 +19,7 @@ let moduleIconConstructor = function (params) {
     color =  color
     watch = params?.iconWatch
     image = icon()
-    size = [hdpx(params.iconSize[0]),hdpx(params.iconSize[1])]
+    size = [hdpx(params.iconSize[0]), hdpx(params.iconSize[1])]
 
     transform = {}
     animations = [
@@ -90,7 +90,7 @@ let text = @(total_count, broken_count) {
   rendObj = ROBJ_TEXT
   color = broken_count > 0 ? colors.hud.damageModule.active : colors.hud.damageModule.inactive
   halign = ALIGN_CENTER
-  text = str((total_count - broken_count),"/",total_count)
+  text = str((total_count - broken_count), "/", total_count)
 }
 
 
@@ -125,7 +125,8 @@ let dmModule = function (params) {
     if (totalCountState.value > 1) {
       if (totalCountState.value < MAX_DOST) {
         children.append(dots(totalCountState.value, brokenCountState.value))
-      } else {
+      }
+      else {
         children.append(text(totalCountState.value, brokenCountState.value))
       }
     }

@@ -1,0 +1,37 @@
+{
+  "tdiv": {
+    "size": "pw, ph",
+    "flow": "vertical",
+    "HorizontalListBox": [
+      {
+        "id": "tabs_list",
+        "height": "1@frameHeaderHeight",
+        "class": "header",
+        "normalFont": "yes",
+        "withImages": "no",
+        "activeAccesskeys": "RS",
+        "on_select": "onHelpSheetChange"
+      },
+      {
+        "id": "sub_tabs_list",
+        "normalFont": "yes",
+        "withImages": "no",
+        "navigatorShortcuts": "yes",
+        "on_select": "onHelpSubSheetChange"
+      }
+    ],
+    "tdiv": [
+      {
+        "id": "help_sheet",
+        "size": "pw, fh"
+      },
+      {
+        "id": "link_lines_block",
+        "size": "pw, ph",
+        "position": "root",
+        "total-input-transparent": "yes",
+        "display": "hide"
+      }
+    ]
+  }
+}

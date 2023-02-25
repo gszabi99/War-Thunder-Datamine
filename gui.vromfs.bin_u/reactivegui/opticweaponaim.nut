@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 
 let opticWeaponAim = @(tracker_size, tracker_x, tracker_y, guidance_lock_state, tracker_visible, color_watched) function() {
   let tSize = tracker_size.value
@@ -9,7 +9,7 @@ let opticWeaponAim = @(tracker_size, tracker_x, tracker_y, guidance_lock_state, 
     [
       [VECTOR_RECTANGLE, -tSize, -tSize, 2.0 * tSize, 2.0 * tSize],
       [VECTOR_LINE, 0, -0.33 * tSize, 0, -tSize],
-      [VECTOR_LINE, 0 , 0.33 * tSize, 0,  tSize],
+      [VECTOR_LINE, 0,  0.33 * tSize, 0,  tSize],
       [VECTOR_LINE, -0.33 * tSize, 0, -tSize, 0],
       [VECTOR_LINE,  0.33 * tSize, 0,  tSize, 0]
     ]

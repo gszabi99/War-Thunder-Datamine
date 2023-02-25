@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -38,15 +39,13 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
   }
 }
 
-::g_weaponry_types._getUnlockCost <- function _getUnlockCost(unit, item)
-{
+::g_weaponry_types._getUnlockCost <- function _getUnlockCost(unit, item) {
   if (item.name == "")
     return ::Cost()
   return ::Cost(0, ::wp_get_modification_open_cost_gold(unit.name, item.name))
 }
 
-::g_weaponry_types._getCost <- function _getCost(unit, item)
-{
+::g_weaponry_types._getCost <- function _getCost(unit, item) {
   if (item.name == "")
     return ::Cost()
   return ::Cost(
@@ -55,8 +54,7 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
   )
 }
 
-::g_weaponry_types._getAmount <- function _getAmount(unit, item)
-{
+::g_weaponry_types._getAmount <- function _getAmount(unit, item) {
   if (("isDefaultForGroup" in item) && item.isDefaultForGroup >= 0)
     return 1
   return ::shop_is_modification_purchased(unit.name, item.name)
@@ -81,8 +79,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getMaxAmount = function(unit, item) { return ::wp_get_weapon_max_count(unit.name, item.name) }
     canBuy = function(unit, item) { return ::isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
 
-    getScoreCostText = function(unit, item)
-    {
+    getScoreCostText = function(unit, item) {
       let fullCost = ::shop_get_spawn_score(unit.name, item.name, [])
       if (!fullCost)
         return ""
@@ -122,9 +119,8 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
     canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
 
-    getScoreCostText = function(unit, item)
-    {
-      let fullCost = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), [ item.name ] )
+    getScoreCostText = function(unit, item) {
+      let fullCost = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), [ item.name ])
       if (!fullCost)
         return ""
 
@@ -157,7 +153,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getCost = function(unit, ...) { return ::Cost(
       ::wp_get_spare_cost(unit.name),
       ::wp_get_spare_cost_gold(unit.name)
-    )}
+    ) }
     getAmount = function(unit, ...) { return ::get_spare_aircrafts_count(unit.name) }
     getMaxAmount = function(...) { return ::max_spare_amount }
     canBuy = function(unit, item) { return ::isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
@@ -170,7 +166,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     type = weaponsItem.primaryWeapon
     getLocName = function(unit, item, _limitedName = false) { return getWeaponNameText(unit, true, item.name, " ") }
     getCost = ::g_weaponry_types._getCost
-    getAmount = function(unit, item) { return ::u.isEmpty(item.name)? 1 : ::shop_is_modification_purchased(unit.name, item.name) }
+    getAmount = function(unit, item) { return ::u.isEmpty(item.name) ? 1 : ::shop_is_modification_purchased(unit.name, item.name) }
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
     canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
   }
@@ -178,20 +174,17 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //****************** BUNDLE ****************************************************
   BUNDLE = {
     type = weaponsItem.bundle
-    getLocName = function(unit, item, limitedName = false)
-    {
+    getLocName = function(unit, item, limitedName = false) {
       return getByCurBundle(unit, item, (@(limitedName) function(unit, curItem) {
         return ::g_weaponry_types.getUpgradeTypeByItem(curItem).getLocName(unit, curItem, limitedName)
       })(limitedName))
     }
-    getUnlockCost = function(unit, item)
-    {
+    getUnlockCost = function(unit, item) {
       return getByCurBundle(unit, item, function(unit, curItem) {
         return ::g_weaponry_types.getUpgradeTypeByItem(curItem).getUnlockCost(unit, curItem)
       })
     }
-    getCost = function(unit, item)
-    {
+    getCost = function(unit, item) {
       return getByCurBundle(unit, item, function(unit, curItem) {
         return ::g_weaponry_types.getUpgradeTypeByItem(curItem).getCost(unit, curItem)
       })
@@ -212,8 +205,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
   return 0
 })*/
 
-::g_weaponry_types.getUpgradeTypeByItem <- function getUpgradeTypeByItem(item)
-{
+::g_weaponry_types.getUpgradeTypeByItem <- function getUpgradeTypeByItem(item) {
   if (!("type" in item))
     return ::g_weaponry_types.UNKNOWN
 

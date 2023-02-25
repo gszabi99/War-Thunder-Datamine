@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -18,10 +19,8 @@ j+eTYc35NQIDAQAB
 "
 ]
 
-let function initPublicKeys()
-{
-  if (is_platform_xbox)
-  {
+let function initPublicKeys() {
+  if (is_platform_xbox) {
     log("Content signature verification temporary disabled for xboxone")
     return false
   }

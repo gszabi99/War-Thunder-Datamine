@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
-::gui_handlers.TopMenuButtonsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.TopMenuButtonsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mainmenu/topmenu_menuPanel.tpl"
@@ -26,8 +26,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 
   ON_ESC_SECTION_OPEN = "menu"
 
-  static function create(nestObj, parentHandler, sectionsStructure, objForWidth = null)
-  {
+  static function create(nestObj, parentHandler, sectionsStructure, objForWidth = null) {
     if (!::g_login.isLoggedIn())
       return null
 
@@ -40,19 +39,17 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
                                            sectionsStructure = sectionsStructure,
                                            objForWidth = objForWidth
                                         })
-    return handler? handler.weakref() : null
+    return handler ? handler.weakref() : null
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.GCDropdownsList = []
     return {
       section = this.getSectionsView()
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     if (this.parentHandlerWeak)
       this.parentHandlerWeak = this.parentHandlerWeak.weakref()
 
@@ -60,8 +57,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     this.updateButtonsStatus()
   }
 
-  function getMaxSectionsCount()
-  {
+  function getMaxSectionsCount() {
     if (!hasFeature("SeparateTopMenuButtons"))
       return 1
 
@@ -75,8 +71,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     return max(freeWidth / singleButtonMinWidth, 1)
   }
 
-  function initSectionsOrder()
-  {
+  function initSectionsOrder() {
     if (this.sectionsOrder)
       return
 
@@ -84,25 +79,22 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     this.sectionsOrder = ::g_top_menu_sections.getSectionsOrder(this.sectionsStructure, this.maxSectionsCount)
   }
 
-  function getSectionsView()
-  {
+  function getSectionsView() {
     if (!checkObj(this.scene))
       return {}
 
     this.initSectionsOrder()
 
     let sectionsView = []
-    foreach (topMenuButtonIndex, sectionData in this.sectionsOrder)
-    {
+    foreach (topMenuButtonIndex, sectionData in this.sectionsOrder) {
       let columnsCount = sectionData.buttons.len()
       let columns = []
 
-      foreach (idx, column in sectionData.buttons)
-      {
+      foreach (idx, column in sectionData.buttons) {
         columns.append({
           buttons = column
           addNewLine = idx != (columnsCount - 1)
-          columnIndex = (idx+1)
+          columnIndex = (idx + 1)
         })
       }
 
@@ -131,13 +123,11 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     return sectionsView
   }
 
-  function getSectionUnseenIcon(columns)
-  {
+  function getSectionUnseenIcon(columns) {
     let unseenList = []
     foreach (column in columns)
       foreach (button in column.buttons)
-      if (!button.isHidden() && !button.isVisualDisabled())
-      {
+      if (!button.isHidden() && !button.isVisualDisabled()) {
         let unseenIcon = button.unseenIcon?()
         if (unseenIcon)
           unseenList.append(unseenIcon)
@@ -146,14 +136,13 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     return unseenList.len() ? bhvUnseen.makeConfigStrByList(unseenList) : null
   }
 
-  function onHoverSizeMove(obj)
-  {
-    if(obj?["class"] != "dropDown")
+  function onHoverSizeMove(obj) {
+    if (obj?["class"] != "dropDown")
       obj = obj.getParent()
 
-    let hover = obj.findObject(obj.id+"_list_hover")
+    let hover = obj.findObject(obj.id + "_list_hover")
     if (checkObj(hover)) {
-      let menu = obj.findObject(obj.id+"_focus")
+      let menu = obj.findObject(obj.id + "_focus")
       menu.getScene().applyPendingChanges(true)
       hover["height-end"] = menu.getSize()[1] + this.guiScene.calcString("@dropDownMenuBottomActivityGap", null)
     }
@@ -161,25 +150,21 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     base.onHoverSizeMove(obj);
   }
 
-  function updateButtonsStatus()
-  {
+  function updateButtonsStatus() {
     let needHideVisDisabled = hasFeature("HideDisabledTopMenuActions")
     let isInQueue = ::checkIsInQueue()
     let skipNavigation = this.parentHandlerWeak?.scene
       .findObject("gamercard_div")["gamercardSkipNavigation"] == "yes"
 
-    foreach (_idx, section in this.sectionsOrder)
-    {
+    foreach (_idx, section in this.sectionsOrder) {
       let sectionId = section.getTopMenuButtonDivId()
       let sectionObj = this.scene.findObject(sectionId)
       if (!checkObj(sectionObj))
         continue
 
       local isVisibleAnyButton = false
-      foreach (column in section.buttons)
-      {
-        foreach (button in column)
-        {
+      foreach (column in section.buttons) {
+        foreach (button in column) {
           let btnObj = sectionObj.findObject(button.id)
           if (!checkObj(btnObj))
             continue
@@ -197,13 +182,12 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
             continue
 
           isVisualDisable = isVisualDisable || (button.isInactiveInQueue && isInQueue)
-          btnObj.inactiveColor = isVisualDisable? "yes" : "no"
+          btnObj.inactiveColor = isVisualDisable ? "yes" : "no"
           btnObj.tooltip = button.tooltip()
         }
       }
 
-      if (skipNavigation)
-      {
+      if (skipNavigation) {
         sectionObj["skip-navigation"] = "yes"
         sectionObj.findObject($"{sectionObj.id}_btn")["skip-navigation"] = "yes"
       }
@@ -213,8 +197,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     }
   }
 
-  function hideHoverMenu(name)
-  {
+  function hideHoverMenu(name) {
     let obj = this.getObj(name)
     if (!checkObj(obj))
       return
@@ -224,15 +207,13 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     obj.height = "0"
   }
 
-  function onClick(obj)
-  {
+  function onClick(obj) {
     if (!::handlersManager.isHandlerValid(this.parentHandlerWeak))
       return
 
     let btn = getButtonConfigById(obj.id)
     if (btn.isDelayed)
-      this.guiScene.performDelayed(this, function()
-      {
+      this.guiScene.performDelayed(this, function() {
         if (this.isValid())
           btn.onClickFunc(null, this.parentHandlerWeak)
       })
@@ -240,20 +221,17 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
       btn.onClickFunc(obj, this.parentHandlerWeak)
   }
 
-  function onChangeCheckboxValue(obj)
-  {
+  function onChangeCheckboxValue(obj) {
     let btn = getButtonConfigById(obj.id)
     btn.onChangeValueFunc(obj.getValue())
   }
 
-  function switchMenuFocus()
-  {
+  function switchMenuFocus() {
     let section = this.sectionsStructure.getSectionByName(this.ON_ESC_SECTION_OPEN)
     if (::u.isEmpty(section))
       return
 
-    if (::show_console_buttons && section.mergeIndex >= -1)
-    {
+    if (::show_console_buttons && section.mergeIndex >= -1) {
       this.scene.findObject("top_menu_panel_place").setValue(section.mergeIndex)
       return
     }
@@ -263,8 +241,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
       this[section.onClick](buttonObj)
   }
 
-  function topmenuMenuActivate(obj)
-  {
+  function topmenuMenuActivate(obj) {
     let curVal = obj.getValue()
     if (curVal < 0)
       return
@@ -286,8 +263,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
   function stickLeftDropDown(obj)  { this.moveDropDownFocus(obj, -1) }
   function stickRightDropDown(obj) { this.moveDropDownFocus(obj, 1)  }
 
-  function moveDropDownFocus(obj, direction)
-  {
+  function moveDropDownFocus(obj, direction) {
     this.forceCloseDropDown(obj)
 
     local mergeIdx = -1
@@ -296,8 +272,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
         mergeIdx = idx
 
     mergeIdx += direction
-    if (mergeIdx < 0 || mergeIdx >= this.sectionsOrder.len())
-    {
+    if (mergeIdx < 0 || mergeIdx >= this.sectionsOrder.len()) {
       ::set_dirpad_event_processed(false)
       return
     }
@@ -307,18 +282,15 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     panelObj.setValue(mergeIdx)
   }
 
-  function onEventGameModesAvailability(_p)
-  {
+  function onEventGameModesAvailability(_p) {
     this.doWhenActiveOnce("updateButtonsStatus")
   }
 
-  function onEventQueueChangeState(_p)
-  {
+  function onEventQueueChangeState(_p) {
     this.doWhenActiveOnce("updateButtonsStatus")
   }
 
-  function onEventUpdateGamercard(_p)
-  {
+  function onEventUpdateGamercard(_p) {
     this.doWhenActiveOnce("updateButtonsStatus")
   }
 
@@ -330,8 +302,7 @@ let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
     this.doWhenActiveOnce("updateButtonsStatus")
   }
 
-  function onEventActiveHandlersChanged(_p)
-  {
+  function onEventActiveHandlersChanged(_p) {
     if (!this.isSceneActiveNoModals())
       this.unstickLastDropDown()
   }

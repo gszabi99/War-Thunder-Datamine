@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
@@ -42,7 +44,7 @@ let function onSquadDataReceived(data) {
 
   if ((data?.wwOperationInfo.id ?? -1) > -1
     && !::g_ww_global_status_actions.getOperationById(data.wwOperationInfo.id)) {
-      let requestBlk = ::DataBlock()
+      let requestBlk = DataBlock()
       requestBlk.operationId = data.wwOperationInfo.id
       actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk)
   }

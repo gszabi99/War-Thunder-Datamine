@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,9 +6,10 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let time = require("%scripts/time.nut")
-let { GO_NONE, GO_WAITING_FOR_RESULT } = require_native("guiMission")
+let { GO_NONE, GO_WAITING_FOR_RESULT } = require("guiMission")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
+let { get_game_mode, get_game_type } = require("mission")
 
 enum LIVE_STATS_MODE {
   WATCH
@@ -71,8 +73,7 @@ enum LIVE_STATS_MODE {
       [LIVE_STATS_MODE.WATCH] = [ "name", "footballGoals", "footballAssists", "footballScore" ],
     },
   }
-  function init(parent_obj, nest_obj_id, is_self_togglable)
-  {
+  function init(parent_obj, nest_obj_id, is_self_togglable) {
     if (!hasFeature("LiveStats"))
       return
     if (!checkObj(parent_obj))
@@ -82,7 +83,7 @@ enum LIVE_STATS_MODE {
     this.guiScene  = this.parentObj.getScene()
 
     this.isSelfTogglable = is_self_togglable
-    this.gameType = ::get_game_type()
+    this.gameType = get_game_type()
     this.missionMode =
         (this.gameType & GT_RACE) ? GT_RACE
       : (this.gameType & GT_FOOTBALL) ? GT_FOOTBALL
@@ -101,14 +102,12 @@ enum LIVE_STATS_MODE {
       units   = []
     }
 
-    if (!this.isInitialized)
-    {
+    if (!this.isInitialized) {
       ::add_event_listener("StreakArrived", this.onEventStreakArrived, this)
       this.isInitialized = true
     }
 
-    if (this.isSelfTogglable)
-    {
+    if (this.isSelfTogglable) {
       this.isAwaitingSpawn = true
 
       ::g_hud_event_manager.subscribe("MissionResult", this.onMissionResult, this)
@@ -123,8 +122,7 @@ enum LIVE_STATS_MODE {
     this.reinit()
   }
 
-  function reinit()
-  {
+  function reinit() {
     let _scene = checkObj(this.parentObj) ? this.parentObj.findObject(this.nestObjId) : null
     if (!checkObj(_scene))
       return
@@ -136,8 +134,7 @@ enum LIVE_STATS_MODE {
     this.checkPlayerDead()
   }
 
-  function getState(playerId = null, diffState = null)
-  {
+  function getState(playerId = null, diffState = null) {
     let now = ::get_usefull_total_time()
     let isHero = playerId == null
     let player = isHero ? ::get_local_mplayer() : ::get_mplayer_by_id(playerId)
@@ -156,8 +153,7 @@ enum LIVE_STATS_MODE {
       if (!(id in state.player))
         state.player[id] <- ::g_mplayer_param_type.getTypeById(id).getVal(state.player)
 
-    if (diffState)
-    {
+    if (diffState) {
       let p1 = diffState.player
       let p2 = state.player
       foreach (id in this.curColumnsOrder)
@@ -175,20 +171,17 @@ enum LIVE_STATS_MODE {
     return state
   }
 
-  function isVisible()
-  {
+  function isVisible() {
     return this.isSelfTogglable && this.isActive
   }
 
-  function show(activate, viewMode = null, playerId = null)
-  {
+  function show(activate, viewMode = null, playerId = null) {
     let isSceneValid = checkObj(this.scene)
     activate = activate && isSceneValid
     let isVisibilityToggle = this.isSelfTogglable && this.isActive != activate
     this.isActive = activate
 
-    if (isSceneValid)
-    {
+    if (isSceneValid) {
       this.scene.show(this.isActive)
 
       this.curViewPlayerId = playerId
@@ -199,7 +192,7 @@ enum LIVE_STATS_MODE {
       let misObjs = this.missionObjectives
       let gt = this.gameType
       this.curColumnsOrder = ::u.filter(this.curColumnsOrder, @(id)
-        ::g_mplayer_param_type.getTypeById(id).isVisible(misObjs, gt, ::get_game_mode()))
+        ::g_mplayer_param_type.getTypeById(id).isVisible(misObjs, gt, get_game_mode()))
 
       this.fill()
     }
@@ -208,13 +201,11 @@ enum LIVE_STATS_MODE {
       ::g_hud_event_manager.onHudEvent("LiveStatsVisibilityToggled", { visible = this.isActive })
   }
 
-  function fill()
-  {
+  function fill() {
     if (!checkObj(this.scene))
       return
 
-    if (!this.isActive)
-    {
+    if (!this.isActive) {
       this.guiScene.replaceContentFromText(this.scene, "", 0, this)
       return
     }
@@ -225,14 +216,12 @@ enum LIVE_STATS_MODE {
     local title = ""
     if (this.curViewMode == LIVE_STATS_MODE.WATCH || this.missionResult == GO_WAITING_FOR_RESULT)
       title = ""
-    else if (this.curViewMode == LIVE_STATS_MODE.SPAWN && !this.isMissionLastManStanding)
-    {
+    else if (this.curViewMode == LIVE_STATS_MODE.SPAWN && !this.isMissionLastManStanding) {
       let txtUnitName = ::getUnitName(getTblValue("aircraftName", state.player, ""))
       let txtLifetime = time.secondsToString(state.lifetime, true)
       title = loc("multiplayer/lifetime") + loc("ui/parentheses/space", { text = txtUnitName }) + loc("ui/colon") + txtLifetime
     }
-    else if (this.curViewMode == LIVE_STATS_MODE.FINAL || this.isMissionLastManStanding)
-    {
+    else if (this.curViewMode == LIVE_STATS_MODE.FINAL || this.isMissionLastManStanding) {
       title = this.isMissionTeamplay ? loc("debriefing/placeInMyTeam") :
         (loc("mainmenu/btnMyPlace") + loc("ui/colon"))
       title += colorize("userlogColoredText", getTblValue("rowNo", state.player, this.getPlayerPlaceInTeam(state.player)))
@@ -247,8 +236,7 @@ enum LIVE_STATS_MODE {
       lifetime = isCompareStates && !this.isMissionLastManStanding
     }
 
-    foreach (id in this.curColumnsOrder)
-    {
+    foreach (id in this.curColumnsOrder) {
       let param = ::g_mplayer_param_type.getTypeById(id)
       let value = state.player?[id] ?? param.defVal
       let lableName = param.getName(value)
@@ -260,8 +248,7 @@ enum LIVE_STATS_MODE {
       })
     }
 
-    if (this.curViewMode == LIVE_STATS_MODE.FINAL)
-    {
+    if (this.curViewMode == LIVE_STATS_MODE.FINAL) {
       let unitNames = []
       foreach (unitId in this.hero.units)
         unitNames.append(::getUnitName(unitId))
@@ -281,16 +268,14 @@ enum LIVE_STATS_MODE {
     this.update(null, 0.0)
   }
 
-  function update(_o = null, _dt = 0.0)
-  {
+  function update(_o = null, _dt = 0.0) {
     if (!this.isActive || !checkObj(this.scene))
       return
 
     let isCompareStates = this.curViewMode == LIVE_STATS_MODE.SPAWN
     let state = this.getState(this.curViewPlayerId, isCompareStates ? this.spawnStartState : null)
 
-    foreach (id in this.curColumnsOrder)
-    {
+    foreach (id in this.curColumnsOrder) {
       let param = ::g_mplayer_param_type.getTypeById(id)
 
       let value = getTblValue(id, state.player, param.defVal)
@@ -317,8 +302,7 @@ enum LIVE_STATS_MODE {
         txtObj.setValue(lableName)
     }
 
-    if (isCompareStates && (!this.visState || this.visState.lifetime != state.lifetime) && !this.isMissionLastManStanding)
-    {
+    if (isCompareStates && (!this.visState || this.visState.lifetime != state.lifetime) && !this.isMissionLastManStanding) {
       let text = time.secondsToString(state.lifetime, true)
       let obj = this.scene.findObject("txt_lifetime")
       if (checkObj(obj) && obj.getValue() != text)
@@ -326,14 +310,12 @@ enum LIVE_STATS_MODE {
     }
 
     let visStreaksLen = this.visState ? this.visState.streaks.len() : 0
-    if (state.streaks.len() != visStreaksLen)
-    {
+    if (state.streaks.len() != visStreaksLen) {
       let obj = this.scene.findObject("hero_streaks")
-      if (checkObj(obj))
-      {
+      if (checkObj(obj)) {
         local awardsList = []
         foreach (id in state.streaks)
-          awardsList.append({unlockType = UNLOCKABLE_STREAK, unlockId = id})
+          awardsList.append({ unlockType = UNLOCKABLE_STREAK, unlockId = id })
         awardsList = ::combineSimilarAwards(awardsList)
 
         let view = { awards = [] }
@@ -350,13 +332,11 @@ enum LIVE_STATS_MODE {
     this.visState = state
   }
 
-  function isValid()
-  {
+  function isValid() {
     return true
   }
 
-  function getPlayerPlaceInTeam(player)
-  {
+  function getPlayerPlaceInTeam(player) {
     let playerId = getTblValue("id", player, -1)
     let teamId = this.isMissionTeamplay ? getTblValue("team", player, GET_MPLAYERS_LIST) : GET_MPLAYERS_LIST
     let players = ::get_mplayers_list(teamId, true)
@@ -369,8 +349,7 @@ enum LIVE_STATS_MODE {
     return 0
   }
 
-  function checkPlayerSpawned()
-  {
+  function checkPlayerSpawned() {
     if (!this.isAwaitingSpawn)
       return
     let player = ::get_local_mplayer()
@@ -383,8 +362,7 @@ enum LIVE_STATS_MODE {
     this.onPlayerSpawn()
   }
 
-  function checkPlayerDead()
-  {
+  function checkPlayerDead() {
     if (this.isAwaitingSpawn && !this.isSwitchScene)
       return
     if (!this.hero.units.len())
@@ -398,13 +376,11 @@ enum LIVE_STATS_MODE {
     this.onPlayerDeath()
   }
 
-  function onEventStreakArrived(params)
-  {
+  function onEventStreakArrived(params) {
     this.hero.streaks.append(getTblValue("id", params))
   }
 
-  function onMissionResult(eventData)
-  {
+  function onMissionResult(eventData) {
     if (!this.isSelfTogglable || this.isMissionFinished)
       return
     this.isMissionFinished = true
@@ -412,8 +388,7 @@ enum LIVE_STATS_MODE {
     this.show(true, LIVE_STATS_MODE.FINAL)
   }
 
-  function onPlayerSpawn()
-  {
+  function onPlayerSpawn() {
     if (!this.isSelfTogglable || this.isMissionFinished)
       return
     this.spawnStartState = this.getState()
@@ -421,8 +396,7 @@ enum LIVE_STATS_MODE {
     this.show(false)
   }
 
-  function onPlayerDeath()
-  {
+  function onPlayerDeath() {
     if (!this.isSelfTogglable || this.isMissionFinished)
       return
     this.show(true, LIVE_STATS_MODE.SPAWN)

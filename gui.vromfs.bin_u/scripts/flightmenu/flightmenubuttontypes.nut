@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,7 +9,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { is_replay_playing } = require("replays")
-let { is_benchmark_game_mode } = require("mission")
+let { is_benchmark_game_mode, get_game_mode } = require("mission")
 
 let buttons = {
   types = []
@@ -72,14 +73,12 @@ enums.addTypes(buttons, {
     isVisible = canBailout
     getUpdatedLabelText = function getUpdatedLabelText() {
       local txt = getPlayerCurUnit()?.unitType.getBailoutButtonText() ?? ""
-      if (!::is_multiplayer() && ::get_mission_restore_type() == ERT_ATTEMPTS)
-      {
+      if (!::is_multiplayer() && ::get_mission_restore_type() == ERT_ATTEMPTS) {
         local attemptsTxt
         let numLeft = ::get_num_attempts_left()
         if (numLeft < 0)
           attemptsTxt = loc("options/attemptsUnlimited")
-        else
-        {
+        else {
           local attempts = loc(numLeft == 1 ? "options/attemptLeft" : "options/attemptsLeft")
           attemptsTxt = $"{numLeft} {attempts}"
         }
@@ -96,7 +95,7 @@ enums.addTypes(buttons, {
       return loc(
         is_replay_playing() ? "flightmenu/btnQuitReplay"
         : (::get_mission_status() == MISSION_STATUS_SUCCESS
-            && ::get_game_mode() == GM_DYNAMIC) ? "flightmenu/btnCompleteMission"
+            && get_game_mode() == GM_DYNAMIC) ? "flightmenu/btnCompleteMission"
         : "flightmenu/btnQuitMission"
       )
     }

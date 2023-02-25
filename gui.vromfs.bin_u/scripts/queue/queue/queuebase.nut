@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { get_time_msec } = require("dagor.time")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
 
-::queue_classes.Base <- class
-{
+::queue_classes.Base <- class {
   id = 0
   name = ""
   typeBit = QUEUE_TYPE_BIT.UNKNOWN //FIX ME: should to rename this also
@@ -24,8 +24,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   queueStats = null //created on first stats income. We dont know stats version before
   selfActivated = false
 
-  constructor(queueId, v_queueType, v_params)
-  {
+  constructor(queueId, v_queueType, v_params) {
     this.id = queueId
     this.queueType = v_queueType
     this.params = v_params || {}
@@ -41,58 +40,48 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   function init() {}
 
   // return <is somethind in queue parameters changed>
-  function addQueueByParams(_qParams)
-  {
+  function addQueueByParams(_qParams) {
     return false
   }
 
   //return true if queue changed
-  function removeQueueByParams(_leaveData)
-  {
+  function removeQueueByParams(_leaveData) {
     return false
   }
 
-  function addQueueByUid(queueUid, queueParms)
-  {
+  function addQueueByUid(queueUid, queueParms) {
     if (queueUid != null)
       this.queueUidsList[queueUid] <- queueParms
   }
 
-  function removeQueueByUid(queueUid)
-  {
+  function removeQueueByUid(queueUid) {
     delete this.queueUidsList[queueUid]
   }
 
-  function clearAllQueues()
-  {
+  function clearAllQueues() {
     this.queueUidsList.clear()
   }
 
-  function isActive()
-  {
+  function isActive() {
     return this.queueUidsList.len() > 0
   }
 
-  function getQueueData(_qParams)
-  {
+  function getQueueData(_qParams) {
     return {}
   }
 
-  function getTeamCode()
-  {
+  function getTeamCode() {
     return getTblValue("team", this.params, Team.Any)
   }
 
-  function getBattleName()
-  {
+  function getBattleName() {
     return ""
   }
 
-  getDescription = @() "".concat( colorize("activeTextColor", this.getBattleName()), "\n",
+  getDescription = @() "".concat(colorize("activeTextColor", this.getBattleName()), "\n",
     loc("options/country"), loc("ui/colon"), loc(this.params?.country ?? ""))
 
-  function getActiveTime()
-  {
+  function getActiveTime() {
     if (this.activateTime >= 0)
       return time.millisecondsToSeconds(get_time_msec() - this.activateTime)
 
@@ -110,8 +99,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   //when custom mode switched on, it will be queued automatically
   function isCustomModeSwitchedOn() { return false }
   function switchCustomMode(_shouldQueue) {}
-  static function isAllowedToSwitchCustomMode()
-    { return !::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader() }
+  static function isAllowedToSwitchCustomMode() { return !::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader() }
   hasActualQueueData = @() true
   actualizeData = @() null
 }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,8 +16,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
-::gui_handlers.WwGlobalBattlesModal <- class extends ::gui_handlers.WwBattleDescription
-{
+::gui_handlers.WwGlobalBattlesModal <- class extends ::gui_handlers.WwBattleDescription {
   hasSquadsInviteButton = false
   hasBattleFilter = true
   battlesList = null
@@ -26,8 +26,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
   minCountBattlesInList = 100
   needFullUpdateList = true
 
-  static function open(battle = null)
-  {
+  static function open(battle = null) {
     if (!battle || !battle.isValid())
       battle = WwGlobalBattle()
 
@@ -37,8 +36,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
       })
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.battlesList = []
     globalBattlesListData.requestList()
     base.initScreen()
@@ -46,31 +44,26 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     ::checkNonApprovedResearches(true)
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return {
       hasRefreshButton = true
     }
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     this.refreshList()
   }
 
-  function onRefresh()
-  {
+  function onRefresh() {
     this.refreshList(true)
   }
 
-  function goBack()
-  {
+  function goBack() {
     ::ww_stop_preview()
     base.goBack()
   }
 
-  function refreshList(isForce = false)
-  {
+  function refreshList(isForce = false) {
     this.requestQueuesData()
     globalBattlesListData.requestList()
 
@@ -80,19 +73,16 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     this.needFullUpdateList = true
   }
 
-  function onEventWWUpdateGlobalBattles(_p)
-  {
+  function onEventWWUpdateGlobalBattles(_p) {
     this.updateForceSelectedBattle()
     this.reinitBattlesList()
   }
 
-  function onEventWWUpdateWWQueues(_params)
-  {
+  function onEventWWUpdateWWQueues(_params) {
     this.reinitBattlesList()
   }
 
-  function updateWindow()
-  {
+  function updateWindow() {
     this.updateViewMode()
     this.updateDescription()
     this.updateSlotbar()
@@ -102,19 +92,16 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     this.updateTitle()
   }
 
-  function getTitleText()
-  {
+  function getTitleText() {
     return loc("worldwar/global_battle/title", {
-      country = loc(getCustomViewCountryData(profileCountrySq.value).locId)})
+      country = loc(getCustomViewCountryData(profileCountrySq.value).locId) })
   }
 
-  function updateSlotbar()
-  {
+  function updateSlotbar() {
     let availableUnits = {}
     let operationUnits = {}
     if (this.operationBattle.isValid())
-      foreach (side in ::g_world_war.getSidesOrder(this.curBattleInList))
-      {
+      foreach (side in ::g_world_war.getSidesOrder(this.curBattleInList)) {
         let playerTeam = this.operationBattle.getTeamBySide(side)
         availableUnits.__update(this.operationBattle.getTeamRemainUnits(playerTeam))
         operationUnits.__update(::g_world_war.getAllOperationUnitsBySide(side))
@@ -127,13 +114,13 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     if (prevSlotbarStatus != this.hasSlotbarByUnitsGroups)
       this.destroySlotbar()
     if (this.hasSlotbarByUnitsGroups)
-      slotbarPresets.setCurPreset(map.getId() ,unitsGroupsByCountry)
+      slotbarPresets.setCurPreset(map.getId(), unitsGroupsByCountry)
 
     let assignCountry = profileCountrySq.value
     this.createSlotbar(
       {
         singleCountry = assignCountry
-        customViewCountryData = {[assignCountry]  = getCustomViewCountryData(assignCountry, map?.getId(), true)}
+        customViewCountryData = { [assignCountry]  = getCustomViewCountryData(assignCountry, map?.getId(), true) }
         availableUnits = availableUnits.len() ? availableUnits : null
         customUnitsList = this.hasSlotbarByUnitsGroups || operationUnits.len() == 0
           ? null
@@ -143,13 +130,11 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     )
   }
 
-  function updateSelectedItem(isForceUpdate = false)
-  {
+  function updateSelectedItem(isForceUpdate = false) {
     this.refreshSelBattle()
     let cb = Callback(function() {
       local newOperationBattle = ::g_world_war.getBattleById(this.curBattleInList.id)
-      if (!newOperationBattle.isValid() || newOperationBattle.isStale())
-      {
+      if (!newOperationBattle.isValid() || newOperationBattle.isStale()) {
         newOperationBattle = clone this.curBattleInList
         newOperationBattle.setStatus(EBS_FINISHED)
       }
@@ -161,10 +146,8 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
         this.updateWindow()
     }, this)
 
-    if (this.curBattleInList.isValid())
-    {
-      if (isForceUpdate)
-      {
+    if (this.curBattleInList.isValid()) {
+      if (isForceUpdate) {
         this.updateDescription()
         this.updateButtons()
       }
@@ -177,31 +160,25 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
       cb()
   }
 
-  function getOperationBackground()
-  {
-    return "#ui/images/worldwar_window_bg_image_all_battles.jpg?P1"
+  function getOperationBackground() {
+    return "#ui/images/worldwar_window_bg_image_all_battles?P1"
   }
 
-  function getSelectedBattlePrefixText(_battleData)
-  {
+  function getSelectedBattlePrefixText(_battleData) {
     return ""
   }
 
-  function createBattleListMap()
-  {
+  function createBattleListMap() {
     this.setFilteredBattles()
-    if (this.needFullUpdateList || this.curBattleListMap.len() <= 0)
-    {
+    if (this.needFullUpdateList || this.curBattleListMap.len() <= 0) {
       this.needFullUpdateList = false
       return this.getFilteredBattlesByMaxCountPerGroup()
     }
 
     let battleListMap = clone this.curBattleListMap
-    foreach(idx, battle in battleListMap)
-    {
+    foreach (idx, battle in battleListMap) {
       let newBattle = this.getBattleById(battle.id, false)
-      if (newBattle.isValid())
-      {
+      if (newBattle.isValid()) {
         battleListMap[idx] = newBattle
         continue
       }
@@ -217,8 +194,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     return battleListMap
   }
 
-  function onEventCountryChanged(_p)
-  {
+  function onEventCountryChanged(_p) {
     this.guiScene.performDelayed(this, function() {
       this.needFullUpdateList = true
       this.reinitBattlesList(true)
@@ -226,10 +202,8 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     })
   }
 
-  function onOpenBattlesFilters(_obj)
-  {
-    let applyFilter = Callback(function()
-      {
+  function onOpenBattlesFilters(_obj) {
+    let applyFilter = Callback(function() {
         this.reinitBattlesList(true)
         this.refreshList(true)
       }, this)
@@ -240,8 +214,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     })
   }
 
-  function setFilteredBattles()
-  {
+  function setFilteredBattles() {
     let assignCountry = profileCountrySq.value
     this.battlesList = globalBattlesListData.getList().filter(@(battle)
       battle.hasSideCountry(assignCountry) && battle.isOperationMapAvaliable()
@@ -258,36 +231,31 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
       }.bindenv(this))
   }
 
-  function battlesSort(battleA, battleB)
-  {
+  function battlesSort(battleA, battleB) {
     return battleB.isConfirmed() <=> battleA.isConfirmed()
       || battleA.sortTimeFactor <=> battleB.sortTimeFactor
       || battleB.sortFullnessFactor <=> battleA.sortFullnessFactor
   }
 
-  function getBattleById(battleId, searchInCurList = true)
-  {
+  function getBattleById(battleId, searchInCurList = true) {
     return ::u.search(this.battlesList, @(battle) battle.id == battleId)
       ?? (searchInCurList
         ? (::u.search(this.curBattleListMap, @(battle) battle.id == battleId) ?? WwGlobalBattle())
         : WwGlobalBattle())
   }
 
-  function getPlayerSide(battle = null)
-  {
+  function getPlayerSide(battle = null) {
     if (!battle)
       battle = this.curBattleInList
 
     return battle.getSideByCountry(profileCountrySq.value)
   }
 
-  function getEmptyBattle()
-  {
+  function getEmptyBattle() {
     return WwGlobalBattle()
   }
 
-  function fillOperationInfoText()
-  {
+  function fillOperationInfoText() {
     let operationInfoTextObj = this.scene.findObject("operation_info_text")
     if (!checkObj(operationInfoTextObj))
       return
@@ -299,8 +267,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
     operationInfoTextObj.setValue(operation.getNameText())
   }
 
-  function getFilteredBattlesByMaxCountPerGroup()
-  {
+  function getFilteredBattlesByMaxCountPerGroup() {
     if (this.battlesList.len() == 0)
       return []
 
@@ -309,8 +276,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
 
     let battlesByGroups = {}
     let res = []
-    foreach (battleData in this.battlesList)
-    {
+    foreach (battleData in this.battlesList) {
       let groupId = battleData.getGroupId()
       if (!(groupId in battlesByGroups))
         battlesByGroups[groupId] <- [battleData]
@@ -318,8 +284,7 @@ local MAX_VISIBLE_BATTLES_PER_GROUP = 5
         battlesByGroups[groupId].append(battleData)
     }
 
-    foreach (group in battlesByGroups)
-    {
+    foreach (group in battlesByGroups) {
       group.sort(this.battlesSort)
       group.resize(min(group.len(), maxVisibleBattlesPerGroup))
       res.extend(group)

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -12,8 +13,7 @@ let { get_time_msec } = require("dagor.time")
 
 const MAX_THREAD_LANG_VISIBLE = 3
 
-::ChatThreadInfo <- class
-{
+::ChatThreadInfo <- class {
   roomId = "" //threadRoomId
   lastUpdateTime = -1
 
@@ -32,8 +32,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   isValid = true
 
-  constructor(threadRoomId, dataBlk = null) //dataBlk from chat response
-  {
+  constructor(threadRoomId, dataBlk = null) { //dataBlk from chat response
     this.roomId = threadRoomId
     this.isValid = this.roomId.len() > 0
     assert(::g_chat_room_type.THREAD.checkRoomId(this.roomId), "Chat thread created with not thread id = " + this.roomId)
@@ -42,23 +41,19 @@ const MAX_THREAD_LANG_VISIBLE = 3
     this.updateInfo(dataBlk)
   }
 
-  function markUpdated()
-  {
+  function markUpdated() {
     this.lastUpdateTime = get_time_msec()
   }
 
-  function invalidate()
-  {
+  function invalidate() {
     this.isValid = false
   }
 
-  function isOutdated()
-  {
+  function isOutdated() {
     return this.lastUpdateTime + ::g_chat.THREADS_INFO_TIMEOUT_MSEC < get_time_msec()
   }
 
-  function checkRefreshThread()
-  {
+  function checkRefreshThread() {
     if (!this.isValid
         || !::g_chat.checkChatConnected()
         || this.lastUpdateTime + ::g_chat.THREAD_INFO_REFRESH_DELAY_MSEC > get_time_msec()
@@ -68,8 +63,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     ::gchat_raw_command("xtmeta " + this.roomId)
   }
 
-  function updateInfo(dataBlk)
-  {
+  function updateInfo(dataBlk) {
     if (!dataBlk)
       return
 
@@ -85,19 +79,16 @@ const MAX_THREAD_LANG_VISIBLE = 3
     this.markUpdated()
   }
 
-  function updateInfoTags(tagsList)
-  {
-    foreach(tagType in ::g_chat_thread_tag.types)
-    {
+  function updateInfoTags(tagsList) {
+    foreach (tagType in ::g_chat_thread_tag.types) {
       if (!tagType.isRegular)
         continue
 
       tagType.updateThreadBeforeTagsUpdate(this)
 
       local found = false
-      for(local i = tagsList.len() - 1; i >= 0; i--)
-        if (tagType.updateThreadByTag(this, tagsList[i]))
-        {
+      for (local i = tagsList.len() - 1; i >= 0; i--)
+        if (tagType.updateThreadByTag(this, tagsList[i])) {
           tagsList.remove(i)
           found = true
         }
@@ -109,11 +100,9 @@ const MAX_THREAD_LANG_VISIBLE = 3
     this.sortLangList()
   }
 
-  function getFullTagsString()
-  {
+  function getFullTagsString() {
     let resArray = []
-    foreach(tagType in ::g_chat_thread_tag.types)
-    {
+    foreach (tagType in ::g_chat_thread_tag.types) {
       if (!tagType.isRegular)
         continue
 
@@ -125,16 +114,14 @@ const MAX_THREAD_LANG_VISIBLE = 3
     return ::g_string.implode(resArray, ",")
   }
 
-  function sortLangList()
-  {
+  function sortLangList() {
     //usually only one lang in thread, but moderators can set some threads to multilang
     if (this.langs.len() < 2)
       return
 
     let unsortedLangs = clone this.langs
     this.langs.clear()
-    foreach(langInfo in ::g_language.getGameLocalizationInfo())
-    {
+    foreach (langInfo in ::g_language.getGameLocalizationInfo()) {
       let idx = unsortedLangs.indexof(langInfo.chatId)
       if (idx != null)
         this.langs.append(unsortedLangs.remove(idx))
@@ -142,18 +129,15 @@ const MAX_THREAD_LANG_VISIBLE = 3
     this.langs.extend(unsortedLangs) //unknown langs at the end
   }
 
-  function isMyThread()
-  {
+  function isMyThread() {
     return this.ownerUid == "" || this.ownerUid == ::my_user_id_str
   }
 
-  function getTitle()
-  {
+  function getTitle() {
     return ::g_chat.filterMessageText(this.title, this.isMyThread())
   }
 
-  function getOwnerText(isColored = true, defaultColor = "")
-  {
+  function getOwnerText(isColored = true, defaultColor = "") {
     if (!this.ownerNick.len())
       return this.ownerUid
 
@@ -163,8 +147,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     return res
   }
 
-  function getRoomTooltipText()
-  {
+  function getRoomTooltipText() {
     local res = this.getOwnerText(true, "userlogColoredText")
     res += "\n" + loc("chat/thread/participants") + loc("ui/colon")
            + colorize("activeTextColor", this.membersAmount)
@@ -172,34 +155,28 @@ const MAX_THREAD_LANG_VISIBLE = 3
     return res
   }
 
-  function isJoined()
-  {
+  function isJoined() {
     return ::g_chat.isRoomJoined(this.roomId)
   }
 
-  function join()
-  {
+  function join() {
     ::g_chat.joinThread(this.roomId)
   }
 
-  function showOwnerMenu(position = null)
-  {
+  function showOwnerMenu(position = null) {
     let contact = ::getContact(this.ownerUid, this.ownerNick, this.ownerClanTag)
     ::g_chat.showPlayerRClickMenu(this.ownerNick, this.roomId, contact, position)
   }
 
-  function getJoinText()
-  {
+  function getJoinText() {
     return this.isJoined() ? loc("chat/showThread") : loc("chat/joinThread")
   }
 
-  function getMembersAmountText()
-  {
+  function getMembersAmountText() {
     return loc("chat/thread/participants") + loc("ui/colon") + this.membersAmount
   }
 
-  function showThreadMenu(position = null)
-  {
+  function showThreadMenu(position = null) {
     let thread = this
     let menu = [
       {
@@ -219,20 +196,17 @@ const MAX_THREAD_LANG_VISIBLE = 3
     })
   }
 
-  function canEdit()
-  {
+  function canEdit() {
     return ::is_myself_anyof_moderators()
   }
 
-  function setObjValueById(objNest, id, value)
-  {
+  function setObjValueById(objNest, id, value) {
     let obj = objNest.findObject(id)
     if (checkObj(obj))
       obj.setValue(value)
   }
 
-  function updateInfoObj(obj, updateActionBtn = false)
-  {
+  function updateInfoObj(obj, updateActionBtn = false) {
     if (!checkObj(obj))
       return
 
@@ -248,24 +222,20 @@ const MAX_THREAD_LANG_VISIBLE = 3
       this.fillLangIconsRow(obj)
   }
 
-  function needShowLang()
-  {
+  function needShowLang() {
     return ::g_chat.canChooseThreadsLang()
   }
 
-  function getLangsList()
-  {
+  function getLangsList() {
     let res = []
     local langInfo = {}
-    if (this.langs.len() > MAX_THREAD_LANG_VISIBLE)
-    {
+    if (this.langs.len() > MAX_THREAD_LANG_VISIBLE) {
       langInfo = ::g_language.getEmptyLangInfo()
       langInfo.icon = ""
       res.append(langInfo)
     }
     else
-      foreach(langId in this.langs)
-      {
+      foreach (langId in this.langs) {
         langInfo = ::g_language.getLangInfoByChatId(langId)
         if (langInfo)
           res.append(langInfo)
@@ -274,12 +244,10 @@ const MAX_THREAD_LANG_VISIBLE = 3
     return res
   }
 
-  function fillLangIconsRow(obj)
-  {
+  function fillLangIconsRow(obj) {
     let contentObject = obj.findObject("thread_lang")
     let res = this.getLangsList()
-    for(local i = 0; i < MAX_THREAD_LANG_VISIBLE; i++)
-    {
+    for (local i = 0; i < MAX_THREAD_LANG_VISIBLE; i++) {
       contentObject.getChild(i)["background-image"] = res[i].icon
     }
   }

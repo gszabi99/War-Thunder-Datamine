@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 
 let regexp2 = require("regexp2")
 let { format } = require("string")
+let { rnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let awardRanks = [3, 4, 7]
@@ -38,18 +40,17 @@ let function showViralAcquisitionWnd() {
 
   ::copy_to_clipboard(getLinkString())
 
-  let formatImg = "ui/images/%s.jpg?P1"
+  let formatImg = "ui/images/%s?P1"
   local image = format(formatImg, "facebook_invite")
   local height = 400
   let guiBlk = GUI.get()
 
   if (guiBlk?.invites_notification_window_images
       && guiBlk.invites_notification_window_images.paramCount() > 0) {
-    let paramNum = ::math.rnd() % guiBlk.invites_notification_window_images.paramCount()
+    let paramNum = rnd() % guiBlk.invites_notification_window_images.paramCount()
     let newHeight = guiBlk.invites_notification_window_images.getParamName(paramNum)
     let newImage = format(formatImg, guiBlk.invites_notification_window_images.getParamValue(paramNum))
-    if (!regexp2(@"\D+").match(newHeight))
-    {
+    if (!regexp2(@"\D+").match(newHeight)) {
       height = newHeight
       image = newImage
     }
@@ -59,7 +60,7 @@ let function showViralAcquisitionWnd() {
     name = loc("mainmenu/getLinkTitle")
     desc = getViralAcquisitionDesc()
     descAlign = "center"
-    popupImage = "#"+image
+    popupImage = "#" + image
     ratioHeight = (height.tofloat() / 800).tostring()
     showSendEmail = true
     showPostLink = true

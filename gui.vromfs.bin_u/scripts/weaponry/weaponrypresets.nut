@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -17,6 +18,8 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
   && a.presetId == b.presetId
   && a?.blk == b?.blk
   && a?.dm == b?.dm
+  && a?.flash == b?.flash
+  && a?.emitter == b?.emitter
 
 let function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc = isEqualWeapon) {
   foreach (weapon in (preset % "Weapon")) {
@@ -47,8 +50,8 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
   let res = []
   local slots = getUnitWeaponSlots(unitBlk)             // All unit weapons
   if (!isCommon)
-    slots = slots.filter(@(s) s?.tier != null)// Pesets weapon only
-  if (slots.len() > 0) {// CUSTOM data type
+    slots = slots.filter(@(s) s?.tier != null) // Pesets weapon only
+  if (slots.len() > 0) { // CUSTOM data type
     let unitName = unitBlk?.model // warning disable: -declared-never-used
     foreach (wp in (weaponsBlk % "Weapon")) {
       let slotIdx = wp.slot
@@ -68,7 +71,7 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
     }
   }
   // !!!FIX ME: Processing old format of weapons data should be removed over time when all units presets get ability to be customized.
-  else// PLAIN data type
+  else // PLAIN data type
     foreach (weapon in (weaponsBlk % "Weapon"))
       ::u.appendOnce((::u.copy(weapon)), res)
 
@@ -98,10 +101,10 @@ let function getSlotWeapons(slotBlk, tiersCount = MIN_TIERS_COUNT) {
   return res
 }
 
-let function getUnitWeapons(unitBlk) {// Pesets weapon only
+let function getUnitWeapons(unitBlk) { // Pesets weapon only
   let res = []
   let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
-  if(slots.len() > 0)
+  if (slots.len() > 0)
     foreach (slot in slots)
       res.extend(getSlotWeapons(slot, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT))
   else
@@ -110,7 +113,7 @@ let function getUnitWeapons(unitBlk) {// Pesets weapon only
           let w = ::u.copy(weapon)
           w.presetId <- preset.name
           ::u.appendOnce(w, res)
-        }
+      }
 
   return res
 }
@@ -147,8 +150,7 @@ let function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, bullets = null) {
   }
 }
 
-let function getUnitWeaponsByTier(unit, blkPath, tierId)
-  {
+let function getUnitWeaponsByTier(unit, blkPath, tierId) {
     let unitBlk = ::get_full_unit_blk(unit.name)
     let tiersCount = unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
 

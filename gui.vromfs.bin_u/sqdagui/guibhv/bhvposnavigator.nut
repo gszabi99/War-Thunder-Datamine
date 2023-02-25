@@ -12,8 +12,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 //  value
 //  moveX, moveY  =  "linear", "closest"  (default = "closest")
 
-::gui_bhv.posNavigator <- class
-{
+::gui_bhv.posNavigator <- class {
   bhvId = "posNavigator"
   eventMask = EV_JOYSTICK | EV_PROCESS_SHORTCUTS | EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_DBL_CLICK
     | EV_ON_FOCUS_SET | EV_ON_FOCUS_LOST | EV_ON_CMD | EV_ON_INSERT_REMOVE | EV_TIMER | EV_MOUSE_NOT_ON_OBJ
@@ -34,8 +33,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
   canChooseByMClick = false
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     if (obj?.value)
       this.setValue(obj, obj.value.tointeger())
     obj.timer_interval_msec = "100"
@@ -52,16 +50,13 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return RETCODE_NOTHING
   }
 
-  function onFocus(obj, event)
-  {
-    if (event == EV_ON_FOCUS_SET)
-    {
+  function onFocus(obj, event) {
+    if (event == EV_ON_FOCUS_SET) {
       if (!this.isOnlyHover(obj))
         this.selectCurItem(obj)
       obj.getScene().playSound("focus")
     }
-    else if (event == EV_ON_FOCUS_LOST)
-    {
+    else if (event == EV_ON_FOCUS_LOST) {
       if (this.canSelectOnlyFocused(obj))
         this.clearSelect(obj)
       this.resetFixedCoord(obj)
@@ -72,50 +67,42 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       selObj.markObjChanged()
 
     obj.sendNotify("set_focus")
-    return (obj?.disableFocusParent == "yes")? RETCODE_HALT : RETCODE_NOTHING
+    return (obj?.disableFocusParent == "yes") ? RETCODE_HALT : RETCODE_NOTHING
   }
 
-  function canSelectOnlyFocused(obj)
-  {
+  function canSelectOnlyFocused(obj) {
     return obj?.clearOnFocusLost == "yes"
   }
 
-  function getValue(obj)
-  {
+  function getValue(obj) {
     return obj.getIntProp(this.valuePID, -1)
   }
 
-  function setValue(obj, value)
-  {
+  function setValue(obj, value) {
     this.selectItem(obj, value)
   }
 
-  function getSelectedValue(obj)
-  {
+  function getSelectedValue(obj) {
     return this.getValue(obj)
   }
 
-  function getCanSelectNone(obj)
-  {
+  function getCanSelectNone(obj) {
     return obj?.canSelectNone == "yes"
   }
 
-  function getChildObj(obj, value)
-  {
+  function getChildObj(obj, value) {
     if (value >= 0 && value < obj.childrenCount())
       return obj.getChild(value)
     return null
   }
 
-  function getMiddleCoords(obj)
-  {
+  function getMiddleCoords(obj) {
     let pos = obj.getPos()
     let size = obj.getSize()
-    return [pos[0] + 0.5*size[0], pos[1] + 0.5*size[1]]
+    return [pos[0] + 0.5 * size[0], pos[1] + 0.5 * size[1]]
   }
 
-  function getClosestCoords(obj, point)
-  {
+  function getClosestCoords(obj, point) {
     let pos = obj.getPos()
     let size = obj.getSize()
     return [clamp(point[0], pos[0], pos[0] + (size[0] < 0 ? 0 : size[0]))
@@ -123,8 +110,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
            ]
   }
 
-  function selectCurItem(obj)
-  {
+  function selectCurItem(obj) {
     let byHover = this.isOnlyHover(obj)
     let value = byHover ? this.getHoveredChild(obj).hoveredIdx : this.getSelectedValue(obj)
     let valObj = this.getChildObj(obj, value)
@@ -140,14 +126,12 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       this.selectItem(obj, foundIdx, foundObj, false, true)
   }
 
-  function isSelectable(obj)
-  {
+  function isSelectable(obj) {
     return obj.isVisible() && obj.isEnabled() && obj?.inactive != "yes" && !obj.isUnderWindow()
   }
 
   function eachSelectable(obj, handler) {
-    for(local i = 0; i < obj.childrenCount(); i++)
-    {
+    for (local i = 0; i < obj.childrenCount(); i++) {
       let cObj = obj.getChild(i)
       if (this.isSelectable(cObj))
         if (handler(cObj, i))
@@ -155,16 +139,14 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     }
   }
 
-  function getClosestItem(obj, coords)
-  {
+  function getClosestItem(obj, coords) {
     local foundObj = null
     local foundIdx = -1
     local sqDist = -1
     this.eachSelectable(obj, function(cObj, i) {
       let coords2 = this.getClosestCoords(cObj, coords)
-      let cSqDist = (coords[0]-coords2[0])*(coords[0]-coords2[0]) + (coords[1]-coords2[1])*(coords[1]-coords2[1])
-      if (sqDist < 0 || cSqDist < sqDist)
-      {
+      let cSqDist = (coords[0] - coords2[0]) * (coords[0] - coords2[0]) + (coords[1] - coords2[1]) * (coords[1] - coords2[1])
+      if (sqDist < 0 || cSqDist < sqDist) {
         foundObj = cObj
         foundIdx = i
         sqDist = cSqDist
@@ -174,28 +156,25 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return { foundObj = foundObj, foundIdx = foundIdx }
   }
 
-  function selectItem(obj, idx, idxObj = null, needSound = true, needSetMouse = false)
-  {
+  function selectItem(obj, idx, idxObj = null, needSound = true, needSetMouse = false) {
     let canSelectNone = this.getCanSelectNone(obj)
 
     if (!idxObj)
       idxObj = this.getChildObj(obj, idx)
-    if ( ! idxObj && ! canSelectNone)
+    if (! idxObj && ! canSelectNone)
       return false
 
     local needNotify = false
     let prevIdx = this.getSelectedValue(obj)
 
-    if(canSelectNone && prevIdx==idx)
-    {
-      if( ! idxObj)
+    if (canSelectNone && prevIdx == idx) {
+      if (! idxObj)
         return false
       idxObj = null
       idx = -1
     }
 
-    if (prevIdx!=idx || canSelectNone)
-    {
+    if (prevIdx != idx || canSelectNone) {
       needNotify = true
       let prevObj = this.getChildObj(obj, prevIdx)
       this.setChildSelected(obj, prevObj, false)
@@ -203,8 +182,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
     obj.setIntProp(this.selectedPID, idx)
 
-    if(idxObj)
-    {
+    if (idxObj) {
       this.setChildSelected(obj, idxObj, true)
       idxObj.scrollToView()
       if (needSetMouse)
@@ -227,20 +205,17 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
   function chooseItem(_obj, _idx, _needSound = true) {}
 
-  function onSelectAction(obj)
-  {
+  function onSelectAction(obj) {
     obj.sendNotify("select")
   }
 
-  function activateAction(obj)
-  {
+  function activateAction(obj) {
     obj.sendNotify("dbl_click")
     if (obj.isValid())
       obj.sendNotify("activate")
   }
 
-  function onShortcutActivate(obj, is_down)
-  {
+  function onShortcutActivate(obj, is_down) {
     if (is_down) {
       ::set_script_gui_behaviour_events(this.bhvId, obj, EV_MOUSE_HOVER_CHANGE)
       this.onActivatePushed(obj, this.getValue(obj))
@@ -256,13 +231,12 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return RETCODE_HALT
   }
 
-  function findClickedObj(obj, mx, my)
-  {
+  function findClickedObj(obj, mx, my) {
     local res = null
     this.eachSelectable(obj, function(iObj, i) {
       let pos = iObj.getPos()
       let size = iObj.getSize()
-      if (mx >= pos[0] && mx <= pos[0]+size[0] && my >= pos[1] && my <= pos[1]+size[1])
+      if (mx >= pos[0] && mx <= pos[0] + size[0] && my >= pos[1] && my <= pos[1] + size[1])
         res = { idx = i, obj = iObj }
       return res != null
     })
@@ -336,8 +310,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       this.onActivateUnpushed(obj)
   }
 
-  function onExtMouse(obj, mx, my, btn_id, is_up, bits)
-  {
+  function onExtMouse(obj, mx, my, btn_id, is_up, bits) {
     if (btn_id != 2)  //right mouse button
       return RETCODE_NOTHING
 
@@ -345,8 +318,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     if (!isOnObj)
       return RETCODE_NOTHING
 
-    if (is_up)
-    {
+    if (is_up) {
       if (this.findClickedObj(obj, mx, my))
         obj.sendNotify("r_click")
       return RETCODE_PROCESSED
@@ -356,36 +328,31 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return this.selectItemByClick(obj, mx, my, false) >= 0 ? RETCODE_HALT : RETCODE_NOTHING
   }
 
-  function onShortcutLeft(obj, is_down)
-  {
+  function onShortcutLeft(obj, is_down) {
     if (is_down)
       return this.moveSelect(obj, 0, -1)
     return RETCODE_NOTHING
   }
 
-  function onShortcutRight(obj, is_down)
-  {
+  function onShortcutRight(obj, is_down) {
     if (is_down)
       return this.moveSelect(obj, 0, 1)
     return RETCODE_NOTHING
   }
 
-  function onShortcutDown(obj, is_down)
-  {
+  function onShortcutDown(obj, is_down) {
     if (is_down)
       return this.moveSelect(obj, 1, 1)
     return RETCODE_NOTHING
   }
 
-  function onShortcutUp(obj, is_down)
-  {
+  function onShortcutUp(obj, is_down) {
     if (is_down)
       return this.moveSelect(obj, 1, -1)
     return RETCODE_NOTHING
   }
 
-  function onShortcutSelect(obj, is_down)
-  {
+  function onShortcutSelect(obj, is_down) {
     let { hoveredObj, hoveredIdx } = this.getHoveredChild(obj)
     if (is_down) {
       if (hoveredIdx == null)
@@ -410,8 +377,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return RETCODE_HALT
   }
 
-  function moveSelect(obj, axis, dir)
-  {
+  function moveSelect(obj, axis, dir) {
     let valueObj = this.getHoveredChild(obj).hoveredObj ?? this.getChildObj(obj, this.getSelectedValue(obj))
     let moveType = obj?[axis ? "moveY" : "moveX"]
     let { foundObj, foundIdx } = moveType == "linear"
@@ -428,8 +394,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return RETCODE_HALT
   }
 
-  function sendNotifyWrap(obj, axis, dir)
-  {
+  function sendNotifyWrap(obj, axis, dir) {
     obj.setIntProp(this.lastMoveTimeMsecPID, 0)
 
     let wrapDir = ::g_wrap_dir.getWrapDir(axis == 1, dir > 0)
@@ -437,13 +402,11 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       ::set_dirpad_event_processed(false)
   }
 
-  function resetFixedCoord(obj)
-  {
+  function resetFixedCoord(obj) {
     obj.setIntProp(this.fixedAxisPID, -1)
   }
 
-  function checkFixedCoord(obj, axis, newPos)
-  {
+  function checkFixedCoord(obj, axis, newPos) {
     if (obj?.disableFixedCoord == "yes")
       return newPos
 
@@ -455,23 +418,20 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
     let objPos = obj.getPos()
     let coord = obj.getIntProp(this.fixedCoordPID)
-    if (fixedAxis==axis && coord!=null)
-      newPos[1-axis] = coord + objPos[1-axis]
-    else
-    {
+    if (fixedAxis == axis && coord != null)
+      newPos[1 - axis] = coord + objPos[1 - axis]
+    else {
       obj.setIntProp(this.fixedAxisPID, axis)
-      obj.setIntProp(this.fixedCoordPID, newPos[1-axis] - objPos[1-axis])
+      obj.setIntProp(this.fixedCoordPID, newPos[1 - axis] - objPos[1 - axis])
     }
     return newPos
   }
 
-  function getScreenSizeByAxis(axis)
-  {
+  function getScreenSizeByAxis(axis) {
     return axis ? ::screen_height() : ::screen_width()
   }
 
-  function moveSelectClosest(obj, valueObj, axis, dir)
-  {
+  function moveSelectClosest(obj, valueObj, axis, dir) {
     local pos = this.isOnlyHover(obj) || valueObj == null
       ? ::get_dagui_mouse_cursor_pos_RC()
       : this.getMiddleCoords(valueObj)
@@ -488,13 +448,12 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
         return
 
       let primOffsetSq = (pos[axis] - pos2[axis]) * (pos[axis] - pos2[axis])
-      let secOffsetSq = (pos[1-axis] - pos2[1-axis]) * (pos[1-axis] - pos2[1-axis])
+      let secOffsetSq = (pos[1 - axis] - pos2[1 - axis]) * (pos[1 - axis] - pos2[1 - axis])
       if (4 * primOffsetSq < secOffsetSq)  // 60 degrees
         return
 
       let cSqDist = primOffsetSq + secOffsetSq
-      if (sqDist < 0 || cSqDist < sqDist)
-      {
+      if (sqDist < 0 || cSqDist < sqDist) {
         foundObj = cObj
         foundIdx = i
         sqDist = cSqDist
@@ -503,25 +462,23 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return { foundObj = foundObj, foundIdx = foundIdx }
   }
 
-  function getClosestCoordsByAxis(obj, point, axis)
-  {
+  function getClosestCoordsByAxis(obj, point, axis) {
     let pos = obj.getPos()
     let size = obj.getSize().map(@(v) max(0, v))
     return getObjCentering(obj)
       .map(@(pointerMul, a) a == axis
         ? clamp(point[a], pos[a], pos[a] + min(1.0, 0.5 + pointerMul) * size[a])
-        : pos[a] + pointerMul*size[a])
+        : pos[a] + pointerMul * size[a])
   }
 
-  function moveSelectLinear(obj, valueObj, axis, dir)
-  {
+  function moveSelectLinear(obj, valueObj, axis, dir) {
     local pos = this.isOnlyHover(obj) || valueObj == null
       ? ::get_dagui_mouse_cursor_pos_RC()
       : this.getMiddleCoords(valueObj)
     pos = this.checkFixedCoord(obj, axis, pos)
     let posDiv = valueObj == null
       ? this.getScreenSizeByAxis(axis)
-      : 0.4 * valueObj.getSize()[1-axis]
+      : 0.4 * valueObj.getSize()[1 - axis]
 
     local foundObj = null
     local foundIdx = -1
@@ -529,8 +486,8 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     this.eachSelectable(obj, function(cObj, i) {
       if (valueObj?.isEqual(cObj))
         return
-      let pos2 = this.getClosestCoordsByAxis(cObj, pos, 1-axis)
-      let distSubAxis = abs(pos[1-axis] - pos2[1-axis])
+      let pos2 = this.getClosestCoordsByAxis(cObj, pos, 1 - axis)
+      let distSubAxis = abs(pos[1 - axis] - pos2[1 - axis])
       if ((pos2[axis] - pos[axis]) * dir <= 0
           || distSubAxis > posDiv)
         return
@@ -538,8 +495,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
       //we trying to keep choosen line, so distance in other line has much lower priority
       let distAxis = abs(pos[axis] - pos2[axis])
       let cDistRating = distAxis + 100 * distSubAxis
-      if (distRating < 0 || cDistRating < distRating)
-      {
+      if (distRating < 0 || cDistRating < distRating) {
         foundObj = cObj
         foundIdx = i
         distRating = cDistRating
@@ -548,8 +504,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return { foundObj = foundObj, foundIdx = foundIdx }
   }
 
-  function setChildSelected(obj, childObj, isSelected = true)
-  {
+  function setChildSelected(obj, childObj, isSelected = true) {
     if (!childObj || !childObj.isValid())
       return false
 
@@ -557,19 +512,16 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
     return true
   }
 
-  function canSelectChild(obj)
-  {
+  function canSelectChild(obj) {
     return obj.isHovered() || !this.canSelectOnlyFocused(obj)
   }
 
-  function clearSelect(obj)
-  {
+  function clearSelect(obj) {
     let valueObj = this.getChildObj(obj, this.getSelectedValue(obj))
     this.setChildSelected(obj, valueObj, false)
   }
 
-  function onShortcutCancel(obj, is_down)
-  {
+  function onShortcutCancel(obj, is_down) {
     if (!is_down)
       obj.sendNotify("cancel_edit")
     return RETCODE_HALT

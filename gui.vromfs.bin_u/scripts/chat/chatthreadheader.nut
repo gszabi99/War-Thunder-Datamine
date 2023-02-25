@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -14,8 +15,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   roomId = ""
   threadInfo = null
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.threadInfo = ::g_chat.addThreadInfoById(this.roomId)
     return {
       threads = [this.threadInfo]
@@ -25,51 +25,42 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     let timerObj = this.scene.findObject("room_" + this.roomId)
     if (checkObj(timerObj))
       timerObj.setUserData(this)
   }
 
-  function updateInfo()
-  {
+  function updateInfo() {
     this.threadInfo.updateInfoObj(this.scene)
   }
 
-  function onSceneShow()
-  {
+  function onSceneShow() {
     this.popDelayedActions()
   }
 
-  function onUserInfo()
-  {
+  function onUserInfo() {
     this.threadInfo.showOwnerMenu(null)
   }
 
-  function onEditThread()
-  {
+  function onEditThread() {
     ::g_chat.openModifyThreadWnd(this.threadInfo)
   }
 
-  function onEventChatThreadInfoChanged(p)
-  {
+  function onEventChatThreadInfoChanged(p) {
     if (getTblValue("roomId", p) == this.roomId)
       this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventChatFilterChanged(_p)
-  {
+  function onEventChatFilterChanged(_p) {
     this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventContactsGroupUpdate(_p)
-  {
+  function onEventContactsGroupUpdate(_p) {
     this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventSquadStatusChanged(_p)
-  {
+  function onEventSquadStatusChanged(_p) {
     this.doWhenActiveOnce("updateInfo")
   }
 
@@ -77,8 +68,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.doWhenActiveOnce("updateInfo")
   }
 
-  function onThreadTimer(_obj, _dt)
-  {
+  function onThreadTimer(_obj, _dt) {
     this.threadInfo.checkRefreshThread()
   }
 }

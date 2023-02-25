@@ -1,8 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {get_mission_time} = require("%rGui/globals/mission.nut")
+let { get_mission_time } = require("%rGui/globals/mission.nut")
 let interopGet = require("interopGen.nut")
 let { subscribe } = require("eventbus")
+let { CHAT_MODE_ALL } = require("chat")
 
 let hudLog = Watched([])
 

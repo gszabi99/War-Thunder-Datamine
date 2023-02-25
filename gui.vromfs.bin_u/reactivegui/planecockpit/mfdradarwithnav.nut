@@ -1,9 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
-let {Altitude, Roll} = require("%rGui/planeState/planeFlyState.nut")
-let {DistanceMax, MfdRadarColor, targets, Irst, TargetsTrigger,
-  HasDistanceScale, HasAzimuthScale, Distance} = require("%rGui/radarState.nut")
+let { Altitude, Roll } = require("%rGui/planeState/planeFlyState.nut")
+let { DistanceMax, MfdRadarColor, targets, Irst, TargetsTrigger,
+  HasDistanceScale, HasAzimuthScale, Distance } = require("%rGui/radarState.nut")
 let compass = require("%rGui/compass.nut")
 
 let baseLineWidth = hdpx(2 * LINE_WIDTH)
@@ -82,14 +82,14 @@ let altitude = @() {
       lineWidth = baseLineWidth
       commands = [
         [VECTOR_LINE, 0, AltWatched.value, -50, AltWatched.value],
-        [VECTOR_LINE, 0, AltWatched.value, -30, AltWatched.value-5],
+        [VECTOR_LINE, 0, AltWatched.value, -30, AltWatched.value - 5],
         [VECTOR_LINE, 0, AltWatched.value, -30, AltWatched.value + 5]
       ]
     }
   ]
 }
 
-let flyDirection = @(){
+let flyDirection = @() {
     size = [pw(10), ph(10)]
     pos = [pw(50), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -110,7 +110,7 @@ let flyDirection = @(){
 }
 
 let digitalAlt = Computed(@() string.format(Altitude.value < 1000 ? "%d0" : "%.1f", Altitude.value < 1000 ? Altitude.value / 10 : Altitude.value / 1000.0))
-let roll = @(){
+let roll = @() {
   size = flex()
   children = [
     {
@@ -207,7 +207,7 @@ let function compassElem(width, height) {
   }
 }
 
-let createTarget = @(index) function(){
+let createTarget = @(index) function() {
   let target = targets[index]
   let distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
 
@@ -240,7 +240,7 @@ let createTarget = @(index) function(){
 let targetsComponent = function(createTargetDistFunc) {
   let getTargets = function() {
     let targetsRes = []
-    for(local i = 0; i < targets.len(); ++i) {
+    for (local i = 0; i < targets.len(); ++i) {
       if (!targets[i])
         continue
       else if (targets[i].signalRel < 0.1)

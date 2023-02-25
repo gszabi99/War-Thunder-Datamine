@@ -1,10 +1,14 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { frnd, rnd } = require("dagor.random")
+let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { GO_WIN, MISSION_CAPTURING_ZONE } = require_native("guiMission")
+let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")
 
 local dbg_msg_obj_counter = 0
@@ -29,7 +33,7 @@ let dbg_player_damage_messages = [
 let function hud_message_player_damage_debug() {
   ::g_hud_event_manager.onHudEvent("HudMessage", {
     type = HUD_MSG_DAMAGE
-    text = loc(dbg_player_damage_messages[(::math.frnd() * dbg_player_damage_messages.len()).tointeger()])
+    text = loc(dbg_player_damage_messages[(frnd() * dbg_player_damage_messages.len()).tointeger()])
     id = dbg_player_damage_counter++
   })
 }
@@ -38,18 +42,18 @@ local killLogMessageDebugCounter = 0
 let function hud_message_kill_log_debug() {
   ::g_hud_event_manager.onHudEvent("HudMessage", {
     type = HUD_MSG_MULTIPLAYER_DMG
-    isKill=true
-    action="kill"
-    playerId=-1
-    unitName=""
-    unitType=""
-    unitNameLoc=$"Friend{killLogMessageDebugCounter}"
-    team=::get_player_army_for_hud()
-    victimPlayerId=-1
-    victimUnitName=""
-    victimUnitType =""
-    victimUnitNameLoc=$"Enemy{killLogMessageDebugCounter}"
-    victimTeam=-1
+    isKill = true
+    action = "kill"
+    playerId = -1
+    unitName = ""
+    unitType = ""
+    unitNameLoc = $"Friend{killLogMessageDebugCounter}"
+    team = ::get_player_army_for_hud()
+    victimPlayerId = -1
+    victimUnitName = ""
+    victimUnitType = ""
+    victimUnitNameLoc = $"Enemy{killLogMessageDebugCounter}"
+    victimTeam = -1
   })
   killLogMessageDebugCounter++
 }
@@ -95,22 +99,21 @@ let function hud_reward_message_debug() {
 }
 
 let function hud_debug_streak(streakId = null) {
-  if (!streakId)
-  {
+  if (!streakId) {
     let list = ::u.filter(::g_unlocks.getAllUnlocks(),
                    function(blk) { return blk?.type == "streak" &&  !blk?.hidden })
-    streakId = list[::math.rnd() % list.len()].id
+    streakId = list[rnd() % list.len()].id
   }
 
-  let header = ::get_loc_for_streak(SNT_MY_STREAK_HEADER, streakId, ::math.rnd() % 3)
-  let wp = ::math.rnd() % 5000
+  let header = ::get_loc_for_streak(SNT_MY_STREAK_HEADER, streakId, rnd() % 3)
+  let wp = rnd() % 5000
   ::add_streak_message(header, wp, 0, streakId)
 }
 
 let function hud_mission_result_debug(result = GO_WIN, checkResending = false, noLives = false) {
-  ::g_hud_event_manager.onHudEvent("MissionResult", {resultNum = result,
+  ::g_hud_event_manager.onHudEvent("MissionResult", { resultNum = result,
                                                      checkResending = checkResending,
-                                                     noLives = noLives})
+                                                     noLives = noLives })
 }
 
 let function hud_show_in_battle_time_to_kick_timer() {
@@ -120,7 +123,7 @@ let function hud_show_in_battle_time_to_kick_timer() {
 }
 
 let function hud_show_in_battle_time_to_kick_alert() {
-  ::get_mp_kick_countdown <- @() ::math.rnd() % 5000
+  ::get_mp_kick_countdown <- @() rnd() % 5000
   ::in_battle_time_to_kick_show_alert <- ::get_mp_kick_countdown()
 }
 

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -19,8 +20,7 @@ let { getCrewUnlockTime, getCrewUnlockTimeByUnit } = require("%scripts/crew/crew
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 
-::gui_handlers.MainMenu <- class extends ::gui_handlers.InstantDomination
-{
+::gui_handlers.MainMenu <- class extends ::gui_handlers.InstantDomination {
   rootHandlerClass = topMenuHandlerClass.getHandler()
 
   unitInfoPanel = null
@@ -29,8 +29,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
   visibleUnitInfoName = ""
 
   //custom functions
-  function initScreen()
-  {
+  function initScreen() {
     ::set_presence_to_player("menu")
     ::enableHangarControls(true)
 
@@ -41,14 +40,12 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 
     this.forceUpdateSelUnitInfo()
 
-    if (::g_login.isAuthorized())
-    {
+    if (::g_login.isAuthorized()) {
       this.showOnlineInfo()
       this.updateClanRequests()
     }
 
-    if (::SessionLobby.isInRoom())
-    {
+    if (::SessionLobby.isInRoom()) {
       log("after main menu, uid " + ::my_user_id_str + ", " + ::my_user_name + " is in room")
       debug_dump_stack()
       ::SessionLobby.leaveRoom()
@@ -56,13 +53,11 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
     ::stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
   }
 
-  function onEventOnlineInfoUpdate(_params)
-  {
+  function onEventOnlineInfoUpdate(_params) {
     this.showOnlineInfo()
   }
 
-  function showOnlineInfo()
-  {
+  function showOnlineInfo() {
     if (::is_vietnamese_version() || ::is_vendor_tencent() || topMenuHandler.value == null)
       return
 
@@ -74,23 +69,20 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
     this.setSceneTitle(text, topMenuHandler.value.scene, "online_info")
   }
 
-  function onEventClanInfoUpdate(_params)
-  {
+  function onEventClanInfoUpdate(_params) {
     this.updateClanRequests()
   }
 
-  function updateClanRequests()
-  {
+  function updateClanRequests() {
     let haveRights = ::g_clans.isHaveRightsToReviewCandidates()
     let isReqButtonDisplay = haveRights && ::g_clans.getMyClanCandidates().len() > 0
     let obj = this.showSceneBtn("btn_main_menu_showRequests", isReqButtonDisplay)
     if (checkObj(obj) && isReqButtonDisplay)
       obj.setValue(loc("clan/btnShowRequests") + loc("ui/parentheses/space",
-        {text = ::g_clans.getMyClanCandidates().len()}))
+        { text = ::g_clans.getMyClanCandidates().len() }))
   }
 
-  function onExit()
-  {
+  function onExit() {
     if (!is_platform_pc && !is_platform_android)
       return
 
@@ -98,19 +90,17 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
       [
         ["yes", exitGame],
         ["no", function() { }]
-      ], "no", { cancel_fn = function() {}})
+      ], "no", { cancel_fn = function() {} })
   }
 
-  function onLoadModels()
-  {
+  function onLoadModels() {
     if (isPlatformSony || isPlatformXboxOne)
       ::showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
     else
       ::check_package_and_ask_download("pkg_main", loc("msgbox/ask_package_download"))
   }
 
-  function initPromoBlock()
-  {
+  function initPromoBlock() {
     if (this.promoHandler != null)
       return
     if (!hasFeature("PromoBlocks"))
@@ -120,23 +110,19 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
     this.registerSubHandler(this.promoHandler)
   }
 
-  function onEventHangarModelLoading(_p)
-  {
+  function onEventHangarModelLoading(_p) {
     this.doWhenActiveOnce("updateSelUnitInfo")
   }
 
-  function onEventHangarModelLoaded(_p)
-  {
+  function onEventHangarModelLoaded(_p) {
     this.doWhenActiveOnce("forceUpdateSelUnitInfo")
   }
 
-  function onEventCrewsListChanged(_p)
-  {
+  function onEventCrewsListChanged(_p) {
     this.doWhenActiveOnce("forceUpdateSelUnitInfo")
   }
 
-  function updateLowQualityModelWarning()
-  {
+  function updateLowQualityModelWarning() {
     let lowQuality = !::is_loaded_model_high_quality()
     let warningObj = this.showSceneBtn("low-quality-model-warning", lowQuality)
     let canDownloadPackage = ::can_download_package()
@@ -147,8 +133,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
   }
 
   forceUpdateSelUnitInfo = @() this.updateSelUnitInfo(true)
-  function updateSelUnitInfo(isForced = false)
-  {
+  function updateSelUnitInfo(isForced = false) {
     let unitName = hangar_get_current_unit_name()
     if (!isForced && unitName == this.visibleUnitInfoName)
       return
@@ -185,15 +170,13 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
     getSuggestedSkin(hangar_get_current_unit_name())?.doPreview()
   }
 
-  function updateUnitRentInfo(unit)
-  {
+  function updateUnitRentInfo(unit) {
     let rentInfoObj = this.scene.findObject("rented_unit_info_text")
     let messageTemplate = loc("mainmenu/unitRentTimeleft") + loc("ui/colon") + "%s"
     SecondsUpdater(rentInfoObj, function(obj, _params) {
       let isVisible = !!unit && unit.isRented()
       obj.show(isVisible)
-      if (isVisible)
-      {
+      if (isVisible) {
         let sec = unit.getRentTimeleft()
         let hours = time.secondsToHours(sec)
         let timeStr = hours < 1.0 ?
@@ -230,8 +213,7 @@ let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
       let showButtons = hasFeature("EarlyExitCrewUnlock")
       let crewCost = ::shop_get_unlock_crew_cost(crew.id)
       let crewCostGold = ::shop_get_unlock_crew_cost_gold(crew.id)
-      if (showButtons)
-      {
+      if (showButtons) {
         placePriceTextToButton(obj, "btn_unlock_crew", loc("mainmenu/btn_crew_unlock"), crewCost, 0)
         placePriceTextToButton(obj, "btn_unlock_crew_gold", loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)
       }

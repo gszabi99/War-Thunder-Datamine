@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let hudTankStates = require("hudTankStates")
 let { hudTankMovementStatesVisible } = require("%scripts/hud/hudConfigByGame.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
-enum ORDER //order for movement state info
-{
+enum ORDER { //order for movement state info
   GEAR
   RPM
   CRUISE_CONTROL
@@ -164,7 +164,7 @@ let function showHudTankMovementStates(scene) {
   if (!checkObj(movementStatesObj))
     return
 
-  let blk = ::handyman.renderCached("%gui/hud/hudTankMovementInfo.tpl", {tankStates = getMovementViewArray()})
+  let blk = ::handyman.renderCached("%gui/hud/hudTankMovementInfo.tpl", { tankStates = getMovementViewArray() })
   this.guiScene.replaceContentFromText(movementStatesObj, blk, blk.len(), this)
 }
 

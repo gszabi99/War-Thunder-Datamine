@@ -1,4 +1,8 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { rnd, frnd } = require("dagor.random")
+let { HUD_MSG_DEATH_REASON } = require("hudMessages")
 
 //checked for explicitness
 #no-root-fallback
@@ -6,7 +10,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP
-} = require_native("guiMission")
+} = require("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hud_message_objective_debug, hud_message_player_damage_debug, hud_message_kill_log_debug,
   hud_debug_streak
@@ -34,8 +38,8 @@ enums.addTypes(results, {
       let ignoreIdx = ::g_hud_reward_message.types.indexof(::g_hud_reward_message.UNKNOWN)
       ::g_hud_event_manager.onHudEvent("InBattleReward", {
         messageCode = ::u.chooseRandomNoRepeat(::g_hud_reward_message.types, ignoreIdx).code
-        warpoints = 10 * (::math.rnd() % 40)
-        experience = 10 * (::math.rnd() % 40)
+        warpoints = 10 * (rnd() % 40)
+        experience = 10 * (rnd() % 40)
         counter = 1
       })
     }
@@ -46,7 +50,7 @@ enums.addTypes(results, {
     eventNames = ["MissionResult", "MissionContinue"]
     function genNewEvent() {
       ::g_hud_event_manager.onHudEvent(::u.chooseRandom(this.eventNames), {
-        resultNum = (::math.rnd() % 2) ? GO_FAIL : GO_WIN
+        resultNum = (rnd() % 2) ? GO_FAIL : GO_WIN
       })
     }
   }
@@ -81,7 +85,7 @@ enums.addTypes(results, {
         function getEventData() {
           return {
             state = ::u.chooseRandom(["notInRepair", "prepareRepair", "repairing"])
-            time = 2 + ::math.rnd() % 10
+            time = 2 + rnd() % 10
           }
         }
       }
@@ -90,8 +94,8 @@ enums.addTypes(results, {
         function getEventData() {
           return {
             state = ::u.chooseRandom(["notInRearm", "rearming"])
-            timeToLoadOne = 1 + ::math.rnd() % 5
-            currentLoadTime = 0.5 * (::math.rnd() % 3)
+            timeToLoadOne = 1 + rnd() % 5
+            currentLoadTime = 0.5 * (rnd() % 3)
             object_name = "rearm_status"
           }
         }
@@ -101,8 +105,8 @@ enums.addTypes(results, {
         function getEventData() {
           return {
             state = ::u.chooseRandom(["takingPlace", "ok"])
-            totalTakePlaceTime = 5 + ::math.rnd() % 10
-            timeToTakePlace = 1 + ::math.rnd() % 4
+            totalTakePlaceTime = 5 + rnd() % 10
+            timeToTakePlace = 1 + rnd() % 4
           }
         }
       }
@@ -119,33 +123,33 @@ enums.addTypes(results, {
   ZONE_CAPTURE = {
     eventChance = 30
 
-    hudEventsTbl= {
+    hudEventsTbl = {
       [MISSION_CAPTURED_ZONE] = {
         locId = "NET_TEAM1_CAPTURED_LA"
-        isHeroAction = @() ::math.frnd() < 0.2
+        isHeroAction = @() frnd() < 0.2
         captureProgress = 1
       },
       [MISSION_CAPTURING_ZONE] = {
         locId = "NET_YOU_CAPTURING_LA"
         isHeroAction = true
-        captureProgress = @() 2.0 * ::math.frnd() - 1
+        captureProgress = @() 2.0 * frnd() - 1
       },
       [MISSION_CAPTURING_STOP] = {
         locId = "NET_TEAM_A_CAPTURING_STOP_LA"
         isHeroAction = true
-        captureProgress = @() 2.0 * ::math.frnd() - 1
+        captureProgress = @() 2.0 * frnd() - 1
       }
     }
 
     function genNewEvent() {
-      let drop = ::math.frnd()
+      let drop = frnd()
       let eventId = drop < 0.7 ? MISSION_CAPTURING_ZONE
         : drop < 0.9 ? MISSION_CAPTURED_ZONE
         : MISSION_CAPTURING_STOP
 
       let hudEventData = { eventId = eventId }
       let data = this.hudEventsTbl[eventId]
-      foreach(key, val in data)
+      foreach (key, val in data)
         hudEventData[key] <- ::u.isFunction(val) ? val() : val
 
       hudEventData.zoneName <- ::u.chooseRandom(["A", "B", "C"])
@@ -223,7 +227,7 @@ enums.addTypes(results, {
         eventId = "HudMessage"
         type = HUD_MSG_DEATH_REASON
         text = loc("death/ammoExplosion")
-        id = @() ::math.rnd()
+        id = @() rnd()
         showInDamageLog = true
       }
     ]
@@ -236,15 +240,15 @@ enums.addTypes(results, {
     function genNewEvent() {
       let eventData = {
         participant = []
-        timeSeconds = ::math.rnd() % 15 + 1
+        timeSeconds = rnd() % 15 + 1
         locId = ::u.chooseRandom(this.textsList)
         shortcut = "ID_KILLSTREAK_WHEEL_MENU"
         slotsCount = 3
         playerId = 0
       }
 
-      let pTotal = ::math.rnd() % 6 + 1
-      for(local i = 0; i < pTotal; i++)
+      let pTotal = rnd() % 6 + 1
+      for (local i = 0; i < pTotal; i++)
         eventData.participant.append({
           image = ::u.chooseRandom(this.iconsList)
           participantId = i

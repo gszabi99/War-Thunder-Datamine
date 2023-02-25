@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {interop} = require("%rGui/globals/interop.nut")
+let { interop } = require("%rGui/globals/interop.nut")
 let interopGen = require("%rGui/interopGen.nut")
 
 let IlsVisible = Watched(false)

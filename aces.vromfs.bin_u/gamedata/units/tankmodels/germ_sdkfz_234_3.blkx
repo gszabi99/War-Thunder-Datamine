@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -2774,6 +2774,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -2831,51 +2841,97 @@
     }
   },
   "commonWeapons": {
-    "Weapon": {
-      "trigger": "gunner0",
-      "blk": "gameData/Weapons/groundModels_weapons/75mm_KwK51_user_cannon.blk",
-      "emitter": "bone_gun_barrel",
-      "flash": "emtr_gun_flame",
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "barrelDP": "gun_barrel_dm",
-      "breechDP": "cannon_breech_dm",
-      "speedYaw": 14.0,
-      "speedPitch": 4.0,
-      "fireConeAngle": 1.0,
-      "bullets": 50,
-      "salvoAmount": 100.0,
-      "ChainfireTime": 0.0,
-      "DelayAfterShoot": 5.0,
-      "AttackMaxDistance": 1000.0,
-      "AttackMaxRadius": 1000.0,
-      "AttackMaxHeight": 1000.0,
-      "accuracyAir": 0.0,
-      "accuracyGnd": 1.5,
-      "errMeasureVel": 0.0,
-      "errMeasureVelFast": 0.0,
-      "errMeasureVelFwdShift": 0.0,
-      "errMeasureVelDir": 0.0,
-      "errTargettingOn100kmph": 0.0,
-      "errTargetting": 3.0,
-      "errExplTime": 0.0,
-      "turret": {
-        "head": "bone_turret",
-        "gun": "bone_gun",
-        "barrel": "bone_gun_barrel",
-        "gunnerDm": "gunner_dm"
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/groundModels_weapons/75mm_KwK51_user_cannon.blk",
+        "emitter": "bone_gun_barrel",
+        "flash": "emtr_gun_flame",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_dm",
+        "breechDP": "cannon_breech_dm",
+        "speedYaw": 14.0,
+        "speedPitch": 4.0,
+        "fireConeAngle": 1.0,
+        "bullets": 50,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel",
+          "gunnerDm": "gunner_dm"
+        },
+        "limits": {
+          "yaw": [
+            -14.0,
+            14.0
+          ],
+          "pitch": [
+            -10.0,
+            16.0
+          ]
+        }
       },
-      "limits": {
-        "yaw": [
-          -14.0,
-          14.0
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "coaxial",
+        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG42_user_machinegun.blk",
+        "emitter": "bone_mg_gun_twin",
+        "flash": "emtr_mg_flame_01",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_01_dm",
+        "useAnimFlashNode": true,
+        "speedYaw": 5.5,
+        "speedPitch": 4.0,
+        "fireConeAngle": [
+          1.0,
+          15.0
         ],
-        "pitch": [
-          -10.0,
-          16.0
-        ]
+        "bullets": 1950,
+        "ChainfireTime": 3.0,
+        "DelayAfterShoot": 3.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_mg_gun_twin",
+          "gun": "bone_mg_gun_twin",
+          "gunnerDm": "loader_dm"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
       }
-    }
+    ]
   },
   "weapon_presets": {
     "preset": {

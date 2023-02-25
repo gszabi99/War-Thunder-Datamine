@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -49,7 +50,7 @@ let function getMyStateData() {
 
   let checkPacks = ["pkg_main"]
   let missed = []
-  foreach(pack in checkPacks)
+  foreach (pack in checkPacks)
     if (!::have_package(pack))
       missed.append(pack)
   if (missed.len())

@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 return {
-  BgNormal   = Color(0,0,0,200)
+  BgNormal   = Color(0, 0, 0, 200)
   BgHover    = Color(220, 220, 220, 200)
   BgActive   = Color(180, 180, 180, 180)
   BgFocused  = Color(40, 40, 40, 120)
@@ -13,10 +13,10 @@ return {
   BdFocused = Color(160, 160, 160, 120)
   BdDisabled  = Color(20, 20, 20, 20)
 
-  TextDisabled  = Color(0,0,0,100)
+  TextDisabled  = Color(0, 0, 0, 100)
   TextNormal  = Color(160, 160, 160, 120)
-  TextHover   = Color(0,0,0)
-  TextActive  = Color(0,0,0)
+  TextHover   = Color(0, 0, 0)
+  TextActive  = Color(0, 0, 0)
   TextFocused = Color(160, 160, 160, 120)
   TextHilite  = Color(220, 220, 220, 160)
 

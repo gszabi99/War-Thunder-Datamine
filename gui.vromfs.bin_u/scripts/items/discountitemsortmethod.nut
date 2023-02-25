@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -10,8 +11,7 @@ let discountPostfixArray = ["_premium", ""]
 let function addDiscountDescriptionAircrafts(blk, category, items) {
   if (blk == null)
     return
-  for (local i = 0; i < blk.paramCount(); ++i)
-  {
+  for (local i = 0; i < blk.paramCount(); ++i) {
     if (blk.getParamValue(i) == 0)
       continue
     let aircraftName = blk.getParamName(i)
@@ -141,8 +141,7 @@ let function sortDiscountDescriptionItems(items, sortData) {
   if (sortData == null)
     return
   items.sort(function (item1, item2) {
-    if (item1.category != item2.category)
-    {
+    if (item1.category != item2.category) {
       let catSortData1 = sortData[item1.category]
       let catSortData2 = sortData[item2.category]
       if (catSortData1.categoryIndex != catSortData2.categoryIndex)
@@ -153,8 +152,7 @@ let function sortDiscountDescriptionItems(items, sortData) {
     let isTypeAircraft2 = item2.type == "aircraft"
     if (isTypeAircraft1 != isTypeAircraft2)
       return isTypeAircraft1 ? -1 : 1
-    if (isTypeAircraft1)
-    {
+    if (isTypeAircraft1) {
       if (item1.aircraftSortIndex != item2.aircraftSortIndex)
         return item1.aircraftSortIndex > item2.aircraftSortIndex ? 1 : -1
       return 0
@@ -176,8 +174,7 @@ let function createDiscountDescriptionSortData(blk) {
   if (blk == null)
     return null
   let sortData = {}
-  for (local i = 0; i < blk.blockCount(); ++i)
-  {
+  for (local i = 0; i < blk.blockCount(); ++i) {
     let discountCategoryBlk = blk.getBlock(i)
     let paramsOrder = []
     for (local j = 0; j < discountCategoryBlk.paramCount(); ++j)

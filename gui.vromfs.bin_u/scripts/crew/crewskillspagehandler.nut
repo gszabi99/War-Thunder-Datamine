@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -27,10 +28,8 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
   onSkillRowChangeCb = null
   unit = null
 
-  function initScreen()
-  {
-    if (!this.curPage || !this.crew)
-    {
+  function initScreen() {
+    if (!this.curPage || !this.crew) {
       this.scene = null //make handler invalid to unsubscribe from events.
       ::script_net_assert_once("failed load crewSkillsPage", format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
                                    toString(this.curPage), toString(this.crew)))
@@ -44,12 +43,10 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.pageOnInit = false
   }
 
-  function loadSceneTpl(row = null)
-  {
+  function loadSceneTpl(row = null) {
     let rows = []
     local obj = this.scene
-    if (row != null)
-    {
+    if (row != null) {
        obj = this.scene.findObject(this.getRowName(row))
        let item = this.curPage.items?[row]
        if (!checkObj(obj) || !item)
@@ -58,13 +55,12 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
        rows.append(this.getSkillRowConfig(row))
     }
     else
-      foreach(idx, item in this.curPage.items)
+      foreach (idx, item in this.curPage.items)
         if (item.isVisible(this.curCrewUnitType))
           rows.append(this.getSkillRowConfig(idx))
 
     let view = { rows = rows, needAddRow = row == null }
-    if (this.unit != null)
-    {
+    if (this.unit != null) {
       view.buySpecTooltipId1 <- ::g_crew_spec_type.EXPERT.getBtnBuyTooltipId(this.crew, this.unit)
       view.buySpecTooltipId2 <- ::g_crew_spec_type.ACE.getBtnBuyTooltipId(this.crew, this.unit)
     }
@@ -80,15 +76,13 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
       this.scene.setValue(0)
   }
 
-  function setHandlerVisible(value)
-  {
+  function setHandlerVisible(value) {
     this.isHandlerVisible = value
     this.scene.show(value)
     this.scene.enable(value)
   }
 
-  function updateHandlerData(params)
-  {
+  function updateHandlerData(params) {
     this.curPage = params.curPage
     this.crew = params.crew
     this.curCrewUnitType = params.curCrewUnitType
@@ -101,19 +95,16 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.updateSkills()
   }
 
-  function getItemsBonuses(page)
-  {
+  function getItemsBonuses(page) {
     let bonuses = []
     local curGunnersMul = 1.0
     let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.unit)
     let curSpecMul = specType.getMulValue()
-    if (page.id=="gunner")
-    {
+    if (page.id == "gunner") {
       let airGunners = getTblValue("gunnersCount", this.unit, 0)
       local curGunners = getSkillValue(this.crew.id, this.unit, "gunner", "members")
       foreach (item in page.items)
-        if(item.name == "members" && "newValue" in item)
-        {
+        if (item.name == "members" && "newValue" in item) {
           curGunners = item.newValue
           break
         }
@@ -122,8 +113,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
         curGunnersMul = curGunners.tofloat() / airGunners
     }
 
-    foreach(item in page.items)
-    {
+    foreach (item in page.items) {
       let hasSpecMul = item.useSpecializations && item.isVisible(this.curCrewUnitType)
       bonuses.append({
         add =  hasSpecMul ? curSpecMul * ::g_crew.getMaxSkillValue(item) : 0.0
@@ -136,20 +126,16 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     return bonuses
   }
 
-  function getRowName(rowIndex)
-  {
+  function getRowName(rowIndex) {
     return format("skill_row%d", rowIndex)
   }
 
-  function getCurPoints()
-  {
+  function getCurPoints() {
     return this.curPoints
   }
 
-  function updateIncButtons(items)
-  {
-    foreach(idx, item in items)
-    {
+  function updateIncButtons(items) {
+    foreach (idx, item in items) {
       if (!item.isVisible(this.curCrewUnitType))
         continue
       let rowObj = this.scene.findObject(this.getRowName(idx))
@@ -162,8 +148,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     }
   }
 
-  function applySkillRowChange(row, item, newValue)
-  {
+  function applySkillRowChange(row, item, newValue) {
     this.onSkillRowChangeCb?(item, newValue)
     this.guiScene.performDelayed(this, function() {
       if (this.isValid())
@@ -171,14 +156,12 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     })
   }
 
-  function onProgressButton(obj, inc, isRepeat = false, limit = false)
-  {
+  function onProgressButton(obj, inc, isRepeat = false, limit = false) {
     if (!this.isRecrutedCurCrew())
       return
 
     let row = ::g_crew.getButtonRow(obj, this.scene, this.scene)
-    if (this.curPage.items.len() > 0 && (!this.repeatButton || isRepeat))
-    {
+    if (this.curPage.items.len() > 0 && (!this.repeatButton || isRepeat)) {
       let item = this.curPage.items[row]
       let value = getSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
       local newValue = item.newValue
@@ -190,8 +173,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
       if (newValue == item.newValue)
         return
       let changeCost = ::g_crew.getSkillCost(item, newValue, item.newValue)
-      if (this.getCurPoints() - changeCost < 0)
-      {
+      if (this.getCurPoints() - changeCost < 0) {
         if (isRepeat)
           this.needAskBuySkills = true
         else
@@ -204,39 +186,32 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.repeatButton = isRepeat
   }
 
-  function onButtonInc(obj)
-  {
+  function onButtonInc(obj) {
     this.onProgressButton(obj, true)
   }
 
-  function onButtonDec(obj)
-  {
+  function onButtonDec(obj) {
     this.onProgressButton(obj, false)
   }
 
-  function onButtonIncRepeat(obj)
-  {
+  function onButtonIncRepeat(obj) {
     this.onProgressButton(obj, true, true)
   }
 
-  function onButtonDecRepeat(obj)
-  {
+  function onButtonDecRepeat(obj) {
     this.onProgressButton(obj, false, true)
   }
 
-  function onButtonMax(_obj)
-  {
+  function onButtonMax(_obj) {
     // onProgressButton(obj, true, true)
   }
 
-  function getSkillMaxAvailable(skillItem)
-  {
+  function getSkillMaxAvailable(skillItem) {
     return ::g_crew.getMaxAvailbleStepValue(skillItem, skillItem.newValue, this.getCurPoints())
   }
 
-  function updateSkills(row = null, needUpdateIncButton = true)
-  {
-    if(row == null || (this.curPage.items[row].name == "members" && this.curPage.id == "gunner"))
+  function updateSkills(row = null, needUpdateIncButton = true) {
+    if (row == null || (this.curPage.items[row].name == "members" && this.curPage.id == "gunner"))
       this.loadSceneTpl()
     else
       this.loadSceneTpl(row)
@@ -245,8 +220,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
       this.updateIncButtons(this.curPage.items)
   }
 
-  function onSkillChanged(obj)
-  {
+  function onSkillChanged(obj) {
     if (this.pageOnInit || !obj || !this.isRecrutedCurCrew())
       return
 
@@ -264,14 +238,12 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let maxValue = this.getSkillMaxAvailable(item)
     if (newValue < value)
       newValue = value
-    if (newValue > maxValue)
-    {
+    if (newValue > maxValue) {
       newValue = maxValue
       if (item.newValue == maxValue)
         this.askBuySkills()
     }
-    if (newValue == item.newValue)
-    {
+    if (newValue == item.newValue) {
       this.guiScene.performDelayed(this, function() {
         if (this.isValid())
           this.updateSkills(row, false)
@@ -279,8 +251,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
       return
     }
     let changeCost = ::g_crew.getSkillCost(item, newValue, item.newValue)
-    if (this.getCurPoints() - changeCost < 0)
-    {
+    if (this.getCurPoints() - changeCost < 0) {
       this.askBuySkills()
       return
     }
@@ -288,8 +259,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.applySkillRowChange(row, item, newValue)
   }
 
-  function askBuySkills()
-  {
+  function askBuySkills() {
     this.needAskBuySkills = false
 
     // Duplicate check.
@@ -298,35 +268,30 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     let spendGold = hasFeature("SpendGold")
     local text = loc("shop/notEnoughSkillPoints")
-    let cancelButtonName = spendGold? "no" : "ok"
-    let buttonsArray = [[cancelButtonName, function(){}]]
+    let cancelButtonName = spendGold ? "no" : "ok"
+    let buttonsArray = [[cancelButtonName, function() {}]]
     local defaultButton = "ok"
-    if (spendGold)
-    {
+    if (spendGold) {
       text += "\n" + loc("shop/purchaseMoreSkillPoints")
-      buttonsArray.insert(0,["yes", (@(crew) function() { ::g_crew.createCrewBuyPointsHandler(crew) })(this.crew)])
+      buttonsArray.insert(0, ["yes", (@(crew) function() { ::g_crew.createCrewBuyPointsHandler(crew) })(this.crew)])
       defaultButton = "yes"
     }
     this.msgBox("buySkillPoints", text, buttonsArray, defaultButton)
   }
 
-  function onSpecIncrease(nextSpecType)
-  {
+  function onSpecIncrease(nextSpecType) {
     ::g_crew.upgradeUnitSpec(this.crew, this.unit, this.curCrewUnitType, nextSpecType)
   }
 
-  function onSpecIncrease1()
-  {
+  function onSpecIncrease1() {
     this.onSpecIncrease(::g_crew_spec_type.EXPERT)
   }
 
-  function onSpecIncrease2()
-  {
+  function onSpecIncrease2() {
     this.onSpecIncrease(::g_crew_spec_type.ACE)
   }
 
-  function onSkillRowTooltipOpen(obj)
-  {
+  function onSkillRowTooltipOpen(obj) {
     let memberName = obj?.memberName ?? ""
     let skillName = obj?.skillName ?? ""
     let difficulty = ::get_current_shop_difficulty()
@@ -336,8 +301,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
-  function getSkillRowConfig(idx)
-  {
+  function getSkillRowConfig(idx) {
     let item = this.curPage.items?[idx]
     if (!item)
       return null
@@ -351,8 +315,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     local bonusText = ""
     local bonusOverlayTextColor = "good"
     local bonusTooltip = ""
-    if (bonusData)
-    {
+    if (bonusData) {
       let totalSkill = bonusData.mul * item.newValue + bonusData.add
       let bonusLevel = ::g_crew.getSkillCrewLevel(item, totalSkill, item.newValue)
       let addLevel   = ::g_crew.getSkillCrewLevel(item, totalSkill, totalSkill - bonusData.add)
@@ -407,8 +370,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     }
   }
 
-  function getRowSpecButtonConfig(specType, crewLvl, bonusData)
-  {
+  function getRowSpecButtonConfig(specType, crewLvl, bonusData) {
     local icon = ""
     let curSpecCode = bonusData.specType.code
     if (bonusData && bonusData.haveSpec)

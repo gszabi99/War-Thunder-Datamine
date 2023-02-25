@@ -1,11 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
-} = require("app")
+let { get_game_version_str } = require("app")
 let { canUseIngameShop,
         getShopItemsTable,
         getEntStoreLocId,
@@ -64,15 +64,14 @@ let template = {
   checkbox = @() this.elementType == TOP_MENU_ELEMENT_TYPE.CHECKBOX //param name only because of checkbox.tpl
   isLineSeparator = @() this.elementType == TOP_MENU_ELEMENT_TYPE.LINE_SEPARATOR
   isEmptyButton = @() this.elementType == TOP_MENU_ELEMENT_TYPE.EMPTY_BUTTON
-  funcName = @() this.isButton()? "onClick" : this.checkbox()? "onChangeCheckboxValue" : null
+  funcName = @() this.isButton() ? "onClick" : this.checkbox() ? "onChangeCheckboxValue" : null
 }
 
 let list = {
   UNKNOWN = {}
   SKIRMISH = {
     text = @() "#mainmenu/btnSkirmish"
-    onClickFunc = function(_obj, handler)
-    {
+    onClickFunc = function(_obj, handler) {
       if (!::is_custom_battles_enabled())
         return ::show_not_available_msg_box()
       if (!::check_gamemode_pkg(GM_SKIRMISH))
@@ -105,8 +104,7 @@ let list = {
   }
   WORLDWAR = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("mainmenu/btnWorldwar"))
-    onClickFunc = function(_obj, handler)
-    {
+    onClickFunc = function(_obj, handler) {
       if (!::g_world_war.checkPlayWorldwarAccess())
         return
 
@@ -157,7 +155,7 @@ let list = {
         [
           ["yes", ::purchase_any_campaign],
           ["no", function() {}]
-        ], "yes", { cancel_fn = function() {}})
+        ], "yes", { cancel_fn = function() {} })
     }
     isHidden = @(...) !hasFeature("HistoricalCampaign")
     isVisualDisabled = @() contentStateModule.isHistoricalCampaignDownloading()
@@ -214,12 +212,12 @@ let list = {
   }
   CLANS = {
     text = @() "#mainmenu/btnClans"
-    onClickFunc = @(...) hasFeature("Clans")? ::gui_modal_clans() : ::show_not_available_msg_box()
+    onClickFunc = @(...) hasFeature("Clans") ? ::gui_modal_clans() : ::show_not_available_msg_box()
     isHidden = @(...) !hasFeature("Clans")
   }
   REPLAY = {
     text = @() "#mainmenu/btnReplays"
-    onClickFunc = @(_obj, handler) isPlatformSony? ::show_not_available_msg_box() : handler.checkedNewFlight(::gui_start_replays)
+    onClickFunc = @(_obj, handler) isPlatformSony ? ::show_not_available_msg_box() : handler.checkedNewFlight(::gui_start_replays)
     isHidden = @(...) !hasFeature("ClientReplay")
   }
   VIRAL_AQUISITION = {
@@ -285,12 +283,12 @@ let list = {
       ? openQrWindow({
           headerText = loc("topmenu/reportAnIssue")
           additionalInfoText = loc("qrWindow/info/reportAnIssue")
-          baseUrl = loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
+          baseUrl = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
           needUrlWithQrRedirect = true
         })
       : openUrlByObj(obj, true)
     isDelayed = false
-    link = loc("url/reportAnIssue", {platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str()})
+    link = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
     isLink = @() isPlatformPC
     isFeatured = @() true
     isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || ::is_vendor_tencent() || !::isInMenu()
@@ -443,8 +441,7 @@ let list = {
     text = @() "Debug PS4 Data" //intentionally without localization
     onClickFunc = function(_obj, _handler) {
       let itemInfo = []
-      foreach (_id, item in getShopItemsTable())
-      {
+      foreach (_id, item in getShopItemsTable()) {
         itemInfo.append(item.id)
         itemInfo.append(item.imagePath)
         itemInfo.append(item.getDescription())

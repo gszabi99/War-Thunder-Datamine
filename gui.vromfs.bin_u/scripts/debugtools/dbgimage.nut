@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -19,32 +20,29 @@ let function debug_svg(image, size = null, bgColor = "#808080") {
   let view = {
     image = image
     bgColor = bgColor
-    blocks= []
+    blocks = []
   }
 
   if (::u.isString(size))
     size = to_pixels(size)
 
-  if (::u.isInteger(size) && size > 0)
-  {
+  if (::u.isInteger(size) && size > 0) {
     let block = { header = size, sizeList = [] }
     let screenHeights = [720, 768, 800, 864, 900, 960, 1024, 1050, 1080, 1200, 1440, 1800, 2160]
-    foreach(sf in screenHeights)
+    foreach (sf in screenHeights)
       block.sizeList.append({ name = sf, size = (size.tofloat() * sf / baseHeight + 0.5).tointeger() })
     view.blocks.append(block)
-  } else
-  {
+  }
+  else {
     let screenHeights = [720, 1080, 2160]
     let smallestFont = ::g_font.getSmallestFont(1280, 720)
     if (smallestFont && smallestFont.sizeMultiplier < 1)
       screenHeights.insert(0, smallestFont.sizeMultiplier * 720)
     let sizes = ["@sIco", "@cIco", "@dIco", "@lIco"]
-    foreach(sf in screenHeights)
-    {
+    foreach (sf in screenHeights) {
       let block = { header = "screen height " + sf, sizeList = [] }
       view.blocks.append(block)
-      foreach(s in sizes)
-      {
+      foreach (s in sizes) {
         local px = to_pixels(s)
         block.sizeList.append({ name = " " + s + " ", size = (px.tofloat() * sf / baseHeight + 0.5).tointeger() })
       }
@@ -66,9 +64,8 @@ let function debug_svg_list(fileMask = null, size = null, bgColor = null) {
   ]
 
   let filesList = []
-  foreach (dir in dirs)
-  {
-    let filePaths = dagor_fs.scan_folder({root=dir, files_suffix=fileMask, vromfs=false, realfs = true, recursive = true})
+  foreach (dir in dirs) {
+    let filePaths = dagor_fs.scan_folder({ root = dir, files_suffix = fileMask, vromfs = false, realfs = true, recursive = true })
     filesList.extend(::u.map(filePaths, @(path) g_path.fileName(path)))
   }
   filesList.sort()
@@ -90,14 +87,12 @@ let function debug_svg_list(fileMask = null, size = null, bgColor = null) {
     scene = null
     guiScene = null
 
-    function onCreate(obj)
-    {
+    function onCreate(obj) {
       this.scene = obj
       this.guiScene = obj.getScene()
     }
 
-    function onImgClick(obj)
-    {
+    function onImgClick(obj) {
       ::view_fullscreen_image(obj.findObject("image"))
     }
   }

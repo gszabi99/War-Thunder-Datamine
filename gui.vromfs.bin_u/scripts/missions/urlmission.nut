@@ -1,11 +1,12 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let DataBlock = require("DataBlock")
 
-::UrlMission <- class
-{
+::UrlMission <- class {
   name = ""
   url = ""
   hasErrorByLoading = false
@@ -21,8 +22,7 @@ from "%scripts/dagui_library.nut" import *
 
   //constructor(name, url) - create new UrlMission with name and url listed in params
   //constructor(DataBlock) - load all params from DataBlock
-  constructor(param1, param2 = null)
-  {
+  constructor(param1, param2 = null) {
     if (::u.isDataBlock(param1))
       return this.loadFromBlk(param1)
 
@@ -32,23 +32,20 @@ from "%scripts/dagui_library.nut" import *
       this.url = param2
   }
 
-  function loadFromBlk(blk)
-  {
-    foreach(key in this.saveParamsList)
+  function loadFromBlk(blk) {
+    foreach (key in this.saveParamsList)
       if (type(blk?[key]) == type(this[key]))
         this[key] = blk[key]
   }
 
-  function getSaveBlk()
-  {
-    let res = ::DataBlock()
-    foreach(key in this.saveParamsList)
+  function getSaveBlk() {
+    let res = DataBlock()
+    foreach (key in this.saveParamsList)
       res[key] = this[key]
     return res
   }
 
-  function getMetaInfo()
-  {
+  function getMetaInfo() {
     if (this.fullMissionBlk == null ||
         !("mission_settings" in this.fullMissionBlk) ||
         !("mission" in this.fullMissionBlk.mission_settings))
@@ -57,8 +54,7 @@ from "%scripts/dagui_library.nut" import *
       return this.fullMissionBlk.mission_settings.mission
   }
 
-  function isValid()
-  {
+  function isValid() {
     return this.name.len() > 0 && this.url.len() > 0
   }
 }

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -12,8 +13,7 @@ let subscriptions = require_optional("%sqStdLibs/helpers/subscriptions.nut")
 if ("g_script_reloader" in getroottable())
   ::g_script_reloader.loadIfExist("%scripts/framework/msgBox.nut")
 
-global enum TASK_CB_TYPE
-{
+global enum TASK_CB_TYPE {
   BASIC,
   REQUEST_DATA
 }
@@ -90,8 +90,7 @@ let function addTask(taskId, taskOptions = null, onSuccess = null, onError = nul
 
   addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox, showErrorMessageBox)
 
-  if (showProgressBox)
-  {
+  if (showProgressBox) {
     showTaskProgressBox(
       getTblValue("progressBoxText", taskOptions, null),
       getTblValue("progressBoxCancelFunc", taskOptions, null),
@@ -150,8 +149,7 @@ let function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, 
   if (getNumBlockingTasks() == 0)
     hideTaskProgressBox()
 
-  if (taskResult == YU2_OK)
-  {
+  if (taskResult == YU2_OK) {
     if (taskData.onSuccess != null)
       if (taskCbType == TASK_CB_TYPE.REQUEST_DATA)
         taskData.onSuccess(data)
@@ -160,8 +158,7 @@ let function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, 
     return
   }
 
-  if (taskData.onError != null)
-  {
+  if (taskData.onError != null) {
     let info = taskData.onError.getfuncinfos()
     if (info.native || info.parameters.len() > 1)
       taskData.onError(taskResult)
@@ -211,13 +208,11 @@ let function onCharRequestJwtFromServerComplete(data) {
 subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComplete)
 
 // Why this function is in this module???
-::getErrorText <- function getErrorText(result)
-{
+::getErrorText <- function getErrorText(result) {
   local text = loc("charServer/updateError/" + result.tostring())
   if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
       && ("get_char_extended_error" in getroottable())
-      && result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS)
-  {
+      && result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
     let notAllowedChars = ::get_char_extended_error()
     text = format(text, notAllowedChars)
   }

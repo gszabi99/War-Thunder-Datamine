@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -28,8 +29,7 @@ let function openEditPresetName(name, okFunc) {
   })
 }
 
-::gui_handlers.EditWeaponryPresetsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.EditWeaponryPresetsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/editWeaponryPresetModal.tpl"
   unit                 = null
@@ -69,19 +69,19 @@ let function openEditPresetName(name, okFunc) {
   function getPopupWeaponsList(weaponsBlk) {
     let res = []
     let weapons = {}
-    foreach(wBlk in weaponsBlk)
-      foreach(key, val in (addWeaponsFromBlk({}, [wBlk], this.unit)?.weaponsByTypes ?? {}))
+    foreach (wBlk in weaponsBlk)
+      foreach (key, val in (addWeaponsFromBlk({}, [wBlk], this.unit)?.weaponsByTypes ?? {}))
         weapons[key] <- (weapons?[key] ?? []).extend(val)
     foreach (triggerType, triggers in weapons)
       foreach (weapon in triggers)
-        foreach(id, inst in weapon.weaponBlocks)
-          res.append(inst.__merge({id = id, tType = triggerType}))
+        foreach (id, inst in weapon.weaponBlocks)
+          res.append(inst.__merge({ id = id, tType = triggerType }))
     return res
   }
 
   getPopupItemName = @(ammo, nameText) ammo > 0
     ? "".concat(nameText, loc("ui/parentheses/space",
-      {text = $"{loc("shop/ammo")}{loc("ui/colon")}{ammo}"}))
+      { text = $"{loc("shop/ammo")}{loc("ui/colon")}{ammo}" }))
     : nameText
 
   function getWeaponsPopupParams(weapons, tierId) {
@@ -237,7 +237,7 @@ let function openEditPresetName(name, okFunc) {
   }
 
   function updatePreset() {
-    let data = ::handyman.renderCached("%gui/weaponry/weaponryPreset.tpl", {presets = this.getPresetMarkup()})
+    let data = ::handyman.renderCached("%gui/weaponry/weaponryPreset.tpl", { presets = this.getPresetMarkup() })
     this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
   }
 

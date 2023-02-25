@@ -42,22 +42,23 @@
     "caliber": 0.152,
     "speed": 530.0,
     "maxDistance": 10000.0,
-    "normalizationPreset": "ap",
-    "ricochetPreset": "ap",
-    "secondaryShattersPreset": "ap",
+    "normalizationPreset": "apbc",
+    "ricochetPreset": "apbc",
+    "secondaryShattersPreset": "ap_large_caliber",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "ac_shell_tank",
-    "slopeEffectPreset": "ap",
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "sapcbc_tank",
+    "slopeEffectPreset": "apc",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/aphe.ivf",
-    "rendinstDamageRadius": 8.0,
+    "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "152mm_g_530",
     "relativeVelHitShift": [
       300.0,
@@ -78,20 +79,20 @@
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
-        0.05
+        0.2
       ],
       "mod2": [
         20.0,
-        0.1
+        0.4
       ],
       "mod3": [
         [
           30.0,
-          0.2
+          0.6
         ],
         [
           45.0,
-          0.3
+          0.9
         ]
       ]
     },
@@ -112,7 +113,7 @@
     "damage": {
       "kinetic": {
         "damageType": "generic",
-        "demarrePenetrationK": 0.9,
+        "demarrePenetrationK": 0.65,
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
@@ -219,22 +220,23 @@
       "caliber": 0.152,
       "speed": 530.0,
       "maxDistance": 10000.0,
-      "normalizationPreset": "ap",
-      "ricochetPreset": "ap",
-      "secondaryShattersPreset": "ap",
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
+      "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "ac_shell_tank",
-      "slopeEffectPreset": "ap",
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.0,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
+      "bulletType": "sapcbc_tank",
+      "slopeEffectPreset": "apc",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/aphe.ivf",
-      "rendinstDamageRadius": 8.0,
+      "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "152mm_g_530",
       "relativeVelHitShift": [
         300.0,
@@ -255,20 +257,20 @@
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
-          0.05
+          0.2
         ],
         "mod2": [
           20.0,
-          0.1
+          0.4
         ],
         "mod3": [
           [
             30.0,
-            0.2
+            0.6
           ],
           [
             45.0,
-            0.3
+            0.9
           ]
         ]
       },
@@ -289,7 +291,7 @@
       "damage": {
         "kinetic": {
           "damageType": "generic",
-          "demarrePenetrationK": 0.9,
+          "demarrePenetrationK": 0.65,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07

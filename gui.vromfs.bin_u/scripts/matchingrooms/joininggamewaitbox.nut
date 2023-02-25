@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,33 +8,29 @@ from "%scripts/dagui_library.nut" import *
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+let { set_game_mode, get_game_mode, get_cur_game_mode_name } = require("mission")
 
-::gui_handlers.JoiningGameWaitBox <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.JoiningGameWaitBox <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/msgBox.blk"
   timeToShowCancel = 30
   timer = -1
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.findObject("msgWaitAnimation").show(true)
     this.scene.findObject("msg_box_timer").setUserData(this)
     this.updateInfo()
   }
 
-  function onEventLobbyStatusChange(_params)
-  {
+  function onEventLobbyStatusChange(_params) {
     this.updateInfo()
   }
 
-  function onEventEventsDataUpdated(_params)
-  {
+  function onEventEventsDataUpdated(_params) {
     this.updateInfo()
   }
 
-  function updateInfo()
-  {
+  function updateInfo() {
     if (!::SessionLobby.isInJoiningGame())
       return this.goBack()
 
@@ -51,11 +48,9 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     this.scene.findObject("msgText").setValue(msg)
   }
 
-  function getCurrentMissionGameMode()
-  {
-    local gameModeName = ::get_cur_game_mode_name()
-    if (gameModeName == "domination")
-    {
+  function getCurrentMissionGameMode() {
+    local gameModeName = get_cur_game_mode_name()
+    if (gameModeName == "domination") {
       let event = ::SessionLobby.getRoomEvent()
       if (event == null)
         return ""
@@ -66,16 +61,13 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     return loc("multiplayer/" + gameModeName + "Mode")
   }
 
-  function getCurrentMissionName()
-  {
-    if (::get_game_mode() == GM_DOMINATION)
-    {
+  function getCurrentMissionName() {
+    if (get_game_mode() == GM_DOMINATION) {
       let event = ::SessionLobby.getRoomEvent()
       if (event)
         return ::events.getEventNameText(event)
     }
-    else
-    {
+    else {
       let misName = ::SessionLobby.getMissionNameLoc()
       if (misName != "")
         return misName
@@ -83,24 +75,21 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     return ""
   }
 
-  function checkGameMode()
-  {
+  function checkGameMode() {
     let gm = ::SessionLobby.getGameMode()
-    let curGm = ::get_game_mode()
-    if (gm < 0 || curGm==gm)
+    let curGm = get_game_mode()
+    if (gm < 0 || curGm == gm)
       return
 
-    ::set_mp_mode(gm)
+    set_game_mode(gm)
     if (this.mainGameMode < 0)
       this.mainGameMode = curGm  //to restore gameMode after close window
   }
 
-  function showCancelButton(show)
-  {
+  function showCancelButton(show) {
     let btnId = "btn_cancel"
     local obj = this.scene.findObject(btnId)
-    if (obj)
-    {
+    if (obj) {
       obj.show(show)
       obj.enable(show)
       if (show)
@@ -122,14 +111,12 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
     ::move_mouse_on_obj(obj)
   }
 
-  function resetTimer()
-  {
+  function resetTimer() {
     this.timer = this.timeToShowCancel
     this.showCancelButton(false)
   }
 
-  function onUpdate(_obj, dt)
-  {
+  function onUpdate(_obj, dt) {
     if (this.timer < 0)
       return
     this.timer -= dt
@@ -137,10 +124,8 @@ let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
       this.showCancelButton(true)
   }
 
-  function onCancel()
-  {
-    this.guiScene.performDelayed(this, function()
-    {
+  function onCancel() {
+    this.guiScene.performDelayed(this, function() {
       if (this.timer >= 0)
         return
       ::destroy_session_scripted()

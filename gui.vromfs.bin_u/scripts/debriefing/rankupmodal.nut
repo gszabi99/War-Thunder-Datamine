@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,8 +12,7 @@ let { updatePlayerRankByCountry } = require("%scripts/ranks.nut")
 
 let delayedRankUpWnd = []
 
-::gui_handlers.RankUpModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.RankUpModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/rankUpWindow.blk";
 
@@ -20,57 +20,47 @@ let delayedRankUpWnd = []
   ranks = [];
   unlockData = null
 
-  function initScreen()
-  {
+  function initScreen() {
     let aircraftTableObj = this.scene.findObject("rankup_aircraft_table");
     let showAsUnlock = isInArray(0, this.ranks)
     local topRank = 0;
     local airRow = "";
     let unitItems = []
-    ::show_facebook_screenshot_button(this.scene)
 
     this.guiScene.playSound("new_rank")
 
-    if (this.country.len() > 0 && (this.country.slice(0, 8) == "country_"))
-    {
+    if (this.country.len() > 0 && (this.country.slice(0, 8) == "country_")) {
       let bgImage = this.scene.findObject("background_country");
-      if(bgImage) bgImage["background-image"] = "#ui/images/new_rank_" + this.country.slice(8) + ".jpg?P1"
+      if (bgImage)
+        bgImage["background-image"] = "#ui/images/new_rank_" + this.country.slice(8) + "?P1"
       this.scene.findObject("country_icon")["background-image"] = ::get_country_icon(this.country)
     }
 
     let blk = ::get_shop_blk();
 
-    for(local shopCountry=0; shopCountry<blk.blockCount(); shopCountry++)  //country
-    {
+    for (local shopCountry = 0; shopCountry < blk.blockCount(); shopCountry++) {  //country
       let cblk = blk.getBlock(shopCountry);
       if (cblk.getBlockName() != this.country)
         continue;
 
-      for(local page=0; page<cblk.blockCount(); page++) //pages
-      {
+      for (local page = 0; page < cblk.blockCount(); page++) { //pages
         let pblk = cblk.getBlock(page)
-        for(local range=0; range<pblk.blockCount(); range++)  //ranges
-        {
+        for (local range = 0; range < pblk.blockCount(); range++) {  //ranges
           let rblk = pblk.getBlock(range)
-          for(local aircraft=0; aircraft<rblk.blockCount(); aircraft++) //aircrafts
-          {
+          for (local aircraft = 0; aircraft < rblk.blockCount(); aircraft++) { //aircrafts
             let airBlk = rblk.getBlock(aircraft);
             local air = ::getAircraftByName(airBlk.getBlockName());
-            if (air)
-            {
-              if (this.isShowUnit(air, showAsUnlock))
-              {
+            if (air) {
+              if (this.isShowUnit(air, showAsUnlock)) {
                 airRow += ::build_aircraft_item(air.name, air);
                 unitItems.append({ id = air.name, unit = air })
               }
             }
             else
-              for(local group=0; group<airBlk.blockCount(); group++) //airgroup
-              {
+              for (local group = 0; group < airBlk.blockCount(); group++) { //airgroup
                 let gAirBlk = airBlk.getBlock(group);
                 air = ::getAircraftByName(gAirBlk.getBlockName());
-                if (this.isShowUnit(air, showAsUnlock))
-                {
+                if (this.isShowUnit(air, showAsUnlock)) {
                   airRow += ::build_aircraft_item(air.name, air);
                   unitItems.append({ id = air.name, unit = air })
                 }
@@ -87,16 +77,15 @@ let delayedRankUpWnd = []
     let topRankStr = ::get_roman_numeral(topRank)
     local headerText = format(loc("userlog/new_rank/country"), topRankStr)
     local rankText = loc("shop/age") + colorize("userlogColoredText", topRankStr)
-    if (showAsUnlock)
-    {
+    if (showAsUnlock) {
       let cText = loc(this.country)
       headerText = loc("unlocks/country") + loc("ui/colon") + "<color=@userlogColoredText>" + cText + "</color>"
-      rankText = cText + ((topRank>0)? ", " + rankText : "")
+      rankText = cText + ((topRank > 0) ? ", " + rankText : "")
     }
     this.scene.findObject("player_rank").setValue(rankText)
     this.scene.findObject("rankup_country_title").setValue(headerText)
 
-    if(airRow.len() != 0) {
+    if (airRow.len() != 0) {
       this.scene.findObject("availableNewAirText").setValue(loc("debriefing/new_aircrafts_available"))
       this.guiScene.replaceContentFromText(aircraftTableObj, airRow, airRow.len(), this);
       foreach (unitItem in unitItems)
@@ -106,8 +95,7 @@ let delayedRankUpWnd = []
     this.updateNextAwardInfo()
   }
 
-  function isShowUnit(unit, showAsUnlock)
-  {
+  function isShowUnit(unit, showAsUnlock) {
     if (!unit || !unit.unitType.isAvailable())
       return false
 
@@ -119,8 +107,7 @@ let delayedRankUpWnd = []
     return showUnit
   }
 
-  function updateNextAwardInfo()
-  {
+  function updateNextAwardInfo() {
     let checkUnlockId = getTblValue("miscParam", this.unlockData)
     if (!checkUnlockId)
       return
@@ -137,13 +124,12 @@ let delayedRankUpWnd = []
     this.scene.findObject("next_award").setValue(text)
   }
 
-  function afterModalDestroy()
-  {
-    if (delayedRankUpWnd.len() > 0)
-    {
+  function afterModalDestroy() {
+    if (delayedRankUpWnd.len() > 0) {
       ::gui_start_modal_wnd(::gui_handlers.RankUpModal, delayedRankUpWnd[0])
       delayedRankUpWnd.remove(0)
-    } else
+    }
+    else
       ::check_delayed_unlock_wnd(this.unlockData)
   }
 }
@@ -155,7 +141,7 @@ let function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
     return false
 
   let gained_ranks = [];
-  for (local i = old_rank+1; i<=new_rank; i++)
+  for (local i = old_rank + 1; i <= new_rank; i++)
     gained_ranks.append(i);
   let config = { country = country, ranks = gained_ranks, unlockData = unlockData }
   if (::isHandlerInScene(::gui_handlers.RankUpModal))

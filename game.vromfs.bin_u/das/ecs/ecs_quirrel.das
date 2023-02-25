@@ -8,7 +8,7 @@ require daslib/constant_expression
 
 
 [constant_expression(baseTypeName)]
-def pop_class_value_slow(var vm : SQVM?; idx : int64; baseTypeName : string; cb : block<(res : auto(T)#) : void>)
+def pop_class_value_slow(var vm : SQVM?; idx : int64; baseTypeName : string; cb : block<(res : auto(T)) : void>)
   var actualType : AbstractStaticClassData?
   if sq_gettypetag(vm, idx, unsafe(reinterpret<void ??> unsafe(addr(actualType)))) >= 0l
     var correctType = false
@@ -31,7 +31,7 @@ def pop_class_value_slow(var vm : SQVM?; idx : int64; baseTypeName : string; cb 
   return false
 
 [constant_expression(baseTypeName)]
-def pop_class_value_rw_slow(var vm : SQVM?; idx : int64; baseTypeName : string; cb : block<(var res : auto(T)#) : void>)
+def pop_class_value_rw_slow(var vm : SQVM?; idx : int64; baseTypeName : string; cb : block<(var res : auto(T)) : void>)
   var actualType : AbstractStaticClassData?
   if sq_gettypetag(vm, idx, unsafe(reinterpret<void ??> unsafe(addr(actualType)))) >= 0l
     var correctType = false
@@ -54,8 +54,8 @@ def pop_class_value_rw_slow(var vm : SQVM?; idx : int64; baseTypeName : string; 
   return false
 
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : EntityId#) : void>)
-  return popValue(vm, idx) <| $(res : uint)
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : EntityId) : void>)
+  return getStackValue(vm, idx) <| $(res : uint)
     cb |> invoke(EntityId(res))
 
 
@@ -63,586 +63,601 @@ def pushValue(var vm : SQVM?; val : EntityId) { pushValue(vm, uint(val)); }
 
 // generated block
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Object#) : void>) : bool
+
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Object) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Object?)
-    cb |> invoke(unsafe(reinterpret<Object#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Object#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Object) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Object?)
-    cb |> invoke(unsafe(reinterpret<Object#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Object const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Object const? | Object const#? | Object const?# | Object const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Object implicit) : void
+def pushValue(var vm : SQVM?; val : Object | Object) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Array#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Array) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Array?)
-    cb |> invoke(unsafe(reinterpret<Array#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Array#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Array) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Array?)
-    cb |> invoke(unsafe(reinterpret<Array#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Array const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Array const? | Array const#? | Array const?# | Array const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Array implicit) : void
+def pushValue(var vm : SQVM?; val : Array | Array) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : StringList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : StringList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : StringList?)
-    cb |> invoke(unsafe(reinterpret<StringList#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : StringList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : StringList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : StringList?)
-    cb |> invoke(unsafe(reinterpret<StringList#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : StringList const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : StringList const? | StringList const#? | StringList const?# | StringList const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : StringList implicit) : void
+def pushValue(var vm : SQVM?; val : StringList | StringList) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : FloatList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : FloatList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : FloatList?)
-    cb |> invoke(unsafe(reinterpret<FloatList#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : FloatList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : FloatList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : FloatList?)
-    cb |> invoke(unsafe(reinterpret<FloatList#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : FloatList const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : FloatList const? | FloatList const#? | FloatList const?# | FloatList const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : FloatList implicit) : void
+def pushValue(var vm : SQVM?; val : FloatList | FloatList) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : IntList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : IntList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : IntList?)
-    cb |> invoke(unsafe(reinterpret<IntList#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : IntList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : IntList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : IntList?)
-    cb |> invoke(unsafe(reinterpret<IntList#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : IntList const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : IntList const? | IntList const#? | IntList const?# | IntList const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : IntList implicit) : void
+def pushValue(var vm : SQVM?; val : IntList | IntList) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Int8List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Int8List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Int8List?)
-    cb |> invoke(unsafe(reinterpret<Int8List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Int8List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Int8List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Int8List?)
-    cb |> invoke(unsafe(reinterpret<Int8List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Int8List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Int8List const? | Int8List const#? | Int8List const?# | Int8List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Int8List implicit) : void
+def pushValue(var vm : SQVM?; val : Int8List | Int8List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Int16List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Int16List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Int16List?)
-    cb |> invoke(unsafe(reinterpret<Int16List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Int16List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Int16List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Int16List?)
-    cb |> invoke(unsafe(reinterpret<Int16List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Int16List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Int16List const? | Int16List const#? | Int16List const?# | Int16List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Int16List implicit) : void
+def pushValue(var vm : SQVM?; val : Int16List | Int16List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Int64List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Int64List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Int64List?)
-    cb |> invoke(unsafe(reinterpret<Int64List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Int64List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Int64List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Int64List?)
-    cb |> invoke(unsafe(reinterpret<Int64List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Int64List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Int64List const? | Int64List const#? | Int64List const?# | Int64List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Int64List implicit) : void
+def pushValue(var vm : SQVM?; val : Int64List | Int64List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt8List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt8List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt8List?)
-    cb |> invoke(unsafe(reinterpret<UInt8List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt8List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt8List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt8List?)
-    cb |> invoke(unsafe(reinterpret<UInt8List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : UInt8List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : UInt8List const? | UInt8List const#? | UInt8List const?# | UInt8List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : UInt8List implicit) : void
+def pushValue(var vm : SQVM?; val : UInt8List | UInt8List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt16List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt16List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt16List?)
-    cb |> invoke(unsafe(reinterpret<UInt16List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt16List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt16List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt16List?)
-    cb |> invoke(unsafe(reinterpret<UInt16List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : UInt16List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : UInt16List const? | UInt16List const#? | UInt16List const?# | UInt16List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : UInt16List implicit) : void
+def pushValue(var vm : SQVM?; val : UInt16List | UInt16List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt32List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt32List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt32List?)
-    cb |> invoke(unsafe(reinterpret<UInt32List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt32List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt32List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt32List?)
-    cb |> invoke(unsafe(reinterpret<UInt32List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : UInt32List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : UInt32List const? | UInt32List const#? | UInt32List const?# | UInt32List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : UInt32List implicit) : void
+def pushValue(var vm : SQVM?; val : UInt32List | UInt32List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt64List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : UInt64List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt64List?)
-    cb |> invoke(unsafe(reinterpret<UInt64List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt64List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : UInt64List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : UInt64List?)
-    cb |> invoke(unsafe(reinterpret<UInt64List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : UInt64List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : UInt64List const? | UInt64List const#? | UInt64List const?# | UInt64List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : UInt64List implicit) : void
+def pushValue(var vm : SQVM?; val : UInt64List | UInt64List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : EidList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : EidList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : EidList?)
-    cb |> invoke(unsafe(reinterpret<EidList#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : EidList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : EidList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : EidList?)
-    cb |> invoke(unsafe(reinterpret<EidList#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : EidList const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : EidList const? | EidList const#? | EidList const?# | EidList const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : EidList implicit) : void
+def pushValue(var vm : SQVM?; val : EidList | EidList) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Point2List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Point2List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Point2List?)
-    cb |> invoke(unsafe(reinterpret<Point2List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Point2List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Point2List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Point2List?)
-    cb |> invoke(unsafe(reinterpret<Point2List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Point2List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Point2List const? | Point2List const#? | Point2List const?# | Point2List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Point2List implicit) : void
+def pushValue(var vm : SQVM?; val : Point2List | Point2List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Point3List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Point3List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Point3List?)
-    cb |> invoke(unsafe(reinterpret<Point3List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Point3List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Point3List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Point3List?)
-    cb |> invoke(unsafe(reinterpret<Point3List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Point3List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Point3List const? | Point3List const#? | Point3List const?# | Point3List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Point3List implicit) : void
+def pushValue(var vm : SQVM?; val : Point3List | Point3List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Point4List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Point4List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Point4List?)
-    cb |> invoke(unsafe(reinterpret<Point4List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : Point4List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : Point4List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Point4List?)
-    cb |> invoke(unsafe(reinterpret<Point4List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Point4List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Point4List const? | Point4List const#? | Point4List const?# | Point4List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Point4List implicit) : void
+def pushValue(var vm : SQVM?; val : Point4List | Point4List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : IPoint2List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : IPoint2List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : IPoint2List?)
-    cb |> invoke(unsafe(reinterpret<IPoint2List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : IPoint2List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : IPoint2List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : IPoint2List?)
-    cb |> invoke(unsafe(reinterpret<IPoint2List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : IPoint2List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : IPoint2List const? | IPoint2List const#? | IPoint2List const?# | IPoint2List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : IPoint2List implicit) : void
+def pushValue(var vm : SQVM?; val : IPoint2List | IPoint2List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : IPoint3List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : IPoint3List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : IPoint3List?)
-    cb |> invoke(unsafe(reinterpret<IPoint3List#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : IPoint3List#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : IPoint3List) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : IPoint3List?)
-    cb |> invoke(unsafe(reinterpret<IPoint3List#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : IPoint3List const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : IPoint3List const? | IPoint3List const#? | IPoint3List const?# | IPoint3List const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : IPoint3List implicit) : void
+def pushValue(var vm : SQVM?; val : IPoint3List | IPoint3List) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : BoolList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : BoolList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : BoolList?)
-    cb |> invoke(unsafe(reinterpret<BoolList#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : BoolList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : BoolList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : BoolList?)
-    cb |> invoke(unsafe(reinterpret<BoolList#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : BoolList const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : BoolList const? | BoolList const#? | BoolList const?# | BoolList const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : BoolList implicit) : void
+def pushValue(var vm : SQVM?; val : BoolList | BoolList) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : TMatrixList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : TMatrixList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : TMatrixList?)
-    cb |> invoke(unsafe(reinterpret<TMatrixList#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : TMatrixList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : TMatrixList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : TMatrixList?)
-    cb |> invoke(unsafe(reinterpret<TMatrixList#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : TMatrixList const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : TMatrixList const? | TMatrixList const#? | TMatrixList const?# | TMatrixList const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : TMatrixList implicit) : void
+def pushValue(var vm : SQVM?; val : TMatrixList | TMatrixList) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : ColorList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : ColorList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : ColorList?)
-    cb |> invoke(unsafe(reinterpret<ColorList#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : ColorList#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : ColorList) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : ColorList?)
-    cb |> invoke(unsafe(reinterpret<ColorList#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : ColorList const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : ColorList const? | ColorList const#? | ColorList const?# | ColorList const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : ColorList implicit) : void
+def pushValue(var vm : SQVM?; val : ColorList | ColorList) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : float3x4#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : float3x4) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : float3x4?)
-    cb |> invoke(unsafe(reinterpret<float3x4#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : float3x4#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : float3x4) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : float3x4?)
-    cb |> invoke(unsafe(reinterpret<float3x4#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : float3x4 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : float3x4 const? | float3x4 const#? | float3x4 const?# | float3x4 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : float3x4 implicit) : void
+def pushValue(var vm : SQVM?; val : float3x4 | float3x4) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : BSphere3#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : BSphere3) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : BSphere3?)
-    cb |> invoke(unsafe(reinterpret<BSphere3#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : BSphere3#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : BSphere3) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : BSphere3?)
-    cb |> invoke(unsafe(reinterpret<BSphere3#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : BSphere3 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : BSphere3 const? | BSphere3 const#? | BSphere3 const?# | BSphere3 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : BSphere3 implicit) : void
+def pushValue(var vm : SQVM?; val : BSphere3 | BSphere3) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : BBox3#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : BBox3) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : BBox3?)
-    cb |> invoke(unsafe(reinterpret<BBox3#> * val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : BBox3#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : BBox3) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : BBox3?)
-    cb |> invoke(unsafe(reinterpret<BBox3#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : BBox3 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : BBox3 const? | BBox3 const#? | BBox3 const?# | BBox3 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : BBox3 implicit) : void
+def pushValue(var vm : SQVM?; val : BBox3 | BBox3) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : E3DCOLOR#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : E3DCOLOR) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : E3DCOLOR?)
-    cb |> invoke(unsafe(reinterpret<E3DCOLOR#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : E3DCOLOR const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : E3DCOLOR const? | E3DCOLOR const#? | E3DCOLOR const?# | E3DCOLOR const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : E3DCOLOR implicit) : void
+def pushValue(var vm : SQVM?; val : E3DCOLOR | E3DCOLOR) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Color3#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Color3) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Color3?)
-    cb |> invoke(unsafe(reinterpret<Color3#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Color3 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Color3 const? | Color3 const#? | Color3 const?# | Color3 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Color3 implicit) : void
+def pushValue(var vm : SQVM?; val : Color3 | Color3) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : Color4#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Color4) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : Color4?)
-    cb |> invoke(unsafe(reinterpret<Color4#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : Color4 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : Color4 const? | Color4 const#? | Color4 const?# | Color4 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : Color4 implicit) : void
+def pushValue(var vm : SQVM?; val : Color4 | Color4) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : quat#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : quat) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : quat?)
-    cb |> invoke(unsafe(reinterpret<quat#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : quat const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : quat const? | quat const#? | quat const?# | quat const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : quat implicit) : void
+def pushValue(var vm : SQVM?; val : quat | quat) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : float2#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : float2) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : float2?)
-    cb |> invoke(unsafe(reinterpret<float2#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : float2 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : float2 const? | float2 const#? | float2 const?# | float2 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : float2 implicit) : void
+def pushValue(var vm : SQVM?; val : float2 | float2) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : float3#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : float3) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : float3?)
-    cb |> invoke(unsafe(reinterpret<float3#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : float3 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : float3 const? | float3 const#? | float3 const?# | float3 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : float3 implicit) : void
+def pushValue(var vm : SQVM?; val : float3 | float3) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : float4#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : float4) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : float4?)
-    cb |> invoke(unsafe(reinterpret<float4#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : float4 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : float4 const? | float4 const#? | float4 const?# | float4 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : float4 implicit) : void
+def pushValue(var vm : SQVM?; val : float4 | float4) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : int2#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : int2) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : int2?)
-    cb |> invoke(unsafe(reinterpret<int2#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : int2 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : int2 const? | int2 const#? | int2 const?# | int2 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : int2 implicit) : void
+def pushValue(var vm : SQVM?; val : int2 | int2) : void
   PushInstanceCopy(vm, val)
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : int3#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : int3) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : int3?)
-    cb |> invoke(unsafe(reinterpret<int3#> * val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : int3 const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : int3 const? | int3 const#? | int3 const?# | int3 const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : int3 implicit) : void
+def pushValue(var vm : SQVM?; val : int3 | int3) : void
+  PushInstanceCopy(vm, val)
+
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : int4) : void>) : bool
+  GetInstance(vm, idx, false) <| $(var val : int4?)
+    cb |> invoke(*val)
+  return true
+
+def pushValue(var vm : SQVM?; val : int4 const? | int4 const#? | int4 const?# | int4 const#?) : void
+  if val != null
+    PushInstanceCopy(vm, *val)
+  else
+    sq_pushnull(vm)
+
+def pushValue(var vm : SQVM?; val : int4 | int4) : void
   PushInstanceCopy(vm, val)
 
 
@@ -686,51 +701,51 @@ def gen()
     "float3";
     "float4";
     "int2";
-    "int3"
-    //"int4"
+    "int3";
+    "int4"
   }]
 
   for typ in rwTypes
     print("
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : {typ}#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : {typ}) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : {typ}?)
-    cb |> invoke(unsafe(reinterpret<{typ}#> *val))
+    cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : {typ}#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : {typ}) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : {typ}?)
-    cb |> invoke(unsafe(reinterpret<{typ}#> *val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : {typ} const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : {typ} const? | {typ} const#? | {typ} const?# | {typ} const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : {typ} implicit) : void
+def pushValue(var vm : SQVM?; val : {typ} | {typ}) : void
   PushInstanceCopy(vm, val)");
 
   for typ in valueTypes
     print("
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : {typ}#) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : {typ}) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : {typ}?)
-    cb |> invoke(unsafe(reinterpret<{typ}#> *val))
+    cb |> invoke(*val)
   return true
 
-def pushValue(var vm : SQVM?; val : {typ} const implicit? implicit) : void
+def pushValue(var vm : SQVM?; val : {typ} const? | {typ} const#? | {typ} const?# | {typ} const#?) : void
   if val != null
     PushInstanceCopy(vm, *val)
   else
     sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : {typ} implicit) : void
+def pushValue(var vm : SQVM?; val : {typ} | {typ}) : void
   PushInstanceCopy(vm, val)");
 */
 
 /*
 [constant_expression(baseTypeName)]
-def push_class_value_slow(var vm : SQVM?; baseTypeName : string; val#) : void
+def push_class_value_slow(var vm : SQVM?; baseTypeName : string; val) : void
   var found = false
   find_AbstractStaticClassData() <| $(cls)
     if cls.className == baseTypeName
@@ -747,12 +762,12 @@ def push_class_value_slow(var vm : SQVM?; baseTypeName : string; val#) : void
     sq_pushnull(vm)
 
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(res : auto(T)) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : auto(T)) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : T?#)
     cb |> invoke(*val)
   return true
 
-def popValue(var vm : SQVM?; idx : int64; cb : block<(var res : auto(T)) : void>) : bool
+def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : auto(T)) : void>) : bool
   GetInstance(vm, idx, false) <| $(var val : T?)
     cb |> invoke(unsafe(reinterpret<T> *val))
   return true

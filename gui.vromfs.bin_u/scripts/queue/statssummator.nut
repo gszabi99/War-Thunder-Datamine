@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,12 +12,10 @@ from "%scripts/dagui_library.nut" import *
                     "4", "5"]
   summableTypes = ["integer", "float"]
 
-  function sum (q1, q2)
-  {
+  function sum (q1, q2) {
     local defVal = null
     foreach (q in [q1, q2])
-      if (q != null)
-      {
+      if (q != null) {
         defVal = type(q) == "array" ? [] : {}
         break
       }
@@ -30,11 +29,9 @@ from "%scripts/dagui_library.nut" import *
       return this.sumArrays(q1 ? q1 : defVal, q2 ? q2 : defVal)
   }
 
-  function sumArrays(q1, q2)
-  {
+  function sumArrays(q1, q2) {
     let res = []
-    for(local i = 0; i < (max(q1.len(), q2.len())); i++)
-    {
+    for (local i = 0; i < (max(q1.len(), q2.len())); i++) {
       let val1 = q1.len() >= i ? q1[i] : null
       let val2 = q2.len() >= i ? q2[i] : null
       local _sum = null
@@ -43,8 +40,7 @@ from "%scripts/dagui_library.nut" import *
 
       if (isStructs)
         _sum = this.sum(val1 ? val1 : null, val2 ? val2 : null)
-      else if (summable)
-      {
+      else if (summable) {
         //for save data type inchanged
         if (val1 == null)
           _sum = val2 + 0
@@ -58,11 +54,9 @@ from "%scripts/dagui_library.nut" import *
     return res
   }
 
-  function sumTables(q1, q2)
-  {
+  function sumTables(q1, q2) {
     let res = {}
-    foreach(key, val in q1)
-    {
+    foreach (key, val in q1) {
       if (isInArray(type(val), this.structTypes))
         res[key] <- this.sum(q1[key], getTblValue(key, q2, null))
       else if (isInArray(key, this.summableFields) && isInArray(type(val), this.summableTypes))
@@ -71,8 +65,7 @@ from "%scripts/dagui_library.nut" import *
         res[key] <- val
     }
 
-    foreach(key, val in q2)
-    {
+    foreach (key, val in q2) {
       if (key in res)
         continue
       if (isInArray(type(val), this.structTypes))

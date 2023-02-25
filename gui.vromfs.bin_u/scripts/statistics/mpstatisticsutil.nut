@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -9,12 +10,12 @@ let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { updateTopSquadScore, getSquadInfo,isShowSquad,
+let { updateTopSquadScore, getSquadInfo, isShowSquad,
   getSquadInfoByMemberName, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
+let { get_game_mode } = require("mission")
 
-::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) // used from native code
-{
+::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
   let handler = ::handlersManager.loadHandler(::gui_handlers.MPStatisticsModal,
     {
@@ -37,7 +38,7 @@ let function getWeaponTypeIcoByWeapon(airName, weapon) {
   if (!air)
     return config
 
-  foreach(w in air.getWeapons()) {
+  foreach (w in air.getWeapons()) {
     if (w.name != weapon)
       continue
 
@@ -46,7 +47,7 @@ let function getWeaponTypeIcoByWeapon(airName, weapon) {
       icon = !w.bomb ? ""
         : isShip ? "#ui/gameuiskin#weap_naval_bomb.svg"
         : "#ui/gameuiskin#weap_bomb.svg"
-      ratio = isShip ? 0.594 :0.375
+      ratio = isShip ? 0.594 : 0.375
     }
     config.rocket.icon = w.rocket ? "#ui/gameuiskin#weap_missile.svg" : ""
     config.torpedo.icon = w.torpedo ? "#ui/gameuiskin#weap_torpedo.svg" : ""
@@ -57,8 +58,7 @@ let function getWeaponTypeIcoByWeapon(airName, weapon) {
   return config
 }
 
-let function sort_units_for_br_tooltip(u1, u2)
-{
+let function sort_units_for_br_tooltip(u1, u2) {
   if (u1.rating != u2.rating)
     return u1.rating > u2.rating ? -1 : 1
   if (u1.rankUnused != u2.rankUnused)
@@ -66,26 +66,23 @@ let function sort_units_for_br_tooltip(u1, u2)
   return 0
 }
 
-let function get_mp_country_by_team(team)
-{
+let function get_mp_country_by_team(team) {
   let info = ::get_mp_session_info()
   if (!info)
     return ""
-  if (team==1 && ("alliesCountry" in info))
-    return "country_"+info.alliesCountry
-  if (team==2 && ("axisCountry" in info))
-    return "country_"+info.axisCountry
+  if (team == 1 && ("alliesCountry" in info))
+    return "country_" + info.alliesCountry
+  if (team == 2 && ("axisCountry" in info))
+    return "country_" + info.axisCountry
   return "country_0"
 }
 
-let function guiStartMPStatScreen()
-{
+let function guiStartMPStatScreen() {
   ::gui_start_mpstatscreen_({ isFromGame = false })
   ::handlersManager.setLastBaseHandlerStartFunc(guiStartMPStatScreen)
 }
 
-let function guiStartMPStatScreenFromGame()
-{
+let function guiStartMPStatScreenFromGame() {
   ::gui_start_mpstatscreen_({ isFromGame = true })
   ::handlersManager.setLastBaseHandlerStartFunc(guiStartMPStatScreenFromGame)
 }
@@ -98,49 +95,39 @@ let function guiStartMPStatScreenFromGame()
 ::in_battle_time_to_kick_show_timer <- null
 ::in_battle_time_to_kick_show_alert <- null
 
-::get_time_to_kick_show_timer <- function get_time_to_kick_show_timer()
-{
-  if (::time_to_kick_show_timer == null)
-  {
+::get_time_to_kick_show_timer <- function get_time_to_kick_show_timer() {
+  if (::time_to_kick_show_timer == null) {
     ::time_to_kick_show_timer = ::get_game_settings_blk()?.time_to_kick.show_timer_threshold ?? 30
   }
   return ::time_to_kick_show_timer
 }
 
-::get_time_to_kick_show_alert <- function get_time_to_kick_show_alert()
-{
-  if (::time_to_kick_show_alert == null)
-  {
+::get_time_to_kick_show_alert <- function get_time_to_kick_show_alert() {
+  if (::time_to_kick_show_alert == null) {
     ::time_to_kick_show_alert = ::get_game_settings_blk()?.time_to_kick.show_alert_threshold ?? 15
   }
   return ::time_to_kick_show_alert
 }
 
-::get_in_battle_time_to_kick_show_timer <- function get_in_battle_time_to_kick_show_timer()
-{
-  if (::in_battle_time_to_kick_show_timer == null)
-  {
+::get_in_battle_time_to_kick_show_timer <- function get_in_battle_time_to_kick_show_timer() {
+  if (::in_battle_time_to_kick_show_timer == null) {
     ::in_battle_time_to_kick_show_timer = ::get_game_settings_blk()?.time_to_kick.in_battle_show_timer_threshold ?? 150
   }
   return ::in_battle_time_to_kick_show_timer
 }
 
-::get_in_battle_time_to_kick_show_alert <- function get_in_battle_time_to_kick_show_alert()
-{
-  if (::in_battle_time_to_kick_show_alert == null)
-  {
+::get_in_battle_time_to_kick_show_alert <- function get_in_battle_time_to_kick_show_alert() {
+  if (::in_battle_time_to_kick_show_alert == null) {
     ::in_battle_time_to_kick_show_alert = ::get_game_settings_blk()?.time_to_kick.in_battle_show_alert_threshold ?? 50
   }
   return ::in_battle_time_to_kick_show_alert
 }
 
-::get_local_team_for_mpstats <- function get_local_team_for_mpstats(team = null)
-{
+::get_local_team_for_mpstats <- function get_local_team_for_mpstats(team = null) {
   return (team ?? ::get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
 }
 
-::build_mp_table <- function build_mp_table(table, markupData, hdr, numRows = 1)
-{
+::build_mp_table <- function build_mp_table(table, markupData, hdr, numRows = 1) {
   if (numRows <= 0)
     return ""
 
@@ -153,54 +140,47 @@ let function guiStartMPStatScreenFromGame()
 
   let markup = markupData.columns
 
-  if (isRowInvert)
-  {
+  if (isRowInvert) {
     hdr = clone hdr
     hdr.reverse()
   }
 
   local data = ""
-  for (local i = 0; i < numRows; i++)
-  {
+  for (local i = 0; i < numRows; i++) {
     let isEmpty = i >= numTblRows
-    local trData = format("even:t='%s'; ", (i%2 == 0)? "yes" : "no")
-    local trAdd = isEmpty? "inactive:t='yes'; " : ""
+    local trData = format("even:t='%s'; ", (i % 2 == 0) ? "yes" : "no")
+    local trAdd = isEmpty ? "inactive:t='yes'; " : ""
     if (!::u.isEmpty(trOnHover))
       trAdd = "".concat(trAdd, $"rowIdx='{i}'; on_hover:t='{trOnHover}'; on_unhover:t='{trOnHover}';")
 
-    for (local j = 0; j < hdr.len(); ++j)
-    {
+    for (local j = 0; j < hdr.len(); ++j) {
       local item = ""
       local tdData = ""
-      let widthAdd = ((j==0)||(j==(hdr.len()-1)))? "+@tablePad":""
+      let widthAdd = ((j == 0) || (j == (hdr.len() - 1))) ? "+@tablePad" : ""
       local textPadding = "style:t='padding:@tablePad,0;'; "
 
       if (!isEmpty && (hdr[j] in table[i]))
         item = table[i][hdr[j]]
 
-      if (hdr[j] == "hasPassword")
-      {
+      if (hdr[j] == "hasPassword") {
         let icon = item ? "#ui/gameuiskin#password.svg" : ""
-        tdData += "size:t='ph"+widthAdd+" ,ph';"  +
+        tdData += "size:t='ph" + widthAdd + " ,ph';"  +
           ("img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';" +
           "background-svg-size:t='@tableIcoSize,@tableIcoSize'; background-image:t='" + (isEmpty ? "" : icon) + "'; }")
       }
-      else if (hdr[j] == "team")
-      {
+      else if (hdr[j] == "team") {
         let teamText = "teamImg{ text { halign:t='center'}} "
-        tdData += "size:t='ph"+widthAdd+",ph'; css-hier-invalidate:t='yes'; team:t=''; " + teamText
+        tdData += "size:t='ph" + widthAdd + ",ph'; css-hier-invalidate:t='yes'; team:t=''; " + teamText
       }
-      else if (hdr[j] == "country" || hdr[j] == "teamCountry")
-      {
+      else if (hdr[j] == "country" || hdr[j] == "teamCountry") {
         local country = ""
         if (hdr[j] == "country")
           country = item
-        else
-          if (!isEmpty && ("team" in table[i]))
+        else if (!isEmpty && ("team" in table[i]))
             country = get_mp_country_by_team(table[i].team)
 
         local icon = ""
-        if (!isEmpty && country!= "")
+        if (!isEmpty && country != "")
           icon = ::get_country_icon(country)
         tdData += format("size:t='ph%s,ph';"
           + "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';"
@@ -208,12 +188,10 @@ let function guiStartMPStatScreenFromGame()
           + "}",
           widthAdd, icon)
       }
-      else if (hdr[j] == "status")
-      {
+      else if (hdr[j] == "status") {
         tdData = format("size:t='ph%s,ph'; playerStateIcon { id:t='ready-ico' } ", widthAdd)
       }
-      else if (hdr[j] == "name")
-      {
+      else if (hdr[j] == "name") {
         local nameText = item
         if (!isEmpty && !isHeader && !table[i].isBot)
           nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
@@ -227,8 +205,7 @@ let function guiStartMPStatScreenFromGame()
           nameWidth, "textareaNoTab", nameAlign, nameText, textPadding
         )
 
-        if (!isEmpty)
-        {
+        if (!isEmpty) {
           //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
           if (table[i]?.isLocal)
             trAdd += "mainPlayer:t = 'yes';"
@@ -238,11 +215,10 @@ let function guiStartMPStatScreenFromGame()
             trAdd += "spectator:t = 'yes';"
         }
       }
-      else if (hdr[j] == "unitIcon")
-      {
+      else if (hdr[j] == "unitIcon") {
         //creating empty unit class/dead icon and weapons icons, to be filled in update func
         let images = [ "img { id:t='unit-ico'; size:t='@tableIcoSize,@tableIcoSize'; background-svg-size:t='@tableIcoSize, @tableIcoSize'; background-image:t=''; background-repeat:t='aspect-ratio'; shopItemType:t=''; }" ]
-        foreach(id, _weap in getWeaponTypeIcoByWeapon("", ""))
+        foreach (id, _weap in getWeaponTypeIcoByWeapon("", ""))
           images.insert(0, format("img { id:t='%s-ico'; size:t='0.375@tableIcoSize,@tableIcoSize'; background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'; background-image:t=''; margin:t='2@dp, 0' }", id))
         if (isRowInvert)
           images.reverse()
@@ -250,12 +226,10 @@ let function guiStartMPStatScreenFromGame()
         let divPos = isRowInvert ? "0" : "pw-w"
         tdData += format("width:t='%s'; tdiv { pos:t='%s, ph/2-h/2'; position:t='absolute'; %s } ", cellWidth, divPos, ::g_string.implode(images))
       }
-      else if (hdr[j] == "rank")
-      {
+      else if (hdr[j] == "rank") {
         local prestigeImg = "";
         local rankTxt = ""
-        if (!isEmpty && ("exp" in table[i]) && ("prestige" in table[i]))
-        {
+        if (!isEmpty && ("exp" in table[i]) && ("prestige" in table[i])) {
           rankTxt = ::get_rank_by_exp(table[i].exp).tostring()
           prestigeImg = $"#ui/gameuiskin#prestige{table[i].prestige}.png"
         }
@@ -265,35 +239,30 @@ let function guiStartMPStatScreenFromGame()
         tdData += format("width:t='2.2@rows16height%s'; tdiv { pos:t='%s, 0.5(ph-h)'; position:t='absolute'; " + cell + " } ",
                     widthAdd, isRowInvert ? "0" : "pw-w-1", "0", "0.003sh")
       }
-      else if (hdr[j] == "rowNo")
-      {
+      else if (hdr[j] == "rowNo") {
         local tdProp = ""
         if (hdr[j] in markup)
           tdProp += format("width:t='%s'", getTblValue("width", markup[hdr[j]], ""))
 
         trAdd += "winnerPlace:t='none';"
-        tdData += format("%s activeText { text:t = '%i'; halign:t='center'} ", tdProp, i+1)
+        tdData += format("%s activeText { text:t = '%i'; halign:t='center'} ", tdProp, i + 1)
       }
-      else if (hdr[j] == "place")
-      {
+      else if (hdr[j] == "place") {
         let width = "width:t='" + getTblValue("width", markup[hdr[j]], "1") + "'; "
         tdData += format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
-      else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ]))
-      {
+      else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ])) {
         let txt = isEmpty ? "" : ::g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData += format("activeText { text:t='%s' halign:t='center' } ", txt)
         let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
         if (width != "")
           tdData += format("width:t='%s'; ", width)
       }
-      else if (hdr[j] == "numPlayers")
-      {
-        let curWidth = ((hdr[j] in markup)&&("width" in markup[hdr[j]]))?markup[hdr[j]].width:"0.15pw"
+      else if (hdr[j] == "numPlayers") {
+        let curWidth = ((hdr[j] in markup) && ("width" in markup[hdr[j]])) ? markup[hdr[j]].width : "0.15pw"
         local txt = item.tostring()
         local txtParams = "pare-text:t='yes'; max-width:t='pw'; halign:t='center';"
-        if (!isEmpty && "numPlayersTotal" in table[i])
-        {
+        if (!isEmpty && "numPlayersTotal" in table[i]) {
           let maxVal = table[i].numPlayersTotal
           txt += "/" + maxVal
           if (item >= maxVal)
@@ -301,8 +270,7 @@ let function guiStartMPStatScreenFromGame()
         }
         tdData += "width:t='" + curWidth + "'; activeText { text:t = '" + txt + "'; " + txtParams + " } "
       }
-      else
-      {
+      else {
         local tdProp = textPadding
         local textType = "activeText"
         let text = ::locOrStrip(item.tostring())
@@ -310,8 +278,7 @@ let function guiStartMPStatScreenFromGame()
         local pareText = true
         local imageBg = ""
 
-        if (hdr[j] in markup)
-        {
+        if (hdr[j] in markup) {
           if ("width" in markup[hdr[j]])
             tdProp += "width:t='" + markup[hdr[j]].width + "'; "
           if ("textDiv" in markup[hdr[j]])
@@ -327,7 +294,7 @@ let function guiStartMPStatScreenFromGame()
               "id:t='%s';" +
               "background-image:t='%s';" +
               "display:t='%s'; ",
-              colorTeam, "icon_"+hdr[j], markup[hdr[j]].image, isEmpty ? "hide" : "show"
+              colorTeam, "icon_" + hdr[j], markup[hdr[j]].image, isEmpty ? "hide" : "show"
             )
         }
         let textParams = format("halign:t='%s'; ", halign)
@@ -338,14 +305,17 @@ let function guiStartMPStatScreenFromGame()
           "max-width:t='pw';" +
           "pare-text:t='%s'; " +
           "%s}",
-          tdProp+imageBg+textType, "txt_"+hdr[j], text, (pareText ? "yes" : "no"), textParams+((imageBg=="")?"":"}")
+          tdProp + imageBg + textType, "txt_" + hdr[j], text, (pareText ? "yes" : "no"), textParams + ((imageBg == "") ? "" : "}")
         )
       }
 
       trData += "td { id:t='td_" + hdr[j] + "'; "
-        if (j==0)              trData += "padding-left:t='@tablePad'; "
-        if (j>0)               trData += "cellType:t = 'border'; "
-        if (j==(hdr.len()-1))  trData += "padding-right:t='@tablePad'; "
+        if (j == 0)
+          trData += "padding-left:t='@tablePad'; "
+        if (j > 0)
+          trData += "cellType:t = 'border'; "
+        if (j == (hdr.len() - 1))
+          trData += "padding-right:t='@tablePad'; "
       trData += tdData + " }"
     }
 
@@ -356,17 +326,15 @@ let function guiStartMPStatScreenFromGame()
   return data
 }
 
-::update_team_css_label <- function update_team_css_label(nestObj, customPlayerTeam = null)
-{
+::update_team_css_label <- function update_team_css_label(nestObj, customPlayerTeam = null) {
   if (!checkObj(nestObj))
     return
-  let teamCode = (::SessionLobby.status == lobbyStates.IN_LOBBY)? ::SessionLobby.team
+  let teamCode = (::SessionLobby.status == lobbyStates.IN_LOBBY) ? ::SessionLobby.team
     : (customPlayerTeam ?? ::get_local_team_for_mpstats())
   nestObj.playerTeam = ::g_team.getTeamByCode(teamCode).cssLabel
 }
 
-::set_mp_table <- function set_mp_table(obj_tbl, table, params = {})
-{
+::set_mp_table <- function set_mp_table(obj_tbl, table, params = {}) {
   let numTblRows = table.len()
   let realTblRows = obj_tbl.childrenCount()
   let numRows = max(numTblRows, realTblRows)
@@ -383,40 +351,36 @@ let function guiStartMPStatScreenFromGame()
 
   updateTopSquadScore(table)
 
-  for (local i = 0; i < numRows; i++)
-  {
+  for (local i = 0; i < numRows; i++) {
     local objTr = null
-    if (realTblRows <= i)
-    {
-      objTr = obj_tbl.getChild(realTblRows-1).getClone()
+    if (realTblRows <= i) {
+      objTr = obj_tbl.getChild(realTblRows - 1).getClone()
       if (objTr?.rowIdx != null)
         objTr.rowIdx = i.tostring()
-      objTr.even = (i%2 == 0)? "yes" : "no"
+      objTr.even = (i % 2 == 0) ? "yes" : "no"
       objTr.selected = "no"
     }
     else
       objTr = obj_tbl.getChild(i)
 
     let isEmpty = i >= numTblRows
-    objTr.inactive = isEmpty? "yes" : "no"
+    objTr.inactive = isEmpty ? "yes" : "no"
     objTr.show(!isEmpty)
     if (isEmpty)
       continue
 
     local isInGame = true
-    if (needColorizeNotInGame)
-    {
+    if (needColorizeNotInGame) {
       let state = table[i].state
       isInGame = state == PLAYER_IN_FLIGHT || state == PLAYER_IN_RESPAWN
       objTr.inGame = isInGame ? "yes" : "no"
     }
 
     let totalCells = objTr.childrenCount()
-    for (local idx = 0; idx < totalCells; idx++)
-    {
+    for (local idx = 0; idx < totalCells; idx++) {
       let objTd = objTr.getChild(idx)
       let id = objTd?.id
-      if (!id || id.len()<4 || id.slice(0, 3)!="td_")
+      if (!id || id.len() < 4 || id.slice(0, 3) != "td_")
         continue
 
       let hdr = id.slice(3)
@@ -425,19 +389,16 @@ let function guiStartMPStatScreenFromGame()
       if (hdr in table[i])
         item = table[i][hdr]
 
-      if (isReplay)
-      {
+      if (isReplay) {
         table[i].isLocal = spectatorWatchedHero.id == table[i].id
         table[i].isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId,
           table[i]?.squadId)
       }
 
-      if (hdr == "team")
-      {
+      if (hdr == "team") {
         local teamText = ""
         local teamStyle = ""
-        switch (item)
-        {
+        switch (item) {
           case 1:
             teamText = "A"
             teamStyle = "a"
@@ -454,13 +415,11 @@ let function guiStartMPStatScreenFromGame()
         objTd.getChild(0).setValue(teamText)
         objTd["team"] = teamStyle
       }
-      else if (hdr == "country" || hdr == "teamCountry")
-      {
+      else if (hdr == "country" || hdr == "teamCountry") {
         local country = ""
         if (hdr == "country")
           country = item
-        else
-          if ("team" in table[i])
+        else if ("team" in table[i])
             country = get_mp_country_by_team(table[i].team)
 
         let objImg = objTd.getChild(0)
@@ -469,11 +428,9 @@ let function guiStartMPStatScreenFromGame()
           icon = ::get_country_icon(country)
         objImg["background-image"] = icon
       }
-      else if (hdr == "status")
-      {
+      else if (hdr == "status") {
         let objReady = objTd.findObject("ready-ico")
-        if (checkObj(objReady))
-        {
+        if (checkObj(objReady)) {
           let playerState = ::g_player_state.getStateByPlayerInfo(table[i])
           objReady["background-image"] = playerState.getIcon(table[i])
           objReady["background-color"] = playerState.getIconColor()
@@ -481,21 +438,19 @@ let function guiStartMPStatScreenFromGame()
           objReady.tooltip = (desc != "") ? (loc("multiplayer/state") + loc("ui/colon") + desc) : ""
         }
       }
-      else if (hdr == "name")
-      {
+      else if (hdr == "name") {
         local nameText = item
         if (!table[i].isBot)
           nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
 
-        if (table[i]?.invitedName && table[i].invitedName != item)
-        {
+        if (table[i]?.invitedName && table[i].invitedName != item) {
           local color = ""
           if (obj_tbl?.team) {
             if (obj_tbl.team == "red")
               color = "teamRedInactiveColor"
             else if (obj_tbl.team == "blue")
               color = "teamBlueInactiveColor"
-         }
+          }
 
           local playerName = colorize(color, platformModule.getPlayerName(table[i].invitedName))
           nameText = $"{platformModule.getPlayerName(nameText)}... {playerName}"
@@ -523,11 +478,9 @@ let function guiStartMPStatScreenFromGame()
 
         if (!table[i].isBot
           && ::get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
-          && !::g_mis_custom_state.getCurMissionRules().isWorldWar)
-        {
+          && !::g_mis_custom_state.getCurMissionRules().isWorldWar) {
           let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
-          if (data)
-          {
+          if (data) {
             let squadInfo = getSquadInfo(data.squad)
             let isInSquad = squadInfo ? !squadInfo.autoSquad : false
             let ratingTotal = ::calc_battle_rating_from_rank(data.rank)
@@ -538,8 +491,7 @@ let function guiStartMPStatScreenFromGame()
             for (local j = 0; j < min(data.units.len(), 3); ++j)
               unitsForTooltip.append(data.units[j])
             unitsForTooltip.sort(sort_units_for_br_tooltip)
-            for (local j = 0; j < unitsForTooltip.len(); ++j)
-            {
+            for (local j = 0; j < unitsForTooltip.len(); ++j) {
               let rankUnused = unitsForTooltip[j].rankUnused
               let formatString = rankUnused
                 ? "\n<color=@disabledTextColor>(%.1f) %s</color>"
@@ -550,8 +502,7 @@ let function guiStartMPStatScreenFromGame()
             }
             tooltip += "\n" + loc(isInSquad ? "debriefing/battleRating/squad" : "debriefing/battleRating/total") +
                               loc("ui/colon") + format("%.1f", ratingTotal)
-            if (showLowBRPrompt)
-            {
+            if (showLowBRPrompt) {
               let maxBRDifference = 2.0 // Hardcoded till switch to new matching.
               let rankCalcMode = ::SessionLobby.getRankCalcMode()
               if (rankCalcMode)
@@ -561,8 +512,7 @@ let function guiStartMPStatScreenFromGame()
         }
         objTr.tooltip = tooltip
       }
-      else if (hdr == "unitIcon")
-      {
+      else if (hdr == "unitIcon") {
         local unitIco = ""
         local unitIcoColorType = ""
         local unitId = ""
@@ -573,8 +523,7 @@ let function guiStartMPStatScreenFromGame()
           unitIco = ::g_player_state.HAS_LEAVED_GAME.getIcon(player)
         else if (player?.isDead)
           unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
-        else if (showAirIcons && ("aircraftName" in player))
-        {
+        else if (showAirIcons && ("aircraftName" in player)) {
           unitId = player.aircraftName
           unitIco = ::getUnitClassIco(unitId)
           unitIcoColorType = getUnitRole(unitId)
@@ -582,14 +531,12 @@ let function guiStartMPStatScreenFromGame()
         }
 
         local obj = objTd.findObject("unit-ico")
-        if (checkObj(obj))
-        {
+        if (checkObj(obj)) {
           obj["background-image"] = unitIco
           obj["shopItemType"] = unitIcoColorType
         }
 
-        foreach(iconId, weap in getWeaponTypeIcoByWeapon(unitId, weapon))
-        {
+        foreach (iconId, weap in getWeaponTypeIcoByWeapon(unitId, weapon)) {
           obj = objTd.findObject($"{iconId}-ico")
           if (checkObj(obj)) {
             let iconSize = $"{weap.ratio}@tableIcoSize,@tableIcoSize"
@@ -599,20 +546,16 @@ let function guiStartMPStatScreenFromGame()
           }
         }
       }
-      else if (hdr == "aircraft")
-      {
+      else if (hdr == "aircraft") {
         let objText = objTd.findObject("txt_aircraft")
-        if (checkObj(objText))
-        {
+        if (checkObj(objText)) {
           local text = ""
           local tooltip = ""
-          if (getTblValue("spectator", table[i], false))
-          {
+          if (getTblValue("spectator", table[i], false)) {
             text = loc("mainmenu/btnReferee")
             tooltip = loc("multiplayer/state/player_referee")
           }
-          else
-          {
+          else {
             let unitId = getTblValue("aircraftName", table[i], "")
             text = (unitId != "") ? loc(::getUnitName(unitId, true)) : "..."
             tooltip = (unitId != "") ? loc(::getUnitName(unitId, false)) : ""
@@ -621,14 +564,12 @@ let function guiStartMPStatScreenFromGame()
           objText.tooltip = tooltip
         }
       }
-      else if (hdr == "rowNo")
-      {
+      else if (hdr == "rowNo") {
         let tablePos = i + 1
         let pos = tablePos + continueRowNum
         objTd.getChild(0).setValue(pos.tostring())
         local winPlace = "none"
-        if (numberOfWinningPlaces > 0 && getTblValue("raceLastCheckpoint", table[i], 0) > 0)
-        {
+        if (numberOfWinningPlaces > 0 && getTblValue("raceLastCheckpoint", table[i], 0) > 0) {
           if (tablePos == 1)
             winPlace = "1st"
           else if (tablePos <= numberOfWinningPlaces)
@@ -636,27 +577,23 @@ let function guiStartMPStatScreenFromGame()
         }
         objTr.winnerPlace = winPlace
       }
-      else if (hdr == "place")
-      {
+      else if (hdr == "place") {
         objTd.getChild(0).setValue(item)
       }
-      else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ]))
-      {
+      else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime" ])) {
         let paramType = ::g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)
         objText.setValue(txt)
         objText.tooltip = paramType ? paramType.getTooltip(item, table[i], txt) : ""
       }
-      else if (hdr == "numPlayers")
-      {
+      else if (hdr == "numPlayers") {
         local txt = item.tostring()
         if ("numPlayersTotal" in table[i])
           txt += "/" + table[i].numPlayersTotal
         objTd.getChild(0).setValue(txt)
       }
-      else if (hdr == "squad")
-      {
+      else if (hdr == "squad") {
         let squadInfo = isShowSquad() ? getSquadInfoByMemberName(table[i]?.name ?? "") : null
         let squadId = getTblValue("squadId", squadInfo, INVALID_SQUAD_ID)
         let labelSquad = squadInfo ? squadInfo.label.tostring() : ""
@@ -664,16 +601,14 @@ let function guiStartMPStatScreenFromGame()
         let squadScore = needSquadIcon ? getTblValue("squadScore", table[i], 0) : 0
         let isTopSquad = needSquadIcon && squadScore && squadId != INVALID_SQUAD_ID && squadId == getTopSquadId(squadInfo.teamId)
 
-        let cellText = objTd.findObject("txt_"+hdr)
+        let cellText = objTd.findObject("txt_" + hdr)
         if (checkObj(cellText))
           cellText.setValue(needSquadIcon && !isTopSquad ? labelSquad : "")
 
-        let cellIcon = objTd.findObject("icon_"+hdr)
-        if (checkObj(cellIcon))
-        {
+        let cellIcon = objTd.findObject("icon_" + hdr)
+        if (checkObj(cellIcon)) {
           cellIcon.show(needSquadIcon)
-          if (needSquadIcon)
-          {
+          if (needSquadIcon) {
             cellIcon["iconSquad"] = squadInfo.autoSquad ? "autosquad" : "squad"
             cellIcon["topSquad"] = isTopSquad ? "yes" : "no"
             cellIcon["tooltip"] = format("%s %s%s", loc("options/chat_messages_squad"), loc("ui/number_sign", "#"), labelSquad)
@@ -685,14 +620,12 @@ let function guiStartMPStatScreenFromGame()
           }
         }
       }
-      else
-      {
+      else {
         local txt = item.tostring()
         if (txt.len() > 0 && txt[0] == '#')
           txt = loc(txt.slice(1))
-        let objText = objTd.findObject("txt_"+hdr)
-        if (objText)
-        {
+        let objText = objTd.findObject("txt_" + hdr)
+        if (objText) {
           objText.setValue(txt)
           objText.tooltip = txt
         }
@@ -701,28 +634,29 @@ let function guiStartMPStatScreenFromGame()
   }
 }
 
-::getCurMpTitle <- function getCurMpTitle()
-{
+::getCurMpTitle <- function getCurMpTitle() {
   local text = ""
 
-  if (::g_mis_custom_state.getCurMissionRules().isWorldWar && ::is_worldwar_enabled())
-  {
+  if (::g_mis_custom_state.getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
     text = ::g_world_war.getCurMissionWWBattleName()
     text = (text.len() > 0 ? loc("ui/comma") : "").concat(text, ::loc_current_mission_name())
   }
-  else
-  {
-    let gm = ::get_game_mode()
-    if (gm == GM_DOMINATION)
-    {
+  else {
+    let gm = get_game_mode()
+    if (gm == GM_DOMINATION) {
       let diffCode = ::get_mission_difficulty_int()
       text = ::g_difficulty.getDifficultyByDiffCode(diffCode).getLocName()
     }
-    else if (gm==GM_SKIRMISH)         text = loc("multiplayer/skirmishMode")
-    else if (gm==GM_CAMPAIGN)         text = loc("mainmenu/btnCampaign")
-    else if (gm==GM_SINGLE_MISSION)   text = loc("mainmenu/btnCoop")
-    else if (gm==GM_DYNAMIC)          text = loc("mainmenu/btnDynamic")
-    else if (gm==GM_BUILDER)          text = loc("mainmenu/btnBuilder")
+    else if (gm == GM_SKIRMISH)
+      text = loc("multiplayer/skirmishMode")
+    else if (gm == GM_CAMPAIGN)
+      text = loc("mainmenu/btnCampaign")
+    else if (gm == GM_SINGLE_MISSION)
+      text = loc("mainmenu/btnCoop")
+    else if (gm == GM_DYNAMIC)
+      text = loc("mainmenu/btnDynamic")
+    else if (gm == GM_BUILDER)
+      text = loc("mainmenu/btnBuilder")
     //else if (gm==GM_TOURNAMENT)       text = loc("multiplayer/tournamentMode")
 
     text += ((text.len()) ? loc("ui/comma") : "") + ::loc_current_mission_name()
@@ -731,8 +665,7 @@ let function guiStartMPStatScreenFromGame()
   return text
 }
 
-::getUnitClassIco <- function getUnitClassIco(unit)
-{
+::getUnitClassIco <- function getUnitClassIco(unit) {
   local unitName = unit?.name ?? ""
   if (type(unit) == "string") {
     unitName = unit
@@ -742,16 +675,14 @@ let function guiStartMPStatScreenFromGame()
     : unit?.customClassIco ?? $"#ui/gameuiskin#{unitName}_ico.svg"
 }
 
-::getUnitClassColor <- function getUnitClassColor(unit)
-{
+::getUnitClassColor <- function getUnitClassColor(unit) {
   let role = getUnitRole(unit) //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
   if (role == null || role == "" || role == "none")
     return "white";
   return role + "Color"
 }
 
-::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName)
-{
+::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName) {
   if (!weaponName || ::u.isEmpty(weaponName))
     return ""
 
@@ -760,9 +691,8 @@ let function guiStartMPStatScreenFromGame()
     return ""
 
   local weaponIconsText = ""
-  foreach(weapon in unit.getWeapons())
-    if (weapon.name == weaponName)
-    {
+  foreach (weapon in unit.getWeapons())
+    if (weapon.name == weaponName) {
       foreach (paramName in [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET,
         WEAPON_TAG.TORPEDO, WEAPON_TAG.ADD_GUN])
           if (weapon[paramName])
@@ -773,17 +703,14 @@ let function guiStartMPStatScreenFromGame()
   return colorize("weaponPresetColor", weaponIconsText)
 }
 
-::count_width_for_mptable <- function count_width_for_mptable(objTbl, markup)
-{
+::count_width_for_mptable <- function count_width_for_mptable(objTbl, markup) {
   let guiScene = objTbl.getScene()
   local usedWidth = 0
   local relWidthTotal = 0.0
-  foreach (_id, col in markup)
-  {
+  foreach (_id, col in markup) {
     if ("relWidth" in col)
       relWidthTotal += col.relWidth
-    else if ("width" in col)
-    {
+    else if ("width" in col) {
       let width = guiScene.calcString(col.width, objTbl)
       col.width = width.tostring()
       usedWidth += width
@@ -791,10 +718,8 @@ let function guiStartMPStatScreenFromGame()
   }
 
   local freeWidth = objTbl.getSize()[0] - usedWidth
-  foreach (_id, col in markup)
-  {
-    if (relWidthTotal > 0 && ("relWidth" in col))
-    {
+  foreach (_id, col in markup) {
+    if (relWidthTotal > 0 && ("relWidth" in col)) {
       let width = (freeWidth * col.relWidth / relWidthTotal).tointeger()
       col.width <- width.tostring()
       freeWidth -= width

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
+let DataBlock = require("DataBlock")
 let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
@@ -33,7 +35,7 @@ local summaryNameArray = [
   "single_played"
 ]
 
-::my_stats <-{
+::my_stats <- {
   updateDelay = 3600000 //once per 1 hour, we have force update after each battle or debriefing.
 
   _my_stats = null
@@ -50,20 +52,17 @@ local summaryNameArray = [
   _unitTypeByNewbieEventId = {}
   _maxUnitsUsedRank = null
 
-  function getStats()
-  {
+  function getStats() {
     this.requestMyStats()
     return this._my_stats
   }
 
-  function getTitles(showHidden = false)
-  {
+  function getTitles(showHidden = false) {
     let titles = getTblValue("titles", this._my_stats, [])
     if (showHidden)
       return titles
 
-    for (local i = titles.len() - 1; i >= 0 ; i--)
-    {
+    for (local i = titles.len() - 1; i >= 0 ; i--) {
       let titleUnlock = ::g_unlocks.getUnlockById(titles[i])
       if (!titleUnlock || titleUnlock?.hidden)
         titles.remove(i)
@@ -72,8 +71,7 @@ local summaryNameArray = [
     return titles
   }
 
-  function requestMyStats()
-  {
+  function requestMyStats() {
     if (!::g_login.isLoggedIn())
       return
     let time = get_time_msec()
@@ -93,12 +91,11 @@ local summaryNameArray = [
                      }.bindenv(this))
   }
 
-  function _update_my_stats()
-  {
+  function _update_my_stats() {
     if (!::g_login.isLoggedIn())
       return
 
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     ::get_player_public_stats(blk)
 
     if (!blk)
@@ -110,50 +107,42 @@ local summaryNameArray = [
     ::broadcastEvent("MyStatsUpdated")
   }
 
-  function isStatsLoaded()
-  {
+  function isStatsLoaded() {
     return this._my_stats != null
   }
 
-  function clearStats()
-  {
+  function clearStats() {
     this._my_stats = null
   }
 
-  function markStatsReset()
-  {
+  function markStatsReset() {
     this._resetStats = true
   }
 
-  function onEventUnitBought(_p)
-  {
+  function onEventUnitBought(_p) {
     //need update bought units list
     this.markStatsReset()
   }
 
-  function onEventAllModificationsPurchased(_p)
-  {
+  function onEventAllModificationsPurchased(_p) {
     this.markStatsReset()
   }
 
   //newbie stats
-  function onEventInitConfigs(_p)
-  {
+  function onEventInitConfigs(_p) {
     let settingsBlk = ::get_game_settings_blk()
     let blk = settingsBlk?.newPlayersBattles
     if (!blk)
       return
 
-    foreach (unitType in unitTypes.types)
-    {
+    foreach (unitType in unitTypes.types) {
       let data = {
         minKills = 0
         battles = []
         additionalUnitTypes = []
       }
       let list = blk % unitType.lowerName
-      foreach(ev in list)
-      {
+      foreach (ev in list) {
         if (!ev.event)
           continue
         this._unitTypeByNewbieEventId[ev.event] <- unitType.esUnitType
@@ -175,8 +164,7 @@ local summaryNameArray = [
     }
   }
 
-  function onEventScriptsReloaded(p)
-  {
+  function onEventScriptsReloaded(p) {
     this.onEventInitConfigs(p)
   }
 
@@ -202,11 +190,9 @@ local summaryNameArray = [
     this.newbie = this.__isNewbie()
   }
 
-  function checkRecountNewbie()
-  {
+  function checkRecountNewbie() {
     let statsLoaded = this.isStatsLoaded()  //when change newbie recount, dont forget about check stats loaded for newbie tutor
-    if (!this._needRecountNewbie || !statsLoaded)
-    {
+    if (!this._needRecountNewbie || !statsLoaded) {
       if (!statsLoaded || (this.newbie ?? false))
         this.requestMyStats()
       return
@@ -218,8 +204,7 @@ local summaryNameArray = [
       : null
 
     this.newbieByUnitType.clear()
-    foreach (unitType in unitTypes.types)
-    {
+    foreach (unitType in unitTypes.types) {
       if (!unitType.isAvailable() || !unitType.isPresentOnMatching)
         continue
 
@@ -248,8 +233,7 @@ local summaryNameArray = [
     this.newbie = this.__isNewbie()
 
     this.newbieNextEvent.clear()
-    foreach(unitType, config in this._newPlayersBattles)
-    {
+    foreach (unitType, config in this._newPlayersBattles) {
       local event = null
       local kills = this.getKillsOnUnitType(unitType)
       local timePlayed = this.getTimePlayedOnUnitType(unitType)
@@ -258,8 +242,7 @@ local summaryNameArray = [
         kills += this.getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
         timePlayed += this.getTimePlayedOnUnitType(::getUnitTypeByText(addEsUnitType))
       }
-      foreach(evData in config.battles)
-      {
+      foreach (evData in config.battles) {
         if (kills >= evData.kills)
           continue
         if (timePlayed >= evData.timePlayed)
@@ -275,8 +258,7 @@ local summaryNameArray = [
     }
   }
 
-  function checkUnitInSlot(requiredUnitRank, unitType)
-  {
+  function checkUnitInSlot(requiredUnitRank, unitType) {
     if (this._maxUnitsUsedRank == null)
       this._maxUnitsUsedRank = this.calculateMaxUnitsUsedRanks()
 
@@ -292,21 +274,18 @@ local summaryNameArray = [
    * Internal usage only. If there is no stats
    * result will be unconsistent.
    */
-  function __isNewbie()
-  {
+  function __isNewbie() {
     foreach (_esUnitType, isNewbie in this.newbieByUnitType)
       if (!isNewbie)
         return false
     return true
   }
 
-  function onEventEventsDataUpdated(_params)
-  {
+  function onEventEventsDataUpdated(_params) {
     this._needRecountNewbie = true
   }
 
-  function onEventCrewTakeUnit(params)
-  {
+  function onEventCrewTakeUnit(params) {
     let unitType = ::get_es_unit_type(params.unit)
     let unitRank = params.unit?.rank ?? -1
     let lastMaxRank = getTblValue(unitType.tostring(), this._maxUnitsUsedRank, 0)
@@ -330,13 +309,11 @@ local summaryNameArray = [
     return res
   }
 
-  function getPvpPlayed()
-  {
+  function getPvpPlayed() {
     return this.getUserstat("sessions")
   }
 
-  function getTotalTimePlayedSec()
-  {
+  function getTotalTimePlayedSec() {
     local sec = 0
     foreach (modeBlock in this._my_stats?.summary ?? {})
       foreach (diffBlock in modeBlock)
@@ -362,8 +339,7 @@ local summaryNameArray = [
    *     unitType - unit type filter; if not specified - get both
    *   }
    */
-  function getSummary(summaryName, filter = {})
-  {
+  function getSummary(summaryName, filter = {}) {
     local res = 0
     let pvpSummary = getTblValue(summaryName, getTblValue("summary", this._my_stats))
     if (!pvpSummary)
@@ -372,27 +348,24 @@ local summaryNameArray = [
     let roles = ::u.map(getUnitClassTypesByEsUnitType(filter?.unitType),
        @(t) t.expClassName)
 
-    foreach(_idx, diffData in pvpSummary)
-      foreach(unitRole, data in diffData)
-      {
+    foreach (_idx, diffData in pvpSummary)
+      foreach (unitRole, data in diffData) {
         if (!isInArray(unitRole, roles))
           continue
 
-        foreach(param in getTblValue("addArray", filter, []))
+        foreach (param in getTblValue("addArray", filter, []))
           res += getTblValue(param, data, 0)
-        foreach(param in getTblValue("subtractArray", filter, []))
+        foreach (param in getTblValue("subtractArray", filter, []))
           res -= getTblValue(param, data, 0)
       }
     return res
   }
 
-  function getPvpRespawns()
-  {
-    return this.getSummary("pvp_played", {addArray = ["respawns"]})
+  function getPvpRespawns() {
+    return this.getSummary("pvp_played", { addArray = ["respawns"] })
   }
 
-  function getKillsOnUnitType(unitType)
-  {
+  function getKillsOnUnitType(unitType) {
     return this.getSummary("pvp_played", {
                                       addArray = ["air_kills", "ground_kills", "naval_kills"],
                                       subtractArray = ["air_kills_ai", "ground_kills_ai", "naval_kills_ai"]
@@ -400,16 +373,14 @@ local summaryNameArray = [
                                     })
   }
 
-  function getTimePlayedOnUnitType(unitType)
-  {
+  function getTimePlayedOnUnitType(unitType) {
     return this.getSummary("pvp_played", {
                                       addArray = ["timePlayed"]
                                       unitType = unitType
                                     })
   }
 
-  function getClassFlags(unitType)
-  {
+  function getClassFlags(unitType) {
     if (unitType == ES_UNIT_TYPE_AIRCRAFT)
       return CLASS_FLAGS_AIRCRAFT
     if (unitType == ES_UNIT_TYPE_TANK)
@@ -423,54 +394,46 @@ local summaryNameArray = [
     return (1 << EUCT_TOTAL) - 1
   }
 
-  function getSummaryFromProfile(func, unitType = null, diff = null, mode = 1 /*domination*/)
-  {
+  function getSummaryFromProfile(func, unitType = null, diff = null, mode = 1 /*domination*/ ) {
     local res = 0.0
     let classFlags = this.getClassFlags(unitType)
-    for(local i = 0; i < EUCT_TOTAL; i++)
-      if (classFlags & (1 << i))
-      {
+    for (local i = 0; i < EUCT_TOTAL; i++)
+      if (classFlags & (1 << i)) {
         if (diff != null)
           res += func(diff, i, mode)
         else
-          for(local d = 0; d < 3; d++)
+          for (local d = 0; d < 3; d++)
             res += func(d, i, mode)
       }
     return res
   }
 
-  function getTimePlayed(unitType = null, diff = null)
-  {
+  function getTimePlayed(unitType = null, diff = null) {
     return this.getSummaryFromProfile(::stat_get_value_time_played, unitType, diff)
   }
 
-  function isMeNewbie() //used in code
-  {
+  function isMeNewbie() { //used in code
     this.checkRecountNewbie()
     if (this.newbie == null)
       this.loadLocalNewbieData()
     return this.newbie ?? false
   }
 
-  function isMeNewbieOnUnitType(esUnitType)
-  {
+  function isMeNewbieOnUnitType(esUnitType) {
     this.checkRecountNewbie()
     if (this.newbie == null)
       this.loadLocalNewbieData()
     return this.newbieByUnitType?[esUnitType] ?? false
   }
 
-  function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) //return null when no newbie event
-  {
+  function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) { //return null when no newbie event
     this.checkRecountNewbie()
     if (!country)
       country = profileCountrySq.value
 
-    if (unitType == null)
-    {
+    if (unitType == null) {
       unitType = getFirstChosenUnitType(ES_UNIT_TYPE_AIRCRAFT)
-      if (checkSlotbar)
-      {
+      if (checkSlotbar) {
         let types = ::getSlotbarUnitTypes(country)
         if (types.len() && !isInArray(unitType, types))
           unitType = types[0]
@@ -479,28 +442,24 @@ local summaryNameArray = [
     return getTblValue(unitType, this.newbieNextEvent)
   }
 
-  function isNewbieEventId(eventName)
-  {
-    foreach(config in this._newPlayersBattles)
-      foreach(evData in config.battles)
+  function isNewbieEventId(eventName) {
+    foreach (config in this._newPlayersBattles)
+      foreach (evData in config.battles)
         if (eventName == evData.event)
           return true
     return false
   }
 
-  function getUnitTypeByNewbieEventId(eventId)
-  {
+  function getUnitTypeByNewbieEventId(eventId) {
     return getTblValue(eventId, this._unitTypeByNewbieEventId, ES_UNIT_TYPE_INVALID)
   }
 
-  function calculateMaxUnitsUsedRanks()
-  {
+  function calculateMaxUnitsUsedRanks() {
     local needRecalculate = false
-    let loadedBlk = ::loadLocalByAccount("tutor/newbieBattles/unitsRank", ::DataBlock())
+    let loadedBlk = ::loadLocalByAccount("tutor/newbieBattles/unitsRank", DataBlock())
     foreach (unitType in unitTypes.types)
       if (unitType.isAvailable()
-        && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < ::max_country_rank)
-      {
+        && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < ::max_country_rank) {
         needRecalculate = true
         break
       }
@@ -508,12 +467,11 @@ local summaryNameArray = [
     if (!needRecalculate)
       return loadedBlk
 
-    let saveBlk = ::DataBlock()
+    let saveBlk = DataBlock()
     saveBlk.setFrom(loadedBlk)
     let countryCrewsList = ::g_crews_list.get()
-    foreach(countryCrews in countryCrewsList)
-      foreach (crew in getTblValue("crews", countryCrews, []))
-      {
+    foreach (countryCrews in countryCrewsList)
+      foreach (crew in getTblValue("crews", countryCrews, [])) {
         let unit = ::g_crew.getCrewUnit(crew)
         if (unit == null)
           continue
@@ -528,21 +486,18 @@ local summaryNameArray = [
     return saveBlk
   }
 
-  function getMissionsComplete(summaryArray = summaryNameArray)
-  {
+  function getMissionsComplete(summaryArray = summaryNameArray) {
     local res = 0
     let myStats = this.getStats()
-    foreach (summaryName in summaryArray)
-    {
+    foreach (summaryName in summaryArray) {
       let summary = myStats?.summary?[summaryName] ?? {}
-      foreach(diffData in summary)
+      foreach (diffData in summary)
         res += diffData?.missionsComplete ?? 0
     }
     return res
   }
 
-  function resetStatsParams()
-  {
+  function resetStatsParams() {
     this.clearStats()
     this._is_in_update = false
     this._resetStats = false
@@ -552,8 +507,7 @@ local summaryNameArray = [
     this._maxUnitsUsedRank = null
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.resetStatsParams()
   }
 
@@ -564,7 +518,6 @@ seenTitles.setListGetter(@() ::my_stats.getTitles())
 
 ::subscribe_handler(::my_stats, ::g_listener_priority.DEFAULT_HANDLER)
 
-::is_me_newbie <- function is_me_newbie() //used in code
-{
+::is_me_newbie <- function is_me_newbie() { //used in code
   return ::my_stats.isMeNewbie()
 }

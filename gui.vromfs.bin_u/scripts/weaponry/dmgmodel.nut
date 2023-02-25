@@ -1,12 +1,15 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { lerp } = require("%sqstd/math.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isDataBlock } = require("%sqstd/datablock.nut")
+let { Point2 } = require("dagor.math")
 
 const RICOCHET_DATA_ANGLE = 30
 const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
@@ -16,16 +19,16 @@ local ricochetDataByPreset = null
 
 let resetData = @() ricochetDataByPreset = null
 
-let isPoint2 = @(p) type(p) == "instance" && p instanceof ::Point2
+let isPoint2 = @(p) type(p) == "instance" && p instanceof Point2
 
 let function getDmgModelBlk() {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.load("config/damageModel.blk")
   return blk
 }
 
 let function getExplosiveBlk() {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.load("gameData/damage_model/explosive.blk")
   return blk
 }

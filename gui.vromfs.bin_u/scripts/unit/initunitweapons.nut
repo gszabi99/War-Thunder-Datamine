@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -24,7 +25,7 @@ let function addReqParamsToWeaponry(weaponry, blk) {
   if (!isDataBlock(blk))
     return
 
-  foreach(rp in reqNames) {
+  foreach (rp in reqNames) {
     let reqData = []
     if (rp not in blk)
       continue
@@ -46,7 +47,7 @@ let function initPresetParams(weapon, blk = null) {
   weapon.frontGun <- (weaponmask & WeaponMask.MACHINE_GUN_MASK) != 0
   weapon.rocket <- (weaponmask & WeaponMask.ALL_ROCKETS_MASK) != 0
   weapon.bombsNbr <- blk?.totalBombCount ?? 0
-  foreach(p in weaponWpCostProperties)
+  foreach (p in weaponWpCostProperties)
     weapon[p] <- weapon?[p] ?? blk?[p]
 }
 
@@ -58,12 +59,12 @@ let function initCustomPresetParams(unit, weapon) {
     let pWeapons = (weapons?.custom_presets ? weapons.custom_presets % "slot" : [])
       .findvalue(@(v) v.index == w.slot)[w.preset]
     if (pWeapons)
-      eachParam(pWeapons, function(count, name){
+      eachParam(pWeapons, function(count, name) {
         let blk = weapons?[name]
         weapon.weaponmask <- (weapon?.weaponmask ?? 0) | (blk?.weaponmask ?? 0)
         if ("mass_per_sec" in blk)
           massPerSecValue += blk.mass_per_sec * count
-        foreach(p in weaponWpCostProperties)
+        foreach (p in weaponWpCostProperties)
           weapon[p] <- weapon?[p] ?? blk?[p]
         if ((weapon.weaponmask & WeaponMask.ALL_BOMBS_MASK) != 0)
           bombsNbr += (blk?.totalBombCount ?? 0) * count
@@ -93,7 +94,7 @@ let function initWeaponry(weaponry, blk, esUnitType) {
   if (weaponry.name == "tank_additional_armor")
     weaponry.requiresModelReload <- true
 
-  foreach(p in weaponProperties) {
+  foreach (p in weaponProperties) {
     let val = blk?[p] ?? weaponBlk?[p]
     if (val != null)
       weaponry[p] <- val
@@ -108,7 +109,7 @@ let function initWeaponry(weaponry, blk, esUnitType) {
 }
 
 let function addReqParamsByContainers(weaponsContainers, name, reqParams) {
-  foreach(rp in reqNames)
+  foreach (rp in reqNames)
     if (rp in weaponsContainers[name]) {
       reqParams[rp] <- reqParams?[rp] ?? []
       foreach (req in weaponsContainers[name][rp])
@@ -138,7 +139,7 @@ let function getCustomSumWeapons(weaponBlk, weaponsBlk) {
 
   let weapons = weaponBlk % "Weapon"
   let slots = weaponsBlk.custom_presets % "slot"
-  foreach(wBlk in weapons) {
+  foreach (wBlk in weapons) {
     let blk = slots.findvalue(@(s) s.index == wBlk.slot)?[wBlk.preset]
     if (blk != null)
       eachParam(blk, function(_, param) { appendOnce(param, res) })
@@ -164,7 +165,7 @@ let function initUnitCustomPresetsWeapons(unit, weapons) {
 }
 
 let function initWeaponryUpgrades(upgradesTarget, blk) {
-  foreach(upgradeName in upgradeNames) {
+  foreach (upgradeName in upgradeNames) {
     if (blk?[upgradeName] == null)
       break
 

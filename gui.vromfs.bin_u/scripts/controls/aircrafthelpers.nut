@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -24,8 +25,7 @@ let globalEnv = require("globalEnv")
 
   /* PUBLIC */
   // Set option and call change handler if changed
-  function setOptionValue(optionId, newValue)
-  {
+  function setOptionValue(optionId, newValue) {
     let oldValue = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
     if (oldValue == newValue)
       return
@@ -35,8 +35,7 @@ let globalEnv = require("globalEnv")
 
 
   // Init options if not and get option
-  function getOptionValue(optionId)
-  {
+  function getOptionValue(optionId) {
     if (!this.isInitialized)
       this.onHelpersChanged()
     return ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_GAMEPLAY)
@@ -44,8 +43,7 @@ let globalEnv = require("globalEnv")
 
 
   // Helper options change handler
-  function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false)
-  {
+  function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) {
     // Do not continue if not logged in or if recursion call happend
     if (!::g_login.isLoggedIn() || this.isHelpersChangePerformed)
       return
@@ -63,8 +61,7 @@ let globalEnv = require("globalEnv")
     let prevOptions = clone options
 
     // Synchronize mouseUsage and mouseUsageNoAim
-    if (options.mouseUsage != AIR_MOUSE_USAGE.AIM)
-    {
+    if (options.mouseUsage != AIR_MOUSE_USAGE.AIM) {
       if (forcedByOption == ::USEROPT_MOUSE_USAGE_NO_AIM)
         options.mouseUsage = options.mouseUsageNoAim
       else
@@ -72,8 +69,7 @@ let globalEnv = require("globalEnv")
     }
 
     // Determine target helpers mode
-    switch (forcedByOption)
-    {
+    switch (forcedByOption) {
       case ::USEROPT_MOUSE_USAGE:
         if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
           options.helpersMode = globalEnv.EM_MOUSE_AIM
@@ -96,8 +92,7 @@ let globalEnv = require("globalEnv")
         break
 
       default:
-        if (options.helpersMode == null)
-        {
+        if (options.helpersMode == null) {
           // For new profiles or profiles without helpersMode
           if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
             options.helpersMode = globalEnv.EM_MOUSE_AIM
@@ -117,8 +112,7 @@ let globalEnv = require("globalEnv")
     options.autotrim = true
 
     // Set helpers options according to helpers mode
-    switch (options.helpersMode)
-    {
+    switch (options.helpersMode) {
       case globalEnv.EM_FULL_REAL:
         options.autotrim = false
         // no break!
@@ -138,8 +132,7 @@ let globalEnv = require("globalEnv")
     }
 
     // Load current mouse usage from preset if it undefined
-    if (options.mouseUsageNoAim == null)
-    {
+    if (options.mouseUsageNoAim == null) {
       options.mouseUsageNoAim = this.getPresetMouseUsage()
       if (options.mouseUsage == null)
         options.mouseUsage = options.mouseUsageNoAim
@@ -158,8 +151,7 @@ let globalEnv = require("globalEnv")
 
 
   // Get mouse usage from axes params
-  function getPresetMouseUsage()
-  {
+  function getPresetMouseUsage() {
     // Load current mouse usage from used preset
     let curPreset = ::g_controls_manager.getCurPreset()
 
@@ -175,8 +167,7 @@ let globalEnv = require("globalEnv")
 
 
   // Update mouse usage in axes params according to helpers options
-  function updatePresetMouseUsage()
-  {
+  function updatePresetMouseUsage() {
     let curPreset = ::g_controls_manager.getCurPreset()
     let mouseUsageNoAim = ::get_gui_option_in_mode(
       ::USEROPT_MOUSE_USAGE_NO_AIM, ::OPTIONS_MODE_GAMEPLAY)
@@ -197,13 +188,11 @@ let globalEnv = require("globalEnv")
 
     // Set new mouse axes
     if (mouseUsageNoAim == AIR_MOUSE_USAGE.JOYSTICK ||
-      mouseUsageNoAim == AIR_MOUSE_USAGE.RELATIVE)
-    {
+      mouseUsageNoAim == AIR_MOUSE_USAGE.RELATIVE) {
       curPreset.getAxis("ailerons").mouseAxisId <- 0
       curPreset.getAxis("elevator").mouseAxisId <- 1
     }
-    else if (mouseUsageNoAim == AIR_MOUSE_USAGE.VIEW)
-    {
+    else if (mouseUsageNoAim == AIR_MOUSE_USAGE.VIEW) {
       curPreset.getAxis("camx").mouseAxisId <- 0
       curPreset.getAxis("camy").mouseAxisId <- 1
     }
@@ -213,23 +202,19 @@ let globalEnv = require("globalEnv")
   }
 
   // Event handlers
-  function onEventLoginComplete(_params)
-  {
+  function onEventLoginComplete(_params) {
     this.onHelpersChanged()
   }
 
-  function onEventSignOut(_params)
-  {
+  function onEventSignOut(_params) {
     this.isInitialized = false
   }
 
-  function onEventBeforeControlsCommit(_params)
-  {
+  function onEventBeforeControlsCommit(_params) {
     this.onHelpersChanged()
   }
 
-  function onEventControlsReloaded(_params)
-  {
+  function onEventControlsReloaded(_params) {
     this.onHelpersChanged(null, true)
   }
 }

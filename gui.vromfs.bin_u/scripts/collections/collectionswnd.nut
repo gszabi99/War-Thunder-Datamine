@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -48,11 +49,11 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let wndCollectionsObj = this.scene.findObject("wnd_collections")
     this.countItemsInRow = to_pixels("1@collectionWidth-1@collectionPrizeWidth")
       / (to_pixels("1@collectionItemSizeWithIndent"))
-    let countRowInCollection = ceil(MAX_COLLECTION_ITEMS / (this.countItemsInRow*1.0))
+    let countRowInCollection = ceil(MAX_COLLECTION_ITEMS / (this.countItemsInRow * 1.0))
     this.collectionHeight = "".concat(countRowInCollection,
       "@collectionItemSizeWithIndent+1@buttonHeight-1@blockInterval")
     let sizes = ::g_dagui_utils.adjustWindowSize(wndCollectionsObj, this.collectionsListObj,
-      "@collectionWidth", this.collectionHeight, "@blockInterval", "@blockInterval", {windowSizeX = 0})
+      "@collectionWidth", this.collectionHeight, "@blockInterval", "@blockInterval", { windowSizeX = 0 })
     this.collectionsPerPage = sizes.itemsCountY
   }
 
@@ -85,7 +86,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let pageStartIndex = this.curPage * this.collectionsPerPage
     let pageEndIndex = min((this.curPage + 1) * this.collectionsPerPage, this.collectionsList.len())
     local idxOnPage = 0
-    for(local i=pageStartIndex; i < pageEndIndex; i++) {
+    for (local i = pageStartIndex; i < pageEndIndex; i++) {
       let collectionTopPos = $"{idxOnPage} * ({this.collectionHeight} + 1@blockInterval)"
       view.collections.append(
         this.collectionsList[i].getView(this.countItemsInRow, collectionTopPos, this.collectionHeight, i))
@@ -105,13 +106,12 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.updateDecoratorInfo()
 
     ::generatePaginator(this.scene.findObject("paginator_place"), this,
-      this.curPage, ceil(this.collectionsList.len().tofloat() / this.collectionsPerPage) - 1, null, true /*show last page*/)
+      this.curPage, ceil(this.collectionsList.len().tofloat() / this.collectionsPerPage) - 1, null, true /*show last page*/ )
   }
 
   function findLastValue(prevValue) {
     local enabledValue = null
-    for(local i = 0; i < this.collectionsListObj.childrenCount(); i++)
-    {
+    for (local i = 0; i < this.collectionsListObj.childrenCount(); i++) {
       let childObj = this.collectionsListObj.getChild(i)
       if (!childObj.isEnabled())
         continue
@@ -218,8 +218,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.updateCollectionsList()
   }
 
-  function onEventInventoryUpdate(_params)
-  {
+  function onEventInventoryUpdate(_params) {
     this.updateCollectionsList()
   }
 
@@ -256,33 +255,28 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     askPurchaseDecorator(decorator, null)
   }
 
-  function onBtnMarketplaceFindCoupon(_obj)
-  {
+  function onBtnMarketplaceFindCoupon(_obj) {
     let decorator = this.getDecoratorConfig()?.decorator
     findDecoratorCouponOnMarketplace(decorator)
   }
 
-  function onBtnMarketplaceConsumeCoupon(_obj)
-  {
+  function onBtnMarketplaceConsumeCoupon(_obj) {
     let decorator = this.getDecoratorConfig()?.decorator
     askConsumeDecoratorCoupon(decorator, null)
   }
 
-  function updateOnlyUncompletedCheckbox()
-  {
+  function updateOnlyUncompletedCheckbox() {
     let checkboxObj = this.scene.findObject("checkbox_only_uncompleted")
     checkboxObj.setValue(this.isOnlyUncompleted)
   }
 
-  function filterCollectionsList()
-  {
+  function filterCollectionsList() {
     return this.isOnlyUncompleted
       ? getCollectionsList().filter(@(val) !val.prize.isUnlocked())
       : getCollectionsList()
   }
 
-  function onOnlyUncompletedCheck(obj)
-  {
+  function onOnlyUncompletedCheck(obj) {
     this.isOnlyUncompleted = obj.getValue()
     this.collectionsList = this.filterCollectionsList()
     this.curPage = 0

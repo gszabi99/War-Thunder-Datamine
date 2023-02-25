@@ -1,3 +1,4 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -42,7 +43,7 @@ local currentMissionNo = 0
 ::beginMissionsGeneration <- function beginMissionsGeneration() {
   currentMissionNo = 0
 }
-::generateNextMission <- function generateNextMission(isFreeFlight) {// isFreeFlight = Mission Editor
+::generateNextMission <- function generateNextMission(isFreeFlight) { // isFreeFlight = Mission Editor
   if (currentMissionNo >= missionGenFunctions.len())
     return false
 

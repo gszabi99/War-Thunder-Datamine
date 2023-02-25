@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,14 +6,15 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format, split_by_chars } = require("string")
+let { frnd } = require("dagor.random")
+let DataBlock = require("DataBlock")
 let { get_gui_option } = require("guiOptions")
-let {
-  is_mplayer_peer = @() ::is_mplayer_peer() //compatibility with 2.16.0.X
-} = require_optional("multiplayer")
+let { is_mplayer_peer } = require("multiplayer")
 let { loading_is_finished, loading_press_apply, briefing_finish, loading_play_voice,
   loading_stop_voice, loading_stop_voice_but_named_events, loading_get_voice_len,
   loading_is_voice_playing, loading_play_music, loading_stop_music
 } = require("loading")
+let { get_game_mode, get_game_type } = require("mission")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let changeStartMission = require("%scripts/missions/changeStartMission.nut")
@@ -28,17 +30,15 @@ const MIN_SLIDE_TIME = 2.0
   loading_stop_music()
 })
 
-::gui_handlers.LoadingBrief <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.LoadingBrief <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/loading/loadingCamp.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 
   gm = 0
   gt = 0
 
-  function initScreen()
-  {
-    this.gm = ::get_game_mode()
+  function initScreen() {
+    this.gm = get_game_mode()
     this.gt = ::get_game_type_by_mode(this.gm)
 
     ::set_presence_to_player("loading")
@@ -49,88 +49,79 @@ const MIN_SLIDE_TIME = 2.0
     this.numTips = blk.loading.numTips
 
     let cutObj = this.guiScene["cutscene_update"]
-    if (checkObj(cutObj)) cutObj.setUserData(this)
+    if (checkObj(cutObj))
+      cutObj.setUserData(this)
 
     setDoubleTextToButton(this.scene, "btn_select", loc("hints/cutsc_skip"))
 
-    let missionBlk = ::DataBlock()
+    let missionBlk = DataBlock()
     local country = ""
-    if (::current_campaign_mission || is_mplayer_peer())
-    {
-      if (is_mplayer_peer())
-      {
+    if (::current_campaign_mission || is_mplayer_peer()) {
+      if (is_mplayer_peer()) {
         ::get_current_mission_desc(missionBlk)
-        ::current_campaign_mission = missionBlk.getStr("name","")
+        ::current_campaign_mission = missionBlk.getStr("name", "")
       }
-      else if (::get_game_type() & GT_DYNAMIC)
+      else if (get_game_type() & GT_DYNAMIC)
         missionBlk.setFrom(::mission_settings.mission)
       else if (::current_campaign_mission)
         missionBlk.setFrom(::get_mission_meta_info(::current_campaign_mission))
 
       if (this.gm == GM_TEST_FLIGHT)
-        country = ::getCountryByAircraftName(::test_flight_aircraft.name)
+        country = ::getCountryByAircraftName(::get_test_flight_unit_info()?.unit.name)
       else
         country = ::getCountryByAircraftName(missionBlk.getStr("player_class", ""))
-      log("0 player_class = "+missionBlk.getStr("player_class", "") + "; country = " + country)
-      if (country != "" && !(::get_game_type() & GT_VERSUS) && this.gm != GM_TRAINING)
+      log("0 player_class = " + missionBlk.getStr("player_class", "") + "; country = " + country)
+      if (country != "" && !(get_game_type() & GT_VERSUS) && this.gm != GM_TRAINING)
         this.guiScene["briefing-flag"]["background-image"] = ::get_country_flag_img("bgflag_" + country)
 
       this.misObj_add = this.count_misObj_add(missionBlk)
     }
 
     this.partsList = []
-    if (this.briefing)
-    {
+    if (this.briefing) {
       let guiBlk = GUI.get()
       let exclBlock = guiBlk?.slides_exclude?[::get_country_flags_preset()]
-      let excludeArray = exclBlock? (exclBlock % "name") : []
+      let excludeArray = exclBlock ? (exclBlock % "name") : []
 
       local sceneInfo = ""
-      if (::current_campaign_mission)
-      {
+      if (::current_campaign_mission) {
         sceneInfo += loc(format("mb/%s/date", ::current_campaign_mission.tostring()), "")
-        sceneInfo += (sceneInfo=="")? "" : "\n"
+        sceneInfo += (sceneInfo == "") ? "" : "\n"
         sceneInfo += loc(format("mb/%s/place", ::current_campaign_mission.tostring()), "")
       }
       if (sceneInfo == "")
         sceneInfo = loc(this.briefing.getStr("place_loc", ""))
       this.setSceneInfo(sceneInfo)
 
-      this.music = this.briefing.getStr("music","action_01")
-      if ((::get_game_type() & GT_DYNAMIC) && country != "")
+      this.music = this.briefing.getStr("music", "action_01")
+      if ((get_game_type() & GT_DYNAMIC) && country != "")
         this.music = country + "_main_theme"
 
       local prevSlide = ""
 
-      for (local i = 0; i < this.briefing.blockCount(); i++)
-      {
+      for (local i = 0; i < this.briefing.blockCount(); i++) {
         let partBlock = this.briefing.getBlock(i);
-        if (partBlock.getBlockName() == "part")
-        {
+        if (partBlock.getBlockName() == "part") {
           let part =
           {
             subtitles = loc(partBlock.getStr("event", ""))
             slides = []
           }
           part.event <- partBlock.getStr("event", "")
-          for (local idx = part.event.indexof("/"); idx; )
-            if (idx != null)
-            {
-              part.event = part.event.slice(0, idx)+"_"+part.event.slice(idx+1)
+          for (local idx = part.event.indexof("/"); idx;)
+            if (idx != null) {
+              part.event = part.event.slice(0, idx) + "_" + part.event.slice(idx + 1)
               idx = part.event.indexof("/")
             }
           part.voiceLen <- loading_get_voice_len(part.event) //-1 if there's no sound
-          log("voice "+part.event+" len "+part.voiceLen.tostring())
+          log("voice " + part.event + " len " + part.voiceLen.tostring())
 
           local totalSlidesTime = 0.0
           let freeTimeSlides = []
-          foreach(slideBlock in partBlock % "slide")
-          {
+          foreach (slideBlock in partBlock % "slide") {
             let image = slideBlock.getStr("picture", "")
-            if (image != "")
-            {
-              if (::find_in_array(excludeArray, image, -1) >= 0)
-              {
+            if (image != "") {
+              if (::find_in_array(excludeArray, image, -1) >= 0) {
                 log("EXCLUDE by: " + ::get_country_flags_preset() + "; slide " + image)
                 continue
               }
@@ -152,8 +143,7 @@ const MIN_SLIDE_TIME = 2.0
               prevSlide = slide.image
           }
 
-          if (!part.slides.len())
-          {
+          if (!part.slides.len()) {
             local partTime = part.voiceLen
             if (partTime <= 0)
               partTime = (partBlock?.minTime ?? 0).tofloat()
@@ -163,18 +153,15 @@ const MIN_SLIDE_TIME = 2.0
               map = false
             })
           }
-          else if (part.voiceLen > totalSlidesTime)
-          {
-            if (freeTimeSlides.len())
-            {
+          else if (part.voiceLen > totalSlidesTime) {
+            if (freeTimeSlides.len()) {
               let slideTimeDiff = (part.voiceLen - totalSlidesTime) / freeTimeSlides.len()
-              foreach(slide in freeTimeSlides)
+              foreach (slide in freeTimeSlides)
                 slide.time += slideTimeDiff
             }
-            else if (totalSlidesTime)
-            {
+            else if (totalSlidesTime) {
               let slideTimeMul = part.voiceLen / totalSlidesTime
-              foreach(slide in part.slides)
+              foreach (slide in part.slides)
                 slide.time *= slideTimeMul
             }
           }
@@ -189,8 +176,7 @@ const MIN_SLIDE_TIME = 2.0
     if (::gchat_is_enabled() && hasMenuChat.value)
       ::switchMenuChatObjIfVisible(::getChatDiv(this.scene))
 
-    if (this.gt & GT_VERSUS)
-    {
+    if (this.gt & GT_VERSUS) {
       let missionHelpPath = ::g_mission_type.getHelpPathForCurrentMission()
       let haveHelp = hasFeature("ControlsHelp") && missionHelpPath != null
 
@@ -198,14 +184,12 @@ const MIN_SLIDE_TIME = 2.0
       if (helpBtnObj && !::show_console_buttons)
         helpBtnObj.setValue(loc("flightmenu/btnControlsHelp") + loc("ui/parentheses/space", { text = "F1" }))
 
-      if (haveHelp)
-      {
+      if (haveHelp) {
         let parts = split_by_chars(missionHelpPath, "/.")
         let helpId = parts.len() >= 2 ? parts[parts.len() - 2] : ""
         let cfgPath = "seen/help_mission_type/" + helpId
         let isSeen = ::loadLocalByAccount(cfgPath, 0)
-        if (!isSeen)
-        {
+        if (!isSeen) {
           this.onHelp()
           ::saveLocalByAccount(cfgPath, 1)
         }
@@ -213,16 +197,14 @@ const MIN_SLIDE_TIME = 2.0
     }
   }
 
-  function count_misObj_add(blk)
-  {
+  function count_misObj_add(blk) {
     let res = []
 
     local m_aircraft = blk.getStr("player_class", "")
     local m_weapon = blk.getStr("player_weapons", "")
 
-    if (this.gm == GM_TEST_FLIGHT)
-    {
-      m_aircraft = ::test_flight_aircraft.name
+    if (this.gm == GM_TEST_FLIGHT) {
+      m_aircraft = ::get_test_flight_unit_info()?.unit.name
       m_weapon = get_gui_option(::USEROPT_WEAPONS)
     }
     if ((m_aircraft != "") && !(this.gt & GT_VERSUS))
@@ -232,12 +214,10 @@ const MIN_SLIDE_TIME = 2.0
 
     local m_condition = ""
     if (::current_campaign_mission)
-      m_condition = loc("missions/"+::current_campaign_mission+"/condition", "")
+      m_condition = loc("missions/" + ::current_campaign_mission + "/condition", "")
 
-    if (m_condition == "")
-    {
-      if (!(this.gt & GT_VERSUS))
-      {
+    if (m_condition == "") {
+      if (!(this.gt & GT_VERSUS)) {
         let m_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
         if (m_location != "")
           m_condition += loc("location/" + m_location)
@@ -254,13 +234,11 @@ const MIN_SLIDE_TIME = 2.0
     return ::g_string.implode(res, "\n")
   }
 
-  function onUpdate(_obj, dt)
-  {
+  function onUpdate(_obj, dt) {
     if (!this.finished)
       this.slidesUpdate(dt)
 
-    if (this.nextSlideImg && this.isSlideReady())
-    {
+    if (this.nextSlideImg && this.isSlideReady()) {
       this.showSlide()
       this.checkNewSubtitles()
     }
@@ -268,29 +246,24 @@ const MIN_SLIDE_TIME = 2.0
     if (this.waitForMap)
       this.showMap()
 
-    if (this.applyReady != loading_is_finished())
-    {
+    if (this.applyReady != loading_is_finished()) {
       this.applyReady = loading_is_finished()
       let showStart = !::is_multiplayer() && this.gm != GM_TRAINING && !changeStartMission
       if ((this.applyReady && !showStart) || this.finished)
         this.finishLoading()
-      else
-      {
+      else {
         this.showSceneBtn("btn_select", this.applyReady && showStart)
         this.showSceneBtn("loadanim", !this.applyReady)
       }
     }
 
-    if (this.finished && (!this.waitForMap))
-    {  //tipsUpdate
+    if (this.finished && (!this.waitForMap)) {  //tipsUpdate
       this._tipTime -= dt
-      if (this.tipShow && (this._tipTime < 0))
-      {
+      if (this.tipShow && (this._tipTime < 0)) {
         this.setSceneInfo("")
         this.tipShow = false
       }
-      if (this._tipTime < -1)
-      {
+      if (this._tipTime < -1) {
         this._tipTime = this.tipShowTime
         this.tipShow = true
         this.setSceneInfo(::g_tips.getTip())
@@ -298,49 +271,41 @@ const MIN_SLIDE_TIME = 2.0
     }
   }
 
-  function checkNewSubtitles()
-  {
-    if (this.nextSubtitles)
-    {
+  function checkNewSubtitles() {
+    if (this.nextSubtitles) {
       this.setSubtitles(this.nextSubtitles)
       this.nextSubtitles = null
     }
   }
 
-  function slidesUpdate(dt)
-  {
+  function slidesUpdate(dt) {
     this.slideTime -= dt
     if (this.slideTime <= 0)
       this.checkNextSlide()
   }
 
-  function checkNextSlide()
-  {
+  function checkNextSlide() {
     let isLastSlideInPart = this.slideIdx >= this.partsList[this.partIdx].slides.len() - 1
     if (isLastSlideInPart && loading_is_voice_playing())
       return
 
-    if (!this.slidesStarted)
-    {
+    if (!this.slidesStarted) {
       this.slidesStarted = true
       this.onSlidesStart()
     }
 
     if (!isLastSlideInPart)
       this.slideIdx++
-    else
-    {
+    else {
       this.partIdx++
       this.setSubtitles("")
-      if (this.partIdx >= this.partsList.len() || !this.partsList[this.partIdx].slides.len())
-      {
+      if (this.partIdx >= this.partsList.len() || !this.partsList[this.partIdx].slides.len()) {
         this.setFinished()
         if (loading_is_finished())
           this.finishLoading()
         return
       }
-      else
-      {
+      else {
         this.slideIdx = 0
         this.nextSubtitles = this.partsList[this.partIdx].subtitles
         loading_stop_voice_but_named_events()
@@ -360,17 +325,14 @@ const MIN_SLIDE_TIME = 2.0
       this.setSlide(curSlide.image)
   }
 
-  function setFinished()
-  {
+  function setFinished() {
     this.finished = true
     this.showMap()
   }
 
-  function onSlidesStart()
-  {
+  function onSlidesStart() {
     this.setSceneTitle(::getCurMpTitle())
-    if (this.partsList.len() > 0)
-    {
+    if (this.partsList.len() > 0) {
       this.setSubtitles(this.partsList[0].subtitles)
       loading_play_music(this.music)
       loading_play_voice(this.partsList[0].event, true)
@@ -379,75 +341,62 @@ const MIN_SLIDE_TIME = 2.0
     ::start_gui_sound("slide_loop")
   }
 
-  function setSlide(imgName)
-  {
-    this.nextSlideImg = (imgName != "")? imgName : null
+  function setSlide(imgName) {
+    this.nextSlideImg = (imgName != "") ? imgName : null
     this.hideSlide()
   }
 
-  function hideSlide()
-  {
+  function hideSlide() {
     this.guiScene["slide-place"].animShow = "hide"
-    if (!this.hideSoundPlayed)
-    {
+    if (!this.hideSoundPlayed) {
       this.guiScene.playSound("slide_in")
       this.hideSoundPlayed = true
     }
   }
 
-  function showSlide()
-  {
+  function showSlide() {
     this.showProjectorGlow(true)
     this.showProjectorSmallGlow(false)
     let place = this.guiScene["slide-place"]
     place.animShow = "show"
     this.guiScene.playSound("slide_out")
     this.hideSoundPlayed = false
-    if (this.nextSlideImg)
-    {
-      this.guiScene["slide-img"]["background-image"] = $"ui/slides/{this.nextSlideImg}.jpg?P1"
-      place.rotation = (2.0*::math.frnd() - 1.0).tostring()
-      place.padding = format("%fsh, %fsh, 0, 0", 0.1*(::math.frnd() - 0.5), 0.05*(::math.frnd() - 0.5))
+    if (this.nextSlideImg) {
+      this.guiScene["slide-img"]["background-image"] = $"ui/slides/{this.nextSlideImg}?P1"
+      place.rotation = (2.0 * frnd() - 1.0).tostring()
+      place.padding = format("%fsh, %fsh, 0, 0", 0.1 * (frnd() - 0.5), 0.05 * (frnd() - 0.5))
       this.nextSlideImg = null
     }
   }
 
-  function showProjectorGlow(show)
-  {
+  function showProjectorGlow(show) {
     if (this.guiScene["briefingglow"])
       this.guiScene["briefingglow"].show(show)
   }
-  function showProjectorSmallGlow(show)
-  {
+  function showProjectorSmallGlow(show) {
     if (this.guiScene["briefingsmallglow"])
       this.guiScene["briefingsmallglow"].show(show)
   }
 
-  function isSlideReady()
-  {
+  function isSlideReady() {
     return (this.guiScene["slide-place"]["_pos-timer"] == "0")
   }
 
-  function setSceneInfo(text)
-  {
+  function setSceneInfo(text) {
     this.safeSetValue("scene-info", text)
   }
 
-  function setSubtitles(text)
-  {
+  function setSubtitles(text) {
     this.safeSetValue("scene-subtitles", text)
   }
 
-  function showMap()
-  {
-    if (this.isSlideReady())
-    {
+  function showMap() {
+    if (this.isSlideReady()) {
       this.showProjectorGlow(false)
       this.showProjectorSmallGlow(true)
       this.checkNewSubtitles()
       this.waitForMap = false
-      if (this.briefing)
-      {
+      if (this.briefing) {
         local misObj = ""
         if (::current_campaign_mission)
           misObj = loc(format("mb/%s/objective", ::current_campaign_mission.tostring()), "")
@@ -472,59 +421,50 @@ const MIN_SLIDE_TIME = 2.0
       this.setSceneInfo("")
 
       let obj = this.guiScene?["tactical-map"]
-      if (obj)
-      {
+      if (obj) {
         if (obj?.animShow != "show")
           this.guiScene.playSound("show_map")
         obj.animShow = "show"
         obj.show(true)
       }
     }
-    else
-    {
+    else {
       this.hideSlide()
       this.waitForMap = true
     }
   }
 
-  function setMissionObjective(text)
-  {
+  function setMissionObjective(text) {
     this.safeSetValue("mission-objectives", text)
   }
 
-  function safeSetValue(objName, value)
-  {
-    let show = (value != null)&&(value != "")
+  function safeSetValue(objName, value) {
+    let show = (value != null) && (value != "")
     let obj = this.guiScene[objName]
-    if (obj)
-    {
+    if (obj) {
       if (show)
         obj.setValue(value)
       obj.animShow = (show) ? "show" : "hide"
     }
   }
 
-  function onHelp(_obj = null)
-  {
+  function onHelp(_obj = null) {
     ::gui_modal_help(false, HELP_CONTENT_SET.LOADING)
   }
 
-  function onApply(_obj)
-  {
+  function onApply(_obj) {
     loading_stop_voice()
     loading_stop_music()
     loading_press_apply()
   }
 
-  function finishLoading()
-  {
+  function finishLoading() {
     loading_stop_voice()
     loading_stop_music()
     briefing_finish()
   }
 
-  function onTestBack(_obj)
-  {
+  function onTestBack(_obj) {
     this.goForward(::gui_start_mainmenu)
   }
 

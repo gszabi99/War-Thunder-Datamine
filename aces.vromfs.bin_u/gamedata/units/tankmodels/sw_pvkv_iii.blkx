@@ -16,7 +16,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -58,8 +58,8 @@
       ],
       "suffix": "1",
       "dmName": "gunner_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -122,8 +122,8 @@
       ],
       "suffix": "2",
       "dmName": "driver_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -186,8 +186,8 @@
       ],
       "suffix": "3",
       "dmName": "machine_gunner_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -250,8 +250,8 @@
       ],
       "suffix": "4",
       "dmName": "commander_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -314,8 +314,8 @@
       ],
       "suffix": "5",
       "dmName": "loader_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -403,6 +403,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -2930,6 +2940,115 @@
     ],
     "detectionHeight": 2.71,
     "bone_turret": "bone_mg_aa_h_01"
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": true,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_01_dm": {
+          "count": 1
+        },
+        "ammo_turret_02_dm": {
+          "count": 1
+        },
+        "ammo_turret_03_dm": {
+          "count": 1
+        },
+        "ammo_turret_04_dm": {
+          "count": 1
+        },
+        "ammo_turret_05_dm": {
+          "count": 1
+        },
+        "ammo_turret_06_dm": {
+          "count": 1
+        },
+        "ammo_turret_07_dm": {
+          "count": 1
+        },
+        "ammo_turret_08_dm": {
+          "count": 1
+        },
+        "ammo_turret_09_dm": {
+          "count": 1
+        },
+        "ammo_turret_10_dm": {
+          "count": 1
+        },
+        "ammo_turret_11_dm": {
+          "count": 1
+        },
+        "ammo_turret_12_dm": {
+          "count": 1
+        },
+        "ammo_turret_13_dm": {
+          "count": 1
+        },
+        "ammo_turret_14_dm": {
+          "count": 1
+        },
+        "ammo_turret_15_dm": {
+          "count": 1
+        },
+        "ammo_turret_16_dm": {
+          "count": 1
+        },
+        "ammo_body_01_dm": {
+          "count": 1
+        },
+        "ammo_body_02_dm": {
+          "count": 1
+        },
+        "ammo_body_03_dm": {
+          "count": 1
+        },
+        "ammo_body_04_dm": {
+          "count": 1
+        },
+        "ammo_body_05_dm": {
+          "count": 1
+        },
+        "ammo_body_06_dm": {
+          "count": 1
+        },
+        "ammo_body_07_dm": {
+          "count": 1
+        },
+        "ammo_body_08_dm": {
+          "count": 1
+        },
+        "ammo_body_09_dm": {
+          "count": 1
+        },
+        "ammo_body_10_dm": {
+          "count": 1
+        },
+        "ammo_body_11_dm": {
+          "count": 1
+        },
+        "ammo_body_12_dm": {
+          "count": 1
+        },
+        "ammo_body_13_dm": {
+          "count": 1
+        },
+        "ammo_body_14_dm": {
+          "count": 1
+        },
+        "ammo_body_15_dm": {
+          "count": 1
+        },
+        "ammo_body_16_dm": {
+          "count": 1
+        }
+      }
+    }
   },
   "modifications": {
     "new_tank_tracks": {},

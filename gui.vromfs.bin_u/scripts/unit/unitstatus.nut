@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -13,10 +14,9 @@ let canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && !unit.getOpenCost().isZero()
 
 
-let function isUnitHaveSecondaryWeapons(unit)
-{
+let function isUnitHaveSecondaryWeapons(unit) {
   local foundWeapon = false
-  foreach(weapon in unit.getWeapons())
+  foreach (weapon in unit.getWeapons())
     if (!isWeaponAux(weapon))
       if (foundWeapon)
         return true
@@ -25,8 +25,7 @@ let function isUnitHaveSecondaryWeapons(unit)
   return "" != getWeaponInfoText(unit, { isPrimary = false, weaponPreset = 0, needTextWhenNoWeapons = false })
 }
 
-let function isShipWithoutPurshasedTorpedoes(unit)
-{
+let function isShipWithoutPurshasedTorpedoes(unit) {
   if (!unit?.isShipOrBoat())
     return false
 
@@ -43,8 +42,7 @@ let function isShipWithoutPurshasedTorpedoes(unit)
   return true
 }
 
-let function getBitStatus(unit, params = {})
-{
+let function getBitStatus(unit, params = {}) {
   let isLocalState = params?.isLocalState ?? true
   let forceNotInResearch  = params?.forceNotInResearch ?? false
   let shopResearchMode    = params?.shopResearchMode ?? false
@@ -90,12 +88,11 @@ let function getBitStatus(unit, params = {})
 
   if ((shopResearchMode
       && (isSquadVehicle || !(bitStatus &
-        ( bit_unit_status.locked
+        (bit_unit_status.locked
           | bit_unit_status.canBuy
           | bit_unit_status.inResearch
           | bit_unit_status.canResearch))))
-    || (isSquadronResearchMode && !isSquadVehicle))
-  {
+    || (isSquadronResearchMode && !isSquadVehicle)) {
     bitStatus = bit_unit_status.disabled
   }
 
@@ -120,8 +117,7 @@ let function isAvailablePrimaryWeapon(unit, weaponName) {
   availableWeapons = clone defaultPrimaryWeaponsMod
   if (unitBlk?.modifications != null) {
     let modificationsCount = unitBlk.modifications.blockCount()
-    for (local i = 0; i < modificationsCount; i++)
-    {
+    for (local i = 0; i < modificationsCount; i++) {
       let modification = unitBlk.modifications.getBlock(i)
       let modName = modification.getBlockName()
       let commonWeapons = modification?.effects?.commonWeapons
@@ -132,11 +128,9 @@ let function isAvailablePrimaryWeapon(unit, weaponName) {
         let weapons = []
         if (unitBlk?.WeaponSlots != null) {
           foreach (weaponSlot in (unitBlk.WeaponSlots % "WeaponSlot")) {
-            if (weap?.slot == weaponSlot?.index)
-            {
+            if (weap?.slot == weaponSlot?.index) {
               foreach (weaponPreset in (weaponSlot % "WeaponPreset")) {
-                if (weap?.preset == weaponPreset?.name)
-                {
+                if (weap?.preset == weaponPreset?.name) {
                   foreach (weapon in (weaponPreset % "Weapon"))
                     weapons.append(weapon)
                   break
@@ -149,24 +143,23 @@ let function isAvailablePrimaryWeapon(unit, weaponName) {
         else
           weapons.append(weap)
 
-        foreach (weapon in weapons)
-        {
+        foreach (weapon in weapons) {
            if (!weapon?.blk || weapon?.dummy)
             continue
           let weapBlk = blkFromPath(weapon.blk)
-          if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
+          if (availableWeapons != null && (weapBlk?.rocket.isFlare ?? false))
             availableWeapons.flares = modName
-          if (availableWeapons!=null && (weapBlk?.rocket.isChaff ?? false))
+          if (availableWeapons != null && (weapBlk?.rocket.isChaff ?? false))
             availableWeapons.chaffs = modName
-          if (availableWeapons!=null && (weapBlk?.bullet.rocket.isChaff ?? false))
+          if (availableWeapons != null && (weapBlk?.bullet.rocket.isChaff ?? false))
             availableWeapons.chaffs = modName
-          if (availableWeapons!=null && (weapBlk?.bullet.rocket.isFlare ?? false))
+          if (availableWeapons != null && (weapBlk?.bullet.rocket.isFlare ?? false))
             availableWeapons.flares = modName
         }
       }
     }
   }
-  availablePrimaryWeaponsMod[unit.name] <-availableWeapons
+  availablePrimaryWeaponsMod[unit.name] <- availableWeapons
   return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 }
 

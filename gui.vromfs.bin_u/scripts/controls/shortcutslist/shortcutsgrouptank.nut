@@ -1,8 +1,12 @@
-from "%scripts/dagui_library.nut" import *
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+from "%scripts/dagui_library.nut" import *
+let { get_option_multiplier, set_option_multiplier,
+  OPTION_AIM_TIME_NONLINEARITY_TANK, OPTION_AIM_ACCELERATION_DELAY_TANK,
+  OPTION_MOUSE_Z_TANK_MULT
+} = require("gameOptions")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -234,7 +238,6 @@ return [
     id = "gm_sensor_cue_z"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() hasFeature("RadarElevationControl")
   }
   {
     id = "ID_TANK_NIGHT_VISION"
@@ -340,16 +343,16 @@ return [
   {
     id = "aim_time_nonlinearity_tank"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK, objValue / 100.0)
+      set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK, objValue / 100.0)
   }
   {
     id = "aim_acceleration_delay_tank"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK, objValue / 100.0)
+      set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK, objValue / 100.0)
   }
   {
     id = "mouse_z_ground"
@@ -362,8 +365,8 @@ return [
   {
     id = "mouse_z_mult_ground"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_MOUSE_Z_TANK_MULT)
-    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_Z_TANK_MULT, objValue / 100.0)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_MOUSE_Z_TANK_MULT)
+    setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_Z_TANK_MULT, objValue / 100.0)
     showFunc = @() hasFeature("EnableMouse")
   }
 //-------------------------------------------------------

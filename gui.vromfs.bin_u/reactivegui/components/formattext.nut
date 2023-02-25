@@ -2,12 +2,12 @@ from "%rGui/globals/ui_library.nut" import *
 let { is_pc, platformId } = require("%sqstd/platform.nut")
 
 let formatters = require("textFormatters.nut")
-let {defStyle} = formatters
+let { defStyle } = formatters
 let function filter(object) {
-  return !(object?.platform == null || object.platform.indexof(platformId)!=null
-    || (is_pc && object.platform.indexof("pc")!=null))
+  return !(object?.platform == null || object.platform.indexof(platformId) != null
+    || (is_pc && object.platform.indexof("pc") != null))
 }
-let formatText = require("%darg/helpers/mkFormatAst.nut")({formatters, style=defStyle, filter})
+let formatText = require("%darg/helpers/mkFormatAst.nut")({ formatters, style = defStyle, filter })
 
 return {
   formatText

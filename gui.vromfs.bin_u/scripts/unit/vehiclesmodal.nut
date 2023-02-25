@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -18,8 +19,7 @@ let MAX_SLOT_COUNT_X = 4
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
 
-local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
-{
+local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   unitsFilter          = null
   units                = null
@@ -35,8 +35,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   actionsListOpenTime  = 0
   maxSlotCountY = 6
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.collectUnitData()
     return {
       slotCountX = MAX_SLOT_COUNT_X
@@ -50,8 +49,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     let listObj = this.scene.findObject("units_list")
     this.restoreLastUnitSelection(listObj)
     this.initPopupFilter()
@@ -70,15 +68,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   getNavBarView = @() null
   updateButtons = @() null
 
-  function collectUnitData()
-  {
+  function collectUnitData() {
     this.units = []
     this.countries = {}
     this.unitsTypes = {}
 
-    foreach(unit in ::all_units)
-      if (!this.unitsFilter || this.unitsFilter(unit))
-      {
+    foreach (unit in ::all_units)
+      if (!this.unitsFilter || this.unitsFilter(unit)) {
         let country = unit.shopCountry
         let unitTypeStr = unit.unitType.esUnitType.tostring()
         this.units.append(unit)
@@ -89,12 +85,11 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
             value = false
           }
         if (!(unitTypeStr in this.unitsTypes))
-          this.unitsTypes[unitTypeStr] <- {unitType = unit.unitType, value = false}
+          this.unitsTypes[unitTypeStr] <- { unitType = unit.unitType, value = false }
       }
   }
 
-  function onChangeFilterItem(objId, typeName, value)
-  {
+  function onChangeFilterItem(objId, typeName, value) {
     let isTypeUnit = typeName == "unit"
     let referenceArr = isTypeUnit ? this.unitsTypes : this.countries
     if (objId == RESET_ID)
@@ -105,16 +100,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     this.fillUnitsList()
   }
 
-  function getFiltersView()
-  {
+  function getFiltersView() {
     let res = []
-    foreach (tName in ["country", "unit"])
-    {
+    foreach (tName in ["country", "unit"]) {
       let isUnitType = tName == "unit"
       let responceArr = isUnitType ? this.unitsTypes : this.countries
       let view = { checkbox = [] }
-      foreach(inst in responceArr)
-      {
+      foreach (inst in responceArr) {
         if (isUnitType && !inst.unitType.isAvailable())
           continue
 
@@ -127,23 +119,21 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         })
       }
 
-      view.checkbox.sort(@(a,b) a.idx <=> b.idx)
+      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
 
       if (view.checkbox.len() > 0)
-        view.checkbox[view.checkbox.len()-1].isLastCheckBox <- true
+        view.checkbox[view.checkbox.len() - 1].isLastCheckBox <- true
 
       res.append(view)
     }
     return res
   }
 
-  function getUnitsListData()
-  {
+  function getUnitsListData() {
     this.filteredUnits = []
     let isEmptyCountryFilter  = this.countries.findindex(@(t) t.value) == null
     let isEmptyUnitFilter = this.unitsTypes.findindex(@(t) t.value) == null
-    foreach(unit in this.units)
-    {
+    foreach (unit in this.units) {
       let country = unit.shopCountry
       // Show all items if filters list is empty
       if ((!isEmptyCountryFilter && !this.countries[country].value)
@@ -153,15 +143,14 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     local data = ""
-    foreach(unit in this.filteredUnits)
+    foreach (unit in this.filteredUnits)
       data += format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
         ::build_aircraft_item(unit.name, unit, this.getUnitItemParams(unit)))
 
     return data
   }
 
-  function fillUnitsList()
-  {
+  function fillUnitsList() {
     let listObj = this.scene.findObject("units_list")
     if (!checkObj(listObj))
       return
@@ -169,8 +158,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     let data = this.getUnitsListData()
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
-    foreach(unit in this.units)
-    {
+    foreach (unit in this.units) {
       let placeObj = listObj.findObject("cont_" + unit.name)
       if (!placeObj)
         continue
@@ -182,8 +170,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     this.restoreLastUnitSelection(listObj)
   }
 
-  function selectCell()
-  {
+  function selectCell() {
     let listObj = this.scene.findObject("units_list")
     if (!listObj?.isValid())
       return
@@ -195,11 +182,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     listObj.setValue(idx)
   }
 
-  function restoreLastUnitSelection(listObj)
-  {
+  function restoreLastUnitSelection(listObj) {
     local newIdx = -1
-    if (this.lastSelectedUnit)
-    {
+    if (this.lastSelectedUnit) {
       let unit = this.lastSelectedUnit
       newIdx = this.filteredUnits.findindex(@(u) u == unit) ?? -1
     }
@@ -211,15 +196,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     listObj.setValue(newIdx)
     this.needSkipFocus = false
 
-    if (newIdx == -1)
-    {
+    if (newIdx == -1) {
       this.lastSelectedUnit = null
       this.updateButtons()
     }
   }
 
-  function getUnitItemParams(_unit)
-  {
+  function getUnitItemParams(_unit) {
     return {
       hasActions         = true
       isInTable          = false
@@ -229,10 +212,9 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  getParamsForActionsList = @() {setResearchManually  = true}
+  getParamsForActionsList = @() { setResearchManually  = true }
 
-  function checkUnitItemAndUpdate(unit)
-  {
+  function checkUnitItemAndUpdate(unit) {
     if (!unit)
       return
 
@@ -240,8 +222,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     ::updateAirAfterSwitchMod(unit)
   }
 
-  function updateUnitItem(unit, placeObj)
-  {
+  function updateUnitItem(unit, placeObj) {
     if (!checkObj(placeObj))
       return
 
@@ -250,15 +231,14 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     this.updateAdditionalProp(unit, placeObj)
   }
 
-  function updateAdditionalProp(unit, placeObj)
-  {
+  function updateAdditionalProp(unit, placeObj) {
     ::fill_unit_item_timers(placeObj.findObject(unit.name), unit, this.getUnitItemParams(unit))
-    ::showUnitDiscount(placeObj.findObject(unit.name+"-discount"), unit)
+    ::showUnitDiscount(placeObj.findObject(unit.name + "-discount"), unit)
 
     local bonusData = unit.name
     if (::isUnitGroup(unit))
       bonusData = ::u.map(unit.airsGroup, function(unit) { return unit.name })
-    ::showAirExpWpBonus(placeObj.findObject(unit.name+"-bonus"), bonusData)
+    ::showAirExpWpBonus(placeObj.findObject(unit.name + "-bonus"), bonusData)
   }
 
   function getCurSlotObj() {
@@ -270,8 +250,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     return listObj.getChild(idx).getChild(0)
   }
 
-  function onUnitSelect(_obj)
-  {
+  function onUnitSelect(_obj) {
     this.lastSelectedUnit = null
     let slotObj = this.getCurSlotObj()
     if (checkObj(slotObj))
@@ -297,8 +276,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     this.onUnitAction(obj)
   }
 
-  function onEventUnitResearch(p)
-  {
+  function onEventUnitResearch(p) {
     let prevUnitName = p?.prevUnitName
     let unitName = p?.unitName
 
@@ -308,24 +286,20 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     this.checkUnitItemAndUpdate(::getAircraftByName(unitName))
   }
 
-  function onEventUnitBought(p)
-  {
+  function onEventUnitBought(p) {
     ::update_gamercards()
     this.checkUnitItemAndUpdate(::getAircraftByName(p?.unitName))
   }
 
-  function onEventFlushSquadronExp(_p)
-  {
+  function onEventFlushSquadronExp(_p) {
     this.fillUnitsList()
   }
 
-  function onEventModificationPurchased(p)
-  {
+  function onEventModificationPurchased(p) {
     this.checkUnitItemAndUpdate(p?.unit)
   }
 
-  function onEventUnitRepaired(p)
-  {
+  function onEventUnitRepaired(p) {
     this.checkUnitItemAndUpdate(p?.unit)
   }
 }
@@ -334,8 +308,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
 return {
   handlerClass = handlerClass
-  open = function(unitsFilter = null, params = {})
-  {
+  open = function(unitsFilter = null, params = {}) {
     let handlerParams = params.__merge({ unitsFilter = unitsFilter })
     ::handlersManager.loadHandler(handlerClass, handlerParams)
   }

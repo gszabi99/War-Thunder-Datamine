@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,8 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
-global enum Team //better to replace it everywhere by g_teams
-{
+global enum Team { //better to replace it everywhere by g_teams
   Any   = 0,
   A     = 1,
   B     = 2,
@@ -71,17 +71,14 @@ enums.addTypesByGlobalName("g_team", {
 }, null, "id")
 
 ::g_team.teams = [::g_team.A, ::g_team.B]
-::g_team.getTeams <- function getTeams()
-{
+::g_team.getTeams <- function getTeams() {
   return this.teams
 }
 
-::g_team.getTeamByCode <- function getTeamByCode(code)
-{
+::g_team.getTeamByCode <- function getTeamByCode(code) {
   return enums.getCachedType("code", code, this.cache.byCode, this, this.NONE)
 }
 
-::g_team.getTeamByCountriesOption <- function getTeamByCountriesOption(optionId)
-{
+::g_team.getTeamByCountriesOption <- function getTeamByCountriesOption(optionId) {
   return enums.getCachedType("teamCountriesOption", optionId, this.cache.byCountriesOption, this, this.NONE)
 }

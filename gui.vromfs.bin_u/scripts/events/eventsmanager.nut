@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format, split_by_chars } = require("string")
+let { rnd } = require("dagor.random")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
@@ -28,6 +30,7 @@ let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/
 let { getTournamentInfoBlk } = require("%scripts/events/eventRewards.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -41,8 +44,7 @@ const SQUAD_NOT_READY_LOC_TAG = "#snr"
 
 const ES_UNIT_TYPE_TOTAL_RELEASED = 3
 
-global enum UnitRelevance
-{
+global enum UnitRelevance {
   NONE,
   MEDIUM,
   BEST,
@@ -57,8 +59,7 @@ let eventNameText = {
 
 systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
 
-::Events <- class
-{
+::Events <- class {
   __game_events        = {}
   lastUpdate           = 0
   chapters             = null
@@ -105,42 +106,37 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   unallowedEventEconomicNames = []
   unallowedEventEconomicNamesNeedUpdate = true
 
-  constructor()
-  {
+  constructor() {
     this.__game_events        = {}
     this.chapters = ::EventChaptersManager()
     this.initBrToTierConformity()
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
-  function initBrToTierConformity()
-  {
+  function initBrToTierConformity() {
     let brToTierBlk = GUI.get()?.events_br_to_tier_conformity
     if (!brToTierBlk)
       return
 
     this.brToTier.clear()
-    foreach(p2 in brToTierBlk % "brToTier")
+    foreach (p2 in brToTierBlk % "brToTier")
       if (::u.isPoint2(p2))
         this.brToTier[p2.x] <- p2.y.tointeger()
   }
 
-  function getTableConfigShortRowByEvent(event)
-  {
+  function getTableConfigShortRowByEvent(event) {
     foreach (row in this.eventsTableConfig)
       if (row.isDefaultSortRowInEvent(event))
         return row
     return null
   }
 
-  function getLbCategoryByField(field)
-  {
+  function getLbCategoryByField(field) {
     let category = ::g_lb_category.getTypeByField(field)
     return isInArray(category, this.eventsTableConfig) ? category : null
   }
 
-  function updateEventsData(newEventsData)
-  {
+  function updateEventsData(newEventsData) {
     this.__game_events = this.mergeEventsInfo(this.__game_events, newEventsData)
     this.chapters.updateChapters()
     this.eventsLoaded = true
@@ -150,10 +146,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     this.unallowedEventEconomicNamesNeedUpdate = true
   }
 
-  function isTankEventActive(eventPrefix)
-  {
-    foreach (event in this.__game_events)
-    {
+  function isTankEventActive(eventPrefix) {
+    foreach (event in this.__game_events) {
       if (event.name.len() >= eventPrefix.len() &&
           event.name.slice(0, eventPrefix.len()) == eventPrefix &&
           this.isEventEnabled(event))
@@ -162,8 +156,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function getTankEvent(eventPrefix)
-  {
+  function getTankEvent(eventPrefix) {
     foreach (event in this.__game_events)
       if (event.name.len() >= eventPrefix.len() &&
           event.name.slice(0, eventPrefix.len()) == eventPrefix &&
@@ -172,46 +165,39 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return null
   }
 
-  function getTankEventName(eventPrefix)
-  {
+  function getTankEventName(eventPrefix) {
     let event = this.getTankEvent(eventPrefix)
     return event && event.name
   }
 
-  function setDifficultyWeight(event)
-  {
+  function setDifficultyWeight(event) {
     local diffWeight = null
     if (!("mission_decl" in event) ||
         !("difficulty" in event.mission_decl) ||
         event.mission_decl.difficulty == ""
        )
       diffWeight = -1
-    else
-    {
+    else {
       diffWeight = this.diffTable[event.mission_decl.difficulty]
-      if(this.isDifficultyCustom(event))
+      if (this.isDifficultyCustom(event))
         diffWeight++
     }
     return diffWeight
   }
 
-  function getEventDisplayType(event)
-  {
+  function getEventDisplayType(event) {
     return event?._displayType ?? ::g_event_display_type.NONE
   }
 
-  function setEventDisplayType(event, displayType)
-  {
+  function setEventDisplayType(event, displayType) {
     event._displayType <- displayType
   }
 
-  function isEventEnableOnDebug(event)
-  {
+  function isEventEnableOnDebug(event) {
     return (event?.enableOnDebug  ?? false) && !this.hasEventEndTime(event)
   }
 
-  function isEventNeedInfoButton(event)
-  {
+  function isEventNeedInfoButton(event) {
     if (!isMultiplayerPrivilegeAvailable.value)
       return false
 
@@ -220,8 +206,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return this.isEventForClan(event) || this.isEventWithLobby(event) || this.isEventEnableOnDebug(event)
   }
 
-  function openEventInfo(event)
-  {
+  function openEventInfo(event) {
     if (this.isEventWithLobby(event))
       ::gui_handlers.EventRoomsHandler.open(event)
     else
@@ -232,64 +217,54 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Returns "true" if event is not debug or client
    * has specific feature: ShowDebugEvents
    */
-  function checkEnableOnDebug(event)
-  {
+  function checkEnableOnDebug(event) {
     return !this.isEventEnableOnDebug(event) || hasFeature("ShowDebugEvents")
   }
 
-  function isEventDisplayWide(event)
-  {
+  function isEventDisplayWide(event) {
     return (event?.displayWide ?? false) && !this.isEventEnableOnDebug(event)
   }
 
-  function checkTankEvents()
-  {
-    foreach (event in this.__game_events)
-    {
+  function checkTankEvents() {
+    foreach (event in this.__game_events) {
       if (this.isEventRandomBattles(event) && this.isEventEnabled(event))
         return true
     }
     return false
   }
 
-  function isUnitTypeAvailable(event, unitType)
-  {
+  function isUnitTypeAvailable(event, unitType) {
     return (this.getEventUnitTypesMask(event) & (1 << unitType)) != 0
   }
 
-  function isUnitTypeRequired(event, unitType, valueWhenNoRequiredUnits = false)
-  {
+  function isUnitTypeRequired(event, unitType, valueWhenNoRequiredUnits = false) {
     let reqUnitTypesMask = this.getEventRequiredUnitTypesMask(event)
     return reqUnitTypesMask != 0 ? reqUnitTypesMask & (1 << unitType) : valueWhenNoRequiredUnits
   }
 
-  function getEventUnitTypesMask(event)
-  {
+  function getEventUnitTypesMask(event) {
     if (!("unitTypesMask" in event))
       event.unitTypesMask <- this.countAvailableUnitTypes(event)
     return event.unitTypesMask
   }
 
-  function getEventRequiredUnitTypesMask(event)
-  {
+  function getEventRequiredUnitTypesMask(event) {
     if (!("reqUnitTypesMask" in event))
       event.reqUnitTypesMask <- this.countRequiredUnitTypesMask(event)
     return event.reqUnitTypesMask
   }
 
-  function getBaseUnitTypefromRule(rule, checkAllAvailable)
-  {
+  function getBaseUnitTypefromRule(rule, checkAllAvailable) {
     if (!("class" in rule))
       return ES_UNIT_TYPE_INVALID
     if (checkAllAvailable)
-      foreach(key in ["name", "type"])
+      foreach (key in ["name", "type"])
         if (key in rule)
           return ES_UNIT_TYPE_INVALID
     return ::getUnitTypeByText(rule["class"])
   }
 
-  function getMatchingUnitType(unit)
-  {
+  function getMatchingUnitType(unit) {
     let matchingUnitType = ::get_es_unit_type(unit)
     // override boats as ships because there are no boats on the matching
     if (matchingUnitType == ES_UNIT_TYPE_BOAT)
@@ -300,21 +275,17 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   /**
    * Supports event objects and session lobby info as parameter.
    */
-  function countAvailableUnitTypes(teamDataByTeamName)
-  {
+  function countAvailableUnitTypes(teamDataByTeamName) {
     local resMask = 0
-    foreach(team in this.getSidesList())
-    {
+    foreach (team in this.getSidesList()) {
       let teamData = this.getTeamData(teamDataByTeamName, team)
       if (!teamData || !this.isTeamDataPlayable(teamData))
         continue
 
       local teamUnitTypes = 0
-      foreach(rule in this.getAlowedCrafts(teamData))
-      {
+      foreach (rule in this.getAlowedCrafts(teamData)) {
         local unitType = this.getBaseUnitTypefromRule(rule, false)
-        if ("name" in rule)
-        {
+        if ("name" in rule) {
           let unit = ::getAircraftByName(rule.name)
           if (unit)
             unitType = this.getMatchingUnitType(unit)
@@ -327,8 +298,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       if (!teamUnitTypes)
         teamUnitTypes = ::allUnitTypesMask
 
-      foreach(rule in this.getForbiddenCrafts(teamData))
-      {
+      foreach (rule in this.getForbiddenCrafts(teamData)) {
         let unitType = this.getBaseUnitTypefromRule(rule, true)
         if (unitType >= 0)
           teamUnitTypes = teamUnitTypes & ~(1 << unitType)
@@ -343,23 +313,19 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return resMask
   }
 
-  function getUnitTypesByTeamDataAndName(teamData, teamName)
-  {
+  function getUnitTypesByTeamDataAndName(teamData, teamName) {
     if (teamData == null)
       return ::allUnitTypesMask
-    return this.countAvailableUnitTypes({ [teamName]=teamData })
+    return this.countAvailableUnitTypes({ [teamName] = teamData })
   }
 
   //result 0 - no required crafts
-  function countRequiredUnitTypesMaskByTeamData(teamData)
-  {
+  function countRequiredUnitTypesMaskByTeamData(teamData) {
     local res = 0
     let reqCrafts = this.getRequiredCrafts(teamData)
-    foreach(rule in reqCrafts)
-    {
+    foreach (rule in reqCrafts) {
       local unitType = this.getBaseUnitTypefromRule(rule, false)
-      if ("name" in rule)
-      {
+      if ("name" in rule) {
         let unit = ::getAircraftByName(rule.name)
         if (unit)
           unitType = this.getMatchingUnitType(unit)
@@ -372,11 +338,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return res
   }
 
-  function countRequiredUnitTypesMask(event)
-  {
+  function countRequiredUnitTypesMask(event) {
     local res = 0
-    foreach(team in this.getSidesList())
-    {
+    foreach (team in this.getSidesList()) {
       let teamData = this.getTeamData(event, team)
       if (!teamData || !this.isTeamDataPlayable(teamData))
         continue
@@ -389,32 +353,27 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   /**
    * Returns list of events for game mode select menu
    */
-  function getEventsForGcDrawer()
-  {
+  function getEventsForGcDrawer() {
     return this.getEventsList(EVENT_TYPE.ANY & (~EVENT_TYPE.NEWBIE_BATTLES),
       @(event) this.getEventDisplayType(event).showInGamercardDrawer && this.isEventActive(event))
   }
 
-  function getVisibleEventsList()
-  {
+  function getVisibleEventsList() {
     return this.getEventsList(EVENT_TYPE.ANY,
       @(event) (this.checkEnableOnDebug(event) || this.getEventIsVisible(event)))
   }
 
-  function getEventsForEventsWindow()
-  {
+  function getEventsForEventsWindow() {
     return this.getEventsList(EVENT_TYPE.ANY_BASE_EVENTS,  this.isEventVisibleInEventsWindow)
   }
 
-  function getEventType(event)
-  {
+  function getEventType(event) {
     if (!("_type" in event))
       event._type <- this.detectEventType(event)
     return event._type
   }
 
-  function detectEventType(event_data)
-  {
+  function detectEventType(event_data) {
     local result = 0
     if (::my_stats.isNewbieEventId(event_data.name))
       result = EVENT_TYPE.NEWBIE_BATTLES
@@ -429,31 +388,27 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return result
   }
 
-  function getEventTournamentMode(event)
-  {
+  function getEventTournamentMode(event) {
     return event?.tournament_mode ?? GAME_EVENT_TYPE.TM_NONE
   }
 
-  function _initEventViewData(eventData)
-  {
+  function _initEventViewData(eventData) {
     if (!("view_data" in eventData))
       return
 
     //override event params by predefined config by designers.
     //!!FIX ME: teporary support of multi events before it will be done in more correct way, without strange data.
     let sourceInfo = {}
-    foreach(key, value in eventData.view_data)
-    {
-      if (key == "teamA" || key == "teamB")
-      {
-        if (key in eventData)
-        {
+    foreach (key, value in eventData.view_data) {
+      if (key == "teamA" || key == "teamB") {
+        if (key in eventData) {
           sourceInfo[key] <- eventData[key]
           eventData[key] = clone eventData[key]
-        } else
+        }
+        else
           eventData[key] <- {}
 
-        foreach(key2, value2 in value)
+        foreach (key2, value2 in value)
           eventData[key][key2] <- value2
         continue
       }
@@ -466,8 +421,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       eventData._source_overrided <- sourceInfo
   }
 
-  function _calcEventDisplayType(event)
-  {
+  function _calcEventDisplayType(event) {
     if (!::g_difficulty.isDiffCodeAvailable(this.getEventDiffCode(event), GM_DOMINATION))
       return ::g_event_display_type.NONE
 
@@ -478,8 +432,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       res = ::g_event_display_type.RANDOM_BATTLE
     else if (!this.isEventVisibleByFeature(event))
       res = ::g_event_display_type.NONE
-    else
-    {
+    else {
       let displayTypeName = event?.displayType
       if (displayTypeName != null)
         res = ::g_event_display_type.getTypeByName(displayTypeName)
@@ -487,10 +440,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return res
   }
 
-  function _initEventParams(eventData)
-  {
-    if (!("teamA" in eventData) && "team" in eventData)
-    {
+  function _initEventParams(eventData) {
+    if (!("teamA" in eventData) && "team" in eventData) {
       eventData.teamA <- eventData.team
       delete eventData.team
     }
@@ -507,8 +458,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (("specialRequirements" in eventData) && !::u.isArray(eventData.specialRequirements))
       eventData.specialRequirements <- [eventData.specialRequirements]
 
-    if (("loc_name" in eventData) && !::u.isString(eventData.loc_name))
-    {
+    if (("loc_name" in eventData) && !::u.isString(eventData.loc_name)) {
       assert(false, "Bad event loc_name. eventName = " + eventData.name + ", " +
                              "economicName = " + this.getEventEconomicName(eventData) + ", loc_name = " + toString(eventData.loc_name))
       delete eventData.loc_name
@@ -517,13 +467,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return eventData
   }
 
-  function mergeEventsInfo(curEventsData, newEventsData)
-  {
+  function mergeEventsInfo(curEventsData, newEventsData) {
     let activeEvents = this.getActiveEventsList(EVENT_TYPE.ANY)
-    foreach(event in activeEvents)
+    foreach (event in activeEvents)
       curEventsData.rawdelete(event)
-    foreach(eventId, eventData in newEventsData)
-    {
+    foreach (eventId, eventData in newEventsData) {
       if (this.isCustomGameMode(eventData))
         continue
 
@@ -534,8 +482,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return curEventsData
   }
 
-  function checkEventAccess(eventData)
-  {
+  function checkEventAccess(eventData) {
     if (useTouchscreen && eventData.diffWeight >= this.diffTable.hardcore)
       return false
 
@@ -550,11 +497,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return true
   }
 
-  function recalcAllEventsDisplayType()
-  {
+  function recalcAllEventsDisplayType() {
     local isChanged = false
-    foreach(event in this.__game_events)
-    {
+    foreach (event in this.__game_events) {
       let displayType = this._calcEventDisplayType(event)
       if (displayType == this.getEventDisplayType(event))
         continue
@@ -563,45 +508,38 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       isChanged = true
     }
 
-    if (isChanged)
-    {
+    if (isChanged) {
       this.chapters.updateChapters()
       ::broadcastEvent("EventsDataUpdated")
     }
   }
 
-  function checkEventId(eventId)
-  {
-    if(eventId in this.__game_events && this.__game_events[eventId] != null)
+  function checkEventId(eventId) {
+    if (eventId in this.__game_events && this.__game_events[eventId] != null)
       return true
     return false
   }
 
-  function getEvent(event_id)
-  {
-    return this.checkEventId(event_id)? this.__game_events[event_id] : null
+  function getEvent(event_id) {
+    return this.checkEventId(event_id) ? this.__game_events[event_id] : null
   }
 
-  function getMGameMode(event, room)
-  {
+  function getMGameMode(event, room) {
     return (room && ::SessionLobby.getMGameMode(room)) || event
   }
 
-  function getEventEconomicName(event)
-  {
+  function getEventEconomicName(event) {
     return event?.economicName ?? ""
   }
 
-  function getEventByEconomicName(economicName)
-  {
+  function getEventByEconomicName(economicName) {
     foreach (event in this.__game_events)
       if (this.getEventEconomicName(event) == economicName)
         return event
     return null
   }
 
-  function getLastPlayedEvent()
-  {
+  function getLastPlayedEvent() {
     let eventData = ::loadLocalByAccount("lastPlayedEvent", null)
     if (eventData == null)
       return null
@@ -614,34 +552,28 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   /**
    * returns true if events queue multiclustered
    */
-  function isMultiCluster(event)
-  {
+  function isMultiCluster(event) {
     return event?.multiCluster ?? false
   }
 
-  function getEDiffByEvent(event)
-  {
-    if (!("ediff" in event))
-    {
+  function getEDiffByEvent(event) {
+    if (!("ediff" in event)) {
       let difficulty = this.getEventDifficulty(event)
       event.ediff <- difficulty.getEdiffByUnitMask(this.getEventUnitTypesMask(event))
     }
     return event.ediff
   }
 
-  function getUnitEconomicRankByEvent(event, unit)
-  {
+  function getUnitEconomicRankByEvent(event, unit) {
     let ediff = this.getEDiffByEvent(event)
     return unit.getEconomicRank(ediff)
   }
 
-  function getTeamData(eventData, team)
-  {
+  function getTeamData(eventData, team) {
     return eventData?[this.getTeamName(team)]
   }
 
-  function getTeamDataWithRoom(event, team, room)
-  {
+  function getTeamDataWithRoom(event, team, room) {
     if (room)
       return ::SessionLobby.getTeamData(team, room)
     return this.getTeamData(event, team)
@@ -649,33 +581,30 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   //check is team data allowed to play in this event.
   //doesnt depend on any player parameters.
-  function isTeamDataPlayable(teamData)
-  {
+  function isTeamDataPlayable(teamData) {
     return (teamData?.maxTeamSize ?? 1) > 0
   }
 
-  function initSidesOnce(event)
-  {
+  function initSidesOnce(event) {
     if (event?._isSidesInited)
       return
 
     local sides = []
-    foreach(team in this.fullTeamsList)
+    foreach (team in this.fullTeamsList)
       if (this.isTeamDataPlayable(this.getTeamData(event, team)))
         sides.append(team)
 
     let isFreeForAll = event?.ffa ?? false
     local isSymmetric = isFreeForAll || (event?.isSymmetric ?? false) || sides.len() <= 1
     //no point to save duplicate array, just link on fullTeamsList
-    if (!isSymmetric)
-    {
+    if (!isSymmetric) {
       let teamDataA = this.getTeamData(event, sides[0])
       let teamDataB = this.getTeamData(event, sides[1])
-      if (teamDataA == null || teamDataB == null)
-      {
+      if (teamDataA == null || teamDataB == null) {
         let economicName = event?.economicName  // warning disable: -declared-never-used
         ::script_net_assert_once("not found event teamdata", "missing teamdata in event")
-      } else
+      }
+      else
         isSymmetric = isSymmetric || this.isTeamsEqual(teamDataA, teamDataB)
     }
     if (isSymmetric && sides.len() > 1)
@@ -686,13 +615,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     event.isFreeForAll <- isFreeForAll
   }
 
-  function isTeamsEqual(teamAData, teamBData)
-  {
+  function isTeamsEqual(teamAData, teamBData) {
     if (teamAData.len() != teamBData.len())
       return false
 
-    foreach(key, value in teamAData)
-    {
+    foreach (key, value in teamAData) {
       if (key == "forcedCountry")
         continue
 
@@ -703,48 +630,40 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return true
   }
 
-  function getSidesList(event = null)
-  {
+  function getSidesList(event = null) {
     if (!event)
       return this.fullTeamsList
     this.initSidesOnce(event)
     return event.sidesList
   }
 
-  function isEventSymmetricTeams(event)
-  {
+  function isEventSymmetricTeams(event) {
     this.initSidesOnce(event)
     return event.isSymmetric
   }
 
-  function needRankInfoInQueue(event)
-  {
+  function needRankInfoInQueue(event) {
     return event?.balancerMode == "mrank"
   }
 
-  function isEventFreeForAll(event)
-  {
+  function isEventFreeForAll(event) {
     this.initSidesOnce(event)
     return event.isFreeForAll
   }
 
-  function getTeamName(teamCode)
-  {
+  function getTeamName(teamCode) {
     return ::g_team.getTeamByCode(teamCode).name
   }
 
-  function isEventXboxOnlyAllowed(event)
-  {
+  function isEventXboxOnlyAllowed(event) {
     return (event?.xboxOnlyAllowed ?? false) && isPlatformXboxOne
   }
 
-  function isEventPS4OnlyAllowed(event)
-  {
+  function isEventPS4OnlyAllowed(event) {
     return (event?.ps4OnlyAllowed ?? false) && isPlatformSony
   }
 
-  function isEventPlatformOnlyAllowed(event)
-  {
+  function isEventPlatformOnlyAllowed(event) {
     return this.isEventXboxOnlyAllowed(event) || this.isEventPS4OnlyAllowed(event)
   }
 
@@ -753,10 +672,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Name could be got from events config or generated by difiiculty level and
    * available unit type
    */
-  function getEventTileImageName(event, isWide = false)
-  {
-    if ("eventImage" in event)
-    {
+  function getEventTileImageName(event, isWide = false) {
+    if ("eventImage" in event) {
       let eventImageTemplate = event.eventImage
       return format(eventImageTemplate, isWide ? "wide" : "thin")
     }
@@ -773,13 +690,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return this.wrapImageName(this.getEventDiffName(event.name, true) + "_" + res, isWide)
   }
 
-  function wrapImageName(imageName, isWide)
-  {
-    return format("#ui/images/game_modes_tiles/%s.jpg?P1", imageName + (isWide ? "_wide" : "_thin"))
+  function wrapImageName(imageName, isWide) {
+    return format("#ui/images/game_modes_tiles/%s?P1", imageName + (isWide ? "_wide" : "_thin"))
   }
 
-  function getEventPreviewVideoName(event, isWide)
-  {
+  function getEventPreviewVideoName(event, isWide) {
     //We can't check is video exist. For now, there is no wide videos.
     //So, this function return null in this case.
     if (isWide)
@@ -806,23 +721,19 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return $"video/gameModes/{unitTypeName}_{this.getEventDiffName(event.name, true)}.ivf"
   }
 
-  function getCustomVideioPreviewName(event)
-  {
+  function getCustomVideioPreviewName(event) {
     return event?.customVideoPreviewName
   }
 
-  function isEventEnabled(event)
-  {
+  function isEventEnabled(event) {
     return event ? (event?.disabled ?? false) == false : false
   }
 
-  function isEventMatchesType(event, typeMask)
-  {
+  function isEventMatchesType(event, typeMask) {
     return event ? (this.getEventType(event) & typeMask) != 0 : false
   }
 
-  function getEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS, testFunc = function (_event){return true})
-  {
+  function getEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS, testFunc = function (_event) { return true }) {
     let result = []
     if (this.__game_events == null)
       return result
@@ -832,8 +743,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return result
   }
 
-  function __countEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS, testFunc = function (_event){return true})
-  {
+  function __countEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS, testFunc = function (_event) { return true }) {
     local result = 0
     if (this.__game_events == null)
       return result
@@ -843,24 +753,20 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return result
   }
 
-  function getEventsCount(typeMask = EVENT_TYPE.ANY_BASE_EVENTS)
-  {
+  function getEventsCount(typeMask = EVENT_TYPE.ANY_BASE_EVENTS) {
     return this.__countEventsList(typeMask, this.isEventEnabled)
   }
 
-  function isEventActive(event)
-  {
+  function isEventActive(event) {
     return this.isEventEnabled(event)
   }
 
-  function isEventEnded(event)
-  {
+  function isEventEnded(event) {
     return !this.isEventEnabled(event) && this.getEventEndTime(event) < 0
   }
 
   //return true if it possible to join this event.
-  function isEventAllowed(event)
-  {
+  function isEventAllowed(event) {
     return this.getEventDisplayType(event) != ::g_event_display_type.NONE
       && this.checkEventFeature(event, true)
       && this.isEventAllowedByComaptibilityMode(event)
@@ -869,37 +775,31 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibiliyMode()
 
-  function getEventsVisibleInEventsWindowCount()
-  {
+  function getEventsVisibleInEventsWindowCount() {
     return this.__countEventsList(EVENT_TYPE.ANY, this.isEventVisibleInEventsWindow)
   }
 
-  function getActiveEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS)
-  {
+  function getActiveEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS) {
     let result = this.getEventsList(typeMask, function (event) {
       return ::events.getEventDisplayType(event).showInEventsWindow && this.isEventActive(event)
     }.bindenv(this))
-    result.sort(function (a, b)
-      {
+    result.sort(function (a, b) {
         return this.sortEventsByDiff(a, b)
       }.bindenv(this))
     return result
   }
 
-  function getEndedEventsCount(_filterType = EVENT_TYPE.ANY_BASE_EVENTS)
-  {
+  function getEndedEventsCount(_filterType = EVENT_TYPE.ANY_BASE_EVENTS) {
     return this.__countEventsList(this.typeMask, function (event) {
       return ::events.getEventDisplayType(event).showInEventsWindow && this.isEventEnded(event)
       }.bindenv(this))
   }
 
-  function getEndedEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS)
-  {
+  function getEndedEventsList(typeMask = EVENT_TYPE.ANY_BASE_EVENTS) {
     let result = this.getEventsList(typeMask, function (event) {
       return ::events.getEventDisplayType(event).showInEventsWindow && this.isEventEnded(event)
     }.bindenv(this))
-    result.sort(function (a, b)
-      {
+    result.sort(function (a, b) {
         return this.sortEventsByDiff(a, b)
       }.bindenv(this))
     return result
@@ -907,30 +807,27 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   onEventInventoryUpdate = @(_p) this.unallowedEventEconomicNamesNeedUpdate = true
 
-  function getUnallowedEventEconomicNames()
-  {
-    if(!this.unallowedEventEconomicNamesNeedUpdate)
+  function getUnallowedEventEconomicNames() {
+    if (!this.unallowedEventEconomicNamesNeedUpdate)
       return this.unallowedEventEconomicNames
 
     this.unallowedEventEconomicNames.clear()
-    foreach(event in this.__game_events)
+    foreach (event in this.__game_events)
       if (!this.isEventAllowed(event))
         ::u.appendOnce(this.getEventEconomicName(event), this.unallowedEventEconomicNames, true)
     this.unallowedEventEconomicNamesNeedUpdate = false
     return this.unallowedEventEconomicNames
   }
 
-  function getCountries(teamData)
-  {
+  function getCountries(teamData) {
     if (!teamData)
       return []
     return teamData.countries
   }
 
-  function getCountriesByTeams(event)
-  {
+  function getCountriesByTeams(event) {
     let res = []
-    foreach(team in this.getSidesList(event))
+    foreach (team in this.getSidesList(event))
       res.append(this.getCountries(this.getTeamData(event, team)))
     return res
   }
@@ -949,16 +846,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       }
     ]
   */
-  function getAllCountriesSets(event)
-  {
+  function getAllCountriesSets(event) {
     if ("_allCountriesSets" in event)
       return event._allCountriesSets
 
     let res = []
     let mgmList = ::g_matching_game_modes.getGameModesByEconomicName(this.getEventEconomicName(event))
-    mgmList.sort(function(a,b) { return a.gameModeId - b.gameModeId }) //same order on all clients
-    foreach(mgm in mgmList)
-    {
+    mgmList.sort(function(a, b) { return a.gameModeId - b.gameModeId }) //same order on all clients
+    foreach (mgm in mgmList) {
       if (this.isCustomGameMode(mgm))
         continue
 
@@ -966,15 +861,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       local cSet = ::u.search(res,
         (@(countries) function(set) { return ::u.isEqual(set.countries, countries) })(countries))
 
-      if (!cSet)
-      {
+      if (!cSet) {
         cSet = {
           countries = countries
           gameModeIds = []
           allCountries = {}
         }
-        foreach(team, teamCountries in countries)
-          foreach(country in teamCountries)
+        foreach (team, teamCountries in countries)
+          foreach (country in teamCountries)
             cSet.allCountries[country] <- team
         res.append(cSet)
       }
@@ -986,18 +880,16 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return event._allCountriesSets
   }
 
-  function getAvailableTeams(event, room = null)
-  {
+  function getAvailableTeams(event, room = null) {
     let availableTeams = []
     if (!event)
       return availableTeams
     let playersCurCountry = profileCountrySq.value
-    if(!playersCurCountry || playersCurCountry.len() <= 0)
+    if (!playersCurCountry || playersCurCountry.len() <= 0)
       return availableTeams
 
     let mgm = this.getMGameMode(event, room)
-    foreach(team in this.getSidesList(this.isLobbyGameMode(mgm) ? null : mgm))
-    {
+    foreach (team in this.getSidesList(this.isLobbyGameMode(mgm) ? null : mgm)) {
       let teamData = this.getTeamDataWithRoom(event, team, room)
       if (isInArray(playersCurCountry, this.getCountries(teamData)))
         availableTeams.append(team)
@@ -1005,11 +897,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return availableTeams
   }
 
-  function isCountryAvailable(event, country)
-  {
+  function isCountryAvailable(event, country) {
     let sidesList = this.getSidesList(event)
-    foreach(team in sidesList)
-    {
+    foreach (team in sidesList) {
       let countries = this.getTeamData(event, team)?.countries
       if (countries && isInArray(country, countries))
         return true
@@ -1023,8 +913,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Don't use this method for checking country.
    * There is isCountryAvailable() for this purpose
    */
-  function getAvailableCountriesByEvent(event)
-  {
+  function getAvailableCountriesByEvent(event) {
     let result = []
     foreach (country in shopCountriesList)
       if (this.isCountryAvailable(event, country))
@@ -1033,9 +922,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return result.len() < shopCountriesList.len() ? result : []
   }
 
-  function isUnitMatchesRule(unit, rulesList, defReturn = false, ediff = -1)
-  {
-    if(rulesList.len() <= 0)
+  function isUnitMatchesRule(unit, rulesList, defReturn = false, ediff = -1) {
+    if (rulesList.len() <= 0)
       return defReturn
 
     if (::u.isString(unit))
@@ -1044,17 +932,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return false
 
     let maxEconomicRank = getMaxEconomicRank()
-    foreach (rule in rulesList)
-    {
-      if ("name" in rule)
-      {
+    foreach (rule in rulesList) {
+      if ("name" in rule) {
         if (rule.name == unit.name)
           return true
         continue
       }
 
-      if ("mranks" in rule)
-      {
+      if ("mranks" in rule) {
         let unitMRank = ediff != -1 ? unit.getEconomicRank(ediff) : 0
         if (unitMRank < (rule.mranks?.min ?? 0) || (rule.mranks?.max ?? maxEconomicRank) < unitMRank)
           continue
@@ -1075,15 +960,13 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function getTierByMaxBr(maxBR)
-  {
+  function getTierByMaxBr(maxBR) {
     local res = -1
     local foundBr = 0
     foreach (br, tier in this.brToTier)
       if (br == maxBR)
         return tier
-      else if ((br < 0 && !foundBr) || (br > maxBR && (br < foundBr || foundBr <= 0)))
-      {
+      else if ((br < 0 && !foundBr) || (br > maxBR && (br < foundBr || foundBr <= 0))) {
         foundBr = br
         res = tier
       }
@@ -1091,8 +974,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   //return -1 if not tier detected
-  function getTierNumByRule(rule)
-  {
+  function getTierNumByRule(rule) {
     if (!("mranks" in rule))
       return -1
 
@@ -1100,11 +982,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return this.getTierByMaxBr(maxBR)
   }
 
-  function getBrTextByRules(rules)
-  {
+  function getBrTextByRules(rules) {
     if (rules)
-      foreach(rule in rules)
-      {
+      foreach (rule in rules) {
         let mranks = rule.mranks
         let minBR = ::calc_battle_rating_from_rank(mranks?.min ?? 0)
         let maxBR = ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank())
@@ -1115,17 +995,15 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return ""
   }
 
-  function isUnitAllowedForEvent(event, unit)
-  {
-    foreach(team in ::events.getSidesList(event))
+  function isUnitAllowedForEvent(event, unit) {
+    foreach (team in ::events.getSidesList(event))
       if (this.isUnitAllowed(event, team, unit.name))
         return true
 
     return false
   }
 
-  function isUnitAllowedForEventRoom(event, room, unit)
-  {
+  function isUnitAllowedForEventRoom(event, room, unit) {
     let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
     if (roomSpecialRules && !this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, this.getEDiffByEvent(event)))
       return false
@@ -1134,20 +1012,17 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return this.isUnitAllowedForEvent(mGameMode, unit)
   }
 
-  function isUnitAllowed(event, team, airName)
-  {
+  function isUnitAllowed(event, team, airName) {
     let teamData = this.getTeamData(event, team)
     let ediff = this.getEDiffByEvent(event)
-    return teamData? this.isUnitAllowedByTeamData(teamData, airName, ediff) : false
+    return teamData ? this.isUnitAllowedByTeamData(teamData, airName, ediff) : false
   }
 
-  function isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, ediff)
-  {
+  function isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, ediff) {
     return !roomSpecialRules || this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff)
   }
 
-  function isCurUnitMatchesRoomRules(event, room)
-  {
+  function isCurUnitMatchesRoomRules(event, room) {
     let unit = ::get_cur_slotbar_unit()
     if (!unit)
       return false
@@ -1156,24 +1031,21 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return !roomSpecialRules || this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, this.getEDiffByEvent(event))
   }
 
-  function checkRequiredUnits(event, room = null, country = null)
-  {
+  function checkRequiredUnits(event, room = null, country = null) {
     if (!event)
       return false
 
     let playersCurCountry = country ?? profileCountrySq.value
     let ediff = this.getEDiffByEvent(event)
 
-    foreach (team in this.getSidesList(event))
-    {
+    foreach (team in this.getSidesList(event)) {
       let teamData = this.getTeamDataWithRoom(event, team, room)
       if (!this.getRequiredCrafts(teamData).len()
           || !isInArray(playersCurCountry, teamData.countries))
        continue
 
       let crews = ::get_crews_list_by_country(playersCurCountry)
-      foreach(crew in crews)
-      {
+      foreach (crew in crews) {
         if (::is_crew_locked_by_prev_battle(crew))
           continue
 
@@ -1186,14 +1058,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return true
   }
 
-  function isAirRequiredAndAllowedByTeamData(teamData, airName, ediff)
-  {
+  function isAirRequiredAndAllowedByTeamData(teamData, airName, ediff) {
     return (this.isUnitMatchesRule(airName, this.getRequiredCrafts(teamData), true, ediff)
         && this.isUnitAllowedByTeamData(teamData, airName, ediff))
   }
 
-  function isUnitAllowedByTeamData(teamData, airName, ediff = -1)
-  {
+  function isUnitAllowedByTeamData(teamData, airName, ediff = -1) {
     let unit = ::getAircraftByName(airName)
     if (!unit || unit.disableFlyout)
       return false
@@ -1205,8 +1075,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return !airInForbidenList && airInAllowedList
   }
 
-  function checkUnitRelevanceForEvent(eventId, unit)
-  {
+  function checkUnitRelevanceForEvent(eventId, unit) {
     let event = this.getEvent(eventId)
     return (!event || !unit) ? UnitRelevance.NONE
      : this.isUnitAllowedForEvent(event, unit) ? UnitRelevance.BEST
@@ -1214,29 +1083,25 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
      : UnitRelevance.NONE
   }
 
-  function getSpecialRequirements(event)
-  {
+  function getSpecialRequirements(event) {
     return event?.specialRequirements
   }
 
-  function checkSpecialRequirements(event)
-  {
+  function checkSpecialRequirements(event) {
     let requirements = this.getSpecialRequirements(event)
     if (!requirements)
       return true
 
     let ediff = this.getEDiffByEvent(event)
-    foreach(unit in ::all_units)
+    foreach (unit in ::all_units)
        if (::isUnitUsable(unit) && this.isUnitMatchesRule(unit, requirements, true, ediff))
          return true
     return false
   }
 
-  function checkPlayerCountryCrafts(country, teamData, ediff, roomSpecialRules = null)
-  {
+  function checkPlayerCountryCrafts(country, teamData, ediff, roomSpecialRules = null) {
     let crews = ::get_crews_list_by_country(country)
-    foreach(crew in crews)
-    {
+    foreach (crew in crews) {
       if (::is_crew_locked_by_prev_battle(crew))
         continue
 
@@ -1250,14 +1115,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function checkPlayersCrafts(event, room = null)
-  {
+  function checkPlayersCrafts(event, room = null) {
     let mGameMode = ::events.getMGameMode(event, room)
     let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
     let playersCurCountry = profileCountrySq.value
     let ediff = this.getEDiffByEvent(event)
-    foreach (team in this.getSidesList(mGameMode))
-    {
+    foreach (team in this.getSidesList(mGameMode)) {
       let teamData = this.getTeamDataWithRoom(mGameMode, team, room)
       if (teamData && isInArray(playersCurCountry, teamData.countries)
           && this.checkPlayerCountryCrafts(playersCurCountry, teamData, ediff, roomSpecialRules))
@@ -1266,14 +1129,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function checkPlayersCraftsRoomRules(event, room)
-  {
+  function checkPlayersCraftsRoomRules(event, room) {
     let roomSpecialRules = ::SessionLobby.getRoomSpecialRules(room)
     if (!roomSpecialRules)
       return true
     let ediff = this.getEDiffByEvent(event)
-    foreach(crew in ::get_crews_list_by_country(profileCountrySq.value))
-    {
+    foreach (crew in ::get_crews_list_by_country(profileCountrySq.value)) {
       let unit = ::g_crew.getCrewUnit(crew)
       if (unit && this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, ediff))
         return true
@@ -1281,12 +1142,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function getSlotbarRank(event, country, idInCountry)
-  {
+  function getSlotbarRank(event, country, idInCountry) {
     local res = 0
     let isMultiSlotEnabled = this.isEventMultiSlotEnabled(event)
-    foreach(idx, crew in ::get_crews_list_by_country(country))
-    {
+    foreach (idx, crew in ::get_crews_list_by_country(country)) {
       if (!isMultiSlotEnabled && idInCountry != idx)
         continue
 
@@ -1303,14 +1162,13 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return res
   }
 
-  function getCountryRepairInfo(event, room, country)
-  {
+  function getCountryRepairInfo(event, room, country) {
     let mGameMode = ::events.getMGameMode(event, room)
     let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
     let teams = this.getAvailableTeams(mGameMode)
     let ediff = this.getEDiffByEvent(event)
     let teamsData = []
-    foreach(t in teams)
+    foreach (t in teams)
       teamsData.append(this.getTeamData(mGameMode, t))
 
     return ::getBrokenAirsInfo([country], this.isEventMultiSlotEnabled(event),
@@ -1318,18 +1176,16 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         if (roomSpecialRules
             && !this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff))
           return false
-        foreach(td in teamsData)
+        foreach (td in teamsData)
           if (this.isUnitAllowedByTeamData(td, unit.name, ediff))
             return true
         return false
       }.bindenv(this))
   }
 
-  function stackMemberErrors(members)
-  {
+  function stackMemberErrors(members) {
     let res = []
-    foreach(member in members)
-    {
+    foreach (member in members) {
       let stack = ::u.search(res, @(s) s.status == member.status)
       if (stack)
         stack.names.append(getPlayerName(member.name))
@@ -1342,14 +1198,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return res
   }
 
-  function showCantFlyMembersMsgBox(teamData, continueQueueFunc = null, cancelFunc = null)
-  {
+  function showCantFlyMembersMsgBox(teamData, continueQueueFunc = null, cancelFunc = null) {
     let langConfig = [SQUAD_NOT_READY_LOC_TAG]
     let langConfigByTeam = {}
     local singleLangConfig = null
 
-    foreach(idx, membersData in teamData.cantFlyData)
-    {
+    foreach (idx, membersData in teamData.cantFlyData) {
       let teamCode = membersData?.team ?? idx
       let stacks = this.stackMemberErrors(membersData.members)
       let teamLangConfig = ::u.map(
@@ -1370,8 +1224,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (singleLangConfig)
       langConfig.extend(singleLangConfig)
     else
-      foreach(teamCode, teamLangConfig in langConfigByTeam)
-      {
+      foreach (teamCode, teamLangConfig in langConfigByTeam) {
         langConfig.append({ [systemMsg.LOC_ID] = "events/" + ::g_team.getTeamByCode(teamCode).name })
         langConfig.extend(teamLangConfig)
       }
@@ -1390,29 +1243,25 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     ::g_chat.sendLocalizedMessageToSquadRoom(langConfig)
   }
 
-  function getMembersTeamsData(event, room, teams)
-  {
+  function getMembersTeamsData(event, room, teams) {
     if (!::g_squad_manager.isSquadLeader())
       return null
 
     local bestTeamsData = null
     if (room)
       bestTeamsData = this.getMembersFlyoutEventDataImpl(event, room, teams)
-    else
-    {
+    else {
       let myCountry = profileCountrySq.value
       let allSets = this.getAllCountriesSets(event)
-      foreach(countrySet in allSets)
-      {
+      foreach (countrySet in allSets) {
         let mgmTeams = []
-        foreach(idx, countries in countrySet.countries)
+        foreach (idx, countries in countrySet.countries)
           if (isInArray(myCountry, countries))
             mgmTeams.append(idx + 1) //idx to Team enum
         if (!mgmTeams.len())
           continue
 
-        foreach(gameModeId in countrySet.gameModeIds)
-        {
+        foreach (gameModeId in countrySet.gameModeIds) {
           let mgm = ::g_matching_game_modes.getModeById(gameModeId)
           if (!mgm)
             continue
@@ -1423,8 +1272,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
           if (compareTeamData == 0 && teamsData.haveRestrictions)
             compareTeamData = bestTeamsData.cantFlyData.len() <=> teamsData.cantFlyData.len()
 
-          if (compareTeamData > 0)
-          {
+          if (compareTeamData > 0) {
             bestTeamsData = teamsData
             if (!bestTeamsData.haveRestrictions && bestTeamsData.bestCountriesChanged == 0)
               break
@@ -1441,8 +1289,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return bestTeamsData
   }
 
-  function getMembersFlyoutEventDataImpl(roomMgm, room, teams)
-  {
+  function getMembersFlyoutEventDataImpl(roomMgm, room, teams) {
     let res = {
       teamsData = []
       cantFlyData = []
@@ -1450,13 +1297,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       haveRestrictions = true
       bestCountriesChanged = -1
     }
-    foreach(team in teams)
-    {
+    foreach (team in teams) {
       let data = this.getMembersFlyoutEventData(roomMgm, room, team)
       data.team <- team
 
-      if (data.canFlyout)
-      {
+      if (data.canFlyout) {
         res.teamsData.append(data)
         res.canFlyout = true
         res.haveRestrictions = res.haveRestrictions && data.haveRestrictions
@@ -1472,23 +1317,20 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return res
   }
 
-  function getMembersFlyoutEventData(event, room, team)
-  {
+  function getMembersFlyoutEventData(event, room, team) {
     let mGameMode = this.getMGameMode(event, room)
     let teamData = this.getTeamDataWithRoom(mGameMode, team, room)
     let canChangeMemberCountry = !room //can choose members country by queue params
     return ::g_squad_utils.getMembersFlyoutData(teamData, event, canChangeMemberCountry)
   }
 
-  function prepareMembersForQueue(membersData)
-  {
+  function prepareMembersForQueue(membersData) {
     let membersQuery = {}
     let leaderCountry = profileCountrySq.value
-    foreach(m in membersData.members)
-    {
+    foreach (m in membersData.members) {
       local country = leaderCountry
       if (m.countries.len() && !isInArray(leaderCountry, m.countries))
-        country = m.countries[::math.rnd() % m.countries.len()]  //choose random country atm
+        country = m.countries[rnd() % m.countries.len()]  //choose random country atm
       let slot = (country in m.selSlots) ? m.selSlots[country] : 0
 
       membersQuery[m.uid] <- {
@@ -1505,34 +1347,28 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return membersQuery
   }
 
-  function getAlowedCrafts(teamData, roomSpecialRules = null)
-  {
+  function getAlowedCrafts(teamData, roomSpecialRules = null) {
     local res = teamData?.allowedCrafts ?? []
-    if (roomSpecialRules)
-    {
+    if (roomSpecialRules) {
       res = clone res
       res.extend(roomSpecialRules)
     }
     return res
   }
 
-  function getForbiddenCrafts(teamData)
-  {
+  function getForbiddenCrafts(teamData) {
     return teamData?.forbiddenCrafts ?? []
   }
 
-  function getRequiredCrafts(teamData)
-  {
+  function getRequiredCrafts(teamData) {
     return teamData?.requiredCrafts ?? []
   }
 
-  function hasUnitRequirements(teamData)
-  {
+  function hasUnitRequirements(teamData) {
     return this.getRequiredCrafts(teamData).len() > 0
   }
 
-  function isRespawnAvail(event)
-  {
+  function isRespawnAvail(event) {
     if (event == null)
       return true
 
@@ -1542,8 +1378,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function getRespawnsText(event)
-  {
+  function getRespawnsText(event) {
     if (!this.isEventRespawnEnabled(event))
       return loc("template/noRespawns")
     let availRespawns = ::events.getEventMaxRespawns(event)
@@ -1556,8 +1391,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Returns false if event does not support respawning at all.
    * (Player returns to hangar after death.)
    */
-  function isEventRespawnEnabled(event)
-  {
+  function isEventRespawnEnabled(event) {
     return event?.respawn ?? false
   }
 
@@ -1565,8 +1399,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Returns true if player can select from several during respawn.
    * False means that player has only slot that was selected in hangar.
    */
-  function isEventMultiSlotEnabled(event)
-  {
+  function isEventMultiSlotEnabled(event) {
     return event?.multiSlot ?? false
   }
 
@@ -1574,13 +1407,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Returns max possible respawn count.
    * Ignored if isEventRespawnEnabled(event) == false.
    */
-  function getEventMaxRespawns(event)
-  {
+  function getEventMaxRespawns(event) {
     return event?.mission_decl.maxRespawns ?? 0
   }
 
-  function getEventRewardMuls(eventId)
-  {
+  function getEventRewardMuls(eventId) {
     let res = { wp = 1.0, exp = 1.0 }
     if (!this.checkEventId(eventId))
       return res
@@ -1592,18 +1423,15 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return res
   }
 
-  function getEventDifficulty(event)
-  {
+  function getEventDifficulty(event) {
     return ::g_difficulty.getDifficultyByMatchingName(event?.difficulty ?? "arcade")
   }
 
-  function getEventDiffCode(event)
-  {
+  function getEventDiffCode(event) {
     return this.getEventDifficulty(event).diffCode
   }
 
-  function getEventDiffName(eventId, baseOnly = false)
-  {
+  function getEventDiffName(eventId, baseOnly = false) {
     if (!this.checkEventId(eventId))
       return ""
     local diffName = ""
@@ -1616,39 +1444,33 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return diffName
   }
 
-  function isDifficultyCustom(_event)
-  {
+  function isDifficultyCustom(_event) {
     return false
   }
 
-  function getCustomDifficultyChanges(eventId)
-  {
+  function getCustomDifficultyChanges(eventId) {
     local diffChanges = ""
     if (!this.checkEventId(eventId) || !this.isDifficultyCustom(this.__game_events[eventId]))
       return ""
 
-    foreach(name, flag in this.__game_events[eventId].mission_decl.customDifficulty)
-    {
-      diffChanges += diffChanges.len()? "\n" : ""
-      diffChanges += format("%s - %s", loc("options/" + name), loc("options/" + (flag? "enabled" : "disabled")))
+    foreach (name, flag in this.__game_events[eventId].mission_decl.customDifficulty) {
+      diffChanges += diffChanges.len() ? "\n" : ""
+      diffChanges += format("%s - %s", loc("options/" + name), loc("options/" + (flag ? "enabled" : "disabled")))
     }
 
     return diffChanges
   }
 
-  function getTeamSize(teamData)
-  {
+  function getTeamSize(teamData) {
     return teamData?.maxTeamSize ?? EVENT_DEFAULT_TEAM_SIZE
   }
 
-  function hasTeamSizeHandicap(event)
-  {
+  function hasTeamSizeHandicap(event) {
     let sides = this.getSidesList(event)
     if (sides.len() < 2)
       return false
     local size = 0
-    foreach(idx, team in sides)
-    {
+    foreach (idx, team in sides) {
       let teamData = this.getTeamData(event, team)
       let teamSize = this.getTeamSize(teamData)
       if (!idx)
@@ -1659,123 +1481,107 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function getMaxTeamSize(event)
-  {
+  function getMaxTeamSize(event) {
     local maxTeamSize = 0
-    foreach(team in this.getSidesList(event))
-    {
+    foreach (team in this.getSidesList(event)) {
       let teamSize = this.getTeamSize(this.getTeamData(event, team))
       maxTeamSize = max(maxTeamSize, teamSize)
     }
     return maxTeamSize
   }
 
-  function getMinTeamSize(event)
-  {
+  function getMinTeamSize(event) {
     return (event?.minTeamSize ?? 1) || 1
   }
 
-  function countEventTime(eventTime)
-  {
+  function countEventTime(eventTime) {
     return (eventTime - ::get_matching_server_time())
   }
 
-  function getEventStartTime(event)
-  {
-    return ("startTime" in event)? this.countEventTime(event.startTime) : 0
+  function getEventStartTime(event) {
+    return ("startTime" in event) ? this.countEventTime(event.startTime) : 0
   }
 
-  function getEventEndTime(event)
-  {
-    return ("endTime" in event)? this.countEventTime(event.endTime) : 0
+  function getEventEndTime(event) {
+    return ("endTime" in event) ? this.countEventTime(event.endTime) : 0
   }
 
-  function getEventUiSortPriority(event)
-  {
+  function getEventUiSortPriority(event) {
     return event?.uiSortPriority ?? 0
   }
 
-  function hasEventEndTime(event)
-  {
+  function hasEventEndTime(event) {
     return "endTime" in event
   }
 
-  function getEventAchievementGroup(event)
-  {
+  function getEventAchievementGroup(event) {
     return event?.achievementGroup ?? ""
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.__game_events.clear()
     this.eventsLoaded = false
     this.chapters.updateChapters()
   }
 
-  function getEventMission(eventId)
-  {
+  function getEventMission(eventId) {
     if (!this.checkEventId(eventId))
       return ""
     let list = this.__game_events[eventId].mission_decl.missions_list
-    if(list.len() == 1)
+    if (list.len() == 1)
       if (type(list) == "array" && type(list[0]) == "string")
         return list[0]
       else if (type(list) == "table")
-        foreach(key, _value in list)
+        foreach (key, _value in list)
           if (type(key) == "string")
             return key
     return ""
   }
 
-  function getFeaturedEvent()
-  {
+  function getFeaturedEvent() {
     if (this.__game_events == null)
       return ""
     let diff = ::get_current_shop_difficulty()
-    foreach(eventName, event in this.__game_events)
+    foreach (eventName, event in this.__game_events)
       if (this.getEventDifficulty(eventName) == diff &&
           this.isEventEnabled(event))
         return eventName
     return ""
   }
 
-  function getTextsBlock(economicName)
-  {
+  function getTextsBlock(economicName) {
     return ::get_gui_regional_blk()?.eventsTexts?[economicName]
   }
 
   //!!! function only for compatibility with version without gui_regional
-  function getNameLocOldStyle(event, economicName)
-  {
+  function getNameLocOldStyle(event, economicName) {
     return event?.loc_name ?? $"events/{economicName}/name"
   }
 
-  function getMaxBrText(event)
-  {
+  function getMaxBrText(event) {
     local maxBR = -1
-    foreach(team in this.getSidesList(event)) {
+    foreach (team in this.getSidesList(event)) {
       let teamData = this.getTeamData(event, team)
       if (!teamData || !this.isTeamDataPlayable(teamData))
         continue
-      foreach(rule in this.getAlowedCrafts(teamData)) {
+      foreach (rule in this.getAlowedCrafts(teamData)) {
         if ("mranks" not in rule)
           continue
-        maxBR = max(maxBR , rule.mranks?.max ?? getMaxEconomicRank())
+        maxBR = max(maxBR,  rule.mranks?.max ?? getMaxEconomicRank())
       }
       if (maxBR == -1)
         maxBR = getMaxEconomicRank()
-      foreach(rule in this.getForbiddenCrafts(teamData)) {
+      foreach (rule in this.getForbiddenCrafts(teamData)) {
         if (rule?.mranks.max == null && rule?.mranks.min == null)
           continue
         if ((rule.mranks?.max ?? getMaxEconomicRank()) == maxBR)
           maxBR = (rule.mranks?.min ?? 1) - 1
       }
     }
-    return  loc("mainmenu/maxBR", {br = format("%.1f", ::calc_battle_rating_from_rank(maxBR))})
+    return  loc("mainmenu/maxBR", { br = format("%.1f", ::calc_battle_rating_from_rank(maxBR)) })
   }
 
-  function getEventNameText(event)
-  {
+  function getEventNameText(event) {
     let economicName = this.getEventEconomicName(event)
     if (economicName in eventNameText)
       return eventNameText[economicName]
@@ -1797,37 +1603,31 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return eventNameText[economicName]
   }
 
-  function getNameByEconomicName(economicName)
-  {
+  function getNameByEconomicName(economicName) {
     return this.getEventNameText(::events.getEventByEconomicName(economicName))
   }
 
-  function getBaseDescByEconomicName(economicName)
-  {
+  function getBaseDescByEconomicName(economicName) {
     let res = ::g_language.getLocTextFromConfig(this.getTextsBlock(economicName), "desc", "")
     if (res.len())
       return res
 
-    if (this.langCompatibility)
-    {
+    if (this.langCompatibility) {
       let event = ::events.getEventByEconomicName(economicName)
       return loc(event?.loc_desc ?? $"events/{economicName}/desc", "")
     }
     return loc($"events/{economicName}/desc")
   }
 
-  function isEventForClan(event)
-  {
+  function isEventForClan(event) {
     return this.isEventMatchesType(event, EVENT_TYPE.CLAN)
   }
 
-  function isEventForNewbies(event)
-  {
+  function isEventForNewbies(event) {
     return this.isEventMatchesType(event, EVENT_TYPE.NEWBIE_BATTLES)
   }
 
-  function isEventRandomBattles(event)
-  {
+  function isEventRandomBattles(event) {
     if (this.getEventType(event) & EVENT_TYPE.NEWBIE_BATTLES)
       return false
     if (isInArray(event.name, ::event_ids_for_main_game_mode_list))
@@ -1835,33 +1635,28 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return this.getEventDisplayType(event).canBeSelectedInGcDrawer()
   }
 
-  function isEventRandomBattlesById(eventId)
-  {
+  function isEventRandomBattlesById(eventId) {
     let event = this.getEvent(eventId)
     return event != null && this.isEventRandomBattles(event)
   }
 
-  function isRaceEvent(event_data)
-  {
+  function isRaceEvent(event_data) {
     if (!("templates" in event_data))
       return false
 
     return isInArray("races_template", event_data.templates)
   }
 
-  function isEventLastManStanding(event)
-  {
+  function isEventLastManStanding(event) {
     return ("mission_decl" in event) && ("br_area_change_time" in event.mission_decl)
   }
 
-  function isEventTanksCompatible(eventId)
-  {
+  function isEventTanksCompatible(eventId) {
     let event = this.getEvent(eventId)
-    return event? this.isUnitTypeAvailable(event, ES_UNIT_TYPE_TANK) : false
+    return event ? this.isUnitTypeAvailable(event, ES_UNIT_TYPE_TANK) : false
   }
 
-  function getMainLbRequest(event)
-  {
+  function getMainLbRequest(event) {
     return this._leaderboards.getMainLbRequest(event)
   }
 
@@ -1869,8 +1664,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Function requests leaderboards asynchronously and puts result
    * as argument to callback function
    */
-  function requestLeaderboard(requestData, id, callback = null, context = null)
-  {
+  function requestLeaderboard(requestData, id, callback = null, context = null) {
     this._leaderboards.requestLeaderboard(requestData, id, callback, context)
   }
 
@@ -1878,33 +1672,27 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * Function requests self leaderboard row asynchronously and puts result
    * as argument to callback function
    */
-  function requestSelfRow(requestData, id, callback = null, context = null)
-  {
+  function requestSelfRow(requestData, id, callback = null, context = null) {
     this._leaderboards.requestSelfRow(requestData, id, callback, context)
   }
 
-  function lbBlkToArray(blk)
-  {
+  function lbBlkToArray(blk) {
     return this._leaderboards.lbBlkToArray(blk)
   }
 
-  function isClanLbRequest(requestData)
-  {
+  function isClanLbRequest(requestData) {
     return this._leaderboards.isClanLbRequest(requestData)
   }
 
-  function validateRequestData(requestData)
-  {
+  function validateRequestData(requestData) {
     return this._leaderboards.validateRequestData(requestData)
   }
 
-  function compareRequests(req1, req2)
-  {
+  function compareRequests(req1, req2) {
     return this._leaderboards.compareRequests(req1, req2)
   }
 
-  function checkLbRowVisibility(row, params = {})
-  {
+  function checkLbRowVisibility(row, params = {}) {
     if (!::leaderboardModel.checkLbRowVisibility(row, params))
       return false
 
@@ -1912,8 +1700,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return row.isVisibleInEvent(event)
   }
 
-  function fillAirsList(handler, teamObj, teamData, allowedUnitTypes, roomSpecialRules = null)
-  {
+  function fillAirsList(handler, teamObj, teamData, allowedUnitTypes, roomSpecialRules = null) {
     let allowedAirsObj = teamObj.findObject("allowed_crafts")
     let haveAllowedRules = this.generateRulesText(handler, this.getAlowedCrafts(teamData, roomSpecialRules), allowedAirsObj, true)
     allowedAirsObj.show(haveAllowedRules)
@@ -1936,13 +1723,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     local allowId = "all_units_allowed"
     local allowText = ""
-    if (stdMath.number_of_set_bits(allowedUnitTypes)==1)
+    if (stdMath.number_of_set_bits(allowedUnitTypes) == 1)
       allowId = "allowed_only/" + ::getUnitTypeText(stdMath.number_of_set_bits(allowedUnitTypes - 1))
-    if (stdMath.number_of_set_bits(allowedUnitTypes)==2)
-    {
+    if (stdMath.number_of_set_bits(allowedUnitTypes) == 2) {
       let masksArray = unitTypes.getArrayBybitMask(allowedUnitTypes)
-      if (masksArray && masksArray.len() == 2)
-      {
+      if (masksArray && masksArray.len() == 2) {
         let allowUnitId = "events/allowed_units"
         allowText = loc(allowUnitId, {
           unitType = loc(allowUnitId + "/" + masksArray[0].name),
@@ -1954,12 +1739,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     allowedUnitTypesObj.findObject("allowed_unit_types_text").setValue(allowText)
   }
 
-  function generateRulesText(handler, rules, rulesObj, _highlightRules = false, checkAllRules = false)
-  {
+  function generateRulesText(handler, rules, rulesObj, _highlightRules = false, checkAllRules = false) {
     // Using special container 'tdiv' for proper 'rulesObj' reuse.
     local craftsListObj = rulesObj.findObject("crafts_list")
-    if (!checkObj(craftsListObj))
-    {
+    if (!checkObj(craftsListObj)) {
       craftsListObj = handler.guiScene.createElement(rulesObj, "tdiv", handler)
       craftsListObj["id"] = "crafts_list"
       craftsListObj["flow"] = "vertical"
@@ -1968,9 +1751,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
     local haveRules = false
     let blk = "%gui/events/airRuleItem.blk"
-    foreach(rule in rules)
-    {
-      if (!checkAllRules && ("class" in rule) && rule.len()==1)
+    foreach (rule in rules) {
+      if (!checkAllRules && ("class" in rule) && rule.len() == 1)
         continue
 
       haveRules = true
@@ -1982,14 +1764,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return haveRules
   }
 
-  function generateEventRule(rule, onlyText = false, ruleObj = null)
-  {
-    local ruleString =""
-    if ("name" in rule)
-    {
+  function generateEventRule(rule, onlyText = false, ruleObj = null) {
+    local ruleString = ""
+    if ("name" in rule) {
       let air = ::getAircraftByName(rule.name)
-      if (!air)
-      {
+      if (!air) {
         assert(false, "Wrong air name '" + rule.name + "'")
         log("rule:")
         debugTableData(rule)
@@ -1997,8 +1776,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       if (onlyText || !air)
         ruleString = ::getUnitName(air, true)
 
-      if (air && checkObj(ruleObj))
-      {
+      if (air && checkObj(ruleObj)) {
         let airNameObj = ruleObj.findObject("air_name")
         airNameObj.setValue(loc(rule.name + "_shop"))
 
@@ -2026,8 +1804,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         ruleClass = "ship_and_boat"
       ruleString += loc($"mainmenu/type_{ruleClass}")
     }
-    if ("ranks" in rule)
-    {
+    if ("ranks" in rule) {
       let minRank = max(1, rule.ranks?.min ?? 1)
       let maxRank = rule.ranks?.max ?? ::max_country_rank
       local rankText = ::get_roman_numeral(minRank)
@@ -2039,8 +1816,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         ruleString = rankText
     }
 
-    if ("mranks" in rule)
-    {
+    if ("mranks" in rule) {
       let mranks = rule.mranks
       let minBR = format("%.1f", ::calc_battle_rating_from_rank(mranks?.min ?? 0))
       let maxBR = format("%.1f", ::calc_battle_rating_from_rank(mranks?.max ?? getMaxEconomicRank()))
@@ -2054,20 +1830,17 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return ruleString
   }
 
-  function getRulesText(rules, separator = "\n")
-  {
+  function getRulesText(rules, separator = "\n") {
     let textsList = ::u.map(rules, function(rule) { return this.generateEventRule(rule, true) }.bindenv(this))
     return ::g_string.implode(textsList, separator)
   }
 
-  function getSpecialRequirementsText(event, separator = "\n")
-  {
+  function getSpecialRequirementsText(event, separator = "\n") {
     let requirements = this.getSpecialRequirements(event)
     return requirements ? this.getRulesText(requirements, separator) : ""
   }
 
-  function getPlayersRangeTextData(event)
-  {
+  function getPlayersRangeTextData(event) {
     let minSize = this.getMinTeamSize(event)
     let maxSize = this.getMaxTeamSize(event)
     let isEqual = minSize == maxSize
@@ -2079,23 +1852,20 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return res
   }
 
-  function checkCurrentCraft(event, room = null)
-  {
+  function checkCurrentCraft(event, room = null) {
     let unit = ::get_cur_slotbar_unit()
     if (!unit)
       return false
 
     let ediff = this.getEDiffByEvent(event)
-    if (room)
-    {
+    if (room) {
       let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
       if (roomSpecialRules && !this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff))
         return false
     }
 
     let mGameMode = ::events.getMGameMode(event, room)
-    foreach(team in this.getSidesList(mGameMode))
-    {
+    foreach (team in this.getSidesList(mGameMode)) {
       let teamData = this.getTeamDataWithRoom(mGameMode, team, room)
       if (teamData && this.isUnitAllowedByTeamData(teamData, unit.name, ediff))
         return true
@@ -2103,8 +1873,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function isAllowedByRoomBalance(mGameMode, room)
-  {
+  function isAllowedByRoomBalance(mGameMode, room) {
     if (!room)
       return true
     let maxDisbalance = this.getMaxLobbyDisbalance(mGameMode)
@@ -2122,8 +1891,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return (countTbl?[myTeam] ?? 0) + membersCount <= (countTbl?[otherTeam] ?? 0) + maxDisbalance
   }
 
-  function hasPlaceInMyTeam(mGameMode, room)
-  {
+  function hasPlaceInMyTeam(mGameMode, room) {
     if (!room)
       return true
     let availTeams = this.getAvailableTeams(mGameMode, room)
@@ -2135,8 +1903,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return countTbl[availTeams[0]] + membersCount <= this.getMaxTeamSize(mGameMode)
   }
 
-  function getCantJoinReasonData(event, room = null, params = null)
-  {
+  function getCantJoinReasonData(event, room = null, params = null) {
     let data = {
       activeJoinButton = false
       reasonText = null
@@ -2147,8 +1914,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       room = room
       checkXboxOverlayMessage = false
     }
-    if (params != null)
-    {
+    if (params != null) {
       foreach (paramKey, paramValue in params)
         data[paramKey] <- paramValue
     }
@@ -2157,16 +1923,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let mGameMode = ::events.getMGameMode(event, room)
     if (event == null)
       data.reasonText = loc("events/no_selected_event")
-    else if (!this.checkEventFeature(event, true))
-    {
+    else if (!this.checkEventFeature(event, true)) {
       let purchData = ::OnlineShopModel.getFeaturePurchaseData(this.getEventReqFeature(event))
       data.activeJoinButton = purchData.canBePurchased
       data.reasonText = this.getEventFeatureReasonText(event)
     }
     else if (!this.isEventAllowedByComaptibilityMode(event))
       data.reasonText = loc("events/noCompatibilityMode")
-    else if (!isCreationCheck && !this.isEventEnabled(event))
-    {
+    else if (!isCreationCheck && !this.isEventEnabled(event)) {
       local startTime = ::events.getEventStartTime(event)
       if (startTime > 0)
         data.reasonText = loc("events/event_not_started_yet")
@@ -2187,14 +1951,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.msgboxReasonText = loc("xbox/noMultiplayer")
       data.checkXboxOverlayMessage = true
     }
-    else if (!this.isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled())
-    {
+    else if (!this.isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled()) {
       data.reasonText = loc("xbox/crossPlayRequired")
       data.msgboxReasonText = loc("xbox/actionNotAvailableCrossNetworkPlay")
       data.checkXboxOverlayMessage = true
     }
-    else if (!this.checkSpecialRequirements(event))
-    {
+    else if (!this.checkSpecialRequirements(event)) {
       if (isFullText)
         data.reasonText = loc("events/specialRequirements") + loc("ui/colon") + "\n"
                         + this.getSpecialRequirementsText(event)
@@ -2215,8 +1977,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.reasonText = loc("events/selected_craft_is_not_allowed")
     else if (!this.checkClan(event))
       data.reasonText = loc("events/wrong_clan_for_this_tornament")
-    else if (this.eventRequiresTicket(event) && this.getEventActiveTicket(event) == null)
-    {
+    else if (this.eventRequiresTicket(event) && this.getEventActiveTicket(event) == null) {
       data.activeJoinButton = true
       data.reasonText = loc("ticketBuyWindow/mainText")
       data.actionFunc = function (reasonData) {
@@ -2224,11 +1985,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         ::events.checkAndBuyTicket(event, continueFunc)
       }
     }
-    else if (this.getEventActiveTicket(event) != null && !this.getEventActiveTicket(event).getTicketTournamentData(this.getEventEconomicName(event)).canJoinTournament)
-    {
+    else if (this.getEventActiveTicket(event) != null && !this.getEventActiveTicket(event).getTicketTournamentData(this.getEventEconomicName(event)).canJoinTournament) {
       data.reasonText = loc("events/wait_for_sessions_to_finish/main")
-      data.actionFunc = function (reasonData)
-      {
+      data.actionFunc = function (reasonData) {
         ::g_event_ticket_buy_offer.offerTicket(reasonData.event)
       }
     }
@@ -2236,16 +1995,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.reasonText = loc("events/minSquadSize", { minSize = this.getMinSquadSize(event) })
     else if (::g_squad_manager.getOnlineMembersCount() > this.getMaxSquadSize(event))
       data.reasonText = loc("events/maxSquadSize", { maxSize = this.getMaxSquadSize(event) })
-    else if (!this.hasPlaceInMyTeam(mGameMode, room))
-    {
+    else if (!this.hasPlaceInMyTeam(mGameMode, room)) {
       let myTeam = this.getAvailableTeams(mGameMode, room)[0]
       data.reasonText = loc("multiplayer/chosenTeamIsFull",
         {
           chosenTeam = colorize("teamBlueColor", ::g_team.getTeamByCode(myTeam).getShortName())
         })
     }
-    else if (!this.isAllowedByRoomBalance(mGameMode, room))
-    {
+    else if (!this.isAllowedByRoomBalance(mGameMode, room)) {
       let teamsCnt = ::SessionLobby.getMembersCountByTeams(room)
       let myTeam = this.getAvailableTeams(mGameMode, room)[0]
       let otherTeam = ::u.search(this.getSidesList(mGameMode), (@(myTeam) function(t) { return t != myTeam })(myTeam))
@@ -2260,19 +2017,16 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       let locKey = "multiplayer/enemyTeamTooLowMembers" + (isFullText ? "" : "/short")
       data.reasonText = loc(locKey, locParams)
     }
-    else if (!this.haveEventAccessByCost(event))
-    {
+    else if (!this.haveEventAccessByCost(event)) {
       data.reasonText = loc("events/notEnoughMoney")
     }
-    else
-    {
+    else {
       data.reasonText = ""
       data.checkStatus = true
       data.activeJoinButton = true
     }
 
-    if (data.actionFunc == null && !data.checkStatus)
-    {
+    if (data.actionFunc == null && !data.checkStatus) {
       data.actionFunc = function(reasonData) {
         if (!reasonData.checkXboxOverlayMessage)
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
@@ -2287,10 +2041,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return data
   }
 
-  function getEventStartTimeText(event)
-  {
-    if (::events.isEventEnabled(event))
-    {
+  function getEventStartTimeText(event) {
+    if (::events.isEventEnabled(event)) {
       let startTime = ::events.getEventStartTime(event)
       if (startTime > 0)
         return format(loc("events/event_started_at"), colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
@@ -2298,10 +2050,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return ""
   }
 
-  function getEventTimeText(event)
-  {
-    if (::events.isEventEnabled(event))
-    {
+  function getEventTimeText(event) {
+    if (::events.isEventEnabled(event)) {
       let endTime = ::events.getEventEndTime(event)
       if (endTime > 0)
         return format(loc("events/event_ends_in"), colorize("activeTextColor", time.hoursToString(time.secondsToHours(endTime))))
@@ -2318,37 +2068,36 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   // Sort/compare functions.
   //
 
-  function sortEventsByDiff(a, b)
-  {
+  function sortEventsByDiff(a, b) {
     let diffA = (type(a) == "string" ? this.__game_events[a] : a).diffWeight
     let diffB = (type(b) == "string" ? this.__game_events[b] : b).diffWeight
-    if(diffA > diffB)
+    if (diffA > diffB)
       return 1
-    else if(diffA < diffB)
+    else if (diffA < diffB)
       return -1
     return 0
   }
 
-  function gameModeCompare(gm1, gm2)
-  {
+  function gameModeCompare(gm1, gm2) {
     local cmp = this.forClanCompare(gm1.forClan, gm2.forClan)
-    if (cmp != 0) return cmp
+    if (cmp != 0)
+      return cmp
     cmp = this.displayTypeCompare(gm1.displayType, gm2.displayType)
-    if (cmp != 0) return cmp
+    if (cmp != 0)
+      return cmp
     cmp = this.diffCodeCompare(gm1.diffCode, gm2.diffCode)
-    if (cmp != 0) return cmp
+    if (cmp != 0)
+      return cmp
     return this.unitTypesCompare(gm1.unitTypes, gm2.unitTypes)
   }
 
-  function displayTypeCompare(dt1, dt2)
-  {
+  function displayTypeCompare(dt1, dt2) {
     if (dt1 == dt2)
       return 0
     return dt1.showInEventsWindow ? 1 : -1
   }
 
-  function diffCodeCompare(d1, d2)
-  {
+  function diffCodeCompare(d1, d2) {
     if (d1 > d2)
       return 1
     if (d1 < d2)
@@ -2356,10 +2105,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return 0
   }
 
-  function unitTypesCompare(uts1, uts2)
-  {
-    if (uts1.len() == 1 && uts2.len() == 1)
-    {
+  function unitTypesCompare(uts1, uts2) {
+    if (uts1.len() == 1 && uts2.len() == 1) {
       if (uts1[0] > uts2[0])
         return 1
       if (uts1[0] < uts2[0])
@@ -2370,16 +2117,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return uts1.len() > uts2.len() ? 1 : -1
   }
 
-  function forClanCompare(fc1, fc2)
-  {
+  function forClanCompare(fc1, fc2) {
     if (fc1 == fc2)
       return 0
     return fc1 ? 1 : -1
   }
 
   /** Returns tickets available for purchase. */
-  function getEventTickets(event, canBuyOnly = false)
-  {
+  function getEventTickets(event, canBuyOnly = false) {
     let eventId = this.getEventEconomicName(event)
     let tickets = ::ItemsManager.getItemsList(itemType.TICKET, (@(eventId, canBuyOnly) function (item) {
       return item.isForEvent(eventId) && (!canBuyOnly || item.isCanBuy())
@@ -2388,8 +2133,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   /** Returns null if no such ticket found. */
-  function getEventActiveTicket(event)
-  {
+  function getEventActiveTicket(event) {
     let eventId = event.economicName
     if (!::have_you_valid_tournament_ticket(eventId))
       return null
@@ -2417,8 +2161,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * @param useShortText Setting to true will
    * return only price with no text label.
    */
-  function getEventBattleCostText(event, valueColor = "activeTextColor", useShortText = false, colored = true)
-  {
+  function getEventBattleCostText(event, valueColor = "activeTextColor", useShortText = false, colored = true) {
     let cost = this.getEventBattleCost(event)
     if (cost <= ::zero_money)
       return ""
@@ -2430,39 +2173,33 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return loc("events/battle_cost", { cost = colorize(valueColor, shortText) })
   }
 
-  function getEventBattleCost(event)
-  {
+  function getEventBattleCost(event) {
     if (event == null)
       return ::Cost()
     return ::Cost().setFromTbl(::get_tournament_battle_cost(event.economicName))
   }
 
-  function haveEventAccessByCost(event)
-  {
+  function haveEventAccessByCost(event) {
     return ::get_gui_balance() >= this.getEventBattleCost(event)
   }
 
-  function hasEventTicket(event)
-  {
+  function hasEventTicket(event) {
     return this.getEventActiveTicket(event) != null
   }
 
-  function eventRequiresTicket(event)
-  {
+  function eventRequiresTicket(event) {
     // Event has at least one ticket available in shop.
     return this.getEventTickets(event).len() != 0
   }
 
-  function checkAndBuyTicket(event, afterBuyFunc = null)
-  {
+  function checkAndBuyTicket(event, afterBuyFunc = null) {
     if (!this.eventRequiresTicket(event))
       return ::call_for_handler(null, afterBuyFunc)
     let ticket = this.getEventActiveTicket(event)
     if (ticket != null)
       return ::call_for_handler(null, afterBuyFunc)
     let purchasableTickets = this.getEventTickets(event, true)
-    if (purchasableTickets.len() == 0)
-    {
+    if (purchasableTickets.len() == 0) {
       let locParams = {
         eventName = this.getEventNameText(event)
       }
@@ -2470,8 +2207,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       ::showInfoMsgBox(message, "no_tickets")
     }
     // Player has to purchase one of available tickets via special window.
-    else
-    {
+    else {
       let windowParams = {
         afterBuyFunc = afterBuyFunc,
         event = event
@@ -2486,8 +2222,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
    * This function returns true if current clan (if exists) is the same as clan
    * you first time took part in this tournamnet you was in.
    */
-  function checkClan(event)
-  {
+  function checkClan(event) {
     let clanTournament = get_blk_value_by_path(::get_tournaments_blk(), event.name + "/clanTournament", false)
     if (!clanTournament)
       return true
@@ -2499,8 +2234,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return tournamentBlk?.clanId ? ::clan_get_my_clan_id() == tournamentBlk.clanId.tostring() : true
   }
 
-  function checkMembersForQueue(event, room = null, continueQueueFunc = null, cancelFunc = null)
-  {
+  function checkMembersForQueue(event, room = null, continueQueueFunc = null, cancelFunc = null) {
     if (!::g_squad_manager.isInSquad())
       return continueQueueFunc && continueQueueFunc(null)
 
@@ -2510,8 +2244,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return cancelFunc && cancelFunc()
 
     let membersInfo = this.getMembersInfo(membersTeams.teamsData)
-    if (membersTeams.haveRestrictions)
-    {
+    if (membersTeams.haveRestrictions) {
       let func = @() continueQueueFunc && continueQueueFunc(membersInfo)
       this.showCantFlyMembersMsgBox(membersTeams, func, cancelFunc)
       return
@@ -2521,21 +2254,19 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       continueQueueFunc(membersInfo)
   }
 
-  function getMembersInfo(membersTeams)
-  {
+  function getMembersInfo(membersTeams) {
     if (membersTeams.len() == 0)
       return null
 
     let notRestrictionsTeamsData = membersTeams.filter(@(v) !v.haveRestrictions)
-    let membersData =notRestrictionsTeamsData.len() > 0
-      ? notRestrictionsTeamsData[::math.rnd() % notRestrictionsTeamsData.len()]
-      : membersTeams[::math.rnd() % membersTeams.len()]
+    let membersData = notRestrictionsTeamsData.len() > 0
+      ? notRestrictionsTeamsData[rnd() % notRestrictionsTeamsData.len()]
+      : membersTeams[rnd() % membersTeams.len()]
     let membersQuery = this.prepareMembersForQueue(membersData)
     return membersQuery
   }
 
-  function getEventsChapter(event)
-  {
+  function getEventsChapter(event) {
     if (::events.isEventEnableOnDebug(event))
       return "test_events"
     local chapterName = event?.chapter ?? "basic_events"
@@ -2544,21 +2275,18 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return chapterName
   }
 
-  function getChapters()
-  {
+  function getChapters() {
     return this.chapters.getChapters()
   }
 
-  function checkEventDisableSquads(handler, eventId)
-  {
+  function checkEventDisableSquads(handler, eventId) {
     if (!::g_squad_manager.isNotAloneOnline())
       return false
     let event = ::events.getEvent(eventId)
     if (event == null)
       return false
     let { disableSquads = false } = event
-    if (disableSquads)
-    {
+    if (disableSquads) {
       handler.msgBox("squads_disabled", loc("events/squads_disabled"),
         [
           ["ok", function() {}]
@@ -2568,13 +2296,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return false
   }
 
-  function getEventRankCalcMode(event)
-  {
+  function getEventRankCalcMode(event) {
     return event?.rankCalcMode
   }
 
-  function getEventIsVisible(event)
-  {
+  function getEventIsVisible(event) {
     if (this.isEventEnabled(event))
       return true
     return event?.visible ?? true
@@ -2586,10 +2312,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   /**
    * @param teamDataByTeamName This can be event or session info.
    */
-  function isEventAllUnitAllowed(teamDataByTeamName)
-  {
-    foreach (team in ::events.getSidesList())
-    {
+  function isEventAllUnitAllowed(teamDataByTeamName) {
+    foreach (team in ::events.getSidesList()) {
       let teamName = this.getTeamName(team)
       let teamData = teamDataByTeamName?[teamName]
       if (!teamData || !this.isTeamDataPlayable(teamData))
@@ -2607,30 +2331,26 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return true
   }
 
-  function descFormat(name, value)
-  {
+  function descFormat(name, value) {
     if (::u.isEmpty(value))
       return ""
     return name + loc("ui/colon") + colorize("@activeTextColor", value)
   }
 
-  function getEventRewardText(event)
-  {
+  function getEventRewardText(event) {
     let muls = ::events.getEventRewardMuls(event.name)
     let wpText = this.buildBonusText((100.0 * (muls.wp  - 1.0) + 0.5).tointeger(), "% " + loc("warpoints/short/colored"))
     let expText = this.buildBonusText((100.0 * (muls.exp - 1.0) + 0.5).tointeger(), "% " + loc("currency/researchPoints/sign/colored"))
-    return wpText + ((wpText.len() && expText.len())? ", " : "") + expText
+    return wpText + ((wpText.len() && expText.len()) ? ", " : "") + expText
   }
 
-  function buildBonusText(value, endingText)
-  {
+  function buildBonusText(value, endingText) {
     if (!value || value <= 0)
       return ""
     return "+" + value + endingText
   }
 
-  function getEventDescriptionText(event, mroom = null, hasEventFeatureReasonText = false)
-  {
+  function getEventDescriptionText(event, mroom = null, hasEventFeatureReasonText = false) {
     let textsList = []
 
     textsList.append(this.getCustomRulesDesc(event))
@@ -2654,19 +2374,16 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return ::g_string.implode(textsList, "\n")
   }
 
-  function isEventAllowSwitchClan(event)
-  {
+  function isEventAllowSwitchClan(event) {
     return event?.allowSwitchClan ?? false
   }
 
-  function getDifficultyImg(eventId)
-  {
+  function getDifficultyImg(eventId) {
     let diffName = this.getEventDiffName(eventId)
     return this.getDifficultyIcon(diffName)
   }
 
-  function getDifficultyIcon(diffName)
-  {
+  function getDifficultyIcon(diffName) {
     let difficulty = ::g_difficulty.getDifficultyByName(diffName)
     if (!::u.isEmpty(difficulty.icon))
       return difficulty.icon
@@ -2677,34 +2394,29 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return ""
   }
 
-  function getDifficultyTooltip(eventId)
-  {
+  function getDifficultyTooltip(eventId) {
     local custChanges = this.getCustomDifficultyChanges(eventId)
-    custChanges = (custChanges.len()? "\n" : "") + custChanges
+    custChanges = (custChanges.len() ? "\n" : "") + custChanges
     return ::events.descFormat(loc("multiplayer/difficulty"), this.getDifficultyText(eventId)) + custChanges
   }
 
-  function getDifficultyText(eventId)
-  {
+  function getDifficultyText(eventId) {
     let difficulty = this.getEventDiffName(eventId)
-    if(difficulty.len())
+    if (difficulty.len())
       return loc("options/" + difficulty)
     return ""
   }
 
-  function getCustomRules(event)
-  {
+  function getCustomRules(event) {
     return event.mission_decl?.customRules
   }
 
-  function getCustomRulesSetName(event)
-  {
+  function getCustomRulesSetName(event) {
     let customRules = this.getCustomRules(event)
     return customRules?.guiName ?? customRules?.name
   }
 
-  function getCustomRulesDesc(event)
-  {
+  function getCustomRulesDesc(event) {
     let rulesName = this.getCustomRulesSetName(event)
     if (::u.isEmpty(rulesName))
       return ""
@@ -2713,61 +2425,51 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return rulesClass().getEventDescByRulesTbl(this.getCustomRules(event))
   }
 
-  function getUnlockProgress(event)
-  {
+  function getUnlockProgress(event) {
     if (event.mission_decl?.gt_use_unlocks ?? true)
       return ""
     return loc("events/no_unlock_progress")
   }
 
-  function getTimeAwardingEconomicsDesc(event)
-  {
+  function getTimeAwardingEconomicsDesc(event) {
     return event.mission_decl?.useTimeAwardingEconomics ? loc("events/has_time_awarding_economics") : ""
   }
 
-  function isEventForClanGlobalLb(event)
-  {
+  function isEventForClanGlobalLb(event) {
     let tournamentMode = this.getEventTournamentMode(event)
     let forClans = this._leaderboards.isClanLeaderboard(event)
 
     return tournamentMode == GAME_EVENT_TYPE.TM_NONE && forClans
   }
 
-  function isEnableFriendsJoin(event)
-  {
+  function isEnableFriendsJoin(event) {
     return event?.enableFriendsJoin ?? false
   }
 
-  function isEventWithLobby(event)
-  {
+  function isEventWithLobby(event) {
     return event?.withLobby ?? false
   }
 
-  function getMaxLobbyDisbalance(event)
-  {
+  function getMaxLobbyDisbalance(event) {
     return event?.maxLobbyDisbalance ?? ::global_max_players_versus
   }
 
-  function getEventReqFeature(event)
-  {
+  function getEventReqFeature(event) {
     return event?.reqFeature ?? ""
   }
 
-  function getEventPVETrophyName(event)
-  {
+  function getEventPVETrophyName(event) {
     return event?.pveTrophyName ?? ""
   }
 
-  function isEventVisibleByFeature(event)
-  {
+  function isEventVisibleByFeature(event) {
     let feature = this.getEventReqFeature(event)
     if (::u.isEmpty(feature) || hasFeature(feature))
       return true
     return hasFeature("OnlineShopPacks") && ::OnlineShopModel.getFeaturePurchaseData(feature).canBePurchased
   }
 
-  function checkEventFeature(event, isSilent = false)
-  {
+  function checkEventFeature(event, isSilent = false) {
     let feature = this.getEventReqFeature(event)
     if (::u.isEmpty(feature) || hasFeature(feature))
       return true
@@ -2796,8 +2498,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   //when @checkFeature return pack only if player has feature access to event.
-  function getEventReqPack(event, checkFeature = false)
-  {
+  function getEventReqPack(event, checkFeature = false) {
     let feature = this.getEventReqFeature(event)
     if (::u.isEmpty(feature) || (checkFeature && !hasFeature(feature)))
       return null
@@ -2806,16 +2507,14 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   //return true if me and all my squad members has packs requeired by event feature
   //show msgBox askingdownload when no silent
-  function checkEventFeaturePacks(event, isSilent = false)
-  {
+  function checkEventFeaturePacks(event, isSilent = false) {
     let pack = this.getEventReqPack(event)
     if (!pack)
       return true
     return ::check_package_full(pack, isSilent)
   }
 
-  function onEventEntitlementsPriceUpdated(_p)
-  {
+  function onEventEntitlementsPriceUpdated(_p) {
     this.recalcAllEventsDisplayType()
   }
 
@@ -2824,32 +2523,27 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   // game mode allows to join either from queue or from rooms list
-  function isLobbyGameMode(mGameMode)
-  {
+  function isLobbyGameMode(mGameMode) {
     return mGameMode?.withLobby ?? false
   }
 
   // it is lobby game mode but with sessions that can be created by players
-  function isCustomGameMode(mGameMode)
-  {
+  function isCustomGameMode(mGameMode) {
     return mGameMode?.forCustomLobby ?? false
   }
 
-  function getCustomGameMode(event)
-  {
+  function getCustomGameMode(event) {
     return ::u.search(
       ::g_matching_game_modes.getGameModesByEconomicName(this.getEventEconomicName(event)),
       this.isCustomGameMode
     )
   }
 
-  function canCreateCustomRoom(event)
-  {
+  function canCreateCustomRoom(event) {
     return hasFeature("CreateEventRoom") && !!this.getCustomGameMode(event)
   }
 
-  function openCreateRoomWnd(event)
-  {
+  function openCreateRoomWnd(event) {
     let customMgm = this.getCustomGameMode(event)
     if (!customMgm)
       return
@@ -2858,23 +2552,19 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       { mGameMode = customMgm })
   }
 
-  function getMaxSquadSize(event)
-  {
+  function getMaxSquadSize(event) {
     return event?.maxSquadSize ?? 4
   }
 
-  function getMinSquadSize(event)
-  {
+  function getMinSquadSize(event) {
     return event?.minSquadSize ?? 1
   }
 
-  function isGameTypeOfEvent(event, gameTypeName)
-  {
-    return !!event && !!::get_meta_mission_info_by_name(this.getEventMission(event.name))?[gameTypeName]
+  function isGameTypeOfEvent(event, gameTypeName) {
+    return !!event && !!get_meta_mission_info_by_name(this.getEventMission(event.name))?[gameTypeName]
   }
 
-  function onEventEventBattleEnded(params)
-  {
+  function onEventEventBattleEnded(params) {
     let event = ::events.getEvent(params?.eventId)
     if (!event)
       return
@@ -2882,14 +2572,12 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     this._leaderboards.dropLbCache(event)
   }
 
-  function getEventFeatureReasonText(event)
-  {
+  function getEventFeatureReasonText(event) {
     let purchData = ::OnlineShopModel.getFeaturePurchaseData(this.getEventReqFeature(event))
     local reasonText = ""
     if (!purchData.canBePurchased)
       reasonText = loc("msgbox/notAvailbleYet")
-    else
-    {
+    else {
       let entitlementItem = getEntitlementConfig(purchData.sourceEntitlement)
       reasonText = loc("events/no_entitlement",
         { entitlement = colorize("userlogColoredText", getEntitlementName(entitlementItem)) })
@@ -2906,8 +2594,7 @@ seenEvents.setListGetter(@() ::events.getVisibleEventsList())
 seenEvents.setSubListGetter(SEEN.S_EVENTS_WINDOW,
   @() ::events.getEventsForEventsWindow())
 
-seenEvents.setCompatibilityLoadData(function()
-  {
+seenEvents.setCompatibilityLoadData(function() {
     let res = {}
     let savePath = "seen/events"
     let blk = ::loadLocalByAccount(savePath)

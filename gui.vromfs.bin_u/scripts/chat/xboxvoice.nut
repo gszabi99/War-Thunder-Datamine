@@ -1,7 +1,8 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let {subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member,
-  update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers} = require("%xboxLib/voice.nut")
-let {reqPlayerExternalIDsByUserId} = require("%scripts/user/externalIdsService.nut")
+let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member,
+  update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%xboxLib/voice.nut")
+let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 
 let requestedIds = persist("requestedIds", @() {})
 
@@ -39,7 +40,7 @@ let function add_user(uid) {
     return
 
   requestedIds[uid] <- true
-  reqPlayerExternalIDsByUserId(uid, {showProgressBox = false}, null, true)
+  reqPlayerExternalIDsByUserId(uid, { showProgressBox = false }, null, true)
 }
 
 

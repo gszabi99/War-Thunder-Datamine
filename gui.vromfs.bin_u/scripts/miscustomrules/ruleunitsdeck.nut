@@ -1,26 +1,23 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-::mission_rules.UnitsDeck <- class extends ::mission_rules.Base
-{
+::mission_rules.UnitsDeck <- class extends ::mission_rules.Base {
   needLeftRespawnOnSlots = true
 
-  function getLeftRespawns()
-  {
+  function getLeftRespawns() {
     return ::RESPAWNS_UNLIMITED
   }
 
-  function getRespawnInfoTextForUnitInfo(unit)
-  {
+  function getRespawnInfoTextForUnitInfo(unit) {
     return loc("multiplayer/leftTeamUnit",
                  { num = this.getUnitLeftRespawns(unit) })
   }
 
-  function getUnitLeftRespawns(unit, _teamDataBlk = null)
-  {
+  function getUnitLeftRespawns(unit, _teamDataBlk = null) {
     if (!unit)
       return 0
     let myState = this.getMyStateBlk()
@@ -28,30 +25,26 @@ from "%scripts/dagui_library.nut" import *
     return getTblValue(unit.name, limitedUnits, 0)
   }
 
-  function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk)
-  {
+  function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk) {
     if (!unit)
       return 0
 
     return teamDataBlk?.limitedUnits?[unit.name] ?? ::RESPAWNS_UNLIMITED
   }
 
-  function getSpecialCantRespawnMessage(unit)
-  {
+  function getSpecialCantRespawnMessage(unit) {
     let leftRespawns = this.getUnitLeftRespawns(unit)
     if (leftRespawns || this.isUnitAvailableBySpawnScore(unit))
       return null
     return loc("respawn/noUnitLeft", { unitName = colorize("userlogColoredText", ::getUnitName(unit)) })
   }
 
-  function hasCustomUnitRespawns()
-  {
+  function hasCustomUnitRespawns() {
     let myTeamDataBlk = this.getMyTeamDataBlk()
     return myTeamDataBlk != null
   }
 
-  function calcFullUnitLimitsData(isTeamMine = true)
-  {
+  function calcFullUnitLimitsData(isTeamMine = true) {
     let res = base.calcFullUnitLimitsData()
     res.defaultUnitRespawnsLeft = 0
 
@@ -64,8 +57,7 @@ from "%scripts/dagui_library.nut" import *
     let unitsGroups = this.getUnitsGroups()
 
     if (::u.isDataBlock(limitedBlk))
-      for(local i = 0; i < limitedBlk.paramCount(); i++)
-      {
+      for (local i = 0; i < limitedBlk.paramCount(); i++) {
         let unitName = limitedBlk.getParamName(i)
         let teamUnitPreset = getTblValue(unitName, myTeamUnitsParamsBlk, null)
         let userUnitPreset = getTblValue(unitName, weaponsLimitsBlk, null)
@@ -93,8 +85,7 @@ from "%scripts/dagui_library.nut" import *
     return res
   }
 
-  function isUnitAvailableBySpawnScore(unit)
-  {
+  function isUnitAvailableBySpawnScore(unit) {
     if (!unit)
       return false
 
@@ -109,8 +100,7 @@ from "%scripts/dagui_library.nut" import *
       && unit.getSpawnScore() > 0
   }
 
-  function isEnemyLimitedUnitsVisible()
-  {
+  function isEnemyLimitedUnitsVisible() {
     return ::get_current_mission_info_cached()?.customRules?.showEnemiesLimitedUnits == true
   }
 }

@@ -1,23 +1,23 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let DataBlock  = require("DataBlock")
 
-let function getClanRequirementsText(membershipRequirements)
-{
+let function getClanRequirementsText(membershipRequirements) {
   if (!membershipRequirements)
     return ""
 
-  let rawRanksCond = membershipRequirements.getBlockByName("ranks") || ::DataBlock();
+  let rawRanksCond = membershipRequirements.getBlockByName("ranks") || DataBlock();
   let ranksConditionTypeText = (rawRanksCond?.type == "or")
     ? loc("clan/rankReqInfoCondType_or")
     : loc("clan/rankReqInfoCondType_and")
 
   let ranksReqTextArray = []
-  foreach (unitType in unitTypes.types)
-  {
+  foreach (unitType in unitTypes.types) {
     let req = rawRanksCond.getBlockByName("rank_" + unitType.name)
     if (req?.type != "rank" || req?.unitType != unitType.name)
       continue
@@ -29,32 +29,28 @@ let function getClanRequirementsText(membershipRequirements)
   }
 
   local ranksReqText = ""
-  if (ranksReqTextArray.len())
-  {
+  if (ranksReqTextArray.len()) {
     ranksReqText = ::g_string.implode(ranksReqTextArray, " " + ranksConditionTypeText + " ")
     ranksReqText = loc("clan/rankReqInfoHead") + loc("ui/colon") + ranksReqText
   }
 
   local battlesReqText = "";
   local haveBattlesReq = false;
-  foreach(diff in ::g_difficulty.types)
-    if (diff.egdCode != EGD_NONE)
-    {
+  foreach (diff in ::g_difficulty.types)
+    if (diff.egdCode != EGD_NONE) {
       let modeName = diff.getEgdName(false); // arcade, historical, simulation
-      let req = membershipRequirements.getBlockByName("battles_"+modeName);
-      if (req?.type == "battles" && req?.difficulty == modeName)
-      {
+      let req = membershipRequirements.getBlockByName("battles_" + modeName);
+      if (req?.type == "battles" && req?.difficulty == modeName) {
         let battlesRequired = req.getInt("count", 0);
-        if ( battlesRequired > 0 )
-        {
-          if ( !haveBattlesReq )
+        if (battlesRequired > 0) {
+          if (!haveBattlesReq)
             battlesReqText = loc("clan/battlesReqInfoHead");
           else
             battlesReqText += " " + ranksConditionTypeText;
 
           haveBattlesReq = true;
-          battlesReqText += ( " " + loc("clan/battlesReqInfoMode_"+modeName) + " " +
-            colorize("activeTextColor", battlesRequired.tostring()) );
+          battlesReqText += (" " + loc("clan/battlesReqInfoMode_" + modeName) + " " +
+            colorize("activeTextColor", battlesRequired.tostring()));
         }
       }
     }

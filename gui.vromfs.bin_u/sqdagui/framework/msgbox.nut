@@ -4,43 +4,38 @@
 let { format } = require("string")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { get_time_msec } = require("dagor.time")
+let broadcastEvent = require("%sqStdLibs/helpers/subscriptions.nut").broadcast
+let { stripTags } =  require("%sqstd/string.nut")
 
 ::scene_msg_boxes_list <- [] //FIX ME need to make it part of handler manager
 
 //  {id, text, buttons, defBtn}
 ::gui_scene_boxes <- []
-let g_string =  require("%sqstd/string.nut")
 
-::remove_scene_box <- function remove_scene_box(id)
-{
-  for (local i = 0; i < ::gui_scene_boxes.len(); i++)
-  {
-    if (::gui_scene_boxes[i].id == id)
-    {
+::remove_scene_box <- function remove_scene_box(id) {
+  for (local i = 0; i < ::gui_scene_boxes.len(); i++) {
+    if (::gui_scene_boxes[i].id == id) {
       ::gui_scene_boxes.remove(i)
       return
     }
   }
 }
 
-::destroyMsgBox <- function destroyMsgBox(boxObj)
-{
-  if(!check_obj(boxObj))
+::destroyMsgBox <- function destroyMsgBox(boxObj) {
+  if (!check_obj(boxObj))
     return
   local guiScene = boxObj.getScene()
   guiScene.destroyElement(boxObj)
-  ::broadcastEvent("ModalWndDestroy")
+  broadcastEvent("ModalWndDestroy")
 }
 
-let function clear_msg_boxes_list()
-{
-  for(local i = ::scene_msg_boxes_list.len()-1; i >= 0; i--)
+let function clear_msg_boxes_list() {
+  for (local i = ::scene_msg_boxes_list.len() - 1; i >= 0; i--)
     if (!check_obj(::scene_msg_boxes_list[i]))
       ::scene_msg_boxes_list.remove(i)
 }
 
-let function get_text_urls_data(text)
-{
+let function get_text_urls_data(text) {
   if (!text.len())
     return null
 
@@ -64,7 +59,7 @@ let function get_text_urls_data(text)
       url = text.slice(start + startText.len(), urlEnd)
       text = text.slice(urlEnd + urlEndText.len(), end)
     })
-    text = text.slice(0, start) + text.slice(end + endText.len())
+    text = "".concat(text.slice(0, start), text.slice(end + endText.len()))
   } while (start != null && start < text.len())
 
   if (!urls.len())
@@ -73,8 +68,7 @@ let function get_text_urls_data(text)
 }
 
 ::saved_scene_msg_box <- null  //msgBox which must be shown even when scene changed
-::scene_msg_box <- function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null)
-{
+::scene_msg_box <- function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
   gui_scene = gui_scene || ::get_cur_gui_scene()
   if (options?.checkDuplicateId && check_obj(gui_scene[id]))
     return null
@@ -91,7 +85,7 @@ let function get_text_urls_data(text)
   local cancel_fn = options?.cancel_fn
   let needCancelFn = options?.need_cancel_fn
   if (!cancel_fn && buttons && buttons.len() == 1)
-    cancel_fn = buttons[0].len() >= 2 ? buttons[0][1] : function(){}
+    cancel_fn = buttons[0].len() >= 2 ? buttons[0][1] : function() {}
 
   if (options?.saved)
     ::saved_scene_msg_box = (@(id, gui_scene, text, buttons, def_btn, options) function() {
@@ -99,17 +93,15 @@ let function get_text_urls_data(text)
       })(id, gui_scene, text, buttons, def_btn, options)
 
   let bottomLinks = get_text_urls_data(text)
-  if (bottomLinks)
-  {
+  if (bottomLinks) {
     text = bottomLinks.text
     data_below_text = data_below_text || ""
-    foreach(idx, urlData in bottomLinks.urls)
+    foreach (idx, urlData in bottomLinks.urls)
       data_below_text += format("button { id:t='msgLink%d'; text:t='%s'; link:t='%s'; on_click:t = '::open_url_by_obj'; underline{} }",
-                           idx, g_string.stripTags(urlData.text), g_string.stripTags(urlData.url))
+                           idx, stripTags(urlData.text), stripTags(urlData.url))
   }
 
-  if (!check_obj(gui_scene[rootNode]))
-  {
+  if (!check_obj(gui_scene[rootNode])) {
     rootNode = ""
     if (!check_obj(gui_scene.getRoot()))
       return null
@@ -118,7 +110,7 @@ let function get_text_urls_data(text)
   if (!msgbox)
     return null
   msgbox.id = id
-  println("GuiManager: load msgbox = " + id)
+  println($"GuiManager: load msgbox = {id}")
 //  ::enableHangarControls(false, false) //to disable hangar controls need restore them on destroy msgBox
 
   let textObj = msgbox.findObject("msgText")
@@ -127,15 +119,13 @@ let function get_text_urls_data(text)
   textObj.setValue(text)
 
   local handlerObj = null
-  if (buttons)
-  {
+  if (buttons) {
     let handlerClass = class {
-      function onButtonId(id)
-      {
+      function onButtonId(id) {
         if (this.startingDialogNow)
           return
 
-        if (this.showButtonsTimer>0)
+        if (this.showButtonsTimer > 0)
           return
 
         let srcHandlerObj = this.sourceHandlerObj
@@ -144,18 +134,15 @@ let function get_text_urls_data(text)
 
         let delayedAction = function() {
           if (check_obj(this.boxObj))
-            foreach (b in buttons)
-            {
+            foreach (b in buttons) {
               local isDestroy = true
               if (b.len() > 2)
                 isDestroy = b[2]
-              if (b[0] == id || (b[0]=="" && id == "cancel"))
-              {
-                if (b.len()>1 && b[1])
+              if (b[0] == id || (b[0] == "" && id == "cancel")) {
+                if (b.len() > 1 && b[1])
                   b[1].call(srcHandlerObj)
 
-                if (isDestroy)
-                {
+                if (isDestroy) {
                   ::remove_scene_box(bId) //!!FIX ME: need refactoring about this list
                   ::saved_scene_msg_box = null
                   ::destroyMsgBox(bObj)
@@ -170,18 +157,15 @@ let function get_text_urls_data(text)
         this.guiScene.performDelayed(this, delayedAction)
       }
 
-      function onButton(obj)
-      {
+      function onButton(obj) {
         this.onButtonId(obj.id)
       }
 
-      function onAccessKey(obj)
-      {
+      function onAccessKey(obj) {
         this.onButtonId(obj.id.slice(3))
       }
 
-      function onAcceptSelectionAccessKey(_obj)
-      {
+      function onAcceptSelectionAccessKey(_obj) {
         if (this.showButtonsTimer > 0)
           return
         let btnObj = check_obj(this.boxObj) ? this.boxObj.findObject("buttons_holder") : null
@@ -192,8 +176,7 @@ let function get_text_urls_data(text)
         if (value < 0 || value >= total)
           return
         local button = btnObj.getChild(value)
-        for (local i = 0; i < total; i++)
-        {
+        for (local i = 0; i < total; i++) {
           let bObj = btnObj.getChild(i)
           if (bObj?.isValid() && bObj.isHovered())
             button = bObj
@@ -202,20 +185,15 @@ let function get_text_urls_data(text)
           return this.onButtonId(button.id)
       }
 
-      function onUpdate(_obj, dt)
-      {
+      function onUpdate(_obj, dt) {
         ::reset_msg_box_check_anim_time()
         // If buttons need
-        if (this.showButtonsTimer>0)
-        {
+        if (this.showButtonsTimer > 0) {
           this.showButtonsTimer -= dt
-          if (this.showButtonsTimer<=0)
-          {
-            if (check_obj(this.boxObj))
-            {
+          if (this.showButtonsTimer <= 0) {
+            if (check_obj(this.boxObj)) {
               let btnObj = this.boxObj.findObject("buttons_holder")
-              if (check_obj(btnObj))
-              {
+              if (check_obj(btnObj)) {
                 btnObj.show(true)
                 btnObj.enable(true)
                 btnObj.select()
@@ -224,8 +202,7 @@ let function get_text_urls_data(text)
           }
         }
 
-        if (this.need_cancel_fn && this.need_cancel_fn())
-        {
+        if (this.need_cancel_fn && this.need_cancel_fn()) {
           this.need_cancel_fn = null;
           this.onButtonId("");
         }
@@ -243,8 +220,7 @@ let function get_text_urls_data(text)
     handlerObj = handlerClass()
     handlerObj.guiScene = gui_scene
 
-    if (buttons)
-    {
+    if (buttons) {
       local blkText = ""
       local navText = @"Button_text
             {
@@ -256,12 +232,11 @@ let function get_text_urls_data(text)
               ButtonImg {}
             }"
 
-      if (cancel_fn)
-      {
+      if (cancel_fn) {
         local alreadyHave = false
-        foreach(b in buttons)
-          if (b[0]=="")
-            alreadyHave =true
+        foreach (b in buttons)
+          if (b[0] == "")
+            alreadyHave = true
         if (!alreadyHave)
           buttons.append(["", cancel_fn])
       }
@@ -269,22 +244,19 @@ let function get_text_urls_data(text)
       local defBtnIdx = 0
       local idx = -1
       let animParams = needAnim ? "color-factor:t='0';" : ""
-      foreach(btn in buttons)
-      {
-        if (btn[0]!="")
-        {
-          let locTxtId = (btn[0].slice(0,1) == "#") ? btn[0] : "#msgbox/btn_" + btn[0]
-          local btnText = "text:t='" + locTxtId + "'; id:t='" + btn[0] + "'; on_click:t='onButton';"
+      foreach (btn in buttons) {
+        if (btn[0] != "") {
+          let locTxtId = (btn[0].slice(0, 1) == "#") ? btn[0] : $"#msgbox/btn_{btn[0]}"
+          local btnText = "".concat("text:t='", locTxtId, "'; id:t='", btn[0], "'; on_click:t='onButton';")
           if (buttons.len() == 1)
-            btnText += "btnName:t='AB'; " //Enter and Esc for the single button
-          blkText += "Button_text { " + animParams + btnText + "}"
+            btnText = "".concat(btnText, "btnName:t='AB'; ") //Enter and Esc for the single button
+          blkText = "".concat(blkText, "Button_text { ", animParams, btnText, "}")
           idx++
           if (btn[0] == def_btn)
             defBtnIdx = idx
         }
-        if (btn[0] == "cancel" || btn[0] == "")
-        {
-          navText += @"Button_text
+        if (btn[0] == "cancel" || btn[0] == "") {
+          navText = "".concat(navText, @"Button_text
             {
               id:t = 'ak_cancel';
               text:t = '#msgbox/btn_cancel';
@@ -292,12 +264,12 @@ let function get_text_urls_data(text)
               on_click:t = 'onAccessKey'
               display:t='none'
               ButtonImg {}
-            }"
+            }")
         }
       }
 
       if (navText.len() > 0)
-        navText = "navRight { " + navText + " }"
+        navText = "".concat("navRight { ", navText, " }")
 
       handlerObj.sourceHandlerObj = baseHandler
       handlerObj.boxId = msgbox.id
@@ -325,45 +297,37 @@ let function get_text_urls_data(text)
   if (!buttons)
     needWaitAnim = true  //if no buttons, than wait anim always need
 
-  if (needWaitAnim)
-  {
+  if (needWaitAnim) {
     let waitObj = msgbox.findObject("msgWaitAnimation")
     if (waitObj)
       waitObj.show(true)
   }
 
-  if (data_below_text)
-  {
+  if (data_below_text) {
     let containerObj = msgbox.findObject("msg_div_after_text")
-    if (containerObj)
-    {
+    if (containerObj) {
       gui_scene.replaceContentFromText(containerObj, data_below_text, data_below_text.len(), baseHandler || handlerObj)
       containerObj.show(true)
     }
   }
-  if (data_below_buttons)
-  {
+  if (data_below_buttons) {
     let containerObj = msgbox.findObject("msg_bottom_div")
-    if (containerObj)
-    {
+    if (containerObj) {
       gui_scene.replaceContentFromText(containerObj, data_below_buttons, data_below_buttons.len(), baseHandler)
       containerObj.show(true)
     }
   }
 
   let containerObj = msgbox.findObject("msgTextRoot")
-  if (check_obj(containerObj))
-  {
+  if (check_obj(containerObj)) {
     gui_scene.applyPendingChanges(false)
     let isNeedVCentering = containerObj.getSize()[1] < containerObj.getParent().getSize()[1]
     containerObj["pos"] = isNeedVCentering ? "0, ph/2-h/2" : "0, 0"
   }
 
-  if (debug_string)
-  {
+  if (debug_string) {
     let obj = msgbox.findObject("msg_debug_string")
-    if (obj)
-    {
+    if (obj) {
       obj.setValue(debug_string)
       obj.show(true)
     }
@@ -373,30 +337,25 @@ let function get_text_urls_data(text)
     msgbox.findObject("buttons_holder")?.select()
 
   ::scene_msg_boxes_list.append(msgbox)
-  ::broadcastEvent("MsgBoxCreated")
+  broadcastEvent("MsgBoxCreated")
   return msgbox
 }
 
 local last_scene_msg_box_time = -1
 
-::reset_msg_box_check_anim_time <- function reset_msg_box_check_anim_time()
-{
+::reset_msg_box_check_anim_time <- function reset_msg_box_check_anim_time() {
   last_scene_msg_box_time = get_time_msec()
 }
 
-::need_new_msg_box_anim <- function need_new_msg_box_anim()
-{
+::need_new_msg_box_anim <- function need_new_msg_box_anim() {
   return get_time_msec() - last_scene_msg_box_time > 200
 }
 
 
-::destroy_all_msg_boxes <- function destroy_all_msg_boxes(guiScene = null)
-{
-  for(local i = ::scene_msg_boxes_list.len()-1; i >= 0; i--)
-  {
+::destroy_all_msg_boxes <- function destroy_all_msg_boxes(guiScene = null) {
+  for (local i = ::scene_msg_boxes_list.len() - 1; i >= 0; i--) {
     let msgBoxObj = ::scene_msg_boxes_list[i]
-    if (check_obj(msgBoxObj))
-    {
+    if (check_obj(msgBoxObj)) {
       let objGuiScene = msgBoxObj.getScene()
       if (guiScene && !guiScene.isEqual(objGuiScene))
         continue
@@ -407,16 +366,14 @@ local last_scene_msg_box_time = -1
   }
 }
 
-::is_active_msg_box_in_scene <- function is_active_msg_box_in_scene(guiScene)
-{
-  foreach(msgBoxObj in ::scene_msg_boxes_list)
+::is_active_msg_box_in_scene <- function is_active_msg_box_in_scene(guiScene) {
+  foreach (msgBoxObj in ::scene_msg_boxes_list)
    if (check_obj(msgBoxObj) && guiScene.isEqual(msgBoxObj.getScene()))
      return true
   return false
 }
 
-::update_msg_boxes <- function update_msg_boxes()
-{
+::update_msg_boxes <- function update_msg_boxes() {
   let guiScene = ::get_gui_scene()
   if (guiScene == null)
     return
@@ -426,11 +383,9 @@ local last_scene_msg_box_time = -1
 
   local msgsToShow = []
 
-  for (local i = 0; i < ::gui_scene_boxes.len(); i++)
-  {
+  for (local i = 0; i < ::gui_scene_boxes.len(); i++) {
     let msg = ::gui_scene_boxes[i]
-    if (msg.id == "signin_change")
-    {
+    if (msg.id == "signin_change") {
       msgsToShow = []
       msgsToShow.append(i)
       break
@@ -439,8 +394,7 @@ local last_scene_msg_box_time = -1
       msgsToShow.append(i)
   }
 
-  for (local i = 0; i < msgsToShow.len(); i++)
-  {
+  for (local i = 0; i < msgsToShow.len(); i++) {
     let msg = ::gui_scene_boxes[msgsToShow[i]]
     let options = msg?.options
     if (guiScene[msg.id] == null)
@@ -448,12 +402,9 @@ local last_scene_msg_box_time = -1
   }
 }
 
-::add_msg_box <- function add_msg_box(id, text, buttons, def_btn, options = null)
-{
-  for (local i = 0; i < ::gui_scene_boxes.len(); i++)
-  {
-    if (::gui_scene_boxes[i].id == id)
-    {
+::add_msg_box <- function add_msg_box(id, text, buttons, def_btn, options = null) {
+  for (local i = 0; i < ::gui_scene_boxes.len(); i++) {
+    if (::gui_scene_boxes[i].id == id) {
       ::update_msg_boxes()
       return
     }
@@ -469,8 +420,7 @@ local last_scene_msg_box_time = -1
   ::update_msg_boxes()
 }
 
-::showInfoMsgBox <- function showInfoMsgBox(text, id = "info_msg_box", checkDuplicateId = false)
-{
+::showInfoMsgBox <- function showInfoMsgBox(text, id = "info_msg_box", checkDuplicateId = false) {
   ::scene_msg_box(id, null, text, [["ok", function() {} ]], "ok",
-                  { cancel_fn = function() {}, checkDuplicateId = checkDuplicateId})
+                  { cancel_fn = function() {}, checkDuplicateId = checkDuplicateId })
 }

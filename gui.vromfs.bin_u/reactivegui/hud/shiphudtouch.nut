@@ -2,13 +2,13 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { safeAreaSizeHud, rh } = require("%rGui/style/screenState.nut")
-let { dmgIndicatorStates } = require("%rGui/hudState.nut")
+let { missionProgressHeight } = require("%rGui/hudState.nut")
 let { isMultiplayer } = require("%rGui/networkState.nut")
 let { mkTouchButton, touchButtonSize, bigTouchButtonSize, touchButtonMargin
 } = require("%rGui/hud/hudTouchButton.nut")
 
-let speedHeight = 2.5*touchButtonMargin
-let bottomLeftBlockHeigh = 2*bigTouchButtonSize + speedHeight
+let speedHeight = 2.5 * touchButtonMargin
+let bottomLeftBlockHeigh = 2 * bigTouchButtonSize + speedHeight
 let hudFont = Fonts.small_text_hud
 
 let speedComp = @() {
@@ -18,7 +18,7 @@ let speedComp = @() {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
-    machineSpeed({ font = hudFont, fontColor = Color(255, 255, 255)})
+    machineSpeed({ font = hudFont, fontColor = Color(255, 255, 255) })
     {
       flow = FLOW_HORIZONTAL
       valign = ALIGN_BOTTOM
@@ -49,9 +49,9 @@ let menuButtonsBlock = @() {
 }
 
 let movementBlock = @() {
-  watch = [rh, dmgIndicatorStates]
-  size = [3*bigTouchButtonSize + 2*touchButtonMargin, bottomLeftBlockHeigh]
-  pos = [0, rh.value - bottomLeftBlockHeigh - dmgIndicatorStates.value.padding[2]]
+  watch = [rh, missionProgressHeight]
+  size = [3 * bigTouchButtonSize + 2 * touchButtonMargin, bottomLeftBlockHeigh]
+  pos = [0, rh.value - bottomLeftBlockHeigh - missionProgressHeight.value]
   children = [
     mkTouchButton("ship_steering_rangeMax", {
       vplace = ALIGN_CENTER
@@ -71,13 +71,13 @@ let movementBlock = @() {
 }
 
 let weaponryBlock = @() {
-  size = [bigTouchButtonSize + 1.5*touchButtonSize, bigTouchButtonSize + 1.5*touchButtonSize]
+  size = [bigTouchButtonSize + 1.5 * touchButtonSize, bigTouchButtonSize + 1.5 * touchButtonSize]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   children = [
     mkTouchButton("ID_ZOOM_TOGGLE")
     mkTouchButton("ID_SHIP_WEAPON_ALL", {
-      pos = [0.75*touchButtonSize, touchButtonSize]
+      pos = [0.75 * touchButtonSize, touchButtonSize]
     })
   ]
 }

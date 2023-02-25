@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,6 +8,7 @@ let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let api = require("dagor.webpoll")
 let { get_time_msec } = require("dagor.time")
+let DataBlock = require("DataBlock")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000
 const REQUEST_AUTHORIZATION_TIMEOUT_MS = 3600000
@@ -39,7 +41,7 @@ let function canRequestAuthorization(pollId) {
 let function loadVotedPolls() {
   if (!::g_login.isProfileReceived())
     return
-  votedPolls = ::load_local_account_settings(VOTED_POLLS_SAVE_ID, ::DataBlock())
+  votedPolls = ::load_local_account_settings(VOTED_POLLS_SAVE_ID, DataBlock())
 }
 
 let function saveVotedPolls() {
@@ -50,7 +52,7 @@ let function saveVotedPolls() {
 
 let function getVotedPolls() {
   if (!::g_login.isProfileReceived())
-    return ::DataBlock()
+    return DataBlock()
   if (votedPolls == null)
     loadVotedPolls()
   return votedPolls
@@ -72,7 +74,7 @@ local function webpollEvent(id, token, voted) {
     set_blk_value_by_path(getVotedPolls(), idString, true)
     saveVotedPolls()
   }
-  ::broadcastEvent("WebPollAuthResult", {pollId = idString})
+  ::broadcastEvent("WebPollAuthResult", { pollId = idString })
 }
 
 let function onCanVoteResponse(response) {
@@ -98,11 +100,11 @@ let function invalidateTokensCache(pollId = null) {
   }
 
   ::get_cur_gui_scene().performDelayed(this,
-    function(){ ::broadcastEvent("WebPollTokenInvalidated", { pollId = pollId?.tostring() }) })
+    function() { ::broadcastEvent("WebPollTokenInvalidated", { pollId = pollId?.tostring() }) })
 }
 
 let function checkTokensCacheTimeout(pollId) {
-  if((cachedTokenById?[pollId] ?? "") != ""
+  if ((cachedTokenById?[pollId] ?? "") != ""
     && (tokenInvalidationTimeById?[pollId] ?? -1) < get_time_msec())
     invalidateTokensCache(pollId)
 }

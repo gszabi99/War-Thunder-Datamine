@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -13,8 +14,7 @@ let function openLinkWithSource(params = [], source = "promo_open_link") {
   local forceBrowser = false
   if (::u.isString(params))
     link = params
-  else if (::u.isArray(params) && params.len() > 0)
-  {
+  else if (::u.isArray(params) && params.len() > 0) {
     link = params[0]
     forceBrowser = params?[1] ?? false
   }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,20 +6,17 @@ from "%scripts/dagui_library.nut" import *
 
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
-::gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler
-{
+::gui_handlers.WaitForLoginWnd <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/login/waitForLoginWnd.blk"
   isInitialized = false
   isBgVisible = true
 
-  function initScreen()
-  {
+  function initScreen() {
     this.updateText()
     this.updateBg()
   }
 
-  function updateText()
-  {
+  function updateText() {
     local text = ""
     if (!(::g_login.curState & LOGIN_STATE.MATCHING_CONNECTED))
       text = loc("yn1/connecting_msg")
@@ -27,14 +25,12 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
     this.scene.findObject("msgText").setValue(text)
   }
 
-  function updateVisibility()
-  {
+  function updateVisibility() {
     let isVisible = this.isSceneActiveNoModals()
     this.scene.findObject("root-box").show(isVisible)
   }
 
-  function updateBg()
-  {
+  function updateBg() {
     let shouldBgVisible = !(::g_login.curState & LOGIN_STATE.HANGAR_LOADED)
     if (this.isBgVisible == shouldBgVisible && this.isInitialized)
       return
@@ -46,19 +42,16 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
       animBgLoad("", this.scene.findObject("animated_bg_picture"))
   }
 
-  function onEventLoginStateChanged(_p)
-  {
+  function onEventLoginStateChanged(_p) {
     this.updateText()
     this.updateBg()
   }
 
-  function onEventHangarModelLoaded(_params)
-  {
+  function onEventHangarModelLoaded(_params) {
     ::enableHangarControls(true)
   }
 
-  function onEventActiveHandlersChanged(_p)
-  {
+  function onEventActiveHandlersChanged(_p) {
     this.updateVisibility()
   }
 }

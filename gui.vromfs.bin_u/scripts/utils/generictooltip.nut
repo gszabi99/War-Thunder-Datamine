@@ -1,8 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
+let { parse_json } = require("json")
 
 let { getTooltipType, UNLOCK, ITEM, INVENTORY, SUBTROPHY, UNIT,
   CREW_SPECIALIZATION, BUY_CREW_SPEC, DECORATION
@@ -41,8 +44,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   local isSucceed = true
   if (tooltipType.isCustomTooltipFill)
     isSucceed = tooltipType.fillTooltip(obj, handler, id, params)
-  else
-  {
+  else {
     let content = tooltipType.getTooltipContent(id, params)
     if (content.len())
       obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
@@ -52,8 +54,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   return isSucceed
 }
 
-::g_tooltip.open <- function open(obj, handler)
-{
+::g_tooltip.open <- function open(obj, handler) {
   removeInvalidTooltipObjs()
   if (!checkObj(obj))
     return
@@ -64,7 +65,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   let tooltipId = ::getTooltipObjId(obj)
   if (!tooltipId || tooltipId == "")
     return
-  let params = ::parse_json(tooltipId)
+  let params = parse_json(tooltipId)
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return
 
@@ -80,8 +81,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   openedTooltipObjs.append(this.addEventListeners(obj, handler, tooltipType, id, params))
 }
 
-::g_tooltip.addEventListeners <- function addEventListeners(obj, handler, tooltipType, id, params)
-{
+::g_tooltip.addEventListeners <- function addEventListeners(obj, handler, tooltipType, id, params) {
   let data = {
     obj         = obj
     handler     = handler
@@ -92,8 +92,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   }
 
   foreach (key, value in tooltipType)
-    if (::u.isFunction(value) && ::g_string.startsWith(key, "onEvent"))
-    {
+    if (::u.isFunction(value) && ::g_string.startsWith(key, "onEvent")) {
       let eventName = key.slice("onEvent".len())
       ::add_event_listener(eventName, (@(eventName) function(eventParams) {
         tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params)
@@ -102,8 +101,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   return data
 }
 
-::g_tooltip.close <- function close(obj) //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler
-{
+::g_tooltip.close <- function close(obj) { //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler
   let tIdx = !obj.isValid() ? null
     : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))
   if (tIdx != null) {
@@ -125,8 +123,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
     if (!dbg_event)
       return
 
-    if (!(dbg_event in this))
-    {
+    if (!(dbg_event in this)) {
       guiScene.replaceContentFromText(obj, "", 0, null) //after it tooltip dosnt open again
       return
     }
@@ -135,16 +132,14 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   })
 }
 
-::g_tooltip.init <- function init()
-{
+::g_tooltip.init <- function init() {
   if (this.inited)
     return
   this.inited = true
   ::add_event_listener("ChangedCursorVisibility", this.onEventChangedCursorVisibility, this)
 }
 
-::g_tooltip.onEventChangedCursorVisibility <- function onEventChangedCursorVisibility(params)
-{
+::g_tooltip.onEventChangedCursorVisibility <- function onEventChangedCursorVisibility(params) {
   // Proceed if cursor is hidden now.
   if (params.isVisible)
     return
@@ -152,12 +147,10 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   this.removeAll()
 }
 
-::g_tooltip.removeAll <- function removeAll()
-{
+::g_tooltip.removeAll <- function removeAll() {
   removeInvalidTooltipObjs()
 
-  while (openedTooltipObjs.len())
-  {
+  while (openedTooltipObjs.len()) {
     let tooltipData = openedTooltipObjs.remove(0)
     this.close.call(tooltipData.handler, tooltipData.obj)
   }

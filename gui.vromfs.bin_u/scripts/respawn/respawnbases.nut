@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,13 +12,11 @@ local respawnBases = {
   MAP_ID_NOTHING = RespawnBase.MAP_ID_NOTHING
   selectedBaseData = null //null when not inited for current mission. reset every battle
 
-  function getSelectedBase()
-  {
+  function getSelectedBase() {
     return this.selectedBaseData?.respBase
   }
 
-  function getRespawnBasesData(unit)
-  {
+  function getRespawnBasesData(unit) {
     let res = {
       hasRespawnBases = false
       canChooseRespawnBase = false
@@ -33,8 +32,7 @@ local respawnBases = {
     res.canChooseRespawnBase = true
     let lastSelectedBase = this.getSelectedBase()
     local defaultBase = null
-    foreach(_idx, id in rbs)
-    {
+    foreach (_idx, id in rbs) {
       let rb = RespawnBase(id)
       res.basesList.append(rb)
       if (rb.isEqual(lastSelectedBase))
@@ -50,8 +48,7 @@ local respawnBases = {
     return res
   }
 
-  function selectBase(unit, respawnBase)
-  {
+  function selectBase(unit, respawnBase) {
     if (respawnBase)
       this.selectedBaseData = {
         unit = unit
@@ -61,13 +58,11 @@ local respawnBases = {
       this.selectedBaseData = null
   }
 
-  function resetSelectedBase()
-  {
+  function resetSelectedBase() {
     this.selectedBaseData = null
   }
 
-  function onEventLoadingStateChange(_p)
-  {
+  function onEventLoadingStateChange(_p) {
     if (!::is_in_flight())
       this.resetSelectedBase()
   }

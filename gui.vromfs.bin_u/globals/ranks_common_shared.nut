@@ -3,11 +3,13 @@
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { file_exists } = require("dagor.fs")
 let { pow, floor } = require("math")
 let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { interpolateArray } = require("%sqstd/math.nut")
+let { get_selected_mission } = require("mission")
 
 let log = @(...) println(" ".join(vargv))
 
@@ -113,7 +115,7 @@ global const EDIFF_SHIFT = 3
 ::get_mission_mode <- function get_mission_mode() {
   if (::cur_mission_mode >= 0)
     return ::cur_mission_mode
-  let mission_name = ::get_selected_mission()
+  let mission_name = get_selected_mission()
   let mission_mode = (mission_name && ::get_mission_type(mission_name)) || 0
   log($"get_mission_mode {mission_name} mission_mode {mission_mode}")
   ::cur_mission_mode = mission_mode
@@ -148,9 +150,9 @@ global const EDIFF_SHIFT = 3
 ::get_unit_type_by_unit_name <- function get_unit_type_by_unit_name(unitId) {
   return ::mapWpUnitClassToWpUnitType?[::getWpcostUnitClass(unitId)] ?? ::DS_UT_INVALID
 }
-let function round(value, digits=0) {
+let function round(value, digits = 0) {
   let mul = pow(10, digits)
-  return floor(0.5 + value.tofloat()*mul) / mul
+  return floor(0.5 + value.tofloat() * mul) / mul
 }
 ::calc_battle_rating_from_rank <- function calc_battle_rating_from_rank(economicRank) {
   return round(economicRank / 3.0 + 1, 1)
@@ -209,7 +211,7 @@ let function round(value, digits=0) {
         param_name = $"{param_name}Minus"
         eraDiff *= -1
       }
-    expMul *= blk.getReal("".concat(param_name,eraDiff.tostring()), 0.0)
+    expMul *= blk.getReal("".concat(param_name, eraDiff.tostring()), 0.0)
     log($"get_unit_exp_conversion_mul: with units era difference. ExpMul {expMul}")
   }
 
@@ -225,9 +227,8 @@ let function round(value, digits=0) {
   for (local i = 0; i < count; i++) {
     if (i < countOfK)
       res = res + k[i] * bostersArray[i]
-    else
-    if (k[countOfK-1] * bostersArray[i] > 0.01)
-      res = res + k[countOfK-1] * bostersArray[i]
+    else if (k[countOfK - 1] * bostersArray[i] > 0.01)
+      res = res + k[countOfK - 1] * bostersArray[i]
     else
       res = res + 0.01
   }
@@ -415,13 +416,13 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
   if ("imports" in misblk && "import_record" in misblk.imports)
     err("import_record in imports not supported in user missions")
 
-  let units = misblk?.units ?? ::DataBlock()
+  let units = misblk?.units ?? DataBlock()
   for (local i = 0; i < units.blockCount(); i++) {
     let unit = units.getBlock(i);
     let unitType = unit.getBlockName();
     let unitClass = unit?.unit_class
     if (unitType in typeToPath) {
-      let path = unitClass ? "".concat(typeToPath[unitType], "/",unitClass, ".blk") : ""
+      let path = unitClass ? "".concat(typeToPath[unitType], "/", unitClass, ".blk") : ""
       if (!file_exists(path))
         err($"Unknown unit_class {unitClass} of unit {unit?.name}")
       else {
@@ -455,8 +456,8 @@ let function getCustomWeaponPresetParams(unitname, weaponTable) {
 }
 
 let cyber_cafe_boost = {
-  level=[{wp = 0, xp = 0}, {wp = 0.0, xp = 0.05}, {wp = 0.0, xp = 0.1}, {wp = 0.1, xp = 0.1}]
-  squad=[{wp = 0, xp = 0}, {wp = 0.0, xp = 0.0}, {wp = 0.0, xp = 0.1}, {wp = 0.05, xp = 0.1}, {wp = 0.05, xp = 0.1}]
+  level = [{ wp = 0, xp = 0 }, { wp = 0.0, xp = 0.05 }, { wp = 0.0, xp = 0.1 }, { wp = 0.1, xp = 0.1 }]
+  squad = [{ wp = 0, xp = 0 }, { wp = 0.0, xp = 0.0 }, { wp = 0.0, xp = 0.1 }, { wp = 0.05, xp = 0.1 }, { wp = 0.05, xp = 0.1 }]
   isValid = false
 }
 
@@ -474,7 +475,7 @@ cyber_cafe_boost.loadTables <- function loadTables() {
     param.xp = ws.getReal($"cyberCafeLevelBoost{idx.tostring()}XP", param.xp)
   }
 
-  foreach(idx, param in this.squad) {
+  foreach (idx, param in this.squad) {
     param.wp = ws.getReal($"cyberCafeSquadBoost{idx.tostring()}WP", param.wp)
     param.xp = ws.getReal($"cyberCafeSquadBoost{idx.tostring()}XP", param.xp)
   }

@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
+let { IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
       TimeBeforeBombRelease, AimLocked, TargetPos, TargetPosValid,
-      RocketMode, CannonMode, RadarTargetPosValid} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, metrToFeet} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {Aos, Tangage, Roll, BarAltitude, Altitude} = require("%rGui/planeState/planeFlyState.nut")
-let {GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
-let {Irst, targets, TargetsTrigger, Azimuth} = require("%rGui/radarState.nut")
+      RocketMode, CannonMode, RadarTargetPosValid } = require("%rGui/planeState/planeToolsState.nut")
+let { baseLineWidth, metrToFeet } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { Aos, Tangage, Roll, BarAltitude, Altitude } = require("%rGui/planeState/planeFlyState.nut")
+let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { Irst, targets, TargetsTrigger, Azimuth } = require("%rGui/radarState.nut")
 let string = require("string")
 let { BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
 
@@ -245,7 +245,7 @@ let ASPAirSymbolWrap = {
 let targetsComponent = function(createTargetDistFunc) {
   let getTargets = function() {
     let targetsRes = []
-    for(local i = 0; i < targets.len(); ++i) {
+    for (local i = 0; i < targets.len(); ++i) {
       if (!targets[i])
         continue
       else if (targets[i].signalRel < 0.1)
@@ -313,7 +313,7 @@ let function SUMAltitude(font_size) {
 
 let function getBulletImpactLineCommand() {
   let commands = []
-  for (local i = 0; i < BulletImpactPoints1.value.len() - 2; ++i){
+  for (local i = 0; i < BulletImpactPoints1.value.len() - 2; ++i) {
     let point1 = BulletImpactPoints1.value[i]
     let point2 = BulletImpactPoints1.value[i + 1]
     if (point1.x == -1 && point1.y == -1)
@@ -322,7 +322,7 @@ let function getBulletImpactLineCommand() {
       continue
     commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
   }
-  for (local i = 0; i < BulletImpactPoints2.value.len() - 2; ++i){
+  for (local i = 0; i < BulletImpactPoints2.value.len() - 2; ++i) {
     let point1 = BulletImpactPoints2.value[i]
     let point2 = BulletImpactPoints2.value[i + 1]
     if (point1.x == -1 && point1.y == -1)
@@ -338,7 +338,7 @@ let bulletsImpactLine = @() {
   watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
   size = flex()
   children = BulletImpactLineEnable.value && !CCIPMode.value && !isAAMMode.value ? [
-    @(){
+    @() {
       watch = [BulletImpactPoints1, BulletImpactPoints2]
       rendObj = ROBJ_VECTOR_CANVAS
       size = flex()

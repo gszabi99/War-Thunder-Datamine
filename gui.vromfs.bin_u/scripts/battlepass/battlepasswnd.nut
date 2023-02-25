@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { ceil } = require("math")
+let { rnd } = require("dagor.random")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
 let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("%scripts/battlePass/seasonStages.nut")
@@ -48,6 +50,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
   sceneBlkName     = "%gui/battlePass/battlePassWnd.blk"
 
+  currSheet = "battle_pass_sheet"
   stageIndexOffset = 0
   stageIndexOffsetAddedByPages = null
   curPage = 0
@@ -170,7 +173,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     local isChangesRewards = false
     local idxOnPage = 0
-    for(local i=pageStartIndex; i < pageEndIndex; i++) {
+    for (local i = pageStartIndex; i < pageEndIndex; i++) {
       let stageView = getStageViewData(stagesList[i], idxOnPage)
       view.battlePassStage.append(stageView)
       isChangesRewards = isChangesRewards
@@ -183,7 +186,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (isChangesRewards || forceUpdate) {
       let data = ::handyman.renderCached("%gui/battlePass/battlePassStage.tpl", view)
       this.guiScene.replaceContentFromText(stagesObj, data, data.len(), this)
-    } else {
+    }
+    else {
       foreach (idx, stage in view.battlePassStage) {
         let stageObj = stagesObj.getChild(idx)
         stageObj.stageStatus = stage.stageStatus
@@ -193,7 +197,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage,
       ceil((stagesList.len().tofloat() + doubleWidthStagesIcon.value.len()) / this.stagesPerPage)
-      - 1, null, true /*show last page*/)
+      - 1, null, true /*show last page*/ )
   }
 
   isEqualStageReward = @(curStage, newStage)
@@ -206,7 +210,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (holderId == null || stage == null)
       return
 
-    if(prizeStatus == "received") {
+    if (prizeStatus == "received") {
       this.msgBox("alreadyReceived", loc("battlePass/msgbox/alreadyReceived"), [["ok"]], "ok")
       return
     }
@@ -214,16 +218,16 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let { lastRewardedStage = null } = unlockProgress.value?[holderId]
 
     if (lastRewardedStage == null
-      || (lastRewardedStage + 1) != stage.tointeger()){
+      || (lastRewardedStage + 1) != stage.tointeger()) {
         this.showLockedsMessage(obj?.isFree == "yes")
         return
-      }
+    }
 
     receiveRewards(holderId)
   }
 
   function onEventItemsShopUpdate(_params) {
-    this.fillStagePage(true)//force update stages because recived itemdefs for it
+    this.fillStagePage(true) //force update stages because recived itemdefs for it
   }
 
   function initBattlePassInfo() {
@@ -247,7 +251,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     ::g_battle_tasks.setUpdateTimer(
       ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"),
       this.scene.findObject("task_timer_nest"),
-      {addText = $"{loc("mainmenu/btnBattleTasks")}{loc("ui/colon")}"})
+      { addText = $"{loc("mainmenu/btnBattleTasks")}{loc("ui/colon")}" })
   }
 
   function initStageUpdater() {
@@ -289,7 +293,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         @(v) v?.mainPrizeImage == mainPrizeImage) != null)) //main prize is already showed
       return
 
-    this.mainPrizeData = clone mainPrizesValue[::math.rnd() % countMainPrizes]
+    this.mainPrizeData = clone mainPrizesValue[rnd() % countMainPrizes]
     this.fillPromoBlock()
   }
 
@@ -338,9 +342,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initSheets() {
-    let view = {tabs = []}
-    foreach (idx, sheetData in this.sheetsList)
-    {
+    let view = { tabs = [] }
+    foreach (idx, sheetData in this.sheetsList) {
       view.tabs.append({
         tabName = sheetData.text
         navImagesText = ::get_navigation_images_text(idx, this.sheetsList.len())
@@ -348,11 +351,12 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         tabImageParam = sheetData?.getTabImageParam()
       })
     }
-
     let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let sheetsListObj = this.scene.findObject("sheet_list")
     this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
-    sheetsListObj.setValue(0)
+    let showSheet = this.currSheet;
+    let sheetIndex = this.sheetsList.findindex(@(s) s.objId == showSheet) ?? 0
+    sheetsListObj.setValue(sheetIndex)
   }
 
   function onSheetChange(obj) {
@@ -447,8 +451,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   getSelectedChildId = @(obj) getSelectedChild(obj)?.id ?? ""
 
-  function onEventFavoriteUnlocksChanged(params)
-  {
+  function onEventFavoriteUnlocksChanged(params) {
     if (this.getCurSheetObjId() != "challenges_sheet")
       return
 
@@ -456,13 +459,11 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!listBoxObj.isValid())
       return
 
-    for (local i = 0; i < listBoxObj.childrenCount(); i++)
-    {
+    for (local i = 0; i < listBoxObj.childrenCount(); i++) {
       let challengeObj = listBoxObj.getChild(i)
-      if(params.changedId == challengeObj?.id)
-      {
+      if (params.changedId == challengeObj?.id) {
         let cbObj = challengeObj.findObject("checkbox_favorites")
-        if(cbObj.isValid())
+        if (cbObj.isValid())
           cbObj.setValue(params.value)
       }
     }
@@ -479,20 +480,18 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     ::move_mouse_on_obj(childObj)
   }
 
-  function expandHoverChallenge()
-  {
+  function expandHoverChallenge() {
     let listBoxObj = this.scene.findObject("challenges_list")
     let total = listBoxObj.childrenCount()
     if (total == 0)
       return
 
     for (local i = 0; i < total; i++)
-      if(this.hoverChallengeId == listBoxObj.getChild(i).id)
+      if (this.hoverChallengeId == listBoxObj.getChild(i).id)
         listBoxObj.setValue(i)
   }
 
-  function challengeToFavoritesByActivateItem(obj)
-  {
+  function challengeToFavoritesByActivateItem(obj) {
     this.curChallengeId = this.getSelectedChildId(obj)
     let checkBoxObj = obj.findObject(this.curChallengeId)?.findObject("checkbox_favorites")
     if (checkBoxObj?.isValid())
@@ -513,7 +512,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onViewBattleTaskRequirements() {
     let awardsList = []
-    foreach(id in this.getCurrentConfig()?.names ?? [])
+    foreach (id in this.getCurrentConfig()?.names ?? [])
       awardsList.append(::build_log_unlock_data(::build_conditions_config(::g_unlocks.getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
@@ -524,7 +523,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function congratulationBattlePassPurchased() {
     this.scene.findObject("sheet_list").setValue(0)
     this.showSceneBtn("congrat_content", true)
-    this.scene.findObject("promo_img")["background-image"] = "#ui/images/bp_bg.jpg?P1"
+    this.scene.findObject("promo_img")["background-image"] = "#ui/images/bp_bg?P1"
     this.showSceneBtn("promo_preview", false)
   }
 
@@ -564,13 +563,13 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.BattlePassWnd <- BattlePassWnd
 
-let function openBattlePassWnd() {
+let function openBattlePassWnd(params = {}) {
   if (isUserstatMissingData.value) {
     ::showInfoMsgBox(loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
     return
   }
 
-  ::handlersManager.loadHandler(BattlePassWnd)
+  ::handlersManager.loadHandler(BattlePassWnd, params)
 }
 
 addPromoAction("battle_pass", @(_handler, _params, _obj) openBattlePassWnd())

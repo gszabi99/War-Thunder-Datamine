@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -32,7 +33,7 @@ updateActiveCustomConfig = function() {
 
   local minUpdateTimeSec = null
   let activeCustomizationConfig = {}
-  foreach(customization in scheduledEvents) {
+  foreach (customization in scheduledEvents) {
     let endTime = customization?.endDate != null
       ? getTimestampFromStringUtc(customization.endDate)
       : null

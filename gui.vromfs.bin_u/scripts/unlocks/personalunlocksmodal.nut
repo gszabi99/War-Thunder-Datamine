@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { getBattleTaskUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -208,14 +210,13 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
       return
     let isCollapsed = chapterObj.collapsed == "yes"
     let chapterGroups = this.unlocksConfigByChapter?[chapterId]
-    if(chapterGroups == null)
+    if (chapterGroups == null)
       return
 
     local isHiddenGroupSelected = false
-    foreach (group in chapterGroups)
-    {
+    foreach (group in chapterGroups) {
       let groupObj = this.chaptersObj.findObject(group.id)
-      if(!checkObj(groupObj))
+      if (!checkObj(groupObj))
         continue
 
       isHiddenGroupSelected = isHiddenGroupSelected || this.curChapterId == group.id
@@ -234,8 +235,8 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function getCollapsedChapters() {
-    if(this.collapsedChapters == null)
-      this.collapsedChapters = ::load_local_account_settings(COLLAPSED_CHAPTERS_SAVE_ID, ::DataBlock())
+    if (this.collapsedChapters == null)
+      this.collapsedChapters = ::load_local_account_settings(COLLAPSED_CHAPTERS_SAVE_ID, DataBlock())
     return this.collapsedChapters
   }
 

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -23,7 +24,7 @@ let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("%scripts/use
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { fillProfileSummary } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction,
   getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -43,7 +44,7 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
   getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, openUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -52,24 +53,21 @@ enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
 }
 
-enum OwnUnitsType
-{
+enum OwnUnitsType {
   ALL = "all",
   BOUGHT = "only_bought",
 }
 
 let selMedalIdx = {}
 
-::gui_start_profile <- function gui_start_profile(params = {})
-{
+::gui_start_profile <- function gui_start_profile(params = {}) {
   if (!hasFeature("Profile"))
     return
 
   ::gui_start_modal_wnd(::gui_handlers.Profile, params)
 }
 
-::gui_handlers.Profile <- class extends ::gui_handlers.UserCardHandler
-{
+::gui_handlers.Profile <- class extends ::gui_handlers.UserCardHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/profile.blk"
   initialSheet = ""
@@ -143,8 +141,7 @@ let selMedalIdx = {}
     UnlockSkin = "airCountry"
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.scene)
       return this.goBack()
 
@@ -162,20 +159,17 @@ let selMedalIdx = {}
     this.initTabs()
 
     //fill skins filters
-    if ("UnlockSkin" in this.unlockFilters)
-    {
-      let skinCountries = this.getUnlockFiltersList("skin", function(unlock)
-        {
+    if ("UnlockSkin" in this.unlockFilters) {
+      let skinCountries = this.getUnlockFiltersList("skin", function(unlock) {
           let country = this.getSkinCountry(unlock.getStr("id", ""))
-          return (country != "")? country : null
+          return (country != "") ? country : null
         })
 
       this.unlockFilters.UnlockSkin = ::u.filter(shopCountriesList, @(c) isInArray(c, skinCountries))
     }
 
     //fill medal filters
-    if ("Medal" in this.unlockFilters)
-    {
+    if ("Medal" in this.unlockFilters) {
       let medalCountries = this.getUnlockFiltersList("medal", @(unlock) unlock?.country)
       this.unlockFilters.Medal = ::u.filter(shopCountriesList, @(c) isInArray(c, medalCountries))
     }
@@ -188,8 +182,7 @@ let selMedalIdx = {}
     this.initShortcuts()
   }
 
-  function initSheetsList()
-  {
+  function initSheetsList() {
     this.customMenuTabs = {}
     this.sheetsList = clone this.presetSheetList
     local hasAnyUnlocks = false
@@ -199,8 +192,7 @@ let selMedalIdx = {}
     local tabImage = null
     local tabText = null
 
-    foreach(cb in ::g_unlocks.getAllUnlocksWithBlkOrder())
-    {
+    foreach (cb in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
 
@@ -225,13 +217,11 @@ let selMedalIdx = {}
 
       let defaultImage = format(this.tabImageNameTemplate, this.defaultTabImageName)
 
-      if (cb.customMenuTab in customCategoryConfig)
-      {
+      if (cb.customMenuTab in customCategoryConfig) {
         tabImage = customCategoryConfig[cb.customMenuTab]?.image ?? defaultImage
         tabText = this.tabLocalePrefix + (customCategoryConfig[cb.customMenuTab]?.title ?? cb.customMenuTab)
       }
-      else
-      {
+      else {
         tabImage = defaultImage
         tabText = this.tabLocalePrefix + cb.customMenuTab
       }
@@ -246,30 +236,25 @@ let selMedalIdx = {}
       sheetsToHide.append("Medal")
     if (!hasAnyUnlocks)
       sheetsToHide.append("UnlockAchievement")
-    foreach(sheetName in sheetsToHide)
-    {
+    foreach (sheetName in sheetsToHide) {
       let idx = this.sheetsList.indexof(sheetName)
       if (idx != null)
         this.sheetsList.remove(idx)
     }
   }
 
-  function initTabs()
-  {
+  function initTabs() {
     let view = { tabs = [] }
     local curSheetIdx = 0
     local tabImage = null
     local tabText = null
 
-    foreach(idx, sheet in this.sheetsList)
-    {
-      if (sheet in this.customMenuTabs)
-      {
+    foreach (idx, sheet in this.sheetsList) {
+      if (sheet in this.customMenuTabs) {
         tabImage = this.customMenuTabs[sheet].image
         tabText = this.customMenuTabs[sheet].title
       }
-      else
-      {
+      else {
         tabImage = format(this.tabImageNameTemplate, sheet.tolower())
         tabText = this.tabLocalePrefix + sheet
       }
@@ -293,15 +278,13 @@ let selMedalIdx = {}
     sheetsListObj.setValue(curSheetIdx)
   }
 
-  function isSheetVisible(sheetName)
-  {
+  function isSheetVisible(sheetName) {
     if (sheetName == "Medal")
       return hasFeature("ProfileMedals")
     return true
   }
 
-  function initShortcuts()
-  {
+  function initShortcuts() {
     local obj = this.scene.findObject("btn_profile_icon")
     if (checkObj(obj))
       obj.btnName = "X"
@@ -312,11 +295,10 @@ let selMedalIdx = {}
     this.scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
   }
 
-  function getUnlockFiltersList(uType, getCategoryFunc)
-  {
+  function getUnlockFiltersList(uType, getCategoryFunc) {
     let categories = []
     let unlocks = ::g_unlocks.getUnlocksByType(uType)
-    foreach(unlock in unlocks)
+    foreach (unlock in unlocks)
       if (isUnlockVisible(unlock))
         ::u.appendOnce(getCategoryFunc(unlock), categories, true)
 
@@ -369,8 +351,7 @@ let selMedalIdx = {}
     })
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let sheet = this.getCurSheet()
     let isProfileOpened = sheet == "Profile"
     let buttonsList = {
@@ -437,29 +418,24 @@ let selMedalIdx = {}
     this.updateDecalButtons(decal)
   }
 
-  function onSheetChange(_obj)
-  {
+  function onSheetChange(_obj) {
     let sheet = this.getCurSheet()
     this.curFilterType = ""
-    foreach(btn in ["btn_top_place", "btn_pagePrev", "btn_pageNext", "checkbox_only_for_bought"])
+    foreach (btn in ["btn_top_place", "btn_pagePrev", "btn_pageNext", "checkbox_only_for_bought"])
       this.showSceneBtn(btn, false)
 
-    if (sheet == "Profile")
-    {
+    if (sheet == "Profile") {
       this.showSheetDiv("profile")
-      if (!this.profileInited)
-      {
+      if (!this.profileInited) {
         this.updateStats()
         this.profileInited = true
       }
     }
-    else if (sheet=="Statistics")
-    {
+    else if (sheet == "Statistics") {
       this.showSheetDiv("stats")
       this.fillAirStats()
     }
-    else if (sheet == "UnlockDecal")
-    {
+    else if (sheet == "UnlockDecal") {
       this.showSheetDiv("decals", true)
 
       let decorCache = ::g_decorator.getCachedDataByType(::g_decorator_type.DECALS)
@@ -496,16 +472,14 @@ let selMedalIdx = {}
       this.guiScene.applyPendingChanges(false)
       categoriesListObj.getChild(selIdx).scrollToView()
     }
-    else if (sheet == "Medal")
-    {
+    else if (sheet == "Medal") {
       this.showSheetDiv("medals", true)
 
       let selCategory = this.filterCountryName ?? profileCountrySq.value
 
       local selIdx = 0
       let view = { items = [] }
-      foreach (idx, filter in this.unlockFilters[sheet])
-      {
+      foreach (idx, filter in this.unlockFilters[sheet]) {
         if (filter == selCategory)
           selIdx = idx
         view.items.append({ text = $"#{filter}" })
@@ -520,25 +494,21 @@ let selMedalIdx = {}
       if (isEqualIdx) // func on_select don't call if same value is se already
         this.onPageChange(pageList)
     }
-    else if (sheet in this.unlockFilters)
-    {
-      if ((!this.unlockFilters[sheet]) || (this.unlockFilters[sheet].len() < 1))
-      {
+    else if (sheet in this.unlockFilters) {
+      if ((!this.unlockFilters[sheet]) || (this.unlockFilters[sheet].len() < 1)) {
         //challange and achievents
         this.showSheetDiv("unlocks")
         this.curPage = this.getPageIdByName(sheet)
         this.fillUnlocksList()
       }
-      else
-      {
+      else {
         this.showSheetDiv("unlocks", true, true)
         let pageList = this.scene.findObject("pages_list")
         let curCountry = this.filterCountryName || profileCountrySq.value
         local selIdx = 0
 
         let view = { items = [] }
-        foreach(idx, item in this.unlockFilters[sheet])
-        {
+        foreach (idx, item in this.unlockFilters[sheet]) {
           selIdx = item == curCountry ? idx : selIdx
           view.items.append(
             {
@@ -561,22 +531,18 @@ let selMedalIdx = {}
     this.updateButtons()
   }
 
-  function getPageIdByName(name)
-  {
+  function getPageIdByName(name) {
     let start = name.indexof("Unlock")
-    if (start!=null)
-      return name.slice(start+6)
+    if (start != null)
+      return name.slice(start + 6)
     return name
   }
 
-  function showSheetDiv(name, pages = false, subPages = false)
-  {
-    foreach(div in ["profile", "unlocks", "stats", "medals", "decals"])
-    {
+  function showSheetDiv(name, pages = false, subPages = false) {
+    foreach (div in ["profile", "unlocks", "stats", "medals", "decals"]) {
       let show = div == name
       let divObj = this.scene.findObject(div + "-container")
-      if (checkObj(divObj))
-      {
+      if (checkObj(divObj)) {
         divObj.show(show)
         divObj.enable(show)
         if (show)
@@ -682,7 +648,8 @@ let selMedalIdx = {}
       progressObj.show(progressData.show)
       if (progressData.show)
         progressObj.setValue(progressData.value)
-    } else
+    }
+    else
       progressObj.show(false)
 
     infoObj.findObject("decalMainCond").setValue(getUnlockMainCondDescByCfg(cfg))
@@ -728,14 +695,13 @@ let selMedalIdx = {}
     return ::g_decorator.getDecorator(decalId, ::g_decorator_type.DECALS)
   }
 
-  function onPageChange(_obj)
-  {
+  function onPageChange(_obj) {
     local pageIdx = 0
     let sheet = this.getCurSheet()
     if (!(sheet in this.unlockFilters) || !this.unlockFilters[sheet])
       return
 
-    if(sheet=="Medal")
+    if (sheet == "Medal")
       pageIdx = this.scene.findObject("medals_list").getValue()
     else
       pageIdx = this.scene.findObject("pages_list").getValue()
@@ -744,7 +710,7 @@ let selMedalIdx = {}
       return
 
     let filter = this.unlockFilters[sheet][pageIdx]
-    this.curPage = ("page" in filter)? filter.page : this.getPageIdByName(sheet)
+    this.curPage = ("page" in filter) ? filter.page : this.getPageIdByName(sheet)
 
     this.curFilterType = getTblValue(sheet, this.filterTable, "")
 
@@ -757,11 +723,9 @@ let selMedalIdx = {}
       this.fillUnlocksList()
   }
 
-  function onSubPageChange(_obj = null)
-  {
+  function onSubPageChange(_obj = null) {
     let subSwitch = this.getObj("unit_type_list")
-    if (subSwitch?.isValid())
-    {
+    if (subSwitch?.isValid()) {
       let value = subSwitch.getValue()
       let unitType = unitTypes.getByEsUnitType(value)
       this.curSubFilter = unitType.esUnitType
@@ -771,25 +735,22 @@ let selMedalIdx = {}
     this.fillUnlocksList()
   }
 
-  function onOnlyForBoughtCheck(_obj)
-  {
+  function onOnlyForBoughtCheck(_obj) {
     this.onSubPageChange()
   }
 
-  function refreshUnitTypeControl()
-  {
+  function refreshUnitTypeControl() {
     let unitypeListObj = this.scene.findObject("unit_type_list")
-    if ( ! checkObj(unitypeListObj))
+    if (! checkObj(unitypeListObj))
       return
 
-    if ( ! unitypeListObj.childrenCount())
-    {
+    if (! unitypeListObj.childrenCount()) {
       local filterUnitType = unitTypes.getByTag(this.filterUnitTag)
       if (!filterUnitType.isAvailable())
         filterUnitType = unitTypes.getByEsUnitType(::get_es_unit_type(getPlayerCurUnit()))
 
       let view = { items = [] }
-      foreach(unitType in unitTypes.types)
+      foreach (unitType in unitTypes.types)
         if (unitType.isAvailable())
           view.items.append(
             {
@@ -806,8 +767,7 @@ let selMedalIdx = {}
     local indexForSelection = -1
     let previousSelectedIndex = unitypeListObj.getValue()
     let total = unitypeListObj.childrenCount()
-    for(local i = 0; i < total; i++)
-    {
+    for (local i = 0; i < total; i++) {
       let obj = unitypeListObj.getChild(i)
       let unitType = unitTypes.getByEsUnitType(i)
       let isVisible = this.getSkinsCache(this.curFilter, unitType.esUnitType, OwnUnitsType.ALL).len() > 0
@@ -825,16 +785,14 @@ let selMedalIdx = {}
     this.onSubPageChange(unitypeListObj)
   }
 
-  function recacheSkins()
-  {
+  function recacheSkins() {
     this.skinsCache = {}
-    foreach(skinName, decorator in ::g_decorator.getCachedDecoratorsListByType(::g_decorator_type.SKINS))
-    {
+    foreach (skinName, decorator in ::g_decorator.getCachedDecoratorsListByType(::g_decorator_type.SKINS)) {
       let unit = ::getAircraftByName(::g_unlocks.getPlaneBySkinId(skinName))
       if (!unit)
         continue
 
-      if ( ! unit.isVisibleInShop())
+      if (! unit.isVisibleInShop())
         continue
 
       if (!decorator || !decorator.isVisible())
@@ -843,46 +801,42 @@ let selMedalIdx = {}
       let unitType = ::get_es_unit_type(unit)
       let unitCountry = ::getUnitCountry(unit)
 
-      if ( ! (unitCountry in this.skinsCache))
+      if (! (unitCountry in this.skinsCache))
         this.skinsCache[unitCountry] <- {}
-      if ( ! (unitType in this.skinsCache[unitCountry]))
+      if (! (unitType in this.skinsCache[unitCountry]))
         this.skinsCache[unitCountry][unitType] <- {}
 
-      if ( ! (OwnUnitsType.ALL in this.skinsCache[unitCountry][unitType]))
+      if (! (OwnUnitsType.ALL in this.skinsCache[unitCountry][unitType]))
         this.skinsCache[unitCountry][unitType][OwnUnitsType.ALL] <- []
       this.skinsCache[unitCountry][unitType][OwnUnitsType.ALL].append(decorator)
 
-      if( ! unit.isBought())
+      if (! unit.isBought())
         continue
 
-      if ( ! (OwnUnitsType.BOUGHT in this.skinsCache[unitCountry][unitType]))
+      if (! (OwnUnitsType.BOUGHT in this.skinsCache[unitCountry][unitType]))
               this.skinsCache[unitCountry][unitType][OwnUnitsType.BOUGHT] <- []
       this.skinsCache[unitCountry][unitType][OwnUnitsType.BOUGHT].append(decorator)
     }
   }
 
-  function getSkinsCache(country, unitType, ownType)
-  {
-    if ( ! this.skinsCache)
+  function getSkinsCache(country, unitType, ownType) {
+    if (! this.skinsCache)
       this.recacheSkins()
     return this.skinsCache?[country][unitType][ownType] ?? []
   }
 
-  function getCurrentOwnType()
-  {
+  function getCurrentOwnType() {
     let ownSwitch = this.scene.findObject("checkbox_only_for_bought")
-    let ownType = ( ! checkObj(ownSwitch) || ! ownSwitch.getValue()) ? OwnUnitsType.ALL : OwnUnitsType.BOUGHT
+    let ownType = (! checkObj(ownSwitch) || ! ownSwitch.getValue()) ? OwnUnitsType.ALL : OwnUnitsType.BOUGHT
     return ownType
   }
 
-  function refreshOwnUnitControl(unitType)
-  {
+  function refreshOwnUnitControl(unitType) {
     let ownSwitch = this.scene.findObject("checkbox_only_for_bought")
     local tooltip = loc("profile/only_for_bought/hint")
     local enabled = true
-    if(this.getSkinsCache(this.curFilter, unitType, OwnUnitsType.BOUGHT).len() < 1)
-    {
-      if(ownSwitch.getValue() == true)
+    if (this.getSkinsCache(this.curFilter, unitType, OwnUnitsType.BOUGHT).len() < 1) {
+      if (ownSwitch.getValue() == true)
         ownSwitch.setValue(false)
       tooltip = loc("profile/only_for_bought_disabled/hint")
       enabled = false
@@ -892,8 +846,7 @@ let selMedalIdx = {}
     ownSwitch.show(true)
   }
 
-  function fillUnlocksList()
-  {
+  function fillUnlocksList() {
     this.isPageFilling = true
 
     this.guiScene.setUpdatesEnabled(false, false)
@@ -905,15 +858,13 @@ let selMedalIdx = {}
     let containerObjId = pageTypeId == UNLOCKABLE_MEDAL ? "medals_zone" : "unlocks_group_list"
     this.unlocksTree = {}
 
-    if (pageTypeId == UNLOCKABLE_SKIN)
-    {
+    if (pageTypeId == UNLOCKABLE_SKIN) {
       let itemsView = this.getSkinsView()
       data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", { items = itemsView })
       let skinId = this.initSkinId
       curIndex = itemsView.findindex(@(p) p.id == skinId) ?? 0
     }
-    else
-    {
+    else {
       let view = { items = [] }
       view.items = this.generateItems(pageTypeId)
       data = ::handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
@@ -930,8 +881,7 @@ let selMedalIdx = {}
     let ediff = getShopDiffCode()
 
     let view = { items = [] }
-    foreach (chapterName, chapterItem in this.unlocksTree)
-    {
+    foreach (chapterName, chapterItem in this.unlocksTree) {
       if (isAchievementPage && chapterName == this.curAchievementGroupName)
         curIndex = view.items.len()
 
@@ -949,8 +899,7 @@ let selMedalIdx = {}
       })
 
       if (chapterItem.groups.len() > 0)
-        foreach (groupName, groupItem in chapterItem.groups)
-        {
+        foreach (groupName, groupItem in chapterItem.groups) {
           let id = chapterName + "/" + groupName
           if (isAchievementPage && id == this.curAchievementGroupName)
             curIndex = view.items.len()
@@ -985,12 +934,10 @@ let selMedalIdx = {}
     this.updateFavoritesCheckboxesInList()
   }
 
-  function getSkinsView()
-  {
+  function getSkinsView() {
     let itemsView = []
     let comma = loc("ui/comma")
-    foreach (decorator in this.getSkinsCache(this.curFilter, this.curSubFilter, this.getCurrentOwnType()))
-    {
+    foreach (decorator in this.getSkinsCache(this.curFilter, this.curSubFilter, this.getCurrentOwnType())) {
       let unitId = ::g_unlocks.getPlaneBySkinId(decorator.id)
 
       itemsView.append({
@@ -1014,8 +961,7 @@ let selMedalIdx = {}
     return ""
   }
 
-  function generateItems(pageTypeId)
-  {
+  function generateItems(pageTypeId) {
     let items = []
     let lowerCurPage = this.curPage.tolower()
     let isCustomMenuTab = lowerCurPage in this.customMenuTabs
@@ -1023,8 +969,7 @@ let selMedalIdx = {}
     local chapter = ""
     local group = ""
 
-    foreach(_idx, cb in ::g_unlocks.getAllUnlocksWithBlkOrder())
-    {
+    foreach (_idx, cb in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
       let name = cb.getStr("id", "")
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
@@ -1040,31 +985,28 @@ let selMedalIdx = {}
       if (cb?.showAsBattleTask || ::BattleTasks.isBattleTask(cb))
         continue
 
-      if (isCustomMenuTab)
-      {
+      if (isCustomMenuTab) {
         if (!cb?.customMenuTab || cb?.customMenuTab.tolower() != lowerCurPage)
           continue
       }
       else if (cb?.customMenuTab)
         continue
 
-      if (this.curFilterType == "country" && cb.getStr("country","") != this.curFilter)
+      if (this.curFilterType == "country" && cb.getStr("country", "") != this.curFilter)
         continue
 
-      if (isUnlockTree)
-      {
-        let newChapter = cb.getStr("chapter","")
-        let newGroup = cb.getStr("group","")
-        if (newChapter != "")
-        {
+      if (isUnlockTree) {
+        let newChapter = cb.getStr("chapter", "")
+        let newGroup = cb.getStr("group", "")
+        if (newChapter != "") {
           chapter = newChapter
           group = newGroup
         }
-        if(newGroup != "")
+        if (newGroup != "")
           group = newGroup
-        if(!(chapter in this.unlocksTree))
-          this.unlocksTree[chapter] <- {rootItems = [], groups = {}}
-        if(group != "" && !(group in this.unlocksTree[chapter].groups))
+        if (!(chapter in this.unlocksTree))
+          this.unlocksTree[chapter] <- { rootItems = [], groups = {} }
+        if (group != "" && !(group in this.unlocksTree[chapter].groups))
           this.unlocksTree[chapter].groups[group] <- []
         if (group == "")
           this.unlocksTree[chapter].rootItems.append(name)
@@ -1086,21 +1028,18 @@ let selMedalIdx = {}
     return items;
   }
 
-  function getSkinsUnitType(skinName)
-  {
+  function getSkinsUnitType(skinName) {
     let unit = this.getUnitBySkin(skinName)
-    if( ! unit)
+    if (! unit)
         return ES_UNIT_TYPE_INVALID
     return ::get_es_unit_type(unit)
   }
 
-  function getUnitBySkin(skinName)
-  {
+  function getUnitBySkin(skinName) {
     return ::getAircraftByName(::g_unlocks.getPlaneBySkinId(skinName))
   }
 
-  function getDecalsMarkup(categoryId, groupId)
-  {
+  function getDecalsMarkup(categoryId, groupId) {
     let decorCache = ::g_decorator.getCachedDataByType(::g_decorator_type.DECALS)
     let decorators = decorCache.catToGroups?[categoryId][groupId]
     if (!decorators || decorators.len() == 0)
@@ -1120,40 +1059,36 @@ let selMedalIdx = {}
     return ::handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
   }
 
-  function checkSkinVehicle(unitName)
-  {
+  function checkSkinVehicle(unitName) {
     let unit = ::getAircraftByName(unitName)
     if (unit == null)
       return false
     return unit.isVisibleInShop()
   }
 
-  function collapse(itemName = null)
-  {
+  function collapse(itemName = null) {
     let listObj = this.scene.findObject("unlocks_group_list")
     if (!listObj || !this.unlocksTree || this.unlocksTree.len() == 0)
       return
 
     let chapterRegexp = regexp2("/[^\\s]+")
     let chapterName = itemName && chapterRegexp.replace("", itemName)
-    this.uncollapsedChapterName = chapterName?
-      (chapterName == this.uncollapsedChapterName)? null : chapterName
+    this.uncollapsedChapterName = chapterName ?
+      (chapterName == this.uncollapsedChapterName) ? null : chapterName
       : this.uncollapsedChapterName
     local newValue = -1
 
     this.guiScene.setUpdatesEnabled(false, false)
     let total = listObj.childrenCount()
-    for(local i = 0; i < total; i++)
-    {
+    for (local i = 0; i < total; i++) {
       let obj = listObj.getChild(i)
       let iName = obj?.id
       let isUncollapsedChapter = iName == this.uncollapsedChapterName
       if (iName == (isUncollapsedChapter ? this.curAchievementGroupName : chapterName))
         newValue = i
 
-      if (iName in this.unlocksTree) //chapter
-      {
-        obj.collapsed = isUncollapsedChapter? "no" : "yes"
+      if (iName in this.unlocksTree) { //chapter
+        obj.collapsed = isUncollapsedChapter ? "no" : "yes"
         continue
       }
 
@@ -1168,20 +1103,17 @@ let selMedalIdx = {}
       listObj.setValue(newValue)
   }
 
-  function onCollapse(obj)
-  {
-    if (!obj) return
+  function onCollapse(obj) {
+    if (!obj)
+      return
     let id = obj.id
-    if (id.len() > 4 && id.slice(0, 4) == "btn_")
-    {
+    if (id.len() > 4 && id.slice(0, 4) == "btn_") {
       this.collapse(id.slice(4))
       let listBoxObj = this.scene.findObject("unlocks_group_list")
       let listItemCount = listBoxObj.childrenCount()
-      for(local i = 0; i < listItemCount; i++)
-      {
+      for (local i = 0; i < listItemCount; i++) {
         let listItemId = listBoxObj.getChild(i)?.id
-        if(listItemId == id.slice(4))
-        {
+        if (listItemId == id.slice(4)) {
           listBoxObj.setValue(i)
           break
         }
@@ -1189,13 +1121,11 @@ let selMedalIdx = {}
     }
   }
 
-  function onCodeAppClick(_obj)
-  {
+  function onCodeAppClick(_obj) {
     openUrl(loc("url/2step/codeApp"))
   }
 
-  function onGroupCollapse(obj)
-  {
+  function onGroupCollapse(obj) {
     let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
@@ -1203,25 +1133,22 @@ let selMedalIdx = {}
     this.collapse(obj.getChild(value).id)
   }
 
-  function openCollapsedGroup(group, name)
-  {
+  function openCollapsedGroup(group, name) {
     this.collapse(group)
-    let reqBlockName = group + (name? ("/" + name) : "")
+    let reqBlockName = group + (name ? ("/" + name) : "")
     let listBoxObj = this.scene.findObject("unlocks_group_list")
     if (!checkObj(listBoxObj))
       return
 
     let listItemCount = listBoxObj.childrenCount()
-    for(local i = 0; i < listItemCount; i++)
-    {
+    for (local i = 0; i < listItemCount; i++) {
       let listItemId = listBoxObj.getChild(i).id
-      if(reqBlockName == listItemId)
+      if (reqBlockName == listItemId)
         return listBoxObj.setValue(i)
     }
   }
 
-  function getSkinCountry(skinName)
-  {
+  function getSkinCountry(skinName) {
     let len0 = skinName.indexof("/")
     if (len0)
       return ::getShopCountry(skinName.slice(0, len0))
@@ -1299,14 +1226,12 @@ let selMedalIdx = {}
   unlockToFavorites = @(obj) unlockToFavorites(obj,
     Callback(this.updateFavoritesCheckboxesInList, this))
 
-  function updateFavoritesCheckboxesInList()
-  {
+  function updateFavoritesCheckboxesInList() {
     if (this.isPageFilling)
       return
 
     let canAddFav = canAddFavorite()
-    foreach (unlockId in this.getCurUnlockList())
-    {
+    foreach (unlockId in this.getCurUnlockList()) {
       let unlockObj = this.scene.findObject(this.getUnlockBlockId(unlockId))
       if (!checkObj(unlockObj))
         continue
@@ -1317,8 +1242,7 @@ let selMedalIdx = {}
     }
   }
 
-  function unlockToFavoritesByActivateItem(obj)
-  {
+  function unlockToFavoritesByActivateItem(obj) {
     let childrenCount = obj.childrenCount()
     let index = obj.getValue()
     if (index < 0 || index >= childrenCount)
@@ -1331,8 +1255,16 @@ let selMedalIdx = {}
     checkBoxObj.setValue(!checkBoxObj.getValue())
   }
 
-  function onBuyUnlock(obj)
-  {
+  function onManualOpenUnlock(obj) {
+    let unlockId = obj?.unlockId ?? ""
+    if (unlockId == "")
+      return
+
+    let onSuccess = Callback(@() this.updateUnlockBlock(unlockId), this)
+    openUnlockManually(unlockId, onSuccess)
+  }
+
+  function onBuyUnlock(obj) {
     let unlockId = getTblValue("unlockId", obj)
     if (::u.isEmpty(unlockId))
       return
@@ -1354,8 +1286,7 @@ let selMedalIdx = {}
       ], "cancel")
   }
 
-  function updateUnlockBlock(unlockData)
-  {
+  function updateUnlockBlock(unlockData) {
     local unlock = unlockData
     if (::u.isString(unlockData))
       unlock = ::g_unlocks.getUnlockById(unlockData)
@@ -1386,8 +1317,7 @@ let selMedalIdx = {}
     this.goBack()
   }
 
-  function fillUnlockInfo(unlockBlk, unlockObj)
-  {
+  function fillUnlockInfo(unlockBlk, unlockObj) {
     let itemData = ::build_conditions_config(unlockBlk)
     ::build_unlock_desc(itemData)
     unlockObj.show(true)
@@ -1402,11 +1332,11 @@ let selMedalIdx = {}
     ::g_unlock_view.fillUnlockTitle(itemData, unlockObj)
     ::g_unlock_view.fillUnlockFav(itemData.id, unlockObj)
     ::g_unlock_view.fillUnlockPurchaseButton(itemData, unlockObj)
+    ::g_unlock_view.fillUnlockManualOpenButton(itemData, unlockObj)
     ::g_unlock_view.updateLockStatus(itemData, unlockObj)
   }
 
-  function printUnlocksList(unlocksList)
-  {
+  function printUnlocksList(unlocksList) {
     let achievaAmount = unlocksList.len()
     let unlocksListObj = this.showSceneBtn("unlocks_list", true)
     this.showSceneBtn("item_desc", false)
@@ -1414,16 +1344,13 @@ let selMedalIdx = {}
 
     this.guiScene.setUpdatesEnabled(false, false)
 
-    if (blockAmount < achievaAmount)
-    {
+    if (blockAmount < achievaAmount) {
       let unlockItemBlk = "%gui/profile/unlockItem.blk"
-      for(; blockAmount < achievaAmount; blockAmount++)
+      for (; blockAmount < achievaAmount; blockAmount++)
         this.guiScene.createElementByObject(unlocksListObj, unlockItemBlk, "expandable", this)
     }
-    else if (blockAmount > achievaAmount)
-    {
-      for(; blockAmount > achievaAmount; blockAmount--)
-      {
+    else if (blockAmount > achievaAmount) {
+      for (; blockAmount > achievaAmount; blockAmount--) {
         unlocksListObj.getChild(blockAmount - 1).show(false)
         unlocksListObj.getChild(blockAmount - 1).enable(false)
       }
@@ -1431,8 +1358,7 @@ let selMedalIdx = {}
 
     local currentItemNum = 0
     local selIdx = 0
-    foreach(unlock in ::g_unlocks.getAllUnlocksWithBlkOrder())
-    {
+    foreach (unlock in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
       if (unlock?.id == null) {
         let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
         ::script_net_assert_once("missing id in unlock after cashed", "ProfileHandler: Missing id in unlock after cashed")
@@ -1461,13 +1387,11 @@ let selMedalIdx = {}
     seenList.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
   }
 
-  function getUnlockBlockId(unlockId)
-  {
+  function getUnlockBlockId(unlockId) {
     return unlockId + "_block"
   }
 
-  function onMedalSelect(obj)
-  {
+  function onMedalSelect(obj) {
     if (!checkObj(obj))
       return
 
@@ -1508,8 +1432,7 @@ let selMedalIdx = {}
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  function onUnlockSelect(obj)
-  {
+  function onUnlockSelect(obj) {
     if (obj?.isValid())
       this.curUnlockId = getSelectedChild(obj)?.holderId ?? ""
   }
@@ -1518,29 +1441,25 @@ let selMedalIdx = {}
     let list = this.scene.findObject("unlocks_group_list")
     let index = list.getValue()
     local unlocksList = []
-    if ((index >= 0) && (index < list.childrenCount()))
-    {
+    if ((index >= 0) && (index < list.childrenCount())) {
       let curObj = list.getChild(index)
       if (this.curPage.tolower() == "skin")
         this.fillSkinDescr(curObj.id)
-      else
-      {
+      else {
         let id = curObj.id
         let isGroup = (id in this.unlocksTree)
-        if(isGroup)
+        if (isGroup)
           unlocksList = this.unlocksTree[id].rootItems
         else
-          foreach(chapterName, chapterItem in this.unlocksTree)
+          foreach (chapterName, chapterItem in this.unlocksTree)
             if (chapterName.len() + 1 < id.len()
                 && id.slice(0, chapterName.len()) == chapterName
-                && id.slice(chapterName.len() + 1) in chapterItem.groups)
-            {
+                && id.slice(chapterName.len() + 1) in chapterItem.groups) {
               unlocksList = chapterItem.groups[id.slice(chapterName.len() + 1)]
               break
             }
         this.printUnlocksList(unlocksList)
-        if (this.curPage == "Achievement")
-        {
+        if (this.curPage == "Achievement") {
           this.curAchievementGroupName = id
           if (isGroup && id != this.uncollapsedChapterName)
             this.onGroupCollapse(list)
@@ -1549,8 +1468,7 @@ let selMedalIdx = {}
     }
   }
 
-  function onSkinPreview(_obj)
-  {
+  function onSkinPreview(_obj) {
     let list = this.scene.findObject("unlocks_group_list")
     let index = list.getValue()
     if ((index < 0) || (index >= list.childrenCount()))
@@ -1580,8 +1498,7 @@ let selMedalIdx = {}
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
-  function getCurSheet()
-  {
+  function getCurSheet() {
     let obj = this.scene.findObject("profile_sheet_list")
     let sheetIdx = obj.getValue()
     if ((sheetIdx < 0) || (sheetIdx >= obj.childrenCount()))
@@ -1596,10 +1513,10 @@ let selMedalIdx = {}
     for (local idx = 0; idx < 3; idx++) //difficulty
       if (idx == diff || diff < 0)
 
-        for(local pm=0; pm < 2; pm++)  //players
+        for (local pm = 0; pm < 2; pm++)  //players
           if (mode == pm || mode < 0)
 
-            if (fm_idx!=null)
+            if (fm_idx != null)
               value += func(idx, fm_idx, pm)
             else
               value += func(idx, pm)
@@ -1607,13 +1524,11 @@ let selMedalIdx = {}
     return value
   }
 
-  function getStatRowData(name, func, mode, fm_idx=null, timeFormat = false)
-  {
-    let row = [{ text = name, tdalign = "left"}]
-    for (local diff=0; diff < 3; diff++)
-    {
+  function getStatRowData(name, func, mode, fm_idx = null, timeFormat = false) {
+    let row = [{ text = name, tdalign = "left" }]
+    for (local diff = 0; diff < 3; diff++) {
       local value = 0
-      if (fm_idx==null || fm_idx >= 0)
+      if (fm_idx == null || fm_idx >= 0)
         value = this.calcStat(func, diff, mode, fm_idx)
       else
         for (local i = 0; i < 3; i++)
@@ -1621,13 +1536,12 @@ let selMedalIdx = {}
 
       let s = timeFormat ? time.secondsToString(value) : value
       let tooltip = ["#mainmenu/arcadeInstantAction", "#mainmenu/instantAction", "#mainmenu/fullRealInstantAction"][diff]
-      row.append({ id = diff.tostring(), text = s.tostring(), tooltip = tooltip})
+      row.append({ id = diff.tostring(), text = s.tostring(), tooltip = tooltip })
     }
     return ::buildTableRowNoPad("", row)
   }
 
-  function updateStats()
-  {
+  function updateStats() {
     let myStats = ::my_stats.getStats()
     if (!myStats || !checkObj(this.scene))
       return
@@ -1635,26 +1549,22 @@ let selMedalIdx = {}
     this.fillProfileStats(myStats)
   }
 
-  function openChooseTitleWnd(_obj)
-  {
+  function openChooseTitleWnd(_obj) {
     ::gui_handlers.ChooseTitle.open()
   }
 
-  function openProfileTab(tab, selectedBlock)
-  {
+  function openProfileTab(tab, selectedBlock) {
     let obj = this.scene.findObject("profile_sheet_list")
-    if(checkObj(obj))
-    {
+    if (checkObj(obj)) {
       let num = ::find_in_array(this.sheetsList, tab)
-      if(num < 0)
+      if (num < 0)
         return
       obj.setValue(num)
       this.openCollapsedGroup(selectedBlock, null)
     }
   }
 
-  function fillProfileStats(stats)
-  {
+  function fillProfileStats(stats) {
     this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
     if ("uid" in stats && stats.uid != ::my_user_id_str)
       externalIDsService.reqPlayerExternalIDsByUserId(stats.uid)
@@ -1666,8 +1576,7 @@ let selMedalIdx = {}
     this.scene.findObject("profile_loading").show(false)
   }
 
-  function onProfileStatsModeChange(obj)
-  {
+  function onProfileStatsModeChange(obj) {
     if (!checkObj(this.scene))
       return
     let myStats = ::my_stats.getStats()
@@ -1682,10 +1591,8 @@ let selMedalIdx = {}
     this.fillLeaderboard()
   }
 
-  function onUpdate(_obj, _dt)
-  {
-    if (this.pending_logout && ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active())
-    {
+  function onUpdate(_obj, _dt) {
+    if (this.pending_logout && ::is_app_active() && !::steam_is_overlay_active() && !::is_builtin_browser_active()) {
       this.pending_logout = false
       this.guiScene.performDelayed(this, function() {
         startLogout()
@@ -1693,13 +1600,11 @@ let selMedalIdx = {}
     }
   }
 
-  function onChangeName()
-  {
+  function onChangeName() {
     local textLocId = "mainmenu/questionChangeName"
-    local afterOkFunc = @() this.guiScene.performDelayed(this, function() { this.pending_logout = true})
+    local afterOkFunc = @() this.guiScene.performDelayed(this, function() { this.pending_logout = true })
 
-    if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking"))
-    {
+    if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking")) {
       textLocId = "mainmenu/questionChangeNameSteam"
       afterOkFunc = @() null
     }
@@ -1714,8 +1619,7 @@ let selMedalIdx = {}
       ], "cancel")
   }
 
-  function onChangeAccount()
-  {
+  function onChangeAccount() {
     this.msgBox("question_change_name", loc("mainmenu/questionChangePlayer"),
       [
         ["yes", function() {
@@ -1734,13 +1638,11 @@ let selMedalIdx = {}
     avatars.openChangePilotIconWnd(this.onIconChoosen, this)
   }
 
-  function openViralAcquisitionWnd()
-  {
+  function openViralAcquisitionWnd() {
     showViralAcquisitionWnd()
   }
 
-  function onIconChoosen(option)
-  {
+  function onIconChoosen(option) {
     let value = ::get_option(::USEROPT_PILOT).value
     if (value == option.idx)
       return
@@ -1758,21 +1660,18 @@ let selMedalIdx = {}
     ::broadcastEvent(profileEvent.AVATAR_CHANGED)
   }
 
-  function onEventMyStatsUpdated(_params)
-  {
+  function onEventMyStatsUpdated(_params) {
     if (this.getCurSheet() == "Statistics")
       this.fillAirStats()
     if (this.getCurSheet() == "Profile")
       this.updateStats()
   }
 
-  function onEventClanInfoUpdate(_params)
-  {
+  function onEventClanInfoUpdate(_params) {
     this.fillClanInfo(::get_profile_info())
   }
 
-  function initAirStats()
-  {
+  function initAirStats() {
     let myStats = ::my_stats.getStats()
     if (!myStats || !checkObj(this.scene))
       return
@@ -1780,8 +1679,7 @@ let selMedalIdx = {}
     this.initAirStatsScene(myStats.userstat)
   }
 
-  function fillAirStats()
-  {
+  function fillAirStats() {
     let myStats = ::my_stats.getStats()
     if (!this.airStatsInited || !myStats || !myStats.userstat)
       return this.initAirStats()
@@ -1789,13 +1687,11 @@ let selMedalIdx = {}
     this.fillAirStatsScene(myStats.userstat)
   }
 
-  function getPlayerStats()
-  {
+  function getPlayerStats() {
     return ::my_stats.getStats()
   }
 
-  function getCurUnlockList()
-  {
+  function getCurUnlockList() {
     let list = this.scene.findObject("unlocks_group_list")
     let index = list.getValue()
     local unlocksList = []
@@ -1804,32 +1700,29 @@ let selMedalIdx = {}
 
     let curObj = list.getChild(index)
     let id = curObj.id
-    if(id in this.unlocksTree)
+    if (id in this.unlocksTree)
       unlocksList = this.unlocksTree[id].rootItems
     else
-      foreach(chapterName, chapterItem in this.unlocksTree)
-      {
-        let subsectionName = ::g_string.cutPrefix(id, chapterName+"/", null)
-        if(!subsectionName)
+      foreach (chapterName, chapterItem in this.unlocksTree) {
+        let subsectionName = ::g_string.cutPrefix(id, chapterName + "/", null)
+        if (!subsectionName)
           continue
 
         unlocksList = chapterItem?.groups?[subsectionName] ?? []
-        if (unlocksList.len()>0)
+        if (unlocksList.len() > 0)
           return unlocksList
       }
     return unlocksList
   }
 
-  function onGroupCancel(_obj)
-  {
+  function onGroupCancel(_obj) {
     if (::show_console_buttons && this.getCurSheet() == "UnlockSkin")
       ::move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
     else
       this.goBack()
   }
 
-  function onBindEmail()
-  {
+  function onBindEmail() {
     if (needShowGuestEmailRegistration())
       launchGuestEmailRegistration()
     else
@@ -1837,8 +1730,7 @@ let selMedalIdx = {}
     this.doWhenActiveOnce("updateButtons")
   }
 
-  function onEventUnlocksCacheInvalidate(_p)
-  {
+  function onEventUnlocksCacheInvalidate(_p) {
     let curSheet = this.getCurSheet()
     if (curSheet == "UnlockAchievement")
       this.fillUnlocksList()
@@ -1851,8 +1743,7 @@ let selMedalIdx = {}
       this.fillUnlocksList()
   }
 
-  function onEventInventoryUpdate(_p)
-  {
+  function onEventInventoryUpdate(_p) {
     let curSheet = this.getCurSheet()
     if (curSheet == "UnlockAchievement")
       this.fillUnlocksList()
@@ -1860,17 +1751,16 @@ let selMedalIdx = {}
       this.fillDecalsList()
   }
 
-  function onOpenAchievementsUrl()
-  {
+  function onOpenAchievementsUrl() {
     openUrl(loc("url/achievements",
-        { appId = APP_ID, name = ::get_profile_info().name}),
+        { appId = APP_ID, name = ::get_profile_info().name }),
       false, false, "profile_page")
   }
 }
 
 let openProfileSheetParamsFromPromo = {
   UnlockAchievement = @(p1, p2, ...) {
-    uncollapsedChapterName = p2 != ""? p1 : null
+    uncollapsedChapterName = p2 != "" ? p1 : null
     curAchievementGroupName = p1 + (p2 != "" ? ("/" + p2) : "")
   }
   Medal = @(p1, _p2, ...) { filterCountryName = p1 }

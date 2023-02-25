@@ -28,7 +28,7 @@ let function createModule(module) {
       padding = [shHud(1), shHud(1)]
       children = {
         rendObj = ROBJ_TEXT
-        pos = [pw(47 + 50*cos(angel)), ph(45 + 50*sin(angel))]
+        pos = [pw(47 + 50 * cos(angel)), ph(45 + 50 * sin(angel))]
         font = Fonts.hud
         color = colors.menu.activeTextColor
         fontFxFactor = 5

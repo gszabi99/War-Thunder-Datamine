@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -55,8 +57,7 @@ let premiumAccountDescriptionArr = [
   }
 ]
 
-let function getEntitlementConfig(name)
-{
+let function getEntitlementConfig(name) {
   if (!name || name == "")
     return null
 
@@ -66,22 +67,19 @@ let function getEntitlementConfig(name)
   if (pblk?[name] == null)
     return null
 
-  foreach(param in ["entitlementGift", "aircraftGift", "unlockGift", "decalGift", "attachableGift", "skinGift", "showEntAsGift"])
-  {
+  foreach (param in ["entitlementGift", "aircraftGift", "unlockGift", "decalGift", "attachableGift", "skinGift", "showEntAsGift"]) {
     if (param in pblk[name])
       res[param] <- pblk[name] % param
   }
 
-  if (res?.showEntAsGift != null)
-  {
+  if (res?.showEntAsGift != null) {
     if (pblk[name]?.showEntitlementGift)
       res.entitlementGift.extend(res.showEntAsGift)
     else
       res.entitlementGift = res?.showEntAsGift
   }
 
-  for (local i = 0; i < pblk[name].paramCount(); i++)
-  {
+  for (local i = 0; i < pblk[name].paramCount(); i++) {
     let paramName = pblk[name].getParamName(i)
     if (!(paramName in res))
       res[paramName] <- pblk[name].getParamValue(i)
@@ -90,25 +88,22 @@ let function getEntitlementConfig(name)
   return res
 }
 
-let function getEntitlementLocId(ent)
-{
+let function getEntitlementLocId(ent) {
   return ("alias" in ent) ? ent.alias : ("group" in ent) ? ent.group : (ent?.name ?? "unknown")
 }
 
-let function getEntitlementAmount(ent)
-{
+let function getEntitlementAmount(ent) {
   if ("httl" in ent)
     return ent.httl.tofloat() / 24.0
 
-  foreach(n in ["ttl", "wpIncome", "goldIncome"])
+  foreach (n in ["ttl", "wpIncome", "goldIncome"])
     if ((n in ent) && ent[n] > 0)
       return ent[n]
 
   return 1
 }
 
-let function getEntitlementTimeText(ent)
-{
+let function getEntitlementTimeText(ent) {
   if ("ttl" in ent)
     return ent.ttl + loc("measureUnits/days")
   if ("httl" in ent)
@@ -116,37 +111,33 @@ let function getEntitlementTimeText(ent)
   return ""
 }
 
-let function getEntitlementName(ent)
-{
+let function getEntitlementName(ent) {
   local name = ""
-  if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent))
-  {
+  if (("useGroupAmount" in ent) && ent.useGroupAmount && ("group" in ent)) {
     name = loc("charServer/entitlement/" + ent.group)
-    let amountStr = ::g_language.decimalFormat(getEntitlementAmount(ent))
-    if(name.indexof("%d") != null)
+    let amountStr = decimalFormat(getEntitlementAmount(ent))
+    if (name.indexof("%d") != null)
       name = ::stringReplace(name, "%d", amountStr)
     else
-      name = loc("charServer/entitlement/" + ent.group, {amount = amountStr})
+      name = loc("charServer/entitlement/" + ent.group, { amount = amountStr })
   }
   else
     name = loc("charServer/entitlement/" + getEntitlementLocId(ent))
 
   let timeText = getEntitlementTimeText(ent)
-  if (timeText!="")
+  if (timeText != "")
     name += " " + timeText
   return name
 }
 
-let function getFirstPurchaseAdditionalAmount(ent)
-{
+let function getFirstPurchaseAdditionalAmount(ent) {
   if (!::has_entitlement(ent.name))
     return getTblValue("goldIncomeFirstBuy", ent, 0)
 
   return 0
 }
 
-let function getEntitlementPrice(ent)
-{
+let function getEntitlementPrice(ent) {
   if (ent?.onlinePurchase ?? false) {
     let info = bundlesShopInfo.value?[ent.name]
     if (info)
@@ -156,14 +147,14 @@ let function getEntitlementPrice(ent)
     if (priceText == "")
       return ""
 
-    let markup = ::steam_is_running() ? 1.0 + ::getSteamMarkUp()/100.0 : 1.0
+    let markup = ::steam_is_running() ? 1.0 + ::getSteamMarkUp() / 100.0 : 1.0
     local totalPrice = priceText.tofloat() * markup
     let discount = ::g_discount.getEntitlementDiscount(ent.name)
     if (discount)
       totalPrice -= totalPrice * discount * 0.01
 
     return format(loc("price/common"),
-      ent?.chapter == "eagles" ? totalPrice.tostring() : ::g_language.decimalFormat(totalPrice))
+      ent?.chapter == "eagles" ? totalPrice.tostring() : decimalFormat(totalPrice))
   }
   else if ("goldCost" in ent)
     return ::Cost(0, ::get_entitlement_cost_gold(ent.name)).tostring()
@@ -236,10 +227,9 @@ let function getEntitlementBundles() {
 
 let function isBoughtEntitlement(ent) {
   let bundles = getEntitlementBundles()
-  if (ent?.name != null && bundles?[ent.name] != null)
-  {
+  if (ent?.name != null && bundles?[ent.name] != null) {
     let isBought = callee()
-    foreach(name in bundles[ent.name])
+    foreach (name in bundles[ent.name])
       if (!this.goods?[name] || !isBought(this.goods[name]))
         return false
     return true
@@ -255,9 +245,8 @@ let function getEntitlementDescription(product, _productId) {
   let paramTbl =  getEntitlementLocParams()
 
   let entLocId = getEntitlementLocId(product)
-  if (entLocId == "PremiumAccount")
-  {
-    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({text = loc(d.locId, paramTbl)}))
+  if (entLocId == "PremiumAccount") {
+    let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge({ text = loc(d.locId, paramTbl) }))
 
     return formatLocalizationArrayToDescription(locArr)
   }
@@ -269,16 +258,15 @@ let function getEntitlementDescription(product, _productId) {
   let locId = $"charServer/entitlement/{entLocId}/desc"
   resArr.append(loc(locId, paramTbl))
 
-  foreach(giftName in product?.entitlementGift ?? [])
-  {
+  foreach (giftName in product?.entitlementGift ?? []) {
     let config = giftName.slice(0, 4) == "Rate" ? getEntitlementConfig(product.name) : getEntitlementConfig(giftName)
     resArr.append(format(loc("charServer/gift/entitlement"), getEntitlementName(config)))
   }
 
-  foreach(airName in product?.aircraftGift ?? [])
+  foreach (airName in product?.aircraftGift ?? [])
     resArr.append(format(loc("charServer/gift/aircraft"), ::getUnitName(airName)))
 
-  if (product?.goldIncome && product?.chapter!="eagles")
+  if (product?.goldIncome && product?.chapter != "eagles")
     resArr.append(format(loc("charServer/gift"), "".concat(product.goldIncome, loc("gold/short/colored"))))
 
   if ("afterGiftsDesc" in product)
@@ -287,8 +275,7 @@ let function getEntitlementDescription(product, _productId) {
   if (product?.onlinePurchase && !isBoughtEntitlement(product) && ::steam_is_running())
     resArr.append(loc("charServer/web_purchase"))
 
-  if (product?.chapter == "warpoints")
-  {
+  if (product?.chapter == "warpoints") {
     let days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
     if (days > 0)
       resArr.append(colorize("warningTextColor",

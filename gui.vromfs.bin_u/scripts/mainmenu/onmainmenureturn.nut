@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,8 +12,6 @@ let itemNotifications = require("%scripts/items/itemNotifications.nut")
 let { checkGaijinPassReminder } = require("%scripts/mainmenu/reminderGaijinPass.nut")
 let { systemOptionsMaintain } = require("%scripts/options/systemOptions.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 
 let { checkInvitesAfterFlight } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
@@ -22,21 +21,21 @@ let { checkShowEmailRegistration,
 let { checkShowGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 let { checkAfterFlight } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 let checkReconnect = require("%scripts/matchingRooms/checkReconnect.nut")
+let { checkShowPersonalOffers } = require("%scripts/user/personalOffers.nut")
 let { steamCheckNewItems } = require("%scripts/inventory/steamCheckNewItems.nut")
 
 let delayed_gblk_error_popups = []
 let function showGblkErrorPopup(errCode, path) {
-  if (!::g_login.isLoggedIn())
-  {
+  if (!::g_login.isLoggedIn()) {
     delayed_gblk_error_popups.append({ type = errCode, path = path })
     return
   }
 
   let title = loc("gblk/saveError/title")
-  let msg = loc(format("gblk/saveError/text/%d", errCode), {path=path})
-  ::g_popups.add(title, msg, null, [{id="copy_button",
-                              text=loc("gblk/saveError/copy"),
-                              func=(@(msg) function() {::copy_to_clipboard(msg)})(msg)}])
+  let msg = loc(format("gblk/saveError/text/%d", errCode), { path = path })
+  ::g_popups.add(title, msg, null, [{ id = "copy_button",
+                              text = loc("gblk/saveError/copy"),
+                              func = (@(msg) function() { ::copy_to_clipboard(msg) })(msg) }])
 }
 ::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
 
@@ -45,8 +44,7 @@ let function popGblkErrorPopups() {
     return
 
   let total = delayed_gblk_error_popups.len()
-  for(local i = 0; i < total; i++)
-  {
+  for (local i = 0; i < total; i++) {
     let data = delayed_gblk_error_popups[i]
     showGblkErrorPopup(data.type, data.path)
   }
@@ -63,13 +61,11 @@ local function onMainMenuReturn(handler, isAfterLogin) {
   if (isAfterLogin && isAllowPopups)
     checkReconnect()
 
-  if (!isAfterLogin)
-  {
+  if (!isAfterLogin) {
     ::g_warbonds_view.resetShowProgressBarFlag()
     ::checkUnlockedCountriesByAirs()
     penalties.showBannedStatusMsgBox(true)
-    if (isAllowPopups && !::disable_network())
-    {
+    if (isAllowPopups && !::disable_network()) {
       handler.doWhenActive(checkShowRateWnd)
       handler.doWhenActive(checkJoystickThustmasterHotas)
     }
@@ -86,19 +82,18 @@ local function onMainMenuReturn(handler, isAfterLogin) {
   handler.doWhenActive(@() ::checkNewNotificationUserlogs())
   handler.doWhenActive(@() ::checkNonApprovedResearches(true))
 
-  if (isAllowPopups)
-  {
+  if (isAllowPopups) {
     handler.doWhenActive(@() checkNuclearEvent())
 
     handler.doWhenActive(::gui_handlers.FontChoiceWnd.openIfRequired)
 
-    handler.doWhenActive(@() checkInvitesAfterFlight() )
+    handler.doWhenActive(@() checkInvitesAfterFlight())
     handler.doWhenActive(checkAfterFlight)
-    handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks() )
+    handler.doWhenActive(@() ::g_battle_tasks.checkNewSpecialTasks())
     handler.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
-  if(isAllowPopups && hasFeature("Invites") && !guiScene.hasModalObject())
+  if (isAllowPopups && hasFeature("Invites") && !guiScene.hasModalObject())
     handler.doWhenActiveOnce("checkShowViralAcquisition")
 
   if (isAllowPopups && !guiScene.hasModalObject())
@@ -107,22 +102,18 @@ local function onMainMenuReturn(handler, isAfterLogin) {
   if (isAfterLogin && isAllowPopups && !guiScene.hasModalObject())
     handler.doWhenActive(@() checkShowGuestEmailRegistrationAfterLogin())
 
-  if (isAllowPopups && !guiScene.hasModalObject() && !isPlatformSony && isAvailableFacebook())
-    handler.doWhenActive(function () { ::show_facebook_login_reminder() })
-  if (handler.unitInfoPanel == null)
-  {
+  if (handler.unitInfoPanel == null) {
     handler.unitInfoPanel = ::create_slot_info_panel(handler.scene, true, "mainmenu")
     handler.registerSubHandler(handler.unitInfoPanel)
   }
 
-  if (isAllowPopups)
-  {
+  if (isAllowPopups) {
     handler.doWhenActiveOnce("checkShowChangelog")
     handler.doWhenActiveOnce("initPromoBlock")
 
     local hasModalObjectVal = guiScene.hasModalObject()
-    handler.doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal) )
-    handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration() )
+    handler.doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal))
+    handler.doWhenActive(@() itemNotifications.checkOfferToBuyAtExpiration())
     handler.doWhenActive(@() checkGaijinPassReminder())
 
     handler.doWhenActive(::check_tutorial_on_start)
@@ -130,6 +121,9 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
     handler.doWhenActive(steamCheckNewItems)
+
+    if (isAfterLogin)
+      checkShowPersonalOffers()
   }
 
   if (!isAfterLogin && isAllowPopups) {

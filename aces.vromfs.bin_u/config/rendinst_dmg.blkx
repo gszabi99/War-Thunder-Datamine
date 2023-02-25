@@ -15566,7 +15566,7 @@
     },
     {
       "name": "construction_fence_a_pillar",
-      "destroyedModelName": "american_road_sign_n_destr_phobj",
+      "destroyedModelName": "construction_fence_a_pillar_destr_phobj",
       "destructionImpulse": 15000.0,
       "fx": "ad_wood_small",
       "fxScale": 1.0,
@@ -40757,7 +40757,7 @@
       "physRes": "european_hydrant_a_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -40766,7 +40766,7 @@
       "physRes": "european_hydrant_a_blue_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -40775,7 +40775,7 @@
       "physRes": "european_hydrant_a_gray_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -40784,7 +40784,7 @@
       "physRes": "european_hydrant_a_red_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -40793,7 +40793,7 @@
       "physRes": "european_hydrant_b_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -40802,7 +40802,7 @@
       "physRes": "european_hydrant_b_blue_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -40811,7 +40811,7 @@
       "physRes": "european_hydrant_b_grey_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -40820,7 +40820,7 @@
       "physRes": "european_hydrant_b_red_destr_phobj",
       "hp": 7.0,
       "impulseThreshold": 1.5,
-      "dmPreset": "frame_metal_house",
+      "dmPreset": "metal_props",
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
@@ -41985,6 +41985,15 @@
       "fxScale": 1.0,
       "material": "fabric"
     },
+    "milord_cab_carriage_a": {
+      "isParent": true,
+      "physRes": "milord_cab_carriage_a_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_props",
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
     "semitrailer_platform_a": {
       "nextRes": "semitrailer_platform_a_dmg",
       "physRes": "semitrailer_platform_a_destr_phobj",
@@ -42831,9 +42840,29 @@
       "fx": "ad_car_wreck",
       "fxScale": 1.0
     },
+    "ussr_dump_truck_belaz_75211_a_damaged_a": {
+      "nextRes": "ussr_dump_truck_belaz_75211_a_damaged_a_dmg",
+      "physRes": "ussr_dump_truck_belaz_75211_a_damaged_a_destr_phobj",
+      "hp": 360.0,
+      "isParent": true,
+      "impulseThreshold": 20.0,
+      "dmPreset": "hard_shoot_objects",
+      "fx": "ad_car_wreck",
+      "fxScale": 1.0
+    },
     "ussr_dump_truck_belaz_75211_a_unloaded": {
       "nextRes": "ussr_dump_truck_belaz_75211_a_unloaded_dmg",
       "physRes": "ussr_dump_truck_belaz_75211_a_destr_phobj",
+      "hp": 360.0,
+      "isParent": true,
+      "impulseThreshold": 20.0,
+      "dmPreset": "hard_shoot_objects",
+      "fx": "ad_car_wreck",
+      "fxScale": 1.0
+    },
+    "ussr_dump_truck_belaz_75211_a_unloaded_damaged_a": {
+      "nextRes": "ussr_dump_truck_belaz_75211_a_unloaded_damaged_a_dmg",
+      "physRes": "ussr_dump_truck_belaz_75211_a_unloaded_damaged_a_destr_phobj",
       "hp": 360.0,
       "isParent": true,
       "impulseThreshold": 20.0,
@@ -42850,6 +42879,22 @@
       "dmPreset": "hard_shoot_objects",
       "fx": "ad_car_wreck",
       "fxScale": 1.0
+    },
+    "crawler_excavator": {
+      "nextRes": "crawler_excavator_dmg",
+      "physRes": "crawler_excavator_destr_phobj",
+      "hp": 1200.0,
+      "fx": "ad_car_wreck",
+      "fxScale": 1.0,
+      "impulseThreshold": 50.0
+    },
+    "front_loader": {
+      "nextRes": "front_loader_dmg",
+      "physRes": "front_loader_destr_phobj",
+      "hp": 1000.0,
+      "fx": "ad_car_wreck",
+      "fxScale": 1.0,
+      "impulseThreshold": 50.0
     },
     "us_general_m35": {
       "nextRes": "us_general_m35_dmg",

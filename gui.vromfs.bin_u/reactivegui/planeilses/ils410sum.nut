@@ -1,14 +1,14 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety} = require("%rGui/planeState/planeToolsState.nut")
-let {Speed, Roll, Aoa, ClimbSpeed, Tangage} = require("%rGui/planeState/planeFlyState.nut");
-let {mpsToKnots, mpsToFpm, baseLineWidth} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
-let {cvt} = require("dagor.math")
-let {compassWrap, generateCompassMarkSUM} = require("ilsCompasses.nut")
-let {yawIndicator, angleTxt, bombFallingLine, SUMAltitude} = require("commonElements.nut")
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
+       AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety } = require("%rGui/planeState/planeToolsState.nut")
+let { Speed, Roll, Aoa, ClimbSpeed, Tangage } = require("%rGui/planeState/planeFlyState.nut");
+let { mpsToKnots, mpsToFpm, baseLineWidth } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { cvt } = require("dagor.math")
+let { compassWrap, generateCompassMarkSUM } = require("ilsCompasses.nut")
+let { yawIndicator, angleTxt, bombFallingLine, SUMAltitude } = require("commonElements.nut")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
@@ -172,7 +172,7 @@ let function pitchSum(height) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.016666667]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.0333333]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.0333333]
       }
     }
   }
@@ -231,7 +231,7 @@ let SUMCCIPReticle = @() {
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.value
   rendObj = ROBJ_VECTOR_CANVAS
-  fillColor = Color(0,0,0,0)
+  fillColor = Color(0, 0, 0, 0)
   commands = [
     [VECTOR_ELLIPSE, 0, 0, 20, 20],
     [VECTOR_LINE, -50, 0, -20, 0],
@@ -284,7 +284,7 @@ let function SumAAMCrosshair(position, anim) {
     ]
     transform = {}
     animations = [
-      { prop=AnimProp.rotate, from = 0, to = 360, duration = 2.5, play = anim, loop = true}
+      { prop = AnimProp.rotate, from = 0, to = 360, duration = 2.5, play = anim, loop = true }
     ]
   }
 }
@@ -301,7 +301,7 @@ let function SumAAMMode(width, height) {
         children = [SumAAMCrosshair([width * 0.5, height * 0.25], true)]
         transform = {}
         animations = [
-          { prop=AnimProp.rotate, from = 360, to = 0, duration = 2.5, play = true, loop = true}
+          { prop = AnimProp.rotate, from = 360, to = 0, duration = 2.5, play = true, loop = true }
         ]
       }
       : null)
@@ -353,7 +353,7 @@ let function rotatedBombReleaseSUM(width, height) {
       transform = {
         translate = [TargetPos.value[0] - width * 0.1, height * 0.4]
         rotate = -Roll.value
-        pivot=[0.1, TargetPos.value[1] / height - 0.4]
+        pivot = [0.1, TargetPos.value[1] / height - 0.4]
       }
     }
   }
@@ -386,7 +386,7 @@ let timeToRelease = @() {
   size = [pw(8), ph(8)]
   pos = [pw(50), ph(30)]
   color = IlsColor.value
-  fillColor = Color(0,0,0,0)
+  fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.value
   commands = [
     [VECTOR_SECTOR, 0, 0, 80, 80, -90, releaseMarkSector.value],

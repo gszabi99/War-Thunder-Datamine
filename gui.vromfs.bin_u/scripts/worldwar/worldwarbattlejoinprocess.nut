@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,8 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { get_time_msec } = require("dagor.time")
 
-::WwBattleJoinProcess <- class
-{
+::WwBattleJoinProcess <- class {
   wwBattle = null
   side = SIDE_NONE
 
@@ -17,8 +17,7 @@ let { get_time_msec } = require("dagor.time")
   static activeJoinProcesses = []   //cant modify staic self
   processStartTime = -1
 
-  constructor (v_wwBattle, v_side)
-  {
+  constructor (v_wwBattle, v_side) {
     if (!v_wwBattle || !v_wwBattle.isValid())
       return
 
@@ -36,20 +35,17 @@ let { get_time_msec } = require("dagor.time")
     this.joinStep1_squad()
   }
 
-  function remove()
-  {
-    foreach(idx, process in this.activeJoinProcesses)
+  function remove() {
+    foreach (idx, process in this.activeJoinProcesses)
       if (process == this)
         this.activeJoinProcesses.remove(idx)
   }
 
-  function onDone()
-  {
+  function onDone() {
     this.remove()
   }
 
-  function joinStep1_squad()
-  {
+  function joinStep1_squad() {
     if (!::g_squad_utils.canJoinFlightMsgBox(
           {
             isLeaderCanJoin = true,
@@ -62,10 +58,8 @@ let { get_time_msec } = require("dagor.time")
     this.joinStep2_external()
   }
 
-  function joinStep2_external()
-  {
-    if (!::is_loaded_model_high_quality())
-    {
+  function joinStep2_external() {
+    if (!::is_loaded_model_high_quality()) {
       ::check_package_and_ask_download("pkg_main", null, this.joinStep3_internal, this, "event", this.remove)
       return
     }
@@ -73,8 +67,7 @@ let { get_time_msec } = require("dagor.time")
     this.joinStep3_internal()
   }
 
-  function joinStep3_internal()
-  {
+  function joinStep3_internal() {
     if (this.wwBattle.isTanksCompatible() && !::check_tanks_available())
       return this.remove()
 
@@ -88,8 +81,7 @@ let { get_time_msec } = require("dagor.time")
     )
   }
 
-  function joinStep4_repairInfo()
-  {
+  function joinStep4_repairInfo() {
     if (this.wwBattle.isBattleByUnitsGroup())
       return this.joinStep5_paramsForQueue()
 
@@ -104,8 +96,7 @@ let { get_time_msec } = require("dagor.time")
     ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep5_paramsForQueue, false, this.remove)
   }
 
-  function joinStep5_paramsForQueue()
-  {
+  function joinStep5_paramsForQueue() {
     ::queues.joinQueue({
       operationId = ::ww_get_operation_id()
       battleId = this.wwBattle.id

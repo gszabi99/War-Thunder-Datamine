@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -16,14 +17,12 @@ elemModelType.addTypes({
     init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     onEventModUpgraded = @(p) this.notify([p.unit.name, p.mod.name])
     onEventOverdriveActivated = @(_p) this.notify([])
-    onEventInventoryUpdate = function(_p)
-    {
+    onEventInventoryUpdate = function(_p) {
       this.hasUpgradeItems = null
       this.notify([])
     }
 
-    needShowAvailableUpgrades = function()
-    {
+    needShowAvailableUpgrades = function() {
       if (this.hasUpgradeItems == null)
         this.hasUpgradeItems = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE).len() > 0
       return this.hasUpgradeItems
@@ -41,8 +40,7 @@ elemViewType.addTypes({
     createMarkup = @(params, objId = null) format("modUpgradeImg { id:t='%s'; value:t='%s' } ",
       objId || "", ::g_string.stripTags(this.getBhvParamsString(params)))
 
-    updateView = function(obj, params)
-    {
+    updateView = function(obj, params) {
       let unitName = params?.unit
       obj.show(!!unitName)
       if (!unitName)

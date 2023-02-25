@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,19 +7,16 @@ from "%scripts/dagui_library.nut" import *
 
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 
-::gui_handlers.ModUpgradeApplyWnd <- class extends ::gui_handlers.ItemsListWndBase
-{
+::gui_handlers.ModUpgradeApplyWnd <- class extends ::gui_handlers.ItemsListWndBase {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"
 
   unit = null
   mod = null
 
-  static function open(unitToActivate, modToActivate, wndAlignObj = null, wndAlign = ALIGN.TOP)
-  {
+  static function open(unitToActivate, modToActivate, wndAlignObj = null, wndAlign = ALIGN.TOP) {
     local list = ::ItemsManager.getInventoryList(itemType.MOD_UPGRADE)
     list = ::u.filter(list, @(item) item.canActivateOnMod(unitToActivate, modToActivate))
-    if (!list.len())
-    {
+    if (!list.len()) {
       ::showInfoMsgBox(loc("msg/noUpgradeItemsForMod"))
       return
     }
@@ -32,8 +30,7 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
     })
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
 
     let newLevel = ::get_modification_level(this.unit.name, this.mod.name) + 1
@@ -45,8 +42,7 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
       null)
   }
 
-  function showEffects(effect)
-  {
+  function showEffects(effect) {
     this.scene.findObject("effects_wait_icon").show(false)
     this.scene.findObject("effects_text").setValue(
       weaponryEffects.getDesc(this.unit, effect?.withLevel ?? {}, { needComment = false }))
@@ -54,8 +50,7 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
     this.updateWndAlign()
   }
 
-  function onActivate()
-  {
+  function onActivate() {
     this.curItem.activateOnMod(this.unit, this.mod, Callback(this.goBack, this))
   }
 }

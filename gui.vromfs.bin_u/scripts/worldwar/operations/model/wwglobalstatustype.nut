@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -26,12 +27,10 @@ const MAPS_OUT_OF_DATE_DAYS = 1
   emptyCharData = []
   cachedList = null
 
-  getList = function(filterFunc = null)
-  {
+  getList = function(filterFunc = null) {
     refreshGlobalStatusData()
     let validListsMask = getValidGlobalStatusListMask()
-    if (!this.cachedList || !(validListsMask & this.typeMask))
-    {
+    if (!this.cachedList || !(validListsMask & this.typeMask)) {
       this.loadList()
       setValidGlobalStatusListMask(validListsMask | this.typeMask)
     }
@@ -64,8 +63,8 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
         return
 
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
-      foreach(mapId, map in mapsList)
-        this.cachedList[mapId] <-::WwQueue(map, getTblValue(mapId, data))
+      foreach (mapId, map in mapsList)
+        this.cachedList[mapId] <- ::WwQueue(map, getTblValue(mapId, data))
     }
   }
 
@@ -79,7 +78,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
       if (!::u.isArray(data))
         return
 
-      foreach(opData in data) {
+      foreach (opData in data) {
         let operation = ::WwOperation(opData)
         if (operation.isValid())
           this.cachedList.append(operation)
@@ -98,8 +97,8 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
       if (!::u.isTable(data) || (data.len() <= 0))
         return
 
-      foreach(name, mapData in data)
-        this.cachedList[name] <-::WwMap(name, mapData)
+      foreach (name, mapData in data)
+        this.cachedList[name] <- ::WwMap(name, mapData)
 
       let guiScene = ::get_cur_gui_scene()
       if (guiScene) //need all other configs invalidate too before push event
@@ -111,7 +110,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     }
   }
 
-  OPERATIONS_GROUPS ={
+  OPERATIONS_GROUPS = {
     typeMask = WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
     invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS | WW_GLOBAL_STATUS_TYPE.MAPS
 

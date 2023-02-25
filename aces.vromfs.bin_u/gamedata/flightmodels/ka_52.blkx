@@ -52,6 +52,18 @@
     "armor10": {
       "cannon1_dm": {
         "hp": 15.0
+      },
+      "cannon2_dm": {
+        "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
+      "cannon4_dm": {
+        "hp": 15.0
+      },
+      "cannon5_dm": {
+        "hp": 15.0
       }
     },
     "armor_jet_engine": {
@@ -104,6 +116,18 @@
     },
     "dural": {
       "cover1_dm": {
+        "hp": 19.5
+      },
+      "cover5_dm": {
+        "hp": 19.5
+      },
+      "cover6_dm": {
+        "hp": 19.5
+      },
+      "cover7_dm": {
+        "hp": 19.5
+      },
+      "cover8_dm": {
         "hp": 19.5
       }
     },
@@ -192,7 +216,31 @@
         "name": "cannon1_dm"
       },
       {
+        "name": "cannon2_dm"
+      },
+      {
+        "name": "cannon3_dm"
+      },
+      {
+        "name": "cannon4_dm"
+      },
+      {
+        "name": "cannon5_dm"
+      },
+      {
         "name": "cover1_dm"
+      },
+      {
+        "name": "cover5_dm"
+      },
+      {
+        "name": "cover6_dm"
+      },
+      {
+        "name": "cover7_dm"
+      },
+      {
+        "name": "cover8_dm"
       },
       {
         "name": "engine1_dm",
@@ -2215,7 +2263,26 @@
         "bomb_pylon6",
         "fuse2",
         "fuse4",
-        "exhaust_shield"
+        "exhaust_shield",
+        "rotor_blade_01",
+        "rotor_blade_02",
+        "rotor_blade_03",
+        "rotor_blade_04",
+        "rotor_blade_05",
+        "rotor_blade_06"
+      ],
+      "show": "rotor_head"
+    },
+    "HideDmParts": {
+      "node": [
+        "cover5_dm",
+        "cover6_dm",
+        "cover7_dm",
+        "cover8_dm",
+        "cannon2_dm",
+        "cannon3_dm",
+        "cannon4_dm",
+        "cannon5_dm"
       ]
     },
     "WeaponSlot": [
@@ -2764,11 +2831,18 @@
                 "pylon1"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover5_dm",
+                "cannon2_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
               "emitter": "flare3",
               "flash": "flare3",
+              "dm": "cannon2_dm",
               "bullets": 250,
               "spread": 1.5,
               "traceOffset": 1,
@@ -2816,11 +2890,18 @@
                 "pylon2"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover6_dm",
+                "cannon3_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
               "emitter": "flare5",
               "flash": "flare5",
+              "dm": "cannon3_dm",
               "bullets": 250,
               "spread": 1.5,
               "traceOffset": 1,
@@ -2906,11 +2987,18 @@
                 "pylon3"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover7_dm",
+                "cannon4_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
               "emitter": "flare7",
               "flash": "flare7",
+              "dm": "cannon4_dm",
               "bullets": 250,
               "spread": 1.5,
               "traceOffset": 1,
@@ -3208,11 +3296,18 @@
                 "pylon1"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover8_dm",
+                "cannon5_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
               "emitter": "flare10",
               "flash": "flare10",
+              "dm": "cannon5_dm",
               "bullets": 250,
               "spread": 1.5,
               "traceOffset": 1,

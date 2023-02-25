@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -45,8 +46,7 @@ enums.addTypesByGlobalName("g_objective_status", {
   }
 })
 
-::g_objective_status.getObjectiveStatusByCode <- function getObjectiveStatusByCode(statusCode)
-{
+::g_objective_status.getObjectiveStatusByCode <- function getObjectiveStatusByCode(statusCode) {
   return enums.getCachedType("code", statusCode, ::g_objective_status_cache.byCode,
     ::g_objective_status, ::g_objective_status.UNKNOWN)
 }

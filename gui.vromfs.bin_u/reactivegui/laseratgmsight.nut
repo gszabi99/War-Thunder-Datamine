@@ -6,7 +6,7 @@ let lineWidth = hdpx(LINE_WIDTH)
 let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = require("planeState/planeWeaponState.nut")
 let { GuidanceLockState } = require("agmAimState.nut")
 let { IsOnGround } = require("planeState/planeToolsState.nut")
-let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
 
 
 let crosshair = @() {

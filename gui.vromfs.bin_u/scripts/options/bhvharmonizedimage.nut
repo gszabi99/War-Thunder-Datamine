@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,12 +9,10 @@ if (!("gui_bhv" in getroottable()))
 
 ::dagui_propid.add_name_id("harmonizedImageId")
 
-::gui_bhv.HarmonizedImage <- class
-{
+::gui_bhv.HarmonizedImage <- class {
   eventMask = 0
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     let textureId = obj?.harmonizedImageId
     if (!::u.isEmpty(textureId))
       obj["background-image"] = ::get_country_flag_img(textureId)

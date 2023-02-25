@@ -1,14 +1,16 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
-let {PI, round, roundToDigits} = require("%sqstd/math.nut")
+let { PI, round, roundToDigits } = require("%sqstd/math.nut")
 let { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
   getFullUnitRoleText, getShipMaterialTexts } = require("%scripts/unit/unitInfoTexts.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
@@ -100,21 +102,18 @@ const COMPARE_NO_COMPARE = "no"
   infoArmyType = UNIT_INFO_ARMY_TYPE.ALL
   headerLocId = null
   getValue = function(_unit)            { return null }
-  getValueText = function(value, _unit)
-  {
+  getValueText = function(value, _unit) {
     if (value == null)
       return null
     return ::u.isString(value) ? value : toString(value)
   }
   compare = COMPARE_NO_COMPARE
   order = -1
-  addToExportTankDataBlock = function(blk, unit, unitConfiguration)
-  {
-    blk.value = ::DataBlock()
-    blk.valueText = ::DataBlock()
-    foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != EGD_NONE)
-      {
+  addToExportTankDataBlock = function(blk, unit, unitConfiguration) {
+    blk.value = DataBlock()
+    blk.valueText = DataBlock()
+    foreach (diff in ::g_difficulty.types)
+      if (diff.egdCode != EGD_NONE) {
         let mode = diff.getEgdName()
 
         let currentParams = unit[unitConfiguration][diff.crewSkillName];
@@ -122,13 +121,11 @@ const COMPARE_NO_COMPARE = "no"
       }
   }
 
-  addToExportTankDataBlockValues = function(_blk, _params, _mode){}
+  addToExportTankDataBlockValues = function(_blk, _params, _mode) {}
 
-  exportToDataBlock = function(unit, unitConfiguration = UNIT_CONFIGURATION_MIN)
-  {
-    let blk = ::DataBlock()
-    if (!(unit.unitType.bit & this.infoArmyType))
-    {
+  exportToDataBlock = function(unit, unitConfiguration = UNIT_CONFIGURATION_MIN) {
+    let blk = DataBlock()
+    if (!(unit.unitType.bit & this.infoArmyType)) {
         blk.hide = true
         return blk
     }
@@ -142,9 +139,8 @@ const COMPARE_NO_COMPARE = "no"
     return blk
   }
 
-  exportCommonToDataBlock = function()
-  {
-    let blk = ::DataBlock()
+  exportCommonToDataBlock = function() {
+    let blk = DataBlock()
 
     if (this.headerLocId)
       blk.header = loc(this.headerLocId)
@@ -155,27 +151,23 @@ const COMPARE_NO_COMPARE = "no"
   }
 
   addToExportDataBlock = function(_blk, _unit, _unitConfiguration) {} //for unique data to export.
-  addToBlkFromParams = function(blk,unit, item, unitConfiguration)
-  {
-    blk.value = ::DataBlock()
-    blk.valueText = ::DataBlock()
-    foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != EGD_NONE)
-      {
+  addToBlkFromParams = function(blk, unit, item, unitConfiguration) {
+    blk.value = DataBlock()
+    blk.valueText = DataBlock()
+    foreach (diff in ::g_difficulty.types)
+      if (diff.egdCode != EGD_NONE) {
         let mode = diff.getEgdName()
-        let characteristicArr = ::getCharacteristicActualValue(unit, [item.id, item.id2], function(_value){return ""}, diff.crewSkillName, false)
+        let characteristicArr = ::getCharacteristicActualValue(unit, [item.id, item.id2], function(_value) { return "" }, diff.crewSkillName, false)
         blk.value[mode] = unitConfiguration == UNIT_CONFIGURATION_MIN ? characteristicArr[2] : characteristicArr[3]
         blk.valueText[mode] = item.prepareTextFunc(characteristicArr[2])
       }
   }
 
-  addSingleValue = function(blk, _unit, value, valueText)
-  {
-    blk.value = ::DataBlock()
-    blk.valueText = ::DataBlock()
-    foreach(diff in ::g_difficulty.types)
-      if (diff.egdCode != EGD_NONE)
-      {
+  addSingleValue = function(blk, _unit, value, valueText) {
+    blk.value = DataBlock()
+    blk.valueText = DataBlock()
+    foreach (diff in ::g_difficulty.types)
+      if (diff.egdCode != EGD_NONE) {
         let mode = diff.getEgdName()
         blk.value[mode] = value
         blk.valueText[mode] = valueText
@@ -190,8 +182,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   }
   {
     id = "image"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       blk.image = getUnitTooltipImage(unit)
       blk.cardImage = ::image_for_air(unit)
       blk.icon = ::getUnitClassIco(unit)
@@ -202,8 +193,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "role"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_TANK
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
         blk.stringValue = getUnitRole(unit)
     }
     getValueText = function(_value, unit) { return getFullUnitRoleText(unit) }
@@ -212,8 +202,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "role"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
         blk.stringValue = getUnitBasicRole(unit)
     }
     getValueText = function(_value, unit) { return getRoleText(getUnitBasicRole(unit)) }
@@ -221,8 +210,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
 
   {
     id = "tags"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       foreach (t in unit.tags)
         blk.tag <- t
     }
@@ -237,13 +225,11 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "battle_rating"
     headerLocId = "shop/battle_rating"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
-      blk.value = ::DataBlock()
-      blk.valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != EGD_NONE)
-        {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           blk.value[mode] = unit.getBattleRating(diff.getEdiff())
           blk.valueText[mode] = format("%.1f", blk.value[mode])
@@ -253,16 +239,14 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "price"
     headerLocId = "ugm/price"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let valueText = ::getUnitCost(unit).getUncoloredText()
-      if(valueText == "")
-      {
+      if (valueText == "") {
           blk.hide = true
           return
       }
-      blk.valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
+      blk.valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
         if (diff.egdCode != EGD_NONE)
           blk.valueText[diff.getEgdName()] = valueText
 
@@ -273,17 +257,14 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   }
   {
     id = "wp_bonus"
-    getHeader = function(_unit)
-    {
+    getHeader = function(_unit) {
       return loc("reward") + loc("ui/parentheses/space", { text = loc("charServer/chapter/warpoints") }) + ":"
     }
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
-      blk.value = ::DataBlock()
-      blk.valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != EGD_NONE)
-        {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           let wpMuls = unit.getWpRewardMulList(diff)
           let value = (wpMuls.wpMul * wpMuls.premMul * 100.0 + 0.5).tointeger()
@@ -294,25 +275,21 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   }
   {
     id = "exp_bonus"
-    getHeader = function(_unit)
-    {
+    getHeader = function(_unit) {
       return loc("reward") + loc("ui/parentheses/space", { text = loc("currency/researchPoints/name") }) + ":"
     }
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let talismanMul = ::isUnitSpecial(unit) ? (::get_ranks_blk()?.goldPlaneExpMul ?? 1.0) : 1.0
       let value = (unit.expMul * talismanMul * 100.0 + 0.5).tointeger()
-      if (value == 100)
-      {
+      if (value == 100) {
         blk.hide = true
         return
       }
       let valueText = format("%d%%", value)
-      blk.value = ::DataBlock()
-      blk.valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != EGD_NONE)
-        {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           blk.value[mode] = value
           blk.valueText[mode] = valueText
@@ -325,20 +302,17 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_LESS_BETTER
     order = UNIT_INFO_ORDER.TRAIN_COST
     headerLocId = "shop/crew_train_cost"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = unit.trainCost
-      if (value == 0)
-      {
+      if (value == 0) {
         blk.hide = true
         return
       }
       let valueText = ::Cost(value).getUncoloredText()
-      blk.value = ::DataBlock()
-      blk.valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != EGD_NONE)
-        {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           blk.value[mode] = value
           blk.valueText[mode] = valueText
@@ -350,14 +324,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.FULL_REPAIR_COST
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/full_repair_cost"
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      blk.value = ::DataBlock()
-      blk.valueText = ::DataBlock()
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
 
       local costMultiplier = 1.0
-      if (unitConfiguration == UNIT_CONFIGURATION_MAX)
-      {
+      if (unitConfiguration == UNIT_CONFIGURATION_MAX) {
         let mods = ::get_wpcost_blk()?[unit.name]?.modifications
         if (mods != null)
           eachBlock(mods, function(mod, _) {
@@ -365,9 +337,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
           })
       }
 
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != EGD_NONE)
-        {
+      foreach (diff in ::g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           let field = "repairCost" + mode
           local value = ::get_wpcost_blk()?[unit.name]?[field] ?? 0
@@ -383,20 +354,17 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.FREE_REPAIRS
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/free_repairs"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
-      if(::is_default_aircraft(unit.name))
-      {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      if (::is_default_aircraft(unit.name)) {
         blk.hide = true
         return
       }
       let value = getTblValue("freeRepairs", unit)
       let valueText = toString(value)
-      blk.value = ::DataBlock()
-      blk.valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != EGD_NONE)
-        {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           blk.value[mode] = value
           blk.valueText[mode] = valueText
@@ -408,18 +376,15 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.FULL_REPAIR_TIME_CREW
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/full_repair_time"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
-      blk.value = ::DataBlock()
-      blk.valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
-        if (diff.egdCode != EGD_NONE)
-        {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
           let mode = diff.getEgdName()
           let field = "repairTimeHrs" + mode
           let value = ::get_wpcost_blk()?[unit.name]?[field] ?? 0.0
-          if(value == 0.0)
-          {
+          if (value == 0.0) {
             blk.hide = true
             return
           }
@@ -431,10 +396,9 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   {
     id = "weapon_info_text"
     order = UNIT_INFO_ORDER.WEAPON_INFO_TEXT
-    getValueText = function(_value, unit)
-    {
-      let valueText = ::DataBlock()
-      foreach(diff in ::g_difficulty.types)
+    getValueText = function(_value, unit) {
+      let valueText = DataBlock()
+      foreach (diff in ::g_difficulty.types)
         if (diff.egdCode != EGD_NONE)
           valueText[diff.getEgdName()] = getWeaponInfoText(unit.name)
       return valueText
@@ -446,9 +410,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_speed"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value)}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "maxSpeed", id2 = "speed", prepareTextFunc = @(value) countMeasure(0, value) }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -457,8 +420,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     order = UNIT_INFO_ORDER.MAX_SPEED_ALT
     headerLocId = "shop/max_speed_alt"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = unit.shop.maxSpeedAlt
       let valueText = countMeasure(1, unit.shop.maxSpeedAlt)
       this.addSingleValue(blk, unit, value, valueText)
@@ -470,9 +432,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/turn_time"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "turnTime", id2 = "virage", prepareTextFunc = function(value){return format("%.1f %s", value, loc("measureUnits/seconds"))}}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "turnTime", id2 = "virage", prepareTextFunc = function(value) { return format("%.1f %s", value, loc("measureUnits/seconds")) } }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -483,9 +444,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/max_climbSpeed"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "climbSpeed", id2 = "climb", prepareTextFunc = @(value) countMeasure(3, value)}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "climbSpeed", id2 = "climb", prepareTextFunc = @(value) countMeasure(3, value) }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -496,8 +456,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/max_altitude"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = unit.shop.maxAltitude
       let valueText = countMeasure(1, value)
       this.addSingleValue(blk, unit, value, valueText)
@@ -510,8 +469,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/airfieldLen"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = unit.shop.airfieldLen
       let valueText = countMeasure(1, value)
       this.addSingleValue(blk, unit, value, valueText)
@@ -524,8 +482,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/wing_loading"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = unit.shop.wingLoading
       let valueText = value.tostring()
       this.addSingleValue(blk, unit, value, valueText)
@@ -538,10 +495,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/thrust_to_weight_ratio"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
-      if ("thrustToWeightRatio" in unit.shop)
-      {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      if ("thrustToWeightRatio" in unit.shop) {
         let value = unit.shop.thrustToWeightRatio
         let valueText = value.tostring()
         this.addSingleValue(blk, unit, value, valueText)
@@ -555,10 +510,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/power_to_weight_ratio"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
 
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
-      if ("powerToWeightRatio" in unit.shop)
-      {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      if ("powerToWeightRatio" in unit.shop) {
         let value = unit.shop.powerToWeightRatio
         let valueText = value.tostring()
         this.addSingleValue(blk, unit, value, valueText)
@@ -572,8 +525,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/climb_alt"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = unit.shop.climbAlt
       let valueText = countMeasure(1, value)
       this.addSingleValue(blk, unit, value, valueText)
@@ -586,8 +538,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/climb_time"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR_HELICOPTER
 
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = unit.shop.climbTime
       let valueText = format("%.1f %s", value, loc("measureUnits/seconds"))
       this.addSingleValue(blk, unit, value, valueText)
@@ -599,8 +550,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/weaponPresets"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = getUnitWeaponPresetsCount(unit)
       let valueText = value.tostring()
       this.addSingleValue(blk, unit, value, valueText)
@@ -612,10 +562,9 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/massPerSec"
     infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let massPerSecValue = getUnitMassPerSecValue(unit)
-      let valueText = massPerSecValue == 0? "" : format("%.2f %s", massPerSecValue, loc("measureUnits/kgPerSec"))
+      let valueText = massPerSecValue == 0 ? "" : format("%.2f %s", massPerSecValue, loc("measureUnits/kgPerSec"))
       this.addSingleValue(blk, unit, massPerSecValue, valueText)
     }
   }
@@ -625,9 +574,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/tank_mass"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "mass", id2 = "mass", prepareTextFunc = function(value){return format("%.1f %s", (value / 1000.0), loc("measureUnits/ton"))}}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "mass", id2 = "mass", prepareTextFunc = function(value) { return format("%.1f %s", (value / 1000.0), loc("measureUnits/ton")) } }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -637,8 +585,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/horsePowers"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
         let horsePowers = params.horsePowers;
         let horsePowersRPM = params.maxHorsePowersRPM;
 
@@ -648,8 +595,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
           loc("shop/unitValidCondition"), horsePowersRPM.tointeger(), loc("measureUnits/rpm"))
     }
 
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -659,16 +605,14 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_NO_COMPARE
     headerLocId = "shop/horsePowers"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
         let horsePowersRPM = params.maxHorsePowersRPM.tointeger()
 
         blk.value[mode] = horsePowersRPM
         blk.valueText[mode] = horsePowersRPM.tostring()
     }
 
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -678,9 +622,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_speed"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -690,9 +633,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_inclination"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "maxInclination", id2 = "maxInclination", prepareTextFunc = function(value){return format("%d%s", (value*180.0/PI).tointeger(), loc("measureUnits/deg"))}}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "maxInclination", id2 = "maxInclination", prepareTextFunc = function(value) { return format("%d%s", (value * 180.0 / PI).tointeger(), loc("measureUnits/deg")) } }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -702,9 +644,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/turnTurretTime"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value){return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec"))}}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value) { return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec")) } }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -714,14 +655,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/angleVerticalGuidance"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let angles = params.angleVerticalGuidance;
       blk.value[mode] = angles[0].tointeger()
       blk.valueText[mode] = format("%d%s", angles[0].tointeger(), loc("measureUnits/deg"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -731,14 +670,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/angleVerticalGuidance"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let angles = params.angleVerticalGuidance;
       blk.value[mode] = angles[1].tointeger()
       blk.valueText[mode] = format("%d%s", angles[1].tointeger(), loc("measureUnits/deg"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -748,14 +685,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/armorThicknessHull"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let thickness = params.armorThicknessHull;
       blk.value[mode] = thickness[0].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[0].tointeger(), loc("measureUnits/mm"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -765,14 +700,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/armorThicknessHull"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let thickness = params.armorThicknessHull;
       blk.value[mode] = thickness[1].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[1].tointeger(), loc("measureUnits/mm"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -782,14 +715,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/armorThicknessHull"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let thickness = params.armorThicknessHull;
       blk.value[mode] = thickness[2].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[2].tointeger(), loc("measureUnits/mm"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -799,14 +730,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/armorThicknessTurret"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let thickness = params.armorThicknessTurret;
       blk.value[mode] = thickness[0].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[0].tointeger(), loc("measureUnits/mm"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -816,14 +745,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/armorThicknessTurret"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let thickness = params.armorThicknessTurret;
       blk.value[mode] = thickness[1].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[1].tointeger(), loc("measureUnits/mm"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -833,14 +760,12 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/armorThicknessTurret"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
+    addToExportTankDataBlockValues = function(blk, params, mode) {
       let thickness = params.armorThicknessTurret;
       blk.value[mode] = thickness[2].tointeger()
       blk.valueText[mode] = format("%d %s", thickness[2].tointeger(), loc("measureUnits/mm"))
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -848,29 +773,24 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     id = "armor_piercing_10"
     order = UNIT_INFO_ORDER.ARMOR_PIERCING_10
     compare = COMPARE_MORE_BETTER
-    getHeader = function(_unit)
-    {
+    getHeader = function(_unit) {
       return format("%s (%s 10 %s)", loc("shop/armorPiercing"), loc("shop/armorPiercingDist"), loc("measureUnits/meters_alt"))
     }
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
-      if(blk?.hide ?? false)
+    addToExportTankDataBlockValues = function(blk, params, mode) {
+      if (blk?.hide ?? false)
         return
       let armorPiercing = params.armorPiercing;
-      if(armorPiercing.len() > 2)
-      {
+      if (armorPiercing.len() > 2) {
         let val = round(armorPiercing[0]).tointeger()
         blk.value[mode] = val
         blk.valueText[mode] = format("%d %s", val, loc("measureUnits/mm"))
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -878,29 +798,24 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     id = "armor_piercing_100"
     order = UNIT_INFO_ORDER.ARMOR_PIERCING_100
     compare = COMPARE_MORE_BETTER
-    getHeader = function(_unit)
-    {
+    getHeader = function(_unit) {
       return format("%s (%s 100 %s)", loc("shop/armorPiercing"), loc("shop/armorPiercingDist"), loc("measureUnits/meters_alt"))
     }
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
-      if(blk?.hide ?? false)
+    addToExportTankDataBlockValues = function(blk, params, mode) {
+      if (blk?.hide ?? false)
         return
       let armorPiercing = params.armorPiercing;
-      if(armorPiercing.len() > 2)
-      {
+      if (armorPiercing.len() > 2) {
         let val = round(armorPiercing[1]).tointeger()
         blk.value[mode] = val
         blk.valueText[mode] = format("%d %s", val, loc("measureUnits/mm"))
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -908,30 +823,25 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     id = "armor_piercing_500"
     order = UNIT_INFO_ORDER.ARMOR_PIERCING_500
     compare = COMPARE_MORE_BETTER
-    getHeader = function(_unit)
-    {
+    getHeader = function(_unit) {
       return format("%s (%s 500 %s)", loc("shop/armorPiercing"), loc("shop/armorPiercingDist"), loc("measureUnits/meters_alt"))
     }
 
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
-      if(blk?.hide ?? false)
+    addToExportTankDataBlockValues = function(blk, params, mode) {
+      if (blk?.hide ?? false)
         return
       let armorPiercing = params.armorPiercing;
-      if(armorPiercing.len() > 2)
-      {
+      if (armorPiercing.len() > 2) {
         let val = round(armorPiercing[2]).tointeger()
         blk.value[mode] = val
         blk.valueText[mode] = format("%d %s", val, loc("measureUnits/mm"))
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -941,24 +851,20 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "shop/shotFreq"
     compare = COMPARE_MORE_BETTER
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
-      if(blk?.hide ?? false)
+    addToExportTankDataBlockValues = function(blk, params, mode) {
+      if (blk?.hide ?? false)
         return
       let shotFreq = params.shotFreq;
-      if(shotFreq > 0)
-      {
+      if (shotFreq > 0) {
         let perMinute = roundToDigits(shotFreq * 60, 3)
         blk.value[mode] = perMinute
         blk.valueText[mode] = format("%s %s", perMinute.tostring(), loc("measureUnits/shotPerMinute"))
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -966,29 +872,24 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     id = "reload_time"
     order = UNIT_INFO_ORDER.RELOAD_TIME
     headerLocId = "bullet_properties/cooldown"
-    getHeader = function(_unit)
-    {
+    getHeader = function(_unit) {
       return format("%s:", loc("bullet_properties/cooldown"))
     }
     compare = COMPARE_LESS_BETTER
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
-      if(blk?.hide ?? false)
+    addToExportTankDataBlockValues = function(blk, params, mode) {
+      if (blk?.hide ?? false)
         return
       let reloadTime = params.reloadTime;
-      if(reloadTime > 0)
-      {
+      if (reloadTime > 0) {
         blk.value[mode] = reloadTime
         blk.valueText[mode] = format("%.1f %s", reloadTime, loc("measureUnits/seconds"))
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -998,8 +899,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/weaponPresets"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = getUnitWeaponPresetsCount(unit)
       let valueText = value.tostring()
       this.addSingleValue(blk, unit, value, valueText)
@@ -1011,24 +911,20 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_LESS_BETTER
     headerLocId = "shop/visibilityFactor"
     infoArmyType = UNIT_INFO_ARMY_TYPE.TANK
-    addToExportTankDataBlockValues = function(blk, params, mode)
-    {
-      if(blk?.hide ?? false)
+    addToExportTankDataBlockValues = function(blk, params, mode) {
+      if (blk?.hide ?? false)
         return
-      if(!("visibilityFactor" in params) || params.visibilityFactor <= 0)
-      {
+      if (!("visibilityFactor" in params) || params.visibilityFactor <= 0) {
         blk.hide = true
       }
-      else
-      {
+      else {
         let visibilityFactor = params.visibilityFactor
         blk.value[mode] = visibilityFactor
         blk.valueText[mode] = format("%d %%", visibilityFactor)
       }
 
     }
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
       this.addToExportTankDataBlock(blk, unit, unitConfiguration)
     }
   }
@@ -1038,17 +934,14 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/displacement"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = ::get_full_unit_blk(unit.name)?.ShipPhys?.mass?.TakeOff
       local valueText = ""
-      if (value != null)
-      {
-        valueText = ::g_measure_type.SHIP_DISPLACEMENT_TON.getMeasureUnitsText(value/1000, true)
+      if (value != null) {
+        valueText = ::g_measure_type.SHIP_DISPLACEMENT_TON.getMeasureUnitsText(value / 1000, true)
         this.addSingleValue(blk, unit, value, valueText)
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
@@ -1060,9 +953,8 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "shop/max_speed"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, unitConfiguration)
-    {
-      let item = {id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value)}
+    addToExportDataBlock = function(blk, unit, unitConfiguration) {
+      let item = { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) }
       this.addToBlkFromParams(blk, unit, item, unitConfiguration)
     }
   }
@@ -1072,18 +964,15 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/citadelArmor"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
-      if(armorThicknessCitadel != null)
-      {
+      if (armorThicknessCitadel != null) {
         let value = round(armorThicknessCitadel.x).tointeger()
         let valueText =  format("%d %s", value, loc("measureUnits/mm"))
         this.addSingleValue(blk, unit, value, valueText)
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
@@ -1094,18 +983,15 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/citadelArmor"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
-      if(armorThicknessCitadel != null)
-      {
+      if (armorThicknessCitadel != null) {
         let value = round(armorThicknessCitadel.y).tointeger()
         let valueText =  format("%d %s", value, loc("measureUnits/mm"))
         this.addSingleValue(blk, unit, value, valueText)
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
@@ -1116,18 +1002,15 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/citadelArmor"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let armorThicknessCitadel = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessCitadel
 
-      if(armorThicknessCitadel != null)
-      {
+      if (armorThicknessCitadel != null) {
         let value = round(armorThicknessCitadel.z).tointeger()
         let valueText =  format("%d %s", value, loc("measureUnits/mm"))
         this.addSingleValue(blk, unit, value, valueText)
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
@@ -1138,18 +1021,15 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/mainFireTower"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
-      if(armorThicknessMainFireTower != null)
-      {
+      if (armorThicknessMainFireTower != null) {
         let value = round(armorThicknessMainFireTower.x).tointeger()
         let valueText =  format("%d %s", value, loc("measureUnits/mm"))
         this.addSingleValue(blk, unit, value, valueText)
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
@@ -1160,18 +1040,15 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/mainFireTower"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
-      if(armorThicknessMainFireTower != null)
-      {
+      if (armorThicknessMainFireTower != null) {
         let value = round(armorThicknessMainFireTower.y).tointeger()
         let valueText =  format("%d %s", value, loc("measureUnits/mm"))
         this.addSingleValue(blk, unit, value, valueText)
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
@@ -1182,18 +1059,15 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_MORE_BETTER
     headerLocId = "info/ship/mainFireTower"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let armorThicknessMainFireTower = ::get_unittags_blk()?[unit.name]?.Shop?.armorThicknessTurretMainCaliber
 
-      if(armorThicknessMainFireTower != null)
-      {
+      if (armorThicknessMainFireTower != null) {
         let value = round(armorThicknessMainFireTower.z).tointeger()
         let valueText =  format("%d %s", value, loc("measureUnits/mm"))
         this.addSingleValue(blk, unit, value, valueText)
       }
-      else
-      {
+      else {
         blk.hide = true
       }
     }
@@ -1204,8 +1078,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_NO_COMPARE
     headerLocId = "info/ship/part/hull"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = (::get_wpcost_blk()?[unit.name]?.Shop?.hullThickness ?? 0).tointeger()
       let valueText = getShipMaterialTexts(unit.name)?.hullValue ?? ""
       if (valueText != "")
@@ -1220,8 +1093,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     compare = COMPARE_NO_COMPARE
     headerLocId = "info/ship/part/superstructure"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let value = (::get_wpcost_blk()?[unit.name]?.Shop?.superstructureThickness ?? 0).tointeger()
       let valueText = getShipMaterialTexts(unit.name)?.superstructureValue ?? ""
       if (valueText != "")
@@ -1232,8 +1104,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   }
   {
     id = "require"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       if (unit.reqAir == null || unit.reqAir == "")
         blk.hide = true
       else
@@ -1242,12 +1113,11 @@ enums.addTypesByGlobalName("g_unit_info_type", [
   }
   {
     id = "modifications"
-    addToExportDataBlock = function(blk, unit, _unitConfiguration)
-    {
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       let mods = ::get_wpcost_blk()?[unit.name]?.modifications
       if (mods != null)
         eachBlock(mods, function(_, mod_id) {
-          blk[mod_id] = ::DataBlock()
+          blk[mod_id] = DataBlock()
           blk[mod_id].name <- getModificationName(unit, mod_id)
           blk[mod_id].desc <- getModificationInfo(unit, mod_id).desc
           let mod_info = getModificationByName(unit, mod_id)

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -21,8 +22,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   prevRanges = ""
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.mGameMode)
       return this.goBack()
 
@@ -45,14 +45,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.prevRanges = this.rangesToString(this.optionsConfig.brRanges)
   }
 
-  function onEventEventsDataUpdated(_params)
-  {
+  function onEventEventsDataUpdated(_params) {
     let customMgm = ::queue_classes.Event.getCustomMgm(this.mGameMode.name)
-    if(customMgm == null)
+    if (customMgm == null)
       return
 
     let newRanges = this.rangesToString(customMgm.matchmaking.mmRanges)
-    if(this.prevRanges != newRanges) {
+    if (this.prevRanges != newRanges) {
       this.mGameMode = customMgm
       this.roomCreationContext = ::EventRoomCreationContext(this.mGameMode, Callback(this.reinitSlotbar, this))
       this.options = this.roomCreationContext.getOptionsList()
@@ -62,23 +61,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function rangesToString(ranges)
-  {
+  function rangesToString(ranges) {
     local res = []
     foreach (_idx, range in ranges)
       res.append("-".concat(range[0], range[1]))
     return ";".join(res)
   }
 
-  function initSizes()
-  {
+  function initSizes() {
     let frameObj = this.scene.findObject("wnd_frame")
     frameObj.width = "1.3@sf"
     frameObj.height = "8@baseTrHeight + 1@frameTopPadding + 1@frameFooterHeightLarge"
   }
 
-  function getNavbarTplView()
-  {
+  function getNavbarTplView() {
     return {
       left = [
         {
@@ -107,17 +103,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function updateMissionsBtn()
-  {
+  function updateMissionsBtn() {
     local misBtnText = ""
     let total = this.roomCreationContext.fullMissionsList.len()
-    if (total > 1)
-    {
+    if (total > 1) {
       let chosenAmount = this.roomCreationContext.chosenMissionsList.len()
       if (this.roomCreationContext.isAllMissionsSelected())
         misBtnText = loc("misList/allMissionsSelected")
-      else if (chosenAmount == 1)
-      {
+      else if (chosenAmount == 1) {
         let selMission = this.roomCreationContext.chosenMissionsList[0]
         misBtnText = loc("misList/oneMissionSelected",
           { mission = this.roomCreationContext.misListType.getMissionNameText(selMission) })
@@ -129,8 +122,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     misBtn.setValue(misBtnText)
   }
 
-  function updateApplyButton()
-  {
+  function updateApplyButton() {
     let reasonData = this.roomCreationContext.getCantCreateReasonData()
 
     let joinButtonObj = this.scene.findObject("btn_apply")
@@ -140,35 +132,30 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     reasonTextObj.setValue(reasonData.reasonText)
   }
 
-  function onMissions()
-  {
+  function onMissions() {
     if (!this.roomCreationContext.fullMissionsList.len())
       return
 
     ::gui_handlers.ChooseMissionsListWnd.open({
       missionsList = this.roomCreationContext.fullMissionsList
       selMissions = this.roomCreationContext.chosenMissionsList
-      onApplyListCb = Callback(function(selList)
-      {
+      onApplyListCb = Callback(function(selList) {
         this.roomCreationContext.setChosenMissions(selList)
         this.updateMissionsBtn()
       }, this)
     })
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     let ediff = ::events.getEDiffByEvent(this.mGameMode)
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
-  function onEventCountryChanged(_p)
-  {
+  function onEventCountryChanged(_p) {
     this.updateApplyButton()
   }
 
-  function applyFunc()
-  {
+  function applyFunc() {
     this.roomCreationContext.createRoom()
   }
 }

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,13 +7,12 @@ from "%scripts/dagui_library.nut" import *
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { dynamicClear } = require("dynamicMission")
 
 local dbgStartCheck = 0
 
-::gui_start_mainmenu <- function gui_start_mainmenu(allowMainmenuActions = true)
-{
-  if (dbgStartCheck++)
-  {
+::gui_start_mainmenu <- function gui_start_mainmenu(allowMainmenuActions = true) {
+  if (dbgStartCheck++) {
     let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
     log(msg)
     debug_dump_stack()
@@ -21,7 +21,7 @@ local dbgStartCheck = 0
 
   ::back_from_replays = null
 
-  ::dynamic_clear()
+  dynamicClear()
   ::mission_desc_clear()
   ::mission_settings.dynlist <- []
 
@@ -38,11 +38,9 @@ local dbgStartCheck = 0
   return handler
 }
 
-::gui_start_mainmenu_reload <- function gui_start_mainmenu_reload(showShop = false)
-{
+::gui_start_mainmenu_reload <- function gui_start_mainmenu_reload(showShop = false) {
   log("Forced reload mainmenu")
-  if (dbgStartCheck)
-  {
+  if (dbgStartCheck) {
     let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
     log(msg)
     debug_dump_stack()

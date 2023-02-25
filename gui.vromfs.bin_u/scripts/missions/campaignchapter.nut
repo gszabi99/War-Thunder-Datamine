@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
@@ -17,14 +19,16 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { get_gui_option } = require("guiOptions")
+let { dynamicGetVisual } = require("dynamicMission")
+let { select_mission, select_mission_full } = require("guiMission")
+let { get_game_mode, get_game_type } = require("mission")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
 ::g_script_reloader.registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
-::gui_handlers.CampaignChapter <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.CampaignChapter <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.BASE
   applyAtClose = false
 
@@ -60,11 +64,10 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
   needCheckDiffAfterOptions = false
 
-  function initScreen()
-  {
+  function initScreen() {
     this.showWaitAnimation(true)
 
-    this.gm = ::get_game_mode()
+    this.gm = get_game_mode()
     this.loadCollapsedChapters()
     this.initCollapsingOptions()
 
@@ -76,37 +79,31 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
-  function initDescHandler()
-  {
+  function initDescHandler() {
     let descHandler = ::gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
     this.registerSubHandler(descHandler)
     this.missionDescWeak = descHandler.weakref()
   }
 
-  function initCollapsingOptions()
-  {
+  function initCollapsingOptions() {
     this.canCollapseCampaigns = this.gm != GM_SKIRMISH
     this.canCollapseChapters = this.gm == GM_SKIRMISH
   }
 
-  function loadCollapsedChapters()
-  {
+  function loadCollapsedChapters() {
     let collapsedList = ::load_local_account_settings(this.getCollapseListSaveId(), "")
     this.collapsedCamp = ::g_string.split(collapsedList, ";")
   }
 
-  function saveCollapsedChapters()
-  {
+  function saveCollapsedChapters() {
     ::save_local_account_settings(this.getCollapseListSaveId(), ::g_string.implode(this.collapsedCamp, ";"))
   }
 
-  function getCollapseListSaveId()
-  {
+  function getCollapseListSaveId() {
     return "mislist_collapsed_chapters/" + ::get_game_mode_name(this.gm)
   }
 
-  function updateWindow()
-  {
+  function updateWindow() {
     local title = ""
     if (this.gm == GM_CAMPAIGN)
       title = loc("mainmenu/btnCampaign")
@@ -122,22 +119,19 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.initMissionsList(title)
   }
 
-  function initMissionsList(title)
-  {
+  function initMissionsList(title) {
     let customChapterId = (this.gm == GM_DYNAMIC) ? ::current_campaign_id : missionsListCampaignId.value
     local customChapters = null
     if (!this.showAllCampaigns && (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION))
       customChapters = ::current_campaign
 
-    if (this.gm == GM_DYNAMIC)
-    {
-      let info = ::DataBlock()
-      ::dynamic_get_visual(info)
-      let l_file = info.getStr("layout","")
+    if (this.gm == GM_DYNAMIC) {
+      let info = DataBlock()
+      dynamicGetVisual(info)
+      let l_file = info.getStr("layout", "")
       let dynLayouts = ::get_dynamic_layouts()
       for (local i = 0; i < dynLayouts.len(); i++)
-        if (dynLayouts[i].mis_file == l_file)
-        {
+        if (dynLayouts[i].mis_file == l_file) {
           title = loc("dynamic/" + dynLayouts[i].name)
           break
         }
@@ -152,13 +146,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       customChapterId, customChapters)
   }
 
-  function updateMissionsList(new_missions)
-  {
+  function updateMissionsList(new_missions) {
     this.showWaitAnimation(false)
 
     this.missions = new_missions
-    if (this.missions.len() <= 0 && !this.canSwitchMisListType && !this.misListType.canBeEmpty)
-    {
+    if (this.missions.len() <= 0 && !this.canSwitchMisListType && !this.misListType.canBeEmpty) {
       this.msgBox("no_missions", loc("missions/no_missions_msgbox"), [["ok"]], "ok")
       this.goBack()
       return
@@ -167,8 +159,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.fillMissionsList()
   }
 
-  function fillMissionsList()
-  {
+  function fillMissionsList() {
     let listObj = this.getObj("items_list")
     if (!listObj)
       return
@@ -180,12 +171,10 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     local foundCurrent = false
     local hasVideoToPlay = false
 
-    foreach(idx, mission in this.missions)
-    {
-      if (mission.isHeader)
-      {
+    foreach (idx, mission in this.missions) {
+      if (mission.isHeader) {
         view.items.append({
-          itemTag = mission.isCampaign? "campaign_item" : "chapter_item_unlocked"
+          itemTag = mission.isCampaign ? "campaign_item" : "chapter_item_unlocked"
           id = mission.id
           itemText = this.misListType.getMissionNameText(mission)
           isCollapsable = (mission.isCampaign && this.canCollapseCampaigns) || this.canCollapseChapters
@@ -197,17 +186,15 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       if (selIdx == -1)
         selIdx = idx
 
-      if (!foundCurrent)
-      {
+      if (!foundCurrent) {
         local isCurrent = false
-        if (this.gm ==GM_TRAINING
+        if (this.gm == GM_TRAINING
             || (this.gm == GM_CAMPAIGN && !selMisConfig))
           isCurrent = getTblValue("progress", mission, -1) == MIS_PROGRESS.UNLOCKED
         else
           isCurrent = selMisConfig == null || selMisConfig.id == mission.id
 
-        if (isCurrent)
-        {
+        if (isCurrent) {
           selIdx = idx
           foundCurrent = isCurrent
           if (this.gm == GM_CAMPAIGN && getTblValue("progress", mission, -1) == MIS_PROGRESS.UNLOCKED)
@@ -215,8 +202,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
         }
       }
 
-      if (::g_mislist_type.isUrlMission(mission))
-      {
+      if (::g_mislist_type.isUrlMission(mission)) {
         let medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite.png" : ""
         view.items.append({
           itemIcon = medalIcon
@@ -230,8 +216,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       local elemCssId = "mission_item_locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
       if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING)
-        switch (mission.progress)
-        {
+        switch (mission.progress) {
           case 0:
             elemCssId = "mission_item_completed"
             medalIcon = "#ui/gameuiskin#mission_complete_arcade.png"
@@ -249,13 +234,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
             medalIcon = ""
             break
         }
-      else if (this.gm == GM_DOMINATION || this.gm == GM_SKIRMISH)
-      {
+      else if (this.gm == GM_DOMINATION || this.gm == GM_SKIRMISH) {
         elemCssId = "mission_item_unlocked"
         medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite.png" : ""
       }
-      else if (mission.isUnlocked)
-      {
+      else if (mission.isUnlocked) {
         elemCssId = "mission_item_unlocked"
         medalIcon = ""
       }
@@ -274,8 +257,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     for (local i = 0; i < listObj.childrenCount(); i++)
       listObj.getChild(i).setIntProp(this.listIdxPID, i)
 
-    if (selIdx >= 0 && selIdx < listObj.childrenCount())
-    {
+    if (selIdx >= 0 && selIdx < listObj.childrenCount()) {
       let mission = this.missions[selIdx]
       if (hasVideoToPlay && this.gm == GM_CAMPAIGN)
         this.playChapterVideo(mission.chapter, true)
@@ -290,13 +272,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.updateCollapsedItems()
   }
 
-  function createFilterDataArray()
-  {
+  function createFilterDataArray() {
     let listObj = this.getObj("items_list")
 
     this.filterDataArray = []
-    foreach(idx, mission in this.missions)
-    {
+    foreach (idx, mission in this.missions) {
       let locText = this.misListType.getMissionNameText(mission)
       let locString = ::g_string.utf8ToLower(locText)
       this.filterDataArray.append({
@@ -310,8 +290,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
   }
 
-  function playChapterVideo(chapterName, checkSeen = false)
-  {
+  function playChapterVideo(chapterName, checkSeen = false) {
     let videoName = "video/" + chapterName
     if (checkSeen && ::was_video_seen(videoName))
       return
@@ -320,38 +299,32 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       return
 
     this.guiScene.performDelayed(this, (@(videoName) function(_obj) {
-      if (!::is_system_ui_active())
-      {
+      if (!::is_system_ui_active()) {
         ::play_movie(videoName, false, true, true)
         ::add_video_seen(videoName)
       }
     })(videoName))
   }
 
-  function getSelectedMissionIndex(needCheckFocused = true)
-  {
+  function getSelectedMissionIndex(needCheckFocused = true) {
     let list = this.getObj("items_list")
-    if (list != null && (!needCheckFocused || list.isHovered()))
-    {
+    if (list != null && (!needCheckFocused || list.isHovered())) {
       let index = list.getValue()
-      if (index >=0 && index < list.childrenCount())
+      if (index >= 0 && index < list.childrenCount())
         return index
     }
     return -1
   }
 
-  function getSelectedMission(needCheckFocused = true)
-  {
+  function getSelectedMission(needCheckFocused = true) {
     this.curMissionIdx = this.getSelectedMissionIndex(!this.isMouseMode && needCheckFocused)
     this.curMission = getTblValue(this.curMissionIdx, this.missions, null)
     return this.curMission
   }
 
-  function onItemSelect(obj)
-  {
+  function onItemSelect(obj) {
     this.getSelectedMission(false)
-    if (this.missionDescWeak)
-    {
+    if (this.missionDescWeak) {
       local previewBlk = null
       if (this.gm == GM_DYNAMIC)
         previewBlk = getTblValue(this.curMissionIdx, ::mission_settings.dynlist)
@@ -359,24 +332,21 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
     this.updateButtons()
 
-    if (checkObj(obj))
-    {
+    if (checkObj(obj)) {
       let value = obj.getValue()
       if (value >= 0 && value < obj.childrenCount())
         obj.getChild(value).scrollToView()
     }
   }
 
-  function onItemDblClick()
-  {
+  function onItemDblClick() {
     if (::show_console_buttons)
       return
 
     this.onStart()
   }
 
-  function onItemHover(obj)
-  {
+  function onItemHover(obj) {
     if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
@@ -388,50 +358,41 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.updateButtons()
   }
 
-  function onHoveredItemSelect(_obj)
-  {
+  function onHoveredItemSelect(_obj) {
     if (this.hoveredIdx != -1)
       this.getObj("items_list")?.setValue(this.hoveredIdx)
   }
 
-  function updateMouseMode()
-  {
+  function updateMouseMode() {
     this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
-  function onEventSquadDataUpdated(_params)
-  {
+  function onEventSquadDataUpdated(_params) {
     if (this.gm == GM_SINGLE_MISSION)
       this.doWhenActiveOnce("updateWindow")
   }
 
-  function onEventUrlMissionChanged(_params)
-  {
+  function onEventUrlMissionChanged(_params) {
     this.doWhenActiveOnce("updateWindow")
   }
 
-  function onEventUrlMissionAdded(_params)
-  {
+  function onEventUrlMissionAdded(_params) {
     this.doWhenActiveOnce("updateWindow")
   }
 
-  function onEventUrlMissionLoaded(params)
-  {
+  function onEventUrlMissionLoaded(params) {
     if (params.mission != this.curMission.urlMission)
       return
     this.curMission.blk = params.mission.getMetaInfo()
     this.missionDescWeak?.setMission(this.curMission)
   }
 
-  function getFavoritesSaveId()
-  {
+  function getFavoritesSaveId() {
     return "wnd/isOnlyFavoriteMissions/" + this.misListType.id
   }
 
-  function updateFavorites()
-  {
-    if (!this.misListType.canMarkFavorites())
-    {
+  function updateFavorites() {
+    if (!this.misListType.canMarkFavorites()) {
       this.isOnlyFavorites = false
       return
     }
@@ -442,8 +403,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       objValid.setValue(this.isOnlyFavorites)
   }
 
-  function onOnlyFavoritesSwitch(obj)
-  {
+  function onOnlyFavoritesSwitch(obj) {
     let value = obj.getValue()
     if (value == this.isOnlyFavorites)
       return
@@ -454,8 +414,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.updateCollapsedItems()
   }
 
-  function onFav()
-  {
+  function onFav() {
     if (!this.curMission || this.curMission.isHeader)
       return
 
@@ -471,21 +430,17 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       medalObj["background-image"] = this.misListType.isMissionFavorite(this.curMission) ? "#ui/gameuiskin#favorite.png" : ""
   }
 
-  function goBack()
-  {
-    if( ! this.filterText.len())
+  function goBack() {
+    if (! this.filterText.len())
       this.saveCollapsedChapters()
-    let gt = ::get_game_type()
-    if ((this.gm == GM_DYNAMIC) && (gt & GT_COOPERATIVE) && ::SessionLobby.isInRoom())
-    {
+    let gt = get_game_type()
+    if ((this.gm == GM_DYNAMIC) && (gt & GT_COOPERATIVE) && ::SessionLobby.isInRoom()) {
       ::first_generation <- false
       this.goForward(::gui_start_dynamic_summary)
       return
     }
-    else if (::SessionLobby.isInRoom())
-    {
-      if (this.wndType != handlerType.MODAL)
-      {
+    else if (::SessionLobby.isInRoom()) {
+      if (this.wndType != handlerType.MODAL) {
         this.goForward(::gui_start_mp_lobby)
         return
       }
@@ -493,41 +448,33 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     base.goBack()
   }
 
-  function checkStartBlkMission(showMsgbox = false)
-  {
+  function checkStartBlkMission(showMsgbox = false) {
     if (!("blk" in this.curMission))
       return true
 
-    if (!this.curMission.isUnlocked && ("mustHaveUnit" in this.curMission))
-    {
-      if (showMsgbox)
-      {
+    if (!this.curMission.isUnlocked && ("mustHaveUnit" in this.curMission)) {
+      if (showMsgbox) {
         let unitNameLoc = colorize("activeTextColor", ::getUnitName(this.curMission.mustHaveUnit))
         let requirements = loc("conditions/char_unit_exist/single", { value = unitNameLoc })
         ::showInfoMsgBox(loc("charServer/needUnlock") + "\n\n" + requirements)
       }
       return false
     }
-    if ((this.gm == GM_SINGLE_MISSION) && (this.curMission.progress >= 4))
-    {
-      if (showMsgbox)
-      {
+    if ((this.gm == GM_SINGLE_MISSION) && (this.curMission.progress >= 4)) {
+      if (showMsgbox) {
         let unlockId = this.curMission.blk.chapter + "/" + this.curMission.blk.name
         let msg = loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(unlockId, 1)
         ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false
     }
-    if ((this.gm == GM_CAMPAIGN) && (this.curMission.progress >= 4))
-    {
+    if ((this.gm == GM_CAMPAIGN) && (this.curMission.progress >= 4)) {
       if (showMsgbox)
         ::showInfoMsgBox(loc("campaign/unlockPrevious"))
       return false
     }
-    if ((this.gm != GM_CAMPAIGN) && !this.curMission.isUnlocked)
-    {
-      if (showMsgbox)
-      {
+    if ((this.gm != GM_CAMPAIGN) && !this.curMission.isUnlocked) {
+      if (showMsgbox) {
         local msg = loc("ui/unavailable")
         if ("mustHaveUnit" in this.curMission)
           msg = format("%s\n%s", loc("unlocks/need_to_unlock"), ::getUnitName(this.curMission.mustHaveUnit))
@@ -538,13 +485,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     return true
   }
 
-  function onStart()
-  {
+  function onStart() {
     if (!this.curMission)
       return
 
-    if (this.curMission.isHeader)
-    {
+    if (this.curMission.isHeader) {
       if ((this.curMission.isCampaign && this.canCollapseCampaigns) || this.canCollapseChapters)
         if (this.filterText.len() == 0)
           return this.collapse(this.curMission.id)
@@ -557,7 +502,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       if (this.curMission.isUnlocked)
         this.playChapterVideo(this.curMission.id)
       else
-        ::showInfoMsgBox( loc("campaign/unlockPreviousChapter"))
+        ::showInfoMsgBox(loc("campaign/unlockPreviousChapter"))
       return
     }
 
@@ -568,16 +513,14 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
          }))
       return
 
-    if( ! this.filterText.len())
+    if (! this.filterText.len())
       this.saveCollapsedChapters()
 
-    if (getTblValue("blk", this.curMission) == null && ::g_mislist_type.isUrlMission(this.curMission))
-    {
+    if (getTblValue("blk", this.curMission) == null && ::g_mislist_type.isUrlMission(this.curMission)) {
       let misBlk = this.curMission.urlMission.getMetaInfo()
       if (misBlk)
         this.curMission.blk <- misBlk
-      else
-      {
+      else {
         ::g_url_missions.loadBlk(this.curMission, Callback(this.onUrlMissionLoaded, this))
         return
       }
@@ -589,8 +532,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.setMission()
   }
 
-  function setMission()
-  {
+  function setMission() {
     ::mission_settings.postfix = null
     ::current_campaign_id = this.curMission.chapter
     ::current_campaign_mission = this.curMission.id
@@ -602,8 +544,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       saveTutorialToCheckReward(this.curMission.blk)
   }
 
-  function onUrlMissionLoaded(success, mission)
-  {
+  function onUrlMissionLoaded(success, mission) {
     if (!success || !this.checkStartBlkMission(true))
       return
 
@@ -612,8 +553,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.setMission()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let hoveredMission = this.isMouseMode ? null : this.missions?[this.hoveredIdx]
     let isCurItemInFocus = this.isMouseMode || (hoveredMission != null && hoveredMission == this.curMission)
 
@@ -629,8 +569,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
         loc("mainmenu/btnFavoriteUnmark") : loc("mainmenu/btnFavorite"))
 
     local startText = ""
-    if (isCurItemInFocus && (isMission || isHeader))
-    {
+    if (isCurItemInFocus && (isMission || isHeader)) {
       if (isMission)
         startText = loc("multiplayer/btnStart")
       else if (this.filterText.len() == 0 && ((this.curMission?.isCampaign && this.canCollapseCampaigns) || (isHeader && this.canCollapseChapters)))
@@ -641,8 +580,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
     let isShowStartBtn = startText != ""
     let startBtnObj = this.showSceneBtn("btn_start", isShowStartBtn)
-    if (checkObj(startBtnObj) && isShowStartBtn)
-    {
+    if (checkObj(startBtnObj) && isShowStartBtn) {
       let enabled = isHeader || (isMission && this.checkStartBlkMission())
       startBtnObj.inactiveColor = enabled ? "no" : "yes"
       setDoubleTextToButton(this.scene, "btn_start", startText)
@@ -664,8 +602,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
     let linkData = this.misListType.getInfoLinkData()
     let linkObj = this.showSceneBtn("btn_user_missions_info_link", linkData != null)
-    if (linkObj && linkData)
-    {
+    if (linkObj && linkData) {
       linkObj.link = linkData.link
       linkObj.tooltip = linkData.tooltip
       linkObj.setValue(linkData.text)
@@ -675,15 +612,14 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       this.showSceneBtn("btn_purchase_campaigns", hasFeature("OnlineShopPacks") && ::get_not_purchased_campaigns().len() > 0)
   }
 
-  function getEmptyListMsg()
-  {
+  function getEmptyListMsg() {
     return ::g_squad_manager.isNotAloneOnline() ? loc("missions/noCoopMissions") : loc("missions/emptyList")
   }
 
-  function updateCollapsedItems(selCamp=null)
-  {
+  function updateCollapsedItems(selCamp = null) {
     let listObj = this.getObj("items_list")
-    if (!listObj) return
+    if (!listObj)
+      return
 
     this.guiScene.setUpdatesEnabled(false, false)
     local collapsed = false
@@ -691,23 +627,20 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     local selIdx = -1
     local hasAnyVisibleMissions = false
     let isFilteredMissions = this.filterText.len() > 0
-    foreach(idx, m in this.missions)
-    {
+    foreach (idx, m in this.missions) {
       local isVisible = true
-      if ((m.isHeader && this.canCollapseChapters) || (m.isCampaign && this.canCollapseCampaigns))
-      {
+      if ((m.isHeader && this.canCollapseChapters) || (m.isCampaign && this.canCollapseCampaigns)) {
         collapsed = !isFilteredMissions && isInArray(m.id, this.collapsedCamp)
 
         let obj = listObj.getChild(idx)
-        if (obj)
-        {
-          obj.collapsed = collapsed? "yes" : "no"
+        if (obj) {
+          obj.collapsed = collapsed ? "yes" : "no"
           let collapseBtnObj = obj.findObject("btn_" + obj.id)
           if (checkObj(collapseBtnObj))
             collapseBtnObj.show(!isFilteredMissions)
         }
 
-        if (selCamp && selCamp==m.id)
+        if (selCamp && selCamp == m.id)
           selIdx = idx
       }
       else
@@ -728,13 +661,12 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
 
     this.guiScene.setUpdatesEnabled(true, true)
-    if (selIdx>=0)
-    {
-      if (selIdx != wasIdx)
-      {
+    if (selIdx >= 0) {
+      if (selIdx != wasIdx) {
         listObj.setValue(selIdx)
         this.onItemSelect(listObj)
-      } else
+      }
+      else
         listObj.getChild(selIdx).scrollToView()
     }
 
@@ -742,12 +674,10 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.scene.findObject("items_list_msg").setValue(listText)
   }
 
-  function collapse(campId, forceOpen = false, shouldUpdate = true)
-  {
+  function collapse(campId, forceOpen = false, shouldUpdate = true) {
     local hide = !forceOpen
-    foreach(idx, camp in this.collapsedCamp)
-      if (camp == campId)
-      {
+    foreach (idx, camp in this.collapsedCamp)
+      if (camp == campId) {
         this.collapsedCamp.remove(idx)
         hide = false
         break
@@ -762,16 +692,15 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.updateButtons()
   }
 
-  function onCollapse(obj)
-  {
-    if (!obj) return
+  function onCollapse(obj) {
+    if (!obj)
+      return
     let id = obj.id
     if (id.len() > 4 && id.slice(0, 4) == "btn_")
       this.collapse(id.slice(4))
   }
 
-  function openMissionOptions(mission)
-  {
+  function openMissionOptions(mission) {
     let campaignName = ::current_campaign_id
 
     this.missionName = ::current_campaign_mission
@@ -779,7 +708,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     if (campaignName == null || this.missionName == null)
       return
 
-    this.missionBlk = ::DataBlock()
+    this.missionBlk = DataBlock()
     this.missionBlk.setFrom(mission.blk)
 
     let isUrlMission = ::g_mislist_type.isUrlMission(mission)
@@ -791,8 +720,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
     this.missionBlk.setInt("_gameMode", this.gm)
 
-    if ((::SessionLobby.isCoop() && ::SessionLobby.isInRoom()) || isGameModeCoop(this.gm))
-    {
+    if ((::SessionLobby.isCoop() && ::SessionLobby.isInRoom()) || isGameModeCoop(this.gm)) {
       ::mission_settings.players = 4;
       this.missionBlk.setInt("_players", 4)
       this.missionBlk.setInt("maxPlayers", 4)
@@ -805,11 +733,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
 
     if (isUrlMission)
-      ::select_mission_full(this.missionBlk, mission.urlMission.fullMissionBlk)
+      select_mission_full(this.missionBlk, mission.urlMission.fullMissionBlk)
     else
-      ::select_mission(this.missionBlk, this.gm != GM_DOMINATION && this.gm != GM_SKIRMISH)
+      select_mission(this.missionBlk, this.gm != GM_DOMINATION && this.gm != GM_SKIRMISH)
 
-    let gt = ::get_game_type()
+    let gt = get_game_type()
     let optionItems = ::get_briefing_options(this.gm, gt, this.missionBlk)
     let diffOption = ::u.search(optionItems, function(item) { return getTblValue(0, item) == ::USEROPT_DIFFICULTY })
     this.needCheckDiffAfterOptions = diffOption != null
@@ -821,8 +749,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     })(cb, this.missionBlk))
   }
 
-  function afterMissionOptionsApply()
-  {
+  function afterMissionOptionsApply() {
     let diffCode = ::mission_settings.diff
     if (!::check_diff_pkg(diffCode))
       return
@@ -835,8 +762,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     })
   }
 
-  function createModalOptions(optionItems, applyFunc)
-  {
+  function createModalOptions(optionItems, applyFunc) {
     let params = this.getModalOptionsParam(optionItems, applyFunc)
     let handler = ::handlersManager.loadHandler(::gui_handlers.GenericOptionsModal, params)
 
@@ -844,8 +770,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       handler.applyOptions()
   }
 
-  function getModalOptionsParam(optionItems, applyFunc)
-  {
+  function getModalOptionsParam(optionItems, applyFunc) {
     return {
       options = optionItems
       optionsConfig = { missionName = this.curMission && this.curMission.id }
@@ -856,29 +781,24 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
   }
 
-  function showNav(show)
-  {
+  function showNav(show) {
     let obj = this.getObj("nav-help")
-    if (obj)
-    {
+    if (obj) {
       obj.show(show)
       obj.enable(show)
     }
   }
 
-  function onRefresh(_obj)
-  {
+  function onRefresh(_obj) {
     if (this.misListType.canRefreshList)
       this.updateWindow()
   }
 
-  function initMisListTypeSwitcher()
-  {
+  function initMisListTypeSwitcher() {
     if (!this.canSwitchMisListType)
       return
     let tabsObj = this.scene.findObject("chapter_top_list")
-    if (!checkObj(tabsObj))
-    {
+    if (!checkObj(tabsObj)) {
       this.canSwitchMisListType = false
       return
     }
@@ -886,17 +806,15 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     local curMisListType = ::g_mislist_type.BASE
     if (::SessionLobby.isInRoom())
       curMisListType = ::SessionLobby.getMisListType()
-    else
-    {
+    else {
       let typeName = ::loadLocalByAccount("wnd/chosenMisListType", "")
       curMisListType = ::g_mislist_type.getTypeByName(typeName)
     }
 
     let typesList = []
     local selIdx = 0
-    foreach(mlType in ::g_mislist_type.types)
-      if (mlType.canCreate(this.gm))
-      {
+    foreach (mlType in ::g_mislist_type.types)
+      if (mlType.canCreate(this.gm)) {
         typesList.append(mlType)
         if (mlType == curMisListType)
           selIdx = typesList.len() - 1
@@ -905,8 +823,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     if (typesList.len())
        this.misListType = typesList[selIdx]
 
-    if (typesList.len() < 2)
-    {
+    if (typesList.len() < 2) {
       this.canSwitchMisListType = false
       return
     }
@@ -917,12 +834,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.scene.findObject("chapter_name").show(false)
   }
 
-  function fillHeaderTabs(tabsObj, typesList, selIdx)
-  {
+  function fillHeaderTabs(tabsObj, typesList, selIdx) {
     let view = {
       tabs = []
     }
-    foreach(idx, mlType in typesList)
+    foreach (idx, mlType in typesList)
       view.tabs.append({
         id = mlType.id
         tabName = mlType.getTabName()
@@ -934,8 +850,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
   }
 
-  function onChapterSelect(obj)
-  {
+  function onChapterSelect(obj) {
     if (!this.canSwitchMisListType)
       return
 
@@ -950,22 +865,19 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.updateWindow()
   }
 
-  onFilterEditBoxActivate =@() null
+  onFilterEditBoxActivate = @() null
 
-  function onFilterEditBoxChangeValue()
-  {
+  function onFilterEditBoxChangeValue() {
     this.applyMissionFilter()
     this.updateCollapsedItems()
     this.updateButtons()
   }
 
-  function onFilterEditBoxCancel()
-  {
+  function onFilterEditBoxCancel() {
     this.goBack()
   }
 
-  function checkFilterData(filterData)
-  {
+  function checkFilterData(filterData) {
     local res = !this.filterText.len() || filterData.locString.indexof(this.filterText) != null
       || (filterData.mission.blk?.name ?? "").indexof(this.filterText) != null
     if (res && this.isOnlyFavorites)
@@ -973,8 +885,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     return res
   }
 
-  function applyMissionFilter()
-  {
+  function applyMissionFilter() {
     let filterEditBox = this.scene.findObject("filter_edit_box")
     if (!checkObj(filterEditBox))
       return
@@ -983,26 +894,21 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
     local showChapter = false
     local showCampaign = false
-    for (local idx = this.filterDataArray.len() - 1; idx >= 0; --idx)
-    {
+    for (local idx = this.filterDataArray.len() - 1; idx >= 0; --idx) {
       let filterData = this.filterDataArray[idx]
       //need update headers by missions content
       local filterCheck = filterData.isHeader || this.checkFilterData(filterData)
-      if (!filterData.isHeader)
-      {
-        if (filterCheck)
-        {
+      if (!filterData.isHeader) {
+        if (filterCheck) {
           showChapter = true
           showCampaign = true
         }
       }
-      else if (filterData.isCampaign)
-      {
+      else if (filterData.isCampaign) {
         filterCheck = showCampaign
         showCampaign = false
       }
-      else
-      {
+      else {
         filterCheck = showChapter
         showChapter = false
       }
@@ -1011,51 +917,43 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     }
   }
 
-  function onAddMission()
-  {
+  function onAddMission() {
     if (this.misListType.canAddToList)
       this.misListType.addToList()
   }
 
-  function onModifyMission()
-  {
+  function onModifyMission() {
     if (this.curMission && this.misListType.canModify(this.curMission))
       this.misListType.modifyMission(this.curMission)
   }
 
-  function onDeleteMission()
-  {
+  function onDeleteMission() {
     if (this.curMission && this.misListType.canDelete(this.curMission))
       this.misListType.deleteMission(this.curMission)
   }
 
-  function onBuyCampaign()
-  {
+  function onBuyCampaign() {
     ::purchase_any_campaign()
   }
 
-  function onEventProfileUpdated(p)
-  {
+  function onEventProfileUpdated(p) {
     if (p.transactionType == EATT_UPDATE_ENTITLEMENTS)
       this.updateWindow()
   }
 }
 
-::gui_handlers.SingleMissions <- class extends ::gui_handlers.CampaignChapter
-{
+::gui_handlers.SingleMissions <- class extends ::gui_handlers.CampaignChapter {
   sceneBlkName = "%gui/chapter.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.findObject("optionlist-container").mislist = "yes"
     base.initScreen()
   }
 }
 
-::gui_handlers.SingleMissionsModal <- class extends ::gui_handlers.SingleMissions
-{
+::gui_handlers.SingleMissionsModal <- class extends ::gui_handlers.SingleMissions {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
@@ -1063,13 +961,12 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
   filterMask = {}
 
-  function initScreen()
-  {
+  function initScreen() {
     let navObj = this.scene.findObject("nav-help")
-    if(checkObj(navObj))
-    {
+    if (checkObj(navObj)) {
       let backBtn = navObj.findObject("btn_back")
-      if (checkObj(backBtn)) this.guiScene.destroyElement(backBtn)
+      if (checkObj(backBtn))
+        this.guiScene.destroyElement(backBtn)
 
       this.showSceneBtn("btn_inviteSquad", ::enable_coop_in_SingleMissions)
     }
@@ -1078,8 +975,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     if (frameObj)
       this.guiScene.replaceContent(frameObj, "%gui/frameHeaderRefresh.blk", this)
 
-    if (this.wndGameMode == GM_SKIRMISH || this.wndGameMode == GM_SINGLE_MISSION)
-    {
+    if (this.wndGameMode == GM_SKIRMISH || this.wndGameMode == GM_SINGLE_MISSION) {
       let listboxFilterHolder = this.scene.findObject("listbox_filter_holder")
       this.guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
     }
@@ -1087,8 +983,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     base.initScreen()
   }
 
-  function getFilterMask()
-  {
+  function getFilterMask() {
     let mask = this.filterMask?[this.misListType.id]
     if (mask)
       return mask
@@ -1097,8 +992,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     return this.filterMask[this.misListType.id]
   }
 
-  function checkFilterData(filterData)
-  {
+  function checkFilterData(filterData) {
     if (!base.checkFilterData(filterData))
       return false
 
@@ -1110,8 +1004,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       && (filterData.group & mask.group) != 0
   }
 
-  function createFilterDataArray()
-  {
+  function createFilterDataArray() {
     base.createFilterDataArray()
 
     if (this.wndGameMode != GM_SKIRMISH)
@@ -1123,8 +1016,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     if (!isFilterVisible)
       return
 
-    foreach (v in this.filterDataArray)
-    {
+    foreach (v in this.filterDataArray) {
       if (v.isHeader)
         continue
 
@@ -1149,8 +1041,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     .filter(@(u) u.isAvailable())
     .sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
 
-  function getFiltersView()
-  {
+  function getFiltersView() {
     let availableUnitTypes = this.getAvailableUnitTypes()
     let availableMissionGroups = this.getAvailableMissionGroups()
     let mask = this.getFilterMask()
@@ -1174,21 +1065,18 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     ]
   }
 
-  function onFilterCbChange(objId, typeName, value)
-  {
+  function onFilterCbChange(objId, typeName, value) {
     let mask = this.getFilterMask()
     if (objId == RESET_ID)
       mask[typeName] = 0
-    else if (objId == "group_favorite")
-    {
+    else if (objId == "group_favorite") {
       if (value == this.isOnlyFavorites)
         return
 
       this.isOnlyFavorites = value
       ::saveLocalByAccount(this.getFavoritesSaveId(), this.isOnlyFavorites)
     }
-    else
-    {
+    else {
       let bit = objId.split("_")[1].tointeger()
       mask[typeName] = mask[typeName] ^ bit
     }
@@ -1196,15 +1084,13 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.updateCollapsedItems()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     this.restoreMainOptions()
   }
 
-  function showWaitAnimation(isVisible)
-  {
+  function showWaitAnimation(isVisible) {
     if (isVisible)
-      progressMsg.create(SAVEDATA_PROGRESS_MSG_ID, {text = loc("wait/missionListLoading")})
+      progressMsg.create(SAVEDATA_PROGRESS_MSG_ID, { text = loc("wait/missionListLoading") })
     else
       progressMsg.destroy(SAVEDATA_PROGRESS_MSG_ID)
   }

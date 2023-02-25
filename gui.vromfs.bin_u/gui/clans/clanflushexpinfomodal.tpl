@@ -48,7 +48,7 @@ root {
 
     img {
       size:t='pw, 400.0/800pw'
-      background-image:t='#ui/images/reward10.jpg?P1'
+      background-image:t='#ui/images/reward10?P1'
       background-position:t="0, 40, 0, 260"
       background-repeat:t='part'
       background-color:t='@white'

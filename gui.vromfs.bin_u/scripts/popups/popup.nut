@@ -1,11 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-::Popup <- class
-{
+::Popup <- class {
   static POPUP_BLK = "%gui/popup/popup.blk"
   static POPUP_BUTTON_BLK = "%gui/popup/popupButton.blk"
 
@@ -20,8 +20,7 @@ from "%scripts/dagui_library.nut" import *
   selfObj = null
   onClickPopupAction = null
 
-  constructor(config)
-  {
+  constructor(config) {
     this.onClickPopupAction = config.onClickPopupAction
     this.buttons = config.buttons || []
     this.handler = config.handler
@@ -31,19 +30,17 @@ from "%scripts/dagui_library.nut" import *
     this.lifetime = config.lifetime
   }
 
-  function isValidView()
-  {
+  function isValidView() {
     return checkObj(this.selfObj)
   }
 
-  function show(popupNestObj)
-  {
+  function show(popupNestObj) {
     popupNestObj.setUserData(this)
 
     let popupGuiScene = ::get_cur_gui_scene()
     this.selfObj = popupGuiScene.createElementByObject(popupNestObj, this.POPUP_BLK, "popup", this)
 
-    if(!::u.isEmpty(this.title))
+    if (!::u.isEmpty(this.title))
       this.selfObj.findObject("title").setValue(this.title)
     else
       this.selfObj.findObject("title").show(false)
@@ -51,8 +48,7 @@ from "%scripts/dagui_library.nut" import *
     this.selfObj.findObject("msg").setValue(this.message)
 
     let obj = this.selfObj.findObject("popup_buttons_place")
-    foreach (button in this.buttons)
-    {
+    foreach (button in this.buttons) {
       let buttonObj = popupGuiScene.createElementByObject(obj, this.POPUP_BUTTON_BLK, "Button_text", this)
       buttonObj.id = button.id
       buttonObj.setValue(button.text)
@@ -64,20 +60,17 @@ from "%scripts/dagui_library.nut" import *
       this.selfObj.timer_interval_msec = this.lifetime.tostring()
   }
 
-  function destroy(isForced = false)
-  {
+  function destroy(isForced = false) {
     if (checkObj(this.selfObj))
       this.selfObj.fade = isForced ? "forced" : "out"
   }
 
-  function requestDestroy(isForced = true)
-  {
+  function requestDestroy(isForced = true) {
     this.destroy(isForced)
     ::g_popups.remove(this)
   }
 
-  function performPopupAction(func)
-  {
+  function performPopupAction(func) {
     if (!func)
       return
     if (this.handler != null)
@@ -86,25 +79,21 @@ from "%scripts/dagui_library.nut" import *
       func()
   }
 
-  function onClickPopup(_obj)
-  {
+  function onClickPopup(_obj) {
     if (this.onClickPopupAction)
       this.performPopupAction(this.onClickPopupAction)
     this.requestDestroy()
   }
 
-  function onRClickPopup(_obj)
-  {
+  function onRClickPopup(_obj) {
     this.requestDestroy()
   }
 
-  function onClosePopup(_obj)
-  {
+  function onClosePopup(_obj) {
     this.requestDestroy()
   }
 
-  function onPopupButtonClick(obj)
-  {
+  function onPopupButtonClick(obj) {
     let id = obj?.id
     let button = this.buttons.findvalue(@(b) b.id == id)
     obj.getScene().performDelayed(this, function() {
@@ -115,8 +104,7 @@ from "%scripts/dagui_library.nut" import *
     })
   }
 
-  function onTimerUpdate(_obj, _dt)
-  {
+  function onTimerUpdate(_obj, _dt) {
     this.requestDestroy(false)
   }
 }

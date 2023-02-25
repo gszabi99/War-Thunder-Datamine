@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,17 +6,16 @@ from "%scripts/dagui_library.nut" import *
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotify, unsubscribeOperationNotify } = require("%scripts/worldWar/services/wwService.nut")
+let DataBlock  = require("DataBlock")
 
 foreach (notificationName, callback in
   {
-    ["worldwar.on_join_to_battle"] = function(params)
-      {
+    ["worldwar.on_join_to_battle"] = function(params) {
         let operationId = params?.operationId ?? ""
         let team = params?.team ?? SIDE_1
         let country = params?.country ?? ""
         let battleIds = getTblValue("battleIds", params, [])
-        foreach (battleId in battleIds)
-        {
+        foreach (battleId in battleIds) {
           let queue = ::queues.createQueue({
               operationId = operationId
               battleId = battleId
@@ -26,8 +26,7 @@ foreach (notificationName, callback in
         }
         ::g_squad_manager.cancelWwBattlePrepare()
       },
-    ["worldwar.on_leave_from_battle"] = function(params)
-      {
+    ["worldwar.on_leave_from_battle"] = function(params) {
         let queue = ::queues.findQueueByName(::queue_classes.WwBattle.getName(params))
         if (!queue)
           return
@@ -42,14 +41,12 @@ foreach (notificationName, callback in
         if (isBattleStarted)
           ::SessionLobby.setWaitForQueueRoom(true)
       },
-    ["worldwar.notify"] = function(params)
-      {
+    ["worldwar.notify"] = function(params) {
         let messageType = params?.type
         if (!messageType)
           return
 
-        if (messageType == "wwNotification")
-        {
+        if (messageType == "wwNotification") {
           ::ww_process_server_notification(params)
           return
         }
@@ -63,32 +60,28 @@ foreach (notificationName, callback in
 
         let isOwnSide = (::get_local_player_country() == params?.activeSideCountry)
         local text = ""
-        if (messageType == "operation_finished")
-        {
+        if (messageType == "operation_finished") {
           let operation = getOperationById(operationId)
           text = operation ? loc("worldwar/operation_complete_battle_results_ignored_full_text",
-            {operationInfo = operation.getNameText()})
+            { operationInfo = operation.getNameText() })
                            : loc("worldwar/operation_complete_battle_results_ignored")
         }
-        else if (messageType == "zone_captured")
-        {
+        else if (messageType == "zone_captured") {
           text = loc(isOwnSide ? "worldwar/operation_zone_captured"
                                  : "worldwar/operation_zone_lost",
-            {zoneName = params?.customParam ?? ""})
+            { zoneName = params?.customParam ?? "" })
         }
-        else if (messageType == "reinforcements_arrived")
-        {
-          let misBlk = ::DataBlock()
+        else if (messageType == "reinforcements_arrived") {
+          let misBlk = DataBlock()
           ::get_current_mission_desc(misBlk)
           if (params?.customParam == misBlk?.customRules.battleId)
             text = loc(isOwnSide ? "worldwar/operation_air_reinforcements_arrived_our"
                                    : "worldwar/operation_air_reinforcements_arrived_enemy")
         }
-        else if (messageType == "battle_finished")
-        {
+        else if (messageType == "battle_finished") {
           text = loc(isOwnSide ? "worldwar/operation_battle_won_our"
                                  : "worldwar/operation_battle_won_enemy",
-            {zoneName = params?.customParam ?? ""})
+            { zoneName = params?.customParam ?? "" })
         }
 
         if (text != "")
@@ -100,8 +93,7 @@ foreach (notificationName, callback in
 
 foreach (notificationName, callback in
   {
-    ["worldwar_forced_subscribe"] = function(params)
-      {
+    ["worldwar_forced_subscribe"] = function(params) {
         let operationId = params?.id
         if (!operationId)
           return

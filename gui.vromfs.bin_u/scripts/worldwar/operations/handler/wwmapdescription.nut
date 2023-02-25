@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
 //show info about WwMap, WwOperation or WwOperationgroup
-::gui_handlers.WwMapDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.WwMapDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
 
   descItem = null //WwMap, WwQueue, WwOperation, WwOperationGroup
@@ -21,8 +21,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   rootDescId = "item_desc"
 
   //this handler dosnt create own scene, just search objects in already exist scene.
-  static function link(v_scene, v_descItem = null, v_map = null, v_descParams = {})
-  {
+  static function link(v_scene, v_descItem = null, v_map = null, v_descParams = {}) {
     let params = {
       scene = v_scene
       descItem = v_descItem
@@ -36,8 +35,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return ::handlersManager.loadHandler(::gui_handlers.WwQueueDescriptionCustomHandler, params)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.setUserData(this) //to not unload handler even when scene not loaded
     this.updateView()
 
@@ -46,21 +44,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       timerObj.setUserData(this)
   }
 
-  function setDescItem(newDescItem)
-  {
+  function setDescItem(newDescItem) {
     this.descItem = newDescItem
     this.updateView()
   }
 
-  function initCustomHandlerScene()
-  {
+  function initCustomHandlerScene() {
     //this handler dosnt replace content in scene.
     this.guiScene = this.scene.getScene()
     return true
   }
 
-  function updateView()
-  {
+  function updateView() {
     let isShow = this.isVisible()
     this.updateVisibilities(isShow)
     if (!isShow)
@@ -73,35 +68,30 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateAvailableText()
   }
 
-  function isVisible()
-  {
+  function isVisible() {
     return this.descItem != null && this.map != null
   }
 
-  function updateVisibilities(isShow)
-  {
+  function updateVisibilities(isShow) {
     if (this.scene.id == this.rootDescId)
       this.scene.show(isShow)
     else
       this.showSceneBtn(this.rootDescId, isShow)
   }
 
-  function updateName()
-  {
+  function updateName() {
     let nameObj = this.scene.findObject("item_name")
     if (checkObj(nameObj))
       nameObj.setValue(this.descItem.getNameText())
   }
 
-  function updateDescription()
-  {
+  function updateDescription() {
     let desctObj = this.scene.findObject("item_desc")
     if (checkObj(desctObj))
       desctObj.setValue(this.descItem.getDescription())
   }
 
-  function mapCountriesToView(countries)
-  {
+  function mapCountriesToView(countries) {
     let mapName = this.descItem.getId()
     return {
       countries = countries.map(@(countryName) {
@@ -111,8 +101,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function updateCountriesList()
-  {
+  function updateCountriesList() {
     let obj = this.scene.findObject("div_before_text")
     if (!checkObj(obj))
       return
@@ -131,8 +120,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     obj.show(true)
   }
 
-  function updateTotalClansText()
-  {
+  function updateTotalClansText() {
     let obj = this.scene.findObject("total_members_text")
     if (!checkObj(obj))
       return
@@ -140,8 +128,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     obj.setValue(this.descItem.getClansNumberInQueueText())
   }
 
-  function updateAvailableText()
-  {
+  function updateAvailableText() {
     let obj = this.scene.findObject("available_text")
     if (!checkObj(obj) || !this.descItem)
       return
@@ -149,8 +136,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     obj.setValue(this.descItem.getMapChangeStateTimeText())
   }
 
-  function onTimerDescriptionUpdate(_obj, _dt)
-  {
+  function onTimerDescriptionUpdate(_obj, _dt) {
     this.updateAvailableText()
   }
 

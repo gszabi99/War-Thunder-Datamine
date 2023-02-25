@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {Speed, Altitude, ClimbSpeed, Tangage, Roll} = require("%rGui/planeState/planeFlyState.nut");
-let {compassWrap, generateCompassMark} = require("ilsCompasses.nut")
-let {flyDirection, angleTxt, yawIndicator, cancelBombing,
-      lowerSolutionCue, bombFallingLine, aimMark} = require("commonElements.nut")
-let {IlsColor, TargetPos, DistToSafety, IlsLineScale,
-        IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked} = require("%rGui/planeState/planeToolsState.nut")
-let {mpsToKnots, metrToFeet, mpsToFpm, baseLineWidth} = require("ilsConstants.nut")
-let {floor} = require("%sqstd/math.nut")
+let { Speed, Altitude, ClimbSpeed, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut");
+let { compassWrap, generateCompassMark } = require("ilsCompasses.nut")
+let { flyDirection, angleTxt, yawIndicator, cancelBombing,
+      lowerSolutionCue, bombFallingLine, aimMark } = require("commonElements.nut")
+let { IlsColor, TargetPos, DistToSafety, IlsLineScale,
+        IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked } = require("%rGui/planeState/planeToolsState.nut")
+let { mpsToKnots, metrToFeet, mpsToFpm, baseLineWidth } = require("ilsConstants.nut")
+let { floor } = require("%sqstd/math.nut")
 
 let function speedometer(width, height) {
   let grid = @() {
@@ -217,7 +217,7 @@ let function pitch(width, height) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.1]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.2]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.2]
       }
     }
   }
@@ -310,7 +310,7 @@ let function rotatedBombReleaseReticle(width, height) {
       transform = {
         translate = [TargetPos.value[0] - width * 0.1, height * 0.1]
         rotate = -Roll.value
-        pivot=[0.1, TargetPos.value[1] / height - 0.1]
+        pivot = [0.1, TargetPos.value[1] / height - 0.1]
       }
     }
   }

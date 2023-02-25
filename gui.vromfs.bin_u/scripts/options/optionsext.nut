@@ -1,16 +1,19 @@
-from "%scripts/dagui_library.nut" import *
-
+//-file:plus-string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+from "%scripts/dagui_library.nut" import *
+from "gameOptions" import *
 from "soundOptions" import *
 
-let { get_unit_option, set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
+let { get_unit_option, set_unit_option, set_gui_option, get_gui_option,
+  setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption, getCdBaseDifficulty
+} = require("guiOptions")
 let { abs } = require("math")
+let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let time = require("%scripts/time.nut")
-let colorCorrector = require_native("colorCorrector")
+let colorCorrector = require("colorCorrector")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let globalEnv = require("globalEnv")
@@ -20,17 +23,17 @@ let optionsUtils = require("%scripts/options/optionsUtils.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let soundDevice = require("soundDevice")
-let holidays = require_native("holidays")
+let holidays = require("holidays")
 let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
 let { setUnitLastBullets,
         getOptionsBulletsList } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let {bombNbr} = require("%scripts/unit/unitStatus.nut")
+let { bombNbr } = require("%scripts/unit/unitStatus.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
-let { has_forced_crosshair } = require_native("crosshair")
+let { has_forced_crosshair } = require("crosshair")
 //
 
 
@@ -38,24 +41,31 @@ let { getSlotbarOverrideCountriesByMissionName } = require("%scripts/slotbar/slo
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
-let { setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption,
-  getCdBaseDifficulty } = require_native("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
 let {
- get_option_radar_aim_elevation_control = @() false,
- set_option_radar_aim_elevation_control = @(_value) null,
- get_option_seeker_auto_stabilization = @() true,
- set_option_seeker_auto_stabilization = @(_value) null,
- get_gyro_sight_deflection = @() true,
- set_gyro_sight_deflection = @(_value) null
+  get_option_radar_aim_elevation_control,
+  set_option_radar_aim_elevation_control,
+  get_option_seeker_auto_stabilization,
+  set_option_seeker_auto_stabilization,
+  get_gyro_sight_deflection,
+  set_gyro_sight_deflection
 } = require("controlsOptions")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { getClustersByCountry } = require("%scripts/onlineInfo/defaultClusters.nut")
-let { getCountryCode } = require("auth_wt")
+let { is_bit_set } = require("%sqstd/math.nut")
+let { dynamicGetZones, getDynamicLayoutsBlk } = require("dynamicMission")
+let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
+  get_option_chat_filter, set_option_chat_filter,
+  set_option_auto_show_chat, get_option_voicechat,
+  set_option_voicechat, get_option_chat_messages_filter,
+  set_option_chat_messages_filter } = require("chat")
+let { get_game_mode } = require("mission")
+let { get_meta_missions_info } = require("guiMission")
+let { crosshairColorOpt, hueHeliCrosshairOpt } = require("%scripts/options/dargOptionsSync.nut")
+let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -89,11 +99,11 @@ setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
 ::KG_TO_TONS <- 0.001
 
 ::ttv_video_sizes <- [
-  [640,368],
-  [720,480],
-  [864,480],
-  [1280,720],
-  [1920,1088],
+  [640, 368],
+  [720, 480],
+  [864, 480],
+  [1280, 720],
+  [1920, 1088],
 ]
 
 let clanRequirementsRankDescId = {
@@ -103,8 +113,7 @@ let clanRequirementsRankDescId = {
   [::USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK] = "rankReqCoastalShip"
 }
 
-::image_for_air <- function image_for_air(air)
-{
+::image_for_air <- function image_for_air(air) {
   if (type(air) == "string")
     air = ::getAircraftByName(air)
   if (!air)
@@ -121,13 +130,10 @@ let clanRequirementsRankDescId = {
     "crosshair_icons", "crosshair_colors", "thermovision_colors"
   ])
 
-::check_aircraft_tags <- function(airtags, filtertags)
-{
+::check_aircraft_tags <- function(airtags, filtertags) {
   local isNotFound = false
-  for (local j = 0; j < filtertags.len(); j++)
-  {
-    if (::find_in_array(airtags, filtertags[j]) < 0)
-    {
+  for (local j = 0; j < filtertags.len(); j++) {
+    if (::find_in_array(airtags, filtertags[j]) < 0) {
       isNotFound = true
       break
     }
@@ -137,56 +143,49 @@ let clanRequirementsRankDescId = {
 
 local isWaitMeasureEvent = false
 
-::get_game_mode_maps <- function get_game_mode_maps()
-{
+::get_game_mode_maps <- function get_game_mode_maps() {
   if (::game_mode_maps.len())
     return ::game_mode_maps
 
-  for (local modeNo = 0; modeNo < GM_COUNT; ++modeNo)
-  {
-    let mi = ::get_meta_missions_info(modeNo)
+  for (local modeNo = 0; modeNo < GM_COUNT; ++modeNo) {
+    let mi = get_meta_missions_info(modeNo)
 
     let modeMap = {}
     modeMap.items <- []
     modeMap.values <- []
     modeMap.coop <- []
 
-    for (local i = 0; i < mi.len(); ++i)
-    {
+    for (local i = 0; i < mi.len(); ++i) {
       let blkMap = mi[i]
-      let chapterName = blkMap.getStr("chapter","")
+      let chapterName = blkMap.getStr("chapter", "")
 
-      let misId = blkMap.getStr("name","")
+      let misId = blkMap.getStr("name", "")
       modeMap.values.append(misId)
       modeMap.items.append("#missions/" + misId)
       modeMap.coop.append(blkMap.getBool("gt_cooperative", false))
 
-      let videoIn = blkMap.getStr("video_in","")
-      if (videoIn.len())
-      {
-        ::game_movies_in[chapterName+"/"+misId] <- videoIn
-        log("[VIDEO] " + videoIn + " [IN] "+chapterName+"/"+misId);
+      let videoIn = blkMap.getStr("video_in", "")
+      if (videoIn.len()) {
+        ::game_movies_in[chapterName + "/" + misId] <- videoIn
+        log("[VIDEO] " + videoIn + " [IN] " + chapterName + "/" + misId);
       }
 
-      let videoOut = blkMap.getStr("video_out","");
-      if (videoOut.len())
-      {
-        ::game_movies_out[chapterName+"/"+misId] <- videoOut
-        log("[VIDEO] " + videoOut + " [OUT] "+chapterName+"/"+misId);
+      let videoOut = blkMap.getStr("video_out", "");
+      if (videoOut.len()) {
+        ::game_movies_out[chapterName + "/" + misId] <- videoOut
+        log("[VIDEO] " + videoOut + " [OUT] " + chapterName + "/" + misId);
       }
 
-      let videoInAch = blkMap.getStr("achievement_after_video_in","");
-      if (videoInAch.len())
-      {
-        ::game_movies_in_ach[chapterName+"/"+misId] <- videoInAch
-        log("[VIDEO TROPHY] " + videoInAch + " [IN] "+chapterName+"/"+misId);
+      let videoInAch = blkMap.getStr("achievement_after_video_in", "");
+      if (videoInAch.len()) {
+        ::game_movies_in_ach[chapterName + "/" + misId] <- videoInAch
+        log("[VIDEO TROPHY] " + videoInAch + " [IN] " + chapterName + "/" + misId);
       }
 
-      let videoOutAch = blkMap.getStr("achievement_after_video_out","");
-      if (videoOutAch.len())
-      {
-        ::game_movies_out_ach[chapterName+"/"+misId] <- videoOutAch
-        log("[VIDEO TROPHY] " + videoOutAch + " [OUT] "+chapterName+"/"+misId);
+      let videoOutAch = blkMap.getStr("achievement_after_video_out", "");
+      if (videoOutAch.len()) {
+        ::game_movies_out_ach[chapterName + "/" + misId] <- videoOutAch
+        log("[VIDEO TROPHY] " + videoOutAch + " [OUT] " + chapterName + "/" + misId);
       }
     }
     ::game_mode_maps.append(modeMap)
@@ -195,25 +194,22 @@ local isWaitMeasureEvent = false
   return ::game_mode_maps
 }
 
-::get_dynamic_layouts <- function get_dynamic_layouts()
-{
+::get_dynamic_layouts <- function get_dynamic_layouts() {
   if (::dynamic_layouts.len())
     return ::dynamic_layouts
 
-  let dblk = ::dynamic_get_layouts( )
-  for (local i = 0; i < dblk.blockCount(); i++)
-  {
+  let dblk = getDynamicLayoutsBlk()
+  for (local i = 0; i < dblk.blockCount(); i++) {
     let info = {}
     info.mis_file <- dblk.getBlock(i).getStr("mis_file", "")
-    info.name <- dblk.getBlock(i).getStr("name","")
+    info.name <- dblk.getBlock(i).getStr("name", "")
     ::dynamic_layouts.append(info)
   }
 
   return ::dynamic_layouts
 }
 
-::find_in_array <- function find_in_array(arr, val, notFoundValue = -1)
-{
+::find_in_array <- function find_in_array(arr, val, notFoundValue = -1) {
   if (type(arr) != "array" && type(arr) != "table")
     return notFoundValue
 
@@ -224,15 +220,13 @@ local isWaitMeasureEvent = false
   return notFoundValue
 }
 
-::get_block_hsv_color <- function get_block_hsv_color(h, s = 1.0, v = 1.0)
-{
+::get_block_hsv_color <- function get_block_hsv_color(h, s = 1.0, v = 1.0) {
   if (h > 360)
     h -= 360
   return ::get_color_from_hsv(h, s, v)
 }
 
-::create_option_list <- function create_option_list(id, items, value, cb, isFull, spinnerType=null, optionTag = null, params = null)
-{
+::create_option_list <- function create_option_list(id, items, value, cb, isFull, spinnerType = null, optionTag = null, params = null) {
   if (!optionsUtils.checkArgument(id, items, "array"))
     return ""
 
@@ -249,8 +243,7 @@ local isWaitMeasureEvent = false
   if (cb)
     view.cb <- cb
 
-  foreach (idx, item in items)
-  {
+  foreach (idx, item in items) {
     let opt = type(item) == "string" ? { text = item } : clone item
     opt.selected <- idx == value
     if ("hue" in item)
@@ -276,8 +269,7 @@ local isWaitMeasureEvent = false
     view.options.append(opt)
   }
 
-  if (isFull)
-  {
+  if (isFull) {
     let controlTag = spinnerType || "ComboBox"
     view.controlTag <- controlTag
     if (controlTag == "dropright")
@@ -289,13 +281,11 @@ local isWaitMeasureEvent = false
   return ::handyman.renderCached(("%gui/options/spinnerOptions.tpl"), view)
 }
 
-::create_option_dropright <- function create_option_dropright(id, items, value, cb, isFull)
-{
+::create_option_dropright <- function create_option_dropright(id, items, value, cb, isFull) {
   return ::create_option_list(id, items, value, cb, isFull, "dropright")
 }
 
-::create_option_combobox <- function create_option_combobox(id, items, value, cb, isFull, params = null)
-{
+::create_option_combobox <- function create_option_combobox(id, items, value, cb, isFull, params = null) {
   return ::create_option_list(id, items, value, cb, isFull, "ComboBox", null, params)
 }
 
@@ -305,17 +295,15 @@ local isWaitMeasureEvent = false
     text = ::locOrStrip(value.tostring()),
     len = maxlength,
     type = password ? "type:t='password'; password-smb:t='{0}';".subst(loc("password_mask_char", "*")) : "",
-    charMask = charMask? $"char-mask:t='{charMask}';" : ""
+    charMask = charMask ? $"char-mask:t='{charMask}';" : ""
   })
 })
 
-::create_option_switchbox <- function create_option_switchbox(config)
-{
+::create_option_switchbox <- function create_option_switchbox(config) {
   return ::handyman.renderCached(("%gui/options/optionSwitchbox.tpl"), config)
 }
 
-::create_option_row_listbox <- function create_option_row_listbox(id, items, value, cb, isFull, listClass="options")
-{
+::create_option_row_listbox <- function create_option_row_listbox(id, items, value, cb, isFull, listClass = "options") {
   if (!optionsUtils.checkArgument(id, items, "array"))
     return ""
   if (!optionsUtils.checkArgument(id, value, "integer"))
@@ -326,8 +314,7 @@ local isWaitMeasureEvent = false
   data += "class:t='" + listClass + "'; "
 
   let view = { items = [] }
-  foreach (idx, item in items)
-  {
+  foreach (idx, item in items) {
     let selected = idx == value
     if (::u.isString(item))
       view.items.append({ text = item, selected = selected })
@@ -342,16 +329,14 @@ local isWaitMeasureEvent = false
   }
   data += ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
 
-  if (isFull)
-  {
+  if (isFull) {
     data = "HorizontalListBox { height:t='ph-6'; pos:t = 'pw-0.5p.p.w-0.5w, 0.5(ph-h)'; position:t = 'absolute'; "
              + data + "}"
   }
   return data
 }
 
-::create_option_row_multiselect <- function create_option_row_multiselect(params)
-{
+::create_option_row_multiselect <- function create_option_row_multiselect(params) {
   let option = params?.option
   if (!optionsUtils.checkArgument(option?.id, option?.items, "array") ||
     !optionsUtils.checkArgument(option?.id, option?.value, "integer"))
@@ -369,8 +354,7 @@ local isWaitMeasureEvent = false
     if ((option?[key] ?? "") != "")
       view[key] <- ::locOrStrip(option[key])
 
-  foreach (v in option.items)
-  {
+  foreach (v in option.items) {
     let item = type(v) == "string" ? { text = v, image = "" } : v
     let viewItem = {}
     foreach (key in [ "enabled", "isVisible" ])
@@ -387,8 +371,7 @@ local isWaitMeasureEvent = false
   return ::handyman.renderCached(("%gui/options/optionMultiselect.tpl"), view)
 }
 
-::create_option_vlistbox <- function create_option_vlistbox(id, items, value, cb, isFull)
-{
+::create_option_vlistbox <- function create_option_vlistbox(id, items, value, cb, isFull) {
   if (!optionsUtils.checkArgument(id, items, "array"))
     return ""
 
@@ -397,8 +380,7 @@ local isWaitMeasureEvent = false
 
   local data = ""
   local itemNo = 0
-  foreach (item in items)
-  {
+  foreach (item in items) {
     data += "option { text:t = '" + item + "'; " + (itemNo == value ? "selected:t = 'yes';" : "") + " }"
     ++itemNo
   }
@@ -410,8 +392,7 @@ local isWaitMeasureEvent = false
   return data
 }
 
-::create_option_slider <- function create_option_slider(id, value, cb, isFull, sliderType, params = {})
-{
+::create_option_slider <- function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
   if (!optionsUtils.checkArgument(id, value, "integer"))
     return ""
 
@@ -430,8 +411,7 @@ local isWaitMeasureEvent = false
   return data
 }
 
-::get_mission_time_text <- function get_mission_time_text(missionTime)
-{
+::get_mission_time_text <- function get_mission_time_text(missionTime) {
   if (::g_string.isStringInteger(missionTime))
     return format("%d:00", missionTime.tointeger())
   if (::g_string.isStringFloat(missionTime))
@@ -449,14 +429,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   },
   get_volume_limits(sndType))
 
-::get_option <- function get_option(optionId, context = null)
-{
+::get_option <- function get_option(optionId, context = null) {
   let descr = optionsUtils.createDefaultOption()
   descr.type = optionId
   descr.context = context
 
-  if(::u.isString(optionId))
-  {
+  if (::u.isString(optionId)) {
     descr.controlType = optionControlType.HEADER
     descr.controlName <- ""
     descr.id = "header_" + ::gen_rnd_password(10)
@@ -470,8 +448,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   local defaultValue = 0
   local prevValue = null
 
-  switch (optionId)
-  {
+  switch (optionId) {
     // global settings:
     case ::USEROPT_LANGUAGE:
       let titleCommon = loc("profile/language")
@@ -482,8 +459,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       descr.trParams <- "iconType:t='small';"
       let info = ::g_language.getGameLocalizationInfo()
-      for (local i = 0; i < info.len(); i++)
-      {
+      for (local i = 0; i < info.len(); i++) {
         let lang = info[i]
         descr.values.append(lang.id)
         descr.items.append({
@@ -520,8 +496,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         AIR_MOUSE_USAGE.VIEW
       ]
 
-      if (ignoreAim)
-      {
+      if (ignoreAim) {
         let aimIdx = descr.values.indexof(AIR_MOUSE_USAGE.AIM)
         descr.values.remove(aimIdx)
         descr.items.remove(aimIdx)
@@ -622,8 +597,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       descr.value = ::find_nearest(isBombActivationAssault ? ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE : bombActivationTime, descr.values)
       descr.items = []
-      for (local i = 0; i < descr.values.len(); i++)
-      {
+      for (local i = 0; i < descr.values.len(); i++) {
         let assaultFuse = descr.values[i] == ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE
         let text = assaultFuse ? "#options/bomb_activation_type/assault"
           : time.secondsToString(descr.values[i], true, true, 1)
@@ -631,10 +605,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
         descr.items.append({
           text = text
-          tooltip = loc(tooltipLoc, { sec = assaultFuse? assaultFuseTime : descr.values[i] })
+          tooltip = loc(tooltipLoc, { sec = assaultFuse ? assaultFuseTime : descr.values[i] })
         })
       }
-      let curValue = isBombActivationAssault? assaultFuseTime : descr.values[descr.value]
+      let curValue = isBombActivationAssault ? assaultFuseTime : descr.values[descr.value]
       if (::get_option_bomb_activation_time() != curValue) {
         ::set_option_bomb_activation_type(isBombActivationAssault ? BOMB_ACT_ASSAULT : BOMB_ACT_TIME)
         ::set_option_bomb_activation_time(curValue)
@@ -648,8 +622,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let unit = ::getAircraftByName(::aircraft_for_weapons)
       let bombSeries = [0, 4, 6, 12, 24, 48]
       let nbrBomb = unit != null ? bombNbr(unit) : bombSeries.top()
-      for (local i = 1; i < bombSeries.len(); ++i)
-      {
+      for (local i = 1; i < bombSeries.len(); ++i) {
         if (bombSeries[i] >= nbrBomb) // max = -1
           break
 
@@ -673,10 +646,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_COUNTERMEASURES_PERIODS:
        descr.id = "countermeasures_periods"
-       descr.values = [0.1,0.2,0.5,1.0]
+       descr.values = [0.1, 0.2, 0.5, 1.0]
        descr.items = []
-       for (local i = 0; i < descr.values.len(); ++i)
-       {
+       for (local i = 0; i < descr.values.len(); ++i) {
          let text = time.secondsToString(descr.values[i], true, true, 2)
          let tooltipLoc = "guiHints/countermeasures_periods/periods"
          descr.items.append({
@@ -692,9 +664,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_COUNTERMEASURES_SERIES_PERIODS:
        descr.id = "countermeasures_series_periods"
        descr.items = []
-       descr.values = [1,2,5,10]
-       for (local i = 0; i < descr.values.len(); ++i)
-       {
+       descr.values = [1, 2, 5, 10]
+       for (local i = 0; i < descr.values.len(); ++i) {
           let text = time.secondsToString(descr.values[i], true, true, 2)
           let tooltipLoc = "guiHints/countermeasures_periods/series_periods"
          descr.items.append({
@@ -709,9 +680,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_COUNTERMEASURES_SERIES:
        descr.id = "countermeasures_series"
        descr.items = []
-       descr.values = [1,2,3,4]
-       for (local i = 0; i < descr.values.len(); ++i)
-       {
+       descr.values = [1, 2, 3, 4]
+       for (local i = 0; i < descr.values.len(); ++i) {
           let text = descr.values[i].tostring()
           let tooltipLoc = "guiHints/countermeasures_periods/series"
          descr.items.append({
@@ -728,8 +698,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "depthcharge_activation_time"
       descr.items = []
       descr.values = []
-      for(local i = 3; i <= 10; i++)
-      {
+      for (local i = 3; i <= 10; i++) {
         descr.items.append(time.secondsToString(i, true, true))
         descr.values.append(i)
       }
@@ -747,7 +716,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "rocket_fuse_dist"
       descr.items = ["#options/rocketFuseImpact", "200", "300", "400", "500", "600", "700", "800", "900", "1000"]
       descr.values = [0, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-      if(::aircraft_for_weapons)
+      if (::aircraft_for_weapons)
         descr.value = ::find_in_array(descr.values, get_unit_option(::aircraft_for_weapons, ::USEROPT_ROCKET_FUSE_DIST), null)
       if (!::is_numeric(descr.value))
         descr.value = ::find_in_array(descr.values, ::get_option_rocket_fuse_dist(), null)
@@ -759,12 +728,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let items = ::get_options_torpedo_dive_depth()
       descr.items = []
       descr.values = []
-      foreach(val in items)
-      {
+      foreach (val in items) {
         descr.items.append(val.tostring())
         descr.values.append(val)
       }
-      if(::aircraft_for_weapons)
+      if (::aircraft_for_weapons)
         descr.value = ::find_in_array(descr.values, get_unit_option(::aircraft_for_weapons, ::USEROPT_TORPEDO_DIVE_DEPTH), null)
       if (!::is_numeric(descr.value))
         descr.value = ::find_in_array(descr.values, ::get_option_torpedo_dive_depth(), null)
@@ -780,8 +748,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.unlocks <- []
 
       let localSmokeType = ::get_option_aerobatics_smoke_type()
-      foreach(inst in aeroSmokesList.value)
-      {
+      foreach (inst in aeroSmokesList.value) {
         let { id, unlockId = "", locId = "" } = inst
         if ((id == TRICOLOR_INDEX) && !hasFeature("AerobaticTricolorSmoke")) //not triple color
           continue
@@ -799,8 +766,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR:
     case ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR:
-    case ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR:
-      {
+    case ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR: {
         let optIndex = ::find_in_array(
           [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR],
           optionId)
@@ -827,8 +793,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       let diffCode = ::get_mission_set_difficulty_int()
       let total = ::g_hud_vis_mode.types.len()
-      for(local i = 0; i < total; i++)
-      {
+      for (local i = 0; i < total; i++) {
         let visType = ::g_hud_vis_mode.types[i]
         if (!visType.isAvailable(diffCode))
           continue
@@ -845,8 +810,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       descr.items = []
       descr.values = ::g_font.getAvailableFonts()
-      for(local i = 0; i < descr.values.len(); i++)
-      {
+      for (local i = 0; i < descr.values.len(); i++) {
         let font = descr.values[i]
         descr.items.append({
           text = font.getOptionText()
@@ -888,7 +852,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_JOY_MIN_VIBRATION:
       descr.id = "gamepadMinVibration"
       descr.controlType = optionControlType.SLIDER
-      descr.value = (100.0 * ::get_option_multiplier(OPTION_JOY_MIN_VIBRATION)).tointeger()
+      descr.value = (100.0 * get_option_multiplier(OPTION_JOY_MIN_VIBRATION)).tointeger()
       defaultValue = 5
       break
 
@@ -1182,7 +1146,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "ptt"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_ptt()
+      descr.value = get_option_ptt()
       descr.optionCb = "onPTTChange";
       break
 
@@ -1190,7 +1154,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "voice_chat"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_voicechat()
+      descr.value = get_option_voicechat()
       descr.optionCb = "onVoicechatChange";
       break
 
@@ -1235,7 +1199,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.textChecked <- loc("options/enabled")
       descr.textUnchecked <- loc("#options/disabled")
       descr.hint = loc("options/sound")
-      if(!is_sound_inited())
+      if (!is_sound_inited())
         descr.needRestartClient = true
       descr.value = ::getSystemConfigOption("sound/fmod_sound_enable", true)
       break
@@ -1286,7 +1250,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_AILERONS_MULTIPLIER:
       descr.id = "multiplier_ailerons"
-      descr.value = (::get_option_multiplier(OPTION_AILERONS_MULTIPLIER) * 100).tointeger()
+      descr.value = (get_option_multiplier(OPTION_AILERONS_MULTIPLIER) * 100).tointeger()
       if (descr.value < 0)
         descr.value = 0
       else if (descr.value > 100)
@@ -1295,7 +1259,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_ELEVATOR_MULTIPLIER:
       descr.id = "multiplier_elevator"
-      descr.value = (::get_option_multiplier(OPTION_ELEVATOR_MULTIPLIER) * 100).tointeger()
+      descr.value = (get_option_multiplier(OPTION_ELEVATOR_MULTIPLIER) * 100).tointeger()
       if (descr.value < 0)
         descr.value = 0
       else if (descr.value > 100)
@@ -1304,7 +1268,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_RUDDER_MULTIPLIER:
       descr.id = "multiplier_rudder"
-      descr.value = (::get_option_multiplier(OPTION_RUDDER_MULTIPLIER) * 100).tointeger()
+      descr.value = (get_option_multiplier(OPTION_RUDDER_MULTIPLIER) * 100).tointeger()
       if (descr.value < 0)
         descr.value = 0
       else if (descr.value > 100)
@@ -1313,7 +1277,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_ZOOM_SENSE:
       descr.id = "multiplier_zoom"
-      descr.value = (::get_option_multiplier(OPTION_ZOOM_SENSE) * 100).tointeger()
+      descr.value = (get_option_multiplier(OPTION_ZOOM_SENSE) * 100).tointeger()
       if (descr.value < 0)
         descr.value = 0
       else if (descr.value > 100)
@@ -1326,7 +1290,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.SLIDER
       descr.min <- 5
       descr.max <- 100
-      descr.value = (::get_option_multiplier(OPTION_MOUSE_SENSE) * 50.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_MOUSE_SENSE) * 50.0).tointeger()
       descr.value = clamp(descr.value, descr.min, descr.max)
       break
 
@@ -1335,28 +1299,28 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.SLIDER
       descr.min <- 5
       descr.max <- 100
-      descr.value = (::get_option_multiplier(OPTION_MOUSE_AIM_SENSE) * 50.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_MOUSE_AIM_SENSE) * 50.0).tointeger()
       descr.value = clamp(descr.value, descr.min, descr.max)
       break
 
     case ::USEROPT_GUNNER_VIEW_SENSE:
       descr.id = "multiplier_gunner_view"
-      descr.value = (::get_option_multiplier(OPTION_GUNNER_VIEW_SENSE) * 100.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_GUNNER_VIEW_SENSE) * 100.0).tointeger()
       break
 
     case ::USEROPT_GUNNER_VIEW_ZOOM_SENS:
       descr.id = "multiplier_gunner_view_zoom"
-      descr.value = (::get_option_multiplier(OPTION_GUNNER_VIEW_ZOOM_SENS) * 100.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_GUNNER_VIEW_ZOOM_SENS) * 100.0).tointeger()
       break
 
     case ::USEROPT_ATGM_AIM_SENS_HELICOPTER:
       descr.id = "atgm_aim_sens_helicopter"
-      descr.value = (::get_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER) * 100.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER) * 100.0).tointeger()
       break
 
     case ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER:
       descr.id = "atgm_aim_zoom_sens_helicopter"
-      descr.value = (::get_option_multiplier(OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER) * 100.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER) * 100.0).tointeger()
       break
 
     case ::USEROPT_MOUSE_SMOOTH:
@@ -1373,13 +1337,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_CAMERA_SHAKE_MULTIPLIER:
       descr.id = "camera_shake_gain"
-      descr.value = (::get_option_multiplier(OPTION_CAMERA_SHAKE) * 50.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_CAMERA_SHAKE) * 50.0).tointeger()
       descr.controlType = optionControlType.SLIDER
       break
 
     case ::USEROPT_VR_CAMERA_SHAKE_MULTIPLIER:
       descr.id = "vr_camera_shake_gain"
-      descr.value = (::get_option_multiplier(OPTION_VR_CAMERA_SHAKE) * 50.0).tointeger()
+      descr.value = (get_option_multiplier(OPTION_VR_CAMERA_SHAKE) * 50.0).tointeger()
       descr.controlType = optionControlType.SLIDER
       break
 
@@ -1445,8 +1409,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.insert(0, "") //custom preset
       let p = ::g_controls_manager.getCurPreset()?.getBasePresetInfo()
         ?? ::g_controls_presets.getCurrentPresetInfo()
-      for(local k = 0; k < descr.values.len(); k++)
-      {
+      for (local k = 0; k < descr.values.len(); k++) {
         local name = descr.values[k]
         local suffix = isPlatformSony ? "ps4/" : ""
         let vPresetData = ::g_controls_presets.parsePresetName(name)
@@ -1459,8 +1422,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           imageName = "preset_gamepad.svg"
         else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
           imageName = "preset_ps4.svg"
-        else if (name == "")
-        {
+        else if (name == "") {
           name = "custom"
           imageName = "preset_custom.png"
           suffix = ""
@@ -1478,7 +1440,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_ROUNDS:
       descr.id = "rounds"
-      descr.items = ["#options/rounds0","#options/rounds1","#options/rounds3","#options/rounds5","#options/rounds7"]
+      descr.items = ["#options/rounds0", "#options/rounds1", "#options/rounds3", "#options/rounds5", "#options/rounds7"]
       descr.values = [0, 1, 3, 5, 7]
       defaultValue = 5
       break;
@@ -1509,7 +1471,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
                      "#options/weatherrain",
                      "#options/weatherstorm"
                     ]
-      descr.values = ["clear", "good", "hazy", "thin_clouds","cloudy","poor","blind",/*"shower"*/"rain","thunder"]
+      descr.values = ["clear", "good", "hazy", "thin_clouds", "cloudy", "poor", "blind", /*"shower"*/ "rain", "thunder"]
       defaultValue = "cloudy"
       if (::SessionLobby.isInRoom())
         prevValue = ::SessionLobby.getMissionParam("weather", null)
@@ -1575,10 +1537,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_SESSION_PASSWORD:
       descr.id = "session_password"
       descr.controlType = optionControlType.EDITBOX
-      descr.controlName <-"editbox"
+      descr.controlName <- "editbox"
       descr.value = ::SessionLobby.password
-      descr.getValueLocText = function(val)
-      {
+      descr.getValueLocText = function(val) {
         if (val == true)
           return loc("options/yes")
         return loc("options/no")
@@ -1591,15 +1552,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       if (optionId == ::USEROPT_TAKEOFF_MODE &&
         (::mission_name_for_takeoff == "dynamic_free_flight01" ||
-         ::mission_name_for_takeoff == "dynamic_free_flight02"))
-      {
-        descr.items = ["#options/takeoffmode/no","#options/takeoffmode/real"]
+         ::mission_name_for_takeoff == "dynamic_free_flight02")) {
+        descr.items = ["#options/takeoffmode/no", "#options/takeoffmode/real"]
         descr.values = [0, 2]
         defaultValue = 0
       }
-      else
-      {
-        descr.items = ["#options/takeoffmode/no","#options/takeoffmode/teleport","#options/takeoffmode/real"]
+      else {
+        descr.items = ["#options/takeoffmode/no", "#options/takeoffmode/teleport", "#options/takeoffmode/real"]
         descr.values = [0, 1, 2]
         defaultValue = 1
       }
@@ -1654,8 +1613,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
 
-      for (local i = 2; i <= ::global_max_players_versus; i+=2)
-      {
+      for (local i = 2; i <= ::global_max_players_versus; i += 2) {
         descr.items.append("" + i)
         descr.values.append(i)
       }
@@ -1666,8 +1624,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "minPlayers"
       descr.items = []
       descr.values = []
-      for (local i = 0; i <= ::global_max_players_versus; i+=2)
-      {
+      for (local i = 0; i <= ::global_max_players_versus; i += 2) {
         descr.items.append("" + i)
         descr.values.append(i)
       }
@@ -1677,30 +1634,28 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "complaint_category"
       descr.values = ["FOUL", "ABUSE", "TEAMKILL", "BOT", "SPAM", "OTHER"]
       descr.items = []
-      for(local i=0; i<descr.values.len(); i++)
-        descr.items.append("#charServer/ban/reason/"+descr.values[i])
+      for (local i = 0; i < descr.values.len(); i++)
+        descr.items.append("#charServer/ban/reason/" + descr.values[i])
       break
     case ::USEROPT_BAN_PENALTY:
       descr.id = "ban_penalty"
       descr.values = []
-      if (::myself_can_devoice())
-      {
+      if (::myself_can_devoice()) {
         descr.values.append("DEVOICE")
         descr.values.append("SILENT_DEVOICE")
       }
       if (::myself_can_ban())
         descr.values.append("BAN")
       descr.items = []
-      for(local i=0; i<descr.values.len(); i++)
-        descr.items.append("#charServer/penalty/"+descr.values[i])
+      for (local i = 0; i < descr.values.len(); i++)
+        descr.items.append("#charServer/penalty/" + descr.values[i])
       break
     case ::USEROPT_BAN_TIME:
       descr.id = "ban_time"
-      descr.values = ::myself_can_ban()? [1, 2, 4, 7, 14] : [1]
+      descr.values = ::myself_can_ban() ? [1, 2, 4, 7, 14] : [1]
       descr.items = []
       let dayVal = time.daysToSeconds(1)
-      for(local i=0; i<descr.values.len(); i++)
-      {
+      for (local i = 0; i < descr.values.len(); i++) {
         descr.items.append(descr.values[i] + loc("measureUnits/days"))
         descr.values[i] *= dayVal
       }
@@ -1724,8 +1679,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "maxRespawns"
       descr.items = ["#options/resp_unlimited", "#options/resp_all", "#options/resp_none"]
       descr.values = [-2, -1,  1]
-      for(local i = 2; i <= 3; i++)
-      {
+      for (local i = 2; i <= 3; i++) {
         descr.items.append(loc("options/resp_limited/value", { amount = i }))
         descr.values.append(i)
       }
@@ -1788,7 +1742,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "auto_show_chat"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_autoShowChat() != 0
+      descr.value = get_option_auto_show_chat() != 0
       break
 
     case ::USEROPT_CHAT_MESSAGES_FILTER:
@@ -1796,14 +1750,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = ["#options/chat_messages_all", "#options/chat_messages_team_and_squad", "#options/chat_messages_squad",
         "#options/chat_messages_system", "#options/chat_messages_nothing"]
       descr.values = [0, 1, 2, 3, 4]
-      descr.value = ::get_option_chat_messages_filter()
+      descr.value = get_option_chat_messages_filter()
       break
 
     case ::USEROPT_CHAT_FILTER:
       descr.id = "chat_filter"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      descr.value = ::get_option_chatFilter() != 0
+      descr.value = get_option_chat_filter() != 0
       break
 
     case ::USEROPT_DAMAGE_INDICATOR_SIZE:
@@ -1991,8 +1945,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = ["#options/auto", "#options/always"]
       descr.values = [0, 2]
 
-      if (::g_difficulty.SIMULATOR.isAvailable())
-      {
+      if (::g_difficulty.SIMULATOR.isAvailable()) {
         descr.items.insert(1, "#options/inhardcore")
         descr.values.insert(1, 1)
       }
@@ -2006,8 +1959,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = ["#options/auto", "#options/always"]
       descr.values = [0, 2]
 
-      if (::g_difficulty.SIMULATOR.isAvailable())
-      {
+      if (::g_difficulty.SIMULATOR.isAvailable()) {
         descr.items.insert(1, "#options/inhardcore")
         descr.values.insert(1, 1)
       }
@@ -2028,8 +1980,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = ["#options/auto", "#options/always"]
       descr.values = [0, 2]
 
-      if (::g_difficulty.SIMULATOR.isAvailable())
-      {
+      if (::g_difficulty.SIMULATOR.isAvailable()) {
         descr.items.insert(1, "#options/inhardcore")
         descr.values.insert(1, 1)
       }
@@ -2200,7 +2151,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "helpers_mode";
       descr.items = []
       let types = ["mouse_aim", "virtual_instructor", "simplified_controls", "full_real"]
-      for(local t=0; t<types.len(); t++)
+      for (local t = 0; t < types.len(); t++)
         descr.items.append({
           text = "#options/" + types[t]
           tooltip = "#options/" + types[t] + "/tooltip"
@@ -2220,7 +2171,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "helpers_mode";
       descr.items = []
       let types = ["mouse_aim", "virtual_instructor", "simplified_controls", "full_real"]
-      for(local t=0; t<types.len(); t++)
+      for (local t = 0; t < types.len(); t++)
         descr.items.append({
           text = "#options/" + types[t] + "/tank"
           tooltip = "#options/" + types[t] + "/tank/tooltip"
@@ -2282,11 +2233,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       descr.trParams <- "optionWidthInc:t='double';"
-      if (type(aircraft) == "string")
-      {
+      if (type(aircraft) == "string") {
         let air = ::getAircraftByName(aircraft)
-        if (air)
-        {
+        if (air) {
           let bullets = getOptionsBulletsList(air, groupIndex, true)
           descr.title = getBulletsListHeader(air, bullets)
 
@@ -2321,14 +2270,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_SKIN:
       descr.id = "skin"
       descr.trParams <- "optionWidthInc:t='double';"
-      if (type(::aircraft_for_weapons) == "string")
-      {
+      if (type(::aircraft_for_weapons) == "string") {
         let skins = ::g_decorator.getSkinsOption(::aircraft_for_weapons)
         descr.items = skins.items
         descr.values = skins.values
         descr.value = skins.value
-      } else
-      {
+      }
+      else {
         descr.items = []
         descr.values = []
       }
@@ -2342,19 +2290,16 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = [""]
       defaultValue = ""
 
-      assert(::cur_aircraft_name!=null, "ERROR: variable cur_aircraft_name is null")
+      assert(::cur_aircraft_name != null, "ERROR: variable cur_aircraft_name is null")
 
-      if (is_platform_pc && hasFeature("UserSkins") && ::cur_aircraft_name)
-      {
+      if (is_platform_pc && hasFeature("UserSkins") && ::cur_aircraft_name) {
         let userSkins = ::get_user_skins_blk()
         let skinsBlock = userSkins?[::cur_aircraft_name]
         let cdb = ::get_user_skins_profile_blk()
         let setValue = cdb?[::cur_aircraft_name]
 
-        if (skinsBlock)
-        {
-          for(local i = 0; i < skinsBlock.blockCount(); i++)
-          {
+        if (skinsBlock) {
+          for (local i = 0; i < skinsBlock.blockCount(); i++) {
             let table = skinsBlock.getBlock(i)
             descr.items.append({
                                 text = table.name
@@ -2367,8 +2312,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
               descr.value = i + 1
           }
         }
-        if (descr.value == null)
-        {
+        if (descr.value == null) {
           descr.value = 0
           if (setValue)
             cdb[::cur_aircraft_name] = defaultValue
@@ -2384,8 +2328,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = difficulty.contentAllowedPresetOptionDefVal
       descr.id = "content_allowed_preset"
       descr.title = loc("options/content_allowed_preset")
-      if (difficulty != ::g_difficulty.UNKNOWN)
-      {
+      if (difficulty != ::g_difficulty.UNKNOWN) {
         descr.id += difficulty.diffCode
         descr.title += loc("ui/parentheses/space", { text = loc(difficulty.locId) })
       }
@@ -2394,8 +2337,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlName <- "combobox"
       descr.items = []
       descr.values = []
-      foreach (value in contentPreset.getContentPresets())
-      {
+      foreach (value in contentPreset.getContentPresets()) {
         descr.items.append(loc("content/tag/" + value))
         descr.values.append(value)
       }
@@ -2465,8 +2407,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.diffCode <- []
       descr.optionCb = "onDifficultyChange"
 
-      for(local i = 0; i < ::g_difficulty.types.len(); i++)
-      {
+      for (local i = 0; i < ::g_difficulty.types.len(); i++) {
         let diff = ::g_difficulty.types[i]
         if (!diff.isAvailable())
           continue
@@ -2476,8 +2417,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.diffCode.append(diff.diffCode)
       }
 
-      if (::get_game_mode() != GM_TRAINING)
-      {
+      if (get_game_mode() != GM_TRAINING) {
         descr.items.append("#difficulty3")
         descr.values.append("custom")
         descr.diffCode.append(DIFFICULTY_CUSTOM)
@@ -2497,15 +2437,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.optionCb = "onDifficultyChange"
 
       foreach (_idx, diff in ::g_difficulty.types)
-        if (diff.isAvailable())
-        {
+        if (diff.isAvailable()) {
           descr.items.append("#" + diff.locId)
           descr.values.append(diff.name)
           descr.idxValues.append(diff.diffCode)
         }
 
-      if (descr.items.len() > 1)
-      {
+      if (descr.items.len() > 1) {
         descr.items.insert(0, "#options/any")
         descr.values.insert(0, "any")
         descr.idxValues.insert(0, -1)
@@ -2549,8 +2487,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "num_friendlies"
       descr.items = []
       descr.values = []
-      for (local i = 0; i < 16; i++)
-      {
+      for (local i = 0; i < 16; i++) {
         descr.items.append("" + i)
         descr.values.append(i)
       }
@@ -2560,8 +2497,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "num_enemies"
       descr.items = []
       descr.values = []
-      for (local i = 0; i <= 16; i++)
-      {
+      for (local i = 0; i <= 16; i++) {
         descr.items.append("" + i)
         descr.values.append(i)
       }
@@ -2571,17 +2507,16 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "time_limit"
       descr.values = [3, 5, 10, 15, 20, 25, 30, 60, 120, 360]
       descr.items = []
-      for(local i = 0; i < descr.values.len(); i++)
+      for (local i = 0; i < descr.values.len(); i++)
         descr.items.append(time.hoursToString(time.secondsToMinutes(descr.values[i]), false))
       defaultValue = 10
-      descr.getValueLocText = function(val)
-      {
+      descr.getValueLocText = function(val) {
         if (val < 0)
           return loc("options/timeLimitAuto")
         if (val > 10000)
           return loc("options/timeUnlimited")
         let result = getTblValue(this.values.indexof(val), this.items)
-        if(result != null)
+        if (result != null)
           return result
         return time.hoursToString(time.secondsToMinutes(val), false)
       }
@@ -2613,7 +2548,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 */
     case ::USEROPT_MISSION_COUNTRIES_TYPE:
       descr.id = "mission_countries_type"
-      descr.items = ["#options/countryArcade","#options/countryReal", "#options/countrySymmetric", "#options/countryCustom"]
+      descr.items = ["#options/countryArcade", "#options/countryReal", "#options/countrySymmetric", "#options/countryCustom"]
       descr.values = [misCountries.ALL, misCountries.BY_MISSION, misCountries.SYMMETRIC, misCountries.CUSTOM]
       defaultValue = misCountries.ALL
       descr.optionCb = "onMissionCountriesType"
@@ -2637,23 +2572,20 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.listClass <- "countries"
 
       local allowedMask = (1 << shopCountriesList.len()) - 1
-      if (getTblValue("isEventRoom", context, false))
-      {
+      if (getTblValue("isEventRoom", context, false)) {
         let allowedList = context?.countries[team.name]
         if (allowedList)
           allowedMask = ::get_bit_value_by_array(allowedList, shopCountriesList)
                         || allowedMask
       }
-      else if ("missionName" in context)
-      {
+      else if ("missionName" in context) {
         let countries = getSlotbarOverrideCountriesByMissionName(context.missionName)
         if (countries.len())
           allowedMask = ::get_bit_value_by_array(countries, shopCountriesList)
       }
       descr.allowedMask <- allowedMask
 
-      for (local nc = 0; nc < shopCountriesList.len(); nc++)
-      {
+      for (local nc = 0; nc < shopCountriesList.len(); nc++) {
         let country = shopCountriesList[nc]
         let isEnabled = (allowedMask & (1 << nc)) != 0
         descr.items.append({
@@ -2665,8 +2597,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.values.append(country)
       }
 
-      if (::SessionLobby.isInRoom())
-      {
+      if (::SessionLobby.isInRoom()) {
         let cList = ::SessionLobby.getPublicParam(descr.sideTag, null)
         if (cList)
           prevValue = ::get_bit_value_by_array(cList, shopCountriesList)
@@ -2732,8 +2663,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       descr.availableUnitTypesMask <- availableUnitTypesMask
 
-      foreach (unitType in unitTypes.types)
-      {
+      foreach (unitType in unitTypes.types) {
         if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
           continue
         let isVisible = !!(availableUnitTypesMask & unitType.bit)
@@ -2747,8 +2677,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         })
       }
 
-      if (isKillStreaksOptionAvailable)
-      {
+      if (isKillStreaksOptionAvailable) {
         let killStreaksOptionLocName = loc("options/use_killstreaks")
         descr.textAfter <- colorize("fadedTextColor", "+ " + killStreaksOptionLocName)
         descr.hint += "\n" + loc("options/advice/disable_option_to_have_more_choices",
@@ -2766,8 +2695,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
 
       let maxEconomicRank = getMaxEconomicRank()
-      for (local mrank = 0; mrank <= maxEconomicRank; mrank++)
-      {
+      for (local mrank = 0; mrank <= maxEconomicRank; mrank++) {
         let br = ::calc_battle_rating_from_rank(mrank)
         descr.values.append(mrank)
         descr.items.append(format("%.1f", br))
@@ -2802,8 +2730,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "race_can_shoot"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      if (::SessionLobby.isInRoom())
-      {
+      if (::SessionLobby.isInRoom()) {
         let cannotShoot = ::SessionLobby.getMissionParam("raceForceCannotShoot", null)
         if (cannotShoot != null)
           prevValue = !cannotShoot
@@ -2818,12 +2745,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
       descr.items = []
       descr.values = []
-      if (getTblValue("isEventRoom", context, false))
-      {
+      if (getTblValue("isEventRoom", context, false)) {
         descr.title = loc("guiHints/chooseUnitsMMRank")
         let brRanges = getTblValue("brRanges", context, [])
-        for(local i = 0; i < brRanges.len(); i++)
-        {
+        for (local i = 0; i < brRanges.len(); i++) {
           let range = brRanges[i]
           let minBR = ::calc_battle_rating_from_rank(getTblValue(0, range, 0))
           let maxBR = ::calc_battle_rating_from_rank(getTblValue(1, range, ::max_country_rank))
@@ -2837,8 +2762,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       }
 
       if (!descr.values.len())
-        for(local i = 1; i <= ::max_country_rank; i++)
-        {
+        for (local i = 1; i <= ::max_country_rank; i++) {
           descr.items.append(loc("shop/age/num", { num = ::get_roman_numeral(i) }))
           descr.values.append(i)
         }
@@ -2849,8 +2773,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.BIT_LIST
       descr.items = []
       descr.values = []
-      for(local i = 0; i < unitTypes.types.len(); i++)
-      {
+      for (local i = 0; i < unitTypes.types.len(); i++) {
         let unitType = unitTypes.types[i]
         if (!unitType.isAvailable())
           continue
@@ -2864,8 +2787,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.BIT_LIST
       descr.items = []
       descr.values = []
-      for(local i = 1; i <= ::max_country_rank; i++)
-      {
+      for (local i = 1; i <= ::max_country_rank; i++) {
         descr.items.append(::get_roman_numeral(i))
         descr.values.append(i)
       }
@@ -2911,26 +2833,23 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "year"
       //filled by onLayoutChange()
       descr.trParams <- "optionWidthInc:t='double';"
-      let isKoreanWarDC = ::get_game_mode() == GM_DYNAMIC && ::current_campaign?.id == "korea_dynamic"
+      let isKoreanWarDC = get_game_mode() == GM_DYNAMIC && ::current_campaign?.id == "korea_dynamic"
       let yearsArray = !isKoreanWarDC
         ? [ 1940, 1941, 1942, 1943, 1944, 1945 ]
         : [ 1950, 1951, 1952, 1953 ]
       descr.valuesInt <- yearsArray
       descr.items <- yearsArray.map(@(yyyy) yyyy.tostring())
       descr.values = yearsArray.map(@(yyyy) $"year{yyyy}")
-      if (::get_game_mode() == GM_DYNAMIC && ::current_campaign)
-      {
+      if (get_game_mode() == GM_DYNAMIC && ::current_campaign) {
         let teamOption = ::get_option(::USEROPT_MP_TEAM_COUNTRY)
         let teamIdx = max(teamOption.values[teamOption.value] - 1, 0)
         descr.items = []
-        for(local i = 0; i < descr.values.len(); i++)
-        {
+        for (local i = 0; i < descr.values.len(); i++) {
           local enabled = true
           local tooltip = ""
           let yearId = "country_" + ::current_campaign.countries[teamIdx] + "_" + descr.values[i]
           let blk = ::g_unlocks.getUnlockById(yearId)
-          if (blk)
-          {
+          if (blk) {
             enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
             tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(blk))
           }
@@ -2979,17 +2898,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       else if (::mission_settings && ::mission_settings.layout)
         countries = ::get_mission_team_countries(::mission_settings.layout)
 
-      if (countries)
-      {
+      if (countries) {
         descr.trParams <- "iconType:t='country';"
         descr.trListParams <- "iconType:t='listbox_country';"
         descr.listClass <- "countries"
         local selValue = -1
-        for(local i = 0; i < descr.values.len(); i++)
-        {
+        for (local i = 0; i < descr.values.len(); i++) {
           let c = getTblValue(descr.values[i] - 1, countries, "country_0")
-          if (!c)
-          {
+          if (!c) {
             descr.values.remove(i)
             continue
           }
@@ -2999,14 +2915,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           local enabled = false
           local tooltip = ""
 
-          if (::get_game_mode() == GM_DYNAMIC && ::current_campaign)
-          {
+          if (get_game_mode() == GM_DYNAMIC && ::current_campaign) {
             let countryId = ::current_campaign.id + "_" + ::current_campaign.countries[i]
             let unlock = ::g_unlocks.getUnlockById(countryId)
-            if(unlock==null)
+            if (unlock == null)
               assert(false, ("Not found unlock " + countryId))
-            else
-            {
+            else {
               text = "#country_" + ::current_campaign.countries[i]
               image = ::get_country_icon("country_" + ::current_campaign.countries[i], true)
               enabled = ::is_unlocked_scripted(UNLOCKABLE_DYNCAMPAIGN, countryId)
@@ -3028,10 +2942,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           descr.value = selValue
       }
 
-      if (descr.items.len()==0)
-      {
+      if (descr.items.len() == 0) {
         let itemsList = ["#multiplayer/teamRandom", "#multiplayer/teamA", "#multiplayer/teamB"]
-        for(local v=0; v< descr.values.len(); v++)
+        for (local v = 0; v < descr.values.len(); v++)
           descr.items.append(itemsList[descr.values[v]])
         descr.value = ::find_in_array(descr.values, prevValue, 0)
       }
@@ -3041,14 +2954,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_DMP_MAP:
       descr.id = "dyn_mp_map"
-      let modeNo = ::get_game_mode()
+      let modeNo = get_game_mode()
       descr.values = []
       descr.items = []
       let gameModeMaps = ::get_game_mode_maps()
-      if (modeNo >= 0 && modeNo < gameModeMaps.len())
-      {
-        for (local i = 0; i < gameModeMaps[modeNo].items.len(); i++)
-        {
+      if (modeNo >= 0 && modeNo < gameModeMaps.len()) {
+        for (local i = 0; i < gameModeMaps[modeNo].items.len(); i++) {
           if ((modeNo == GM_SINGLE_MISSION) || (modeNo == GM_EVENT))
             if (!gameModeMaps[modeNo].coop[i])
               continue;
@@ -3073,10 +2984,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       descr.items = []
       descr.optionCb = "onSectorChange"
-      let dynamic_zones = ::dynamic_get_zones()
-      for (local i = 0; i < dynamic_zones.len(); i++)
-      {
-        descr.items.append(::mission_settings.layoutName+"/"+dynamic_zones[i])
+      let dynamic_zones = dynamicGetZones()
+      for (local i = 0; i < dynamic_zones.len(); i++) {
+        descr.items.append(::mission_settings.layoutName + "/" + dynamic_zones[i])
         descr.values.append(dynamic_zones[i])
       }
       break
@@ -3106,7 +3016,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "dyn_surround"
       descr.items = ["#options/dyncount/front_enemy", "#options/dyncount/front_ally",
                      "#options/dyncount/ally_around_ally", "#options/dyncount/ally_around_enemy",
-                     "#options/dyncount/enemy_around_ally", "#options/dyncount/enemy_around_enemy",]
+                     "#options/dyncount/enemy_around_ally", "#options/dyncount/enemy_around_enemy", ]
       descr.values = [0, 1, 2, 3, 4, 5]
       descr.optionCb = "onSectorChange"
       break
@@ -3115,7 +3025,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "wins_to_complete"
       descr.items = ["#options/dyncount/capture_all_sectors",
 //                     "#options/dyncount/need_3_wins",   //temporary disabled 3 wins for anniversary event
-                     "#options/dyncount/need_5_wins",];
+                     "#options/dyncount/need_5_wins", ];
       descr.values = [-1, /* 3, */ 5] //temporary disabled 3 wins for anniversary event
       defaultValue = -1
       break;
@@ -3128,8 +3038,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         prevValue = ::SessionLobby.getMissionParam("optionalTakeOff", null)
       break
 
-    case ::USEROPT_LOAD_FUEL_AMOUNT:
-      {
+    case ::USEROPT_LOAD_FUEL_AMOUNT: {
         descr.id = "fuel_amount"
         descr.items = []
         descr.values = []
@@ -3139,8 +3048,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         local fuelConsumptionPerHour = 100.0;
         local minutes = [0, 20.0, 30.0, 45.0, 60.0, 1000000.0]
         local isFuelFixed = false
-        if(::cur_aircraft_name)
-        {
+        if (::cur_aircraft_name) {
           prevValue = get_unit_option(::cur_aircraft_name, ::USEROPT_LOAD_FUEL_AMOUNT)
           maxFuel = ::get_aircraft_max_fuel(::cur_aircraft_name)
           let difOpt = ::get_option(::USEROPT_DIFFICULTY)
@@ -3148,19 +3056,16 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           if (difficulty == "custom")
             difficulty = ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()).name
           let modOpt = ::get_option(::USEROPT_MODIFICATIONS)
-          let useModifications = ::get_game_mode() == GM_TEST_FLIGHT || ::get_game_mode() == GM_BUILDER ? modOpt.values[modOpt.value] : true
+          let useModifications = get_game_mode() == GM_TEST_FLIGHT || get_game_mode() == GM_BUILDER ? modOpt.values[modOpt.value] : true
           fuelConsumptionPerHour = ::get_aircraft_fuel_consumption(::cur_aircraft_name, difficulty, useModifications)
 
-          if (fuelConsumptionPerHour > 0 && ::is_in_flight())
-          {
+          if (fuelConsumptionPerHour > 0 && ::is_in_flight()) {
             let fixedPercent = ::g_mis_custom_state.getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
-            if (fixedPercent > 0)
-            {
+            if (fixedPercent > 0) {
               isFuelFixed = true
               minutes = [fixedPercent * maxFuel / time.minutesToSeconds(fuelConsumptionPerHour)]
               let value = (fixedPercent * 1000000 + 0.5).tointeger()
-              if (value != prevValue)
-              {
+              if (value != prevValue) {
                 prevValue = value
                 set_gui_option(::USEROPT_LOAD_FUEL_AMOUNT, value)
               }
@@ -3168,8 +3073,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           }
         }
 
-        if (!::is_numeric(prevValue))
-        {
+        if (!::is_numeric(prevValue)) {
           prevValue = get_gui_option(::USEROPT_LOAD_FUEL_AMOUNT);
           if (!::is_numeric(prevValue))
             prevValue = -1
@@ -3177,17 +3081,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
         let minFuelPercent = 0.3
         local foundMax = false
-        for (local ind = 0; ind < minutes.len(); ind++)
-        {
+        for (local ind = 0; ind < minutes.len(); ind++) {
           let m = minutes[ind]
           local timeInHours = time.secondsToMinutes(m)
           let fuelReq = fuelConsumptionPerHour * timeInHours
           local percent = maxFuel > 0.0 ? fuelReq / maxFuel : 0.0
           local text = ""
-          if (percent <= minFuelPercent) //minFuel
-          {
-            if (!isFuelFixed) //we allow to custom rules set fuel below max, but show it as min_tank
-            {
+          if (percent <= minFuelPercent) { //minFuel
+            if (!isFuelFixed) { //we allow to custom rules set fuel below max, but show it as min_tank
               if (descr.values.len() > 0 || m) //only 0 show as minFuelPercent
                 continue
               percent = minFuelPercent
@@ -3195,10 +3096,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
             }
             text = loc("options/min_tank")
           }
-          else if(fuelReq > maxFuel * 0.95) //maxFuel
-          {
-            if (!isFuelFixed)
-            {
+          else if (fuelReq > maxFuel * 0.95) { //maxFuel
+            if (!isFuelFixed) {
               percent = 1.0
               timeInHours = fuelConsumptionPerHour > 0.0 ? maxFuel * percent / fuelConsumptionPerHour : 0.0
             }
@@ -3214,7 +3113,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           descr.items.append(text)
           let value = (percent * 1000000 + 0.5).tointeger()
           descr.values.append(value)
-          if(descr.value == null || value <= prevValue)
+          if (descr.value == null || value <= prevValue)
             descr.value = descr.values.len() - 1
 
           if (foundMax)
@@ -3266,12 +3165,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       local index = 0
-      if (::current_campaign_mission != null)
-      {
+      if (::current_campaign_mission != null) {
         let metaInfo = ::get_mission_meta_info(::current_campaign_mission)
         let values = ::get_mission_types_from_meta_mission_info(metaInfo)
-        for (index = 0; index < values.len(); index++)
-        {
+        for (index = 0; index < values.len(); index++) {
           descr.items.append("#options/" + values[index])
           descr.values.append(values[index])
         }
@@ -3288,8 +3185,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = 2
       break
 
-    case ::USEROPT_COUNTRY:
-      {
+    case ::USEROPT_COUNTRY: {
         descr.id = "profileCountry"
         descr.items = []
         descr.values = []
@@ -3302,8 +3198,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         let dMode = ::game_mode_manager.getCurrentGameMode()
         let event = isDominationMode && dMode && dMode.getEvent()
 
-        for (local nc = start; nc < shopCountriesList.len(); nc++)
-        {
+        for (local nc = start; nc < shopCountriesList.len(); nc++) {
           if (::mission_settings.battleMode == BATTLE_TYPES.TANK && nc < 0)
             continue
 
@@ -3320,8 +3215,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         descr.value = 0
         let c = profileCountrySq.value
         for (local nc = 0; nc < descr.values.len(); nc++)
-          if (c == descr.values[nc])
-          {
+          if (c == descr.values[nc]) {
             descr.value = nc
           }
         descr.optionCb = "onProfileChange"
@@ -3331,48 +3225,63 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_CLUSTER:
     case ::USEROPT_RANDB_CLUSTER:
       descr.id = "cluster"
-      descr.items = []
-      descr.values = []
+      descr.controlType = optionId == ::USEROPT_RANDB_CLUSTER
+        ? optionControlType.BIT_LIST
+        : optionControlType.LIST
 
       if (::g_clusters.clusters_info.len() > 0) {
         descr.items = ::g_clusters.clusters_info.map(@(c) {
           text = ::g_clusters.getClusterLocName(c.name)
           name = c.name
-          enable = true
           image = c.isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
           tooltip = c.isUnstable ? loc("multiplayer/cluster_connection_unstable") : null
           isUnstable = c.isUnstable
-        })
-        descr.values = ::g_clusters.clusters_info.map(@(c) c.name)
-        let defaultClusters = getClustersByCountry(getCountryCode())
-          .filter(@(c) descr.values.contains(c))
-        defaultValue = ";".join(defaultClusters.len() > 0 ? defaultClusters : descr.values)
-      }
-      else {
-        // only in dev mode (otherwise would be logout)
-        descr.items.append({
-          text = "---"
-          enable = true
+          isDefault = c.isDefault
+          isAuto = false
+        }).append({
+          text = loc("options/auto")
+          name = "auto"
           image = null
           tooltip = null
           isUnstable = false
+          isDefault = false
+          isAuto = true
         })
+        descr.values = descr.items.map(@(i) i.name)
+        defaultValue = optionId == ::USEROPT_CLUSTER
+          ? "auto"
+          : ";".join(descr.items.filter(@(i) i.isAuto || i.isDefault).map(@(i) i.name))
+      }
+      else {
+        // only in dev mode (otherwise would be logout)
+        descr.items = [{
+          text = "---"
+          image = null
+          tooltip = null
+          isUnstable = false
+          isDefault = false
+          isAuto = false
+        }]
+        descr.values = [""]
+        descr.value = descr.controlType == optionControlType.BIT_LIST ? 1 : ""
         defaultValue = ""
-        descr.values.append(defaultValue)
+        break
       }
 
       prevValue = ::get_gui_option_in_mode(optionId, ::OPTIONS_MODE_MP_DOMINATION)
-      if (optionId == ::USEROPT_CLUSTER)
-      {
+      if (optionId == ::USEROPT_CLUSTER) {
         if (::SessionLobby.isInRoom())
           prevValue = ::SessionLobby.getPublicParam("cluster", null)
       }
-      else if (optionId == ::USEROPT_RANDB_CLUSTER)
-      {
-        descr.controlType = optionControlType.BIT_LIST
+      else if (optionId == ::USEROPT_RANDB_CLUSTER) {
         descr.value = 0
-        if (::u.isString(prevValue))
-          descr.value = ::get_bit_value_by_array(split_by_chars(prevValue, ";"), descr.values)
+        if (::u.isString(prevValue)) {
+          local selectedValues = split_by_chars(prevValue, ";")
+          let isAuto = selectedValues.contains("auto")
+          if (isAuto)
+            selectedValues = split_by_chars(defaultValue, ";")
+          descr.value = ::get_bit_value_by_array(selectedValues, descr.values)
+        }
         if (!descr.value)
           descr.value = ::get_bit_value_by_array(split_by_chars(defaultValue, ";"), descr.values) || 1
       }
@@ -3393,8 +3302,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let curPilotImgId = ::get_cur_rank_info().pilotId
       let icons = avatars.getIcons()
       let marketplaceItemdefIds = []
-      for (local nc = 0; nc < icons.len(); nc++)
-      {
+      for (local nc = 0; nc < icons.len(); nc++) {
         let unlockId = icons[nc]
         let unlockItem = ::g_unlocks.getUnlockById(unlockId)
         let isShown = ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId) || isUnlockVisible(unlockItem)
@@ -3411,8 +3319,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           tooltipId = ::g_tooltip.getIdUnlock(unlockId, { showProgress = true })
           marketplaceItemdefId
         }
-        if (item.show && item.enabled)
-        {
+        if (item.show && item.enabled) {
           item.seenListId <- SEEN.AVATARS
           item.seenEntity <- unlockId
         }
@@ -3432,8 +3339,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       descr.trParams <- "iconType:t='crosshair';"
       let c = ::get_hud_crosshair_type()
-      for (local nc = 0; nc < ::crosshair_icons.len(); nc++)
-      {
+      for (local nc = 0; nc < ::crosshair_icons.len(); nc++) {
         descr.items.append({
           image = "#ui/gameuiskin#" + ::crosshair_icons[nc]
         })
@@ -3448,8 +3354,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       let c = ::get_hud_crosshair_color()
-      for (local nc = 0; nc < ::crosshair_colors.len(); nc++)
-      {
+      for (local nc = 0; nc < ::crosshair_colors.len(); nc++) {
         descr.values.append(nc)
         let config = ::crosshair_colors[nc]
         let item = { text = "#crosshairColor/" + config.name }
@@ -3467,8 +3372,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
 
       foreach (_idx, diff in ::g_difficulty.types)
-        if (diff.isAvailable())
-        {
+        if (diff.isAvailable()) {
           descr.items.append("#" + diff.locId)
           descr.values.append(diff.diffCode)
         }
@@ -3685,8 +3589,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "internet_radio_station";
       descr.items = []
       descr.values = ::get_internet_radio_stations();
-      for (local i = 0; i < descr.values.len(); i++)
-      {
+      for (local i = 0; i < descr.values.len(); i++) {
         let str = "InternetRadio/" + descr.values[i];
         let url_radio = ::get_internet_radio_path(descr.values[i])
         if (loc(str, "") == "")
@@ -3700,8 +3603,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
             tooltip = url_radio
           })
       }
-      if (!descr.values.len())
-      {
+      if (!descr.values.len()) {
         descr.values.append("")
         descr.items.append("#options/no_internet_radio_stations")
       }
@@ -3889,24 +3791,24 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_FPS_CAMERA_PHYSICS:
       descr.id = "fps_camera_physics"
-      descr.value = clamp((::get_option_multiplier(OPTION_FPS_CAMERA_PHYS) * 100.0).tointeger(), 0, 100)
+      descr.value = clamp((get_option_multiplier(OPTION_FPS_CAMERA_PHYS) * 100.0).tointeger(), 0, 100)
       descr.controlType = optionControlType.SLIDER
       break
 
     case ::USEROPT_FPS_VR_CAMERA_PHYSICS:
       descr.id = "fps_vr_camera_physics"
-      descr.value = clamp((::get_option_multiplier(OPTION_FPS_VR_CAMERA_PHYS) * 100.0).tointeger(), 0, 100)
+      descr.value = clamp((get_option_multiplier(OPTION_FPS_VR_CAMERA_PHYS) * 100.0).tointeger(), 0, 100)
       descr.controlType = optionControlType.SLIDER
       break
 
     case ::USEROPT_FREE_CAMERA_INERTIA:
       descr.id = "free_camera_inertia"
-      descr.value = clamp((::get_option_multiplier(OPTION_FREE_CAMERA_INERTIA) * 100.0).tointeger(), 0, 100)
+      descr.value = clamp((get_option_multiplier(OPTION_FREE_CAMERA_INERTIA) * 100.0).tointeger(), 0, 100)
       break
 
     case ::USEROPT_REPLAY_CAMERA_WIGGLE:
       descr.id = "replay_camera_wiggle"
-      descr.value = clamp((::get_option_multiplier(OPTION_REPLAY_CAMERA_WIGGLE) * 100.0).tointeger(), 0, 100)
+      descr.value = clamp((get_option_multiplier(OPTION_REPLAY_CAMERA_WIGGLE) * 100.0).tointeger(), 0, 100)
       break
 
     case ::USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK:
@@ -3918,8 +3820,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.optionCb = "onRankReqChange"
       descr.items = []
       descr.values = []
-      for(local rank = 0; rank <= ::max_country_rank; ++rank)
-      {
+      for (local rank = 0; rank <= ::max_country_rank; ++rank) {
         descr.values.append(format("option_%s", rank.tostring()))
         descr.items.append({
           text = (rank == 0 ? loc("clan/membRequirementsRankAny") : ::get_roman_numeral(rank))
@@ -3936,18 +3837,15 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES:
     case ::USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES:
     case ::USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES:
-      if (optionId == ::USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES)
-      {
+      if (optionId == ::USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES) {
         descr.id = "battles_arcade"
         descr.title = loc("clan/battlesSelect_arcade")
       }
-      else if (optionId == ::USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES)
-      {
+      else if (optionId == ::USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES) {
         descr.id = "battles_simulation"
         descr.title = loc("clan/battlesSelect_simulation")
       }
-      else if (optionId == ::USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES)
-      {
+      else if (optionId == ::USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES) {
         descr.id = "battles_historical"
         descr.title = loc("clan/battlesSelect_historical")
       }
@@ -3975,21 +3873,18 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
 
-      if (!has_forced_crosshair())
-      {
+      if (!has_forced_crosshair()) {
         descr.items.append(loc("options/defaultSight"));
         descr.values.append("");
       }
 
       let presets = ::get_user_alt_crosshairs()
-      for (local i = 0; i < presets.len(); i++)
-      {
+      for (local i = 0; i < presets.len(); i++) {
         descr.items.append(presets[i]);
         descr.values.append(presets[i]);
       }
 
-      if (hasFeature("TankAltCrosshair"))
-      {
+      if (hasFeature("TankAltCrosshair")) {
         descr.items.append(loc("options/addUserSight"))
         descr.values.append(TANK_ALT_CROSSHAIR_ADD_NEW)
       }
@@ -4121,8 +4016,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.items = []
       descr.values = []
       let cultures = holidays.list_cultures()
-      for (local i = 0; i < cultures.len(); i++)
-      {
+      for (local i = 0; i < cultures.len(); i++) {
         descr.values.append(cultures[i])
         descr.items.append(loc($"options/holidays_{cultures[i]}", cultures[i]))
       }
@@ -4137,6 +4031,53 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
 
 
+
+    case ::USEROPT_HIT_INDICATOR_RADIUS:
+      descr.id = "hit_indicator_radius"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
+    case ::USEROPT_HIT_INDICATOR_SIMPLIFIED:
+      descr.id = "hit_indicator_simplified"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = false
+    break
+
+    case ::USEROPT_HIT_INDICATOR_ALPHA:
+      descr.id = "hit_indicator_alpha"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
+    case ::USEROPT_HIT_INDICATOR_SCALE:
+      descr.id = "hit_indicator_scale"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
+    case ::USEROPT_HIT_INDICATOR_FADE_TIME:
+      descr.id = "hit_indicator_timeout"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 1
+      descr.max <- 10
+      descr.step <- 1
+      defaultValue = 2
+      descr.getValueLocText = @(val) $"{val}s"
+    break
 
     default:
       let optionName = ::user_option_name_by_idx?[optionId] ?? ""
@@ -4161,36 +4102,31 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     descr.optionCb = "updateOptionValueTextByObj"
   descr.cb <- context?.containerCb ?? descr.optionCb
 
-  if (descr.controlType == optionControlType.SLIDER)
-  {
+  if (descr.controlType == optionControlType.SLIDER) {
     if (descr.value == null)
       descr.value = clamp(valueToSet || 0, descr?.min ?? 0, descr?.max ?? 1)
     return descr
   }
 
-  if (descr.controlType == optionControlType.CHECKBOX)
-  {
+  if (descr.controlType == optionControlType.CHECKBOX) {
     if (descr.value == null)
       descr.value = !!valueToSet
     return descr
   }
 
-  if (descr.controlType == optionControlType.EDITBOX)
-  {
+  if (descr.controlType == optionControlType.EDITBOX) {
     if (!::u.isString(descr.value))
       descr.value = ::u.isString(valueToSet) ? valueToSet : ""
     return descr
   }
 
-  if (!descr.values && descr.items)
-  {
+  if (!descr.values && descr.items) {
     descr.values = []
-    for(local i = 0; i < descr.items.len(); i++)
+    for (local i = 0; i < descr.items.len(); i++)
       descr.values.append(i)
   }
 
-  if (descr.controlType == optionControlType.BIT_LIST)
-  {
+  if (descr.controlType == optionControlType.BIT_LIST) {
     if (!::u.isInteger(descr.value))
       if (::u.isInteger(prevValue))
         descr.value = prevValue
@@ -4206,10 +4142,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     descr.value = null
 
   if (descr.value == null && valueToSet != null && type(descr.values) == "array")
-    for (local i = 0; i < descr.values.len(); i++)
-    {
-      if (descr.values[i] == valueToSet)
-      {
+    for (local i = 0; i < descr.values.len(); i++) {
+      if (descr.values[i] == valueToSet) {
         descr.value = i
         break
       }
@@ -4229,8 +4163,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   if (!descr)
     descr = ::get_option(optionId)
 //  log($"DD: set option {optionId}", value, "name", ::user_option_name_by_idx[optionId])
-  switch (optionId)
-  {
+  switch (optionId) {
     // global settings:
     case ::USEROPT_LANGUAGE:
       ::g_language.setGameLocalization(descr.values[value], false, true)
@@ -4295,8 +4228,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR:
     case ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR:
-    case ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR:
-      {
+    case ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR: {
         let optIndex = ::find_in_array(
           [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR],
           optionId)
@@ -4345,7 +4277,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     //  break
 
     case ::USEROPT_FORCE_GAIN:
-      ::set_option_gain(value/50.0)
+      ::set_option_gain(value / 50.0)
       break
 
     case ::USEROPT_INDICATED_SPEED_TYPE:
@@ -4353,15 +4285,15 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_AUTO_SHOW_CHAT:
-      ::set_option_autoShowChat(value ? 1 : 0)
+      set_option_auto_show_chat(value ? 1 : 0)
       break
 
     case ::USEROPT_CHAT_MESSAGES_FILTER:
-      ::set_option_chat_messages_filter(value)
+      set_option_chat_messages_filter(value)
       break
 
     case ::USEROPT_CHAT_FILTER:
-      ::set_option_chatFilter(value ? 1 : 0)
+      set_option_chat_filter(value ? 1 : 0)
       ::broadcastEvent("ChatFilterChanged")
       break
 
@@ -4384,7 +4316,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_XCHG_STICKS:
-      ::set_option_xchg_sticks(0, value? 1 : 0)
+      ::set_option_xchg_sticks(0, value ? 1 : 0)
       break
 
     case ::USEROPT_AUTOSAVE_REPLAYS:
@@ -4412,11 +4344,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_PTT:
-      ::set_option_ptt(value ? 1 : 0)
+      set_option_ptt(value ? 1 : 0)
       break
 
     case ::USEROPT_VOICE_CHAT:
-      ::set_option_voicechat(value ? 1 : 0)
+      set_option_voicechat(value ? 1 : 0)
       break
 
     case ::USEROPT_SOUND_ENABLE:
@@ -4465,8 +4397,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_MEASUREUNITS_TEMPERATURE:
     case ::USEROPT_MEASUREUNITS_WING_LOADING:
     case ::USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO:
-      if (type(descr.values) == "array" && value >= 0 && value < descr.values.len())
-      {
+      if (type(descr.values) == "array" && value >= 0 && value < descr.values.len()) {
         local unitType = 0
         if (optionId == ::USEROPT_MEASUREUNITS_ALT)
           unitType = 1
@@ -4506,11 +4437,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_CAMERA_SHAKE_MULTIPLIER:
-      ::set_option_multiplier(OPTION_CAMERA_SHAKE, value / 50.0)
+      set_option_multiplier(OPTION_CAMERA_SHAKE, value / 50.0)
       break
 
     case ::USEROPT_VR_CAMERA_SHAKE_MULTIPLIER:
-      ::set_option_multiplier(OPTION_VR_CAMERA_SHAKE, value / 50.0)
+      set_option_multiplier(OPTION_VR_CAMERA_SHAKE, value / 50.0)
       break
 
     case ::USEROPT_GAMMA:
@@ -4521,57 +4452,57 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_AILERONS_MULTIPLIER:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_AILERONS_MULTIPLIER, val)
+      set_option_multiplier(OPTION_AILERONS_MULTIPLIER, val)
       break
 
     case ::USEROPT_ELEVATOR_MULTIPLIER:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER, val)
+      set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER, val)
       break
 
     case ::USEROPT_RUDDER_MULTIPLIER:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_RUDDER_MULTIPLIER, val)
+      set_option_multiplier(OPTION_RUDDER_MULTIPLIER, val)
       break
 
     case ::USEROPT_ZOOM_SENSE:
       let val = (100.0 - value) / 100.0
-      ::set_option_multiplier(OPTION_ZOOM_SENSE, val)
+      set_option_multiplier(OPTION_ZOOM_SENSE, val)
       break
 
     case ::USEROPT_MOUSE_SENSE:
       let val = value / 50.0
-      ::set_option_multiplier(OPTION_MOUSE_SENSE, val)
+      set_option_multiplier(OPTION_MOUSE_SENSE, val)
       break
 
     case ::USEROPT_JOY_MIN_VIBRATION:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_JOY_MIN_VIBRATION, val)
+      set_option_multiplier(OPTION_JOY_MIN_VIBRATION, val)
       break
 
     case ::USEROPT_MOUSE_AIM_SENSE:
       let val = value / 50.0
-      ::set_option_multiplier(OPTION_MOUSE_AIM_SENSE, val)
+      set_option_multiplier(OPTION_MOUSE_AIM_SENSE, val)
       break
 
     case ::USEROPT_GUNNER_VIEW_SENSE:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_GUNNER_VIEW_SENSE, val)
+      set_option_multiplier(OPTION_GUNNER_VIEW_SENSE, val)
       break
 
     case ::USEROPT_GUNNER_VIEW_ZOOM_SENS:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_GUNNER_VIEW_ZOOM_SENS, val)
+      set_option_multiplier(OPTION_GUNNER_VIEW_ZOOM_SENS, val)
       break
 
     case ::USEROPT_ATGM_AIM_SENS_HELICOPTER:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER, val)
+      set_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER, val)
       break
 
     case ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER, val)
+      set_option_multiplier(OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER, val)
       break
 
     case ::USEROPT_MOUSE_SMOOTH:
@@ -4635,7 +4566,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_CROSSHAIR_COLOR:
-      ::set_hud_crosshair_color(descr.values[value])
+      let curVal = descr.values[value]
+      ::set_hud_crosshair_color(curVal)
+      let color = color4ToInt(::crosshair_colors[curVal].color)
+      crosshairColorOpt(color)
       break
 
     case ::USEROPT_CROSSHAIR_DEFLECTION:
@@ -4669,15 +4603,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       ::set_option_hud_show_temperature(descr.values[value])
       break
     case ::USEROPT_MENU_SCREEN_SAFE_AREA:
-      if (value >= 0 && value < descr.values.len())
-      {
+      if (value >= 0 && value < descr.values.len()) {
         safeAreaMenu.setValue(descr.values[value])
         ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       }
       break
     case ::USEROPT_HUD_SCREEN_SAFE_AREA:
-      if (value >= 0 && value < descr.values.len())
-      {
+      if (value >= 0 && value < descr.values.len()) {
         safeAreaHud.setValue(descr.values[value])
         ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       }
@@ -4725,7 +4657,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       set_gui_option(optionId, value)
       break;
     case ::USEROPT_SHOW_INDICATORS_TYPE:
-      local val = ::get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT|HUD_INDICATORS_CENTER|HUD_INDICATORS_ALL);
+      local val = ::get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT | HUD_INDICATORS_CENTER | HUD_INDICATORS_ALL);
       if (descr.values[value] == 0)
         val = val | HUD_INDICATORS_SELECT;
       if (descr.values[value] == 1)
@@ -4763,11 +4695,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break;
 
     case ::USEROPT_SKIN:
-      if (type(descr.values) == "array")
-      {
+      if (type(descr.values) == "array") {
         let air = ::aircraft_for_weapons
-        if (value >= 0 && value < descr.values.len())
-        {
+        if (value >= 0 && value < descr.values.len()) {
           set_gui_option(optionId, descr.values[value] || ::g_decorator.getAutoSkin(air))
           ::g_decorator.setLastSkin(air, descr.values[value])
         }
@@ -4780,16 +4710,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_USER_SKIN:
       let cdb = ::get_user_skins_profile_blk()
-      if (::cur_aircraft_name)
-      {
-        if (cdb?[::cur_aircraft_name] != getTblValue(value, descr.values, ""))
-        {
+      if (::cur_aircraft_name) {
+        if (cdb?[::cur_aircraft_name] != getTblValue(value, descr.values, "")) {
           cdb[::cur_aircraft_name] = getTblValue(value, descr.values, "")
           saveProfile()
         }
       }
-      else
-      {
+      else {
         log("[ERROR] ::cur_aircraft_name is null")
         debug_dump_stack()
       }
@@ -4871,8 +4798,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_HUE_HELICOPTER_CROSSHAIR:
       let { sat = 0.7, val = 0.7 } = descr.items[value]
-      colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_CROSSHAIR, descr.values[value], sat, val);
+      let curVal = descr.values[value]
+      let ccTarget = colorCorrector.TARGET_HUE_HELICOPTER_CROSSHAIR
+      colorCorrector.setHsb(ccTarget, curVal, sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      let color = colorCorrector.correctHueTarget(curVal, ccTarget)
+      hueHeliCrosshairOpt(color)
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD:
@@ -4963,16 +4894,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
 
       local optionValue = null
-      if (descr.controlType == optionControlType.CHECKBOX)
-      {
+      if (descr.controlType == optionControlType.CHECKBOX) {
         optionValue = value
         set_gui_option(optionId, value)
         setCdOption(optionId, value ? 1 : 0)
       }
-      else if (descr.controlType == optionControlType.LIST)
-      {
-        if (value in descr.values)
-        {
+      else if (descr.controlType == optionControlType.LIST) {
+        if (value in descr.values) {
           optionValue = descr.values[value]
           set_gui_option(optionId, optionValue)
           setCdOption(optionId, optionValue)
@@ -5009,7 +4937,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_ENABLE_SOUND_SPEED:
       let optionIdx = getTblValue("boolOptionIdx", descr, -1)
       if (optionIdx >= 0 && ::u.isBool(value))
-        ::set_option_bool(optionIdx, value)
+        set_option_bool(optionIdx, value)
       break
 
     case ::USEROPT_COMMANDER_CAMERA_IN_VIEWS:
@@ -5022,8 +4950,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_MISSION_COUNTRIES_TYPE:
-      if (value in descr.values)
-      {
+      if (value in descr.values) {
         set_gui_option(optionId, descr.values[value])
         ::mission_settings.countriesType <- descr.values[value]
       }
@@ -5059,8 +4986,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_BR_MIN:
     case ::USEROPT_BR_MAX:
-      if (value in descr.values)
-      {
+      if (value in descr.values) {
         let optionValue = descr.values[value]
         set_gui_option(optionId, optionValue)
         ::mission_settings[optionId == ::USEROPT_BR_MIN ? "mrankMin" : "mrankMax"] <- optionValue
@@ -5082,7 +5008,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_SESSION_PASSWORD:
-      ::SessionLobby.changePassword(value? value : "")
+      ::SessionLobby.changePassword(value ? value : "")
       break
 
     case ::USEROPT_BULLETS0:
@@ -5201,12 +5127,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_HUD_SHOW_TANK_GUNS_AMMO:
     case ::USEROPT_HUD_VISIBLE_ORDERS:
-    case ::USEROPT_HUD_VISIBLE_STREAKS:
     case ::USEROPT_HUD_VISIBLE_REWARDS_MSG:
+    case ::USEROPT_HUD_VISIBLE_STREAKS:
     case ::USEROPT_HUD_VISIBLE_KILLLOG:
     case ::USEROPT_HUD_VISIBLE_CHAT_PLACE:
-      if (descr.controlType == optionControlType.LIST)
-      {
+      if (descr.controlType == optionControlType.LIST) {
         if (type(descr.values) != "array")
           break
         if (value < 0 || value >= descr.values.len())
@@ -5214,8 +5139,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
         set_gui_option(optionId, descr.values[value])
       }
-      else if (descr.controlType == optionControlType.CHECKBOX)
-      {
+      else if (descr.controlType == optionControlType.CHECKBOX) {
         if (::u.isBool(value))
           set_gui_option(optionId, value)
       }
@@ -5234,8 +5158,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_DAMAGE_INDICATOR_SIZE:
     case ::USEROPT_TACTICAL_MAP_SIZE:
       if (value >= (descr?.min ?? 0) && value <= (descr?.max ?? 1)
-          && (!("step" in descr) || value % descr.step == 0))
-      {
+          && (!("step" in descr) || value % descr.step == 0)) {
         ::set_gui_option_in_mode(optionId, value, ::OPTIONS_MODE_GAMEPLAY)
         ::broadcastEvent("HudIndicatorChangedSize", { option = optionId })
       }
@@ -5250,14 +5173,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         ::set_gui_option_in_mode(optionId, descr.values[value], ::OPTIONS_MODE_MP_DOMINATION)
       break
     case ::USEROPT_RANDB_CLUSTER:
-      if (value >= 0 && value <= (1 << descr.values.len()) - 1)
-      {
-        local newVal = ""
-        for (local i = 0; i < descr.values.len(); i++)
-        {
-          if (value & 1 << i)
-            newVal += (newVal.len() > 0 ? ";" : "") + descr.values[i]
-        }
+      if (value >= 0 && value <= (1 << descr.values.len()) - 1) {
+        let idx = descr.values.findindex(@(v) v == "auto")
+        let isAuto = idx != null ? is_bit_set(value, idx) : false
+        let clusters = descr.values.filter(@(_, i) isAuto
+          ? descr.items[i].isDefault || descr.items[i].isAuto
+          : is_bit_set(value, i))
+        let newVal = ";".join(clusters)
         ::set_gui_option_in_mode(optionId, newVal, ::OPTIONS_MODE_MP_DOMINATION)
         ::broadcastEvent("ClusterChange")
       }
@@ -5274,8 +5196,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
     case ::USEROPT_INTERNET_RADIO_STATION:
       let station = descr.values[value]
-      if (station != "")
-      {
+      if (station != "") {
         let internet_radio_options = ::get_internet_radio_options();
         internet_radio_options["station"] = station
         ::set_internet_radio_options(internet_radio_options);
@@ -5306,17 +5227,15 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       ::ps4_headtrack_set_yscale(value)
       break
     case ::USEROPT_MISSION_NAME_POSTFIX:
-      if (::current_campaign_mission != null)
-      {
+      if (::current_campaign_mission != null) {
         let metaInfo = ::get_mission_meta_info(::current_campaign_mission)
         let values = ::get_mission_types_from_meta_mission_info(metaInfo)
-        if (values.len() > 0)
-        {
+        if (values.len() > 0) {
           let optValue = descr.values[value]
           if (optValue.len())
             ::mission_settings.postfix = optValue
           else
-            ::mission_settings.postfix = values[::math.rnd() % values.len()]
+            ::mission_settings.postfix = values[rnd() % values.len()]
           set_gui_option(optionId, optValue)
         }
       }
@@ -5339,21 +5258,21 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_FPS_CAMERA_PHYSICS:
-      ::set_option_multiplier(OPTION_FPS_CAMERA_PHYS, value / 100.0)
+      set_option_multiplier(OPTION_FPS_CAMERA_PHYS, value / 100.0)
       break
 
     case ::USEROPT_FPS_VR_CAMERA_PHYSICS:
-      ::set_option_multiplier(OPTION_FPS_VR_CAMERA_PHYS, value / 100.0)
+      set_option_multiplier(OPTION_FPS_VR_CAMERA_PHYS, value / 100.0)
       break
 
     case ::USEROPT_FREE_CAMERA_INERTIA:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_FREE_CAMERA_INERTIA, val)
+      set_option_multiplier(OPTION_FREE_CAMERA_INERTIA, val)
       break
 
     case ::USEROPT_REPLAY_CAMERA_WIGGLE:
       let val = value / 100.0
-      ::set_option_multiplier(OPTION_REPLAY_CAMERA_WIGGLE, val)
+      set_option_multiplier(OPTION_REPLAY_CAMERA_WIGGLE, val)
       break
 
     case ::USEROPT_TANK_GUNNER_CAMERA_FROM_SIGHT:
@@ -5409,6 +5328,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       set_gui_option(optionId, value)
       break
 
+    case ::USEROPT_HIT_INDICATOR_RADIUS:
+    case ::USEROPT_HIT_INDICATOR_SIMPLIFIED:
+    case ::USEROPT_HIT_INDICATOR_ALPHA:
+    case ::USEROPT_HIT_INDICATOR_SCALE:
+    case ::USEROPT_HIT_INDICATOR_FADE_TIME:
+      set_gui_option(optionId, value)
+      break
+
     default:
       let optionName = ::user_option_name_by_idx?[optionId] ?? ""
       assert(false, $"[ERROR] Options: Set: Unsupported type {optionId} ({optionName}) - {value}")
@@ -5416,8 +5343,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   return true
 }
 
-::get_current_wnd_difficulty <- function get_current_wnd_difficulty()
-{
+::get_current_wnd_difficulty <- function get_current_wnd_difficulty() {
   let diffCode = ::loadLocalByAccount("wnd/diffMode", ::get_current_shop_difficulty().diffCode)
   local diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
   if (!diff.isAvailable())
@@ -5425,13 +5351,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   return diff.diffCode
 }
 
-::set_current_wnd_difficulty <- function set_current_wnd_difficulty(mode = 0)
-{
+::set_current_wnd_difficulty <- function set_current_wnd_difficulty(mode = 0) {
   ::saveLocalByAccount("wnd/diffMode", mode)
 }
 
-::create_options_container <- function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos=true, context = null)
-{
+::create_options_container <- function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos = true, context = null, hasTitle = true) {
   local selectedRow = 0
   local iRow = 0
   let resDescr = {
@@ -5445,8 +5369,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
   let rowsView = []
   local headerHaveContent = false
-  for(local i = options.len() - 1; i >= 0; i--)
-  {
+  for (local i = options.len() - 1; i >= 0; i--) {
     let opt = options[i]
     if (!(opt?[2] ?? true))
       continue
@@ -5456,23 +5379,22 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       continue
 
     let isHeader = optionData.controlType == optionControlType.HEADER
-    if(isHeader)
-    {
-      if(!headerHaveContent)
+    if (isHeader) {
+      if (!headerHaveContent)
         continue
       else
         headerHaveContent = false
-    } else
+    }
+    else
       headerHaveContent = true
 
-    if(optionData?.controlName == null)
+    if (optionData?.controlName == null)
       optionData.controlName <- opt?[1] ?? "spinner"
 
     local isVlist = false
     local haveOptText = true
     local elemTxt = ""
-    switch (optionData.controlName)
-    {
+    switch (optionData.controlName) {
       case "list":
       case "spinner":
         elemTxt = ::create_option_list(optionData.id, optionData.items, optionData.value, optionData.cb, true)
@@ -5501,13 +5423,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         break
 
       case "listbox":
-        let listClass = ("listClass" in optionData)? optionData.listClass : "options"
+        let listClass = ("listClass" in optionData) ? optionData.listClass : "options"
         elemTxt = ::create_option_row_listbox(optionData.id, optionData.items, optionData.value, optionData.cb, true, listClass)
         haveOptText = false
         break
 
       case "multiselect":
-        let listClass = ("listClass" in optionData)? optionData.listClass : "options"
+        let listClass = ("listClass" in optionData) ? optionData.listClass : "options"
         elemTxt = ::create_option_row_multiselect({ option = optionData, isFull = true, listClass = listClass })
         haveOptText = optionData?.showTitle ?? false
         break
@@ -5528,14 +5450,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     }
 
     let cell = []
-    if (elemTxt != null)
-    {
-      if (isVlist)
+    if (elemTxt != null) {
+      if (isVlist || !hasTitle)
         cell.append({ params = {
           width = 0
-        }})
-      else
-      {
+        } })
+      else {
         local tdText = ""
         if (haveOptText)
           tdText = ::g_string.stripTags(optionData.getTitle())
@@ -5551,14 +5471,14 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           autoScrollText = "yes"
           rawParam = "".concat(optionTitleStyle, " { id:t = 'lbl_", optionData.id,
             "'; text:t ='", tdText, "'; }")
-        }})
+        } })
       }
 
       cell.append({ params = {
         cellType = "right"
         width = wRight
-        rawParam = $"padding-left:t='@optPad'; {elemTxt}"
-      }})
+        rawParam = !hasTitle ? elemTxt : $"padding-left:t='@optPad'; {elemTxt}"
+      } })
 
       let rowParams = []
       if (isHeader)
@@ -5567,11 +5487,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         rowParams.append($"enable:t='{optionData.enabled ? "yes" : "no"}';")
       if (!::u.isEmpty(optionData.hint))
         rowParams.append($"tooltip:t='{::g_string.stripTags(optionData.hint)}';")
-      if (optionData.controlName == "listbox")
-      {
+      if (optionData.controlName == "listbox") {
         if ("trListParams" in optionData)
           rowParams.append(optionData.trListParams)
-      } else if ("trParams" in optionData)
+      }
+      else if ("trParams" in optionData)
         rowParams.append(optionData.trParams)
 
       rowsView.insert(0, {
@@ -5602,8 +5522,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 }
 
 local unitsImgPreset = null
-::get_unit_preset_img <- function get_unit_preset_img(unitName /*or unit group name*/)
-{
+::get_unit_preset_img <- function get_unit_preset_img(unitName /*or unit group name*/ ) {
   if (unitsImgPreset == null) {
     unitsImgPreset = {}
     let guiBlk = GUI.get()
@@ -5616,8 +5535,7 @@ local unitsImgPreset = null
   return unitsImgPreset?[unitName]
 }
 
-::is_tencent_unit_image_reqired <- function is_tencent_unit_image_reqired(unit)
-{
+::is_tencent_unit_image_reqired <- function is_tencent_unit_image_reqired(unit) {
   return unit.shopCountry == "country_japan" && unit.unitType == unitTypes.AIRCRAFT
     && ::is_vendor_tencent()
 }

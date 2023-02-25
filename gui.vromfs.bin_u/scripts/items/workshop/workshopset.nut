@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let workshopCraftTree = require("workshopCraftTree.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
@@ -44,8 +46,7 @@ local WorkshopSet = class {
   subsetsList = null
   curSubsetId   = null
 
-  constructor(blk)
-  {
+  constructor(blk) {
     this.id = blk.getBlockName() || ""
     this.reqFeature = blk?.reqFeature
     this.locId = blk?.locId || this.id
@@ -59,16 +60,14 @@ local WorkshopSet = class {
     this.subsetsList = {}
     local firstSubsetId = null
 
-    foreach (itemsBlkIdx, itemsBlk in (blk % "items"))
-    {
+    foreach (itemsBlkIdx, itemsBlk in (blk % "items")) {
       let subsetBlockIdx = itemsBlkIdx * 100
       let subsetItems = []
       let subsetId = itemsBlk?.setId ?? ""
       local items = this.getItemsFromBlk(itemsBlk, subsetBlockIdx + 0, subsetId)
       subsetItems.extend(items)
       if (itemsBlk)
-        foreach (idx, itemBlk in itemsBlk % "itemBlock")
-        {
+        foreach (idx, itemBlk in itemsBlk % "itemBlock") {
           items = this.getItemsFromBlk(itemBlk, subsetBlockIdx + idx + 1, subsetId)
           subsetItems.extend(items)
         }
@@ -86,9 +85,8 @@ local WorkshopSet = class {
       }
     }
 
-    if (blk?.eventPreview)
-    {
-      this.previewBlk = ::DataBlock()
+    if (blk?.eventPreview) {
+      this.previewBlk = DataBlock()
       this.previewBlk.setFrom(blk.eventPreview)
     }
 
@@ -123,8 +121,7 @@ local WorkshopSet = class {
 
   hasPreview                = @() this.previewBlk != null
 
-  function getItemsFromBlk(itemsBlk, blockNumber, subsetId)
-  {
+  function getItemsFromBlk(itemsBlk, blockNumber, subsetId) {
     let items = []
     if (!itemsBlk)
       return items
@@ -133,11 +130,9 @@ local WorkshopSet = class {
     let itemsReqRules = []
     let passBySavedReqItems = itemsBlk?.passBySavedReqItems ?? false
     let showOnlyInCraftTree = itemsBlk?.showOnlyInCraftTree ?? false
-    foreach(reqItems in itemsBlk % "reqItems")
-    {
+    foreach (reqItems in itemsBlk % "reqItems") {
       let itemsTbl = {}
-      foreach (reqId in reqItems.split(","))
-      {
+      foreach (reqId in reqItems.split(",")) {
         let needHave = !::g_string.startsWith(reqId, "!") // true = need to have, false = need to NOT have.
         let itemId = reqId.slice(needHave ? 0 : 1).tointeger()
 
@@ -148,8 +143,7 @@ local WorkshopSet = class {
       itemsReqRules.append(itemsTbl)
     }
 
-    for (local i = 0; i < itemsBlk.paramCount(); i++)
-    {
+    for (local i = 0; i < itemsBlk.paramCount(); i++) {
       let itemdef = itemsBlk.getParamValue(i)
       if (type(itemdef) != "integer")
         continue
@@ -160,7 +154,7 @@ local WorkshopSet = class {
       items.append(itemdef)
 
       if (showOnlyInCraftTree)
-        this.itemsVisibleOnlyInCraftTree[itemdef] <-true
+        this.itemsVisibleOnlyInCraftTree[itemdef] <- true
     }
 
     foreach (idx, itemId in items)
@@ -176,8 +170,7 @@ local WorkshopSet = class {
     return items
   }
 
-  function initHiddenItemsBlocks()
-  {
+  function initHiddenItemsBlocks() {
     this.loadKnownReqItemsOnce()
 
     this.hiddenItemsBlocks = {}
@@ -191,8 +184,7 @@ local WorkshopSet = class {
 
     this.updateKnownReqItems(reqItemsAmountTbl)
 
-    foreach (itemData in this.itemdefs)
-    {
+    foreach (itemData in this.itemdefs) {
       let blockNumber = itemData.blockNumber
       if (itemData.blockNumber in this.hiddenItemsBlocks)
         continue
@@ -202,11 +194,9 @@ local WorkshopSet = class {
         continue
 
       local isHidden = true
-      foreach (itemsTbl in itemsReqRules)
-      {
+      foreach (itemsTbl in itemsReqRules) {
         local canShow = true
-        foreach (itemId, needHave in itemsTbl)
-        {
+        foreach (itemId, needHave in itemsTbl) {
           let amount = reqItemsAmountTbl?[itemId] ?? 0
           if ((needHave && amount > 0)
             || (needHave && itemData.passBySavedReqItems && this.knownReqItemdefs?[itemId])
@@ -217,8 +207,7 @@ local WorkshopSet = class {
           break
         }
 
-        if (canShow)
-        {
+        if (canShow) {
           isHidden = false
           break
         }
@@ -229,8 +218,7 @@ local WorkshopSet = class {
     }
   }
 
-  function getItemsList()
-  {
+  function getItemsList() {
     if (this.itemsListCache && !this.itemsReqRulesTbl.len())
       return this.itemsListCache
 
@@ -245,23 +233,21 @@ local WorkshopSet = class {
 
     //add all craft parts recipes result to visible items.
     if (requiredList.len() != this.itemdefs.len())
-      foreach(item in this.itemsListCache)
-        if (item.iType == itemType.CRAFT_PART)
-        {
+      foreach (item in this.itemsListCache)
+        if (item.iType == itemType.CRAFT_PART) {
           let recipes = item.getRelatedRecipes()
           if (!recipes.len())
             continue
-          foreach(r in recipes)
+          foreach (r in recipes)
             if (r.generatorId in this.itemdefs)
               requiredList[r.generatorId] <- 0
         }
 
-    foreach(item in this.itemsListCache)
+    foreach (item in this.itemsListCache)
       if (item.id in requiredList)
         delete requiredList[item.id]
 
-    foreach(itemdef, _sortId in requiredList)
-    {
+    foreach (itemdef, _sortId in requiredList) {
       if (this.isItemIdHidden(itemdef))
         continue
 
@@ -288,20 +274,17 @@ local WorkshopSet = class {
     return this.itemsListCache
   }
 
-  static function clearOutdatedData(actualSets)
-  {
+  static function clearOutdatedData(actualSets) {
     let knownBlk = ::load_local_account_settings(KNOWN_ITEMS_SAVE_ID)
     if (!knownBlk)
       return
 
     local hasChanges = false
-    for(local i = knownBlk.paramCount() - 1; i >= 0; i--)
-    {
+    for (local i = knownBlk.paramCount() - 1; i >= 0; i--) {
       let id = knownBlk.getParamValue(i)
       local isActual = false
-      foreach(set in actualSets)
-        if (set.isItemIdInSet(id))
-        {
+      foreach (set in actualSets)
+        if (set.isItemIdInSet(id)) {
           isActual = true
           break
         }
@@ -314,8 +297,7 @@ local WorkshopSet = class {
       ::save_local_account_settings(KNOWN_ITEMS_SAVE_ID, knownBlk)
   }
 
-  function loadKnownItemsOnce()
-  {
+  function loadKnownItemsOnce() {
     if (this.knownItemdefs)
       return
 
@@ -325,13 +307,12 @@ local WorkshopSet = class {
       return
 
     let knownList = knownBlk % KNOWN_ITEMS_SAVE_KEY
-    foreach(d in knownList)
+    foreach (d in knownList)
       if (this.isItemIdInSet(d))
         this.knownItemdefs[d] <- true
   }
 
-  function loadKnownReqItemsOnce()
-  {
+  function loadKnownReqItemsOnce() {
     if (this.knownReqItemdefs)
       return
 
@@ -341,24 +322,21 @@ local WorkshopSet = class {
       return
 
     let knownList = knownBlk % KNOWN_ITEMS_SAVE_KEY
-    foreach(d in knownList)
+    foreach (d in knownList)
       this.knownReqItemdefs[d] <- true
   }
 
-  function initKnownItemsOnce()
-  {
+  function initKnownItemsOnce() {
     if (!this.knownItemdefs)
-      this.updateKnownItems(::ItemsManager.getInventoryList(itemType.ALL, this.isItemInSet.bindenv(this) ))
+      this.updateKnownItems(::ItemsManager.getInventoryList(itemType.ALL, this.isItemInSet.bindenv(this)))
   }
 
-  function updateKnownItems(curInventoryItems)
-  {
+  function updateKnownItems(curInventoryItems) {
     this.loadKnownItemsOnce()
 
     let newKnownIds = []
-    foreach(item in curInventoryItems)
-      if (!this.isItemIdKnown(item.id))
-      {
+    foreach (item in curInventoryItems)
+      if (!this.isItemIdKnown(item.id)) {
         this.knownItemdefs[item.id] <- true
         newKnownIds.append(item.id)
       }
@@ -366,14 +344,12 @@ local WorkshopSet = class {
     this.saveKnownItems(newKnownIds, KNOWN_ITEMS_SAVE_ID)
   }
 
-  function updateKnownReqItems(reqItemsAmountTbl)
-  {
+  function updateKnownReqItems(reqItemsAmountTbl) {
     this.loadKnownReqItemsOnce()
 
     let newKnownIds = []
-    foreach(reqItemId, amount in reqItemsAmountTbl)
-      if (amount > 0 && !this.isReqItemIdKnown(reqItemId))
-      {
+    foreach (reqItemId, amount in reqItemsAmountTbl)
+      if (amount > 0 && !this.isReqItemIdKnown(reqItemId)) {
         this.knownReqItemdefs[reqItemId] <- true
         newKnownIds.append(reqItemId)
       }
@@ -381,15 +357,14 @@ local WorkshopSet = class {
     this.saveKnownItems(newKnownIds, KNOWN_REQ_ITEMS_SAVE_ID)
   }
 
-  function saveKnownItems(newKnownIds, saveId)
-  {
+  function saveKnownItems(newKnownIds, saveId) {
     if (!newKnownIds.len())
       return
 
     local knownBlk = ::load_local_account_settings(saveId)
     if (!knownBlk)
-      knownBlk = ::DataBlock()
-    foreach(d in newKnownIds)
+      knownBlk = DataBlock()
+    foreach (d in newKnownIds)
       knownBlk[KNOWN_ITEMS_SAVE_KEY] <- d
 
     ::save_local_account_settings(saveId, knownBlk)
@@ -399,18 +374,15 @@ local WorkshopSet = class {
   needShowPreview      = @() this.hasPreview() && !::load_local_account_settings(this.getPreviewedSaveId(), false)
   markPreviewed        = @() ::save_local_account_settings(this.getPreviewedSaveId(), true)
 
-  function invalidateItemsCache()
-  {
+  function invalidateItemsCache() {
     this.visibleSeenIds = null
     this.itemsListCache = null
   }
 
-  function getVisibleSeenIds()
-  {
-    if (!this.visibleSeenIds)
-    {
+  function getVisibleSeenIds() {
+    if (!this.visibleSeenIds) {
       this.visibleSeenIds = {}
-      foreach(item in this.getItemsList())
+      foreach (item in this.getItemsList())
         if (!item.isDisguised)
           this.visibleSeenIds[item.id] <- item.getSeenId()
     }
@@ -422,16 +394,14 @@ local WorkshopSet = class {
   isVisibleCraftTree = @(craftTree) hasAllFeatures(craftTree.reqFeaturesArr)
   getCraftTree       = @() ::u.search(this.craftTrees, this.isVisibleCraftTree.bindenv(this))
 
-  function getItemsListForCraftTree(craftTree)
-  {
+  function getItemsListForCraftTree(craftTree) {
     let itemDefIds = craftTree.craftTreeItemsIdArray
     let itemsList = {}
     let itemsArray = ::ItemsManager.getInventoryList(itemType.ALL, @(item) itemDefIds.indexof(item.id) != null)
     foreach (item in itemsArray)
       itemsList[item.id] <- item
 
-    foreach(itemdefid in itemDefIds)
-    {
+    foreach (itemdefid in itemDefIds) {
       if (itemsList?[itemdefid] != null)
         continue
 
@@ -446,8 +416,7 @@ local WorkshopSet = class {
     return itemsList
   }
 
-  function getItemsSubList(subsetId)
-  {
+  function getItemsSubList(subsetId) {
     let fullItemsList = this.getItemsList()
     if (!this.hasSubsets)
       return fullItemsList
@@ -459,15 +428,13 @@ local WorkshopSet = class {
     return fullItemsList.filter(@(item) isInArray(item.id, subsetItems))
   }
 
-  function getSubsetsList()
-  {
+  function getSubsetsList() {
     return this.subsetsList.filter(this.isVisibleSubset.bindenv(this)).values().sort(
       @(a, b) a.sortIdx <=> b.sortIdx)
   }
 
   getCurSubsetId = @() this.curSubsetId
-  function setSubset(subsetId)
-  {
+  function setSubset(subsetId) {
     if (!this.hasSubsets || !(subsetId in this.subsetsList))
       return
 
@@ -475,20 +442,18 @@ local WorkshopSet = class {
     ::save_local_account_settings(CURRENT_SUBSET_SAVE_PATH + this.id, subsetId)
   }
 
-  function getSubsetIdByItemId(itemId)
-  {
+  function getSubsetIdByItemId(itemId) {
     if (!this.hasSubsets)
       return null
 
-    foreach(subset in this.subsetsList)
+    foreach (subset in this.subsetsList)
       if (this.isVisibleSubset(subset) && ::u.search(subset.items, @(i) i == itemId) != null)
         return subset.id
 
     return null
   }
 
-  function needReqItems(itemBlock, itemsList)
-  {
+  function needReqItems(itemBlock, itemsList) {
     foreach (reqItemId in (itemBlock?.reqItems ?? []))
       if (reqItemId != null && (itemsList?[reqItemId].getAmount() ?? 0) == 0)
         return true
@@ -496,14 +461,11 @@ local WorkshopSet = class {
     return false
   }
 
-  function isRequireCondition(reqItems, itemsList, isMetConditionFunc)
-  {
+  function isRequireCondition(reqItems, itemsList, isMetConditionFunc) {
     local needCondForCraft = false
-    foreach (reqItemBlock in (reqItems ?? []))
-    {
+    foreach (reqItemBlock in (reqItems ?? [])) {
       local canCraft = true
-      foreach (itemId, needHave in reqItemBlock)
-      {
+      foreach (itemId, needHave in reqItemBlock) {
         let isMetCondition = isMetConditionFunc(itemsList, itemId)
         if ((needHave && isMetCondition) || (!needHave && !isMetCondition))
           continue
@@ -532,8 +494,7 @@ local WorkshopSet = class {
   isRequireExistItemsForDisplaying = @(itemBlock, itemsList)
     this.isRequireCondition(itemBlock?.reqItemExistsForDisplaying, itemsList, this.hasAmountFunc)
 
-  function findTutorialItem()
-  {
+  function findTutorialItem() {
     if (::load_local_account_settings(this.getCraftTreeIdPathForSave(), false))
       return null
 
@@ -545,8 +506,7 @@ local WorkshopSet = class {
     let itemsList = this.getItemsListForCraftTree(craftTree)
 
     foreach (branch in branches)
-      foreach (itemBlock in branch.branchItems)
-      {
+      foreach (itemBlock in branch.branchItems) {
         if (!craftTree.allowableItemsForCraftingTutorial?[itemBlock?.id])
           continue
 
@@ -574,8 +534,7 @@ local WorkshopSet = class {
   getCraftTreeIdPathForSave = @() "".join([ACCENT_CRAFT_TREE_SAVE_PATH, this.id])
   saveTutorialWasShown = @() ::save_local_account_settings(this.getCraftTreeIdPathForSave(), true)
 
-  function checkForcedDisplayTime(forcedDisplayWithoutFeature)
-  {
+  function checkForcedDisplayTime(forcedDisplayWithoutFeature) {
     if (!forcedDisplayWithoutFeature)
       return
 
@@ -586,13 +545,12 @@ local WorkshopSet = class {
     if (currentTime >= endTime)
       return
 
-    if(currentTime >= startTime && currentTime < endTime)
-    {
+    if (currentTime >= startTime && currentTime < endTime) {
       this.isForcedDisplayByDate = true
       ::g_delayed_actions.add(Callback(function() {
           this.isForcedDisplayByDate = false
           ::broadcastEvent("WorkshopAvailableChanged")
-        }, this), (endTime - currentTime)*1000)
+        }, this), (endTime - currentTime) * 1000)
 
       return
     }
@@ -600,7 +558,7 @@ local WorkshopSet = class {
     ::g_delayed_actions.add(Callback(function() {
         this.isForcedDisplayByDate = true
         ::broadcastEvent("WorkshopAvailableChanged")
-      }, this), (startTime - currentTime)*1000)
+      }, this), (startTime - currentTime) * 1000)
   }
 }
 

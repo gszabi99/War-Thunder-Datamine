@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
-::gui_handlers.ShopSearchBox <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ShopSearchBox <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopSearchBox.blk"
 
@@ -30,13 +30,11 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   isActive = false
   isClear = true
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.setUserData(this)
     this.scene.findObject("search_update_timer").setUserData(this)
 
-    foreach (id in [ "search_btn_start", "search_btn_close" ])
-    {
+    foreach (id in [ "search_btn_start", "search_btn_close" ]) {
       let obj = this.scene.findObject(id)
       if (checkObj(obj))
         obj["tooltip"] += colorize("hotkeyColor",
@@ -46,8 +44,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.searchClear()
   }
 
-  function searchClear()
-  {
+  function searchClear() {
     this.searchString = ""
     this.prevSearchString = ""
     this.prevSearchResult = []
@@ -64,14 +61,12 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.updateHint(this.isClear, 0, 0)
   }
 
-  function searchCancel()
-  {
+  function searchCancel() {
     this.searchClear()
     this.cbOwnerSearchCancel()
   }
 
-  function updateHint(isEditboxClear, countGlobal, countLocal)
-  {
+  function updateHint(isEditboxClear, countGlobal, countLocal) {
     local hintText = isEditboxClear ? loc("shop/search/hint")
       : !countGlobal ? loc("shop/search/global/notFound")
       : countLocal ? loc("shop/search/local/found", { count = countLocal })
@@ -84,13 +79,11 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       obj.setValue(hintText)
   }
 
-  function onSearchEditBoxChangeValue(obj)
-  {
+  function onSearchEditBoxChangeValue(obj) {
     this.searchString = obj.getValue()
   }
 
-  function doFastSearch(searchStr)
-  {
+  function doFastSearch(searchStr) {
     this.isClear = searchStr == ""
     this.prevSearchString = searchStr
     local units = shopSearchCore.findUnitsByLocName(searchStr)
@@ -109,21 +102,18 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.cbOwnerSearchHighlight(units, this.isClear)
   }
 
-  function onSearchCancelClick(_obj)
-  {
+  function onSearchCancelClick(_obj) {
     this.searchCancel()
   }
 
-  function onSearchEditBoxCancelEdit(_obj)
-  {
+  function onSearchEditBoxCancelEdit(_obj) {
     if (this.isActive)
       this.searchCancel()
     else
       this.cbOwnerClose()
   }
 
-  function onSearchEditBoxActivate(obj = null)
-  {
+  function onSearchEditBoxActivate(obj = null) {
     obj = obj || this.scene.findObject("search_edit_box")
     if (!checkObj(obj))
       return
@@ -133,13 +123,11 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
         this.searchClear()
   }
 
-  function onSearchButtonClick(_obj)
-  {
+  function onSearchButtonClick(_obj) {
     this.onSearchEditBoxActivate()
   }
 
-  function onActiveStateChanged(v_isActive)
-  {
+  function onActiveStateChanged(v_isActive) {
     if (!this.isValid())
       return
     if (this.isActive == v_isActive)
@@ -158,8 +146,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       this.searchCancel()
   }
 
-  function onSearchEditBoxFocusChanged(obj)
-  {
+  function onSearchEditBoxFocusChanged(obj) {
     this.guiScene.performDelayed(this, @() checkObj(obj) && this.onActiveStateChanged(obj.isFocused()))
   }
 
@@ -170,32 +157,27 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.onActiveStateChanged(obj.isMouseOver())
   }
 
-  function onAccesskeyActivateSearch(_obj)
-  {
+  function onAccesskeyActivateSearch(_obj) {
     ::select_editbox(this.scene.findObject("search_edit_box"))
   }
 
-  function onEventShopUnitTypeSwitched(p)
-  {
+  function onEventShopUnitTypeSwitched(p) {
     if (this.curEsUnitType == p.esUnitType)
       return
     this.curEsUnitType = p.esUnitType
     this.searchCancel()
   }
 
-  function onEventCountryChanged(_p)
-  {
+  function onEventCountryChanged(_p) {
     this.curCountry = profileCountrySq.value
     this.searchCancel()
   }
 
-  function onEventShopWndSwitched(_p)
-  {
+  function onEventShopWndSwitched(_p) {
     this.searchCancel()
   }
 
-  function onTimer(_obj, _dt)
-  {
+  function onTimer(_obj, _dt) {
     if (this.isActive && this.searchString != this.prevSearchString)
       this.doFastSearch(this.searchString)
   }

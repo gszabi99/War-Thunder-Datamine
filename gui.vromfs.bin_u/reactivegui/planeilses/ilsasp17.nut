@@ -1,9 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockPos, AimLockValid} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth} = require("ilsConstants.nut")
-let {cvt} = require("dagor.math")
-let {Roll} = require("%rGui/planeState/planeFlyState.nut");
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
+let { baseLineWidth } = require("ilsConstants.nut")
+let { cvt } = require("dagor.math")
+let { Roll } = require("%rGui/planeState/planeFlyState.nut");
 
 let ASP17crosshair = @() {
   watch = IlsColor

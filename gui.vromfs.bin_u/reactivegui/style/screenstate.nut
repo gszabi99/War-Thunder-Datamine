@@ -12,8 +12,8 @@ let isInVr = is_stereo_mode()
 
 let recalculateHudSize = function(safeArea) {
   let borders = [
-    max((sh((1.0 - safeArea[1]) *100) / 2).tointeger(), debugRowHeight),
-    max((sw((1.0 - safeArea[0]) *100) / 2).tointeger(), debugRowHeight)
+    max((sh((1.0 - safeArea[1]) * 100) / 2).tointeger(), debugRowHeight),
+    max((sw((1.0 - safeArea[0]) * 100) / 2).tointeger(), debugRowHeight)
   ]
   let size = [sw(100) - 2 * borders[1], sh(100) - 2 * borders[0]]
   return {

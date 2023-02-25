@@ -1,43 +1,36 @@
 #explicit-this
 #no-root-fallback
 
-::gui_bhv.ActivateSelect <- class extends ::gui_bhv.posNavigator
-{
+::gui_bhv.ActivateSelect <- class extends ::gui_bhv.posNavigator {
   bhvId = "ActivateSelect"
   valuePID = ::dagui_propid.add_name_id("value")  //values by bits   chosen:yes;
   selectedPID = ::dagui_propid.add_name_id("_selected")    //only 1     selected:yes;
   canChooseByMClick = true
 
-  function setValue(obj, value)
-  {
+  function setValue(obj, value) {
     if (this.chooseItemImpl(obj, value, false, false))
       this.setSelectedValue(obj, value)
   }
 
-  function getSelectedValue(obj)
-  {
+  function getSelectedValue(obj) {
     return obj.getIntProp(this.selectedPID, -1)
   }
 
-  function setSelectedValue(obj, value)
-  {
+  function setSelectedValue(obj, value) {
     this.selectItem(obj, value, null, false)
   }
 
-  function onSelectAction(_obj)
-  {
+  function onSelectAction(_obj) {
   }
 
-  function chooseItemImpl(obj, idx, needSound = true, needActivateChoosenItem = true)
-  {
+  function chooseItemImpl(obj, idx, needSound = true, needActivateChoosenItem = true) {
     let idxObj = this.getChildObj(obj, idx)
     if (!idxObj)
       return false
 
     local needNotify = false
     let prevIdx = this.getValue(obj)
-    if (prevIdx!=idx)
-    {
+    if (prevIdx != idx) {
       needNotify = true
       let prevObj = this.getChildObj(obj, prevIdx)
       if (prevObj)
@@ -58,8 +51,7 @@
 
   chooseItem = @(obj, idx, needSound = true) this.chooseItemImpl(obj, idx, needSound)
 
-  function onShortcutSelect(obj, is_down)
-  {
+  function onShortcutSelect(obj, is_down) {
     let value = this.getHoveredChild(obj).hoveredIdx ?? -1
     if (is_down) {
       if (value < 0)

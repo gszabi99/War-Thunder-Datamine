@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {PI, cos, sin} = require("%sqstd/math.nut")
+let { PI, cos, sin } = require("%sqstd/math.nut")
 let {
   isAllMachineGunsEmpty, GunOverheatState, GunDirectionX, isAllCannonsEmpty,
   GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode,
@@ -14,12 +14,11 @@ let {
   RocketSightOpacity, RocketSightShadowOpacity,
   CanonSightLineWidthFactor, RocketSightLineWidthFactor, BombSightLineWidthFactor,
   CanonSightShadowLineWidthFactor, RocketSightShadowLineWidthFactor, BombSightShadowLineWidthFactor,
-  BombSightShadowOpacity, TurretSightOpacity, TurretSightLineWidthFactor} = require("airState.nut")
+  BombSightShadowOpacity, TurretSightOpacity, TurretSightLineWidthFactor } = require("airState.nut")
 let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
-
 let { mixColor, styleText, styleLineForeground, relativCircle, isDarkColor, fadeColor } = require("style/airHudStyle.nut")
-
 let { LaserPoint, HaveLaserPoint } = require("planeState/planeWeaponState.nut")
+let { crosshairColorOpt } = require("options/options.nut")
 
 const NUM_TURRETS_MAX = 10
 const NUM_CANNONS_MAX = 3
@@ -117,7 +116,7 @@ let function gunDirection(colorWatch, isSightHud) {
   let rootWatchList = freeze([GunDirectionX, GunDirectionY, GunDirectionVisible])
 
   let animations = [
-    { prop = AnimProp.opacity, from = 1, to = 0, duration = 0.5, loop = true, easing = InOutSine, trigger = triggerGun}
+    { prop = AnimProp.opacity, from = 1, to = 0, duration = 0.5, loop = true, easing = InOutSine, trigger = triggerGun }
   ]
 
   return function() {
@@ -144,20 +143,20 @@ let dashCount = 36
 const circleSize = 2.5
 let angleReloadArrow = 90.0
 
-let function reloadTurret(currentTime){
+let function reloadTurret(currentTime) {
   let angleAnim = ((currentTime * 180) % 360) * (PI / 180)  // 360 per 2 sec
   let commands = []
   let angleDegree = angleReloadArrow / dashCount
   let angle = angleDegree * (PI / 180)
-  for(local i = 0; i < dashCount; ++i) {
+  for (local i = 0; i < dashCount; ++i) {
       commands.append([
         VECTOR_LINE,
-        (cos(angle * (i-1) + angleAnim) - sin(angle * (i-1) + angleAnim)) * circleSize,
-        (cos(angle * (i-1) + angleAnim) + sin(angle * (i-1) + angleAnim)) * circleSize,
+        (cos(angle * (i - 1) + angleAnim) - sin(angle * (i - 1) + angleAnim)) * circleSize,
+        (cos(angle * (i - 1) + angleAnim) + sin(angle * (i - 1) + angleAnim)) * circleSize,
         (cos(angle * i + angleAnim) - sin(angle * i + angleAnim)) * circleSize,
         (cos(angle * i + angleAnim) + sin(angle * i + angleAnim)) * circleSize
       ])
-    }
+  }
   return commands
 }
 
@@ -197,7 +196,7 @@ let function aircraftTurretsComponent(colorWatch) {
 
 
 
-let function fixedGunsSight(sightId){
+let function fixedGunsSight(sightId) {
   local shifting = 30
   if (sightId == 0) {
     return [
@@ -277,8 +276,8 @@ let function fixedGunsDirection() {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = shadowLineWidth
         size = [sh(0.625), sh(0.625)]
-        fillColor = Color(0,0,0,0)
-        color = isDarkColor(HudColor.value) ? Color(255,255,255, 255) : Color(0,0,0,255)
+        fillColor = Color(0, 0, 0, 0)
+        color = isDarkColor(HudColor.value) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
         commands = fixedGunsSight(FixedGunSightMode.value)
         children = overheatBg
       })
@@ -306,7 +305,7 @@ let function helicopterCCRP(colorWatch) {
       rendObj = ROBJ_VECTOR_CANVAS
       size = [sh(0.625), sh(0.625)]
       color = colorWatch.value
-      commands = [[VECTOR_LINE, 0,0, TargetX.value, TargetY.value]]
+      commands = [[VECTOR_LINE, 0, 0, TargetX.value, TargetY.value]]
     })
 
     return res.__update({
@@ -344,21 +343,20 @@ let function agmTrackZoneComponent(colorWatch) {
   let height = sh(100)
   return {
     pos = [sw(50) - width * 0.5, sh(50) - height * 0.5]
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1 duration = 0.5, play = true, loop = true, easing = InOutCubic}]
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1 duration = 0.5, play = true, loop = true, easing = InOutCubic }]
     children = agmTrackZone(width, height)
   }
 }
 
 let function laserDesignatorComponent(colorWatch, posX, posY) {
   let function laserDesignator(width, height) {
-    let color = (IsAgmEmpty.value) ? AlertColorHigh.value
-      : colorWatch.value
+    let color = Computed(@() IsAgmEmpty.value ? AlertColorHigh.value : colorWatch.value)
     return @() styleLineForeground.__merge({
-      watch = [IsAgmEmpty, colorWatch, AlertColorHigh]
+      watch = [color]
       rendObj = ROBJ_VECTOR_CANVAS
       size = [width, height]
-      color = color
-      fillColor = color
+      color = color.value
+      fillColor = color.value
       commands = [
         [ VECTOR_ELLIPSE, 50, 50,
           5.0 / width * 100,
@@ -412,7 +410,7 @@ let function agmTrackerStatusComponent(colorWatch, posX, posY) {
     text = NoLosToATGM.value ? loc("HUD/TXT_NO_LOS_ATGM") : loc("HUD/TXT_ATGM_OUT_OF_TRACKER_SECTOR")
     color = colorWatch.value
     watch = [NoLosToATGM, colorWatch]
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = true, loop = true, easing = InOutCubic}]
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = true, loop = true, easing = InOutCubic }]
   })
 
   let resCompoment = @() {
@@ -425,7 +423,7 @@ let function agmTrackerStatusComponent(colorWatch, posX, posY) {
   return resCompoment
 }
 
-let function aircraftRocketSightMode(sightMode){
+let function aircraftRocketSightMode(sightMode) {
 
   if (sightMode == 0) {
     return [
@@ -461,7 +459,7 @@ let function aircraftRocketSightMode(sightMode){
 
 let aircraftRocketSight = @(width, height) function() {
 
-  let res = { watch = [RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
+  let res = { watch = [crosshairColorOpt, RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
     RocketSightOpacity, RocketSightShadowOpacity, RocketSightLineWidthFactor, RocketSightShadowLineWidthFactor] }
 
   if (!RocketAimVisible.value)
@@ -470,19 +468,19 @@ let aircraftRocketSight = @(width, height) function() {
   let lineWidth = hdpx(LINE_WIDTH * RocketSightLineWidthFactor.value)
   let shadowLineWidth = hdpx(LINE_WIDTH * RocketSightShadowLineWidthFactor.value)
 
-  let lines = @() styleLineForeground.__merge({
+  let lines = styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    color = fadeColor(HudColor.value, 255)
-    fillColor = Color(0,0,0,0)
+    color = fadeColor(crosshairColorOpt.value, 255)
+    fillColor = 0
     lineWidth
     size =  [width * RocketSightSizeFactor.value, height * RocketSightSizeFactor.value]
     opacity = RocketSightOpacity.value
     commands = aircraftRocketSightMode(RocketSightMode.value)
   })
 
-  let shadowLines = @() styleLineForeground.__merge({
+  let shadowLines = styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    color = isDarkColor(HudColor.value) ? Color(255,255,255, 255) : Color(0,0,0,255)
+    color = isDarkColor(HudColor.value) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
     lineWidth = shadowLineWidth
     size = [width * RocketSightSizeFactor.value, height * RocketSightSizeFactor.value]
     opacity = RocketSightShadowOpacity.value
@@ -523,42 +521,42 @@ let function laserPointComponent(colorWatch) {
   }
 }
 
-local bombSightComponent = @(width, height) function() {
-  local res = { watch = [BombReleaseVisible, BombReleaseDirX, BombReleaseDirY, BombReleasePoints,
+let bombSightComponent = @(width, height, crosshairColorWatch) function() {
+  let res = { watch = [BombReleaseVisible, BombReleaseDirX, BombReleaseDirY, BombReleasePoints,
     BombReleaseRelativToTarget, AlertColorHigh, HudColor, BombReleaseOpacity, BombSightShadowOpacity,
-    BombSightLineWidthFactor, BombSightShadowLineWidthFactor] }
+    BombSightLineWidthFactor, BombSightShadowLineWidthFactor, crosshairColorWatch] }
 
   if (!BombReleaseVisible.value)
     return res
 
-  local commands = []
+  let commands = []
   for (local i = 0; i < NUM_BOMB_RELEASE_POINT; i += 4) {
-    commands.append([VECTOR_LINE, BombReleasePoints.value?[i], BombReleasePoints.value?[i + 1], BombReleasePoints.value?[i+2], BombReleasePoints.value?[i+3]])
+    commands.append([VECTOR_LINE, BombReleasePoints.value?[i], BombReleasePoints.value?[i + 1], BombReleasePoints.value?[i + 2], BombReleasePoints.value?[i + 3]])
   }
 
-  local finalBombSightColor = mixColor(HudColor.value, AlertColorHigh.value, BombReleaseRelativToTarget.value)
+  let finalBombSightColor = mixColor(crosshairColorWatch.value, AlertColorHigh.value, BombReleaseRelativToTarget.value)
 
   let lineWidth = hdpx(LINE_WIDTH * BombSightLineWidthFactor.value)
   let shadowLineWidth = hdpx(LINE_WIDTH * BombSightShadowLineWidthFactor.value)
 
-  local lines = @() styleLineForeground.__merge({
+  let lines = styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth
-    fillColor = Color(0,0,0,0)
+    fillColor = Color(0, 0, 0, 0)
     size = [width, height]
-    pos = [BombReleaseDirX.value,BombReleaseDirY.value]
+    pos = [BombReleaseDirX.value, BombReleaseDirY.value]
     color = fadeColor(finalBombSightColor, 255)
     opacity = BombReleaseOpacity.value
     commands
   })
 
-  local shadowLines = @() styleLineForeground.__merge({
+  let shadowLines = styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = shadowLineWidth
-    fillColor = Color(0,0,0,0)
+    fillColor = Color(0, 0, 0, 0)
     size = [width, height]
-    pos = [BombReleaseDirX.value,BombReleaseDirY.value]
-    color = isDarkColor(finalBombSightColor) ? Color(255,255,255, 255) : Color(0,0,0,255)
+    pos = [BombReleaseDirX.value, BombReleaseDirY.value]
+    color = isDarkColor(finalBombSightColor) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
     opacity = BombReleaseOpacity.value * BombSightShadowOpacity.value
     fillOpacity = 0
     commands
@@ -567,7 +565,7 @@ local bombSightComponent = @(width, height) function() {
   return res.__update({
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    pos = [0,0]
+    pos = [0, 0]
     children = [shadowLines, lines]
   })
 }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let logS = log_with_prefix("[PSN: Contacts] ")
 
+let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
@@ -28,25 +30,20 @@ let pendingContactsChanges = {}
 let checkGroups = []
 
 
-let tryUpdateContacts = function(contactsBlk)
-{
+let tryUpdateContacts = function(contactsBlk) {
   local haveAnyUpdate = false
   foreach (_group, usersList in contactsBlk)
     haveAnyUpdate = haveAnyUpdate || usersList.paramCount() > 0
 
-  if (!haveAnyUpdate)
-  {
+  if (!haveAnyUpdate) {
     logS("Update: No changes. No need to server call")
     return
   }
 
   let result = ::request_edit_player_lists(contactsBlk, false)
-  if (result)
-  {
-    foreach(group, playersBlock in contactsBlk)
-    {
-      foreach (uid, isAdding in playersBlock)
-      {
+  if (result) {
+    foreach (group, playersBlock in contactsBlk) {
+      foreach (uid, isAdding in playersBlock) {
         let contact = ::getContact(uid)
         if (!contact)
           continue
@@ -73,13 +70,12 @@ let function psnUpdateContactsList(usersTable) {
       psnId = playerData.id
     })
 
-  let contactsBlk = ::DataBlock()
-  contactsBlk[::EPLX_PS4_FRIENDS] <- ::DataBlock()
-  contactsBlk[EPL_BLOCKLIST]  <- ::DataBlock()
-  contactsBlk[EPL_FRIENDLIST] <- ::DataBlock()
+  let contactsBlk = DataBlock()
+  contactsBlk[::EPLX_PS4_FRIENDS] <- DataBlock()
+  contactsBlk[EPL_BLOCKLIST]  <- DataBlock()
+  contactsBlk[EPL_FRIENDLIST] <- DataBlock()
 
-  foreach (groupName, groupData in pendingContactsChanges)
-  {
+  foreach (groupName, groupData in pendingContactsChanges) {
     let existedPSNContacts = ::get_contacts_array_by_filter_func(groupName, isPS4PlayerName)
 
     foreach (userInfo in groupData.users) {
@@ -138,11 +134,9 @@ let function proceedPlayersList() {
     playersList.extend(data.users)
 
   let knownUsers = {}
-  for (local i = playersList.len() - 1; i >= 0; i--)
-  {
+  for (local i = playersList.len() - 1; i >= 0; i--) {
     let contact = ::g_contacts.findContactByPSNId(playersList[i].accountId)
-    if (contact)
-    {
+    if (contact) {
       knownUsers[contact.uid] <- {
         nick = contact.name
         id = playersList.remove(i).accountId

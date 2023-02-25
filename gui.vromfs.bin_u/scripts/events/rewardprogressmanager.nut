@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -21,8 +22,7 @@ let { format } = require("string")
 ::g_reward_progress_manager <- {
   __cache = {}
 
-  function requestProgress(event, eventEconomicName, field, callback)
-  {
+  function requestProgress(event, eventEconomicName, field, callback) {
     //Try to get from cache
     if (eventEconomicName in this.__cache && this.__cache[eventEconomicName])
       return callback(this.__cache[eventEconomicName]?[field])
@@ -45,8 +45,7 @@ let { format } = require("string")
       cache[eventEconomicName] <- selfRow[0]
       if (field in selfRow[0])
         callback(selfRow[0][field])
-      else
-      {
+      else {
         let msgToSend = format("Error: no field '%s' in leaderbords for event '%s' , economic name '%s'",
                                    field, event.name, eventEconomicName)
         log(msgToSend)
@@ -54,24 +53,21 @@ let { format } = require("string")
     })
   }
 
-  function onEventEventBattleEnded(params)
-  {
+  function onEventEventBattleEnded(params) {
     let eventId = params?.eventId ?? ""
-    let event = ::events.getEvent(eventId) || ::events.getEventByEconomicName(eventId)// if event name difference of its shared economic name
+    let event = ::events.getEvent(eventId) || ::events.getEventByEconomicName(eventId) // if event name difference of its shared economic name
     if (event)
       this.fetchRowFromUserlog(event)
   }
 
-  function fetchRowFromUserlog(event)
-  {
+  function fetchRowFromUserlog(event) {
     let userLogs = ::getUserLogsList({
       show = [
         EULT_SESSION_RESULT
       ]
     })
 
-    foreach (logObj in userLogs)
-    {
+    foreach (logObj in userLogs) {
       let eventEconomicName = ::events.getEventEconomicName(event)
       if (getTblValue("eventId", logObj) != eventEconomicName)
         continue

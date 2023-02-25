@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,13 +6,10 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
-::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
-{
-  function createView()
-  {
+::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler {
+  function createView() {
     let clanTypeItems = []
-    foreach (clanType in ::g_clan_type.types)
-    {
+    foreach (clanType in ::g_clan_type.types) {
       if (clanType == ::g_clan_type.UNKNOWN)
         continue
       let typeName = clanType.getTypeName()
@@ -36,15 +34,12 @@ let { format } = require("string")
     }
   }
 
-  function getTypeTextId(clanType)
-  {
+  function getTypeTextId(clanType) {
     return format("clan_type_text_%s", clanType.getTypeName())
   }
 
-  function updateTypeCosts()
-  {
-    foreach (clanType in ::g_clan_type.types)
-    {
+  function updateTypeCosts() {
+    foreach (clanType in ::g_clan_type.types) {
       if (clanType == ::g_clan_type.UNKNOWN)
         continue
       let typeTextId = this.getTypeTextId(clanType)
@@ -55,14 +50,12 @@ let { format } = require("string")
   }
 
   // Override.
-  function onEventOnlineShopPurchaseSuccessful(_params)
-  {
+  function onEventOnlineShopPurchaseSuccessful(_params) {
     this.updateSubmitButtonText()
     this.updateTypeCosts()
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
     this.updateSubmitButtonText()
     ::select_editbox(this.scene.findObject("newclan_name"))
@@ -71,8 +64,7 @@ let { format } = require("string")
     this.updateAnnouncement()
   }
 
-  function onClanTypeSelect(obj)
-  {
+  function onClanTypeSelect(obj) {
     if (!checkObj(obj))
       return
     this.prepareClanData(false, true)
@@ -88,14 +80,12 @@ let { format } = require("string")
   }
 
   // Override.
-  function updateSubmitButtonText()
-  {
+  function updateSubmitButtonText() {
     let createCost = this.newClanType.getCreateCost()
     this.setSubmitButtonText(loc("clan/create_clan_submit_button"), createCost)
   }
 
-  function createClan(createCost)
-  {
+  function createClan(createCost) {
     if (this.isObsceneWord())
       return
 
@@ -113,15 +103,13 @@ let { format } = require("string")
     ::g_clans.createClan(createParams, this)
   }
 
-  function onSubmit()
-  {
-    if(!this.prepareClanData())
+  function onSubmit() {
+    if (!this.prepareClanData())
       return
     let createCost = this.newClanType.getCreateCost()
     if (createCost <= ::zero_money)
       this.createClan(createCost)
-    else if (::check_balance_msgBox(createCost))
-    {
+    else if (::check_balance_msgBox(createCost)) {
       let msgText = ::warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
@@ -130,8 +118,7 @@ let { format } = require("string")
     }
   }
 
-  function getDecoratorsList()
-  {
+  function getDecoratorsList() {
     return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
   }
 }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ from "%scripts/dagui_library.nut" import *
 
 const MULTICLUSTER_NAME = "multi"
 
-::queue_stats_versions.Base <- class
-{
+::queue_stats_versions.Base <- class {
   isClanStats = false
   isSymmetric = false
   isMultiCluster = false
@@ -55,8 +55,7 @@ const MULTICLUSTER_NAME = "multi"
   myClanQueueTable = { "<rank>" = <clans>, clansCount = <total clans> }
   */
 
-  constructor(queue)
-  {
+  constructor(queue) {
     local queueEvent = ::queues.getQueueEvent(queue)
     this.isClanStats = ::queues.isClanQueue(queue)
     this.isMultiCluster = this.isClanStats || ::events.isMultiCluster(queueEvent)
@@ -73,62 +72,54 @@ const MULTICLUSTER_NAME = "multi"
   /*************************************PUBLIC FUNCTIONS *******************************************/
   /*************************************************************************************************/
 
-  function applyQueueInfo(queueInfo)
-  {
+  function applyQueueInfo(queueInfo) {
     this.source = queueInfo
     this.resetCache()
     return false
   }
 
-  function getMaxClusterName()
-  {
+  function getMaxClusterName() {
     this.recountQueueOnce()
     return this.maxClusterName
   }
 
-  function getTeamsQueueTable(cluster = null)
-  {
+  function getTeamsQueueTable(cluster = null) {
     this.recountQueueOnce()
     if (this.isMultiCluster)
       cluster = MULTICLUSTER_NAME
     return getTblValue(cluster || this.maxClusterName, this.teamsQueueTable)
   }
 
-  function getQueueTableByTeam(teamName, cluster = null)
-  {
+  function getQueueTableByTeam(teamName, cluster = null) {
     return getTblValue(teamName, this.getTeamsQueueTable(cluster))
   }
 
-  function getPlayersCountByTeam(teamName, cluster = null)
-  {
+  function getPlayersCountByTeam(teamName, cluster = null) {
     return getTblValue("playersCount", this.getQueueTableByTeam(teamName, cluster), 0)
   }
 
-  function getPlayersCountOfAllRanks(cluster = null)
-  {
+  function getPlayersCountOfAllRanks(cluster = null) {
     local res = 0
     let teamQueueTable = this.getQueueTableByTeam("teamA", cluster)
-    for(local i = 1; i <= ::max_country_rank; i++)
+    for (local i = 1; i <= ::max_country_rank; i++)
       res += teamQueueTable?[i.tostring()] ?? 0
 
     return res
   }
 
-  function getPlayersCountOfMyRank(cluster = null)
-  {
+  function getPlayersCountOfMyRank(cluster = null) {
     this.recountQueueOnce()
     let rankStr = this.myRankInQueue.tostring()
     if (this.isSymmetric)
       return getTblValue(rankStr, this.getQueueTableByTeam("teamA", cluster), 0)
 
     local res = 0
-    foreach(teamName in this.teamNamesList)
+    foreach (teamName in this.teamNamesList)
       res += getTblValue(rankStr, this.getQueueTableByTeam(teamName, cluster), 0)
     return res
   }
 
-  function getCountriesQueueTable(cluster = null)
-  {
+  function getCountriesQueueTable(cluster = null) {
     this.recountQueueOnce()
     if (this.isMultiCluster)
       cluster = MULTICLUSTER_NAME
@@ -136,19 +127,16 @@ const MULTICLUSTER_NAME = "multi"
   }
 
   //for clans queues
-  function getClansCount()
-  {
+  function getClansCount() {
     return getTblValue("clansCount", this.getClansQueueTable(), 0)
   }
 
-  function getMyClanQueueTable()
-  {
+  function getMyClanQueueTable() {
     this.recountQueueOnce()
     return this.myClanQueueTable
   }
 
-  function getClansQueueTable()
-  {
+  function getClansQueueTable() {
     this.recountQueueOnce()
     return this.clansQueueTable
   }
@@ -157,13 +145,11 @@ const MULTICLUSTER_NAME = "multi"
   /************************************PRIVATE FUNCTIONS *******************************************/
   /*************************************************************************************************/
 
-  function resetCache()
-  {
+  function resetCache() {
     this.isStatsCounted = false
   }
 
-  function recountQueueOnce()
-  {
+  function recountQueueOnce() {
     if (this.isStatsCounted)
       return
 
@@ -174,15 +160,13 @@ const MULTICLUSTER_NAME = "multi"
       this.calcQueueTable()
   }
 
-  function calcQueueTable()
-  {
+  function calcQueueTable() {
     this.maxClusterName = ""
     this.teamsQueueTable = {}
     this.countriesQueueTable = {}
   }
 
-  function calcClanQueueTable()
-  {
+  function calcClanQueueTable() {
     this.myClanQueueTable = null
     this.clansQueueTable = {}
   }

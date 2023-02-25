@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let interopGen = require("interopGen.nut")
-let {interop} = require("%rGui/globals/interop.nut")
+let { interop } = require("%rGui/globals/interop.nut")
 
 let warningSystemState = {
   IsMlwsLwsHudVisible = Watched(false),
@@ -26,7 +26,7 @@ let warningSystemState = {
 
 interop.clearMlwsTargets <- function() {
   local needUpdateTargets = false
-  for(local i = 0; i < warningSystemState.mlwsTargets.len(); ++i) {
+  for (local i = 0; i < warningSystemState.mlwsTargets.len(); ++i) {
     if (warningSystemState.mlwsTargets[i] != null) {
       warningSystemState.mlwsTargets[i] = null
       needUpdateTargets = true
@@ -39,7 +39,7 @@ interop.clearMlwsTargets <- function() {
 
 interop.clearLwsTargets <- function() {
   local needUpdateTargets = false
-  for(local i = 0; i < warningSystemState.lwsTargets.len(); ++i) {
+  for (local i = 0; i < warningSystemState.lwsTargets.len(); ++i) {
     if (warningSystemState.lwsTargets[i] != null) {
       warningSystemState.lwsTargets[i] = null
       needUpdateTargets = true
@@ -82,7 +82,7 @@ interopGen({
 
 interop.clearRwrTargets <- function() {
   local needUpdateTargets = false
-  for(local i = 0; i < warningSystemState.rwrTargets.len(); ++i) {
+  for (local i = 0; i < warningSystemState.rwrTargets.len(); ++i) {
     if (warningSystemState.rwrTargets[i] != null) {
       warningSystemState.rwrTargets[i] = null
       needUpdateTargets = true

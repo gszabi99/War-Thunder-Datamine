@@ -21,10 +21,10 @@ require daslib/macro_boost
 def generateApplyVisitStruct ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
     assert(stype.baseType==Type tStructure)
     assert(stype.dim.length==0)
-    var selfT <- clone_type(stype); defer_delete(selfT)
+    var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags isExplicit | TypeDeclFlags explicitConst
-    var blkList : array<ExpressionPtr>; defer_delete(blkList)
-    var func_args : array<VariablePtr>; defer_delete(func_args)
+    var inscope blkList : array<ExpressionPtr>
+    var inscope func_args : array<VariablePtr>
     for fld in stype.structType.fields
         blkList |> emplace_new <|  qmacro(invoke($i("__arg_{fld.name}"),$v(string(fld.name)),_`_self.$f(fld.name)))
         var argT <- new [[TypeDecl() baseType=Type tBlock, at=at]]                         // block<(name:string;x:field1type)>
@@ -37,7 +37,7 @@ def generateApplyVisitStruct ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
         emplace(argT.argTypes, fldT)
         argT.firstType <- new [[TypeDecl() baseType=Type tVoid,at=at]]
         argT.flags = TypeDeclFlags constant
-        func_args |> emplace <| new [[Variable() name := "__arg_{fld.name}", _type <- argT]]
+        func_args |> emplace_new <| new [[Variable() name := "__arg_{fld.name}", _type <- argT]]
     var fn <- qmacro_function(fnname) <| $ ( _`_self:$t(selfT); $a(func_args) )
         $b(blkList)
     fn.flags |= FunctionFlags privateFunction
@@ -53,11 +53,11 @@ def generateApplyVisitStruct ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
 def generateApplyVisitTuple ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
     assert(stype.baseType==Type tTuple)
     assert(stype.dim.length==0)
-    var selfT <- clone_type(stype); defer_delete(selfT)
+    var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags isExplicit | TypeDeclFlags explicitConst
-    var blkList : array<ExpressionPtr>; defer_delete(blkList)
-    var func_args : array<VariablePtr>; defer_delete(func_args)
-    for flda,fldi in stype.argTypes,range(100500)
+    var inscope blkList : array<ExpressionPtr>
+    var inscope func_args : array<VariablePtr>
+    for flda,fldi in stype.argTypes,count()
         let fldname = length(stype.argNames)==length(stype.argTypes) ? string(stype.argNames[fldi]) : "_{fldi}"
         blkList |> emplace_new <|  qmacro(invoke($i("__arg_{fldname}"),$v(fldname),_`_self.$f(fldname)))
         var argT <- new [[TypeDecl() baseType=Type tBlock, at=at]]                         // block<(name:string;x:field1type)>
@@ -70,7 +70,7 @@ def generateApplyVisitTuple ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
         emplace(argT.argTypes, fldT)
         argT.firstType <- new [[TypeDecl() baseType=Type tVoid,at=at]]
         argT.flags = TypeDeclFlags constant
-        func_args |> emplace <| new [[Variable() name := "__arg_{fldname}", _type <- argT]]
+        func_args |> emplace_new <| new [[Variable() name := "__arg_{fldname}", _type <- argT]]
     var fn <- qmacro_function(fnname) <| $ ( _`_self:$t(selfT); $a(func_args) )
         $b(blkList)
     fn.flags |= FunctionFlags privateFunction
@@ -90,11 +90,11 @@ def generateApplyVisitTuple ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
 def generateApplyVisitVariant ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
     assert(stype.baseType==Type tVariant)
     assert(stype.dim.length==0)
-    var selfT <- clone_type(stype); defer_delete(selfT)
+    var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags isExplicit | TypeDeclFlags explicitConst
-    var blkList : array<ExpressionPtr>; defer_delete(blkList)
-    var func_args : array<VariablePtr>; defer_delete(func_args)
-    for flda,fldi in stype.argTypes,range(100500)
+    var inscope blkList : array<ExpressionPtr>
+    var inscope func_args : array<VariablePtr>
+    for flda,fldi in stype.argTypes,count()
         let fldname = length(stype.argNames)==length(stype.argTypes) ? string(stype.argNames[fldi]) : "_{fldi}"
         var vexpr <- qmacro_block <|
             if variant_index(_`_self)==$v(fldi)
@@ -111,7 +111,7 @@ def generateApplyVisitVariant ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
         emplace(argT.argTypes, fldT)
         argT.firstType <- new [[TypeDecl() baseType=Type tVoid,at=at]]
         argT.flags = TypeDeclFlags constant
-        func_args |> emplace <| new [[Variable() name:="__arg_{fldname}", _type <- argT]]
+        func_args |> emplace_new <| new [[Variable() name:="__arg_{fldname}", _type <- argT]]
     var fn <- qmacro_function(fnname) <| $ ( _`_self:$t(selfT); $a(func_args) )
         $b(blkList)
     fn.flags |= FunctionFlags privateFunction
@@ -132,7 +132,7 @@ class ApplyMacro : AstCallMacro
     def override visit ( prog:ProgramPtr; mod:Module?; var expr:smart_ptr<ExprCallMacro> ) : ExpressionPtr
         macro_verify(expr.arguments.length==2,prog,expr.at,"expecting apply(value, block)")
         if expr.arguments[0]._type!=null    // need value inferred
-            var argT := expr.arguments[0]._type; defer_delete(argT)
+            var inscope argT := expr.arguments[0]._type
             macro_verify(argT.dim.length==0,prog,expr.at,"can't apply to dim")
             macro_verify(argT.baseType==Type tStructure || argT.baseType==Type tTuple || argT.baseType==Type tVariant,
                 prog,expr.at,"can only apply to {describe(expr.arguments[0]._type)}")

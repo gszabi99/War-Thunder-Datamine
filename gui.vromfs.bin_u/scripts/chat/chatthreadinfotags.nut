@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,16 +10,13 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   types = []
 }
 
-::g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, _valueString)
-{
+::g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, _valueString) {
   threadInfo[this.threadInfoParamName] = true
 }
-::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo)
-{
+::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo) {
   threadInfo[this.threadInfoParamName] = false
 }
-::g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo)
-{
+::g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo) {
   if (threadInfo[this.threadInfoParamName])
     return this.prefix
   return ""
@@ -30,17 +28,14 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   isRegular = true //regular tags are converted direct to threadInfo params.
   isReadOnly = false //do not send this tag on modify tags
 
-  checkTag = function(tag)
-  {
+  checkTag = function(tag) {
     return ::g_string.startsWith(tag, this.prefix)
   }
-  setThreadInfoProperty = function(threadInfo, valueString)
-  {
+  setThreadInfoProperty = function(threadInfo, valueString) {
     if (this.threadInfoParamName)
       threadInfo[this.threadInfoParamName] = valueString
   }
-  updateThreadByTag = function(threadInfo, tag)
-  {
+  updateThreadByTag = function(threadInfo, tag) {
     if (!this.isRegular || !this.checkTag(tag))
       return false
     this.setThreadInfoProperty(threadInfo, ::g_string.slice(tag, this.prefix.len()))
@@ -49,8 +44,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   updateThreadWhenNoTag = function(_threadInfo) {}
   updateThreadBeforeTagsUpdate = function(_threadInfo) {}
 
-  getTagString = function(threadInfo)
-  {
+  getTagString = function(threadInfo) {
     if (this.isReadOnly || !this.threadInfoParamName)
       return ""
     return this.prefix + threadInfo[this.threadInfoParamName]
@@ -70,8 +64,7 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
   NICK = {
     prefix = "nick_"
     threadInfoParamName = "ownerNick"
-    setThreadInfoProperty = function(threadInfo, valueString)
-    {
+    setThreadInfoProperty = function(threadInfo, valueString) {
       threadInfo[this.threadInfoParamName] = ::gchat_unescape_target(valueString)
     }
   }
@@ -86,18 +79,16 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     threadInfoParamName = "membersAmount"
     isReadOnly = true
 
-    setThreadInfoProperty = function(threadInfo, valueString)
-    {
+    setThreadInfoProperty = function(threadInfo, valueString) {
       threadInfo[this.threadInfoParamName] = ::to_integer_safe(valueString)
     }
-    updateThreadWhenNoTag = function(threadInfo)
-    {
+    updateThreadWhenNoTag = function(threadInfo) {
       this.setThreadInfoProperty(threadInfo, 0)
     }
   }
 
   HIDDEN = {
-    prefix ="hidden"
+    prefix = "hidden"
     threadInfoParamName = "isHidden"
     setThreadInfoProperty = ::g_chat_thread_tag._setThreadInfoPropertyForBoolTag
     updateThreadWhenNoTag = ::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag
@@ -105,7 +96,7 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
   }
 
   PINNED = {
-    prefix ="pinned"
+    prefix = "pinned"
     threadInfoParamName = "isPinned"
     setThreadInfoProperty = ::g_chat_thread_tag._setThreadInfoPropertyForBoolTag
     updateThreadWhenNoTag = ::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag
@@ -113,34 +104,29 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
   }
 
   TIME_STAMP = {
-    prefix ="stamp_"
+    prefix = "stamp_"
     threadInfoParamName = "timeStamp"
     isReadOnly = true
 
-    setThreadInfoProperty = function(threadInfo, valueString)
-    {
+    setThreadInfoProperty = function(threadInfo, valueString) {
       threadInfo[this.threadInfoParamName] = ::to_integer_safe(valueString)
     }
-    updateThreadWhenNoTag = function(threadInfo)
-    {
+    updateThreadWhenNoTag = function(threadInfo) {
       this.setThreadInfoProperty(threadInfo, -1)
     }
   }
 
   LANG = {
-    prefix ="lang_"
+    prefix = "lang_"
     threadInfoParamName = "langs"
 
-    updateThreadBeforeTagsUpdate = function(threadInfo)
-    {
+    updateThreadBeforeTagsUpdate = function(threadInfo) {
       threadInfo[this.threadInfoParamName].clear()
     }
-    setThreadInfoProperty = function(threadInfo, valueString)
-    {
+    setThreadInfoProperty = function(threadInfo, valueString) {
       threadInfo[this.threadInfoParamName].insert(0, valueString) //tags checked in inverted order
     }
-    getTagString = function(threadInfo)
-    {
+    getTagString = function(threadInfo) {
       threadInfo.sortLangList()
       let tags = ::u.map(threadInfo[this.threadInfoParamName], (@(prefix) function(val) { return prefix + val })(this.prefix))
       return ::g_string.implode(tags, ",")
@@ -151,15 +137,13 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     prefix = "cat_"
     threadInfoParamName = "category"
 
-    setThreadInfoProperty = function(threadInfo, valueString)
-    {
+    setThreadInfoProperty = function(threadInfo, valueString) {
       let categories = ::g_chat_categories.list
       let category = (valueString in categories) ? valueString : ::g_chat_categories.defaultCategoryName
       threadInfo[this.threadInfoParamName] = category
     }
 
-    updateThreadWhenNoTag = function(threadInfo)
-    {
+    updateThreadWhenNoTag = function(threadInfo) {
       threadInfo[this.threadInfoParamName] = ::g_chat_categories.defaultCategoryName
     }
   }

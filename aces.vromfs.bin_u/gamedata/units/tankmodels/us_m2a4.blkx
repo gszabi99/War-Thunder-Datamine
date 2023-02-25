@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -1901,8 +1901,21 @@
     },
     "tracks": {
       "animationMultiplier": 0.5924,
-      "height": 0.045,
-      "width": 0.294
+      "height": 0.075,
+      "width": 0.294,
+      "tracksTensionK": [
+        6.5,
+        8.0,
+        3.0
+      ],
+      "trackMesh": "us_t16e1_phys_track_line",
+      "trackLen": 0.1398,
+      "trackCount": 66,
+      "trackFadeTime": 1.1,
+      "trackConnector": true,
+      "trackEmitSparks": false,
+      "trackMaxHeight": 1.1,
+      "trackStartOffset": 0.02
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -1944,7 +1957,9 @@
       ],
       "frontBackGearRadius": 0.27,
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_drive": 0.29,
+      "wheel_l_drive": 0.29
     }
   },
   "PhysSys": {

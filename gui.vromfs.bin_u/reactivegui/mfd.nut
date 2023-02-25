@@ -1,12 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd,
-  IsMfdEnabled, RwrPosSize, SecondaryMask} = require("airState.nut")
-let {paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize} = require("airHudElems.nut")
+let { IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd,
+  IsMfdEnabled, RwrPosSize, SecondaryMask } = require("airState.nut")
+let { paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize } = require("airHudElems.nut")
 let tws = require("tws.nut")
-let {mkRadarForMfd} = require("radarComponent.nut")
+let { mkRadarForMfd } = require("radarComponent.nut")
 
-let {ceil} = require("%sqstd/math.nut")
+let { ceil } = require("%sqstd/math.nut")
 
 const mfdFontScale = 1.5
 

@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
 let compassState = require("compassState.nut")
 
 let styleLineForeground = {
@@ -38,7 +38,7 @@ let function generateCompassNumber(line_style, num, width, height, color) {
 }
 
 
-let generateCompassDash = @(line_style,width, height, color)
+let generateCompassDash = @(line_style, width, height, color)
   line_style.__merge({
     size = [width, height]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -49,7 +49,7 @@ let generateCompassDash = @(line_style,width, height, color)
   })
 
 
-let function compassLine(line_style, total_width, width, height, color){
+let function compassLine(line_style, total_width, width, height, color) {
   const step = 5.0
   let children = []
 

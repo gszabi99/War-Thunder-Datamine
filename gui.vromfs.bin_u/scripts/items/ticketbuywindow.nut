@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,16 +9,14 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_handlers.TicketBuyWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.TicketBuyWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   afterBuyFunc = null
   event = null
   tickets = null
   activeTicket = null
 
-  function initScreen()
-  {
+  function initScreen() {
     let view = {
       headerText = loc("ticketBuyWindow/header")
       tickets = ::handyman.renderCached("%gui/items/item.tpl", this.createTicketsView(this.tickets))
@@ -36,27 +35,22 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::g_item_limits.requestLimits()
   }
 
-  function onEventItemLimitsUpdated(_params)
-  {
+  function onEventItemLimitsUpdated(_params) {
     this.updateTicketCaptionsText()
     this.updateTicketCaptionsPosition()
   }
 
-  function onTicketDoubleClicked(_obj)
-  {
+  function onTicketDoubleClicked(_obj) {
     this.doMainAction()
   }
 
-  function onBuyClicked(_obj)
-  {
+  function onBuyClicked(_obj) {
     this.doMainAction()
   }
 
-  function createTicketsView(ticketsList)
-  {
+  function createTicketsView(ticketsList) {
     let view = { items = [] }
-    for (local i = 0; i < ticketsList.len(); ++i)
-    {
+    for (local i = 0; i < ticketsList.len(); ++i) {
       view.items.append(ticketsList[i].getViewData({
         itemIndex = i.tostring()
         ticketBuyWindow = true
@@ -65,11 +59,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return view
   }
 
-  function createTicketCaptionsView()
-  {
+  function createTicketCaptionsView() {
     let view = []
-    for (local i = 0; i < this.tickets.len(); ++i)
-    {
+    for (local i = 0; i < this.tickets.len(); ++i) {
       view.append({
         captionId = this.getTicketCaptionId(i)
         captionText = this.getTicketCaptionText(this.tickets[i])
@@ -78,18 +70,15 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return view
   }
 
-  function updateTicketCaptionsText()
-  {
-    for (local i = 0; i < this.tickets.len(); ++i)
-    {
+  function updateTicketCaptionsText() {
+    for (local i = 0; i < this.tickets.len(); ++i) {
       let captionObj = this.scene.findObject(this.getTicketCaptionId(i))
       if (checkObj(captionObj))
         captionObj.setValue(this.getTicketCaptionText(this.tickets[i]))
     }
   }
 
-  function getTicketCaptionText(ticket)
-  {
+  function getTicketCaptionText(ticket) {
     local captionText = ticket.getAvailableDefeatsText(::events.getEventEconomicName(this.event))
     let limitText = ticket.getGlobalLimitText()
     if (limitText.len() > 0)
@@ -97,13 +86,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return captionText
   }
 
-  function getTicketCaptionId(ticketIndex)
-  {
+  function getTicketCaptionId(ticketIndex) {
     return "ticket_caption_" + ticketIndex.tostring()
   }
 
-  function onItemAction(obj)
-  {
+  function onItemAction(obj) {
     let itemIdx = (obj?.holderId ?? "-1").tointeger()
     let item = this.tickets?[itemIdx]
     if (item != this.getCurItem())
@@ -112,47 +99,39 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.doMainAction(item)
   }
 
-  function onTicketSelected(_obj)
-  {
+  function onTicketSelected(_obj) {
     this.updateBuyButtonText()
   }
 
-  function getCurItem()
-  {
+  function getCurItem() {
     local value = this.getItemsListObj().getValue()
     return getTblValue(value, this.tickets)
   }
 
-  function getItemsListObj()
-  {
+  function getItemsListObj() {
     return this.scene.findObject("items_list")
   }
 
-  function getTicketCaptionObj()
-  {
+  function getTicketCaptionObj() {
     return this.scene.findObject("ticket_caption")
   }
 
-  function doMainAction(item = null)
-  {
+  function doMainAction(item = null) {
     item = item ?? this.getCurItem()
     if (item != null)
       item.doMainAction(Callback(@(result) result.success && this.goBack(), this), this)
   }
 
-  function updateTicketCaptionsPosition()
-  {
+  function updateTicketCaptionsPosition() {
     let itemsListObj = this.getItemsListObj()
-    for (local i = 0; i < this.tickets.len(); ++i)
-    {
+    for (local i = 0; i < this.tickets.len(); ++i) {
       let itemObj = itemsListObj.getChild(i)
       let captionObj = this.scene.findObject("ticket_caption_" + i.tostring())
       this.updateTicketCaptionPosition(captionObj, itemObj)
     }
   }
 
-  function updateTicketCaptionPosition(captionObj, itemObj)
-  {
+  function updateTicketCaptionPosition(captionObj, itemObj) {
     if (!checkObj(captionObj))
       return
     if (!checkObj(itemObj))
@@ -162,8 +141,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     captionObj.left = position.tointeger().tostring()
   }
 
-  function updateBuyButtonText()
-  {
+  function updateBuyButtonText() {
     let mainActionData = this.getCurItem().getMainActionData()
     if (mainActionData)
       setDoubleTextToButton(
@@ -173,16 +151,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         mainActionData?.btnColoredName || mainActionData.btnName)
   }
 
-  function createMainText()
-  {
+  function createMainText() {
     local text = loc("ticketBuyWindow/mainText")
     if (this.tickets.len() > 1)
       text += "\n" + loc("ticketBuyWindow/optionalText")
     return text
   }
 
-  function createActiveTicketText()
-  {
+  function createActiveTicketText() {
     if (this.activeTicket == null)
       return ""
     local text = loc("ticketBuyWindow/activeTicketText") + "\n"

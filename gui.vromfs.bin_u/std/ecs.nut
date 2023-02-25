@@ -16,29 +16,8 @@ let unicastSqEvents = {}
 //local broadcastNativeEvents = ["onUpdate", ecs.EventComponentChanged, ecs.EventComponentsAppear, ecs.EventComponentsDisappear, ecs.EventEntityCreated, ecs.EventEntityDestroyed]
 
 let sqEvents = {}
-let event = {}
 const VERBOSE_PRINT = false //getroottable()?.__is_stub__
 let verbose_print = VERBOSE_PRINT ? @(val) print(val) : @(_) null
-
-let function register_event(name, eventType, structure=null){
-
-  assert(ecs.EVCAST_UNICAST == eventType || ecs.EVCAST_BROADCAST == eventType,
-            "eventType should be ecs.EVCAST_UNICAST || ecs.EVCAST_BROADCAST")
-  verbose_print($"registering sq event {name}; ")
-  assert (type(name) =="string", "event name should be string")
-  assert(!(name in sqEvents), @() $"event: '{name}' already registered!")
-  sqEvents[name] <- name
-  let eventRegisteredName = ecs.register_sq_event(name, eventType)
-  event[name] <- function(payload=null){
-//  todo - add type checking
-    if (structure == null) {
-      assert (payload == null)
-      return ecs.SQEvent(eventRegisteredName)
-    }
-    assert (payload != null)
-    return ecs.SQEvent(eventRegisteredName, payload)
-  }
-}
 
 let function mkEsFuncNamed(esname, func) {
   assert(["function", "instance", "table"].indexof(type(func)) != null, $"esHandler can be only function or callable, for ES '{esname}', got type: {type(func)}")
@@ -109,7 +88,7 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     assert(remappedEvents.len()>0, $"can't register ES '{name}' without any events")
     assert(!("OnUpdate" in remappedEvents), $"ES: {name}, OnUpdate is incorrect eventListener, should be onUpdate")
     foreach (k, _v in remappedEvents) {
-      assert(k in ecs.sqEvents || ["Timer","onUpdate"].indexof(k) != null || (type(k) == "class") || (type(k) == "integer"), $"unknown event {k}. Script events should be registered via ecs.register_event()")
+      assert(k in sqEvents || ["Timer","onUpdate"].indexof(k) != null || (type(k) == "class") || (type(k) == "integer"), $"unknown event {k}. Script events should be registered via ecs.register_event()")
     }
     let isChangedTracked = ecs.EventComponentChanged in remappedEvents
     let comps_track = comps?.comps_track ?? []
@@ -283,17 +262,40 @@ let function set_array2list(array_, list){
   return list
 }
 
+let function register_event(name, eventType, structure=null){
+
+  assert(ecs.EVCAST_UNICAST == eventType || ecs.EVCAST_BROADCAST == eventType,
+            "eventType should be ecs.EVCAST_UNICAST or ecs.EVCAST_BROADCAST")
+  verbose_print($"registering sq event {name}; ")
+  assert (type(name) =="string", "event name should be string")
+  assert(!(name in sqEvents), @() $"event: '{name}' already registered!")
+  sqEvents[name] <- name
+  let eventRegisteredName = ecs.register_sq_event(name, eventType)
+  let function mkEvent(payload=null){
+//  todo - add type checking
+    if (structure == null) {
+      assert (payload == null)
+      return ecs.SQEvent(eventRegisteredName)
+    }
+    assert (payload != null)
+    return ecs.SQEvent(eventRegisteredName, payload)
+  }
+  let ctorName = $"mk{name}"
+  sqEvents[ctorName] <- mkEvent
+  return {[ctorName] = mkEvent, [name]=name}
+}
+
+
 let mkRegisterEventByType = @(eventType) function(payload, eventName){
   if (payload == null)
-    register_event(eventName, eventType)
-  else
-    register_event(eventName, eventType, payload)
+    return register_event(eventName, eventType)
+  return register_event(eventName, eventType, payload)
 }
 let _registerUnicastEvent = mkRegisterEventByType(ecs.EVCAST_UNICAST)
 unicastSqEvents.clear()
 let function registerUnicastEvent(payload, eventName){
   unicastSqEvents[eventName] <- payload
-  _registerUnicastEvent(payload, eventName)
+  return _registerUnicastEvent(payload, eventName)
 }
 let registerBroadcastEvent = mkRegisterEventByType(ecs.EVCAST_BROADCAST)
 //this is done here only to have all events in all VMs
@@ -304,8 +306,6 @@ return ecs.__update({
   registerUnicastEvent
   registerBroadcastEvent
   register_event
-  sqEvents
-  event
 
   //this is needed for pure native APIs replacement
   register_es

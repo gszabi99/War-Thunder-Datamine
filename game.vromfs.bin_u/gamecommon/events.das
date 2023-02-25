@@ -3,9 +3,16 @@ require ecs
 require dm
 require %game.unit_events
 require %game.dm_events
+require %game.ammo_stowage_events
+require %game.fire_system_events
 require %game.repair_system_events
 require %game.extinguish_system_events
 require %game.ship_events
+
+[cpp_event(broadcast)]
+struct ParallelUpdateFrameDelayed
+  curTime : float
+  dt : float
 
 [cpp_event(unicast)]
 struct EventOnStartShooting
@@ -62,19 +69,6 @@ struct EventOnKeyState
 struct EventOnKeyUp
   eventId : int
   dt : float
-
-[cpp_event(unicast)]
-struct EventOnStartBurn
-  fireId : int
-  fireParamsId : int
-  nodeId : int
-  offset : float3
-  dmgPos : float3
-
-[cpp_event(unicast)]
-struct EventOnStopSingleBurn
-  fireId : int
-  initiatorId : uint
 
 [cpp_event(broadcast)]
 struct EventOnPlayerConnected

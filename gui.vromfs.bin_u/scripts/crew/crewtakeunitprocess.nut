@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -39,8 +40,7 @@ enum CTU_PROGRESS {
     return false if process still exist.
 */
 
-::CrewTakeUnitProcess <- class
-{
+::CrewTakeUnitProcess <- class {
   crew = null
   country = null //used only when crew not unlocked
   unit = null
@@ -58,18 +58,15 @@ enum CTU_PROGRESS {
   removeCb = null
 
   stepsList = {
-    [CTU_PROGRESS.CHECK_QUEUE] = function()
-    {
+    [CTU_PROGRESS.CHECK_QUEUE] = function() {
       if (this.crew || this.unit)
         ::queues.checkAndStart(this.nextStepCb, this.removeCb, "isCanModifyCrew")
       else
         this.nextStep() //we no need to check queue when only hire crew.
     },
 
-    [CTU_PROGRESS.CHECK_AVAILABILITY] = function()
-    {
-      if (this.crew)
-      {
+    [CTU_PROGRESS.CHECK_AVAILABILITY] = function() {
+      if (this.crew) {
         this.prevUnit = ::g_crew.getCrewUnit(this.crew)
         if (this.prevUnit == this.unit)
           return this.remove()
@@ -84,18 +81,16 @@ enum CTU_PROGRESS {
       let needCheckRequired = !isInvalidCrewsAllowed && ::SessionLobby.hasUnitRequirements()
         && (!isCurUnitAllowed || !::SessionLobby.isUnitRequired(this.unit))
 
-      if (needCheckAllowed || needCheckRequired || (this.prevUnit && !this.unit))
-      {
+      if (needCheckAllowed || needCheckRequired || (this.prevUnit && !this.unit)) {
         local hasUnit = !!this.unit
         local hasAllowedUnit = !needCheckAllowed
         local hasRequiredUnit = !needCheckRequired
         let crews = ::g_crews_list.get()?[this.crew.idCountry]?.crews
         if (crews)
-          foreach(c in crews)
-          {
+          foreach (c in crews) {
             if (this.crew.id == c.id)
               continue
-            let cUnit =::g_crew.getCrewUnit(c)
+            let cUnit = ::g_crew.getCrewUnit(c)
             if (!cUnit)
               continue
             hasUnit = true
@@ -108,8 +103,7 @@ enum CTU_PROGRESS {
 
         if (!hasUnit && hasDefaultUnitsInCountry(this.crew.country))
           return this.remove()
-        if (!hasAllowedUnit)
-        {
+        if (!hasAllowedUnit) {
           local msg = ""
           if (this.unit)
             msg = loc("msg/cantUseUnitInCurrentBattle",
@@ -119,8 +113,7 @@ enum CTU_PROGRESS {
           ::showInfoMsgBox(msg)
           return this.remove()
         }
-        if (!hasRequiredUnit)
-        {
+        if (!hasRequiredUnit) {
           ::showInfoMsgBox(loc("msg/needAtLeastOneRequiredUnit"))
           return this.remove()
         }
@@ -129,8 +122,7 @@ enum CTU_PROGRESS {
       this.nextStep()
     },
 
-    [CTU_PROGRESS.FULL_COST_MESSAGE] = function()
-    {
+    [CTU_PROGRESS.FULL_COST_MESSAGE] = function() {
       if (this.cost.isZero())
         return this.nextStep()
 
@@ -145,11 +137,9 @@ enum CTU_PROGRESS {
         ], "ok")
     },
 
-    [CTU_PROGRESS.CHECK_MONEY] = function()
-    {
+    [CTU_PROGRESS.CHECK_MONEY] = function() {
       if (::check_balance_msgBox(this.cost,
-            Callback(function()
-              {
+            Callback(function() {
                 if (::check_balance_msgBox(this.cost, this.nextStepCb, true))
                   this.nextStep()
                 else
@@ -159,12 +149,10 @@ enum CTU_PROGRESS {
         this.nextStep()
     },
 
-    [CTU_PROGRESS.HIRE_CREW] = function()
-    {
+    [CTU_PROGRESS.HIRE_CREW] = function() {
       if (this.crew)
         return this.nextStep()
-      let purchaseCb = Callback(function()
-        {
+      let purchaseCb = Callback(function() {
           let crews = ::get_crews_list_by_country(this.country)
           if (!crews.len())
             return this.remove()
@@ -175,8 +163,7 @@ enum CTU_PROGRESS {
       ::g_crew.purchaseNewSlot(this.country, purchaseCb, this.removeCb)
     },
 
-    [CTU_PROGRESS.TAKE_UNIT] = function()
-    {
+    [CTU_PROGRESS.TAKE_UNIT] = function() {
       if (this.unit == this.prevUnit)
         return this.nextStep()
       if (this.unit && !this.unit.isUsable())
@@ -191,14 +178,12 @@ enum CTU_PROGRESS {
         this.remove()
     },
 
-    [CTU_PROGRESS.COMPLETE] = function()
-    {
+    [CTU_PROGRESS.COMPLETE] = function() {
       this.onComplete()
     }
   }
 
-  constructor(crewOrCountry, unitToTake = null, callback = null)
-  {
+  constructor(crewOrCountry, unitToTake = null, callback = null) {
     if (!unitToTake && !crewOrCountry)
       return this.remove()
 
@@ -226,28 +211,24 @@ enum CTU_PROGRESS {
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
-  static function getProcessCost(crew, unit, country = null)
-  {
+  static function getProcessCost(crew, unit, country = null) {
     let resCost = ::g_crew.getCrewTrainCost(crew, unit)
     if (crew || (!unit && !country))
       return resCost
 
     let crewCostTbl = ::get_crew_slot_cost(country || ::getUnitCountry(unit))
-    if (crewCostTbl)
-    {
+    if (crewCostTbl) {
       resCost.wp += crewCostTbl.cost
       resCost.gold += crewCostTbl.costGold
     }
     return resCost
   }
 
-  static function hasActiveProcess()
-  {
+  static function hasActiveProcess() {
     return this.activeProcesses.len() > 0 && !this.activeProcesses[0].isStuck()
   }
 
-  static function safeInterrupt()
-  {
+  static function safeInterrupt() {
     if (!this.hasActiveProcess())
       return true
 
@@ -258,30 +239,25 @@ enum CTU_PROGRESS {
     return true
   }
 
-  function isValid()
-  {
+  function isValid() {
     return getTblValue(0, this.activeProcesses) == this
   }
 
-  function isEqual(process)
-  {
+  function isEqual(process) {
     return this.crew == process.crew
            && this.unit == process.unit
            && this.country == process.country
   }
 
-  function canBeInterrupted()
-  {
+  function canBeInterrupted() {
     return this.curProgress != CTU_PROGRESS.HIRE_CREW && this.curProgress != CTU_PROGRESS.TAKE_UNIT
   }
 
-  function isReadyToStart()
-  {
+  function isReadyToStart() {
     if (!this.activeProcesses.len())
       return true
 
-    if (this.activeProcesses[0].isStuck())
-    {
+    if (this.activeProcesses[0].isStuck()) {
       this.activeProcesses[0].remove()
       return true
     }
@@ -295,21 +271,17 @@ enum CTU_PROGRESS {
     return false
   }
 
-  function isStuck()
-  {
+  function isStuck() {
     return get_time_msec() - this.lastUpdateTime > this.PROCESS_TIME_OUT
   }
 
-  function refreshTimer()
-  {
+  function refreshTimer() {
     this.lastUpdateTime = get_time_msec()
   }
 
-  function remove(...)
-  {
-    foreach(idx, process in this.activeProcesses)
-      if (process == this)
-      {
+  function remove(...) {
+    foreach (idx, process in this.activeProcesses)
+      if (process == this) {
         this.activeProcesses.remove(idx)
         break
       }
@@ -318,14 +290,12 @@ enum CTU_PROGRESS {
     ::g_crews_list.flushSlotbarUpdate()
   }
 
-  function nextStep()
-  {
+  function nextStep() {
     this.curProgress++
     this.refreshTimer()
 
     let curStepFunc = getTblValue(this.curProgress, this.stepsList)
-    if (!curStepFunc)
-    {
+    if (!curStepFunc) {
       ::script_net_assert_once("missing take unit step", "Missing take unit step = " + this.curProgress)
       return this.remove()
     }
@@ -333,30 +303,25 @@ enum CTU_PROGRESS {
     curStepFunc.call(this)
   }
 
-  function onEventQueueChangeState(_p)
-  {
+  function onEventQueueChangeState(_p) {
     if (this.curProgress > CTU_PROGRESS.CHECK_QUEUE
         && (this.crew || this.unit)
         && !::queues.isCanModifyCrew())
       this.remove()
   }
 
-  function onEventLoadingStateChange(_p)
-  {
+  function onEventLoadingStateChange(_p) {
     if (::is_in_flight())
       this.remove()
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.remove()
   }
 
-  function onComplete()
-  {
+  function onComplete() {
     this.isSuccess = true
-    if (this.unit)
-    {
+    if (this.unit) {
       ::updateAirAfterSwitchMod(this.unit)
       ::select_crew(this.crew.idCountry, this.crew.idInCountry, true)
       setShowUnit(this.unit)

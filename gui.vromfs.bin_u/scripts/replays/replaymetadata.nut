@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,9 +7,9 @@ from "%scripts/dagui_library.nut" import *
 let { split_by_chars } = require("string")
 let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 let { get_replay_info } = require("replays")
+let DataBlock = require("DataBlock")
 
-let buildReplayMpTable = function(replayPath)
-{
+let buildReplayMpTable = function(replayPath) {
   let res = []
 
   let replayInfo = get_replay_info(replayPath)
@@ -24,8 +25,7 @@ let buildReplayMpTable = function(replayPath)
   let authorBlk = ::u.search(playersBlkList, @(v) ::to_integer_safe(v?.userId ?? "", 0, false) == authorUserId)
   let authorSquadId = authorBlk?.squadId ?? INVALID_SQUAD_ID
 
-  foreach (b in playersBlkList)
-  {
+  foreach (b in playersBlkList) {
     let userId = ::to_integer_safe(b?.userId ?? "", 0, false)
     if (userId == 0)
       continue
@@ -46,8 +46,7 @@ let buildReplayMpTable = function(replayPath)
       kills = b?.kills ?? b?.airKills ?? 0
     }
 
-    if (mplayer.name == "")
-    {
+    if (mplayer.name == "") {
       let parts = split_by_chars(b?.nick ?? "", " ")
       let hasClanTag = parts.len() == 2
       mplayer.clanTag = hasClanTag ? parts[0] : ""
@@ -57,7 +56,7 @@ let buildReplayMpTable = function(replayPath)
     if (mplayer?.isBot && mplayer?.name.indexof("/") != null)
       mplayer.name = loc(mplayer.name)
 
-    foreach(p in ::g_mplayer_param_type.types)
+    foreach (p in ::g_mplayer_param_type.types)
       if (!(p.id in mplayer) && p != ::g_mplayer_param_type.UNKNOWN)
         mplayer[p.id] <- b?[p.id] ?? p?.defVal
 
@@ -68,24 +67,20 @@ let buildReplayMpTable = function(replayPath)
   return res
 }
 
-let saveReplayScriptCommentsBlk = function(blk)
-{
-  blk.uiScriptsData = ::DataBlock()
+let saveReplayScriptCommentsBlk = function(blk) {
+  blk.uiScriptsData = DataBlock()
   blk.uiScriptsData.playersInfo = datablockConverter.dataToBlk(::SessionLobby.playersInfo)
 }
 
-let restoreReplayScriptCommentsBlk = function(replayPath)
-{
+let restoreReplayScriptCommentsBlk = function(replayPath) {
   // Works for Local replays
   let commentsBlk = get_replay_info(replayPath)?.comments
   let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData?.playersInfo) || {}
 
   // Works for Server replays
-  if (!playersInfo.len())
-  {
+  if (!playersInfo.len()) {
     let mplayersList = ::get_mplayers_list(GET_MPLAYERS_LIST, true)
-    foreach (mplayer in mplayersList)
-    {
+    foreach (mplayer in mplayersList) {
       if (mplayer?.isBot || mplayer?.userId == null)
         continue
       playersInfo[mplayer.userId] <- {

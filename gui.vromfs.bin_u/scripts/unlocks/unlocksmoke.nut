@@ -1,8 +1,10 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 
@@ -10,14 +12,14 @@ let aeroSmokesList    = persist("aeroSmokesList", @() Watched([]))
 let buyableSmokesList = persist("buyableSmokesList", @() Watched([]))
 
 let function updateAeroSmokeList() {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.setFrom(blkFromPath("config/fx.blk")?.aerobatics_smoke_fxs)
   if (!blk)
     return
 
   let locations = ["tail", "leftwing", "rightwing"]
   let smokeList = (blk % "smoke_fx").map(function(inst) {
-    let res = ::DataBlock()
+    let res = DataBlock()
     res.setFrom(inst)
     res.locOrd <- -1          // Sort order by location
     foreach (idx, p in locations)
@@ -26,7 +28,7 @@ let function updateAeroSmokeList() {
     return res
   })
 
-  let rarityTypes = {bronze = 0, silver = 1, gold = 2}
+  let rarityTypes = { bronze = 0, silver = 1, gold = 2 }
   smokeList.sort(@(a, b)
       (rarityTypes?[a?.rarity] ?? -1) <=> (rarityTypes?[b?.rarity] ?? -1)
         || a.locOrd <=> b.locOrd)
@@ -36,8 +38,7 @@ let function updateAeroSmokeList() {
 
 let function updateBuyableSmokesList() {
   let res = []
-  foreach(inst in aeroSmokesList.value)
-  {
+  foreach (inst in aeroSmokesList.value) {
     if (!inst?.unlockId)
       continue
     if ((inst.unlockId == "" || ::g_unlocks.getUnlockById(inst.unlockId))

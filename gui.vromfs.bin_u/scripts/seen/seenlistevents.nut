@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -10,22 +11,19 @@ const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10
 
 let subscriptions = {} //<listId> = { <entityId> = array of callbacks }
 
-let function getListSubscriptions(listId)
-{
+let function getListSubscriptions(listId) {
   if (!(listId in subscriptions))
     subscriptions[listId] <- {}
   return subscriptions[listId]
 }
 
-let function validateSubscriptionsArray(subArr)
-{
-  for(local i = subArr.len() - 1; i >= 0; i--)
+let function validateSubscriptionsArray(subArr) {
+  for (local i = subArr.len() - 1; i >= 0; i--)
     if (!subArr[i].isValid())
       subArr.remove(i)
 }
 
-let function addSubscription(subList, entityName, cb)
-{
+let function addSubscription(subList, entityName, cb) {
   if (!(entityName in subList))
     subList[entityName] <- []
   let subArr = subList[entityName]
@@ -34,45 +32,40 @@ let function addSubscription(subList, entityName, cb)
     validateSubscriptionsArray(subArr)
 }
 
-let function subscribe(listId, entitiesList, cb)
-{
+let function subscribe(listId, entitiesList, cb) {
   let subList = getListSubscriptions(listId)
-  if (!entitiesList)
-  {
+  if (!entitiesList) {
     addSubscription(subList, ANY_CHANGED_ID, cb)
     return
   }
 
-  foreach(entityName in entitiesList)
+  foreach (entityName in entitiesList)
     addSubscription(subList, entityName, cb)
 }
 
-let function gatherCbFromList(subArr, resList)
-{
+let function gatherCbFromList(subArr, resList) {
   if (!subArr)
     return
-  for(local i = subArr.len() - 1; i >= 0; i--)
+  for (local i = subArr.len() - 1; i >= 0; i--)
     if (subArr[i].isValid())
       u.appendOnce(subArr[i], resList)
     else
       subArr.remove(i)
 }
 
-let function notifyChanged(listId, entitiesList)
-{
+let function notifyChanged(listId, entitiesList) {
   let subList = getListSubscriptions(listId)
   let notifyList = []
-  if (entitiesList)
-  {
+  if (entitiesList) {
     gatherCbFromList(subList?[ANY_CHANGED_ID], notifyList)
-    foreach(entity in entitiesList)
+    foreach (entity in entitiesList)
       gatherCbFromList(subList?[entity], notifyList)
   }
   else
-    foreach(entity, _list in subList)
+    foreach (entity, _list in subList)
       gatherCbFromList(subList[entity], notifyList)
 
-  foreach(cb in notifyList)
+  foreach (cb in notifyList)
     cb()
 }
 

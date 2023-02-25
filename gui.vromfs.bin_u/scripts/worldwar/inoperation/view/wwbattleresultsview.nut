@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -18,8 +19,7 @@ enum UNIT_STATS {
   TOTAL // enum size
 }
 
-::WwBattleResultsView <- class
-{
+::WwBattleResultsView <- class {
   battleRes = null
 
   battleUnitTypes   = null
@@ -34,25 +34,20 @@ enum UNIT_STATS {
     EASAB_DEAD        = "debriefing/ww_army_state_dead"
   }
 
-  constructor(v_battleRes)
-  {
+  constructor(v_battleRes) {
     this.battleRes = v_battleRes
 
     this.loadBattleUnitTypesData()
     this.teamBlock = this.getTeamBlock()
   }
 
-  function loadBattleUnitTypesData()
-  {
+  function loadBattleUnitTypesData() {
     this.battleUnitTypes   = []
     this.inactiveUnitTypes = []
 
-    foreach (team in this.battleRes.teams)
-    {
-      foreach (wwUnit in team.unitsInitial)
-      {
-        if (wwUnit.getWwUnitType() == ::g_ww_unit_type.UNKNOWN)
-        {
+    foreach (team in this.battleRes.teams) {
+      foreach (wwUnit in team.unitsInitial) {
+        if (wwUnit.getWwUnitType() == ::g_ww_unit_type.UNKNOWN) {
           let unitName = wwUnit.name // warning disable: -declared-never-used
           ::script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
           continue
@@ -68,57 +63,49 @@ enum UNIT_STATS {
     this.inactiveUnitTypes.sort()
   }
 
-  function getLocName()
-  {
+  function getLocName() {
     return getMissionLocName({ locId = this.battleRes.locName })
   }
 
-  function getBattleTitle()
-  {
+  function getBattleTitle() {
     let localizedName = this.getLocName()
     let missionTitle = (localizedName != "") ? localizedName : loc("worldwar/autoModeBattle")
     let battleName = loc("worldWar/battleName", { number = this.battleRes.ordinalNumber })
     return battleName + " " + missionTitle
   }
 
-  function getBattleDescText()
-  {
+  function getBattleDescText() {
     let operationName = this.getOperation()?.getNameText() ?? ""
     let zoneName = this.battleRes.zoneName != "" ? (loc("options/dyn_zone") + " " + this.battleRes.zoneName) : ""
     let dateTime = time.buildDateStr(this.battleRes.time) + " " + time.buildTimeStr(this.battleRes.time)
     return ::g_string.implode([ operationName, zoneName, dateTime ], loc("ui/semicolon"))
   }
 
-  function getBattleResultText()
-  {
+  function getBattleResultText() {
     let isWinner = this.battleRes.isWinner()
     let color = isWinner ? "wwTeamAllyColor" : "wwTeamEnemyColor"
     let result = loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
     return colorize(color, result)
   }
 
-  function isBattleResultsIgnored()
-  {
+  function isBattleResultsIgnored() {
     return this.battleRes.isBattleResultsIgnored
   }
 
-  function getArmyStateText(wwArmy, armyState)
-  {
+  function getArmyStateText(wwArmy, armyState) {
     local res = loc(getTblValue(armyState, this.armyStateTexts, ""))
     if (armyState == "EASAB_DEAD" && wwArmy.deathReason != "")
       res += loc("ui/parentheses/space", { text = loc("worldwar/log/army_died_" + wwArmy.deathReason) })
     return res
   }
 
-  function getTeamBySide(side)
-  {
+  function getTeamBySide(side) {
     return ::u.search(this.battleRes.teams, (@(side) function (team) {
       return team.side == side
     })(side))
   }
 
-  function getTeamStats(teamInfo, unitTypesBattle, unitTypesInactive)
-  {
+  function getTeamStats(teamInfo, unitTypesBattle, unitTypesInactive) {
     let res = {
       unitTypes = []
       units     = []
@@ -139,8 +126,7 @@ enum UNIT_STATS {
     let unitsGroups = wwOperationUnitsGroups.getUnitsGroups()
     let needShowUnitsByGroups = unitsGroups != null
     teamInfo.unitsInitial.sort(::g_world_war.sortUnitsByTypeAndCount)
-    foreach (wwUnit in teamInfo.unitsInitial)
-    {
+    foreach (wwUnit in teamInfo.unitsInitial) {
       let unitName = wwUnit.name
       let wwUnitType = wwUnit.getWwUnitType()
       let wwUnitTypeCode = wwUnitType.code
@@ -150,16 +136,14 @@ enum UNIT_STATS {
 
       local remainInactive = 0
       foreach (u in teamInfo.unitsRemain)
-        if (u.name == unitName)
-        {
+        if (u.name == unitName) {
           remainInactive = u.inactiveCount
           break
         }
 
       local casualties = 0
       foreach (u in teamInfo.unitsCasualties)
-        if (u.name == unitName)
-        {
+        if (u.name == unitName) {
           casualties = u.count + u.inactiveCount
           break
         }
@@ -167,8 +151,7 @@ enum UNIT_STATS {
       let remainActive = (initialActive + initialInactive) - casualties - remainInactive // Fixes vehicle units remain counts
       let inactiveAdded = remainInactive - initialInactive
 
-      if (wwUnitTypeCode in unitTypeStats)
-      {
+      if (wwUnitTypeCode in unitTypeStats) {
         let stats = unitTypeStats[wwUnitTypeCode]
         stats[UNIT_STATS.INITIAL]   += initialActive
         stats[UNIT_STATS.KILLED]    += casualties
@@ -198,8 +181,7 @@ enum UNIT_STATS {
       })
     }
 
-    foreach (wwUnitTypeCode, stats in unitTypeStats)
-    {
+    foreach (wwUnitTypeCode, stats in unitTypeStats) {
       if (!stats)
         continue
 
@@ -215,8 +197,7 @@ enum UNIT_STATS {
     return res
   }
 
-  function getStatsRowView(stats, isShowInactiveCount = false)
-  {
+  function getStatsRowView(stats, isShowInactiveCount = false) {
     let columnsMap = [
       [UNIT_STATS.INITIAL],
       isShowInactiveCount ? [UNIT_STATS.KILLED, UNIT_STATS.INACTIVE] : [UNIT_STATS.KILLED],
@@ -224,8 +205,7 @@ enum UNIT_STATS {
     ]
 
     let row = []
-    foreach (valueIds in columnsMap)
-    {
+    foreach (valueIds in columnsMap) {
       let values = ::u.map(valueIds, (@(stats) function(id) { return stats[id] })(stats))
       let valuesSum = values.reduce(@(sum, v) sum + v, 0)
 
@@ -244,12 +224,10 @@ enum UNIT_STATS {
     return row
   }
 
-  function getTeamBlock()
-  {
+  function getTeamBlock() {
     let mapName = this.getOperation()?.getMapId() ?? ""
     let teams = []
-    foreach(sideIdx, side in ::g_world_war.getSidesOrder())
-    {
+    foreach (sideIdx, side in ::g_world_war.getSidesOrder()) {
       let team = this.getTeamBySide(side)
       if (!team)
         continue
@@ -272,19 +250,16 @@ enum UNIT_STATS {
     return teams
   }
 
-  function hasReplay()
-  {
+  function hasReplay() {
     return !::u.isEmpty(this.battleRes.getSessionId()) &&
            hasFeature("WorldWarReplay")
   }
 
-  function getReplayBtnTooltip()
-  {
-    return loc("mainmenu/btnViewReplayTooltip", {sessionID = this.battleRes.getSessionId()})
+  function getReplayBtnTooltip() {
+    return loc("mainmenu/btnViewReplayTooltip", { sessionID = this.battleRes.getSessionId() })
   }
 
-  function getOperation()
-  {
+  function getOperation() {
     return getOperationById(this.battleRes.getOperationId() ?? ::ww_get_operation_id())
   }
 }

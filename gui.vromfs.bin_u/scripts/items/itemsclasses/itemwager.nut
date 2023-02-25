@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,14 +6,16 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { pow } = require("math")
+let DataBlock  = require("DataBlock")
 let { format } = require("string")
+let { isPoint3 } = require("%sqStdLibs/helpers/u.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   getFullUnlockCondsDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
-::items_classes.Wager <- class extends ::BaseItem
-{
+::items_classes.Wager <- class extends ::BaseItem {
   static iType = itemType.WAGER
   static defaultLocId = "wager"
   static defaultIconStyle = "default_wager_debug"
@@ -86,11 +89,9 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   rewardData = null
   isGoldWager = false
 
-  constructor(blk, invBlk = null, slotData = null)
-  {
+  constructor(blk, invBlk = null, slotData = null) {
     base.constructor(blk, invBlk, slotData)
-    if (this.isActive())
-    {
+    if (this.isActive()) {
       this.numWins = getTblValue("numWins", invBlk, 0)
       this.numBattles = getTblValue("numBattles", invBlk, 0)
       this.curWager = getTblValue("wager", invBlk, 0)
@@ -99,8 +100,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     this._initWagerParams(blk?.wagerParams)
   }
 
-  function _initWagerParams(blk)
-  {
+  function _initWagerParams(blk) {
     if (!blk)
       return
 
@@ -122,10 +122,8 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     this.isGoldWager = getTblValue("goldWager", blk, false)
   }
 
-  function getRewardDataTypeByName(name)
-  {
-    foreach (rewardDataType in this.rewardDataTypes)
-    {
+  function getRewardDataTypeByName(name) {
+    foreach (rewardDataType in this.rewardDataTypes) {
       if (rewardDataType.name == name)
         return rewardDataType
     }
@@ -133,15 +131,12 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   }
 
   /** Return reward data type name with highest priority. */
-  function checkRewardType(blk)
-  {
+  function checkRewardType(blk) {
     if (blk?.winParams == null)
       return null
     local bestIndex = -1
-    foreach(reward in blk.winParams % "reward")
-    {
-      foreach (index, rewardDataType in this.rewardDataTypes)
-      {
+    foreach (reward in blk.winParams % "reward") {
+      foreach (index, rewardDataType in this.rewardDataTypes) {
         if (rewardDataType.name in reward)
           bestIndex = max(bestIndex, index)
       }
@@ -151,35 +146,30 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return this.rewardDataTypes[bestIndex].name
   }
 
-  function getRewardText(rewData, stakeValue)
-  {
+  function getRewardText(rewData, stakeValue) {
     local text = ""
-    foreach (rewardDataTypeName, rewardParams in rewData.rewardParamsTable)
-    {
+    foreach (rewardDataTypeName, rewardParams in rewData.rewardParamsTable) {
       if (text != "")
         text += ", "
       let rewardDataType = this.getRewardDataTypeByName(rewardDataTypeName)
       let rewardValue = this.getRewardValueByNumWins(rewardParams, rewData.winCount, stakeValue)
-      text += ::g_language.decimalFormat(rewardValue) + loc(rewardDataType.icon)
+      text += decimalFormat(rewardValue) + loc(rewardDataType.icon)
     }
     return text
   }
 
   /** Creates array with reward data objects sorted by param value. */
-  function createWinParamsData(blk)
-  {
+  function createWinParamsData(blk) {
     let res = []
     if (blk == null)
       return res
-    foreach (reward in blk % "reward")
-    {
+    foreach (reward in blk % "reward") {
       let rewData = this.createRewardData(reward)
       // No need to add empty rewards.
       if (!rewData.isEmpty)
         res.append(rewData)
     }
-    res.sort(function (rd1, rd2)
-    {
+    res.sort(function (rd1, rd2) {
       if (rd1.winCount != rd2.winCount)
         return rd1.winCount < rd2.winCount ? -1 : 1
       return 0
@@ -188,13 +178,11 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   }
 
   /** Returns closest reward data to specified param value. */
-  function getRewardDataByParam(winCount, winParams)
-  {
+  function getRewardDataByParam(winCount, winParams) {
     if (winCount < 1 || winCount > this.maxWins)
       return null
     local res = null
-    for (local i = 0; i < winParams.len(); ++i)
-    {
+    for (local i = 0; i < winParams.len(); ++i) {
       let nextRewardData = winParams[i]
       if (nextRewardData.winCount > winCount)
         break
@@ -204,8 +192,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   }
 
   /** Creates object with data binding reward parameters to win count (param). */
-  function createRewardData(blk)
-  {
+  function createRewardData(blk) {
     if (blk == null || getTblValue("param", blk, 0) == 0)
       return {}
     let res = {
@@ -213,11 +200,10 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
       rewardParamsTable = {}
       isEmpty = true
     }
-    foreach (rewardDataType in this.rewardDataTypes)
-    {
+    foreach (rewardDataType in this.rewardDataTypes) {
       let rewardDataTypeName = rewardDataType.name
       let p3 = getTblValue(rewardDataTypeName, blk, null)
-      if (type(p3) != "instance" || !(p3 instanceof ::Point3))
+      if (!isPoint3(p3))
         continue
       if (p3.x == 0 && p3.y == 0 && p3.z == 0)
         continue
@@ -232,19 +218,16 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return res
   }
 
-  function getRewardValueByNumWins(rewardParams, winsNum, wagerValue)
-  {
+  function getRewardValueByNumWins(rewardParams, winsNum, wagerValue) {
     return rewardParams.a * wagerValue * pow(winsNum, rewardParams.b) + rewardParams.c
   }
 
-  function getWinIcon(winBlk)
-  {
+  function getWinIcon(winBlk) {
     if (!winBlk)
       return this.defaultWinIcon
 
     local iconName = winBlk?.type
-    for(local i = 0; i < winBlk.paramCount(); i++)
-    {
+    for (local i = 0; i < winBlk.paramCount(); i++) {
       let paramName = winBlk.getParamName(i)
       if (paramName != "unlock")
         continue
@@ -259,18 +242,15 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return iconName
   }
 
-  function getIcon(_addItemName = true)
-  {
+  function getIcon(_addItemName = true) {
     return this.getLayersData(true)
   }
 
-  function getBigIcon()
-  {
+  function getBigIcon() {
     return this.getIcon()
   }
 
-  function getLayersData(small = true)
-  {
+  function getLayersData(small = true) {
     local layersData = ::LayersIcon.genDataFromLayer(this._getBestRewardImage(small))
     layersData += this._getWinIconData(small)
 
@@ -278,31 +258,26 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return ::LayersIcon.genDataFromLayer(mainLayerCfg, layersData)
   }
 
-  function getBasePartOfLayerId(_small)
-  {
-    return this.iconStyle// + (small? "_shop" : "")
+  function getBasePartOfLayerId(_small) {
+    return this.iconStyle // + (small? "_shop" : "")
   }
 
-  function _getBackground(small)
-  {
+  function _getBackground(small) {
     return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small))
   }
 
-  function _getWinIconData(small)
-  {
+  function _getWinIconData(small) {
     if (!this.winIcon)
       return ""
 
     let layers = []
 
-    if (this.reqWinsNum && this.reqWinsNum > 1)
-    {
+    if (this.reqWinsNum && this.reqWinsNum > 1) {
       let textLayerId = this.getBasePartOfLayerId(small) + "_" + this.defaultTextType
       let textLayerCfg = ::LayersIcon.findLayerCfg(textLayerId)
-      if (textLayerCfg)
-      {
+      if (textLayerCfg) {
         textLayerCfg.id <- textLayerId
-        textLayerCfg.text <- this.reqWinsNum? this.reqWinsNum.tostring() : ""
+        textLayerCfg.text <- this.reqWinsNum ? this.reqWinsNum.tostring() : ""
         layers.append(textLayerCfg)
       }
     }
@@ -310,8 +285,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     local imageLayerCfg = ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.winIcon)
     if (imageLayerCfg)
       layers.append(imageLayerCfg)
-    else
-    {
+    else {
       imageLayerCfg = ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.defaultWinIcon)
       if (imageLayerCfg)
         layers.append(imageLayerCfg)
@@ -320,30 +294,26 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return ::LayersIcon.genInsertedDataFromLayer(::LayersIcon.findLayerCfg("wager_place_container"), layers)
   }
 
-  function _getBestRewardImage(small)
-  {
+  function _getBestRewardImage(small) {
     if (!this.rewardType)
       return
 
     return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.rewardType)
   }
 
-  function getAvailableStakeText()
-  {
+  function getAvailableStakeText() {
     if (this.curWager >= 0)
       return loc("items/wager/name") + loc("ui/colon") + ::getPriceAccordingToPlayersCurrency(this.curWager, 0)
     return loc("items/wager/notAvailable")
   }
 
-  function getItemTypeDescription(loc_params = {})
-  {
+  function getItemTypeDescription(loc_params = {}) {
     loc_params.maxWins <- this.maxWins
     loc_params.maxFails <- this.maxFails
     return base.getItemTypeDescription(loc_params)
   }
 
-  function getDescription(customParams = {})
-  {
+  function getDescription(customParams = {}) {
     local desc = ""
     let customNumWins = getTblValue("numWins", customParams, this.numWins)
 
@@ -353,12 +323,10 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
       desc += loc("items/wager/maxWins", { maxWins = this.maxWins })
     desc += "\n"
 
-    if (this.maxFails > 0)
-    {
+    if (this.maxFails > 0) {
       if (this.numBattles == null)
         desc += loc("items/wager/maxFails", { maxFails = this.maxFails })
-      else
-      {
+      else {
         let customNumFails = getTblValue("numFails", customParams, this.numBattles - customNumWins)
         desc += loc("items/wager/numFails", {
           numFails = customNumFails
@@ -369,9 +337,9 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     }
 
     local stakeText
-    let costParam = {isWpAlwaysShown = true}
+    let costParam = { isWpAlwaysShown = true }
     if (this.isActive())
-      stakeText =::Cost(this.curWager).toStringWithParams(costParam)
+      stakeText = ::Cost(this.curWager).toStringWithParams(costParam)
     else if (this.maxWager == 0)
       stakeText = ""
     else if (this.minWager == this.maxWager)
@@ -388,8 +356,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
       desc += "\n" + expireText
 
     if (this.winConditions != null && this.winConditions.len() > 0
-        && getTblValue("showLongMarkupPart", customParams, true))
-    {
+        && getTblValue("showLongMarkupPart", customParams, true)) {
       if (desc != "")
         desc += "\n"
       desc += colorize("grayOptionColor", loc("items/wager/winConditions"))
@@ -401,29 +368,26 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   }
 
   _needLongMarkup = null
-  function isNeedLongMarkup()
-  {
+  function isNeedLongMarkup() {
     if (this._needLongMarkup != null)
       return this._needLongMarkup
 
-    if (this.winConditions)
-    {
+    if (this.winConditions) {
       let mainCond = getMainProgressCondition(this.winConditions)
       let modeType = mainCond && mainCond.modeType
       this._needLongMarkup = (modeType == "unlocks" || modeType == "char_unlocks")
                         && getTblValue("typeLocIDWithoutValue", mainCond) == null
-    } else
+    }
+    else
       this._needLongMarkup = false
     return this._needLongMarkup
   }
 
-  function getLongDescription()
-  {
+  function getLongDescription() {
     return this.getDescription({ showLongMarkupPart = !this.isNeedLongMarkup() })
   }
 
-  function _getMainCondViewData(mainCond)
-  {
+  function _getMainCondViewData(mainCond) {
     let modeType = mainCond.modeType
     if (modeType != "unlocks" && modeType != "char_unlocks")
       return { text = getUnlockMainCondDesc(mainCond, null, null, this.winCondParams) }
@@ -440,7 +404,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     res.subTexts.append({ text = getUnlockMainCondDesc(mainCond, "", null, this.winCondParams) + loc("ui/colon") })
 
     let locValues = getLocForBitValues(modeType, values)
-    foreach(idx, value in locValues)
+    foreach (idx, value in locValues)
       res.subTexts.append({
         text = colorize("unlockActiveColor", value) + ((idx < values.len() - 1) ? loc("ui/comma") : "")
         tooltipId = ::g_tooltip.getIdUnlock(values[idx])
@@ -449,8 +413,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return res
   }
 
-  function getLongDescriptionMarkup(_params = null)
-  {
+  function getLongDescriptionMarkup(_params = null) {
     if (!this.isNeedLongMarkup())
       return ""
 
@@ -468,8 +431,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return ::handyman.renderCached("%gui/items/conditionsTexts.tpl", view)
   }
 
-  function getDescriptionAboveTable()
-  {
+  function getDescriptionAboveTable() {
     local desc = ""
     if (this.winParamsData != null && this.winParamsData.len() > 0)
       desc += colorize("grayOptionColor", loc("items/wager/winParams")) + "\n"
@@ -477,16 +439,14 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return desc
   }
 
-  function getDescriptionUnderTable()
-  {
+  function getDescriptionUnderTable() {
     if (this.conditions == null || this.conditions.len() == 0)
       return ""
     return colorize("grayOptionColor", loc("items/wager/conditions")) +
       "\n" + getFullUnlockCondsDesc(this.conditions)
   }
 
-  function getMainActionData(isShort = false, params = {})
-  {
+  function getMainActionData(isShort = false, params = {}) {
     let res = base.getMainActionData(isShort, params)
     if (res)
       return res
@@ -500,8 +460,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
 
   getWagerCost = @(value) this.isGoldWager ? ::Cost(0, value) : ::Cost(value)
 
-  function doMainAction(cb, handler, params = null)
-  {
+  function doMainAction(cb, handler, params = null) {
     let baseResult = base.doMainAction(cb, handler, params)
     if (baseResult || !this.isInventoryItem)
       return true
@@ -511,8 +470,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
 
     if (this.minWager == this.maxWager || this.maxWager == 0)
       this.activate(this.minWager, cb)
-    else
-    {
+    else {
       let item = this
       chooseAmountWnd.open({
         parentObj = params?.obj
@@ -533,19 +491,16 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return true
   }
 
-  function activate(wagerValue, cb)
-  {
+  function activate(wagerValue, cb) {
     if (!this.uids || !this.uids.len())
       return false
 
-    if (this.getWagerCost(wagerValue) > ::get_gui_balance())
-    {
+    if (this.getWagerCost(wagerValue) > ::get_gui_balance()) {
       this.showNotEnoughMoneyMsgBox(cb)
       return false
     }
 
-    if (::get_current_wager_uid() == "")
-    {
+    if (::get_current_wager_uid() == "") {
       this.activateImpl(wagerValue, cb)
       return true
     }
@@ -556,15 +511,14 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     ::scene_msg_box("conflicting_wager_message_box", null, bodyText,
       [
         [ "continue", @() item.activateImpl(wagerValue, cb) ],
-        [ "cancel", @() cb({success=false}) ]
+        [ "cancel", @() cb({ success = false }) ]
       ],
       "cancel")
     return true
   }
 
-  function sendTaskActivate(wagerValue, cb)
-  {
-    let blk = ::DataBlock()
+  function sendTaskActivate(wagerValue, cb) {
+    let blk = DataBlock()
     blk.setStr("name", this.uids[0])
     blk.setInt("wager", wagerValue)
     let taskId = ::char_send_blk("cln_set_current_wager", blk)
@@ -572,12 +526,11 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     let isTaskSend = ::g_tasker.addTask(taskId, { showProgressBox = true },
       @() cb({ success = true }), @(_res) cb({ success = false }))
     if (!isTaskSend)
-      cb({success=false})
+      cb({ success = false })
   }
 
   hasGoldReward = @() this.rewardType == "goldRewardParams"
-  function activateImpl(wagerValue, cb)
-  {
+  function activateImpl(wagerValue, cb) {
     if (!this.isGoldWager && !this.hasGoldReward()) {
       this.sendTaskActivate(wagerValue, cb)
       return
@@ -592,36 +545,33 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     ::scene_msg_box("activate_wager_message_box", null, bodyText,
       [
         [ "yes", @() item.sendTaskActivate(wagerValue, cb) ],
-        [ "no", @() cb({success=false}) ]
+        [ "no", @() cb({ success = false }) ]
       ],
-      "yes", { cancel_fn = @() cb({success=false}) })
+      "yes", { cancel_fn = @() cb({ success = false }) })
   }
 
-  function getWagerDescriptionForMessageBox(uid)
-  {
+  function getWagerDescriptionForMessageBox(uid) {
     let wager = ::ItemsManager.findItemByUid(uid, itemType.WAGER)
     return wager == null ? "" : wager.getShortDescription()
   }
 
-  function showNotEnoughMoneyMsgBox(cb)
-  {
+  function showNotEnoughMoneyMsgBox(cb) {
     local bodyTextLocString = "msgbox/notEnoughMoneyWager/"
     bodyTextLocString += this.isGoldWager ? "gold" : "wp"
     let bodyText = loc(bodyTextLocString)
     ::scene_msg_box("not_enough_money_message_box", null, bodyText,
-      [["ok", @() cb({success=false}) ]],
+      [["ok", @() cb({ success = false }) ]],
       "ok")
   }
 
-  function getShortDescription(colored = true)
-  {
+  function getShortDescription(colored = true) {
     local desc = this.getName(colored)
     let descVars = []
     if (this.isActive())
       descVars.append(this.numWins + "/" + this.maxWins)
 
     if (this.numBattles != null)
-      descVars.append(colorize("badTextColor", (this.numBattles-this.numWins) + "/" + this.maxFails))
+      descVars.append(colorize("badTextColor", (this.numBattles - this.numWins) + "/" + this.maxFails))
 
     if (descVars.len() > 0)
       desc += loc("ui/parentheses/space", { text = ::g_string.implode(descVars, ", ") })
@@ -629,26 +579,22 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     return desc
   }
 
-  /*override*/ function getDescriptionTitle()
-  {
+  /*override*/ function getDescriptionTitle() {
     return this.getName()
   }
 
-  function isActive(...)
-  {
+  function isActive(...) {
     return this.uids && isInArray(::get_current_wager_uid(), this.uids)
   }
 
-  /*override*/ function getTableData()
-  {
+  /*override*/ function getTableData() {
     if (this.winParamsData == null || this.winParamsData.len() == 0)
       return null
     let view = this.createTableDataView(this.winParamsData, this.numWins)
     return ::handyman.renderCached("%gui/items/wagerRewardsTable.tpl", view)
   }
 
-  function createTableDataView(winParams, winsNum)
-  {
+  function createTableDataView(winParams, winsNum) {
     let view = {
       rows = []
     }
@@ -657,8 +603,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     headerView.winCount <- loc("items/wager/table/winCount")
     if (this.minWager == this.maxWager || this.isActive())
       headerView.rewardText <- loc("items/wager/table/reward")
-    else
-    {
+    else {
       headerView.rewardText <- loc("items/wager/table/atMinStake")
       headerView.secondaryRewardText <- loc("items/wager/table/atMaxStake")
     }
@@ -667,11 +612,9 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     local previousRewardData = null
     local activeRowPlaced = false
     let needActiveRow = this.isActive() && winsNum != 0
-    for (local i = 0; i < winParams.len(); ++i)
-    {
+    for (local i = 0; i < winParams.len(); ++i) {
       let rewData = winParams[i]
-      if (rewData.winCount > winsNum && !activeRowPlaced && needActiveRow)
-      {
+      if (rewData.winCount > winsNum && !activeRowPlaced && needActiveRow) {
         activeRowPlaced = true
         let activeRewardData = this.getRewardDataByParam(winsNum, winParams)
         view.rows.append(this.createRewardView("selected", activeRewardData, winsNum))
@@ -696,18 +639,15 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
       if (isMeActive)
         activeRowPlaced = true
     }
-    if (!activeRowPlaced && needActiveRow)
-    {
+    if (!activeRowPlaced && needActiveRow) {
       let activeRewardData = this.getRewardDataByParam(winsNum, winParams)
       view.rows.append(this.createRewardView("selected", activeRewardData, winsNum))
     }
     return view
   }
 
-  function compareRewardData(rd1, rd2)
-  {
-    foreach (rewardDataType in this.rewardDataTypes)
-    {
+  function compareRewardData(rd1, rd2) {
+    foreach (rewardDataType in this.rewardDataTypes) {
       let rp1 = rd1?.rewardParamsTable[rewardDataType.name]
       let rp2 = rd2?.rewardParamsTable[rewardDataType.name]
       if (rp1 == rp2)
@@ -723,8 +663,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
   /**
    * @param winsNum Useful when creating reward view for current wager progress.
    */
-  function createRewardView(rowTypeName, rewData, winsNum = -1)
-  {
+  function createRewardView(rowTypeName, rewData, winsNum = -1) {
     if (winsNum == -1)
       winsNum = rewData?.winCount ?? 0
     let view = (rowTypeName in this.tableRowTypeByName)
@@ -733,8 +672,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
     view.winCount <- winsNum.tostring()
     if (this.isActive())
       view.rewardText <- rewData == null ? "" : this.getRewardText(rewData, this.curWager)
-    else
-    {
+    else {
       view.rewardText <- rewData == null ? "" : this.getRewardText(rewData, this.minWager)
       if (this.minWager != this.maxWager)
         view.secondaryRewardText <- rewData == null ? "" : this.getRewardText(rewData, this.maxWager)
@@ -746,8 +684,7 @@ let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
    * Returns false if player does not
    * have enough resources to make a stake.
    */
-  function checkStake()
-  {
+  function checkStake() {
     if (this.isGoldWager)
       return this.curWager <= ::get_cur_rank_info().gold
     return this.curWager <= ::get_cur_rank_info().wp

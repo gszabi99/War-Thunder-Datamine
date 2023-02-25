@@ -2066,6 +2066,10 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk77.blk"
       },
       {
+        "name": "a_4b_bomb_mk79",
+        "blk": "gameData/FlightModels/weaponPresets/a_4b_bomb_mk79.blk"
+      },
+      {
         "name": "a_4b_mk4_mod0",
         "blk": "gameData/FlightModels/weaponPresets/a_4b_mk4_mod0.blk"
       }
@@ -2305,6 +2309,23 @@
             }
           },
           {
+            "iconType": "napalm_heavy",
+            "name": "mk79_left_x2",
+            "reqModification": "us_1000_lb_mk_79_mod_0",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000_lb_mk_79_mod_0.blk",
+              "emitter": "bomb_83_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "doublebarreled_box",
             "name": "mk11",
             "reqModification": "mk4_mod0_gunpod",
@@ -2479,6 +2500,23 @@
             }
           },
           {
+            "iconType": "napalm_heavy",
+            "name": "mk79",
+            "reqModification": "us_1000_lb_mk_79_mod_0",
+            "ShowNodes": {
+              "node": "pylon"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000_lb_mk_79_mod_0.blk",
+              "emitter": "bomb_84_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "doublebarreled_box",
             "name": "mk11",
             "reqModification": "mk4_mod0_gunpod",
@@ -2650,6 +2688,23 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_heavy",
+            "name": "mk79_right_x2",
+            "reqModification": "us_1000_lb_mk_79_mod_0",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000_lb_mk_79_mod_0.blk",
+              "emitter": "bomb_83_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
             }
           },
           {
@@ -2891,6 +2946,10 @@
     },
     "us_mk_77": {
       "tier": 1,
+      "modClass": "weapon"
+    },
+    "us_1000_lb_mk_79_mod_0": {
+      "tier": 2,
       "modClass": "weapon"
     }
   },

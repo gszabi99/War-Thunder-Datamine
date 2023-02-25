@@ -3,6 +3,7 @@
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
+let { parse_json } = require("json")
 
 let viewType = {
   types = []
@@ -12,8 +13,7 @@ viewType.template <- {
   id = "" //filled automatically by typeName. so unique
   model = elemModelType.EMPTY
 
-  bhvParamsToString = function(params)
-  {
+  bhvParamsToString = function(params) {
     params.viewId <- this.id
     return ::save_to_json(params)
   }
@@ -22,8 +22,7 @@ viewType.template <- {
   updateView = @(_obj, _bhvConfig) null
 }
 
-viewType.addTypes <- function(typesTable)
-{
+viewType.addTypes <- function(typesTable) {
   enums.addTypes(this, typesTable, null, "id")
 }
 
@@ -35,10 +34,10 @@ viewType.addTypes({
 viewType.get <- @(typeId) this?[typeId] ?? this.EMPTY
 
 viewType.buildBhvConfig <- function(params) {
-  local tbl = (type(params)=="table") ? params : null
+  local tbl = (type(params) == "table") ? params : null
   local vt = this.get(tbl?.viewId ?? params)
-  if (type(params)=="string")
-    tbl = vt == this.EMPTY ? ::parse_json(params) : { viewId = params }
+  if (type(params) == "string")
+    tbl = vt == this.EMPTY ? parse_json(params) : { viewId = params }
 
   if (!tbl?.viewId)
     return null

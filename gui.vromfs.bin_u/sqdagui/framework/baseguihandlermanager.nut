@@ -3,11 +3,13 @@
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
-let {handlerType} = require("handlerType.nut")
+let { handlerType } = require("handlerType.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { debug_dump_stack } = require("dagor.debug")
 let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let broadcastEvent = subscriptions.broadcast
 
 ::current_base_gui_handler <- null //active base handler in main gui scene
 ::always_reload_scenes <- false //debug only
@@ -58,14 +60,12 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
   delayedActions                     = []
   delayedActionsGuiScene             = null
 
-  function init()
-  {
+  function init() {
     g_script_reloader.registerPersistentDataFromRoot("handlersManager")
     subscriptions.subscribeHandler(::handlersManager, subscriptions.DEFAULT_HANDLER)
   }
 
-  function loadHandler(handlerClass, params = {})
-  {
+  function loadHandler(handlerClass, params = {}) {
     this._loadHandlerRecursionLevel++
 
     let hType = this.getHandlerType(handlerClass)
@@ -84,7 +84,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     local handler = null
     if (hType == handlerType.MODAL)
       handler = this.loadModalHandler(handlerClass, params)
-    else if (hType==handlerType.CUSTOM)
+    else if (hType == handlerType.CUSTOM)
       handler = this.loadCustomHandler(handlerClass, params)
     else
       handler = this.loadBaseHandler(handlerClass, params)
@@ -107,54 +107,46 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     return handler
   }
 
-  function getHandlerClassName(handlerClass)
-  {
-    foreach(name, hClass in ::gui_handlers)
+  function getHandlerClassName(handlerClass) {
+    foreach (name, hClass in ::gui_handlers)
       if (handlerClass == hClass)
         return name
     return null
   }
 
-  function getHandlerClassDebugName(handlerClass)
-  {
+  function getHandlerClassDebugName(handlerClass) {
     let className = this.getHandlerClassName(handlerClass)
     if (className)
-      return "::gui_handlers." + className
-    return " sceneBlk = " + (handlerClass?.sceneBlkName ?? "null")
+      return $"::gui_handlers.{className}"
+    return "".concat(" sceneBlk = ", (handlerClass?.sceneBlkName ?? "null"))
   }
 
-  function onLoadHandlerDebug(handlerClass, _params)
-  {
+  function onLoadHandlerDebug(handlerClass, _params) {
     let handlerName = this.getHandlerClassDebugName(handlerClass)
-    println("GuiManager: load handler " + handlerName)
+    println($"GuiManager: load handler {handlerName}")
 
     this.lastLoadedHandlerName = handlerName
     return handlerName
   }
 
-  function initHandler(handler)
-  {
+  function initHandler(handler) {
     this.beforeInitHandler(handler)
 
     local result
-    try
-    {
+    try {
       handler.init()
       result = true
     }
-    catch (errorMessage)
-    {
+    catch (errorMessage) {
       let handlerName = this.getHandlerClassDebugName(handler)
       let message = format("Error on init handler %s:\n%s", handlerName, errorMessage)
-      ::script_net_assert_once(handlerName, message)
+      script_net_assert_once(handlerName, message)
       let hType = this.getHandlerType(handler.getclass())
-      if (hType == handlerType.MODAL)
-      {
+      if (hType == handlerType.MODAL) {
         if (check_obj(handler.scene))
           ::get_cur_gui_scene().destroyElement(handler.scene)
       }
-      else if (hType == handlerType.CUSTOM)
-      {
+      else if (hType == handlerType.CUSTOM) {
         if (check_obj(handler.scene))
           ::get_cur_gui_scene().replaceContentFromText(handler.scene, "", 0, null)
         handler.scene = null
@@ -166,45 +158,40 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     return result
   }
 
-  function reinitHandler(handler, params)
-  {
+  function reinitHandler(handler, params) {
     if ("reinitScreen" in handler)
       handler.reinitScreen(params)
   }
 
-  function destroyHandler(handler) //destroy handler with it subhandlers.
+  function destroyHandler(handler) { //destroy handler with it subhandlers.
                                                    //destroy handler scene, so accurate use with custom handlers
-  {
     if (!this.isHandlerValid(handler))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      ::script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui::ObjScene::act")
+      script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui::ObjScene::act")
       return
     }
 
     handler.onDestroy()
-    foreach(sh in handler.subHandlers)
+    foreach (sh in handler.subHandlers)
       this.destroyHandler(sh)
     handler.guiScene.destroyElement(handler.scene)
   }
 
-  function loadBaseHandler(handlerClass, params = {})
-  {
+  function loadBaseHandler(handlerClass, params = {}) {
     let guiScene = ::get_gui_scene()
     if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      ::script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui::ObjScene::act")
+      script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui::ObjScene::act")
       return null
     }
 
     let reloadScene = this.updatePostLoadCss() || this.needReloadScene()
     let reload = !handlerClass.keepLoaded || reloadScene
-    if (!reload)
-    {
+    if (!reload) {
       let handler = this.findAndReinitHandler(handlerClass, params)
-      if (handler)
-      {
+      if (handler) {
         this.setLastBaseHandlerStartFuncByHandler(handlerClass, params)
-        ::broadcastEvent("NewSceneLoaded")
+        broadcastEvent("NewSceneLoaded")
         return handler
       }
     }
@@ -227,22 +214,19 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     this.lastGuiScene = handler.guiScene
 
     this.setLastBaseHandlerStartFuncByHandler(handlerClass, params)
-    ::broadcastEvent("NewSceneLoaded")
+    broadcastEvent("NewSceneLoaded")
     return handler
   }
 
-  function loadHandlerScene(handler)
-  {
-    if (!handler.sceneBlkName)
-    {
+  function loadHandlerScene(handler) {
+    if (!handler.sceneBlkName) {
       debug_dump_stack()
       assert(false, "Error: cant load base handler w/o sceneBlkName.")
       return null
     }
 
-    let id = "root_scene_" + ++this.sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
-    if (!handler.rootHandlerClass || this.getHandlerType(handler) != handlerType.BASE)
-    {
+    let id = $"root_scene_{++this.sceneObjIdx} {handler.sceneBlkName}" //mostly for debug
+    if (!handler.rootHandlerClass || this.getHandlerType(handler) != handlerType.BASE) {
       let rootObj = handler.guiScene.getRoot()
       handler.scene = handler.guiScene.createElementByObject(rootObj, handler.sceneBlkName, "rootScene", handler)
       handler.initHandlerSceneTpl()
@@ -253,8 +237,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     local newLoadedRootHandler = null
     let guiScene = ::get_cur_gui_scene()
     local rootHandler = this.findHandlerClassInScene(handler.rootHandlerClass)
-    if (!this.isHandlerValid(rootHandler, true))
-    {
+    if (!this.isHandlerValid(rootHandler, true)) {
       rootHandler = handler.rootHandlerClass(guiScene, {})
       this.loadHandlerScene(rootHandler)
       this.handlers[handlerType.ROOT].append(rootHandler.weakref())
@@ -269,17 +252,14 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     return newLoadedRootHandler
   }
 
-  function loadModalHandler(handlerClass, params = {})
-  {
-    if (!handlerClass.sceneBlkName && !handlerClass.sceneTplName)
-    {
+  function loadModalHandler(handlerClass, params = {}) {
+    if (!handlerClass.sceneBlkName && !handlerClass.sceneTplName) {
       debug_dump_stack()
-      assert(handlerClass.sceneBlkName!=null, "Error: cant load modal handler w/o sceneBlkName or sceneTplName.")
+      assert(handlerClass.sceneBlkName != null, "Error: cant load modal handler w/o sceneBlkName or sceneTplName.")
       return null
     }
     local handler = this.findHandlerClassInScene(handlerClass)
-    if (handler && !handlerClass.multipleInstances)
-    {
+    if (handler && !handlerClass.multipleInstances) {
       this.reinitHandler(handler, params)
       return handler
     }
@@ -289,7 +269,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     this.handlers[handlerType.MODAL].append(handler.weakref())
 
     let scene = guiScene.loadModal("", handler.sceneBlkName || "%gui/emptyScene.blk", "rootScene", handler)
-    scene.id = "modal_wnd_" + ++this.sceneObjIdx + " " + handler.sceneBlkName //mostly for debug
+    scene.id = $"modal_wnd_{++this.sceneObjIdx} {handler.sceneBlkName}" //mostly for debug
     handler.scene = scene
 
     handler.initHandlerSceneTpl()
@@ -300,12 +280,10 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     return handler
   }
 
-  function loadCustomHandler(handlerClass, params = {})
-  {
+  function loadCustomHandler(handlerClass, params = {}) {
     let guiScene = ::get_gui_scene()
     let handler = this.createHandler(handlerClass, guiScene, params)
-    if (!handler.sceneBlkName && !handler.sceneTplName)
-    {
+    if (!handler.sceneBlkName && !handler.sceneTplName) {
       debug_dump_stack()
       assert(false, "Error: cant load custom handler w/o sceneBlkName or sceneTplName.")
       return null
@@ -321,18 +299,15 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     return handler
   }
 
-  function createHandler(handlerClass, guiScene, params)
-  {
+  function createHandler(handlerClass, guiScene, params) {
     let handler = handlerClass(guiScene, params)
     subscriptions.subscribeHandler(handler)
     return handler
   }
 
-  function findAndReinitHandler(handlerClass, params)
-  {
+  function findAndReinitHandler(handlerClass, params) {
     let curHandler = this.getActiveBaseHandler()
-    if (curHandler && curHandler.getclass() == handlerClass)
-    {
+    if (curHandler && curHandler.getclass() == handlerClass) {
       this.reinitHandler(curHandler, params)
       return curHandler
     }
@@ -346,16 +321,14 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     return handler
   }
 
-  function switchBaseHandler(handler)
-  {
+  function switchBaseHandler(handler) {
     let guiScene = ::get_cur_gui_scene()
     this.closeAllModals(guiScene)
 
     let curHandler = this.getActiveBaseHandler()
     this.showBaseHandler(curHandler, false)
     this.onBaseHandlerSwitch()
-    if (handler)
-    {
+    if (handler) {
       this.switchRootHandlerChecked(handler.rootHandlerClass)
       this.showBaseHandler(handler, true)
     }
@@ -372,11 +345,10 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
 
     this.onSwitchBaseHandler()
 
-    ::broadcastEvent("SwitchedBaseHandler")
+    broadcastEvent("SwitchedBaseHandler")
   }
 
-  function switchRootHandlerChecked(rootHandlerClass)
-  {
+  function switchRootHandlerChecked(rootHandlerClass) {
     let curRootHandler = this.getActiveRootHandler()
     if ((!curRootHandler && !rootHandlerClass)
         || (curRootHandler && curRootHandler.getclass() == rootHandlerClass))
@@ -388,35 +360,29 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     this.removeHandlerFromListByGuiScene(this.activeRootHandlers, ::get_cur_gui_scene())
 
     let newRootHandler = rootHandlerClass && this.findHandlerClassInScene(rootHandlerClass)
-    if (newRootHandler)
-    {
+    if (newRootHandler) {
       this.activeRootHandlers.append(newRootHandler)
       this.showBaseHandler(newRootHandler, true)
     }
   }
 
-  function removeHandlerFromListByGuiScene(list, guiScene)
-  {
-    for(local i = list.len()-1; i >= 0; i--)
-    {
+  function removeHandlerFromListByGuiScene(list, guiScene) {
+    for (local i = list.len() - 1; i >= 0; i--) {
       let h = list[i]
       if (!h || !h.guiScene || guiScene.isEqual(h.guiScene))
         list.remove(i)
     }
   }
 
-  function onBaseHandlerSwitch()
-  {
+  function onBaseHandlerSwitch() {
     ::reset_msg_box_check_anim_time() //no need msg box anim right after scene switch
   }
 
-  function showBaseHandler(handler, show)
-  {
+  function showBaseHandler(handler, show) {
     if (!this.isHandlerValid(handler, false))
       return this.clearInvalidHandlers()
 
-    if (!show && !handler.keepLoaded)
-    {
+    if (!show && !handler.keepLoaded) {
       this.destroyHandler(handler)
       this.clearInvalidHandlers()
       return
@@ -431,12 +397,11 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
   getRootScreenBlkPath = @() "%gui/rootScreen.blk"
 
   //if guiScene == null, will be used current scene
-  function clearScene(guiScene = null)
-  {
+  function clearScene(guiScene = null) {
     if (!guiScene)
       guiScene = ::get_cur_gui_scene()
     if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      ::script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui::ObjScene::act")
+      script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui::ObjScene::act")
       return
     }
 
@@ -450,10 +415,9 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     this.setGuiRootOptions(guiScene, false)
     this.startActionsDelay()
     guiScene.initCursor("%gui/cursor.blk", "normal")
-    if (!guiScene.isEqual(::get_cur_gui_scene()))
-    {
+    if (!guiScene.isEqual(::get_cur_gui_scene())) {
       this.onClearScene(guiScene)
-      ::broadcastEvent("GuiSceneCleared")
+      broadcastEvent("GuiSceneCleared")
       return
     }
 
@@ -464,21 +428,19 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
 
     this.updateLoadingFlag()
     this.onClearScene(guiScene)
-    ::broadcastEvent("GuiSceneCleared")
+    broadcastEvent("GuiSceneCleared")
   }
 
-  function updateLoadingFlag()
-  {
+  function updateLoadingFlag() {
     let oldVal = this.isInLoading
     this.isInLoading = !this.isMainGuiSceneActive()
-                  || (!this.getActiveBaseHandler() && !this.getActiveRootHandler())//empty screen count as loading too
+                  || (!this.getActiveBaseHandler() && !this.getActiveRootHandler()) //empty screen count as loading too
 
     if (oldVal != this.isInLoading)
-      ::broadcastEvent("LoadingStateChange")
+      broadcastEvent("LoadingStateChange")
   }
 
-  function emptyScreen()
-  {
+  function emptyScreen() {
     println("GuiManager: load emptyScreen")
     this.setLastBaseHandlerStartFunc(function() { ::handlersManager.emptyScreen() })
     this.lastLoadedHandlerName = "emptyScreen"
@@ -491,16 +453,14 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
       this.onActiveHandlersChanged()
   }
 
-  function isMainGuiSceneActive()
-  {
+  function isMainGuiSceneActive() {
     return ::get_cur_gui_scene().isEqual(::get_main_gui_scene())
   }
 
-  function setGuiRootOptions(guiScene, forceUpdate = true)
-  {
+  function setGuiRootOptions(guiScene, forceUpdate = true) {
     let rootObj = guiScene.getRoot()
 
-    rootObj["show_console_buttons"] = ::show_console_buttons ? "yes" : "no" //should to force box buttons in WoP?
+    rootObj["show_console_buttons"] = getroottable()?["show_console_buttons"] ? "yes" : "no" //should to force box buttons in WoP?
     if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ::ps4_is_circle_selected_as_enter_button())
       rootObj["swap_ab"] = "yes";
 
@@ -514,14 +474,12 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     })
   }
 
-  function needReloadScene()
-  {
+  function needReloadScene() {
     return this.needFullReload || ::always_reload_scenes || !check_obj(::get_cur_gui_scene()["root_loaded"])
            || this.isNeedReloadSceneSpecific()
   }
 
-  function startSceneFullReload(startSceneFunc = null)
-  {
+  function startSceneFullReload(startSceneFunc = null) {
     startSceneFunc = startSceneFunc || this.getLastBaseHandlerStartFunc()
     if (!startSceneFunc)
       return
@@ -532,8 +490,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     this.isFullReloadInProgress = false
   }
 
-  function markfullReloadOnSwitchScene(needReloadOnActivateHandlerToo = true)
-  {
+  function markfullReloadOnSwitchScene(needReloadOnActivateHandlerToo = true) {
     this.needFullReload = true
     if (!needReloadOnActivateHandlerToo)
       return
@@ -543,8 +500,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
       handler.doWhenActiveOnce("fullReloadScene")
   }
 
-  function onEventScriptsReloaded(_p)
-  {
+  function onEventScriptsReloaded(_p) {
     this.markfullReloadOnSwitchScene(false)
     let startData = this.findLastBaseHandlerStartData(::get_gui_scene())
     if (!startData)
@@ -558,13 +514,11 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     startFunc()
   }
 
-  function checkPostLoadCssOnBackToBaseHandler()
-  {
+  function checkPostLoadCssOnBackToBaseHandler() {
     this.needCheckPostLoadCss = true
   }
 
-  function checkPostLoadCss(isForced = false)
-  {
+  function checkPostLoadCss(isForced = false) {
     if (!this.needCheckPostLoadCss && !isForced)
       return false
     let handler = ::handlersManager.getActiveBaseHandler()
@@ -579,53 +533,45 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     return true
   }
 
-  function onEventModalWndDestroy(_p)
-  {
+  function onEventModalWndDestroy(_p) {
     if (!this.checkPostLoadCss() && !this._loadHandlerRecursionLevel)
       this.onActiveHandlersChanged()
   }
 
-  function onEventMsgBoxCreated(_p)
-  {
+  function onEventMsgBoxCreated(_p) {
     if (!this._loadHandlerRecursionLevel)
       this.onActiveHandlersChanged()
   }
 
-  function isModal(handlerClass)
-  {
+  function isModal(handlerClass) {
     return this.getHandlerType(handlerClass) == handlerType.MODAL
   }
 
-  function getHandlerType(handlerClass)
-  {
+  function getHandlerType(handlerClass) {
     return handlerClass.wndType
   }
 
-  function isHandlerValid(handler, checkGuiScene = false)
-  {
+  function isHandlerValid(handler, checkGuiScene = false) {
     return handler != null && handler.isValid() && (!checkGuiScene || handler.isInCurrentScene())
   }
 
-  function clearInvalidHandlers()
-  {
-    foreach(_hType, group in this.handlers)
-      for(local i = group.len()-1; i >= 0; i--)
+  function clearInvalidHandlers() {
+    foreach (_hType, group in this.handlers)
+      for (local i = group.len() - 1; i >= 0; i--)
         if (!this.isHandlerValid(group[i], false))
           group.remove(i)
   }
 
-  function closeAllModals(guiScene = null)
-  {
+  function closeAllModals(guiScene = null) {
     if ((guiScene ?? ::get_cur_gui_scene())?.isInAct()) { //isInAct appear at 18.11.2020
-      ::script_net_assert_once("closeAllModals", "Try to close all modals while in dagui::ObjScene::act")
+      script_net_assert_once("closeAllModals", "Try to close all modals while in dagui::ObjScene::act")
       return
     }
 
     ::destroy_all_msg_boxes(guiScene)
 
     let group = this.handlers[handlerType.MODAL]
-    for(local i = group.len()-1; i >= 0; i--)
-    {
+    for (local i = group.len() - 1; i >= 0; i--) {
       let handler = group[i]
       if (guiScene && handler && !guiScene.isEqual(handler.guiScene))
         continue
@@ -635,67 +581,59 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     }
   }
 
-  function destroyModal(handler)
-  {
+  function destroyModal(handler) {
     if (!this.isHandlerValid(handler, true))
       return
     if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
-      ::script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui::ObjScene::act")
+      script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui::ObjScene::act")
       return
     }
 
-    foreach(idx, h in this.handlers[handlerType.MODAL])
-      if (this.isHandlerValid(h, true) && h.scene.isEqual(handler.scene))
-      {
+    foreach (idx, h in this.handlers[handlerType.MODAL])
+      if (this.isHandlerValid(h, true) && h.scene.isEqual(handler.scene)) {
         this.handlers[handlerType.MODAL].remove(idx)
         break
       }
     this.destroyHandler(handler)
   }
 
-  function findHandlerClassInScene(searchClass, checkGuiScene = true)
-  {
+  function findHandlerClassInScene(searchClass, checkGuiScene = true) {
     let searchType = this.getHandlerType(searchClass)
     if (searchType in this.handlers)
-      foreach(handler in this.handlers[searchType])
-        if (!searchClass || (handler && handler.getclass() == searchClass))
-        {
+      foreach (handler in this.handlers[searchType])
+        if (!searchClass || (handler && handler.getclass() == searchClass)) {
           if (this.isHandlerValid(handler, checkGuiScene))
             return handler
         }
     return null
   }
 
-  function isAnyModalHandlerActive()
-  {
-    foreach(handler in this.handlers[handlerType.MODAL])
+  function isAnyModalHandlerActive() {
+    foreach (handler in this.handlers[handlerType.MODAL])
       if (this.isHandlerValid(handler, true))
         return true
     return false
   }
 
-  function getActiveBaseHandler()
-  {
+  function getActiveBaseHandler() {
     let curGuiScene = ::get_cur_gui_scene()
-    foreach(handler in this.activeBaseHandlers)
+    foreach (handler in this.activeBaseHandlers)
       if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && this.isHandlerValid(handler, false))
         return handler
     return null
   }
 
-  function getActiveRootHandler()
-  {
+  function getActiveRootHandler() {
     let curGuiScene = ::get_cur_gui_scene()
-    foreach(handler in this.activeRootHandlers)
+    foreach (handler in this.activeRootHandlers)
       if (handler.guiScene && handler.guiScene.isEqual(curGuiScene) && this.isHandlerValid(handler, false))
         return handler
     return null
   }
 
-  function sendEventToHandlers(eventFuncName, guiScene = null, params = null)
-  {
-    foreach(_hType, hList in this.handlers)
-      foreach(handler in hList)
+  function sendEventToHandlers(eventFuncName, guiScene = null, params = null) {
+    foreach (_hType, hList in this.handlers)
+      foreach (handler in hList)
         if (this.isHandlerValid(handler)
             && (!guiScene || handler.guiScene.isEqual(guiScene))
             && eventFuncName in handler && type(handler[eventFuncName]) == "function")
@@ -717,8 +655,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
    * @return False if windows restoration failed. Occures if window
    * handler was not found or getHandlerRestoreData is not implemented.
    */
-  function requestHandlerRestore(restoreHandler, triggerHandlerClass = null)
-  {
+  function requestHandlerRestore(restoreHandler, triggerHandlerClass = null) {
     let restoreData = restoreHandler.getHandlerRestoreData()
     if (restoreData == null) // Not implemented.
       return false
@@ -728,8 +665,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
     if (!triggerHandlerClass)
       return false
 
-    if (triggerHandlerClass == restoreData.handlerClass)
-    {
+    if (triggerHandlerClass == restoreData.handlerClass) {
       this.restoreDataOnLoadHandler[restoreData.handlerClass] <- restoreData
       return true
     }
@@ -742,8 +678,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
    * Restores handlers requested by specified trigger-handler.
    * Does nothing if no restore data found.
    */
-  function restoreHandlers(triggerHandlerClass)
-  {
+  function restoreHandlers(triggerHandlerClass) {
     let restoreData = this.restoreDataByTriggerHandler?[triggerHandlerClass]
     if (restoreData == null)
       return
@@ -757,38 +692,33 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
       handler.restoreHandler(stateData)
   }
 
-  function findLastBaseHandlerStartData(guiScene)
-  {
-    for(local i = this.lastBaseHandlerStartData.len() - 1; i >= 0; i--)
+  function findLastBaseHandlerStartData(guiScene) {
+    for (local i = this.lastBaseHandlerStartData.len() - 1; i >= 0; i--)
       if (this.lastBaseHandlerStartData[i].guiScene.isEqual(guiScene))
         return this.lastBaseHandlerStartData[i]
     return null
   }
 
-  function getLastBaseHandlerStartFunc(guiScene = null)
-  {
+  function getLastBaseHandlerStartFunc(guiScene = null) {
     if (!guiScene)
       guiScene = ::get_gui_scene()
     local data = this.findLastBaseHandlerStartData(guiScene)
     return data && data.startFunc
   }
 
-  function setLastBaseHandlerStartFunc(startFunc, guiScene = null, handlerLocId = null)
-  {
+  function setLastBaseHandlerStartFunc(startFunc, guiScene = null, handlerLocId = null) {
     if (!guiScene)
       guiScene = ::get_gui_scene()
     local data = this.findLastBaseHandlerStartData(guiScene)
-    if (!data)
-    {
-      data = { guiScene, startFunc = null, handlerLocId}
+    if (!data) {
+      data = { guiScene, startFunc = null, handlerLocId }
       this.lastBaseHandlerStartData.append(data)
     }
     data.startFunc = startFunc
     data.handlerLocId = handlerLocId
   }
 
-  function setLastBaseHandlerStartFuncByHandler(handlerClass, params)
-  {
+  function setLastBaseHandlerStartFuncByHandler(handlerClass, params) {
     let handlerClassName = this.getHandlerClassName(handlerClass)
     this.setLastBaseHandlerStartFunc(function() {
                                  let hClass = ::gui_handlers?[handlerClassName] ?? handlerClass
@@ -796,8 +726,7 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
                                }, null, handlerClass?.handlerLocId)
   }
 
-  function destroyPrevHandlerAndLoadNew(handlerClass, params, needDestroyIfAlreadyOnTop = false)
-  {
+  function destroyPrevHandlerAndLoadNew(handlerClass, params, needDestroyIfAlreadyOnTop = false) {
     local isNewHandlerCreated = true
     let prevHandler = this.findHandlerClassInScene(handlerClass)
     if (prevHandler)
@@ -811,24 +740,21 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
   }
 
   //run delayed action same with guiScene.performDelayed, but it will survive guiScene reload and switch
-  function doDelayed(action)
-  {
+  function doDelayed(action) {
     this.delayedActions.append(action)
     if (this.delayedActions.len() == 1)
       this.startActionsDelay()
   }
 
-  function startActionsDelay()
-  {
+  function startActionsDelay() {
     if (!this.delayedActions.len())
       return
     this.delayedActionsGuiScene = ::get_cur_gui_scene()
-    this.delayedActionsGuiScene.performDelayed(this, function()
-    {
+    this.delayedActionsGuiScene.performDelayed(this, function() {
       this.delayedActionsGuiScene = null
       let actions = clone this.delayedActions
       this.delayedActions.clear()
-      foreach(action in actions)
+      foreach (action in actions)
         action()
     })
   }
@@ -839,25 +765,21 @@ let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptRe
       this.startActionsDelay()
   }
 
-  function onEventSignOut(_)
-  {
+  function onEventSignOut(_) {
     this.restoreDataOnLoadHandler.clear()
     this.restoreDataByTriggerHandler.clear()
   }
 }
 //=======================  global functions  ==============================
 
-::isHandlerInScene <- function isHandlerInScene(handlerClass)
-{
+::isHandlerInScene <- function isHandlerInScene(handlerClass) {
   return ::handlersManager.findHandlerClassInScene(handlerClass) != null
 }
-::gui_start_modal_wnd <- function gui_start_modal_wnd(handlerClass, params = {}) //only for basic handlers with sceneBlkName predefined
-{
+::gui_start_modal_wnd <- function gui_start_modal_wnd(handlerClass, params = {}) { //only for basic handlers with sceneBlkName predefined
   return ::handlersManager.loadHandler(handlerClass, params)
 }
 
-::is_in_loading_screen <- function is_in_loading_screen()
-{
+::is_in_loading_screen <- function is_in_loading_screen() {
   return ::handlersManager.isInLoading
 }
 

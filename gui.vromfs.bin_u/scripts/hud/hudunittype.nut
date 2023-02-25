@@ -1,3 +1,4 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -13,10 +14,12 @@ let HUD_UNIT_TYPE = {
   //
 
 
+
 }
 
 let { TANK, SHIP, SHIP_EX, AIRCRAFT, HELICOPTER
 //
+
 
 
 } = HUD_UNIT_TYPE
@@ -30,6 +33,7 @@ let unitTypeByHudUnitType = {
   //
 
 
+
 }
 
 let hudTypeByHudUnitType = {
@@ -39,6 +43,7 @@ let hudTypeByHudUnitType = {
   [AIRCRAFT]         = HUD_TYPE.AIR,
   [HELICOPTER]       = HUD_TYPE.HELICOPTER,
   //
+
 
 
 }

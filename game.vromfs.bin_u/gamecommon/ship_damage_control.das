@@ -39,7 +39,7 @@ def get_process_penalty(processes : uint; process : uint; penatlies : float3) : 
 def ship_start_damage_control_es(evt : EventShipStartDamageControl;
                                  eid : EntityId;
                                  ship_modern_damage_control : bool;
-                                 var ship_damage_control_cooldown : float&;
+                                 var ship_damage_control_cooldown_end_time : float&;
                                  var ship_damage_control_priorities : uint&)
   if !ship_modern_damage_control
     return
@@ -47,9 +47,9 @@ def ship_start_damage_control_es(evt : EventShipStartDamageControl;
   let start = evt.priorities != 0u
   if start
     if ship_damage_control_priorities != evt.priorities
-      if ship_damage_control_cooldown > 0.0f
+      if ship_damage_control_cooldown_end_time > float(get_app().usefulTotalTime)
         return
-      ship_damage_control_cooldown = get_app().gameParams.shipDamageControlSwitchCooldownTime
+      ship_damage_control_cooldown_end_time = get_app().gameParams.shipDamageControlSwitchCooldownTime + float(get_app().usefulTotalTime)
       ship_damage_control_priorities = evt.priorities
 
     sendEvent(eid, [[EventShipRequestRepairBreaches repair=true]])
@@ -75,7 +75,6 @@ def ship_damage_control_init_es(evt : CmdInitComponent;
 def ship_update_damage_control_es(act : UpdateStageInfoAct;
                                   eid : EntityId;
                                   uid : int;
-                                  var ship_damage_control_cooldown : float&;
                                   var repair_system_auto_check_delay : float&;
                                   ship_damage_control_running : bool;
                                   fire_damage__isBurn : bool;
@@ -83,10 +82,9 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
                                   repair_system_state : uint;
                                   repair_system_speed_multiplier : float;
                                   repair_system_repair_hp_multiplier : float;
-                                  repair_system_parts_id : IntList;
+                                  repair_system_parts_id : PartIdList;
                                   repair_system_parts_hp : Point4List;
                                   repair_system_parts_state : UInt32List)
-  ship_damage_control_cooldown = max(ship_damage_control_cooldown - act.dt, 0.0f)
 
   if ship_damage_control_running
     if fire_damage__isBurn

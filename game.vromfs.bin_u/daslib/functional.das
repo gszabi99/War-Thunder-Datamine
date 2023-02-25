@@ -30,12 +30,18 @@ def private map_any(var src:iterator<auto(TT)>; var blk)
     static_if typeinfo(can_copy type<QQ>)
         return <- generator<QQ -&> [[<-src,<-blk]] () <| $ ()
             for w in src
-                yield invoke(blk,w)
+                static_if typeinfo(is_ref_type invoke(blk,w) )
+                    yield copy_to_local(invoke(blk,w))
+                else
+                    yield invoke(blk,w)
             return false
     static_elif typeinfo(can_move type<QQ>)
         return <- generator<QQ -&> [[<-src,<-blk]] () <| $ ()
             for w in src
-                yield <- invoke(blk,w)
+                static_if typeinfo(is_ref_type invoke(blk,w) )
+                    yield <- move_to_local(invoke(blk,w))
+                else
+                    yield <- invoke(blk,w)
             return false
     else
         concept_assert(false,"can't copy or move return type")
@@ -61,7 +67,10 @@ def private reduce_any(it:iterator<auto(TT)>;functor)
             first = false
             left = right
         else
-            left = invoke(functor,left,right)
+            static_if typeinfo(is_ref_type type<TT-&>)
+                left <- copy_to_local(invoke(functor,left,right))
+            else
+                left = invoke(functor,left,right)
     if first
         panic("can't reduce empty sequence")
     return left
@@ -154,15 +163,6 @@ def islice( var src : iterator<auto(TT)>; start,stop : int )
                 if i>=start
                     yield x
             return false
-
-// [[ start; start+step; start+2*step ]]
-[generic]
-def count(var start,step:int) : iterator<int>
-    //! endlessly iterates from `start` and yields `start+step`, `start+2*step`, ...
-    return <- each() <| @(var result:int&) : bool
-        result = start
-        start += step
-        return true
 
 // [[ value; value; value; .... count times ]]
 def repeat_ref ( value:auto(TT); var total:int )

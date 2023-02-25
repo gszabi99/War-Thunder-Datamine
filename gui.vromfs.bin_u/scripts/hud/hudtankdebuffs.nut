@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -24,8 +25,7 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
   }
 
 
-  function init(nest)
-  {
+  function init(nest) {
     if (!hasFeature("TankDetailedDamageIndicator"))
       return
 
@@ -73,17 +73,14 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
     ::hud_request_hud_tank_debuffs_state()
   }
 
-  function reinit()
-  {
+  function reinit() {
     ::hud_request_hud_tank_debuffs_state()
   }
 
-  function updateDebufSate(debuffs_data, obj)
-  {
+  function updateDebufSate(debuffs_data, obj) {
     obj.tooltip = this.getTooltip(debuffs_data)
     foreach (on in debuffs_data)
-      if (on)
-      {
+      if (on) {
         obj.state = (("engineDead" in debuffs_data && debuffs_data.engineDead) || ("horizontalDriveDead" in debuffs_data && debuffs_data.horizontalDriveDead)
           || ("barrelDead" in debuffs_data && debuffs_data.barrelDead) || ("breechDead" in debuffs_data && debuffs_data.breechDead))
           ? "dead" : "bad"
@@ -92,19 +89,16 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
     obj.state = "ok"
   }
 
-  function getTooltip(debuffs_data)
-  {
+  function getTooltip(debuffs_data) {
     local res = ""
-    foreach (debuffName, on in debuffs_data)
-    {
+    foreach (debuffName, on in debuffs_data) {
       if (on && debuffName in this.tooltips)
         res += (res.len() ? "\n\n" : "") + loc(this.tooltips[debuffName])
     }
     return res
   }
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.scene)
   }
 }

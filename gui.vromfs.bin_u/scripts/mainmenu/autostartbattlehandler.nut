@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
@@ -52,8 +53,7 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.updateScene()
   }
 
-  function updateTip()
-  {
+  function updateTip() {
     let tipObj = this.scene.findObject("queue_tip")
     if (tipObj?.isValid() ?? false)
       return
@@ -61,8 +61,7 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
     tipObj.setValue(getCurEsUnitTypesMask())
   }
 
-  function updateQueueWaitIconImage()
-  {
+  function updateQueueWaitIconImage() {
     let obj = this.scene.findObject("queue_wait_icon_block")
     if (!(obj?.isValid() ?? false))
       return
@@ -71,12 +70,10 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 
-  function updateWaitTime()
-  {
+  function updateWaitTime() {
     local txtWaitTime = ""
     let waitTime = this.getCurQueue()?.getActiveTime() ?? 0
-    if (waitTime > 0)
-    {
+    if (waitTime > 0) {
       let minutes = time.secondsToMinutes(waitTime).tointeger()
       let seconds = waitTime - time.minutesToSeconds(minutes)
       txtWaitTime = format("%d:%02d", minutes, seconds)
@@ -123,8 +120,7 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onEventQueueChangeState(p) {
     let queue = p?.queue
-    if (::queues.isQueuesEqual(queue, this.getCurQueue()))
-    {
+    if (::queues.isQueuesEqual(queue, this.getCurQueue())) {
       this.updateScene()
       return
     }
@@ -135,27 +131,23 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.setCurQueue(::queues.isQueueActive(p.queue) ? p.queue : null)
   }
 
-  function onEventQueueInfoUpdated(_params)
-  {
+  function onEventQueueInfoUpdated(_params) {
     if (!this.getCurQueue())
       return
 
     this.updateScene()
   }
 
-  function updateScene()
-  {
+  function updateScene() {
     let showQueueTbl = ::queues.isQueueActive(this.getCurQueue())
     this.setShowQueueTable(showQueueTbl)
   }
 
-  function setShowQueueTable(value)
-  {
+  function setShowQueueTable(value) {
     if (value && this.autoStartQueueWnd.isVisible())
       return
 
-    if (value)
-    {
+    if (value) {
       this.updateTip()
       this.updateQueueWaitIconImage()
     }

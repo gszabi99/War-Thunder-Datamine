@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,8 +12,7 @@ let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let squadApplications = require("%scripts/squads/squadApplications.nut")
 ::dagui_propid.add_name_id("leaderUid")
 
-::gui_handlers.MyClanSquadsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.MyClanSquadsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSquadsModal.blk"
   squadsListObj = null
@@ -23,7 +23,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   squadButtonsList = [
     {
       id = "btn_squad_info"
-      buttonClass ="image"
+      buttonClass = "image"
       shortcut = ""
       showOnSelect = "hover"
       btnName = "X"
@@ -36,7 +36,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     },
     {
       id = "btn_application"
-      buttonClass ="image"
+      buttonClass = "image"
       shortcut = ""
       showOnSelect = "hover"
       btnName = "A"
@@ -49,7 +49,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     },
     {
       id = "btn_revoke_application"
-      buttonClass ="image"
+      buttonClass = "image"
       shortcut = ""
       showOnSelect = "hover"
       btnName = "A"
@@ -67,13 +67,11 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   selectedSquad = null
   selectedIndex = 0
 
-  static function open()
-  {
+  static function open() {
     ::gui_start_modal_wnd(::gui_handlers.MyClanSquadsListModal)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.squadsListObj = this.scene.findObject("clan_squads_list")
     this.dummyButtonsListObj = this.scene.findObject("clan_squads_modal")
     if (!checkObj(this.squadsListObj))
@@ -81,7 +79,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.curList = []
     this.selectedSquad = null
     this.onlineUsersTable = {}
-    let view = { squad = array(this.minListItems, {buttonsList = this.createSquadButtons()}) }
+    let view = { squad = array(this.minListItems, { buttonsList = this.createSquadButtons() }) }
     local blk = ::handyman.renderCached(("%gui/clans/clanSquadsList.tpl"), view)
     this.guiScene.appendWithBlk(this.squadsListObj, blk, this)
 
@@ -95,71 +93,60 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.updateSquadsListInfo(this.curList.len())
   }
 
-  function createSquadButtons()
-  {
+  function createSquadButtons() {
     local markUp = ""
     foreach (buttonView in this.squadButtonsList)
       markUp += ::handyman.renderCached("%gui/commonParts/button.tpl", buttonView)
     return markUp
   }
 
-  function createDummyButtons()
-  {
+  function createDummyButtons() {
     local markUp = ""
     foreach (buttonView in this.squadButtonsList)
       markUp += ::handyman.renderCached("%gui/commonParts/dummyButton.tpl", buttonView)
     return markUp
   }
 
-  function refreshList()
-  {
+  function refreshList() {
     squadsListData.requestList()
   }
 
-  function updateSquadsList()
-  {
+  function updateSquadsList() {
     let newList = clone squadsListData.getList()
     let total = max(newList.len(), this.curList.len())
     local isSelected = false
-    for(local i = 0; i < total; i++)
-    {
+    for (local i = 0; i < total; i++) {
       this.updateSquadInfo(i, this.curList?[i], newList?[i])
-      if (!isSelected && ::u.isEqual(this.selectedSquad, newList?[i]) && (this.selectedIndex != -1))
-        {
-          if (this.selectedIndex != i)
-          {
+      if (!isSelected && ::u.isEqual(this.selectedSquad, newList?[i]) && (this.selectedIndex != -1)) {
+          if (this.selectedIndex != i) {
             this.squadsListObj.setValue(i)
             this.selectedIndex = i
           }
           this.selectedSquad = newList?[i]
           isSelected = true
-        }
+      }
     }
     this.curList = newList
-    if (!isSelected && newList.len()>0)
-    {
+    if (!isSelected && newList.len() > 0) {
       this.selectedIndex = clamp(this.selectedIndex, 0, newList.len() - 1)
       this.selectedSquad = newList[this.selectedIndex]
       this.squadsListObj.setValue(this.selectedIndex)
     }
-    else
-      if (newList.len() <= 0)
-      {
+    else if (newList.len() <= 0) {
         this.selectedSquad = null
         this.selectedIndex = -1
         ::gui_bhv.posNavigator.clearSelect(this.squadsListObj)
-      }
+    }
     this.updateSquadDummyButtons()
     this.updateSquadsListInfo(this.curList.len())
   }
 
-  function updateSquadInfo(idx, curSquad, newSquad)
-  {
+  function updateSquadInfo(idx, curSquad, newSquad) {
     if (curSquad == newSquad || (::u.isEqual(curSquad, newSquad)))
       return
 
     let obj = this.getSquadObj(idx)
-    let show = newSquad ? true: false
+    let show = newSquad ? true : false
     obj.show(show)
     obj.enable(show)
     if (!show)
@@ -177,15 +164,13 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.updateSquadButtons(buttonsContainerObj, newSquad)
   }
 
-  function fillPresence(obj, squad)
-  {
+  function fillPresence(obj, squad) {
     obj.findObject("presence").setValue(!this.isSquadOnline(squad)
       ? colorize(OFFLINE_SQUAD_TEXT_COLOR, loc("matching/SQUAD_LEADER_OFFLINE"))
       : this.getPresence(squad))
   }
 
-  function updateSquadButtons(obj, squad)
-  {
+  function updateSquadButtons(obj, squad) {
     let show = this.canApplyForMembership(squad)
     let btnObj = ::showBtn("btn_application", show, obj)
     if (checkObj(btnObj) && show)
@@ -194,43 +179,37 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     ::showBtn("btn_revoke_application", this.canRevokeApplication(squad), obj)
   }
 
-  function updateSquadDummyButtons()
-  {
+  function updateSquadDummyButtons() {
     if (!this.selectedSquad)
       return
     ::showBtn("btn_application", this.canApplyForMembership(this.selectedSquad), this.dummyButtonsListObj)
     ::showBtn("btn_revoke_application", this.canRevokeApplication(this.selectedSquad), this.dummyButtonsListObj)
   }
 
-  function canApplyForMembership(squad)
-  {
+  function canApplyForMembership(squad) {
     return !squadApplications.hasApplication(squad.leader)
       && !this.isMySquad(squad)
       && (squad?.data?.properties?.isApplicationsEnabled ?? true)
   }
 
-  function canRevokeApplication(squad)
-  {
+  function canRevokeApplication(squad) {
     return squadApplications.hasApplication(squad.leader)
       && !::g_squad_manager.isInSquad()
   }
 
-  function getInvitationInSquad(squad)
-  {
-    let uid = ::g_invites_classes.Squad.getUidByParams({squadId = squad.leader})
+  function getInvitationInSquad(squad) {
+    let uid = ::g_invites_classes.Squad.getUidByParams({ squadId = squad.leader })
     return ::g_invites.findInviteByUid(uid)
   }
 
-  function getSquadObj(idx)
-  {
+  function getSquadObj(idx) {
     if (this.squadsListObj.childrenCount() > idx) {
         return this.squadsListObj.getChild(idx)
     }
-    return this.squadsListObj.getChild(idx-1).getClone(this.squadsListObj, this)
+    return this.squadsListObj.getChild(idx - 1).getClone(this.squadsListObj, this)
   }
 
-  function isMySquad(squad)
-  {
+  function isMySquad(squad) {
     if (!::g_squad_manager.isInSquad())
       return false
 
@@ -238,31 +217,26 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
       || squad?.leader.tostring() == ::g_squad_manager.getLeaderUid()
   }
 
-  function getLeaderName(squad)
-  {
+  function getLeaderName(squad) {
     let contact = ::getContact(squad?.leader.tostring())
-    return contact? contact.getName() : ""
+    return contact ? contact.getName() : ""
   }
 
-  function getNumMembers(squad)
-  {
+  function getNumMembers(squad) {
     return loc("squad/size", { numMembers = this.getNumberMembers(squad)
-                          maxMembers = this.getMaxMembers(squad)})
+                          maxMembers = this.getMaxMembers(squad) })
   }
 
-  function getPresence(squad)
-  {
+  function getPresence(squad) {
     let presenceParams = squad?.data?.presence ?? {}
     return ::g_presence_type.getByPresenceParams(presenceParams).getLocText(presenceParams)
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     this.refreshList()
   }
 
-  function updateSquadsListInfo(visibleSquadsAmount)
-  {
+  function updateSquadsListInfo(visibleSquadsAmount) {
     let needWaitIcon = !visibleSquadsAmount && squadsListData.isInUpdate
       && !squadsListData.isListValid()
     this.scene.findObject("items_list_wait_icon").show(needWaitIcon)
@@ -274,29 +248,24 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.scene.findObject("items_list_msg").setValue(infoText)
   }
 
-  function getNumberMembers(squad)
-  {
+  function getNumberMembers(squad) {
     return (squad?.members ?? []).len()
   }
 
-  function getMaxMembers(squad)
-  {
+  function getMaxMembers(squad) {
     return squad?.data?.properties?.maxMembers ?? ""
   }
 
-  function onItemSelect(obj)
-  {
+  function onItemSelect(obj) {
     let countListItem = this.curList.len()
-    if (countListItem <= 0)
-      {
+    if (countListItem <= 0) {
         this.selectedSquad = null
         this.selectedIndex = -1
         return
-      }
+    }
 
     let index = obj.getValue()
-    if (index < 0 || index >= countListItem)
-    {
+    if (index < 0 || index >= countListItem) {
       return
     }
 
@@ -305,8 +274,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.updateSquadDummyButtons()
   }
 
-  function onLeaderClick(obj)
-  {
+  function onLeaderClick(obj) {
     let actionSquad = this.getSquadByObj(obj)
     if (!actionSquad)
       return
@@ -316,12 +284,11 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     position[1] += obj.getSize()[1]
     let leaderUid = actionSquad?.leader.tostring()
     let contact = leaderUid && ::getContact(leaderUid)
-    let leaderName = contact? contact.getName(): ""
+    let leaderName = contact ? contact.getName() : ""
     ::g_chat.showPlayerRClickMenu(leaderName, null, contact, position)
   }
 
-  function getSelectedSquadInHover()
-  {
+  function getSelectedSquadInHover() {
     if (!this.squadsListObj.isHovered())
       return null
 
@@ -335,8 +302,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     return this.selectedSquad
   }
 
-  function getSquadByObj(obj)
-  {
+  function getSquadByObj(obj) {
     if (!obj)
       return null
 
@@ -354,8 +320,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
 
   function applicationToSquad(actionSquad) {
     let invite = this.getInvitationInSquad(actionSquad)
-    if (invite)
-    {
+    if (invite) {
       invite.accept()
       return
     }
@@ -365,8 +330,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
 
   revokeApplication = @(actionSquad) ::g_squad_manager.revokeMembershipAplication(actionSquad?.leader)
 
-  function onApplication(obj)
-  {
+  function onApplication(obj) {
     let actionSquad = this.getSquadByObj(obj)
     if (!actionSquad)
       return
@@ -374,8 +338,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.applicationToSquad(actionSquad)
   }
 
-  function onRevokeApplication(obj)
-  {
+  function onRevokeApplication(obj) {
     let actionSquad = this.getSquadByObj(obj)
     if (!actionSquad)
       return
@@ -383,8 +346,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.revokeApplication(actionSquad)
   }
 
-  function onSquadInfo(obj)
-  {
+  function onSquadInfo(obj) {
     let actionSquad = this.getSquadByObj(obj)
     if (!actionSquad)
       return
@@ -393,23 +355,19 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     ::gui_handlers.clanSquadInfoWnd.open(obj, actionSquad)
   }
 
-  function onEventPlayerApplicationsChanged(params)
-  {
+  function onEventPlayerApplicationsChanged(params) {
     this.updateSquadButtonsByleadersUid(params.leadersArr)
   }
 
-  function onEventClanSquadsListChanged(_params)
-  {
+  function onEventClanSquadsListChanged(_params) {
     this.updateSquadsList()
   }
 
-  function onEventClanRoomMembersChanged(params = {})
-  {
+  function onEventClanRoomMembersChanged(params = {}) {
     this.refreshUserOnlineData(params)
   }
 
-  function updateSquadOnlineStatus(contact)
-  {
+  function updateSquadOnlineStatus(contact) {
     let contactUid = contact.uid.tointeger()
     let idx = this.curList.findindex(@(squad) squad.leader == contactUid)
     if (idx == null)
@@ -421,23 +379,20 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.updateSquadButtons(obj, squad)
   }
 
-  function refreshOnlineUsersTable()
-  {
+  function refreshOnlineUsersTable() {
     let roomId = ::g_chat_room_type.CLAN.roomPrefix + ::clan_get_my_clan_id()
     let room = ::g_chat.getRoomById(roomId)
     if (!room || !("users" in room))
       return
 
-    foreach (user in room.users)
-    {
+    foreach (user in room.users) {
       let contact = ::Contact.getByName(user.name)
       if (contact)
         this.onlineUsersTable[contact.uid.tointeger()] <- true
     }
   }
 
-  function refreshUserOnlineData(params)
-  {
+  function refreshUserOnlineData(params) {
     if (!("nick" in params) || !("presence" in params))
       return
 
@@ -451,13 +406,11 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.updateSquadOnlineStatus(contact)
   }
 
-  function isSquadOnline(squad)
-  {
+  function isSquadOnline(squad) {
     return this.onlineUsersTable?[squad.leader] ?? false
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     if (!::g_squad_manager.isInSquad())
       return false
 
@@ -468,8 +421,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.updateSquadButtonsByleadersUid([leaderUid.tointeger()])
   }
 
-  function onEventInviteReceived(params)
-  {
+  function onEventInviteReceived(params) {
     let leaderUid = params.invite?.leaderId
     if (!leaderUid)
       return
@@ -477,18 +429,15 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.updateSquadButtonsByleadersUid([leaderUid.tointeger()])
   }
 
-  function updateSquadButtonsByleadersUid(leadersArr)
-  {
+  function updateSquadButtonsByleadersUid(leadersArr) {
     if (!this.curList.len())
       return
 
     local leader = null
     local obj = null
-    for (local i = 0; i < this.curList.len(); i++)
-    {
+    for (local i = 0; i < this.curList.len(); i++) {
       leader = this.curList[i].leader
-      if (isInArray(leader, leadersArr))
-      {
+      if (isInArray(leader, leadersArr)) {
         obj = this.getSquadObj(i)
         this.updateSquadButtons(obj, this.curList[i])
       }

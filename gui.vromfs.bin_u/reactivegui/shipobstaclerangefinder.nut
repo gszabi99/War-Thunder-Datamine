@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {obstacleIsNear, distanceToObstacle} = require("shipState.nut")
-let {alert} = require("style/colors.nut").hud.damageModule
-let {abs} = require("%sqstd/math.nut")
+let { obstacleIsNear, distanceToObstacle } = require("shipState.nut")
+let { alert } = require("style/colors.nut").hud.damageModule
+let { abs } = require("%sqstd/math.nut")
 let { measureUnitsNames } = require("options/optionsMeasureUnits.nut")
 
 let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
@@ -10,7 +10,7 @@ let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
 let textToShow = Computed(@() str(showCollideWarning.value ? loc("hud_ship_collide_warning") :
        loc("hud_ship_depth_on_course_warning"), loc("ui/colon"))
 )
-return @(){
+return @() {
   watch = obstacleIsNear
   isHidden = !obstacleIsNear.value
   size = SIZE_TO_CONTENT

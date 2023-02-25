@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ local { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-global enum WW_MAP_TOOLTIP_TYPE
-{
+global enum WW_MAP_TOOLTIP_TYPE {
   BATTLE,
   ARMY,
   NONE,
@@ -19,8 +19,7 @@ global enum WW_MAP_TOOLTIP_TYPE
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
-::gui_handlers.wwMapTooltip <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.wwMapTooltip <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   controllerScene = null
 
@@ -34,14 +33,12 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
   showTooltipTimer = null
   descriptionTimer = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.setUserData(this) //to not unload handler even when scene not loaded
     this.updateScreen(this.getUpdatedSpecs())
   }
 
-  function updateScreen(newSpecs)
-  {
+  function updateScreen(newSpecs) {
     this.specs = newSpecs
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.NONE)
       return this.hideTooltip()
@@ -49,8 +46,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     this.startShowTooltipTimer()
   }
 
-  function onEventWWMapUpdateCursorByTimer(p)
-  {
+  function onEventWWMapUpdateCursorByTimer(p) {
     let newSpecs = this.getUpdatedSpecs(p)
     if (::u.isEqual(this.specs, newSpecs))
       return
@@ -58,24 +54,20 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     this.updateScreen(newSpecs)
   }
 
-  function onEventWWLoadOperation(_params = {})
-  {
+  function onEventWWLoadOperation(_params = {}) {
     this.scene.lastCurrentId = ""
     if (this.specs.currentType != WW_MAP_TOOLTIP_TYPE.NONE)
       this.show()
   }
 
-  function getUpdatedSpecs(p = null)
-  {
+  function getUpdatedSpecs(p = null) {
     let res = {
       currentType = WW_MAP_TOOLTIP_TYPE.NONE
       currentId = ""
     }
-    for (local i = 0; i < WW_MAP_TOOLTIP_TYPE.TOTAL; i++)
-    {
+    for (local i = 0; i < WW_MAP_TOOLTIP_TYPE.TOTAL; i++) {
       let key = getTblValue("paramsKey", this.specifyTypeOrder[i])
-      if (key in p)
-      {
+      if (key in p) {
         res.currentType = i
         res.currentId = p[key]
         break
@@ -84,14 +76,12 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     return res
   }
 
-  function hideTooltip()
-  {
+  function hideTooltip() {
     this.specs = this.getUpdatedSpecs()
     this.onTooltipObjClose(this.scene)
   }
 
-  function startShowTooltipTimer()
-  {
+  function startShowTooltipTimer() {
     this.onTooltipObjClose(this.scene)
     if (!checkObj(this.controllerScene))
       return
@@ -100,14 +90,12 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       this.showTooltipTimer.destroy()
 
     this.showTooltipTimer = ::Timer(this.controllerScene, SHOW_TOOLTIP_DELAY_TIME,
-      function()
-      {
+      function() {
         this.show()
       }, this, false)
   }
 
-  function show()
-  {
+  function show() {
     if (!checkObj(this.scene))
       return
 
@@ -125,8 +113,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     this.onGenericTooltipOpen(this.scene)
     this.updatePos()
 
-    if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY)
-    {
+    if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY) {
       let hoveredArmy = ::g_world_war.getArmyByName(this.specs.currentId)
       this.destroyDescriptionTimer()
 
@@ -135,20 +122,17 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       )
     }
 
-    if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.BATTLE)
-    {
+    if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.BATTLE) {
       let battleDescObj = this.scene.findObject("battle_desc")
-      if (checkObj(battleDescObj))
-      {
+      if (checkObj(battleDescObj)) {
         local maxTeamContentWidth = 0
-        foreach(teamName in ["teamA", "teamB"])
-        {
+        foreach (teamName in ["teamA", "teamB"]) {
           let teamInfoObj = this.scene.findObject(teamName)
           if (checkObj(teamInfoObj))
             maxTeamContentWidth = max(teamInfoObj.getSize()[0], maxTeamContentWidth)
         }
 
-        battleDescObj.width = (2*maxTeamContentWidth) + "+4@framePadding"
+        battleDescObj.width = (2 * maxTeamContentWidth) + "+4@framePadding"
 
         let hoveredBattle = ::g_world_war.getBattleById(this.specs.currentId)
         this.destroyDescriptionTimer()
@@ -161,32 +145,27 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     }
   }
 
-  function destroyDescriptionTimer()
-  {
-    if (this.descriptionTimer)
-    {
+  function destroyDescriptionTimer() {
+    if (this.descriptionTimer) {
       this.descriptionTimer.destroy()
       this.descriptionTimer = null
     }
   }
 
-  function updateSelectedArmy(hoveredArmy)
-  {
+  function updateSelectedArmy(hoveredArmy) {
     if (!checkObj(this.scene) || !hoveredArmy)
       return
 
     hoveredArmy.update(hoveredArmy.name)
     let armyView = hoveredArmy.getView()
-    foreach (fieldId, func in armyView.getRedrawArmyStatusData())
-    {
+    foreach (fieldId, func in armyView.getRedrawArmyStatusData()) {
       let redrawFieldObj = this.scene.findObject(fieldId)
       if (checkObj(redrawFieldObj))
         redrawFieldObj.setValue(func.call(armyView))
     }
   }
 
-  function updateSelectedBattle(hoveredBattle)
-  {
+  function updateSelectedBattle(hoveredBattle) {
     if (!checkObj(this.scene) || !hoveredBattle)
       return
 
@@ -233,8 +212,7 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
       winCahnceObj.show(false)
   }
 
-  function getWWMapIdHoveredObjectId()
-  {
+  function getWWMapIdHoveredObjectId() {
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.BATTLE)
       return WW_MAP_TOOLTIP_TYPE_BATTLE.getTooltipId(this.specs.currentId, this.specs)
 
@@ -244,16 +222,14 @@ const SHOW_TOOLTIP_DELAY_TIME = 0.35
     return ""
   }
 
-  function onUpdateTooltip(_obj, _dt)
-  {
+  function onUpdateTooltip(_obj, _dt) {
     if (!this.isSceneActiveNoModals())
       return
 
     this.updatePos()
   }
 
-  function updatePos()
-  {
+  function updatePos() {
     let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     cursorPos[0] = cursorPos[0]  + "+1@wwMapTooltipOffset"
     ::g_dagui_utils.setObjPosition(this.scene, cursorPos, ["@bw", "@bh"])

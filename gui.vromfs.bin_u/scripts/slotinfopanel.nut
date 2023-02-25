@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -22,8 +23,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
-::create_slot_info_panel <- function create_slot_info_panel(parent_scene, show_tabs, configSaveId)
-{
+::create_slot_info_panel <- function create_slot_info_panel(parent_scene, show_tabs, configSaveId) {
   if (!checkObj(parent_scene))
     return null
   let containerObj = parent_scene.findObject("slot_info")
@@ -42,8 +42,7 @@ let function getSkillCategoryView(crewData, unit) {
   let crewUnitType = unitType.crewUnitType
   let unitName = unit?.name ?? ""
   let view = []
-  foreach (skillCategory in getSkillCategories())
-  {
+  foreach (skillCategory in getSkillCategories()) {
     let isSupported = (skillCategory.crewUnitTypeMask & (1 << crewUnitType)) != 0
       && (unit.gunnersCount > 0 || categoryHasNonGunnerSkills(skillCategory))
     if (!isSupported)
@@ -58,8 +57,7 @@ let function getSkillCategoryView(crewData, unit) {
   return view
 }
 
-::gui_handlers.SlotInfoPanel <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.SlotInfoPanel <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotInfoPanel.blk"
   showTabs = false
@@ -101,16 +99,14 @@ let function getSkillCategoryView(crewData, unit) {
 
   favUnlocksHandlerWeak = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.infoPanelObj = this.scene.findObject("slot_info_side_panel")
     this.infoPanelObj.show(true)
     ::dmViewer.init(this)
 
     //Must be before replace fill tabs
     let buttonsPlace = this.scene.findObject("buttons_place")
-    if (checkObj(buttonsPlace))
-    {
+    if (checkObj(buttonsPlace)) {
       let data = "".join(slotInfoPanelButtons.value.map(@(view) ::handyman.renderCached("%gui/commonParts/button.tpl", view)))
       this.guiScene.replaceContentFromText(buttonsPlace, data, data.len(), this)
     }
@@ -122,11 +118,9 @@ let function getSkillCategoryView(crewData, unit) {
     let showTabsCount = this.showTabs ? this.tabsInfo.len() : 1
 
     this.listboxObj = this.scene.findObject("slot_info_listbox")
-    if (checkObj(this.listboxObj))
-    {
+    if (checkObj(this.listboxObj)) {
       let view = { items = [] }
-      for(local i = 0; i < showTabsCount; i++)
-      {
+      for (local i = 0; i < showTabsCount; i++) {
         view.items.append({
           tooltip = this.tabsInfo[i].tooltip,
           imgId = this.tabsInfo[i].imgId,
@@ -149,8 +143,7 @@ let function getSkillCategoryView(crewData, unit) {
     }
 
     let unitInfoObj = this.scene.findObject("air_info_content_info")
-    if (checkObj(unitInfoObj))
-    {
+    if (checkObj(unitInfoObj)) {
       let handler = ::handlersManager.getActiveBaseHandler()
       let hasSlotbar = handler?.getSlotbar()
       unitInfoObj["max-height"] = unitInfoObj[hasSlotbar ? "maxHeightWithSlotbar" : "maxHeightWithoutSlotbar"]
@@ -162,18 +155,15 @@ let function getSkillCategoryView(crewData, unit) {
     this.updateSceneVisibility()
   }
 
-  function getCurShowUnitName()
-  {
+  function getCurShowUnitName() {
     return getShowedUnitName()
   }
 
-  function getCurShowUnit()
-  {
+  function getCurShowUnit() {
     return getShowedUnit()
   }
 
-  function onUnitInfoTestDrive()
-  {
+  function onUnitInfoTestDrive() {
     let unit = this.getCurShowUnit()
     if (!unit)
       return
@@ -181,8 +171,7 @@ let function getSkillCategoryView(crewData, unit) {
     ::queues.checkAndStart(@() ::gui_start_testflight({ unit }), null, "isCanNewflight")
   }
 
-  function onAirInfoWeapons()
-  {
+  function onAirInfoWeapons() {
     let unit = this.getCurShowUnit()
     if (!unit)
       return
@@ -190,21 +179,18 @@ let function getSkillCategoryView(crewData, unit) {
     ::open_weapons_for_unit(unit)
   }
 
-  function onProtectionAnalysis()
-  {
+  function onProtectionAnalysis() {
     let unit = this.getCurShowUnit()
     this.checkedCrewModify(
       @() ::handlersManager.animatedSwitchScene(@() protectionAnalysis.open(unit)))
   }
 
-  function onShowExternalDmPartsChange(obj)
-  {
+  function onShowExternalDmPartsChange(obj) {
     if (checkObj(obj))
       ::dmViewer.showExternalPartsArmor(obj.getValue())
   }
 
-  function onShowHiddenXrayPartsChange(obj)
-  {
+  function onShowHiddenXrayPartsChange(obj) {
     if (checkObj(obj))
       ::dmViewer.showExternalPartsXray(obj.getValue())
   }
@@ -214,28 +200,24 @@ let function getSkillCategoryView(crewData, unit) {
     ::dmViewer.resetXrayCache()
   }
 
-  function onCollapseButton()
-  {
-    if(this.listboxObj)
+  function onCollapseButton() {
+    if (this.listboxObj)
       this.listboxObj.setValue(this.listboxObj.getValue() < 0 ? 0 : -1)
   }
 
-  function onAirInfoToggleDMViewer(obj)
-  {
+  function onAirInfoToggleDMViewer(obj) {
     ::dmViewer.toggle(obj.getValue())
   }
 
-  function onDMViewerHintTimer(obj, _dt)
-  {
+  function onDMViewerHintTimer(obj, _dt) {
     ::dmViewer.placeHint(obj)
   }
 
-  function updateContentVisibility(_obj = null)
-  {
+  function updateContentVisibility(_obj = null) {
     let currentIndex = this.listboxObj.getValue()
     let isPanelHidden = currentIndex == -1
     let collapseBtnContainer = this.scene.findObject("slot_collapse")
-    if(checkObj(collapseBtnContainer))
+    if (checkObj(collapseBtnContainer))
       collapseBtnContainer.collapsed = isPanelHidden ? "yes" : "no"
     this.showSceneBtn("slot_info_content", ! isPanelHidden)
     this.updateVisibleTabContent(true)
@@ -243,32 +225,29 @@ let function getSkillCategoryView(crewData, unit) {
       ::save_local_account_settings(this.configSavePath, currentIndex)
   }
 
-  function updateVisibleTabContent(isTabSwitch = false)
-  {
+  function updateVisibleTabContent(isTabSwitch = false) {
     if (this.isSceneForceHidden || !checkObj(this.listboxObj))
       return
     let currentIndex = this.listboxObj.getValue()
     let isPanelHidden = currentIndex == -1
-    foreach(index, tabInfo in this.tabsInfo)
-    {
+    foreach (index, tabInfo in this.tabsInfo) {
       let discountObj = this.listboxObj.findObject(tabInfo.discountId)
       if (checkObj(discountObj))
         discountObj.type = isPanelHidden ? "box_left" : "box_up"
-      if(isPanelHidden)
+      if (isPanelHidden)
         continue
 
       let isActive = index == currentIndex
       if (isTabSwitch)
         this.showSceneBtn(tabInfo.contentId, isActive)
-      if(isActive)
+      if (isActive)
         tabInfo.fillerFunction.call(this)
     }
   }
 
-  function updateHeader(text, isPremium = false)
-  {
+  function updateHeader(text, isPremium = false) {
     let header = this.scene.findObject("header_background")
-    if(!checkObj(header))
+    if (!checkObj(header))
       return
 
     header.type = isPremium ? "transparent" : ""
@@ -277,24 +256,22 @@ let function getSkillCategoryView(crewData, unit) {
     header.findObject("premium_vehicle_icon").show(isPremium)
   }
 
-  function updateAirInfo(force = false)
-  {
+  function updateAirInfo(force = false) {
     let unit = this.getCurShowUnit()
     this.updateUnitIcon(unit)
 
     let contentObj = this.scene.findObject("air_info_content")
-    if ( !checkObj(contentObj) || ( ! contentObj.isVisible() && ! force))
+    if (!checkObj(contentObj) || (! contentObj.isVisible() && ! force))
       return
 
     this.updateTestDriveButtonText(unit)
     this.updateWeaponryDiscounts(unit)
-    ::showAirInfo(unit, true, contentObj, null, {showRewardsInfoOnlyForPremium = true})
+    ::showAirInfo(unit, true, contentObj, null, { showRewardsInfoOnlyForPremium = true })
     ::showBtn("aircraft-name", false, this.scene)
     this.updateHeader(::getUnitName(unit), ::isUnitSpecial(unit))
   }
 
-  function checkUpdateAirInfo()
-  {
+  function checkUpdateAirInfo() {
     let unit = this.getCurShowUnit()
     if (!unit)
       return
@@ -305,13 +282,11 @@ let function getSkillCategoryView(crewData, unit) {
       this.doWhenActiveOnce("updateAirInfo")
   }
 
-  function canShowScene()
-  {
+  function canShowScene() {
     return !this.isSceneForceHidden && this.getCurShowUnit() != null
   }
 
-  function updateSceneVisibility()
-  {
+  function updateSceneVisibility() {
     let canShow = this.canShowScene()
     if (this.isSceneVisibilityAllowed == canShow)
       return
@@ -319,13 +294,11 @@ let function getSkillCategoryView(crewData, unit) {
     this.onSceneActivate(canShow)
   }
 
-  function onSceneActivate(show)
-  {
+  function onSceneActivate(show) {
     if (show && !this.canShowScene())
       return
 
-    if (show)
-    {
+    if (show) {
       ::dmViewer.init(this)
       this.doWhenActiveOnce("updateVisibleTabContent")
     }
@@ -334,64 +307,54 @@ let function getSkillCategoryView(crewData, unit) {
       this.infoPanelObj.show(show)
   }
 
-  function onEventShopWndVisible(p)
-  {
+  function onEventShopWndVisible(p) {
     this.isSceneForceHidden = p?.isShopShow ?? false
     this.updateSceneVisibility()
   }
 
-  function onEventModalWndDestroy(p)
-  {
+  function onEventModalWndDestroy(p) {
     if (this.isSceneActiveNoModals())
       this.checkUpdateAirInfo()
     base.onEventModalWndDestroy(p)
   }
 
-  function onEventHangarModelLoading(_params)
-  {
+  function onEventHangarModelLoading(_params) {
     this.doWhenActiveOnce("updateAirInfo")
     this.doWhenActiveOnce("updateCrewInfo")
     this.updateSceneVisibility()
   }
 
-  function onEventCurrentGameModeIdChanged(_params)
-  {
+  function onEventCurrentGameModeIdChanged(_params) {
     this.doWhenActiveOnce("updateAirInfo")
   }
 
-  function onEventUnitModsRecount(params)
-  {
+  function onEventUnitModsRecount(params) {
     let unit = getTblValue("unit", params)
     if (unit && unit.name == this.getCurShowUnitName())
       this.doWhenActiveOnce("updateAirInfo")
   }
 
-  function onEventSecondWeaponModsUpdated(params)
-  {
+  function onEventSecondWeaponModsUpdated(params) {
     let unit = getTblValue("unit", params)
     if (unit && unit.name == this.getCurShowUnitName())
       this.doWhenActiveOnce("updateAirInfo")
   }
 
-  function onEventMeasureUnitsChanged(_params)
-  {
+  function onEventMeasureUnitsChanged(_params) {
     this.doWhenActiveOnce("updateAirInfo")
   }
 
-  function onEventCrewSkillsChanged(_params)
-  {
+  function onEventCrewSkillsChanged(_params) {
     this.doWhenActiveOnce("updateCrewInfo")
   }
 
-  function onEventQualificationIncreased(_params)
-  {
+  function onEventQualificationIncreased(_params) {
     this.doWhenActiveOnce("updateCrewInfo")
   }
 
-  function updateCrewInfo(force = false)
-  {
+  function updateCrewInfo(force = false) {
     let contentObj = this.scene.findObject("crew_info_content")
-    if ( !checkObj(contentObj) || ( ! contentObj.isVisible() && ! force))
+    if (!checkObj(contentObj) || (! contentObj.isVisible() && ! force))
       return
 
     let crewCountryId = ::find_in_array(shopCountriesList, profileCountrySq.value, -1)
@@ -406,14 +369,12 @@ let function getSkillCategoryView(crewData, unit) {
 
     let discountInfo = ::g_crew.getDiscountInfo(crewCountryId, crewIdInCountry)
     let maxDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo)
-    let discountText = maxDiscount > 0? ("-" + maxDiscount + "%") : ""
+    let discountText = maxDiscount > 0 ? ("-" + maxDiscount + "%") : ""
     let discountTooltip = ::g_crew.getDiscountsTooltipByInfo(discountInfo)
 
-    if (checkObj(this.listboxObj))
-    {
+    if (checkObj(this.listboxObj)) {
       let obj = this.listboxObj.findObject("crew_lb_discount")
-      if (checkObj(obj))
-      {
+      if (checkObj(obj)) {
         obj.setValue(discountText)
         obj.tooltip = discountTooltip
       }
@@ -448,15 +409,13 @@ let function getSkillCategoryView(crewData, unit) {
     this.updateHeader(::g_crew.getCrewName(crewData))
   }
 
-  function showUnlockAchievementInfo()
-  {
-    if( ! this.favUnlocksHandlerWeak)
-    {
+  function showUnlockAchievementInfo() {
+    if (! this.favUnlocksHandlerWeak) {
       let contentObj = this.scene.findObject("favorite_unlocks_placeholder")
-      if(! checkObj(contentObj))
+      if (! checkObj(contentObj))
         return
       this.favUnlocksHandlerWeak = ::handlersManager.loadHandler(
-        ::gui_handlers.FavoriteUnlocksListView, { scene = contentObj}).weakref()
+        ::gui_handlers.FavoriteUnlocksListView, { scene = contentObj }).weakref()
       this.registerSubHandler(this.favUnlocksHandlerWeak)
     }
     else
@@ -464,38 +423,33 @@ let function getSkillCategoryView(crewData, unit) {
 
     let cur = getFavoriteUnlocksNum()
     let text = loc("mainmenu/btnFavoritesUnlockAchievement") + loc("ui/parentheses/space", {
-      text = colorize(canAddFavorite()? "" : "warningTextColor", cur + loc("ui/slash") + FAVORITE_UNLOCKS_LIMIT)
+      text = colorize(canAddFavorite() ? "" : "warningTextColor", cur + loc("ui/slash") + FAVORITE_UNLOCKS_LIMIT)
     })
 
     this.updateHeader(text)
   }
 
-  function onEventFavoriteUnlocksChanged(_p)
-  {
+  function onEventFavoriteUnlocksChanged(_p) {
     let currentIndex = this.tabsInfo.findindex(@(e) e.contentId == "unlockachievement_content")
-    if(this.listboxObj.getValue() == currentIndex){
+    if (this.listboxObj.getValue() == currentIndex) {
       this.showUnlockAchievementInfo()
     }
-    else
-    {
+    else {
       this.listboxObj.setValue(currentIndex)
     }
   }
 
-  function onAchievementsButtonClicked(_obj)
-  {
+  function onAchievementsButtonClicked(_obj) {
     ::gui_start_profile({ initialSheet = "UnlockAchievement" })
   }
 
-  function onEventCrewChanged(_params)
-  {
+  function onEventCrewChanged(_params) {
     this.doWhenActiveOnce("updateAirInfo")
     this.doWhenActiveOnce("updateCrewInfo")
     this.updateSceneVisibility()
   }
 
-  function updateUnitIcon(unit)
-  {
+  function updateUnitIcon(unit) {
     if (!unit)
       return
 
@@ -504,8 +458,7 @@ let function getSkillCategoryView(crewData, unit) {
       iconObj["background-image"] = unit.unitType.testFlightIcon
   }
 
-  function updateTestDriveButtonText(unit)
-  {
+  function updateTestDriveButtonText(unit) {
     let obj = this.scene.findObject("btnTestdrive")
     if (!checkObj(obj))
       return
@@ -513,35 +466,30 @@ let function getSkillCategoryView(crewData, unit) {
     obj.setValue(unit.unitType.getTestFlightText())
   }
 
-  function updateWeaponryDiscounts(unit)
-  {
+  function updateWeaponryDiscounts(unit) {
     let discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
     let discountObj = this.scene.findObject("btnAirInfoWeaponry_discount")
     ::showCurBonus(discountObj, discount, "mods", true, true)
     if (checkObj(discountObj))
       discountObj.show(discount > 0)
 
-    if (checkObj(this.listboxObj))
-    {
+    if (checkObj(this.listboxObj)) {
       let obj = this.listboxObj.findObject("unit_lb_discount")
-      if (checkObj(obj))
-      {
-        obj.setValue(discount > 0? ("-" + discount + "%") : "")
+      if (checkObj(obj)) {
+        obj.setValue(discount > 0 ? ("-" + discount + "%") : "")
         obj.tooltip = format(loc("discount/mods/tooltip"), discount.tostring())
       }
     }
   }
 
-  function onCrewButtonClicked(_obj)
-  {
+  function onCrewButtonClicked(_obj) {
     let crewCountryId = ::find_in_array(shopCountriesList, profileCountrySq.value, -1)
     let crewIdInCountry = getTblValue(crewCountryId, ::selected_crews, -1)
     if (crewCountryId != -1 && crewIdInCountry != -1)
       ::gui_modal_crew({ countryId = crewCountryId, idInCountry = crewIdInCountry })
   }
 
-  function onEventUnitWeaponChanged(_params)
-  {
+  function onEventUnitWeaponChanged(_params) {
     this.doWhenActiveOnce("updateAirInfo")
   }
 

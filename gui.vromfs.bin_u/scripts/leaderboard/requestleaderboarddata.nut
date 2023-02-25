@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 let ww_leaderboard = require("ww_leaderboard")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
+let DataBlock = require("DataBlock")
 
 const APP_ID_CUSTOM_LEADERBOARD = 1231
 /*
@@ -20,8 +22,7 @@ headersParams = {
   appId = -1
 } */
 
-let function requestLeaderboardData(dataParams, headers, cb)
-{
+let function requestLeaderboardData(dataParams, headers, cb) {
   let requestData = {
     add_token = true
     action = ("userId" in headers) ? "ano_get_leaderboard_json" : "cln_get_leaderboard_json" //Need use ano_get_leaderboard_json for request with userId
@@ -36,7 +37,7 @@ let function requestLeaderboardData(dataParams, headers, cb)
 }
 
 let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.event = requestData.economicName
   blk.sortField = requestData.lbField
   blk.start = requestData.pos
@@ -47,8 +48,7 @@ let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
   blk.version = 1
   blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
-  if (blk.start == null || blk.start < 0)
-  {
+  if (blk.start == null || blk.start < 0) {
     let event = blk.event  // warning disable: -declared-never-used
     let start = blk.start  // warning disable: -declared-never-used
     let count = blk.count  // warning disable: -declared-never-used
@@ -57,8 +57,7 @@ let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
 
     blk.start = 0
   }
-  if (blk.count == null || blk.count <= 0)
-  {
+  if (blk.count == null || blk.count <= 0) {
     let event = blk.event  // warning disable: -declared-never-used
     let count = blk.count  // warning disable: -declared-never-used
     let start = blk.start  // warning disable: -declared-never-used
@@ -76,7 +75,7 @@ let function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
 }
 
 let function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb) {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.event = requestData.economicName
   blk.sortField = requestData.lbField
   blk.start = -1
@@ -139,16 +138,14 @@ let leaderboardKeyCorrection = {
 
 let function convertLeaderboardData(result, applyLocalisationToName = false) {
   let list = []
-  foreach (rowId, rowData in result)
-  {
+  foreach (rowId, rowData in result) {
     if (type(rowData) != "table")
       continue
 
     let lbData = {
       name = applyLocalisationToName ? loc(rowId) : rowId
     }
-    foreach (columnId, columnData in rowData)
-    {
+    foreach (columnId, columnData in rowData) {
       let key = leaderboardKeyCorrection?[columnId] ?? columnId
       if (key in lbData && ::u.isEmpty(columnData))
         continue

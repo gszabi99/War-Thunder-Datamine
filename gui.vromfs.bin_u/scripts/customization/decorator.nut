@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,8 +16,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
-::Decorator <- class
-{
+::Decorator <- class {
   id = ""
   blk = null
   decoratorType = null
@@ -48,13 +48,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
   isToStringForDebug = true
 
-  constructor(blkOrId, decType)
-  {
+  constructor(blkOrId, decType) {
     this.decoratorType = decType
     if (::u.isString(blkOrId))
       this.id = blkOrId
-    else if (::u.isDataBlock(blkOrId))
-    {
+    else if (::u.isDataBlock(blkOrId)) {
       this.blk = blkOrId
       this.id = this.blk.getBlockName()
     }
@@ -75,8 +73,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     this.tex = this.blk ? ::get_decal_tex(this.blk, 1) : this.id
     this.aspect_ratio = this.blk ? this.decoratorType.getRatio(this.blk) : 1
 
-    if ("countries" in this.blk)
-    {
+    if ("countries" in this.blk) {
       this.countries = []
       eachParam(this.blk.countries, function(access, country) {
         if (access == true)
@@ -95,8 +92,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 
     this.rarity  = itemRarity.get(this.blk?.item_quality, this.blk?.name_color)
 
-    if (this.blk?.marketplaceItemdefId != null && isMarketplaceEnabled())
-    {
+    if (this.blk?.marketplaceItemdefId != null && isMarketplaceEnabled()) {
       this.couponItemdefId = this.blk.marketplaceItemdefId
 
       let couponItem = ::ItemsManager.findItemById(this.couponItemdefId)
@@ -108,53 +104,44 @@ let { GUI } = require("%scripts/utils/configs.nut")
       this.lockedByDLC = ::has_entitlement(this.unlockBlk.showByEntitlement) ? null : this.unlockBlk.showByEntitlement
   }
 
-  function getName()
-  {
+  function getName() {
     let name = this.decoratorType.getLocName(this.id)
     return this.isRare() ? colorize(this.getRarityColor(), name) : name
   }
 
-  function getDesc()
-  {
+  function getDesc() {
     return this.decoratorType.getLocDesc(this.id)
   }
 
-  function isUnlocked()
-  {
+  function isUnlocked() {
     return this.decoratorType.isPlayerHaveDecorator(this.id)
   }
 
-  function isVisible()
-  {
+  function isVisible() {
     return this.decoratorType.isVisible(this.blk, this)
   }
 
-  function getCost()
-  {
+  function getCost() {
     return this.cost
   }
 
-  function canRecieve()
-  {
+  function canRecieve() {
     return this.unlockBlk != null || ! this.getCost().isZero() || this.getCouponItemdefId() != null
   }
 
-  function isSuitableForUnit(unit)
-  {
+  function isSuitableForUnit(unit) {
     return unit == null
       || (!this.isLockedByCountry(unit) && !this.isLockedByUnit(unit) && this.isAllowedByUnitTypes(unit.unitType.tag))
   }
 
-  function isLockedByCountry(unit)
-  {
+  function isLockedByCountry(unit) {
     if (this.countries == null)
       return false
 
     return !isInArray(::getUnitCountry(unit), this.countries)
   }
 
-  function isLockedByUnit(unit)
-  {
+  function isLockedByUnit(unit) {
     if (this.decoratorType == ::g_decorator_type.SKINS)
       return unit?.name != ::g_unlocks.getPlaneBySkinId(this.id)
 
@@ -164,36 +151,31 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return !isInArray(unit?.name, this.units)
   }
 
-  function getUnitTypeLockIcon()
-  {
+  function getUnitTypeLockIcon() {
     if (::u.isEmpty(this.units))
       return null
 
     return ::get_unit_type_font_icon(::get_es_unit_type(::getAircraftByName(this.units[0])))
   }
 
-  function getTypeDesc()
-  {
+  function getTypeDesc() {
     return this.decoratorType.getTypeDesc(this)
   }
 
-  function getRestrictionsDesc()
-  {
+  function getRestrictionsDesc() {
     if (this.decoratorType == ::g_decorator_type.SKINS)
       return ""
 
     let important = []
     let common    = []
 
-    if (!::u.isEmpty(this.units))
-    {
+    if (!::u.isEmpty(this.units)) {
       let visUnits = ::u.filter(this.units, @(u) ::getAircraftByName(u)?.isInShop)
       important.append(loc("options/unit") + loc("ui/colon") +
         ::g_string.implode(::u.map(visUnits, @(u) ::getUnitName(u)), loc("ui/comma")))
     }
 
-    if (this.countries)
-    {
+    if (this.countries) {
       let visCountries = ::u.filter(this.countries, @(c) isInArray(c, shopCountriesList))
       important.append(loc("events/countres") + " " +
         ::g_string.implode(::u.map(visCountries, @(c) loc(c)), loc("ui/comma")))
@@ -206,8 +188,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
       (important.len() ? "\n" : "") + ::g_string.implode(common, "\n")
   }
 
-  function getLocationDesc()
-  {
+  function getLocationDesc() {
     if (!this.decoratorType.hasLocations(this.id))
       return ""
 
@@ -220,8 +201,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
       loc("ui/colon") + ::g_string.implode(locations.map(@(l) colorize("activeTextColor", l)), ", ")
   }
 
-  function getTagsDesc()
-  {
+  function getTagsDesc() {
     local tagsLoc = this.getTagsLoc()
     if (!tagsLoc.len())
       return ""
@@ -230,8 +210,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return loc("ugm/tags") + loc("ui/colon") + ::g_string.implode(tagsLoc, loc("ui/comma"))
   }
 
-  function getCostText()
-  {
+  function getCostText() {
     if (this.isUnlocked())
       return ""
 
@@ -245,40 +224,33 @@ let { GUI } = require("%scripts/utils/configs.nut")
            + loc("shop/object/can_be_purchased")
   }
 
-  function getSmallIcon()
-  {
+  function getSmallIcon() {
     return this.decoratorType.getSmallIcon(this)
   }
 
-  function canBuyUnlock(unit)
-  {
+  function canBuyUnlock(unit) {
     return this.isSuitableForUnit(unit) && !this.isUnlocked() && !this.getCost().isZero() && hasFeature("SpendGold")
   }
 
-  function canGetFromCoupon(unit)
-  {
+  function canGetFromCoupon(unit) {
     return this.isSuitableForUnit(unit) && !this.isUnlocked()
       && (::ItemsManager.getInventoryItemById(this.getCouponItemdefId())?.canConsume() ?? false)
   }
 
-  function canBuyCouponOnMarketplace(unit)
-  {
+  function canBuyCouponOnMarketplace(unit) {
     return this.isSuitableForUnit(unit) && !this.isUnlocked()
       && (::ItemsManager.findItemById(this.getCouponItemdefId())?.hasLink() ?? false)
   }
 
-  function canUse(unit)
-  {
+  function canUse(unit) {
     return this.isAvailable(unit) && !this.isOutOfLimit(unit)
   }
 
-  function isAvailable(unit)
-  {
+  function isAvailable(unit) {
     return this.isSuitableForUnit(unit) && this.isUnlocked()
   }
 
-  function getCountOfUsingDecorator(unit)
-  {
+  function getCountOfUsingDecorator(unit) {
     if (this.decoratorType != ::g_decorator_type.ATTACHABLES || !this.isUnlocked())
       return 0
 
@@ -290,8 +262,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return numUse
   }
 
-  function isOutOfLimit(unit)
-  {
+  function isOutOfLimit(unit) {
     if (this.limit < 0)
       return false
 
@@ -301,23 +272,19 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return this.limit <= this.getCountOfUsingDecorator(unit)
   }
 
-  function isRare()
-  {
+  function isRare() {
     return this.rarity.isRare
   }
 
-  function getRarity()
-  {
+  function getRarity() {
     return this.rarity.value
   }
 
-  function getRarityColor()
-  {
+  function getRarityColor() {
     return  this.rarity.color
   }
 
-  function getTagsLoc()
-  {
+  function getTagsLoc() {
     let res = this.rarity.tag ? [ this.rarity.tag ] : []
     let tagsVisibleBlk = GUI.get()?.decorator_tags_visible
     if (tagsVisibleBlk && this.tags)
@@ -327,46 +294,38 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return res
   }
 
-  function updateFromItemdef(itemDef)
-  {
+  function updateFromItemdef(itemDef) {
     this.rarity = itemRarity.get(itemDef?.item_quality, itemDef?.name_color)
     this.tags = itemDef?.tags
   }
 
-  function setCouponItemdefId(itemdefId)
-  {
+  function setCouponItemdefId(itemdefId) {
     this.couponItemdefId = itemdefId
   }
 
-  function getCouponItemdefId()
-  {
+  function getCouponItemdefId() {
     return this.couponItemdefId
   }
 
-  function _tostring()
-  {
+  function _tostring() {
     return format("Decorator(%s, %s%s)", toString(this.id), this.decoratorType.name,
       this.unlockId == "" ? "" : (", unlock=" + this.unlockId))
   }
 
-  function getLocParamsDesc()
-  {
+  function getLocParamsDesc() {
     return this.decoratorType.getLocParamsDesc(this)
   }
 
-  function canPreview()
-  {
+  function canPreview() {
     return this.isLive ? this.decoratorType.canPreviewLiveDecorator() : true
   }
 
-  function doPreview()
-  {
+  function doPreview() {
     if (this.canPreview())
       contentPreview.showResource(this.id, this.decoratorType.resourceType)
   }
 
-  function isAllowedByUnitTypes(unitType)
-  {
+  function isAllowedByUnitTypes(unitType) {
     return (this.allowedUnitTypes.len() == 0 || this.allowedUnitTypes.indexof(unitType) != null)
   }
 
@@ -382,8 +341,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
       processedUnitTypes.map(@(unitType) loc($"mainmenu/type_{unitType}"))))
   }
 
-  function getVehicleDesc()
-  {
+  function getVehicleDesc() {
     let locUnitTypes = this.getLocAllowedUnitTypes()
     if (locUnitTypes == "")
       return ""

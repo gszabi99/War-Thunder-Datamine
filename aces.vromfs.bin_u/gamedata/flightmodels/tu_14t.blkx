@@ -2522,7 +2522,7 @@
       {
         "name": "tu_14t_fab500",
         "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab500.blk",
-        "reqModification": "kd-3_bc",
+        "reqModification": "kd3_281",
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
@@ -2530,6 +2530,10 @@
             "tier": [
               {
                 "idx": 5,
+                "iconType": "bombs_special_group"
+              },
+              {
+                "idx": 6,
                 "iconType": "bombs_special_group"
               },
               {
@@ -2543,24 +2547,24 @@
       {
         "name": "tu_14t_fab1000",
         "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab1000.blk",
-        "reqModification": "bd-4_bc"
+        "reqModification": "kd4_181"
       },
       {
         "name": "tu_14t_fab1500",
         "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab1500.blk",
-        "reqModification": "bd-4_bc",
+        "reqModification": "kd4_181",
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/bombGuns/su_fab_1500m_46.blk",
             "amountPerTier": 1.0,
-            "iconType": "bombs_heavy_middle"
+            "iconType": "bombs_special"
           }
         }
       },
       {
         "name": "tu_14t_fab3000",
         "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab3000.blk",
-        "reqModification": "bd-4_bc",
+        "reqModification": "kd4_181",
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/BombGuns/su_fab_3000m_46.blk",
@@ -2572,7 +2576,7 @@
       {
         "name": "tu_14t_torpedo",
         "blk": "gameData/FlightModels/weaponPresets/tu_14t_torpedo.blk",
-        "reqModification": "t-18"
+        "reqModification": "der4_47bmt"
       },
       {
         "name": "tu_14t_default",
@@ -2689,18 +2693,38 @@
     "turnTime": 28.1492
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_compressor_jet": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "hp_105_jet": {
+      "prevModification": "new_compressor_jet",
+      "tier": 3,
+      "modClass": "lth"
+    },
     "air_extinguisher": {
       "tier": 4,
-      "modClass": "weapon",
+      "modClass": "armor",
       "invertEnableLogic": false
-    },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {},
-    "new_compressor_jet": {
-      "tier": 1
     },
     "ns23_belt_pack": {
       "tier": 1
@@ -2721,17 +2745,17 @@
     },
     "nr23_turret_apit": {},
     "nr23_turret_heit": {},
-    "kd-3_bc": {
-      "reqModification": "t-18",
+    "kd3_281": {
+      "reqModification": "der4_47bmt",
       "modClass": "weapon",
       "tier": 3
     },
-    "bd-4_bc": {
-      "reqModification": "kd-3_bc",
+    "kd4_181": {
+      "reqModification": "kd3_281",
       "modClass": "weapon",
       "tier": 4
     },
-    "t-18": {
+    "der4_47bmt": {
       "reqModLevel": 4.0,
       "modClass": "weapon",
       "tier": 2
@@ -2753,6 +2777,18 @@
         "from": "tu_14t_late_n_dmg*"
       }
     ]
+  },
+  "parachutes": {
+    "emitterRange": [
+      1,
+      1
+    ],
+    "emitterName": "emtr_chute",
+    "chuteModel": "chute_mig_19_char",
+    "chuteAnimVarName": "chute_state_switch",
+    "chuteFlapVarName": "fire_chute",
+    "chuteTimeScaleParam": "chute_time_scale",
+    "chuteFallSpeed": 1.0
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

@@ -25,7 +25,7 @@ let frameHeader = @(headerParams) {
 }.__update(headerParams)
 
 let frameHandler = kwarg(function(content, frameParams = {}, headerParams = {}) {
-  return @(){
+  return @() {
     size = flex()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER

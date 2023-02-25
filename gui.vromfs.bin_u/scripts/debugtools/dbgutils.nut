@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,6 +7,7 @@ let userstat = require("userstat")
 let { format, split_by_chars } = require("string")
 // warning disable: -file:forbidden-function
 
+let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let dbgExportToFile = require("%scripts/debugTools/dbgExportToFile.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
@@ -24,6 +26,8 @@ let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let animBg = require("%scripts/loading/animBg.nut")
 let { register_command } = require("console")
+let { get_meta_mission_info_by_name } = require("guiMission")
+let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -39,7 +43,7 @@ let function _charAddAllItemsHelper(params) {
   if (params.currentIndex >= params.items.len())
     return
   let item = params.items[params.currentIndex]
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.setStr("what", "addItem")
   blk.setStr("item", item.id)
   blk.addInt("howmuch", params.count);
@@ -77,8 +81,7 @@ let function switch_on_debug_debriefing_recount() {
 
   ::_stat_get_exp <- ::stat_get_exp
   ::_stat_get_exp_cache <- null
-  ::stat_get_exp <- function()
-  {
+  ::stat_get_exp <- function() {
     ::_stat_get_exp_cache = ::_stat_get_exp() || ::_stat_get_exp_cache
     return ::_stat_get_exp_cache
   }
@@ -109,7 +112,7 @@ let function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
 }
 
 let function show_hotas_window_image() {
-  ::gui_start_image_wnd(loc("thrustmaster_tflight_hotas_4_controls_image", ""), 1.41)
+    ::gui_start_image_wnd(hotasControlImagePath, 1.41)
 }
 
 let function debug_export_unit_weapons_descriptions() {
@@ -127,22 +130,21 @@ let function debug_export_unit_weapons_descriptions() {
       return res
     }()
     itemProcessFunc = function(unit) {
-      let blk = ::DataBlock()
-      foreach(weapon in unit.getWeapons())
-        if (!isWeaponAux(weapon))
-        {
+      let blk = DataBlock()
+      foreach (weapon in unit.getWeapons())
+        if (!isWeaponAux(weapon)) {
           blk[weapon.name + "_short"] <- getWeaponNameText(unit, false, weapon.name, ", ")
           local rowsList = split_by_chars(getWeaponInfoText(unit,
             { isPrimary = false, weaponPreset = weapon.name }), "\n")
-          foreach(row in rowsList)
+          foreach (row in rowsList)
             blk[weapon.name] <- row
           rowsList = split_by_chars(getWeaponInfoText(unit,
             { isPrimary = false, weaponPreset = weapon.name, detail = INFO_DETAIL.EXTENDED }), "\n")
-          foreach(row in rowsList)
+          foreach (row in rowsList)
             blk[weapon.name + "_extended"] <- row
           rowsList = split_by_chars(getWeaponInfoText(unit,
             { weaponPreset = weapon.name, detail = INFO_DETAIL.FULL }), "\n")
-          foreach(row in rowsList)
+          foreach (row in rowsList)
             blk[weapon.name + "_full"] <- row
           blk[$"{weapon.name}_massPerSec"] <- getUnitMassPerSecValue(unit, true, weapon.name)
           blk[$"{weapon.name}_bombsNbr"] <- weapon.bombsNbr
@@ -169,22 +171,20 @@ let function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
       return res
     }()
     itemProcessFunc = function(unit) {
-      let blk = ::DataBlock()
+      let blk = DataBlock()
 
       ::dmViewer.updateUnitInfo(unit.name)
       let partNames = []
       let damagePartsBlk = ::dmViewer.unitBlk?.DamageParts
       if (damagePartsBlk)
-        for (local b = 0; b < damagePartsBlk.blockCount(); b++)
-        {
+        for (local b = 0; b < damagePartsBlk.blockCount(); b++) {
           let partsBlk = damagePartsBlk.getBlock(b)
           for (local p = 0; p < partsBlk.blockCount(); p++)
             ::u.appendOnce(partsBlk.getBlock(p).getBlockName(), partNames)
         }
       partNames.sort()
 
-      foreach (partName in partNames)
-      {
+      foreach (partName in partNames) {
         if (partIdWhitelist != null && partIdWhitelist.findindex(@(v) ::g_string.startsWith(partName, v)) == null)
           continue
         let params = { name = partName }
@@ -210,12 +210,12 @@ let function gui_do_debug_unlock() {
 }
 
 let function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount = 0) {
-  let missionBlk = ::get_meta_mission_info_by_name(missionName)
+  let missionBlk = get_meta_mission_info_by_name(missionName)
   if (!::u.isDataBlock(missionBlk))
     return dlog("Not found mission " + missionName) //warning disable: -dlog-warn
 
   let filePath = missionBlk?.mis_file
-  if (filePath==null)
+  if (filePath == null)
     return dlog("No mission blk filepath") //warning disable: -dlog-warn
   let fullBlk = blkFromPath(filePath)
 
@@ -223,29 +223,25 @@ let function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount 
   if (!::u.isDataBlock(briefing) || !briefing.blockCount())
     return dlog("Mission does not have briefing") //warning disable: -dlog-warn
 
-  let briefingClone = ::DataBlock()
+  let briefingClone = DataBlock()
   if (slidesAmount <= 0)
     briefingClone.setFrom(briefing)
-  else
-  {
+  else {
     local slidesLeft = slidesAmount
     let parts = briefing % "part"
     let partsClone = []
-    for(local i = parts.len()-1; i >= 0; i--)
-    {
+    for (local i = parts.len() - 1; i >= 0; i--) {
       let part = parts[i]
-      let partClone = ::DataBlock()
+      let partClone = DataBlock()
       let slides = part % "slide"
-      if (slides.len() <= slidesLeft)
-      {
+      if (slides.len() <= slidesLeft) {
         partClone.setFrom(part)
         slidesLeft -= slides.len()
       }
       else
-        for(local j = slides.len()-slidesLeft; j < slides.len(); j++)
-        {
+        for (local j = slides.len() - slidesLeft; j < slides.len(); j++) {
           let slide = slides[j]
-          let slideClone = ::DataBlock()
+          let slideClone = DataBlock()
           slideClone.setFrom(slide)
           partClone["slide"] <- slideClone
           slidesLeft--
@@ -256,7 +252,7 @@ let function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount 
         break
     }
 
-    foreach(part in partsClone)
+    foreach (part in partsClone)
       briefingClone["part"] <- part
   }
 
@@ -294,15 +290,13 @@ let function debug_show_unit(unitId) {
 
 let function debug_show_weapon(weaponName) {
   weaponName = getWeaponNameByBlkPath(weaponName)
-  foreach (u in ::all_units)
-  {
+  foreach (u in ::all_units) {
     if (!u.isInShop)
       continue
     let unitBlk = ::get_full_unit_blk(u.name)
     let weapons = getUnitWeapons(unitBlk)
     foreach (weap in weapons)
-      if (weaponName == getWeaponNameByBlkPath(weap?.blk ?? ""))
-      {
+      if (weaponName == getWeaponNameByBlkPath(weap?.blk ?? "")) {
         ::open_weapons_for_unit(u)
         return $"{u.name} / {weap.blk}"
       }
@@ -313,7 +307,7 @@ let function debug_show_weapon(weaponName) {
 let function debug_change_language(isNext = true) {
   let list = ::g_language.getGameLocalizationInfo()
   let curLang = ::get_current_language()
-  let curIdx = list.findindex( @(l) l.id == curLang ) ?? 0
+  let curIdx = list.findindex(@(l) l.id == curLang) ?? 0
   let newIdx = curIdx + (isNext ? 1 : -1 + list.len())
   let newLang = list[newIdx % list.len()]
   ::g_language.setGameLocalization(newLang.id, true, false)
@@ -345,9 +339,8 @@ let function debug_multiply_color(colorStr, multiplier) {
 let function debug_get_last_userlogs(num = 1) {
   let total = ::get_user_logs_count()
   let res = []
-  for (local i = total - 1; i > (total - num - 1); i--)
-  {
-    local blk = ::DataBlock()
+  for (local i = total - 1; i > (total - num - 1); i--) {
+    local blk = DataBlock()
     ::get_user_log_blk_body(i, blk)
     dlog("print userlog " + ::getLogNameByType(blk.type) + " " + blk.id)
     debugTableData(blk)
@@ -361,16 +354,14 @@ let function to_pixels_float(value) {
 }
 
 let function debug_check_dirty_words(path = null) {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.load(path || "debugDirtyWords.blk")
   dirtyWordsFilter.setDebugLogFunc(log)
   local failed = 0
-  for (local i = 0; i < blk.paramCount(); i++)
-  {
+  for (local i = 0; i < blk.paramCount(); i++) {
     let text = blk.getParamValue(i)
     let filteredText = dirtyWordsFilter.checkPhrase(text)
-    if (text == filteredText)
-    {
+    if (text == filteredText) {
       log("DIRTYWORDS: PASSED " + text)
       failed++
     }
@@ -380,8 +371,7 @@ let function debug_check_dirty_words(path = null) {
 }
 
 let function debug_unit_rent(unitId = null, seconds = 60) {
-  if (!("_debug_unit_rent" in getroottable()))
-  {
+  if (!("_debug_unit_rent" in getroottable())) {
     ::_debug_unit_rent <- {}
     ::_shop_is_unit_rented <- ::shop_is_unit_rented
     ::_rented_units_get_last_max_full_rent_time <- ::rented_units_get_last_max_full_rent_time
@@ -399,8 +389,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
     }
   }
 
-  if (unitId)
-  {
+  if (unitId) {
     ::_debug_unit_rent[unitId] <- { time = seconds, expire = ::get_charserver_time_sec() + seconds }
     ::broadcastEvent("UnitRented", { unitName = unitId })
   }
@@ -410,7 +399,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
 
 let function debug_tips_list() {
   debugWnd("%gui/debugTools/dbgTipsList.tpl",
-    {tipsList = ::g_tips.getAllTips().map(@(value) { value = value })})
+    { tipsList = ::g_tips.getAllTips().map(@(value) { value = value }) })
 }
 
 let function debug_get_skyquake_path() {

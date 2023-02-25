@@ -2255,6 +2255,10 @@
       {
         "name": "fiat_g91y_4x1000lb_bombs",
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_4x1000lb_bombs.blk"
+      },
+      {
+        "name": "fiat_g91y_2x_aerea_559",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_2x_aerea_559.blk"
       }
     ]
   },
@@ -2328,6 +2332,7 @@
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb3",
               "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -2344,6 +2349,7 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
               "emitter": "bomb3",
               "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -2397,6 +2403,7 @@
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_default.blk",
               "emitter": "bomb1",
               "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -2413,6 +2420,24 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_default.blk",
               "emitter": "bomb1",
               "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "aerea_559",
+            "reqModification": "aerea_559g",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "emitter": "bomb1",
+              "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -2466,6 +2491,7 @@
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_default.blk",
               "emitter": "bomb2",
               "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -2482,6 +2508,24 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_default.blk",
               "emitter": "bomb2",
               "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "aerea_559",
+            "reqModification": "aerea_559g",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_250kg_napalm_aerea_559g1.blk",
+              "emitter": "bomb2",
+              "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -2535,6 +2579,7 @@
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
               "emitter": "bomb4",
               "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -2551,6 +2596,7 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
               "emitter": "bomb4",
               "external": true,
+              "separate": true,
               "bullets": 1,
               "machLimit": 1.01
             }
@@ -4468,6 +4514,10 @@
     "aden_new_gun": {
       "reqModification": "aden_belt_pack",
       "tier": 3
+    },
+    "aerea_559g": {
+      "modClass": "weapon",
+      "tier": 1
     },
     "us_500lb_m82": {
       "modClass": "weapon",

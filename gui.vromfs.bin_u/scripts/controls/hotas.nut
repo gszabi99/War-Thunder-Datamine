@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -9,8 +10,9 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let hotasPS4DevId = "044F:B67B"
 let hotasXONEDevId = "044F:B68C"
 
-let function askHotasPresetChange()
-{
+let hotasControlImageFileName = isPlatformXboxOne ? "t-flight-hotas-one" : "t-flight-hotas-4"
+
+let function askHotasPresetChange() {
   if ((!isPlatformSony && !isPlatformXboxOne) || ::loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
@@ -59,6 +61,8 @@ let function askHotasPresetChange()
 }
 
 return {
+  hotasControlImagePath = $"!ui/images/joystick/{hotasControlImageFileName}?P1"
+
   checkJoystickThustmasterHotas = function(changePreset = true) {
     let deviceId =
       isPlatformSony ? hotasPS4DevId :

@@ -3,8 +3,8 @@
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let {handlerType} = require("handlerType.nut")
-let {handlersManager} = require("baseGuiHandlerManager.nut")
+let { handlerType } = require("handlerType.nut")
+let { handlersManager } = require("baseGuiHandlerManager.nut")
 /*
   FramedMessageBox is a message box, with visible frame.
   Config {
@@ -21,8 +21,7 @@ let {handlersManager} = require("baseGuiHandlerManager.nut")
   }
 */
 
-::gui_handlers.FramedMessageBox <- class extends ::BaseGuiHandler
-{
+::gui_handlers.FramedMessageBox <- class extends ::BaseGuiHandler {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/framedMessageBox.tpl"
 
@@ -40,27 +39,23 @@ let {handlersManager} = require("baseGuiHandlerManager.nut")
     button = true
   }]
 
-  function open(config = {})
-  {
+  function open(config = {}) {
     handlersManager.loadHandler(::gui_handlers.FramedMessageBox, config)
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     if (u.isEmpty(this.buttons))
       this.buttons = this.closeButtonDefault
 
-    foreach(idx, button in this.buttons)
-    {
+    foreach (idx, button in this.buttons) {
       button.funcName <- "onButtonClick"
-      button.id <- button?.id ?? ("button_" + idx)
+      button.id <- button?.id ?? ($"button_{idx}" )
     }
 
     return this
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     let obj = this.scene.findObject("framed_message_box")
     if (!obj?.isValid())
       return
@@ -78,8 +73,7 @@ let {handlersManager} = require("baseGuiHandlerManager.nut")
       this.guiScene.playSound(this.onOpenSound)
   }
 
-  function getDefaultPos()
-  {
+  function getDefaultPos() {
     let buttonsObj = this.scene.findObject("framed_message_box_buttons_place")
     if (!check_obj(buttonsObj))
       return array(2, 0)
@@ -87,11 +81,9 @@ let {handlersManager} = require("baseGuiHandlerManager.nut")
     return ::get_dagui_mouse_cursor_pos_RC()
   }
 
-  function onButtonClick(obj)
-  {
-    foreach(button in this.buttons)
-      if (button.id == obj?.id)
-      {
+  function onButtonClick(obj) {
+    foreach (button in this.buttons)
+      if (button.id == obj?.id) {
         this.performAction(button?.cb)
         break
       }
@@ -99,8 +91,7 @@ let {handlersManager} = require("baseGuiHandlerManager.nut")
     this.goBack()
   }
 
-  function performAction(func = null)
-  {
+  function performAction(func = null) {
     if (!func)
       return
 

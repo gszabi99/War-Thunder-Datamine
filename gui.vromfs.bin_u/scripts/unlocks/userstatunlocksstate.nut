@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -24,9 +25,9 @@ let emptyProgress = {
 let unlockTables = Computed(function() {
   let stats = userstatStats.value
   let res = {}
-  foreach(name, _value in stats?.stats ?? {})
+  foreach (name, _value in stats?.stats ?? {})
     res[name] <- true
-  foreach(name, _value in stats?.inactiveTables ?? {})
+  foreach (name, _value in stats?.inactiveTables ?? {})
     res[name] <- false
   return res
 })
@@ -58,7 +59,7 @@ let function calcUnlockProgress(progressData, unlockDesc) {
 let personalUnlocksData = Computed(@() userstatUnlocks.value?.personalUnlocks ?? {})
 
 let allUnlocks = Computed(@() (userstatDescList.value?.unlocks ?? {})
-  .map(function(u,name) {
+  .map(function(u, name) {
     let upd = {}
     let progress = calcUnlockProgress((userstatUnlocks.value?.unlocks ?? {})?[name], u)
     if ((u?.personal ?? "") != "")
@@ -102,8 +103,7 @@ let RECEIVE_REWARD_DEFAULT_OPTIONS = {
   showProgressBox = true
 }
 
-let function sendReceiveRewardRequest(params)
-{
+let function sendReceiveRewardRequest(params) {
   let { stage, rewards, unlockName, taskOptions, needShowRewardWnd } = params
   let receiveRewardsCallback = function(res) {
     log($"Userstat: receive reward {unlockName}, stage: {stage}, results: {res}")
@@ -138,8 +138,8 @@ local function receiveRewards(unlockName, taskOptions = RECEIVE_REWARD_DEFAULT_O
 
 let function getRewards(unlockDesc) {
   let res = {}
-  foreach(stageData in unlockDesc?.stages ?? [])
-    foreach(idStr, _amount in stageData?.rewards ?? {})
+  foreach (stageData in unlockDesc?.stages ?? [])
+    foreach (idStr, _amount in stageData?.rewards ?? {})
       res[idStr.tointeger()] <- true
   return res
 }
@@ -147,9 +147,9 @@ let function getRewards(unlockDesc) {
 let unlocksByReward = keepref(Computed(
   function() {
     let res = {}
-    foreach(unlockDesc in activeUnlocks.value) {
+    foreach (unlockDesc in activeUnlocks.value) {
       let rewards = getRewards(unlockDesc)
-      foreach(itemdefid, _ in rewards) {
+      foreach (itemdefid, _ in rewards) {
         if (!(itemdefid in res))
           res[itemdefid] <- []
         res[itemdefid].append(unlockDesc)
@@ -168,7 +168,7 @@ unlocksByReward.subscribe(requestRewardItems)
 requestRewardItems(unlocksByReward.value)
 
 let function getUnlockReward(userstatUnlock) {
-  let rewardMarkUp = { rewardText = "", itemMarkUp = ""}
+  let rewardMarkUp = { rewardText = "", itemMarkUp = "" }
   let { lastRewardedStage = 0 } = userstatUnlock
   let stage = getStageByIndex(userstatUnlock, lastRewardedStage)
   if (stage == null)

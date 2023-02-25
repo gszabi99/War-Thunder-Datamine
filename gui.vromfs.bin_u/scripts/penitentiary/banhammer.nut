@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,23 +10,21 @@ let platformModule = require("%scripts/clientState/platform.nut")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
+let { get_game_mode } = require("mission")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
   ::handlersManager.loadHandler(::gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
 }
 
-::gui_modal_complain <- function gui_modal_complain(playerInfo, cLog = null)
-{
+::gui_modal_complain <- function gui_modal_complain(playerInfo, cLog = null) {
   if (!::tribunal.canComplaint())
     return
 
   ::handlersManager.loadHandler(::gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })
 }
 
-let chatLogToString = function(chatLog)
-{
-  if(!::u.isTable(chatLog))
-  {
+let chatLogToString = function(chatLog) {
+  if (!::u.isTable(chatLog)) {
     ::script_net_assert_once("Chatlog value is not a table", "Invalid type of chatlog")
     return ""
   }
@@ -33,18 +32,16 @@ let chatLogToString = function(chatLog)
   local res = ::save_to_json(chatLog)
   local size = res.len()
   local idx = 0
-  while(size > 29300)
+  while (size > 29300)
     size -= ::save_to_json(chatLog.chatLog[idx++]).len() + 1
-  if (idx > 0)
-  {
+  if (idx > 0) {
     chatLog.chatLog = chatLog.chatLog.slice(idx)
     res = ::save_to_json(chatLog)
   }
   return res
 }
 
-::gui_handlers.BanHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.BanHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/complain.blk"
   wndType = handlerType.MODAL
 
@@ -53,17 +50,14 @@ let chatLogToString = function(chatLog)
   optionsList = null
   chatLog = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.scene || !this.player || !this.canBan())
       return this.goBack()
 
     this.playerName = getTblValue("name", this.player, "")
-    if (!getTblValue("uid", this.player))
-    {
+    if (!getTblValue("uid", this.player)) {
       this.taskId = ::find_contact_by_name_and_do(this.playerName, Callback(this.onPlayerFound, this))
-      if (this.taskId!=null && this.taskId<0)
-      {
+      if (this.taskId != null && this.taskId < 0) {
         this.notFoundPlayerMsg()
         return
       }
@@ -80,7 +74,7 @@ let chatLogToString = function(chatLog)
     let clanTag = getTblValue("clanTag", this.player, "")
     let targetObj = this.scene.findObject("complain_target")
     if (checkObj(targetObj))
-      targetObj.setValue((clanTag.len() > 0? (clanTag + " ") : "") + platformModule.getPlayerName(this.playerName))
+      targetObj.setValue((clanTag.len() > 0 ? (clanTag + " ") : "") + platformModule.getPlayerName(this.playerName))
 
     let options = [
       ::USEROPT_COMPLAINT_CATEGORY,
@@ -88,17 +82,16 @@ let chatLogToString = function(chatLog)
       ::USEROPT_BAN_TIME
     ]
     this.optionsList = []
-    foreach(o in options)
+    foreach (o in options)
       this.optionsList.append(::get_option(o))
 
     let optionsBox = this.scene.findObject("options_rows_div")
     let objForClones = optionsBox.getChild(0)
-    for(local i=1; i<=this.optionsList.len(); i++)
-    {
-      let idx = (i<this.optionsList.len())? i : 0
+    for (local i = 1; i <= this.optionsList.len(); i++) {
+      let idx = (i < this.optionsList.len()) ? i : 0
       let opt = this.optionsList[idx]
       local optRow = null
-      if (idx==0)
+      if (idx == 0)
         optRow = objForClones
       else
         optRow = objForClones.getClone(optionsBox, this)
@@ -114,28 +107,24 @@ let chatLogToString = function(chatLog)
     this.updateButtons()
   }
 
-  function canBan()
-  {
+  function canBan() {
     return ::myself_can_devoice() || ::myself_can_ban()
   }
 
-  function notFoundPlayerMsg()
-  {
+  function notFoundPlayerMsg() {
     this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = platformModule.getPlayerName(this.playerName) }),
         [
           ["ok", function() { this.goBack() } ]
         ], "ok")
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let haveUid = getTblValue("uid", this.player) != null
     this.showSceneBtn("info_loading", !haveUid)
     this.showSceneBtn("btn_send", haveUid)
   }
 
-  function onPlayerFound(contact)
-  {
+  function onPlayerFound(contact) {
     if (!contact)
       return this.notFoundPlayerMsg()
 
@@ -146,14 +135,12 @@ let chatLogToString = function(chatLog)
 
   onTypeChange = @() ::select_editbox(this.scene.findObject("complaint_text"))
 
-  function onApply()
-  {
+  function onApply() {
     if (!this.canBan())
       return this.goBack()
 
-    let comment = clearBorderSymbolsMultiline(  this.scene.findObject("complaint_text").getValue()  )
-    if (comment.len() < 10)
-    {
+    let comment = clearBorderSymbolsMultiline(this.scene.findObject("complaint_text").getValue())
+    if (comment.len() < 10) {
       this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
@@ -163,8 +150,7 @@ let chatLogToString = function(chatLog)
     if (!uid)
       return
 
-    foreach(opt in this.optionsList)
-    {
+    foreach (opt in this.optionsList) {
       let obj = this.scene.findObject(opt.id)
       ::set_option(opt.type, obj.getValue(), opt)
     }
@@ -176,13 +162,11 @@ let chatLogToString = function(chatLog)
     log(format("%s user: %s, for %s, for %d sec.\n comment: %s",
                        penalty, this.playerName, category, duration, comment))
     this.taskId = ::char_ban_user(uid, duration, "", category, penalty,
-                           comment, ""/*hidden_note*/, chatLogToString(this.chatLog ?? {}))
-    if (this.taskId >= 0)
-    {
+                           comment, "" /*hidden_note*/ , chatLogToString(this.chatLog ?? {}))
+    if (this.taskId >= 0) {
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))
-      this.afterSlotOp = function()
-        {
+      this.afterSlotOp = function() {
           log("[IRC] sending /reauth " + this.playerName)
           ::gchat_raw_command("reauth " + ::gchat_escape_target(this.playerName))
           this.goBack()
@@ -191,8 +175,7 @@ let chatLogToString = function(chatLog)
   }
 }
 
-::gui_handlers.ComplainHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ComplainHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   optionsList = null
   location = ""
   clanInfo = ""
@@ -203,15 +186,13 @@ let chatLogToString = function(chatLog)
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/complain.blk"
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.scene || !this.pInfo || type(this.pInfo) != "table")
       return this.goBack()
 
-    let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", ::get_game_mode_name(::get_game_mode())))
+    let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", ::get_game_mode_name(get_game_mode())))
     this.location = gameMode
-    if (this.chatLog != null)
-    {
+    if (this.chatLog != null) {
       if ("roomId" in this.pInfo && "roomName" in this.pInfo && this.pInfo.roomName != "")
         this.location = "Main Chat, Channel = " + this.pInfo.roomName + " (" + this.pInfo.roomId + ")"
       else
@@ -222,8 +203,7 @@ let chatLogToString = function(chatLog)
 
     local pName = platformModule.getPlayerName(this.pInfo.name)
     local clanTag
-    if("clanData" in this.pInfo)
-    {
+    if ("clanData" in this.pInfo) {
       let clanData = this.pInfo.clanData
       clanTag = ("tag" in clanData) ? clanData.tag : null
 
@@ -233,7 +213,7 @@ let chatLogToString = function(chatLog)
                 ("slogan" in clanData ? "clan slogan = " + clanData.slogan + "\n" : "") +
                 ("desc" in clanData ? "clan description = " + clanData.desc : "")
     }
-    clanTag = clanTag || ( ("clanTag" in this.pInfo && this.pInfo.clanTag != "") ? this.pInfo.clanTag : null )
+    clanTag = clanTag || (("clanTag" in this.pInfo && this.pInfo.clanTag != "") ? this.pInfo.clanTag : null)
     pName = clanTag ? (clanTag + " " + pName) : pName
 
     let titleObj = this.scene.findObject("complaint_title")
@@ -261,11 +241,9 @@ let chatLogToString = function(chatLog)
 
   onTypeChange = @() ::select_editbox(this.scene.findObject("complaint_text"))
 
-  function collectThreadListForTribunal()
-  {
+  function collectThreadListForTribunal() {
     let threads = []
-    foreach( t in ::g_chat_latest_threads.getList())
-    {
+    foreach (t in ::g_chat_latest_threads.getList()) {
       threads.append({  tags      = t.getFullTagsString(),
                         title     = t.title,
                         numPosts  = t.numPosts,
@@ -274,15 +252,12 @@ let chatLogToString = function(chatLog)
     return threads
   }
 
-  function collectUserDetailsForTribunal( src )
-  {
+  function collectUserDetailsForTribunal(src) {
     let res = {};
 
-    if ( src != null )
-    {
-      foreach(key in ["kills", "teamKills", "name", "clanTag", "groundKills", "awardDamage", "navalKills", "exp", "deaths"])
-      {
-        res[key] <- ((key in src)&&(src[key] != null))? src[key] : "<N/A>";
+    if (src != null) {
+      foreach (key in ["kills", "teamKills", "name", "clanTag", "groundKills", "awardDamage", "navalKills", "exp", "deaths"]) {
+        res[key] <- ((key in src) && (src[key] != null)) ? src[key] : "<N/A>";
       }
       res["uid"] <- (("userId" in src) && src.userId) || "<N/A>" //in mplayer uid not the same like in other places. userId is real uid.
     }
@@ -290,14 +265,12 @@ let chatLogToString = function(chatLog)
     return res;
   }
 
-  function onApply()
-  {
+  function onApply() {
     if (!this.isValid())
       return
 
-    let user_comment = clearBorderSymbolsMultiline( this.scene.findObject("complaint_text").getValue() )
-    if (user_comment.len() < 10)
-    {
+    let user_comment = clearBorderSymbolsMultiline(this.scene.findObject("complaint_text").getValue())
+    if (user_comment.len() < 10) {
       this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
@@ -305,10 +278,10 @@ let chatLogToString = function(chatLog)
 
     let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
     let cValue = this.scene.findObject(option.id).getValue()
-    let category = (cValue in option.values)? option.values[cValue] : option.values[0]
+    let category = (cValue in option.values) ? option.values[cValue] : option.values[0]
     let details = ::save_to_json({
-      own      = this.collectUserDetailsForTribunal( ::get_local_mplayer() ),
-      offender = this.collectUserDetailsForTribunal( this.pInfo ),
+      own      = this.collectUserDetailsForTribunal(::get_local_mplayer()),
+      offender = this.collectUserDetailsForTribunal(this.pInfo),
       chats    = this.collectThreadListForTribunal()
     });
 
@@ -327,8 +300,7 @@ let chatLogToString = function(chatLog)
       this.taskId = ::send_complaint_by_nick(this.pInfo.name, category, user_comment, strChatLog, details)
     else
       this.taskId = ::send_complaint(this.pInfo.id, category, user_comment, strChatLog, details)
-    if (this.taskId >= 0)
-    {
+    if (this.taskId >= 0) {
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))
       this.afterSlotOp = this.goBack

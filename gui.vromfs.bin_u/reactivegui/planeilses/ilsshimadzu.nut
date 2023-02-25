@@ -1,14 +1,14 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
-let {Speed, Roll, Mach, Overload, Aos} = require("%rGui/planeState/planeFlyState.nut");
-let {IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
-        IlsLineScale, RocketMode, CannonMode} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, mpsToKnots} = require("ilsConstants.nut")
-let {compassWrap, generateCompassMarkShim} = require("ilsCompasses.nut")
-let {flyDirection, angleTxt, cancelBombing, lowerSolutionCue,
-      bombFallingLine, shimadzuRoll, ShimadzuPitch, ShimadzuAlt} = require("commonElements.nut")
-let {floor} = require("%sqstd/math.nut")
+let { Speed, Roll, Mach, Overload, Aos } = require("%rGui/planeState/planeFlyState.nut");
+let { IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
+        IlsLineScale, RocketMode, CannonMode } = require("%rGui/planeState/planeToolsState.nut")
+let { baseLineWidth, mpsToKnots } = require("ilsConstants.nut")
+let { compassWrap, generateCompassMarkShim } = require("ilsCompasses.nut")
+let { flyDirection, angleTxt, cancelBombing, lowerSolutionCue,
+      bombFallingLine, shimadzuRoll, ShimadzuPitch, ShimadzuAlt } = require("commonElements.nut")
+let { floor } = require("%sqstd/math.nut")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
@@ -18,7 +18,7 @@ let generateSpdMarkShimadzu = function(num) {
     size = [pw(100), ph(7.5)]
     pos = [pw(40), 0]
     children = [
-      ( num % 50 > 0 ? null :
+      (num % 50 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -100,7 +100,7 @@ let generateAltMarkShimadzu = function(num) {
         lineWidth = baseLineWidth * IlsLineScale.value
         vplace = ALIGN_CENTER
       },
-      ( num % 50 > 0 ? null :
+      (num % 50 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -212,7 +212,7 @@ let function f16CcipMark(width, height) {
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
     rendObj = ROBJ_VECTOR_CANVAS
-    fillColor = Color(0,0,0,0)
+    fillColor = Color(0, 0, 0, 0)
     commands = [
       [VECTOR_ELLIPSE, 0, 0, 100, 100],
       (TargetPosValid.value ? [VECTOR_LINE, -100, -100, 100, -100] : []),
@@ -243,7 +243,7 @@ let function f16CcrpMark(_width, height) {
           transform = {
             translate = [TargetPos.value[0], height * 0.1]
             rotate = -Roll.value
-            pivot=[0.1, TargetPos.value[1] / height - 0.1]
+            pivot = [0.1, TargetPos.value[1] / height - 0.1]
           }
         }
       },

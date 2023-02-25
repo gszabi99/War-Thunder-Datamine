@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -35,13 +36,11 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   arcadeCountry = false
   hasRespawns = false
   isAvailable = function(_gm = null) { return true }
-  getEdiff = function(battleType = BATTLE_TYPES.AIR)
-  {
+  getEdiff = function(battleType = BATTLE_TYPES.AIR) {
     return this.diffCode == -1 ? -1 :
       this.diffCode + (battleType == BATTLE_TYPES.TANK ? EDIFF_SHIFT : 0)
   }
-  getEdiffByUnitMask = function(unitTypesMask = 0)
-  {
+  getEdiffByUnitMask = function(unitTypesMask = 0) {
     let isAvailableTanks = (unitTypesMask & (1 << ES_UNIT_TYPE_TANK)) != 0
     return this.diffCode == -1 ? -1 :
       this.diffCode + (isAvailableTanks ? EDIFF_SHIFT : 0)
@@ -128,54 +127,45 @@ enums.addTypesByGlobalName("g_difficulty", {
   }
 })
 
-::g_difficulty.types.sort(function(a,b)
-{
+::g_difficulty.types.sort(function(a, b) {
   if (a.diffCode != b.diffCode)
     return a.diffCode > b.diffCode ? 1 : -1
   return 0
 })
 
-::g_difficulty.getDifficultyByDiffCode <- function getDifficultyByDiffCode(diffCode)
-{
+::g_difficulty.getDifficultyByDiffCode <- function getDifficultyByDiffCode(diffCode) {
   return enums.getCachedType("diffCode", diffCode, ::g_difficulty_cache.byDiffCode, ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByName <- function getDifficultyByName(name)
-{
+::g_difficulty.getDifficultyByName <- function getDifficultyByName(name) {
   return enums.getCachedType("name", name, ::g_difficulty_cache.byName, ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByEgdCode <- function getDifficultyByEgdCode(egdCode)
-{
+::g_difficulty.getDifficultyByEgdCode <- function getDifficultyByEgdCode(egdCode) {
   return enums.getCachedType("egdCode", egdCode, ::g_difficulty_cache.byEgdCode, ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByEgdLowercaseName <- function getDifficultyByEgdLowercaseName(name)
-{
+::g_difficulty.getDifficultyByEgdLowercaseName <- function getDifficultyByEgdLowercaseName(name) {
   return enums.getCachedType("egdLowercaseName", name, ::g_difficulty_cache.byEgdLowercaseName,
                                         ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByMatchingName <- function getDifficultyByMatchingName(name)
-{
+::g_difficulty.getDifficultyByMatchingName <- function getDifficultyByMatchingName(name) {
   return enums.getCachedType("matchingName", name, ::g_difficulty_cache.byMatchingName,
                                         ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.getDifficultyByCrewSkillName <- function getDifficultyByCrewSkillName(name)
-{
+::g_difficulty.getDifficultyByCrewSkillName <- function getDifficultyByCrewSkillName(name) {
   return enums.getCachedType("crewSkillName", name, ::g_difficulty_cache.byCrewSkillName,
                                       ::g_difficulty, ::g_difficulty.UNKNOWN)
 }
 
-::g_difficulty.isDiffCodeAvailable <- function isDiffCodeAvailable(diffCode, gm = null)
-{
+::g_difficulty.isDiffCodeAvailable <- function isDiffCodeAvailable(diffCode, gm = null) {
   return this.getDifficultyByDiffCode(diffCode).isAvailable(gm)
 }
 
-::g_difficulty.getDifficultyByChoiceType <- function getDifficultyByChoiceType(searchChoiceType = "")
-{
-  foreach(t in this.types)
+::g_difficulty.getDifficultyByChoiceType <- function getDifficultyByChoiceType(searchChoiceType = "") {
+  foreach (t in this.types)
     if (isInArray(searchChoiceType, t.choiceType))
       return t
 
@@ -191,28 +181,24 @@ enums.addTypesByGlobalName("g_difficulty", {
   byCrewSkillName = {}
 }
 
-::get_current_ediff <- function get_current_ediff()
-{
+::get_current_ediff <- function get_current_ediff() {
   let gameMode = ::game_mode_manager.getCurrentGameMode()
   return gameMode && gameMode.ediff != -1 ? gameMode.ediff : EDifficulties.ARCADE
 }
 
-::get_battle_type_by_ediff <- function get_battle_type_by_ediff(ediff)
-{
+::get_battle_type_by_ediff <- function get_battle_type_by_ediff(ediff) {
   return ediff < EDIFF_SHIFT ? BATTLE_TYPES.AIR : BATTLE_TYPES.TANK
 }
 
-::get_difficulty_by_ediff <- function get_difficulty_by_ediff(ediff)
-{
+::get_difficulty_by_ediff <- function get_difficulty_by_ediff(ediff) {
   let diffCode = ediff % EDIFF_SHIFT
-  foreach(difficulty in ::g_difficulty.types)
+  foreach (difficulty in ::g_difficulty.types)
     if (difficulty.diffCode == diffCode)
       return difficulty
   return ::g_difficulty.ARCADE
 }
 
-::get_current_shop_difficulty <- function get_current_shop_difficulty()
-{
+::get_current_shop_difficulty <- function get_current_shop_difficulty() {
   let gameMode = ::game_mode_manager.getCurrentGameMode()
   if (gameMode)
     return ::g_difficulty.getDifficultyByDiffCode(gameMode.diffCode)

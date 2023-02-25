@@ -3,7 +3,7 @@ require Mission
 require DagorDataBlock
 require DagorSystem
 
-def components_to_blk(var blk : DataBlock implicit; eid : EntityId)
+def components_to_blk(var blk : DataBlock; eid : EntityId)
   ecs::query(eid) <| $ [es] (setting__crewSkillK : float;
                              setting__weapons : string;
                              setting__isPhysPredictionEnabled : bool;
@@ -38,6 +38,7 @@ def components_to_blk(var blk : DataBlock implicit; eid : EntityId)
                              setting__lightlyArmored : bool;
                              setting__avoidObstacles : bool;
                              setting__targetableByAi : bool;
+                             setting__aiEnabled : bool;
                              setting__isImmortal : bool;
                              setting__calmDetection : bool;
                              setting__aiReloadMult : float;
@@ -92,6 +93,7 @@ def components_to_blk(var blk : DataBlock implicit; eid : EntityId)
       add(prop, "lightlyArmored", setting__lightlyArmored)
       add(prop, "avoidObstacles", setting__avoidObstacles)
       add(prop, "targetableByAi", setting__targetableByAi)
+      add(prop, "aiEnabled", setting__aiEnabled)
       add(prop, "isImmortal", setting__isImmortal)
       add(prop, "calmDetection", setting__calmDetection)
       add(prop, "aiReloadMult", setting__aiReloadMult)
@@ -108,7 +110,7 @@ def unit_loader_init(evt : Event;
                      setting__unitType, setting__className : string;
                      setting__tm : float3x4;
                      setting__playerNo, setting__flags : int)
-  using() <| $(var settingsBlk : DataBlock#)
+  using() <| $(var settingsBlk : DataBlock)
     components_to_blk(settingsBlk, eid)
 
     if setting__unitType == "ship"

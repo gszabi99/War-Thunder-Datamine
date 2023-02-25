@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -40,7 +41,7 @@ return [
     max = 100
     step = 5
     showValueMul = 0.005
-    value = @(axis) (axis.innerDeadzone/MAX_DEADZONE) * 100
+    value = @(axis) (axis.innerDeadzone / MAX_DEADZONE) * 100
     setValue = @(axis, objValue) axis.innerDeadzone = objValue / 100.0 * MAX_DEADZONE
   }
   {

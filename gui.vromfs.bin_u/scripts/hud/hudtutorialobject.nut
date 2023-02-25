@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { get_time_msec } = require("dagor.time")
 
 ::dagui_propid.add_name_id("_set_aabb_by_object")
 
-::HudTutorialObject <- class
-{
+::HudTutorialObject <- class {
   obj = null
   showUpTo = 0
   hasAabb = false
@@ -17,53 +17,44 @@ let { get_time_msec } = require("dagor.time")
 
   aabbFromName = null
 
-  constructor(id, scene)
-  {
+  constructor(id, scene) {
     this.refreshObj(id, scene)
   }
 
-  function refreshObj(id, scene)
-  {
+  function refreshObj(id, scene) {
     this.obj = scene.findObject(id)
     this.show(this.isVisible)
     this.initAabb()
   }
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.obj)
   }
 
-  function show(value)
-  {
+  function show(value) {
     if (checkObj(this.obj))
       this.obj.show(value)
     this.isVisible = value
   }
 
-  function setTime(timeSec)
-  {
+  function setTime(timeSec) {
     if (timeSec > 0)
       this.showUpTo = get_time_msec() + 1000 * timeSec
   }
 
-  function getTimeLeft()
-  {
+  function getTimeLeft() {
     return 0.001 * (this.showUpTo - get_time_msec())
   }
 
-  function hasTimer()
-  {
+  function hasTimer() {
     return this.showUpTo > 0
   }
 
-  function isVisibleByTime()
-  {
+  function isVisibleByTime() {
     return this.isVisible && (!this.hasTimer() || this.showUpTo < get_time_msec())
   }
 
-  function initAabb()
-  {
+  function initAabb() {
     if (!this.isValid())
       return
 
@@ -73,8 +64,7 @@ let { get_time_msec } = require("dagor.time")
     this.updateAabb()
   }
 
-  function updateAabb()
-  {
+  function updateAabb() {
     if (!this.aabbFromName || !this.isValid())
       return
 

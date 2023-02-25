@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "smokeScreenActivateTime": 5.0,
@@ -41,7 +41,6 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
-  "allowForestallWithoutMarkers": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
@@ -123,6 +122,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -524,6 +531,132 @@
           ]
         }
       ]
+    },
+    {
+      "model": "usa_sailor_navy_modern_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "7",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "usa_sailor_navy_modern_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "8",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
     }
   ],
   "attach": {
@@ -532,7 +665,9 @@
     "Bip01 Pelvis_3": "usa_sailor_navy_modern_sit",
     "Bip01 Pelvis_4": "usa_sailor_navy_modern_sit",
     "Bip01 Pelvis_5": "usa_sailor_navy_modern_standing",
-    "Bip01 Pelvis_6": "usa_sailor_navy_modern_standing"
+    "Bip01 Pelvis_6": "usa_sailor_navy_modern_standing",
+    "Bip01 Pelvis_7": "usa_sailor_navy_modern_sit",
+    "Bip01 Pelvis_8": "usa_sailor_navy_modern_sit"
   },
   "controlDevices": {
     "device": [
@@ -573,6 +708,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -803,6 +948,9 @@
       "fireDamageMult": 0.1,
       "funnel_01_dm": {
         "hp": 3000.0
+      },
+      "funnel_02_dm": {
+        "hp": 3000.0
       }
     },
     "steering_gear": {
@@ -841,49 +989,67 @@
       "armorThickness": 40.0,
       "fireDamageMult": 0.1,
       "armor_cit_01_dm": {
-        "armorThickness": 160.0,
+        "armorThickness": 134.62,
         "hp": 10000.0
       },
       "armor_cit_02_dm": {
         "armorClass": "ship_STS",
-        "armorThickness": 28.575,
+        "armorThickness": 25.4,
         "hidableInViewer": true,
         "hp": 10000.0
       },
       "armor_cit_03_dm": {
-        "armorClass": "ship_STS",
-        "armorThickness": 63.5,
+        "armorClass": "ship_RHA",
+        "armorThickness": 86.36,
         "hp": 10000.0
       },
       "armor_cit_04_dm": {
-        "armorThickness": 140.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 121.92,
         "hp": 10000.0
       },
       "armor_cit_05_dm": {
-        "armorClass": "ship_RHA",
-        "armorThickness": 127.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 38.1,
         "hp": 10000.0
       },
       "armor_cit_06_dm": {
-        "armorClass": "ship_RHA",
-        "armorThickness": 165.1,
+        "armorThickness": 154.94,
         "hp": 10000.0
       },
       "armor_cit_07_dm": {
         "armorClass": "ship_STS",
-        "armorThickness": 50.8,
+        "armorThickness": 63.5,
         "hp": 10000.0
       },
       "armor_cit_08_dm": {
-        "armorThickness": 152.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 19.05,
         "hp": 10000.0
       },
       "armor_cit_09_dm": {
-        "armorThickness": 152.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 147.32,
         "hp": 10000.0
       },
       "armor_cit_10_dm": {
-        "armorThickness": 31.75,
+        "armorClass": "ship_RHA",
+        "armorThickness": 101.6,
+        "hp": 10000.0
+      },
+      "armor_cit_11_dm": {
+        "armorClass": "ship_STS",
+        "armorThickness": 25.4,
+        "hp": 10000.0
+      },
+      "armor_cit_12_dm": {
+        "armorClass": "ship_STS",
+        "armorThickness": 51.816,
+        "hp": 10000.0
+      },
+      "armor_cit_13_dm": {
+        "armorClass": "ship_STS",
+        "armorThickness": 22.225,
         "hp": 10000.0
       }
     },
@@ -923,75 +1089,129 @@
       "splashPenetrationToArmorThreshold": 0.1,
       "kineticPenetrationToArmorThreshold": 0.95,
       "armor_belt_l_01_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_l_02_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_l_03_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_l_04_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_l_05_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_l_06_dm": {
-        "armorThickness": 152.0,
-        "hp": 3000.0
+        "armorThickness": 147.32,
+        "hp": 2860.0
       },
       "armor_belt_r_01_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_r_02_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_r_03_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_r_04_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_r_05_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
         "hp": 3000.0
       },
       "armor_belt_r_06_dm": {
-        "armorThickness": 152.0,
+        "armorThickness": 147.32,
+        "hp": 2860.0
+      },
+      "armor_belt_l_10_dm": {
+        "armorThickness": 96.52,
         "hp": 3000.0
       },
+      "armor_belt_l_11_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
+      "armor_belt_l_12_dm": {
+        "armorThickness": 96.52,
+        "hp": 2675.0
+      },
+      "armor_belt_l_13_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
+      "armor_belt_l_14_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
+      "armor_belt_l_15_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
+      "armor_belt_r_10_dm": {
+        "armorThickness": 96.52,
+        "hp": 3000.0
+      },
+      "armor_belt_r_11_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
+      "armor_belt_r_12_dm": {
+        "armorThickness": 96.52,
+        "hp": 2675.0
+      },
+      "armor_belt_r_13_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
+      "armor_belt_r_14_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
+      "armor_belt_r_15_dm": {
+        "armorThickness": 96.52,
+        "hp": 2500.0
+      },
       "armor_belt_l_07_dm": {
-        "armorThickness": 102.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 50.8,
         "hp": 3000.0
       },
       "armor_belt_l_08_dm": {
-        "armorThickness": 102.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 50.8,
         "hp": 2627.0
       },
       "armor_belt_l_09_dm": {
-        "armorThickness": 102.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 38.1,
         "hp": 2500.0
       },
       "armor_belt_r_07_dm": {
-        "armorThickness": 102.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 50.8,
         "hp": 3000.0
       },
       "armor_belt_r_08_dm": {
-        "armorThickness": 102.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 50.8,
         "hp": 2627.0
       },
       "armor_belt_r_09_dm": {
-        "armorThickness": 102.0,
+        "armorClass": "ship_STS",
+        "armorThickness": 38.1,
         "hp": 2500.0
       }
     },
@@ -1000,37 +1220,29 @@
       "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_RHA",
       "armorThickness": 15.0,
-      "turret_01_bottom_dm": {
-        "hp": 10000.0
-      },
-      "turret_02_bottom_dm": {
-        "hp": 10000.0
-      },
-      "turret_03_bottom_dm": {
-        "hp": 10000.0
-      },
       "turret_01_front_dm": {
         "armorClass": "ship_RGA",
         "armorThickness": 203.2,
         "hp": 10000.0
       },
       "turret_01_side_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 90.0,
+        "armorThickness": 95.25,
         "hp": 10000.0
       },
       "turret_02_side_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 51.8,
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_01_back_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 38.1,
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_01_top_dm": {
-        "armorThickness": 102.0,
+        "armorThickness": 101.6,
+        "hp": 10000.0
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_02_front_dm": {
@@ -1039,22 +1251,23 @@
         "hp": 10000.0
       },
       "turret_03_side_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 90.0,
+        "armorThickness": 95.25,
         "hp": 10000.0
       },
       "turret_04_side_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 51.8,
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_02_back_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 38.1,
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_02_top_dm": {
-        "armorThickness": 102.0,
+        "armorThickness": 101.6,
+        "hp": 10000.0
+      },
+      "turret_02_bottom_dm": {
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_03_front_dm": {
@@ -1063,22 +1276,23 @@
         "hp": 10000.0
       },
       "turret_05_side_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 90.0,
+        "armorThickness": 95.25,
         "hp": 10000.0
       },
       "turret_06_side_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 51.8,
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_03_back_dm": {
-        "armorClass": "ship_RGA",
-        "armorThickness": 38.1,
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_03_top_dm": {
-        "armorThickness": 102.0,
+        "armorThickness": 101.6,
+        "hp": 10000.0
+      },
+      "turret_03_bottom_dm": {
+        "armorThickness": 50.8,
         "hp": 10000.0
       },
       "turret_04_front_dm": {
@@ -5497,10 +5711,10 @@
     },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_rangefinder": {
       "prevModification": "203mm_us_mk25_navy_hc_ammo_pack"
@@ -7435,5 +7649,76 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "usa_camo_navy_blue",
+      "nameLocId": "skin/usa_camo_navy_blue",
+      "descLocId": "skin/usa_camo_navy_blue/desc",
+      "replace_tex": [
+        {
+          "from": "camo_royal_blue*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_medium_bluegray*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_navy_blue*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_atlanticocean",
+      "nameLocId": "skin/usa_camo_atlanticocean",
+      "descLocId": "skin/usa_camo_atlanticocean/desc",
+      "replace_tex": [
+        {
+          "from": "camo_royal_blue*",
+          "to": "usa_camo_atlanticocean*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_atlanticocean*"
+        },
+        {
+          "from": "camo_medium_bluegray*",
+          "to": "usa_camo_atlanticocean*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_atlanticocean*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_pacificfleet",
+      "nameLocId": "skin/usa_camo_pacificfleet",
+      "descLocId": "skin/usa_camo_pacificfleet/desc",
+      "replace_tex": [
+        {
+          "from": "camo_royal_blue*",
+          "to": "usa_camo_pacificfleet*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_pacificfleet*"
+        },
+        {
+          "from": "camo_medium_bluegray*",
+          "to": "usa_camo_pacificfleet*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_pacificfleet*"
+        }
+      ]
+    }
+  ]
 }

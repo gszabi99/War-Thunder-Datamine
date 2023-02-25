@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,26 +7,22 @@ from "%scripts/dagui_library.nut" import *
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
-::items_classes.InternalItem <- class extends ItemCouponBase
-{
+::items_classes.InternalItem <- class extends ItemCouponBase {
   static iType = itemType.INTERNAL_ITEM
   static typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
 
-  getContentItem   = function()
-  {
+  getContentItem   = function() {
     let contentItem = this.metaBlk?.item ?? this.metaBlk?.trophy
     return contentItem && ::ItemsManager.findItemById(contentItem)
   }
 
-  function canConsume()
-  {
+  function canConsume() {
     let item = this.getContentItem()
     if (!this.isInventoryItem || !item)
       return false
 
     if (item.iType == itemType.TROPHY) {
-      foreach (blk in item.getContent())
-      {
+      foreach (blk in item.getContent()) {
         let decoratorType = ::g_decorator_type.getTypeByResourceType(blk?.resourceType)
         if (!blk?.resource || !decoratorType.isPlayerHaveDecorator(blk.resource))
           return true
@@ -36,16 +33,14 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     return true
   }
 
-  function updateShopFilterMask()
-  {
+  function updateShopFilterMask() {
     this.shopFilterMask = this.iType
     let contentItem = this.getContentItem()
     if (contentItem)
       this.shopFilterMask = this.shopFilterMask | contentItem.iType
   }
 
-  getContentIconData   = function()
-  {
+  getContentIconData   = function() {
     let contentItem = this.getContentItem()
     return contentItem ? { contentIcon = contentItem.typeIcon } : null
   }
@@ -63,15 +58,14 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
   function getViewData(params = {}) {
     if (this.showAsContentItem())
       return this.getContentItem()?.getViewData(
-          params.__update({count = (params?.count ?? 0) * (this.metaBlk?.count ?? 0)}))
+          params.__update({ count = (params?.count ?? 0) * (this.metaBlk?.count ?? 0) }))
         ?? base.getViewData(params)
     return base.getViewData(params)
   }
 
   showAsContentItem = @() this.itemDef?.tags?.showAsContentItem ?? false
 
-  function getPrizeDescription(count = 1, colored = true)
-  {
+  function getPrizeDescription(count = 1, colored = true) {
     let itemText = this.getShortDescription(colored)
     let quantity = count * (this.metaBlk?.count ?? 1)
     let quantityText = quantity == 1
@@ -84,8 +78,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     ? this.getContentItem()?.getShortDescription(colored) ?? base.getShortDescription(colored)
     : base.getShortDescription(colored)
 
-  function getSubstitutionItem()
-  {
+  function getSubstitutionItem() {
     if (this.showAsContentItem())
       return this.getContentItem()
 

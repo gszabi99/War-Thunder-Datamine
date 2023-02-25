@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { getRespawnBaseNameById, isDefaultRespawnBase } = require("guiRespawn")
 
 let MAP_SELECT_NOTHING = -1
 
-local RespawnBase = class
-{
+local RespawnBase = class {
   id = -1
   name = ""
   mapId = MAP_SELECT_NOTHING
@@ -20,8 +20,7 @@ local RespawnBase = class
 
   static MAP_ID_NOTHING = MAP_SELECT_NOTHING
 
-  constructor(v_id, v_isAutoSelected = false)
-  {
+  constructor(v_id, v_isAutoSelected = false) {
     this.id = v_id
     this.isAutoSelected = v_isAutoSelected
     this.name = getRespawnBaseNameById(this.id)
@@ -31,16 +30,14 @@ local RespawnBase = class
     this.mapId = !this.isRandom ? this.id : this.MAP_ID_NOTHING
   }
 
-  function getTitle()
-  {
+  function getTitle() {
     local res = (this.name == "") ? loc("missions/spawn_number", { number = this.id + 1 }) : loc(this.name)
     if (this.isAutoSelected)
       res = loc("missions/auto_spawn", { spawn = res })
     return res
   }
 
-  function isEqual(respBase)
-  {
+  function isEqual(respBase) {
     return respBase != null && this.isAutoSelected == respBase.isAutoSelected && this.id == respBase.id
   }
 }

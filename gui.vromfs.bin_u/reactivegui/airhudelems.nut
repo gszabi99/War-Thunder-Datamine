@@ -1,10 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
-let {floor, round_by_value} = require("%sqstd/math.nut")
+let { floor, round_by_value } = require("%sqstd/math.nut")
 let string = require("string")
 
-let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount, IsCannonEmpty,
+let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCount, IsCannonEmpty,
   OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
   EngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, HasExternalFuel, ExternalFuel, FuelState, IsCompassVisible,
   IsMachineGunsEmpty, MachineGunsSelectedArray, MachineGunsCount, MachineGunsReloadTime, MachineGunsMode,
@@ -27,19 +27,19 @@ let {CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonCo
   PassivColor, IsLaserDesignatorEnabled, IsInsideLaunchZoneDist, GunInDeadZone,
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
   RocketAimX, RocketAimY, TATargetVisible, IRCMState,
-  Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced,IsEnginesControled, ThrottleState, isEngineControled,
+  Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced, IsEnginesControled, ThrottleState, isEngineControled,
   DistanceToGround, IsMfdEnabled, VerticalSpeed, HudParamColor, MfdColor,
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
 
-let {isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor} = require("style/airHudStyle.nut")
+let { isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor } = require("style/airHudStyle.nut")
 
 let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 
 let { isInitializedMeasureUnits, measureUnitsNames } = require("options/optionsMeasureUnits.nut")
 
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 
 let aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
 
@@ -60,7 +60,7 @@ let verticalSpeedInd = function(height, style, color) {
     rendObj = ROBJ_VECTOR_CANVAS
     color
     size = [height, height]
-    pos = [0, -height*0.25]
+    pos = [0, -height * 0.25]
     commands = [
       [VECTOR_LINE, 0, 25, 100, 50, 100, 0, 0, 25],
     ]
@@ -79,20 +79,20 @@ let verticalSpeedScale = function(width, height, style, color) {
     commands = [
       [VECTOR_LINE, 0,         0,           100, 0],
       [VECTOR_LINE, lineStart, part1_16,    100, part1_16],
-      [VECTOR_LINE, lineStart, 2*part1_16,  100, 2*part1_16],
-      [VECTOR_LINE, lineStart, 3*part1_16,  100, 3*part1_16],
+      [VECTOR_LINE, lineStart, 2 * part1_16,  100, 2 * part1_16],
+      [VECTOR_LINE, lineStart, 3 * part1_16,  100, 3 * part1_16],
       [VECTOR_LINE, 0,         25,          100, 25],
-      [VECTOR_LINE, lineStart, 5*part1_16,  100, 5*part1_16],
-      [VECTOR_LINE, lineStart, 6*part1_16,  100, 6*part1_16],
-      [VECTOR_LINE, lineStart, 7*part1_16,  100, 7*part1_16],
+      [VECTOR_LINE, lineStart, 5 * part1_16,  100, 5 * part1_16],
+      [VECTOR_LINE, lineStart, 6 * part1_16,  100, 6 * part1_16],
+      [VECTOR_LINE, lineStart, 7 * part1_16,  100, 7 * part1_16],
       [VECTOR_LINE, 0,         50,          100, 50],
-      [VECTOR_LINE, lineStart, 9*part1_16,  100, 9*part1_16],
-      [VECTOR_LINE, lineStart, 10*part1_16, 100, 10*part1_16],
-      [VECTOR_LINE, lineStart, 11*part1_16, 100, 11*part1_16],
+      [VECTOR_LINE, lineStart, 9 * part1_16,  100, 9 * part1_16],
+      [VECTOR_LINE, lineStart, 10 * part1_16, 100, 10 * part1_16],
+      [VECTOR_LINE, lineStart, 11 * part1_16, 100, 11 * part1_16],
       [VECTOR_LINE, 0,         75,          100, 75],
-      [VECTOR_LINE, lineStart, 13*part1_16, 100, 13*part1_16],
-      [VECTOR_LINE, lineStart, 14*part1_16, 100, 14*part1_16],
-      [VECTOR_LINE, lineStart, 15*part1_16, 100, 15*part1_16],
+      [VECTOR_LINE, lineStart, 13 * part1_16, 100, 13 * part1_16],
+      [VECTOR_LINE, lineStart, 14 * part1_16, 100, 14 * part1_16],
+      [VECTOR_LINE, lineStart, 15 * part1_16, 100, 15 * part1_16],
       [VECTOR_LINE, 0,         100,         100, 100],
     ]
   })
@@ -100,7 +100,7 @@ let verticalSpeedScale = function(width, height, style, color) {
 
 let function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = styleText) {
 
-  let relativeHeight = Computed( @() clamp(DistanceToGround.value * 2.0, 0, 100))
+  let relativeHeight = Computed(@() clamp(DistanceToGround.value * 2.0, 0, 100))
 
   return {
     pos = [posX, posY]
@@ -126,18 +126,18 @@ let function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyl
       {
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
-        size = [-0.5*scaleWidth, height]
+        size = [-0.5 * scaleWidth, height]
         children = @() elemStyle.__merge({
           rendObj = ROBJ_TEXT
           halign = ALIGN_RIGHT
           color
-          size = [scaleWidth*4,SIZE_TO_CONTENT]
+          size = [scaleWidth * 4, SIZE_TO_CONTENT]
           watch = [DistanceToGround, IsMfdEnabled]
           text = IsMfdEnabled.value ? floor(DistanceToGround.value).tostring() :
             cross_call.measureTypes.ALTITUDE.getMeasureUnitsText(DistanceToGround.value)
         })
       }
-      @(){
+      @() {
         watch = VerticalSpeed
         pos = [scaleWidth + sh(0.5), 0]
         transform = {
@@ -150,7 +150,7 @@ let function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyl
             children = @() elemStyle.__merge({
               rendObj = ROBJ_TEXT
               color
-              size = [scaleWidth*4,SIZE_TO_CONTENT]
+              size = [scaleWidth * 4, SIZE_TO_CONTENT]
               watch = [VerticalSpeed, IsMfdEnabled]
               text = IsMfdEnabled.value ?
                 round_by_value(VerticalSpeed.value, 1).tostring() :
@@ -233,7 +233,7 @@ let generateTemperatureTextFunction = function(temperature, state, temperatureUn
 }
 
 let generateTransmissionStateTextFunction = function(oilState) {
-  if(oilState > 0.01)
+  if (oilState > 0.01)
     return loc("HUD_FUEL_LEAK")
   else
   return loc("HUD_TANK_IS_EMPTY")
@@ -241,7 +241,7 @@ let generateTransmissionStateTextFunction = function(oilState) {
 }
 
 let function getThrottleText(mode, trt) {
-  if ( mode == AirThrottleMode.DEFAULT_MODE
+  if (mode == AirThrottleMode.DEFAULT_MODE
     || mode == AirThrottleMode.CLIMB
     || mode == AirThrottleMode.AIRCRAFT_DEFAULT_MODE)
     return string.format("%d %%", trt)
@@ -260,7 +260,7 @@ let function getThrottleCaption(mode, isControled, idx) {
   if (mode == AirThrottleMode.AIRCRAFT_DEFAULT_MODE
   || mode == AirThrottleMode.AIRCRAFT_WEP
   || mode == AirThrottleMode.AIRCRAFT_BRAKE)
-    texts.append( loc("HUD/THROTTLE_SHORT"))
+    texts.append(loc("HUD/THROTTLE_SHORT"))
   else if (mode == AirThrottleMode.CLIMB)
     texts.append(loc("HUD/CLIMB_SHORT"))
   else
@@ -321,8 +321,8 @@ let function getGBCaption(guidanceLockState, pointIsTarget) {
   return "".join(texts)
 }
 
-let function getCountermeasuresCaption(isFlare ,mode) {
-  let texts = isFlare ? [loc("HUD/FLARES_SHORT")," "] : [loc("HUD/CHAFFS_SHORT")," "]
+let function getCountermeasuresCaption(isFlare, mode) {
+  let texts = isFlare ? [loc("HUD/FLARES_SHORT"), " "] : [loc("HUD/CHAFFS_SHORT"), " "]
   if (mode & CountermeasureMode.PERIODIC_COUNTERMEASURE)
     texts.append(loc("HUD/COUNTERMEASURE_PERIODIC"))
   if (mode == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
@@ -358,43 +358,43 @@ let function getModeCaption(mode) {
   return "".join(texts)
 }
 
-let function getMachineGunCaption(mode){
-  let texts = [loc("HUD/MACHINE_GUNS_SHORT")," "]
+let function getMachineGunCaption(mode) {
+  let texts = [loc("HUD/MACHINE_GUNS_SHORT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getAdditionalCannonCaption(mode){
-  let texts = [loc("HUD/ADDITIONAL_GUNS_SHORT")," "]
+let function getAdditionalCannonCaption(mode) {
+  let texts = [loc("HUD/ADDITIONAL_GUNS_SHORT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getRocketCaption(mode){
-  let texts = [loc("HUD/RKT")," "]
+let function getRocketCaption(mode) {
+  let texts = [loc("HUD/RKT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getBombCaption(mode){
-  let texts = [loc("HUD/BOMBS_SHORT")," "]
+let function getBombCaption(mode) {
+  let texts = [loc("HUD/BOMBS_SHORT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
 let function getTorpedoCaption(mode) {
-  let texts = [loc("HUD/TORPEDOES_SHORT")," "]
+  let texts = [loc("HUD/TORPEDOES_SHORT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getCannonsCaption(mode){
+let function getCannonsCaption(mode) {
   let texts = [loc("HUD/CANNONS_SHORT"), " "]
   texts.append(getModeCaption(mode))
   return "".join(texts)
 }
 
-let function getIRCMCaption(state){
+let function getIRCMCaption(state) {
   let texts = []
   if (state == IRCMMode.IRCM_ENABLED)
     texts.append(loc("controls/on"))
@@ -405,15 +405,15 @@ let function getIRCMCaption(state){
   return "".join(texts)
 }
 
-let function getInstructorCaption(isInstructorForced){
+let function getInstructorCaption(isInstructorForced) {
   return isInstructorForced ? loc("HUD_INSTRUCTOR_FORCED") : loc("HUD_INSTRUCTOR")
 }
 
-let function getThrottleValueState(state, controled){
+let function getThrottleValueState(state, controled) {
   return controled ? state : HudColorState.PASSIV
 }
 
-let function getThrottleState(controled){
+let function getThrottleState(controled) {
   return controled ? HudColorState.ACTIV : HudColorState.PASSIV
 }
 
@@ -421,7 +421,7 @@ let function getStaminaValue(stamina) {
   return string.format("%d %%", stamina)
 }
 
-let function getFuelState(fuel, hasExternalFuel, externalFuel, fuelState){
+let function getFuelState(fuel, hasExternalFuel, externalFuel, fuelState) {
   if (fuelState == TemperatureState.FUEL_LEAK)
     return loc("HUD_FUEL_LEAK")
   if (fuelState == TemperatureState.FUEL_SEALING)
@@ -434,15 +434,15 @@ let function getFuelState(fuel, hasExternalFuel, externalFuel, fuelState){
   return val
 }
 
-let function getFuelAlertState(fuelState){
+let function getFuelAlertState(fuelState) {
   return fuelState >= TemperatureState.FUEL_LEAK ? HudColorState.HIGH_ALERT :
          fuelState == TemperatureState.OVERHEAT ? HudColorState.PASSIV :
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
 let function createParam(param, width, height, style, needCaption = true, for_ils = false, isBomberView = false) {
-  let {blinkComputed=null, blinkTrigger=null, valueComputed, selectedComputed,
-    additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed} = param
+  let { blinkComputed = null, blinkTrigger = null, valueComputed, selectedComputed,
+    additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed } = param
 
   let selectColor = function(state, activeColor, passivColor, lowAlertColor, mediumAlertColor, highAlertColor) {
     return (state == HudColorState.PASSIV) ? passivColor
@@ -488,7 +488,7 @@ let function createParam(param, width, height, style, needCaption = true, for_il
   let selectedComponent = @() style.__merge({
     watch = [selectedComputed, colorAlertCaptionW, colorFxCaption]
     rendObj = ROBJ_TEXT
-    size = [0.05*width, height]
+    size = [0.05 * width, height]
     text = selectedComputed.value
     color = colorAlertCaptionW.value
     fontFxColor = colorFxCaption.value
@@ -531,7 +531,7 @@ let function createParam(param, width, height, style, needCaption = true, for_il
 
   return {
     flow = FLOW_HORIZONTAL
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = blinkComputed?.value, loop = true, easing = InOutCubic, trigger = blinkTrigger}]
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = blinkComputed?.value, loop = true, easing = InOutCubic, trigger = blinkTrigger }]
     children = [
       selectedComponent,
       (needCaption ? captionComponent : null),
@@ -702,7 +702,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
     valueComputed = Computed(@() getThrottleText(trtModeComputed.value, trtComputed.value))
     selectedComputed = Computed (@() "")
     additionalComputed = Computed (@() "")
-    alertStateCaptionComputed = Computed( @() getThrottleState(isEngineControledComputed.value))
+    alertStateCaptionComputed = Computed(@() getThrottleState(isEngineControledComputed.value))
     alertValueStateComputed = Computed (@() getThrottleValueState(throttleStateComputed.value, isEngineControledComputed.value))
   }
 }
@@ -711,9 +711,10 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   let idx = i
   let MachineGunsAmmoCount = MachineGunsCount[idx]
   let MachineGunsAmmoReloadTime = MachineGunsReloadTime[idx]
+  let MachineGunsModeLocal = MachineGunsMode[idx]
 
   textParamsMapMain[AirParamsMain.MACHINE_GUNS_1 + idx] <- {
-    titleComputed = Computed(@() getMachineGunCaption(MachineGunsMode.value))
+    titleComputed = Computed(@() getMachineGunCaption(MachineGunsModeLocal.value))
     valueComputed = Computed(@() generateBulletsTextFunction(MachineGunsAmmoCount.value, MachineGunsAmmoReloadTime.value))
     selectedComputed = Computed(@() MachineGunsSelectedArray.value?[idx] ? ">" : "")
     additionalComputed = Computed (@() "")
@@ -726,13 +727,14 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   let idx = i
   let CannonAmmoCount = CannonCount[idx]
   let CannonAmmoReloadTime = CannonReloadTime[idx]
+  let CannonModeLocal = CannonMode[idx]
   let blinkComputed = Computed(@() GunInDeadZone.value)
   let blinkTrigger = {}
   blinkComputed.subscribe(@(v) v ? anim_start(blinkTrigger) : anim_request_stop(blinkTrigger))
   textParamsMapMain[AirParamsMain.CANNON_1 + idx] <- {
-    titleComputed = Computed(@() getCannonsCaption(CannonMode.value))
+    titleComputed = Computed(@() getCannonsCaption(CannonModeLocal.value))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonAmmoCount.value, CannonAmmoReloadTime.value))
-    selectedComputed = Computed(@() CannonSelectedArray.value?[idx] || CannonSelected.value? ">" : "")
+    selectedComputed = Computed(@() CannonSelectedArray.value?[idx] || CannonSelected.value ? ">" : "")
     additionalComputed = Computed (@() "")
     alertStateCaptionComputed = Computed(@() (IsCannonEmpty.value?[idx] || isCannonJamed.value?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() (IsCannonEmpty.value?[idx] || isCannonJamed.value?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -746,7 +748,7 @@ let textParamsMapSecondary = {}
 
 for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
 
-  let indexStr = (i+1).tostring()
+  let indexStr = (i + 1).tostring()
   let oilStateComputed = OilState[i]
   let oilTemperatureComputed = OilTemperature[i]
   let oilAlertComputed = OilAlert[i]
@@ -789,7 +791,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
 
 for (local i = 0; i < NUM_TRANSMISSIONS_MAX; ++i) {
 
-  let indexStr = (i+1).tostring();
+  let indexStr = (i + 1).tostring();
   let transmissionOilStateComputed = TransmissionOilState[i]
   let isTransmissionAlertComputed = IsTransmissionOilAlert[i]
   textParamsMapSecondary[AirParamsSecondary.TRANSMISSION_1 + i] <- {
@@ -835,7 +837,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
   let function getChildren(style, isBomberView = false) {
     let children = []
 
-    foreach(key, param in textParamsMapMain) {
+    foreach (key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
         children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
       if (key == AirParamsMain.ALTITUDE && is_aircraft) {
@@ -862,7 +864,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
       }))
     }
 
-    foreach(key, param in textParamsMapSecondary) {
+    foreach (key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
         children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
     }
@@ -898,7 +900,7 @@ let airHorizonZeroLevel = function(elemStyle, height, color) {
   return elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     color
-    size = [4*height, height]
+    size = [4 * height, height]
     commands = [
       [VECTOR_LINE, 0, 50, 15, 50],
       [VECTOR_LINE, 85, 50, 100, 50],
@@ -910,7 +912,7 @@ let airHorizonZeroLevel = function(elemStyle, height, color) {
 let airHorizon = function(elemStyle, height, color) {
   return @() elemStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [4*height, height]
+    size = [4 * height, height]
     color
     commands = [
       [VECTOR_LINE, 20, 50,  32, 50,  41, 100,  50, 50,  59, 100,  68, 50,  80, 50],
@@ -937,13 +939,13 @@ let function horizontalSpeedVector(elemStyle, color, height) {
 let function HelicopterHorizontalSpeedComponent(color, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = styleLineForeground) {
   return function() {
     return {
-      pos = [posX - 2* height, posY - height*0.5]
-      size = [4*height, height]
+      pos = [posX - 2 * height, posY - height * 0.5]
+      size = [4 * height, height]
       children = [
         airHorizonZeroLevel(elemStyle, height, color)
         airHorizon(elemStyle, height, color)
         {
-          pos = [height, -0.5*height]
+          pos = [height, -0.5 * height]
           children = [
             horizontalSpeedVector(elemStyle, color, 2 * height)
           ]
@@ -1066,7 +1068,7 @@ let function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5
             commands = getAgmLaunchAngularRangeCommands(IsAgmLaunchZoneVisible.value, AgmLaunchZoneYawMin.value, AgmLaunchZoneYawMax.value,
               AgmLaunchZonePitchMin.value, AgmLaunchZonePitchMax.value)
             animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchZoneBlinking.value,
-              loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger}]
+              loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger }]
           }) : null,
       isAtgmGuidanceRangeVisible.value
         ? @() styleLineForeground.__merge({
@@ -1083,7 +1085,7 @@ let function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5
             commands = getAgmGuidanceRangeCommands(IsAgmLaunchZoneVisible.value, AgmRotatedLaunchZoneYawMin.value, AgmRotatedLaunchZoneYawMax.value,
               AgmRotatedLaunchZonePitchMin.value, AgmRotatedLaunchZonePitchMax.value)
             animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchZoneBlinking.value,
-              loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger}]
+              loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger }]
           }) : null,
         isAtgmGuidanceRangeVisible.value
           ? @() styleLineForeground.__merge({
@@ -1100,7 +1102,7 @@ let function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5
               commands = getAgmLaunchDistanceRangeCommands(IsAgmLaunchZoneVisible.value, IsRangefinderEnabled.value,
                 AgmLaunchZoneDistMin.value, AgmLaunchZoneDistMax.value, RangefinderDist.value)
               animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchDistanceblinking.value,
-                loop = true, easing = InOutSine, trigger = atgmLaunchDistanceTrigger}]
+                loop = true, easing = InOutSine, trigger = atgmLaunchDistanceTrigger }]
             }) : null
     ]
   })
@@ -1111,7 +1113,7 @@ let lockSightComponent = function(colorWatch, width, height, posX, posY) {
   return lockSight(color, width, height, posX, posY)
 }
 
-let function helicopterRocketSightMode(sightMode){
+let function helicopterRocketSightMode(sightMode) {
 
   if (sightMode == 0) {
     return [
@@ -1175,7 +1177,7 @@ let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blin
 }
 
 let function agmLaunchZone(colorWatch, _w, _h) {
-  let function maxAngleBorder(){
+  let function maxAngleBorder() {
     let px = TurretYaw.value
     let py = TurretPitch.value
     let left  = max(0.0, AgmLaunchZoneYawMin.value) * 100.0 - px * 100.0 + 50.0
@@ -1232,10 +1234,10 @@ let function sight(colorWatch, height) {
       [VECTOR_LINE, 50, 50 + centerOffset, 50, 50 + centerOffset + shortL],
       [VECTOR_LINE, 50, 50 - shortL - centerOffset, 50, 50 - centerOffset],
 
-      [VECTOR_LINE, 50 - centerOffset, 50 - dash , 50 - centerOffset, 50 + dash],
-      [VECTOR_LINE, 50 + centerOffset, 50 - dash , 50 + centerOffset, 50 + dash],
-      [VECTOR_LINE, 50 - dash , 50 - centerOffset, 50 + dash, 50 - centerOffset],
-      [VECTOR_LINE, 50 - dash , 50 + centerOffset, 50 + dash, 50 + centerOffset],
+      [VECTOR_LINE, 50 - centerOffset, 50 - dash,  50 - centerOffset, 50 + dash],
+      [VECTOR_LINE, 50 + centerOffset, 50 - dash,  50 + centerOffset, 50 + dash],
+      [VECTOR_LINE, 50 - dash,  50 - centerOffset, 50 + dash, 50 - centerOffset],
+      [VECTOR_LINE, 50 - dash,  50 + centerOffset, 50 + dash, 50 + centerOffset],
     ]
   })
 }
@@ -1307,7 +1309,7 @@ let HelicopterTATarget = @(w, h) function() {
   let res = {
     watch = [TATargetVisible, TargetX, TargetY, IsTargetTracked,
       TargetAge, AlertColorHigh, IsLaserDesignatorEnabled]
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value > 0.2, loop = true, easing = InOutSine, trigger = triggerTATarget}]
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value > 0.2, loop = true, easing = InOutSine, trigger = triggerTATarget }]
     key = TargetAge
   }
 
@@ -1358,9 +1360,9 @@ let targetSizeComponent = function(colorWatch, width, height) {
   }
 }
 
-let detectAllyComponent = @(posX, posY) function(){
+let detectAllyComponent = @(posX, posY) function() {
 
-  let res = {watch = [DetectAllyProgress, DetectAllyState]}
+  let res = { watch = [DetectAllyProgress, DetectAllyState] }
   if (DetectAllyProgress.value < 1.0)
     return res
 

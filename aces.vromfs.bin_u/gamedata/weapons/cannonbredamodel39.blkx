@@ -12,7 +12,7 @@
   "emitTime": 0.03,
   "aimMinDist": 10.0,
   "aimMaxDist": 3500.0,
-  "maxDeltaAngle": 0.2,
+  "maxDeltaAngle": 0.1,
   "shotFreq": 2.3,
   "recoilMultiplier": 0.8,
   "traceFreq": 1,
@@ -51,7 +51,6 @@
       "hitPowerMult": 45.0,
       "bulletName": "37mm_gr_tracciante_da37ca_he_t",
       "selfDestructionInAir": true,
-      "dynamicKv": true,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -89,15 +88,26 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
+      "hitpower": {
+        "HitPower0m": [
+          1.0,
+          500.0
+        ],
+        "HitPower5000m": [
+          0.5,
+          5000.0
+        ],
+        "HitPower7000m": [
+          0.1,
+          7000.0
+        ]
+      },
       "damage": {
-        "kinetic": {
-          "damageType": "generic"
-        },
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.125,
+          "countPortion": 0.3,
           "segment": {
-            "radiusScale": 3.0,
+            "radiusScale": 1.0,
             "penetrationScale": 1.0,
             "damageScale": 1.0,
             "angles": [
@@ -108,19 +118,8 @@
           }
         }
       },
-      "hitpower": {
-        "HitPower0m": [
-          1.0,
-          500.0
-        ],
-        "HitPower2500m": [
-          0.5,
-          2500.0
-        ],
-        "HitPower5000m": [
-          0.1,
-          5000.0
-        ]
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -502,7 +501,6 @@
         "hitPowerMult": 45.0,
         "bulletName": "37mm_gr_tracciante_da37ca_he_t",
         "selfDestructionInAir": true,
-        "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -540,15 +538,26 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [
+            1.0,
+            500.0
+          ],
+          "HitPower5000m": [
+            0.5,
+            5000.0
+          ],
+          "HitPower7000m": [
+            0.1,
+            7000.0
+          ]
+        },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.125,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 3.0,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [
@@ -559,19 +568,8 @@
             }
           }
         },
-        "hitpower": {
-          "HitPower0m": [
-            1.0,
-            500.0
-          ],
-          "HitPower2500m": [
-            0.5,
-            2500.0
-          ],
-          "HitPower5000m": [
-            0.1,
-            5000.0
-          ]
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -771,7 +769,6 @@
         "hitPowerMult": 45.0,
         "bulletName": "37mm_gr_tracciante_da37ca_he_t",
         "selfDestructionInAir": true,
-        "dynamicKv": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -809,15 +806,26 @@
         "pressureDamage": {
           "damageType": "pressure"
         },
+        "hitpower": {
+          "HitPower0m": [
+            1.0,
+            500.0
+          ],
+          "HitPower5000m": [
+            0.5,
+            5000.0
+          ],
+          "HitPower7000m": [
+            0.1,
+            7000.0
+          ]
+        },
         "damage": {
-          "kinetic": {
-            "damageType": "generic"
-          },
           "shatter": {
             "useRealShatters": true,
-            "countPortion": 0.125,
+            "countPortion": 0.3,
             "segment": {
-              "radiusScale": 3.0,
+              "radiusScale": 1.0,
               "penetrationScale": 1.0,
               "damageScale": 1.0,
               "angles": [
@@ -828,19 +836,8 @@
             }
           }
         },
-        "hitpower": {
-          "HitPower0m": [
-            1.0,
-            500.0
-          ],
-          "HitPower2500m": [
-            0.5,
-            2500.0
-          ],
-          "HitPower5000m": [
-            0.1,
-            5000.0
-          ]
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "visual": {
           "range_percent_of_ammo": [
@@ -1398,7 +1395,7 @@
     ]
   },
   "breda_model_39_new_gun": {
-    "maxDeltaAngle": 0.35,
+    "maxDeltaAngle": 0.15,
     "overheat": {
       "overheat": [
         [

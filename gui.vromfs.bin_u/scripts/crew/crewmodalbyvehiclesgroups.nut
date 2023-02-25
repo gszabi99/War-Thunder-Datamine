@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPr
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
-{
+let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler {
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
 
   getSlotbarParams = @() {
@@ -21,8 +21,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
 
   createSlotbarHandler = @(params) slotbarWidget.create(params)
 
-  function updateAirList()
-  {
+  function updateAirList() {
     this.airList = []
     let curPreset = getCurPreset()
     let curCountryGroups =  curPreset?.groupsList[this.getCurCountryName()]
@@ -33,14 +32,12 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
     let curGroupName = curCountryGroups.groupIdByUnitName?[curUnit?.name] ?? ""
 
     let sortData = [] // { unit, locname }
-    foreach(unit in (curCountryGroups.groups?[curGroupName].units ?? []))
-      if (unit.getCrewUnitType() == this.curCrewUnitType)
-      {
+    foreach (unit in (curCountryGroups.groups?[curGroupName].units ?? []))
+      if (unit.getCrewUnitType() == this.curCrewUnitType) {
         let isCurrent = curUnit?.name == unit.name
         if (isCurrent)
           this.airList.append(unit)
-        else
-        {
+        else {
           sortData.append({
             unit = unit
             locname = ::g_string.utf8ToLower(::getUnitName(unit))
@@ -48,41 +45,38 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
         }
       }
 
-    sortData.sort(@(a,b) a.locname <=> b.locname)
+    sortData.sort(@(a, b) a.locname <=> b.locname)
     this.airList.extend(sortData.map(@(a) a.unit))
   }
 
   onSlotDblClick = @(_slotCrew) null
   canUpgradeCrewSpec = @(_upgCrew) false
 
-  function getCrewUnit(slotCrew)
-  {
+  function getCrewUnit(slotCrew) {
     let curPreset = getCurPreset()
     return curPreset?.countryPresets[slotCrew.country].units[slotCrew.idInCountry]
   }
 
   getSlotCrew = @() getSlotItem(this.countryId, this.idInCountry)
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let isRecrutedCrew = this.crew.id != -1
     this.scene.findObject("btn_apply").show(isRecrutedCrew)
     this.showSceneBtn("not_recrute_crew_warning", !isRecrutedCrew)
     this.showSceneBtn("btn_recruit", !isRecrutedCrew)
     if (!isRecrutedCrew) {
       let rawCost = ::get_crew_slot_cost(this.getCurCountryName())
-      let cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
+      let cost = rawCost ? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
       let text = "".concat(loc("shop/recruitCrew"),
         loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
       setColoredDoubleTextToButton(this.scene, "btn_recruit", text)
     }
   }
 
-  function onRecruitCrew()
-  {
+  function onRecruitCrew() {
     let country = this.getCurCountryName()
     let rawCost = ::get_crew_slot_cost(country)
-    let cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
+    let cost = rawCost ? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
     if (!::check_balance_msgBox(cost))
       return
 
@@ -115,8 +109,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler
       onTaskSuccess()
   }
 
-  function onEventPresetsByGroupsChanged(_params)
-  {
+  function onEventPresetsByGroupsChanged(_params) {
     this.openSelectedCrew()
     this.updatePage()
   }

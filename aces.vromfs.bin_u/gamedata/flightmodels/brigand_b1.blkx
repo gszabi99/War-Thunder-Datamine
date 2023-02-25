@@ -2502,50 +2502,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 200,
-        "spread": 1.0,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon2_dm",
-        "bullets": 200,
-        "spread": 1.0,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon3_dm",
-        "spread": 1.0,
-        "bullets": 200
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon4_dm",
-        "spread": 1.0,
-        "bullets": 200
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2554,58 +2514,464 @@
         "blk": "gameData/FlightModels/weaponPresets/brigand_b1_default.blk"
       },
       {
+        "name": "brigand_b1_16x60lb_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_16x60lb_rockets.blk"
+      },
+      {
         "name": "brigand_b1_2x500lb_bombs",
         "blk": "gameData/FlightModels/weaponPresets/brigand_b1_2x500lb_bombs.blk"
       },
       {
         "name": "brigand_b1_4x500lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_4x500lb_bombs.blk",
-        "reqModification": "halker_mbc"
-      },
-      {
-        "name": "brigand_b1_2x500lb_2x1000lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_2x500lb_2x1000lb_bombs.blk",
-        "reqModification": [
-          "halker_mbc",
-          "halker_lbc"
-        ]
+        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_4x500lb_bombs.blk"
       },
       {
         "name": "brigand_b1_2x1000lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_2x1000lb_bombs.blk",
-        "reqModification": "halker_lbc"
+        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_2x1000lb_bombs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1680.0,
+    "maxloadMassLeftConsoles": 840.0,
+    "maxloadMassRightConsoles": 840.0,
+    "maxDisbalance": 500.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3",
+        "pylon_bomb4",
+        "pylon_rocket1",
+        "pylon_rocket2",
+        "pylon_rocket3",
+        "pylon_rocket4",
+        "pylon_rocket5",
+        "pylon_rocket6",
+        "pylon_rocket7",
+        "pylon_rocket8"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 200,
+              "spread": 1.0,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon2_dm",
+              "bullets": 200,
+              "spread": 1.0,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon3_dm",
+              "spread": 1.0,
+              "bullets": 200
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon4_dm",
+              "spread": 1.0,
+              "bullets": 200
+            }
+          ]
+        }
       },
       {
-        "name": "brigand_b1_2x1000lb_bombs_16x60lb_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_2x1000lb_bombs_16x60lb_rockets.blk",
-        "reqModification": [
-          "halker_lbc",
-          "halker_rc"
+        "index": 1,
+        "tier": 11,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket1"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_1",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_9",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
+      },
+      {
+        "index": 2,
+        "tier": 10,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket2"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_3",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_11",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
+      },
+      {
+        "index": 3,
+        "tier": 9,
+        "order": 5,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket3"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_5",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_13",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
+      },
+      {
+        "index": 4,
+        "tier": 8,
+        "order": 7,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket4"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_7",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_15",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
+      },
+      {
+        "index": 5,
+        "tier": 7,
+        "order": 9,
+        "WeaponPreset": {
+          "iconType": "bombs_middle",
+          "name": "500lb",
+          "ShowNodes": {
+            "node": "pylon_bomb3"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/uk_500lbs_43_default.blk",
+            "emitter": "500gp_bomb1",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 6,
+        "tier": 6,
+        "order": 11,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "500lb_x2",
+            "reqModification": "halker_mbc",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb1",
+                "pylon_bomb2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+                "emitter": "1000gp_bomb1",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lbs_43.blk",
+                "emitter": "1000gp_bomb2",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "1000lb_x2",
+            "reqModification": "halker_lbc",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb1",
+                "pylon_bomb2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_mk1.blk",
+                "emitter": "1000gp_bomb1",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_mk1.blk",
+                "emitter": "1000gp_bomb2",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          }
         ]
       },
       {
-        "name": "brigand_b1_16x60lb_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_16x60lb_rockets.blk",
-        "reqModification": "halker_rc"
+        "index": 7,
+        "tier": 5,
+        "order": 10,
+        "WeaponPreset": {
+          "iconType": "bombs_middle",
+          "name": "500lb",
+          "ShowNodes": {
+            "node": "pylon_bomb4"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/uk_500lbs_43_default.blk",
+            "emitter": "500gp_bomb2",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
       },
       {
-        "name": "brigand_b1_2x500lb_bombs_16x60lb_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_2x500lb_bombs_16x60lb_rockets.blk",
-        "reqModification": "halker_rc"
+        "index": 8,
+        "tier": 4,
+        "order": 8,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket5"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_8",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_16",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
       },
       {
-        "name": "brigand_b1_4x500lb_bombs_16x60lb_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_4x500lb_bombs_16x60lb_rockets.blk",
-        "reqModification": "halker_rc"
+        "index": 9,
+        "tier": 3,
+        "order": 6,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket6"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_6",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_14",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
       },
       {
-        "name": "brigand_b1_2x500lb_2x1000lb_bombs_16x60lb_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/brigand_b1_2x500lb_2x1000lb_bombs_16x60lb_rockets.blk",
-        "reqModification": [
-          "halker_mbc",
-          "halker_lbc",
-          "halker_rc"
-        ]
+        "index": 10,
+        "tier": 2,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket7"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_4",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_12",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
+      },
+      {
+        "index": 11,
+        "tier": 1,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "rockets_he_large_group_x2",
+          "name": "60lb",
+          "reqModification": "halker_rc",
+          "ShowNodes": {
+            "node": "pylon_rocket8"
+          },
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+              "emitter": "rocket_60lb_2",
+              "bullets": 1,
+              "blockingGroupId": 0
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk",
+              "emitter": "rocket_60lb_10",
+              "bullets": 1,
+              "blockedByGroupId": 0
+            }
+          ]
+        }
       }
     ]
   },
@@ -4513,20 +4879,50 @@
     "turnTime": 41.7229
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "air_extinguisher": {
       "image": "#ui/gameuiskin#engine_extinguisher.png",
       "tier": 4,
-      "modClass": "weapon",
+      "modClass": "armor",
       "invertEnableLogic": false
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
     "hispano_universal": {},
     "hispano_ground_targets": {},
     "hispano_air_targets": {},

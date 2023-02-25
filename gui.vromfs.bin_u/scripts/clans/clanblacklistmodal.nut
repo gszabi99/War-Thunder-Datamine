@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -12,23 +13,21 @@ local clanBlackList = [
   { id = "initiator_nick", type = lbDataType.NICK },
   { id = "date", type = lbDataType.DATE }]
 
-::gui_start_clan_blacklist <- function gui_start_clan_blacklist(clanData = null)
-{
+::gui_start_clan_blacklist <- function gui_start_clan_blacklist(clanData = null) {
   clanData = clanData || ::my_clan_info
   if (!clanData)
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.clanBlacklistModal, {clanData = clanData})
+  ::gui_start_modal_wnd(::gui_handlers.clanBlacklistModal, { clanData = clanData })
 }
 
-::gui_handlers.clanBlacklistModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.clanBlacklistModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/clans/clanRequests.blk"
   wndType = handlerType.MODAL
 
   myRights = []
   curCandidate = null
-  blacklistRow = ["nick", "initiator_nick", { id="date", type = lbDataType.DATE }]
+  blacklistRow = ["nick", "initiator_nick", { id = "date", type = lbDataType.DATE }]
 
   clanData = null
   blacklistData = null
@@ -36,19 +35,17 @@ local clanBlackList = [
   curPage = 0
   rowsPerPage = 10
 
-  function initScreen()
-  {
+  function initScreen() {
     this.myRights = ::clan_get_role_rights(::clan_get_admin_editor_mode() ? ECMR_CLANADMIN : ::clan_get_my_role())
 
     this.blacklistData = this.clanData.blacklist
     this.updateBlacklistTable()
     let tObj = this.scene.findObject("clan_title_table")
-    if(tObj)
+    if (tObj)
       tObj.setValue(loc("clan/blacklist"))
   }
 
-  function updateBlacklistTable()
-  {
+  function updateBlacklistTable() {
     if (!checkObj(this.scene) || !this.blacklistData)
       return
 
@@ -59,14 +56,13 @@ local clanBlackList = [
     local data = ""
 
     let headerRow = []
-    foreach(item in this.blacklistRow)
-    {
-      let itemName = (type(item) != "table")? item : item.id
-      let name = "#clan/"+(itemName == "date"? "bannedDate" : itemName)
+    foreach (item in this.blacklistRow) {
+      let itemName = (type(item) != "table") ? item : item.id
+      let name = "#clan/" + (itemName == "date" ? "bannedDate" : itemName)
       headerRow.append({
         id = itemName,
         text = name,
-        tdalign="center",
+        tdalign = "center",
       })
     }
     data = ::buildTableRow("row_header", headerRow, null,
@@ -74,24 +70,22 @@ local clanBlackList = [
 
     let startIdx = this.curPage * this.rowsPerPage
     let lastIdx = min((this.curPage + 1) * this.rowsPerPage, this.blacklistData.len())
-    for(local i=startIdx; i < lastIdx; i++)
-    {
+    for (local i = startIdx; i < lastIdx; i++) {
       let rowName = "row_" + i
       let rowData = []
 
-      foreach(item in this.blacklistRow)
-      {
-         let itemName = (type(item) != "table")? item : item.id
+      foreach (item in this.blacklistRow) {
+         let itemName = (type(item) != "table") ? item : item.id
          rowData.append({
           id = itemName,
           text = "",
          })
       }
-      data += ::buildTableRow(rowName, rowData, (i-this.curPage*this.rowsPerPage)%2==0, "")
+      data += ::buildTableRow(rowName, rowData, (i - this.curPage * this.rowsPerPage) % 2 == 0, "")
     }
     this.guiScene.setUpdatesEnabled(false, false)
     this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
-    for(local i=startIdx; i < lastIdx; i++)
+    for (local i = startIdx; i < lastIdx; i++)
       this.fillRow(tblObj, i)
 
     tblObj.setValue(1) //after header
@@ -99,42 +93,36 @@ local clanBlackList = [
     ::move_mouse_on_child_by_value(tblObj)
     this.onSelect()
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.blacklistData.len()-1) / this.rowsPerPage).tointeger())
+    ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.blacklistData.len() - 1) / this.rowsPerPage).tointeger())
   }
 
-  function fillRow(tblObj, i)
-  {
+  function fillRow(tblObj, i) {
     let block = this.blacklistData[i]
-    let rowObj = tblObj.findObject("row_"+i)
-    if (rowObj)
-    {
+    let rowObj = tblObj.findObject("row_" + i)
+    if (rowObj) {
       let comments = ("comments" in block) ? block.comments : ""
       rowObj.tooltip = comments.len()
-        ? loc("clan/blacklistRowTooltip", {comments = comments}) : ""
+        ? loc("clan/blacklistRowTooltip", { comments = comments }) : ""
 
-      foreach(item in clanBlackList)
-      {
+      foreach (item in clanBlackList) {
         let vObj = rowObj.findObject("txt_" + item.id)
-        let itemValue = (item.id in block)? block[item.id] : 0
-        if(vObj)
+        let itemValue = (item.id in block) ? block[item.id] : 0
+        if (vObj)
           vObj.setValue(item.type.getShortTextByValue(itemValue))
       }
     }
   }
 
-  function goToPage(obj)
-  {
+  function goToPage(obj) {
     this.curPage = obj.to_page.tointeger()
     this.updateBlacklistTable()
   }
 
-  function onSelect()
-  {
+  function onSelect() {
     this.curCandidate = null
-    if (this.blacklistData && this.blacklistData.len()>0)
-    {
+    if (this.blacklistData && this.blacklistData.len() > 0) {
       let objTbl = this.scene.findObject("candidatesList");
-      let index = objTbl.getValue() + this.curPage*this.rowsPerPage - 1 //header
+      let index = objTbl.getValue() + this.curPage * this.rowsPerPage - 1 //header
       if (index in this.blacklistData)
         this.curCandidate = this.blacklistData[index]
     }
@@ -143,28 +131,24 @@ local clanBlackList = [
     this.showSceneBtn("btn_user_options", this.curCandidate != null && ::show_console_buttons)
   }
 
-  function onUserCard()
-  {
+  function onUserCard() {
     if (this.curCandidate)
       ::gui_modal_userCard({ uid = this.curCandidate.uid })
   }
 
-  function onRequestApprove(){}
-  function onRequestReject(){}
+  function onRequestApprove() {}
+  function onRequestReject() {}
 
-  function onDeleteFromBlacklist()
-  {
+  function onDeleteFromBlacklist() {
     if (this.curCandidate)
-      ::g_clans.blacklistAction(this.curCandidate.uid, false, this.clanData == ::my_clan_info? "-1" : this.clanData.id)
+      ::g_clans.blacklistAction(this.curCandidate.uid, false, this.clanData == ::my_clan_info ? "-1" : this.clanData.id)
   }
 
-  function onUserRClick()
-  {
+  function onUserRClick() {
     this.openUserPopupMenu()
   }
 
-  function onUserAction()
-  {
+  function onUserAction() {
     let table = this.scene.findObject("candidatesList")
     if (!checkObj(table))
       return
@@ -177,8 +161,7 @@ local clanBlackList = [
     this.openUserPopupMenu(position)
   }
 
-  function openUserPopupMenu(position = null)
-  {
+  function openUserPopupMenu(position = null) {
     if (!this.curCandidate)
       return
 
@@ -196,14 +179,12 @@ local clanBlackList = [
     ::gui_right_click_menu(menu, this, position)
   }
 
-  function hideCandidateByName(name)
-  {
+  function hideCandidateByName(name) {
     if (!name)
       return
 
-    foreach(idx, candidate in this.blacklistData)
-      if (candidate.nick == name)
-      {
+    foreach (idx, candidate in this.blacklistData)
+      if (candidate.nick == name) {
         this.blacklistData.remove(idx)
         break
       }
@@ -214,10 +195,9 @@ local clanBlackList = [
       this.goBack()
   }
 
-  function onEventClanCandidatesListChanged(p)
-  {
+  function onEventClanCandidatesListChanged(p) {
     let uid = p?.userId
-    let candidate = ::u.search(this.blacklistData, @(candidate) candidate.uid == uid )
+    let candidate = ::u.search(this.blacklistData, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
 }

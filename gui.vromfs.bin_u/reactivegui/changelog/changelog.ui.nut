@@ -2,10 +2,10 @@ from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
 let scrollbar = require("%rGui/components/scrollbar.nut")
-let {formatText} = require("%rGui/components/formatText.nut")
-let {curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
+let { formatText } = require("%rGui/components/formatText.nut")
+let { curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
   prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
-  chosenPatchnoteLoaded} = require("changeLogState.nut")
+  chosenPatchnoteLoaded } = require("changeLogState.nut")
 let colors = require("%rGui/style/colors.nut")
 let { commonTextButton } = require("%rGui/components/textButton.nut")
 let modalWindow = require("%rGui/components/modalWindow.nut")
@@ -40,9 +40,12 @@ let scrollStep = fpx(75)
 let maxPatchnoteWidth = fpx(300)
 
 let function getTabColorCtor(sf, style, isCurrent) {
-  if (isCurrent)        return style.current
-  if (sf & S_ACTIVE)    return style.active
-  if (sf & S_HOVER)     return style.hover
+  if (isCurrent)
+    return style.current
+  if (sf & S_ACTIVE)
+    return style.active
+  if (sf & S_HOVER)
+    return style.hover
   return style.normal
 }
 
@@ -55,7 +58,7 @@ let function patchnote(v) {
     fillColor = isCurrent.value ? Color(58, 71, 79)
       : Color(0, 0, 0)
     borderColor = Color(178, 57, 29)
-    borderWidth = isCurrent.value ? [0, 0, 2*borderWidth, 0] : 0
+    borderWidth = isCurrent.value ? [0, 0, 2 * borderWidth, 0] : 0
     size = [flex(1), ph(100)]
     maxWidth = maxPatchnoteWidth
     behavior = Behaviors.Button
@@ -117,9 +120,9 @@ let patchnoteSelector = @() {
 let missedPatchnoteText = formatText([loc("NoUpdateInfo", "Oops... No information yet :(")])
 
 let seeMoreUrl = {
-  t="url"
-  url=loc("url/news")
-  v=loc("visitGameSite", "See game website for more details")
+  t = "url"
+  url = loc("url/news")
+  v = loc("visitGameSite", "See game website for more details")
   margin = [fpx(50), 0, 0, 0]
 }
 
@@ -150,7 +153,7 @@ let scrollPatchnoteBtn = @(hotkey, watchValue) {
 chosenPatchnoteContent.subscribe(@(_value) scrollHandler.scrollToY(0))
 
 let patchnoteLoading = freeze({
-  children = [formatText([{v = loc("loading"), t = "h2", halign = ALIGN_CENTER}]), spinner]
+  children = [formatText([{ v = loc("loading"), t = "h2", halign = ALIGN_CENTER }]), spinner]
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(20)
@@ -162,7 +165,7 @@ let function selPatchnote() {
   local text = (chosenPatchnoteContent.value.text ?? "") != ""
     ? chosenPatchnoteContent.value.text : missedPatchnoteText
   if (cross_call.hasFeature("AllowExternalLink")) {
-    if (type(text)!="array")
+    if (type(text) != "array")
       text = [text, seeMoreUrl]
     else
       text = (clone text).append(seeMoreUrl)
@@ -173,7 +176,7 @@ let function selPatchnote() {
     children = [
       scrollbar.makeSideScroll({
         size = [flex(), SIZE_TO_CONTENT]
-        margin = [0 ,blockInterval]
+        margin = [0, blockInterval]
         children = chosenPatchnoteLoaded.value ? formatText(text) : patchnoteLoading
       }, {
         scrollHandler = scrollHandler
@@ -190,9 +193,9 @@ let function onCloseAction() {
 }
 
 let btnNext  = commonTextButton(loc("mainmenu/btnNextItem"), nextPatchNote,
-  {hotkeys=[["{0} | Tab".subst(JB.B)]], margin=0})
+  { hotkeys = [["{0} | Tab".subst(JB.B)]], margin = 0 })
 let btnClose = commonTextButton(loc("mainmenu/btnClose"), onCloseAction,
-  {hotkeys=[["{0}".subst(JB.B)]], margin=0})
+  { hotkeys = [["{0}".subst(JB.B)]], margin = 0 })
 
 let nextButton = @() {
   watch = [curPatchnoteIdx]

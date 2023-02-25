@@ -1,12 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-::mission_rules.EnduringConfrontation <- class extends ::mission_rules.Base
-{
-  function isStayOnRespScreen()
-  {
+::mission_rules.EnduringConfrontation <- class extends ::mission_rules.Base {
+  function isStayOnRespScreen() {
     return false
   }
 }

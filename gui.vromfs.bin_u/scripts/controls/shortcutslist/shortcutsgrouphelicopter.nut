@@ -1,10 +1,19 @@
-from "%scripts/dagui_library.nut" import *
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+from "%scripts/dagui_library.nut" import *
 let globalEnv = require("globalEnv")
 let { get_game_params } = require("gameparams")
+let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
+  OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER,
+  OPTION_HELICOPTER_PEDALS_MULTIPLIER, OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE,
+  OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE, OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY,
+  OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE, OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR,
+  OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR, OPTION_AIM_TIME_NONLINEARITY_HELICOPTER,
+  OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, OPTION_MOUSE_Z_HELICOPTER_MULT,
+  OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE
+} = require("gameOptions")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -36,7 +45,7 @@ return [
   {
     id = "ID_HELICOPTER_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON,
-    onClick = @() controlsOperations.swapGamepadSticks( ActionGroup.HELICOPTER )
+    onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.HELICOPTER)
     showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
@@ -139,25 +148,25 @@ return [
     id = "helicopter_cyclic_roll_sens"
     type = CONTROL_TYPE.SLIDER
     filterHide = [ globalEnv.EM_MOUSE_AIM ]
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, objValue / 100.0)
+      set_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, objValue / 100.0)
   }
   {
     id = "helicopter_cyclic_pitch_sens"
     type = CONTROL_TYPE.SLIDER
     filterHide = [ globalEnv.EM_MOUSE_AIM ]
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER, objValue / 100.0)
+      set_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER, objValue / 100.0)
   }
   {
     id = "helicopter_pedals_sens"
     type = CONTROL_TYPE.SLIDER
     filterHide = [ globalEnv.EM_MOUSE_AIM ]
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER, objValue / 100.0)
+      set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER, objValue / 100.0)
   }
 //-------------------------------------------------------
   {
@@ -199,7 +208,6 @@ return [
   {
     id = "ID_JETTISON_SECONDARY_HELICOPTER"
     checkAssign = false
-    showFunc = @() hasFeature("WeaponJettison")
   }
   {
     id = "ID_BOMBS_HELICOPTER"
@@ -298,7 +306,6 @@ return [
     id = "helicopter_sensor_cue_z"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() hasFeature("RadarElevationControl")
   }
   {
     id = "ID_IRCM_SWITCH_HELICOPTER"
@@ -475,16 +482,16 @@ return [
   {
     id = "aim_time_nonlinearity_helicopter"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_HELICOPTER)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_HELICOPTER)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_HELICOPTER, objValue / 100.0)
+      set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_HELICOPTER, objValue / 100.0)
   }
   {
     id = "aim_acceleration_delay_helicopter"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HELICOPTER)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HELICOPTER)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, objValue / 100.0)
+      set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, objValue / 100.0)
   }
   {
     id = "mouse_z_helicopter"
@@ -497,8 +504,8 @@ return [
   {
     id = "mouse_z_mult_helicopter"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_MOUSE_Z_HELICOPTER_MULT)
-    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_Z_HELICOPTER_MULT, objValue / 100.0)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_MOUSE_Z_HELICOPTER_MULT)
+    setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_Z_HELICOPTER_MULT, objValue / 100.0)
     showFunc = @() hasFeature("EnableMouse")
   }
 //-------------------------------------------------------
@@ -639,8 +646,8 @@ return [
     filterHide = [globalEnv.EM_MOUSE_AIM]
     options = ["#options/mouse_joy_mode_simple", "#options/mouse_joy_mode_standard"]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(_joyParams) ::get_option_int(OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE)
-    setValue = @(_joyParams, objValue) ::set_option_int(OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE, objValue)
+    value = @(_joyParams) get_option_int(OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE)
+    setValue = @(_joyParams, objValue) set_option_int(OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE, objValue)
   }
   {
     id = "mouse_joystick_sensitivity_helicopter"
@@ -651,13 +658,13 @@ return [
       let gp = get_game_params()
       let minSens = gp?.minMouseJoystickSensitivity ?? 0.0
       let maxSens = gp?.maxMouseJoystickSensitivity  ?? 1.0
-      return 100.0 * (::get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY) - minSens) / (maxSens - minSens)
+      return 100.0 * (get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY) - minSens) / (maxSens - minSens)
     }
     setValue = function(_joyParams, objValue) {
       let gp = get_game_params()
       let minSens = gp?.minMouseJoystickSensitivity ?? 0.0
       let maxSens = gp?.maxMouseJoystickSensitivity  ?? 1.0
-      ::set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY, minSens + (objValue / 100.0) * (maxSens - minSens))
+      set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY, minSens + (objValue / 100.0) * (maxSens - minSens))
     }
   }
   {
@@ -667,11 +674,11 @@ return [
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let dz = get_game_params()?.maxMouseJoystickDeadZone ?? 1.0
-      return 100.0*::get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE) / dz
+      return 100.0 * get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE) / dz
     }
     setValue = function(_joyParams, objValue) {
       let dz = get_game_params()?.maxMouseJoystickDeadZone ?? 1.0
-      ::set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE, (objValue / 100.0) * dz)
+      set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE, (objValue / 100.0) * dz)
     }
   }
 
@@ -684,13 +691,13 @@ return [
       let gp = get_game_params()
       let minVal = gp?.minMouseJoystickScreenSize ?? 0.0
       let maxVal = gp?.maxMouseJoystickScreenSize ?? 1.0
-      return 100.0*(::get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE) - minVal) / (maxVal - minVal)
+      return 100.0 * (get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE) - minVal) / (maxVal - minVal)
     }
     setValue = function(_joyParams, objValue) {
       let gp = get_game_params()
       let minVal = gp?.minMouseJoystickScreenSize ?? 0.0
       let maxVal = gp?.maxMouseJoystickScreenSize ?? 1.0
-      ::set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE, minVal + (objValue / 100.0) * (maxVal - minVal))
+      set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE, minVal + (objValue / 100.0) * (maxVal - minVal))
     }
   }
   {
@@ -698,8 +705,8 @@ return [
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
-    value = @(_joyParams) 100.0*::get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE)
-    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE, objValue / 100.0)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE)
+    setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE, objValue / 100.0)
   }
   {
     id = "mouse_joystick_aileron_helicopter"
@@ -708,11 +715,11 @@ return [
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickAileron ?? 1.0
-      return 100.0*::get_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR) / maxVal
+      return 100.0 * get_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR) / maxVal
     }
     setValue = function(_joyParams, objValue) {
       let maxVal = get_game_params()?.maxMouseJoystickAileron ?? 1.0
-      ::set_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR, (objValue / 100.0) * maxVal)
+      set_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR, (objValue / 100.0) * maxVal)
     }
   }
   {
@@ -722,11 +729,11 @@ return [
     showFunc = @() ::g_controls_utils.getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickRudder ?? 1.0
-      return 100.0*::get_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR) / maxVal
+      return 100.0 * get_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR) / maxVal
     }
     setValue = function(_joyParams, objValue) {
       let maxVal = get_game_params()?.maxMouseJoystickRudder ?? 1.0
-      ::set_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR, (objValue / 100.0) * maxVal)
+      set_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR, (objValue / 100.0) * maxVal)
     }
   }
   {

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -30,8 +31,7 @@ let getColoredNick = @(logEntry)
   needDetails = @(_logEntry) true
   getLogHeader = @(_logEntry) ""
 
-  getLogDetailsCommonFields = function()
-  {
+  getLogDetailsCommonFields = function() {
     let fields = ["admin"]
     fields.extend(this.logDetailsCommonFields)
     return fields
@@ -39,8 +39,7 @@ let getColoredNick = @(logEntry)
 
   getLogDetailsIndividualFields = @() this.logDetailsIndividualFields
 
-  getSignText = function(logEntry)
-  {
+  getSignText = function(logEntry) {
     local name = logEntry?.uN
     if (!name)
       return null
@@ -69,8 +68,7 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "region"
       "announcement"
     ]
-    function getLogHeader(_logEntry)
-    {
+    function getLogHeader(_logEntry) {
       return loc("clan/log/create_log")
     }
   }
@@ -85,8 +83,7 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "announcement"
       "status"
     ]
-    function getLogHeader(_logEntry)
-    {
+    function getLogHeader(_logEntry) {
       return loc("clan/log/change_info_log")
     }
   }
@@ -97,8 +94,7 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "tag"
       "desc"
     ]
-    function getLogHeader(_logEntry)
-    {
+    function getLogHeader(_logEntry) {
       return loc("clan/log/upgrade_log")
     }
   }
@@ -110,9 +106,8 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "role"
     ]
     needDetails = @(logEntry) !isSelfLog(logEntry)
-    function getLogHeader(logEntry)
-    {
-      return loc("clan/log/add_new_member_log", {nick = getColoredNick(logEntry) })
+    function getLogHeader(logEntry) {
+      return loc("clan/log/add_new_member_log", { nick = getColoredNick(logEntry) })
     }
   }
   REMOVE = {
@@ -122,10 +117,9 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "nick"
     ]
     needDetails = @(logEntry) !isSelfLog(logEntry)
-    function getLogHeader(logEntry)
-    {
-      let locId = isSelfLog(logEntry) ? "clan/log/leave_member_log" :"clan/log/remove_member_log"
-      return loc(locId, {nick = getColoredNick(logEntry) })
+    function getLogHeader(logEntry) {
+      let locId = isSelfLog(logEntry) ? "clan/log/leave_member_log" : "clan/log/remove_member_log"
+      return loc(locId, { nick = getColoredNick(logEntry) })
     }
   }
   ROLE = {
@@ -137,8 +131,7 @@ enums.addTypesByGlobalName("g_clan_log_type", {
     logDetailsIndividualFields = [
       "old"
     ]
-    function getLogHeader(logEntry)
-    {
+    function getLogHeader(logEntry) {
       return loc("clan/log/change_role_log", {
         nick = getColoredNick(logEntry),
         role = colorize("@userlogColoredText", loc("clan/" + (logEntry?.new ?? "")))
@@ -151,9 +144,8 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "old"
       "new"
     ]
-    function getLogHeader(logEntry)
-    {
-      return loc("clan/log/upgrade_members_log", {nick = logEntry.uN})
+    function getLogHeader(logEntry) {
+      return loc("clan/log/upgrade_members_log", { nick = logEntry.uN })
     }
   }
   REJECT_CANDIDATE = {
@@ -163,9 +155,8 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "nick"
       "comments"
     ]
-    function getLogHeader(logEntry)
-    {
-      return loc("clan/log/reject_candidate_log", {nick = getColoredNick(logEntry)})
+    function getLogHeader(logEntry) {
+      return loc("clan/log/reject_candidate_log", { nick = getColoredNick(logEntry) })
     }
   }
   ADD_TO_BLACKLIST = {
@@ -175,9 +166,8 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "nick"
       "comments"
     ]
-    function getLogHeader(logEntry)
-    {
-      return loc("clan/log/add_to_blacklist_log", {nick = getColoredNick(logEntry)})
+    function getLogHeader(logEntry) {
+      return loc("clan/log/add_to_blacklist_log", { nick = getColoredNick(logEntry) })
     }
   }
   REMOVE_FROM_BLACKLIST = {
@@ -187,16 +177,14 @@ enums.addTypesByGlobalName("g_clan_log_type", {
       "nick"
       "comments"
     ]
-    function getLogHeader(logEntry)
-    {
-      return loc("clan/log/remove_from_blacklist_log", {nick = getColoredNick(logEntry)})
+    function getLogHeader(logEntry) {
+      return loc("clan/log/remove_from_blacklist_log", { nick = getColoredNick(logEntry) })
     }
   }
   UNKNOWN = {}
 })
 
-::g_clan_log_type.getTypeByName <- function getTypeByName(name)
-{
+::g_clan_log_type.getTypeByName <- function getTypeByName(name) {
   return enums.getCachedType("name", name, ::g_clan_log_type_cache.byName,
                                        ::g_clan_log_type, ::g_clan_log_type.UNKNOWN)
 }

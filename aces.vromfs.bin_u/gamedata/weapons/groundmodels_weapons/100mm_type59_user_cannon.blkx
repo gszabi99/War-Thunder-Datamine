@@ -585,7 +585,7 @@
       "stucking": 0.7,
       "stuckingAngle": 45.0,
       "bulletType": "aphebc_tank",
-      "slopeEffectPreset": "ap",
+      "slopeEffectPreset": "apbc",
       "fresnel": [
         0.23,
         0.1,
@@ -1100,10 +1100,12 @@
     "bullet": {
       "bulletCount": 25,
       "mass": 3.18,
+      "damageMass": 2.13,
       "caliber": 0.1,
-      "damageCaliber": 0.04,
-      "ballisticCaliber": 0.0566,
+      "damageCaliber": 0.056,
+      "ballisticCaliber": 0.056,
       "speed": 1432.0,
+      "Cx": 0.22297,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds",
@@ -1114,8 +1116,8 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apds_tank",
-      "slopeEffectPreset": "apds",
+      "bulletType": "apds_early_tank",
+      "slopeEffectPreset": "apds_early",
       "fresnel": [
         0.23,
         0.1,
@@ -1123,18 +1125,17 @@
       ],
       "shellAnimation": "video/shells_animations/apds.ivf",
       "bulletName": "100mm_type1959",
-      "onHitChanceMultExplFuel": 0.1,
-      "Cx": 0.21827,
+      "breakingArmorThicknessEffective": true,
+      "breakingArmorThickness": [
+        30.0,
+        150.0
+      ],
+      "breakingCriticalSpeed": 1432.0,
+      "breakingDistance": 0.1,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
-      "armorFragmentsDamage": true,
-      "armorFragmentsDamageRadius": 5.4,
-      "armorFragmentsDamageAngle": 20.0,
-      "armorFragmentsAmount": 100,
-      "armorFragmentsArmorPower": 4.0,
-      "armorFragmentsHit": 10.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -1163,66 +1164,33 @@
       "hitpower": {
         "HitPower0m": [
           1.0,
-          0.0
+          300.0
         ],
         "HitPower1000m": [
-          0.9,
-          0.0
+          0.7,
+          1000.0
+        ],
+        "HitPower1500m": [
+          0.6,
+          1500.0
+        ],
+        "HitPower2500m": [
+          0.6,
+          2500.0
         ],
         "HitPower10000m": [
-          0.8,
+          0.5,
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          299.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          298.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          291.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          272.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          253.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          249.0,
-          2000.0
-        ],
-        "ArmorPower2500m": [
-          243.0,
-          2500.0
-        ],
-        "ArmorPower3000m": [
-          225.0,
-          3000.0
-        ],
-        "ArmorPower3500m": [
-          211.0,
-          3500.0
-        ],
-        "ArmorPower4000m": [
-          162.0,
-          4000.0
-        ],
-        "ArmorPower4500m": [
-          143.0,
-          4500.0
-        ],
-        "ArmorPower10000m": [
-          0.0,
-          10000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 1.32,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.739,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [

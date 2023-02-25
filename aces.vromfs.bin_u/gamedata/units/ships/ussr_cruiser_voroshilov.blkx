@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "smokeScreenActivateTime": 5.0,
@@ -135,6 +135,14 @@
         "to": "flag_uk_01_c_tomoe*"
       },
       {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      },
+      {
         "from": "airplane_ger_ar196_c*",
         "to": "airplane_ger_ar196_c_tomoe*"
       },
@@ -195,6 +203,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -1098,10 +1116,10 @@
     },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "torpedoes_movement_mode": {
       "effects": {
@@ -6557,7 +6575,7 @@
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.015,
+        "salvoRndK": 0.07,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -6667,7 +6685,7 @@
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.015,
+        "salvoRndK": 0.07,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -6777,7 +6795,7 @@
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.015,
+        "salvoRndK": 0.07,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -6887,7 +6905,7 @@
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.015,
+        "salvoRndK": 0.07,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -6997,7 +7015,7 @@
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.015,
+        "salvoRndK": 0.07,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -7113,7 +7131,7 @@
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
-        "salvoRndK": 0.015,
+        "salvoRndK": 0.07,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -11405,13 +11423,42 @@
       ]
     }
   },
-  "skin": {
-    "name": "arctic_minesweeper_block",
-    "replace_tex": {
-      "from": "camo_white*",
-      "to": "camo_arctic_minesweeper_block*"
+  "skin": [
+    {
+      "name": "arctic_minesweeper_block",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "camo_arctic_minesweeper_block*"
+      }
+    },
+    {
+      "name": "ussr_camo_navy_purple",
+      "nameLocId": "skin/ussr_camo_navy_purple",
+      "descLocId": "skin/ussr_camo_navy_purple/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_navy_purple*"
+      }
+    },
+    {
+      "name": "ussr_camo_arcticfleet",
+      "nameLocId": "skin/ussr_camo_arcticfleet",
+      "descLocId": "skin/ussr_camo_arcticfleet/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_arcticfleet*"
+      }
+    },
+    {
+      "name": "ussr_camo_blackgray_geometry",
+      "nameLocId": "skin/ussr_camo_blackgray_geometry",
+      "descLocId": "skin/ussr_camo_blackgray_geometry/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_blackgray_geometry*"
+      }
     }
-  },
+  ],
   "user_skin": {
     "name": "cruiser_voroshilov",
     "replace_tex": [

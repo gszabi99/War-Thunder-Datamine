@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getCurEsUnitTypesList } = require("%scripts/queue/curEsUnitTypesMask.nut")
 let FULL_CIRCLE_GRAD = 360
@@ -18,7 +20,7 @@ let function getQueueWaitIconImageMarkup() {
   ]
 
   let view = { icons = [] }
-  let rotationStart = ::math.rnd() % FULL_CIRCLE_GRAD
+  let rotationStart = rnd() % FULL_CIRCLE_GRAD
   foreach (esUnitType in esUnitTypesOrder)
     if (isInArray(esUnitType, esUnitTypes))
       view.icons.append({

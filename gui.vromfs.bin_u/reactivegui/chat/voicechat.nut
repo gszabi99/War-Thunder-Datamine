@@ -6,7 +6,7 @@ let fontsState = require("%rGui/style/fontsState.nut")
 
 let voiceChatElements = function() {
   let children = []
-  foreach(idx, member in voiceChatState.voiceChatMembers.value) {
+  foreach (idx, member in voiceChatState.voiceChatMembers.value) {
     let voiceChatMember = member
     let prevVisIdx = voiceChatMember.visibleIdx
     let curVisIdx = idx
@@ -29,7 +29,7 @@ let voiceChatElements = function() {
           image = Picture($"!ui/gameuiskin#voip_status.svg:{fpx(18)}:{fpx(26)}:K")
           color = colors.menu.voiceChatIconActiveColor
         }
-        @(){
+        @() {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           text = voiceChatMember.name
@@ -43,9 +43,9 @@ let voiceChatElements = function() {
       transform = {}
       transitions = [{ prop = AnimProp.opacity, duration = voiceChatMember.animTime, easing = OutCubic }]
       animations = [
-        { prop=AnimProp.translate, from=[0, 28], to=[0, 0], duration=0.2,
+        { prop = AnimProp.translate, from = [0, 28], to = [0, 0], duration = 0.2,
           trigger = $"voiceChatMoveTop{voiceChatMember.id}" }
-        { prop=AnimProp.translate, from=[0, -28], to=[0, 0], duration=0.2,
+        { prop = AnimProp.translate, from = [0, -28], to = [0, 0], duration = 0.2,
           trigger = $"voiceChatMoveBottom{voiceChatMember.id}" }
       ]
     })

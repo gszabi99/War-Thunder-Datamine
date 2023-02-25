@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,8 +16,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 
-::gui_handlers.WarbondsShop <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.WarbondsShop <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 
@@ -34,8 +34,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
   hoverHoldAction = null
   isMouseMode = true
 
-  function initScreen()
-  {
+  function initScreen() {
     this.wbList = ::g_warbonds.getList(this.filterFunc)
     if (!this.wbList.len())
       return this.goBack()
@@ -63,13 +62,12 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     this.hoverHoldAction = mkHoverHoldAction(this.scene.findObject("hover_hold_timer"))
   }
 
-  function fillTabs()
-  {
+  function fillTabs() {
     let view = { tabs = [] }
-    foreach(i, wb in this.wbList)
+    foreach (i, wb in this.wbList)
       view.tabs.append({
         id = this.getTabId(i)
-        object = wb.haveAnyOrdinaryRequirements()? ::g_warbonds_view.getCurrentLevelItemMarkUp(wb) : null
+        object = wb.haveAnyOrdinaryRequirements() ? ::g_warbonds_view.getCurrentLevelItemMarkUp(wb) : null
         navImagesText = ::get_navigation_images_text(i, this.wbList.len())
         unseenIcon = bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, wb.getSeenId())
       })
@@ -82,23 +80,19 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     this.updateTabsTexts()
   }
 
-  function getTabId(idx)
-  {
+  function getTabId(idx) {
     return "warbond_tab_" + idx
   }
 
-  function getTabsListObj()
-  {
+  function getTabsListObj() {
     return this.scene.findObject("tabs_list")
   }
 
-  function getItemsListObj()
-  {
+  function getItemsListObj() {
     return this.scene.findObject("items_list")
   }
 
-  function onTabChange(obj)
-  {
+  function onTabChange(obj) {
     if (!obj || !this.wbList.len())
       return
 
@@ -114,8 +108,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     this.updateTabsTexts() //to reccount tabs textarea colors
   }
 
-  function initItemsListSize()
-  {
+  function initItemsListSize() {
     this.guiScene.applyPendingChanges(false)
 
     let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
@@ -133,11 +126,10 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     this.scene.findObject("shop_level_progress_place").left = $"0.5({contentWidth})-0.5w"
     this.scene.findObject("special_tasks_progress_block").pos = $"0.5({contentWidth})+0.5pw-0.5w,0.5ph-0.5h"
     this.scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w"
-    this.itemsPerPage = (itemsCountX * itemsCountY ).tointeger()
+    this.itemsPerPage = (itemsCountX * itemsCountY).tointeger()
   }
 
-  function updateCurPageAwardsList()
-  {
+  function updateCurPageAwardsList() {
     this.curPageAwards.clear()
     if (!this.curWb)
       return
@@ -145,12 +137,11 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     let fullList = this.curWb.getAwardsList()
     let pageStartIndex = this.curPage * this.itemsPerPage
     let pageEndIndex = min((this.curPage + 1) * this.itemsPerPage, fullList.len())
-    for(local i=pageStartIndex; i < pageEndIndex; i++)
+    for (local i = pageStartIndex; i < pageEndIndex; i++)
       this.curPageAwards.append(fullList[i])
   }
 
-  function fillPage()
-  {
+  function fillPage() {
     this.updateCurPageAwardsList()
 
     let view = {
@@ -180,33 +171,28 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     this.updatePaginator()
   }
 
-  function updatePaginator()
-  {
+  function updatePaginator() {
     let totalPages = this.curWb ? ceil(this.curWb.getAwardsList().len().tofloat() / this.itemsPerPage) : 1
     ::generatePaginator(this.scene.findObject("paginator_place"), this,
-      this.curPage, totalPages - 1, null, true /*show last page*/)
+      this.curPage, totalPages - 1, null, true /*show last page*/ )
   }
 
-  function goToPage(obj)
-  {
+  function goToPage(obj) {
     this.markCurrentPageSeen()
     this.goToPageIdx(obj.to_page.tointeger())
   }
 
-  function goToPageIdx(idx)
-  {
+  function goToPageIdx(idx) {
     this.curPage = idx
     this.fillPage()
   }
 
-  function getCurAward()
-  {
+  function getCurAward() {
     let value = this.getItemsListObj().getValue()
     return getTblValue(value, this.curPageAwards)
   }
 
-  function getCurAwardObj()
-  {
+  function getCurAwardObj() {
     let itemListObj = this.getItemsListObj()
     let value = ::get_obj_valid_index(itemListObj)
     if (value < 0)
@@ -215,15 +201,13 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     return itemListObj.getChild(value)
   }
 
-  function fillItemDesc(award)
-  {
+  function fillItemDesc(award) {
     let obj = this.scene.findObject("item_info")
     let hasItemDesc = award != null && award.fillItemDesc(obj, this)
     obj.show(hasItemDesc)
   }
 
-  function fillCommonDesc(award)
-  {
+  function fillCommonDesc(award) {
     let obj = this.scene.findObject("common_info")
     let hasCommonDesc = award != null && award.hasCommonDesc()
     obj.show(hasCommonDesc)
@@ -239,8 +223,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     this.guiScene.replaceContentFromText(iconObj, imageData, imageData.len(), this)
   }
 
-  function updateItemInfo()
-  {
+  function updateItemInfo() {
     let award = this.getCurAward()
     this.markAwardSeen(award)
     this.fillItemDesc(award)
@@ -256,8 +239,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     return isButtonsVisible
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     if (hasFeature("BattlePass"))
       this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
 
@@ -276,20 +258,17 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     if (!award)
       return
 
-    if (checkObj(mainActionBtn))
-    {
+    if (checkObj(mainActionBtn)) {
       mainActionBtn.visualStyle = "purchase"
       mainActionBtn.inactiveColor = award.canBuy() ? "no" : "yes"
       setColoredDoubleTextToButton(this.scene, "btn_main_action", award.getBuyText(false))
     }
   }
 
-  function updateBalance()
-  {
+  function updateBalance() {
     local text = ""
     local tooltip = ""
-    if (this.curWb)
-    {
+    if (this.curWb) {
       text = loc("warbonds/currentAmount", { warbonds = this.curWb.getBalanceText() })
       tooltip = loc("warbonds/maxAmount", { warbonds = ::g_warbonds.getLimit() })
     }
@@ -298,12 +277,10 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     textObj.tooltip = tooltip
   }
 
-  function updateAwardPrices()
-  {
+  function updateAwardPrices() {
     let listObj = this.getItemsListObj()
     let total = min(listObj.childrenCount(), this.curPageAwards.len())
-    for(local i = 0; i < total; i++)
-    {
+    for (local i = 0; i < total; i++) {
       let childObj = listObj.getChild(i)
       let priceObj = childObj.findObject("price")
       if (!checkObj(priceObj)) //price obj always exist in item. so it check that childObj valid
@@ -313,8 +290,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
 
       let isAllBought = this.curPageAwards[i].isAllBought()
       let iconObj = childObj.findObject("all_bougt_icon")
-      if (checkObj(iconObj))
-      {
+      if (checkObj(iconObj)) {
         iconObj.show(isAllBought)
         priceObj.show(!isAllBought)
       }
@@ -325,11 +301,9 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     }
   }
 
-  function updateTabsTexts()
-  {
+  function updateTabsTexts() {
     let tabsObj = this.getTabsListObj()
-    foreach(idx, wb in this.wbList)
-    {
+    foreach (idx, wb in this.wbList) {
       let id = this.getTabId(idx) + "_text"
       let obj = tabsObj.findObject(id)
       if (!checkObj(obj))
@@ -337,8 +311,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
 
       local timeText = ""
       let timeLeft = wb.getChangeStateTimeLeft()
-      if (timeLeft > 0)
-      {
+      if (timeLeft > 0) {
         timeText = time.hoursToString(time.secondsToHours(timeLeft), false, true)
         timeText = " " + loc("ui/parentheses", { text = timeText })
       }
@@ -346,26 +319,22 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     }
   }
 
-  function onTimer(_obj, _dt)
-  {
+  function onTimer(_obj, _dt) {
     this.updateTabsTexts()
   }
 
-  function initItemsProgress()
-  {
+  function initItemsProgress() {
     let showAnyShopProgress = ::g_warbonds_view.showOrdinaryProgress(this.curWb)
     let progressPlaceObj = this.scene.findObject("shop_level_progress_place")
     progressPlaceObj.show(showAnyShopProgress)
 
     let isShopInactive = !this.curWb || !this.curWb.isCurrent()
-    if (showAnyShopProgress)
-    {
+    if (showAnyShopProgress) {
       let oldShopObj = progressPlaceObj.findObject("old_shop_progress_place")
       oldShopObj.show(isShopInactive)
 
       ::g_warbonds_view.createProgressBox(this.curWb, progressPlaceObj, this, isShopInactive)
-      if (isShopInactive)
-      {
+      if (isShopInactive) {
         let data = ::g_warbonds_view.getCurrentLevelItemMarkUp(this.curWb)
         this.guiScene.replaceContentFromText(oldShopObj.findObject("level_icon"), data, data.len(), this)
       }
@@ -378,8 +347,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
       ::g_warbonds_view.createSpecialMedalsProgress(this.curWb, medalsPlaceObj, this)
   }
 
-  function onItemAction(buttonObj)
-  {
+  function onItemAction(buttonObj) {
     let fullAwardId = buttonObj?.holderId
     if (!fullAwardId)
       return
@@ -388,53 +356,46 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
       this.buyAward(wbAward)
   }
 
-  function onMainAction(_obj)
-  {
+  function onMainAction(_obj) {
     this.buyAward()
   }
 
-  function buyAward(wbAward = null)
-  {
+  function buyAward(wbAward = null) {
     if (!wbAward)
       wbAward = this.getCurAward()
     if (wbAward)
       wbAward.buy()
   }
 
-  function markAwardSeen(award)
-  {
+  function markAwardSeen(award) {
     if (award == null || award.isItemLocked())
       return
 
     seenWarbondsShop.markSeen(award.getSeenId())
   }
 
-  function markCurrentPageSeen()
-  {
+  function markCurrentPageSeen() {
     if (this.curPageAwards == null || this.curWb == null)
       return
 
     let pageStartIndex = this.curPage * this.itemsPerPage
     let pageEndIndex = min((this.curPage + 1) * this.itemsPerPage, this.curPageAwards.len())
     let list = []
-    for(local i = pageStartIndex; i < pageEndIndex; ++i)
+    for (local i = pageStartIndex; i < pageEndIndex; ++i)
       if (!this.curPageAwards[i].isItemLocked())
         list.append(this.curPageAwards[i].getSeenId())
     seenWarbondsShop.markSeen(list)
   }
 
-  function onShowBattlePass()
-  {
+  function onShowBattlePass() {
     openBattlePassWnd()
   }
 
-  function onShowSpecialTasks(_obj)
-  {
+  function onShowSpecialTasks(_obj) {
     ::gui_start_battle_tasks_wnd(null, BattleTasksWndTab.BATTLE_TASKS_HARD)
   }
 
-  function onEventWarbondAwardBought(_p)
-  {
+  function onEventWarbondAwardBought(_p) {
     this.guiScene.setUpdatesEnabled(false, false)
     this.updateBalance()
     this.updateAwardPrices()
@@ -442,41 +403,34 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  function onEventProfileUpdated(_p)
-  {
+  function onEventProfileUpdated(_p) {
     this.updateBalance()
   }
 
-  function onEventBattleTasksFinishedUpdate(_p)
-  {
+  function onEventBattleTasksFinishedUpdate(_p) {
     this.updateItemInfo()
   }
 
-  function onEventItemsShopUpdate(_p)
-  {
+  function onEventItemsShopUpdate(_p) {
     this.doWhenActiveOnce("fillPage")
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     this.markCurrentPageSeen()
     let activeWb = ::g_warbonds.getCurrentWarbond()
     if (activeWb)
       activeWb.markSeenLastResearchShopLevel()
   }
 
-  function onEventBeforeStartShowroom(_params)
-  {
+  function onEventBeforeStartShowroom(_params) {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
-  function onEventBeforeStartTestFlight(_params)
-  {
+  function onEventBeforeStartTestFlight(_params) {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
-  function getHandlerRestoreData()
-  {
+  function getHandlerRestoreData() {
     return {
       openData = {
         filterFunc = this.filterFunc
@@ -488,12 +442,10 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     }
   }
 
-  function restoreHandler(stateData)
-  {
+  function restoreHandler(stateData) {
     let fullList = this.curWb.getAwardsList()
     foreach (i, v in fullList)
-      if (v.id == stateData.curAwardId)
-      {
+      if (v.id == stateData.curAwardId) {
         this.goToPageIdx(ceil(i / this.itemsPerPage).tointeger())
         this.getItemsListObj().setValue(i % this.itemsPerPage)
         break
@@ -505,8 +457,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
       this.updateButtons()
   }
 
-  function onJumpToDescPanelAccessKey(_obj)
-  {
+  function onJumpToDescPanelAccessKey(_obj) {
     if (!::show_console_buttons)
       return
     let containerObj = this.scene.findObject("item_info_nest")

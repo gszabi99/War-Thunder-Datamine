@@ -1,3 +1,4 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -36,7 +37,7 @@ const PRESETS_COUNT = 3
     this.presets = DataBlock()
     this.presets.setFrom(getUnitExtraData(this.unit.name, "ship_dc_presets"))
 
-    for(local i = 0; i < PRESETS_COUNT; i++)
+    for (local i = 0; i < PRESETS_COUNT; i++)
       this.presets[$"preset{i + 1}"] = this.presets?[$"preset{i + 1}"] ?? ""
 
     this.updateCurrentPresets()
@@ -53,7 +54,7 @@ const PRESETS_COUNT = 3
 
   function createCurrentPresets() {
     let presetsData = []
-    for(local i = 0; i < PRESETS_COUNT; i++) {
+    for (local i = 0; i < PRESETS_COUNT; i++) {
       presetsData.append({
         presetNumber = $"preset{i + 1}"
         shortcut = this.getShortcutById($"ID_SHIP_DAMAGE_CONTROL_PRESET_{i + 1}")
@@ -63,7 +64,7 @@ const PRESETS_COUNT = 3
   }
 
   function updateCurrentPresets() {
-    for(local i = 0; i < PRESETS_COUNT; i++) {
+    for (local i = 0; i < PRESETS_COUNT; i++) {
       let image = this.createPresetImage(this.presets[$"preset{i + 1}"])
       let presetNumber = $"preset{i + 1}"
       let obj = this.scene.findObject(presetNumber)
@@ -72,14 +73,14 @@ const PRESETS_COUNT = 3
   }
 
   function createPresetImage(presetString = "") {
-    if(presetString == "")
+    if (presetString == "")
       return ""
     local res = [];
     local iconLayer = "iconLayer {position:t='absolute'; css-hier-invalidate:t='yes'; background-image:t='{0}'; {1}}"
     local place = 0
-    for(local i = 0; i < presetString.len(); i++) {
+    for (local i = 0; i < presetString.len(); i++) {
       let action = presetString.slice(i, i + 1)
-      if(!"eur".contains(action))
+      if (!"eur".contains(action))
         continue
       let image = this.getIconByAction(action)
       let params = this.getParamsByPlace(place)
@@ -91,9 +92,9 @@ const PRESETS_COUNT = 3
   }
 
   function getParamsByPlace(place) {
-    if(place == 0)
+    if (place == 0)
       return "size:t='0.8pw, 0.8ph'; background-svg-size:t='0.8pw, 0.8ph'; pos:t='0, 0'"
-    if(place == 1)
+    if (place == 1)
       return "size:t='0.25pw, 0.25ph'; background-svg-size:t='0.25pw, 0.25ph'; pos:t='0.55pw - 0.5w, ph - 1.5h'"
 
     return "size:t='0.25pw, 0.25ph'; background-svg-size:t='0.25pw, 0.25ph'; pos:t='0.68pw, ph - 1.5h'"
@@ -112,8 +113,7 @@ const PRESETS_COUNT = 3
 
   function getIconByAction(action) {
     local res = ""
-    switch(action)
-    {
+    switch (action) {
       case "e":
         res = "manual_ship_extinguisher.png"
         break
@@ -131,16 +131,16 @@ const PRESETS_COUNT = 3
 
   function createFixedPresets() {
     let fixedPresetsData = []
-    foreach(preset in this.fixedPresets) {
+    foreach (preset in this.fixedPresets) {
       let presetData = {
         presetName = loc(preset.name, { num = preset.num })
         actionsView = []
         hasBottomGap = preset.num == 2
       }
-      for(local i = 0; i < preset.set.len(); i++) {
+      for (local i = 0; i < preset.set.len(); i++) {
         let action = preset.set.slice(i, i + 1)
         let image = this.getIconByAction(action)
-        presetData.actionsView.append({img = image lastAction = i == preset.set.len() - 1 })
+        presetData.actionsView.append({ img = image lastAction = i == preset.set.len() - 1 })
       }
       fixedPresetsData.append(presetData)
     }
@@ -149,7 +149,7 @@ const PRESETS_COUNT = 3
 
   function createSelectButtons() {
     let buttons = []
-    for(local i = 0; i < PRESETS_COUNT; i++) {
+    for (local i = 0; i < PRESETS_COUNT; i++) {
       let buttonData = {
         presetNumber = "preset{0}".subst(i + 1)
         shortcut = this.getShortcutById($"ID_SHIP_DAMAGE_CONTROL_PRESET_{i + 1}")
@@ -164,7 +164,7 @@ const PRESETS_COUNT = 3
   }
 
   function onSelectFor(obj) {
-    if(this.currentPresetId == "")
+    if (this.currentPresetId == "")
       return
 
     this.setPreset(obj.forPresetId)
@@ -172,11 +172,10 @@ const PRESETS_COUNT = 3
 
   function setPreset(presetNumber) {
     local swaped = false
-    for (local i = 0; i < this.presets.paramCount(); i++)
-    {
+    for (local i = 0; i < this.presets.paramCount(); i++) {
       let key = this.presets.getParamName(i)
       let preset = this.presets.getParamValue(i)
-      if(preset == this.currentPresetId) {
+      if (preset == this.currentPresetId) {
         this.presets[key] = this.presets[presetNumber]
         this.presets[presetNumber] = this.currentPresetId
         swaped = true
@@ -184,7 +183,7 @@ const PRESETS_COUNT = 3
       }
     }
 
-    if(!swaped)
+    if (!swaped)
       this.presets[presetNumber] = this.currentPresetId
     this.updateCurrentPresets()
     saveUnitExtraData(this.unit.name, "ship_dc_presets", this.presets)
@@ -193,7 +192,7 @@ const PRESETS_COUNT = 3
 
 return {
   showDamageControl = function(unit) {
-    if(unit != null && unit.isShipOrBoat())
+    if (unit != null && unit.isShipOrBoat())
       ::handlersManager.loadHandler(::gui_handlers.DamageControlWnd, { unit })
   }
 }

@@ -85,10 +85,10 @@
         "hp": 124.5
       },
       "fuse2_dm": {
-        "hp": 155.1
+        "hp": 157.0
       },
       "fuse_dm": {
-        "hp": 159.6
+        "hp": 160.5
       },
       "tail_dm": {
         "genericDamageMult": 0.6,
@@ -3234,8 +3234,40 @@
         "tags": {
           "aux": true
         }
+      },
+      {
+        "name": "lancaster_mk3_1x_8000_6x_500",
+        "blk": "gameData/FlightModels/weaponPresets/lancaster_mk3_1x_8000_6x_500.blk",
+        "reqModification": "lancaster_mk3_avro_mark_1",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/uk_8000lb_hc_mkI_n33_bomb.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_heavy"
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle"
+            }
+          ]
+        }
+      },
+      {
+        "name": "lancaster_mk3_1x_8000",
+        "blk": "gameData/FlightModels/weaponPresets/lancaster_mk3_1x_8000.blk",
+        "reqModification": "uk_12000lb_hc_mkI_n52_bomb"
+      },
+      {
+        "name": "lancaster_mk3_1x_12000",
+        "blk": "gameData/FlightModels/weaponPresets/lancaster_mk3_1x_12000.blk",
+        "reqModification": "uk_12000lb_hc_mkI_n52_bomb"
       }
     ]
+  },
+  "Aircraft": {
+    "gunnersCount": 5
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -3708,33 +3740,47 @@
     "turnTime": 35.5487
   },
   "modifications": {
-    "cd_98": {},
-    "air_extinguisher": {
-      "image": "#ui/gameuiskin#engine_extinguisher.png",
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
       "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
+      "modClass": "lth"
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
-    "bmg303_turret_belt_pack": {
-      "tier": 2
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
     },
-    "bmg303_turret_new_gun": {
-      "reqModification": "bmg303_turret_belt_pack",
-      "tier": 3
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
     },
-    "303_turret_ap": {},
-    "303_turret_api": {},
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "lancaster_m1_flyers_vest": {
       "modClass": "armor",
       "tier": 1,
-      "reqModLevel": 3.0,
       "effects": {
         "DamageParts": {
           "mod_protected_vest": {
@@ -3770,6 +3816,22 @@
         }
       }
     },
+    "air_extinguisher": {
+      "prevModification": "lancaster_m1_flyers_vest",
+      "image": "#ui/gameuiskin#engine_extinguisher.png",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
+    "bmg303_turret_belt_pack": {
+      "tier": 2
+    },
+    "bmg303_turret_new_gun": {
+      "reqModification": "bmg303_turret_belt_pack",
+      "tier": 3
+    },
+    "303_turret_ap": {},
+    "303_turret_api": {},
     "lancaster_mk3_avro_mark_1": {
       "reqModification": "lancaster_mk3_avro_mark_3",
       "modClass": "weapon",
@@ -3780,6 +3842,11 @@
       "modClass": "weapon",
       "tier": 2,
       "reqModLevel": 7.0
+    },
+    "uk_12000lb_hc_mkI_n52_bomb": {
+      "reqModification": "lancaster_mk3_avro_mark_1",
+      "modClass": "weapon",
+      "tier": 4
     }
   },
   "user_skin": {

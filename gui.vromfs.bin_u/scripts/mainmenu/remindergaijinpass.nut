@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let reminderGaijinPassModal = require("%scripts/mainmenu/reminderGaijinPassModal
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { getUtcDays } = require("%scripts/time.nut")
 
-let function checkGaijinPassReminder()
-{
+let function checkGaijinPassReminder() {
   let haveGP = havePlayerTag("GaijinPass")
   let have2Step = havePlayerTag("2step")
   if (!is_platform_pc || ::steam_is_running() || ::is_me_newbie() || !have2Step || haveGP
@@ -25,8 +25,7 @@ let function checkGaijinPassReminder()
   let gmBlk = ::get_game_settings_blk()
   let daysCounter = max(gmBlk?.reminderGaijinPassGetting ?? 1,
     ::load_local_account_settings("gaijinpass/daysCounter", 0))
-  if (deltaDaysReminder >= daysCounter)
-  {
+  if (deltaDaysReminder >= daysCounter) {
     ::save_local_account_settings("gaijinpass/daysCounter", 2 * daysCounter)
     ::save_local_account_settings("gaijinpass/lastDayReminder", currDays)
     reminderGaijinPassModal.open()

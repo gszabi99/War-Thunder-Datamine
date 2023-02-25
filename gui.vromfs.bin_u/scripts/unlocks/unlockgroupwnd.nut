@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -20,7 +21,7 @@ let class UnlockGroupWnd extends ::gui_handlers.BaseGuiHandlerWT {
     fObj["max-height"] = "1@maxWindowHeight"
     fObj["max-width"] = "1@maxWindowWidth"
     fObj["class"] = "wnd"
-    fObj.width="fw"
+    fObj.width = "fw"
 
     let listObj = this.scene.findObject("wnd_content")
     listObj.width = $"2(@unlockBlockWidth + @framePadding) + @scrollBarSize"

@@ -1,3 +1,4 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -25,8 +26,7 @@ register_command(
   },
   "ui.debug_unlocks_reward")
 
-::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.UnlockRewardWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
   unlocksRewards = null
@@ -39,8 +39,7 @@ register_command(
   decoratorSlot = -1
   unit = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.processConfigsArray()
     this.checkConfigsArray()
     this.setTitle()
@@ -50,7 +49,7 @@ register_command(
   }
 
   function getTitle() {
-    if(this.unlocks.len() == 1)
+    if (this.unlocks.len() == 1)
       return getUnlockTypeText(this.unlocks[0].type, this.unlocks[0].id)
 
     return loc("unlocks/achievement")
@@ -59,7 +58,7 @@ register_command(
   function processConfigsArray() {
     this.unlocks.clear()
     this.shrinkedUnlocks.clear()
-    foreach(unlockId, _ in this.unlocksRewards) {
+    foreach (unlockId, _ in this.unlocksRewards) {
       let config = ::g_unlocks.getUnlockById(unlockId)
       if (!config)
         continue
@@ -68,10 +67,10 @@ register_command(
       this.unlocks.append(unlock)
 
       let shrinkedUnlock = {}
-      foreach(key, value in unlock) {
-        if(key == "id")
+      foreach (key, value in unlock) {
+        if (key == "id")
           shrinkedUnlock["unlock"] <- value
-        else if(key == "amount")
+        else if (key == "amount")
           shrinkedUnlock["count"] <- value
       }
       this.shrinkedUnlocks.append(shrinkedUnlock)
@@ -82,25 +81,25 @@ register_command(
     let units = []
     let decors = []
 
-    foreach(unlock in this.unlocks) {
+    foreach (unlock in this.unlocks) {
       let unlockType = ::g_unlock_view.getUnlockType(unlock)
       if (unlockType == UNLOCKABLE_AIRCRAFT)
         units.append(::getAircraftByName(unlock.id))
       else if (unlockType == UNLOCKABLE_DECAL
         || unlockType == UNLOCKABLE_SKIN
         || unlockType == UNLOCKABLE_ATTACHABLE)
-        decors.append({unlockId = unlock.id unlockType = unlockType})
+        decors.append({ unlockId = unlock.id unlockType = unlockType })
     }
 
-    if(units.len() > 1)
+    if (units.len() > 1)
       return
-    if(units.len() == 0 && decors.len() != 1)
+    if (units.len() == 0 && decors.len() != 1)
       return
-    if(units.len() == 1 && units[0].isUsable() && !::isUnitInSlotbar(units[0])) {
+    if (units.len() == 1 && units[0].isUsable() && !::isUnitInSlotbar(units[0])) {
       this.unit = units[0]
       this.showSceneBtn("btn_take_air", true)
     }
-    else if(units.len() == 0 && decors.len() == 1) {
+    else if (units.len() == 0 && decors.len() == 1) {
       this.updateResourceData(decors[0].unlockId, decors[0].unlockType)
     }
   }
@@ -120,16 +119,14 @@ register_command(
     }
   }
 
-  function onTakeNavBar()
-  {
+  function onTakeNavBar() {
     if (!this.unit)
       return
 
     this.onTake(this.unit)
   }
 
-  function onTake(unitToTake)
-  {
+  function onTake(unitToTake) {
     base.onTake(unitToTake, {
       cellClass = "slotbarClone"
       isNewUnit = true
@@ -137,8 +134,7 @@ register_command(
     })
   }
 
-  function setTitle()
-  {
+  function setTitle() {
     let title = this.getTitle()
 
     let titleObj = this.scene.findObject("reward_title")
@@ -148,12 +144,10 @@ register_command(
       titleObj.caption = "no"
   }
 
-  function startOpening()
-  {
+  function startOpening() {
     ::showBtn("reward_roullete", false, this.scene)
     let animObj = this.scene.findObject("open_chest_animation")
-    if (checkObj(animObj))
-    {
+    if (checkObj(animObj)) {
       animObj.animation = "show"
       this.guiScene.playSound("chest_open")
       let delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
@@ -164,8 +158,7 @@ register_command(
       this.openChest()
   }
 
-  function openChest()
-  {
+  function openChest() {
     if (this.opened)
       return false
 
@@ -174,8 +167,7 @@ register_command(
     return true
   }
 
-  function updateWnd()
-  {
+  function updateWnd() {
     this.updateUnlockImages()
     this.updateRewardText()
     this.updateRewardPostscript()
@@ -193,8 +185,7 @@ register_command(
     this.guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
   }
 
-  function updateRewardPostscript()
-  {
+  function updateRewardPostscript() {
     if (!this.opened)
       return
 
@@ -207,11 +198,10 @@ register_command(
     if (!checkObj(obj))
       return
 
-    obj.setValue(loc("trophy/moreRewards", {num = countNotVisibleItems}))
+    obj.setValue(loc("trophy/moreRewards", { num = countNotVisibleItems }))
   }
 
-  function updateRewardText()
-  {
+  function updateRewardText() {
     if (!this.opened)
       return
 
@@ -227,8 +217,7 @@ register_command(
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
-  function getRewardImage()
-  {
+  function getRewardImage() {
     local layersData = ""
     let show_count = min(::trophyReward.maxRewardsShow, this.unlocks.len())
     for (local i = 0; i < show_count; i++)
@@ -242,11 +231,9 @@ register_command(
     return res
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     if (!checkObj(this.scene))
       return
-    ::show_facebook_screenshot_button(this.scene, this.opened)
     let isShowRewardListBtn = this.opened && (this.unlocks.len() > 1) && this.animFinished
     local btnObj = this.showSceneBtn("btn_rewards_list", isShowRewardListBtn)
     if (isShowRewardListBtn)
@@ -260,11 +247,10 @@ register_command(
     if (this.unlocks.len() <= 1)
       return
     ::gui_start_open_trophy_rewards_list({ rewardsArray = this.shrinkedUnlocks,
-      titleLocId = "mainmenu/rewardsList"})
+      titleLocId = "mainmenu/rewardsList" })
   }
 
-  function onOpenAnimFinish()
-  {
+  function onOpenAnimFinish() {
     this.animFinished = true
     if (!this.openChest())
       this.updateButtons()
@@ -278,20 +264,19 @@ register_command(
   onGoToItem = @() null
   onPreviewDecorator = @() null
 
-  function getImageLayer(unlock, config)
-  {
+  function getImageLayer(unlock, config) {
     let imageLayer = ::LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
     let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
 
-    return ::handyman.renderCached(("%gui/items/item.tpl"), {items = [tooltipConfig.__update({
+    return ::handyman.renderCached(("%gui/items/item.tpl"), { items = [tooltipConfig.__update({
       layered_image = imageLayer,
-      hasFocusBorder = true })]})
+      hasFocusBorder = true })] })
   }
 }
 
 return {
   showUnlocks = function(unlocksRewards) {
-    if(unlocksRewards.len() == 0)
+    if (unlocksRewards.len() == 0)
       return
     ::handlersManager.loadHandler(::gui_handlers.UnlockRewardWnd, { unlocksRewards })
   }

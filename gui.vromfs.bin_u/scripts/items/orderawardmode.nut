@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,10 +11,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   types = []
 }
 
-::g_order_award_mode._addMultTextPart <- function _addMultTextPart(currentText, awardValue, signLocId)
-{
-  if (awardValue > 0)
-  {
+::g_order_award_mode._addMultTextPart <- function _addMultTextPart(currentText, awardValue, signLocId) {
+  if (awardValue > 0) {
     if (currentText.len() > 0)
       currentText += " "
     currentText += colorize("activeTextColor", "x" + awardValue) + loc(signLocId)
@@ -21,8 +20,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   return currentText
 }
 
-::g_order_award_mode._getAwardTextByDifficultyCost <- function _getAwardTextByDifficultyCost(difficulty, orderItem)
-{
+::g_order_award_mode._getAwardTextByDifficultyCost <- function _getAwardTextByDifficultyCost(difficulty, orderItem) {
   let cost = ::Cost()
   cost.wp = orderItem.awardWpByDifficulty[difficulty]
   cost.gold = orderItem.awardGoldByDifficulty[difficulty]
@@ -30,8 +28,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   return cost.getUncoloredText()
 }
 
-::g_order_award_mode._getAwardTextByDifficultyMultipliers <- function _getAwardTextByDifficultyMultipliers(difficulty, orderItem)
-{
+::g_order_award_mode._getAwardTextByDifficultyMultipliers <- function _getAwardTextByDifficultyMultipliers(difficulty, orderItem) {
   local text = ""
   text = ::g_order_award_mode._addMultTextPart(text, orderItem.awardWpByDifficulty[difficulty],
     "warpoints/short/colored")

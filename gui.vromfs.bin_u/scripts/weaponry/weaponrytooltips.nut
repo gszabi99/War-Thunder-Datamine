@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,7 +10,8 @@ let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getFakeBulletsModByName, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
-let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip
+let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip,
+  validateWeaponryTooltipParams
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 
 const INFO_DELAY = 2.0
@@ -39,21 +41,19 @@ let lockedTimerHandler = {
 
 let tooltipTypes = {
   SINGLE_BULLET = {
-    getTooltipId = function(unitName, bulletName = "", params = null, _p3 = null)
-    {
+    getTooltipId = function(unitName, bulletName = "", params = null, _p3 = null) {
       let p = params ? clone params : {}
       p.bulletName <- bulletName
       return this._buildId(unitName, p)
     }
     isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, unitName, params)
-    {
+    fillTooltip = function(obj, handler, unitName, params) {
       let unit = ::getAircraftByName(unitName)
       if (!unit)
         return false
       let { modName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
 
-      let locName =" ".concat(format(loc("caliber/mm"), bSet.caliber),
+      let locName = " ".concat(format(loc("caliber/mm"), bSet.caliber),
         getModificationName(unit, modName), loc($"{bulletName}/name/short"))
       let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"),
         getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams))
@@ -62,15 +62,13 @@ let tooltipTypes = {
     }
   }
   MODIFICATION = { //by unitName, modName
-    getTooltipId = function(unitName, modName = "", params = null, _p3 = null)
-    {
-      let p = params ? clone params : {}
+    getTooltipId = function(unitName, modName = "", params = null, _p3 = null) {
+      let p = validateWeaponryTooltipParams(params)
       p.modName <- modName
       return this._buildId(unitName, p)
     }
     isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, unitName, params)
-    {
+    fillTooltip = function(obj, handler, unitName, params) {
       let unit = ::getAircraftByName(unitName)
       if (!unit)
         return false
@@ -87,10 +85,10 @@ let tooltipTypes = {
 
   PRIMARY_WEAPON = {
     getTooltipId = @(unitName, modName = "", params = null, _p3 = null)
-      this._buildId(unitName, (params ?? {}).__merge({ modName }))
+      this._buildId(unitName,
+        (validateWeaponryTooltipParams(params)).__merge({ modName }))
     isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, unitName, params)
-    {
+    fillTooltip = function(obj, handler, unitName, params) {
       let unit = ::getAircraftByName(unitName)
       if (!unit)
         return false
@@ -123,9 +121,8 @@ let tooltipTypes = {
   }
 
   WEAPON = { //by unitName
-    getTooltipId = function(unitName, weaponName = "", params = null, _p3 = null)
-    {
-      let p = params ? clone params : {}
+    getTooltipId = function(unitName, weaponName = "", params = null, _p3 = null) {
+      let p = validateWeaponryTooltipParams(params)
       p.weaponName <- weaponName
       return this._buildId(unitName, p)
     }
@@ -158,8 +155,7 @@ let tooltipTypes = {
 
   SPARE = { //by unit name
     isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, unitName, ...)
-    {
+    fillTooltip = function(obj, handler, unitName, ...) {
       if (!checkObj(obj))
         return false
 
@@ -179,8 +175,7 @@ let tooltipTypes = {
       this._buildId(unitName, params)
 
     isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, unitName, params)
-    {
+    fillTooltip = function(obj, handler, unitName, params) {
       if (!checkObj(obj))
         return false
 

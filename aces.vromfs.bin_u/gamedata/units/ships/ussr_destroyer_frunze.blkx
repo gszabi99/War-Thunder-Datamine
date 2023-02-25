@@ -25,7 +25,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -125,6 +125,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -1537,6 +1545,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -2936,10 +2954,10 @@
     "fireDirecting": {
       "dmPartMain": "bridge_dm",
       "dmPart": "rangefinder_01_dm",
-      "measureAccuracy": 0.85,
-      "targetLockTime": 24.0,
-      "calcTime": 14.0,
-      "rotationSpeed": 20.0,
+      "measureAccuracy": 0.9,
+      "targetLockTime": 10.0,
+      "calcTime": 5.0,
+      "rotationSpeed": 24.0,
       "triggerGroupUse": {
         "primary": true,
         "secondary": true,
@@ -4518,6 +4536,18 @@
     "binoculars": "navy_binoculars"
   },
   "modifications": {
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {
+      "prevModification": "ship_tool_kit"
+    },
+    "new_ship_pumps": {},
+    "new_main_caliber_turrets": {
+      "prevModification": "new_aux_caliber_turrets"
+    },
+    "new_aux_caliber_turrets": {
+      "prevModification": "new_aa_caliber_turrets"
+    },
+    "ship_rangefinder": {},
     "new_ship_hull": {},
     "new_ship_rudder": {
       "prevModification": "new_ship_hull"
@@ -4525,10 +4555,6 @@
     "new_ship_screw": {},
     "new_ship_engine": {
       "prevModification": "new_ship_screw"
-    },
-    "ship_tool_kit": {},
-    "manual_ship_extinguisher": {
-      "prevModification": "ship_tool_kit"
     },
     "ship_smoke_screen_system_mod": {},
     "ship_anti_fragmentation_protection": {
@@ -4558,7 +4584,6 @@
         }
       }
     },
-    "new_ship_pumps": {},
     "ship_ammo_wetting": {
       "effects": {
         "damagePartsOverride": {
@@ -4586,15 +4611,8 @@
     "45mm_ussr_21k_naval_base_fuse_he_ammo_pack": {
       "prevModification": "45mm_ussr_21k_naval_ap_ammo_pack"
     },
-    "ship_torpedoes": {},
     "new_aa_caliber_turrets": {},
-    "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
-    },
-    "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
-    },
-    "ship_rangefinder": {},
+    "ship_torpedoes": {},
     "torpedoes_movement_mode": {
       "effects": {
         "distToLive": 3000.0,

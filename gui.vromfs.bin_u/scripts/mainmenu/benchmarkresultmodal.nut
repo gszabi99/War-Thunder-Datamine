@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,24 +9,21 @@ let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.BenchmarkResultModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.BenchmarkResultModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/benchmark.blk"
 
   title = null
   benchmark_data = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (this.title)
       this.scene.findObject("mission_title").setValue(this.title)
 
-    if ("benchTotalTime" in this.benchmark_data)
-    {
+    if ("benchTotalTime" in this.benchmark_data) {
       local resultTableData = ""
       let avgfps = format("%.1f", this.benchmark_data.benchTotalTime > 0.1 ?
-        (this.benchmark_data.benchTotalFrames / this.benchmark_data.benchTotalTime) : 0.0 )
+        (this.benchmark_data.benchTotalFrames / this.benchmark_data.benchTotalTime) : 0.0)
 
       resultTableData = this.getStatRow("stat_avgfps", "benchmark/avgfps", avgfps)
 
@@ -41,8 +39,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       ::d3d_enable_vsync(::ps4_vsync_enabled)
   }
 
-  function getStatRow(id, statType, statCount)
-  {
+  function getStatRow(id, statType, statCount) {
     let rowData = [
                       {
                         text = loc(statType),

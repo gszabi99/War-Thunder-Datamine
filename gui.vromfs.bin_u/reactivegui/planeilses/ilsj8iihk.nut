@@ -1,15 +1,15 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
-let {Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude} = require("%rGui/planeState/planeFlyState.nut");
-let {IlsColor, TargetPosValid, TargetPos, CannonMode,
-        BombCCIPMode, RocketMode, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")
-let {mpsToKmh, baseLineWidth} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {compassWrap, generateCompassMarkJ8} = require("ilsCompasses.nut")
-let {TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
-let {flyDirection, angleTxt, shimadzuRoll, ShimadzuPitch, ShimadzuAlt, aimMark} = require("commonElements.nut")
-let {floor, abs} = require("%sqstd/math.nut")
+let { Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude } = require("%rGui/planeState/planeFlyState.nut");
+let { IlsColor, TargetPosValid, TargetPos, CannonMode,
+        BombCCIPMode, RocketMode, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
+let { mpsToKmh, baseLineWidth } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { compassWrap, generateCompassMarkJ8 } = require("ilsCompasses.nut")
+let { TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
+let { flyDirection, angleTxt, shimadzuRoll, ShimadzuPitch, ShimadzuAlt, aimMark } = require("commonElements.nut")
+let { floor, abs } = require("%sqstd/math.nut")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let OverloadWatch = Computed(@() (floor(Overload.value * 10)).tointeger())
@@ -19,7 +19,7 @@ let generateSpdMarkJ8 = function(num) {
     size = [pw(100), ph(7.5)]
     pos = [pw(40), 0]
     children = [
-      ( num % 5 > 0 ? null :
+      (num % 5 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -83,7 +83,7 @@ let J8FlyInfo = @() {
   pos = [pw(11), ph(12)]
   flow = FLOW_VERTICAL
   children = [
-    @(){
+    @() {
       watch = OverloadWatch
       rendObj = ROBJ_TEXT
       color = IlsColor.value
@@ -91,7 +91,7 @@ let J8FlyInfo = @() {
       font = Fonts.hud
       text = string.format("G%.1f", OverloadWatch.value / 10.0)
     },
-    @(){
+    @() {
       watch = MachWatchJ8
       rendObj = ROBJ_TEXT
       color = IlsColor.value
@@ -99,7 +99,7 @@ let J8FlyInfo = @() {
       font = Fonts.hud
       text = string.format("M%.1f0", Mach.value)
     },
-    @(){
+    @() {
       watch = TasWatch
       rendObj = ROBJ_TEXT
       color = IlsColor.value
@@ -116,7 +116,7 @@ let J8AoaInfo = @() {
   pos = [pw(20), ph(46)]
   flow = FLOW_VERTICAL
   children = [
-    @(){
+    @() {
       watch = AoaWatch
       rendObj = ROBJ_TEXT
       color = IlsColor.value
@@ -129,7 +129,7 @@ let J8AoaInfo = @() {
       size = [baseLineWidth * 12, baseLineWidth * IlsLineScale.value]
       color = IlsColor.value
     },
-    @(){
+    @() {
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -146,7 +146,7 @@ let J8ClimbInfo = @() {
   pos = [pw(75), ph(46)]
   flow = FLOW_VERTICAL
   children = [
-    @(){
+    @() {
       watch = ClimbJ8Watch
       rendObj = ROBJ_TEXT
       color = IlsColor.value
@@ -228,7 +228,7 @@ let generateAltMarkJ8 = function(num) {
         lineWidth = baseLineWidth * IlsLineScale.value
         vplace = ALIGN_CENTER
       },
-      ( num % 50 > 0 ? null :
+      (num % 50 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -261,7 +261,7 @@ let J8AltInfo = @() {
   pos = [pw(81), ph(16)]
   flow = FLOW_VERTICAL
   children = [
-    @(){
+    @() {
       watch = altValue
       rendObj = ROBJ_TEXT
       color = IlsColor.value
@@ -305,7 +305,7 @@ let J8AirAimMark = {
     }
 }
 
-let J8AamMode = @(){
+let J8AamMode = @() {
   watch = GuidanceLockState
   size = flex()
   children = [
@@ -315,19 +315,19 @@ let J8AamMode = @(){
       pos = [pw(50), ph(50)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
-      fillColor = Color(0,0,0,0)
+      fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.value
       commands = [
         [VECTOR_ELLIPSE, 0, 0, 100, 100]
       ]
     },
     (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ?
-    @(){
+    @() {
       watch = IlsColor
       size = [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
-      fillColor = Color(0,0,0,0)
+      fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.value
       commands = [
         [VECTOR_LINE, 0, -100, 100, 0],

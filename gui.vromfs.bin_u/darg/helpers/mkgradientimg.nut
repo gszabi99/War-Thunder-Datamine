@@ -28,7 +28,7 @@ let function mkGradPointStyle(point, idx, points){
     colorStr = $"stop-color:rgb({r}, {g}, {b});"
   }
   let opacityStr = (opacity!=null) ? $"stop-opacity:{opacity};" : ""
-  assert(colorStr != "" || opacityStr != "", "point in gradient should have color and/or opacity! got '{point}'")
+  assert(colorStr != "" || opacityStr != "", $"point in gradient should have color and/or opacity! got '{point}'")
   return $"<stop offset='{offset}%' style='{opacityStr}{colorStr}'/>"
 }
 

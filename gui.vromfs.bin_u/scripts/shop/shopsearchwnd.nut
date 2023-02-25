@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -12,8 +13,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
-::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 
@@ -25,8 +25,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   isUseUnitPlates = false
   unitToShowOnClose = null
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     let unitsData = this.prepareUnitsData()
     let countriesView = this.getCountriesView(unitsData)
 
@@ -38,29 +37,24 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
   }
 
-  function initScreen()
-  {
-    if (this.isUseUnitPlates)
-    {
+  function initScreen() {
+    if (this.isUseUnitPlates) {
       let contentObj = this.scene.findObject("contentBlock")
       foreach (u in this.units)
         ::fill_unit_item_timers(contentObj.findObject(u.name), u)
     }
   }
 
-  function prepareUnitsData()
-  {
+  function prepareUnitsData() {
     let data = {}
     let ediff = this.getEdiffFunc()
-    foreach (countryId in shopCountriesList)
-    {
+    foreach (countryId in shopCountriesList) {
       let countryUnits = this.units.filter(@(unit) ::getUnitCountry(unit) == countryId)
       if (!countryUnits.len())
         continue
 
       data[countryId] <- {}
-      foreach (unitType in unitTypes.types)
-      {
+      foreach (unitType in unitTypes.types) {
         let armyUnits = countryUnits.filter(@(unit) unitType == unit.unitType)
         if (!armyUnits.len())
           continue
@@ -72,14 +66,12 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     return data
   }
 
-  function getCountriesView(unitsData)
-  {
+  function getCountriesView(unitsData) {
     let view = []
     let ediff = this.getEdiffFunc()
     this.isUseUnitPlates = this.getIsUseUnitPlates(unitsData)
 
-    foreach (countryId in shopCountriesList)
-    {
+    foreach (countryId in shopCountriesList) {
       if (!unitsData?[countryId])
         continue
 
@@ -88,8 +80,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
         armyTypes = []
       }
 
-      foreach (unitType in unitTypes.types)
-      {
+      foreach (unitType in unitTypes.types) {
         let unitsList = unitsData[countryId]?[unitType.armyId]
         if (!unitsList)
           continue
@@ -101,17 +92,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
           isTooltipByHold = ::show_console_buttons
         }
 
-        foreach (u in unitsList)
-        {
-          if (this.isUseUnitPlates)
-          {
+        foreach (u in unitsList) {
+          if (this.isUseUnitPlates) {
             armyView.unitPlates.append({
               id = u.name
               plateMarkup = ::build_aircraft_item(u.name, u)
             })
           }
-          else
-          {
+          else {
             armyView.units.append({
               id = u.name
               ico = ::getUnitClassIco(u)
@@ -135,13 +123,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     return view
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     return this.getEdiffFunc()
   }
 
-  function onUnitClick(obj)
-  {
+  function onUnitClick(obj) {
     this.unitToShowOnClose = ::g_string.cutPrefix(obj.id, "btn_") ?? ""
     this.goBack()
   }
@@ -150,14 +136,12 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     this.cbOwnerShowUnit(this.unitToShowOnClose)
   }
 
-  function getIsUseUnitPlates(unitsData)
-  {
+  function getIsUseUnitPlates(unitsData) {
     let visibleHeight = to_pixels("1@maxWindowHeightNoSrh -1@frameHeaderHeight " +
       "-@cIco -6@blockInterval -0.02@sf)")
     let slotHeight  = to_pixels("@slot_height + 2@slot_interval")
     local maxColumnHeight = 0
-    foreach (countryUnits in unitsData)
-    {
+    foreach (countryUnits in unitsData) {
       local columnHeight = 0
       foreach (armyUnits in countryUnits)
         columnHeight += slotHeight * (0.5 + armyUnits.len())
@@ -168,8 +152,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 }
 
 return {
-  open = function(searchString, cbOwnerShowUnit, getEdiffFunc)
-  {
+  open = function(searchString, cbOwnerShowUnit, getEdiffFunc) {
     let units = shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
       return false

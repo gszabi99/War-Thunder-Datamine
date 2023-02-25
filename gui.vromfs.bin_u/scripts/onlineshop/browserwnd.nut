@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,8 +14,7 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 ::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
-  is_main_frame)
-{
+  is_main_frame) {
   ::broadcastEvent(
     "EmbeddedBrowser",
     { eventType = event_type, url = url, errorDesc = error_desc,
@@ -22,28 +22,23 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   );
 }
 
-::notify_browser_window <- function notify_browser_window(params)
-{
+::notify_browser_window <- function notify_browser_window(params) {
   ::broadcastEvent("EmbeddedBrowser", params)
 }
 
-::is_builtin_browser_active <- function is_builtin_browser_active()
-{
+::is_builtin_browser_active <- function is_builtin_browser_active() {
   return ::isHandlerInScene(::gui_handlers.BrowserModalHandler)
 }
 
-::open_browser_modal <- function open_browser_modal(url="", tags=[], baseUrl = "")
-{
-  ::gui_start_modal_wnd(::gui_handlers.BrowserModalHandler, { url, urlTags=tags, baseUrl })
+::open_browser_modal <- function open_browser_modal(url = "", tags = [], baseUrl = "") {
+  ::gui_start_modal_wnd(::gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
 }
 
-::close_browser_modal <- function close_browser_modal()
-{
+::close_browser_modal <- function close_browser_modal() {
   let handler = ::handlersManager.findHandlerClassInScene(
     ::gui_handlers.BrowserModalHandler)
 
-  if (handler == null)
-  {
+  if (handler == null) {
     log("[BRWS] Couldn't find embedded browser modal handler")
     return
   }
@@ -51,16 +46,14 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   handler.goBack()
 }
 
-::browser_set_external_url <- function browser_set_external_url(url)
-{
+::browser_set_external_url <- function browser_set_external_url(url) {
   let handler = ::handlersManager.findHandlerClassInScene(
     ::gui_handlers.BrowserModalHandler);
   if (handler)
     handler.externalUrl = url;
 }
 
-::gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler
-{
+::gui_handlers.BrowserModalHandler <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/browser.blk"
   sceneNavBlkName = null
@@ -72,16 +65,14 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   urlTags = []
   isLoadingPage = true
 
-  function initScreen()
-  {
+  function initScreen() {
     let browserObj = this.scene.findObject("browser_area")
     browserObj.url = this.url
     this.lastLoadedUrl = this.baseUrl
     ::browser_go(this.url)
   }
 
-  function browserCloseAndUpdateEntitlements()
-  {
+  function browserCloseAndUpdateEntitlements() {
     ::g_tasker.addTask(::update_entitlements_limited(),
                        {
                          showProgressBox = true
@@ -91,23 +82,19 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     this.goBack()
   }
 
-  function browserGoBack()
-  {
+  function browserGoBack() {
     ::browser_go_back()
   }
 
-  function onBrowserBtnReload()
-  {
+  function onBrowserBtnReload() {
     ::browser_reload_page()
   }
 
-  function browserForceExternal()
-  {
+  function browserForceExternal() {
     local taggedUrl = this.isLoadingPage
       ? this.lastLoadedUrl
       : ::browser_get_current_url()
-    if (!::u.isEmpty(this.urlTags) && taggedUrl != "")
-    {
+    if (!::u.isEmpty(this.urlTags) && taggedUrl != "") {
       let tagsStr = " ".join(this.urlTags)
       if (!::g_string.startsWith(taggedUrl, tagsStr))
         taggedUrl = " ".concat(tagsStr, taggedUrl)
@@ -117,8 +104,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     openUrl(::u.isEmpty(newUrl) ? this.baseUrl : newUrl, true, false, "internal_browser")
   }
 
-  function setTitle(title)
-  {
+  function setTitle(title) {
     if (::u.isEmpty(title))
       return
 
@@ -127,17 +113,14 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
       titleObj.setValue(title)
   }
 
-  function onEventEmbeddedBrowser(params)
-  {
-    switch (params.eventType)
-    {
+  function onEventEmbeddedBrowser(params) {
+    switch (params.eventType) {
       case BROWSER_EVENT_DOCUMENT_READY:
         this.lastLoadedUrl = ::browser_get_current_url()
         this.toggleWaitAnimation(false)
         break;
       case BROWSER_EVENT_FAIL_LOADING_FRAME:
-        if (params.isMainFrame)
-        {
+        if (params.isMainFrame) {
           this.toggleWaitAnimation(false)
           let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
             "\n", loc("browser/error_code"), loc("ui/colon"), params.errorCode, loc("ui/comma"), params.errorDesc)
@@ -158,23 +141,21 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
         ::showInfoMsgBox(loc("browser/error_cant_download"))
         break;
       case BROWSER_EVENT_BEGIN_LOADING_FRAME:
-        if (params.isMainFrame)
-        {
+        if (params.isMainFrame) {
           this.toggleWaitAnimation(true)
           this.setTitle(params.title)
         }
         break;
       case BROWSER_EVENT_FINISH_LOADING_FRAME:
         this.lastLoadedUrl = ::browser_get_current_url()
-        if (params.isMainFrame)
-        {
+        if (params.isMainFrame) {
           this.toggleWaitAnimation(false)
           this.setTitle(params.title)
         }
         break;
       case BROWSER_EVENT_BROWSER_CRASHED:
         log("[BRWS] embedded browser crashed, forcing external")
-        statsd.send_counter("sq.browser.crash", 1, {reason = params.errorDesc})
+        statsd.send_counter("sq.browser.crash", 1, { reason = params.errorDesc })
         this.browserForceExternal()
         this.goBack()
         break;
@@ -185,22 +166,20 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     }
   }
 
-  function onEventWebPollAuthResult(_param)
-  {
+  function onEventWebPollAuthResult(_param) {
     // WebPollAuthResult event may come before browser opens the page
     let currentUrl = ::u.isEmpty(::browser_get_current_url()) ? this.url : ::browser_get_current_url()
-    if(::u.isEmpty(currentUrl))
+    if (::u.isEmpty(currentUrl))
       return
     // we have to update externalUrl for any pollId
     // so we don't care about pollId from param
     let pollId = getPollIdByFullUrl(currentUrl)
-    if( ! pollId)
+    if (! pollId)
       return
     this.externalUrl = generatePollUrl(pollId, false)
   }
 
-  function toggleWaitAnimation(show)
-  {
+  function toggleWaitAnimation(show) {
     this.isLoadingPage = show
 
     let waitSpinner = this.scene.findObject("browserWaitAnimation");
@@ -208,19 +187,16 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
       waitSpinner.show(show);
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     ::broadcastEvent("DestroyEmbeddedBrowser")
   }
 
-  function wordWrapText(str, width)
-  {
+  function wordWrapText(str, width) {
     if (type(str) != "string" || str == "" || width <= 0)
       return str
     let wrapped = []
     let lines = str.split("\n")
-    foreach (line in lines)
-    {
+    foreach (line in lines) {
       let unicodeLine = utf8(line)
       let strLen = unicodeLine.charCount()
       for (local pos = 0; pos < strLen; pos += width)
@@ -229,8 +205,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     return "\n".join(wrapped)
   }
 
-  function getUrlCommentMarkupForMsgbox(urlStr)
-  {
+  function getUrlCommentMarkupForMsgbox(urlStr) {
     if (urlStr == "")
       return ""
 
@@ -239,8 +214,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     let fontSizeCssId = "fontSmall"
     let maxWidthPx = to_pixels("0.8@rw")
     let textWidthPx = getStringWidthPx(urlStr, fontSizeCssId, this.guiScene)
-    if (textWidthPx != 0 && textWidthPx > maxWidthPx)
-    {
+    if (textWidthPx != 0 && textWidthPx > maxWidthPx) {
       let splitByChars = (1.0 * maxWidthPx / textWidthPx * utf8(urlStr).charCount()).tointeger()
       urlStr = this.wordWrapText(urlStr, splitByChars)
     }

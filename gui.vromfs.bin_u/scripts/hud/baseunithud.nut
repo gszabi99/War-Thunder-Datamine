@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
-::gui_handlers.BaseUnitHud <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.BaseUnitHud <- class extends ::gui_handlers.BaseGuiHandlerWT {
   scene = null
   wndType = handlerType.CUSTOM
 
@@ -42,9 +42,8 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
   }
 
   function onEventShowHud(_p) {
-    if (this.isReinitDelayed)
-    {
-      this.actionBar?.reinit(true)
+    if (this.isReinitDelayed) {
+      this.actionBar?.reinit()
       this.isReinitDelayed = false
     }
   }

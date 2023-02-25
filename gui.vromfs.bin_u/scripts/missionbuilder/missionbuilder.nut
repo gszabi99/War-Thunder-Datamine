@@ -1,22 +1,25 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
+let { rnd } = require("dagor.random")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_gui_option } = require("guiOptions")
+let { get_gui_option, getCdBaseDifficulty } = require("guiOptions")
+let { dynamicInit, dynamicGetList, dynamicTune, dynamicSetTakeoffMode,
+} = require("dynamicMission")
+let { select_mission_full } = require("guiMission")
+let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 
-local { getCdBaseDifficulty } = require_native("guiOptions")
-
-::gui_start_builder <- function gui_start_builder(params = {})
-{
+::gui_start_builder <- function gui_start_builder(params = {}) {
   ::gui_start_modal_wnd(::gui_handlers.MissionBuilder, params)
 }
 
-::gui_handlers.MissionBuilder <- class extends ::gui_handlers.GenericOptionsModal
-{
+::gui_handlers.MissionBuilder <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/navBuilderOptions.blk"
@@ -28,8 +31,7 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
   // Remove can_generate_missions parameter and find out how not to generate two map regenerations
   needSlotbar = true
 
-  function initScreen()
-  {
+  function initScreen() {
     ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
     this.guiScene.setUpdatesEnabled(false, false)
@@ -61,14 +63,14 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     let desc = ::get_option(::USEROPT_DYN_ZONE)
     let dynZoneObj = this.guiScene["dyn_zone"]
     local value = desc.value
-    if(checkObj(dynZoneObj))
+    if (checkObj(dynZoneObj))
       value = this.guiScene["dyn_zone"].getValue()
 
-    ::g_map_preview.setSummaryPreview(this.scene.findObject("tactical-map"), ::DataBlock(), desc.values[value])
+    setSummaryPreview(this.scene.findObject("tactical-map"), DataBlock(), desc.values[value])
 
     if (::mission_settings.dynlist.len() == 0)
       return this.msgBox("no_missions_error", loc("msgbox/appearError"),
-                     [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack})
+                     [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack })
 
     this.update_takeoff()
 
@@ -84,8 +86,7 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     ::move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
-  function reinitOptionsList()
-  {
+  function reinitOptionsList() {
     if (!checkObj(this.scene))
       return this.goBack()
 
@@ -105,24 +106,21 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     this.update_dynamic_map()
   }
 
-  function isBuilderAvailable()
-  {
+  function isBuilderAvailable() {
     return ::isUnitAvailableForGM(showedUnit.value, GM_BUILDER)
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     if (!checkObj(this.scene))
       return
 
     let available = this.isBuilderAvailable()
-    this.scene.findObject("btn_select").inactiveColor = available? "no" : "yes"
+    this.scene.findObject("btn_select").inactiveColor = available ? "no" : "yes"
     this.showSceneBtn("btn_random", available)
     this.showSceneBtn("btn_inviteSquad", ::enable_coop_in_QMB && ::g_squad_manager.canInviteMember())
   }
 
-  function onApply()
-  {
+  function onApply() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
         maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
@@ -140,38 +138,32 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     this.applyOptions()
   }
 
-  function getSceneOptRes(optName)
-  {
+  function getSceneOptRes(optName) {
     let option = ::get_option(optName)
     let obj = this.scene.findObject(option.id)
-    local value = obj? obj.getValue() : -1
+    local value = obj ? obj.getValue() : -1
     if (!(value in option.items))
       value = option.value
     return { name = option.items[value], value = option.values[value] }
   }
 
-  function init_builder_map()
-  {
+  function init_builder_map() {
     let mapData = this.getSceneOptRes(::USEROPT_DYN_MAP)
     ::mission_settings.layout <- mapData.value
     ::mission_settings.layoutName <- mapData.name
 
-    let settings = ::DataBlock();
+    let settings = DataBlock();
     local playerSide = 1
     foreach (tag in (showedUnit.value?.tags ?? []))
-      if (tag == "axis")
-      {
+      if (tag == "axis") {
         playerSide = 2
         break
       }
-    settings.setInt("playerSide", /*getSceneOptValue(::USEROPT_MP_TEAM)*/playerSide)
-
-
-    ::dynamic_init(settings, mapData.value);
+    settings.setInt("playerSide", /*getSceneOptValue(::USEROPT_MP_TEAM)*/ playerSide)
+    dynamicInit(settings, mapData.value)
   }
 
-  function generate_builder_list(wait)
-  {
+  function generate_builder_list(wait) {
     if (!this.can_generate_missions)
       return
     if (showedUnit.value == null)
@@ -179,20 +171,19 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
 
     ::aircraft_for_weapons = showedUnit.value.name
 
-    let settings = ::DataBlock();
+    let settings = DataBlock();
     settings.setStr("player_class", showedUnit.value.name)
     settings.setStr("player_weapons", get_gui_option(::USEROPT_WEAPONS) ?? "")
     settings.setStr("player_skin", this.getSceneOptValue(::USEROPT_SKIN) || "")
     settings.setStr("wishSector", this.getSceneOptValue(::USEROPT_DYN_ZONE))
     settings.setInt("sectorSurround", this.getSceneOptValue(::USEROPT_DYN_SURROUND))
-    settings.setStr("year", "year_any" /*getSceneOptValue(::USEROPT_YEAR)*/)
+    settings.setStr("year", "year_any" /*getSceneOptValue(::USEROPT_YEAR)*/ )
     settings.setBool("isQuickMissionBuilder", true)
 
-    ::mission_settings.dynlist <- ::dynamic_get_list(settings, wait)
+    ::mission_settings.dynlist <- dynamicGetList(settings, wait)
 
     let add = []
-    for (local i = 0; i < ::mission_settings.dynlist.len(); i++)
-    {
+    for (local i = 0; i < ::mission_settings.dynlist.len(); i++) {
       let misblk = ::mission_settings.dynlist[i].mission_settings.mission
 
       ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misblk)
@@ -207,8 +198,7 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     ::add_mission_list_full(GM_BUILDER, add, ::mission_settings.dynlist)
   }
 
-  function update_dynamic_map()
-  {
+  function update_dynamic_map() {
     let descr = ::get_option(::USEROPT_DYN_MAP)
     let txt = ::create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
     let dObj = this.scene.findObject(descr.id)
@@ -220,8 +210,7 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     return descr
   }
 
-  function update_dynamic_layout(guiScene, _obj, _descr)
-  {
+  function update_dynamic_layout(guiScene, _obj, _descr) {
     this.init_builder_map()
 
     let descrWeap = ::get_option(::USEROPT_DYN_ZONE)
@@ -231,8 +220,7 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     return descrWeap
   }
 
-  function update_dynamic_sector(guiScene, _obj, _descr)
-  {
+  function update_dynamic_sector(guiScene, _obj, _descr) {
     this.generate_builder_list(true)
     let descrWeap = ::get_option(::USEROPT_DMP_MAP)
     let txt = ::create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, null, false)
@@ -241,13 +229,12 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
 
     this.update_takeoff()
 
-    ::g_map_preview.setSummaryPreview(this.scene.findObject("tactical-map"), ::DataBlock(), this.getSceneOptValue(::USEROPT_DYN_ZONE))
+    setSummaryPreview(this.scene.findObject("tactical-map"), DataBlock(), this.getSceneOptValue(::USEROPT_DYN_ZONE))
 
     return descrWeap
   }
 
-  function update_takeoff()
-  {
+  function update_takeoff() {
     local haveTakeOff = false
     let mapObj = this.scene.findObject("dyn_mp_map")
     if (checkObj(mapObj))
@@ -262,10 +249,9 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
 
     ::mission_name_for_takeoff <- dynMission.mission_settings.mission.name
     let descrWeap = ::get_option(::USEROPT_TAKEOFF_MODE)
-    if (!haveTakeOff)
-    {
-      for(local i=0; i<descrWeap.items.len(); i++)
-        descrWeap.items[i] = { text = descrWeap.items[i], enabled = (i==0) }
+    if (!haveTakeOff) {
+      for (local i = 0; i < descrWeap.items.len(); i++)
+        descrWeap.items[i] = { text = descrWeap.items[i], enabled = (i == 0) }
       descrWeap.value = 0
     }
     let txt = ::create_option_combobox(descrWeap.id, descrWeap.items, descrWeap.value, "onMissionChange", false)
@@ -274,13 +260,11 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
       this.guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
   }
 
-  function setRandomOpt(optName)
-  {
+  function setRandomOpt(optName) {
     let desc = ::get_option(optName)
     let obj = this.scene.findObject(desc.id)
 
-    if(desc.values.len() == 0)
-    {
+    if (desc.values.len() == 0) {
       let settings = toString({                      // warning disable: -declared-never-used
         DYN_MAP = this.getSceneOptValue(::USEROPT_DYN_MAP),
         DYN_ZONE = this.getSceneOptValue(::USEROPT_DYN_ZONE),
@@ -303,11 +287,11 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
       return
     }
 
-    if (obj) obj.setValue(::math.rnd() % desc.values.len())
+    if (obj)
+      obj.setValue(rnd() % desc.values.len())
   }
 
-  function randomize_builder_options()
-  {
+  function randomize_builder_options() {
     if (!checkObj(this.scene))
       return
 
@@ -317,24 +301,21 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     this.setRandomOpt(::USEROPT_DYN_MAP)
     this.onLayoutChange(this.scene.findObject("dyn_map"))
 
-    this.guiScene.performDelayed(this, function()
-      {
+    this.guiScene.performDelayed(this, function() {
         if (!this.isValid())
           return
 
         this.setRandomOpt(::USEROPT_DYN_ZONE)
         this.onSectorChange(this.scene.findObject("dyn_zone"))
 
-        this.guiScene.performDelayed(this, function()
-          {
+        this.guiScene.performDelayed(this, function() {
             if (!this.isValid())
               return
 
-            foreach(o in [::USEROPT_TIME, ::USEROPT_CLIME, ::USEROPT_DYN_SURROUND])
+            foreach (o in [::USEROPT_TIME, ::USEROPT_CLIME, ::USEROPT_DYN_SURROUND])
               this.setRandomOpt(o)
 
-            this.guiScene.performDelayed(this, function()
-              {
+            this.guiScene.performDelayed(this, function() {
                 if (!this.isValid())
                   return
 
@@ -352,8 +333,7 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     )
   }
 
-  function applyFunc()
-  {
+  function applyFunc() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
         maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
@@ -365,13 +345,13 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     if (!fullMissionBlk)
       return
 
-    if (fullMissionBlk.mission_settings.mission.paramExists("takeoff_mode"))
-    {
+    if (fullMissionBlk.mission_settings.mission.paramExists("takeoff_mode")) {
       let takeoff_mode = this.scene.findObject("takeoff_mode").getValue()
-      ::dynamic_set_takeoff_mode(fullMissionBlk, takeoff_mode, takeoff_mode)
+      let land_mode = takeoff_mode
+      dynamicSetTakeoffMode(fullMissionBlk, takeoff_mode, land_mode)
     }
 
-    let settings = ::DataBlock()
+    let settings = DataBlock()
     settings.setInt("allyCount",  this.getSceneOptValue(::USEROPT_DYN_ALLIES))
     settings.setInt("enemyCount", this.getSceneOptValue(::USEROPT_DYN_ENEMIES))
     settings.setInt("allySkill",  this.getSceneOptValue(::USEROPT_FRIENDLY_SKILL))
@@ -383,14 +363,13 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     ::mission_settings.friendOnly = false
     ::mission_settings.allowJIP = true
 
-    ::dynamic_tune(settings, fullMissionBlk)
+    dynamicTune(settings, fullMissionBlk)
 
     let missionBlk = fullMissionBlk.mission_settings.mission
 
     missionBlk.setInt("_gameMode", GM_BUILDER)
     missionBlk.setBool("gt_cooperative", ::mission_settings.coop)
-    if (::mission_settings.coop)
-    {
+    if (::mission_settings.coop) {
       ::mission_settings.players = 4;
       missionBlk.setInt("_players", 4)
       missionBlk.setInt("maxPlayers", 4)
@@ -410,18 +389,17 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     missionBlk.setBool("isLimitedFuel", ::get_option(::USEROPT_LIMITED_FUEL).value)
     missionBlk.setBool("isLimitedAmmo", ::get_option(::USEROPT_LIMITED_AMMO).value)
 
-    ::current_campaign_mission = missionBlk.getStr("name","")
+    ::current_campaign_mission = missionBlk.getStr("name", "")
     ::mission_settings.mission = missionBlk
     ::mission_settings.missionFull = fullMissionBlk
-    ::select_mission_full(missionBlk, fullMissionBlk);
+    select_mission_full(missionBlk, fullMissionBlk);
 
     //dlog("missionBlk:"); debugTableData(missionBlk)
 
     ::gui_start_builder_tuner()
   }
 
-  function onLayoutChange(obj)
-  {
+  function onLayoutChange(obj) {
     this.guiScene.performDelayed(this, function() {
       if (!this.isValid())
         return
@@ -430,13 +408,11 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     })
   }
 
-  function onMissionChange(_obj)
-  {
+  function onMissionChange(_obj) {
     this.update_takeoff()
   }
 
-  function onSectorChange(obj)
-  {
+  function onSectorChange(obj) {
     this.guiScene.performDelayed(this, function() {
       if (!this.isValid())
         return
@@ -444,8 +420,7 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     })
   }
 
-  function onYearChange(obj)
-  {
+  function onYearChange(obj) {
     this.guiScene.performDelayed(this, function() {
       if (!this.isValid())
         return
@@ -453,34 +428,29 @@ local { getCdBaseDifficulty } = require_native("guiOptions")
     })
   }
 
-  function onRandom(_obj)
-  {
+  function onRandom(_obj) {
     this.randomize_builder_options()
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     let diffValue = this.getSceneOptValue(::USEROPT_DIFFICULTY)
     let difficulty = (diffValue == "custom") ?
       ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
-    if (difficulty.diffCode != -1)
-    {
+    if (difficulty.diffCode != -1) {
       let battleType = ::get_battle_type_by_unit(showedUnit.value)
       return difficulty.getEdiff(battleType)
     }
     return ::get_current_ediff()
   }
 
-  function getHandlerRestoreData()
-  {
+  function getHandlerRestoreData() {
     return {
       openData = { needSlotbar = this.needSlotbar }
     }
   }
 
-  function onEventBeforeStartMissionBuilder(_p)
-  {
+  function onEventBeforeStartMissionBuilder(_p) {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 

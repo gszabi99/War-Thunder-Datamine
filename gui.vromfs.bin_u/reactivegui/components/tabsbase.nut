@@ -8,9 +8,10 @@ let function defTab(tab_item, is_current, handler) {
     let isHover = (stateFlags.value & S_HOVER)
     local fillColor, textColor
     if (is_current) {
-      textColor = isHover ? Color(255, 255,255) : Color(0, 255, 0)
+      textColor = isHover ? Color(255, 255, 255) : Color(0, 255, 0)
       fillColor = isHover ? Color(100, 100, 100) : Color(150, 150, 150)
-    } else {
+    }
+    else {
       textColor = isHover ? Color(255, 255, 255) : Color(255, 255, 0)
       fillColor = isHover ? Color(100, 100, 100) : Color(50, 50, 50)
     }

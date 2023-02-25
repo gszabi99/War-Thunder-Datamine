@@ -16,7 +16,7 @@ require %game.repair_system_events
 
 def load_cover_parts(blk : DataBlock&; add_compartment : bool;
                      unit : Unit?;
-                     var ship_cover_parts_part_id : UInt32List&;
+                     var ship_cover_parts_part_id : PartIdList&;
                      var ship_cover_parts_water : Point3List&;
                      var ship_cover_parts_pos : Point3List&;
                      var ship_cover_parts_weight : FloatList&;
@@ -39,7 +39,7 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
     let partId = unit_dm |> dm_get_remap(partNo)
 
     if partId |> dm_part_id_valid()
-      ship_cover_parts_part_id |> push(partId.packed)
+      ship_cover_parts_part_id |> push(partId)
       ship_cover_parts_water |> push(float3(0.0f, 0.0f, max_water_alive))
       ship_cover_parts_weight |> push(weight)
       ship_cover_parts_compartment_id |> push(compartment_id)
@@ -82,11 +82,11 @@ def ship_repair_handler_es(evt : EventUnitRepair;
                            var ship_breaches_amount_to_repair : FloatList&;
                            var ship_breaches_depth_scale : FloatList&;
                            var ship_breaches_next_check : FloatList&;
-                           var ship_breaches_part_id : IntList&;
+                           var ship_breaches_part_id : PartIdList&;
                            var ship_breaches_cover_id : IntList&;
                            var ship_breaches_leaked_amount : FloatList&;
                            var ship_breaches_offender : BreachOffenderDataList&;
-                           var ship_breaches_fatal_part_id : int&;
+                           var ship_breaches_fatal_part_id : PartId&;
                            var ship_repair_breaches_remaining_time : float&;
                            var ship_unwatering_remaining_time : float&;
                            var ship_additional_water_left_side : float&;
@@ -106,7 +106,7 @@ def ship_repair_handler_es(evt : EventUnitRepair;
   ship_breaches_cover_id |> clear()
   ship_breaches_leaked_amount |> clear()
   ship_breaches_offender |> clear()
-  ship_breaches_fatal_part_id = -1
+  ship_breaches_fatal_part_id = PartId()
 
   ship_repair_breaches_remaining_time = -1.0f
   ship_unwatering_remaining_time = -1.0f
@@ -118,7 +118,7 @@ def ship_repair_handler_es(evt : EventUnitRepair;
 [es]
 def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
                                     uid : int;
-                                    var ship_cover_parts_part_id : UInt32List&;
+                                    var ship_cover_parts_part_id : PartIdList&;
                                     var ship_cover_parts_water : Point3List&;
                                     var ship_cover_parts_pos : Point3List&;
                                     var ship_cover_parts_weight : FloatList&;
@@ -318,7 +318,7 @@ def ship_remove_breach_handle_es(evt : EventShipRemoveBreach;
                                  var ship_breaches_amount_to_repair : FloatList&;
                                  var ship_breaches_depth_scale : FloatList&;
                                  var ship_breaches_next_check : FloatList&;
-                                 var ship_breaches_part_id : IntList&;
+                                 var ship_breaches_part_id : PartIdList&;
                                  var ship_breaches_cover_id : IntList&;
                                  var ship_breaches_leaked_amount : FloatList&;
                                  var ship_breaches_offender : BreachOffenderDataList&)
@@ -346,7 +346,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
                          eid : EntityId;
                          uid : int;
                          ship_damage_control_running : bool;
-                         ship_cover_parts_part_id : UInt32List;
+                         ship_cover_parts_part_id : PartIdList;
                          var ship_breaches_id : IntList&;
                          var ship_breaches_pos : Point3List&;
                          var ship_breaches_normal : Point3List&;
@@ -354,7 +354,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
                          var ship_breaches_amount_to_repair : FloatList&;
                          var ship_breaches_depth_scale : FloatList&;
                          var ship_breaches_next_check : FloatList&;
-                         var ship_breaches_part_id : IntList&;
+                         var ship_breaches_part_id : PartIdList&;
                          var ship_breaches_cover_id : IntList&;
                          var ship_breaches_leaked_amount : FloatList&;
                          var ship_breaches_offender : BreachOffenderDataList&;
@@ -367,8 +367,9 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     return
 
   var cover_id = -1
+  let part_id = PartId(evt.packedPartId)
   for i in iter_range(ship_cover_parts_part_id)
-    if int(unpack_part_id(ship_cover_parts_part_id[i]).globalId) == evt.partId
+    if ship_cover_parts_part_id[i].id == part_id.id
       cover_id = i
       break
   if cover_id < 0
@@ -403,7 +404,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   ship_breaches_amount_to_repair |> push(amountToRepair)
   ship_breaches_depth_scale |> push(0.0f)
   ship_breaches_next_check |> push(float(get_app().usefulTotalTime))
-  ship_breaches_part_id |> push(evt.partId)
+  ship_breaches_part_id |> push(part_id)
   ship_breaches_cover_id |> push(cover_id)
   ship_breaches_leaked_amount |> push(0.0f)
   ship_breaches_offender |> push(make_offender_data(evt.offenderUnitId, evt.offenderBulletId))
@@ -421,10 +422,10 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
                                eid : EntityId;
                                uid : int;
                                var ship_breaches_next_id : int&;
-                               var ship_breaches_fatal_part_id : int&;
-                               ship_cover_parts_part_id : UInt32List;
+                               var ship_breaches_fatal_part_id : PartId&;
+                               ship_cover_parts_part_id : PartIdList;
                                ship_cover_parts_water : Point3List)
-  if ship_breaches_fatal_part_id >= 0
+  if ship_breaches_fatal_part_id.valid
     return
 
   let unit = get_unit(uid)
@@ -432,14 +433,15 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
   if ship == null || unit.isDelayed
     return
 
+  let part_id = PartId(evt.packedPartId)
   let ship_props = ship.shipProps
   for i in iter_range(ship_cover_parts_part_id)
-    if int(unpack_part_id(ship_cover_parts_part_id[i]).globalId) == evt.partId
-      ship_breaches_fatal_part_id = i
+    if ship_cover_parts_part_id[i].id == part_id.id
+      ship_breaches_fatal_part_id = part_id
       if unit.isAuthority
         sendEvent(eid, [[EventShipAddBreach
           id=ship_breaches_next_id++,
-          partId=evt.partId,
+          packedPartId=part_id.packed,
           size=ship_cover_parts_water[i].y / (ship_props.fatalBreachDrownTime * 50.0f * ship_props.breachWaterMassMult),
           localPos = evt.localPos,
           localNormal = evt.localNormal,
@@ -600,8 +602,8 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
                                       ship_phys_ground_collision : bool;
                                       var ship_additional_water_left_side : float&;
                                       var ship_additional_water_right_side : float&;
-                                      ship_breaches_fatal_part_id : int;
-                                      ship_breaches_part_id : IntList;
+                                      ship_breaches_fatal_part_id : PartId;
+                                      ship_breaches_part_id : PartIdList;
                                       ship_breaches_cover_id : IntList;
                                       ship_breaches_pos : Point3List;
                                       ship_breaches_size : FloatList;
@@ -609,7 +611,7 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
                                       var ship_breaches_next_check : FloatList&;
                                       var ship_breaches_depth_scale : FloatList&;
                                       var ship_breaches_leaked_amount : FloatList&;
-                                      ship_cover_parts_part_id : UInt32List;
+                                      ship_cover_parts_part_id : PartIdList;
                                       var ship_cover_parts_water : Point3List&;
                                       ship_cover_parts_compartment_id : IntList;
                                       ship_cover_parts_inner_parts : IPoint2List;
@@ -620,13 +622,13 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
   let ship = unit |> as_ship()
   if ship == null || unit.isDelayed
     return
-  assume unit_dm = *unit.visual
+  assume dmData = unit.dmData
   let ship_props = ship.shipProps
   let is_dead = !unit.isAlive
   let current_time = float(get_app().usefulTotalTime)
 
   for part_id, cover_id, pos, size, amount_to_repair, next_check, depth_scale, leaked_amount in ship_breaches_part_id, ship_breaches_cover_id, ship_breaches_pos, ship_breaches_size, ship_breaches_amount_to_repair, ship_breaches_next_check, ship_breaches_depth_scale, ship_breaches_leaked_amount
-    let is_fatal = is_dead || part_id == ship_breaches_fatal_part_id
+    let is_fatal = is_dead || part_id.id == ship_breaches_fatal_part_id.id
 
     var water_mass_velocity = 0.0f
     if amount_to_repair > 0.0f
@@ -652,7 +654,7 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
       for i in cover_parts_range.x..cover_parts_range.y
         // calculate max water in cover part
         var max_water = ship_cover_parts_water[i].y
-        if !dm_is_dmg_part_dead(unit_dm, int(unpack_part_id(ship_cover_parts_part_id[i]).globalId)) // if part is not dead
+        if !is_part_dead(dmData, ship_cover_parts_part_id[i]) // if part is not dead
           max_water *= ship_cover_parts_water[i].z // *= maxWaterAlive
 
         // add water to part
@@ -758,7 +760,7 @@ def send_water_net_sync_event(eid : EntityId;
                               ship_additional_water_left_side : float;
                               ship_additional_water_right_side : float;
                               ship_cover_parts_water : Point3List)
-  using() <| $(var cover_parts_water : FloatList#)
+  using() <| $(var cover_parts_water : FloatList)
     cover_parts_water |> reserve(length(ship_cover_parts_water))
     for part_water in ship_cover_parts_water
       cover_parts_water |> push(part_water.x)
@@ -786,19 +788,19 @@ def send_breaches_net_sync_event(eid : EntityId;
                                  ship_breaches_size : FloatList;
                                  ship_breaches_amount_to_repair : FloatList;
                                  ship_breaches_depth_scale : FloatList;
-                                 ship_breaches_part_id : IntList;
+                                 ship_breaches_part_id : PartIdList;
                                  ship_breaches_cover_id : IntList;
                                  ship_breaches_leaked_amount : FloatList)
   let len = ship_breaches_id |> length()
-  using() <| $(var breaches_ids : IntList#)
-    using() <| $(var breaches_pos_and_size : Point4List#)
-      using() <| $(var breaches_repair_progress : FloatList#)
+  using() <| $(var breaches_ids : IntList)
+    using() <| $(var breaches_pos_and_size : Point4List)
+      using() <| $(var breaches_repair_progress : FloatList)
         breaches_ids |> reserve(len * 3)
         breaches_repair_progress |> reserve(len * 3)
         breaches_pos_and_size |> reserve(len)
         for i in 0..len
           breaches_ids |> push(ship_breaches_id[i])
-          breaches_ids |> push(ship_breaches_part_id[i])
+          breaches_ids |> push(int(ship_breaches_part_id[i].packed))
           breaches_ids |> push(ship_breaches_cover_id[i])
           breaches_repair_progress |> push(ship_breaches_amount_to_repair[i])
           breaches_repair_progress |> push(ship_breaches_leaked_amount[i])
@@ -821,7 +823,7 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
                                      var ship_breaches_amount_to_repair : FloatList&;
                                      var ship_breaches_depth_scale : FloatList&;
                                      var ship_breaches_next_check : FloatList&;
-                                     var ship_breaches_part_id : IntList&;
+                                     var ship_breaches_part_id : PartIdList&;
                                      var ship_breaches_cover_id : IntList&;
                                      var ship_breaches_leaked_amount : FloatList&;
                                      var ship_breaches_offender : BreachOffenderDataList&)
@@ -846,7 +848,7 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
     ship_breaches_pos[i] = float3(pos_and_size.x, pos_and_size.y, pos_and_size.z)
     ship_breaches_size[i] = pos_and_size.w
     ship_breaches_id[i] = packed_ids[i * 3]
-    ship_breaches_part_id[i] = packed_ids[i * 3 + 1]
+    ship_breaches_part_id[i] := PartId(uint(packed_ids[i * 3 + 1]))
     ship_breaches_cover_id[i] = packed_ids[i * 3 + 2]
     ship_breaches_amount_to_repair[i] = packed_repair_progress[i * 3]
     ship_breaches_leaked_amount[i] = packed_repair_progress[i * 3 + 1]
@@ -866,7 +868,7 @@ def ship_handle_net_sync_request_es(evt : EventShipRequestNetSync;
                                     ship_breaches_size : FloatList;
                                     ship_breaches_amount_to_repair : FloatList;
                                     ship_breaches_depth_scale : FloatList;
-                                    ship_breaches_part_id : IntList;
+                                    ship_breaches_part_id : PartIdList;
                                     ship_breaches_cover_id : IntList;
                                     ship_breaches_leaked_amount : FloatList)
   send_breaches_net_sync_event(eid,

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -163,8 +164,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   lastZoneCaptureUpdate = 0
   zoneCaptureOutdateTimeMsec = 3000
 
-  function init(nest, v_unitType)
-  {
+  function init(nest, v_unitType) {
     this.scene = nest.findObject("display_timers")
     if (!this.scene && !checkObj(this.scene))
       return
@@ -203,40 +203,34 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   }
 
 
-  function reinit()
-  {
+  function reinit() {
     if (getTblValue("isDead", ::get_local_mplayer(), false))
       this.clearAllTimers()
   }
 
 
-  function getViewData()
-  {
+  function getViewData() {
     return {
       timersList = this.timersList
     }
   }
 
 
-  function onLocalPlayerDead(_eventData)
-  {
+  function onLocalPlayerDead(_eventData) {
     this.clearAllTimers()
   }
 
 
-  function onMissionResult(_eventData)
-  {
+  function onMissionResult(_eventData) {
     this.clearAllTimers()
   }
 
 
-  function clearAllTimers()
-  {
+  function clearAllTimers() {
     if (!checkObj(this.scene))
       return
 
-    foreach(timerData in this.timersList)
-    {
+    foreach (timerData in this.timersList) {
       let placeObj = this.scene.findObject(timerData.id)
       if (!checkObj(placeObj))
         return
@@ -254,20 +248,17 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   }
 
 
-  function onDriverState(newStateData)
-  {
+  function onDriverState(newStateData) {
     this.onCrewMemberState("driver", newStateData)
   }
 
 
-  function onGunnerState(newStateData)
-  {
+  function onGunnerState(newStateData) {
     this.onCrewMemberState("gunner", newStateData)
   }
 
 
-  function onCrewMemberState(memberId, newStateData)
-  {
+  function onCrewMemberState(memberId, newStateData) {
     if (!("state" in newStateData))
       return
 
@@ -286,8 +277,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   }
 
 
-  function onCrewState(newStateData)
-  {
+  function onCrewState(newStateData) {
     let placeObj = this.scene.findObject("healing_status")
     if (!checkObj(placeObj))
       return
@@ -303,8 +293,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   }
 
 
-  function onRearm(debuffs_data)
-  {
+  function onRearm(debuffs_data) {
     let placeObj = this.scene.findObject(debuffs_data.object_name)
     if (!checkObj(placeObj))
       return
@@ -322,8 +311,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   }
 
 
-  function onReplenish(debuffs_data)
-  {
+  function onReplenish(debuffs_data) {
     let placeObj = this.scene.findObject("replenish_status")
     if (!checkObj(placeObj))
       return
@@ -333,8 +321,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     let timebarObj = placeObj.findObject("timer")
 
-    if (!showTimer)
-    {
+    if (!showTimer) {
       ::g_time_bar.setPeriod(timebarObj, 0)
       ::g_time_bar.setCurrentTime(timebarObj, 0)
       return
@@ -346,8 +333,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
   }
 
 
-  function onRepair(debuffs_data)
-  {
+  function onRepair(debuffs_data) {
     this.destoyRepairUpdater()
     this.hideAnimTimer("repair_status")
     this.hideAnimTimer("repair_auto_status")
@@ -372,13 +358,11 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     placeObj.show(true)
 
-    if (debuffs_data.state == "prepareRepair")
-    {
+    if (debuffs_data.state == "prepareRepair") {
       iconObj.wink = "fast"
       ::g_time_bar.setDirectionBackward(timebarObj)
     }
-    else if (debuffs_data.state == "repairing" || debuffs_data.state == "repairingAuto")
-    {
+    else if (debuffs_data.state == "repairing" || debuffs_data.state == "repairingAuto") {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
@@ -397,8 +381,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
-  function onMoveCooldown(debuffs_data)
-  {
+  function onMoveCooldown(debuffs_data) {
     let placeObj = this.scene.findObject("move_cooldown_status")
     if (!checkObj(placeObj))
       return
@@ -408,8 +391,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     let timebarObj = placeObj.findObject("timer")
 
-    if (!showTimer)
-    {
+    if (!showTimer) {
       ::g_time_bar.setPeriod(timebarObj, 0)
       ::g_time_bar.setCurrentTime(timebarObj, 0)
       return
@@ -420,8 +402,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
-  function onBattery(debuffs_data)
-  {
+  function onBattery(debuffs_data) {
     let placeObj = this.scene.findObject("battery_status")
     if (!checkObj(placeObj))
       return
@@ -437,8 +418,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
-  function hideAnimTimer(objId)
-  {
+  function hideAnimTimer(objId) {
     let placeObj = this.scene.findObject(objId)
     if (!checkObj(placeObj))
       return
@@ -446,8 +426,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     placeObj.findObject("icon").wink = "no"
   }
 
-  function onCancelAction(debuffs_data, placeObj)
-  {
+  function onCancelAction(debuffs_data, placeObj) {
     placeObj.animation = debuffs_data.time > 0 ? "show" : "hide"
     placeObj.show(true)
 
@@ -464,10 +443,8 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
-  function onRepairBreaches(debuffs_data)
-  {
-    if (debuffs_data.state == "notInRepair")
-    {
+  function onRepairBreaches(debuffs_data) {
+    if (debuffs_data.state == "notInRepair") {
       this.destoyRepairBreachesUpdater()
       this.hideAnimTimer("unwatering_status")
       this.hideAnimTimer("repair_breaches_status")
@@ -490,8 +467,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     placeObj.show(true)
 
-    if (debuffs_data.state == "repairing" || debuffs_data.state == "unwatering")
-    {
+    if (debuffs_data.state == "repairing" || debuffs_data.state == "unwatering") {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
@@ -510,8 +486,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
-  function onCancelRepairBreaches(debuffs_data)
-  {
+  function onCancelRepairBreaches(debuffs_data) {
     let placeObj = this.scene.findObject("cancel_repair_breaches_status")
     if (!checkObj(placeObj))
       return
@@ -519,8 +494,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.onCancelAction(debuffs_data, placeObj)
   }
 
-  function onExtinguishAssist(debuffs_data)
-  {
+  function onExtinguishAssist(debuffs_data) {
     let placeObj = this.scene.findObject("extinguish_assist")
     if (!checkObj(placeObj))
       return
@@ -528,8 +502,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.onCancelAction(debuffs_data, placeObj)
   }
 
-  function onMineDetonation(debuffs_data)
-  {
+  function onMineDetonation(debuffs_data) {
     let placeObj = this.scene.findObject("mine_detonation")
     if (!checkObj(placeObj))
       return
@@ -539,8 +512,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     let timebarObj = placeObj.findObject("timer")
 
-    if (!showTimer)
-    {
+    if (!showTimer) {
       ::g_time_bar.setPeriod(timebarObj, 0)
       ::g_time_bar.setCurrentTime(timebarObj, 0)
       return
@@ -551,8 +523,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_time_bar.setCurrentTime(timebarObj, debuffs_data?.timer ?? 0)
   }
 
-  function onExtinguish(debuffs_data)
-  {
+  function onExtinguish(debuffs_data) {
     let placeObj = this.scene.findObject("extinguish_status")
     if (!checkObj(placeObj))
       return
@@ -563,8 +534,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.destoyExtinguishUpdater()
     let iconObj = placeObj.findObject("icon")
 
-    if (!showTimer)
-    {
+    if (!showTimer) {
       iconObj.wink = "no"
       return
     }
@@ -575,8 +545,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
     placeObj.show(true)
 
-    if (debuffs_data.state == "extinguish")
-    {
+    if (debuffs_data.state == "extinguish") {
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
@@ -595,8 +564,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
-  function onCancelExtinguish(debuffs_data)
-  {
+  function onCancelExtinguish(debuffs_data) {
     let placeObj = this.scene.findObject("cancel_extinguish_status")
     if (!checkObj(placeObj))
       return
@@ -604,8 +572,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.onCancelAction(debuffs_data, placeObj)
   }
 
-  function destoyRepairUpdater()
-  {
+  function destoyRepairUpdater() {
     if (this.repairUpdater == null)
       return
 
@@ -613,8 +580,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.repairUpdater = null
   }
 
-  function destoyRepairBreachesUpdater()
-  {
+  function destoyRepairBreachesUpdater() {
     if (this.repairBreachesUpdater == null)
       return
 
@@ -622,8 +588,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.repairBreachesUpdater = null
   }
 
-  function destoyExtinguishUpdater()
-  {
+  function destoyExtinguishUpdater() {
     if (this.extinguishUpdater == null)
       return
 
@@ -631,8 +596,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     this.extinguishUpdater = null
   }
 
-  function onZoneCapturingEvent(eventData)
-  {
+  function onZoneCapturingEvent(eventData) {
     if (!eventData.isHeroAction && eventData.zoneName != this.curZoneCaptureName)
       return
     let placeObj = this.scene.findObject("capture_progress")
@@ -671,8 +635,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   isCapturingZoneMy = @(eventData) (::get_mp_local_team() == Team.A) == (eventData.captureProgress < 0)
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.scene)
   }
 }

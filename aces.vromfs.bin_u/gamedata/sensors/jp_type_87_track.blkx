@@ -264,7 +264,7 @@
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "stateTo": "parked",
+          "stateTo": "standby",
           "actions": {
             "init": {},
             "setStandbyMode": {}
@@ -377,26 +377,6 @@
               "fsm": "track",
               "active": false
             }
-          }
-        },
-        "switchOn": {
-          "stateFrom": "parked",
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "standby"
-        },
-        "switchOff": {
-          "stateFrom": [
-            "standby",
-            "losLock",
-            "visualLock",
-            "track"
-          ],
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "parked",
-          "actions": {
-            "setStandbyMode": {}
           }
         }
       }

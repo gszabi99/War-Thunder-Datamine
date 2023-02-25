@@ -1,43 +1,12 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { is_bit_set } = require("%sqstd/math.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 
-let getViewClusters = function() {
-  let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
-  return clusterOpt.items.map(@(item, idx) {
-    id = $"cluster_item_{idx}"
-    value = idx
-    selected = is_bit_set(clusterOpt.value, idx)
-    text = item.text
-    icon = item.image
-    tooltip = item.tooltip
-  })
-}
-
-let createClusterSelectMenu = function(placeObj, alight = "top")
-{
-  ::gui_start_multi_select_menu({
-    list = getViewClusters()
-    onChangeValuesBitMaskCb = function(mask) {
-      let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
-      let prevMask = clusterOpt.value
-      ::set_option(::USEROPT_RANDB_CLUSTER, mask, clusterOpt)
-
-      for (local i = 0; i < clusterOpt.values.len(); i++)
-        if ((mask & (1 << i)) > 0 && (prevMask & (1 << i)) == 0 && clusterOpt.items[i].isUnstable)
-          ::showInfoMsgBox(loc("multiplayer/cluster_connection_unstable"), "warning_cluster_unstable")
-    }
-    align = alight
-    alignObj = placeObj
-  })
-}
-
-let getCurrentClustersInfo = function()
-{
+let getCurrentClustersInfo = function() {
   let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
   let names = []
   local hasUnstable = false
@@ -49,8 +18,7 @@ let getCurrentClustersInfo = function()
   return { names, hasUnstable }
 }
 
-let updateClusters = function(btnObj)
-{
+let updateClusters = function(btnObj) {
   local show = isMultiplayerPrivilegeAvailable.value
   if (!::show_obj(btnObj, show) || !show)
     return
@@ -70,18 +38,19 @@ let updateClusters = function(btnObj)
   btnIconObj.show(needWarning)
 }
 
-let getCurrentClusters = function()
-{
+let getCurrentClusters = function() {
   let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
   let result = []
-  for (local i = 0; i < clusterOpt.values.len(); i++)
+  for (local i = 0; i < clusterOpt.values.len(); i++) {
+    if (clusterOpt.values[i] == "auto")
+      continue
     if ((clusterOpt.value & (1 << i)) > 0)
       result.append(clusterOpt.values[i])
+  }
   return result
 }
 
 return {
-  createClusterSelectMenu = createClusterSelectMenu
-  updateClusters = updateClusters
-  getCurrentClusters = getCurrentClusters
+  updateClusters
+  getCurrentClusters
 }

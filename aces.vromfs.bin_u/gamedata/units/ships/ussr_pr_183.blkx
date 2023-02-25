@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust",
+  "exhaustFx": "ship_exhaust_small",
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "smokeScreenActivateTime": 2.5,
@@ -112,6 +112,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -496,6 +504,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -3152,13 +3170,13 @@
         "collisionNode": "mast_02_dm"
       },
       {
-        "node": "ex_decor_11",
+        "node": "superstructure_side",
         "idx": 6,
         "mass": 970.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
-        "collisionNode": "ex_decor_11"
+        "collisionNode": "superstructure_side_dm"
       },
       {
         "node": "ex_decor_01",

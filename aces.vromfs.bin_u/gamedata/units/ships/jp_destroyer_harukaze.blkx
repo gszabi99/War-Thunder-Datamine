@@ -25,7 +25,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -120,6 +120,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -4445,7 +4453,7 @@
     },
     "new_aux_caliber_turrets": {},
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_depth_charge": {
       "prevModification": "40mm_bofors_l60_navy_ap_ammo_pack"
@@ -5676,5 +5684,34 @@
       "from": "camo_warshipgray*",
       "to": "camo_darkbluebottom*"
     }
-  }
+  },
+  "skin": [
+    {
+      "name": "jp_camo_navy_green",
+      "nameLocId": "skin/jp_camo_navy_green",
+      "descLocId": "skin/jp_camo_navy_green/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_navy_green*"
+      }
+    },
+    {
+      "name": "jp_camo_green_fleet",
+      "nameLocId": "skin/jp_camo_green_fleet",
+      "descLocId": "skin/jp_camo_green_fleet/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_green_fleet*"
+      }
+    },
+    {
+      "name": "jp_camo_modern_spots",
+      "nameLocId": "skin/jp_camo_modern_spots",
+      "descLocId": "skin/jp_camo_modern_spots/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_modern_spots*"
+      }
+    }
+  ]
 }

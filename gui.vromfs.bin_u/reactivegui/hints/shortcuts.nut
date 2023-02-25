@@ -92,9 +92,9 @@ let shortcutByInputName = {
     let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
     let elmementsCount = shortcutConfig.elements.len()
     let sortcutsCombination = []
-    foreach(idx, element in shortcutConfig.elements) {
+    foreach (idx, element in shortcutConfig.elements) {
       sortcutsCombination.append(getShortcut(element, override))
-      if(idx < elmementsCount-1)
+      if (idx < elmementsCount - 1)
         sortcutsCombination.append({
           rendObj = ROBJ_TEXT
           font = sizeParam.keyboardButtonTextFont

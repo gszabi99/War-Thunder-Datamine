@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,9 +6,10 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete
+} = require("guiMission")
 
-local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
-{
+local MPStatisticsModal = class extends ::gui_handlers.MPStatistics {
   sceneBlkName = "%gui/mpStatistics.blk"
   sceneNavBlkName = "%gui/navMpStat.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -19,8 +21,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
   showAircrafts = true
   isResultMPStatScreen = false
 
-  function initScreen()
-  {
+  function initScreen() {
     ::set_mute_sound_in_flight_menu(false)
     ::in_flight_menu(true)
 
@@ -34,8 +35,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     if (tblObj1.childrenCount() == 0)
       this.initStats()
 
-    if (this.gameType & GT_COOPERATIVE)
-    {
+    if (this.gameType & GT_COOPERATIVE) {
       this.scene.findObject("team1-root").show(false)
       this.isTeam = false
     }
@@ -56,8 +56,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
     this.showSceneBtn("btn_activateorder", !this.isResultMPStatScreen && ::g_orders.showActivateOrderButton())
     let ordersButton = this.scene.findObject("btn_activateorder")
-    if (checkObj(ordersButton))
-    {
+    if (checkObj(ordersButton)) {
       ordersButton.setUserData(this)
       ordersButton.inactiveColor = !::g_orders.orderCanBeActivated() ? "yes" : "no"
     }
@@ -66,8 +65,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     this.scene.findObject("table_kills_team2").setValue(-1)
   }
 
-  function reinitScreen(params)
-  {
+  function reinitScreen(params) {
     this.setParams(params)
     ::set_mute_sound_in_flight_menu(false)
     ::in_flight_menu(true)
@@ -76,20 +74,17 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     this.showMissionResult()
   }
 
-  function forceUpdate()
-  {
+  function forceUpdate() {
     this.updateCooldown = -1
     this.onUpdate(null, 0.0)
   }
 
-  function onUpdate(_obj, dt)
-  {
+  function onUpdate(_obj, dt) {
     let timeLeft = ::get_multiplayer_time_left()
     local timeDif = this.wasTimeLeft - timeLeft
     if (timeDif < 0)
       timeDif = -timeDif
-    if (timeDif >= 1 || ((this.wasTimeLeft * timeLeft) < 0))
-    {
+    if (timeDif >= 1 || ((this.wasTimeLeft * timeLeft) < 0)) {
       this.setGameEndStat(timeLeft)
       this.wasTimeLeft = timeLeft
     }
@@ -97,8 +92,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
     this.updateTables(dt)
   }
 
-  function goBack(_obj)
-  {
+  function goBack(_obj) {
     if (this.isResultMPStatScreen) {
       this.quitToDebriefing()
       return
@@ -110,8 +104,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
       ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
-  function onApply()
-  {
+  function onApply() {
     this.goBack(null)
   }
 
@@ -119,17 +112,16 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
   function quitToDebriefing() {
     if (::get_mission_status() == MISSION_STATUS_SUCCESS) {
-      ::quit_mission_after_complete()
+      quit_mission_after_complete()
       return
     }
 
     let text = loc("flightmenu/questionQuitMission")
     this.msgBox("question_quit_mission", text,
       [
-        ["yes", function()
-          {
-          ::quit_to_debriefing()
-          ::interrupt_multiplayer(true)
+        ["yes", function() {
+          quit_to_debriefing()
+          interrupt_multiplayer(true)
           ::in_flight_menu(false)
         }],
         ["no"]
@@ -176,8 +168,7 @@ local MPStatisticsModal = class extends ::gui_handlers.MPStatistics
 
 ::gui_handlers.MPStatisticsModal <- MPStatisticsModal
 
-::is_mpstatscreen_active <- function is_mpstatscreen_active() // used from native code
-{
+::is_mpstatscreen_active <- function is_mpstatscreen_active() { // used from native code
   if (!::g_login.isLoggedIn())
     return false
   let curHandler = ::handlersManager.getActiveBaseHandler()

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,9 +7,10 @@ from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
+let { Point2 } = require("dagor.math")
 
-local ModificationBase = class extends ::BaseItem
-{
+
+local ModificationBase = class extends ::BaseItem {
   modsList = null
   unitTypes = null
   countries = null
@@ -16,8 +18,7 @@ local ModificationBase = class extends ::BaseItem
 
   shouldAlwaysShowRank = false
 
-  constructor(blk, invBlk = null, slotData = null)
-  {
+  constructor(blk, invBlk = null, slotData = null) {
     base.constructor(blk, invBlk, slotData)
 
     let conditionsBlk = this.getConditionsBlk(blk)
@@ -27,8 +28,7 @@ local ModificationBase = class extends ::BaseItem
 
   getConditionsBlk = @(_configBlk) null
 
-  function initConditions(conditionsBlk)
-  {
+  function initConditions(conditionsBlk) {
     if ("mod" in conditionsBlk)
       this.modsList = conditionsBlk % "mod"
     if ("unitType" in conditionsBlk)
@@ -39,14 +39,13 @@ local ModificationBase = class extends ::BaseItem
     let minRank = conditionsBlk?.minRank
     let maxRank = conditionsBlk?.maxRank
     if (this.shouldAlwaysShowRank || minRank || maxRank)
-      this.rankRange = ::Point2(minRank || 1, maxRank || ::max_country_rank)
+      this.rankRange = Point2(minRank || 1, maxRank || ::max_country_rank)
   }
 
   getDescriptionIntroArray = @() null
   getDescriptionOutroArray = @() null
 
-  function getDescription()
-  {
+  function getDescription() {
     let textParts = [base.getDescription()]
 
     let intro = this.getDescriptionIntroArray()
@@ -57,11 +56,9 @@ local ModificationBase = class extends ::BaseItem
     if (expireText != "")
       textParts.append(expireText)
 
-    if (this.modsList)
-    {
+    if (this.modsList) {
       let locMods = u.map(this.modsList,
-        function(mod)
-        {
+        function(mod) {
           local res = loc("modification/" + mod + "/short", "")
           if (!res.len())
             res = loc("modification/" + mod)
@@ -71,14 +68,12 @@ local ModificationBase = class extends ::BaseItem
           + colorize("activeTextColor", ::g_string.implode(locMods, ", ")))
     }
 
-    if (this.countries)
-    {
+    if (this.countries) {
       let locCountries = u.map(this.countries, @(country) loc("unlockTag/" + country))
       textParts.append(loc("trophy/unlockables_names/country") + loc("ui/colon")
           + colorize("activeTextColor", ::g_string.implode(locCountries, ", ")))
     }
-    if (this.unitTypes)
-    {
+    if (this.unitTypes) {
       let processedUnitTypes = processUnitTypeArray(this.unitTypes)
       let locUnitTypes = u.map(processedUnitTypes, @(unitType) loc($"mainmenu/type_{unitType}"))
       textParts.append(loc("mainmenu/btnUnits") + loc("ui/colon")
@@ -96,16 +91,14 @@ local ModificationBase = class extends ::BaseItem
     return ::g_string.implode (textParts, "\n")
   }
 
-  function getRankText()
-  {
+  function getRankText() {
     if (this.rankRange)
       return ::get_roman_numeral(this.rankRange.x) +
         ((this.rankRange.x != this.rankRange.y) ? "-" + ::get_roman_numeral(this.rankRange.y) : "")
     return ""
   }
 
-  function getIcon(_addItemName = true)
-  {
+  function getIcon(_addItemName = true) {
     local res = ::LayersIcon.genDataFromLayer(this.getIconBgLayer())
     res += ::LayersIcon.genDataFromLayer(this.getIconMainLayer())
     res += ::LayersIcon.genDataFromLayer(this.getIconRankLayer())
@@ -115,8 +108,7 @@ local ModificationBase = class extends ::BaseItem
   getIconBgLayer = @() ::LayersIcon.findLayerCfg("mod_upgrade_bg")
   getIconMainLayer = @() null
 
-  getIconRankLayer = function()
-  {
+  getIconRankLayer = function() {
     if (!this.rankRange)
       return null
 

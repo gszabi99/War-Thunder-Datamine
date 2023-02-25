@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -21,7 +22,7 @@ let isInitedOnce = Watched(false)
 local onItemsReceivedCb = null
 
 isLoadingInProgress.subscribe(@(val)
-  ::broadcastEvent("EpicShopDataUpdated", {isLoadingInProgress = val})
+  ::broadcastEvent("EpicShopDataUpdated", { isLoadingInProgress = val })
 )
 
 let function requestData(cb = null) {
@@ -90,7 +91,7 @@ let visibleSeenIds = Computed(function() {
   return res
 })
 
-seenList.setListGetter(@() visibleSeenIds.value )
+seenList.setListGetter(@() visibleSeenIds.value)
 
 let function invaldateCache() {
   isInitedOnce(false)
@@ -105,7 +106,7 @@ let function updateSpecificItemInfo(itemId) {
 
 let function onUpdateItemCb(blk) {
   ::epic_update_purchases_on_auth()
-  ::g_tasker.addTask( ::update_entitlements_limited(true) )
+  ::g_tasker.addTask(::update_entitlements_limited(true))
 
   let itemId = blk.id
   if (!epicItems.value?[itemId]) {
@@ -114,7 +115,7 @@ let function onUpdateItemCb(blk) {
   }
 
   epicItems.value[itemId].update(blk)
-  ::broadcastEvent("EpicShopItemUpdated", {item = epicItems.value[itemId]})
+  ::broadcastEvent("EpicShopItemUpdated", { item = epicItems.value[itemId] })
 }
 
 let haveAnyItemWithDiscount = Computed(@()

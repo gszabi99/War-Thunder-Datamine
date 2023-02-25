@@ -196,7 +196,6 @@
       "win64mouse": false,
       "updateInThreads": false,
       "webServer": false,
-      "facebook": false,
       "twitch": false,
       "disableChat": false,
       "disableVoiceChat": false,
@@ -507,10 +506,6 @@
       "forSource": "../prog/scripts/wt/dedicatedScripts",
       "forVromfs": "dedicatedscripts"
     },
-    "%nativeModuleCompatibility": {
-      "forSource": "../prog/scripts/nativeModuleCompatibility",
-      "forVromfs": "nativeModuleCompatibility"
-    },
     "%sqDagui": {
       "forSource": "../prog/scripts/sqDagui",
       "forVromfs": "sqDagui"
@@ -547,6 +542,95 @@
       "forSource": "../prog/scripts/game_pkg_dev",
       "forVromfs": "game_pkg_dev"
     }
+  },
+  "addonBasePath": {
+    "addon": [
+      {
+        "vrom": "aces.vromfs.bin",
+        "src": [
+          "../develop/gameBase",
+          "../develop/gameBase/pkg_dev",
+          "../develop/gameBase/_pc",
+          "../develop/gameBase/lang_src"
+        ]
+      },
+      {
+        "vrom": "char.vromfs.bin"
+      },
+      {
+        "vrom": "mis.vromfs.bin"
+      },
+      {
+        "vrom": "game.vromfs.bin"
+      },
+      {
+        "vrom": "regional.vromfs.bin",
+        "vromOptional": true,
+        "cacheOnly": true
+      },
+      {
+        "vrom": "wwdata.vromfs.bin",
+        "vromOptional": true
+      },
+      {
+        "vrom": "game-dev.vromfs.bin",
+        "vromOptional": true
+      },
+      {
+        "vrom": "dscripts.vromfs.bin",
+        "vromIgnoreForClient": true
+      },
+      {
+        "vrom": "servers.vromfs.bin",
+        "vromIgnoreForClient": true
+      },
+      {
+        "vrom": "regsrv.vromfs.bin",
+        "vromIgnoreForClient": true,
+        "vromOptional": true,
+        "cacheOnly": true
+      },
+      {
+        "vrom": "gui.vromfs.bin",
+        "vromIgnoreForServer": true
+      },
+      {
+        "vrom": "ui/fonts.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/atlases.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/tex.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/images.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/slides.vromfs.bin",
+        "mount": "ui/slides/",
+        "vromIgnoreForServer": true,
+        "vromOptional": true,
+        "mountAsPack": true,
+        "webFs": true
+      }
+    ]
   },
   "addons": {
     "folder": [
@@ -1026,7 +1110,7 @@
     }
   },
   "phys": {
-    "fixedTimeStepHz": 30,
+    "fixedTimeStepHz": 32,
     "maxSubSteps": 1
   },
   "dx12": {

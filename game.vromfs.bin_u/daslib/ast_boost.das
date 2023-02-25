@@ -58,7 +58,7 @@ def describe(list:AnnotationList)
     return join([{ for arg in list; describe(*arg) }], ",")
 
 def describe(vvar:VariablePtr)
-    return "{vvar.name}:{describe(vvar._type)}"
+    return vvar._type!=null ? "{vvar.name}:{describe(vvar._type)}" : "{vvar.name}:null"
 
 def describe_bitfield(bf;merger:string = "")
     static_if typeinfo(is_bitfield bf)
@@ -602,22 +602,22 @@ def private walk_and_convert ( data : uint8?; info:TypeDeclPtr; at:LineInfo ) : 
     else
         return walk_and_convert_basic(data,info,at)
 
-def convert_to_expression ( var value : auto& = const; at:LineInfo )
+def convert_to_expression ( var value : auto& ==const; at:LineInfo )
 	let info <- typeinfo(ast_typedecl value)
     unsafe
 	    let pval = addr(value)
 	    return walk_and_convert(reinterpret<uint8?> pval, info, at)
 
-def convert_to_expression ( value : auto = const; at:LineInfo )
+def convert_to_expression ( value : auto ==const; at:LineInfo )
 	let info <- typeinfo(ast_typedecl value)
     unsafe
 	    let pval = addr(value)
 	    return walk_and_convert(reinterpret<uint8?> pval, info, at)
 
-def convert_to_expression ( var value : auto = const )
+def convert_to_expression ( var value : auto ==const )
     return convert_to_expression(value,[[LineInfo]])
 
-def convert_to_expression ( value : auto = const )
+def convert_to_expression ( value : auto ==const )
     return convert_to_expression(value,[[LineInfo]])
 
 def find_annotation ( mod_name,ann_name:string ) : Annotation const?
@@ -651,6 +651,35 @@ def append_annotation ( mod_name,ann_name:string; args:array< tuple<argname:stri
         else
             panic("Invalid rtti value")
     return <- decl
+
+def append_annotation ( mod_name,ann_name:string )
+    var ann = find_annotation(mod_name, ann_name)
+    assert(ann!=null)
+    var decl <- new [[AnnotationDeclaration()]]
+    unsafe
+        decl.annotation := reinterpret<smart_ptr<Annotation>> ann
+    return <- decl
+
+def append_annotation ( var func:FunctionPtr; mod_name,ann_name:string )
+    var ann = find_annotation(mod_name, ann_name)
+    assert(ann!=null)
+    var decl <- append_annotation(mod_name, ann_name)
+    add_function_annotation(func, decl)
+    decl := null
+
+def append_annotation ( var blk:smart_ptr<ExprBlock>; mod_name,ann_name:string )
+    var ann = find_annotation(mod_name, ann_name)
+    assert(ann!=null)
+    var decl <- append_annotation(mod_name, ann_name)
+    add_block_annotation(blk, decl)
+    decl := null
+
+def append_annotation ( var st:smart_ptr<Structure>; mod_name,ann_name:string )
+    var ann = find_annotation(mod_name, ann_name)
+    assert(ann!=null)
+    var decl <- append_annotation(mod_name, ann_name)
+    add_structure_annotation(st, decl)
+    decl := null
 
 def append_annotation ( var func:FunctionPtr; mod_name,ann_name:string; args:array< tuple<argname:string;argvalue:RttiValue> > )
     var ann = find_annotation(mod_name, ann_name)
@@ -713,13 +742,13 @@ def add_annotation_argument ( var arguments:AnnotationArgumentList; ann : rtti::
     return argIdx
 
 def get_for_source_index(expr:smart_ptr<ExprFor>; svar:VariablePtr)
-    for v,t in expr.iteratorVariables,range(100500)
+    for v,t in expr.iteratorVariables,count()
         if v==svar
             return t
     return -1
 
 def get_for_source_index(expr:smart_ptr<ExprFor>; source:ExpressionPtr)
-    for s,t in expr.sources,range(100500)
+    for s,t in expr.sources,count()
         if s==source
             return t
     return -1
@@ -770,7 +799,7 @@ def public function_to_type ( fn : FunctionPtr ) : TypeDeclPtr
     unsafe
         td.firstType <- fn.result!=null ? clone_type(fn.result) : new [[TypeDecl() baseType=Type autoinfer]]
         td.argNames |> resize(length(fn.arguments))
-        for arg,argi in fn.arguments,range(100500)
+        for arg,argi in fn.arguments,count()
             td.argTypes |> emplace_new <| clone_type(arg._type)
             td.argNames[argi] := arg.name
     return td
@@ -804,10 +833,110 @@ def public get_workhorse_types
     ]]
 
 def public find_argument_index ( typ:TypeDeclPtr; name:string )
-    for a,ai in typ.argNames,range(100500)
+    for a,ai in typ.argNames,count()
         if a==name
             return ai
     return -1
 
 def public isCMRESType ( blockT:TypeDeclPtr )
     return blockT!=null && blockT.isRefType && !blockT.flags.ref
+
+bitfield DebugExpressionFlags
+    refCount
+
+def private debug_expression_impl ( var writer:StringBuilderWriter; expr:ExpressionPtr; deFlags:DebugExpressionFlags; tabs:int )
+    if expr==null
+        writer |> write("null")
+        return
+    if empty(expr.__rtti)
+        writer |> write("[NO RTTI]")
+        return
+    writer |> write("({expr.__rtti}")
+    if deFlags.refCount
+        writer |> write("<{smart_ptr_use_count(expr)}>")
+    if string(expr.__rtti) |> starts_with("ExprConst")
+        writer |> write(" {describe(expr)})")
+        return
+    var ann = unsafe(reinterpret<BasicStructureAnnotation?> get_expression_annotation(get_ptr(expr)))
+    if ann==null
+        writer |> write(")")
+        return
+    for_each_field(*ann) <| $ ( name,cppName,xtype,offset)
+        if offset != -1u
+            let tstr = describe(xtype)
+            var p8 : int8?
+            unsafe
+                p8 = (reinterpret<int8?> expr) + int(offset)
+            if tstr=="smart_ptr<ast::Expression>"
+                let pv = unsafe(reinterpret<ExpressionPtr?> p8)
+                let ts = repeat("  ",tabs+2)
+                writer |> write("\n{ts}({name} ")
+                debug_expression_impl(writer, *pv,deFlags,tabs+2)
+                writer |> write(")")
+            elif tstr=="$::das_string"
+                let pv = unsafe(reinterpret<das_string?> p8)
+                writer |> write(" {name}=\"{*pv}\"")
+            elif tstr=="int"
+                let pv = unsafe(reinterpret<int?> p8)
+                writer |> write(" {name}={*pv}")
+            elif tstr=="uint"
+                let pv = unsafe(reinterpret<uint?> p8)
+                writer |> write(" {name}={*pv}")
+            elif tstr=="int64"
+                let pv = unsafe(reinterpret<int64?> p8)
+                writer |> write(" {name}={*pv}")
+            elif tstr=="uint64"
+                let pv = unsafe(reinterpret<uint64?> p8)
+                writer |> write(" {name}={*pv}")
+            elif tstr=="bool"
+                let pv = unsafe(reinterpret<bool?> p8)
+                writer |> write(" {name}={*pv}")
+            elif tstr=="$::dasvector`smart_ptr`Expression"
+                pass
+            else
+                pass
+                // writer |> write(" {name}={describe(xtype)}")
+    for_each_field(*ann) <| $ ( name,cppName,xtype,offset)
+        if offset != -1u
+            let tstr = describe(xtype)
+            var p8 : int8?
+            unsafe
+                p8 = (reinterpret<int8?> expr) + int(offset)
+            if tstr=="$::dasvector`smart_ptr`Expression"
+                let pv = unsafe(reinterpret<dasvector`smart_ptr`Expression?> p8)
+                if length(*pv)!=0
+                    let ts = repeat("  ",tabs+2)
+                    writer |> write("\n{ts}[{name}\n")
+                    for l,i in *pv,count()
+                        writer |> write("{ts}  ")
+                        debug_expression_impl(writer,l,deFlags,tabs+2)
+                        if i != length(*pv)-1
+                            writer |> write("\n")
+                    writer |> write("]")
+            elif tstr=="$::dasvector`smart_ptr`Variable"
+                let pv = unsafe(reinterpret<dasvector`smart_ptr`Variable?> p8)
+                if length(*pv)!=0
+                    let ts = repeat("  ",tabs+2)
+                    writer |> write("\n{ts}[{name}\n")
+                    for l,i in *pv,count()
+                        writer |> write("{ts}  ")
+                        writer |> write("{l.name}:{describe(l._type)}")
+                        if l.init!=null
+                            writer |> write(" = ")
+                            debug_expression_impl(writer,l.init,deFlags,tabs+2)
+                        if i != length(*pv)-1
+                            writer |> write("\n")
+                    writer |> write("]")
+    writer |> write(")")
+
+def public debug_expression ( expr:ExpressionPtr; deFlags:DebugExpressionFlags=bitfield(0) )
+    return build_string <| $ ( writer )
+        debug_expression_impl(writer, expr, deFlags, 0)
+
+def public debug_expression ( expr:Expression? )
+    unsafe
+        return debug_expression(reinterpret<ExpressionPtr> expr)
+
+def public describe ( expr:Expression? )
+    unsafe
+        return describe(reinterpret<ExpressionPtr> expr)

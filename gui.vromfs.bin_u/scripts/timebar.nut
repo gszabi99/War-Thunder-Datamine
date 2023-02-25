@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -25,27 +26,23 @@ let { fabs } = require("math")
    * @time_bar_obj - timeBar object
    * @period_time - time in seconds
    */
-  function setPeriod(timeBarObj, periodTime, isCyclic = false)
-  {
+  function setPeriod(timeBarObj, periodTime, isCyclic = false) {
     let speed = periodTime ? 360.0 / periodTime : 0
     this._setSpeed(timeBarObj, speed)
 
-    if (isCyclic)
-    {
+    if (isCyclic) {
       timeBarObj["inc-min"] = "0.0"
       timeBarObj["inc-max"] = "360.0"
       timeBarObj["inc-is-cyclic"] = "yes"
     }
   }
 
-  function _setSpeed(timeBarObj, speed)
-  {
+  function _setSpeed(timeBarObj, speed) {
     speed = this.getDirection(timeBarObj).incSignMultiplier * fabs(speed)
     timeBarObj["inc-factor"] = speed.tostring()
   }
 
-  function _getSpeed(timeBarObj)
-  {
+  function _getSpeed(timeBarObj) {
     return (timeBarObj?["inc-factor"] ?? 0).tofloat()
   }
 
@@ -54,24 +51,20 @@ let { fabs } = require("math")
    * @time_bar_obj - timeBar object
    * @current_time - time in seconds
    */
-  function setCurrentTime(timeBarObj, currentTime)
-  {
+  function setCurrentTime(timeBarObj, currentTime) {
     let curVal = currentTime * this._getSpeed(timeBarObj)
     timeBarObj["sector-angle-2"] = curVal.tostring()
   }
 
-  function setValue(timeBarObj, value)
-  {
+  function setValue(timeBarObj, value) {
     timeBarObj["sector-angle-2"] = (360 * value).tointeger().tostring()
   }
 
-  function getDirection(timeBarObj)
-  {
+  function getDirection(timeBarObj) {
     return this._direction[this.getDirectionName(timeBarObj)]
   }
 
-  function getDirectionName(timeBarObj)
-  {
+  function getDirectionName(timeBarObj) {
     if (timeBarObj?.direction != null)
       return timeBarObj.direction
     else
@@ -82,8 +75,7 @@ let { fabs } = require("math")
    * Set clockwise direction of time bar.
    * @time_bar_obj - timeBar object
    */
-  function setDirectionForward(timeBarObj)
-  {
+  function setDirectionForward(timeBarObj) {
     this._setDirection(timeBarObj, "forward")
   }
 
@@ -91,8 +83,7 @@ let { fabs } = require("math")
    * Set counter clockwise direction of time bar.
    * @time_bar_obj - timeBar object
    */
-  function setDirectionBackward(timeBarObj)
-  {
+  function setDirectionBackward(timeBarObj) {
     this._setDirection(timeBarObj, "backward")
   }
 
@@ -100,13 +91,11 @@ let { fabs } = require("math")
    * Toggle direction of time bar.
    * @time_bar_obj - timeBar object
    */
-  function toggleDirection(timeBarObj)
-  {
+  function toggleDirection(timeBarObj) {
     this._setDirection(timeBarObj, this.getDirectionName(timeBarObj) == "forward" ? "backward" : "forward")
   }
 
-  function _setDirection(timeBarObj, direction)
-  {
+  function _setDirection(timeBarObj, direction) {
     let w = this._getSpeed(timeBarObj)
     timeBarObj.direction = direction
     this._setSpeed(timeBarObj, w)

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,16 +9,14 @@ let { getPlayerName, isPlatformXboxOne } = require("%scripts/clientState/platfor
 
 let isFirstChoiceShown = persist("isFirstChoiceShown", @() Watched(false))
 
-let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID)
-{
-  foreach(unitType in unitTypes.types)
+let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID) {
+  foreach (unitType in unitTypes.types)
     if (unitType.isFirstChosen())
       return unitType.esUnitType
   return defValue
 }
 
-let isNeedFirstCountryChoice = function()
-{
+let isNeedFirstCountryChoice = function() {
   return getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID
          && !::stat_get_value_respawns(0, 1)
          && !::disable_network()

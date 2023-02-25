@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, TargetPosValid, TargetPos, IlsLineScale,
-       RocketMode, CannonMode, BombCCIPMode, RadarTargetPos, RadarTargetPosValid} = require("%rGui/planeState/planeToolsState.nut")
-let {Roll, Tangage, BarAltitude} = require("%rGui/planeState/planeFlyState.nut");
-let {baseLineWidth} = require("ilsConstants.nut")
-let {compassWrap, generateCompassTCSFMark} = require("ilsCompasses.nut")
-let {fabs} = require("math")
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale,
+       RocketMode, CannonMode, BombCCIPMode, RadarTargetPos, RadarTargetPosValid } = require("%rGui/planeState/planeToolsState.nut")
+let { Roll, Tangage, BarAltitude } = require("%rGui/planeState/planeFlyState.nut");
+let { baseLineWidth } = require("ilsConstants.nut")
+let { compassWrap, generateCompassTCSFMark } = require("ilsCompasses.nut")
+let { fabs } = require("math")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let tcsfAimMark = @() {
@@ -112,7 +112,7 @@ let generateAltMark = function(num) {
         lineWidth = baseLineWidth * IlsLineScale.value
         vplace = ALIGN_CENTER
       },
-      ( num % 10 > 0 ? null :
+      (num % 10 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -148,7 +148,7 @@ let function pitch(width, height, generateFunc) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.015]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.03]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.03]
       }
     }
   }

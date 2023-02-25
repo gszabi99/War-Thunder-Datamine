@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,18 +12,17 @@ let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { getSquadLeaderOperation } = require("%scripts/squads/leaderWwOperationStates.nut")
+let { get_option_voicechat } = require("chat")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
-::init_squad_widget_handler <- function init_squad_widget_handler(nestObj)
-{
+::init_squad_widget_handler <- function init_squad_widget_handler(nestObj) {
   if (!hasFeature("Squad") || !hasFeature("SquadWidget") || !checkObj(nestObj))
     return null
   return ::handlersManager.loadCustomHandler(::gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
 }
 
-::gui_handlers.SquadWidgetCustomHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.SquadWidgetCustomHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/squads/squadWidget.tpl"
@@ -34,8 +34,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     [squadMemberState.SQUAD_MEMBER_OFFLINE] = "offline",
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     let readyText = loc("mainmenu/btnReady")
     let notReadyText = loc("multiplayer/btnNotReady")
     let readyTextWidth = daguiFonts.getStringWidthPx(readyText, "fontNormal", this.guiScene)
@@ -58,19 +57,16 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     return view
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.updateView()
   }
 
-  function updateView()
-  {
+  function updateView() {
     let leader = ::g_squad_manager.getSquadLeaderData()
     this.updateMemberView(0, leader)
     local memberViewIndex = 1
     let members = ::g_squad_manager.getMembers()
-    foreach(_uid, member in members)
-    {
+    foreach (_uid, member in members) {
       if (member == leader)
         continue
 
@@ -83,8 +79,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     this.updateVisibles()
   }
 
-  function updateMemberView(mebmerObjIndex, member)
-  {
+  function updateMemberView(mebmerObjIndex, member) {
     let indexStr = mebmerObjIndex.tostring()
     let isVisible = member != null
     let memberObj = this.showSceneBtn("member_" + indexStr, isVisible)
@@ -95,13 +90,12 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     this.showSceneBtn("member_state_block_" + indexStr, member.isActualData())
 
     memberObj["uid"] = member.uid
-    memberObj["isMe"] = member.isMe()? "yes" : "no"
+    memberObj["isMe"] = member.isMe() ? "yes" : "no"
     memberObj.setUserData(member)
     memberObj.findObject("member_icon_" + indexStr).setValue(member.pilotIcon)
     memberObj.findObject("member_tooltip_" + indexStr)["uid"] = member.uid
 
-    if (member.isActualData())
-    {
+    if (member.isActualData()) {
       let contact = ::getContact(member.uid)
       local countryIcon = ""
       if (::checkCountry(member.country, "squad member data ( uid = " + member.uid + ")", true))
@@ -114,7 +108,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
       let memberVoipObj = memberObj.findObject("member_voip_" + indexStr)
       memberVoipObj["isVoipActive"] = contact.voiceStatus == voiceChatStats.talking ? "yes" : "no"
       let needShowVoice = chatStatesCanUseVoice()
-        && ::get_option_voicechat()
+        && get_option_voicechat()
         && !platformModule.isXBoxPlayerName(member.name)
       memberVoipObj.show(needShowVoice)
 
@@ -126,8 +120,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     }
   }
 
-  function updateVisibles()
-  {
+  function updateVisibles() {
     let canInvite = ::g_squad_manager.canInviteMember()
     let isInTransition = ::g_squad_manager.isStateInTransition()
 
@@ -156,7 +149,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
       squadLeaderOperation && squadLeaderOperation.id != ::ww_get_operation_id())
     if (wwBtnObj?.isValid())
       wwBtnObj.tooltip = "".concat(loc("worldwar/squadLeaderInOperation"), " ",
-        loc("ui/quotes", { text = squadLeaderOperation?.getNameText() ?? ""}))
+        loc("ui/quotes", { text = squadLeaderOperation?.getNameText() ?? "" }))
 
     let btnSquadReady = this.showSceneBtn("btn_squad_ready",
       ::g_squad_manager.canSwitchReadyness() && !squadLeaderOperation)
@@ -164,16 +157,15 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
       loc(::g_squad_manager.isMeReady() ? "multiplayer/btnNotReady" : "mainmenu/btnReady"))
   }
 
-  function canShowContactTooltip(contact)
-  {
+  function canShowContactTooltip(contact) {
     return contact != null
   }
 
-  function onSquadPlus()
-  {
-    if (is_platform_xbox && !hasFeature("SquadInviteIngame"))
-    {
-      ::xbox_show_invite_window()
+  function onSquadPlus() {
+    if (is_platform_xbox && !hasFeature("SquadInviteIngame")) {
+      // MPSD-based code used ::xbox_show_invite_window() here, but we switched to MPA.
+      // MPA doesn't have such window and we should use ingame invitations and system
+      // invitations together.
       return
     }
 
@@ -185,14 +177,12 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
       ::g_squad_manager.setReadyFlag()
   }
 
-  function onSquadInvitesClick(obj)
-  {
+  function onSquadInvitesClick(obj) {
     if (checkObj(obj))
       ::gui_handlers.squadInviteListWnd.open(obj.findObject("invite_widget"))
   }
 
-  function onSquadLeave()
-  {
+  function onSquadLeave() {
     if (!::g_squad_manager.isInSquad())
       return
 
@@ -206,13 +196,11 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
       { cancel_fn = function() {} })
   }
 
-  function onSquadMemberMenu(obj)
-  {
+  function onSquadMemberMenu(obj) {
     ::g_squad_utils.showMemberMenu(obj)
   }
 
-  function updateVisibleNewApplications()
-  {
+  function updateVisibleNewApplications() {
     let objGlow = this.scene.findObject("iconGlow")
     if (checkObj(objGlow))
       objGlow.wink = (::gui_handlers.squadInviteListWnd.canOpen() &&
@@ -220,38 +208,31 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
   }
 
   /**event handlers**/
-  function onEventSquadHasNewApplications(_params)
-  {
+  function onEventSquadHasNewApplications(_params) {
     this.doWhenActiveOnce("updateVisibleNewApplications")
   }
 
-  function onEventSquadSetReady(_params)
-  {
+  function onEventSquadSetReady(_params) {
     this.doWhenActiveOnce("updateView")
   }
 
-  function onEventSquadDataUpdated(_params)
-  {
+  function onEventSquadDataUpdated(_params) {
     this.doWhenActiveOnce("updateView")
   }
 
-  function onEventMyStatsUpdated(_params)
-  {
+  function onEventMyStatsUpdated(_params) {
     this.doWhenActiveOnce("updateView")
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     this.doWhenActiveOnce("updateVisibles")
   }
 
-  function onEventQueueChangeState(_params)
-  {
+  function onEventQueueChangeState(_params) {
     this.doWhenActiveOnce("updateVisibles")
   }
 
-  function onEventVoiceChatStatusUpdated(params)
-  {
+  function onEventVoiceChatStatusUpdated(params) {
     let uid = getTblValue("uid", params, "")
     if (::g_squad_manager.getMemberData(uid) == null)
       return
@@ -259,13 +240,11 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     this.doWhenActiveOnce("updateView")
   }
 
-  function onEventVoiceChatOptionUpdated(_p)
-  {
+  function onEventVoiceChatOptionUpdated(_p) {
     this.doWhenActiveOnce("updateView")
   }
 
-  function checkActiveForDelayedAction()
-  {
+  function checkActiveForDelayedAction() {
     return this.isSceneActive()
   }
 

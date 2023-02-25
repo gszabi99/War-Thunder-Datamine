@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -12,10 +13,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   eventDescription = null
 
-  function initScreen()
-  {
-    if (!this.checkEvent(this.event))
-    {
+  function initScreen() {
+    if (!this.checkEvent(this.event)) {
       this.goBack()
       return
     }
@@ -33,8 +32,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.eventDescription = ::create_event_description(this.scene, this.event, false)
   }
 
-  function checkEvent(ev)
-  {
+  function checkEvent(ev) {
     return ev != null
   }
 }

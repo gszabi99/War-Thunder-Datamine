@@ -1,10 +1,12 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { Point3 } = require("%sqstd/math_ex.nut")
-let { gfrnd } = require("dagor.random")
+let DataBlock = require("DataBlock")
+let { frnd } = require("dagor.random")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 local lights = []
 
@@ -19,10 +21,10 @@ local lights_inited = false
     return
 
   lights_inited = true
-  let blk = blkFromPath( "levels/hangar_winter_airfield_lights.blk" )
-  let list = blk?.lights ?? ::DataBlock()
-  for ( local i = 0 ; i < list.blockCount() ; ++i ) {
-    let src = list.getBlock( i )
+  let blk = blkFromPath("levels/hangar_winter_airfield_lights.blk")
+  let list = blk?.lights ?? DataBlock()
+  for (local i = 0 ; i < list.blockCount() ; ++i) {
+    let src = list.getBlock(i)
 
     let light = {
       id = 0
@@ -47,15 +49,15 @@ local lights_inited = false
 
   lights_inited = false
   let cnt = lights.len()
-  for ( local i = 0 ; i < cnt ; ++i ) {
+  for (local i = 0 ; i < cnt ; ++i) {
     let l = lights[i]
-    ::destroy_light( l.id )
+    ::destroy_light(l.id)
   }
   lights.clear()
 }
 
 local update_hangar_timer = 0.0
-::on_update_hangar <- function on_update_hangar( dt ) {
+::on_update_hangar <- function on_update_hangar(dt) {
   if (!lights_inited)
     ::on_enter_hangar()
 
@@ -64,18 +66,18 @@ local update_hangar_timer = 0.0
     return
   update_hangar_timer = update_hangar_timer % 0.1 + 0.1
 
-  foreach(l in lights) {
-    local col = light_lerp( l.col0, l.col1, gfrnd() )
-    col *= light_lerp( l.pow0, l.pow1, gfrnd() )
+  foreach (l in lights) {
+    local col = light_lerp(l.col0, l.col1, frnd())
+    col *= light_lerp(l.pow0, l.pow1, frnd())
 
-    let rad = l.rad + l.rad_range * gfrnd()
+    let rad = l.rad + l.rad_range * frnd()
 
-    let dir = Point3(gfrnd(), gfrnd(), gfrnd())
+    let dir = Point3(frnd(), frnd(), frnd())
     dir.normalize()
-    let pos = l.pos + dir * l.pos_range * gfrnd()
+    let pos = l.pos + dir * l.pos_range * frnd()
 
-    ::set_light_col( l.id, col )
-    ::set_light_pos( l.id, pos )
-    ::set_light_radius( l.id, rad )
+    ::set_light_col(l.id, col)
+    ::set_light_pos(l.id, pos)
+    ::set_light_radius(l.id, rad)
   }
 }

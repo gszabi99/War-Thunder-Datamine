@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -13,6 +14,7 @@ from "%scripts/dagui_library.nut" import *
  *
 **/
 
+let DataBlock  = require("DataBlock")
 let EXPORT_PARAMS = { //const
   resultFilePath  = "export/file.blk" // Resulting blk filename to write results to.
   itemsPerFrame   = 1                 // Num of items to process per single frame.
@@ -24,13 +26,10 @@ let EXPORT_PARAMS = { //const
   onFinish        = null              // Function to execute when finished, or null.
 }
 
-let function export_impl(params, resBlk, idx)
-{
+let function export_impl(params, resBlk, idx) {
   let exportImplFunc = callee()
-  for(local i = idx; i != params.list.len(); i++)
-  {
-    if (i != idx && !(i % params.itemsPerFrame)) //avoid freeze
-    {
+  for (local i = idx; i != params.list.len(); i++) {
+    if (i != idx && !(i % params.itemsPerFrame)) { //avoid freeze
       dlog("GP: " + i + " done.")
       ::get_gui_scene().performDelayed(this, @() exportImplFunc(params, resBlk, i))
       return
@@ -49,10 +48,9 @@ let function export_impl(params, resBlk, idx)
     params.onFinish()
 }
 
-local function export(params = EXPORT_PARAMS)
-{
+local function export(params = EXPORT_PARAMS) {
   params = EXPORT_PARAMS.__merge(params)
-  export_impl(params, ::DataBlock(), 0)
+  export_impl(params, DataBlock(), 0)
 }
 
 return {

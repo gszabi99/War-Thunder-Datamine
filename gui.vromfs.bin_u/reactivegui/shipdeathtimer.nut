@@ -1,13 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {timeToDeath} = require("shipState.nut")
-let {alert} = require("style/colors.nut").hud.damageModule
-let {secondsToTimeFormatString} = require("%sqstd/time.nut")
+let { timeToDeath } = require("shipState.nut")
+let { alert } = require("style/colors.nut").hud.damageModule
+let { secondsToTimeFormatString } = require("%sqstd/time.nut")
 let timeLocTable = require("timeLocTable.nut")
 
 let showTimeToDeath = Computed(@() timeToDeath.value > 0)
 
-return @(){
+return @() {
   watch = showTimeToDeath
   size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL

@@ -121,7 +121,6 @@ local function Dataclass(fields, params = defParams){
     ? $"static __name__ = \"{name}\"\n"
     : ""
 
-
   fields = fields.map(unpackfield)
   let args = fields.map(@(v) mkArg(v[0], valToStr(v[1]))).reduce(addComma)
   let classfields = mkClassFields(fields)
@@ -129,10 +128,9 @@ local function Dataclass(fields, params = defParams){
 //  local updateFunc = @"function __update(...){
 //  }".subst(args)
   let ret = @"class {
-  {0}{1}
-  {2}
-}
-".subst(
+    {0}{1}
+    {2}
+  }".subst(
     name,
     classfields,
     ctor
@@ -140,7 +138,7 @@ local function Dataclass(fields, params = defParams){
   )
   if (params?.verbose)
     print(ret)
-  return compilestring($"return {ret}")()
+  return compilestring($"return {ret}", "dataclass-gen", {type})()
 }
 
 if (__name__ == "__main__") {

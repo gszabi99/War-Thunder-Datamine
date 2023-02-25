@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
+let DataBlock = require("DataBlock")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -26,9 +28,9 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     image = function() {
         let operation = ::g_world_war.getLastPlayedOperation()
         if (operation != null)
-          return "#ui/images/game_modes_tiles/worldwar_active_" + (this.isWide() ? "wide" : "thin") + ".jpg?P1"
+          return "#ui/images/game_modes_tiles/worldwar_active_" + (this.isWide() ? "wide" : "thin") + "?P1"
         else
-          return "#ui/images/game_modes_tiles/worldwar_live_" + (this.isWide() ? "wide" : "thin") + ".jpg?P1"
+          return "#ui/images/game_modes_tiles/worldwar_live_" + (this.isWide() ? "wide" : "thin") + "?P1"
       }
     videoPreview = null
     isVisible = @() ::is_worldwar_enabled()
@@ -57,7 +59,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
         checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
     }
     isWide = false
-    image = @() "#ui/images/game_modes_tiles/tss_" + (this.isWide ? "wide" : "thin") + ".jpg?P1"
+    image = @() "#ui/images/game_modes_tiles/tss_" + (this.isWide ? "wide" : "thin") + "?P1"
     videoPreview = null
     isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
     hasNewIconWidget = true
@@ -86,8 +88,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   {
     /*events*/
     modeId = "tournaments_and_event_featured_game_mode"
-    text = function ()
-    {
+    text = function () {
       let activeEventsNum = ::events.getEventsVisibleInEventsWindowCount()
       if (activeEventsNum <= 0)
         return loc("mainmenu/events/eventlist_btn_no_active_events")
@@ -96,18 +97,15 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 
     }
     textDescription = function() { return null }
-    startFunction = function ()
-    {
+    startFunction = function () {
       ::gui_start_modal_events()
     }
     isWide = false
-    image = function ()
-    {
-      return "#ui/images/game_modes_tiles/events_" + (this.isWide ? "wide" : "thin") + ".jpg?P1"
+    image = function () {
+      return "#ui/images/game_modes_tiles/events_" + (this.isWide ? "wide" : "thin") + "?P1"
     }
     videoPreview = null
-    isVisible = function ()
-    {
+    isVisible = function () {
       return hasFeature("Events") && ::events.getEventsVisibleInEventsWindowCount() > 0
     }
     hasNewIconWidget = false
@@ -122,8 +120,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   {
     /*custom battles*/
     modeId = "custom_battles_featured_game_mode"
-    startFunction = function ()
-    {
+    startFunction = function () {
       if (!isMultiplayerPrivilegeAvailable.value) {
         checkAndShowMultiplayerPrivilegeWarning()
         return
@@ -134,19 +131,16 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 
       ::gui_start_skirmish()
     }
-    text = function ()
-    {
+    text = function () {
       return loc("mainmenu/btnSkirmish")
     }
     textDescription = function() { return null }
     isWide = false
-    image = function ()
-    {
-      return "#ui/images/game_modes_tiles/custom_battles_" + (this.isWide ? "wide" : "thin") + ".jpg?P1"
+    image = function () {
+      return "#ui/images/game_modes_tiles/custom_battles_" + (this.isWide ? "wide" : "thin") + "?P1"
     }
     videoPreview = null
-    isVisible = function ()
-    {
+    isVisible = function () {
       return !::is_me_newbie() && ::is_custom_battles_enabled()
     }
     hasNewIconWidget = false
@@ -172,24 +166,23 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   {
     id = "custom_mode_fullreal"
     difficulty = ::g_difficulty.SIMULATOR
-    image = "#ui/images/game_modes_tiles/mixed_event_02_wide.jpg?P1"
+    image = "#ui/images/game_modes_tiles/mixed_event_02_wide?P1"
     type = ::g_event_display_type.REGULAR
     displayWide = true
     getEventId = function() {
       let curUnit = ::get_cur_slotbar_unit()
       let chapter = ::events.chapters.getChapter("simulation_battles")
-      let chapterEvents = chapter? chapter.getEvents() : []
+      let chapterEvents = chapter ? chapter.getEvents() : []
 
       local openEventId = null
-      if (chapterEvents.len())
-      {
+      if (chapterEvents.len()) {
         let lastPlayedEventId = ::events.getLastPlayedEvent()?.name
         let lastPlayedEventRelevance = isInArray(lastPlayedEventId, chapterEvents) ?
           ::events.checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
         let relevanceList = ::u.map(chapterEvents, function(id) {
           return { eventId = id, relevance = ::events.checkUnitRelevanceForEvent(id, curUnit) }
         })
-        relevanceList.sort(@(a,b) b.relevance <=> a.relevance || a.eventId <=> b.eventId)
+        relevanceList.sort(@(a, b) b.relevance <=> a.relevance || a.eventId <=> b.eventId)
         openEventId = relevanceList.findvalue(@(item) lastPlayedEventRelevance >= item.relevance)?.eventId
           ?? lastPlayedEventId
           ?? relevanceList[0].eventId
@@ -264,8 +257,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
  * Manager updates game modes array when (game) events
  * and player stats data is updated.
  */
-::GameModeManager <- class
-{
+::GameModeManager <- class {
   queueMask = QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
   SEEN_MODES_SAVE_PATH = "seen/gameModes"
 
@@ -281,8 +273,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * Constructor. Subscribes manager to events that
    * require it to update.
    */
-  constructor()
-  {
+  constructor() {
     ::add_event_listener("EventsDataUpdated", this._onEventsDataUpdated.bindenv(this))
     ::add_event_listener("MyStatsUpdated", this._onMyStatsUpdated.bindenv(this))
     ::add_event_listener("UnitTypeChosen", this._onUnitTypeChosen.bindenv(this))
@@ -297,8 +288,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   /**
    * Updates current game mode id and game modes array.
    */
-  function updateManager()
-  {
+  function updateManager() {
     this._updateGameModes()
     this.initShowingGameModesSeen()
     this._updateCurrentGameModeId()
@@ -311,8 +301,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   /**
    * Current game mode id getter.
    */
-  function getCurrentGameModeId()
-  {
+  function getCurrentGameModeId() {
     return this._currentGameModeId
   }
 
@@ -320,8 +309,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * Sets current game mode by id
    * and saves it in user account.
    */
-  function setCurrentGameModeById(id, isUserSelected=false)
-  {
+  function setCurrentGameModeById(id, isUserSelected = false) {
     this._setCurrentGameModeId(id, true, isUserSelected)
   }
 
@@ -329,10 +317,8 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * Sets current game mode by index
    * and saves it in user account.
    */
-  function setCurrentGameModeByIndex(index, isUserSelected=false)
-  {
-    if (0 <= index || index < this._gameModes.len())
-    {
+  function setCurrentGameModeByIndex(index, isUserSelected = false) {
+    if (0 <= index || index < this._gameModes.len()) {
       let gameMode = this._gameModes[index]
       this._setCurrentGameModeId(gameMode.id, true, isUserSelected)
     }
@@ -345,8 +331,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   /**
    * User game mode id getter.
    */
-  function getUserGameModeId()
-  {
+  function getUserGameModeId() {
     return this._userGameModeId
   }
 
@@ -354,8 +339,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * Sets user game mode  id.
    */
 
-  function setUserGameModeId(id)
-  {
+  function setUserGameModeId(id) {
     this._userGameModeId = id
   }
 
@@ -366,16 +350,14 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   /**
    * Returns current game mode data.
    */
-  function getCurrentGameMode()
-  {
+  function getCurrentGameMode() {
     return getTblValue(this._currentGameModeId, this._gameModeById, null)
   }
 
   /**
    * Returns game mode data by id.
    */
-  function getGameModeById(id)
-  {
+  function getGameModeById(id) {
     return getTblValue(id, this._gameModeById, null)
   }
 
@@ -387,13 +369,11 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    *                   boolean return type.
    * @return Returns array with available game modes.
    */
-  function getGameModes(unitType = ES_UNIT_TYPE_INVALID, filterFunc = null)
-  {
+  function getGameModes(unitType = ES_UNIT_TYPE_INVALID, filterFunc = null) {
     if (unitType == ES_UNIT_TYPE_INVALID && filterFunc == null)
       return this._gameModes
     let gameModes = []
-    foreach (gameMode in this._gameModes)
-    {
+    foreach (gameMode in this._gameModes) {
       if (filterFunc != null && !filterFunc(gameMode))
         continue
       if (unitType != ES_UNIT_TYPE_INVALID && !isInArray(unitType, gameMode.unitTypes))
@@ -412,11 +392,9 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * @param excludeClanGameModes Clan game mode will be skipped during search.
    * @return Null if game mode not found.
    */
-  function getGameModeByUnitType(unitType, diffCode = -1, excludeClanGameModes = false)
-  {
+  function getGameModeByUnitType(unitType, diffCode = -1, excludeClanGameModes = false) {
     local bestGameMode
-    foreach (gameMode in this._gameModes)
-    {
+    foreach (gameMode in this._gameModes) {
       if (gameMode.displayType != ::g_event_display_type.RANDOM_BATTLE)
         continue
       let checkedUnitTypes = this.getRequiredUnitTypes(gameMode)
@@ -425,13 +403,11 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
         continue
       if (excludeClanGameModes && gameMode.forClan)
         continue
-      if (diffCode < 0)
-      {
+      if (diffCode < 0) {
         if (bestGameMode == null || gameMode.diffCode < bestGameMode.diffCode)
           bestGameMode = gameMode
       }
-      else if (gameMode.diffCode == diffCode)
-      {
+      else if (gameMode.diffCode == diffCode) {
         bestGameMode = gameMode
         break
       }
@@ -439,8 +415,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     return bestGameMode
   }
 
-  function getUnitEconomicRankByGameMode(gameMode, unit)
-  {
+  function getUnitEconomicRankByGameMode(gameMode, unit) {
     if (gameMode.type == RB_GM_TYPE.EVENT)
       return ::events.getUnitEconomicRankByEvent(this.getGameModeEvent(gameMode), unit)
     return unit.getEconomicRank(gameMode.ediff)
@@ -450,8 +425,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * Function checks if unit suitable for specified game mode.
    * @param gameMode Gets current game mode if not speficied.
    */
-  function isUnitAllowedForGameMode(unit, gameMode = null)
-  {
+  function isUnitAllowedForGameMode(unit, gameMode = null) {
     if (!unit || unit.disableFlyout)
       return false
     if (gameMode == null)
@@ -466,16 +440,14 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * one unit allowed for speficied game mode.
    * @param gameMode Gets current game mode if not speficied.
    */
-  function isPresetValidForGameMode(preset, gameMode = null)
-  {
+  function isPresetValidForGameMode(preset, gameMode = null) {
     let unitNames = getTblValue("units", preset, null)
     if (unitNames == null)
       return false
     if (gameMode == null)
       gameMode = this.getCurrentGameMode()
     let checkedUnitTypes = ::game_mode_manager.getRequiredUnitTypes(gameMode)
-    foreach (unitName in unitNames)
-    {
+    foreach (unitName in unitNames) {
       let unit = ::getAircraftByName(unitName)
       if (isInArray(unit?.esUnitType, checkedUnitTypes)
         && this.isUnitAllowedForGameMode(unit, gameMode))
@@ -484,13 +456,11 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     return false
   }
 
-  function findPresetValidForGameMode(countryId, gameMode = null /* if null then current game mode*/)
-  {
+  function findPresetValidForGameMode(countryId, gameMode = null /* if null then current game mode*/ ) {
     let presets = getTblValue(countryId, ::slotbarPresets.presets, null)
     if (presets == null)
       return null
-    foreach (preset in presets)
-    {
+    foreach (preset in presets) {
       if (this.isPresetValidForGameMode(preset, gameMode))
         return preset
     }
@@ -504,8 +474,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    *                           id from local profile.
    * @param preferredDiffCode If specified this difficulty will have highest priority.
    */
-  function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -1)
-  {
+  function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -1) {
     //Step 0. Check current queue for gamemode.
     let queue = ::queues.findQueue(null, this.queueMask, true)
     if (queue && (queue.name in this._gameModeById))
@@ -513,8 +482,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 
     local idFromAccount = null
     local unitType = ES_UNIT_TYPE_INVALID
-    if (!ignoreLocalProfile && ::g_login.isProfileReceived())
-    {
+    if (!ignoreLocalProfile && ::g_login.isProfileReceived()) {
       // Step 1. Attempting to retrieve current game mode id from account.
       idFromAccount = ::loadLocalByAccount("selected_random_battle", null)
       if (idFromAccount in this._gameModeById)
@@ -523,8 +491,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
       // Step 2. Player's newbie event is may be not longer available.
       //         Attempting to get event with same unit type.
       unitType = ::my_stats.getUnitTypeByNewbieEventId(idFromAccount)
-      if (unitType != ES_UNIT_TYPE_INVALID)
-      {
+      if (unitType != ES_UNIT_TYPE_INVALID) {
         local gameMode = null
         if (preferredDiffCode != -1)
           gameMode = this.getGameModeByUnitType(unitType, preferredDiffCode, true)
@@ -577,8 +544,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
    * Returns index of current game
    * mode in game modes array.
    */
-  function getCurrentGameModeIndex()
-  {
+  function getCurrentGameModeIndex() {
     return ::find_in_array(this._gameModes, this.getCurrentGameMode(), 0)
   }
 
@@ -594,15 +560,14 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   seenShowingGameModesInited = false
   isSeenByGameModeId = {}
 
-  function _setCurrentGameModeId(id, save, isUserSelected=false)
-  {
-    if(!::events.eventsLoaded)
+  function _setCurrentGameModeId(id, save, isUserSelected = false) {
+    if (!::events.eventsLoaded)
       return
 
-    if(isUserSelected)
+    if (isUserSelected)
       this._userGameModeId = id
 
-    if(this._currentGameModeId == id && !isUserSelected)
+    if (this._currentGameModeId == id && !isUserSelected)
       return
 
     this._currentGameModeId = id
@@ -610,27 +575,24 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     if (save)
       ::saveLocalByAccount("selected_random_battle", this._currentGameModeId)
 
-    ::broadcastEvent("CurrentGameModeIdChanged", {isUserSelected=isUserSelected})
+    ::broadcastEvent("CurrentGameModeIdChanged", { isUserSelected = isUserSelected })
   }
 
-  function _clearGameModes()
-  {
+  function _clearGameModes() {
     this._gameModes = []
     this._gameModeById = {}
   }
 
-  function _appendGameMode(gameMode, isTempGameMode = false)
-  {
+  function _appendGameMode(gameMode, isTempGameMode = false) {
     this._gameModeById[gameMode.id] <- gameMode
-    if(isTempGameMode)
+    if (isTempGameMode)
       return gameMode
 
     this._gameModes.append(gameMode)
     return gameMode
   }
 
-  function _createEventGameMode(event, isTempGameMode = false)
-  {
+  function _createEventGameMode(event, isTempGameMode = false) {
     if (!event)
        return
 
@@ -656,8 +618,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
       enableOnDebug = ::events.isEventEnableOnDebug(event)
 
       getEvent = function() { return (::g_squad_manager.isNotAloneOnline() && this.eventForSquad) || event }
-      getTooltipText = function()
-      {
+      getTooltipText = function() {
         let ev = this.getEvent()
         return ev ? ::events.getEventDescriptionText(ev, null, true) : ""
       }
@@ -672,8 +633,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
       local inactiveColor = !::events.checkEventFeature(event, true)
 
       if (!inactiveColor)
-        foreach(esUnitType in reqUnitTypes)
-        {
+        foreach (esUnitType in reqUnitTypes) {
           inactiveColor = !unitTypes.getByEsUnitType(esUnitType).isAvailable()
           if (inactiveColor)
             break
@@ -684,8 +644,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     return this._appendGameMode(gameMode, isTempGameMode)
   }
 
-  function _createCustomGameMode(gm)
-  {
+  function _createCustomGameMode(gm) {
     let gameMode = {
       id = gm.id
       source = null
@@ -712,20 +671,17 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     return this._appendGameMode(gameMode)
   }
 
-  function _updateGameModes()
-  {
+  function _updateGameModes() {
     this._clearGameModes()
 
     let newbieGmByUnitType = {}
-    foreach (unitType in unitTypes.types)
-    {
+    foreach (unitType in unitTypes.types) {
       let event = ::my_stats.getNextNewbieEvent(null, unitType.esUnitType, false)
       if (event)
         newbieGmByUnitType[unitType.esUnitType] <- this._createEventGameMode(event)
     }
 
-    for (local idx = 0; idx < ::custom_game_modes_battles.len(); idx++)
-    {
+    for (local idx = 0; idx < ::custom_game_modes_battles.len(); idx++) {
       let dm = ::custom_game_modes_battles[idx]
       if (!("isVisible" in dm) || dm.isVisible())
             this._createCustomGameMode(dm)
@@ -750,19 +706,16 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     ::broadcastEvent("GameModesUpdated")
   }
 
-  function _updateCurrentGameModeId()
-  {
+  function _updateCurrentGameModeId() {
     let currentGameModeId = this.findCurrentGameModeId()
-    if (currentGameModeId != null)
-    {
+    if (currentGameModeId != null) {
       // This activates saving to profile on first update after profile loaded.
       let save = this._currentGameModeId == null && ::events.eventsLoaded
       this._setCurrentGameModeId(currentGameModeId, save)
     }
   }
 
-  function _getUnitTypesByGameMode(gameMode,isOnlyAvailable = true, needReqUnitType = false)
-  {
+  function _getUnitTypesByGameMode(gameMode, isOnlyAvailable = true, needReqUnitType = false) {
     if (!gameMode)
       return []
 
@@ -780,11 +733,9 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
       @(unitType) unitType.esUnitType)
   }
 
-  function getGameModesPartitions()
-  {
+  function getGameModesPartitions() {
     let partitions = []
-    foreach (partitionData in ::game_mode_select_partitions_data)
-    {
+    foreach (partitionData in ::game_mode_select_partitions_data) {
       let partition = {
         separator = partitionData.forClan
         gameModes = ::game_mode_manager.getGameModes(
@@ -802,8 +753,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
       }
       // If diff code is not provided
       // sort game modes by difficulty.
-      if (partitionData.diffCode == -1)
-      {
+      if (partitionData.diffCode == -1) {
         partition.gameModes.sort(function (gm1, gm2) {
           return ::events.diffCodeCompare(gm1.diffCode, gm2.diffCode)
         })
@@ -813,36 +763,31 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     return partitions
   }
 
-  function getFeaturedGameModes()
-  {
+  function getFeaturedGameModes() {
     return this.getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.displayType == ::g_event_display_type.FEATURED && !gameMode.enableOnDebug
     })
   }
 
-  function getDebugGameModes()
-  {
+  function getDebugGameModes() {
     return this.getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.enableOnDebug
     })
   }
 
-  function getPveBattlesGameModes()
-  {
+  function getPveBattlesGameModes() {
     return this.getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.displayType == ::g_event_display_type.PVE_BATTLE && !gameMode.enableOnDebug
     })
   }
 
-  function getClanBattlesGameModes()
-  {
+  function getClanBattlesGameModes() {
     return this.getGameModes(ES_UNIT_TYPE_INVALID, function (gameMode) {
       return gameMode.forClan && !gameMode.enableOnDebug
     })
   }
 
-  function getGameModeItemId(gameModeId)
-  {
+  function getGameModeItemId(gameModeId) {
     return "game_mode_item_" + gameModeId
   }
 
@@ -854,17 +799,15 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   }
 
 //------------- <New Icon Widget> ----------------------
-  function initShowingGameModesSeen()
-  {
+  function initShowingGameModesSeen() {
     if (this.seenShowingGameModesInited)
       return true
 
     if (!::g_login.isLoggedIn())
       return false
 
-    let blk = ::loadLocalByAccount(this.SEEN_MODES_SAVE_PATH, ::DataBlock())
-    for (local i = 0; i < blk.paramCount(); i++)
-    {
+    let blk = ::loadLocalByAccount(this.SEEN_MODES_SAVE_PATH, DataBlock())
+    for (local i = 0; i < blk.paramCount(); i++) {
       let id = blk.getParamName(i)
       this.isSeenByGameModeId[id] <- blk.getParamValue(i)
     }
@@ -880,17 +823,15 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     return true
   }
 
-  function markShowingGameModeAsSeen(gameModeId)
-  {
+  function markShowingGameModeAsSeen(gameModeId) {
     this.isSeenByGameModeId[gameModeId] <- true
     this.saveSeenGameModes()
     ::broadcastEvent("ShowingGameModesUpdated")
   }
 
-  function getUnseenGameModeCount()
-  {
+  function getUnseenGameModeCount() {
     local unseenGameModesCount = 0
-    foreach(gameMode in this.getAllVisibleGameModes())
+    foreach (gameMode in this.getAllVisibleGameModes())
       if (!this.isSeen(this.getGameModeItemId(gameMode.id)))
         unseenGameModesCount++
 
@@ -901,26 +842,22 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     return unseenGameModesCount
   }
 
-  function isSeen(gameModeId)
-  {
+  function isSeen(gameModeId) {
     return getTblValue(gameModeId, this.isSeenByGameModeId, false)
   }
 
-  function saveSeenGameModes()
-  {
+  function saveSeenGameModes() {
     if (!this.seenShowingGameModesInited)
       return //data not loaded yet
 
-    let blk = ::DataBlock()
-    foreach(gameMode in this.getAllVisibleGameModes())
-    {
+    let blk = DataBlock()
+    foreach (gameMode in this.getAllVisibleGameModes()) {
       let id = this.getGameModeItemId(gameMode.id)
       if (id in this.isSeenByGameModeId)
         blk[id] = this.isSeenByGameModeId[id]
     }
 
-    foreach (mode in ::featured_modes)
-    {
+    foreach (mode in ::featured_modes) {
       let id = this.getGameModeItemId(mode.modeId)
       if (id in this.isSeenByGameModeId)
         blk[id] = this.isSeenByGameModeId[id]
@@ -929,11 +866,10 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     ::saveLocalByAccount(this.SEEN_MODES_SAVE_PATH, blk)
   }
 
-  function getAllVisibleGameModes()
-  {
+  function getAllVisibleGameModes() {
     let gameModePartitions = ::game_mode_manager.getGameModesPartitions()
     let gameModes = []
-    foreach(partition in gameModePartitions)
+    foreach (partition in gameModePartitions)
       gameModes.extend(partition.gameModes)
 
     gameModes.extend(this.getPveBattlesGameModes())
@@ -944,55 +880,46 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 
 //------------- </New Icon Widget> ----------------------
 
-  function _onEventsDataUpdated(_params)
-  {
+  function _onEventsDataUpdated(_params) {
     this.updateManager()
   }
 
-  function _onMyStatsUpdated(_params)
-  {
+  function _onMyStatsUpdated(_params) {
     this.updateManager()
   }
 
-  function _onUnitTypeChosen(_params)
-  {
+  function _onUnitTypeChosen(_params) {
     this.updateManager()
   }
 
-  function _onGameLocalizationChanged(_params)
-  {
+  function _onGameLocalizationChanged(_params) {
     if (!::g_login.isLoggedIn())
       return
     this.updateManager()
   }
 
-  function _onEventCrewTakeUnit(_params)
-  {
+  function _onEventCrewTakeUnit(_params) {
     this.updateManager()
   }
 
-  function onEventQueueChangeState(p)
-  {
+  function onEventQueueChangeState(p) {
     if (::queues.checkQueueType(p?.queue, this.queueMask) && ::queues.isQueueActive(p?.queue))
       this._updateCurrentGameModeId()
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this._currentGameModeId = null
     this._gameModeById.clear()
     this._gameModes.clear()
   }
 
-  function getRequiredUnitTypes(gameMode)
-  {
+  function getRequiredUnitTypes(gameMode) {
     return (gameMode?.reqUnitTypes && gameMode.reqUnitTypes.len() > 0)
         ? gameMode.reqUnitTypes
         : (gameMode?.unitTypes ?? [])
   }
 
-  function setLeaderGameMode(id)
-  {
+  function setLeaderGameMode(id) {
    if (!this.getGameModeById(id))
      this._createEventGameMode(::events.getEvent(id), true)
 

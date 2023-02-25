@@ -2233,12 +2233,12 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "f_80_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_80_default.blk"
+        "name": "f_80a_default",
+        "blk": "gameData/FlightModels/weaponPresets/f_80a_default.blk"
       },
       {
-        "name": "f_80_5in_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/f_80_5in_rockets.blk",
+        "name": "f_80a_5in_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/f_80a_5in_rockets.blk",
         "reqModification": "frc_mk2"
       },
       {
@@ -2351,19 +2351,45 @@
     "turnTime": 23.0
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {},
-    "g_suit": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_compressor_jet": {
+      "tier": 1,
+      "modClass": "lth"
+    },
     "hydravlic_power": {
+      "prevModification": "new_compressor_jet",
+      "tier": 2,
+      "modClass": "lth",
       "effects": {
         "aileronBooster": 0.9
       }
     },
-    "new_compressor_jet": {
-      "tier": 1
+    "hp_105_jet": {
+      "prevModification": "hydravlic_power",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "g_suit": {
+      "tier": 4,
+      "modClass": "armor"
     },
     "50cal_universal": {},
     "50cal_ground_targets": {},

@@ -1,9 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let math = require("math")
-let {rwrTargetsTriggers, lwsTargetsTriggers, mlwsTargetsTriggers, mlwsTargets, lwsTargets, rwrTargets, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime} = require("twsState.nut")
-let {MlwsLwsForMfd, RwrForMfd} = require("airState.nut");
-let {isColorOrWhite} = require("style/airHudStyle.nut")
+let { rwrTargetsTriggers, lwsTargetsTriggers, mlwsTargetsTriggers, mlwsTargets, lwsTargets, rwrTargets, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
+let { MlwsLwsForMfd, RwrForMfd } = require("airState.nut");
+let { isColorOrWhite } = require("style/airHudStyle.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
 const RADAR_LINES_OPACITY = 0.42
@@ -83,7 +83,7 @@ let function centeredAircraftIcon(colorWatched) {
       @() styleLineBackground.__merge({
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
-        fillColor = Color(0,0,0,0)
+        fillColor = Color(0, 0, 0, 0)
         color = colorWatched.value
         opacity = targetsCommonOpacity.value
         watch = [targetsCommonOpacity, colorWatched]
@@ -106,7 +106,7 @@ let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTan
     watch = [targetsOpacity, colorWatched]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(LINE_WIDTH)
-    fillColor = backGroundColorEnabled ? backgroundColor : Color(0,0,0,0)
+    fillColor = backGroundColorEnabled ? backgroundColor : Color(0, 0, 0, 0)
     color = colorWatched.value
     opacity = !isForTank ? 1.0 : targetsOpacity.value
     size = flex()
@@ -117,7 +117,7 @@ let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTan
   })
 }
 
-let function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false){
+let function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false) {
   const angleGrad = 30.0
   let angle = math.PI * angleGrad / 180.0
   let dashCount = 360.0 / angleGrad
@@ -405,7 +405,7 @@ let rwrTargetsComponent = function(colorWatched) {
   }
 }
 
-let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale){
+let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale) {
   return {
     size = flex()
     children = [

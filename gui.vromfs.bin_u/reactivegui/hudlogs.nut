@@ -3,6 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let chat = require("hudChat.nut")
 let battleLog = require("hudBattleLog.nut")
 let tabs = require("components/tabs.nut")
+let { get_option_auto_show_chat } = require("chat")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { canWriteToChat, hudLog, lastInputTime } = require("hudChatState.nut")
 let { isMultiplayer } = require("networkState.nut")
@@ -50,8 +51,10 @@ let logsContainerAnims = [
   opacityAnim.__merge({ trigger = slowFadeOutId, from = 0,   to = 0, duration = 1, delay = slowDuration })
 ]
 
+let skipAnims = @() [slowFadeOutId, fastFadeOutId, showOutId].each(@(id) anim_skip(id))
+
 let function startAnim(animId) {
-  [slowFadeOutId, fastFadeOutId, showOutId].each(@(id) anim_skip(id))
+  skipAnims()
   anim_start(animId)
 }
 
@@ -64,12 +67,14 @@ let function hideNewMessage() {
 
 // force isNewMessage state to prevent log blinking right after sending a message
 lastInputTime.subscribe(function(_) {
+  skipAnims()
   isNewMessage(true)
   gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
 })
 
 hudLog.subscribe(function(_) {
-  if (cursorVisible.value || hudLog.value.len() == 0)
+  if (cursorVisible.value || hudLog.value.len() == 0
+      || get_option_auto_show_chat() == 0)
     return
 
   gui_scene.resetTimeout(hideNewMessageDelay, hideNewMessage)
@@ -99,8 +104,8 @@ isInteractive.subscribe(function(value) {
 })
 
 let logsHeader = @() {
-  size = [flex(), SIZE_TO_CONTENT]
   watch = [cursorVisible, currentTab]
+  size = [flex(), SIZE_TO_CONTENT]
   opacity = cursorVisible.value ? 1 : 0
   children = [
     tabs({

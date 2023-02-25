@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {speed, portSideMachine, sideboardSideMachine, stopping } = require("%rGui/shipState.nut")
+let { speed, portSideMachine, sideboardSideMachine, stopping } = require("%rGui/shipState.nut")
 let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 
 let machineDirectionLoc = [
@@ -48,14 +48,14 @@ let machineSpeedDirection = [
   "back"
 ]
 
-local fitTextToBox = kwarg(function(box, text, font, fontSize=null, minSize = 8){
-  local sz = calc_comp_size({rendObj = ROBJ_TEXT, text, font, fontSize})
-  fontSize = fontSize ?? calc_comp_size({rendObj = ROBJ_TEXT, text = "A", font, fontSize})
+local fitTextToBox = kwarg(function(box, text, font, fontSize = null, minSize = 8) {
+  local sz = calc_comp_size({ rendObj = ROBJ_TEXT, text, font, fontSize })
+  fontSize = fontSize ?? calc_comp_size({ rendObj = ROBJ_TEXT, text = "A", font, fontSize })
   sz = [sz[0] > 1 ? sz[0] : 1, sz[1] > 1 ? sz[1] : 1]
-  let scale = min(box[0]/sz[0], box[1]/sz[1])
+  let scale = min(box[0] / sz[0], box[1] / sz[1])
   if (scale >= 1.0)
     return fontSize
-  let res = fontSize*scale
+  let res = fontSize * scale
   if (res < minSize)
     return minSize
   return res
@@ -64,7 +64,7 @@ local fitTextToBox = kwarg(function(box, text, font, fontSize=null, minSize = 8)
 let defFont = Fonts.tiny_text_hud
 
 let function speedValue(params = {}) {
-  let { font = defFont, margin = [0,0,0,sh(1)], fontSize = null } = params
+  let { font = defFont, margin = [0, 0, 0, sh(1)], fontSize = null } = params
   return @() {
     watch = speed
     rendObj = ROBJ_TEXT
@@ -83,9 +83,9 @@ let function speedUnits(params = {}) {
       watch = [isInitializedMeasureUnits, measureUnitsNames]
       rendObj = ROBJ_TEXT
       font
-      fontSize = box ? fitTextToBox({text, box, fontSize, font}) : fontSize
+      fontSize = box ? fitTextToBox({ text, box, fontSize, font }) : fontSize
       text
-      margin = [0,0,hdpx(1.5),sh(0.5)]
+      margin = [0, 0, hdpx(1.5), sh(0.5)]
     }
   }
 }
@@ -101,7 +101,7 @@ let machineSpeed = @(params = {}) function() {
     watch = [averageSpeed, stopping]
     rendObj = ROBJ_TEXT
     font
-    fontSize = box ? fitTextToBox({fontSize, text, box, font}) : null
+    fontSize = box ? fitTextToBox({ fontSize, text, box, font }) : null
     color = stopping.value ? Color(255, 100, 100) : fontColor
     text
   }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -17,8 +18,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   curItem = null
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return {
       items = ::handyman.renderCached("%gui/items/item.tpl", { items = ::u.map(this.itemsList, @(i) i.getViewData()) })
       columns = stdMath.calc_golden_ratio_columns(this.itemsList.len())
@@ -29,8 +29,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.setCurItem(this.itemsList[0])
     this.updateWndAlign()
     this.guiScene.performDelayed(this, @() this.guiScene.performDelayed(this, function() {
@@ -39,20 +38,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }))
   }
 
-  function updateWndAlign()
-  {
+  function updateWndAlign() {
     if (checkObj(this.alignObj))
       this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("frame_obj"))
   }
 
-  function setCurItem(item)
-  {
+  function setCurItem(item) {
     this.curItem = item
     this.scene.findObject("header_text").setValue(this.curItem.getName())
   }
 
-  function onItemSelect(obj)
-  {
+  function onItemSelect(obj) {
     let value = obj.getValue()
     if (value in this.itemsList)
       this.setCurItem(this.itemsList[value])

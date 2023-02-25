@@ -44,7 +44,7 @@ colors.menu <- {
   buttonCloseColorPushed = Color(106, 34, 17, 153)
   menuButtonColorHover = Color(45, 56, 65)
   menuButtonTextColorHover = Color(224, 224, 224)
-  separatorBlockColor = Color(34,34,34, 34)
+  separatorBlockColor = Color(34, 34, 34, 34)
 }
 
 colors.hud <- {

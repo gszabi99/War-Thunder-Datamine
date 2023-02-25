@@ -13,16 +13,14 @@ modelType.template <- {
 
   init = function() {}
 
-  makeFullPath = function(relativePath)
-  {
+  makeFullPath = function(relativePath) {
     relativePath.insert(0, this.id)
     return relativePath
   }
   notify = @(relativePath) elemEvents.notifyChanged(this.makeFullPath(relativePath))
 }
 
-modelType.addTypes <- function(typesTable)
-{
+modelType.addTypes <- function(typesTable) {
   enums.addTypes(this, typesTable, @() this.init(), "id")
 }
 

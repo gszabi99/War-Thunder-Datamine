@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -19,8 +20,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   }
 */
 
-::gui_handlers.ReqPurchaseWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ReqPurchaseWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 
@@ -32,15 +32,13 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   imageRatioHeight = 0.75 //same with blk
   btnStoreText = "#msgbox/btn_onlineShop"
 
-  static function open(config)
-  {
+  static function open(config) {
     if (!("purchaseData" in config) || !config.purchaseData.canBePurchased)
       return
     ::handlersManager.loadHandler(::gui_handlers.ReqPurchaseWnd, config)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.guiScene.setUpdatesEnabled(false, false)
 
     this.scene.findObject("award_name").setValue(this.header)
@@ -54,8 +52,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  function getNavbarTplView()
-  {
+  function getNavbarTplView() {
     return {
       middle = [
         {
@@ -70,20 +67,18 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     }
   }
 
-  function validateImageData()
-  {
+  function validateImageData() {
     if (!::u.isEmpty(this.image))
       return
 
-    this.image = "#ui/images/login_reward.jpg?P1"
+    this.image = "#ui/images/login_reward?P1"
     let imgBlk = get_blk_by_path_array(["entitlementsAdvert", this.purchaseData.sourceEntitlement],
                                            ::get_gui_regional_blk())
     if (!::u.isDataBlock(imgBlk))
       return
 
     let rndImg = ::u.chooseRandom(imgBlk % "image")
-    if (::u.isString(rndImg))
-    {
+    if (::u.isString(rndImg)) {
       let country = profileCountrySq.value
       this.image = rndImg.subst({ country = ::g_string.cutPrefix(country, "country_", country) })
     }
@@ -91,13 +86,11 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       this.imageRatioHeight = imgBlk.imageRatio
   }
 
-  function onOnlineStore()
-  {
+  function onOnlineStore() {
     ::OnlineShopModel.openBrowserByPurchaseData(this.purchaseData)
   }
 
-  function onEventProfileUpdated(_p)
-  {
+  function onEventProfileUpdated(_p) {
     if (!::has_entitlement(this.purchaseData.sourceEntitlement))
       return
 
@@ -107,9 +100,6 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.goBack()
   }
 
-  function onFacebookPostLink() {}
-  function onFacebookLoginAndPostScrnshot() {}
-  function onFacebookLoginAndPostMessage() {}
   function sendInvitation() {}
   function onOk() {}
   function onUseDecorator() {}

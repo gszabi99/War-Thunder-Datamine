@@ -1,15 +1,16 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { getTimestampFromStringUtc, buildDateStr} = require("%scripts/time.nut")
+let { getTimestampFromStringUtc, buildDateStr } = require("%scripts/time.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
 let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockConditions, getHeaderCondition,
-  isTimeRangeCondition} = require("%scripts/unlocks/unlocksConditions.nut")
+  isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")

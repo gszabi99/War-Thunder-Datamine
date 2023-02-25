@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -17,8 +18,7 @@ enum MIS_LOAD { //bit enum
 }
 
   //calls from c++ code.
-::on_update_es_from_host <- function on_update_es_from_host()
-{
+::on_update_es_from_host <- function on_update_es_from_host() {
   log("on_update_es_from_host called")
   ::g_crews_list.invalidate()
   ::reinitAllSlotbars()
@@ -27,8 +27,7 @@ enum MIS_LOAD { //bit enum
 
   //calls from c++ code. Signals that something is changed in mission
   // for now it's only state of respawn bases
-::on_mission_changed <- function on_mission_changed()
-{
+::on_mission_changed <- function on_mission_changed() {
   ::broadcastEvent("ChangedMissionRespawnBasesStatus")
 }
 
@@ -38,18 +37,15 @@ enum MIS_LOAD { //bit enum
   curState = 0
 }
 
-::g_mis_loading_state.isReadyToShowRespawn <- function isReadyToShowRespawn()
-{
+::g_mis_loading_state.isReadyToShowRespawn <- function isReadyToShowRespawn() {
   return (this.curState & MIS_LOAD.RESPAWN_DATA_LOADED) == MIS_LOAD.RESPAWN_DATA_LOADED
 }
 
-::g_mis_loading_state.isCrewsListReceived <- function isCrewsListReceived()
-{
+::g_mis_loading_state.isCrewsListReceived <- function isCrewsListReceived() {
   return (this.curState & MIS_LOAD.ECONOMIC_STATE) != 0
 }
 
-::g_mis_loading_state.onEventUpdateEsFromHost <- function onEventUpdateEsFromHost(_p)
-{
+::g_mis_loading_state.onEventUpdateEsFromHost <- function onEventUpdateEsFromHost(_p) {
   if (this.curState & MIS_LOAD.ECONOMIC_STATE)
     return
 
@@ -58,25 +54,21 @@ enum MIS_LOAD { //bit enum
   this.checkRespawnBases()
 }
 
-::g_mis_loading_state.onEventLoadingStateChange <- function onEventLoadingStateChange(_p)
-{
-  if (!::is_in_flight())
-  {
+::g_mis_loading_state.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
+  if (!::is_in_flight()) {
     if (this.curState != 0)
       log("misLoadState: reset mision loading state")
     this.curState = 0
   }
 }
 
-::g_mis_loading_state.checkRespawnBases <- function checkRespawnBases()
-{
+::g_mis_loading_state.checkRespawnBases <- function checkRespawnBases() {
   if ((this.curState & MIS_LOAD.RESPAWN_BASES)
       || !(this.curState & MIS_LOAD.ECONOMIC_STATE))
     return
 
   local hasRespBases = false
-  foreach(crew in ::get_crews_list_by_country(::get_local_player_country()))
-  {
+  foreach (crew in ::get_crews_list_by_country(::get_local_player_country())) {
     let unit = ::g_crew.getCrewUnit(crew)
     if (!unit)
       continue
@@ -94,8 +86,7 @@ enum MIS_LOAD { //bit enum
     this.curState = this.curState | MIS_LOAD.RESPAWN_BASES
 }
 
-::g_mis_loading_state.onEventChangedMissionRespawnBasesStatus <- function onEventChangedMissionRespawnBasesStatus(_p)
-{
+::g_mis_loading_state.onEventChangedMissionRespawnBasesStatus <- function onEventChangedMissionRespawnBasesStatus(_p) {
   this.checkRespawnBases()
 }
 

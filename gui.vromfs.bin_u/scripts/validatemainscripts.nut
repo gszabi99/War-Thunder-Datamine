@@ -1,9 +1,8 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
-getroottable().__update(require("math"), require("string"), require("iostream"), require("io"))
 
 //Load main scripts
 let { file_exists } = require("dagor.fs")
@@ -14,7 +13,7 @@ log("::load_scripts_after_login()")
 
 
 //validate exist common files for base handlers
-foreach(name, hClass in ::gui_handlers) {
+foreach (name, hClass in ::gui_handlers) {
   assert(("sceneBlkName" in hClass) && ("sceneTplName" in hClass),
        @() $"handlerClass not instance of BaseGuiHandler: ::gui_handlers.{name}")
 

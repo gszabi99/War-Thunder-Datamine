@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -25,11 +26,9 @@ let systemColor = "@chatInfoColor"
 
 ::g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
 
-local function localizeSystemMsg(msg)
-{
+local function localizeSystemMsg(msg) {
   local localized = false
-  foreach(ending in ["is set READONLY", "is set BANNED"])
-  {
+  foreach (ending in ["is set READONLY", "is set BANNED"]) {
     if (!::g_string.endsWith(msg, ending))
       continue
 
@@ -48,16 +47,14 @@ local function localizeSystemMsg(msg)
   return msg
 }
 
-local function colorMyNameInText(msg)
-{
-  if (::my_user_name=="" || msg.len() < ::my_user_name.len())
+local function colorMyNameInText(msg) {
+  if (::my_user_name == "" || msg.len() < ::my_user_name.len())
     return msg
 
   local counter = 0;
   msg = " " + msg + " "; //add temp spaces before name coloring
 
-  while (counter+::my_user_name.len() <= msg.len())
-  {
+  while (counter + ::my_user_name.len() <= msg.len()) {
     let nameStartPos = msg.indexof(::my_user_name, counter);
     if (nameStartPos == null)
       break;
@@ -65,9 +62,8 @@ local function colorMyNameInText(msg)
     let nameEndPos = nameStartPos + ::my_user_name.len();
     counter = nameEndPos;
 
-    if (isInArray(msg.slice(nameStartPos-1, nameStartPos), ::punctuation_list) &&
-        isInArray(msg.slice(nameEndPos, nameEndPos+1),     ::punctuation_list))
-    {
+    if (isInArray(msg.slice(nameStartPos - 1, nameStartPos), ::punctuation_list) &&
+        isInArray(msg.slice(nameEndPos, nameEndPos + 1),     ::punctuation_list)) {
       let msgStart = msg.slice(0, nameStartPos);
       let msgEnd = msg.slice(nameEndPos);
       let msgName = msg.slice(nameStartPos, nameEndPos);
@@ -76,7 +72,7 @@ local function colorMyNameInText(msg)
       counter = msgProcessedPart.len();
     }
   }
-  msg = msg.slice(1, msg.len()-1); //remove temp spaces after name coloring
+  msg = msg.slice(1, msg.len() - 1); //remove temp spaces after name coloring
 
   return msg
 }
@@ -96,7 +92,8 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
   if (type(from) != "instance") {
     if (from in ::clanUserTable)
       clanTag = ::clanUserTable[from]
-  } else {
+  }
+  else {
     uid = from.uid
     clanTag = from.clanTag
     from = from.name
@@ -119,9 +116,10 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
   }
 
   if (from == "") {
-    msgColor = overlaySystemColor ? overlaySystemColor:systemColor
+    msgColor = overlaySystemColor ? overlaySystemColor : systemColor
     messageType = MESSAGE_TYPE.SYSTEM
-  } else {
+  }
+  else {
     userColor = ::g_chat.getSenderColor(from, true, privateMsg)
 
     if (needCensore)
@@ -132,8 +130,7 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
     if (overlaySystemColor) {
       msgColor = overlaySystemColor
     }
-    else if (!myPrivate && ::isPlayerNickInContacts(from, EPL_BLOCKLIST))
-    {
+    else if (!myPrivate && ::isPlayerNickInContacts(from, EPL_BLOCKLIST)) {
       if (privateMsg)
         return null
 
@@ -141,8 +138,7 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
       msgColor = blockedColor
       msg = ::g_chat.makeBlockedMsg(msg)
     }
-    else if (!myself && !myPrivate && !isChatEnableWithPlayer(from))
-    {
+    else if (!myself && !myPrivate && !isChatEnableWithPlayer(from)) {
       if (privateMsg)
         return null
 
@@ -153,7 +149,7 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
     else
       msg = colorMyNameInText(msg)
 
-    messageType = myself ? MESSAGE_TYPE.MY:MESSAGE_TYPE.INCOMMING
+    messageType = myself ? MESSAGE_TYPE.MY : MESSAGE_TYPE.INCOMMING
   }
 
   if (msgColor != "")
@@ -217,12 +213,13 @@ let function newRoom(id, customScene = null, ownerHandler = null) {
         this.mBlocks.top().msgs.extend(mBlock.msgs)
         this.mBlocks.top().msgsSrc.extend(mBlock.msgsSrc)
         mBlock = this.mBlocks.top()
-      } else {
-        mBlock.messageType = this.isCustomScene ? MESSAGE_TYPE.CUSTOM:mBlock.messageType
+      }
+      else {
+        mBlock.messageType = this.isCustomScene ? MESSAGE_TYPE.CUSTOM : mBlock.messageType
         this.mBlocks.append(mBlock)
       }
 
-      if(::g_chat.isRoomClan(id))
+      if (::g_chat.isRoomClan(id))
         mBlock.clanTag = ""
 
       if (mBlock.text == "" && mBlock.from != "") {
@@ -231,7 +228,7 @@ let function newRoom(id, customScene = null, ownerHandler = null) {
             mBlock.fullName)
       }
 
-      mBlock.text += (!this.isCustomScene ? "\n":"") + mBlock.msgs.top()
+      mBlock.text += (!this.isCustomScene ? "\n" : "") + mBlock.msgs.top()
       mBlock.messageIndex = persistent.lastCreatedMessageIndex++
 
       if (this.mBlocks.len() > ::g_chat.getMaxRoomMsgAmount())

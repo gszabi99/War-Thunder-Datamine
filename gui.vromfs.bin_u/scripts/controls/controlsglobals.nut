@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,34 +8,28 @@ from "%scripts/dagui_library.nut" import *
 
 ::is_last_load_controls_succeeded <- false
 
-::load_controls <- function load_controls(blkOrPresetPath)
-{
+::load_controls <- function load_controls(blkOrPresetPath) {
   let otherPreset = ::ControlsPreset(blkOrPresetPath)
-  if (otherPreset.isLoaded && otherPreset.hotkeys.len() > 0)
-  {
+  if (otherPreset.isLoaded && otherPreset.hotkeys.len() > 0) {
     ::g_controls_manager.setCurPreset(otherPreset)
     ::controls_fix_device_mapping()
     ::is_last_load_controls_succeeded = true
   }
-  else
-  {
+  else {
     log($"ControlsGlobals: Prevent setting incorrect preset: {blkOrPresetPath}")
     ::showInfoMsgBox($"{loc("msgbox/errorLoadingPreset")}: {blkOrPresetPath}")
     ::is_last_load_controls_succeeded = false
   }
 }
 
-::save_controls_to_blk <- function save_controls_to_blk(blk)
-{
-  if (::g_controls_manager.getCurPreset().isLoaded)
-  {
+::save_controls_to_blk <- function save_controls_to_blk(blk) {
+  if (::g_controls_manager.getCurPreset().isLoaded) {
     ::g_controls_manager.getCurPreset().saveToBlk(blk)
     ::g_controls_manager.clearGuiOptions()
   }
 }
 
-::controls_fix_device_mapping <- function controls_fix_device_mapping()
-{
+::controls_fix_device_mapping <- function controls_fix_device_mapping() {
   ::g_controls_manager.fixDeviceMapping()
   ::g_controls_manager.commitControls()
 }

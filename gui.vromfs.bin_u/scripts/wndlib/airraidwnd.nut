@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -66,7 +67,8 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
 
         this.isExplosionStarted = true
       }
-    } else {
+    }
+    else {
       let countdownSeconds = millisecondsToSecondsInt(TIME_TO_EXPLOSION - activeTime)
       let countdownTime = secondsToTime(countdownSeconds)
 

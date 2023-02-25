@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -18,8 +19,7 @@ let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
 
 local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
-::gui_handlers.QueueTable <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.QueueTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/queue/queueTable.blk"
 
@@ -29,8 +29,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
   build_IA_shop_filters = false
 
-  function initScreen()
-  {
+  function initScreen() {
     this.setCurQueue(::queues.findQueue({}, this.queueMask))
     this.updateWaitTime()
 
@@ -43,8 +42,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
   curQueue = null
   function getCurQueue() { return this.curQueue }
-  function setCurQueue(value)
-  {
+  function setCurQueue(value) {
     if (::queues.isQueuesEqual(this.curQueue, value))
       return
 
@@ -52,26 +50,22 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     this.fullUpdate()
   }
 
-  function fullUpdate()
-  {
+  function fullUpdate() {
     this.build_IA_shop_filters = true
     this.fillQueueInfo()
     this.updateScene()
   }
 
-  function getCurCountry()
-  {
+  function getCurCountry() {
     let queue = this.getCurQueue()
     return queue != null ? ::queues.getQueueCountry(queue) : ""
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.setShowQueueTable(false)
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     if (!this.scene.isVisible())
       return
 
@@ -79,13 +73,11 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
   }
 
   function getShowQueueTable() { return this.scene.isVisible() }
-  function setShowQueueTable(value)
-  {
+  function setShowQueueTable(value) {
     if (value && this.scene.isVisible())
       return
 
-    if (value) // Queue wnd opening animation start
-    {
+    if (value) { // Queue wnd opening animation start
       this.updateTip()
       this.updateQueueWaitIconImage()
     }
@@ -93,8 +85,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     ::broadcastEvent("RequestToggleVisibility", { target = this.scene, visible = value })
   }
 
-  function updateTip()
-  {
+  function updateTip() {
     let tipObj = this.scene.findObject("queue_tip")
     if (tipObj?.isValid() ?? false)
       return
@@ -102,12 +93,10 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     tipObj.setValue(getCurEsUnitTypesMask())
   }
 
-  function fillQueueInfo()
-  {
+  function fillQueueInfo() {
     local txtPlayersWaiting = ""
     let queueStats = this.getCurQueue()?.queueStats
-    if (queueStats)
-    {
+    if (queueStats) {
       let playersOfMyRank = queueStats?.isClanStats
         ? queueStats.getClansCount()
         : queueStats.getPlayersCountOfMyRank()
@@ -125,12 +114,10 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     this.updateAvailableCountries()
   }
 
-  function updateWaitTime()
-  {
+  function updateWaitTime() {
     local txtWaitTime = ""
     let waitTime = this.getCurQueue()?.getActiveTime() ?? 0
-    if (waitTime > 0)
-    {
+    if (waitTime > 0) {
       let minutes = time.secondsToMinutes(waitTime).tointeger()
       let seconds = waitTime - time.minutesToSeconds(minutes)
       txtWaitTime = format("%d:%02d", minutes, seconds)
@@ -140,20 +127,17 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
     if (!this.isCrossPlayTipShowed
       && waitTime >= WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F
-      && !crossplayModule.isCrossPlayEnabled())
-    {
+      && !crossplayModule.isCrossPlayEnabled()) {
       this.scene.findObject("crossplay_tip").show(true)
       this.isCrossPlayTipShowed = true
     }
   }
 
-  function updateAvailableCountries()
-  {
+  function updateAvailableCountries() {
     let queue = this.getCurQueue()
     let availCountriesObj = this.scene.findObject("available_countries")
 
-    if (!queue)
-    {
+    if (!queue) {
       availCountriesObj.show(false)
       return
     }
@@ -163,8 +147,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
     if (countriesList.len() == 0)
       availCountriesObj.show(false)
-    else
-    {
+    else {
       let blk = ::handyman.renderCached("%gui/countriesList.tpl",
                                           {
                                             countries = (@(countriesList) function () {
@@ -184,8 +167,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     }
   }
 
-  function updateScene()
-  {
+  function updateScene() {
     if (!checkObj(this.scene))
       return
 
@@ -201,13 +183,11 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     this.fillQueueTable()
   }
 
-  function onClustersTabChange()
-  {
+  function onClustersTabChange() {
     this.updateTabContent()
   }
 
-  function updateTabs(queue)
-  {
+  function updateTabs(queue) {
     if (!queue || !this.build_IA_shop_filters)
       return
 
@@ -222,15 +202,13 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     clustersListObj.setValue(0)
   }
 
-  function createClustersFiltersData(queue)
-  {
+  function createClustersFiltersData(queue) {
     let view = { tabs = [] }
     view.tabs.append({ tabName = "#multiplayer/currentWaitTime" })
 
     if (::queues.isClanQueue(queue))
       view.tabs.append({ tabName = "#multiplayer/currentPlayers" })
-    else
-    {
+    else {
       foreach (clusterName in ::queues.getQueueClusters(queue)) {
         let isUnstable = ::g_clusters.isClusterUnstable(clusterName)
         view.tabs.append({
@@ -245,8 +223,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     return ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
   }
 
-  function fillQueueTable()
-  {
+  function fillQueueTable() {
     let queue = this.getCurQueue()
     this.updateTabs(queue)
 
@@ -259,8 +236,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
       return
 
     let genCode = event.name + "_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
-    if (nestObj?._queueTableGenCode == genCode)
-    {
+    if (nestObj?._queueTableGenCode == genCode) {
       this.updateTabContent()
       return
     }
@@ -279,17 +255,15 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
       obj.wink = (this.getCurQueue() != null) ? "yes" : "no"
   }
 
-  function createQueueTableClan(nestObj)
-  {
+  function createQueueTableClan(nestObj) {
     let queueBoxObj = nestObj.findObject("queue_box_container")
     this.guiScene.replaceContent(queueBoxObj, "%gui/events/eventQueue.blk", this)
 
-    foreach(team in ::events.getSidesList())
+    foreach (team in ::events.getSidesList())
       queueBoxObj.findObject(team + "_block").show(team == Team.A) //clan queue always symmetric
   }
 
-  function updateTabContent()
-  {
+  function updateTabContent() {
     if (!checkObj(this.scene))
       return
     let queue = this.getCurQueue()
@@ -311,8 +285,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     clanTableObj.show(isQueueTableVisible && isClanQueue)
 
     local curCluster = null
-    if (!isClanQueue)
-    {
+    if (!isClanQueue) {
       let listBoxObjItemObj = clustersListBoxObj.childrenCount() > value
         ? clustersListBoxObj.getChild(value)
         : null
@@ -328,13 +301,11 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
     if (isClanQueue)
       this.updateClanQueueTable()
-    else
-      if (curCluster != null)
+    else if (curCluster != null)
         ::g_qi_view_utils.updateViewByCountries(tableObj, this.getCurQueue(), curCluster)
   }
 
-  function updateClanQueueTable()
-  {
+  function updateClanQueueTable() {
     let tblObj = this.scene.findObject("queue_box")
     if (!checkObj(tblObj))
       return
@@ -354,8 +325,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
   }
 
   //!!FIX ME copypaste from events handler
-  function fillQueueTeam(teamObj, teamData, tableMarkup, playersCountText , teamColor = "any", teamName = "")
-  {
+  function fillQueueTeam(teamObj, teamData, tableMarkup, playersCountText,  teamColor = "any", teamName = "") {
     if (!checkObj(teamObj))
       return
 
@@ -372,8 +342,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
   }
 
   //!!FIX ME copypaste from events handler
-  function getClanQueueTableMarkup(queueStats)
-  {
+  function getClanQueueTableMarkup(queueStats) {
     let totalClans = queueStats.getClansCount()
     if (!totalClans)
       return ""
@@ -382,8 +351,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     let myClanQueueTable = queueStats.getMyClanQueueTable()
-    if (myClanQueueTable)
-    {
+    if (myClanQueueTable) {
       let headerData = [{
         text = loc("multiplayer/playersInYourClan")
         width = "0.1@sf"
@@ -408,16 +376,14 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
   }
 
   //!!FIX ME copypaste from events handler
-  function buildQueueStatsRowData(queueStatData, clusterNameLoc = "")
-  {
+  function buildQueueStatsRowData(queueStatData, clusterNameLoc = "") {
     let params = []
     params.append({
                     text = clusterNameLoc
                     tdalign = "center"
                  })
 
-    for(local i = 1; i <= ::max_country_rank; i++)
-    {
+    for (local i = 1; i <= ::max_country_rank; i++) {
       params.append({
         text = getTblValue(i.tostring(), queueStatData, 0).tostring()
         tdalign = "center"
@@ -427,11 +393,9 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
   }
 
   //!!FIX ME copypaste from events handler
-  function buildQueueStatsHeader()
-  {
+  function buildQueueStatsHeader() {
     let headerData = []
-    for(local i = 0; i <= ::max_country_rank; i++)
-    {
+    for (local i = 0; i <= ::max_country_rank; i++) {
       headerData.append({
         text = ::get_roman_numeral(i)
         tdalign = "center"
@@ -444,14 +408,12 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
   // Event handlers
   //
 
-  function onEventQueueChangeState(p)
-  {
+  function onEventQueueChangeState(p) {
     let queue = p?.queue
     if (!::queues.checkQueueType(queue, this.queueMask))
       return
 
-    if (::queues.isQueuesEqual(queue, this.getCurQueue()))
-    {
+    if (::queues.isQueuesEqual(queue, this.getCurQueue())) {
       this.fillQueueInfo()
       this.updateScene()
       return
@@ -463,8 +425,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     this.setCurQueue(queue)
   }
 
-  function onEventQueueInfoUpdated(_params)
-  {
+  function onEventQueueInfoUpdated(_params) {
     if (!checkObj(this.scene) || !this.getCurQueue())
       return
 
@@ -472,8 +433,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     this.updateScene()
   }
 
-  function onEventQueueClustersChanged(queue)
-  {
+  function onEventQueueClustersChanged(queue) {
     if (!::queues.isQueuesEqual(queue, this.getCurQueue()))
       return
 
@@ -481,35 +441,29 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     this.updateScene()
   }
 
-  function onEventMyStatsUpdated(_params)
-  {
+  function onEventMyStatsUpdated(_params) {
     this.updateScene()
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     this.updateScene()
   }
 
-  function onEventGamercardDrawerOpened(params)
-  {
+  function onEventGamercardDrawerOpened(params) {
     let target = params.target
     if (target != null && target.id == this.scene.id)
       ::move_mouse_on_child_by_value(this.getObj("ia_table_clusters_list"))
   }
 
-  function onEventShopWndSwitched(_params)
-  {
+  function onEventShopWndSwitched(_params) {
     this.updateVisibility()
   }
 
-  function updateVisibility()
-  {
+  function updateVisibility() {
     this.scene.show(!topMenuShopActive.value)
   }
 
-  function updateQueueWaitIconImage()
-  {
+  function updateQueueWaitIconImage() {
     if (!checkObj(this.scene))
       return
     let obj = this.scene.findObject("queue_wait_icon_block")

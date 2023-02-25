@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -17,15 +18,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   curCrewUnitType = null
   isHandlerVisible = true
 
-  function setHandlerVisible(value)
-  {
+  function setHandlerVisible(value) {
     this.isHandlerVisible = value
     this.scene.show(value)
     this.scene.enable(value)
   }
 
-  function setHandlerData(newCrew, newCrewLevel, newUnits, newCrewUnitType)
-  {
+  function setHandlerData(newCrew, newCrewLevel, newUnits, newCrewUnitType) {
     this.crew = newCrew
     this.crewLevel = newCrewLevel
     this.units = newUnits
@@ -39,26 +38,22 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.scene.setValue(0)
   }
 
-  function loadSceneTpl()
-  {
+  function loadSceneTpl() {
     let rows = []
-    foreach(i, _unit in this.units)
+    foreach (i, _unit in this.units)
       rows.append(this.getSpecRowConfig(i))
 
     local data = ::handyman.renderCached("%gui/crew/crewAirRow.tpl", { rows = rows })
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 
-  function getRowName(rowIndex)
-  {
+  function getRowName(rowIndex) {
     return format("skill_row%d", rowIndex)
   }
 
-  function applyRowButton(obj)
-  {
+  function applyRowButton(obj) {
     // Here 'scene' is table object with id "specs_table".
-    if (!checkObj(obj) || obj?.id != "buttonRowApply")
-    {
+    if (!checkObj(obj) || obj?.id != "buttonRowApply") {
       if (!checkObj(this.scene))
         return
       let idx = this.scene.getValue()
@@ -86,31 +81,26 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::g_crew.upgradeUnitSpec(this.crew, rowUnit)
   }
 
-  function onButtonRowApply(obj)
-  {
+  function onButtonRowApply(obj) {
     this.applyRowButton(obj)
   }
 
-  function increaseSpec(nextSpecType, obj = null)
-  {
+  function increaseSpec(nextSpecType, obj = null) {
     let rowIndex = ::g_crew.getButtonRow(obj, this.scene, this.scene)
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit)
       ::g_crew.upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)
   }
 
-  function onSpecIncrease1(obj)
-  {
+  function onSpecIncrease1(obj) {
     this.increaseSpec(::g_crew_spec_type.EXPERT, obj)
   }
 
-  function onSpecIncrease2(obj)
-  {
+  function onSpecIncrease2(obj) {
     this.increaseSpec(::g_crew_spec_type.ACE, obj)
   }
 
-  function getSpecRowConfig(idx)
-  {
+  function getSpecRowConfig(idx) {
     let unit = this.units?[idx]
     if (!unit)
       return null
@@ -165,8 +155,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function getRowSpecButtonConfig(specType, crewLvl, unit, curSpecType)
-  {
+  function getRowSpecButtonConfig(specType, crewLvl, unit, curSpecType) {
     let icon = specType.getIcon(curSpecType.code, crewLvl, unit)
     return {
       id = specType.code
@@ -176,10 +165,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function updateDiscounts()
-  {
-    foreach(idx, unit in this.units)
-    {
+  function updateDiscounts() {
+    foreach (idx, unit in this.units) {
       let rowObj = this.scene.findObject(this.getRowName(idx))
       if (!checkObj(rowObj))
         return

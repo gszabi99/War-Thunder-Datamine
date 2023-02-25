@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -1553,6 +1553,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -1596,7 +1606,7 @@
     },
     "engine": {
       "horsePowers": 400.0,
-      "maxRPM": 2100.0,
+      "maxRPM": 2000.0,
       "minRPM": 600.0
     },
     "suspension": {
@@ -1619,9 +1629,9 @@
       "wheel_l_front": 0.222
     },
     "Mass": {
-      "Empty": 18200.0,
-      "Fuel": 500.0,
-      "TakeOff": 18700.0,
+      "Empty": 18000.0,
+      "Fuel": 400.0,
+      "TakeOff": 18400.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -1642,7 +1652,7 @@
     "mechanics": {
       "maxBrakeForce": 74800.0,
       "driveGearRadius": 0.27,
-      "mainGearRatio": 4.5751,
+      "mainGearRatio": 4.4,
       "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
@@ -1652,7 +1662,7 @@
           2.19,
           1.5,
           0.964,
-          0.73
+          0.722
         ]
       }
     },
@@ -1727,7 +1737,7 @@
             0.4,
             0.85
           ],
-          "thrust": 25000.0,
+          "thrust": 31000.0,
           "reverseMult": 0.35
         },
         {
@@ -1737,7 +1747,7 @@
             0.4,
             -0.85
           ],
-          "thrust": 25000.0,
+          "thrust": 31000.0,
           "reverseMult": 0.35
         }
       ]
@@ -2478,10 +2488,10 @@
     ]
   },
   "cockpit": {
-    "zoomOutFov": 22.0,
-    "zoomInFov": 18.5,
-    "sightFov": 11.0,
-    "sightName": "tshk_66",
+    "zoomOutFov": 21.1,
+    "zoomInFov": 10.5,
+    "sightFov": 10.0,
+    "sightName": "tsh2_22",
     "headPos": [
       0.0,
       4.0,

@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let pic = Picture($"ui/gameuiskin#throbber.svg:{fpx(44)}:{fpx(44)}:K")
-return kwarg(function mkSpinner(height=fpx(44), color=Color(0,0,0,0), duration=3){
+return kwarg(function mkSpinner(height = fpx(44), color = Color(0, 0, 0, 0), duration = 3) {
   return {
     rendObj = ROBJ_SOLID
     color = color

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,11 +6,15 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { get_meta_mission_info_by_name, get_meta_missions_info_by_campaigns,
+  add_custom_mission_list_full } = require("guiMission")
+let { set_game_mode, get_game_mode, get_game_type } = require("mission")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -17,8 +22,7 @@ const COOP_MAX_PLAYERS = 4
 ::enable_coop_in_SingleMissions <- false
 ::enable_custom_battles <- false
 
-global enum MIS_PROGRESS //value received from get_mission_progress
-{
+global enum MIS_PROGRESS { //value received from get_mission_progress
   COMPLETED_ARCADE    = 0
   COMPLETED_REALISTIC = 1
   COMPLETED_SIMULATOR = 2
@@ -33,30 +37,16 @@ let needCheckForVictory = Watched(false)
     "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
   ])
 
-::is_mission_complete <- function is_mission_complete(chapterName, missionName) //different by mp_modes
-{
+::is_mission_complete <- function is_mission_complete(chapterName, missionName) { //different by mp_modes
   let progress = ::get_mission_progress(chapterName + "/" + missionName)
   return progress >= 0 && progress < 3
 }
 
-::is_mission_unlocked <- function is_mission_unlocked(info)
-{
-  if (!(::get_game_type() & GT_COOPERATIVE))
-    return true
-
-  let name = info.getStr("name","")
-  let chapterName = info.getStr("chapter",::get_cur_game_mode_name())
-  let progress = ::get_mission_progress(chapterName + "/" + name)
-  return progress < 4 || ::is_debug_mode_enabled
-}
-
-::is_user_mission <- function is_user_mission(missionBlk)
-{
+::is_user_mission <- function is_user_mission(missionBlk) {
   return missionBlk?.userMission == true //can be null
 }
 
-::can_play_gamemode_by_squad <- function can_play_gamemode_by_squad(gm)
-{
+::can_play_gamemode_by_squad <- function can_play_gamemode_by_squad(gm) {
   if (!::g_squad_manager.isNotAloneOnline())
     return true
 
@@ -71,25 +61,21 @@ let needCheckForVictory = Watched(false)
 }
 
 //return 0 when no limits
-::get_max_players_for_gamemode <- function get_max_players_for_gamemode(gm)
-{
+::get_max_players_for_gamemode <- function get_max_players_for_gamemode(gm) {
   if (isInArray(gm, [GM_SINGLE_MISSION, GM_DYNAMIC, GM_BUILDER]))
     return COOP_MAX_PLAYERS
   return 0
 }
 
-::get_game_mode_loc_name <- function get_game_mode_loc_name(gm)
-{
+::get_game_mode_loc_name <- function get_game_mode_loc_name(gm) {
   return loc(format("multiplayer/%sMode", ::get_game_mode_name(gm)))
 }
 
-::is_skirmish_with_killstreaks <- function is_skirmish_with_killstreaks(misBlk)
-{
+::is_skirmish_with_killstreaks <- function is_skirmish_with_killstreaks(misBlk) {
   return misBlk.getBool("allowedKillStreaks", false);
 }
 
-::upgrade_url_mission <- function upgrade_url_mission(fullMissionBlk)
-{
+::upgrade_url_mission <- function upgrade_url_mission(fullMissionBlk) {
   let misBlk = fullMissionBlk?.mission_settings?.mission
   if (!fullMissionBlk || !misBlk)
     return
@@ -102,8 +88,7 @@ let needCheckForVictory = Watched(false)
       misBlk[unitType.missionSettingsAvailabilityFlag] = ::has_unittype_in_full_mission_blk(fullMissionBlk, unitType.esUnitType)
 }
 
-::get_mission_allowed_unittypes_mask <- function get_mission_allowed_unittypes_mask(misBlk, useKillStreaks = null)
-{
+::get_mission_allowed_unittypes_mask <- function get_mission_allowed_unittypes_mask(misBlk, useKillStreaks = null) {
   local res = 0
   foreach (unitType in unitTypes.types)
     if (unitType.isAvailable() && ::is_mission_for_unittype(misBlk, unitType.esUnitType, useKillStreaks))
@@ -111,8 +96,7 @@ let needCheckForVictory = Watched(false)
   return res
 }
 
-::is_mission_for_unittype <- function is_mission_for_unittype(misBlk, esUnitType, useKillStreaks = null)
-{
+::is_mission_for_unittype <- function is_mission_for_unittype(misBlk, esUnitType, useKillStreaks = null) {
   let unitType = unitTypes.getByEsUnitType(esUnitType)
 
   // Works for missions in Skirmish.
@@ -129,20 +113,17 @@ let needCheckForVictory = Watched(false)
   return ::has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
 }
 
-::has_unittype_in_full_mission_blk <- function has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
-{
+::has_unittype_in_full_mission_blk <- function has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType) {
   // Searching by units of Single missions
   let unitsBlk = fullMissionBlk?.units
   let playerBlk = fullMissionBlk && get_blk_value_by_path(fullMissionBlk, "mission_settings/player")
   let wings = playerBlk ? (playerBlk % "wing") : []
   let unitsCache = {}
   if (unitsBlk && wings.len())
-    for (local i = 0; i < unitsBlk.blockCount(); i++)
-    {
+    for (local i = 0; i < unitsBlk.blockCount(); i++) {
       let block = unitsBlk.getBlock(i)
       if (block && isInArray(block?.name, wings))
-        if (block?.unit_class)
-        {
+        if (block?.unit_class) {
           if (!(block.unit_class in unitsCache))
             unitsCache[block.unit_class] <- ::get_es_unit_type(::findUnitNoCase(block.unit_class))
           if (unitsCache[block.unit_class] == esUnitType)
@@ -154,8 +135,7 @@ let needCheckForVictory = Watched(false)
   let tag = unitTypes.getByEsUnitType(esUnitType).tag
   let triggersBlk = fullMissionBlk?.triggers
   if (triggersBlk)
-    for (local i = 0; i < triggersBlk.blockCount(); i++)
-    {
+    for (local i = 0; i < triggersBlk.blockCount(); i++) {
       let actionsBlk = triggersBlk.getBlock(i)?.getBlockByName("actions")
       let respawnPointsList = actionsBlk ? (actionsBlk % "missionMarkAsRespawnPoint") : []
       foreach (pointBlk in respawnPointsList)
@@ -166,20 +146,17 @@ let needCheckForVictory = Watched(false)
   return false
 }
 
-::select_next_avail_campaign_mission <- function select_next_avail_campaign_mission(chapterName, missionName)
-{
-  if (::get_game_mode() != GM_CAMPAIGN)
+::select_next_avail_campaign_mission <- function select_next_avail_campaign_mission(chapterName, missionName) {
+  if (get_game_mode() != GM_CAMPAIGN)
     return
 
   let callback = function(misList) {
     local isCurFound = false
-    foreach(mission in misList)
-    {
+    foreach (mission in misList) {
       if (mission?.isHeader || !mission?.isUnlocked)
         continue
 
-      if (!isCurFound)
-      {
+      if (!isCurFound) {
         if (mission?.id == missionName && mission?.chapter == chapterName)
           isCurFound = true
         continue
@@ -193,127 +170,108 @@ let needCheckForVictory = Watched(false)
  ::g_mislist_type.BASE.requestMissionsList(true, callback)
 }
 
-::buildRewardText <- function buildRewardText(name, reward, highlighted=false, _coloredIcon=false, additionalReward = false)
-{
+::buildRewardText <- function buildRewardText(name, reward, highlighted = false, _coloredIcon = false, additionalReward = false) {
   local rewText = reward.tostring()
-  if (rewText != "")
-  {
+  if (rewText != "") {
     if (highlighted)
-      rewText = format("<color=@highlightedTextColor>%s</color>", (additionalReward? ("+(" + rewText + ")") : rewText))
-    rewText = name + ((name != "")? loc("ui/colon"): "") + rewText
+      rewText = format("<color=@highlightedTextColor>%s</color>", (additionalReward ? ("+(" + rewText + ")") : rewText))
+    rewText = name + ((name != "") ? loc("ui/colon") : "") + rewText
   }
   return rewText
 }
 
-::add_mission_list_full <- function add_mission_list_full(gm_builder, add, dynlist)
-{
-  ::add_custom_mission_list_full(gm_builder, add, dynlist)
+::add_mission_list_full <- function add_mission_list_full(gm_builder, add, dynlist) {
+  add_custom_mission_list_full(gm_builder, add, dynlist)
   ::game_mode_maps.clear()
 }
 
-::get_mission_meta_info <- function get_mission_meta_info(missionName)
-{
+::get_mission_meta_info <- function get_mission_meta_info(missionName) {
   let urlMission = ::g_url_missions.findMissionByName(missionName)
   if (urlMission != null)
     return urlMission.getMetaInfo()
 
-  return ::get_meta_mission_info_by_name(missionName)
+  return get_meta_mission_info_by_name(missionName)
 }
 
-::gui_start_campaign <- function gui_start_campaign(checkPack = true)
-{
+::gui_start_campaign <- function gui_start_campaign(checkPack = true) {
   if (checkPack)
     return ::check_package_and_ask_download("hc_pacific", null, ::gui_start_campaign_no_pack, null, "campaign")
 
   ::gui_start_mislist(true, GM_CAMPAIGN)
 
-  if (needCheckForVictory.value && ! ::is_system_ui_active())
-  {
+  if (needCheckForVictory.value && ! ::is_system_ui_active()) {
     needCheckForVictory(false)
     ::play_movie("video/victory", false, true, true)
   }
 }
 
-::gui_start_campaign_no_pack <- function gui_start_campaign_no_pack()
-{
+::gui_start_campaign_no_pack <- function gui_start_campaign_no_pack() {
   ::gui_start_campaign(false)
 }
 
-::gui_start_menuCampaign <- function gui_start_menuCampaign()
-{
+::gui_start_menuCampaign <- function gui_start_menuCampaign() {
   ::gui_start_mainmenu()
   ::gui_start_campaign()
 }
 
-::gui_start_singleMissions <- function gui_start_singleMissions()
-{
+::gui_start_singleMissions <- function gui_start_singleMissions() {
   ::gui_start_mislist(true, GM_SINGLE_MISSION)
 }
 
-::gui_start_menuSingleMissions <- function gui_start_menuSingleMissions()
-{
+::gui_start_menuSingleMissions <- function gui_start_menuSingleMissions() {
   ::gui_start_mainmenu()
   ::gui_start_singleMissions()
 }
 
-::gui_start_userMissions <- function gui_start_userMissions()
-{
+::gui_start_userMissions <- function gui_start_userMissions() {
   ::gui_start_mislist(true, GM_SINGLE_MISSION, { misListType = ::g_mislist_type.UGM })
 }
 
-::gui_start_menuUserMissions <- function gui_start_menuUserMissions()
-{
+::gui_start_menuUserMissions <- function gui_start_menuUserMissions() {
   ::gui_start_mainmenu()
   ::gui_start_userMissions()
 }
 
-::gui_create_skirmish <- function gui_create_skirmish()
-{
+::gui_create_skirmish <- function gui_create_skirmish() {
   ::gui_start_mislist(true, GM_SKIRMISH)
 }
 
-::is_any_campaign_available <- function is_any_campaign_available()
-{
-  let mbc = ::get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
-  foreach(item in mbc)
+::is_any_campaign_available <- function is_any_campaign_available() {
+  let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
+  foreach (item in mbc)
     if (::has_entitlement(item.name) || hasFeature(item.name))
       return true
   return false
 }
 
-::get_not_purchased_campaigns <- function get_not_purchased_campaigns()
-{
+::get_not_purchased_campaigns <- function get_not_purchased_campaigns() {
   let res = []
-  let mbc = ::get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
-  foreach(item in mbc)
+  let mbc = get_meta_missions_info_by_campaigns(GM_CAMPAIGN)
+  foreach (item in mbc)
     if (!::has_entitlement(item.name) && !hasFeature(item.name))
       res.append(item.name)
   return res
 }
 
-::purchase_any_campaign <- function purchase_any_campaign()
-{
+::purchase_any_campaign <- function purchase_any_campaign() {
   ::OnlineShopModel.openBrowserForFirstFoundEntitlement(::get_not_purchased_campaigns())
 }
 
-::gui_start_singleplayer_from_coop <- function gui_start_singleplayer_from_coop()
-{
-  ::select_game_mode(GM_SINGLE_MISSION);
+::gui_start_singleplayer_from_coop <- function gui_start_singleplayer_from_coop() {
+  set_game_mode(GM_SINGLE_MISSION);
   ::gui_start_missions();
 }
 
-::gui_start_mislist <- function gui_start_mislist(isModal=false, setGameMode=null, addParams = {})
-{
-  let hClass = isModal? ::gui_handlers.SingleMissionsModal : ::gui_handlers.SingleMissions
+::gui_start_mislist <- function gui_start_mislist(isModal = false, setGameMode = null, addParams = {}) {
+  let hClass = isModal ? ::gui_handlers.SingleMissionsModal : ::gui_handlers.SingleMissions
   let params = {
-    return_func = isModal? ::gui_start_mislist : ::handlersManager.getLastBaseHandlerStartFunc()
+    return_func = isModal ? ::gui_start_mislist : ::handlersManager.getLastBaseHandlerStartFunc()
   }
-  foreach(key, value in addParams)
+  foreach (key, value in addParams)
     params[key] <- value
 
-  local gm = ::get_game_mode()
-  if (setGameMode!=null)
-  {
+  local gm = get_game_mode()
+  if (setGameMode != null) {
     params.wndGameMode <- setGameMode
     gm = setGameMode
   }
@@ -321,13 +279,12 @@ let needCheckForVictory = Watched(false)
   params.canSwitchMisListType <- gm == GM_SKIRMISH
 
   let showAllCampaigns = gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION
-  ::current_campaign_id = showAllCampaigns? null : ::get_game_mode_name(gm)
+  ::current_campaign_id = showAllCampaigns ? null : ::get_game_mode_name(gm)
   params.showAllCampaigns <- showAllCampaigns
 
-  if (!isModal)
-  {
+  if (!isModal) {
     params.backSceneFunc = ::gui_start_mainmenu
-    if (::SessionLobby.isInRoom() && (::get_game_mode() == GM_DYNAMIC))
+    if (::SessionLobby.isInRoom() && (get_game_mode() == GM_DYNAMIC))
       params.backSceneFunc = ::gui_start_dynamic_summary
   }
 
@@ -336,33 +293,28 @@ let needCheckForVictory = Watched(false)
     ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mislist)
 }
 
-::gui_start_benchmark <- function gui_start_benchmark()
-{
-  if (isPlatformSony)
-  {
+::gui_start_benchmark <- function gui_start_benchmark() {
+  if (isPlatformSony) {
     ::ps4_vsync_enabled = ::d3d_get_vsync_enabled()
     ::d3d_enable_vsync(false)
   }
   ::gui_start_mislist(true, GM_BENCHMARK)
 }
 
-::gui_start_tutorial <- function gui_start_tutorial()
-{
+::gui_start_tutorial <- function gui_start_tutorial() {
   ::gui_start_mislist(true, GM_TRAINING)
 }
 
 ::is_custom_battles_enabled <- function is_custom_battles_enabled() { return ::enable_custom_battles }
 
-::init_coop_flags <- function init_coop_flags()
-{
+::init_coop_flags <- function init_coop_flags() {
   ::enable_coop_in_QMB            = hasFeature(isPlatformSony ? "QmbCoopPs4"            : "QmbCoopPc")
   ::enable_coop_in_SingleMissions = hasFeature(isPlatformSony ? "SingleMissionsCoopPs4" : "SingleMissionsCoopPc")
   ::enable_custom_battles         = hasFeature(isPlatformSony ? "CustomBattlesPs4"      : "CustomBattlesPc")
   ::broadcastEvent("GameModesAvailability")
 }
 
-::get_mission_name <- function get_mission_name(missionId, config, locNameKey = "locName")
-{
+::get_mission_name <- function get_mission_name(missionId, config, locNameKey = "locName") {
   let locNameValue = getTblValue(locNameKey, config, null)
   if (locNameValue && locNameValue.len())
     return getMissionLocName(config, locNameKey)
@@ -370,9 +322,8 @@ let needCheckForVictory = Watched(false)
   return loc("missions/" + missionId)
 }
 
-::loc_current_mission_name <- function loc_current_mission_name(needComment = true)
-{
-  let misBlk = ::DataBlock()
+::loc_current_mission_name <- function loc_current_mission_name(needComment = true) {
+  let misBlk = DataBlock()
   ::get_current_mission_desc(misBlk)
   let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
   let locNameByTeamParamName = $"locNameTeam{teamId}"
@@ -386,8 +337,7 @@ let needCheckForVictory = Watched(false)
     ret = loc("missions/" + misBlk.loc_name, "")
   if (ret == "")
     ret = ::get_combine_loc_name_mission(misBlk)
-  if (needComment && (::get_game_type() & GT_VERSUS))
-  {
+  if (needComment && (get_game_type() & GT_VERSUS)) {
     if (misBlk?.maxRespawns == 1)
       ret = ret + " " + loc("template/noRespawns")
     else if ((misBlk?.maxRespawns ?? 1) > 1)
@@ -397,8 +347,7 @@ let needCheckForVictory = Watched(false)
   return ret
 }
 
-::get_combine_loc_name_mission <- function get_combine_loc_name_mission(missionInfo)
-{
+::get_combine_loc_name_mission <- function get_combine_loc_name_mission(missionInfo) {
   let misInfoName = missionInfo?.name ?? ""
   local locName = ""
   if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
@@ -408,11 +357,9 @@ let needCheckForVictory = Watched(false)
   else
     locName = loc("missions/" + misInfoName, "")
 
-  if (locName == "")
-  {
+  if (locName == "") {
     let misInfoPostfix = missionInfo?.postfix ?? ""
-    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix))
-    {
+    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
       let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
       locName = "[" + loc("missions/" + misInfoPostfix) + "] " + loc("missions/" + name)
     }
@@ -424,9 +371,8 @@ let needCheckForVictory = Watched(false)
   return locName
 }
 
-::loc_current_mission_desc <- function loc_current_mission_desc()
-{
-  let misBlk = ::DataBlock()
+::loc_current_mission_desc <- function loc_current_mission_desc() {
+  let misBlk = DataBlock()
   ::get_current_mission_desc(misBlk)
   let teamId = ::g_team.getTeamByCode(::get_player_army_for_hud()).id
   let locDecsByTeamParamName = $"locDescTeam{teamId}"
@@ -436,20 +382,18 @@ let needCheckForVictory = Watched(false)
     locDesc = getMissionLocName(misBlk, locDecsByTeamParamName)
   else if ((misBlk?.locDesc.len() ?? 0) > 0)
     locDesc = getMissionLocName(misBlk, "locDesc")
-  else
-  {
+  else {
     local missionLocName = misBlk.name
     if ("loc_name" in misBlk && misBlk.loc_name != "")
       missionLocName = misBlk.loc_name
     locDesc = loc("missions/" + missionLocName + "/desc", "")
   }
-  if (::get_game_type() & GT_VERSUS)
-  {
-    if (misBlk.maxRespawns == 1)
-    {
-      if (::get_game_mode()!=GM_DOMINATION)
+  if (get_game_type() & GT_VERSUS) {
+    if (misBlk.maxRespawns == 1) {
+      if (get_game_mode() != GM_DOMINATION)
         locDesc = locDesc + "\n\n" + loc("template/noRespawns/desc")
-    } else if ((misBlk.maxRespawns != null) && (misBlk.maxRespawns > 1))
+    }
+    else if ((misBlk.maxRespawns != null) && (misBlk.maxRespawns > 1))
       locDesc = locDesc + "\n\n" + loc("template/limitedRespawns/desc")
   }
   return locDesc

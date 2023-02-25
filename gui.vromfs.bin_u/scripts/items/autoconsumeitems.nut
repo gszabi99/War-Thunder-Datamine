@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -23,10 +24,9 @@ autoConsumeItems = function() {
     autoConsumeItems()
   }
 
-  foreach(item in ::ItemsManager.getInventoryList())
+  foreach (item in ::ItemsManager.getInventoryList())
     if (item.shouldAutoConsume && !(item.id in failedAutoConsumeItems)
-      && item.consume(onConsumeFinish, {}))
-    {
+      && item.consume(onConsumeFinish, {})) {
       isAutoConsumeInProgress = true
       break
     }

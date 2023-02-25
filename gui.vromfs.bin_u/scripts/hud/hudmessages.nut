@@ -1,4 +1,6 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "hudMessages" import *
 
 //checked for explicitness
 #no-root-fallback
@@ -6,11 +8,12 @@ from "%scripts/dagui_library.nut" import *
 
 let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
   MISSION_TEAM_LEAD_ZONE
-} = require_native("guiMission")
+} = require("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { get_game_mode, get_game_type } = require("mission")
 
 local heightPID = ::dagui_propid.add_name_id("height")
 
@@ -31,8 +34,7 @@ local heightPID = ::dagui_propid.add_name_id("height")
   guiScene = null
   timers = null
 
-  setScene = function(inScene, inTimers)
-  {
+  setScene = function(inScene, inTimers) {
     this.scene = inScene
     this.guiScene = this.scene.getScene()
     this.timers = inTimers
@@ -41,8 +43,7 @@ local heightPID = ::dagui_propid.add_name_id("height")
   reinit  = @(inScene, inTimers) this.setScene(inScene, inTimers)
   clearStack    = @() this.stack.clear()
   onMessage     = function() {}
-  removeMessage = function(inMessage)
-  {
+  removeMessage = function(inMessage) {
     foreach (idx, message in this.stack)
       if (inMessage == message)
         return this.stack.remove(idx)
@@ -52,25 +53,22 @@ local heightPID = ::dagui_propid.add_name_id("height")
     return ::u.search(this.stack, (@(id) function(m) { return getTblValue("id", m.messageData, -1) == id })(id))
   }
 
-  subscribeHudEvents = function()
-  {
+  subscribeHudEvents = function() {
     ::g_hud_event_manager.subscribe(this.messageEvent, this.onMessage, this)
     if (this.hudEvents)
-      foreach(name, func in this.hudEvents)
+      foreach (name, func in this.hudEvents)
         ::g_hud_event_manager.subscribe(name, func, this)
   }
 
   getCleanUpId = @(_total) 0
 
-  cleanUp = function()
-  {
+  cleanUp = function() {
     if (this.stack.len() < this.messagesMax)
       return
 
     let lastId = this.getCleanUpId(this.stack.len())
     let obj = this.stack[lastId].obj
-    if (checkObj(obj))
-    {
+    if (checkObj(obj)) {
       if (obj.isVisible())
         this.stack[lastId].obj.remove = "yes"
       else
@@ -91,8 +89,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     getCleanUpId = @(total) total - 1
 
-    onMessage = function(messageData)
-    {
+    onMessage = function(messageData) {
       if (messageData.type != HUD_MSG_OBJECTIVE)
         return
 
@@ -103,13 +100,11 @@ enums.addTypesByGlobalName("g_hud_messages", {
         this.createMessage(messageData)
     }
 
-    getMsgObjId = function(messageData)
-    {
+    getMsgObjId = function(messageData) {
       return "main_msg_" + messageData.id
     }
 
-    createMessage = function(messageData)
-    {
+    createMessage = function(messageData) {
       if (!getTblValue("show", messageData, true))
         return
 
@@ -122,8 +117,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }
       this.stack.insert(0, mainMessage)
 
-      if (!checkObj(this.nest))
-      {
+      if (!checkObj(this.nest)) {
         this.stack[0].needShowAfterReinit <- true
         return
       }
@@ -137,8 +131,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.guiScene.prependWithBlk(this.nest, blk, this)
       mainMessage.obj = this.nest.getChild(0)
 
-      if (this.nest.isVisible())
-      {
+      if (this.nest.isVisible()) {
         mainMessage.obj["height-end"] = mainMessage.obj.getSize()[1]
         mainMessage.obj.setIntProp(heightPID, 0)
         mainMessage.obj.slideDown = "yes"
@@ -149,17 +142,14 @@ enums.addTypesByGlobalName("g_hud_messages", {
         this.setDestroyTimer(mainMessage)
     }
 
-    updateMessage = function(message, messageData)
-    {
-      if (!getTblValue("show", messageData, true))
-      {
+    updateMessage = function(message, messageData) {
+      if (!getTblValue("show", messageData, true)) {
         this.animatedRemoveMessage(message)
         return
       }
 
       let msgObj = message.obj
-      if (!checkObj(msgObj))
-      {
+      if (!checkObj(msgObj)) {
         this.removeMessage(message)
         this.createMessage(messageData)
         return
@@ -169,8 +159,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       message.needShowAfterReinit <- false
       msgObj.findObject("text").setValue(messageData.text)
       msgObj.state = "old"
-      if (getTblValue("alwaysShow", message.messageData, false))
-      {
+      if (getTblValue("alwaysShow", message.messageData, false)) {
         if (message.timer)
           message.timer.destroy()
       }
@@ -178,28 +167,24 @@ enums.addTypesByGlobalName("g_hud_messages", {
         this.setDestroyTimer(message)
     }
 
-    showNest = function(show)
-    {
+    showNest = function(show) {
       if (checkObj(this.nest))
         this.nest.show(show)
     }
 
-    setDestroyTimer = function(message)
-    {
+    setDestroyTimer = function(message) {
       message.timer = this.timers.addTimer(this.showSec,
         (@() this.animatedRemoveMessage(message)).bindenv(this)).weakref()
     }
 
-    animatedRemoveMessage = function(message)
-    {
+    animatedRemoveMessage = function(message) {
       this.removeMessage(message)
       this.onNotificationRemoved(message.obj)
       if (checkObj(message.obj))
         message.obj.remove = "yes"
     }
 
-    onNotificationRemoved = function(_obj)
-    {
+    onNotificationRemoved = function(_obj) {
       if (this.stack.len() || !checkObj(this.nest))
         return
 
@@ -209,13 +194,11 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }.bindenv(this))
     }
 
-    reinit = function (inScene, inTimers)
-    {
+    reinit = function (inScene, inTimers) {
       this.setScene(inScene, inTimers)
       if (!checkObj(this.nest))
         return
-      foreach (message in this.stack)
-      {
+      foreach (message in this.stack) {
         if (message.needShowAfterReinit)
           this.updateMessage(message, message.messageData)
       }
@@ -228,8 +211,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     messagesMax = 3
     messageEvent = "HudMessage"
 
-    onMessage = function (messageData)
-    {
+    onMessage = function (messageData) {
       if (messageData.type != HUD_MSG_DAMAGE && messageData.type != HUD_MSG_EVENT)
         return
       if (!checkObj(this.nest))
@@ -243,8 +225,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         this.addMessage(messageData)
     }
 
-    addMessage = function (messageData)
-    {
+    addMessage = function (messageData) {
       this.cleanUp()
       let message = {
         timer = null
@@ -259,8 +240,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (this.nest.isVisible())
-      {
+      if (this.nest.isVisible()) {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.slideDown = "yes"
@@ -274,8 +254,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }.bindenv(this)).weakref()
     }
 
-    refreshMessage = function (messageData, message)
-    {
+    refreshMessage = function (messageData, message) {
       let updateText = message.messageData.text != messageData.text
       message.messageData = messageData
       if (message.timer)
@@ -291,8 +270,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     showSec = 11
     messageEvent = "HudMessage"
 
-    reinit = function (inScene, inTimers)
-    {
+    reinit = function (inScene, inTimers) {
       this.setScene(inScene, inTimers)
       if (!checkObj(this.nest))
         return
@@ -307,15 +285,13 @@ enums.addTypesByGlobalName("g_hud_messages", {
           this.addMessage(killLogMessage.messageData, killLogMessage.timestamp)
     }
 
-    clearStack = function ()
-    {
+    clearStack = function () {
       if (!checkObj(this.nest))
         return
       this.nest.deleteChildren()
     }
 
-    onMessage = function (messageData)
-    {
+    onMessage = function (messageData) {
       if (messageData.type != HUD_MSG_MULTIPLAYER_DMG
         && messageData.type != HUD_MSG_ENEMY_DAMAGE
         && messageData.type != HUD_MSG_ENEMY_CRITICAL_DAMAGE
@@ -331,8 +307,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.addMessage(messageData)
     }
 
-    addMessage = function (messageData, timestamp = null)
-    {
+    addMessage = function (messageData, timestamp = null) {
       this.cleanUp()
       let message = {
         timer = null
@@ -369,8 +344,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (this.nest.isVisible() && !timestamp && checkObj(message.obj))
-      {
+      if (this.nest.isVisible() && !timestamp && checkObj(message.obj)) {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.appear = "yes"
@@ -387,8 +361,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     getCleanUpId = @(total) total - 1
 
-    onMessage = function (eventData)
-    {
+    onMessage = function (eventData) {
       if (eventData.isHeroAction
         && eventData.eventId != MISSION_CAPTURED_ZONE
         && eventData.eventId != MISSION_TEAM_LEAD_ZONE)
@@ -398,8 +371,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.addNotification(eventData)
     }
 
-    addNotification = function (eventData)
-    {
+    addNotification = function (eventData) {
       if (!checkObj(::g_hud_messages.ZONE_CAPTURE.nest))
         return
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.CAPTURE_ZONE_INFO))
@@ -417,8 +389,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.setTimer(message)
     }
 
-    createMessage = function (eventData)
-    {
+    createMessage = function (eventData) {
       let message = {
         obj         = null
         messageData = eventData
@@ -428,8 +399,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       return this.stack[0]
     }
 
-    setTimer = function (message)
-    {
+    setTimer = function (message) {
       if (message.timer)
         this.timers.setTimerTime(message.timer, this.showSec)
       else
@@ -441,15 +411,13 @@ enums.addTypesByGlobalName("g_hud_messages", {
           }.bindenv(this)).weakref()
     }
 
-    function createSceneObjectForMessage(view, message)
-    {
+    function createSceneObjectForMessage(view, message) {
       let blk = ::handyman.renderCached("%gui/hud/messageStack/zoneCaptureNotification.tpl", view)
       this.guiScene.prependWithBlk(this.nest, blk, this)
       message.obj = this.nest.getChild(0)
     }
 
-    function setAnimationStartValues(message)
-    {
+    function setAnimationStartValues(message) {
       if (!this.nest.isVisible() || !checkObj(message.obj))
         return
 
@@ -477,15 +445,13 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     _animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
 
-    reinit = function (inScene, inTimers)
-    {
+    reinit = function (inScene, inTimers) {
       this.setScene(inScene, inTimers)
       this.timers.removeTimer(this.rewardClearTimer)
       this.clearRewardMessage()
     }
 
-    onMessage = function (messageData)
-    {
+    onMessage = function (messageData) {
       if (!checkObj(::g_hud_messages.REWARDS.nest))
         return
       if (!::get_gui_option_in_mode(::USEROPT_HUD_VISIBLE_REWARDS_MSG, ::OPTIONS_MODE_GAMEPLAY, true))
@@ -496,8 +462,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.rewardXp += messageData.experience
 
       let newPriority = ::g_hud_reward_message.getMessageByCode(messageData.messageCode).priority
-      if (newPriority >= this.curRewardPriority)
-      {
+      if (newPriority >= this.curRewardPriority) {
         this.curRewardPriority = newPriority
         this.showNewRewardMessage(messageData)
       }
@@ -510,8 +475,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         this.rewardClearTimer = this.timers.addTimer(this.showSec, this.clearRewardMessage.bindenv(this)).weakref()
     }
 
-    showNewRewardMessage = function (newRewardMessage)
-    {
+    showNewRewardMessage = function (newRewardMessage) {
       let messageObj = ::showBtn("reward_message", true, this.nest)
       let textObj = messageObj.findObject("reward_message_text")
       let rewardType = ::g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
@@ -524,8 +488,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     roundRewardValue = @(val) val > 10 ? (val.tointeger() / 10 * 10) : val.tointeger()
 
-    updateRewardValue = function (isSeries)
-    {
+    updateRewardValue = function (isSeries) {
       let reward = ::Cost(this.roundRewardValue(this.rewardWp), 0, this.roundRewardValue(this.rewardXp))
       this.nest.findObject("reward_message").setFloatProp(this._animTimerPid, 0.0)
       this.nest.findObject("reward_total").setValue(reward.getUncoloredText())
@@ -534,10 +497,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
         this.nest.findObject("reward_value_container")._blink = "yes"
     }
 
-    clearRewardMessage = function ()
-    {
-      if (checkObj(this.nest))
-      {
+    clearRewardMessage = function () {
+      if (checkObj(this.nest)) {
         ::showBtn("reward_message", false, this.nest)
         this.nest.findObject("reward_message_text").setValue("")
         this.nest.findObject("reward_message_text").view_class = ""
@@ -557,20 +518,17 @@ enums.addTypesByGlobalName("g_hud_messages", {
     eventName = "RaceSegmentUpdate"
     messageEvent = "RaceSegmentUpdate"
 
-    onMessage = function (eventData)
-    {
-      if (!checkObj(this.nest) || !(::get_game_type() & GT_RACE))
+    onMessage = function (eventData) {
+      if (!checkObj(this.nest) || !(get_game_type() & GT_RACE))
         return
 
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
         return
 
       let statusObj = this.nest.findObject("race_status")
-      if (checkObj(statusObj))
-      {
+      if (checkObj(statusObj)) {
         local text = loc("HUD_RACE_FINISH")
-        if (!eventData.isRaceFinishedByPlayer)
-        {
+        if (!eventData.isRaceFinishedByPlayer) {
           text = loc("HUD_RACE_CHECKPOINT") + " "
           text += eventData.passedCheckpointsInLap + loc("ui/slash")
           text += eventData.checkpointsPerLap + "  "
@@ -582,8 +540,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
       let playerTime = getTblValue("time", getTblValue("player", eventData, {}), 0.0)
 
-      foreach (blockName in ["beforePlayer", "leader", "afterPlayer", "player"])
-      {
+      foreach (blockName in ["beforePlayer", "leader", "afterPlayer", "player"]) {
         let textBlockObj = this.nest.findObject(blockName)
         if (!checkObj(textBlockObj))
           continue
@@ -591,26 +548,21 @@ enums.addTypesByGlobalName("g_hud_messages", {
         let data = getTblValue(blockName, eventData)
         let showBlock = data != null
         textBlockObj.show(showBlock)
-        if (showBlock)
-        {
-          foreach (param, value in data)
-          {
+        if (showBlock) {
+          foreach (param, value in data) {
             if (param == "isPlayer")
-              textBlockObj.isPlayer = value? "yes" : "no"
-            else
-            {
+              textBlockObj.isPlayer = value ? "yes" : "no"
+            else {
               let textObj = textBlockObj.findObject(param)
               if (!checkObj(textObj))
                 continue
 
               local text = value
-              if (param == "time")
-              {
+              if (param == "time") {
                 local prefix = ""
                 let isPlayerBlock = blockName != "player"
                 local adjustedTime = value
-                if (isPlayerBlock)
-                {
+                if (isPlayerBlock) {
                   adjustedTime -= playerTime
                   if (adjustedTime > 0)
                     prefix = loc("keysPlus")
@@ -618,7 +570,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
                 text = prefix + time.preciseSecondsToString(adjustedTime, isPlayerBlock)
               }
               else if (param == "place")
-                text = value > 0? value.tostring() : ""
+                text = value > 0 ? value.tostring() : ""
               else if (param == "name")
                 text = getPlayerName(text)
 
@@ -636,9 +588,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
     showSec = 6
     messagesMax = 1
 
-    onMessage = function (messageData)
-    {
-      if (!checkObj(this.nest) || !(::get_game_type() & GT_RACE))
+    onMessage = function (messageData) {
+      if (!checkObj(this.nest) || !(get_game_type() & GT_RACE))
         return
 
       if (!::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.RACE_INFO))
@@ -655,8 +606,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         nestObj.findObject(objName)["wink"] = animationValue
     }
 
-    addMessage = function (messageData)
-    {
+    addMessage = function (messageData) {
       this.cleanUp()
       let message = {
         timer = null
@@ -672,8 +622,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (this.nest.isVisible())
-      {
+      if (this.nest.isVisible()) {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.slideDown = "yes"
@@ -704,10 +653,9 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     clearStack = function () { this.stack = {} }
 
-    onMessage = function (eventData)
-    {
+    onMessage = function (eventData) {
       if (!checkObj(this.nest)
-          || ::get_game_mode() == GM_TEST_FLIGHT)
+          || get_game_mode() == GM_TEST_FLIGHT)
         return
 
       let oldResultIdx = getTblValue("resultIdx", this.stack, GO_NONE)
@@ -730,7 +678,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       let resultLocId = this.getMissionResultLocId(resultIdx, checkResending, noLives)
       local text = loc(resultLocId)
       if (place >= 0 && total >= 0)
-        text += "\n" + loc("HUD_RACE_PLACE", {place = place, total = total})
+        text += "\n" + loc("HUD_RACE_PLACE", { place = place, total = total })
 
       this.stack = {
         text = text
@@ -746,20 +694,17 @@ enums.addTypesByGlobalName("g_hud_messages", {
         return
       objTarget.show(true)
 
-      if (this.stack.useMoveOut && this.nest.isVisible()) //no need animation when scene invisible
-      {
+      if (this.stack.useMoveOut && this.nest.isVisible()) { //no need animation when scene invisible
         let objStart = this.scene.findObject("mission_result_box_start")
         ::create_ObjMoveToOBj(this.scene, objStart, objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
       }
     }
 
-    getMissionResultLocId = function (resultNum, _checkResending, noLives)
-    {
+    getMissionResultLocId = function (resultNum, _checkResending, noLives) {
       if (noLives)
         return "MF_NoAttempts"
 
-      switch(resultNum)
-      {
+      switch (resultNum) {
         case GO_NONE:
           return ""
         case GO_WIN:
@@ -776,8 +721,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       return ""
     }
 
-    destroy = function()
-    {
+    destroy = function() {
       if (!checkObj(this.nest))
         return
       let msgObj = this.nest.findObject("mission_result_box")
@@ -800,8 +744,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       HudMessageHide = @(_ed) this.destroy()
     }
 
-    onMessage = function (messageData)
-    {
+    onMessage = function (messageData) {
       if (messageData.type != HUD_MSG_UNDER_RADAR && messageData.type != HUD_MSG_DEATH_REASON)
         return
       if (!checkObj(this.nest))
@@ -814,8 +757,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         this.addMessage(messageData)
     }
 
-    addMessage = function (messageData, timestamp = null, needAnimations = true)
-    {
+    addMessage = function (messageData, timestamp = null, needAnimations = true) {
       this.cleanUp()
       let message = {
         timer = null
@@ -831,8 +773,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
-      if (this.nest.isVisible() && needAnimations)
-      {
+      if (this.nest.isVisible() && needAnimations) {
         message.obj["height-end"] = message.obj.getSize()[1]
         message.obj.setIntProp(heightPID, 0)
         message.obj.slideDown = "yes"
@@ -850,8 +791,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       }.bindenv(this)).weakref()
     }
 
-    refreshMessage = function (messageData, message)
-    {
+    refreshMessage = function (messageData, message) {
       let shouldUpdateText = message.messageData.text != messageData.text
       message.messageData = messageData
       if (message.timer)
@@ -869,8 +809,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       this.nest.deleteChildren()
     }
 
-    reinit = function (inScene, inTimers)
-    {
+    reinit = function (inScene, inTimers) {
       this.setScene(inScene, inTimers)
       if (!checkObj(this.nest))
         return
@@ -886,7 +825,6 @@ enums.addTypesByGlobalName("g_hud_messages", {
     }
   }
 },
-function()
-{
+function() {
   this.stack = []
 })

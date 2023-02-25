@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -26,8 +27,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   itemsPerPageWithPaginator = 0
   itemsPerPageWithoutPaginator = 0
 
-  function initScreen()
-  {
+  function initScreen() {
     this.itemsPerPageWithPaginator = this.getArmiesPerPage()
     this.itemsPerPageWithoutPaginator = this.getArmiesPerPage(true)
 
@@ -37,22 +37,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       tabListObj.setValue(0)
   }
 
-  function fillContent()
-  {
+  function fillContent() {
     let contentObj = this.scene.findObject("armies_tab_content")
     if (!checkObj(contentObj))
       return
 
     let emptyViewData = ::g_ww_map_armies_status_tab_type.UNKNOWN.getEmptyContentViewData()
-    for(local i = 0; i < this.itemsPerPageWithoutPaginator; i++)
+    for (local i = 0; i < this.itemsPerPageWithoutPaginator; i++)
       emptyViewData.army.append({})
 
     let markUpData = ::handyman.renderCached(this.contentBlockTplName, emptyViewData)
     this.guiScene.replaceContentFromText(contentObj, markUpData, markUpData.len(), this)
   }
 
-  function getArmiesPerPage(withoutPaginator = false)
-  {
+  function getArmiesPerPage(withoutPaginator = false) {
     let contentObj = this.scene.findObject("armies_tab_content")
     if (!checkObj(contentObj))
       return 0
@@ -60,8 +58,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let armiesContentSize = contentObj.getSize()
     let armyIconSize = this.guiScene.calcString("1@wwArmyIco", contentObj)
     local contentHeight = armiesContentSize[1]
-    if (withoutPaginator)
-    {
+    if (withoutPaginator) {
       let paginatorNestObj = this.scene.findObject("paginator_nest_obj")
       contentHeight += paginatorNestObj.getSize()[1]
     }
@@ -69,28 +66,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
                  * (contentHeight / armyIconSize).tointeger()
   }
 
-  function getSceneTplContainerObj()
-  {
+  function getSceneTplContainerObj() {
     return this.scene
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return { armiesByState = this.getArmiesStateTabs() }
   }
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.scene) && checkObj(this.scene.findObject("armies_object"))
   }
 
-  function getArmiesStateTabs()
-  {
+  function getArmiesStateTabs() {
     return ::u.map(this.tabOrder, function(tab) { return tab.getTitleViewData() })
   }
 
-  function onArmiesByStatusTabChange(obj)
-  {
+  function onArmiesByStatusTabChange(obj) {
     if (this.lastTabSelected != null)
       this.showSceneBtn("army_by_state_title_" + this.lastTabSelected.status, false)
 
@@ -101,24 +93,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateTabContent()
   }
 
-  function fullViewUpdate()
-  {
+  function fullViewUpdate() {
     this.updateTabs()
     this.updateTabContent()
   }
 
-  function updateTabs()
-  {
-    foreach(tab in this.tabOrder)
-    {
+  function updateTabs() {
+    foreach (tab in this.tabOrder) {
       let tabCountObj = this.scene.findObject("army_by_state_title_count_" + tab.status)
       if (checkObj(tabCountObj))
         tabCountObj.setValue(tab.getArmiesCountText())
     }
   }
 
-  function updateTabContent(updatedArmyNames = null)
-  {
+  function updateTabContent(updatedArmyNames = null) {
     this.updateCurItemsPerPage()
     this.updatePaginator()
 
@@ -130,7 +118,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!this.isHasChanges(contentViewData.army, updatedArmyNames))
       return
 
-    for(local i = 0; i < contentViewData.army.len() || i < this.itemsPerPageWithoutPaginator; i++)
+    for (local i = 0; i < contentViewData.army.len() || i < this.itemsPerPageWithoutPaginator; i++)
       this.updateScene(
         contentObj,
         i < contentViewData.army.len() ? contentViewData.army[i] : null,
@@ -138,16 +126,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       )
   }
 
-  function isHasChanges(newArmiesViewList, updatedArmyNames)
-  {
+  function isHasChanges(newArmiesViewList, updatedArmyNames) {
     local result = false
     if (this.lastArmiesViewList == null || newArmiesViewList.len() != this.lastArmiesViewList.len())
       result = true
-    else
-    {
-      for(local i = 0; i < newArmiesViewList.len(); i++)
-        if (newArmiesViewList[i].name != this.lastArmiesViewList[i].name || newArmiesViewList[i].name in updatedArmyNames)
-        {
+    else {
+      for (local i = 0; i < newArmiesViewList.len(); i++)
+        if (newArmiesViewList[i].name != this.lastArmiesViewList[i].name || newArmiesViewList[i].name in updatedArmyNames) {
           result = true
           break
         }
@@ -157,8 +142,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return result
   }
 
-  function updateScene(contentObj, viewData, index)
-  {
+  function updateScene(contentObj, viewData, index) {
     let viewObj = contentObj.getChild(index)
     if (!checkObj(viewObj))
       return
@@ -176,8 +160,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     viewObj["selected"] = viewData.name == this.selectedArmyName ? "yes" : "no"
 
     let armyIconObj = viewObj.findObject("armyIcon")
-    if (checkObj(armyIconObj))
-    {
+    if (checkObj(armyIconObj)) {
       armyIconObj["team"] = viewData.getTeamColor()
       armyIconObj["isBelongsToMyClan"] = viewData.isBelongsToMyClan() ? "yes" : "no"
       armyIconObj.findObject("entrenchIcon").show(viewData.isEntrenched())
@@ -188,14 +171,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function updateCurItemsPerPage()
-  {
+  function updateCurItemsPerPage() {
     let totalPages = this.lastTabSelected.getTotalPageCount(this.itemsPerPageWithoutPaginator)
     this.curItemsPerPage = totalPages > 1 ? this.itemsPerPageWithPaginator : this.itemsPerPageWithoutPaginator
   }
 
-  function updatePaginator()
-  {
+  function updatePaginator() {
     let pagesCount = this.lastTabSelected.getTotalPageCount(this.curItemsPerPage)
     let hasPaginator = pagesCount > 1
     let paginatorPlaceObj = this.showSceneBtn("paginator_place", hasPaginator)
@@ -204,26 +185,22 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       ::generatePaginator(paginatorPlaceObj, this, this.currentPage, pagesCount - 1, null, true, true)
   }
 
-  function goToPage(obj)
-  {
+  function goToPage(obj) {
     this.currentPage = obj.to_page.tointeger()
     this.updateTabContent()
   }
 
-  function onHoverArmyItem(obj)
-  {
+  function onHoverArmyItem(obj) {
     ::ww_update_hover_army_name(obj.armyName)
-    ::ww_event("HoverArmyItem", {armyName = obj.armyName})
+    ::ww_event("HoverArmyItem", { armyName = obj.armyName })
   }
 
-  function onHoverLostArmyItem(_obj)
-  {
+  function onHoverLostArmyItem(_obj) {
     ::ww_update_hover_army_name("")
-    ::ww_event("HoverLostArmyItem", {armyName = null})
+    ::ww_event("HoverLostArmyItem", { armyName = null })
   }
 
-  function onClickArmy(obj)
-  {
+  function onClickArmy(obj) {
     if (this.selectedArmyName == obj.armyName)
       return
 
@@ -239,15 +216,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.playSound("ww_unit_select")
   }
 
-  function setArmyViewSelection(armyName, isSelected)
-  {
+  function setArmyViewSelection(armyName, isSelected) {
     if (armyName == this.selectedArmyName && isSelected)
       return
 
     let contentObj = this.scene.findObject("armies_tab_content")
     if (checkObj(contentObj))
-      for(local i = 0; i < this.itemsPerPageWithoutPaginator; i++)
-      {
+      for (local i = 0; i < this.itemsPerPageWithoutPaginator; i++) {
         let viewObj = contentObj.getChild(i)
         if (!checkObj(viewObj))
           break
@@ -261,8 +236,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.selectedArmyName = isSelected ? armyName : null
   }
 
-  function onEventWWMapArmiesByStatusUpdated(params)
-  {
+  function onEventWWMapArmiesByStatusUpdated(params) {
     if (!this.isSceneActiveNoModals())
       return this.doWhenActiveOnce("fullViewUpdate")
 
@@ -285,8 +259,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateTabContent(::u.indexBy(curTabArmies, "name"))
   }
 
-  function onEventWWMapArmySelected(_params)
-  {
+  function onEventWWMapArmySelected(_params) {
     let selectedArmyNames = ::ww_get_selected_armies_names()
     if (::u.isEmpty(selectedArmyNames))
       return
@@ -298,8 +271,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.setArmyViewSelection(armyName, true)
   }
 
-  function onEventWWMapClearSelection(_params)
-  {
+  function onEventWWMapClearSelection(_params) {
     this.setArmyViewSelection(this.selectedArmyName, false)
   }
 }

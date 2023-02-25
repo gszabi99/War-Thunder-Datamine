@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -42,7 +43,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function onPresetChange() {
-    if(this.ok_fn != null)
+    if (this.ok_fn != null)
       this.ok_fn()
     this.goBack()
   }

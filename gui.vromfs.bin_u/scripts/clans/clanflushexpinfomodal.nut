@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { format } = require("string")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
-let handlerClass = class extends ::gui_handlers.clanVehiclesModal
-{
+let handlerClass = class extends ::gui_handlers.clanVehiclesModal {
   sceneTplName  = "%gui/clans/clanFlushExpInfoModal.tpl"
   maxSlotCountY = 2
   userlog = null
@@ -60,13 +60,11 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal
     ::save_local_account_settings(SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, obj.getValue())
   }
 
-  function onUnitActivate(obj)
-  {
+  function onUnitActivate(obj) {
     this.openUnitActionsList(obj.findObject(this.userlog.body.unit), true)
   }
 
-  function onEventUnitBought(p)
-  {
+  function onEventUnitBought(p) {
     if (p?.unitName == this.userlog.body.unit) {
       this.updateFlushExpUnit()
       return

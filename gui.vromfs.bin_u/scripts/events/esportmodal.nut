@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
@@ -87,7 +89,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     this.tournamentList = this.currSeason.tournamentList
     if (::g_login.isProfileReceived()) {
-      let myFilters = ::load_local_account_settings(MY_FILTERS, ::DataBlock())
+      let myFilters = ::load_local_account_settings(MY_FILTERS, DataBlock())
       this.filter.__update({
         tourStates = myFilters?.tourStates ? myFilters.tourStates % "array" : []
         unitStates = myFilters?.unitStates ? myFilters.unitStates % "array" : []
@@ -99,7 +101,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateRatingByTournaments() {
     this.ratingByTournaments = {}
-    foreach(tour in this.tournamentList) {
+    foreach (tour in this.tournamentList) {
       let curTourParams = getTourParams(tour)
       let id = tour.id
       fetchLbData(getEventByDay(tour.id, curTourParams.dayNum, false), function(lbData) {
@@ -198,8 +200,8 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       let selectedArr = this.filter[$"{tName}States"]
       let referenceArr = this[$"{tName}Types"]
 
-      let view = {checkbox = []}
-      foreach(idx, inst in referenceArr)
+      let view = { checkbox = [] }
+      foreach (idx, inst in referenceArr)
         view.checkbox.append({
           id        = inst.id
           sortId    = inst.sortId
@@ -209,7 +211,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
           value     = !inst.isDisable && selectedArr.findindex(@(v) v == idx) != null
         })
 
-      view.checkbox.sort(@(a,b) a.sortId <=> b.sortId)
+      view.checkbox.sort(@(a, b) a.sortId <=> b.sortId)
       res.append(view)
     }
 
@@ -219,7 +221,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   function fillUnitTypesList() {
     this.unitTypes = {}
 
-    foreach(unitType in unitTypesList.types) {
+    foreach (unitType in unitTypesList.types) {
       if (!unitType.isAvailable())
         continue
 
@@ -286,7 +288,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onLeaderboard(obj) {
     let tournament = getTourById(obj.eventId)
     if (tournament)
-      ::gui_modal_event_leaderboards({// No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
+      ::gui_modal_event_leaderboards({ // No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
         eventId = getMatchingEventId(tournament.id, 0, false)
         sharedEconomicName = tournament.sharedEconomicName
       })

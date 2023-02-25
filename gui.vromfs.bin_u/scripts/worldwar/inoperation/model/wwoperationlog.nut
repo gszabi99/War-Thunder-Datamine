@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 
 ::g_ww_logs <- {
   loaded = []
@@ -66,14 +68,12 @@ from "%scripts/dagui_library.nut" import *
   ]
 }
 
-::g_ww_logs.getObjectivesBlk <- function getObjectivesBlk()
-{
+::g_ww_logs.getObjectivesBlk <- function getObjectivesBlk() {
   let objectivesBlk = ::g_world_war.getOperationObjectives()
-  return objectivesBlk ? ::u.copy(objectivesBlk?.data) : ::DataBlock()
+  return objectivesBlk ? ::u.copy(objectivesBlk?.data) : DataBlock()
 }
 
-::g_ww_logs.requestNewLogs <- function requestNewLogs(loadAmount, useLogMark, handler = null)
-{
+::g_ww_logs.requestNewLogs <- function requestNewLogs(loadAmount, useLogMark, handler = null) {
   if (useLogMark && ::g_ww_logs.lastMark != "")
     return
 
@@ -86,13 +86,11 @@ from "%scripts/dagui_library.nut" import *
   ::g_world_war.requestLogs(loadAmount, useLogMark, cb, errorCb)
 }
 
-::g_ww_logs.changeLogsLoadStatus <- function changeLogsLoadStatus(isLogsLoading = false)
-{
-  ::ww_event("LogsLoadStatusChanged", {isLogsLoading = isLogsLoading})
+::g_ww_logs.changeLogsLoadStatus <- function changeLogsLoadStatus(isLogsLoading = false) {
+  ::ww_event("LogsLoadStatusChanged", { isLogsLoading = isLogsLoading })
 }
 
-::g_ww_logs.loadNewLogs <- function loadNewLogs(useLogMark, handler)
-{
+::g_ww_logs.loadNewLogs <- function loadNewLogs(useLogMark, handler) {
   let logsBlk = ::ww_operation_get_log()
   if (useLogMark)
     ::g_ww_logs.lastMark = logsBlk?.lastMark ?? ""
@@ -100,8 +98,7 @@ from "%scripts/dagui_library.nut" import *
   this.saveLoadedLogs(logsBlk, useLogMark, handler)
 }
 
-::g_ww_logs.saveLoadedLogs <- function saveLoadedLogs(loadedLogsBlk, useLogMark, _handler)
-{
+::g_ww_logs.saveLoadedLogs <- function saveLoadedLogs(loadedLogsBlk, useLogMark, _handler) {
   if (!this.objectivesStaticBlk)
     this.objectivesStaticBlk = this.getObjectivesBlk()
 
@@ -118,8 +115,7 @@ from "%scripts/dagui_library.nut" import *
   local isStrengthUpdateNeeded = false
   local isToBattleUpdateNeeded = false
   let unknownLogType = ::g_ww_log_type.getLogTypeByName(WW_LOG_TYPES.UNKNOWN)
-  for (local i = 0; i < loadedLogsBlk.blockCount(); i++)
-  {
+  for (local i = 0; i < loadedLogsBlk.blockCount(); i++) {
     let logBlk = loadedLogsBlk.getBlock(i)
 
     if (!useLogMark && logBlk?.thisLogId == firstLogId)
@@ -142,8 +138,7 @@ from "%scripts/dagui_library.nut" import *
     ::g_ww_logs.saveLogView(logTable)
 
     // on some fresh logs - we need to play sound or update strength
-    if (!useLogMark)
-    {
+    if (!useLogMark) {
       isStrengthUpdateNeeded = logBlk.type == WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE ||
                                logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
                                logBlk.type == WW_LOG_TYPES.REINFORCEMENT ||
@@ -165,15 +160,13 @@ from "%scripts/dagui_library.nut" import *
   if (!useLogMark)
     ::g_ww_logs.loaded.extend(freshLogs)
 
-  if (!addedLogsNumber)
-  {
+  if (!addedLogsNumber) {
     ::ww_event("NoLogsAdded")
     return
   }
 
   local isLastReadedLogFounded = false
-  for (local i = ::g_ww_logs.loaded.len() - 1; i >= 0; i--)
-  {
+  for (local i = ::g_ww_logs.loaded.len() - 1; i >= 0; i--) {
     if (::g_ww_logs.loaded[i]?.isReaded)
       break
 
@@ -192,14 +185,12 @@ from "%scripts/dagui_library.nut" import *
   ::ww_event("NewLogsDisplayed", { amount = this.getUnreadedNumber() })
 }
 
-::g_ww_logs.saveLogView <- function saveLogView(logObj)
-{
+::g_ww_logs.saveLogView <- function saveLogView(logObj) {
   if (!(logObj.id in this.logsViews))
     this.logsViews[logObj.id] <- ::WwOperationLogView(logObj)
 }
 
-::g_ww_logs.saveLogBattle <- function saveLogBattle(blk)
-{
+::g_ww_logs.saveLogBattle <- function saveLogBattle(blk) {
   if (!blk?.battle)
     return
   let savedData = getTblValue(blk.battle?.id, this.logsBattles)
@@ -215,19 +206,16 @@ from "%scripts/dagui_library.nut" import *
   }
 }
 
-::g_ww_logs.saveLogArmies <- function saveLogArmies(blk, logId)
-{
+::g_ww_logs.saveLogArmies <- function saveLogArmies(blk, logId) {
   if ("armies" in blk)
-    foreach (armyBlk in blk.armies)
-    {
+    foreach (armyBlk in blk.armies) {
       let armyId = this.getLogArmyId(logId, armyBlk?.name)
       if (!(armyId in this.logsArmies))
         this.logsArmies[armyId] <- ::WwArmy(armyBlk?.name, armyBlk)
     }
 }
 
-::g_ww_logs.getLogArmyId <- function getLogArmyId(logId, armyName)
-{
+::g_ww_logs.getLogArmyId <- function getLogArmyId(logId, armyName) {
   return "log_" + logId + "_" + armyName
 }
 
@@ -240,8 +228,7 @@ from "%scripts/dagui_library.nut" import *
   return ::u.search(::g_ww_logs.loaded, @(l) l.isReaded, true)?.id ?? ""
 }
 
-::g_ww_logs.getUnreadedNumber <- function getUnreadedNumber()
-{
+::g_ww_logs.getUnreadedNumber <- function getUnreadedNumber() {
   local unreadedNumber = 0
   foreach (logObj in this.loaded)
     if (!logObj?.isReaded)
@@ -250,18 +237,15 @@ from "%scripts/dagui_library.nut" import *
   return unreadedNumber
 }
 
-::g_ww_logs.applyLogsFilter <- function applyLogsFilter()
-{
+::g_ww_logs.applyLogsFilter <- function applyLogsFilter() {
   this.filtered.clear()
   for (local i = 0; i < this.loaded.len(); i++)
     if (this.filter[this.loaded[i].category])
       this.filtered.append(i)
 }
 
-::g_ww_logs.playLogSound <- function playLogSound(logBlk)
-{
-  switch (logBlk?.type)
-  {
+::g_ww_logs.playLogSound <- function playLogSound(logBlk) {
+  switch (logBlk?.type) {
     case WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE:
       let wwArmy = this.getLogArmy(logBlk)
       if (wwArmy && !wwArmy.isMySide(::ww_get_player_side()))
@@ -285,8 +269,7 @@ from "%scripts/dagui_library.nut" import *
   }
 }
 
-::g_ww_logs.isPlayerWinner <- function isPlayerWinner(logBlk)
-{
+::g_ww_logs.isPlayerWinner <- function isPlayerWinner(logBlk) {
   let mySideName = ::ww_side_val_to_name(::ww_get_player_side())
   if (logBlk?.type == WW_LOG_TYPES.BATTLE_FINISHED)
     for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
@@ -296,14 +279,12 @@ from "%scripts/dagui_library.nut" import *
   return logBlk?.winner == mySideName
 }
 
-::g_ww_logs.getLogArmy <- function getLogArmy(logBlk)
-{
+::g_ww_logs.getLogArmy <- function getLogArmy(logBlk) {
   let wwArmyId = this.getLogArmyId(logBlk?.thisLogId, logBlk?.army)
   return getTblValue(wwArmyId, this.logsArmies)
 }
 
-::g_ww_logs.clear <- function clear()
-{
+::g_ww_logs.clear <- function clear() {
   this.saveLastReadLogMark()
   this.loaded.clear()
   this.filtered.clear()

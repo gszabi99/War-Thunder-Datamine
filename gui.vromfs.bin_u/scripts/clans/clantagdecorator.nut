@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,8 +8,7 @@ from "%scripts/dagui_library.nut" import *
 ::g_clan_tag_decorator <- {
 
 
-  function getDecorators(args)
-  {
+  function getDecorators(args) {
     let decoratorsList = []
 
     if ("clanType" in args)
@@ -21,8 +21,7 @@ from "%scripts/dagui_library.nut" import *
   }
 
 
-  function getDecoratorsForClanType(clanType)
-  {
+  function getDecoratorsForClanType(clanType) {
     let blk = ::get_warpoints_blk()
     let block = blk?[::clan_get_decorators_block_name(clanType.code)]
 
@@ -30,8 +29,7 @@ from "%scripts/dagui_library.nut" import *
   }
 
 
-  function getDecoratorsForClanDuelRewards(rewardsList)
-  {
+  function getDecoratorsForClanDuelRewards(rewardsList) {
     local blk = ::get_warpoints_blk()
     let result = []
 
@@ -63,8 +61,7 @@ from "%scripts/dagui_library.nut" import *
    *   ...
    * }
    */
-  function getDecoratorsInternal(decoratorsBlk, free = false)
-  {
+  function getDecoratorsInternal(decoratorsBlk, free = false) {
     let decorators = []
 
     if (decoratorsBlk != null)
@@ -76,15 +73,13 @@ from "%scripts/dagui_library.nut" import *
 }
 
 
-::ClanTagDecorator <- class
-{
+::ClanTagDecorator <- class {
   id = null
   start = null
   end = null
   free = false
 
-  constructor(decoratorString, freeChange)
-  {
+  constructor(decoratorString, freeChange) {
     let halfLength = (0.5 * decoratorString.len()).tointeger()
     this.id = decoratorString
     this.start = decoratorString.slice(0, halfLength)
@@ -92,8 +87,7 @@ from "%scripts/dagui_library.nut" import *
     this.free = freeChange
   }
 
-  function checkTagText(tagText)
-  {
+  function checkTagText(tagText) {
     if (tagText.indexof(this.start) != 0 || tagText.len() < this.end.len())
       return false
     return tagText.slice(-this.end.len()) == this.end

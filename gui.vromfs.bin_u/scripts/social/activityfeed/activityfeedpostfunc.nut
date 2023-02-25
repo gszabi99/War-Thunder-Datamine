@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -11,11 +12,6 @@ let psnPostFunc = function(config, feed) {
     require("%scripts/social/activityFeed/ps4PostFunc.nut")(config, feed)
 }
 
-let facebookPostFunc = function(config, feed) {
-  if (::facebook_is_logged_in() && hasFeature("FacebookWallPost"))
-    require("%scripts/social/activityFeed/facebookPostFunc.nut")(config, feed)
-}
-
 return function(v_config, v_customFeedParams = {}, reciever = bit_activity.NONE) {
   if (u.isEmpty(v_config) || u.isEmpty(v_customFeedParams))
     return
@@ -25,7 +21,4 @@ return function(v_config, v_customFeedParams = {}, reciever = bit_activity.NONE)
 
   if (reciever & bit_activity.PS4_ACTIVITY_FEED)
     psnPostFunc(config, customFeedParams)
-
-  if (reciever & bit_activity.FACEBOOK)
-    facebookPostFunc(config, customFeedParams)
 }

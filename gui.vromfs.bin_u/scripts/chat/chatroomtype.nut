@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,6 +9,8 @@ let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan,
+  hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -42,8 +45,7 @@ enum chatRoomTabOrder {
 
   roomNameLocId = null
     //localized roomName
-  getRoomName = function(roomId, _isColored = false)
-  {
+  getRoomName = function(roomId, _isColored = false) {
     if (this.roomNameLocId)
       return loc(this.roomNameLocId)
     let roomName = roomId.slice(1)
@@ -78,6 +80,7 @@ enum chatRoomTabOrder {
   updateChatHeader = function(_obj, _roomData) {}
   isAllowed = @() true
   isConcealed = @(_roomId) false
+  isVisible = @() false
 
   needCountAsImportant = false
   needShowMessagePopup = true
@@ -95,6 +98,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     isVisibleInSearch = function() { return true }
     isAllowed = ::ps4_is_ugc_enabled
     canCreateRoom = @() this.isAllowed()
+    isVisible = @() hasMenuGeneralChats.value
   }
 
   PRIVATE = {
@@ -105,8 +109,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
 
     checkRoomId  = function(roomId) { return !::g_string.startsWith(roomId, this.roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
-    getRoomName  = function(roomId, isColored = false) //roomId == playerName
-    {
+    getRoomName  = function(roomId, isColored = false) { //roomId == playerName
       local res = ::g_contacts.getPlayerFullName(
         platformModule.getPlayerName(roomId),
         ::clanUserTable?[roomId] ?? ""
@@ -115,8 +118,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         res = colorize(::g_chat.getSenderColor(roomId), res)
       return res
     }
-    getRoomColorTag = function(roomId) //roomId == playerName
-    {
+    getRoomColorTag = function(roomId) { //roomId == playerName
       if (::g_squad_manager.isInMySquad(roomId, false))
         return "squad"
       if (::isPlayerNickInContacts(roomId, EPL_FRIENDLIST))
@@ -125,6 +127,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     }
 
     isConcealed = @(roomId) !isCrossNetworkMessageAllowed(roomId) || !isChatEnableWithPlayer(roomId)
+    isVisible = @() hasMenuChatPrivate.value
   }
 
   SQUAD = { //param - random
@@ -136,8 +139,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     canVoiceChat = true
     needCountAsImportant = true
 
-    getRoomName = function(roomId, isColored = false, isFull = false)
-    {
+    getRoomName = function(roomId, isColored = false, isFull = false) {
       let isMySquadRoom = roomId == ::g_chat.getMySquadRoomId()
       local res = !isFull || isMySquadRoom ? loc(this.roomNameLocId) : loc("squad/disbanded/name")
       if (isColored && isMySquadRoom)
@@ -151,6 +153,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     getInviteClickNameText = function(_roomId) {
       return loc(::show_console_buttons ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
+    isVisible = @() hasMenuChatSquad.value
   }
 
   CLAN = { //para - clanId
@@ -164,6 +167,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     isHaveOwner = false
 
     canBeClosed = function(roomId) { return roomId != this.getRoomId(::clan_get_my_clan_id()) }
+    isVisible = @() hasMenuChatClan.value
   }
 
   SYSTEM = { //param none
@@ -175,6 +179,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     checkRoomId = function(roomId) { return roomId == this.roomPrefix }
     getRoomId   = function(...) { return this.roomPrefix }
     canBeClosed = function(_roomId) { return false }
+    isVisible = @() hasMenuChatSystem.value
   }
 
   MP_LOBBY = { //param SessionLobby.roomId
@@ -183,6 +188,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     havePlayersList = false
     isErrorPopupAllowed = false
     isHaveOwner = false
+    isVisible = @() hasMenuChatMPlobby.value
   }
 
   GLOBAL = {
@@ -191,21 +197,18 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     checkRoomId = function(roomId) {
       if (!::g_string.startsWith(roomId, "#"))
         return false
-      foreach(r in ::global_chat_rooms)
-        if (roomId.indexof(r.name + "_", 1) == 1)
-        {
+      foreach (r in ::global_chat_rooms)
+        if (roomId.indexof(r.name + "_", 1) == 1) {
           let lang = ::g_string.slice(roomId, r.name.len() + 2)
           local langsList = getTblValue("langs", r, ::langs_list)
           return isInArray(lang, langsList)
         }
       return false
     }
-    getRoomId = function(roomName, lang = null) //room id is  #<<roomName>>_<<validated lang>>
-    {
+    getRoomId = function(roomName, lang = null) { //room id is  #<<roomName>>_<<validated lang>>
       if (!lang)
         lang = ::cur_chat_lang
-      foreach(r in ::global_chat_rooms)
-      {
+      foreach (r in ::global_chat_rooms) {
         if (r.name != roomName)
           continue
 
@@ -217,6 +220,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
       return ""
     }
     getTooltip = function(roomId) { return roomId.slice(1) }
+    isVisible = @() hasMenuGeneralChats.value
   }
 
   THREAD = {
@@ -228,8 +232,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     onlyOwnerCanInvite = false
 
     threadNameLen = 15
-    getRoomName = function(roomId, _isColored = false)
-    {
+    getRoomName = function(roomId, _isColored = false) {
       let threadInfo = ::g_chat.getThreadInfo(roomId)
       if (!threadInfo)
         return loc(this.roomNameLocId)
@@ -244,8 +247,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         return utf8(title).slice(0, this.threadNameLen)
       return title
     }
-    getTooltip = function(roomId)
-    {
+    getTooltip = function(roomId) {
       let threadInfo = ::g_chat.getThreadInfo(roomId)
       return threadInfo ? threadInfo.getRoomTooltipText() : ""
     }
@@ -253,8 +255,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     canCreateRoom = function() { return ::g_chat.canCreateThreads() }
 
     hasChatHeader = true
-    fillChatHeader = function(obj, roomData)
-    {
+    fillChatHeader = function(obj, roomData) {
       let handler = ::handlersManager.loadHandler(::gui_handlers.ChatThreadHeader,
                                                     {
                                                       scene = obj
@@ -262,14 +263,14 @@ enums.addTypesByGlobalName("g_chat_room_type", {
                                                     })
       obj.setUserData(handler)
     }
-    updateChatHeader = function(obj, _roomData)
-    {
+    updateChatHeader = function(obj, _roomData) {
       let ud = obj.getUserData()
       if ("onSceneShow" in ud)
         ud.onSceneShow()
     }
 
     isConcealed = @(roomId) ::g_chat.getThreadInfo(roomId)?.isConcealed() ?? false
+    isVisible = @() hasMenuGeneralChats.value
   }
 
   THREADS_LIST = {
@@ -289,6 +290,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
         roomId = roomId,
         backFunc = backFunc
     })
+    isVisible = @() hasMenuGeneralChats.value
   }
 }, null, "typeName")
 
@@ -298,9 +300,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
   return 0
 })
 
-::g_chat_room_type.getRoomType <- function getRoomType(roomId)
-{
-  foreach(roomType in this.types)
+::g_chat_room_type.getRoomType <- function getRoomType(roomId) {
+  foreach (roomType in this.types)
     if (roomType.checkRoomId(roomId))
       return roomType
 

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,8 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   battleRes = null
 
-  static function open(battleRes)
-  {
+  static function open(battleRes) {
     if (!battleRes || !battleRes.isValid())
       return ::g_popups.add("", loc("worldwar/battle_not_found"),
         null, null, null, "battle_result_view_error")
@@ -22,23 +22,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::handlersManager.loadHandler(::gui_handlers.WwBattleResults, { battleRes = battleRes })
   }
 
-  function getSceneTplContainerObj()
-  {
+  function getSceneTplContainerObj() {
     return this.scene.findObject("root-box")
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return this.battleRes.getView()
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     return ::g_world_war.defaultDiffCode
   }
 
-  function onViewServerReplay()
-  {
+  function onViewServerReplay() {
     ::gui_start_replay_battle(this.battleRes.getSessionId(), @() ::g_world_war.openMainWnd())
   }
 }

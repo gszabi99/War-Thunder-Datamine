@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
+let DataBlock = require("DataBlock")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"
@@ -24,7 +26,7 @@ let function getSeenSuggestedSkins(unitName) {
 
   let skinCount = oldSeenSkinsList.paramCount()
   let currentTime = ::get_charserver_time_sec()
-  let validSkinsCfg = ::DataBlock()
+  let validSkinsCfg = DataBlock()
   for (local i = 0; i < skinCount; i++)
     validSkinsCfg[oldSeenSkinsList.getParamName(i)] = currentTime
 
@@ -50,7 +52,7 @@ let function needSuggestSkin(unitName, skinId) {
 }
 
 let function getSuggestedSkin(unitName) {
-  if(!::g_login.isProfileReceived())
+  if (!::g_login.isProfileReceived())
     return null
   let skinIds = getSuggestedSkins(unitName)
   if (skinIds.len() == 0)
@@ -66,13 +68,13 @@ let function getSuggestedSkin(unitName) {
 }
 
 let function saveSeenSuggestedSkin(unitName, skinId) {
-  if(!::g_login.isProfileReceived())
+  if (!::g_login.isProfileReceived())
     return
   let skinIds = getSuggestedSkins(unitName)
   if (skinId not in skinIds)
     return
 
-  let seenSuggestedSkins = getSeenSuggestedSkins(unitName) ?? ::DataBlock()
+  let seenSuggestedSkins = getSeenSuggestedSkins(unitName) ?? DataBlock()
   let curTime = ::get_charserver_time_sec()
   seenSuggestedSkins[skinId] = curTime
   seenSuggestedSkins[UNIT_DATE_SAVE_ID] = curTime

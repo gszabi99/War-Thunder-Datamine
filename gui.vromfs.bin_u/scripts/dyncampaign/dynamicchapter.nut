@@ -1,21 +1,25 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
+let { dynamicInit, dynamicGetList } = require("dynamicMission")
+let { get_cur_game_mode_name } = require("mission")
+
 ::dynamic_req_country_rank <- 1
 
 ::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts() {
   ::handlersManager.loadHandler(::gui_handlers.DynamicLayouts)
 }
 
-::gui_handlers.DynamicLayouts <- class extends ::gui_handlers.CampaignChapter
-{
+::gui_handlers.DynamicLayouts <- class extends ::gui_handlers.CampaignChapter {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
@@ -28,8 +32,7 @@ let { get_gui_option } = require("guiOptions")
   missions = []
   prevSelect = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.guiScene.replaceContent("mission_desc", "%gui/missionDescr.blk")
     let headerTitle = this.scene.findObject("chapter_name")
     headerTitle.setValue(loc("mainmenu/btnDynamic"))
@@ -44,8 +47,7 @@ let { get_gui_option } = require("guiOptions")
     ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
-  function initMissionsList(...)
-  {
+  function initMissionsList(...) {
     this.missions = []
     this.add_missions()
     let listObj = this.scene.findObject("items_list")
@@ -59,18 +61,16 @@ let { get_gui_option } = require("guiOptions")
     this.refreshMissionDesc()
   }
 
-  function add_missions()
-  {
+  function add_missions() {
     let mission_array = ::get_dynamic_layouts()
     local unlockedMissionCount = 0
 
-    for (local j = 0; j < mission_array.len(); j++)
-    {
+    for (local j = 0; j < mission_array.len(); j++) {
       let misDescr = {}
       misDescr.map <- mission_array[j].mis_file
       misDescr.locName <- "dynamic/" + mission_array[j].name
 
-      let misBlk = ::DataBlock()
+      let misBlk = DataBlock()
       misBlk.load(misDescr.map)
 
       misDescr.unlocks <- {}
@@ -92,20 +92,16 @@ let { get_gui_option } = require("guiOptions")
       local isAnyCountryUnlocked = false
       local isAnyYearUnlocked = false
       local lockReason = ""
-      foreach (_idx, country in misDescr.countries)
-      {
+      foreach (_idx, country in misDescr.countries) {
         let countryId = misDescr.id + "_" + country
         local isCountryUnlocked = ::is_unlocked_scripted(UNLOCKABLE_DYNCAMPAIGN, countryId)
         if (!isCountryUnlocked)
           lockReason += (lockReason.len() ? "\n" : "") + getFullUnlockDescByName(countryId) + "\n"
-        else
-        {
-          foreach (year in this.yearsArray)
-          {
+        else {
+          foreach (year in this.yearsArray) {
             local is_unlocked = false
             let yearId = "country_" + country + "_" + year
-            if (::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId))
-            {
+            if (::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)) {
               isAnyYearUnlocked = true
               is_unlocked = true
             }
@@ -132,16 +128,13 @@ let { get_gui_option } = require("guiOptions")
     }
   }
 
-  function generateMissionsList()
-  {
+  function generateMissionsList() {
     let view = { items = [] }
-    foreach(idx, mission in this.missions)
-    {
+    foreach (idx, mission in this.missions) {
       local elemCssId = "mission_item_locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
       let nameId = "dynamic/" + mission.id
-      switch (mission.progress)
-      {
+      switch (mission.progress) {
         case 0:
           elemCssId = "mission_item_completed"
           medalIcon = "#ui/gameuiskin#mission_complete_arcade.png"
@@ -173,8 +166,7 @@ let { get_gui_option } = require("guiOptions")
     return ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
   }
 
-  function refreshMissionDesc()
-  {
+  function refreshMissionDesc() {
     let missionBlock = this.missions?[this.getSelectedMission()]
     if (missionBlock != null && missionBlock?.descConfig == null)
       missionBlock.descConfig <- this.buildMissionDescConfig(missionBlock)
@@ -183,38 +175,33 @@ let { get_gui_option } = require("guiOptions")
     this.updateButtons()
   }
 
-  function buildMissionDescConfig(missionBlock)
-  {
+  function buildMissionDescConfig(missionBlock) {
     let config = { countries = "" }
     local isAnyCountryUnlocked = false
-    if (missionBlock)
-    {
+    if (missionBlock) {
       config.name <- loc(missionBlock.locName)
       local reqText = missionBlock.unlockText
-      foreach(_idx, country in missionBlock.countries)
-      {
+      foreach (_idx, country in missionBlock.countries) {
         let countryUnlocked = this.checkCountry(country) && missionBlock.unlocks.country[missionBlock.id + "_" + country]
         config.countries += format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
-                             ::get_country_icon("country_" + country, true), countryUnlocked? "yes" : "no")
+                             ::get_country_icon("country_" + country, true), countryUnlocked ? "yes" : "no")
 
         isAnyCountryUnlocked = isAnyCountryUnlocked || countryUnlocked
       }
 
-      if(reqText != "")
+      if (reqText != "")
         reqText = "<color=@badTextColor>" + loc("dynamic/requireForUnlock") + loc("ui/colon") + "\n" + reqText + "</color>\n"
 
-      config.maintext <- reqText + loc("dynamic/"+ missionBlock.id + "/desc", "")
+      config.maintext <- reqText + loc("dynamic/" + missionBlock.id + "/desc", "")
       config.canStart <- isAnyCountryUnlocked
     }
     return config
   }
 
-  function checkCountry(country)
-  {
+  function checkCountry(country) {
     let missionBlock = this.missions[this.getSelectedMission()]
     let countryId = missionBlock.id + "_" + country
-    if(!(countryId in missionBlock.unlocks.country))
-    {
+    if (!(countryId in missionBlock.unlocks.country)) {
       assert(false, "Not found unlock " + countryId)
       debugTableData(missionBlock.countries)
       return false
@@ -222,8 +209,7 @@ let { get_gui_option } = require("guiOptions")
     return true
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let selectedMission = this.missions?[this.getSelectedMission()]
 
     let hoveredMission = this.isMouseMode ? null : this.missions?[this.hoveredIdx]
@@ -236,55 +222,47 @@ let { get_gui_option } = require("guiOptions")
     this.scene.findObject("btn_start").enable(canStart)
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     this.doWhenActiveOnce("updateButtons")
   }
 
-  function getSelectedMission()
-  {
+  function getSelectedMission() {
     let list = this.scene.findObject("items_list")
-    if(checkObj(list))
+    if (checkObj(list))
       return list.getValue()
     return -1
   }
 
-  function onItemSelect(_obj)
-  {
+  function onItemSelect(_obj) {
     this.refreshMissionDesc()
   }
 
-  function onStart()
-  {
-    if (!::g_squad_utils.canJoinFlightMsgBox({msgId = "multiplayer/squad/cantJoinSessionWithSquad"}))
+  function onStart() {
+    if (!::g_squad_utils.canJoinFlightMsgBox({ msgId = "multiplayer/squad/cantJoinSessionWithSquad" }))
       return
 
     let index = this.getSelectedMission()
     let missionBlock = this.missions[index]
     local isAnyCountryUnlocked = false
 
-    foreach (_cName, countryUnlocked in missionBlock.unlocks.country)
-    {
+    foreach (_cName, countryUnlocked in missionBlock.unlocks.country) {
       if (countryUnlocked && missionBlock.unlocks.years.len())
         foreach (_yName, yearUnlocked in missionBlock.unlocks.years)
-          if (yearUnlocked)
-          {
+          if (yearUnlocked) {
             isAnyCountryUnlocked = true
             break
           }
       isAnyCountryUnlocked = countryUnlocked || isAnyCountryUnlocked
     }
 
-    if(isAnyCountryUnlocked)
-    {
+    if (isAnyCountryUnlocked) {
       ::current_campaign = missionBlock
       ::mission_settings.layout = this.missions[index].map
       this.openMissionOptions()
     }
   }
 
-  function openMissionOptions()
-  {
+  function openMissionOptions() {
     let options =   [
       [::USEROPT_MP_TEAM_COUNTRY, "combobox"],
       [::USEROPT_YEAR, "combobox"],
@@ -296,16 +274,14 @@ let { get_gui_option } = require("guiOptions")
     this.createModalOptions(options, Callback(this.checkCustomDifficulty, this))
   }
 
-  function finalApplyCallback()
-  {
+  function finalApplyCallback() {
     this.finalApply()
     if (::mission_settings.dynlist.len() == 0)
       this.msgBox("no_missions_error", loc("msgbox/appearError"),
-        [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack});
+        [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack });
   }
 
-  function checkCustomDifficulty()
-  {
+  function checkCustomDifficulty() {
     let diffCode = ::mission_settings.diff
     if (!::check_diff_pkg(diffCode))
       return
@@ -318,13 +294,12 @@ let { get_gui_option } = require("guiOptions")
     })
   }
 
-  function finalApply()
-  {
+  function finalApply() {
     let map = ::mission_settings.layout
 
     local desc = ::get_option(::USEROPT_MP_TEAM_COUNTRY);
     let team = desc.values[desc.value];
-    let settings = ::DataBlock();
+    let settings = DataBlock();
     settings.setInt("playerSide", team)
 
     //desc = ::get_option(::USEROPT_DYN_ALLIES);
@@ -349,23 +324,22 @@ let { get_gui_option } = require("guiOptions")
     ::mission_settings.diff = desc.value
     settings.setInt("difficulty", desc.value);
 
-    ::dynamic_init(settings, map);
-    let dynListBlk = ::DataBlock();
-    ::mission_settings.dynlist <- ::dynamic_get_list(dynListBlk, false)
+    dynamicInit(settings, map)
+    let dynListBlk = DataBlock();
+    ::mission_settings.dynlist <- dynamicGetList(dynListBlk, false)
 
     local playerCountry = ""
 
     let add = []
-    for (local i = 0; i < ::mission_settings.dynlist.len(); i++)
-    {
+    for (local i = 0; i < ::mission_settings.dynlist.len(); i++) {
       let misblk = ::mission_settings.dynlist[i].mission_settings.mission
       misblk.setStr("mis_file", map)
-      misblk.setStr("chapter", ::get_cur_game_mode_name());
-      misblk.setStr("type", ::get_cur_game_mode_name());
+      misblk.setStr("chapter", get_cur_game_mode_name())
+      misblk.setStr("type", get_cur_game_mode_name())
       add.append(misblk)
 
       if (playerCountry == "")
-        playerCountry = misblk.getStr(team == 1 ? "country_allies" : "country_axis","ussr")
+        playerCountry = misblk.getStr(team == 1 ? "country_allies" : "country_axis", "ussr")
     }
     ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
     ::first_generation <- true
@@ -377,8 +351,7 @@ let { get_gui_option } = require("guiOptions")
     })
   }
 
-  function goBack()
-  {
+  function goBack() {
     base.goBack()
   }
 
@@ -386,12 +359,11 @@ let { get_gui_option } = require("guiOptions")
     this.restoreMainOptions()
   }
 
-  function onFav(){}
+  function onFav() {}
 }
 
 //country without "country_" prefix
-::is_dynamic_country_allowed <- function is_dynamic_country_allowed(country)
-{
+::is_dynamic_country_allowed <- function is_dynamic_country_allowed(country) {
   let sBlk = ::get_game_settings_blk()
   let list = sBlk?.dynamicCountries
 
@@ -400,13 +372,12 @@ let { get_gui_option } = require("guiOptions")
   return list?[country] == true
 }
 
-::get_mission_team_countries <- function get_mission_team_countries(layout)
-{
+::get_mission_team_countries <- function get_mission_team_countries(layout) {
   local res = null
   if (!layout)
     return res
 
-  let lblk = ::DataBlock()
+  let lblk = DataBlock()
   lblk.load(layout)
   let mBlk = lblk?.mission_settings.mission
   if (!mBlk)
@@ -415,8 +386,7 @@ let { get_gui_option } = require("guiOptions")
   let checkDynamic = mBlk?.type == "dynamic"
 
   res = []
-  foreach(cTag in ["country_allies", "country_axis"])
-  {
+  foreach (cTag in ["country_allies", "country_axis"]) {
     local c = mBlk?[cTag] ?? "ussr"
     if (!checkDynamic || ::is_dynamic_country_allowed(c))
       c = "country_" + c

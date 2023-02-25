@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -70,8 +70,8 @@
       ],
       "suffix": "1",
       "dmName": "driver_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -134,8 +134,8 @@
       ],
       "suffix": "2",
       "dmName": "gunner_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -198,8 +198,8 @@
       ],
       "suffix": "3",
       "dmName": "commander_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -287,6 +287,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -429,7 +439,6 @@
       "ex_decor_l_08_dm": {},
       "ex_decor_r_08_dm": {},
       "ex_decor_r_09_dm": {},
-      "wheel_support_dm": {},
       "gun_mask_02_dm": {},
       "ex_armor_l_01_dm": {},
       "ex_armor_r_01_dm": {},
@@ -451,7 +460,8 @@
       "wheel_r_04_dm": {},
       "wheel_l_drive_dm": {},
       "wheel_r_drive_dm": {},
-      "ex_armor_10_dm": {}
+      "ex_armor_10_dm": {},
+      "wheel_support_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -1840,6 +1850,17 @@
         "flash": "emtr_gun_flame",
         "useEmitter": true,
         "rearmCartridgeTime": 20.0,
+        "sleeveEmitter": "emtr_shell",
+        "sleeveMesh": "auto_cannon_cartridge_case",
+        "openHatchTime": 0.0,
+        "sleevesLifeTime": 3.0,
+        "sleeveImpulse": [
+          0.5,
+          -4.0,
+          -4.0
+        ],
+        "linkSleeveToGun": true,
+        "aimingFromBoneGun": true,
         "recoilMultiplier": 0.2,
         "jammedReloadTime": 12.0,
         "maxAdditionalPitch": 0.0,
@@ -2277,7 +2298,7 @@
             0.8,
             0.85
           ],
-          "thrust": 13000.0,
+          "thrust": 27000.0,
           "reverseMult": 0.17
         },
         {
@@ -2288,7 +2309,7 @@
             0.8,
             -0.85
           ],
-          "thrust": 13000.0,
+          "thrust": 27000.0,
           "reverseMult": 0.17
         }
       ]

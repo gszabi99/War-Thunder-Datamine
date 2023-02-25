@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,15 +9,14 @@ let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWil
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
-let function showMessageBox(params)
-{
+let function showMessageBox(params) {
   if (::is_in_flight())
-    return { error = { message = "Can not be shown in battle" }}
+    return { error = { message = "Can not be shown in battle" } }
 
   let title = params?.title ?? ""
   let message = params?.message ?? ""
   if (title == "" && message == "")
-    return { error = { message = "Title and message is empty" }}
+    return { error = { message = "Title and message is empty" } }
 
   let closeFunction = (params?.logout_on_close ?? false)
     ? exitGame
@@ -29,14 +29,13 @@ let function showMessageBox(params)
   return { result = "ok" }
 }
 
-let function showUrl(params)
-{
+let function showUrl(params) {
   if (::is_in_flight())
-    return { error = { message = "Can not be shown in battle" }}
+    return { error = { message = "Can not be shown in battle" } }
 
   let url = params?.url ?? ""
   if (url == "")
-    return { error = { message = "url is empty" }}
+    return { error = { message = "url is empty" } }
 
   if (params?.logout_on_close ?? false)
     callbackWhenAppWillActive(exitGame)

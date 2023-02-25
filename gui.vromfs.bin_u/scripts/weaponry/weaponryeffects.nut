@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -47,12 +48,11 @@ let presetsList = {
     validateValue = @(v) 100.0 * v
     isInverted = true
     canShowForUnit = @(_unit) hasFeature("TankModEffect")
-    getText = function (unit, effects, modeId)
-    {
+    getText = function (unit, effects, modeId) {
       if (!this.canShowForUnit(unit))
         return ""
       let value = this.getValue(unit, effects, modeId)
-      local value2 = effects?[modeId]?[this.id+"_base"]
+      local value2 = effects?[modeId]?[this.id + "_base"]
       if (value2 != null)
         value2 = this.validateValue(value2)
       if (value != null && value2 != null)
@@ -65,8 +65,7 @@ let presetsList = {
     }
   }
   COLORED_PLURAL_VALUE = {
-    getText = function (unit, effects, modeId)
-    {
+    getText = function (unit, effects, modeId) {
       if (!this.canShowForUnit(unit))
         return ""
       let value = this.getValue(unit, effects, modeId)
@@ -97,8 +96,7 @@ let effectTypeTemplate = {
   validateValue = @(value) value  //return null if no need to show effect
   canShowForUnit = @(_unit) true
 
-  valueToString = function(value, needAdditionToZero = false)
-  {
+  valueToString = function(value, needAdditionToZero = false) {
     local res = ""
     if (!::u.isString(this.measureType))
       res = countMeasure(this.measureType, value)
@@ -123,8 +121,7 @@ let effectTypeTemplate = {
     return res
   }
 
-  getValuePart = function(_unit, effects, modeId)
-  {
+  getValuePart = function(_unit, effects, modeId) {
     local value = effects?[modeId]?[this.id] ?? effects?[this.id]
     if (value == null)
       return value
@@ -132,13 +129,11 @@ let effectTypeTemplate = {
     return value
   }
 
-  getValue = function(unit, effects, modeId)
-  {
+  getValue = function(unit, effects, modeId) {
     local res = this.getValuePart(unit, effects, modeId)
     if (res == null)
       return res
-    foreach(key in upgradesKeys)
-    {
+    foreach (key in upgradesKeys) {
       let value = this.getValuePart(unit, effects?[key], modeId)
       if (value != null)
         res += value
@@ -146,8 +141,7 @@ let effectTypeTemplate = {
     return fabs(res / this.presize) > 0.5 ? res : null
   }
 
-  getText = function(unit, effects, modeId)
-  {
+  getText = function(unit, effects, modeId) {
     if (!this.canShowForUnit(unit))
       return ""
     let value = this.getValue(unit, effects, modeId)
@@ -160,8 +154,7 @@ let effectTypeTemplate = {
 
     local hasAddValues = false
     local addValueText = ""
-    foreach(key in upgradesKeys)
-    {
+    foreach (key in upgradesKeys) {
       let addVal = this.getValuePart(unit, effects?[key], modeId) ?? 0.0
       hasAddValues = hasAddValues || addVal != 0
       addValueText += " " + this.valueToString(addVal, true)
@@ -176,10 +169,9 @@ let effectTypeTemplate = {
   }
 }
 
-let function effectTypeConstructor()
-{
+let function effectTypeConstructor() {
   if (this.preset in presetsList)
-    foreach(key, value in presetsList[this.preset])
+    foreach (key, value in presetsList[this.preset])
       this[key] <- value
 }
 
@@ -298,7 +290,7 @@ enums.addTypes(effectsType, [
   { id = "auxSpeedPitchK",         preset = "PERCENT_FLOAT" }
   { id = "aaSpeedYawK",            preset = "PERCENT_FLOAT" }
   { id = "aaSpeedPitchK",          preset = "PERCENT_FLOAT" }
-  { id = "shipDistancePrecision",  measureType = "percent", validateValue = @(value) -100.0 * value }
+  { id = "shipDistancePrecision",  measureType = "percent", validateValue = @(value) - 100.0 * value }
   { id = "turnRadius",             preset = "PERCENT_FLOAT", isInverted = true }
   { id = "turnTime",               preset = "PERCENT_FLOAT", isInverted = true }
   { id = "distToLiveTorpedo",      measureType = "meters_alt" }
@@ -329,8 +321,7 @@ effectTypeConstructor)
 /**************************************** FULL DESC GENERATION ******************************************************/
 
 let startTab = ::nbsp + ::nbsp + ::nbsp + ::nbsp
-local getEffectsStackFunc = function(unit, effectsConfig, modeId)
-{
+local getEffectsStackFunc = function(unit, effectsConfig, modeId) {
   return function(res, eType) {
     let text = eType.getText(unit, effectsConfig, modeId)
     if (text.len())
@@ -339,32 +330,29 @@ local getEffectsStackFunc = function(unit, effectsConfig, modeId)
   }
 }
 
-let function hasNotZeroDiff(effects1, effects2)
-{
+let function hasNotZeroDiff(effects1, effects2) {
   if (!effects1 || !effects2)
     return false
 
-  foreach(key, value in effects2)
+  foreach (key, value in effects2)
     if (::is_numeric(value) && value != 0 && ::is_numeric(effects1?[key])
         && fabs(effects1[key] / value) <= 100)
       return true
   return false
 }
 
-let function hasNotZeroDiffSublist(list1, list2)
-{
+let function hasNotZeroDiffSublist(list1, list2) {
   if (!list1 || !list2)
     return false
-  foreach(key, effects in list1)
+  foreach (key, effects in list1)
     if (hasNotZeroDiff(effects, list2?[key]))
       return true
   return false
 }
 
-let function prepareCalculationParams(_unit, effects, modeId)
-{
+let function prepareCalculationParams(_unit, effects, modeId) {
   upgradesKeys.clear()
-  foreach(key in UPGRADES_ORDER)
+  foreach (key in UPGRADES_ORDER)
     if (hasNotZeroDiff(effects, effects?[key])
         || hasNotZeroDiff(effects?[modeId], effects?[key]?[modeId])
         || hasNotZeroDiffSublist(effects?.weaponMods, effects?[key]?.weaponMods))
@@ -373,8 +361,7 @@ let function prepareCalculationParams(_unit, effects, modeId)
 }
 
 let DESC_PARAMS = { needComment = true, curEdiff = null }
-local function getDesc(unit, effects, p = DESC_PARAMS)
-{
+local function getDesc(unit, effects, p = DESC_PARAMS) {
   p = DESC_PARAMS.__merge(p)
 
   let modeId = (p.curEdiff != null
@@ -388,8 +375,7 @@ local function getDesc(unit, effects, p = DESC_PARAMS)
     res = "\n" + loc("modifications/specs_change") + loc("ui/colon") + desc
 
   if ("weaponMods" in effects)
-    foreach(idx, w in effects.weaponMods)
-    {
+    foreach (idx, w in effects.weaponMods) {
       w.withLevel     <- effects?.withLevel?.weaponMods?[idx] ?? {}
       w.withOverdrive <- effects?.withOverdrive?.weaponMods?[idx] ?? {}
 
@@ -398,7 +384,7 @@ local function getDesc(unit, effects, p = DESC_PARAMS)
         res += "\n" + loc(w.name) + loc("ui/colon") + desc
     }
 
-  if(p.needComment && res != "")
+  if (p.needComment && res != "")
     res += "\n" + "<color=@fadedTextColor>" + loc("weaponry/modsEffectsNotification") + "</color>"
   return res
 }

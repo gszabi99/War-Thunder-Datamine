@@ -1,16 +1,20 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { Point2 } = require("dagor.math")
+let { rnd } = require("dagor.random")
+
+let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
-let class TrophyMultiAward
-{
+let class TrophyMultiAward {
   blk = null
   trophyWeak = null //req to generate tooltip id, and search trophy by award
   idxInTrophy = 0
@@ -42,23 +46,19 @@ let class TrophyMultiAward
     specialization = ["#ui/gameuiskin#item_type_crew_experts.svg", "#ui/gameuiskin#item_type_crew_aces.svg"]
   }
 
-  constructor(v_blk, trophy = null, idx_in_trophy = 0)
-  {
+  constructor(v_blk, trophy = null, idx_in_trophy = 0) {
     this.blk = v_blk
-    if (trophy)
-    {
+    if (trophy) {
       this.trophyWeak = trophy.weak()
       this.idxInTrophy = idx_in_trophy
     }
   }
 
-  function getCost()
-  {
+  function getCost() {
     return ::Cost(0, this.blk?.multiAwardsOnWorthGold ?? 0)
   }
 
-  function getName()
-  {
+  function getName() {
     let awardType = this.getAwardsType()
     let showCount = this.haveCount()
     local key = ""
@@ -74,15 +74,13 @@ let class TrophyMultiAward
                  })
   }
 
-  function getDescription(useBoldAsSmaller = false)
-  {
+  function getDescription(useBoldAsSmaller = false) {
     let resDesc = this.getResultDescription()
     if (resDesc != "")
       return resDesc
 
     local header = colorize(this.headerColor, this.getName())
-    if (this.blk?.fromLastBattle)
-    {
+    if (this.blk?.fromLastBattle) {
       local text = loc("multiAward/fromLastBattle")
       if (useBoldAsSmaller)
         text = "<b>" + text + "</b>"
@@ -92,8 +90,7 @@ let class TrophyMultiAward
     let textList = []
     let skipUnconditional = this.getAwardsType() != ""
     let count = this.blk.blockCount()
-    for(local i = 0; i < count; i++)
-    {
+    for (local i = 0; i < count; i++) {
       let text = this.getAwardText(this.blk.getBlock(i), skipUnconditional, useBoldAsSmaller)
       if (text.len())
         textList.append(text)
@@ -105,14 +102,12 @@ let class TrophyMultiAward
     return ::g_string.implode(textList, (skipUnconditional && count == 1) ? "\n" : this.listDiv)
   }
 
-  function getAwardText(awardBlk, skipUnconditional = false, useBoldAsSmaller = false)
-  {
+  function getAwardText(awardBlk, skipUnconditional = false, useBoldAsSmaller = false) {
     local curAwardType = awardBlk.getBlockName()
     if (curAwardType == "resource" && awardBlk?.resourceType == "skin")
       curAwardType = "skin"
 
-    if (curAwardType == "unlocks")
-    {
+    if (curAwardType == "unlocks") {
       if (skipUnconditional)
         return ""
 
@@ -121,8 +116,7 @@ let class TrophyMultiAward
       return ::g_string.implode(uTypes, this.listDiv)
     }
 
-    if (curAwardType == "modificationsList")
-    {
+    if (curAwardType == "modificationsList") {
       if (skipUnconditional)
         return ""
 
@@ -131,8 +125,7 @@ let class TrophyMultiAward
       return res
     }
 
-    if (curAwardType == "resource")
-    {
+    if (curAwardType == "resource") {
       if (skipUnconditional)
         return ""
 
@@ -142,8 +135,7 @@ let class TrophyMultiAward
     }
 
     local res = ""
-    if (!skipUnconditional && this.haveCount())
-    {
+    if (!skipUnconditional && this.haveCount()) {
       let count = awardBlk?.count ?? 1
       res = "".concat(
         colorize(this.goodsColor, loc("multiAward/type/" + curAwardType)),
@@ -162,8 +154,7 @@ let class TrophyMultiAward
     return res + conditions
   }
 
-  function getConditionsText(awardBlk)
-  {
+  function getConditionsText(awardBlk) {
     let condList = []
     this._addCondSpecialization(awardBlk, condList)
     this._addCondCountries(awardBlk, condList)
@@ -173,14 +164,12 @@ let class TrophyMultiAward
     return ::g_string.implode(condList, "; ")
   }
 
-  function _addCondExistingUnit(awardBlk, condList)
-  {
+  function _addCondExistingUnit(awardBlk, condList) {
     if (awardBlk?.forExistingUnits)
       condList.append(loc("conditions/unitExists"))
   }
 
-  function _addCondSpecialization(awardBlk, condList)
-  {
+  function _addCondSpecialization(awardBlk, condList) {
     if ((awardBlk?.specAce ?? false) == (awardBlk?.aceExpert ?? false))
       return
 
@@ -188,8 +177,7 @@ let class TrophyMultiAward
     condList.append(colorize(this.condColor, text))
   }
 
-  function _addCondCountries(awardBlk, condList)
-  {
+  function _addCondCountries(awardBlk, condList) {
     local countries = awardBlk % "country"
     if (!countries.len())
       return
@@ -201,8 +189,7 @@ let class TrophyMultiAward
     condList.append(text)
   }
 
-  function _addCondRanks(awardBlk, condList)
-  {
+  function _addCondRanks(awardBlk, condList) {
     local ranks = awardBlk % "ranksRange"
     if (!ranks.len())
       return
@@ -210,7 +197,7 @@ let class TrophyMultiAward
     local text = loc("shop/age") + loc("ui/colon")
     ranks = ::u.map(ranks,
                         function(val) {
-                          if (type(val) != "instance" || !(val instanceof ::Point2))
+                          if (type(val) != "instance" || !(val instanceof Point2))
                             return ""
 
                           let res = colorize(this.condColor, ::get_roman_numeral(val.x))
@@ -225,8 +212,7 @@ let class TrophyMultiAward
     condList.append(text)
   }
 
-  function _addCondUnitClass(awardBlk, condList)
-  {
+  function _addCondUnitClass(awardBlk, condList) {
     local classes = processUnitTypeArray(awardBlk % "unitClass")
     if (!classes.len())
       return
@@ -245,8 +231,7 @@ let class TrophyMultiAward
     condList.append(text)
   }
 
-  function getResultDescription()
-  {
+  function getResultDescription() {
     let resList = this.getResultPrizesList()
     if (!resList || !resList.len())
       return ""
@@ -254,8 +239,7 @@ let class TrophyMultiAward
     return ::PrizesView.getPrizesListText(resList)
   }
 
-  function getResultPrizesList()
-  {
+  function getResultPrizesList() {
     let res = []
     let resBlk = this.blk?.result
     if (!isDataBlock(resBlk))
@@ -270,44 +254,39 @@ let class TrophyMultiAward
     return res
   }
 
-  function _addResUnlocks(resBlk, resList)
-  {
+  function _addResUnlocks(resBlk, resList) {
     let unlocksBlk = resBlk?.unlocks
     if (!isDataBlock(unlocksBlk))
       return
 
-    for(local i = 0; ; i++)
-    {
+    for (local i = 0; ; i++) {
       let unlockName = unlocksBlk?["unlock" + i]
       if (!unlockName)
         break
 
-      resList.append(::DataBlockAdapter({
+      resList.append(DataBlockAdapter({
         unlock = unlockName
         gold = unlocksBlk?["gold" + i] ?? 0
       }))
     }
   }
 
-  function _addResModifications(resBlk, resList)
-  {
+  function _addResModifications(resBlk, resList) {
     this._addResModificationsFromBlock(resBlk?.modification, resList)
     this._addResModificationsFromBlock(resBlk?.premExpMul, resList)
   }
 
-  function _addResModificationsFromBlock(resModBlk, resList)
-  {
+  function _addResModificationsFromBlock(resModBlk, resList) {
     if (!resModBlk)
       return
 
-    for(local i = 0; ; i++)
-    {
+    for (local i = 0; ; i++) {
       let unitName = resModBlk?["unit" + i]
       let modName = resModBlk?["mod" + i]
       if (!unitName || !modName)
         break
 
-      resList.append(::DataBlockAdapter({
+      resList.append(DataBlockAdapter({
         unit = unitName
         mod = modName
         gold = resModBlk?["gold" + i] ?? 0
@@ -315,15 +294,13 @@ let class TrophyMultiAward
     }
   }
 
-  function _addResSpare(resBlk, resList)
-  {
+  function _addResSpare(resBlk, resList) {
     let spareBlk = resBlk?.spare
     if (!isDataBlock(spareBlk))
       return
 
     local list = []
-    for(local i = 0; ; i++)
-    {
+    for (local i = 0; ; i++) {
       let unitName = spareBlk?["unit" + i]
       if (!unitName)
         break
@@ -338,24 +315,21 @@ let class TrophyMultiAward
     if (!list.len())
       list = this.getSpareListFromOldUserlogFormat(spareBlk)
 
-    list.sort(function(a,b) { return a.spare > b.spare ? 1 : (a.spare < b.spare ? -1 : 0) })
-    foreach(data in list)
-      resList.append(::DataBlockAdapter(data))
+    list.sort(function(a, b) { return a.spare > b.spare ? 1 : (a.spare < b.spare ? -1 : 0) })
+    foreach (data in list)
+      resList.append(DataBlockAdapter(data))
   }
 
   //version 1.49.7.X  15.05.2015  - new userlogs still not on production, but soon they will come.
   //we need to support old userlogs at least month after new will come.
-  function getSpareListFromOldUserlogFormat(spareBlk)
-  {
+  function getSpareListFromOldUserlogFormat(spareBlk) {
     let list = []
     let namesMap = {} //for faster search
     let count = spareBlk.paramCount()
-    for (local i = 0; i < count; i++)
-    {
+    for (local i = 0; i < count; i++) {
       let name = spareBlk.getParamName(i)
       let gold = spareBlk.getParamValue(i)
-      if (name in namesMap)
-      {
+      if (name in namesMap) {
         let data = namesMap[name]
         data.count++
         data.gold += gold
@@ -373,15 +347,13 @@ let class TrophyMultiAward
     return list
   }
 
-  function _addResSpecialization(resBlk, resList)
-  {
+  function _addResSpecialization(resBlk, resList) {
     let qBlk = resBlk?.specialization
     if (!isDataBlock(qBlk))
       return
 
     let list = {}
-    for(local i = 0; ; i++)
-    {
+    for (local i = 0; ; i++) {
       let unitName = qBlk?["unit" + i]
       if (!unitName)
         break
@@ -401,20 +373,18 @@ let class TrophyMultiAward
       })
     }
 
-    foreach(country in shopCountriesList)
-    {
+    foreach (country in shopCountriesList) {
       if (!(country in list))
         continue
 
       let prizesList = list[country]
       prizesList.sort(this._resSpecializationSort)
-      foreach(data in prizesList)
-        resList.append(::DataBlockAdapter(data))
+      foreach (data in prizesList)
+        resList.append(DataBlockAdapter(data))
     }
   }
 
-  function _resSpecializationSort(a, b)
-  {
+  function _resSpecializationSort(a, b) {
     if (a.specialization != b.specialization)
       return a.specialization > b.specialization ? -1 : 1
     if (a.crew != b.crew)
@@ -424,27 +394,24 @@ let class TrophyMultiAward
     return 0
   }
 
-  function _addResUCurrency(_resBlk, resList)
-  {
+  function _addResUCurrency(_resBlk, resList) {
     let gold = this.blk?.gold //not mistake, it in the root now.
     if (!gold)
       return
-    resList.append(::DataBlockAdapter({ gold = gold }))
+    resList.append(DataBlockAdapter({ gold = gold }))
   }
 
-  function _addResResources(resBlk, resList)
-  {
+  function _addResResources(resBlk, resList) {
     let resourcesBlk = resBlk?.resource
     if (!isDataBlock(resourcesBlk))
       return
 
-    for(local i = 0; ; i++)
-    {
+    for (local i = 0; ; i++) {
       let resName = resourcesBlk?["resource" + i]
       if (!resName)
         break
 
-      resList.append(::DataBlockAdapter({
+      resList.append(DataBlockAdapter({
         resource = resName
         resourceType = resourcesBlk?["resourceType" + i] ?? ""
         gold = resourcesBlk?["gold" + i] ?? 0
@@ -452,14 +419,12 @@ let class TrophyMultiAward
     }
   }
 
-  function haveCount()
-  {
+  function haveCount() {
     return !this.blk?.multiAwardsOnWorthGold
   }
 
   _count = -1
-  function getCount()
-  {
+  function getCount() {
     if (!this.haveCount())
       return 0
 
@@ -469,42 +434,36 @@ let class TrophyMultiAward
   }
 
   _awardType = null
-  function getAwardsType() //return "" when multitype
-  {
+  function getAwardsType() { //return "" when multitype
     if (!this._awardType)
       this.initParams()
     return this._awardType
   }
 
-  function initParams()
-  {
+  function initParams() {
     let count = this.blk.blockCount()
     local multiType = false
     let needCount = this.haveCount()
     local awardsCount = 0
-    for(local i = 0; i < count; i++)  //country
-    {
+    for (local i = 0; i < count; i++) {  //country
       let awardBlk = this.blk.getBlock(i)
       local awardType = awardBlk.getBlockName()
       if (!(awardType in this.typesBlocks))
         continue
 
-      if (awardType == "modificationsList")
-      {
+      if (awardType == "modificationsList") {
         awardsCount += awardBlk.paramCount()
         awardType = "modification"
       }
       else
         awardsCount += awardBlk?.count ?? 0
 
-      if (awardType == "unlocks" || awardType == "resource")
-      {
+      if (awardType == "unlocks" || awardType == "resource") {
         let typesKey = (awardType == "resource") ?  "resourceType" : "type"
         let uTypes = awardBlk % typesKey
         if (uTypes.len() == 1)
           awardType = uTypes[0]
-        else if (uTypes.len() > 1)
-        {
+        else if (uTypes.len() > 1) {
           multiType = true
           if (!needCount)
             break
@@ -514,8 +473,7 @@ let class TrophyMultiAward
 
       if (!this._awardType)
         this._awardType = awardType
-      else if (this._awardType != awardType)
-      {
+      else if (this._awardType != awardType) {
         multiType = true
         if (!needCount)
           break
@@ -527,25 +485,22 @@ let class TrophyMultiAward
     this._count = awardsCount
   }
 
-  function getFullTypesList()
-  {
+  function getFullTypesList() {
     if (this._awardType && this._awardType != "") //to not force recount awardType if it not counted yet.
       return [this._awardType]
 
     let res = []
     let count = this.blk.blockCount()
-    for(local i = 0; i < count; i++)  //country
-    {
+    for (local i = 0; i < count; i++) {  //country
       let awardBlk = this.blk.getBlock(i)
       let awardType = awardBlk.getBlockName()
       if (!(awardType in this.typesBlocks))
         continue
 
-      if (awardType == "unlocks" || awardType == "resource")
-      {
+      if (awardType == "unlocks" || awardType == "resource") {
         let typesKey = (awardType == "resource") ?  "resourceType" : "type"
         let uTypes = awardBlk % typesKey
-        foreach(uType in uTypes)
+        foreach (uType in uTypes)
           ::u.appendOnce(uType, res)
         continue
       }
@@ -555,8 +510,7 @@ let class TrophyMultiAward
     return res
   }
 
-  function getTypeIcon()
-  {
+  function getTypeIcon() {
     let awardType = this.getAwardsType()
     if (awardType == "decal")
       return "#ui/gameuiskin#item_type_decal.svg"
@@ -573,42 +527,37 @@ let class TrophyMultiAward
     return "#ui/gameuiskin#log_online_shop.png"
   }
 
-  function getAvailRouletteIcons()
-  {
+  function getAvailRouletteIcons() {
     let res = []
     let typesList = this.getFullTypesList()
-    foreach(t in typesList)
+    foreach (t in typesList)
       if (t in this.rouletteIcons)
         res.extend(this.rouletteIcons[t])
     return res
   }
 
-  function getRewardImage()
-  {
+  function getRewardImage() {
     local res = this._getIconsLayer()
     res += this._getTextLayer()
     return res
   }
 
-  function getOnlyRewardImage()
-  {
+  function getOnlyRewardImage() {
     return this._getIconsLayer()
   }
 
-  function _chooseIconsForLayer(iconsList, total)
-  {
+  function _chooseIconsForLayer(iconsList, total) {
     let res = []
     let totalIcons = iconsList.len()
-    for(local i=0; i < total; i++)
+    for (local i = 0; i < total; i++)
       if (iconsList.len())
-        res.append(iconsList.remove(::math.rnd() % iconsList.len()))
+        res.append(iconsList.remove(rnd() % iconsList.len()))
       else
-        res.append(res[::math.rnd() % totalIcons])
+        res.append(res[rnd() % totalIcons])
     return res
   }
 
-  function _getIconsLayer()
-  {
+  function _getIconsLayer() {
     let awardsType = this.getAwardsType()
     let iconsList = this.getAvailRouletteIcons()
     if (!iconsList.len())
@@ -618,8 +567,7 @@ let class TrophyMultiAward
     let singleType = awardsType != ""
     let layerName = singleType ? "item_multiaward_single" : "item_multiaward"
     let chosen = this._chooseIconsForLayer(iconsList, singleType ? this.maxRouletteIconsSingleType : this.maxRouletteIcons)
-    for(local idx = chosen.len() - 1; idx >= 0; idx--)
-    {
+    for (local idx = chosen.len() - 1; idx >= 0; idx--) {
       let layerCfg = ::LayersIcon.findLayerCfg(layerName + idx)
       if (!layerCfg)
         continue
@@ -630,8 +578,7 @@ let class TrophyMultiAward
     return res
   }
 
-  function _getTextLayer()
-  {
+  function _getTextLayer() {
     let layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
     if (!layerCfg)
       return ""

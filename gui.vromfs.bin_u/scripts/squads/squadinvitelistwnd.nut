@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil } = require("math")
 
-::gui_handlers.squadInviteListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.squadInviteListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType             = handlerType.MODAL
   sceneBlkName        = "%gui/squads/squadInvites.blk"
 
@@ -33,8 +33,7 @@ let { ceil } = require("math")
 
   optionsObj = null
 
-  static function open(alignObj)
-  {
+  static function open(alignObj) {
     if (!this.canOpen())
       return null
 
@@ -48,16 +47,14 @@ let { ceil } = require("math")
     return ::handlersManager.loadHandler(::gui_handlers.squadInviteListWnd, params)
   }
 
-  static function canOpen()
-  {
+  static function canOpen() {
     return hasFeature("Squad") && hasFeature("SquadWidget")
       && ::g_squad_manager.isInSquad()
       && (::g_squad_manager.canChangeSquadSize(false) || ::g_squad_manager.getInvitedPlayers().len() > 0
           || ::g_squad_manager.getApplicationsToSquad().len() > 0)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.optionsObj = this.scene.findObject("options_block")
 
     this.updateSquadSizeOption()
@@ -66,19 +63,16 @@ let { ceil } = require("math")
     this.updateApplicationsList()
   }
 
-  function updateInviteesList()
-  {
+  function updateInviteesList() {
     this.updateList(this.CONFIG_PLAYERS_LISTS.invites)
   }
 
-  function updateApplicationsList()
-  {
+  function updateApplicationsList() {
      this.updateList(this.CONFIG_PLAYERS_LISTS.applications)
     ::g_squad_manager.markAllApplicationsSeen()
   }
 
-  function updateList(configPlayersList)
-  {
+  function updateList(configPlayersList) {
     let playersList = configPlayersList.playersList()
     let listObj = this.scene.findObject(configPlayersList.listObjId)
     let viewData = this.getMembersViewData(playersList)
@@ -91,12 +85,10 @@ let { ceil } = require("math")
 
     this.guiScene.replaceContentFromText(listObj, viewBlk, viewBlk.len(), this)
     local i = 0
-    foreach(memberData in playersList)
-    {
+    foreach (memberData in playersList) {
       let inviteObjId = "squad_invite_" + memberData.uid
       let inviteObj = listObj.findObject(inviteObjId)
-      if (checkObj(inviteObj))
-      {
+      if (checkObj(inviteObj)) {
         if (::u.isEqual(selectedObjId, inviteObjId) && isFocused)
           selectedIdx = i
         inviteObj.setUserData(memberData)
@@ -111,10 +103,9 @@ let { ceil } = require("math")
     this.updatePosition()
   }
 
-  function getMembersViewData(membersData)
-  {
+  function getMembersViewData(membersData) {
     let items = []
-    foreach(memberData in membersData)
+    foreach (memberData in membersData)
       items.append(
         {
           id = memberData.uid
@@ -125,8 +116,7 @@ let { ceil } = require("math")
     return { items = items }
   }
 
-  function updateSquadSizeOption()
-  {
+  function updateSquadSizeOption() {
     let isAvailable = ::g_squad_manager.canChangeSquadSize(false)
     this.optionsObj.show(isAvailable)
     this.optionsObj.enable(isAvailable)
@@ -145,8 +135,7 @@ let { ceil } = require("math")
     optionObj.enable(::g_squad_manager.canChangeSquadSize())
   }
 
-  function updateReceiveApplicationsOption()
-  {
+  function updateReceiveApplicationsOption() {
     let isAvailable = ::g_squad_manager.canChangeReceiveApplications(false)
     let obj = this.showSceneBtn("receive_applications", isAvailable)
     if (!isAvailable || !obj)
@@ -156,8 +145,7 @@ let { ceil } = require("math")
     obj.enable(::g_squad_manager.canChangeReceiveApplications())
   }
 
-  function updateSize(listObj, playersList)
-  {
+  function updateSize(listObj, playersList) {
     if (!checkObj(listObj))
       return
 
@@ -170,32 +158,27 @@ let { ceil } = require("math")
     listObj.height = format(sizeFormat, rows)
   }
 
-  function updatePosition()
-  {
+  function updatePosition() {
     let nestObj = this.scene.findObject(this.NEST_OBJ_ID)
     if (checkObj(nestObj))
       this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, nestObj)
   }
 
-  function checkActiveForDelayedAction()
-  {
+  function checkActiveForDelayedAction() {
     return this.isSceneActive()
   }
 
-  function onMemberClicked(obj)
-  {
+  function onMemberClicked(obj) {
     ::g_squad_utils.showMemberMenu(obj)
   }
 
-  function onSquadSizeChange(obj)
-  {
+  function onSquadSizeChange(obj) {
     let idx = obj.getValue()
     if (idx in ::g_squad_manager.squadSizesList)
       ::g_squad_manager.setSquadSize(::g_squad_manager.squadSizesList[idx].value)
   }
 
-  function onReceiveApplications(obj)
-  {
+  function onReceiveApplications(obj) {
     if (!obj)
       return
     let value = obj.getValue()
@@ -212,18 +195,15 @@ let { ceil } = require("math")
   }
 
   /**event handlers**/
-  function onEventSquadInvitesChanged(_params)
-  {
+  function onEventSquadInvitesChanged(_params) {
     this.doWhenActiveOnce("updateInviteesList")
   }
 
-  function onEventSquadApplicationsChanged(_params)
-  {
+  function onEventSquadApplicationsChanged(_params) {
     this.doWhenActiveOnce("updateApplicationsList")
   }
 
-  function onEventSquadPropertiesChanged(_params)
-  {
+  function onEventSquadPropertiesChanged(_params) {
     this.doWhenActiveOnce("updateReceiveApplicationsOption")
   }
 }

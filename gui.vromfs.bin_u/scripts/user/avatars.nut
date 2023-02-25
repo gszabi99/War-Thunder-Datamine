@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -14,15 +15,13 @@ let DEFAULT_PILOT_ICON = "cardicon_default"
 local icons = null
 local allowedIcons = null
 
-let function getIcons()
-{
+let function getIcons() {
   if (!icons)
     icons = ::g_unlocks.getUnlocksByTypeInBlkOrder("pilot").map(@(u) u.id)
   return icons
 }
 
-let function getAllowedIcons()
-{
+let function getAllowedIcons() {
   if (!allowedIcons)
     allowedIcons = getIcons().filter(@(unlockId) ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId)
       && isUnlockVisible(::g_unlocks.getUnlockById(unlockId)))
@@ -31,8 +30,7 @@ let function getAllowedIcons()
 
 let getIconById = @(id) getIcons()?[id] ?? DEFAULT_PILOT_ICON
 
-let function openChangePilotIconWnd(cb, handler)
-{
+let function openChangePilotIconWnd(cb, handler) {
   let pilotsOpt = ::get_option(::USEROPT_PILOT)
   let config = {
     options = pilotsOpt.items
@@ -42,8 +40,7 @@ let function openChangePilotIconWnd(cb, handler)
   ::gui_choose_image(config, cb, handler)
 }
 
-let function invalidateIcons()
-{
+let function invalidateIcons() {
   icons = null
   allowedIcons = null
   let guiScene = ::get_cur_gui_scene()

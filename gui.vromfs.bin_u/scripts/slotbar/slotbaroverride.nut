@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -45,15 +46,14 @@ let function getMissionEditSlotbarBlk(missionName) {
 let function calcSlotbarOverrideByMissionName(missionName, event = null) {
   local res = null
   let gmEditSlotbar = event?.mission_decl.editSlotbar
-  let editSlotbar = gmEditSlotbar ? ::build_blk_from_container(gmEditSlotbar)//!!!FIX ME Will be better to turn editSlotbar data block from missions config into table
+  let editSlotbar = gmEditSlotbar ? ::build_blk_from_container(gmEditSlotbar) //!!!FIX ME Will be better to turn editSlotbar data block from missions config into table
     : getMissionEditSlotbarBlk(missionName)
   if (!editSlotbar)
     return res
 
   res = []
   local crewId = -1 //negative crews are invalid, so we prevent any actions with such crews.
-  foreach(country in shopCountriesList)
-  {
+  foreach (country in shopCountriesList) {
     let countryBlk = editSlotbar?[country]
     if (!isDataBlock(countryBlk) || !countryBlk.blockCount()
       || !::is_country_available(country))
@@ -61,8 +61,7 @@ let function calcSlotbarOverrideByMissionName(missionName, event = null) {
 
     let countryData = makeCrewsCountryData(country)
     res.append(countryData)
-    for(local i = 0; i < countryBlk.blockCount(); i++)
-    {
+    for (local i = 0; i < countryBlk.blockCount(); i++) {
       let crewBlk = countryBlk.getBlock(i)
       addCrewToCountryData(countryData, crewId--, res.len() - 1, crewBlk.getBlockName())
     }
@@ -78,8 +77,7 @@ let function getSlotbarOverrideCountriesByMissionName(missionName) {
   if (!editSlotbar)
     return res
 
-  foreach(country in shopCountriesList)
-  {
+  foreach (country in shopCountriesList) {
     let countryBlk = editSlotbar?[country]
     if (isDataBlock(countryBlk) && countryBlk.blockCount()
       && ::is_country_available(country))

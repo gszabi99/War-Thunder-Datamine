@@ -1,11 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-::WwFormation <- class
-{
+::WwFormation <- class {
   name = ""
   owner = null
   units = null
@@ -22,8 +22,7 @@ from "%scripts/dagui_library.nut" import *
   overrideIconId = ""
   loadedArmyType = ""
 
-  function clear()
-  {
+  function clear() {
     this.owner?.clear()
     this.units?.clear()
 
@@ -34,27 +33,23 @@ from "%scripts/dagui_library.nut" import *
     this.artilleryAmmo = null
   }
 
-  function getArmyGroup()
-  {
+  function getArmyGroup() {
     if (!this.armyGroup)
       this.armyGroup = ::g_world_war.getArmyGroupByArmy(this)
     return this.armyGroup
   }
 
-  function getView()
-  {
+  function getView() {
     if (!this.armyView)
       this.armyView = ::WwArmyView(this)
     return this.armyView
   }
 
-  function getUnitType()
-  {
+  function getUnitType() {
     return this.unitType
   }
 
-  function getUnits(excludeInfantry = false)
-  {
+  function getUnits(excludeInfantry = false) {
     this.updateUnits()
     if (excludeInfantry)
       return ::u.filter(this.units, function (unit) {
@@ -65,51 +60,42 @@ from "%scripts/dagui_library.nut" import *
 
   function updateUnits() {} //default func
 
-  function showArmyGroupText()
-  {
+  function showArmyGroupText() {
     return false
   }
 
-  function getClanId()
-  {
+  function getClanId() {
     let group = this.getArmyGroup()
     return group ? group.getClanId() : ""
   }
 
-  function getClanTag()
-  {
+  function getClanTag() {
     let group = this.getArmyGroup()
     return group ? group.getClanTag() : ""
   }
 
-  function isBelongsToMyClan()
-  {
+  function isBelongsToMyClan() {
     let group = this.getArmyGroup()
     return group ? group.isBelongsToMyClan() : false
   }
 
-  function getArmySide()
-  {
+  function getArmySide() {
     return this.owner.getSide()
   }
 
-  function isMySide(side)
-  {
+  function isMySide(side) {
     return this.getArmySide() == side
   }
 
-  function getArmyGroupIdx()
-  {
+  function getArmyGroupIdx() {
     return this.owner.getArmyGroupIdx()
   }
 
-  function getArmyCountry()
-  {
+  function getArmyCountry() {
     return this.owner.getCountry()
   }
 
-  function getUnitsNameArray()
-  {
+  function getUnitsNameArray() {
     let res = []
     foreach (unit in this.units)
       res.append(unit.getFullName())
@@ -117,110 +103,89 @@ from "%scripts/dagui_library.nut" import *
     return res
   }
 
-  function hasManageAccess()
-  {
+  function hasManageAccess() {
     let group = this.getArmyGroup()
     return group ? group.hasManageAccess() : false
   }
 
-  function hasObserverAccess()
-  {
+  function hasObserverAccess() {
     let group = this.getArmyGroup()
     return group ? group.hasObserverAccess() : false
   }
 
-  function isEntrenched()
-  {
+  function isEntrenched() {
     return false
   }
 
-  function isInBattle()
-  {
+  function isInBattle() {
     return ::g_world_war.getBattleForArmy(this) != null
   }
 
-  function isMove()
-  {
+  function isMove() {
     return false
   }
 
-  function setName(nameText)
-  {
+  function setName(nameText) {
     this.name = nameText
   }
 
-  function setFormationID(id)
-  {
+  function setFormationID(id) {
     this.formationId = id
   }
 
-  function getFormationID()
-  {
+  function getFormationID() {
     return this.formationId
   }
 
-  function setUnitType(wwUnitTypeCode)
-  {
+  function setUnitType(wwUnitTypeCode) {
     this.unitType = wwUnitTypeCode
   }
 
-  function getMoral()
-  {
+  function getMoral() {
     return this.morale
   }
 
-  function getPosition()
-  {
+  function getPosition() {
     return null
   }
 
-  function isFormation()
-  {
+  function isFormation() {
     return true
   }
 
-  function hasStrike()
-  {
+  function hasStrike() {
     return this.artilleryAmmo ? this.artilleryAmmo.hasStrike() : null
   }
 
-  function hasAmmo()
-  {
+  function hasAmmo() {
     return this.getAmmoCount() > 0
   }
 
-  function getAmmoCount()
-  {
+  function getAmmoCount() {
     return this.artilleryAmmo ? this.artilleryAmmo.getAmmoCount() : 0
   }
 
-  function getNextAmmoRefillTime()
-  {
+  function getNextAmmoRefillTime() {
     return this.artilleryAmmo ? this.artilleryAmmo.getNextAmmoRefillTime() : -1
   }
 
-  function getMaxAmmoCount()
-  {
+  function getMaxAmmoCount() {
     return this.artilleryAmmo ? this.artilleryAmmo.getMaxAmmoCount() : 0
   }
 
-  function getMapObjectName()
-  {
+  function getMapObjectName() {
     return this.mapObjectName
   }
 
-  function getOverrideIcon()
-  {
+  function getOverrideIcon() {
     if (::u.isEmpty(this.overrideIconId))
       return null
 
     return ::ww_get_army_override_icon(this.overrideIconId, this.loadedArmyType, this.hasArtilleryAbility)
   }
 
-  function getOverrideUnitType()
-  {
-    switch (this.overrideIconId)
-    {
+  function getOverrideUnitType() {
+    switch (this.overrideIconId) {
       case "infantry":
         return ::g_ww_unit_type.INFANTRY.code
       case "helicopter":
@@ -230,13 +195,11 @@ from "%scripts/dagui_library.nut" import *
     return null
   }
 
-  function setMapObjectName(mapObjName)
-  {
+  function setMapObjectName(mapObjName) {
     this.mapObjectName = mapObjName
   }
 
-  function getUnitsNumber()
-  {
+  function getUnitsNumber() {
     local count = 0
     foreach (unit in this.units)
       count += unit.getCount()

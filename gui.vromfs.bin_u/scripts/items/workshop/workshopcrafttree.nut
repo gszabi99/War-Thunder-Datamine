@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -19,14 +20,12 @@ let DEFAULT_BRANCH_CONFIG = {
   itemsIdList = {}
 }
 
-let function getHeaderItems(branchBlk)
-{
+let function getHeaderItems(branchBlk) {
   let headerItems = branchBlk?.headerItems
   return headerItems != null ? (headerItems % "headerItem") : []
 }
 
-let function getArrowConfigByItems(item, reqItem)
-{
+let function getArrowConfigByItems(item, reqItem) {
   let reqItemPos = reqItem.posXY
   let itemPos = item.posXY
   return {
@@ -42,7 +41,7 @@ let function getArrowConfigByItems(item, reqItem)
 }
 
 let function addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig) {
-  if (arrowConfig.sizeY != 0) {//not horizontal arrow
+  if (arrowConfig.sizeY != 0) { //not horizontal arrow
     let reqItemId = arrowConfig.reqItemId
     reqItemsWithDownOutArrows[reqItemId] <-
       (reqItemsWithDownOutArrows?[reqItemId] ?? []).append(arrowConfig.itemId)
@@ -76,14 +75,13 @@ let function addItemConfigToTree(treeRows, bodyIdx, posX, posY, itemConfig) {
   appendOnce(itemConfig, treeRows[bodyIdx][posY][posX], true, @(arrValue, value) arrValue.id == value.id)
 }
 
-let function generateRows(branchBlk, treeRows, treeBlk)
-{
+let function generateRows(branchBlk, treeRows, treeBlk) {
   let branchItems = {}
   let textBlocks = []
   let notFoundReqForItems = {}
   local minPosX = null
   local maxPosX = null
-  let resourcesInColumn = {}//!!!FIX Looks like counter of resources by column, but actually contains flag for column which has resources.
+  let resourcesInColumn = {} //!!!FIX Looks like counter of resources by column, but actually contains flag for column which has resources.
   local reqItemsWithDownOutArrows = {}
   let bodyIdx = branchBlk?.bodyItemIdx ?? 0
   let hasItemBackground = ((treeBlk % "bodyTiledBackImage")?[bodyIdx] ?? "") == ""
@@ -91,8 +89,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
   if (treeRows.len() < bodyIdx + 1)
     treeRows.resize(bodyIdx + 1, array(0, null))
 
-  for(local i = 0; i < branchBlk.blockCount(); i++)
-  {
+  for (local i = 0; i < branchBlk.blockCount(); i++) {
     let iBlk = branchBlk.getBlock(i)
     local id = iBlk.getBlockName()
     let shouldRemoveBlankRows = branchBlk?.shouldRemoveBlankRows ?? false
@@ -140,8 +137,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
     }
 
     foreach (reqListId in ["reqItemForCrafting", "reqItemForDisplaying",
-      "reqItemExistsForDisplaying", "reqItemForIdentification"])
-    {
+      "reqItemExistsForDisplaying", "reqItemForIdentification"]) {
       let reqItems = getReqItemsArray(iBlk % reqListId)
       itemsIdList.__update(reqItems.fullItemsIdList)
       itemConfig[reqListId] = reqItems.itemsIdArray
@@ -151,10 +147,10 @@ let function generateRows(branchBlk, treeRows, treeBlk)
     let posY = itemConfig.posXY.y.tointeger()
     minPosX = min(minPosX ?? posX, posX)
     maxPosX = max(maxPosX ?? posX, posX)
-    if (itemConfig.showResources && resourcesInColumn?[posX-1] == null)
-      resourcesInColumn[posX-1] <- 1
+    if (itemConfig.showResources && resourcesInColumn?[posX - 1] == null)
+      resourcesInColumn[posX - 1] <- 1
 
-    foreach(reqItemId in itemConfig.reqItems) {
+    foreach (reqItemId in itemConfig.reqItems) {
       if (branchItems?[reqItemId] != null) {
         let arrowConfig = getArrowConfigByItems(itemConfig, branchItems[reqItemId])
         reqItemsWithDownOutArrows = addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig)
@@ -170,27 +166,27 @@ let function generateRows(branchBlk, treeRows, treeBlk)
         treeRows[bodyIdx].append(array(posX, null))
     }
 
-    if (treeRows[bodyIdx][posY-1].len() < posX)
-      treeRows[bodyIdx][posY-1].resize(posX, null)
+    if (treeRows[bodyIdx][posY - 1].len() < posX)
+      treeRows[bodyIdx][posY - 1].resize(posX, null)
 
     branchItems[id] <- itemConfig
     itemsIdList[id] <- true
-    addItemConfigToTree(treeRows, bodyIdx, posX-1, posY-1, itemConfig)
+    addItemConfigToTree(treeRows, bodyIdx, posX - 1, posY - 1, itemConfig)
   }
 
   let searchReqForItems = clone notFoundReqForItems
-  foreach(reqItemId, itemConfigs in searchReqForItems) {
+  foreach (reqItemId, itemConfigs in searchReqForItems) {
     if (!(reqItemId in branchItems))
       continue
 
-    foreach(itemConfig in itemConfigs) {
+    foreach (itemConfig in itemConfigs) {
       let arrowConfig = getArrowConfigByItems(itemConfig, branchItems[reqItemId])
       reqItemsWithDownOutArrows = addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig)
       itemConfig.arrows.append(arrowConfig)
 
       branchItems[itemConfig.id] = itemConfig
       itemsIdList[itemConfig.id] <- true
-      addItemConfigToTree(treeRows, bodyIdx, itemConfig.posXY.x-1, itemConfig.posXY.y-1, itemConfig)
+      addItemConfigToTree(treeRows, bodyIdx, itemConfig.posXY.x - 1, itemConfig.posXY.y - 1, itemConfig)
     }
     notFoundReqForItems.rawdelete(reqItemId)
   }
@@ -212,7 +208,7 @@ let function generateRows(branchBlk, treeRows, treeBlk)
         itemConfig.arrows[arrowIdx].isOutMultipleArrow = true
         branchItems[itemId] = itemConfig
         itemsIdList[itemId] <- true
-        addItemConfigToTree(treeRows, bodyIdx, itemConfig.posXY.x-1, itemConfig.posXY.y-1, itemConfig)
+        addItemConfigToTree(treeRows, bodyIdx, itemConfig.posXY.x - 1, itemConfig.posXY.y - 1, itemConfig)
       }
     }
   }
@@ -242,20 +238,18 @@ let function generateRows(branchBlk, treeRows, treeBlk)
   }
 }
 
-let function getAllowableResources(resourcesBlk, resourcesName)
-{
+let function getAllowableResources(resourcesBlk, resourcesName) {
   if (resourcesBlk == null)
     return null
 
   let allowableResources = {}
-  foreach(res in (resourcesBlk % resourcesName))
+  foreach (res in (resourcesBlk % resourcesName))
     allowableResources[::to_integer_safe(res, res, false)] <- true
 
   return allowableResources
 }
 
-let function getCraftResult(treeBlk)
-{
+let function getCraftResult(treeBlk) {
   let craftResult = treeBlk?.craftResult
   if (!craftResult || !craftResult?.item)
     return null
@@ -267,12 +261,10 @@ let function getCraftResult(treeBlk)
   }
 }
 
-let function generateTreeConfig(blk)
-{
+let function generateTreeConfig(blk) {
   let branches = []
   local treeRowsByBodies = []
-  foreach(branchBlk in blk % "treeBlock")
-  {
+  foreach (branchBlk in blk % "treeBlock") {
     let configByBranch = generateRows(branchBlk, treeRowsByBodies, blk)
     treeRowsByBodies = configByBranch.treeRows
     branches.append(DEFAULT_BRANCH_CONFIG.__merge(configByBranch.branch))
@@ -325,7 +317,7 @@ let function generateTreeConfig(blk)
      curBodyConfig.hasBranchesTitles = hasBranchesTitlesInBody || hasBranchTitle
      curBodyConfig.treeColumnsCount += branch.itemsCountX
      curBodyConfig.textBlocks.extend(branch.textBlocks)
-     curBodyConfig.availableBranchByColumns[branch.minPosX-1] <- true
+     curBodyConfig.availableBranchByColumns[branch.minPosX - 1] <- true
      curBodyConfig.resourcesInColumn.__update(branch.resourcesInColumn)
      curBodyConfig.button = branch.buttonConfig ?? curBodyConfig.button
   }

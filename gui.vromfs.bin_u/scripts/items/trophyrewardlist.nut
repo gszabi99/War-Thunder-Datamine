@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {})
-{
+::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {}) {
   let rewardsArray = params?.rewardsArray
   if (!rewardsArray || !rewardsArray.len())
     return
@@ -17,8 +17,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   ::gui_start_modal_wnd(::gui_handlers.trophyRewardsList, params)
 }
 
-::gui_handlers.trophyRewardsList <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.trophyRewardsList <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyRewardsList.blk"
 
@@ -27,8 +26,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   infoHandler = null
 
-  function initScreen()
-  {
+  function initScreen() {
     let listObj = this.scene.findObject("items_list")
     if (!checkObj(listObj))
       return this.goBack()
@@ -48,31 +46,27 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::move_mouse_on_child_by_value(listObj)
   }
 
-  function fillList(listObj)
-  {
+  function fillList(listObj) {
     let data = this.getItemsImages()
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
-  function getItemsImages()
-  {
+  function getItemsImages() {
     local data = ""
-    foreach(_idx, reward in this.rewardsArray)
+    foreach (_idx, reward in this.rewardsArray)
       data += ::trophyReward.getImageByConfig(reward, false, "trophy_reward_place", true)
 
     return data
   }
 
-  function updateItemInfo(obj)
-  {
+  function updateItemInfo(obj) {
     let val = obj.getValue()
     let reward_config = this.rewardsArray[val]
     let rewardType = ::trophyReward.getType(reward_config)
     let isItem = ::trophyReward.isRewardItem(rewardType)
     this.infoHandler?.setHandlerVisible(isItem)
     let prizeInfo = this.showSceneBtn("prize_info", !isItem)
-    if (isItem)
-    {
+    if (isItem) {
       if (!this.infoHandler)
         return
 
@@ -84,8 +78,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
   }
 
-  function onEventItemsShopUpdate(_p)
-  {
+  function onEventItemsShopUpdate(_p) {
     let listObj = this.scene.findObject("items_list")
     if (!checkObj(listObj))
       return

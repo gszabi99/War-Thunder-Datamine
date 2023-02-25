@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {set_allowed_controls_mask} = require("%rGui/globals/system.nut")
+let { set_allowed_controls_mask } = require("%rGui/globals/system.nut")
 let { isInFlight } = require("globalState.nut")
 let { canWriteToChat, inputChatVisible } = require("hudChatState.nut")
 let { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")

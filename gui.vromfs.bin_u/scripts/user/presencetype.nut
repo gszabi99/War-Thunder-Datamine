@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { get_game_mode } = require("mission")
 
 enum presenceCheckOrder {
   IN_GAME_WW
@@ -67,7 +69,7 @@ enums.addTypesByGlobalName("g_presence_type", {
                     || ::SessionLobby.isInRoom())
     canInviteToWWBattle = false
     updateParams = function(params) {
-      params.gameMod <- ::get_game_mode()
+      params.gameMod <- get_game_mode()
       params.eventName <- ::events.getEventEconomicName(::SessionLobby.getRoomEvent())
       params.country <- profileCountrySq.value
     }
@@ -165,7 +167,7 @@ enums.addTypesByGlobalName("g_presence_type", {
 ::g_presence_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
 ::g_presence_type.getCurrent <- function getCurrent() {
-  foreach(presenceType in this.types)
+  foreach (presenceType in this.types)
     if (presenceType.isMatch())
       return presenceType
   return this.IDLE

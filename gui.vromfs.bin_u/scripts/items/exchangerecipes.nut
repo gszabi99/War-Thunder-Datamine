@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let DataBlock  = require("DataBlock")
+let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let asyncActions = require("%sqStdLibs/helpers/asyncActions.nut")
@@ -41,7 +44,7 @@ let defaultLocIdsList = {
   markTooltipPrefix         = "item/recipes/markTooltip/"
   markDescPrefix            = "item/recipes/markDesc/"
   markMsgBoxCantUsePrefix   = "msgBox/craftProcess/cant/"
-  msgBoxConfirmWhithItemName= null
+  msgBoxConfirmWhithItemName = null
   actionButton              = null
 }
 
@@ -78,8 +81,7 @@ local ExchangeRecipes = class {
   allowableComponents = null
   showRecipeAsProduct = null
 
-  constructor(params)
-  {
+  constructor(params) {
     this.idx = lastRecipeIdx++
     this.generatorId = params.generatorId
     this.isFake = params?.isFake ?? false
@@ -106,8 +108,7 @@ local ExchangeRecipes = class {
     this.loadStateRecipe()
   }
 
-  function updateComponents()
-  {
+  function updateComponents() {
     let componentsArray = (clone this.initedComponents).extend(this.reqItems)
     let componentsCount = componentsArray.len()
     this.isUsable = componentsCount > 0
@@ -120,8 +121,7 @@ local ExchangeRecipes = class {
     let items = ::ItemsManager.getInventoryList(itemType.ALL,
       @(item) isInArray(item.id, componentItemdefArray))
     this.hasChestInComponents = u.search(items, @(i) i.iType == itemType.CHEST) != null
-    foreach (component in componentsArray)
-    {
+    foreach (component in componentsArray) {
       let curQuantity = items.filter(@(i) i.id == component.itemdefid).reduce(
         @(res, item) res + item.amount, 0)
       let reqQuantity = component.quantity
@@ -156,13 +156,11 @@ local ExchangeRecipes = class {
     }
   }
 
-  function isEnabled()
-  {
+  function isEnabled() {
     return this.requirement == null || hasFeature(this.requirement)
   }
 
-  function hasComponent(itemdefid)
-  {
+  function hasComponent(itemdefid) {
     foreach (c in this.components)
       if (c.itemdefId == itemdefid)
         return true
@@ -171,14 +169,12 @@ local ExchangeRecipes = class {
 
   isVisibleComponent = @(component) this.allowableComponents == null || (component.itemdefid in this.allowableComponents)
 
-  function getExchangeMarkup(componentItem, params)
-  {
+  function getExchangeMarkup(componentItem, params) {
     let list = []
-    foreach (component in this.visibleComponents)
-    {
+    foreach (component in this.visibleComponents) {
       if (component.itemdefId == componentItem.id)
         continue
-      list.append(::DataBlockAdapter({
+      list.append(DataBlockAdapter({
         item  = component.itemdefId
         commentText = this.getComponentQuantityText(component)
       }))
@@ -186,8 +182,7 @@ local ExchangeRecipes = class {
     return ::PrizesView.getPrizesListView(list, params, false)
   }
 
-  function getItemsListForPrizesView(params = null)
-  {
+  function getItemsListForPrizesView(params = null) {
     if (params?.canOpenForGold ?? false)
       return [{ gold = this.getOpenCost(params?.componentToHide)?.gold ?? 0 }]
     let res = []
@@ -195,44 +190,39 @@ local ExchangeRecipes = class {
     foreach (component in this.components)
       if (component.itemdefId != params?.componentToHide?.id
        && (visibleResources == null || visibleResources?[component.itemdefId]))
-        res.append(::DataBlockAdapter({
+        res.append(DataBlockAdapter({
           item  = component.itemdefId
           commentText = this.getComponentQuantityText(component, params)
         }))
     return res
   }
 
-  function getTextMarkup(params = null)
-  {
+  function getTextMarkup(params = null) {
     if (!params)
       params = {}
-    params = params.__merge({isLocked = this.isRecipeLocked()})
+    params = params.__merge({ isLocked = this.isRecipeLocked() })
 
     let list = this.getItemsListForPrizesView(params)
     return ::PrizesView.getPrizesListView(list, params, false)
   }
 
-  function getText(params = null)
-  {
+  function getText(params = null) {
     let list = this.getItemsListForPrizesView(params)
     let headerFunc = params?.header ? @(...) params.header : null
     return ::PrizesView.getPrizesListText(list, headerFunc, false)
   }
 
-  function hasCraftTime()
-  {
+  function hasCraftTime() {
     return this.craftTime > 0
   }
 
-  function getCraftTime()
-  {
+  function getCraftTime() {
     return this.craftTime
   }
 
-  function getCraftTimeText()
-  {
+  function getCraftTimeText() {
     return loc(this.getLocIdsList().craftTime,
-      {time = loc("icon/hourglass") + " " + time.secondsToString(this.craftTime, true, true)})
+      { time = loc("icon/hourglass") + " " + time.secondsToString(this.craftTime, true, true) })
   }
 
   getItemMarkupParams = @() {
@@ -244,8 +234,7 @@ local ExchangeRecipes = class {
      shouldHideAdditionalAmmount = true
   }
 
-  function getIconedMarkup()
-  {
+  function getIconedMarkup() {
     let itemsViewData = []
     if (this.showRecipeAsProduct != null) {
       let item = ::ItemsManager.findItemById(this.showRecipeAsProduct.tointeger())
@@ -254,9 +243,9 @@ local ExchangeRecipes = class {
           count = -1
           craftTimerText = item.getAdditionalTextInAmmount(false)
       })))
-    } else
-      foreach (component in this.visibleComponents)
-      {
+    }
+    else
+      foreach (component in this.visibleComponents) {
         let item = ::ItemsManager.findItemById(component.itemdefId)
         if (item)
           itemsViewData.append(item.getViewData(this.getItemMarkupParams().__update({
@@ -270,8 +259,7 @@ local ExchangeRecipes = class {
 
   getVisibleMarkupComponents = @() this.showRecipeAsProduct != null ? 1 : this.visibleComponents.len()
 
-  function getMarkIcon()
-  {
+  function getMarkIcon() {
     let curMark = this.getMark()
     if (curMark == MARK_RECIPE.NONE)
       return ""
@@ -286,8 +274,7 @@ local ExchangeRecipes = class {
     return ""
   }
 
-  function getMarkLocIdByPath(path)
-  {
+  function getMarkLocIdByPath(path) {
     let curMark = this.getMark()
     if (curMark == MARK_RECIPE.NONE)
       return ""
@@ -304,8 +291,7 @@ local ExchangeRecipes = class {
   getMarkText = @() this.getMarkLocIdByPath(this.getLocIdsList().markDescPrefix)
   getMarkTooltip = @() this.getMarkLocIdByPath(this.getLocIdsList().markTooltipPrefix)
 
-  function getMarkDescMarkup()
-  {
+  function getMarkDescMarkup() {
     let title = this.getMarkText()
     if (title == "")
       return ""
@@ -349,18 +335,15 @@ local ExchangeRecipes = class {
     })
   }
 
-  static function getRequirementsMarkup(recipes, componentItem, params)
-  {
+  static function getRequirementsMarkup(recipes, componentItem, params) {
     return this._getRequirements(recipes, componentItem, params, true)
   }
 
-  static function getRequirementsText(recipes, componentItem, params)
-  {
+  static function getRequirementsText(recipes, componentItem, params) {
     return this._getRequirements(recipes, componentItem, params, false)
   }
 
-  static function _getRequirements(recipes, componentItem, params, shouldReturnMarkup)
-  {
+  static function _getRequirements(recipes, componentItem, params, shouldReturnMarkup) {
     let showOnlyCraftTime = componentItem.showAllowableRecipesOnly()
     let craftTimeText = this.getRecipesCraftTimeText(recipes)
     if (showOnlyCraftTime) {
@@ -380,15 +363,13 @@ local ExchangeRecipes = class {
     local recipesToShow = recipes
     if (!hasFakeRecipesInList)
       recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
-    if (!isFullRecipesList)
-    {
+    if (!isFullRecipesList) {
       recipesToShow = u.filter(recipes, @(r) r.isUsable && !r.isRecipeLocked())
       if (recipesToShow.len() > maxRecipes)
         recipesToShow = recipesToShow.slice(0, maxRecipes)
       else if (recipesToShow.len() < maxRecipes)
-        foreach(r in recipes)
-          if (!r.isUsable && !r.isRecipeLocked())
-          {
+        foreach (r in recipes)
+          if (!r.isUsable && !r.isRecipeLocked()) {
             recipesToShow.append(r)
             if (recipesToShow.len() == maxRecipes)
               break
@@ -398,11 +379,10 @@ local ExchangeRecipes = class {
     let needShowHeader = params?.needShowHeader ?? true
     local headerFirst = ""
     local headerNext = ""
-    if (needShowHeader)
-    {
-      foreach (recipe in recipesToShow){
+    if (needShowHeader) {
+      foreach (recipe in recipesToShow) {
         let multipleExtraItems = recipe.visibleComponents.filter(
-          @(c) c.itemdefId!=recipe.generatorId && componentItem.id!=c.itemdefId )
+          @(c) c.itemdefId != recipe.generatorId && componentItem.id != c.itemdefId)
         isMultiExtraItems  = isMultiExtraItems || (multipleExtraItems.len() > 1)
       }
 
@@ -419,8 +399,7 @@ local ExchangeRecipes = class {
     params.canOpenForGold <- componentItem.canOpenForGold()
 
     let res = []
-    foreach (recipe in recipesToShow)
-    {
+    foreach (recipe in recipesToShow) {
       if (needShowHeader)
         params.header <- !res.len() ? headerFirst : headerNext
 
@@ -433,8 +412,7 @@ local ExchangeRecipes = class {
     return ::g_string.implode(res, shouldReturnMarkup ? "" : "\n")
   }
 
-  static function getRecipesCraftTimeText(recipes)
-  {
+  static function getRecipesCraftTimeText(recipes) {
     let minSeconds = max(u.min(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
     let maxSeconds = max(u.max(recipes, @(r) r?.craftTime ?? 0)?.craftTime ?? 0, 0)
     if (minSeconds <= 0 && maxSeconds <= 0)
@@ -445,27 +423,25 @@ local ExchangeRecipes = class {
       timeText += " " + loc("ui/ndash") + " " + time.secondsToString(maxSeconds, true, true)
 
     return loc(recipes[0].getLocIdsList().craftTime,
-      {time = timeText})
+      { time = timeText })
   }
 
   static hasFakeRecipes = @(recipes) u.search(recipes, @(r) r?.isFake) != null
 
-  static function saveMarkedRecipes(newMarkedRecipesUid)
-  {
+  static function saveMarkedRecipes(newMarkedRecipesUid) {
     if (!newMarkedRecipesUid.len())
       return
 
     local markRecipeBlk = ::load_local_account_settings(markRecipeSaveId)
     if (!markRecipeBlk)
-      markRecipeBlk = ::DataBlock()
-    foreach(i in newMarkedRecipesUid)
+      markRecipeBlk = DataBlock()
+    foreach (i in newMarkedRecipesUid)
       markRecipeBlk[i] = MARK_RECIPE.USED
 
     ::save_local_account_settings(markRecipeSaveId, markRecipeBlk)
   }
 
-  function getComponentQuantityText(component, params = null)
-  {
+  function getComponentQuantityText(component, params = null) {
     if (!(params?.showCurQuantities ?? true))
       return component.reqQuantity > 1 ?
         (::nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
@@ -483,18 +459,15 @@ local ExchangeRecipes = class {
       : component.has ? "goodTextColor"
       : "badTextColor"
 
-  static function tryUse(recipes, componentItem, params = {})
-  {
+  static function tryUse(recipes, componentItem, params = {}) {
     local recipe = null
     foreach (r in recipes)
-      if (r.isUsable)
-      {
+      if (r.isUsable) {
         recipe = r
         break
       }
 
-    if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false))
-    {
+    if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false)) {
       ::scene_msg_box("reached_max_amount", null,
       loc(componentItem.getLocIdsList().reachedMaxAmount),
         [["cancel"]], "cancel")
@@ -506,8 +479,7 @@ local ExchangeRecipes = class {
       return false
     }
 
-    if (params?.shouldSkipMsgBox)
-    {
+    if (params?.shouldSkipMsgBox) {
       recipe.doExchange(componentItem, 1, params)
       return true
     }
@@ -524,8 +496,7 @@ local ExchangeRecipes = class {
           })
         baseHandler = ::get_cur_base_gui_handler()
       })
-    if (recipe.isDisassemble && params?.bundleContent)
-    {
+    if (recipe.isDisassemble && params?.bundleContent) {
       msgboxParams.__update({
         data_below_text = (msgboxParams?.data_below_text ?? "")
           + ::PrizesView.getPrizesListView(params.bundleContent,
@@ -538,8 +509,7 @@ local ExchangeRecipes = class {
     }
 
     ::scene_msg_box("chest_exchange", null, msgData.text, [
-      [ "yes", Callback(function()
-        {
+      [ "yes", Callback(function() {
           recipe.updateComponents()
           if (recipe.isUsable)
             recipe.doExchange(componentItem, 1, params)
@@ -551,8 +521,7 @@ local ExchangeRecipes = class {
     return true
   }
 
-  static function showUseErrorMsg(recipes, componentItem)
-  {
+  static function showUseErrorMsg(recipes, componentItem) {
     let locId = componentItem.getCantUseLocId()
     let text = colorize("badTextColor", loc(locId))
     let msgboxParams = {
@@ -568,8 +537,7 @@ local ExchangeRecipes = class {
     local requiredItem = null
     if (isMarketplaceEnabled() && recipes.len() == 1)
       foreach (c in recipes[0].components)
-        if (c.itemdefId != componentItem.id && c.curQuantity < c.reqQuantity)
-        {
+        if (c.itemdefId != componentItem.id && c.curQuantity < c.reqQuantity) {
           let item = ::ItemsManager.findItemById(c.itemdefId)
           if (!item || !item.hasLink())
             continue
@@ -579,8 +547,7 @@ local ExchangeRecipes = class {
 
     let buttons = [ ["cancel"] ]
     local defBtn = "cancel"
-    if (requiredItem)
-    {
+    if (requiredItem) {
       buttons.insert(0, [ "find_on_marketplace", Callback(@() requiredItem.openLink(), this) ])
       defBtn = "find_on_marketplace"
     }
@@ -591,18 +558,15 @@ local ExchangeRecipes = class {
 
   //////////////////////////////////// Internal functions ////////////////////////////////////
 
-  function getMaterialsListForExchange(usedUidsList)
-  {
+  function getMaterialsListForExchange(usedUidsList) {
     let res = []
     this.components.each(function(component) {
       if (this.reqItems.findvalue(@(c) c.itemdefid == component.itemdefId) != null)
         return
       local leftCount = component.reqQuantity
       let itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
-      foreach(item in itemsList)
-      {
-        foreach(i in item.uids)
-        {
+      foreach (item in itemsList) {
+        foreach (i in item.uids) {
           let leftByUid = usedUidsList?[i] ?? item.amountByUids[i]
           if (leftByUid <= 0)
             continue
@@ -621,8 +585,7 @@ local ExchangeRecipes = class {
     return res
   }
 
-  function doExchange(componentItem, amount = 1, params = {})
-  {
+  function doExchange(componentItem, amount = 1, params = {}) {
     let resultItems = []
     let usedUidsList = {}
     let recipe = this //to not remove recipe until operation complete
@@ -658,8 +621,7 @@ local ExchangeRecipes = class {
     asyncActions.callAsyncActionsList(exchangeActions)
   }
 
-  function onExchangeComplete(componentItem, resultItems, params = null)
-  {
+  function onExchangeComplete(componentItem, resultItems, params = null) {
     ::ItemsManager.markInventoryUpdate()
     if (params?.cb)
       params.cb()
@@ -727,14 +689,13 @@ local ExchangeRecipes = class {
 
   getSaveId = @() markRecipeSaveId + this.uid
 
-  function markRecipe(isUserMark = false, needSave = true)
-  {
+  function markRecipe(isUserMark = false, needSave = true) {
     let curMark = this.getMark()
     let marker = !isUserMark ? MARK_RECIPE.USED
       : (isUserMark && curMark == MARK_RECIPE.NONE) ? MARK_RECIPE.BY_USER
       : MARK_RECIPE.NONE
 
-    if(curMark == marker)
+    if (curMark == marker)
       return false
 
     this.mark = marker
@@ -744,8 +705,7 @@ local ExchangeRecipes = class {
     return true
   }
 
-  function loadStateRecipe()
-  {
+  function loadStateRecipe() {
     if (::g_login.isProfileReceived())
       this.mark = ::load_local_account_settings(this.getSaveId(), MARK_RECIPE.NONE)
   }

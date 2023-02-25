@@ -6,7 +6,7 @@ root {
   img {
     position:t='absolute'
     size:t='sw, 0.145sw'
-    background-image:t='#ui/images/steam_rate_bg.jpg?P1'
+    background-image:t='#ui/images/steam_rate_bg?P1'
 
     tdiv {
       width:t='0.75@rh' //by size of frame 

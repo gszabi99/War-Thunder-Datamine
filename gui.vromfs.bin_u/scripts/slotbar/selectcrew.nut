@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -12,8 +13,7 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
 
-::gui_start_selecting_crew <- function gui_start_selecting_crew(config)
-{
+::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (::CrewTakeUnitProcess.safeInterrupt())
     ::handlersManager.destroyPrevHandlerAndLoadNew(::gui_handlers.SelectCrew, config)
 }
@@ -27,8 +27,7 @@ let function getObjPosInSafeArea(obj) {
   return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
 
-::gui_handlers.SelectCrew <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.SelectCrew <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/shop/shopTakeAircraft.blk"
 
@@ -51,10 +50,8 @@ let function getObjPosInSafeArea(obj) {
 
   isSelectByGroups = false
 
-  function initScreen()
-  {
-    if (!this.unit || !this.unit.isUsable() || this.isUnitInSlotbar() || !checkObj(this.unitObj))
-    {
+  function initScreen() {
+    if (!this.unit || !this.unit.isUsable() || this.isUnitInSlotbar() || !checkObj(this.unitObj)) {
       this.goBack()
       return
     }
@@ -75,11 +72,9 @@ let function getObjPosInSafeArea(obj) {
     tdClone.position = "root"
     ::fill_unit_item_timers(tdClone.findObject(this.unit.name), this.unit)
 
-    if (!hasFeature("GlobalShowBattleRating") && hasFeature("SlotbarShowBattleRating"))
-    {
+    if (!hasFeature("GlobalShowBattleRating") && hasFeature("SlotbarShowBattleRating")) {
       let rankObj = tdClone.findObject("rank_text")
-      if (checkObj(rankObj))
-      {
+      if (checkObj(rankObj)) {
         let unitRankText = ::get_unit_rank_text(this.unit, null, true, this.getCurrentEdiff())
         rankObj.setValue(unitRankText)
       }
@@ -134,8 +129,7 @@ let function getObjPosInSafeArea(obj) {
     ? slotbarWidget.create(params)
     : ::gui_handlers.SlotbarWidget.create(params)
 
-  function updateObjectsPositions(tdClone, legendObj, headerObj)
-  {
+  function updateObjectsPositions(tdClone, legendObj, headerObj) {
     let rootSize = this.guiScene.getRoot().getSize()
     let sh = rootSize[1]
     let bh = ::g_dagui_utils.toPixels(this.guiScene, "@bh")
@@ -155,27 +149,24 @@ let function getObjPosInSafeArea(obj) {
     let sbSize = sbObj.getSize()
     let isSlotbarOnTop = bottom + interval + sbSize[1] > sh - bh
     local sbPosY = 0
-    if (isSlotbarOnTop)
-    {
+    if (isSlotbarOnTop) {
       sbPosY = top - interval - sbSize[1]
       top = sbPosY
-    } else
-    {
+    }
+    else {
       sbPosY = bottom + interval
       bottom = sbPosY + sbSize[1]
     }
     sbObj.top = sbPosY
 
     //place legend
-    if (checkObj(legendObj))
-    {
+    if (checkObj(legendObj)) {
       let legendSize = legendObj.getSize()
 
       //try to put legend near unit td, but below slotbar when possible
       local isNearTd = false
       local bottomNoTd = bottom
-      if (tdPos[1] + tdSize[1] == bottom)
-      {
+      if (tdPos[1] + tdSize[1] == bottom) {
         bottomNoTd = tdPos[1] - interval
         isNearTd = true
       }
@@ -184,8 +175,7 @@ let function getObjPosInSafeArea(obj) {
       local legendPosY = 0
       if (isLegendBottom)
         legendPosY = bottomNoTd + interval
-      else
-      {
+      else {
         isNearTd = tdPos[1] == top
         let topNoTd = isNearTd ? tdPos[1] + tdSize[1] + interval : top
         legendPosY = topNoTd - interval - legendSize[1]
@@ -194,8 +184,7 @@ let function getObjPosInSafeArea(obj) {
 
       legendObj.top = legendPosY
 
-      if (isNearTd) //else centered.
-      {
+      if (isNearTd) { //else centered.
         let sw = rootSize[0]
         let bw = ::g_dagui_utils.toPixels(this.guiScene, "@bw")
         local legendPosX = tdPos[0] + tdSize[0] + interval
@@ -210,8 +199,7 @@ let function getObjPosInSafeArea(obj) {
     headerObj.top = headerPosY
   }
 
-  function checkAvailableCrew()
-  {
+  function checkAvailableCrew() {
     if (this.takeCrewIdInCountry >= 0)
       return
 
@@ -231,16 +219,14 @@ let function getObjPosInSafeArea(obj) {
     if (cost.gold > 0)
       return
 
-    this.takeCrewIdInCountry = cost <= ::get_gui_balance()? ::get_crew_count(this.country) : this.takeCrewIdInCountry
+    this.takeCrewIdInCountry = cost <= ::get_gui_balance() ? ::get_crew_count(this.country) : this.takeCrewIdInCountry
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     return ::u.isFunction(this.getEdiffFunc) ? this.getEdiffFunc() : ::get_current_ediff()
   }
 
-  function getTakeAirCost()
-  {
+  function getTakeAirCost() {
     return this.isSelectByGroups
       ? ::Cost()
       : ::CrewTakeUnitProcess.getProcessCost(
@@ -249,30 +235,25 @@ let function getObjPosInSafeArea(obj) {
         )
   }
 
-  function onChangeUnit()
-  {
+  function onChangeUnit() {
     this.takeCrewIdInCountry = this.getCurCrew()?.idInCountry ?? ::get_crew_count(this.country)
     this.updateButtons()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     placePriceTextToButton(this.scene, "btn_set_air", loc("mainmenu/btnTakeAircraft"), this.getTakeAirCost())
   }
 
-  function onEventOnlineShopPurchaseSuccessful(_p)
-  {
+  function onEventOnlineShopPurchaseSuccessful(_p) {
     this.updateButtons()
   }
 
-  function checkUseTutorial()
-  {
+  function checkUseTutorial() {
     if (this.useTutorial)
       this.startTutorial()
   }
 
-  function startTutorial()
-  {
+  function startTutorial() {
     let playerBalance = ::Cost()
     let playerInfo = ::get_profile_info()
     playerBalance.wp = playerInfo.balance
@@ -285,7 +266,7 @@ let function getObjPosInSafeArea(obj) {
     let steps = [
       {
         obj = this.getSlotbar() && this.getSlotbar().getBoxOfUnits()
-        text = loc("help/takeAircraft", {unitName = ::getUnitName(this.unit)})
+        text = loc("help/takeAircraft", { unitName = ::getUnitName(this.unit) })
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
@@ -303,13 +284,11 @@ let function getObjPosInSafeArea(obj) {
     ::gui_modal_tutor(steps, this)
   }
 
-  function onApply()
-  {
+  function onApply() {
     this.onApplyCrew(this.getCurCrew())
   }
 
-  function onApplyCrew(crew)
-  {
+  function onApplyCrew(crew) {
     let onFinishCb = Callback(this.onTakeProcessFinish, this)
     if (this.isSelectByGroups)
       slotbarPresets.setUnit({
@@ -321,13 +300,11 @@ let function getObjPosInSafeArea(obj) {
       ::CrewTakeUnitProcess(crew, this.unit, onFinishCb)
   }
 
-  function onTakeProcessFinish(isSuccess)
-  {
+  function onTakeProcessFinish(isSuccess) {
     if (!isSuccess)
       return
 
-    if (this.isNewUnit)
-    {
+    if (this.isNewUnit) {
       ::add_big_query_record("choosed_crew_for_new_unit",
         ::save_to_json({ unit = this.unit.name
           crew = this.getCurCrew()?.id }))
@@ -337,8 +314,7 @@ let function getObjPosInSafeArea(obj) {
     this.goBack()
   }
 
-  function onEventSetInQueue(_params)
-  {
+  function onEventSetInQueue(_params) {
     let reqMoneyMsg = this.scene.findObject("need_money")
     if (checkObj(reqMoneyMsg))
       this.guiScene.destroyObject(reqMoneyMsg)
@@ -350,17 +326,15 @@ let function getObjPosInSafeArea(obj) {
     this.goBack()
   }
 
-  function onTakeCancel()
-  {
+  function onTakeCancel() {
     if (this.restrictCancel)
       return
 
     this.goBack()
   }
 
-  function addLegendData(result, specType)
-  {
-    foreach(data in result)
+  function addLegendData(result, specType) {
+    foreach (data in result)
       if (specType == data.specType)
         return
 
@@ -372,14 +346,12 @@ let function getObjPosInSafeArea(obj) {
     })
   }
 
-  function fillLegendData()
-  {
+  function fillLegendData() {
     if (!hasFeature("CrewInfo"))
       return null
 
     let legendData = []
-    foreach (_idx, crew in ::get_crews_list_by_country(this.country))
-    {
+    foreach (_idx, crew in ::get_crews_list_by_country(this.country)) {
       let specType = ::g_crew_spec_type.getTypeByCode(::g_crew_spec_type.getTrainedSpecCode(crew, this.unit))
       this.addLegendData(legendData, specType)
     }
@@ -389,7 +361,7 @@ let function getObjPosInSafeArea(obj) {
 
     legendData.sort(function(a, b) {
       if (a.specType.code != b.specType.code)
-        return a.specType.code > b.specType.code? 1 : -1
+        return a.specType.code > b.specType.code ? 1 : -1
       return 0
     })
 
@@ -409,8 +381,7 @@ let function getObjPosInSafeArea(obj) {
     return obj
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     if (this.afterCloseFunc)
       this.afterCloseFunc()
   }
@@ -419,8 +390,7 @@ let function getObjPosInSafeArea(obj) {
   function onUnitMainFuncBtnUnHover() {}
   onUnitMarkerClick = @() null
 
-  function isUnitInSlotbar()
-  {
+  function isUnitInSlotbar() {
     return !this.isSelectByGroups && ::isUnitInSlotbar(this.unit)
   }
 }

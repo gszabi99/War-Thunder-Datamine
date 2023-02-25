@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -23,7 +24,8 @@ let expEventLocIds = {
   [EXP_EVENT_SCOUT_CRITICAL_HIT] = "expEventScore/scoutCriticalHit",
   [EXP_EVENT_SCOUT_KILL]         = "expEventScore/scoutKill",
   [EXP_EVENT_SCOUT_KILL_UNKNOWN] = "expEventScore/scoutKillUnknown",
-  [EXP_EVENT_DEATH]              = "expEventScore/death"
+  [EXP_EVENT_DEATH]              = "expEventScore/death",
+  [EXP_EVENT_MISSION_ACTION]     = "expEventScore/missionAction"
 }
 
 ::g_mplayer_param_type <- {
@@ -64,8 +66,7 @@ let expEventLocIds = {
   relWidth = 10
   pareText = false
   updateSpecificMarkupParams = function(_markupTbl) {}
-  getMarkupData = function()
-  {
+  getMarkupData = function() {
     let res = {
       fontIcon = this.fontIcon
       tooltip = this.getName()
@@ -81,8 +82,7 @@ let expEventLocIds = {
     return res
   }
 
-  isVisible = function(objectivesMask, gameType, gameMode = GM_DOMINATION)
-  {
+  isVisible = function(objectivesMask, gameType, gameMode = GM_DOMINATION) {
     return ((this.missionObjective == MISSION_OBJECTIVE.ANY) || (this.missionObjective & objectivesMask) != 0)
       && this.isVisibleByGameType(gameType) && this.isVisibleByGameMode(gameMode)
   }
@@ -104,8 +104,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     diffFunc = ::g_mplayer_param_type._newer
     width = "1@nameWidth + 1@tablePad"
     pareText = true
-    updateSpecificMarkupParams = function(markupTbl)
-    {
+    updateSpecificMarkupParams = function(markupTbl) {
       markupTbl.widthInWideScreen <- "1@nameWidthInWideScreen + 1@tablePad"
       delete markupTbl.tooltip
     }
@@ -241,8 +240,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
         { id = "scoutKills", label = "multiplayer/scout_kills" }
       ]
       let res = []
-      foreach (row in rows)
-      {
+      foreach (row in rows) {
         let rowVal = player?[row.id] ?? 0
         if (rowVal)
           res.append(loc(row.label) + loc("ui/colon") + rowVal)
@@ -336,8 +334,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     defVal = -1
     isForceUpdate = true // Because it shows race completion percentage.
     printFunc = function(val, player) {
-      if (val < 0)
-      {
+      if (val < 0) {
         let total = ::get_race_checkpioints_count()
         if (total)
           return (100 * getTblValue("raceLastCheckpoint", player, 0) / total).tointeger() + "%"
@@ -406,8 +403,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   SQUAD = {
     id = "squad"
     width = "1@tableIcoSize"
-    updateSpecificMarkupParams = function(markupTbl)
-    {
+    updateSpecificMarkupParams = function(markupTbl) {
       markupTbl.image <- "#ui/gameuiskin#table_squad_background.svg"
       markupTbl.hideImage <- true
     }
@@ -424,8 +420,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   }
 })
 
-::g_mplayer_param_type.getTypeById <- function getTypeById(id)
-{
+::g_mplayer_param_type.getTypeById <- function getTypeById(id) {
   return enums.getCachedType("id", id, ::g_mplayer_param_type.cache.byId,
     ::g_mplayer_param_type, ::g_mplayer_param_type.UNKNOWN)
 }

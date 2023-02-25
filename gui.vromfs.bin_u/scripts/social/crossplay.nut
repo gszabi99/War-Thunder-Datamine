@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -17,8 +18,7 @@ let crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null)
 let resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
 let resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
 
-let updateCrossNetworkPlayStatus = function(needOverrideValue = false)
-{
+let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
   if (!needOverrideValue && crossNetworkPlayStatus.value != null)
     return
 
@@ -30,14 +30,12 @@ let updateCrossNetworkPlayStatus = function(needOverrideValue = false)
     crossNetworkPlayStatus(true)
 }
 
-let isCrossNetworkPlayEnabled = function()
-{
+let isCrossNetworkPlayEnabled = function() {
   updateCrossNetworkPlayStatus()
   return crossNetworkPlayStatus.value
 }
 
-let setCrossNetworkPlayStatus = function(val)
-{
+let setCrossNetworkPlayStatus = function(val) {
   if (!isPlatformSony || !hasFeature("PS4CrossNetwork"))
     return
 
@@ -46,8 +44,7 @@ let setCrossNetworkPlayStatus = function(val)
   updateCrossNetworkPlayStatus()
 }
 
-let updateCrossNetworkChatStatus = function(needOverrideValue = false)
-{
+let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
   if (!needOverrideValue && crossNetworkChatStatus.value != null)
     return
 
@@ -59,30 +56,27 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false)
     crossNetworkChatStatus(XBOX_COMMUNICATIONS_ALLOWED)
 }
 
-let getCrossNetworkChatStatus = function()
-{
+let getCrossNetworkChatStatus = function() {
   updateCrossNetworkChatStatus()
   return crossNetworkChatStatus.value
 }
 
 let isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == XBOX_COMMUNICATIONS_ALLOWED
 
-let setCrossNetworkChatStatus = function(boolVal)
-{
+let setCrossNetworkChatStatus = function(boolVal) {
   if (!isPlatformSony || !hasFeature("PS4CrossNetwork"))
     return
 
-  let val = boolVal? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
+  let val = boolVal ? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
   resetCrossNetworkChatStatus()
   ::save_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, val)
   updateCrossNetworkChatStatus()
 }
 
-let getTextWithCrossplayIcon = @(addIcon, text) (addIcon? (loc("icon/cross_play") + " " ) : "") + text
+let getTextWithCrossplayIcon = @(addIcon, text) (addIcon ? (loc("icon/cross_play") + " ") : "") + text
 
 let getSeparateLeaderboardPlatformValue = function() {
-  if (hasFeature("ConsoleSeparateLeaderboards"))
-  {
+  if (hasFeature("ConsoleSeparateLeaderboards")) {
     if (isPlatformSony)
       return ::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) == true
 
@@ -95,8 +89,7 @@ let getSeparateLeaderboardPlatformValue = function() {
 
 let getSeparateLeaderboardPlatformName = function() {
   // These names are set in config on leaderboard server.
-  if (getSeparateLeaderboardPlatformValue())
-  {
+  if (getSeparateLeaderboardPlatformValue()) {
     if (isPlatformPS4 || isPlatformPS5)
       return "ps4"      // TODO: Change later to 'psn' or 'sony'
     if (isPlatformXboxOne || isPlatformXboxScarlett)
@@ -105,8 +98,7 @@ let getSeparateLeaderboardPlatformName = function() {
   return ""
 }
 
-let invalidateCache = function()
-{
+let invalidateCache = function() {
   resetCrossPlayStatus()
   resetCrossNetworkChatStatus()
 }

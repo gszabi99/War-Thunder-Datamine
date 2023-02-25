@@ -1873,6 +1873,29 @@
       0.666,
       -0.04
     ],
+    "mirror": true,
+    "mirrorPos": [
+      0.347,
+      0.863,
+      0.102
+    ],
+    "mirrorNorm": [
+      -0.98,
+      -0.19,
+      -0.1
+    ],
+    "mirrorNode": "blister3",
+    "lightPos": [
+      0.5,
+      0.29,
+      0.0
+    ],
+    "lightColor": [
+      0.62,
+      0.3,
+      0.21
+    ],
+    "lightRadius": 0.35,
     "devices": {
       "speed": [
         0.0,
@@ -1964,6 +1987,22 @@
       "gears_lamp": [
         0.0,
         0.0
+      ],
+      "ammo_counter1": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter2": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter3": [
+        1000.0,
+        0.0
+      ],
+      "ammo_counter4": [
+        1000.0,
+        0.0
       ]
     },
     "parts_holes_dmg": {
@@ -2045,7 +2084,11 @@
               "flash": "flare1",
               "dm": "cannon1_dm",
               "bullets": 500,
-              "spread": 1.2
+              "spread": 1.2,
+              "counterIndex": [
+                1,
+                2
+              ]
             },
             {
               "trigger": "machine gun",
@@ -2054,7 +2097,11 @@
               "flash": "flare2",
               "dm": "cannon2_dm",
               "bullets": 500,
-              "spread": 1.2
+              "spread": 1.2,
+              "counterIndex": [
+                3,
+                4
+              ]
             },
             {
               "trigger": "gunner0",

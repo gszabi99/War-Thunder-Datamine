@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,8 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
-global enum HUD_VIS_PART //bit enum
-{
+global enum HUD_VIS_PART { //bit enum
   DMG_PANEL           = 0x0001
   MAP                 = 0x0002
   CAPTURE_ZONE_INFO   = 0x0004
@@ -32,7 +32,7 @@ global enum HUD_VIS_PART //bit enum
 
   getName = function() { return loc(this.locId) }
   isAvailable = function(_diffCode) { return true }
-  isPartVisible = function(part) { return (this.parts & part) != 0}
+  isPartVisible = function(part) { return (this.parts & part) != 0 }
 }
 
 enums.addTypesByGlobalName("g_hud_vis_mode", {
@@ -62,18 +62,15 @@ enums.addTypesByGlobalName("g_hud_vis_mode", {
   }
 })
 
-::g_hud_vis_mode.types.sort(function(a,b)
-{
+::g_hud_vis_mode.types.sort(function(a, b) {
   return a.hudGm > b.hudGm ? 1 : (a.hudGm < b.hudGm ? -1 : 0)
 })
 
-::g_hud_vis_mode.getModeByHudGm <- function getModeByHudGm(hudGm, defValue = ::g_hud_vis_mode.DEFAULT)
-{
+::g_hud_vis_mode.getModeByHudGm <- function getModeByHudGm(hudGm, defValue = ::g_hud_vis_mode.DEFAULT) {
   return enums.getCachedType("hudGm", hudGm, ::g_hud_vis_mode.cache.byHudGm,
     ::g_hud_vis_mode, defValue)
 }
 
-::g_hud_vis_mode.getCurMode <- function getCurMode()
-{
+::g_hud_vis_mode.getCurMode <- function getCurMode() {
   return this.getModeByHudGm(::get_hud_game_mode(), ::g_hud_vis_mode.FULL)
 }

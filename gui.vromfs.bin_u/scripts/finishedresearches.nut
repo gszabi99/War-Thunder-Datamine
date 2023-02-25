@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -19,26 +20,21 @@ let isResearchForModification = @(research)
   "name" in research && ::researchedModForCheck in research
 
 let getUnitNameFromResearchItem = @(research)
-  research?[isResearchForModification(research)? "name" : "unit"] ?? ""
+  research?[isResearchForModification(research) ? "name" : "unit"] ?? ""
 
-::gui_start_choose_next_research <- function gui_start_choose_next_research(researchBlock = null)
-{
-  if (!isResearchForModification(researchBlock))
-  {
-    ::gui_start_shop_research({researchBlock = researchBlock})
-    ::gui_start_modal_wnd(::gui_handlers.researchUnitNotification, {researchBlock = researchBlock})
+::gui_start_choose_next_research <- function gui_start_choose_next_research(researchBlock = null) {
+  if (!isResearchForModification(researchBlock)) {
+    ::gui_start_shop_research({ researchBlock = researchBlock })
+    ::gui_start_modal_wnd(::gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
   }
-  else
-  {
+  else {
     let unit = ::getAircraftByName(getUnitNameFromResearchItem(researchBlock))
     ::open_weapons_for_unit(unit, { researchMode = true, researchBlock = researchBlock })
   }
 }
 
-let function isResearchEqual(research1, research2)
-{
-  foreach(key in ["name", ::researchedModForCheck, ::researchedUnitForCheck])
-  {
+let function isResearchEqual(research1, research2) {
+  foreach (key in ["name", ::researchedModForCheck, ::researchedUnitForCheck]) {
     let haveValue = key in research1
     if (haveValue != (key in research2))
       return false
@@ -48,16 +44,14 @@ let function isResearchEqual(research1, research2)
   return true
 }
 
-let function isResearchAbandoned(research)
-{
-  foreach(_idx, abandoned in ::abandoned_researched_items_for_session)
+let function isResearchAbandoned(research) {
+  foreach (_idx, abandoned in ::abandoned_researched_items_for_session)
     if (isResearchEqual(research, abandoned))
       return true
   return false
 }
 
-let function isResearchLast(research, checkUnit = false)
-{
+let function isResearchLast(research, checkUnit = false) {
   if (isResearchForModification(research))
     return getTblValue("mod", research, "") == ""
   else if (checkUnit)
@@ -65,29 +59,25 @@ let function isResearchLast(research, checkUnit = false)
   return false
 }
 
-let function removeResearchBlock(researchBlock)
-{
+let function removeResearchBlock(researchBlock) {
   if (!researchBlock)
     return
 
   if (!isResearchAbandoned(researchBlock))
     ::abandoned_researched_items_for_session.append(researchBlock)
 
-  foreach(idx, newResearch in ::researched_items_table)
-    if (isResearchEqual(researchBlock, newResearch))
-    {
+  foreach (idx, newResearch in ::researched_items_table)
+    if (isResearchEqual(researchBlock, newResearch)) {
       ::researched_items_table.remove(idx)
       break
     }
 }
 
-::checkNonApprovedResearches <- function checkNonApprovedResearches(needUpdateResearchTable = false, needResearchAction = true)
-{
+::checkNonApprovedResearches <- function checkNonApprovedResearches(needUpdateResearchTable = false, needResearchAction = true) {
   if (!::isInMenu() || ::checkIsInQueue())
     return false
 
-  if (needUpdateResearchTable)
-  {
+  if (needUpdateResearchTable) {
     ::researched_items_table = ::shop_get_countries_list_with_autoset_units()
     ::researched_items_table.extend(::shop_get_units_list_with_autoset_modules())
   }
@@ -95,8 +85,7 @@ let function removeResearchBlock(researchBlock)
   if (!::researched_items_table || !::researched_items_table.len())
     return false
 
-  for (local i = ::researched_items_table.len()-1; i >= 0; --i)
-  {
+  for (local i = ::researched_items_table.len() - 1; i >= 0; --i) {
     if (isResearchAbandoned(::researched_items_table[i]) ||
       !::getAircraftByName(getUnitNameFromResearchItem(::researched_items_table[i]))?.unitType.isAvailable()
     )
@@ -106,13 +95,11 @@ let function removeResearchBlock(researchBlock)
   if (!::researched_items_table.len())
     return false
 
-  foreach (research in ::researched_items_table)
-  {
+  foreach (research in ::researched_items_table) {
     if (!isResearchLast(research))
       continue
 
-    if (isResearchForModification(research))
-    {
+    if (isResearchForModification(research)) {
       let unit = ::getAircraftByName(getUnitNameFromResearchItem(research))
       ::add_big_query_record("completed_new_research_modification",
         ::save_to_json({ unit = unit.name
@@ -123,10 +110,8 @@ let function removeResearchBlock(researchBlock)
     removeResearchBlock(research)
   }
 
-  if (!::researched_items_table.len())
-  {
-    if (prepareUnitsForPurchaseMods.haveUnits())
-    {
+  if (!::researched_items_table.len()) {
+    if (prepareUnitsForPurchaseMods.haveUnits()) {
       if (needResearchAction)
         prepareUnitsForPurchaseMods.checkUnboughtMods(::get_auto_buy_modifications())
       return true
@@ -135,8 +120,7 @@ let function removeResearchBlock(researchBlock)
       return false
   }
 
-  if (needResearchAction)
-  {
+  if (needResearchAction) {
     let resBlock = ::researched_items_table[0]
     if (isResearchForModification(resBlock)
       && ::isHandlerInScene(::gui_handlers.WeaponsModalHandler))
@@ -152,26 +136,22 @@ let function removeResearchBlock(researchBlock)
   return true
 }
 
-::gui_handlers.researchUnitNotification <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.researchUnitNotification <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/researchedModifications.blk"
 
   researchBlock = null
   unit = null
 
-  function initScreen()
-  {
-    if (!this.researchBlock)
-    {
+  function initScreen() {
+    if (!this.researchBlock) {
       this.goBack()
       return
     }
 
     let unitName = getTblValue(::researchedUnitForCheck, this.researchBlock)
     this.unit = ::getAircraftByName(unitName)
-    if (!this.unit)
-    {
+    if (!this.unit) {
       this.goBack()
       return
     }
@@ -180,8 +160,7 @@ let function removeResearchBlock(researchBlock)
     this.updateButtons()
   }
 
-  function updateResearchedUnit()
-  {
+  function updateResearchedUnit() {
     let placeObj = this.getUnitPlaceObj()
     if (!checkObj(placeObj))
       return
@@ -192,15 +171,12 @@ let function removeResearchBlock(researchBlock)
     ::fill_unit_item_timers(placeObj.findObject(this.unit.name), this.unit)
   }
 
-  function onEventCrewTakeUnit(_params)
-  {
+  function onEventCrewTakeUnit(_params) {
     this.goBack()
   }
 
-  function onEventUnitBought(params)
-  {
-    if(getTblValue("unitName", params) != this.unit.name)
-    {
+  function onEventUnitBought(params) {
+    if (getTblValue("unitName", params) != this.unit.name) {
       this.purchaseUnit()
       return
     }
@@ -210,18 +186,14 @@ let function removeResearchBlock(researchBlock)
     this.trainCrew()
   }
 
-  function getUnitPlaceObj()
-  {
+  function getUnitPlaceObj() {
     if (!checkObj(this.scene))
       return null
 
     return this.scene.findObject("rankup_aircraft_table")
   }
 
-  function updateButtons()
-  {
-    ::show_facebook_screenshot_button(this.scene)
-
+  function updateButtons() {
     let isBought = ::isUnitBought(this.unit)
     let isUsable = ::isUnitUsable(this.unit)
 
@@ -230,13 +202,11 @@ let function removeResearchBlock(researchBlock)
     this.showSceneBtn("btn_trainCrew", isUsable)
   }
 
-  function purchaseUnit()
-  {
+  function purchaseUnit() {
     ::buyUnit(this.unit)
   }
 
-  function trainCrew()
-  {
+  function trainCrew() {
     if (!::isUnitUsable(this.unit))
       return
 

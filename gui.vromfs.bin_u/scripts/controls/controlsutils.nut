@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,6 +11,7 @@ let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scrip
 let { get_gui_option } = require("guiOptions")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { subscribe } = require("eventbus")
 let { DeviceType, register_for_devices_change } = require("%xboxLib/impl/input.nut")
 
 ::classic_control_preset <- "classic"
@@ -28,22 +30,18 @@ if (isPlatformXboxOne)
   [PERSISTENT_DATA_PARAMS] = ["eventHandler"]
   eventHandler = null
 
-  getControlsList = kwarg(function getControlsList(unitType = null, classType = null, unitTags = [])
-  {
+  getControlsList = kwarg(function getControlsList(unitType = null, classType = null, unitTags = []) {
     local isHeaderPassed = true
     local isSectionPassed = true
-    let controlsList = ::shortcutsList.filter(function(sc)
-    {
-      if (sc.type != CONTROL_TYPE.HEADER && sc.type != CONTROL_TYPE.SECTION)
-      {
+    let controlsList = ::shortcutsList.filter(function(sc) {
+      if (sc.type != CONTROL_TYPE.HEADER && sc.type != CONTROL_TYPE.SECTION) {
         if (isHeaderPassed && isSectionPassed && "showFunc" in sc)
           return sc.showFunc()
 
         return isHeaderPassed && isSectionPassed
       }
 
-      if (sc.type == CONTROL_TYPE.HEADER) //unitType and other params below exist only in header
-      {
+      if (sc.type == CONTROL_TYPE.HEADER) { //unitType and other params below exist only in header
         isHeaderPassed = sc?.unitTypes.contains(unitType) ?? true
         isSectionPassed = true // reset previous sectino setting
 
@@ -56,8 +54,7 @@ if (isPlatformXboxOne)
       else if (sc.type == CONTROL_TYPE.SECTION)
         isSectionPassed = isHeaderPassed
 
-      if ("showFunc" in sc)
-      {
+      if ("showFunc" in sc) {
         if (sc.type == CONTROL_TYPE.HEADER && isHeaderPassed)
           isHeaderPassed = sc.showFunc()
         else if (sc.type == CONTROL_TYPE.SECTION && isSectionPassed)
@@ -70,8 +67,7 @@ if (isPlatformXboxOne)
     return controlsList
   })
 
-  function getMouseUsageMask()
-  {
+  function getMouseUsageMask() {
     let usage = ::g_aircraft_helpers.getOptionValue(
       ::USEROPT_MOUSE_USAGE)
     let usageNoAim = ::g_aircraft_helpers.getOptionValue(
@@ -79,8 +75,7 @@ if (isPlatformXboxOne)
     return (usage ? usage : 0) | (usageNoAim ? usageNoAim : 0)
   }
 
-  function checkOptionValue(optName, checkValue)
-  {
+  function checkOptionValue(optName, checkValue) {
     let val = get_gui_option(optName)
     if (val != null)
       return val == checkValue
@@ -91,7 +86,7 @@ if (isPlatformXboxOne)
     if (sc1.len() != sc2.len())
       return false
 
-    foreach(_i, sb in sc2)
+    foreach (_i, sb in sc2)
       if (!::is_bind_in_shortcut(sb, sc1))
         return false
     return true
@@ -101,8 +96,7 @@ if (isPlatformXboxOne)
     let changeList = []
     let changeNames = []
     let curScList = ::get_shortcuts(scNames)
-    foreach(idx, sc in curScList)
-    {
+    foreach (idx, sc in curScList) {
       let prevSc = scList[idx]
       if (!this.isShortcutMapped(prevSc))
         continue
@@ -124,7 +118,7 @@ if (isPlatformXboxOne)
   function isShortcutMapped(shortcut) {
     foreach (button in shortcut)
       if (button && button.dev.len() >= 0)
-        foreach(d in button.dev)
+        foreach (d in button.dev)
           if (d > 0 && d <= STD_GESTURE_DEVICE_ID)
               return true
     return false
@@ -133,9 +127,7 @@ if (isPlatformXboxOne)
 
 ::g_script_reloader.registerPersistentDataFromRoot("g_controls_utils")
 
-::on_connected_controller <- function on_connected_controller()
-{
-  //calls from c++ code, no event on PS4 or XBoxOne
+local function onJoystickConnected() {
   updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
   if (!::isInMenu() || !hasFeature("ControlsDeviceChoice"))
     return
@@ -163,8 +155,7 @@ if (isPlatformXboxOne)
 
 local is_keyboard_or_mouse_connected_before = false
 
-let on_controller_event = function()
-{
+let on_controller_event = function() {
   if (!hasFeature("ControlsDeviceChoice") || !hasFeature("ControlsPresets"))
     return
   let is_keyboard_or_mouse_connected = controllerState.is_keyboard_connected()
@@ -203,8 +194,7 @@ if (::g_controls_utils.eventHandler && controllerState?.remove_event_handler)
 if (controllerState?.add_event_handler)
   controllerState.add_event_handler(::g_controls_utils.eventHandler)
 
-::get_controls_preset_by_selected_type <- function get_controls_preset_by_selected_type(cType = "")
-{
+::get_controls_preset_by_selected_type <- function get_controls_preset_by_selected_type(cType = "") {
   let presets = isPlatformSony ? {
     [::classic_control_preset] = "default",
     [::shooter_control_preset] = "dualshock4"
@@ -223,7 +213,8 @@ if (controllerState?.add_event_handler)
   local preset = ""
   if (cType in presets) {
     preset = presets[cType]
-  } else {
+  }
+  else {
     ::script_net_assert_once("wrong controls type", "Passed wrong controls type")
   }
 
@@ -232,12 +223,15 @@ if (controllerState?.add_event_handler)
   return preset
 }
 
-::on_lost_controller <- function on_lost_controller() {
+local function onJoystickDisconnected() {
   updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
   ::add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }
 
-local xboxInputDevicesData = persist("xboxInputDevicesData", @(){ gamepads = 0, keyboards = 0, user_notified = false })
+subscribe("controls.joystickDisconnected", @(_) onJoystickDisconnected())
+subscribe("controls.joystickConnected", @(_) onJoystickConnected())
+
+local xboxInputDevicesData = persist("xboxInputDevicesData", @() { gamepads = 0, keyboards = 0, user_notified = false })
 
 register_for_devices_change(function(device_type, count) {
   if (device_type == DeviceType.Gamepad)

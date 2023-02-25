@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,16 +7,14 @@ from "%scripts/dagui_library.nut" import *
 let { doesLocTextExist } = require("dagor.localize")
 
 {
-  let class BhvHint
-  {
+  let class BhvHint {
     eventMask    = EV_ON_CMD
     valuePID               = ::dagui_propid.add_name_id("value")
     wrapInRowPID           = ::dagui_propid.add_name_id("isWrapInRowAllowed")
 
     isUpdateInProgressPID  = ::dagui_propid.add_name_id("_isUpdateInProgress")
 
-    function onAttach(obj)
-    {
+    function onAttach(obj) {
       if (obj?.value && !obj.getIntProp(this.isUpdateInProgressPID, 0))
         obj.getScene().performDelayed(this, function() {
           if (obj.isValid())
@@ -24,16 +23,14 @@ let { doesLocTextExist } = require("dagor.localize")
       return RETCODE_NOTHING
     }
 
-    function setValue(obj, newValue)
-    {
+    function setValue(obj, newValue) {
       if (!::u.isString(newValue) || obj?.value == newValue)
         return
       obj.value = newValue
       this.updateView(obj)
     }
 
-    function updateView(obj)
-    {
+    function updateView(obj) {
       if (!("g_hints" in getroottable()))
         return
 

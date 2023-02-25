@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let clanInfoView = require("%scripts/clans/clanInfoView.nut")
+let DataBlock  = require("DataBlock")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 let function isFitsRequirements(clanData) {
@@ -13,7 +15,7 @@ let function isFitsRequirements(clanData) {
     (requirements.blockCount() == 0 && requirements.paramCount() == 0))
     return true
 
-  let resultBlk = ::DataBlock()
+  let resultBlk = DataBlock()
   ::clan_evaluate_membership_requirements(requirements, resultBlk)
   return resultBlk?.result
 }

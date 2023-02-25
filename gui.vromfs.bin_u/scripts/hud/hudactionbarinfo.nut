@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = require_native("hudActionBarConst")
+let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN } = require("hudActionBarConst")
 
 local cachedUnitId = ""
 let cache = {}
@@ -39,8 +40,7 @@ let function getActionItemAmountText(modData, isFull = false) {
   local text = ""
   if (modData.type == EII_SMOKE_GRENADE && "salvo" in modData)
     text = $"{modData.salvo}/{modData.count}"
-  else
-  {
+  else {
     let countEx = modData?.countEx ?? 0
     let countStr = count.tostring()
     local countExText = modData?.isStreakEx ? loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
@@ -56,8 +56,7 @@ let function getActionItemModificationName(item, unit) {
   if (!unit)
     return null
 
-  switch (item.type)
-  {
+  switch (item.type) {
     case EII_ROCKET:
       return getBulletSetNameByBulletName(unit, item?.bulletName)
     case EII_BULLET:
@@ -70,10 +69,20 @@ let function getActionItemModificationName(item, unit) {
   return null
 }
 
+let function getActionItemStatus(item) {
+  let { count = 0, available = true, cooldownEndTime = 0 } = item
+  let isAvailable = available && count != 0
+  return {
+    isAvailable
+    isReady = isAvailable && cooldownEndTime <= ::get_usefull_total_time()
+  }
+}
+
 return {
   cacheActionDescs
   getActionDesc
   LONG_ACTIONBAR_TEXT_LEN
   getActionItemAmountText
   getActionItemModificationName
+  getActionItemStatus
 }

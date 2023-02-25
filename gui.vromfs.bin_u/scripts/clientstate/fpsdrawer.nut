@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -56,7 +57,7 @@ let function validateObjects(objects, guiScene) {
   if (!checkObj(holderObj))
     return false
 
-  foreach(param in paramsList)
+  foreach (param in paramsList)
     objects[param] <- holderObj.findObject(objIdPrefix + param)
   objects.show <- true
   return true
@@ -100,8 +101,7 @@ let function updateTexts(objects, params) {
     else
       latencyText = format("%s:%5.1fms", loc("latency", "Latency"), latency)
   }
-  if (ping >= 0)
-  {
+  if (ping >= 0) {
     pingText = colorize(getPingColor(ping), "Ping: " + ping)
     plText = colorize(getPacketlossColor(pl), "PL: " + pl + "%")
     sidText = sessionId
@@ -118,7 +118,7 @@ let function checkVisibility(objects) {
   if (objects.show == show)
     return
 
-  foreach(param in paramsList)
+  foreach (param in paramsList)
     objects[param].show(show)
   objects.show = show
 }

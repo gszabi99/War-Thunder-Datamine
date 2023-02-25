@@ -1,12 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let cross_call = require("%rGui/globals/cross_call.nut")
-let { mkRadar} = require("radarComponent.nut")
+let { mkRadar } = require("radarComponent.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
 let tankGunsAmmo = require("hud/tankGunsAmmo.nut")
 let tws = require("tws.nut")
-let {IsMlwsLwsHudVisible} = require("twsState.nut")
+let { IsMlwsLwsHudVisible } = require("twsState.nut")
 let sightIndicators = require("hud/tankSightIndicators.nut")
 let activeProtectionSystem = require("%rGui/hud/activeProtectionSystem.nut")
 let { isVisibleDmgIndicator, dmgIndicatorStates } = require("%rGui/hudState.nut")
@@ -27,34 +27,6 @@ let styleAamAim = {
 }
 
 let radarPosComputed = Computed(@() [bw.value, bh.value])
-
-let function Root() {
-  let colorWacthed = Watched(greenColor)
-  let colorAlertWatched = Watched(redColor)
-  let isTankGunsAmmoVisible = cross_call.isVisibleTankGunsAmmoIndicator()
-
-  return {
-    halign = ALIGN_LEFT
-    valign = ALIGN_TOP
-    watch = IndicatorsVisible
-    size = [sw(100), sh(100)]
-    children = [
-      mkRadar(radarPosComputed)
-      aamAim(colorWacthed, colorAlertWatched)
-      agmAim(colorWacthed)
-      isTankGunsAmmoVisible ? tankGunsAmmo : null
-      IndicatorsVisible.value
-        ? @() {
-            children = [
-              sightIndicators(styleAamAim, colorWacthed)
-              lockSight(colorWacthed, hdpx(150), hdpx(100), sw(50), sh(50))
-              targetSize(colorWacthed, sw(100), sh(100), false)
-            ]
-          }
-        : null
-    ]
-  }
-}
 
 let tankXrayIndicator = @() {
   rendObj = ROBJ_XRAYDOLL
@@ -78,7 +50,7 @@ let xraydoll = {
 }
 
 let function tankDmgIndicator() {
-  if(!isVisibleDmgIndicator.value)
+  if (!isVisibleDmgIndicator.value)
     return {
       watch = isVisibleDmgIndicator
       children = xraydoll
@@ -107,13 +79,38 @@ let function tankDmgIndicator() {
     size = dmgIndicatorStates.value.size
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorStates.value.size[0]}:{dmgIndicatorStates.value.size[1]}" )
+    image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorStates.value.size[0]}:{dmgIndicatorStates.value.size[1]}")
     children
   }
 }
 
+let function Root() {
+  let colorWacthed = Watched(greenColor)
+  let colorAlertWatched = Watched(redColor)
+  let isTankGunsAmmoVisible = cross_call.isVisibleTankGunsAmmoIndicator()
 
-return {
-  Root
-  tankDmgIndicator
+  return {
+    halign = ALIGN_LEFT
+    valign = ALIGN_TOP
+    watch = IndicatorsVisible
+    size = [sw(100), sh(100)]
+    children = [
+      mkRadar(radarPosComputed)
+      aamAim(colorWacthed, colorAlertWatched)
+      agmAim(colorWacthed)
+      tankDmgIndicator
+      isTankGunsAmmoVisible ? tankGunsAmmo : null
+      IndicatorsVisible.value
+        ? @() {
+            children = [
+              sightIndicators(styleAamAim, colorWacthed)
+              lockSight(colorWacthed, hdpx(150), hdpx(100), sw(50), sh(50))
+              targetSize(colorWacthed, sw(100), sh(100), false)
+            ]
+          }
+        : null
+    ]
+  }
 }
+
+return Root

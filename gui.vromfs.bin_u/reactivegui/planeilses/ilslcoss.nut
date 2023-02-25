@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       BombingMode, RadarTargetDist} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth} = require("ilsConstants.nut")
-let {cos, sin, PI} = require("%sqstd/math.nut")
-let {cvt} = require("dagor.math")
-let {Roll} = require("%rGui/planeState/planeFlyState.nut")
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
+       BombingMode, RadarTargetDist } = require("%rGui/planeState/planeToolsState.nut")
+let { baseLineWidth } = require("ilsConstants.nut")
+let { cos, sin, PI } = require("%sqstd/math.nut")
+let { cvt } = require("dagor.math")
+let { Roll } = require("%rGui/planeState/planeFlyState.nut")
 
 let LCOSSRollMark = @() {
   watch = IlsColor

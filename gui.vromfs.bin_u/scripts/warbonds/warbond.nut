@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,9 +7,9 @@ from "%scripts/dagui_library.nut" import *
 
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
+let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
-::Warbond <- class
-{
+::Warbond <- class {
   id = ""
   listId = ""
   fontIcon = "currency/warbond"
@@ -31,8 +32,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
   static LAST_SEEN_WARBOND_SHOP_LEVEL_PATH = "warbonds/lastReachedShopLevel"
   static LAST_SEEN_WARBOND_SHOP_MONTH_PATH = "warbonds/lastReachedShopMonth"
 
-  constructor(wbId, wbListId)
-  {
+  constructor(wbId, wbListId) {
     this.id = wbId
     this.listId = wbListId
     this.blkListPath = "warbonds/" + this.id + "/" + this.listId
@@ -59,23 +59,19 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
     this.levelsArray = listBlk?.levels ? (listBlk.levels % "level") : []
   }
 
-  function getFullId()
-  {
+  function getFullId() {
     return this.id + ::g_warbonds.FULL_ID_SEPARATOR + this.listId
   }
 
-  function isCurrent() //warbond than can be received right now
-  {
+  function isCurrent() { //warbond than can be received right now
     return ::get_warbond_curr_stage_name(this.id) == this.listId
   }
 
-  function isVisible()
-  {
+  function isVisible() {
     return this.isCurrent() || this.getBalance() > 0
   }
 
-  function validateList()
-  {
+  function validateList() {
     if (this.isListValid)
       return
 
@@ -88,85 +84,72 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
       return
 
     let total = config.blockCount()
-    for(local i = 0; i < total; i++)
+    for (local i = 0; i < total; i++)
       this.awardsList.append(::WarbondAward(this, config.getBlock(i), i))
   }
 
-  function getAwardsList()
-  {
+  function getAwardsList() {
     this.validateList()
     return this.awardsList
   }
 
-  function getAwardByIdx(awardIdx)
-  {
+  function getAwardByIdx(awardIdx) {
     let idx = ::to_integer_safe(awardIdx, -1)
     return getTblValue(idx, this.getAwardsList())
   }
 
-  function getAwardById(awardId)
-  {
-    return ::u.search(this.getAwardsList(), @(award) award.id == awardId )
+  function getAwardById(awardId) {
+    return ::u.search(this.getAwardsList(), @(award) award.id == awardId)
   }
 
   getAwardByType = @(awardType)
     this.getAwardsList().findvalue(@(award) award.awardType == awardType)
 
-  function getPriceText(amount, needShowZero = false, needColorByBalance = true)
-  {
+  function getPriceText(amount, needShowZero = false, needColorByBalance = true) {
     if (!amount && !needShowZero)
       return ""
 
-    local res = ::g_language.decimalFormat(amount)
+    local res = decimalFormat(amount)
     if (needColorByBalance && amount > this.getBalance())
       res = colorize("badTextColor", res)
     return res + loc(this.fontIcon)
   }
 
-  function getBalance()
-  {
+  function getBalance() {
     return ::get_warbond_balance(this.id)
   }
 
-  function getBalanceText()
-  {
+  function getBalanceText() {
     let limitText = loc("ui/slash") + this.getPriceText(::g_warbonds.getLimit(), true, false)
     return colorize("activeTextColor", this.getPriceText(this.getBalance(), true, false) + limitText)
   }
 
-  function getExpiredTimeLeft()
-  {
+  function getExpiredTimeLeft() {
     return this.expiredTime > 0 ? this.expiredTime - ::get_charserver_time_sec() : 0
   }
 
-  function getCanEarnTimeLeft()
-  {
+  function getCanEarnTimeLeft() {
     return this.canEarnTime > 0 ? this.canEarnTime - ::get_charserver_time_sec() : 0
   }
 
-  function getChangeStateTimeLeft()
-  {
+  function getChangeStateTimeLeft() {
     let res = this.isCurrent() ? this.getCanEarnTimeLeft() : this.getExpiredTimeLeft()
-    if (res < 0) //invalid warbond - need price update
-    {
+    if (res < 0) { //invalid warbond - need price update
       PRICE.update(null, null, false, !this.updateRequested) //forceUpdate request only once
       this.updateRequested = true
     }
     return res
   }
 
-  function getLevelData()
-  {
+  function getLevelData() {
     return ::warbond_get_shop_levels(this.id, this.listId)
   }
 
-  function haveAnyOrdinaryRequirements()
-  {
+  function haveAnyOrdinaryRequirements() {
     return ::u.search(this.getAwardsList(), @(award) award.haveOrdinaryRequirement()) != null
   }
 
-  function haveAnySpecialRequirements()
-  {
+  function haveAnySpecialRequirements() {
     return ::u.search(this.getAwardsList(), @(award) award.haveSpecialRequirement()) != null
   }
 
@@ -175,21 +158,18 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
   getLevelIcon = @() $"#ui/gameuiskin#{this.levelIcon}.svg"
   getLevelIconOverlay = @() $"#ui/gameuiskin#{this.levelIcon}_overlay.png"
 
-  function getCurrentShopLevelTasks()
-  {
+  function getCurrentShopLevelTasks() {
     return this.getLevelData().Ordinary
   }
 
-  function getCurrentShopLevel()
-  {
+  function getCurrentShopLevel() {
     if (!this.haveAnyOrdinaryRequirements())
       return 0
 
     return this.getShopLevel(this.getCurrentShopLevelTasks())
   }
 
-  function getShopLevel(tasksNum)
-  {
+  function getShopLevel(tasksNum) {
     local shopLevel = 0
     foreach (level, reqTasks in this.levelsArray)
       if (tasksNum >= reqTasks)
@@ -198,53 +178,44 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
     return shopLevel
   }
 
-  function getShopLevelText(level)
-  {
+  function getShopLevelText(level) {
     return ::get_roman_numeral(level + 1)
   }
 
-  function getShopLevelTasks(level)
-  {
-    return getTblValue(level, this.levelsArray, this.levelsArray.len()? this.levelsArray.top() : 0)
+  function getShopLevelTasks(level) {
+    return getTblValue(level, this.levelsArray, this.levelsArray.len() ? this.levelsArray.top() : 0)
   }
 
-  function getNextShopLevelTasks()
-  {
+  function getNextShopLevelTasks() {
     return this.getShopLevelTasks(this.getCurrentShopLevel() + 1)
   }
 
-  function isMaxLevelReached()
-  {
+  function isMaxLevelReached() {
     return this.levelsArray.top() <= this.getCurrentShopLevelTasks()
   }
 
-  function getCurrentMedalsCount()
-  {
+  function getCurrentMedalsCount() {
     if (!this.haveAnySpecialRequirements())
       return 0
 
     return this.getMedalsCount(this.getLevelData().Special)
   }
 
-  function getMedalsCount(tasksCount)
-  {
+  function getMedalsCount(tasksCount) {
     return tasksCount / this.medalForSpecialTasks
   }
 
-  function leftForAnotherMedalTasks()
-  {
+  function leftForAnotherMedalTasks() {
     return this.getLevelData().Special % this.medalForSpecialTasks
   }
 
-  function needShowNewItemsNotifications()
-  {
+  function needShowNewItemsNotifications() {
     if (!::g_login.isProfileReceived())
       return false
 
     let curLevel = this.getCurrentShopLevel()
     let lastSeen = ::loadLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, 0)
-    if (curLevel != 0 && lastSeen != curLevel)
-    {
+    if (curLevel != 0 && lastSeen != curLevel) {
       let balance = this.getBalance()
       if (::u.search(this.getAwardsList(),
           (@(award) this.getShopLevel(award.ordinaryTasks) == curLevel &&
@@ -257,8 +228,7 @@ let { GUI, PRICE } = require("%scripts/utils/configs.nut")
     return month != this.listId
   }
 
-  function markSeenLastResearchShopLevel()
-  {
+  function markSeenLastResearchShopLevel() {
     if (!this.needShowNewItemsNotifications())
       return
 

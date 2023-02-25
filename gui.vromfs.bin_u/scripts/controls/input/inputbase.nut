@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -9,8 +10,7 @@ from "%scripts/dagui_library.nut" import *
 /**
  * Interface class for all Input classes.
  */
-::Input.InputBase <- class
-{
+::Input.InputBase <- class {
 
   /**
    * shortcut id for wich this method was created
@@ -23,13 +23,11 @@ from "%scripts/dagui_library.nut" import *
   /**
    * Returns markup for impage display of input
    */
-  function getMarkup()
-  {
+  function getMarkup() {
     return ""
   }
 
-  function getMarkupData()
-  {
+  function getMarkupData() {
     return {}
   }
 
@@ -37,26 +35,22 @@ from "%scripts/dagui_library.nut" import *
   /**
    * Return text representations of input
    */
-  function getText()
-  {
+  function getText() {
     return ""
   }
 
 
 
-  function getDeviceId()
-  {
+  function getDeviceId() {
     return NULL_INPUT_DEVICE_ID
   }
 
 
-  function hasImage ()
-  {
+  function hasImage () {
     return false
   }
 
-  function getConfig()
-  {
+  function getConfig() {
     return { inputName = "inputBase" }
   }
 }

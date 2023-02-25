@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,16 +12,14 @@ let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
-::show_clan_log <- function show_clan_log(clanId)
-{
+::show_clan_log <- function show_clan_log(clanId) {
   ::gui_start_modal_wnd(
     ::gui_handlers.clanLogModal,
-    {clanId = clanId}
+    { clanId = clanId }
   )
 }
 
-::gui_handlers.clanLogModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.clanLogModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanLogModal.blk"
 
@@ -32,8 +31,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
   requestMarker = null
   selectedIndex = 0
 
-  function initScreen()
-  {
+  function initScreen() {
     this.logListObj = this.scene.findObject("log_list")
     if (!checkObj(this.logListObj))
       return this.goBack()
@@ -41,8 +39,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     this.fetchLogPage()
   }
 
-  function fetchLogPage()
-  {
+  function fetchLogPage() {
     ::g_clans.requestClanLog(
       this.clanId,
       ::CLAN_LOG_ROWS_IN_PAGE,
@@ -53,8 +50,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     )
   }
 
-  function handleLogData(logData)
-  {
+  function handleLogData(logData) {
     this.requestMarker = logData.requestMarker
 
     this.guiScene.setUpdatesEnabled(false, false)
@@ -67,8 +63,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     this.selectLogItem()
   }
 
-  function showLogs(logData)
-  {
+  function showLogs(logData) {
     for (local i = 0; i < logData.logEntries.len(); i++) {
       let author = logData.logEntries[i]?.uN ?? logData.logEntries[i]?.details.uN ?? ""
       logData.logEntries[i] = ::getFilteredClanData(logData.logEntries[i], author)
@@ -82,8 +77,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     this.guiScene.appendWithBlk(this.logListObj, blk, this)
   }
 
-  function selectLogItem()
-  {
+  function selectLogItem() {
     if (this.logListObj.childrenCount() <= 0)
       return
 
@@ -103,18 +97,15 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     playerContextMenu.showMenu(::getContact(uid), this)
   }
 
-  function removeNextButton()
-  {
+  function removeNextButton() {
     let obj = this.logListObj.findObject(this.loadButtonId)
     if (checkObj(obj))
       this.guiScene.destroyElement(obj)
   }
 
-  function addNextButton()
-  {
+  function addNextButton() {
     local obj = this.logListObj.findObject(this.loadButtonId)
-    if (!obj)
-    {
+    if (!obj) {
       let data = format("expandable { id:t='%s'}", this.loadButtonId)
       this.guiScene.appendWithBlk(this.logListObj, data, this)
       obj = this.logListObj.findObject(this.loadButtonId)
@@ -128,8 +119,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     this.guiScene.replaceContentFromText(obj, viewBlk, viewBlk.len(), this)
   }
 
-  function onItemSelect(obj)
-  {
+  function onItemSelect(obj) {
     let listChildrenCount = this.logListObj.childrenCount()
     if (listChildrenCount <= 0)
       return

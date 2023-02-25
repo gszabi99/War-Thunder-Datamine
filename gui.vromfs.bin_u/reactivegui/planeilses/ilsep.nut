@@ -1,15 +1,15 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
-let {Speed, Altitude, Roll, Tangage, Mach} = require("%rGui/planeState/planeFlyState.nut");
-let {IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
-        IlsLineScale, RocketMode, CannonMode, AamAccelLock} = require("%rGui/planeState/planeToolsState.nut")
-let {mpsToKmh, baseLineWidth} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {compassWrap, generateCompassMarkEP, generateCompassMarkEP08} = require("ilsCompasses.nut")
-let {IlsTrackerVisible, GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
-let {flyDirection} = require("commonElements.nut")
-let {ShellCnt}  = require("%rGui/planeState/planeWeaponState.nut");
+let { Speed, Altitude, Roll, Tangage, Mach } = require("%rGui/planeState/planeFlyState.nut");
+let { IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
+        IlsLineScale, RocketMode, CannonMode, AamAccelLock } = require("%rGui/planeState/planeToolsState.nut")
+let { mpsToKmh, baseLineWidth } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { compassWrap, generateCompassMarkEP, generateCompassMarkEP08 } = require("ilsCompasses.nut")
+let { IlsTrackerVisible, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { flyDirection } = require("commonElements.nut")
+let { ShellCnt }  = require("%rGui/planeState/planeWeaponState.nut");
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
@@ -54,11 +54,11 @@ let function generatePitchLineEP(num, isEP12, textPad) {
         commands = [
           [VECTOR_LINE, 0, 0, !isEP12 && num == 0 ? 45 : 34, 0],
           (isEP12 && num != 0 ? [VECTOR_LINE, 66, 0, 100, 0] : [VECTOR_LINE, 66, 0, 74, 0]),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 90, 0, 100 , 0] : []),
+          (isEP12 && num == 0 ? [VECTOR_LINE, 90, 0, 100,  0] : []),
           (!isEP12 ? [VECTOR_LINE, num == 0 ? 55 : 66, 0, 100, 0] : []),
           [VECTOR_WIDTH, baseLineWidth * 2 * IlsLineScale.value],
           (!isEP12 && num == 0 ? [VECTOR_LINE, 50, 0, 50, 0] : []),
-          (isEP12 && num == 0 ? [VECTOR_LINE, 37, 0, 37 , 0] : []),
+          (isEP12 && num == 0 ? [VECTOR_LINE, 37, 0, 37,  0] : []),
           (isEP12 && num == 0 ? [VECTOR_LINE, 42, 0, 42, 0] : []),
           (isEP12 && num == 0 ? [VECTOR_LINE, 47, 0, 47, 0] : []),
           (isEP12 && num == 0 ? [VECTOR_LINE, 53, 0, 53, 0] : []),
@@ -156,7 +156,7 @@ let generateAltMarkEP = function(num) {
         lineWidth = baseLineWidth * IlsLineScale.value
         vplace = ALIGN_CENTER
       },
-      ( num % 20 > 0 ? null :
+      (num % 20 > 0 ? null :
         @() {
           watch = IlsColor
           rendObj = ROBJ_TEXT
@@ -269,7 +269,7 @@ let function EPAimMark(width, height) {
           [VECTOR_ELLIPSE, 0, 0, 3, 6],
           [VECTOR_LINE, -100, -100, -100, 100],
           [VECTOR_LINE, 100, -100, 100, 100],
-          [VECTOR_FILL_COLOR, Color(0,0,0,0)],
+          [VECTOR_FILL_COLOR, Color(0, 0, 0, 0)],
           (haveShell.value ? [VECTOR_ELLIPSE, 60, -80, 10, 20] : []),
           (TargetPosValid.value ? [VECTOR_LINE, -50, 90, 50, 90] : []),
           (TargetPosValid.value ? [VECTOR_LINE, -30, 90, -30, 70] : []),

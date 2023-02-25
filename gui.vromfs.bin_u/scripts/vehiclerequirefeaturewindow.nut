@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,8 +12,7 @@ let { floor } = require("math")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
-::gui_handlers.VehicleRequireFeatureWindow <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.VehicleRequireFeatureWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   featureLockAction = CheckFeatureLockAction.BUY
   purchaseAvailable = true
@@ -20,8 +20,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   unit = null
   purchases = []
 
-  function initScreen()
-  {
+  function initScreen() {
     this.purchases = ::OnlineShopModel.getAllFeaturePurchases(this.unit.reqFeature)
     let view = {
       headerText = this.getWndHeaderText()
@@ -35,7 +34,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
     let timerObj = this.getObj("vehicle_require_feature_timer")
-    if (checkObj(timerObj)) timerObj.setUserData(this)
+    if (checkObj(timerObj))
+      timerObj.setUserData(this)
 
     let tblObj = this.getObj("items_list")
     if (tblObj?.isValid() ?? false) {
@@ -44,13 +44,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     }
   }
 
-  function getPurchaseAvailable()
-  {
+  function getPurchaseAvailable() {
     return this.purchaseAvailable && (this.purchases.len() != 0)
   }
 
-  function createMainText()
-  {
+  function createMainText() {
     local locPrefix = "shop/featureLock/"
     if (this.unit)
       if (this.unit.unitType == unitTypes.TANK)
@@ -74,17 +72,15 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return text
   }
 
-  function getWndImage()
-  {
-    local res = "#ui/images/usa_tanks_locked.jpg?P1"
+  function getWndImage() {
+    local res = "#ui/images/usa_tanks_locked?P1"
     let clearedCountry = ::g_string.cutPrefix(::getUnitCountry(this.unit), "country_")
     if (clearedCountry)
-      res = "#ui/images/" + clearedCountry + "_" + this.unit.unitType.tag + "_locked.jpg?P1"
+      res = "#ui/images/" + clearedCountry + "_" + this.unit.unitType.tag + "_locked?P1"
     return res
   }
 
-  function getWndHeaderText()
-  {
+  function getWndHeaderText() {
     if (!this.unit)
       return ""
 
@@ -94,17 +90,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return format("#shop/featureLock/%s/header", locTag)
   }
 
-  function onRowBuy(obj)
-  {
-    if( ! ::OnlineShopModel.getPurchaseData(obj.entitlementId).openBrowser())
+  function onRowBuy(obj) {
+    if (! ::OnlineShopModel.getPurchaseData(obj.entitlementId).openBrowser())
       ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
   }
 
-  function createEntitlementsView(purchasesList)
-  {
+  function createEntitlementsView(purchasesList) {
     let view = []
-    foreach (i, purchase in purchasesList)
-    {
+    foreach (i, purchase in purchasesList) {
       let entitlementItem = getEntitlementConfig(purchase.sourceEntitlement)
       let entitlementPrice = this.getEntitlementPrice(entitlementItem)
       view.append({
@@ -121,39 +114,33 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return view
   }
 
-  function onTimerUpdate(_obj, _dt)
-  {
+  function onTimerUpdate(_obj, _dt) {
     if (!::is_app_active() || ::steam_is_overlay_active() || ::is_builtin_browser_active())
       this.needFullUpdate = true
-    else if (this.needFullUpdate && ::is_online_available())
-    {
+    else if (this.needFullUpdate && ::is_online_available()) {
       this.needFullUpdate = false
       this.taskId = ::update_entitlements_limited()
       if (this.taskId < 0)
         return
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/checking"))
-      this.afterSlotOp = function()
-      {
+      this.afterSlotOp = function() {
         if (!::isUnitFeatureLocked(this.unit))
           this.goBack()
       }.bindenv(this)
     }
   }
 
-  function getEntitlementPrice(entitlementItem)
-  {
+  function getEntitlementPrice(entitlementItem) {
     let priceText = loc("price/" + entitlementItem.name, "")
     // Empty string is valid and means we won't show price at all.
     if (priceText == "")
       return ""
     local basePrice
-    try
-    {
+    try {
       basePrice = priceText.tofloat()
     }
-    catch (err)
-    {
+    catch (err) {
       return this.formatPrice("0")
     }
     let realPrice = (100 - this.getDiscountValue(entitlementItem)) * basePrice / 100
@@ -161,26 +148,22 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return this.formatPrice(roundedPrice.tostring())
   }
 
-  function formatPrice(priceText)
-  {
+  function formatPrice(priceText) {
     return format(loc("price/common"), priceText)
   }
 
-  function getDiscountText(entitlementItem)
-  {
+  function getDiscountText(entitlementItem) {
     let value = this.getDiscountValue(entitlementItem)
     if (value == 0)
       return ""
     return value.tostring() + "%"
   }
 
-  function getDiscountValue(entitlementItem)
-  {
+  function getDiscountValue(entitlementItem) {
     return getTblValue("goldDiscount", entitlementItem, 0)
   }
 
-  function onEventModalWndDestroy(_params)
-  {
+  function onEventModalWndDestroy(_params) {
     if (this.isSceneActiveNoModals())
       ::move_mouse_on_child_by_value(this.getObj("items_list"))
   }

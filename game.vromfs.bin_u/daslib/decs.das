@@ -293,7 +293,7 @@ def private with_archetype ( hash:ComponentHash; blk : block<(var arch:Archetype
 def private create_archetype ( var arch:Archetype; cmp:ComponentMap; idx:int )
     assert(length(arch.components)==0)
     arch.eidIndex = -1
-    for kv,kvi in cmp,range(INT_MAX)
+    for kv,kvi in cmp,count()
         var ct & = unsafe(decsState.componentTypeCheck[kv.name])
         if ct.hash != 0ul
             if kv.info.hash != ct.hash
@@ -389,7 +389,7 @@ def public lookup_request ( var erq : EcsRequest )
         compile_request(erq)
     var ql & = unsafe(decsState.queryLookup[erq.hash])
     if ql == 0
-        for arch,archi in decsState.allArchetypes,range(INT_MAX)
+        for arch,archi in decsState.allArchetypes,count()
             if erq |> can_process_request(arch)
                 erq.archetypes |> push(archi)
         decsState.ecsQueries |> push_clone(erq)
@@ -399,8 +399,7 @@ def public lookup_request ( var erq : EcsRequest )
 def public for_each_archetype ( var erq : EcsRequest; blk:block<(arch:Archetype):void> )
     //! Invokes block for each entity of each archetype that can be processed by the request.
     let qi = lookup_request(erq)
-    var aclone := decsState.ecsQueries[qi].archetypes
-    defer_delete(aclone)
+    var inscope aclone := decsState.ecsQueries[qi].archetypes
     for aidx in aclone
         var arch & = unsafe(decsState.allArchetypes[aidx])
         if arch.size > 0
@@ -413,8 +412,8 @@ def public for_eid_archetype ( eid:EntityId implicit; hash:ComponentHash; var er
     if lookup.generation != eid.generation
         return false
     var qi = -1
-    decsState.queryLookup |> find_if_exists(hash) <| $ ( ql )
-        qi = *ql - 1
+    decsState.queryLookup |> get(hash) <| $ ( ql )
+        qi = ql - 1
     if qi == -1
         qi = lookup_request(invoke(erq))
     let aidx = decsState.archetypeLookup[lookup.archetype]
@@ -432,12 +431,11 @@ def public for_each_archetype ( hash:ComponentHash; var erq : function<():EcsReq
     //! Invokes block for each entity of each archetype that can be processed by the request.
     //! Request is returned by a specified function.
     var qi = -1
-    decsState.queryLookup |> find_if_exists(hash) <| $ ( ql )
-        qi = *ql - 1
+    decsState.queryLookup |> get(hash) <| $ ( ql )
+        qi = ql - 1
     if qi == -1
         qi = lookup_request(invoke(erq))
-    var aclone := decsState.ecsQueries[qi].archetypes
-    defer_delete(aclone)
+    var inscope aclone := decsState.ecsQueries[qi].archetypes
     for aidx in aclone
         var arch & = unsafe(decsState.allArchetypes[aidx])
         if arch.size > 0
@@ -448,12 +446,11 @@ def public for_each_archetype_find ( hash:ComponentHash; var erq : function<():E
     //! Request is returned by a specified function.
     //! If block returns true, iteration is stopped.
     var qi = -1
-    decsState.queryLookup |> find_if_exists(hash) <| $ ( ql )
-        qi = *ql - 1
+    decsState.queryLookup |> get(hash) <| $ ( ql )
+        qi = ql - 1
     if qi == -1
         qi = lookup_request(invoke(erq))
-    var aclone := decsState.ecsQueries[qi].archetypes
-    defer_delete(aclone)
+    var inscope aclone := decsState.ecsQueries[qi].archetypes
     for aidx in aclone
         var arch & = unsafe(decsState.allArchetypes[aidx])
         if arch.size > 0
@@ -509,7 +506,7 @@ def public get_ro ( arch:Archetype; name:string; value:auto(TT)[] ) : array<TT[t
     unsafe
         return <- get(arch, name, value)
 
-[expect_not_dim(value)]
+[!expect_dim(value)]
 def public get_ro ( arch:Archetype; name:string; value:auto(TT) ) : array<TT-const-&-#> const
     //! Returns const temporary array of component given specific name and type of component for regular components.
     unsafe

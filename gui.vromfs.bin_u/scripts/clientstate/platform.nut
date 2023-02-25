@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -13,7 +14,7 @@ let {
   is_console,
   consoleRevision } = require("%sqstd/platform.nut")
 
-let {is_running_on_steam_deck} = require_native("steam")
+let { is_running_on_steam_deck } = require("steam")
 
 let {
   isXBoxPlayerName,
@@ -31,10 +32,8 @@ let PS4_REGION_NAMES = {
   [SCE_REGION_SCEJ]  = "scej"
 }
 
-let getPlayerName = function(name)
-{
-  if (name == ::my_user_name || getRealName(name) == ::my_user_name) //local usage
-  {
+let getPlayerName = function(name) {
+  if (name == ::my_user_name || getRealName(name) == ::my_user_name) { //local usage
     if (!::get_gui_option_in_mode(::USEROPT_DISPLAY_MY_REAL_NICK, ::OPTIONS_MODE_GAMEPLAY, true))
       return loc("multiplayer/name")
   }
@@ -50,8 +49,7 @@ let isMeXBOXPlayer = @() ::get_player_tags().indexof("xbone") != null
 
 let canSpendRealMoney = @() !isPC || (!::has_entitlement("XBOXAccount") && !::has_entitlement("PSNAccount"))
 
-let isPs4XboxOneInteractionAvailable = function(name)
-{
+let isPs4XboxOneInteractionAvailable = function(name) {
   let isPS4Player = isPS4PlayerName(name)
   let isXBOXPlayer = isXBoxPlayerName(name)
   if (((isMePS4Player() && isXBOXPlayer) || (isMeXBOXPlayer() && isPS4Player)) && !hasFeature("Ps4XboxOneInteraction"))

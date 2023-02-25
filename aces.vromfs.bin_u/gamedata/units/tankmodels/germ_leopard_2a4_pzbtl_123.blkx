@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -3471,6 +3471,23 @@
     "new_tank_engine": {},
     "tank_camouflage": {},
     "tank_additional_armor": {},
+    "camouflage_net": {
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "effects": {
+        "rcostAddParam": 0.98
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "body_net",
+            "turret_net",
+            "gun_net",
+            "gun_mask_net"
+          ]
+        }
+      }
+    },
     "manual_extinguisher": {},
     "tank_tool_kit": {},
     "new_tank_horizontal_aiming": {},

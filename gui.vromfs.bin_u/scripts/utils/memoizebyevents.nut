@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -33,9 +34,9 @@ let function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
   let function onEventCb(_p) {
     cache.clear()
   }
-  let {parameters=null, varargs=0, defparams=null} = func.getfuncinfos()
+  let { parameters = null, varargs = 0, defparams = null } = func.getfuncinfos()
   let isVarargved = (varargs > 0) || ((defparams?.len() ?? 0) > 0)
-  let parametersNum = (parameters?.len() ?? 0)-1
+  let parametersNum = (parameters?.len() ?? 0) - 1
   let isOneParam = (parametersNum == 1) && !isVarargved
   let isNoParams = (parametersNum == 0) && !isVarargved
 
@@ -57,7 +58,7 @@ let function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
     }
   }
   else if (isOneParam) {
-    return function memoizedfuncOne(v){
+    return function memoizedfuncOne(v) {
       let k = v ?? NullKey
       if (k in cache)
         return cache[k]

@@ -1,11 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-::queue_stats_versions.StatsVer2 <- class extends ::queue_stats_versions.Base
-{
+::queue_stats_versions.StatsVer2 <- class extends ::queue_stats_versions.Base {
   neutralTeamId = ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
   static fullTeamNamesList = [
     ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
@@ -13,8 +13,7 @@ from "%scripts/dagui_library.nut" import *
     ::get_team_name_by_mp_team(MP_TEAM_B)
   ]
 
-  function applyQueueInfo(queueInfo)
-  {
+  function applyQueueInfo(queueInfo) {
     if (!("queueId" in queueInfo) || !("cluster" in queueInfo))
       return false
 
@@ -31,21 +30,17 @@ from "%scripts/dagui_library.nut" import *
     return true
   }
 
-  function calcQueueTable()
-  {
+  function calcQueueTable() {
     this.teamsQueueTable = {}
     this.countriesQueueTable = {}
     this.maxClusterName = ""
 
     local playersOnMaxCluster = -1
-    foreach(cluster, statsByQueueId in this.source)
-    {
+    foreach (cluster, statsByQueueId in this.source) {
       this.gatherClusterData(cluster, statsByQueueId)
-      if (cluster in this.teamsQueueTable)
-      {
+      if (cluster in this.teamsQueueTable) {
         let playersCount = this.teamsQueueTable[cluster].playersCount
-        if (playersCount > playersOnMaxCluster)
-        {
+        if (playersCount > playersOnMaxCluster) {
           this.maxClusterName = cluster
           playersOnMaxCluster = playersCount
           this.isSymmetric = this.teamsQueueTable[cluster].isSymmetric //set symmetric by max queue symmetric
@@ -55,16 +50,14 @@ from "%scripts/dagui_library.nut" import *
   }
 
   //return player count on cluster
-  function gatherClusterData(cluster, statsByQueueId)
-  {
+  function gatherClusterData(cluster, statsByQueueId) {
     let dataByTeams = {
       playersCount = 0
       isSymmetric = false
     }
     let dataByCountries = {}
 
-    foreach(fullStats in statsByQueueId)
-    {
+    foreach (fullStats in statsByQueueId) {
       let stats = getTblValue("byTeams", fullStats)
       if (!stats)
         continue
@@ -77,11 +70,9 @@ from "%scripts/dagui_library.nut" import *
     this.countriesQueueTable[cluster] <- this.remapCountries(dataByCountries) //britain -> country_britain
   }
 
-  function mergeToDataByTeams(dataByTeams, stats)
-  {
+  function mergeToDataByTeams(dataByTeams, stats) {
     let neutralTeamStats = getTblValue(this.neutralTeamId, stats)
-    if (neutralTeamStats)
-    {
+    if (neutralTeamStats) {
       let playersCount = this.getCountByRank(neutralTeamStats, this.myRankInQueue)
       if (playersCount <= dataByTeams.playersCount)
         return
@@ -106,75 +97,65 @@ from "%scripts/dagui_library.nut" import *
     dataByTeams.isSymmetric <- false
   }
 
-  function getCountByRank(statsByCountries, rank)
-  {
+  function getCountByRank(statsByCountries, rank) {
     local res = 0
     if (!::u.isTable(statsByCountries))
       return res
 
     let key = rank.tostring()
-    foreach(countryTbl in statsByCountries)
+    foreach (countryTbl in statsByCountries)
       res += this.getCountFromStatTbl(getTblValue(key, countryTbl))
     return res
   }
 
-  function getCountFromStatTbl(statTbl)
-  {
+  function getCountFromStatTbl(statTbl) {
     return getTblValue("cnt", statTbl, 0)
   }
 
-  function gatherCountsTblByRanks(statsByCountries)
-  {
+  function gatherCountsTblByRanks(statsByCountries) {
     let res = {}
-    for(local i = 1; i <= ::max_country_rank; i++)
+    for (local i = 1; i <= ::max_country_rank; i++)
       res[i.tostring()] <- this.getCountByRank(statsByCountries, i)
     res.playersCount <- getTblValue(this.myRankInQueue.tostring(), res, 0)
     return res
   }
 
-  function mergeToDataByCountries(dataByCountries, stats)
-  {
-    foreach(teamName in this.fullTeamNamesList)
+  function mergeToDataByCountries(dataByCountries, stats) {
+    foreach (teamName in this.fullTeamNamesList)
       if (teamName in stats)
-        foreach(country, countryStats in stats[teamName])
-        {
-          if (!(country in dataByCountries))
-          {
+        foreach (country, countryStats in stats[teamName]) {
+          if (!(country in dataByCountries)) {
             dataByCountries[country] <- {}
-            for(local i = 1; i <= ::max_country_rank; i++)
+            for (local i = 1; i <= ::max_country_rank; i++)
               dataByCountries[country][i.tostring()] <- 0
           }
           this.mergeCountryStats(dataByCountries[country], countryStats)
         }
   }
 
-  function mergeCountryStats(fullStats, sourceStats)
-  {
-    foreach(key, value in fullStats)
+  function mergeCountryStats(fullStats, sourceStats) {
+    foreach (key, value in fullStats)
       if (key in sourceStats)
         fullStats[key] = max(value, this.getCountFromStatTbl(sourceStats[key]))
   }
 
-  function remapCountries(statsByCountries)
-  {
+  function remapCountries(statsByCountries) {
     let res = {}
-    foreach(country, data in statsByCountries)
+    foreach (country, data in statsByCountries)
       res["country_" + country] <- data
     return res
   }
 
-  function calcClanQueueTable()
-  {
+  function calcClanQueueTable() {
     this.myClanQueueTable = null
     this.clansQueueTable = {}
-    foreach(_cluster, statsByQueueId in this.source)
-      foreach(stats in statsByQueueId)
+    foreach (_cluster, statsByQueueId in this.source)
+      foreach (stats in statsByQueueId)
         if (this.gatherClansData(stats))
           break //clans are multiclusters always. so no need to try merge this data
   }
 
-  function gatherClansData(stats)
-  {
+  function gatherClansData(stats) {
     let statsByClans = getTblValue("byClans", stats)
     if (::u.isEmpty(statsByClans))
       return false
@@ -184,7 +165,7 @@ from "%scripts/dagui_library.nut" import *
       this.myClanQueueTable = clone myClanInfo
 
 
-    foreach(_clanTag, clanStats in statsByClans)
+    foreach (_clanTag, clanStats in statsByClans)
       this.clansQueueTable = ::u.tablesCombine(
         this.clansQueueTable,
         clanStats,

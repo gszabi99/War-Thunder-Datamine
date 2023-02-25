@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -51,7 +52,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
         return null
 
       let isResetShow = checkbox.findindex(@(c) c.value) != null
-      let typeName = checkbox[checkbox.len()-1].id.split("_")[0]
+      let typeName = checkbox[checkbox.len() - 1].id.split("_")[0]
       let params = $"pos:t='0, 1@popupFilterRowHeight-h'; type:t='rightSideCb'; typeName:t={typeName}"
       return fType.__merge({
         typeName
@@ -68,12 +69,12 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
         })
       })
     }).filter(@(inst) inst != null)
-    columns[columns.len()-1].isLast <- true
+    columns[columns.len() - 1].isLast <- true
 
     let stateItems = columns.reduce(@(res, inst) res.extend(inst?.checkbox), [])
 
     this.stateList = {}
-    foreach( inst in stateItems)
+    foreach (inst in stateItems)
       this.stateList[inst.id] <- inst
 
     return {
@@ -125,7 +126,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
     let count = this.stateList.filter(@(inst) inst.value).len()
     setDoubleTextToButton(this.scene, MAIN_BTN_ID, this.btnTitle,
       count == 0 ? ""
-        : colorize("lbActiveColumnColor", loc("ui/parentheses", {text = $"+{count}"})))
+        : colorize("lbActiveColumnColor", loc("ui/parentheses", { text = $"+{count}" })))
   }
 
   function onCheckBoxChange(obj) {

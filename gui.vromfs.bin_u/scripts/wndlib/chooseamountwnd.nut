@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,8 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.ChooseAmountWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ChooseAmountWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/wndLib/chooseAmountWnd.tpl"
   needVoiceChat = false
@@ -26,10 +26,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   onAcceptCb = null
   onCancelCb = null
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     let res = {}
-    foreach(key in ["align", "headerText", "buttonText",
+    foreach (key in ["align", "headerText", "buttonText",
         "minValue", "maxValue", "curValue", "valueStep"])
       res[key] <- this[key]
 
@@ -38,16 +37,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return res
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     if (checkObj(this.parentObj))
       this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.parentObj, this.align, this.scene.findObject("popup_frame"))
     this.updateButtons()
     this.updateValueText()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let buttonDecObj = this.scene.findObject("buttonDec")
     if (checkObj(buttonDecObj))
       buttonDecObj.enable(this.curValue != this.minValue)
@@ -56,23 +53,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       buttonIncObj.enable(this.curValue != this.maxValue)
   }
 
-  function updateValueText()
-  {
+  function updateValueText() {
     if (!this.getValueText)
       return
     local stakeTextObj = this.scene.findObject("cur_value_text")
     stakeTextObj.setValue(this.getValueText(this.curValue))
   }
 
-  function onValueChange(obj)
-  {
+  function onValueChange(obj) {
     this.curValue = obj.getValue()
     this.updateButtons()
     this.updateValueText()
   }
 
-  function changeSliderValue(newValue)
-  {
+  function changeSliderValue(newValue) {
     newValue = clamp(newValue, this.minValue, this.maxValue)
     if (newValue != this.curValue)
       this.scene.findObject("amount_slider").setValue(newValue)
@@ -81,15 +75,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onButtonDec(_obj) { this.changeSliderValue(this.curValue - this.valueStep) }
   function onButtonInc(_obj) { this.changeSliderValue(this.curValue + this.valueStep) }
 
-  function onCancel()
-  {
+  function onCancel() {
     if (this.onCancelCb)
       this.onCancelCb()
     this.goBack()
   }
 
-  function onAccept()
-  {
+  function onAccept() {
     if (this.onAcceptCb)
       this.onAcceptCb(this.curValue)
     this.goBack()

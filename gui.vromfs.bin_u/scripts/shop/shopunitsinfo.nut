@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -10,7 +11,7 @@ let shopPromoteUnits = persist("shopPromoteUnits", @() Watched({}))
 local countDefaultUnitsByCountry = null
 
 let function fillPromoteUnitsList(blk, unit) {
-  if(blk?.beginPurchaseDate != null && blk?.endPurchaseDate != null){
+  if (blk?.beginPurchaseDate != null && blk?.endPurchaseDate != null) {
     shopPromoteUnits.mutate(@(v) v[unit.name] <- {
       unit = unit
       timeStart = getTimestampFromStringUtc(blk.beginPurchaseDate)
@@ -19,29 +20,24 @@ let function fillPromoteUnitsList(blk, unit) {
   }
 }
 
-let function generateUnitShopInfo()
-{
+let function generateUnitShopInfo() {
   let blk = ::get_shop_blk()
   let totalCountries = blk.blockCount()
 
-  for(local c = 0; c < totalCountries; c++)  //country
-  {
+  for (local c = 0; c < totalCountries; c++) {  //country
     let cblk = blk.getBlock(c)
     let totalPages = cblk.blockCount()
 
-    for(local p = 0; p < totalPages; p++)
-    {
+    for (local p = 0; p < totalPages; p++) {
       let pblk = cblk.getBlock(p)
       let totalRanges = pblk.blockCount()
 
-      for(local r = 0; r < totalRanges; r++)
-      {
+      for (local r = 0; r < totalRanges; r++) {
         let rblk = pblk.getBlock(r)
         let totalAirs = rblk.blockCount()
         local prevAir = null
 
-        for(local a = 0; a < totalAirs; a++)
-        {
+        for (local a = 0; a < totalAirs; a++) {
           let airBlk = rblk.getBlock(a)
           let airName = airBlk.getBlockName()
           local air = ::getAircraftByName(airName)
@@ -49,19 +45,16 @@ let function generateUnitShopInfo()
           if (airBlk?.reqAir != null)
             prevAir = airBlk.reqAir
 
-          if (air)
-          {
+          if (air) {
             air.applyShopBlk(airBlk, prevAir)
             prevAir = air.name
             fillPromoteUnitsList(airBlk, air)
           }
-          else //aircraft group
-          {
+          else { //aircraft group
             let groupTotal = airBlk.blockCount()
             local firstIGroup = null
             let groupName = airName
-            for(local ga = 0; ga < groupTotal; ga++)
-            {
+            for (local ga = 0; ga < groupTotal; ga++) {
               let gAirBlk = airBlk.getBlock(ga)
               air = ::getAircraftByName(gAirBlk.getBlockName())
               if (!air)
@@ -106,7 +99,7 @@ let function hasDefaultUnitsInCountry(country) {
 }
 
 let function isCountryHaveUnitType(country, unitType) {
-  foreach(unit in ::all_units)
+  foreach (unit in ::all_units)
     if (unit.shopCountry == country && unit.esUnitType == unitType && unit.isVisibleInShop())
       return true
   return false

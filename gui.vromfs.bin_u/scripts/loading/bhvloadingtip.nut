@@ -1,17 +1,16 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 {
-  let class LoadingTip
-  {
+  let class LoadingTip {
     eventMask = EV_TIMER | EV_ON_CMD
     unitTypeMaskPID = ::dagui_propid.add_name_id("unitTypeMask")
     timerIntervalPID = ::dagui_propid.add_name_id("timer_interval_msec")
 
-    function onAttach(obj)
-    {
+    function onAttach(obj) {
       obj.set_prop_latent(this.timerIntervalPID, 1000)
 
       let unitTypeMask = obj?.unitTypeMask
@@ -23,28 +22,23 @@ from "%scripts/dagui_library.nut" import *
       return RETCODE_NOTHING
     }
 
-    function getUnitTypeMask(obj)
-    {
+    function getUnitTypeMask(obj) {
       return obj.getIntProp(this.unitTypeMaskPID, 0)
     }
 
-    function setValue(obj, unitTypeMask) //to set unit type from scripts
-    {
+    function setValue(obj, unitTypeMask) { //to set unit type from scripts
       if (!::u.isInteger(unitTypeMask) || unitTypeMask == this.getUnitTypeMask(obj))
         return
       obj.setIntProp(this.unitTypeMaskPID, unitTypeMask)
       this.updateTip(obj)
     }
 
-    function onTimer(obj, _dt)
-    {
+    function onTimer(obj, _dt) {
       this.updateTip(obj)
     }
 
-    function updateTip(obj)
-    {
-      obj.getScene().performDelayed(this, function()
-        {
+    function updateTip(obj) {
+      obj.getScene().performDelayed(this, function() {
           if (!obj.isValid())
             return
 

@@ -10,4 +10,4 @@ enum handlerType {
   ANY
 }
 
-return {handlerType}
+return { handlerType }

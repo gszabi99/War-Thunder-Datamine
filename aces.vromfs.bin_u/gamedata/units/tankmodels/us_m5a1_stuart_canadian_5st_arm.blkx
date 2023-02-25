@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -209,21 +209,6 @@
       "armorThickness": 10.0,
       "gun_barrel_dm": {},
       "gun_barrel_01_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_02_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_03_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_04_dm": {
         "armorThrough": 10.0,
         "armorThickness": 5.0,
         "hp": 50.0
@@ -1792,8 +1777,21 @@
     },
     "tracks": {
       "animationMultiplier": 0.565,
-      "height": 0.055,
-      "width": 0.294
+      "height": 0.075,
+      "width": 0.294,
+      "tracksTensionK": [
+        6.5,
+        8.0,
+        3.0
+      ],
+      "trackMesh": "us_t16e1_phys_track_line",
+      "trackLen": 0.1398,
+      "trackCount": 66,
+      "trackFadeTime": 1.1,
+      "trackConnector": true,
+      "trackEmitSparks": false,
+      "trackMaxHeight": 1.12,
+      "trackStartOffset": 0.19
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",

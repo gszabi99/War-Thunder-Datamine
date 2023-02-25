@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -82,20 +83,17 @@ let classDataByExpClass = {
   }
 }
 
-let function getDefaultUnitClassData(unit)
-{
+let function getDefaultUnitClassData(unit) {
   if (!unit.isAir())
     return unknownClassData
 
   return classDataByExpClass?[unit.expClass] ?? unknownClassData
 }
 
-let function getUnitClassData(unit, weapPreset = null)
-{
+let function getUnitClassData(unit, weapPreset = null) {
   let res = {}.__update(getDefaultUnitClassData(unit))
 
-  if (unit.expClass == "fighter" && weapPreset != null)
-  {
+  if (unit.expClass == "fighter" && weapPreset != null) {
     let weaponmask = getWeaponByName(unit.unit, weapPreset)?.weaponmask ?? 0
     let requiredWeaponmask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
     let isFighter = !(weaponmask & requiredWeaponmask)
@@ -107,14 +105,12 @@ let function getUnitClassData(unit, weapPreset = null)
   return res
 }
 
-let function getFighterToAssaultWeapon(unit)
-{
+let function getFighterToAssaultWeapon(unit) {
   let customClassWeaponMask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
   return unit?.getWeapons().findvalue(@(w) (w?.weaponmask ?? 0) & customClassWeaponMask)
 }
 
-let function getAvailableClasses(unit)
-{
+let function getAvailableClasses(unit) {
   let res = [getDefaultUnitClassData(unit)]
 
   if (unit.expClass == "fighter" && getFighterToAssaultWeapon(unit.unit) != null)
@@ -123,8 +119,7 @@ let function getAvailableClasses(unit)
   return res
 }
 
-let function getWeaponNameByExpClass(unit, expClass)
-{
+let function getWeaponNameByExpClass(unit, expClass) {
   return expClass == "assault" ? getFighterToAssaultWeapon(unit)?.name ?? "" : ""
 }
 

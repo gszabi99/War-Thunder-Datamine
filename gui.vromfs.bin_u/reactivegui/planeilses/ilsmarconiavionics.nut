@@ -1,15 +1,15 @@
 from "%rGui/globals/ui_library.nut" import *
-let {floor} = require("%sqstd/math.nut")
-let {IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
+let { floor } = require("%sqstd/math.nut")
+let { IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RadarTargetDistRate, RocketMode, CannonMode, BombCCIPMode, BombingMode,
   RadarTargetPos, TargetPos, TargetPosValid, TimeBeforeBombRelease, DistToTarget } = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {Tangage, Overload, Altitude, Speed, Roll, Mach, MaxOverload} = require("%rGui/planeState/planeFlyState.nut")
+let { baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { Tangage, VertOverload, Altitude, Speed, Roll, Mach, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
-let {compassWrap, generateCompassMarkSU145} = require("ilsCompasses.nut")
-let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
+let { compassWrap, generateCompassMarkSU145 } = require("ilsCompasses.nut")
+let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
@@ -35,7 +35,7 @@ let function pitch(width, height, generateFunc) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.08]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.16]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.16]
       }
     }
   }
@@ -100,11 +100,11 @@ let function generatePitchLine(num) {
 }
 
 let function KaiserTvvLinked(width, height) {
-  return @(){
+  return @() {
     watch = isAAMMode
     size = flex()
     children = [
-      @(){
+      @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = [pw(4), ph(4)]
@@ -155,7 +155,7 @@ let generateSpdMark = function(num) {
     size = [pw(100), ph(7.5)]
     pos = [pw(30), 0]
     children = [
-      ( num % 5 > 0 ? null :
+      (num % 5 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -184,7 +184,7 @@ let function speed(height, generateFunc) {
   let children = []
 
   for (local i = 1000; i >= 0; i -= 10) {
-    children.append(generateFunc(i/10))
+    children.append(generateFunc(i / 10))
   }
 
   let getOffset = @() ((1000.0 - Speed.value * mpsToKnots) * 0.00745 - 0.5) * height
@@ -241,7 +241,7 @@ let generateAltMark = function(num) {
         lineWidth = baseLineWidth * IlsLineScale.value
         vplace = ALIGN_CENTER
       },
-      ( num % 5 > 0 ? null :
+      (num % 5 > 0 ? null :
         @() {
           watch = IlsColor
           size = flex()
@@ -289,7 +289,7 @@ let function altWrap(width, height, generateFunc) {
   }
 }
 
-let OverloadWatch = Computed(@() (floor(Overload.value * 10)).tointeger())
+let OverloadWatch = Computed(@() (floor(VertOverload.value * 10)).tointeger())
 let overload = @() {
   watch = [OverloadWatch, IlsColor]
   size = flex()
@@ -311,7 +311,7 @@ let maxOverload = @() {
   text = string.format("%.1f", MaxOverloadWatch.value / 10.0)
 }
 
-let armLabel = @(){
+let armLabel = @() {
   watch = IlsColor
   size = flex()
   pos = [pw(22), ph(70)]
@@ -332,7 +332,7 @@ let mach = @() {
   text = string.format("%.2f", MachWatch.value / 100.0)
 }
 
-let radarTarget = @(){
+let radarTarget = @() {
   size = [pw(8), ph(8)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -383,7 +383,7 @@ let radarTargetDist = @() {
   ] : null
 }
 
-let ilsMode = @(){
+let ilsMode = @() {
   watch = [IlsColor, isAAMMode, CCIPMode, BombingMode]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
@@ -394,11 +394,11 @@ let ilsMode = @(){
 }
 
 let AamIsReady = Computed(@() GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
-let aamCircle = @(){
+let aamCircle = @() {
   watch = IlsTrackerVisible
   size = flex()
   children = IlsTrackerVisible.value ? [
-    @(){
+    @() {
       watch = AamIsReady
       size = [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -480,7 +480,7 @@ let lcos = @() {
   ] : null
 }
 
-let function ccip(width, height){
+let function ccip(width, height) {
   return @() {
     watch = [CCIPMode, TargetPosValid]
     size = flex()

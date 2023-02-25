@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -13,6 +14,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
+let { get_game_mode } = require("mission")
+let { parse_json } = require("json")
 
 const FOOTBALL_NY2021_BACKUP_SAVE_ID = "footballNy2021Backup"
 
@@ -34,11 +37,10 @@ let function isHotkeyEmpty(hc) {
 
 //==============================================================================
 
-let function tryControlsOverride()
-{
+let function tryControlsOverride() {
   if (!shouldManageControls())
     return false
-  if (::get_game_mode() != GM_DOMINATION || !::SessionLobby.getMissionName().contains("football"))
+  if (get_game_mode() != GM_DOMINATION || !::SessionLobby.getMissionName().contains("football"))
     return false
   if (::load_local_account_settings(FOOTBALL_NY2021_BACKUP_SAVE_ID) != null)
     return false
@@ -50,13 +52,11 @@ let function tryControlsOverride()
   // Searching for a PrimaryGun/MachineGun shared shortcut (like RT by default).
 
   local sourceBtnId = null
-  foreach (sm in hcMachineGun)
-  {
+  foreach (sm in hcMachineGun) {
     foreach (sp in hcPrimaryGun)
       if (sm.len() == 1 && sp.len() == 1
           && sm[0]?.deviceId == JOYSTICK_DEVICE_0_ID && sp[0]?.deviceId == JOYSTICK_DEVICE_0_ID
-          && sm[0]?.buttonId == sp[0]?.buttonId)
-      {
+          && sm[0]?.buttonId == sp[0]?.buttonId) {
         sourceBtnId = sm[0]?.buttonId
         break
       }
@@ -97,12 +97,10 @@ let function tryControlsOverride()
     ::SHORTCUT.GAMEPAD_RIGHT
   ].map(@(b) b.btn[0]) // Mapped to integer buttonIds
 
-  foreach (hotkeyId in preserveHotkeys)
-  {
+  foreach (hotkeyId in preserveHotkeys) {
     let hc = preset.getHotkey(hotkeyId)
     foreach (sc in hc)
-      if (sc.len() == 1 && sc[0]?.deviceId == JOYSTICK_DEVICE_0_ID)
-      {
+      if (sc.len() == 1 && sc[0]?.deviceId == JOYSTICK_DEVICE_0_ID) {
         let delIdx = tryBtnIdOrder.indexof(sc[0]?.buttonId)
         if (delIdx != null)
           tryBtnIdOrder.remove(delIdx)
@@ -120,21 +118,18 @@ let function tryControlsOverride()
   let original = {}
   let modified = {}
 
-  foreach (hotkeyId, hc in preset.hotkeys)
-  {
+  foreach (hotkeyId, hc in preset.hotkeys) {
     local needWipe = false
     foreach (sc in hc)
       if (sc.len() == 1 && sc[0]?.deviceId == JOYSTICK_DEVICE_0_ID && sc[0]?.buttonId == destinationBtnId)
         needWipe = true
 
-    if (needWipe) // For our uncustomized presets wipes 3 shortcuts: ID_ROCKETS, ID_ATGM, submarine_depth.
-    {
+    if (needWipe) { // For our uncustomized presets wipes 3 shortcuts: ID_ROCKETS, ID_ATGM, submarine_depth.
       original[hotkeyId] <- clone hc
       modified[hotkeyId] <- removeSingleGamepadBtnId(hc, destinationBtnId)
     }
 
-    if (hotkeyId == "ID_FIRE_GM_MACHINE_GUN")
-    {
+    if (hotkeyId == "ID_FIRE_GM_MACHINE_GUN") {
       original[hotkeyId] <- clone hc
       modified[hotkeyId] <- addSingleGamepadBtnId(removeSingleGamepadBtnId(hc, sourceBtnId), destinationBtnId)
     }
@@ -153,8 +148,7 @@ let function tryControlsOverride()
   // Logging.
 
   log($"FoolballNy2021Hack: Modifying hotkeys:")
-  foreach(hotkeyId, hc in original)
-  {
+  foreach (hotkeyId, hc in original) {
     log($"  {hotkeyId}")
     log($"    from: {::save_to_json(hc)}")
     log($"    to:   {::save_to_json(modified[hotkeyId])}")
@@ -173,8 +167,7 @@ let function tryControlsOverride()
 
 //==============================================================================
 
-let function tryControlsRestore()
-{
+let function tryControlsRestore() {
   if (!shouldManageControls())
     return false
 
@@ -188,17 +181,14 @@ let function tryControlsRestore()
   log($"FoolballNy2021Hack: Restoring hotkeys from backup:")
   debugTableData(data, 10)
 
-  let original = data?.original.map(@(s) ::parse_json(s)) ?? {}
-  let modified = data?.modified.map(@(s) ::parse_json(s)) ?? {}
+  let original = data?.original.map(@(s) parse_json(s)) ?? {}
+  let modified = data?.modified.map(@(s) parse_json(s)) ?? {}
 
-  if (original.len() == modified.len())
-  {
-    foreach (hotkeyId, hc in original)
-    {
+  if (original.len() == modified.len()) {
+    foreach (hotkeyId, hc in original) {
       let curHc = preset.getHotkey(hotkeyId)
       let expectedHc = modified?[hotkeyId] ?? []
-      if (::u.isEqual(curHc, expectedHc) || (isHotkeyEmpty(curHc) && isHotkeyEmpty(expectedHc)))
-      {
+      if (::u.isEqual(curHc, expectedHc) || (isHotkeyEmpty(curHc) && isHotkeyEmpty(expectedHc))) {
         preset.setHotkey(hotkeyId, hc)
         log($"  OK   {hotkeyId}")
       }

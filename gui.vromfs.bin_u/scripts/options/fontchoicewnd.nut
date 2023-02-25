@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,40 +16,33 @@ local wasOpened = false
 
   option = null
 
-  static function openIfRequired()
-  {
+  static function openIfRequired() {
     if (!::gui_handlers.FontChoiceWnd.isSeen() && ::g_font.getAvailableFonts().len() > 1)
       ::handlersManager.loadHandler(::gui_handlers.FontChoiceWnd)
   }
 
-  static function isSeen()
-  {
+  static function isSeen() {
     return ::load_local_account_settings(FONT_CHOICE_SAVE_ID, false)
   }
 
-  static function markSeen(isMarkSeen = true)
-  {
+  static function markSeen(isMarkSeen = true) {
     return ::save_local_account_settings(FONT_CHOICE_SAVE_ID, isMarkSeen)
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.option = ::get_option(::USEROPT_FONTS_CSS)
     return {
       options = ::create_option_combobox(this.option.id, this.option.items, this.option.value, null, false)
     }
   }
 
-  function initScreen()
-  {
-    if (!wasOpened)
-    {
+  function initScreen() {
+    if (!wasOpened) {
       wasOpened = true
     }
   }
 
-  function onFontsChange(obj)
-  {
+  function onFontsChange(obj) {
     let newValue = obj.getValue()
     if (newValue == this.option.value)
       return
@@ -57,8 +51,7 @@ local wasOpened = false
     this.guiScene.performDelayed(this, @() ::handlersManager.getActiveBaseHandler().fullReloadScene())
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.markSeen(true)
     base.goBack()
   }

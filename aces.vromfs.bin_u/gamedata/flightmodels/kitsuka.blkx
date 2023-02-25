@@ -2039,57 +2039,10 @@
     }
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": [
-        "no_cannon_l",
-        "cannon_r",
-        "flare2"
-      ]
-    },
-    "hideDmParts": {
-      "node": [
-        "engine3_dm",
-        "engine4_dm",
-        "cannon2_dm"
-      ]
-    },
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType5.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 50,
-        "spread": 1.5,
-        "traceOffset": 1,
-        "counterIndex": 1,
-        "external": true
-      },
-      {
-        "trigger": "boosters",
-        "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
-        "emitter": "rocket_engine_1",
-        "bullets": 1,
-        "external": true,
-        "gearRange": [
-          1.0,
-          1.0
-        ]
-      },
-      {
-        "trigger": "boosters",
-        "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
-        "emitter": "rocket_engine_2",
-        "bullets": 1,
-        "external": true,
-        "gearRange": [
-          1.0,
-          1.0
-        ]
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2103,8 +2056,197 @@
       },
       {
         "name": "kitsuka_800kg_bomb",
-        "blk": "gameData/FlightModels/weaponPresets/kitsuka_800kg_bomb.blk",
-        "reqModification": "kitsuka_14in_mod41"
+        "blk": "gameData/FlightModels/weaponPresets/kitsuka_800kg_bomb.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 850.0,
+    "maxloadMassLeftConsoles": 850.0,
+    "maxloadMassRightConsoles": 850.0,
+    "maxDisbalance": 850.0,
+    "HideNodes": {
+      "node": [
+        "bomb_pylon",
+        "rocket_engine_1",
+        "rocket_engine_2",
+        "cannon_l",
+        "cannon_r",
+        "no_cannon_l",
+        "no_cannon_r"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "engine3_dm",
+        "engine4_dm",
+        "cannon2_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": [
+          {
+            "name": "default_common",
+            "ShowDmParts": {
+              "node": [
+                "engine3_dm",
+                "engine4_dm"
+              ]
+            },
+            "ShowNodes": {
+              "node": [
+                "rocket_engine_1",
+                "rocket_engine_2",
+                "cannon_l",
+                "no_cannon_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonType5.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon1_dm",
+                "bullets": 50,
+                "spread": 1.5,
+                "traceOffset": 1,
+                "counterIndex": 1,
+                "external": true
+              },
+              {
+                "trigger": "boosters",
+                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
+                "emitter": "rocket_engine_1",
+                "bullets": 1,
+                "external": true,
+                "gearRange": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "trigger": "boosters",
+                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
+                "emitter": "rocket_engine_2",
+                "bullets": 1,
+                "external": true,
+                "gearRange": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          },
+          {
+            "name": "cannon_common",
+            "ShowDmParts": {
+              "node": [
+                "engine3_dm",
+                "engine4_dm"
+              ]
+            },
+            "ShowNodes": {
+              "node": [
+                "rocket_engine_1",
+                "rocket_engine_2",
+                "cannon_r",
+                "cannon_l"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonType5.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon1_dm",
+                "bullets": 50,
+                "spread": 1.5,
+                "traceOffset": 1,
+                "counterIndex": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonType5_external.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "shell": "emtr_shellrejection1",
+                "dm": "cannon2_dm",
+                "external": true,
+                "bullets": 50,
+                "spread": 1.5,
+                "traceOffset": 1,
+                "counterIndex": 5
+              },
+              {
+                "trigger": "boosters",
+                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
+                "emitter": "rocket_engine_1",
+                "bullets": 1,
+                "external": true,
+                "gearRange": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "trigger": "boosters",
+                "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
+                "emitter": "rocket_engine_2",
+                "bullets": 1,
+                "external": true,
+                "gearRange": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "tier": 6,
+        "order": 1,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large",
+            "name": "500kg",
+            "ShowNodes": {
+              "node": "bomb_pylon"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_navy_mod50mark2_500kg.blk",
+              "emitter": "bomb_800",
+              "dm": "bomb_dm",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "800kg",
+            "reqModification": "kitsuka_14in_mod41",
+            "ShowNodes": {
+              "node": "bomb_pylon"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_navy_mod80mark1_800kg.blk",
+              "emitter": "bomb_800",
+              "dm": "bomb_dm",
+              "bullets": 1,
+              "external": true
+            }
+          }
+        ]
       }
     ]
   },
@@ -2245,67 +2387,10 @@
       "invertEnableLogic": false,
       "effects": {
         "commonWeapons": {
-          "hideDmParts": {
-            "node": [
-              "engine3_dm",
-              "engine4_dm"
-            ]
-          },
-          "hideNodes": {
-            "node": [
-              "no_cannon_r",
-              "no_cannon_l"
-            ]
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonType5.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon1_dm",
-              "bullets": 50,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonType5_external.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon2_dm",
-              "external": true,
-              "bullets": 50,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 5
-            },
-            {
-              "trigger": "boosters",
-              "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_left.blk",
-              "emitter": "rocket_engine_1",
-              "bullets": 1,
-              "external": true,
-              "gearRange": [
-                1.0,
-                1.0
-              ]
-            },
-            {
-              "trigger": "boosters",
-              "blk": "gameData/Weapons/payloadguns/jp_kitsuka_rocket_booster_right.blk",
-              "emitter": "rocket_engine_2",
-              "bullets": 1,
-              "external": true,
-              "gearRange": [
-                1.0,
-                1.0
-              ]
-            }
-          ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "cannon_common"
+          }
         }
       }
     }

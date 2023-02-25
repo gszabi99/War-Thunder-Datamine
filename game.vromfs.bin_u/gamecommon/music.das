@@ -65,7 +65,7 @@ def music_init_es(evt : Event;
   music__forced = false
   music__lockedHangar = false
   music__curBattleState = int(BattleState CALM)
-  using <| $(var blk : DataBlock#)
+  using() <| $(var blk : DataBlock)
     if datablock_load(blk, "config/sound_studio.blk")
       let musicBlk = blk |> datablock_get_block_by_name("music")
       music__battleRadiusAirSq = square(musicBlk |> datablock_getReal("battleRadius", 3000.))
@@ -169,7 +169,7 @@ def update_battle_state(battle_radius_air_sq : float;
   let battleState = get_battle_state(battle_radius_air_sq, battle_radius_ground_sq, battle_enemies_threshold)
   let cooldown = (battleState == BattleState ACTION) ? cooldown_battle : cooldown_calm
   timer_battle += dt
-  if delay_battle_state(battleState, cur_battle_state, timer_battle, cooldown)
+  if delay_battle_state(battleState, cur_battle_state, timer_battle, cooldown) || cur_battle_state >= int(BattleState TOP_TIER)
     cur_battle_state = int(battleState)
 
 
@@ -212,7 +212,7 @@ def make_win_loose_event_name(id : int;
 
 
 [es(tag=sound)]
-def music_es(info : UpdateStageInfoAct;
+def music_es(info : ParallelUpdateFrameDelayed;
              music__battleRadiusAirSq : float;
              music__battleRadiusGroundSq : float;
              music__battleEnemiesThreshold : int;

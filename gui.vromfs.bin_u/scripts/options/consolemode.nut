@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,8 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
-::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled()
-{
+::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled() {
   return isPlatformSony
          || isPlatformXboxOne
          || is_platform_android
@@ -15,8 +15,7 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
          || (::is_steam_big_picture() && ::have_xinput_device())
 }
 
-::get_is_console_mode_enabled <- function get_is_console_mode_enabled()
-{
+::get_is_console_mode_enabled <- function get_is_console_mode_enabled() {
   if (::get_is_console_mode_force_enabled())
     return true
 
@@ -26,8 +25,7 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
   return ::getSystemConfigOption("use_gamepad_interface", false)
 }
 
-::switch_show_console_buttons <- function switch_show_console_buttons(showCB)
-{
+::switch_show_console_buttons <- function switch_show_console_buttons(showCB) {
   if (::get_is_console_mode_force_enabled() && !showCB)
     return false
   if (showCB == ::show_console_buttons)

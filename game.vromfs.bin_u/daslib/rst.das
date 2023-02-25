@@ -251,7 +251,7 @@ def make_table(tab:array<array<string>>;withHeader:bool=false)
         for cc in tab
             for x in range(cols)
                 wid[x] = max(wid[x], length(cc[x]))
-        for ccc,idx in tab,range(100500)
+        for ccc,idx in tab,count()
             write_table_separator(writer,wid,(idx==1 && withHeader) ? "=" : "-")
             write_table_line(writer,ccc,wid)
         write_table_separator(writer,wid)
@@ -391,7 +391,7 @@ def document_function_declaration(doc_file:file;domain,func_name:string;
         argNames:array<string>;argTypes:array<TypeDecl?>;resType:TypeDeclPtr)
     fwrite(doc_file,make_domain(domain))
     fwrite(doc_file,"{func_name}(")
-    for an,at,i in argNames,argTypes,range(100500)
+    for an,at,i in argNames,argTypes,count()
         if argument_needs_documenting(at)
             if i != 0
                 fwrite(doc_file,"; ")
@@ -723,6 +723,8 @@ def document_function(doc_file:file;mod:Module?;func:FunctionPtr)
         fwrite(doc_file,"{func.name} returns {describe_type(func.result)}\n\n")
     if func.flags.unsafeOperation
         document_warning(doc_file,"This is unsafe operation.")
+    if func.moreFlags.deprecated
+        document_warning(doc_file,"This function is deprecated.")
     document_function_arguments(doc_file,argNames,argTypes)
     document_topic(doc_file,topic("function",mod,"{func.name}"))
 

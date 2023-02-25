@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,8 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 local callbackReturnFunc = null
 
-::xbox_on_purchases_updated <- function()
-{
+::xbox_on_purchases_updated <- function() {
   if (!::is_online_available())
     return
 
@@ -16,8 +16,7 @@ local callbackReturnFunc = null
                        progressBoxText = loc("charServer/checking")
                      },
                      Callback(function() {
-                       if (callbackReturnFunc)
-                       {
+                       if (callbackReturnFunc) {
                          callbackReturnFunc()
                          callbackReturnFunc = null
                        }

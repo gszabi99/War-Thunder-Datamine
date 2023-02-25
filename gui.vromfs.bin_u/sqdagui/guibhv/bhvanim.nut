@@ -3,9 +3,8 @@
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 
-::create_ObjMoveToOBj <- function create_ObjMoveToOBj(scene, objStart, objTarget, config = null)
+::create_ObjMoveToOBj <- function create_ObjMoveToOBj(scene, objStart, objTarget, config = null) {
   //createBlk == null -> create objTarget clone
-{
   if (!check_obj(scene) || !check_obj(objStart) || !check_obj(objTarget))
     return
 
@@ -25,8 +24,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
   sizeObj["size-func"] = bhvFuncName
   if (config && ("createBlk" in config))
     guiScene.replaceContent(sizeObj, config.createBlk, handlerObj)
-  else
-  {
+  else {
     let cloneObj = objTarget.getClone(sizeObj, handlerObj)
     cloneObj.pos = "0,0"
     cloneObj.size = "pw, ph"
@@ -51,8 +49,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
   sizeObj["height-base"] = startSize[1].tostring()
   sizeObj["height-end"] = tarSize[1].tostring()
 
-  if (config && ("time" in config))
-  {
+  if (config && ("time" in config)) {
     let timeTxt = (config.time * 1000).tointeger().tostring()
     moveObj["pos-time"] = timeTxt
     sizeObj["size-time"] = timeTxt

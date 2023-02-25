@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,6 +8,8 @@ let { format } = require("string")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
+let { get_meta_missions_info_by_chapters, select_mission } = require("guiMission")
+let { set_game_mode, get_game_mode } = require("mission")
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
@@ -136,8 +139,8 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
 }
 
 let function saveTutorialToCheckReward(mission) {
-  let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(GM_TRAINING)  //req to check progress
+  let mainGameMode = get_game_mode()
+  set_game_mode(GM_TRAINING)  //req to check progress
   let campId = ::get_game_mode_name(GM_TRAINING)
   let missionName = mission.name
   let fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
@@ -148,11 +151,10 @@ let function saveTutorialToCheckReward(mission) {
   let preset = ::g_controls_presets.getCurrentPresetInfo()
   if (preset.name.indexof("hotas4") != null
       && checkJoystickThustmasterHotas(false)
-      && ! hasFeature("DisableSwitchPresetOnTutorialForHotas4"))
-    {
+      && ! hasFeature("DisableSwitchPresetOnTutorialForHotas4")) {
       presetFilename = preset.fileName
       ::apply_joy_preset_xchange(::g_controls_presets.getControlsPresetFilename("dualshock4"))
-    }
+  }
 
   let rBlk = ::get_pve_awards_blk()
   let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
@@ -176,7 +178,7 @@ let function saveTutorialToCheckReward(mission) {
     resourceType
     isResourceUnlocked
   })
-  ::set_mp_mode(mainGameMode)
+  set_game_mode(mainGameMode)
 }
 
 let isRequireFeature = @(data, featureId) (featureId in data) && !hasFeature(data[featureId])
@@ -193,24 +195,24 @@ let function getTutorialsTblWithMissions (diff = -1, misName = null) {
       }),
     {})
 
-  let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(GM_TRAINING)  //req to check progress
+  let mainGameMode = get_game_mode()
+  set_game_mode(GM_TRAINING)  //req to check progress
   let campId = ::get_game_mode_name(GM_TRAINING)
-  let chapters = ::get_meta_missions_info_by_chapters(GM_TRAINING)
-  foreach(chapter in chapters)
-    foreach(m in chapter)
+  let chapters = get_meta_missions_info_by_chapters(GM_TRAINING)
+  foreach (chapter in chapters)
+    foreach (m in chapter)
       if (m.name in tutorialsTbl && (misName == null || misName == m.name)) {
         let fullMissionName = $"{m?.chapter ?? campId}/{m.name}"
         let progress = ::get_mission_progress(fullMissionName)
         if (!isRequireFeature(m, "reqFeature")
-          && ((diff<0 && progress == 3) || (diff>=0 && (progress==3 || progress<diff)))) // 3 == unlocked, 0-2 - completed at difficulty
+          && ((diff < 0 && progress == 3) || (diff >= 0 && (progress == 3 || progress < diff)))) // 3 == unlocked, 0-2 - completed at difficulty
             tutorialsTbl[m.name].__update({ mission = m, progress = progress })
 
         if (misName != null)
           break
       }
 
-  ::set_mp_mode(mainGameMode)
+  set_game_mode(mainGameMode)
 
   return tutorialsTbl
 }
@@ -275,7 +277,7 @@ let function resetTutorialSkip() {
 let reqTimeInMode = 60 //req time in mode when no need check tutorial
 let function isDiffUnlocked(diff, checkUnitType) {
   //check played before
-  for(local d = diff; d<3; d++)
+  for (local d = diff; d < 3; d++)
     if (::my_stats.getTimePlayed(checkUnitType, d) >= reqTimeInMode)
       return true
 
@@ -283,21 +285,21 @@ let function isDiffUnlocked(diff, checkUnitType) {
   if (reqName == "")
     return true
 
-  let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(GM_TRAINING)  //req to check progress
+  let mainGameMode = get_game_mode()
+  set_game_mode(GM_TRAINING)  //req to check progress
 
-  let chapters = ::get_meta_missions_info_by_chapters(GM_TRAINING)
-  foreach(chapter in chapters)
-    foreach(m in chapter)
+  let chapters = get_meta_missions_info_by_chapters(GM_TRAINING)
+  foreach (chapter in chapters)
+    foreach (m in chapter)
       if (reqName == m.name) {
         let fullMissionName = m.getStr("chapter", ::get_game_mode_name(GM_TRAINING)) + "/" + m.name
         let progress = ::get_mission_progress(fullMissionName)
         if (mainGameMode >= 0)
-          ::set_mp_mode(mainGameMode)
-        return (progress<3 && progress>=diff) // 3 == unlocked, 0-2 - completed at difficulty
+          set_game_mode(mainGameMode)
+        return (progress < 3 && progress >= diff) // 3 == unlocked, 0-2 - completed at difficulty
       }
   assert(false, "Error: Not found mission ::req_tutorial_name = " + reqName)
-  ::set_mp_mode(mainGameMode)
+  set_game_mode(mainGameMode)
   return true
 }
 
@@ -317,24 +319,24 @@ let function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = nul
   if (!mData)
     return false
 
-  local msgText = loc((diff==2)? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
+  local msgText = loc((diff == 2) ? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
   msgText += "\n\n" + format(loc("msgbox/req_tutorial_for_mode"), loc("difficulty" + diff))
 
   msgText += "\n<color=@userlogColoredText>" + loc("missions/" + mData.mission.name) + "</color>"
 
-  if(needMsgBox)
+  if (needMsgBox)
     ::scene_msg_box("req_tutorial_msgbox", null, msgText,
       [
         ["startTutorial", (@(mData, diff) function() {
           mData.mission.setStr("difficulty", ::get_option(::USEROPT_DIFFICULTY).values[diff])
-          ::select_mission(mData.mission, true)
+          select_mission(mData.mission, true)
           ::current_campaign_mission = mData.mission.name
           saveTutorialToCheckReward(mData.mission)
           ::handlersManager.animatedSwitchScene(::gui_start_flight)
         })(mData, diff)],
         ["cancel", cancelCb]
       ], "cancel")
-  else if(cancelCb)
+  else if (cancelCb)
     cancelCb()
   return true
 }

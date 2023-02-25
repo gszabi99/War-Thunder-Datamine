@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
-global enum LB_MODE
-{
+global enum LB_MODE {
   ARCADE            = 0x00001
   HISTORICAL        = 0x00002
   SIMULATION        = 0x00004
@@ -36,8 +36,7 @@ global enum LB_MODE
   ALL               = 0xFFFFF
 }
 
-global enum WW_LB_MODE
-{
+global enum WW_LB_MODE {
   WW_USERS          = 0x00001
   WW_CLANS          = 0x00002
   WW_COUNTRIES      = 0x00004
@@ -76,8 +75,7 @@ global enum WW_LB_MODE
 }
 
 
-::get_lb_mode <- function get_lb_mode(name, isWwLeaderboard = false)
-{
+::get_lb_mode <- function get_lb_mode(name, isWwLeaderboard = false) {
   if (!isWwLeaderboard && ::u.isEmpty(name))
     return 0
 
@@ -101,31 +99,26 @@ global enum WW_LB_MODE
   }
 }
 
-::g_lb_category.getTypeById <- function getTypeById(id)
-{
+::g_lb_category.getTypeById <- function getTypeById(id) {
   return enums.getCachedType("id", id, ::g_lb_category.cache.byId,
     ::g_lb_category, this.UNKNOWN)
 }
 
-::g_lb_category.getTypeByField <- function getTypeByField(field)
-{
+::g_lb_category.getTypeByField <- function getTypeByField(field) {
   return enums.getCachedType("field", field, ::g_lb_category.cache.byField,
     ::g_lb_category, this.UNKNOWN)
 }
 
-::g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row)
-{
+::g_lb_category._getAdditionalTooltipPart <- function _getAdditionalTooltipPart(row) {
   if (!this.additionalTooltipCategoryes || !row)
     return ""
 
   local res = ""
   local additionalCategory = null
 
-  foreach (categoryTypeName in this.additionalTooltipCategoryes)
-  {
+  foreach (categoryTypeName in this.additionalTooltipCategoryes) {
     additionalCategory = ::g_lb_category[categoryTypeName]
-    if (!(additionalCategory.field in row))
-    {
+    if (!(additionalCategory.field in row)) {
       continue
     }
 
@@ -153,7 +146,7 @@ global enum WW_LB_MODE
 }
 
 ::g_lb_category.template <- {
-  id = ""//filled automatically by typeName [DEPRECATED]
+  id = "" //filled automatically by typeName [DEPRECATED]
   field = "" //field name from server response
   lbDataType = lbDataType.NUM
   sort_default = false
@@ -173,8 +166,7 @@ global enum WW_LB_MODE
 
   getAdditionalTooltipPart = ::g_lb_category._getAdditionalTooltipPart
 
-  getItemCell = function(value, row = null, allowNegative = false, forceDataType = null)
-  {
+  getItemCell = function(value, row = null, allowNegative = false, forceDataType = null) {
     let res = ::getLbItemCell(this.id, value, (forceDataType ? forceDataType : this.lbDataType), allowNegative)
     let additionalTooltipPart = this.getAdditionalTooltipPart(row)
     if (additionalTooltipPart != "")
@@ -183,21 +175,18 @@ global enum WW_LB_MODE
     return res
   }
 
-  isVisibleByFeature = function()
-  {
+  isVisibleByFeature = function() {
     // check reqFeature
     return hasAllFeatures(this.reqFeature)
   }
 
-  isVisibleByLbModeName = function(modeName)
-  {
+  isVisibleByLbModeName = function(modeName) {
     // check modesMask
     return ((this.modesMask == LB_MODE.ALL) || ((::get_lb_mode(modeName) & this.modesMask) != 0)) &&
       ((this.wwModesMask == WW_LB_MODE.ALL) || ((::get_lb_mode(modeName, true) & this.wwModesMask) != 0))
   }
 
-  isVisibleInEvent = function(event)
-  {
+  isVisibleInEvent = function(event) {
     if (this.showFieldFilter && !isInArray(::events.getEventTournamentMode(event), this.showFieldFilter))
       return false
 
@@ -211,8 +200,7 @@ global enum WW_LB_MODE
 }
 
 
-::g_lb_category._typeConstructor <- function _typeConstructor ()
-{
+::g_lb_category._typeConstructor <- function _typeConstructor () {
   this.headerImage = "#ui/gameuiskin#lb_" + (this.headerImage != "" ? this.headerImage : this.visualKey) + ".svg"
   this.headerTooltip = "#multiplayer/" + (this.headerTooltip != "" ? this.headerTooltip : this.visualKey)
 }

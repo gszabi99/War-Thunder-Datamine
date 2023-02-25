@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -85,7 +86,7 @@ let function updateMatchData() {
 
   foreach (p in lostPlayers) {
     log($"[PSMT] member {p.playerId} left {match.id}/{p.teamId}")
-    psn.send(psn.matches.leave(match.id, { playerId = p.playerId, reason = psn.matches.LeaveReason.QUIT}))
+    psn.send(psn.matches.leave(match.id, { playerId = p.playerId, reason = psn.matches.LeaveReason.QUIT }))
   }
 }
 
@@ -113,7 +114,7 @@ let function markMatchCompleted() {
   match.players = {}
 }
 
-let function leaveMatch(reason=psn.matches.LeaveReason.FINISHED) {
+let function leaveMatch(reason = psn.matches.LeaveReason.FINISHED) {
   if (match.id == null)
     return
 
@@ -150,7 +151,7 @@ let function onBattleEnded(p) {
     })
   }
 
-  psn.send(psn.matches.reportResults(match.id, {teamResults}))
+  psn.send(psn.matches.reportResults(match.id, { teamResults }))
   markMatchCompleted()
 }
 

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -72,7 +73,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
   cyberCafeSquadMembersNum = -1
   state = squadState.NOT_IN_SQUAD
-  lastStateChangeTime = - SQUAD_REQEST_TIMEOUT
+  lastStateChangeTime = -SQUAD_REQEST_TIMEOUT
   squadData = {
     id = ""
     members = {}
@@ -87,7 +88,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     leaderBattleRating = 0
     leaderGameModeId = ""
   }
-
+  membersNames = {}
   meReady = false
   isMyCrewsReady = false
   lastUpdateStatus = squadStatusUpdateState.NONE
@@ -198,7 +199,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (!this.isInSquad())
       return res
 
-    foreach(_uid, memberData in this.squadData.members)
+    foreach (_uid, memberData in this.squadData.members)
       if (memberData.online == online)
         res.append(memberData)
 
@@ -209,7 +210,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (!this.isInSquad())
       return 1
     local res = 0
-    foreach(member in this.squadData.members)
+    foreach (member in this.squadData.members)
       if (member.online)
         res++
     return res
@@ -362,7 +363,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
   isSquadMember = @() this.isInSquad() && !this.isSquadLeader()
   isMemberReady = @(uid) this.getMemberData(uid)?.isReady ?? false
   isInMySquad = @(name, checkAutosquad = true)
-    (this.isInSquad() && this._getSquadMemberByName(name) != null) ? true
+    (this.isInSquad() && this.isMySquadMember(name)) ? true
       : checkAutosquad && ::SessionLobby.isMemberInMySquadByName(name)
   isMe = @(uid) uid == ::my_user_id_str
   isStateInTransition = @() (this.state == squadState.JOINING || this.state == squadState.LEAVING)
@@ -393,7 +394,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (this.squadData.members.len() == 1)
       return false
 
-    foreach(uid, memberData in this.squadData.members)
+    foreach (uid, memberData in this.squadData.members)
       if (uid != ::my_user_id_str && memberData.online == true)
         return true
 
@@ -446,8 +447,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     let wwOperations = []
     if (isWorldwarEnabled) {
       data.canPlayWorldWar = ::g_world_war.canPlayWorldwar()
-      foreach (wwOperation in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList())
-      {
+      foreach (wwOperation in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList()) {
         if (!wwOperation.isValid())
           continue
 
@@ -507,7 +507,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
   function updateInvitedData(invites) {
     let newInvitedData = {}
-    foreach(uidInt64 in invites) {
+    foreach (uidInt64 in invites) {
       if (!::is_numeric(uidInt64))
         continue
 
@@ -525,7 +525,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
   function updateApplications(applications) {
     let newApplicationsData = {}
-    foreach(uid in applications) {
+    foreach (uid in applications) {
       if (uid in this.squadData.applications)
         newApplicationsData[uid] <- this.squadData.applications[uid]
       else {
@@ -616,7 +616,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (!this.isInSquad())
       return false
 
-    foreach(_uid, memberData in this.squadData.members)
+    foreach (_uid, memberData in this.squadData.members)
       if (memberData.online == true && memberData.isReady == false)
         return false
 
@@ -630,7 +630,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (!this.isInSquad())
       return false
 
-    foreach(_uid, memberData in this.squadData.members)
+    foreach (_uid, memberData in this.squadData.members)
       if (memberData.online && !memberData.isCrewsReady)
         return false
 
@@ -721,7 +721,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       squadApplications.updateApplicationsList(response?.applications ?? [])
     }
 
-    ::msquad.requestInfo(callback, callback, {showError = false})
+    ::msquad.requestInfo(callback, callback, { showError = false })
   }
 
   function requestSquadData(callback = null) {
@@ -752,8 +752,6 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       if (cb)
         cb()
     })
-
-    ::xbox_on_local_player_leave_squad()
   }
 
   function joinToSquad(uid) {
@@ -848,7 +846,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     let cb = function() {
       ::request_matching("msquad.request_membership",
         callback,
-        null, {squadId = sid}, null)
+        null, { squadId = sid }, null)
     }
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_application" },
@@ -860,7 +858,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
   function revokeMembershipAplication(sid) {
     squadApplications.deleteApplication(sid)
-    ::request_matching("msquad.revoke_membership_request", null, null,{squadId = sid}, null)
+    ::request_matching("msquad.revoke_membership_request", null, null, { squadId = sid }, null)
   }
 
   function acceptMembershipAplication(uid) {
@@ -871,7 +869,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return ::g_popups.add(null, loc("matching/SQUAD_FULL"))
 
     let callback = Callback(@(_response) this.addMember(uid.tostring()), this)
-    ::request_matching("msquad.accept_membership", callback, null,{userId = uid}, null)
+    ::request_matching("msquad.accept_membership", callback, null, { userId = uid }, null)
   }
 
   function denyAllAplication() {
@@ -885,7 +883,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (this.isInSquad() && !this.isSquadLeader())
       return
 
-    ::request_matching("msquad.deny_membership", callback, null,{userId = uid}, null)
+    ::request_matching("msquad.deny_membership", callback, null, { userId = uid }, null)
   }
 
   function dismissFromSquad(uid) {
@@ -912,12 +910,14 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (!this.isInSquad())
       return null
 
-    foreach(_uid, memberData in this.squadData.members)
+    foreach (_uid, memberData in this.squadData.members)
       if (memberData.name == name || memberData.name == getRealName(name))
         return memberData
 
     return null
   }
+
+  isMySquadMember = @(name) (this.membersNames?[name] != null) || (this.membersNames?[getRealName(name)] != null)
 
   function canTransferLeadership(uid) {
     if (!hasFeature("SquadTransferLeadership"))
@@ -947,7 +947,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       return
 
     ::msquad.transferLeadership(uid)
-    ::broadcastEvent(squadEvent.LEADERSHIP_TRANSFER, {uid = uid})
+    ::broadcastEvent(squadEvent.LEADERSHIP_TRANSFER, { uid = uid })
   }
 
   function onLeadershipTransfered() {
@@ -968,7 +968,6 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       function(_response) {
         this.setState(squadState.NOT_IN_SQUAD)
         this.rejectSquadInvite(sid)
-        ::xbox_on_local_player_leave_squad()
       }.bindenv(this)
     )
   }
@@ -1039,7 +1038,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
     this.squadData.id = ""
     let contactsUpdatedList = []
-    foreach(_id, memberData in this.squadData.members)
+    foreach (_id, memberData in this.squadData.members)
       contactsUpdatedList.append(memberData.getData())
 
     this.squadData.members.clear()
@@ -1181,7 +1180,8 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
     let resMembers = resSquadData?.members ?? []
     let newMembersData = {}
-    foreach(uidInt64 in resMembers) {
+    this.membersNames.clear()
+    foreach (uidInt64 in resMembers) {
       if (!::is_numeric(uidInt64))
         continue
 
@@ -1190,6 +1190,8 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
         newMembersData[uid] <- this.squadData.members[uid]
       else
         newMembersData[uid] <- SquadMember(uid)
+
+      this.membersNames[newMembersData[uid].name] <- uid
 
       if (uid != ::my_user_id_str)
         this.requestMemberData(uid)
@@ -1262,7 +1264,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
       isPropertyChange = true
     }
     if (::u.isTable(properties))
-      foreach(key, value in properties) {
+      foreach (key, value in properties) {
         if (::u.isEqual(this.squadData?.properties?[key], value))
           continue
 
@@ -1275,12 +1277,12 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     this.squadData.psnSessionId = data?.psnSessionId ?? ""
   }
 
-  function checkMembersPkg(pack) {//return list of members dont have this pack
+  function checkMembersPkg(pack) { //return list of members dont have this pack
     let res = []
     if (!this.isInSquad())
       return res
 
-    foreach(uid, memberData in this.squadData.members)
+    foreach (uid, memberData in this.squadData.members)
       if (memberData.missedPkg != null && isInArray(pack, memberData.missedPkg))
         res.append({ uid = uid, name = memberData.name })
 
@@ -1291,7 +1293,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     let contactsData = []
 
     if (this.isInSquad()) {
-      foreach(uid, memberData in this.squadData.members)
+      foreach (uid, memberData in this.squadData.members)
         if (uid != ::my_user_id_str)
           contactsData.append(memberData.getData())
     }

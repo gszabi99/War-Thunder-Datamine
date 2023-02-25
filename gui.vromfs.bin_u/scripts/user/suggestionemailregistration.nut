@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -27,7 +28,7 @@ let function showGuestEmailRegistration() {
   ::showUnlockWnd({
     name = loc("mainmenu/SteamEmailRegistration")
     desc = loc("mainmenu/guestEmailRegistration/desc")
-    popupImage = "ui/images/invite_big.jpg?P1"
+    popupImage = "ui/images/invite_big?P1"
     onOkFunc = launchGuestEmailRegistration
     okBtnText = "msgbox/btn_bind"
   })
@@ -82,7 +83,7 @@ let function checkShowSteamEmailRegistration() {
   ::showUnlockWnd({
     name = loc("mainmenu/SteamEmailRegistration")
     desc = loc("mainmenu/SteamEmailRegistration/desc")
-    popupImage = "ui/images/invite_big.jpg?P1"
+    popupImage = "ui/images/invite_big?P1"
     onOkFunc = launchSteamEmailRegistration
     okBtnText = "msgbox/btn_bind"
   })
@@ -103,7 +104,7 @@ let function checkShowPS4EmailRegistration() {
   ::showUnlockWnd({
     name = loc("mainmenu/PS4EmailRegistration")
     desc = loc("mainmenu/PS4EmailRegistration/desc")
-    popupImage = "ui/images/invite_big.jpg?P1"
+    popupImage = "ui/images/invite_big?P1"
     onOkFunc = launchPS4EmailRegistration
     okBtnText = "msgbox/btn_bind"
   })
@@ -173,9 +174,9 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "imageButton"
   getText = @() loc("promo/btnXBOXAccount_linked")
-  image = isPlatformSony ? "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo.jpg?P1"
-    : isPlatformXboxOne ? "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo.jpg?P1"
-    : ::steam_is_running() ? "https://static.warthunder.ru/upload/image/Promo/2022_03_steam_promo.jpg?P1"
+  image = isPlatformSony ? "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo?P1"
+    : isPlatformXboxOne ? "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo?P1"
+    : ::steam_is_running() ? "https://static.warthunder.ru/upload/image/Promo/2022_03_steam_promo?P1"
     : ""
   aspect_ratio = 2.07
   updateFunctionInHandler = function() {

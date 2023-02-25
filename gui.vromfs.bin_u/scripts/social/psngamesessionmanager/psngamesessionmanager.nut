@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,9 +6,9 @@ from "%scripts/dagui_library.nut" import *
 
 let psnsm = require("%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
-
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
+let { get_game_mode } = require("mission")
 
 let getSessionData = @(pushContextId) {
   gameSessions = [{
@@ -35,7 +36,7 @@ let getSessionJoinData = function(pushContextId, isSpectator = false) {
   if (pushContextId != null)
     res.pushContexts <- [{ pushContextId = pushContextId }]
 
-  return {[isSpectator? "spectators" : "players"] = [res]}
+  return { [isSpectator ? "spectators" : "players"] = [res] }
 }
 
 let createdSessionData = persist("createdSessionData", @() Watched({}))
@@ -109,7 +110,7 @@ let join = function(sessionId, isSpectator, pushContextId, onFinishCb) {
 
 addListenersWithoutEnv({
   RoomJoined = function(_p) {
-    if (::get_game_mode() != GM_SKIRMISH)
+    if (get_game_mode() != GM_SKIRMISH)
       return
 
     let sessionId = ::SessionLobby.getExternalId()

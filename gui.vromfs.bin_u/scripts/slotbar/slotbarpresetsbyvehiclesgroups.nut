@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,6 +8,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let DataBlock = require("DataBlock")
 
 local curPreset = {
   groupsList = {} //groups config by country
@@ -41,8 +43,8 @@ let function generateDefaultPresets(groupsList) {
 }
 
 let function savePresets(presetId, countryPresets) {
-  let blk = ::DataBlock()
-  foreach(countryId, preset in countryPresets)
+  let blk = DataBlock()
+  foreach (countryId, preset in countryPresets)
     blk[countryId] <- ",".join(preset.units.map(@(unit) unit?.name ?? ""))
 
   let cfgBlk = ::load_local_account_settings(getPresetSaveIdByEventId(presetId))
@@ -72,19 +74,16 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
   if ((countryPresets?.len() ?? 0) == 0)
     return generateDefaultPresets(groupsList)
 
-  foreach (countryId in shopCountriesList)
-  {
+  foreach (countryId in shopCountriesList) {
     let countryGroupsList = groupsList?[countryId]
     let countryPreset = countryPresets?[countryId]
-    if (countryGroupsList == null)
-    {
+    if (countryGroupsList == null) {
       if (countryPreset != null)
         countryPresets.rawdelete(countryId)
       continue
     }
 
-    if (countryGroupsList != null && countryPreset == null)
-    {
+    if (countryGroupsList != null && countryPreset == null) {
       countryPresets[countryId] <- getDefaultPresets(countryGroupsList)
       continue
     }
@@ -94,18 +93,15 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
     let presetUnits = countryPreset.units
     presetUnits.resize(maxVisibleSlots, null)
     let emptySLots = []
-    foreach (i, unit in presetUnits)
-    {
-      if (unit == null || !canAssignInSlot(unit, groupsList, countryId))
-      {
+    foreach (i, unit in presetUnits) {
+      if (unit == null || !canAssignInSlot(unit, groupsList, countryId)) {
         presetUnits[i] = null
         emptySLots.append(i)
         continue
       }
 
       let unitGroup = countryGroupsList.groupIdByUnitName?[unit.name]
-      if (unitGroup in defaultUnitsListByGroups)
-      {
+      if (unitGroup in defaultUnitsListByGroups) {
          defaultUnitsListByGroups.rawdelete(unitGroup)
          continue
       }
@@ -115,8 +111,7 @@ let function validatePresets(_presetId, groupsList, countryPresets) {
     }
 
     local i = 0
-    foreach(defaultUnit in defaultUnitsListByGroups)
-    {
+    foreach (defaultUnit in defaultUnitsListByGroups) {
       let slotIdx = emptySLots[i]
       presetUnits[slotIdx] = defaultUnit
       i++
@@ -132,12 +127,10 @@ let function getPresetsList(presetId, groupsList) {
     return countryPresets
 
   let savedPresetsBlk = ::load_local_account_settings(getPresetSaveIdByEventId(presetId))
-  if (savedPresetsBlk)
-  {
+  if (savedPresetsBlk) {
     countryPresets = {}
     let countryCount = savedPresetsBlk.paramCount()
-    for(local c = 0; c < countryCount; c++)
-    {
+    for (local c = 0; c < countryCount; c++) {
       let strPreset = savedPresetsBlk.getParamValue(c)
       let preset = getPresetTemplate()
       let unitNames = ::g_string.split(strPreset, ",")
@@ -145,8 +138,7 @@ let function getPresetsList(presetId, groupsList) {
         continue
 
       local hasUnits = false
-      for(local i = 0; i < unitNames.len(); i++)
-      {
+      for (local i = 0; i < unitNames.len(); i++) {
         let unitName = unitNames[i]
         let unit = ::getAircraftByName(unitName)
         if (unit != null)
@@ -177,16 +169,14 @@ let groupInSlotMsgBoxlocId = "msgbox/groupAlreadyInOtherSlot"
 let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotification = true, needEvent = true) {
   let country = crew.country
   let curCountryPreset = curPreset.countryPresets?[country]
-  if (curCountryPreset == null)
-  {
+  if (curCountryPreset == null) {
     onFinishCb?(true)
     return
   }
 
   let idx = crew.idInCountry
   let curUnit = curCountryPreset.units?[idx]
-  if (curUnit == unit)
-  {
+  if (curUnit == unit) {
     onFinishCb?(true)
     return
   }
@@ -202,20 +192,18 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
     curPreset.countryPresets[country].units[idx] = unit
     updatePresets(curPreset.presetId, curPreset.countryPresets)
     if (needEvent)
-      ::broadcastEvent("PresetsByGroupsChanged", { crew = crew, unit = unit})
+      ::broadcastEvent("PresetsByGroupsChanged", { crew = crew, unit = unit })
     onFinishCb?(true)
   }
 
   let oldGroupIdx = curCountryPreset.units.findindex(@(u)
     groupIdByUnitName?[u?.name ?? ""] == unitGroup)
-  if (unitGroup != curUnitGroup && oldGroupIdx != null)
-  {
+  if (unitGroup != curUnitGroup && oldGroupIdx != null) {
     let replaceUnitGroup = function() {
       curPreset.countryPresets[country].units[oldGroupIdx] = curUnit
       onApplyCb()
     }
-    if (!showNotification)
-    {
+    if (!showNotification) {
       replaceUnitGroup()
       return
     }
@@ -299,16 +287,14 @@ let function setUnits(trainCrews) {
 let setGroup = kwarg(function setGroup(crew, group, onFinishCb) {
   let country = crew.country
   let curCountryPreset = curPreset.countryPresets?[country]
-  if (curCountryPreset == null)
-  {
+  if (curCountryPreset == null) {
     onFinishCb(true)
     return
   }
 
   let groupIdByUnitName = curPreset.groupsList[country].groupIdByUnitName
   let selectGroupUnit = curCountryPreset.units.findvalue(@(v) groupIdByUnitName?[v?.name ?? ""] == group.id)
-  if (selectGroupUnit == null)
-  {
+  if (selectGroupUnit == null) {
     onFinishCb(true)
     return
   }
@@ -325,8 +311,7 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) invalidateCashe()
 })
 
-let function getVehiclesGroupByUnit(unit, countryGroupsList)
-{
+let function getVehiclesGroupByUnit(unit, countryGroupsList) {
   return countryGroupsList?.groups[countryGroupsList?.groupIdByUnitName[unit?.name ?? ""] ?? ""]
 }
 

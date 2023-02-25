@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 
 
-::items_classes.Order <- class extends ::BaseItem
-{
+::items_classes.Order <- class extends ::BaseItem {
   static iType = itemType.ORDER
   static defaultLocId = "order"
   static defaultIconStyle = "default_order_debug"
@@ -48,15 +48,13 @@ let time = require("%scripts/time.nut")
   // This object hold parameters specific to type of order.
   typeParams = null
 
-  constructor(blk, invBlk = null, slotData = null)
-  {
+  constructor(blk, invBlk = null, slotData = null) {
     base.constructor(blk, invBlk, slotData)
     this.isActivateBeforeExpired = blk?.isActivateBeforeExpired ?? true
     this.initMissionOrderParams(blk?.missionOrderParams)
   }
 
-  /* override */ function getName(_colored = true)
-  {
+  /* override */ function getName(_colored = true) {
     local name = this.getStatusOrderName()
     if (name.len() == 0)
       name = loc("item/" + this.defaultLocId)
@@ -67,13 +65,11 @@ let time = require("%scripts/time.nut")
     return name
   }
 
-  function getStatusOrderName()
-  {
+  function getStatusOrderName() {
     return loc("item/" + this.id, "")
   }
 
-  function getMainActionData(isShort = false, params = {})
-  {
+  function getMainActionData(isShort = false, params = {}) {
     let res = base.getMainActionData(isShort, params)
     if (res)
       return res
@@ -94,8 +90,7 @@ let time = require("%scripts/time.nut")
 
   getActivateInfo    = @() ::g_orders.getActivateInfoText()
 
-  function doMainAction(cb, handler, params = null)
-  {
+  function doMainAction(cb, handler, params = null) {
     let baseResult = base.doMainAction(cb, handler, params)
     if (baseResult || !this.isInventoryItem)
       return true
@@ -104,23 +99,19 @@ let time = require("%scripts/time.nut")
     ::g_orders.activateOrder(this, cb)
   }
 
-  function getAmount()
-  {
+  function getAmount() {
     return this.amount - ::g_orders.getTimesUsedOrderItem(this)
   }
 
-  function isActive(...)
-  {
+  function isActive(...) {
     return ::g_orders.isOrderItemActive(this)
   }
 
-  function getIcon(_addItemName = true)
-  {
+  function getIcon(_addItemName = true) {
     return ::LayersIcon.getIconData(this.iconStyle, this.defaultIcon, 1.0, this.defaultIconStyle)
   }
 
-  function initMissionOrderParams(blk)
-  {
+  function initMissionOrderParams(blk) {
     // Common parameters.
     this.onlyIssuerTeam = getTblValue("onlyIssuerTeam", blk, false)
     this.timeTotal = getTblValue("timeTotal", blk, 0)
@@ -132,10 +123,8 @@ let time = require("%scripts/time.nut")
     this.awardXpByDifficulty = this.parseP3byDifficulty(blk?.awardXp)
     this.awardGoldByDifficulty = this.parseP3byDifficulty(blk?.awardGold)
     this.disabledDifficulties = []
-    if (blk != null)
-    {
-      foreach (diffName in blk % "disabledDifficulty")
-      {
+    if (blk != null) {
+      foreach (diffName in blk % "disabledDifficulty") {
         let difficulty = ::g_difficulty.getDifficultyByName(diffName)
         if (difficulty != ::g_difficulty.UNKNOWN)
           this.disabledDifficulties.append(difficulty)
@@ -147,8 +136,7 @@ let time = require("%scripts/time.nut")
     this.initMissionOrderMode(blk?.mode)
   }
 
-  function initMissionOrderMode(blk)
-  {
+  function initMissionOrderMode(blk) {
     this.orderType = ::g_order_type.getOrderTypeByName(blk?.type)
     this.typeParams = ::buildTableFromBlk(blk)
   }
@@ -157,15 +145,13 @@ let time = require("%scripts/time.nut")
    * Returns true if this item can be activated
    * in mission with specified name.
    */
-  function checkMission(missionName)
-  {
+  function checkMission(missionName) {
     let missionRestriction = getTblValue("missionRestriction", this.typeParams, null)
     if (missionRestriction == null)
       return true // No restrictions at all.
     if (::u.isTable(missionRestriction))
       return this.checkMissionRestriction(missionRestriction, missionName)
-    if (!::u.isArray(missionRestriction))
-    {
+    if (!::u.isArray(missionRestriction)) {
       assert(format("Invalid mission restriction config in item: %s", this.id))
       return true
     }
@@ -175,10 +161,8 @@ let time = require("%scripts/time.nut")
     return true
   }
 
-  function checkMissionRestriction(restrictionElement, missionName)
-  {
-    switch (restrictionElement?.type)
-    {
+  function checkMissionRestriction(restrictionElement, missionName) {
+    switch (restrictionElement?.type) {
       case "missionPostfix":
         let missionPostfix = getTblValue("postfix", restrictionElement, null)
         if (missionPostfix == null)
@@ -192,11 +176,9 @@ let time = require("%scripts/time.nut")
   }
 
   /** Description for tooltip. */
-  function getDescription()
-  {
+  function getDescription() {
     let textParts = []
-    if (!::g_orders.checkCurrentMission(this))
-    {
+    if (!::g_orders.checkCurrentMission(this)) {
       let warningText = ::g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
       textParts.append($"{colorize("redMenuButtonColor", warningText)}\n")
     }
@@ -205,8 +187,7 @@ let time = require("%scripts/time.nut")
   }
 
   /** Description for shop. */
-  function getLongDescription()
-  {
+  function getLongDescription() {
     let textParts = []
 
     let orderTypeDescription = this.orderType.getTypeDescription(this.colorScheme)
@@ -230,8 +211,7 @@ let time = require("%scripts/time.nut")
 
     let awardModeLocParams = { awardUnit = this.orderType.getAwardUnitText() }
     textParts.append(loc($"items/order/awardMode/{this.awardMode.name}/header", awardModeLocParams))
-    foreach (difficulty in ::g_difficulty.types)
-    {
+    foreach (difficulty in ::g_difficulty.types) {
       if (isInArray(difficulty, this.disabledDifficulties)
         || difficulty == ::g_difficulty.UNKNOWN)
         continue
@@ -271,8 +251,7 @@ let time = require("%scripts/time.nut")
   // Helpers
   //
 
-  function parseP3byDifficulty(point)
-  {
+  function parseP3byDifficulty(point) {
     return {
       [::g_difficulty.ARCADE] = getTblValue("x", point, 0),
       [::g_difficulty.REALISTIC] = getTblValue("y", point, 0),
@@ -280,8 +259,7 @@ let time = require("%scripts/time.nut")
     }
   }
 
-  function getParameterDescription(paramName, paramValue)
-  {
+  function getParameterDescription(paramName, paramValue) {
     return loc("items/order/" + paramName) + ": " + colorize("activeTextColor", paramValue)
   }
 }

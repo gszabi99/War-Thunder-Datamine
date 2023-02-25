@@ -1,11 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-::gui_handlers.QiHandlerByCountries <- class extends ::gui_handlers.QiHandlerBase
-{
+::gui_handlers.QiHandlerByCountries <- class extends ::gui_handlers.QiHandlerBase {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
 
   timerUpdateObjId = "queue_box"
@@ -15,22 +15,19 @@ from "%scripts/dagui_library.nut" import *
   curClusterName = null
   visibleCountrySets = null
 
-  function initTimer()
-  {
+  function initTimer() {
     base.initTimer()
     this.scene.findObject("wait_time_block").show(this.hasTimerText)
   }
 
-  function createStats()
-  {
+  function createStats() {
     this.createClustersList()
 
     this.statsObj = this.scene.findObject("stats_table")
     ::g_qi_view_utils.createViewByCountries(this.statsObj, this.queue, this.event)
   }
 
-  function updateStats()
-  {
+  function updateStats() {
     ::g_qi_view_utils.updateViewByCountries(this.statsObj, this.queue, this.curClusterName)
     let countrySets = ::events.getAllCountriesSets(this.event)
     if (!::u.isEqual(this.visibleCountrySets, countrySets))
@@ -38,8 +35,7 @@ from "%scripts/dagui_library.nut" import *
     this.updateCustomModeCheckbox()
   }
 
-  function fillCountrySets(countrySets)
-  {
+  function fillCountrySets(countrySets) {
     this.visibleCountrySets = countrySets
     if (countrySets.len() < 2)
       return
@@ -55,16 +51,13 @@ from "%scripts/dagui_library.nut" import *
 
     let view = {
       isCentered = true
-      countriesSets = ::u.map(sortedSets, function(cSet)
-      {
+      countriesSets = ::u.map(sortedSets, function(cSet) {
         let res = {}
         let teams = ::g_team.getTeams()
-        foreach(idx, team in teams)
-          if (idx in cSet.countries)
-          {
+        foreach (idx, team in teams)
+          if (idx in cSet.countries) {
             res[team.name] <- {
-              countries = ::u.map(cSet.countries[idx], function(c)
-              {
+              countries = ::u.map(cSet.countries[idx], function(c) {
                 return { countryIcon = ::get_country_icon(c) }
               })
             }
@@ -80,8 +73,7 @@ from "%scripts/dagui_library.nut" import *
     this.showSceneBtn("countries_sets_header", true)
   }
 
-  function updateCustomModeCheckbox()
-  {
+  function updateCustomModeCheckbox() {
     let isVisible = this.queue && this.queue.hasCustomMode()
     this.showSceneBtn("custom_mode_header", isVisible)
     let obj = this.showSceneBtn("custom_mode_checkbox", isVisible)
@@ -94,8 +86,7 @@ from "%scripts/dagui_library.nut" import *
       obj.setValue(value)
   }
 
-  function getCustomModeCheckboxValue()
-  {
+  function getCustomModeCheckboxValue() {
     if (!this.queue)
       return false
     if (this.queue.isAllowedToSwitchCustomMode())
@@ -103,23 +94,19 @@ from "%scripts/dagui_library.nut" import *
     return this.queue.isCustomModeQUeued()
   }
 
-  function onCustomModeCheckbox(obj)
-  {
+  function onCustomModeCheckbox(obj) {
     if (this.queue)
       this.queue.switchCustomMode(obj.getValue())
   }
 
-  function onEventQueueChanged(q)
-  {
+  function onEventQueueChanged(q) {
     if (q == this.queue)
       this.updateCustomModeCheckbox()
   }
 
-  function createClustersList()
-  {
+  function createClustersList() {
     let clustersObj = this.scene.findObject("clusters_list")
-    if (::events.isMultiCluster(this.event))
-    {
+    if (::events.isMultiCluster(this.event)) {
       clustersObj.show(false)
       clustersObj.enable(false)
       return
@@ -138,15 +125,13 @@ from "%scripts/dagui_library.nut" import *
 
     let markup = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(clustersObj, markup, markup.len(), this)
-    if (view.tabs.len())
-    {
+    if (view.tabs.len()) {
       this.curClusterName = view.tabs[0].id
       clustersObj.setValue(0)
     }
   }
 
-  function onClusterChange(obj)
-  {
+  function onClusterChange(obj) {
     let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return

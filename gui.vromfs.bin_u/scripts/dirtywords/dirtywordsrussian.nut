@@ -96,7 +96,7 @@ excludesdata =
     ]
   },
   {
-    key ="д",
+    key = "д",
     arr =
     [
       "две",

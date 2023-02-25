@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -18,7 +19,7 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
   isDisassemble       = @() this.itemDef?.tags?.isDisassemble == true
   canConsume          = @() false
   canAssemble         = @() false
-  canConvertToWarbonds= @() false
+  canConvertToWarbonds = @() false
   hasLink             = @() false
 
   getMainActionData   = @(...) null
@@ -30,10 +31,8 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
   getDescRecipeListHeader = @(...) loc("items/craft_process/using") // there is always 1 recipe
   getMarketablePropDesc = @() ""
 
-  function cancelCrafting(_cb = null, params = null)
-  {
-    if (this.uids.len() > 0)
-    {
+  function cancelCrafting(_cb = null, params = null) {
+    if (this.uids.len() > 0) {
       let parentItem = params?.parentItem
       let item = this
       let text = loc(this.getLocIdsList().msgBoxConfirm,
@@ -57,14 +56,12 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
     [["ok", @() ::ItemsManager.refreshExtInventory()]],
     "ok")
 
-  function onCancelComplete(resultItems, params)
-  {
+  function onCancelComplete(resultItems, params) {
     ::ItemsManager.markInventoryUpdateDelayed()
 
     let resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
     let trophyId = this.id
-    if (resultItemsShowOpening.len())
-    {
+    if (resultItemsShowOpening.len()) {
       let openTrophyWndConfigs = ::u.map(resultItemsShowOpening, @(extItem) {
         id = trophyId
         item = extItem?.itemdef?.itemdefid

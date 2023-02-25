@@ -86,7 +86,7 @@ local DaguiSceneTimers = class {
 
   function onUpdate(_obj, dt) {
     this.curTime += dt
-    foreach(timer in this.timersList) {
+    foreach (timer in this.timersList) {
       if (timer.time > this.curTime)
         break
 
@@ -99,8 +99,7 @@ local DaguiSceneTimers = class {
     this.timersList.sort(@(a, b) a.time <=> b.time)
   }
 
-  function setObjTimeInterval(obj, interval)
-  {
+  function setObjTimeInterval(obj, interval) {
      obj.timer_interval_msec = (1000 * interval).tointeger().tostring()
   }
 }

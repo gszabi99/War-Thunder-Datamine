@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -45,8 +46,7 @@ let targetTypeToThreatTypes = {
   [ES_UNIT_TYPE_BOAT] = [ ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT ],
 }
 
-let function getThreatEsUnitTypes()
-{
+let function getThreatEsUnitTypes() {
   let targetUnitType = options.targetUnit.esUnitType
   let res = targetTypeToThreatTypes?[targetUnitType] ?? [ targetUnitType ]
   return res.filter(@(e) unitTypes.getByEsUnitType(e).isAvailable())
@@ -70,13 +70,11 @@ let function updateArmorPiercingText(obj) {
   let bullet   = options.BULLET.value
   let distance = options.DISTANCE.value
 
-  if (bullet?.bulletParams?.armorPiercing)
-  {
+  if (bullet?.bulletParams?.armorPiercing) {
     local pMin
     local pMax
 
-    for (local i = 0; i < bullet.bulletParams.armorPiercing.len(); i++)
-    {
+    for (local i = 0; i < bullet.bulletParams.armorPiercing.len(); i++) {
       let v = {
         armor = bullet.bulletParams.armorPiercing[i]?[0] ?? 0,
         dist  = bullet.bulletParams.armorPiercingDist[i],
@@ -94,8 +92,7 @@ let function updateArmorPiercingText(obj) {
     if (pMax && pMax.dist < distance)
       pMax.dist = distance
 
-    if (pMin && pMax)
-    {
+    if (pMin && pMax) {
       let armor = stdMath.lerp(pMin.dist, pMax.dist, pMin.armor, pMax.armor, distance)
       desc = stdMath.round(armor).tointeger() + " " + loc("measureUnits/mm")
     }
@@ -137,7 +134,7 @@ options.template <- {
 
   updateDependentOptions = function(handler, scene) {
     handler.guiScene.setUpdatesEnabled(false, false)
-    for (local i = this.sortId + 1;; i++) {
+    for (local i = this.sortId + 1; ; i++) {
       let option = options.getBySortId(i)
       if (option == options.UNKNOWN)
         break
@@ -164,8 +161,7 @@ options.template <- {
   }
 }
 
-options.addTypes <- function(typesTable)
-{
+options.addTypes <- function(typesTable) {
   enums.addTypes(this, typesTable, null, "id")
   this.types.sort(@(a, b) a.sortId <=> b.sortId)
 }
@@ -181,8 +177,7 @@ options.addTypes({
     labelLocId = "mainmenu/threat"
     isVisible = @() getThreatEsUnitTypes().len() > 1
 
-    updateParams = function(_handler, _scene)
-    {
+    updateParams = function(_handler, _scene) {
       let esUnitTypes = getThreatEsUnitTypes()
       let types = esUnitTypes.map(@(e) unitTypes.getByEsUnitType(e))
       this.values = esUnitTypes
@@ -197,8 +192,7 @@ options.addTypes({
     controlStyle = "iconType:t='small';"
     getLabel = @() options.UNITTYPE.isVisible() ? null : loc("mainmenu/threat")
 
-    updateParams = function(_handler, _scene)
-    {
+    updateParams = function(_handler, _scene) {
       let unitType = options.UNITTYPE.value
       this.values = ::u.filter(shopCountriesList, @(c) isCountryHaveUnitType(c, unitType))
       this.items  = ::u.map(this.values, @(c) { text = loc(c), image = ::get_country_icon(c) })
@@ -257,8 +251,7 @@ options.addTypes({
     labelLocId = "mainmenu/shell"
     visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
 
-    updateParams = function(_handler, _scene)
-    {
+    updateParams = function(_handler, _scene) {
       let unit = options.UNIT.value
       this.values = []
       this.items = []
@@ -268,8 +261,7 @@ options.addTypes({
       local curGunIdx = -1
       let groupsCount = getBulletsGroupCount(unit)
 
-      for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++)
-      {
+      for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
         let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
         if (gunIdx == curGunIdx)
           continue
@@ -280,8 +272,7 @@ options.addTypes({
         if (bulletsList.values.len())
           curGunIdx = gunIdx
 
-        foreach(i, value in bulletsList.values)
-        {
+        foreach (i, value in bulletsList.values) {
           let bulletsSet = getBulletsSetData(unit, value)
           let weaponBlkName = bulletsSet?.weaponBlkName
           let isBulletBelt = bulletsSet?.isBulletBelt ?? true
@@ -299,16 +290,14 @@ options.addTypes({
 
           let bulletNames = isBulletBelt ? [] : (bulletsSet?.bulletNames ?? [])
           if (isBulletBelt)
-            foreach(t, _data in bulletsSet.bulletDataByType)
+            foreach (t, _data in bulletsSet.bulletDataByType)
               bulletNames.append(t)
 
-          foreach (idx, bulletName in bulletNames)
-          {
+          foreach (idx, bulletName in bulletNames) {
             local locName = bulletsList.items[i].text
             local bulletParams = bulletParameters[idx]
             local isDub = false
-            if (isBulletBelt)
-            {
+            if (isBulletBelt) {
               locName = " ".concat(format(loc("caliber/mm"), bulletsSet.caliber),
                 loc($"{bulletName}/name/short"))
               let bulletType = bulletName
@@ -316,10 +305,10 @@ options.addTypes({
               // Find bullet dub by params
               isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType && p.mass == bulletParams.mass
                 && p.speed == bulletParams.speed)
-              if(!isDub)
+              if (!isDub)
                 bulletSetData.append(bulletParams)
               // Need change name for the same bullet type but different params
-              if(isInArray(locName, bulletNamesSet))
+              if (isInArray(locName, bulletNamesSet))
                 locName = $"{locName}{bulletsList.items[i].text}"
             }
             else
@@ -330,13 +319,11 @@ options.addTypes({
 
             local addDiv = ""
 
-            if (isBulletBelt)
-            {
+            if (isBulletBelt) {
               local bSet = bulletsSet.__merge({ bullets = [bulletName] })
               let bData = bulletsSet.bulletDataByType[bulletName]
 
-              foreach(param in ["explosiveType", "explosiveMass", "bulletAnimations"])
-              {
+              foreach (param in ["explosiveType", "explosiveMass", "bulletAnimations"]) {
                 bSet[param] <- bData?[param]
               }
 
@@ -369,8 +356,7 @@ options.addTypes({
       let weapons = getUnitWeapons(unitBlk)
       let knownWeapBlkArray = []
 
-      foreach (weap in weapons)
-      {
+      foreach (weap in weapons) {
         if (!weap?.blk || weap?.dummy || isInArray(weap.blk, knownWeapBlkArray))
           continue
         knownWeapBlkArray.append(weap.blk)

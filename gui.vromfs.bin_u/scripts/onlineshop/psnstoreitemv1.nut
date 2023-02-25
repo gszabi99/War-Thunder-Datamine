@@ -1,8 +1,10 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { calcPercent } = require("%sqstd/math.nut")
 let psnStore = require("sony.store")
 let psnUser = require("sony.user")
@@ -27,7 +29,7 @@ let function handleNewPurchase(itemId) {
   ::ps4_update_purchases_on_auth()
   let taskParams = { showProgressBox = true, progressBoxText = loc("charServer/checking") }
   ::g_tasker.addTask(::update_entitlements_limited(true), taskParams)
-  ::broadcastEvent("PS4ItemUpdate", {id = itemId})
+  ::broadcastEvent("PS4ItemUpdate", { id = itemId })
 }
 
 let getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased"
@@ -38,15 +40,13 @@ let getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased"
 let function sendBqRecord(metric, itemId, result = null) {
   let sendStat = {}
 
-  if (result != null)
-  {
+  if (result != null) {
     sendStat["isPlusAuthorized"] <- result?.isPlusAuthorized
     sendStat["action"] <- result?.action ?? BQ_DEFAULT_ACTION_ERROR
   }
 
-  if ("action" in sendStat)
-  {
-    sendStat.__update({action = getActionText(sendStat.action)})
+  if ("action" in sendStat) {
+    sendStat.__update({ action = getActionText(sendStat.action) })
     metric.append(sendStat.action)
   }
 
@@ -68,8 +68,7 @@ let function reportRecord(data, _record_name) {
 subscribe("storeCheckoutClosed", @(data) reportRecord(data, "checkout.close"))
 subscribe("storeDescriptionClosed", @(data) reportRecord(data, "description.close"))
 
-local Ps4ShopPurchasableItem = class
-{
+local Ps4ShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
   imagePath = null
 
@@ -124,9 +123,8 @@ local Ps4ShopPurchasableItem = class
     this.updateSkuInfo(blk)
   }
 
-  function updateSkuInfo(blk)
-  {
-    this.skuInfo = (blk?.skus.blockCount() ?? 0) > 0? blk.skus.getBlock(0) : ::DataBlock()
+  function updateSkuInfo(blk) {
+    this.skuInfo = (blk?.skus.blockCount() ?? 0) > 0 ? blk.skus.getBlock(0) : DataBlock()
     let userHasPlus = psnUser.hasPremium()
     let isPlusPrice = this.skuInfo?.is_plus_price ?? false
     let displayPrice = this.skuInfo?.display_price ?? ""
@@ -155,7 +153,7 @@ local Ps4ShopPurchasableItem = class
 
   haveDiscount = @() !this.isBought && this.price != null && this.listPrice != null && this.price != this.listPrice
   havePsPlusDiscount = @() psnUser.hasPremium() && ("display_plus_upsell_price" in this.skuInfo || this.skuInfo?.is_plus_price) //use in markup
-  getDiscountPercent = @() (this.price == null && this.listPrice == null)? 0 : calcPercent(1 - (this.price.tofloat() / this.listPrice))
+  getDiscountPercent = @() (this.price == null && this.listPrice == null) ? 0 : calcPercent(1 - (this.price.tofloat() / this.listPrice))
 
   getPriceText = function() {
     if (this.priceText == "")
@@ -177,7 +175,7 @@ local Ps4ShopPurchasableItem = class
       let totalLines = (len / maxSymbolsInLine).tointeger() + 1
       for (local i = 1; i < totalLines; i++) {
         splitDesc += "\n"
-        splitDesc += this.description.slice(i * maxSymbolsInLine, (i+1) * maxSymbolsInLine)
+        splitDesc += this.description.slice(i * maxSymbolsInLine, (i + 1) * maxSymbolsInLine)
       }
       return splitDesc
     }
@@ -220,7 +218,7 @@ local Ps4ShopPurchasableItem = class
   canBeUnseen = @() this.isBought
   showDetails = function(metricPlaceCall = "ingame_store") {
     let itemId = this.id
-    let eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
+    let eventData = { itemId = itemId, metricPlaceCall = metricPlaceCall }
     sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
       [itemId],
@@ -232,7 +230,7 @@ local Ps4ShopPurchasableItem = class
 
   showDescription = function(metricPlaceCall = "ingame_store") {
     let itemId = this.id
-    let eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
+    let eventData = { itemId = itemId, metricPlaceCall = metricPlaceCall }
     sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
       itemId,

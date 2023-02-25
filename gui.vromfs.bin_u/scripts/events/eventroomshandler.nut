@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -19,6 +20,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -44,8 +46,7 @@ enum eRoomFlags { //bit enum. sorted by priority
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-::gui_handlers.EventRoomsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.EventRoomsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
@@ -83,8 +84,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
   static CHAPTER_REGEXP = regexp2(":.*$")
   static ROOM_REGEXP = regexp2(".*(:)")
 
-  static function open(event, hasBackToEventsButton = false, roomIdToSelect = null)
-  {
+  static function open(event, hasBackToEventsButton = false, roomIdToSelect = null) {
     if (!event)
       return
 
@@ -100,8 +100,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     })
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.collapsedChapterNamesArray = []
     this.chaptersTree = []
     this.viewRoomList = {}
@@ -124,8 +123,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     this.scene.findObject("wnd_title").setValue(::events.getEventNameText(this.event))
     this.scene.findObject("event_update").setUserData(this)
 
-    if (this.selectedIdx != -1)
-    {
+    if (this.selectedIdx != -1) {
       this.guiScene.applyPendingChanges(false)
       ::move_mouse_on_child_by_value(this.roomsListObj)
     }
@@ -133,8 +131,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       this.initTime = get_time_msec()
   }
 
-  function initFrameOverEventsWnd()
-  {
+  function initFrameOverEventsWnd() {
     let frameObj = this.scene.findObject("wnd_frame")
     frameObj.width = "1@slotbarWidthFull - 6@framePadding"
     frameObj.height = "1@maxWindowHeightWithSlotbar - 1@frameFooterHeight - 1@frameTopPadding"
@@ -152,21 +149,18 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     roomsListBtn.style = format("position:root; pos:%d,%d;", pos[0], pos[1])
   }
 
-  function getCurRoom()
-  {
+  function getCurRoom() {
     return this.roomsListData.getRoom(this.curRoomId)
   }
 
-  function onItemSelect()
-  {
+  function onItemSelect() {
     if (!this.isValid())
       return
 
     this.onItemSelectAction()
   }
 
-  function onItemSelectAction()
-  {
+  function onItemSelectAction() {
     let selItemIdx = this.roomsListObj.getValue()
     if (selItemIdx < 0 || selItemIdx >= this.roomsListObj.childrenCount())
       return
@@ -188,20 +182,17 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     this.updateWindow()
   }
 
-  function updateWindow()
-  {
+  function updateWindow() {
     this.createSlotbar({ eventId = this.event.name, room = this.getCurRoom() })
     this.updateDescription()
     this.updateButtons()
   }
 
-  function onJoinEvent()
-  {
+  function onJoinEvent() {
     this.joinEvent()
   }
 
-  function joinEvent(isFromDebriefing = false)
-  {
+  function joinEvent(isFromDebriefing = false) {
     if (this.curRoomId == "")
       return
 
@@ -232,63 +223,52 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       })
   }
 
-  function refreshList()
-  {
+  function refreshList() {
     this.roomsListData.requestList(this.getCurFilter())
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     this.doWhenActiveOnce("refreshList")
   }
 
-  function onEventSearchedRoomsChanged(_p)
-  {
+  function onEventSearchedRoomsChanged(_p) {
     this.isSelectedRoomDataChanged = true
     this.fillRoomsList()
   }
 
-  function onOpenClusterSelect(obj)
-  {
+  function onOpenClusterSelect(obj) {
     ::queues.checkAndStart(
-      Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
+      Callback(@() openClustersMenuWnd(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
   }
 
-  function onEventClusterChange(_params)
-  {
+  function onEventClusterChange(_params) {
     this.updateClusters()
     this.fillRoomsList()
   }
 
-  function updateClusters()
-  {
+  function updateClusters() {
     clustersModule.updateClusters(this.scene.findObject("cluster_select_button"))
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     this.updateButtons()
   }
 
-  function onEventSquadSetReady(_params)
-  {
+  function onEventSquadSetReady(_params) {
     this.updateButtons()
   }
 
-  function onEventSquadDataUpdated(_params)
-  {
+  function onEventSquadDataUpdated(_params) {
     this.updateButtons()
   }
 
-  function updateDescription()
-  {
+  function updateDescription() {
     this.eventDescription.selectEvent(this.event, this.getCurRoom())
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let hasRoom = this.curRoomId.len() != 0
 
     let isCurItemInFocus = this.selectedIdx >= 0 && (this.isMouseMode || this.hoveredIdx == this.selectedIdx)
@@ -327,26 +307,22 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
     let isHeader = isCurItemInFocus && this.curChapterId != "" && this.curRoomId == ""
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isHeader)
-    if (isHeader)
-    {
+    if (isHeader) {
       let isCollapsedChapter = isInArray(this.curChapterId, this.collapsedChapterNamesArray)
       startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
     }
   }
 
-  function getCurFilter()
-  {
+  function getCurFilter() {
     return { clusters = clustersModule.getCurrentClusters(), hideFullRooms = false }
   }
 
-  function checkRoomsOrder()
-  {
+  function checkRoomsOrder() {
     this.fillRoomsList(true)
   }
 
-  function fillRoomsList(isUpdateOnlyWhenFlagsChanged = false)
-  {
+  function fillRoomsList(isUpdateOnlyWhenFlagsChanged = false) {
     let roomsList = this.roomsListData.getList()
     let isFlagsUpdated = this.updateRoomsFlags(roomsList)
     if (isUpdateOnlyWhenFlagsChanged && !isFlagsUpdated)
@@ -355,16 +331,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     this.generateChapters(roomsList)
     this.updateListInfo(roomsList.len())
 
-    if (this.initTime != -1 && this.selectedIdx != -1)
-    {
+    if (this.initTime != -1 && this.selectedIdx != -1) {
       if (get_time_msec() - this.initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
         ::move_mouse_on_child_by_value(this.roomsListObj)
       this.initTime = -1
     }
   }
 
-  function getMGameModeFlags(mGameMode, room, isMultiSlot)
-  {
+  function getMGameModeFlags(mGameMode, room, isMultiSlot) {
     local res = eRoomFlags.NONE
     let teams = ::events.getAvailableTeams(mGameMode)
     if (teams.len() == 0)
@@ -372,8 +346,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     res = res | eRoomFlags.HAS_COUNTRY
 
     if ((!isMultiSlot && ::events.isCurUnitMatchesRoomRules(this.event, room))
-        || (isMultiSlot && ::events.checkPlayersCraftsRoomRules(this.event, room)))
-    {
+        || (isMultiSlot && ::events.checkPlayersCraftsRoomRules(this.event, room))) {
       res = res | eRoomFlags.HAS_UNIT_MATCH_RULES
       if (::events.checkRequiredUnits(mGameMode, room))
         res = res | eRoomFlags.HAS_REQUIRED_UNIT
@@ -397,21 +370,18 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     return res
   }
 
-  function updateRoomsFlags(roomsList)
-  {
+  function updateRoomsFlags(roomsList) {
     local hasChanges = false
     let isMultiSlot = ::events.isEventMultiSlotEnabled(this.event)
     let needCheckAvailable = ::events.checkPlayersCrafts(this.event)
     let teamSize = ::events.getMaxTeamSize(this.event)
-    foreach(room in roomsList)
-    {
+    foreach (room in roomsList) {
       let wasFlags = getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
       let mGameMode = ::events.getMGameMode(this.event, room)
 
       let countTbl = ::SessionLobby.getMembersCountByTeams(room)
-      if (countTbl.total < 2 * teamSize)
-      {
+      if (countTbl.total < 2 * teamSize) {
         flags = flags | eRoomFlags.HAS_PLACES
         let availTeams = ::events.getAvailableTeams(mGameMode)
         if (availTeams.len() > 1 || (availTeams.len() && countTbl[availTeams[0]] < teamSize))
@@ -420,11 +390,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
       let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
       if (reqUnits)
-        foreach(rule in reqUnits)
-        {
+        foreach (rule in reqUnits) {
           let tier = ::events.getTierNumByRule(rule)
-          if (tier > 0)
-          {
+          if (tier > 0) {
             flags = flags | (eRoomFlags.ROOM_TIER >> (min(tier, 5) - 1))
             break
           }
@@ -451,15 +419,13 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     return (flags & mustHaveMask) != mustHaveMask
   }
 
-  function getRoomNameView(room)
-  {
+  function getRoomNameView(room) {
     let roomFlags = room[EROOM_FLAGS_KEY_NAME]
     let isLocked = this.isLockedByMask(roomFlags)
 
     local text = ::SessionLobby.getMissionNameLoc(room)
     let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
-    if (reqUnits)
-    {
+    if (reqUnits) {
       local color = ""
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
@@ -478,15 +444,13 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     }
   }
 
-  function getRuleText(rule, needTierRule = false)
-  {
+  function getRuleText(rule, needTierRule = false) {
     if (!needTierRule && ::events.getTierNumByRule(rule) != -1)
       return ""
     return ::events.generateEventRule(rule, true)
   }
 
-  function updateListInfo(visibleRoomsAmount)
-  {
+  function updateListInfo(visibleRoomsAmount) {
     let needWaitIcon = !visibleRoomsAmount && this.roomsListData.isInUpdate
     this.scene.findObject("items_list_wait_icon").show(needWaitIcon)
 
@@ -498,23 +462,19 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     this.roomsListObj.enable(visibleRoomsAmount && !needWaitIcon)
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     let ediff = ::events.getEDiffByEvent(this.event)
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
-  function onEventCountryChanged(_p)
-  {
+  function onEventCountryChanged(_p) {
     this.updateButtons()
     this.checkRoomsOrder()
   }
 
-  function updateChaptersTree(roomsList)
-  {
+  function updateChaptersTree(roomsList) {
     this.chaptersTree.clear()
-    foreach (_idx, room in roomsList)
-    {
+    foreach (_idx, room in roomsList) {
       let chapterGameMode = ::SessionLobby.getMGameMode(room, true)
       let isCustomMode = ::events.isCustomGameMode(chapterGameMode)
       let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
@@ -524,7 +484,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
           : null
       }
       local name = ""
-      foreach(side in ::events.getSidesList(chapterGameMode)) {
+      foreach (side in ::events.getSidesList(chapterGameMode)) {
         let countries = ::events.getCountries(::events.getTeamData(chapterGameMode, side))
         name = isSeparateCustomRoomsList ? "customRooms"
           : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
@@ -535,8 +495,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       }
 
       let foundChapter = this.chaptersTree.findvalue(@(chapter) chapter.name == name)
-      if (foundChapter == null)
-      {
+      if (foundChapter == null) {
         this.chaptersTree.append({
           name
           [EROOM_FLAGS_KEY_NAME] = room[EROOM_FLAGS_KEY_NAME]
@@ -544,8 +503,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
           rooms = [room]
         })
       }
-      else
-      {
+      else {
         foundChapter.rooms.append(room)
         foundChapter[EROOM_FLAGS_KEY_NAME] = foundChapter[EROOM_FLAGS_KEY_NAME] | room[EROOM_FLAGS_KEY_NAME]
       }
@@ -558,15 +516,13 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     return this.chaptersTree
   }
 
-  function generateChapters(roomsList)
-  {
+  function generateChapters(roomsList) {
     this.updateChaptersTree(roomsList)
 
     this.selectedIdx = 1 //select first room by default
     let view = { items = [] }
 
-    foreach (_idx, chapter in this.chaptersTree)
-    {
+    foreach (_idx, chapter in this.chaptersTree) {
       let haveRooms = chapter.rooms.len() > 0
       if (!haveRooms || (this.showOnlyAvailableRooms && this.isLockedByMask(chapter[EROOM_FLAGS_KEY_NAME])))
         continue
@@ -581,14 +537,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       }.__update(chapter.itemView)
       view.items.append(listRow)
 
-      foreach (_roomIdx, room in chapter.rooms)
-      {
+      foreach (_roomIdx, room in chapter.rooms) {
         if (this.showOnlyAvailableRooms && this.isLockedByMask(room[EROOM_FLAGS_KEY_NAME]))
           continue
 
         let roomId = room.roomId
-        if (roomId == this.curRoomId || roomId == this.roomIdToSelect)
-        {
+        if (roomId == this.curRoomId || roomId == this.roomIdToSelect) {
           this.selectedIdx = view.items.len()
           if (roomId == this.roomIdToSelect)
             this.curRoomId = this.roomIdToSelect
@@ -616,14 +570,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     for (local i = 0; i < roomsCount; i++)
       this.roomsListObj.getChild(i).setIntProp(this.listIdxPID, i)
 
-    if (roomsCount > 0)
-    {
+    if (roomsCount > 0) {
       this.roomsListObj.setValue(this.selectedIdx)
       if (this.roomIdToSelect == this.curRoomId)
         this.roomIdToSelect = null
     }
-    else
-    {
+    else {
       this.selectedIdx = -1
       this.curRoomId = ""
       this.curChapterId = ""
@@ -633,25 +585,21 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     this.updateCollapseChaptersStatuses()
   }
 
-  function getFlagsArrayByCountriesArray(countriesArray)
-  {
+  function getFlagsArrayByCountriesArray(countriesArray) {
     return ::u.map(
               countriesArray,
-              function(country)
-              {
-                return {image = ::get_country_icon(country)}
+              function(country) {
+                return { image = ::get_country_icon(country) }
               }
             )
   }
 
-  function onCollapsedChapter()
-  {
+  function onCollapsedChapter() {
     this.collapse(this.curChapterId)
     this.updateButtons()
   }
 
-  function onCollapse(obj)
-  {
+  function onCollapse(obj) {
     if (!obj)
       return
 
@@ -660,11 +608,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       return
 
     let listItemCount = this.roomsListObj.childrenCount()
-    for (local i = 0; i < listItemCount; i++)
-    {
+    for (local i = 0; i < listItemCount; i++) {
       let listItemId = this.roomsListObj.getChild(i).id
-      if (listItemId == id.slice(4))
-      {
+      if (listItemId == id.slice(4)) {
         this.collapse(listItemId)
         break
       }
@@ -672,13 +618,11 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     this.updateButtons()
   }
 
-  function updateCollapseChaptersStatuses()
-  {
+  function updateCollapseChaptersStatuses() {
     if (!checkObj(this.roomsListObj))
       return
 
-    for (local i = 0; i < this.roomsListObj.childrenCount(); i++)
-    {
+    for (local i = 0; i < this.roomsListObj.childrenCount(); i++) {
       let obj = this.roomsListObj.getChild(i)
       let chapterName = this.getChapterNameByObjId(obj.id)
 
@@ -688,16 +632,14 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
       if (obj.id == chapterName)
         obj.collapsed = "yes"
-      else
-      {
+      else {
         obj.show(false)
         obj.enable(false)
       }
     }
   }
 
-  function updateCollapseChapterStatus(chapterObj)
-  {
+  function updateCollapseChapterStatus(chapterObj) {
     let index = ::find_in_array(this.collapsedChapterNamesArray, chapterObj.id)
     let isCollapse = index < 0
     if (isCollapse)
@@ -708,8 +650,7 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     chapterObj.collapsed = isCollapse ? "yes" : "no"
   }
 
-  function collapse(itemName = null)
-  {
+  function collapse(itemName = null) {
     if (!checkObj(this.roomsListObj))
       return
 
@@ -717,11 +658,9 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     local newValue = -1
 
     this.guiScene.setUpdatesEnabled(false, false)
-    for (local i = 0; i < this.roomsListObj.childrenCount(); i++)
-    {
+    for (local i = 0; i < this.roomsListObj.childrenCount(); i++) {
       let obj = this.roomsListObj.getChild(i)
-      if (obj.id == itemName) //is chapter block, can collapse
-      {
+      if (obj.id == itemName) { //is chapter block, can collapse
         this.updateCollapseChapterStatus(obj)
         newValue = i
         continue
@@ -741,32 +680,27 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
       this.roomsListObj.setValue(newValue)
   }
 
-  function getChapterNameByObjId(id)
-  {
+  function getChapterNameByObjId(id) {
     return this.CHAPTER_REGEXP.replace("", id)
   }
 
-  function getRoomIdByObjId(id)
-  {
+  function getRoomIdByObjId(id) {
     let result = this.ROOM_REGEXP.replace("", id)
     if (result == id)
       return ""
     return result
   }
 
-  function getObjIdByChapterNameRoomId(chapterName, roomId)
-  {
+  function getObjIdByChapterNameRoomId(chapterName, roomId) {
     return chapterName + "/" + roomId
   }
 
   _isDelayedCrewchangedStarted = false
-  function onEventCrewChanged(_p)
-  {
+  function onEventCrewChanged(_p) {
     if (this._isDelayedCrewchangedStarted) //!!FIX ME: need to solve multiple CrewChanged events after change preset
       return
     this._isDelayedCrewchangedStarted = true
-    this.guiScene.performDelayed(this, function()
-    {
+    this.guiScene.performDelayed(this, function() {
       if (!this.isValid())
         return
       this._isDelayedCrewchangedStarted = false
@@ -775,26 +709,22 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     })
   }
 
-  function onEventAfterJoinEventRoom(_ev)
-  {
+  function onEventAfterJoinEventRoom(_ev) {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.EventsHandler)
   }
 
-  function onEventEventsDataUpdated(_p)
-  {
+  function onEventEventsDataUpdated(_p) {
     //is event still exist
     if (::events.getEventByEconomicName(::events.getEventEconomicName(this.event)))
       return
 
-    this.guiScene.performDelayed(this, function()
-    {
+    this.guiScene.performDelayed(this, function() {
       if (this.isValid())
         this.goBack()
     })
   }
 
-  function getHandlerRestoreData()
-  {
+  function getHandlerRestoreData() {
     return {
       openData = {
         event = this.event
@@ -803,16 +733,15 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     }
   }
 
-  function onCreateRoom()
-  {
-    if (!antiCheat.showMsgboxIfEacInactive(this.event)||
+  function onCreateRoom() {
+    if (!antiCheat.showMsgboxIfEacInactive(this.event) ||
         !showMsgboxIfSoundModsNotAllowed(this.event))
       return
 
     let diffCode = ::events.getEventDiffCode(this.event)
     let unitTypeMask = ::events.getEventUnitTypesMask(this.event)
-    let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
-    if(checkDiffTutorial(diffCode, checkTutorUnitType))
+    let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask) == 1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
+    if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return
 
     ::events.openCreateRoomWnd(this.event)
@@ -825,12 +754,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     if (this.curRoomId == "") {
       this.collapse(this.curChapterId)
       this.updateButtons()
-    } else
+    }
+    else
       this.joinEvent()
   }
 
-  function onItemHover(obj)
-  {
+  function onItemHover(obj) {
     if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
@@ -842,14 +771,12 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     this.updateButtons()
   }
 
-  function onHoveredItemSelect(_obj)
-  {
+  function onHoveredItemSelect(_obj) {
     if (this.hoveredIdx != -1 && checkObj(this.roomsListObj))
       this.roomsListObj.setValue(this.hoveredIdx)
   }
 
-  function updateMouseMode()
-  {
+  function updateMouseMode() {
     this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 

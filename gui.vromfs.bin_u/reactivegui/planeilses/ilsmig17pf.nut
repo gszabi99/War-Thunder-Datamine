@@ -1,9 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, RadarTargetPosValid, RadarTargetPos} = require("%rGui/planeState/planeToolsState.nut")
-let {HorizonY, HorizonX, Roll} = require("%rGui/planeState/planeFlyState.nut")
+let { IlsColor, RadarTargetPosValid, RadarTargetPos } = require("%rGui/planeState/planeToolsState.nut")
+let { HorizonY, HorizonX, Roll } = require("%rGui/planeState/planeFlyState.nut")
 
-let horizontLine = @(){
+let horizontLine = @() {
   watch = IlsColor
   rendObj = ROBJ_SOLID
   pos = [pw(-50), 0]
@@ -24,7 +24,7 @@ let horizont = {
   }
 }
 
-let target = @(){
+let target = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(1.2), ph(1.2)]

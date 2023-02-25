@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -20,13 +21,13 @@ local function getMyCrewUnitsState(country = null) {
     rank = 0
   }
 
-  foreach(c in ::g_crews_list.get()) {
+  foreach (c in ::g_crews_list.get()) {
     if (!("crews" in c))
       continue
 
     unitsStateCached.crewAirs[c.country] <- []
-    foreach(crew in c.crews)
-      if (("aircraft" in crew) && crew.aircraft!="") {
+    foreach (crew in c.crews)
+      if (("aircraft" in crew) && crew.aircraft != "") {
         let air = ::getAircraftByName(crew.aircraft)
         if (air) {
           unitsStateCached.crewAirs[c.country].append(crew.aircraft)

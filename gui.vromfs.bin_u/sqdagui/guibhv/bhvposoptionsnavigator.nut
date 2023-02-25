@@ -8,13 +8,11 @@ work same as OptionsNavigator focus N child in current child
 but have 2 axis navigation as posNavigator by real size and positions of self childs
 */
 
-::gui_bhv.PosOptionsNavigator <- class extends ::gui_bhv.posNavigator
-{
+::gui_bhv.PosOptionsNavigator <- class extends ::gui_bhv.posNavigator {
   bhvId = "PosOptionsNavigator"
   canChooseByMClick = false
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     markObjShortcutOnHover(obj, true)
     return RETCODE_NOTHING
   }
@@ -29,8 +27,7 @@ but have 2 axis navigation as posNavigator by real size and positions of self ch
 
   function eachSelectable(obj, handler) {
     local idx = 0
-    for(local i = 0; i < obj.childrenCount(); i++)
-    {
+    for (local i = 0; i < obj.childrenCount(); i++) {
       let rowObj = obj.getChild(i)
       if (!rowObj.isValid())
         continue
@@ -41,8 +38,7 @@ but have 2 axis navigation as posNavigator by real size and positions of self ch
         idx++
         continue
       }
-      for(local j = 0; j < rowObj.childrenCount(); j++)
-      {
+      for (local j = 0; j < rowObj.childrenCount(); j++) {
         let cellObj = rowObj.getChild(j)
         if (this.isInteractiveObj(cellObj)) {
           if (cellObj.isEnabled() && cellObj.isVisible())
@@ -52,8 +48,7 @@ but have 2 axis navigation as posNavigator by real size and positions of self ch
           continue
         }
 
-        for(local k = 0; k < cellObj.childrenCount(); k++)
-        {
+        for (local k = 0; k < cellObj.childrenCount(); k++) {
           let elem = cellObj.getChild(k)
           if (this.isInteractiveObj(elem)) {
             if (elem.isEnabled() && elem.isVisible())
@@ -67,8 +62,7 @@ but have 2 axis navigation as posNavigator by real size and positions of self ch
     }
   }
 
-  function setValue(obj, value)
-  {
+  function setValue(obj, value) {
     if (type(value) != "integer")
       return
     local child = null

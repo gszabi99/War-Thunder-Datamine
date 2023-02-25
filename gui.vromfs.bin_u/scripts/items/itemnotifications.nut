@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let workshop = require("%scripts/items/workshop/workshop.nut")
+let DataBlock  = require("DataBlock")
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 
@@ -15,9 +17,8 @@ let addItemsInOfferBuyList = function() {
     return
 
   local hasChanges = false
-  let needOfferBuyItemsList = ::load_local_account_settings(ITEMS_FOR_OFFER_BUY_SAVE_ID, ::DataBlock())
-  foreach (item in itemsList)
-  {
+  let needOfferBuyItemsList = ::load_local_account_settings(ITEMS_FOR_OFFER_BUY_SAVE_ID, DataBlock())
+  foreach (item in itemsList) {
     let idString = (item.id).tostring()
     if (needOfferBuyItemsList?[idString])
       continue
@@ -30,8 +31,7 @@ let addItemsInOfferBuyList = function() {
     ::save_local_account_settings(ITEMS_FOR_OFFER_BUY_SAVE_ID, needOfferBuyItemsList)
 }
 
-let checkOfferToBuyAtExpiration = function()
-{
+let checkOfferToBuyAtExpiration = function() {
   if (!::isInMenu())
     return
 
@@ -42,24 +42,21 @@ let checkOfferToBuyAtExpiration = function()
     return
 
   local hasChanges = false
-  foreach(itemId, _value in needOfferBuyItemsList)
-  {
+  foreach (itemId, _value in needOfferBuyItemsList) {
     let id = ::to_integer_safe(itemId, itemId, false)
     let inventoryItem = ::ItemsManager.getInventoryItemById(id)
     let shopItem = ::ItemsManager.findItemById(id)
     if (inventoryItem && !inventoryItem.isExpired())
       continue
 
-    if (!shopItem || !shopItem.isCanBuy() || !shopItem.needOfferBuyAtExpiration())
-    {
+    if (!shopItem || !shopItem.isCanBuy() || !shopItem.needOfferBuyAtExpiration()) {
       hasChanges = true
       needOfferBuyItemsList[itemId] = null
       continue
     }
 
     let wSet = workshop.getSetByItemId(shopItem.id)
-    if (!wSet || !wSet.isVisible())
-    {
+    if (!wSet || !wSet.isVisible()) {
       hasChanges = true
       needOfferBuyItemsList[itemId] = null
       continue
@@ -81,8 +78,7 @@ let checkOfferToBuyAtExpiration = function()
      break
   }
 
-  if (hasChanges)
-  {
+  if (hasChanges) {
     if (needOfferBuyItemsList.paramCount() == 0)
       needOfferBuyItemsList = null
     ::save_local_account_settings(ITEMS_FOR_OFFER_BUY_SAVE_ID, needOfferBuyItemsList)

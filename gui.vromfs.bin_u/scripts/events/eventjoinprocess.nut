@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -19,8 +20,7 @@ let activeEventJoinProcess = []
 let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   && (get_time_msec() - activeEventJoinProcess[0].processStartTime) < PROCESS_TIME_OUT
 
-::EventJoinProcess <- class
-{
+::EventJoinProcess <- class {
   event = null // Event to join.
   room = null
   onComplete = null
@@ -29,8 +29,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   processStartTime = -1
   processStepName = ""
 
-  constructor (v_event, v_room = null, v_onComplete = null, v_cancelFunc = null)
-  {
+  constructor (v_event, v_room = null, v_onComplete = null, v_cancelFunc = null) {
     if (!v_event)
       return
 
@@ -55,9 +54,8 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
     this.joinStep1_squadMember()
   }
 
-  function remove(needCancelFunc = true)
-  {
-    foreach(idx, process in activeEventJoinProcess)
+  function remove(needCancelFunc = true) {
+    foreach (idx, process in activeEventJoinProcess)
       if (process == this)
         activeEventJoinProcess.remove(idx)
 
@@ -65,18 +63,15 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
       this.cancelFunc()
   }
 
-  function onDone()
-  {
+  function onDone() {
     if (this.onComplete != null)
       this.onComplete(this.event)
     this.remove(false)
   }
 
-  function joinStep1_squadMember()
-  {
+  function joinStep1_squadMember() {
     this.processStepName = "joinStep1_squadMember"
-    if (::g_squad_manager.isSquadMember())
-    {
+    if (::g_squad_manager.isSquadMember()) {
       //Don't allow to change ready status, leader don't know about members balance
       if (!::events.haveEventAccessByCost(this.event))
         ::showInfoMsgBox(loc("events/notEnoughMoney"))
@@ -86,7 +81,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
         ::g_squad_manager.setReadyFlag()
       return this.remove()
     }
-    if (!antiCheat.showMsgboxIfEacInactive(this.event)||
+    if (!antiCheat.showMsgboxIfEacInactive(this.event) ||
         !showMsgboxIfSoundModsNotAllowed(this.event))
       return this.remove()
     // Same as checkedNewFlight in gui_handlers.BaseGuiHandlerWT.
@@ -98,8 +93,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
                    )
   }
 
-  function joinStep2_external()
-  {
+  function joinStep2_external() {
     this.processStepName = "joinStep2_external"
     if (::events.getEventDiffCode(this.event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
@@ -108,8 +102,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
     if (!::events.checkEventFeature(this.event))
       return this.remove()
 
-    if (!::events.isEventAllowedByComaptibilityMode(this.event))
-    {
+    if (!::events.isEventAllowedByComaptibilityMode(this.event)) {
       ::showInfoMsgBox(loc("events/noCompatibilityMode/msg"))
       this.remove()
       return
@@ -121,8 +114,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
     if (!::events.checkEventFeaturePacks(this.event))
       return this.remove()
 
-    if (!::is_loaded_model_high_quality())
-    {
+    if (!::is_loaded_model_high_quality()) {
       ::check_package_and_ask_download("pkg_main", null, this.joinStep3_internal, this, "event", this.remove)
       return
     }
@@ -130,8 +122,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
     this.joinStep3_internal()
   }
 
-  function joinStep3_internal()
-  {
+  function joinStep3_internal() {
     this.processStepName = "joinStep3_internal"
     let mGameMode = ::events.getMGameMode(this.event, this.room)
     if (::events.isEventTanksCompatible(this.event.name) && !::check_tanks_available())
@@ -145,15 +136,14 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
       return this.remove()
     let diffCode = ::events.getEventDiffCode(this.event)
     let unitTypeMask = ::events.getEventUnitTypesMask(this.event)
-    let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask)==1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
-    if(checkDiffTutorial(diffCode, checkTutorUnitType))
+    let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask) == 1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
+    if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return this.remove()
 
     this.joinStep4_cantJoinReason()
   }
 
-  function joinStep4_cantJoinReason()
-  {
+  function joinStep4_cantJoinReason() {
     this.processStepName = "joinStep4_cantJoinReason"
     let reasonData = ::events.getCantJoinReasonData(this.event, this.room,
                           { continueFunc = function() { if (this) this.joinStep5_repairInfo() }.bindenv(this)
@@ -166,15 +156,13 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
     this.remove()
   }
 
-  function joinStep5_repairInfo()
-  {
+  function joinStep5_repairInfo() {
     this.processStepName = "joinStep5_repairInfo"
     let repairInfo = ::events.getCountryRepairInfo(this.event, this.room, profileCountrySq.value)
     ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep6_membersForQueue, false, this.remove)
   }
 
-  function joinStep6_membersForQueue()
-  {
+  function joinStep6_membersForQueue() {
     this.processStepName = "joinStep6_membersForQueue"
     ::events.checkMembersForQueue(this.event, this.room,
       Callback(@(membersData) this.joinStep7_joinQueue(membersData), this),
@@ -182,14 +170,12 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
     )
   }
 
-  function joinStep7_joinQueue(membersData = null)
-  {
+  function joinStep7_joinQueue(membersData = null) {
     this.processStepName = "joinStep7_joinQueue"
     //join room
     if (this.room)
       ::SessionLobby.joinRoom(this.room.roomId)
-    else
-    {
+    else {
       let joinEventParams = {
         mode    = this.event.name
         //team    = team //!!can choose team correct only with multiEvents support
@@ -207,12 +193,10 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   // Helpers
   //
 
-  function checkEventTeamSize(ev)
-  {
+  function checkEventTeamSize(ev) {
     let squadSize = ::g_squad_manager.getSquadSize()
     let maxTeamSize = ::events.getMaxTeamSize(ev)
-    if (squadSize > maxTeamSize)
-    {
+    if (squadSize > maxTeamSize) {
       let locParams = {
         squadSize = squadSize.tostring()
         maxTeamSize = maxTeamSize.tostring()
@@ -228,8 +212,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   // Delegates from current base gui handler.
   //
 
-  function msgBox(id, text, buttons, def_btn, options = {})
-  {
+  function msgBox(id, text, buttons, def_btn, options = {}) {
     ::scene_msg_box(id, null, text, buttons, def_btn, options)
   }
 }

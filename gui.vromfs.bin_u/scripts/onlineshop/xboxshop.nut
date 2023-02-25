@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -26,8 +27,8 @@ shopData.xboxProceedItems.subscribe(function(val) {
       getSeenId = @() $"##xbox_item_sheet_{xboxMediaItemType.GameConsumable}"
       categoryId = xboxMediaItemType.GameConsumable
       sortParams = [
-        {param = "price", asc = false}
-        {param = "price", asc = true}
+        { param = "price", asc = false }
+        { param = "price", asc = true }
       ]
       sortSubParam = "consumableQuantity"
       contentTypes = ["eagles"]
@@ -40,12 +41,12 @@ shopData.xboxProceedItems.subscribe(function(val) {
       getSeenId = @() $"##xbox_item_sheet_{xboxMediaItemType.GameContent}"
       categoryId = xboxMediaItemType.GameContent
       sortParams = [
-        {param = "releaseDate", asc = false}
-        {param = "releaseDate", asc = true}
-        {param = "price", asc = false}
-        {param = "price", asc = true}
-        {param = "isBought", asc = false}
-        {param = "isBought", asc = true}
+        { param = "releaseDate", asc = false }
+        { param = "releaseDate", asc = true }
+        { param = "price", asc = false }
+        { param = "price", asc = true }
+        { param = "isBought", asc = false }
+        { param = "isBought", asc = true }
       ]
       sortSubParam = "name"
       contentTypes = [null, ""]
@@ -61,20 +62,19 @@ shopData.xboxProceedItems.subscribe(function(val) {
       getSeenId = @() $"##xbox_item_sheet_{unitType.typeName}"
       categoryId = unitType.typeName
       sortParams = [
-        {param = "releaseDate", asc = false}
-        {param = "releaseDate", asc = true}
-        {param = "price", asc = false}
-        {param = "price", asc = true}
-        {param = "isBought", asc = false}
-        {param = "isBought", asc = true}
+        { param = "releaseDate", asc = false }
+        { param = "releaseDate", asc = true }
+        { param = "price", asc = false }
+        { param = "price", asc = true }
+        { param = "isBought", asc = false }
+        { param = "isBought", asc = true }
       ]
       sortSubParam = "name"
       contentTypes = [null, ""]
     })
   })
 
-  foreach (_idx, sh in sheetsArray)
-  {
+  foreach (_idx, sh in sheetsArray) {
     let sheet = sh
     seenList.setSubListGetter(sheet.getSeenId(), @()
       (val?[sheet.categoryId] ?? [])
@@ -84,15 +84,12 @@ shopData.xboxProceedItems.subscribe(function(val) {
   }
 })
 
-::gui_handlers.XboxShop <- class extends ::gui_handlers.IngameConsoleStore
-{
-  function loadCurSheetItemsList()
-  {
+::gui_handlers.XboxShop <- class extends ::gui_handlers.IngameConsoleStore {
+  function loadCurSheetItemsList() {
     this.itemsList = this.itemsCatalog?[this.curSheet?.categoryId] ?? []
   }
 
-  function onEventXboxSystemUIReturn(_p)
-  {
+  function onEventXboxSystemUIReturn(_p) {
     this.curItem = this.getCurItem()
     if (!this.curItem)
       return
@@ -102,9 +99,8 @@ shopData.xboxProceedItems.subscribe(function(val) {
 
     let wasPurchasePerformed = wasItemBought != this.curItem.isBought
 
-    if (wasPurchasePerformed)
-    {
-      ::broadcastEvent("EntitlementStoreItemPurchased", {id = this.curItem.id})
+    if (wasPurchasePerformed) {
+      ::broadcastEvent("EntitlementStoreItemPurchased", { id = this.curItem.id })
       statsd.send_counter("sq.close_product.purchased", 1)
       ::add_big_query_record("close_product",
         ::save_to_json({
@@ -129,8 +125,7 @@ shopData.xboxProceedItems.subscribe(function(val) {
     }
   }
 
-  function goBack()
-  {
+  function goBack() {
     ::g_tasker.addTask(::update_entitlements_limited(),
       {
         showProgressBox = true
@@ -147,28 +142,40 @@ shopData.xboxProceedItems.subscribe(function(val) {
 }
 
 let isChapterSuitable = @(chapter) isInArray(chapter, [null, "", "eagles"])
-let getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
+let getEntStoreLocId = @() shopData.canUseIngameShop() ? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
 
 let openIngameStoreImpl = kwarg(
-  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", forceExternalShop = false) {
+  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown",
+    forceExternalShop = false, unitName = "") {
     if (!isChapterSuitable(chapter))
       return false
 
-    if (shopData.canUseIngameShop() && !forceExternalShop)
-    {
+    if (shopData.canUseIngameShop() && !forceExternalShop) {
       shopData.requestData(
         false,
-        @() ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
-          itemsCatalog = shopData.xboxProceedItems.value
-          chapter = chapter
-          curItem = shopData.getShopItem(curItemId)
-          afterCloseFunc
-          titleLocId = "topmenu/xboxIngameShop"
-          storeLocId = "items/openIn/XboxStore"
-          seenEnumId = SEEN.EXT_XBOX_SHOP
-          seenList
-          sheetsArray
-        }),
+        function() {
+          let curItem = shopData.getShopItem(curItemId)
+          local curSheetId = null
+          if (curItem?.categoriesList) {
+            let unitTypeName = ::getAircraftByName(unitName).unitType.typeName
+            curSheetId = curItem.categoriesList.contains(unitTypeName) ? unitTypeName
+              : curItem.categoriesList?[0]
+
+            log($"XBOX SHOP: Found sheet {curSheetId} for unit {unitName}. Item {curItem?.id}, {curItem?.entitlementId}")
+          }
+
+          ::handlersManager.loadHandler(::gui_handlers.XboxShop, {
+            itemsCatalog = shopData.xboxProceedItems.value
+            chapter = chapter
+            curItem
+            curSheetId
+            afterCloseFunc
+            titleLocId = "topmenu/xboxIngameShop"
+            storeLocId = "items/openIn/XboxStore"
+            seenEnumId = SEEN.EXT_XBOX_SHOP
+            seenList
+            sheetsArray
+          }) },
         true,
         statsdMetric
       )
@@ -219,9 +226,9 @@ let function openIngameStore(params = {}) {
 return shopData.__merge({
   openIngameStore = openIngameStore
   getEntStoreLocId = getEntStoreLocId
-  getEntStoreIcon = @() shopData.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
+  getEntStoreIcon = @() shopData.canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
   isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
   getEntStoreUnseenIcon = @() SEEN.EXT_XBOX_SHOP
   needEntStoreDiscountIcon = true
-  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({statsdMetric = "topmenu"})
+  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
 })

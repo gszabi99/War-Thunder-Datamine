@@ -1,17 +1,17 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsVisible, IlsPosSize, CannonMode, RocketMode, BombCCIPMode,
-        BlkFileName, BombingMode} = require("planeState/planeToolsState.nut")
+let { IlsVisible, IlsPosSize, CannonMode, RocketMode, BombCCIPMode,
+        BlkFileName, BombingMode } = require("planeState/planeToolsState.nut")
 let DataBlock = require("DataBlock")
-let {TrackerVisible} = require("rocketAamAimState.nut")
-let {compassWrap, generateCompassMark} = require("planeIlses/ilsCompasses.nut")
+let { TrackerVisible } = require("rocketAamAimState.nut")
+let { compassWrap, generateCompassMark } = require("planeIlses/ilsCompasses.nut")
 
-let {AVQ7Basic, AVQ7BombingMode, AVQ7CCIPMode} = require("planeIlses/ilsAVQ7.nut")
+let { AVQ7Basic, AVQ7BombingMode, AVQ7CCIPMode } = require("planeIlses/ilsAVQ7.nut")
 let ASP17 = require("planeIlses/ilsASP17.nut")
 let buccaneerHUD = require("planeIlses/ilsBuccaneer.nut")
-let {basic410SUM, SUMCCIPMode, SumAAMMode, SumBombingSight, SUMGunReticle} = require("planeIlses/ils410Sum.nut")
+let { basic410SUM, SUMCCIPMode, SumAAMMode, SumBombingSight, SUMGunReticle } = require("planeIlses/ils410Sum.nut")
 let LCOSS = require("planeIlses/ilsLcoss.nut")
-let {J7EAdditionalHud, ASP23ModeSelector} = require("planeIlses/ilsASP23.nut")
+let { J7EAdditionalHud, ASP23ModeSelector } = require("planeIlses/ilsASP23.nut")
 let swedishEPIls = require("planeIlses/ilsEP.nut")
 let ShimadzuIls = require("planeIlses/ilsShimadzu.nut")
 let TCSF196 = require("planeIlses/ilsTcsf196.nut")
@@ -91,7 +91,7 @@ let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode
 
 let planeIls = @(width, height) function() {
 
-  let {isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
+  let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit } = ilsSetting.value

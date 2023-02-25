@@ -50,8 +50,8 @@ let function needAnim(curTgt, prevTgt) {
   if (!prevTgt)
     return true
 
-  foreach(propName in ["size", "pos"])
-    foreach(axis, value in curTgt[propName])
+  foreach (propName in ["size", "pos"])
+    foreach (axis, value in curTgt[propName])
       if (abs(prevTgt[propName][axis] - value) > minDiffForAnimPx)
         return true
   return false
@@ -84,9 +84,9 @@ let function play(obj, targetObj) {
   }
 
   animObj["re-type"] = targetObj.getFinalProp("re-type") ?? "9rect"
-  foreach(prefix, isUsed in imagePrefixList) {
+  foreach (prefix, isUsed in imagePrefixList) {
     animObj[$"{prefix}color"] = isUsed ? (targetObj.getFinalProp("focusAnimColor") ?? "") : ""
-    foreach(key in imageParamsList) {
+    foreach (key in imageParamsList) {
       let fullKey = $"{prefix}{key}"
       animObj[fullKey] = isUsed ? targetObj.getFinalProp(fullKey) ?? "" : ""
     }

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-::gui_handlers.WwCommanders <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.WwCommanders <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarCommandersInfo.tpl"
   sceneBlkName = null
@@ -20,32 +20,27 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   static groupsInColumnMax = 5
   static groupsInRowMax = 3
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return this.getGroupsArray()
   }
 
-  function getSceneTplContainerObj()
-  {
+  function getSceneTplContainerObj() {
     return this.scene
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.onSwitchCommandersSide(this.getObj("commanders_switch_box"))
-    foreach(groupHandler in this.groupsHandlers)
+    foreach (groupHandler in this.groupsHandlers)
       groupHandler.updateSelectedStatus()
   }
 
-  function getGroupsArray()
-  {
+  function getGroupsArray() {
     let groupsView = []
     local useSwitchMode = false
     let view = { items = [] }
     let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
     this.groupsHandlers = []
-    foreach(side in ::g_world_war.getSidesOrder())
-    {
+    foreach (side in ::g_world_war.getSidesOrder()) {
       let groups = ::g_world_war.getArmyGroupsBySide(side)
       if (groups.len() == 0)
         continue
@@ -54,8 +49,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       let sideGroupsView = []
       let armyCountry = []
       let myClanId = ::clan_get_my_clan_id()
-      foreach (_idx, group in groups)
-      {
+      foreach (_idx, group in groups) {
         let country = group.getArmyCountry()
         if (!isInArray(country, armyCountry))
           armyCountry.append(country)
@@ -81,9 +75,8 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       })
 
       local teamText = loc(getCustomViewCountryData(armyCountry[0], mapName).locId)
-      if (armyCountry.len() > 1)
-      {
-        let postfix = ::ww_get_player_side() == side? "allies" : "enemies"
+      if (armyCountry.len() > 1) {
+        let postfix = ::ww_get_player_side() == side ? "allies" : "enemies"
         teamText = loc("worldWar/side/" + postfix)
       }
 
@@ -114,8 +107,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     }
   }
 
-  function onSwitchCommandersSide(obj)
-  {
+  function onSwitchCommandersSide(obj) {
     if (!checkObj(obj))
       return
 
@@ -124,8 +116,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       return
 
     let side = obj.getValue() + 1
-    foreach (groupHandler in this.groupsHandlers)
-    {
+    foreach (groupHandler in this.groupsHandlers) {
       let viewObj = placeObj.findObject(groupHandler.group.getView().getId())
       if (!checkObj(viewObj))
         return
@@ -134,8 +125,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     }
   }
 
-  function onHoverArmyItem(obj)
-  {
+  function onHoverArmyItem(obj) {
     let clanId = obj.clanId
     let groups = ::g_world_war.getArmyGroups((@(clanId) function(group) { return group.clanId == clanId })(clanId))
     let groupArmyNames = []
@@ -148,18 +138,15 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     ::ww_update_popuped_armies_name(groupArmyNames)
   }
 
-  function onClickArmy(obj)
-  {
+  function onClickArmy(obj) {
     ::showClanPage(obj.clanId, "", "")
   }
 
-  function onHoverLostArmyItem(_obj)
-  {
+  function onHoverLostArmyItem(_obj) {
     ::ww_update_popuped_armies_name([])
   }
 
-  function onEventWWArmyManagersInfoUpdated(_p)
-  {
+  function onEventWWArmyManagersInfoUpdated(_p) {
     let view = this.getSceneTplView()
     let data = ::handyman.renderCached(this.sceneTplName, view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)

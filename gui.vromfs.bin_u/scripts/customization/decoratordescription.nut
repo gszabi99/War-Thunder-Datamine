@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,8 +14,7 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
 let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
   let unlockBlk = ::g_unlocks.getUnlockById(decorator?.unlockId)
-  if (unlockBlk)
-  {
+  if (unlockBlk) {
     config = ::build_conditions_config(unlockBlk)
     ::build_unlock_desc(config)
   }
@@ -24,8 +24,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   iObj["background-image"] = img
 
-  if (img != "")
-  {
+  if (img != "") {
     let imgSize = params?.imgSize ?? {}
     let imgRatio = decoratorType.getRatio(decorator)
     let iDivObj = iObj.getParent()
@@ -49,8 +48,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   let commaLoc = loc("ui/comma")
   let colonLoc = loc("ui/colon")
   let searchId = decorator.id
-  if (decoratorType.hasLocations(searchId))
-  {
+  if (decoratorType.hasLocations(searchId)) {
     let mask = skinLocations.getSkinLocationsMaskBySkinId(searchId, false)
     let locations = mask ? skinLocations.getLocationsLoc(mask) : []
     if (locations.len())
@@ -58,18 +56,16 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   }
 
   local tags = decorator.getTagsLoc()
-  if (tags.len())
-  {
+  if (tags.len()) {
     tags = ::u.map(tags, @(txt) colorize("activeTextColor", txt))
     desc.append($"\n{loc("ugm/tags")}{colonLoc}{commaLoc.join(tags, true)}")
   }
 
   local descText = "\n".join(desc, true)
   let warbondId = getTblValue("wbId", params)
-  if (warbondId)
-  {
+  if (warbondId) {
     let warbond = ::g_warbonds.findWarbond(warbondId, getTblValue("wbListId", params))
-    let award = warbond? warbond.getAwardById(searchId) : null
+    let award = warbond ? warbond.getAwardById(searchId) : null
     if (award)
       descText = award.addAmountTextToDesc(descText)
   }
@@ -81,24 +77,22 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local canBuy = false
   let hasDecor = decoratorType.isPlayerHaveDecorator(searchId)
-  if (!hasDecor)
-  {
+  if (!hasDecor) {
     let cost = decorator.getCost()
     let hasPrice = !isTrophyContent && !isReceivedPrizes && !cost.isZero()
     let aObj = ::showBtn("price", hasPrice, obj)
-    if (hasPrice)
-    {
+    if (hasPrice) {
       canBuy = true
       if (checkObj(aObj))
         aObj.setValue(loc("ugm/price") + loc("ui/colon") + colorize("white", cost.getTextAccordingToBalance()))
     }
-  } else
+  }
+  else
     ::showBtn("price", false, obj)
 
   local canConsumeCoupon = false
   local canFindOnMarketplace = false
-  if (!hasDecor && decorator.getCouponItemdefId() != null)
-  {
+  if (!hasDecor && decorator.getCouponItemdefId() != null) {
     let inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
     if (inventoryItem?.canConsume() ?? false)
       canConsumeCoupon = true
@@ -118,10 +112,8 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local obtainInfo = ""
   let hasNoConds = mainCond == "" && conds == ""
-  if (!isDefaultSkin && hasNoConds)
-  {
-    if (hasDecor)
-    {
+  if (!isDefaultSkin && hasNoConds) {
+    if (hasDecor) {
       obtainInfo = loc("mainmenu/itemReceived")
       if (isTrophyContent && !isReceivedPrizes)
         obtainInfo += "\n" + colorize("badTextColor",
@@ -143,8 +135,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   cObj.findObject("obtain_info").setValue(obtainInfo)
 
   let canShowProgressBar = !hasDecor && canShowUnlockDesc && config
-  if (canShowProgressBar)
-  {
+  if (canShowProgressBar) {
     let progressData = config.getProgressBarData()
     let pObj = ::showBtn("progress", progressData.show, cObj)
     if (progressData.show)

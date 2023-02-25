@@ -1,13 +1,16 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let statsd = require("statsd")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 let XboxShopPurchasableItem = require("%scripts/onlineShop/XboxShopPurchasableItem.nut")
 
@@ -23,31 +26,27 @@ local statsdMetric = "unknown"
 local reqProgressMsg = false
 local invalidateSeenList = false
 local haveItemDiscount = null
-::xbox_browse_catalog_callback <- function(catalog)
-{
-  if (!catalog || !catalog.blockCount())
-  {
-    statsd.send_counter("sq.ingame_store.open.empty_catalog", 1, {catalog = statsdMetric})
+::xbox_browse_catalog_callback <- function(catalog) {
+  if (!catalog || !catalog.blockCount()) {
+    statsd.send_counter("sq.ingame_store.open.empty_catalog", 1, { catalog = statsdMetric })
     log("XBOX SHOP: Empty catalog. Don't open shop.")
     return
   }
 
   let xboxShopBlk = GUI.get()?.xbox_ingame_shop
-  let skipItemsList = xboxShopBlk?.itemsHide ?? ::DataBlock()
+  let skipItemsList = xboxShopBlk?.itemsHide ?? DataBlock()
 
   let xbItems = {}
   itemsList.clear()
-  for (local i = 0; i < catalog.blockCount(); i++)
-  {
+  for (local i = 0; i < catalog.blockCount(); i++) {
     let itemBlock = catalog.getBlock(i)
-    if (itemBlock.getBlockName() in skipItemsList)
-    {
+    if (itemBlock.getBlockName() in skipItemsList) {
       log("XBOX SHOP: SKIP: " + itemBlock.Name + " by id " + itemBlock.getBlockName())
       continue
     }
 
     let item = XboxShopPurchasableItem(itemBlock)
-    foreach (xbItemType in item.categoryId) {
+    foreach (xbItemType in item.categoriesList) {
       if (!(xbItemType in xbItems))
         xbItems[xbItemType] <- []
       xbItems[xbItemType].append(item)
@@ -58,8 +57,7 @@ local haveItemDiscount = null
 
   xboxProceedItems(xbItems)
 
-  if (invalidateSeenList)
-  {
+  if (invalidateSeenList) {
     visibleSeenIds.clear()
     seenList.onListChanged()
   }
@@ -69,7 +67,7 @@ local haveItemDiscount = null
     progressMsg.destroy(XBOX_RECEIVE_CATALOG_MSG_ID)
   reqProgressMsg = false
 
-  statsd.send_counter("sq.ingame_store.open", 1, {catalog = statsdMetric})
+  statsd.send_counter("sq.ingame_store.open", 1, { catalog = statsdMetric })
   if (onReceiveCatalogCb)
     onReceiveCatalogCb()
   onReceiveCatalogCb = null
@@ -78,9 +76,8 @@ local haveItemDiscount = null
   ::broadcastEvent("XboxShopDataUpdated")
 }
 
-let requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown")
-{
-  if (!is_platform_xbox)
+let requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown") {
+  if (!isPlatformXboxOne)
     return
 
   onReceiveCatalogCb = cb
@@ -96,19 +93,17 @@ let requestData = function(isSilent = false, cb = null, invSeenList = false, met
 
   /* Debug Purpose Only
   {
-    local blk = ::DataBlock()
+    local blk = DataBlock()
     blk.load("browseCatalog.blk")
     ::xbox_browse_catalog_callback(blk)
   }
   */
 }
 
-let canUseIngameShop = @() is_platform_xbox && hasFeature("XboxIngameShop")
+let canUseIngameShop = @() isPlatformXboxOne && hasFeature("XboxIngameShop")
 
-let getVisibleSeenIds = function()
-{
-  if (!visibleSeenIds.len() && xboxProceedItems.value.len())
-  {
+let getVisibleSeenIds = function() {
+  if (!visibleSeenIds.len() && xboxProceedItems.value.len()) {
     foreach (_, items in xboxProceedItems.value)
       visibleSeenIds.extend(items.filter(@(it) !it.canBeUnseen()).map(@(it) it.getSeenId()))
   }
@@ -118,17 +113,14 @@ let getVisibleSeenIds = function()
 seenList.setListGetter(getVisibleSeenIds)
 
 local isItemsInitedOnce = false
-let initXboxItemsListAfterLogin = function()
-{
-  if (canUseIngameShop() && !isItemsInitedOnce)
-  {
+let initXboxItemsListAfterLogin = function() {
+  if (canUseIngameShop() && !isItemsInitedOnce) {
     isItemsInitedOnce = true
     requestData(true, null, true)
   }
 }
 
-let haveAnyItemWithDiscount = function()
-{
+let haveAnyItemWithDiscount = function() {
   if (!xboxProceedItems.value.len())
     return false
 
@@ -145,13 +137,11 @@ let haveAnyItemWithDiscount = function()
   return haveItemDiscount
 }
 
-let haveDiscount = function()
-{
+let haveDiscount = function() {
   if (!canUseIngameShop())
     return false
 
-  if (!isItemsInitedOnce)
-  {
+  if (!isItemsInitedOnce) {
     initXboxItemsListAfterLogin()
     return false
   }

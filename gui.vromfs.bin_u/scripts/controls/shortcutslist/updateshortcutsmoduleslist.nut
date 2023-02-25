@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -10,6 +11,9 @@ require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")([
   require("%scripts/controls/shortcutsList/shortcutsGroupTank.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupShip.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupSubmarine.nut")
+  //
+
+
   require("%scripts/controls/shortcutsList/shortcutsGroupGamepad.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupIngame.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupArtillery.nut")

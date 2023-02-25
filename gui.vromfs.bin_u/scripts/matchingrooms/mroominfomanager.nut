@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -19,11 +20,11 @@ from "%scripts/dagui_library.nut" import *
 
   function clearOutdated() {
     let outdatedArr = []
-    foreach(roomId, info in this.infoByRoomId)
+    foreach (roomId, info in this.infoByRoomId)
       if (!info.isValid())
         outdatedArr.append(roomId)
 
-    foreach(roomId in outdatedArr)
+    foreach (roomId in outdatedArr)
       delete this.infoByRoomId[roomId]
   }
 }

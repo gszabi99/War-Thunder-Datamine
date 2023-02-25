@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const PRESET_MIN_USAGE = 2
 
-::gui_handlers.DecorLayoutPresets <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.DecorLayoutPresets <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/customization/decorLayoutPresetsWnd.tpl"
@@ -27,8 +27,7 @@ const PRESET_MIN_USAGE = 2
   linkedSkinsInitial = 0
   linkedSkinsCurrent = 0
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     let view = { list = [] }
     for (local i = 0; i < this.skinList.items.len(); i++)
       view.list.append({
@@ -39,8 +38,7 @@ const PRESET_MIN_USAGE = 2
     return view
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     ::enableHangarControls(true)
 
     let objCombobox = this.scene.findObject("master_skin")
@@ -50,14 +48,12 @@ const PRESET_MIN_USAGE = 2
     this.updateMasterPreset()
   }
 
-  function updateMasterPreset(needResetLinkedSkins = true)
-  {
+  function updateMasterPreset(needResetLinkedSkins = true) {
     this.masterPresetId = ::hangar_customization_preset_get_name(this.masterSkinId)
     this.isPreset = this.masterPresetId != ""
     this.presetBySkinIdx = ::u.map(this.skinList.values, @(id) ::hangar_customization_preset_get_name(id))
 
-    if (needResetLinkedSkins)
-    {
+    if (needResetLinkedSkins) {
       this.linkedSkinsInitial = 0
       foreach (idx, val in this.skinList.values)
         if (val == this.masterSkinId || (this.isPreset && this.presetBySkinIdx[idx] == this.masterPresetId))
@@ -70,36 +66,31 @@ const PRESET_MIN_USAGE = 2
     this.updateButtons()
   }
 
-  function updateSkinsPresets()
-  {
+  function updateSkinsPresets() {
     foreach (idx, skinId in this.skinList.values)
       this.scene.findObject("preset_of_" + skinId).setValue(this.presetBySkinIdx[idx])
   }
 
-  function updateLinkedSkins()
-  {
+  function updateLinkedSkins() {
     let listObj = this.scene.findObject("destination_skins")
     listObj.setValue(this.linkedSkinsCurrent)
     foreach (_idx, skinId in this.skinList.values)
       listObj.findObject(skinId).enable(skinId != this.masterSkinId)
   }
 
-  function getIndexBySkinId(skinId)
-  {
+  function getIndexBySkinId(skinId) {
     let selSkinId = skinId
     return this.skinList.values.findindex(@(id) id == selSkinId) ?? -1
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     ::showBtnTable(this.scene, {
         btn_rename = this.isPreset
         btn_apply  = this.linkedSkinsCurrent != this.linkedSkinsInitial
     })
   }
 
-  function onMasterSkinSelect(obj)
-  {
+  function onMasterSkinSelect(obj) {
     if (!checkObj(obj))
       return
     this.masterSkinId = this.skinList.values?[obj.getValue()] ?? ""
@@ -112,16 +103,14 @@ const PRESET_MIN_USAGE = 2
     this.updateMasterPreset()
   }
 
-  function onDestinationSkinSelect(obj)
-  {
+  function onDestinationSkinSelect(obj) {
     if (!checkObj(obj))
       return
     this.linkedSkinsCurrent = obj.getValue()
     this.updateButtons()
   }
 
-  function onBtnRename(_obj)
-  {
+  function onBtnRename(_obj) {
     if (!this.isPreset)
       return
     let validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
@@ -137,8 +126,7 @@ const PRESET_MIN_USAGE = 2
     })
   }
 
-  function doRenamePreset(oldName, newName)
-  {
+  function doRenamePreset(oldName, newName) {
     if (newName == oldName)
       return
     if (isInArray(newName, this.presetBySkinIdx))
@@ -149,15 +137,13 @@ const PRESET_MIN_USAGE = 2
     this.updateMasterPreset(false)
   }
 
-  function onStart(_obj)
-  {
+  function onStart(_obj) {
     if (this.linkedSkinsCurrent == this.linkedSkinsInitial)
       return
 
     let listAttach = []
     let listDetach = []
-    for (local i = 0; i < this.skinList.values.len(); i++)
-    {
+    for (local i = 0; i < this.skinList.values.len(); i++) {
       let id = this.skinList.values[i]
       let val = (this.linkedSkinsCurrent & (1 << i)) != 0
       if ((this.isPreset && this.masterPresetId == this.presetBySkinIdx[i]) != val) // warning disable: -compared-with-bool
@@ -169,11 +155,9 @@ const PRESET_MIN_USAGE = 2
 
     local presetId = this.masterPresetId
     if (!this.isPreset && listAttach.len())
-      for (local i = 0; i < this.skinList.values.len(); i++)
-      {
+      for (local i = 0; i < this.skinList.values.len(); i++) {
         presetId = loc("customization/decorLayout/defaultName", { number = i + 1 })
-        if (::hangar_customization_preset_calc_usage(presetId) == 0)
-        {
+        if (::hangar_customization_preset_calc_usage(presetId) == 0) {
           ::hangar_customization_preset_create(presetId)
           ::u.removeFrom(listAttach, this.masterSkinId)
           break
@@ -199,8 +183,7 @@ const PRESET_MIN_USAGE = 2
 }
 
 return {
-  open = function (unit, skinId)
-  {
+  open = function (unit, skinId) {
     if (!hasFeature("CustomizationLayoutPresets"))
       return
     let skinList = ::g_decorator.getSkinsOption(unit?.name, false, false)

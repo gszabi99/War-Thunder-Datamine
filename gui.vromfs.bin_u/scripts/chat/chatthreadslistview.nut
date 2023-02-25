@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -19,8 +20,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   listObj = null
   curListUid = -1
 
-  function initScreen()
-  {
+  function initScreen() {
     this.listObj = this.scene.findObject("threads_list")
     this.scene.findObject("threads_list_timer").setUserData(this)
 
@@ -29,24 +29,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateCategoriesButton()
   }
 
-  function remove()
-  {
+  function remove() {
     this.scene = null
   }
 
-  function onSceneShow()
-  {
+  function onSceneShow() {
     this.updateAll()
   }
 
-  function updateAll(forceUpdate = false)
-  {
+  function updateAll(forceUpdate = false) {
     this.updateList(forceUpdate)
     this.updateRefreshButton()
   }
 
-  function updateList(forceUpdate = false)
-  {
+  function updateList(forceUpdate = false) {
     if (!forceUpdate && ::g_chat_latest_threads.isListNewest(this.curListUid))
       return
 
@@ -73,13 +69,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.listObj.setValue(::find_in_array(list, selThread, 0))
   }
 
-  function markListChanged()
-  {
+  function markListChanged() {
     this.curListUid = -1
   }
 
-  function updateRefreshButton()
-  {
+  function updateRefreshButton() {
     let btnObj = this.scene.findObject("btn_refresh")
     let isWaiting = ::g_chat_latest_threads.getUpdateState() == chatUpdateState.IN_PROGRESS
 
@@ -97,8 +91,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.updateTooltip(btnObj)
   }
 
-  function updateLangsButton()
-  {
+  function updateLangsButton() {
     let show = ::g_chat.canChooseThreadsLang()
     let langsBtn = this.showSceneBtn("threads_search_langs_btn", show)
     if (!show)
@@ -112,8 +105,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.replaceContentFromText(langsBtn, data, data.len(), this)
   }
 
-  function updateCategoriesButton()
-  {
+  function updateCategoriesButton() {
     let show = ::g_chat_categories.isEnabled()
     this.showSceneBtn("buttons_separator", !show)
     let catBtn = this.showSceneBtn("btn_categories_filter", show)
@@ -123,8 +115,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local text = ""
     if (::g_chat_categories.isSearchAnyCategory())
       text = loc("chat/allCategories")
-    else
-    {
+    else {
       let textsList = ::u.map(::g_chat_categories.getSearchCategoriesLList(),
                                 function(cName) { return ::g_chat_categories.getCategoryNameText(cName) })
       text = ::g_string.implode(textsList, ", ")
@@ -132,17 +123,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     catBtn.setValue(text)
   }
 
-  function onEventChatLatestThreadsUpdate(_p)
-  {
-    if (this.isSceneActive() || this.updateInactiveList)
-    {
+  function onEventChatLatestThreadsUpdate(_p) {
+    if (this.isSceneActive() || this.updateInactiveList) {
       this.updateAll(this.updateInactiveList)
       this.updateInactiveList = false
     }
   }
 
-  function onEventCrossNetworkChatOptionChanged(_p)
-  {
+  function onEventCrossNetworkChatOptionChanged(_p) {
     this.updateInactiveList = true
   }
 
@@ -150,14 +138,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateInactiveList = true
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     if (this.isSceneActive())
       this.updateAll()
   }
 
-  function getThreadByObj(obj = null)
-  {
+  function getThreadByObj(obj = null) {
     let rId = obj?.roomId
     if (rId && rId.len())
       return ::g_chat.getThreadInfo(rId)
@@ -171,71 +157,62 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return null
   }
 
-  function onJoinThread(obj)
-  {
+  function onJoinThread(obj) {
     let actionThread = this.getThreadByObj(obj)
     if (actionThread)
       actionThread.join()
   }
 
-  function onUserInfo(obj)
-  {
+  function onUserInfo(obj) {
     let actionThread = this.getThreadByObj(obj)
     if (actionThread)
       actionThread.showOwnerMenu(null)
   }
 
-  function onEditThread(obj)
-  {
+  function onEditThread(obj) {
     let actionThread = this.getThreadByObj(obj)
     if (actionThread)
       ::g_chat.openModifyThreadWnd(actionThread)
   }
 
-  function openThreadMenu()
-  {
+  function openThreadMenu() {
     let actionThread = this.getThreadByObj()
     if (!actionThread)
       return
 
     local pos = null
     let nameObj = this.listObj.findObject("ownerName_" + actionThread.roomId)
-    if (checkObj(nameObj))
-    {
+    if (checkObj(nameObj)) {
       pos = nameObj.getPosRC()
       pos[0] += nameObj.getSize()[0]
     }
     actionThread.showThreadMenu(pos)
   }
 
-  function onCreateThread()
-  {
+  function onCreateThread() {
     ::g_chat.openRoomCreationWnd()
   }
 
-  function onRefresh()
-  {
+  function onRefresh() {
     ::g_chat_latest_threads.refresh()
     this.updateRefreshButton()
   }
 
-  function onThreadsActivate(obj)
-  {
+  function onThreadsActivate(obj) {
     if (::show_console_buttons)
       this.openThreadMenu() //gamepad shortcut
     else
       this.onJoinThread(obj) //dblClick
   }
 
-  function onThreadSelect()
-  {
+  function onThreadSelect() {
     //delayed callbac
     if (!checkObj(this.listObj) || !this.listObj.childrenCount())
       return
 
     //sellImg is bigger than item, so for correct view while selecting by gamepad need to scroll to selImg
     let val = ::get_obj_valid_index(this.listObj)
-    local childObj = this.listObj.getChild(val < 0? 0 : val)
+    local childObj = this.listObj.getChild(val < 0 ? 0 : val)
     if (!checkObj(childObj))
       childObj = this.listObj.getChild(0)
 
@@ -244,24 +221,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       selImg.scrollToView()
   }
 
-  function onLangsBtn(_obj)
-  {
+  function onLangsBtn(_obj) {
     ::g_chat_latest_threads.openChooseLangsMenu("top", this.scene.findObject("threads_search_langs_btn"))
   }
 
-  function onCategoriesBtn(_obj)
-  {
+  function onCategoriesBtn(_obj) {
     ::g_chat_categories.openChooseCategoriesMenu("top", this.scene.findObject("btn_categories_filter"))
   }
 
-  function updateRoomInList(room)
-  {
+  function updateRoomInList(room) {
     if (room && room.type == ::g_chat_room_type.THREAD)
       this.updateThreadInList(room.id)
   }
 
-  function updateThreadInList(id)
-  {
+  function updateThreadInList(id) {
     if (!this.isSceneActive())
       return this.markListChanged()
 
@@ -270,40 +243,33 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       threadInfo.updateInfoObj(this.scene.findObject("room_" + id), !::show_console_buttons)
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.backFunc)
       this.backFunc()
   }
 
-  function onEventChatRoomJoin(p)
-  {
+  function onEventChatRoomJoin(p) {
     this.updateRoomInList(getTblValue("room", p))
   }
 
-  function onEventChatRoomLeave(p)
-  {
+  function onEventChatRoomLeave(p) {
     this.updateRoomInList(getTblValue("room", p))
   }
 
-  function onEventChatFilterChanged(_p)
-  {
+  function onEventChatFilterChanged(_p) {
     this.markListChanged()
-    if (this.isSceneActive())
-    {
+    if (this.isSceneActive()) {
       //wait to apply all options before update scene.
       let cb = Callback(this.updateAll, this)
       this.guiScene.performDelayed(this, (@(cb) function() { cb() })(cb))
     }
   }
 
-  function onEventChatThreadSearchLangChanged(_p)
-  {
+  function onEventChatThreadSearchLangChanged(_p) {
     this.updateLangsButton()
   }
 
-  function onEventChatSearchCategoriesChanged(_p)
-  {
+  function onEventChatSearchCategoriesChanged(_p) {
     this.updateCategoriesButton()
   }
 }

@@ -1,9 +1,10 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-local cachedLoginData = persist("cachedLoginData", @() { use_tencent_login = null, use_dmm_login = null})
+local cachedLoginData = persist("cachedLoginData", @() { use_tencent_login = null, use_dmm_login = null })
 
 foreach (fn in [
                  "login.nut"

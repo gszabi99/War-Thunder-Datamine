@@ -1,20 +1,20 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
-let {compassWrap, generateCompassMarkSU145} = require("ilsCompasses.nut")
-let {IlsColor, IlsLineScale, BombCCIPMode, RocketMode, BombingMode, TvvMark,
- CannonMode, TargetPosValid, TargetPos, IlsPosSize, TimeBeforeBombRelease} = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, mpsToKnots, metrToFeet} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {lowerSolutionCue} = require("commonElements.nut")
-let {floor, abs, sin, round, atan2, PI} = require("%sqstd/math.nut")
-let {cvt} = require("dagor.math")
+let { compassWrap, generateCompassMarkSU145 } = require("ilsCompasses.nut")
+let { IlsColor, IlsLineScale, BombCCIPMode, RocketMode, BombingMode, TvvMark,
+ CannonMode, TargetPosValid, TargetPos, IlsPosSize, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
+let { baseLineWidth, mpsToKnots, metrToFeet } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { lowerSolutionCue } = require("commonElements.nut")
+let { floor, abs, sin, round, atan2, PI } = require("%sqstd/math.nut")
+let { cvt } = require("dagor.math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let {Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll, MaxOverload} = require("%rGui/planeState/planeFlyState.nut")
+let { Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
 let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/planeState/planeWeaponState.nut")
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
-let {rwrTargetsTriggers, rwrTargets} = require("%rGui/twsState.nut")
+let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let speed = @() {
@@ -119,7 +119,7 @@ let maxOverload = @() {
   ] : null
 }
 
-local localTime = @(){
+local localTime = @() {
   watch = IlsColor
   rendObj = ROBJ_TEXT
   size = SIZE_TO_CONTENT
@@ -157,7 +157,7 @@ let function pitch(width, height, generateFunc) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.05]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.1]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
       }
     }
   }
@@ -232,7 +232,7 @@ let groundReticle = @() {
   watch = [HasGndReticle, TargetPosValid]
   size = flex()
   children = HasGndReticle.value && TargetPosValid ? [
-    @(){
+    @() {
       watch = [RocketMode, CannonMode, BombCCIPMode]
       size = [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -306,11 +306,11 @@ let shellCount = @() {
 
 let flyDirHide = Computed(@() HasGndReticle.value && abs(TargetPos.value[0] - IlsPosSize[2] * 0.5) < IlsPosSize[2] * 0.05 && abs(TargetPos.value[1] - IlsPosSize[3] * 0.5) < IlsPosSize[3] * 0.05)
 let function aamReticle(width, height) {
-  return @(){
+  return @() {
     watch = isAAMMode
     size = flex()
     children = isAAMMode.value ? [
-      @(){
+      @() {
         watch = [IlsColor, AamIsReady]
         size = [pw(7), ph(7)]
         rendObj = ROBJ_VECTOR_CANVAS
@@ -336,7 +336,7 @@ let function aamReticle(width, height) {
       }
     ] :
     [
-      @(){
+      @() {
         watch = flyDirHide
         size = flex()
         children = !flyDirHide.value ? [
@@ -367,7 +367,7 @@ let function aamReticle(width, height) {
 }
 
 let function bombImpactLine(width, height) {
-  return @(){
+  return @() {
     watch = BombCCIPMode
     size = flex()
     children = BombCCIPMode.value ? [
@@ -414,8 +414,8 @@ let ccrpAimMark = @() {
   ] : null
 }
 
-let function ccrpBombLine(height){
-  return @(){
+let function ccrpBombLine(height) {
+  return @() {
     watch = [BombingMode, TargetPosValid]
     size = flex()
     children = BombingMode.value && TargetPosValid.value ? [
@@ -427,7 +427,7 @@ let function ccrpBombLine(height){
             translate = [TargetPos.value[0], 0]
           }
         }
-        children= [
+        children = [
           lowerSolutionCue(height, -5),
           {
             rendObj = ROBJ_SOLID
@@ -441,7 +441,7 @@ let function ccrpBombLine(height){
 }
 
 let TimeToRelease = Computed(@() TimeBeforeBombRelease.value < 100.0 ? round(TimeBeforeBombRelease.value * 10) : 999)
-let timeToReleaseBomb = @(){
+let timeToReleaseBomb = @() {
   watch = BombingMode
   pos = [pw(80), ph(90)]
   size = [pw(20), ph(5)]
@@ -474,7 +474,7 @@ let function mkRwrTarget(target, index) {
     children = {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(10) ,0]
+      pos = [pw(10), 0]
       color = IlsColor.value
       font = Fonts.hud
       fontSize = 40
@@ -552,7 +552,7 @@ let function SU145(width, height) {
       timeToReleaseBomb,
       rwrTargetsComponent,
       localTime,
-      @(){
+      @() {
         watch = GunMode
         size = flex()
         children = GunMode.value ? [

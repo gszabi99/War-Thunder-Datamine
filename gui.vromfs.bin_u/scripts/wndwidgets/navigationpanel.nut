@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -45,8 +46,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   // ==== Functions ====
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return {
       panelWidth        = this.panelWidth
       headerHeight      = this.headerHeight
@@ -59,32 +59,29 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.setNavItems(this.itemList || [])
   }
 
-  function showPanel(isVisible)
-  {
+  function showPanel(isVisible) {
     this.isPanelVisible = isVisible
     this.updateVisibility()
   }
 
-  function setNavItems(navItems)
-  {
+  function setNavItems(navItems) {
     let navListObj = this.scene.findObject(this.navListObjId)
     if (!checkObj(navListObj))
       return
 
     this.itemList = navItems
-    let view = {items = this.itemList.map(@(navItem, idx)
+    let view = { items = this.itemList.map(@(navItem, idx)
       navItem.__merge({
         id = $"nav_{idx.tostring()}"
         isSelected = idx == 0
         itemText = navItem?.text ?? navItem?.id ?? ""
         isCollapsable = navItem?.isCollapsable ?? false
       })
-    )}
+    ) }
 
     let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     this.guiScene.replaceContentFromText(navListObj, data, data.len(), this)
@@ -92,27 +89,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateVisibility()
   }
 
-  function getNavItems()
-  {
+  function getNavItems() {
     return this.itemList
   }
 
-  function setCurrentItem(item)
-  {
+  function setCurrentItem(item) {
     let itemIdx = this.itemList.indexof(item)
     if (itemIdx != null)
       this.setCurrentItemIdx(itemIdx)
   }
 
-  function setCurrentItemIdx(itemIdx)
-  {
+  function setCurrentItemIdx(itemIdx) {
     this.shouldCallCallback = false
     this.doNavigate(itemIdx)
     this.shouldCallCallback = true
   }
 
-  function doNavigate(itemIdx, isRelative = false)
-  {
+  function doNavigate(itemIdx, isRelative = false) {
     let navListObj = this.scene.findObject(this.navListObjId)
     if (!checkObj(navListObj))
       return false
@@ -132,14 +125,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.notifyNavChanged(itemIdx)
   }
 
-  function notifyNavChanged(itemIdx)
-  {
+  function notifyNavChanged(itemIdx) {
     if (this.shouldCallCallback && this.onSelectCb && itemIdx in this.itemList)
       this.onSelectCb(this.itemList[itemIdx])
   }
 
-  function updateVisibility()
-  {
+  function updateVisibility() {
     let isNavRequired = this.itemList.len() > 1
     this.showSceneBtn(this.panelObjId, isNavRequired && this.isPanelVisible)
     this.showSceneBtn(this.expandButtonObjId, isNavRequired && !this.isPanelVisible)
@@ -149,8 +140,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     })
   }
 
-  function onNavClick(_obj = null)
-  {
+  function onNavClick(_obj = null) {
     let navListObj = this.scene.findObject(this.navListObjId)
     if (!checkObj(navListObj))
       return false
@@ -160,8 +150,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.onClickCb(this.itemList[itemIdx])
   }
 
-  function onNavSelect(_obj = null)
-  {
+  function onNavSelect(_obj = null) {
     let navListObj = this.scene.findObject(this.navListObjId)
     if (!checkObj(navListObj))
       return false
@@ -169,22 +158,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.notifyNavChanged(navListObj.getValue())
   }
 
-  function onExpand(_obj = null)
-  {
+  function onExpand(_obj = null) {
     this.showPanel(true)
     if (this.shouldCallCallback && this.onCollapseCb)
       this.onCollapseCb(false)
   }
 
-  function onNavCollapse(_obj = null)
-  {
+  function onNavCollapse(_obj = null) {
     this.showPanel(false)
     if (this.shouldCallCallback && this.onCollapseCb)
       this.onCollapseCb(true)
   }
 
-  function onCollapse(obj)
-  {
+  function onCollapse(obj) {
     let itemObj = obj?.collapse_header ? obj : obj.getParent()
     let listObj = checkObj(itemObj) ? itemObj.getParent() : null
     if (!checkObj(listObj) || !itemObj?.collapse_header)
@@ -198,21 +184,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local needReselect = false
 
     local found = false
-    for (local i = 0; i < listLen; i++)
-    {
+    for (local i = 0; i < listLen; i++) {
       let child = listObj.getChild(i)
-      if (!found)
-      {
-        if (child?.collapsing == "yes")
-        {
+      if (!found) {
+        if (child?.collapsing == "yes") {
           child.collapsing = "no"
           child.collapsed  = isShow ? "no" : "yes"
           headerIdx = i
           found = true
         }
       }
-      else
-      {
+      else {
         if (child?.collapse_header)
           break
         child.show(isShow)
@@ -222,8 +204,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       }
     }
 
-    if (needReselect)
-    {
+    if (needReselect) {
       let indexes = []
       for (local i = selIdx + 1; i < listLen; i++)
         indexes.append(i)
@@ -231,11 +212,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         indexes.append(i)
 
       local newIdx = -1
-      foreach (idx in indexes)
-      {
+      foreach (idx in indexes) {
         let child = listObj.getChild(idx)
-        if (!child?.collapse_header != "yes"  && child.isEnabled())
-        {
+        if (!child?.collapse_header != "yes"  && child.isEnabled()) {
           newIdx = idx
           break
         }

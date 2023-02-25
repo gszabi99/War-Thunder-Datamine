@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -45,8 +46,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
   closeOnUnhover = true
 
-  static function open(v_parentObj, v_params)
-  {
+  static function open(v_parentObj, v_params) {
     if (!checkObj(v_parentObj)
       || v_parentObj.getFinalProp("refuseOpenHoverMenu") == "yes"
       || ::gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj))
@@ -59,31 +59,27 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
     ::handlersManager.loadHandler(::gui_handlers.ActionsList, params)
   }
 
-  function initCustomHandlerScene()
-  {
+  function initCustomHandlerScene() {
     this.parentObj = this.scene
     this.scene = this.guiScene.createElementByObject(this.parentObj, this.sceneBlkName, this.sceneBlkTag, this)
     return true
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.closeOnUnhover = this.params?.closeOnUnhover ?? this.closeOnUnhover
     this.scene.closeOnUnhover = this.closeOnUnhover ? "yes" : "no"
     this.fillList()
     this.updatePosition()
   }
 
-  function fillList()
-  {
+  function fillList() {
     if (!("actions" in this.params) || this.params.actions.len() <= 0)
       return this.goBack()
 
     let nest = this.scene.findObject("list_nest")
 
     local isIconed = false
-    foreach (_idx, action in this.params.actions)
-    {
+    foreach (_idx, action in this.params.actions) {
       let show = getTblValue("show", action, true)
       if (!("show" in action))
         action.show <- show
@@ -99,7 +95,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
     local maxWidth = 0
-    for(local i = 0; i < nest.childrenCount(); i++)
+    for (local i = 0; i < nest.childrenCount(); i++)
       maxWidth = max(maxWidth, nest.getChild(i).getSize()[0])
     nest.width = maxWidth
 
@@ -114,21 +110,18 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       })
   }
 
-  function updatePosition()
-  {
+  function updatePosition() {
     this.guiScene.applyPendingChanges(false)
     let defaultAlign = this.params?.orientation ?? ALIGN.TOP
     ::g_dagui_utils.setPopupMenuPosAndAlign(this.parentObj, defaultAlign, this.scene)
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (checkObj(this.scene))
       this.scene.close = "yes"
   }
 
-  function onAction(obj)
-  {
+  function onAction(obj) {
     this.close()
     let actionName = obj?.id ?? ""
     if (actionName == "")
@@ -140,9 +133,8 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
       this.guiScene.destroyElement(this.scene)
       local func = null
-      foreach(action in this.params.actions)
-        if (action.actionName == actionName)
-        {
+      foreach (action in this.params.actions)
+        if (action.actionName == actionName) {
           func = action.action
           break
         }
@@ -157,14 +149,12 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
     })(actionName))
   }
 
-  function close()
-  {
+  function close() {
     this.goBack()
     ::broadcastEvent("ClosedUnitItemMenu")
   }
 
-  function onFocus(obj)
-  {
+  function onFocus(obj) {
     this.guiScene.performDelayed(this, function () {
       if (!checkObj(this.scene) || this.scene?.close == "yes" || !checkObj(obj))
         return
@@ -173,26 +163,23 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       if (!currentObj)
         return this.close()
 
-      if (( !currentObj.isValid() || !currentObj.isFocused()) &&
+      if ((!currentObj.isValid() || !currentObj.isFocused()) &&
         !obj.isFocused() && !this.closeOnUnhover)
         this.close()
     })
   }
 
-  function onBtnClose()
-  {
+  function onBtnClose() {
     if (this.scene.isValid())
       ::move_mouse_on_obj(this.scene.getParent())
     this.close()
   }
 
-  function onActionsListDeactivate(_obj)
-  {
+  function onActionsListDeactivate(_obj) {
     this.params?.onDeactivateCb()
   }
 
-  static function removeActionsListFromObject(obj, fadeout = false)
-  {
+  static function removeActionsListFromObject(obj, fadeout = false) {
     let alObj = obj.findObject("actions_list")
     if (!checkObj(alObj))
       return
@@ -202,19 +189,16 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
       alObj.getScene().destroyElement(alObj)
   }
 
-  static function hasActionsListOnObject(obj)
-  {
+  static function hasActionsListOnObject(obj) {
     return checkObj(obj.findObject("actions_list"))
   }
 
-  static function switchActionsListVisibility(obj)
-  {
+  static function switchActionsListVisibility(obj) {
     if (!checkObj(obj))
       return false
 
-    if (obj?.refuseOpenHoverMenu)
-    {
-      obj.refuseOpenHoverMenu = obj.refuseOpenHoverMenu == "yes"? "no" : "yes"
+    if (obj?.refuseOpenHoverMenu) {
+      obj.refuseOpenHoverMenu = obj.refuseOpenHoverMenu == "yes" ? "no" : "yes"
       return true
     }
 

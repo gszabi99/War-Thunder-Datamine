@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 
 //you can use array in any path part - in result will be max discount from them.
-::getDiscountByPath <- function getDiscountByPath(path, blk = null, _idx = 0)
-{
+::getDiscountByPath <- function getDiscountByPath(path, blk = null, _idx = 0) {
   if (blk == null)
     blk = ::get_price_blk()
   let result = {
@@ -26,8 +26,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
   return result.maxDiscount
 }
 
-::get_max_weaponry_discount_by_unitName <- function get_max_weaponry_discount_by_unitName(unitName, discountTypes = null)
-{
+::get_max_weaponry_discount_by_unitName <- function get_max_weaponry_discount_by_unitName(unitName, discountTypes = null) {
   let unitTable = ::get_price_blk()?.aircrafts[unitName]
   if (!unitTable)
     return 0
@@ -57,27 +56,24 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 }
 
 //You can use array of airNames - in result will be max discount from them.
-::showAirDiscount <- function showAirDiscount(obj, airName, group=null, groupValue=null, fullUpdate=false)
-{
+::showAirDiscount <- function showAirDiscount(obj, airName, group = null, groupValue = null, fullUpdate = false) {
   let path = ["aircrafts", airName]
   if (group)
     path.append(group)
   if (groupValue)
     path.append(groupValue)
   let discount = ::getDiscountByPath(path)
-  ::showCurBonus(obj, discount, group? group : "buy", true, fullUpdate)
+  ::showCurBonus(obj, discount, group ? group : "buy", true, fullUpdate)
 }
 
-::showUnitDiscount <- function showUnitDiscount(obj, unitOrGroup)
-{
+::showUnitDiscount <- function showUnitDiscount(obj, unitOrGroup) {
   let discount = ::isUnitGroup(unitOrGroup)
     ? ::g_discount.getGroupDiscount(unitOrGroup.airsGroup)
     : ::g_discount.getUnitDiscount(unitOrGroup)
   ::showCurBonus(obj, discount, "buy")
 }
 
-::showDiscount <- function showDiscount(obj, name, group=null, groupValue=null, fullUpdate=false)
-{
+::showDiscount <- function showDiscount(obj, name, group = null, groupValue = null, fullUpdate = false) {
   let path = [name]
   if (group)
     path.append(group)

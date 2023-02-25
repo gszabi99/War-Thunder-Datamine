@@ -12,8 +12,9 @@ let
 
 let
   IDENT_TM = identity3x4()
-  IDENT_BBOX = BBox3(float3(), 1f)
   VERY_SMALL_NUMBER = 4e-19
+
+let [[ignore_heap_usage]] IDENT_BBOX = BBox3(float3(), 1f) // ignore heap usage because it is used c++ heap
 
 [generic]
 def deg_to_rad(val)
@@ -28,7 +29,7 @@ def square(x)
   return x * x
 
 
-[generic]
+[generic, alias_cmres]
 def approach(from, to : auto(algebraic); dt : float; viscosity : float)
   return viscosity < 1e-9 ? to : from + (1.0 - exp(-dt / viscosity)) * (to - from)
 
@@ -150,14 +151,23 @@ def scale_tm(scale : float) : float3x4
   return <- scaleTm
 
 [generic]
-def scale_tm(tm : float3x4; scale) : float3x4
-  return <- tm * scale_tm(scale)
-
-[generic]
 def pos_tm(pos : float3) : float3x4
   var res = IDENT_TM
   res[3] = pos
   return res
+
+[generic]
+def is_inside_tm(pos : float3; tm : float3x4) : bool
+  let p = pos - tm[3]
+  return (abs(dot(p, tm[0])) < dot(tm[0], tm[0]) &&
+          abs(dot(p, tm[1])) < dot(tm[1], tm[1]) &&
+          abs(dot(p, tm[2])) < dot(tm[2], tm[2]))
+
+
+[generic]
+def tm_volume(tm : float3x4) : float
+  return sqrt(length_sq(tm[0]) * length_sq(tm[1]) * length_sq(tm[2]))
+
 
 [generic]
 def cvt(val : float; from : float2; to : float2) : float

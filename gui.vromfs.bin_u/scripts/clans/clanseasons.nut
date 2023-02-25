@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
 
-global enum CLAN_SEASON_MEDAL_TYPE
-{
+global enum CLAN_SEASON_MEDAL_TYPE {
   PLACE
   TOP
   RATING
@@ -21,8 +21,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   _inited = false
 
 
-  function init()
-  {
+  function init() {
     if (this._inited)
       return
 
@@ -31,8 +30,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
-  function getRewardsBlk()
-  {
+  function getRewardsBlk() {
     if (!this.rewardsBlk)
       this.rewardsBlk = ::get_clan_rewards_blk()
 
@@ -45,23 +43,20 @@ global enum CLAN_SEASON_MEDAL_TYPE
   function onEventSignOut(_p) { this.rewardsBlk = null }
 
 
-  function isEnabled()
-  {
+  function isEnabled() {
     if (!hasFeature("ClanSeasons_3_0"))
       return false
     return getTblValue("seasonsEnable", this.getRewardsBlk(), true)
   }
 
 
-  function getTopPlayersRewarded()
-  {
+  function getTopPlayersRewarded() {
     let blk = this.getRewardsBlk()
     return get_blk_value_by_path(blk, "reward/topPlayersRewarded", 10)
   }
 
 
-  function hasPrizePlacesRewards(difficulty)
-  {
+  function hasPrizePlacesRewards(difficulty) {
     let subRewards = ::g_clan_seasons.getRewardsBlk()?.reward.subRewards
     if (!subRewards)
       return false
@@ -82,8 +77,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
    * @till - should pe greater than 1 and less than result of
    * @difficulty - item from ::g_difficulty
    */
-  function getFirstPrizePlacesRewards(till, difficulty)
-  {
+  function getFirstPrizePlacesRewards(till, difficulty) {
     let rewards = []
     let blk = this.getRewardsBlk()
     local currentPlace = 0
@@ -92,18 +86,15 @@ global enum CLAN_SEASON_MEDAL_TYPE
       return rewards
 
     let subRewardsCount = subRewards.blockCount()
-    for (local i = 0; i < subRewardsCount; i++)
-    {
+    for (local i = 0; i < subRewardsCount; i++) {
       let rewardBlock = subRewards.getBlock(i)
       let rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
       let maxPlaceForBlock = this.getMaxPlaceForBlock(rewardBlock.getBlockName())
-      if (this.isLeprRewards(rewardsData))
-      {
+      if (this.isLeprRewards(rewardsData)) {
         local place = currentPlace
-        for (; place < min(maxPlaceForBlock, till); ++place)
-        {
+        for (; place < min(maxPlaceForBlock, till); ++place) {
           let gold = this.getGoldRewardLerp(rewardsData, place + 1, currentPlace)
           let regalia = this.getRagalia(rewardsData, place + 1)
           let hasAnyRewards = gold > 0 || this.getRegaliaPrizes(regalia).len() > 0
@@ -116,11 +107,9 @@ global enum CLAN_SEASON_MEDAL_TYPE
         }
         currentPlace = place
       }
-      else
-      {
+      else {
         local place = currentPlace
-        for (; place < min(maxPlaceForBlock, till); ++place)
-        {
+        for (; place < min(maxPlaceForBlock, till); ++place) {
           let gold = getTblValue("place" + (place + 1) + "Gold", rewardsData, 0)
           let regalia = this.getRagalia(rewardsData, place + 1)
           let hasAnyRewards = gold > 0 || this.getRegaliaPrizes(regalia).len() > 0
@@ -141,8 +130,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
-  function getRegaliaPrizes(regalia)
-  {
+  function getRegaliaPrizes(regalia) {
     let prizes = []
     if (regalia == "")
       return prizes
@@ -150,8 +138,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     let pBlk = get_blk_value_by_path(blk, "reward/templates/" + regalia)
     if (!pBlk)
       return prizes
-    foreach (prizeType in [ "clanTag", "decal" ])
-    {
+    foreach (prizeType in [ "clanTag", "decal" ]) {
       let list = pBlk % prizeType
       if (list.len())
         prizes.append({
@@ -163,15 +150,13 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
-  function getUniquePrizesCounts(regalia)
-  {
+  function getUniquePrizesCounts(regalia) {
     let limits = {}
     let blk = this.getRewardsBlk()
     let lBlk = blk?["uiUniqueAwardCount"]
     if (!lBlk)
       return limits
-    for (local i = 0; i < lBlk.blockCount(); i++)
-    {
+    for (local i = 0; i < lBlk.blockCount(); i++) {
       let block = lBlk.getBlock(i)
       limits[block.getBlockName()] <- block?[regalia] ?? 0
     }
@@ -179,8 +164,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
-  function mergeTbl(destTbl, srcTbl, canCreateKeys = false)
-  {
+  function mergeTbl(destTbl, srcTbl, canCreateKeys = false) {
     foreach (i, v in srcTbl)
       if (canCreateKeys || (i in destTbl))
         destTbl[i] <- v
@@ -192,8 +176,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
    * Retrun empty array if can't get any rewards.
    * @difficulty - item from ::g_difficulty
    */
-  function getSeasonRewardsList(difficulty)
-  {
+  function getSeasonRewardsList(difficulty) {
     let rewards = []
     let blk = this.getRewardsBlk()
     let subRewards = blk?.reward.subRewards
@@ -215,8 +198,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     local prevRegalia = ""
     local prevPlace = 0
     let subRewardsCount = subRewards.blockCount()
-    for (local i = 0; i < subRewardsCount; i++)
-    {
+    for (local i = 0; i < subRewardsCount; i++) {
       let rewardBlock = subRewards.getBlock(i)
       let rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
@@ -224,19 +206,15 @@ global enum CLAN_SEASON_MEDAL_TYPE
       let maxPlaceForBlock = this.getMaxPlaceForBlock(rewardBlock.getBlockName())
       let isSinglePlaceReward = !this.isLeprRewards(rewardsData)
 
-      if (isSinglePlaceReward)
-      {
-        for (local place = 1; place <= maxPlaceForBlock; place++)
-        {
+      if (isSinglePlaceReward) {
+        for (local place = 1; place <= maxPlaceForBlock; place++) {
           let regalia = this.getRagalia(rewardsData, place)
           let isNewItem = regalia == "" || regalia != prevRegalia
-          if (isNewItem)
-          {
+          if (isNewItem) {
             let gold = rewardsData?["place" + place + "Gold"] ?? 0
 
             let hasAnyRewards = gold > 0 || this.getRegaliaPrizes(regalia).len() > 0
-            if (hasAnyRewards)
-            {
+            if (hasAnyRewards) {
               let reward = clone rewardTemplate
               this.mergeTbl(reward, {
                 rType   = CLAN_SEASON_MEDAL_TYPE.PLACE
@@ -247,8 +225,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
               rewards.append(reward)
             }
           }
-          else
-          {
+          else {
             let reward = rewards.len() ? rewards[rewards.len() - 1] : { place = 0 }
             let placeMin = reward.place
             this.mergeTbl(reward, {
@@ -262,8 +239,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
           prevPlace = place
         }
       }
-      else
-      {
+      else {
         let place = maxPlaceForBlock
         let regalia = this.getRagalia(rewardsData, place)
         let goldMin = rewardsData?["lerpRewardLowPlace"] ?? 0
@@ -271,8 +247,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
         let isGoldRange = goldMin != goldMax
 
         let hasAnyRewards = goldMin > 0 || this.getRegaliaPrizes(regalia).len() > 0
-        if (hasAnyRewards)
-        {
+        if (hasAnyRewards) {
           let reward = clone rewardTemplate
           this.mergeTbl(reward, {
             rType   = CLAN_SEASON_MEDAL_TYPE.TOP
@@ -291,8 +266,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
     }
 
     let rewardForRating = blk.reward % "rewardForRating"
-    foreach (rewardBlock in rewardForRating)
-    {
+    foreach (rewardBlock in rewardForRating) {
       let regalia = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!regalia)
         continue
@@ -312,8 +286,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   /**
    * Retrun string with current season name.
    */
-  function getSeasonName()
-  {
+  function getSeasonName() {
     let info = ::clan_get_current_season_info()
     let year = unixtime_to_utc_timetbl(info.startDay).year.tostring()
     let num  = ::get_roman_numeral(info.numberInYear + CLAN_SEASON_NUM_IN_YEAR_SHIFT)
@@ -321,14 +294,12 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
-  function getSeasonEndDate()
-  {
+  function getSeasonEndDate() {
     return time.buildDateTimeStr(::clan_get_current_season_info()?.rewardDay, false, false)
   }
 
 
-  function isLeprRewards(rewardsDataBlk)
-  {
+  function isLeprRewards(rewardsDataBlk) {
     return rewardsDataBlk?.tillPlace
   }
 
@@ -337,8 +308,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
    * Parse block name ("till<N> or "top<N>") for N.
    * Retrun 0 if blockName doesn't match pattern.
    */
-  function getMaxPlaceForBlock(blockName)
-  {
+  function getMaxPlaceForBlock(blockName) {
     foreach (prefix in ["top", "till"])
       if (::g_string.startsWith(blockName, prefix))
         return ::g_string.slice(blockName, prefix.len()).tointeger()
@@ -347,8 +317,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
-  function getRagalia(rewardsData, place = 0)
-  {
+  function getRagalia(rewardsData, place = 0) {
     let placeRegaliaId = "place" + place + "Regalia"
     if (place != 0 && (placeRegaliaId in rewardsData))
       return rewardsData[placeRegaliaId]
@@ -357,8 +326,7 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
-  function getGoldRewardLerp(rewardData, place, lerpStartPlace)
-  {
+  function getGoldRewardLerp(rewardData, place, lerpStartPlace) {
     if (rewardData.lerpRewardLowPlace == rewardData.lerpRewardHiPlace)
       return rewardData.lerpRewardHiPlace
 

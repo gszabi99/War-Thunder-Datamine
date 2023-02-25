@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { ceil, floor} = require("%sqstd/math.nut")
+let { ceil, floor } = require("%sqstd/math.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit,
   deathPenaltyMul, ctaDeathTicketPenalty } = require("%rGui/missionState.nut")
 let teamColors = require("%rGui/style/teamColors.nut")
@@ -9,7 +9,7 @@ let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let scoresForOneKill = Computed(@() deathPenaltyMul.value * ctaDeathTicketPenalty.value)
 let countKillsToWin = Computed(@() scoresForOneKill.value == 0
   ? 0
-  : ceil(scoreLimit.value/scoresForOneKill.value).tointeger()
+  : ceil(scoreLimit.value / scoresForOneKill.value).tointeger()
 )
 
 let localTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamB.value : ticketsTeamA.value)
@@ -20,7 +20,7 @@ let function getKillsCount(oppositeTeamTickets) {
     if (scoresForOneKill.value == 0)
       return 0
 
-    return floor((scoreLimit.value - oppositeTeamTickets.value)/scoresForOneKill.value).tointeger()
+    return floor((scoreLimit.value - oppositeTeamTickets.value) / scoresForOneKill.value).tointeger()
   })
 }
 
@@ -75,7 +75,7 @@ return {
         halign = ALIGN_CENTER
         padding = [hdpx(5), hdpx(7), hdpx(2), hdpx(7)]
         color = Color(42, 48, 55, 204)
-        children = @(){
+        children = @() {
           watch = countKillsToWin
           rendObj = ROBJ_TEXT
           font = Fonts.tiny_text_hud

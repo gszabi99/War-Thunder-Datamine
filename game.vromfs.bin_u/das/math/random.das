@@ -94,3 +94,7 @@ def rnd_dir3()
 
 def rnd_sign()
   return (grnd() & 1) == 0 ? 1.0 : -1.0
+
+[generic]
+def random_in_tm(tm : float3x4)
+  return tm[3] + tm[0] * rnd_float(-0.5, 0.5) + tm[1] * rnd_float(-0.5, 0.5) + tm[2] * rnd_float(-0.5, 0.5)

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -21,16 +22,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   collapsedInfoUnitLimit = null
   collapsedInfoTimer = -1
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.setUserData(this) //to not unload handler even when scene not loaded
     this.scene.findObject(this.blockId).setUserData(this)
 
     this.updateInfo()
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     if (this.isSceneLoaded)
       return null
 
@@ -56,22 +55,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return view
   }
 
-  function getRespTextByUnitLimit(unitLimit)
-  {
+  function getRespTextByUnitLimit(unitLimit) {
     return unitLimit ? unitLimit.getText() : ""
   }
 
-  function getFullUnitsText()
-  {
+  function getFullUnitsText() {
     let data = this.missionRules.getFullUnitLimitsData()
     let textsList = ::u.map(data.unitLimits, this.getRespTextByUnitLimit)
     textsList.insert(0, colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsAllyListHeaderLocId)))
 
-    if (this.missionRules.isEnemyLimitedUnitsVisible())
-    {
+    if (this.missionRules.isEnemyLimitedUnitsVisible()) {
       let enemyData = this.missionRules.getFullEnemyUnitLimitsData()
-      if (enemyData.len())
-      {
+      if (enemyData.len()) {
         let enemyTextsList = ::u.map(enemyData.unitLimits, this.getRespTextByUnitLimit)
         textsList.append("\n" + colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsEnemyListHeaderLocId)))
         textsList.extend(enemyTextsList)
@@ -81,8 +76,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return ::g_string.implode(textsList, "\n")
   }
 
-  function updateInfo(isJustSwitched = false)
-  {
+  function updateInfo(isJustSwitched = false) {
     if (!this.isSceneLoaded)
       return
 
@@ -92,12 +86,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.scene.findObject(this.blockId + "_text").setValue(this.getFullUnitsText())
   }
 
-  function updateCollapsedInfoByUnitLimit(unitLimit, needAnim = true)
-  {
+  function updateCollapsedInfoByUnitLimit(unitLimit, needAnim = true) {
     this.collapsedInfoUnitLimit = unitLimit
     let text = this.getRespTextByUnitLimit(unitLimit)
-    if (needAnim)
-    {
+    if (needAnim) {
       ::g_promo_view_utils.animSwitchCollapsedText(this.scene, this.blockId, text)
       return
     }
@@ -107,8 +99,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       obj.setValue(text)
   }
 
-  function setNewCollapsedInfo(needAnim = true)
-  {
+  function setNewCollapsedInfo(needAnim = true) {
     let data = this.missionRules.getFullUnitLimitsData()
     local prevIdx = -1
     if (this.collapsedInfoUnitLimit)
@@ -118,8 +109,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.collapsedInfoTimer = this.collapsedInfoRefreshDelay
   }
 
-  function updateCollapsedInfoText(isJustSwitched = false)
-  {
+  function updateCollapsedInfoText(isJustSwitched = false) {
     if (isJustSwitched || !this.collapsedInfoUnitLimit)
       return this.setNewCollapsedInfo(!isJustSwitched)
 
@@ -131,15 +121,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.setNewCollapsedInfo()
   }
 
-  function onToggleItem(_obj)
-  {
+  function onToggleItem(_obj) {
     this.isCollapsed = !this.isCollapsed
     this.scene.findObject(this.blockId).collapsed = this.isCollapsed ? "yes" : "no"
     this.updateInfo(true)
   }
 
-  function onUpdate(_obj, dt)
-  {
+  function onUpdate(_obj, dt) {
     if (!this.isCollapsed)
       return
 
@@ -148,13 +136,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.setNewCollapsedInfo()
   }
 
-  function onEventMissionCustomStateChanged(_p)
-  {
+  function onEventMissionCustomStateChanged(_p) {
     this.doWhenActiveOnce("updateInfo")
   }
 
-  function onEventMyCustomStateChanged(_p)
-  {
+  function onEventMyCustomStateChanged(_p) {
     this.doWhenActiveOnce("updateInfo")
   }
 }

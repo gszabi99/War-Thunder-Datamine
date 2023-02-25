@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -24,20 +25,18 @@ enum WARBOND_SHOP_LEVEL_STATUS {
 
   needShowProgressBarInPromo = false
 
-  function getSpecialMedalView(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false)
-  {
+  function getSpecialMedalView(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false) {
     let medalsCount = this.getWarbondMedalsCount(wbClass)
     return {
       posX = 0
-      image = wbClass? wbClass.getMedalIcon() : null
-      countText = needShowZero && reqAwardMedals==0? reqAwardMedals.tostring() : reqAwardMedals
+      image = wbClass ? wbClass.getMedalIcon() : null
+      countText = needShowZero && reqAwardMedals == 0 ? reqAwardMedals.tostring() : reqAwardMedals
       inactive = medalsCount < reqAwardMedals
       title = hasName ? loc("mainmenu/battleTasks/special/medals") : null
     }
   }
 
-  function getSpecialMedalInProgressView(wbClass)
-  {
+  function getSpecialMedalInProgressView(wbClass) {
     let leftTasks = wbClass.leftForAnotherMedalTasks()
     return {
       sector = 360 - (360 * leftTasks.tofloat() / wbClass.medalForSpecialTasks)
@@ -65,8 +64,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   getBattlePassStageByShopLevel = @(level) warbondsShopLevelByStages.value.findindex(
     @(l) level == l) ?? -1
 
-  function getLevelItemTooltipKey(status)
-  {
+  function getLevelItemTooltipKey(status) {
     if (!hasFeature("BattlePass"))
       return "warbonds/shop/level/" + status + "/tooltip"
 
@@ -78,8 +76,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
 
 }
 
-::g_warbonds_view.createProgressBox <- function createProgressBox(wbClass, placeObj, handler, needForceHide = false)
-{
+::g_warbonds_view.createProgressBox <- function createProgressBox(wbClass, placeObj, handler, needForceHide = false) {
   if (!checkObj(placeObj))
     return
 
@@ -102,8 +99,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   this.updateProgressBar(wbClass, nest)
 }
 
-::g_warbonds_view.getProgressBoxMarkUp <- function getProgressBoxMarkUp()
-{
+::g_warbonds_view.getProgressBoxMarkUp <- function getProgressBoxMarkUp() {
   return ::handyman.renderCached("%gui/commonParts/progressBarModern.tpl", {
     id = this.progressBarId
     addId = this.progressBarAddId
@@ -111,8 +107,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   })
 }
 
-::g_warbonds_view.getLevelItemsMarkUp <- function getLevelItemsMarkUp(wbClass)
-{
+::g_warbonds_view.getLevelItemsMarkUp <- function getLevelItemsMarkUp(wbClass) {
   let view = { level = [] }
   foreach (level, _reqTasks in wbClass.levelsArray)
     view.level.append(this.getLevelItemData(wbClass, level))
@@ -120,8 +115,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   return ::handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", view)
 }
 
-::g_warbonds_view.getCurrentLevelItemMarkUp <- function getCurrentLevelItemMarkUp(wbClass, forcePosX = "0")
-{
+::g_warbonds_view.getCurrentLevelItemMarkUp <- function getCurrentLevelItemMarkUp(wbClass, forcePosX = "0") {
   let curLevel = wbClass.getCurrentShopLevel()
   if (curLevel < 0)
     return null
@@ -129,21 +123,18 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   return this.getLevelItemMarkUp(wbClass, curLevel, forcePosX)
 }
 
-::g_warbonds_view.getLevelItemMarkUp <- function getLevelItemMarkUp(wbClass, level, forcePosX = null, params = {})
-{
+::g_warbonds_view.getLevelItemMarkUp <- function getLevelItemMarkUp(wbClass, level, forcePosX = null, params = {}) {
   let levelData = this.getLevelItemData(wbClass, level, forcePosX, params)
-  return ::handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", { level = [levelData]} )
+  return ::handyman.renderCached("%gui/items/warbondShopLevelItem.tpl", { level = [levelData] })
 }
 
-::g_warbonds_view.getLevelItemData <- function getLevelItemData(wbClass, level, forcePosX = null, params = {})
-{
+::g_warbonds_view.getLevelItemData <- function getLevelItemData(wbClass, level, forcePosX = null, params = {}) {
   let status = this.getLevelStatus(wbClass, level)
   let reqTasks = hasFeature("BattlePass") ? this.getBattlePassStageByShopLevel(level)
     : wbClass.getShopLevelTasks(level)
 
   local posX = forcePosX
-  if (!posX)
-  {
+  if (!posX) {
     let maxLevel = wbClass.levelsArray.len() - 1
     posX = level / maxLevel.tofloat() + "pw - 50%w"
   }
@@ -154,15 +145,14 @@ enum WARBOND_SHOP_LEVEL_STATUS {
     levelIcon = wbClass.getLevelIcon()
     levelIconOverlay = wbClass.getLevelIconOverlay()
     text = lvlText
-    tooltip = loc(this.getLevelItemTooltipKey(status), {level = lvlText, tasksNum = reqTasks})
+    tooltip = loc(this.getLevelItemTooltipKey(status), { level = lvlText, tasksNum = reqTasks })
     status = status
     posX = posX
     hasOverlayIcon = true
   }.__merge(params)
 }
 
-::g_warbonds_view.getLevelStatus <- function getLevelStatus(wbClass, level)
-{
+::g_warbonds_view.getLevelStatus <- function getLevelStatus(wbClass, level) {
   let curShopLevel = wbClass.getCurrentShopLevel()
   if (curShopLevel == level)
     return WARBOND_SHOP_LEVEL_STATUS.CURRENT
@@ -173,8 +163,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   return WARBOND_SHOP_LEVEL_STATUS.RECEIVED
 }
 
-::g_warbonds_view.calculateProgressBarValue <- function calculateProgressBarValue(wbClass, level, steps, curTasksDone)
-{
+::g_warbonds_view.calculateProgressBarValue <- function calculateProgressBarValue(wbClass, level, steps, curTasksDone) {
   if (wbClass.isMaxLevelReached() && steps == 1)
     level -= 1
 
@@ -184,11 +173,10 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   let progressPeerLevel = this.maxProgressBarValue.tofloat() / steps
   let iLerp = stdMath.lerp(levelTasks, nextLevelTasks, 0, progressPeerLevel, curTasksDone)
 
-  return steps == 1? iLerp : (progressPeerLevel * level + iLerp)
+  return steps == 1 ? iLerp : (progressPeerLevel * level + iLerp)
 }
 
-::g_warbonds_view.updateProgressBar <- function updateProgressBar(wbClass, placeObj, isForSingleStep = false)
-{
+::g_warbonds_view.updateProgressBar <- function updateProgressBar(wbClass, placeObj, isForSingleStep = false) {
   if (!wbClass)
     return
 
@@ -196,7 +184,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   if (!checkObj(progressBoxObj))
     return
 
-  let steps = isForSingleStep? 1 : wbClass.levelsArray.len() - 1
+  let steps = isForSingleStep ? 1 : wbClass.levelsArray.len() - 1
   let level = wbClass.getCurrentShopLevel()
   let tasks = wbClass.getCurrentShopLevelTasks()
 
@@ -212,15 +200,13 @@ enum WARBOND_SHOP_LEVEL_STATUS {
     progressBoxObj.tooltip = this.getCurrentShopProgressBarText(wbClass)
 
   let addProgressBarObj = progressBoxObj.findObject(this.progressBarAddId)
-  if (checkObj(addProgressBarObj))
-  {
+  if (checkObj(addProgressBarObj)) {
     let addBarValue = this.calculateProgressBarValue(wbClass, level, steps, tasks)
     addProgressBarObj.setValue(addBarValue)
   }
 }
 
-::g_warbonds_view.getCurrentShopProgressBarText <- function getCurrentShopProgressBarText(wbClass)
-{
+::g_warbonds_view.getCurrentShopProgressBarText <- function getCurrentShopProgressBarText(wbClass) {
   if (!this.showOrdinaryProgress(wbClass) || wbClass.levelsArray.len() == 0)
     return ""
 
@@ -230,16 +216,14 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   )
 }
 
-::g_warbonds_view.getShopProgressBarText <- function getShopProgressBarText(curTasks, nextLevelTasks)
-{
+::g_warbonds_view.getShopProgressBarText <- function getShopProgressBarText(curTasks, nextLevelTasks) {
   return loc("mainmenu/battleTasks/progressBarTooltip", {
     tasksNum = curTasks
     nextLevelTasksNum = nextLevelTasks
   })
 }
 
-::g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgress(wbClass, placeObj, handler, addCanBuySpecialTasks = false)
-{
+::g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgress(wbClass, placeObj, handler, addCanBuySpecialTasks = false) {
   if (!checkObj(placeObj))
     return
 
@@ -260,8 +244,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   nest.getScene().replaceContentFromText(nest, data, data.len(), handler)
 }
 
-::g_warbonds_view.getSpecialMedalsTooltip <- function getSpecialMedalsTooltip(wbClass)
-{
+::g_warbonds_view.getSpecialMedalsTooltip <- function getSpecialMedalsTooltip(wbClass) {
   return loc("mainmenu/battleTasks/special/medals/tooltip",
   {
     medals = this.getWarbondMedalsCount(wbClass),
@@ -269,8 +252,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   })
 }
 
-::g_warbonds_view.getSpecialMedalsMarkUp <- function getSpecialMedalsMarkUp(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false, needShowInProgress = false)
-{
+::g_warbonds_view.getSpecialMedalsMarkUp <- function getSpecialMedalsMarkUp(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false, needShowInProgress = false) {
   let view = {
     medal = [this.getSpecialMedalView(wbClass, reqAwardMedals, needShowZero, hasName)]
     tooltip = this.getSpecialMedalsTooltip(wbClass)
@@ -282,23 +264,19 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   return ::handyman.renderCached("%gui/items/warbondSpecialMedal.tpl", view)
 }
 
-::g_warbonds_view.getWarbondMedalsCount <- function getWarbondMedalsCount(wbClass)
-{
-  return wbClass? wbClass.getCurrentMedalsCount() : 0
+::g_warbonds_view.getWarbondMedalsCount <- function getWarbondMedalsCount(wbClass) {
+  return wbClass ? wbClass.getCurrentMedalsCount() : 0
 }
 
-::g_warbonds_view.showOrdinaryProgress <- function showOrdinaryProgress(wbClass)
-{
+::g_warbonds_view.showOrdinaryProgress <- function showOrdinaryProgress(wbClass) {
   return wbClass && wbClass.haveAnyOrdinaryRequirements()
 }
 
-::g_warbonds_view.showSpecialProgress <- function showSpecialProgress(wbClass)
-{
+::g_warbonds_view.showSpecialProgress <- function showSpecialProgress(wbClass) {
   return wbClass && wbClass.haveAnySpecialRequirements()
 }
 
-::g_warbonds_view.resetShowProgressBarFlag <- function resetShowProgressBarFlag()
-{
+::g_warbonds_view.resetShowProgressBarFlag <- function resetShowProgressBarFlag() {
   if (!this.needShowProgressBarInPromo)
     return
 

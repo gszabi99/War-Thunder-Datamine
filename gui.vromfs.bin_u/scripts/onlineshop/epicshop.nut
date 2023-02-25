@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -18,8 +19,8 @@ let sheetsArray = [
     getSeenId = @() "##epic_item_sheet_gold"
     mediaType = "gold"
     sortParams = [
-      {param = "price", asc = false}
-      {param = "price", asc = true}
+      { param = "price", asc = false }
+      { param = "price", asc = true }
     ]
     sortSubParam = "name"
     contentTypes = ["eagles"]
@@ -30,18 +31,17 @@ let sheetsArray = [
     getSeenId = @() "##epic_item_sheet_dlc"
     mediaType = "dlc"
     sortParams = [
-      {param = "price", asc = false}
-      {param = "price", asc = true}
-      {param = "isBought", asc = false}
-      {param = "isBought", asc = true}
+      { param = "price", asc = false }
+      { param = "price", asc = true }
+      { param = "isBought", asc = false }
+      { param = "isBought", asc = true }
     ]
     sortSubParam = "name"
     contentTypes = [null, ""]
   }
 ]
 
-foreach (sh in sheetsArray)
-{
+foreach (sh in sheetsArray) {
   local sheet = sh
   seenList.setSubListGetter(sheet.getSeenId(), @() (
     shopData.catalog.value?[sheet.mediaType] ?? []).filter(@(item) !item.canBeUnseen()).map(@(item) item.getSeenId())
@@ -70,12 +70,12 @@ foreach (sh in sheetsArray)
 }
 
 let openIngameStore = kwarg(
-  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown") {
+  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", _unitName = "") {
     if (!isInArray(chapter, [null, "", "eagles"]))
       return false
 
     if (shopData.canUseIngameShop()) {
-      statsd.send_counter("sq.ingame_store.open", 1, {origin = statsdMetric})
+      statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
       let item = shopData.getShopItem(curItemId)
       shopData.requestData(@() ::handlersManager.loadHandler(::gui_handlers.EpicShop, {
         itemsCatalog = shopData.catalog.value
@@ -98,10 +98,10 @@ let openIngameStore = kwarg(
 
 return shopData.__merge({
   openIngameStore = openIngameStore
-  getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
-  getEntStoreIcon = @() shopData.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
+  getEntStoreLocId = @() shopData.canUseIngameShop() ? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
+  getEntStoreIcon = @() shopData.canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
   isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
   getEntStoreUnseenIcon = @() seenEnumId
   needEntStoreDiscountIcon = true
-  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({statsdMetric = "topmenu"})
+  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
 })

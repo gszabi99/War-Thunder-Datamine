@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { isXBoxPlayerName,
@@ -29,15 +31,13 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil, floor } = require("math")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
-::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
-{
+::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
     return
-  ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, {info = playerInfo})
+  ::gui_start_modal_wnd(::gui_handlers.UserCardHandler, { info = playerInfo })
 }
 
-::gui_handlers.UserCardHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.UserCardHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/userCard.blk"
 
@@ -79,13 +79,12 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
   ribbonsRowLength = 3
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
       return this.goBack()
 
     this.player = {}
-    foreach(pName in ["name", "uid", "id"])
+    foreach (pName in ["name", "uid", "id"])
       if (pName in this.info && this.info[pName] != "")
         this.player[pName] <- this.info[pName]
     if (!("name" in this.player))
@@ -100,16 +99,14 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.taskId = -1
 
     local isMyPage = false
-    if ("uid" in this.player)
-    {
+    if ("uid" in this.player) {
       this.taskId = ::req_player_public_statinfo(this.player.uid)
       if (::my_user_id_str == this.player.uid)
         isMyPage = true
       else
         externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
     }
-    else if ("id" in this.player)
-    {
+    else if ("id" in this.player) {
       this.taskId = ::req_player_public_statinfo_by_player_id(this.player.id)
       let selfPlayerId = getTblValue("uid", ::get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == this.player.id)
@@ -117,8 +114,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
       else
         externalIDsService.reqPlayerExternalIDsByPlayerId(this.player.id)
     }
-    else
-    {
+    else {
       this.searchPlayerByNick = true
       this.taskId = ::find_nicks_by_prefix(this.player.name, 1, false)
     }
@@ -138,11 +134,9 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.updateButtons()
   }
 
-  function initTabs()
-  {
+  function initTabs() {
     let view = { tabs = [] }
-    foreach(idx, sheet in this.sheetsList)
-    {
+    foreach (idx, sheet in this.sheetsList) {
       view.tabs.append({
         id = sheet
         tabImage = format(this.tabImageNameTemplate, sheet.tolower())
@@ -158,34 +152,29 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     sheetsListObj.show(false)
   }
 
-  function initStatsParams()
-  {
+  function initStatsParams() {
     this.curMode = ::get_current_wnd_difficulty()
     this.statsType = ::loadLocalByAccount("leaderboards_type", ETTI_VALUE_INHISORY)
   }
 
-  function goBack()
-  {
+  function goBack() {
     base.goBack()
   }
 
-  function notFoundPlayerMsg()
-  {
-    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = ("name" in this.player)? this.player.name : "" }),
+  function notFoundPlayerMsg() {
+    this.msgBox("incorrect_user", loc("chat/error/item-not-found", { nick = ("name" in this.player) ? this.player.name : "" }),
         [
           ["ok", function() { this.goBack() } ]
         ], "ok")
   }
 
-  function onSearchResult()
-  {
+  function onSearchResult() {
     this.searchPlayerByNick = false
 
-    local searchRes = ::DataBlock()
+    local searchRes = DataBlock()
     searchRes = ::get_nicks_find_result_blk()
-    foreach(uid, nick in searchRes)
-      if (nick == this.player.name)
-      {
+    foreach (uid, nick in searchRes)
+      if (nick == this.player.name) {
         this.player.uid <- uid
         this.taskId = ::req_player_public_statinfo(this.player.uid)
         if (this.taskId < 0)
@@ -196,19 +185,17 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     return this.notFoundPlayerMsg()
   }
 
-  function tryFillUserStats()
-  {
+  function tryFillUserStats() {
     if (this.searchPlayerByNick)
       return this.onSearchResult()
 
     if (!checkObj(this.scene))
       return;
 
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     ::get_player_public_stats(blk)
 
-    if (!blk?.nick || blk.nick == "") //!!FIX ME: Check incorrect user by no uid in answer.
-    {
+    if (!blk?.nick || blk.nick == "") { //!!FIX ME: Check incorrect user by no uid in answer.
       this.msgBox("user_not_played", loc("msg/player_not_played_our_game"),
         [
           ["ok", function() { this.goBack() } ]
@@ -227,14 +214,11 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.fillLeaderboard()
   }
 
-  function showSheetDiv(name)
-  {
-    foreach(div in ["profile", "stats"])
-    {
+  function showSheetDiv(name) {
+    foreach (div in ["profile", "stats"]) {
       let show = div == name
       let divObj = this.scene.findObject(div + "-container")
-      if (checkObj(divObj))
-      {
+      if (checkObj(divObj)) {
         divObj.show(show)
         if (show)
           this.updateDifficultySwitch(divObj)
@@ -242,26 +226,22 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     }
   }
 
-  function onSheetChange(_obj)
-  {
+  function onSheetChange(_obj) {
     if (!this.infoReady)
       return
 
-    if (this.getCurSheet() == "Statistics")
-    {
+    if (this.getCurSheet() == "Statistics") {
       this.showSheetDiv("stats")
       this.fillStatistics()
     }
-    else
-    {
+    else {
       this.showSheetDiv("profile")
       this.fillProfile()
     }
     this.updateButtons()
   }
 
-  function fillProfile()
-  {
+  function fillProfile() {
     if (!checkObj(this.scene))
       return
 
@@ -275,10 +255,8 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.scene.findObject("profile_loading").show(false)
   }
 
-  function fillTitleName(name, setEmpty = true)
-  {
-    if(name == "")
-    {
+  function fillTitleName(name, setEmpty = true) {
+    if (name == "") {
       if (!setEmpty)
         return
 
@@ -288,8 +266,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.scene.findObject("profile-currentUser-title")["inactive"] = this.isOwnStats ? "no" : "yes"
   }
 
-  function onProfileStatsModeChange(obj)
-  {
+  function onProfileStatsModeChange(obj) {
     if (!checkObj(this.scene))
       return
     let value = obj.getValue()
@@ -300,13 +277,11 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     fillProfileSummary(this.scene.findObject("stats_table"), this.player.summary, this.curMode)
   }
 
-  function onEventContactsGroupUpdate(_p)
-  {
+  function onEventContactsGroupUpdate(_p) {
     this.updateButtons()
   }
 
-  function onEventUpdateExternalsIDs(params)
-  {
+  function onEventUpdateExternalsIDs(params) {
     if (!(params?.externalIds))
       return
 
@@ -317,19 +292,16 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.updateExternalIdsData(params.externalIds, isMe)
   }
 
-  function updateExternalIdsData(externalIdsData, isMe)
-  {
+  function updateExternalIdsData(externalIdsData, isMe) {
     this.curPlayerExternalIds = externalIdsData
 
     this.fillAdditionalName(this.curPlayerExternalIds?.steamName ?? "", "steamName")
-    this.fillAdditionalName(this.curPlayerExternalIds?.facebookName ?? "", "facebookName")
 
     this.showSceneBtn("btn_xbox_profile", isPlatformXboxOne && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "")
     this.showSceneBtn("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (this.curPlayerExternalIds?.psnId ?? "") != "")
   }
 
-  function fillAdditionalName(name, link)
-  {
+  function fillAdditionalName(name, link) {
     if (!checkObj(this.scene))
       return
 
@@ -340,14 +312,12 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : loc("profile/" + link)}{name}")
   }
 
-  function fillClanInfo(playerData)
-  {
+  function fillClanInfo(playerData) {
     if (!hasFeature("Clans"))
       return
 
     let clanTagObj = this.scene.findObject("profile-clanTag");
-    if (clanTagObj)
-    {
+    if (clanTagObj) {
       let clanType = ::g_clan_type.getTypeByCode(playerData.clanType)
       let text = ::checkClanTagForDirtyWords(playerData.clanTag);
       clanTagObj.setValue(colorize(clanType.color, text));
@@ -355,8 +325,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     }
   }
 
-  function fillShortCountryStats(profile)
-  {
+  function fillShortCountryStats(profile) {
     let countryStatsNest = this.scene.findObject("country_stats_nest")
     if (!checkObj(countryStatsNest))
       return
@@ -374,13 +343,11 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.guiScene.replaceContentFromText(countryStatsNest, blk, blk.len(), this)
   }
 
-  function updateCurrentStatsMode(value)
-  {
+  function updateCurrentStatsMode(value) {
     this.statsMode = ::g_difficulty.getDifficultyByDiffCode(value).egdLowercaseName
   }
 
-  function updateDifficultySwitch(parentObj)
-  {
+  function updateDifficultySwitch(parentObj) {
     if (!checkObj(parentObj))
       return
 
@@ -395,8 +362,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     switchObj.setValue(clamp(this.curMode, 0, childrenCount - 1))
   }
 
-  function onStatsModeChange(obj)
-  {
+  function onStatsModeChange(obj) {
     if (!checkObj(obj))
       return
 
@@ -410,26 +376,21 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.fillAirStats()
   }
 
-  function fillAwardsBlock(pl)
-  {
+  function fillAwardsBlock(pl) {
     if (hasFeature("ProfileMedals"))
       this.fillMedalsBlock(pl)
     else // Tencent
       this.fillTitlesBlock(pl)
   }
 
-  function fillMedalsBlock(pl)
-  {
+  function fillMedalsBlock(pl) {
     local curCountryId = profileCountrySq.value
     local maxMedals = 0
-    if (!this.isOwnStats)
-    {
+    if (!this.isOwnStats) {
       maxMedals = pl.countryStats[curCountryId].medalsCount
-      foreach(_idx, countryId in shopCountriesList)
-      {
+      foreach (_idx, countryId in shopCountriesList) {
         let medalsCount = pl.countryStats[countryId].medalsCount
-        if (maxMedals < medalsCount)
-        {
+        if (maxMedals < medalsCount) {
           curCountryId = countryId
           maxMedals = medalsCount
         }
@@ -440,8 +401,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     local curValue = 0
     let view = { items = [] }
     let countFmt = "text { pos:t='pw/2-w/2, ph+@blockInterval'; position:t='absolute'; text:t='%d' }"
-    foreach(idx, countryId in shopCountriesList)
-    {
+    foreach (idx, countryId in shopCountriesList) {
       view.items.append({
         id = countryId
         image = ::get_country_icon(countryId)
@@ -459,8 +419,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     countriesObj.setValue(curValue)
   }
 
-  function onMedalsCountrySelect(obj)
-  {
+  function onMedalsCountrySelect(obj) {
     let nestObj = this.scene.findObject("medals_nest")
     if (!checkObj(obj) || !checkObj(nestObj))
       return
@@ -481,8 +440,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
   }
 
-  function getRibbonsView(medalsList)
-  {
+  function getRibbonsView(medalsList) {
     return medalsList.len() > 0 ? {
       flowAlign = medalsList.len() > this.ribbonsRowLength ? "center" : "left"
       items = medalsList.map((@(id) {
@@ -492,8 +450,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     } : null
   }
 
-  function getMedalsView(medalsList)
-  {
+  function getMedalsView(medalsList) {
     return medalsList.len() > 0 ? {
       items = medalsList.map((@(id) {
         tag = "imgUsercardMedal"
@@ -502,8 +459,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     } : null
   }
 
-  function getBaseConfigMedal(id)
-  {
+  function getBaseConfigMedal(id) {
     return {
       id = id
       unlocked = true
@@ -511,14 +467,12 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     }
   }
 
-  function fillTitlesBlock(pl)
-  {
+  function fillTitlesBlock(pl) {
     this.showSceneBtn("medals_block", false)
     this.showSceneBtn("titles_block", true)
 
     let titles = []
-    foreach (id in pl.titles)
-    {
+    foreach (id in pl.titles) {
       let titleUnlock = ::g_unlocks.getUnlockById(id)
       if (!titleUnlock || titleUnlock?.hidden)
         continue
@@ -541,8 +495,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     local markup = ""
     let cols = 2
     let rows = ceil(titlesTotal * 1.0 / cols)
-    for (local r = 0; r < rows; r++)
-    {
+    for (local r = 0; r < rows; r++) {
       let rowData = []
       for (local c = 0; c < cols; c++)
         rowData.append(titles?[rows * c + r] ?? {})
@@ -552,21 +505,19 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.guiScene.replaceContentFromText(this.scene.findObject("titles_table"), markup, markup.len(), this)
   }
 
-  function getPlayerStats()
-  {
+  function getPlayerStats() {
     return this.player
   }
 
-  function onStatsTypeChange(obj)
-  {
-    if (!obj) return
-    this.statsType = obj.getValue()? ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL
+  function onStatsTypeChange(obj) {
+    if (!obj)
+      return
+    this.statsType = obj.getValue() ? ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL
     ::saveLocalByAccount("leaderboards_type", this.statsType)
     this.fillLeaderboard()
   }
 
-  function onLbModeSelect(obj)
-  {
+  function onLbModeSelect(obj) {
     if (!checkObj(obj) || this.lbModesList == null)
       return
 
@@ -575,15 +526,13 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
       return
 
     this.lbMode = newLbMode
-    this.guiScene.performDelayed(this, function()
-    {
+    this.guiScene.performDelayed(this, function() {
       if (this.isValid())
         this.fillLeaderboard()
     })
   }
 
-  function fillStatistics()
-  {
+  function fillStatistics() {
     if (!checkObj(this.scene))
       return
 
@@ -591,8 +540,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.fillAirStats()
   }
 
-  function fillAirStats()
-  {
+  function fillAirStats() {
     if (!checkObj(this.scene))
       return
 
@@ -602,16 +550,14 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.fillAirStatsScene(this.player.userstat)
   }
 
-  function initAirStats()
-  {
+  function initAirStats() {
     this.countryStats = []
-    foreach(country in shopCountriesList)
+    foreach (country in shopCountriesList)
       this.countryStats.append(country)
     this.initAirStatsScene(this.player.userstat)
   }
 
-  function initAirStatsScene(_airStats)
-  {
+  function initAirStatsScene(_airStats) {
     let sObj = this.scene.findObject("stats-container")
 
     sObj.findObject("stats_loading").show(false)
@@ -620,13 +566,11 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     local selDiff = null
     local selIdx = -1
     let view = { items = [] }
-    foreach(diff in ::g_difficulty.types)
-    {
+    foreach (diff in ::g_difficulty.types) {
       if (!diff.isAvailable())
         continue
       view.items.append({ text = diff.getLocName() })
-      if (!selDiff || this.statsMode == diff.egdLowercaseName)
-      {
+      if (!selDiff || this.statsMode == diff.egdLowercaseName) {
         selDiff = diff
         selIdx = view.items.len() - 1
       }
@@ -652,13 +596,11 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.fillAirStats()
   }
 
-  function fillUnitListCheckBoxes()
-  {
+  function fillUnitListCheckBoxes() {
     this.availableUTypes = {}
     this.unitStats = []
 
-    foreach(unitType in unitTypes.types)
-    {
+    foreach (unitType in unitTypes.types) {
       if (!unitType.isAvailable())
         continue
 
@@ -672,8 +614,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     }
   }
 
-  function fillCountriesCheckBoxes()
-  {
+  function fillCountriesCheckBoxes() {
     this.availableCountries = {}
     foreach (idx, inst in shopCountriesList)
       this.availableCountries[inst] <- {
@@ -687,16 +628,14 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
       this.countryStats = [profileCountrySq.value]
   }
 
-  function getFiltersView()
-  {
+  function getFiltersView() {
     let res = []
-    foreach (tName in ["country", "unit"])
-    {
+    foreach (tName in ["country", "unit"]) {
       let isUnitType = tName == "unit"
       let selectedArr = this[$"{tName}Stats"]
       let referenceArr = isUnitType ? this.availableUTypes : this.availableCountries
-      let view = {checkbox = []}
-      foreach(idx, inst in referenceArr)
+      let view = { checkbox = [] }
+      foreach (idx, inst in referenceArr)
         view.checkbox.append({
           id = inst.id
           idx = inst.idx
@@ -705,22 +644,20 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
           value = !isUnitType && isInArray(idx, selectedArr)
         })
 
-      view.checkbox.sort(@(a,b) a.idx <=> b.idx)
+      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
       res.append(view)
     }
 
     return res
   }
 
-  function onFilterCbChange(objId, tName, value)
-  {
+  function onFilterCbChange(objId, tName, value) {
     let selectedArr = this[$"{tName}Stats"]
     let isUnitType = tName == "unit"
     let referenceArr = isUnitType ? this.availableUTypes : this.availableCountries
     let isReset = objId == RESET_ID
 
-    foreach (idx, inst in referenceArr)
-    {
+    foreach (idx, inst in referenceArr) {
       if (!isReset && inst.id != objId)
         continue
 
@@ -733,8 +670,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.fillAirStats()
   }
 
-  function fillAirStatsScene(airStats)
-  {
+  function fillAirStatsScene(airStats) {
     if (!checkObj(this.scene))
       return
 
@@ -749,29 +685,27 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     let modeName = this.statsMode
     if ((modeName in airStats) && (typeName in airStats[modeName]))
       checkList = airStats[modeName][typeName]
-    foreach(item in checkList)
-    {
+    foreach (item in checkList) {
       let air = ::getAircraftByName(item.name)
       let unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
       if (!isInArray(unitTypeShopId, filterUnits))
           continue
-      if (!("country" in item))
-      {
-        item.country <- air? air.shopCountry : ""
-        item.rank <- air? air.rank : 0
+      if (!("country" in item)) {
+        item.country <- air ? air.shopCountry : ""
+        item.rank <- air ? air.rank : 0
       }
-      if ( ! ("locName" in item))
+      if (! ("locName" in item))
         item.locName <- air ? ::getUnitName(air, true) : ""
       if (isInArray(item.country, filterCountry))
         this.airStatsList.append(item)
     }
 
-    if (this.statsSortBy=="")
+    if (this.statsSortBy == "")
       this.statsSortBy = "victories"
 
     let sortBy = this.statsSortBy
     let sortReverse = this.statsSortReverse == (sortBy != "locName")
-    this.airStatsList.sort(function(a,b) {
+    this.airStatsList.sort(function(a, b) {
       let res = b[sortBy] <=> a[sortBy]
       if (res != 0)
         return sortReverse ? -res : res
@@ -782,19 +716,17 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.updateStatPage()
   }
 
-  function initStatsPerPage()
-  {
+  function initStatsPerPage() {
     if (this.statsPerPage > 0)
       return
 
     let listObj = this.scene.findObject("airs_stats_table")
     let size = listObj.getSize()
-    let rowsHeigt = size[1] -this.guiScene.calcString("@leaderboardHeaderHeight", null)
+    let rowsHeigt = size[1] - this.guiScene.calcString("@leaderboardHeaderHeight", null)
     this.statsPerPage =   max(1, (rowsHeigt / this.guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
   }
 
-  function updateStatPage()
-  {
+  function updateStatPage() {
     if (!this.airStatsList)
       return
 
@@ -805,65 +737,61 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     let rcWidth = "0.04@scrn_tgt"
     let nameWidth = "0.2@scrn_tgt"
     let headerRow = [
-      { width=posWidth }
-      { id="rank", width=rcWidth, text="#sm_rank", tdalign="split", cellType="splitRight", callback = "onStatsCategory", active = this.statsSortBy=="rank" }
-      { id="rank", width=rcWidth, cellType="splitLeft", callback = "onStatsCategory" }
-      { id="locName", width=rcWidth, cellType="splitRight", callback = "onStatsCategory" }
-      { id="locName", width=nameWidth, text="#options/unit", tdalign="left", cellType="splitLeft", callback = "onStatsCategory", active = this.statsSortBy=="locName" }
+      { width = posWidth }
+      { id = "rank", width = rcWidth, text = "#sm_rank", tdalign = "split", cellType = "splitRight", callback = "onStatsCategory", active = this.statsSortBy == "rank" }
+      { id = "rank", width = rcWidth, cellType = "splitLeft", callback = "onStatsCategory" }
+      { id = "locName", width = rcWidth, cellType = "splitRight", callback = "onStatsCategory" }
+      { id = "locName", width = nameWidth, text = "#options/unit", tdalign = "left", cellType = "splitLeft", callback = "onStatsCategory", active = this.statsSortBy == "locName" }
     ]
-    foreach(item in airStatsListConfig)
-    {
+    foreach (item in airStatsListConfig) {
       if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))
         continue
 
       if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
         headerRow.append({
           id = item.id
-          image = "#ui/gameuiskin#" + (("icon" in item)? item.icon : "lb_"+item.id) + ".svg"
-          tooltip = ("text" in item)? "#" + item.text : "#multiplayer/"+item.id
+          image = "#ui/gameuiskin#" + (("icon" in item) ? item.icon : "lb_" + item.id) + ".svg"
+          tooltip = ("text" in item) ? "#" + item.text : "#multiplayer/" + item.id
           callback = "onStatsCategory"
-          active = this.statsSortBy==item.id
+          active = this.statsSortBy == item.id
           needText = false
         })
     }
     data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
 
     let tooltips = {}
-    let fromIdx = this.curStatsPage*this.statsPerPage
-    local toIdx = (this.curStatsPage+1)*this.statsPerPage-1
-    if (toIdx >= this.airStatsList.len()) toIdx = this.airStatsList.len()-1
+    let fromIdx = this.curStatsPage * this.statsPerPage
+    local toIdx = (this.curStatsPage + 1) * this.statsPerPage - 1
+    if (toIdx >= this.airStatsList.len())
+      toIdx = this.airStatsList.len() - 1
 
-    for(local idx = fromIdx; idx <= toIdx; idx++)
-    {
+    for (local idx = fromIdx; idx <= toIdx; idx++) {
       let airData = this.airStatsList[idx]
       let unitTooltipId = UNIT.getTooltipId(airData.name)
 
-      let rowName = "row_"+idx
+      let rowName = "row_" + idx
       let rowData = [
-        { text = (idx+1).tostring(), width=posWidth }
-        { id="rank", width=rcWidth, text = airData.rank.tostring(), tdalign="right", cellType="splitRight", active = this.statsSortBy=="rank" }
-        { id="country", width=rcWidth, image=::get_country_icon(airData.country), cellType="splitLeft", needText = false }
+        { text = (idx + 1).tostring(), width = posWidth }
+        { id = "rank", width = rcWidth, text = airData.rank.tostring(), tdalign = "right", cellType = "splitRight", active = this.statsSortBy == "rank" }
+        { id = "country", width = rcWidth, image = ::get_country_icon(airData.country), cellType = "splitLeft", needText = false }
         {
-          id="unit",
-          width=rcWidth,
-          image=::getUnitClassIco(airData.name),
+          id = "unit",
+          width = rcWidth,
+          image = ::getUnitClassIco(airData.name),
           tooltipId = unitTooltipId,
-          cellType="splitRight",
+          cellType = "splitRight",
           needText = false
         }
-        { id="name", text = ::getUnitName(airData.name, true), tdalign="left", active = this.statsSortBy=="name", cellType="splitLeft", tooltipId = unitTooltipId }
+        { id = "name", text = ::getUnitName(airData.name, true), tdalign = "left", active = this.statsSortBy == "name", cellType = "splitLeft", tooltipId = unitTooltipId }
       ]
-      foreach(item in airStatsListConfig)
-      {
+      foreach (item in airStatsListConfig) {
         if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))
           continue
 
-        if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
-        {
+        if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly) {
           let cell = ::getLbItemCell(item.id, airData[item.id], item.type)
           cell.active <- this.statsSortBy == item.id
-          if ("tooltip" in cell)
-          {
+          if ("tooltip" in cell) {
             if (!(rowName in tooltips))
               tooltips[rowName] <- {}
             tooltips[rowName][item.id] <- cell.rawdelete("tooltip")
@@ -871,43 +799,38 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
           rowData.append(cell)
         }
       }
-      data += ::buildTableRow(rowName, rowData, idx%2==0)
+      data += ::buildTableRow(rowName, rowData, idx % 2 == 0)
     }
 
     let tblObj = this.scene.findObject("airs_stats_table")
     this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
-    foreach(rowName, row in tooltips)
-    {
+    foreach (rowName, row in tooltips) {
       let rowObj = tblObj.findObject(rowName)
       if (rowObj)
-        foreach(name, value in row)
+        foreach (name, value in row)
           rowObj.findObject(name).tooltip = value
     }
     let nestObj = this.scene.findObject("paginator_place")
-    ::generatePaginator(nestObj, this, this.curStatsPage, floor((this.airStatsList.len() - 1)/this.statsPerPage))
+    ::generatePaginator(nestObj, this, this.curStatsPage, floor((this.airStatsList.len() - 1) / this.statsPerPage))
     this.updateButtons()
   }
 
-  function goToPage(obj)
-  {
+  function goToPage(obj) {
     this.curStatsPage = obj.to_page.tointeger()
     this.updateStatPage()
   }
 
-  function checkLbRowVisibility(row)
-  {
+  function checkLbRowVisibility(row) {
     return ::leaderboardModel.checkLbRowVisibility(row, this)
   }
 
-  function fillLeaderboard()
-  {
+  function fillLeaderboard() {
     let stats = this.getPlayerStats()
     if (!stats || !("leaderboard" in stats) || !stats.leaderboard.len())
       return
 
     let typeProfileObj = this.scene.findObject("stats_type_profile")
-    if (checkObj(typeProfileObj))
-    {
+    if (checkObj(typeProfileObj)) {
       typeProfileObj.show(true)
       typeProfileObj.setValue(this.statsType == ETTI_VALUE_INHISORY)
     }
@@ -919,7 +842,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
     //add header row
     let headerRow = [""]
-    foreach(lbCategory in ::leaderboards_list)
+    foreach (lbCategory in ::leaderboards_list)
       if (this.checkLbRowVisibility(lbCategory))
         headerRow.append({
           id = lbCategory.id
@@ -948,40 +871,33 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     let lb = getTblValue(valueFieldName, getTblValue(this.lbMode, stats.leaderboard), {})
     let standartRow = {}
 
-    foreach (idx, fieldTbl in lb)
-    {
+    foreach (idx, fieldTbl in lb) {
       standartRow[idx] <- getTblValue(valueFieldName, fieldTbl, -1)
     }
 
-    foreach (row in rows)
-    {
+    foreach (row in rows) {
       let rowName = "row_" + rowIdx
-      let rowData = [{ text = row.text, tdalign="left" }]
+      let rowData = [{ text = row.text, tdalign = "left" }]
       local res = {}
 
-      foreach(lbCategory in ::leaderboards_list)
-        if (this.checkLbRowVisibility(lbCategory))
-        {
-          if (lbCategory.field in lb)
-          {
+      foreach (lbCategory in ::leaderboards_list)
+        if (this.checkLbRowVisibility(lbCategory)) {
+          if (lbCategory.field in lb) {
             if (!row.showLbPlaces)
               res = lbCategory.getItemCell(standartRow[lbCategory.field], standartRow)
-            else
-            {
+            else {
               let value = (lb[lbCategory.field].idx < 0) ? -1 : lb[lbCategory.field].idx + 1
               res = lbCategory.getItemCell(value, null, false, lbDataType.PLACE)
             }
           }
-          else
-          {
+          else {
             if (!row.showLbPlaces)
               res = lbCategory.getItemCell(lbCategory.lbDataType == lbDataType.PERCENT ? -1 : 0)
             else
               res = lbCategory.getItemCell(-1, null, false, lbDataType.PLACE)
           }
 
-          if ("tooltip" in res)
-          {
+          if ("tooltip" in res) {
             if (!(rowName in tooltips))
               tooltips[rowName] <- {}
             tooltips[rowName][lbCategory.id] <- res.rawdelete("tooltip")
@@ -995,16 +911,15 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     }
     this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
 
-    foreach(rowName, row in tooltips)
-      foreach(name, value in row)
+    foreach (rowName, row in tooltips)
+      foreach (name, value in row)
         tblObj.findObject(rowName).findObject(name).tooltip = value
   }
 
   function onChangePilotIcon(_obj) {}
   function openChooseTitleWnd() {}
 
-  function getCurSheet()
-  {
+  function getCurSheet() {
     let obj = this.scene.findObject("profile_sheet_list")
     let sheetIdx = obj.getValue()
     if ((sheetIdx < 0) || (sheetIdx >= obj.childrenCount()))
@@ -1013,15 +928,13 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     return obj.getChild(sheetIdx).id
   }
 
-  function initLeaderboardModes()
-  {
+  function initLeaderboardModes() {
     this.lbMode      = ""
     this.lbModesList = []
 
     local data  = ""
 
-    foreach(_idx, mode in ::leaderboard_modes)
-    {
+    foreach (_idx, mode in ::leaderboard_modes) {
       let diffCode = getTblValue("diffCode", mode)
       if (!::g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
         continue
@@ -1038,8 +951,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     modesObj.setValue(0)
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     if (!checkObj(this.scene))
       return
 
@@ -1047,7 +959,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
     let contact = ::getContact(this.player?.uid, this.player.name)
     let isMe = contact?.isMe() ?? false
-    let canBan = isMe? false : (::myself_can_devoice() || ::myself_can_ban())
+    let canBan = isMe ? false : (::myself_can_devoice() || ::myself_can_ban())
     let isFriend = contact?.isInFriendGroup() ?? false
     let isBlock = contact?.isInBlockGroup() ?? false
 
@@ -1057,7 +969,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     let canInteractCC = canInteractCrossConsole(this.player.name)
 
     let sheet = this.getCurSheet()
-    let showStatBar = this.infoReady && sheet=="Statistics"
+    let showStatBar = this.infoReady && sheet == "Statistics"
     let showProfBar = this.infoReady && !showStatBar
 
     ::showBtnTable(this.scene, {
@@ -1073,8 +985,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     })
   }
 
-  function onBlacklistBan()
-  {
+  function onBlacklistBan() {
     let clanTag = getTblValue("clanTag", this.player, "")
     let playerName = getTblValue("name", this.player, "")
     let userId = getTblValue("uid", this.player, "")
@@ -1082,34 +993,28 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     ::gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
   }
 
-  function onFriendAdd()
-  {
+  function onFriendAdd() {
     ::editContactMsgBox(this.player, EPL_FRIENDLIST, true)
   }
 
-  function onFriendRemove()
-  {
+  function onFriendRemove() {
     ::editContactMsgBox(this.player, EPL_FRIENDLIST, false)
   }
 
-  function onBlacklistAdd()
-  {
+  function onBlacklistAdd() {
     ::editContactMsgBox(this.player, EPL_BLOCKLIST, true)
   }
 
-  function onBlacklistRemove()
-  {
+  function onBlacklistRemove() {
     ::editContactMsgBox(this.player, EPL_BLOCKLIST, false)
   }
 
-  function onComplain()
-  {
+  function onComplain() {
     if (this.infoReady && ("uid" in this.player))
       ::gui_modal_complain(this.player)
   }
 
-  function onOpenXboxProfile()
-  {
+  function onOpenXboxProfile() {
     ::xbox_show_profile_card(this.curPlayerExternalIds?.xboxId ?? "")
   }
 
@@ -1126,31 +1031,28 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     )
   }
 
-  function removeItemFromList(value, list)
-  {
+  function removeItemFromList(value, list) {
     let idx = list.findindex(@(v) v == value)
     if (idx != null)
       list.remove(idx)
   }
 
-  function onStatsCategory(obj)
-  {
-    if (!obj) return
+  function onStatsCategory(obj) {
+    if (!obj)
+      return
     let value = obj.id
-    if (this.statsSortBy==value)
+    if (this.statsSortBy == value)
       this.statsSortReverse = !this.statsSortReverse
-    else
-    {
+    else {
       this.statsSortBy = value
       this.statsSortReverse = false
     }
     this.guiScene.performDelayed(this, function() { this.fillAirStats() })
   }
 
-  function onOpenAchievementsUrl()
-  {
+  function onOpenAchievementsUrl() {
     openUrl(loc("url/achievements",
-        { appId = APP_ID, name = this.player.name}),
+        { appId = APP_ID, name = this.player.name }),
       false, false, "profile_page")
   }
 }

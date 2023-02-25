@@ -240,3 +240,19 @@ fieldReq{
   border:yes;
   border-offset:@dp;
 }
+
+controlsBox {
+  position:relative;
+  overflow-y:auto;
+  total-input-transparent:yes;
+}
+
+controlsBox table.optionsTable, controlsBox optionsList {
+  pos:50%pw-50%w, 0;
+  position:relative;
+  total-input-transparent:yes;
+}
+
+controlsBox optionsList[disablePosition=yes] {
+  pos: 0,0;
+}

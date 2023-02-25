@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,22 +9,19 @@ let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 
 
-::WwReinforcementArmy <- class extends ::WwFormation
-{
+::WwReinforcementArmy <- class extends ::WwFormation {
   suppliesEndMillisec = 0
   entrenchEndMillisec = 0
   availableAtMillisec = 0
   loadedArmies = null
 
-  constructor(reinforcementBlock)
-  {
+  constructor(reinforcementBlock) {
     this.units = []
     this.artilleryAmmo = ::WwArtilleryAmmo()
     this.update(reinforcementBlock)
   }
 
-  function update(reinforcementBlock)
-  {
+  function update(reinforcementBlock) {
     if (!reinforcementBlock)
       return
 
@@ -49,8 +47,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     this.artilleryAmmo.update(this.name, armyBlock.getBlockByName("artilleryAmmo"))
   }
 
-  function clear()
-  {
+  function clear() {
     base.clear()
 
     this.suppliesEndMillisec = 0
@@ -59,60 +56,51 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     this.loadedArmies = null
   }
 
-  function getName()
-  {
+  function getName() {
     return this.name
   }
 
-  function getFullName()
-  {
+  function getFullName() {
     local fullName = this.getName()
-    fullName += loc("ui/parentheses/space", {text = this.getDescription()})
+    fullName += loc("ui/parentheses/space", { text = this.getDescription() })
 
     return fullName
   }
 
-  function getDescription()
-  {
+  function getDescription() {
     let desc = []
 
     if (this.morale >= 0)
-      desc.append(loc("worldwar/morale", {morale = (this.morale + 0.5).tointeger()}))
+      desc.append(loc("worldwar/morale", { morale = (this.morale + 0.5).tointeger() }))
 
-    if (this.suppliesEndMillisec > 0)
-    {
+    if (this.suppliesEndMillisec > 0) {
       let elapsed = max(0, (this.suppliesEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
 
       desc.append(loc("worldwar/suppliesfinishedIn",
-          {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
+          { time = time.hoursToString(time.secondsToHours(elapsed), true, true) }))
     }
 
     let elapsed = this.secondsLeftToEntrench();
-    if (elapsed == 0)
-    {
+    if (elapsed == 0) {
       desc.append(loc("worldwar/armyEntrenched"))
     }
-    else if (elapsed > 0)
-    {
+    else if (elapsed > 0) {
       desc.append(loc("worldwar/armyEntrenching",
-          {time = time.hoursToString(time.secondsToHours(elapsed), true, true)}))
+          { time = time.hoursToString(time.secondsToHours(elapsed), true, true) }))
     }
 
     return ::g_string.implode(desc, "\n")
   }
 
-  function getArrivalTime()
-  {
+  function getArrivalTime() {
     return max(0, (this.availableAtMillisec - ::ww_get_operation_time_millisec()))
   }
 
-  function isReady()
-  {
+  function isReady() {
     return this.getArrivalTime() == 0
   }
 
-  function getArrivalStatusText()
-  {
+  function getArrivalStatusText() {
     let arrivalTime = this.getArrivalTime()
     if (arrivalTime == 0)
       return loc("worldwar/state/reinforcement_ready")
@@ -120,29 +108,25 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     return time.secondsToString(time.millisecondsToSeconds(arrivalTime), false)
   }
 
-  function getFullDescription()
-  {
+  function getFullDescription() {
     local desc = this.getFullName()
     desc += "\n"
     desc += ::g_string.implode(this.getUnitsMapFullName(), "\n")
     return desc
   }
 
-  function getUnitsMapFullName()
-  {
+  function getUnitsMapFullName() {
     return ::u.map(this.getUnits(), function(unit) { return unit.getFullName() })
   }
 
-  function secondsLeftToEntrench()
-  {
+  function secondsLeftToEntrench() {
     if (this.entrenchEndMillisec <= 0)
       return -1
 
     return max(0, (this.entrenchEndMillisec - ::ww_get_operation_time_millisec()) * 0.001)
   }
 
-  static function sortReadyReinforcements(a, b)
-  {
+  static function sortReadyReinforcements(a, b) {
     if (a.getArmyGroupIdx() != b.getArmyGroupIdx())
       return a.getArmyGroupIdx() < b.getArmyGroupIdx() ? -1 : 1
 
@@ -151,8 +135,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     return 0
   }
 
-  static function sortNewReinforcements(a, b)
-  {
+  static function sortNewReinforcements(a, b) {
     if (a.getArmyGroupIdx() != b.getArmyGroupIdx())
       return a.getArmyGroupIdx() < b.getArmyGroupIdx() ? -1 : 1
 
@@ -165,8 +148,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     return 0
   }
 
-  function isFormation()
-  {
+  function isFormation() {
     return false
   }
 }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -32,15 +33,13 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
   getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(this.getMyRecipes(), this, params)
   getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(this.getMyRecipes(), this, params)
 
-  function _getDescHeader(fixedAmount = 1)
-  {
+  function _getDescHeader(fixedAmount = 1) {
     let locId = (fixedAmount > 1) ? "trophy/recipe_result/many" : "trophy/recipe_result"
     let headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
     return colorize("grayOptionColor", headerText)
   }
 
-  function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "")
-  {
+  function getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes = false, timeText = "") {
     if (!this.isDisassemble())
       return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
 
@@ -53,8 +52,7 @@ let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
       })
   }
 
-  function getMainActionData(_isShort = false, _params = {})
-  {
+  function getMainActionData(_isShort = false, _params = {}) {
     if (this.canAssemble())
       return {
         btnName = this.getAssembleButtonText()

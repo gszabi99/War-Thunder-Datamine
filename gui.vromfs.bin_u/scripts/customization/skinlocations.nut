@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let DataBlock = require("DataBlock")
 let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -16,14 +18,12 @@ let levelsMask = {} //<levelName> = <locationTypeMask>
 local camoTypesVisibleList = []
 local camoTypesIconPriority = []
 
-let function getLocationTypeId(typeName)
-{
+let function getLocationTypeId(typeName) {
   if (typeName in locationTypeNameToId)
     return locationTypeNameToId[typeName]
 
   local idx = locationTypeNameToId.len()
-  if (idx > MAX_LOCATION_TYPES)
-  {
+  if (idx > MAX_LOCATION_TYPES) {
     ::script_net_assert_once("too much locTypes", "Error: too much location type names in skins")
     idx = MAX_LOCATION_TYPES
   }
@@ -33,61 +33,55 @@ let function getLocationTypeId(typeName)
   return res
 }
 
-let function getLocationsLoc(mask)
-{
+let function getLocationsLoc(mask) {
   let list = []
   if (!mask)
     return list
-  foreach(name in camoTypesVisibleList)
+  foreach (name in camoTypesVisibleList)
     if (mask & getLocationTypeId(name))
       list.append(loc("camoType/" + name))
   return list
 }
 
-let function debugLocationMask(mask)
-{
+let function debugLocationMask(mask) {
   let list = []
-  foreach(name, bit in locationTypeNameToId)
+  foreach (name, bit in locationTypeNameToId)
     if (bit & mask)
       list.append(name)
   return mask + ": " + string.implode(list, ", ")
 }
 
-let function getLocationMaskByNamesArray(namesList)
-{
+let function getLocationMaskByNamesArray(namesList) {
   local res = 0
-  foreach(typeName in namesList)
+  foreach (typeName in namesList)
     res = res | getLocationTypeId(typeName)
   return res
 }
 
 local isMasksLoaded = false
-let function loadSkinMasksOnce()
-{
+let function loadSkinMasksOnce() {
   if (isMasksLoaded)
     return false
   isMasksLoaded = true
 
-  let skinsBlk = ::DataBlock()
+  let skinsBlk = DataBlock()
   skinsBlk.load("config/skinsLocations.blk")
 
-  for(local i = 0; i < skinsBlk.blockCount(); i++)
-  {
+  for (local i = 0; i < skinsBlk.blockCount(); i++) {
     let blk = skinsBlk.getBlock(i)
     skinsMask[blk.getBlockName()] <- getLocationMaskByNamesArray(blk % "camoType")
   }
   camoTypesVisibleList = []
   if (skinsBlk?.camo_type_visible)
-    foreach(b in skinsBlk.camo_type_visible % "camoType")
+    foreach (b in skinsBlk.camo_type_visible % "camoType")
       camoTypesVisibleList.append(b.name)
   camoTypesIconPriority = []
   if (skinsBlk?.camo_type_icons)
-    foreach(b in skinsBlk.camo_type_icons % "camoType")
+    foreach (b in skinsBlk.camo_type_icons % "camoType")
       camoTypesIconPriority.append(b.name)
 }
 
-let function getSkinLocationsMaskByDecoratorTags(id)
-{
+let function getSkinLocationsMaskByDecoratorTags(id) {
   local res = 0
   let decorator = ::g_decorator.getDecorator(id, ::g_decorator_type.SKINS)
   if (!decorator || !decorator.tags)
@@ -98,27 +92,23 @@ let function getSkinLocationsMaskByDecoratorTags(id)
   return res
 }
 
-let function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty)
-{
+let function getSkinLocationsMaskByFullIdAndSkinId(id, skinId, canBeEmpty) {
   if (!(id in skinsMask) && !(skinId in skinsMask) && guidParser.isGuid(skinId))
     skinsMask[id] <- getSkinLocationsMaskByDecoratorTags(id)
   return skinsMask?[id] || skinsMask?[skinId] || (canBeEmpty ? 0  : getLocationTypeId("forest"))
 }
 
-let function getSkinLocationsMask(skinId, unitId, canBeEmpty = true)
-{
+let function getSkinLocationsMask(skinId, unitId, canBeEmpty = true) {
   loadSkinMasksOnce()
   return getSkinLocationsMaskByFullIdAndSkinId(unitId + "/" + skinId, skinId, canBeEmpty)
 }
 
-let function getSkinLocationsMaskBySkinId(id, canBeEmpty = true)
-{
+let function getSkinLocationsMaskBySkinId(id, canBeEmpty = true) {
   loadSkinMasksOnce()
   return getSkinLocationsMaskByFullIdAndSkinId(id, ::g_unlocks.getSkinNameBySkinId(id), canBeEmpty)
 }
 
-let function getMaskByLevel(level)
-{
+let function getMaskByLevel(level) {
   if (level in  levelsMask)
     return levelsMask[level]
 
@@ -132,18 +122,15 @@ let function getMaskByLevel(level)
   return res
 }
 
-let function getBestSkinsList(skinsList, unitName, level)
-{
+let function getBestSkinsList(skinsList, unitName, level) {
   let res = []
   local bestMatch = 0
   let locationMask = getMaskByLevel(level)
-  foreach(skin in skinsList)
-  {
+  foreach (skin in skinsList) {
     let match = stdMath.number_of_set_bits(locationMask & getSkinLocationsMask(skin, unitName))
     if (!match)
       continue
-    if (match > bestMatch)
-    {
+    if (match > bestMatch) {
       bestMatch = match
       res.clear()
     }
@@ -153,8 +140,7 @@ let function getBestSkinsList(skinsList, unitName, level)
   return res
 }
 
-let function getIconTypeByMask(mask)
-{
+let function getIconTypeByMask(mask) {
   if (mask)
     foreach (name in camoTypesIconPriority)
       if (mask & getLocationTypeId(name))

@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { subscribe } = require("eventbus")
 
-let state = persist("battleLogState", @(){
+let state = persist("battleLogState", @() {
   log = Watched([])
 })
 

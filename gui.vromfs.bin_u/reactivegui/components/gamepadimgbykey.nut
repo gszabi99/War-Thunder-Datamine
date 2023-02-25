@@ -80,7 +80,7 @@ let CUR_IMAGES_PRESET = is_sony ? "ui/gameuiskin#ps_" : "ui/gameuiskin#xone_"
 let defHeight = dp(2) + fpx(36)
 
 let function mkImageComp(text, params = {}) {
-  if (text==null || text=="")
+  if (text == null || text == "")
     return null
   let height = (params?.height ?? defHeight).tointeger()
   return {
@@ -96,7 +96,7 @@ let function mkImageComp(text, params = {}) {
 
 let getTexture = @(id) $"{CUR_IMAGES_PRESET}{id}.svg"
 
-local function mkImageCompByDargKey(key, sf = null, params={}) {
+local function mkImageCompByDargKey(key, sf = null, params = {}) {
   if (sf != null && (sf & S_HOVER) != 0)
     key = "J:A"
   let textureId = dargJKeysToImage?[key]

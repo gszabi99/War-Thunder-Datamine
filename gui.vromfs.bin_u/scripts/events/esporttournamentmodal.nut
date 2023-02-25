@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
   getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor,
@@ -14,6 +16,7 @@ let { needShowOverrideSlotbar, isLeaderboardsAvailable } = require("%scripts/eve
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
 
 let function getActiveTicketTxt(event) {
   if (!event)
@@ -27,7 +30,7 @@ let function getActiveTicketTxt(event) {
     ? ticket.getTicketTournamentData(event.economicName) : null
 
   return tournamentData
-    ? loc("ui/parentheses/space", {text = $"{tournamentData.battleCount}/{ticket.battleLimit}"})
+    ? loc("ui/parentheses/space", { text = $"{tournamentData.battleCount}/{ticket.battleLimit}" })
     : ""
 }
 
@@ -89,7 +92,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     return (q && ::queues.isQueueActive(q)) ? q : null
   }
 
-  function onEventQueueChangeState(p){
+  function onEventQueueChangeState(p) {
     if (!::queues.isEventQueue(p?.queue))
       return
 
@@ -121,10 +124,10 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       }
 
       res.append({
-        day = i+1
+        day = i + 1
         dayCountries = dayCountries
         items = items
-        chapterName = loc("tournaments/enumerated_day", {num = i + 1})
+        chapterName = loc("tournaments/enumerated_day", { num = i + 1 })
         isCollapsed = isCollapsed
         collapsed = isCollapsed ? "yes" : "no"
       })
@@ -155,9 +158,9 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
       let txt = row._id == ::my_user_id_str
         ? colorize("totalTextColor", row.name) : row.name
-      texts.append({ text = $"{idx + 1} {txt}"})
+      texts.append({ text = $"{idx + 1} {txt}" })
     }
-    let data = ::handyman.renderCached("%gui/commonParts/text.tpl", {texts = texts})
+    let data = ::handyman.renderCached("%gui/commonParts/text.tpl", { texts = texts })
     this.guiScene.replaceContentFromText(topObj, data, data.len(), this)
   }
 
@@ -169,7 +172,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     let missArr = [$"{loc("mainmenu/missions")}{loc("ui/colon")}"]
     foreach (miss, _v in (this.curEvent.mission_decl?.missions_list ?? {}))
       missArr.append("".concat("<color=@activeTextColor>",
-        ::get_combine_loc_name_mission(::get_meta_mission_info_by_name(miss)), "</color>"))
+        ::get_combine_loc_name_mission(get_meta_mission_info_by_name(miss)), "</color>"))
     let descTxtArr = [
       ::events.getEventActiveTicketText(this.curEvent, "activeTextColor"),
       rangeData.isValid ? $"{rangeData.label}<color=@activeTextColor>{rangeData.value}</color>" : "",
@@ -277,9 +280,9 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       }
   }
 
-  function registerForTournament(){
+  function registerForTournament() {
     let tourId = this.tournament.id
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     blk["eventName"] = tourId
 
     let taskId = ::char_send_blk("cln_subscribe_tournament", blk)
@@ -287,7 +290,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       showProgressBox = true
       progressBoxText = loc("tournaments/registration_in_progress")
     }
-    let onSuccess = @() ::broadcastEvent("TourRegistrationComplete", {id = tourId})
+    let onSuccess = @() ::broadcastEvent("TourRegistrationComplete", { id = tourId })
     ::g_tasker.addTask(taskId, taskOptions, onSuccess)
   }
 
@@ -307,7 +310,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
       this.registerForTournament()
   }
 
-  function goToBattleFromDebriefing(){
+  function goToBattleFromDebriefing() {
     this.joinEvent("debriefing")
   }
 
@@ -363,7 +366,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
         header = loc("tournaments/rewards")
         event = this.curEvent
         tourId = this.tournament.id
-      },{
+      }, {
         header = loc("tournaments/seasonRewards")
         event = this.curEvent
         tourId = this.tournament.sharedEconomicName
@@ -413,7 +416,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     ::scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
-      [["ok", Callback(function(){
+      [["ok", Callback(function() {
           this.onLeaveEvent()
           this.goBackImpl()
         }, this)], ["no", null]], "ok")

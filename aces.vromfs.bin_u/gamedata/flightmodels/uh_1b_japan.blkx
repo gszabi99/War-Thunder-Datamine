@@ -1031,58 +1031,145 @@
     "inclinedRotor": true
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": [
-        "xm_5",
-        "xm_5_turret",
-        "xm_5_gun",
-        "flare9"
-      ]
-    },
-    "hideDmParts": {
-      "node": [
-        "gun9_dm",
-        "cover1_dm"
-      ]
-    },
     "Weapon": {
-      "dummy": true,
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/dummy_weapon.blk",
-      "emitter": "optic1_gun",
-      "parkInDeadzone": false,
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "speedYaw": 25.0,
-      "speedPitch": 25.0,
-      "aimForOperatedShell": true,
-      "turret": {
-        "head": "optic1_turret",
-        "gun": "optic1_gun",
-        "playerControllable": false,
-        "mainTurret": true
-      },
-      "limits": {
-        "yaw": [
-          -115.0,
-          90.0
-        ],
-        "pitch": [
-          -50.0,
-          25.0
-        ]
-      }
+      "slot": 0,
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
-    "preset": {
-      "name": "uh_1b_default",
-      "blk": "gameData/flightModels/weaponPresets/uh_1b_rocket.blk",
-      "tags": {
-        "free": true
+    "preset": [
+      {
+        "name": "uh_1b_japan_default",
+        "blk": "gameData/flightModels/weaponPresets/uh_1b_japan_rocket.blk"
+      },
+      {
+        "name": "uh_1b_default",
+        "blk": "gameData/flightModels/weaponPresets/empty.blk",
+        "tags": {
+          "free": true
+        }
       }
-    }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1820.0,
+    "maxloadMassLeftConsoles": 910.0,
+    "maxloadMassRightConsoles": 910.0,
+    "maxDisbalance": 500.0,
+    "HideNodes": {
+      "node": [
+        "uh_xm_200_1",
+        "uh_xm_200_2",
+        "us_xm_18_barrel1",
+        "us_xm_18_barrel2",
+        "us_xm_18_l",
+        "us_xm_18_r",
+        "us_xm22_1",
+        "us_xm22_2",
+        "xm_5",
+        "xm_5_turret",
+        "xm_5_gun",
+        "xm21_barrel_1",
+        "xm21_gun_1",
+        "xm21_belt_l",
+        "xm21_us_xm_21_1",
+        "xm21_wire1_l",
+        "xm21_turret_1",
+        "xm21_barrel_2",
+        "xm21_gun_2",
+        "xm21_belt_r",
+        "xm21_us_xm_21_2",
+        "xm21_wire1_r",
+        "xm21_turret_2",
+        "xm159_pylon_1",
+        "xm159_pylon_2"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "gun3_dm",
+        "gun4_dm",
+        "gun7_dm",
+        "gun8_dm",
+        "cover1_dm",
+        "gun9_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": {
+            "dummy": true,
+            "trigger": "gunner0",
+            "triggerGroup": "primary",
+            "blk": "gameData/Weapons/dummy_weapon.blk",
+            "emitter": "optic1_gun",
+            "parkInDeadzone": false,
+            "defaultYaw": 0.0,
+            "defaultPitch": 0.0,
+            "speedYaw": 25.0,
+            "speedPitch": 25.0,
+            "aimForOperatedShell": true,
+            "turret": {
+              "head": "optic1_turret",
+              "gun": "optic1_gun",
+              "playerControllable": false,
+              "mainTurret": true
+            },
+            "limits": {
+              "yaw": [
+                -115.0,
+                90.0
+              ],
+              "pitch": [
+                -50.0,
+                25.0
+              ]
+            }
+          }
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "nar_ap_large",
+          "name": "ffar",
+          "ShowNodes": {
+            "node": "uh_xm_200_1"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+            "emitter": "xm159_aero_7_2",
+            "external": true,
+            "machLimit": 1.01
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "nar_ap_large",
+          "name": "ffar",
+          "ShowNodes": {
+            "node": "uh_xm_200_2"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "blk": "gameData/Weapons/containers/aero_7a_not_cup_2_75_in_ffar_mighty_mouse.blk",
+            "emitter": "xm159_aero_7_3",
+            "external": true,
+            "machLimit": 1.01
+          }
+        }
+      }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,

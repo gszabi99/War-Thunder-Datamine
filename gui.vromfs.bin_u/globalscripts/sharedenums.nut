@@ -59,12 +59,12 @@ global enum AxisInvertOption {
 
 global enum DargWidgets {
    NONE = 0
-  ,HUD
-  ,SHIP_OBSTACLE_RF
-  ,SCOREBOARD
-  ,CHANGE_LOG
-  ,DAMAGE_PANEL
-  ,HUD_TOUCH
+  , HUD
+  , SHIP_OBSTACLE_RF
+  , SCOREBOARD
+  , CHANGE_LOG
+  , DAMAGE_PANEL
+  , HUD_TOUCH
 };
 
 global enum AirParamsMain {

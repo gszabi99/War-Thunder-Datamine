@@ -17,6 +17,12 @@ MultiSelect {
 
   <<#list>>
   multiOption {
+    <<#id>>
+    id:t='<<id>>'
+    <</id>>
+    <<^enable>>
+    enable:t='no'
+    <</enable>>
     <<^show>>
     enable:t='no'
     display:t='hide'

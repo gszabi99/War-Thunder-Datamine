@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -29,8 +30,7 @@ enum hintTagCheckOrder {
 enums.addTypesByGlobalName("g_hint_tag", {
   TIMER = {
     typeName = "@"
-    getViewSlices = function(_tagName, params)
-    {
+    getViewSlices = function(_tagName, params) {
       let total = (getTblValue("time", params, 0) + 0.5).tointeger()
       let offset = getTblValue("timeoffset", params, 0)
       return [{
@@ -50,27 +50,25 @@ enums.addTypesByGlobalName("g_hint_tag", {
     checkTag = function(_tagName) { return true }
     getSeparator = @() loc("hints/shortcut_separator")
 
-    getViewSlices = function(tagName, params) //tagName == shortcutId
-    {
+    getViewSlices = function(tagName, params) { //tagName == shortcutId
       let slices = []
       let needConfig = params?.needConfig ?? false
       let expanded = ::g_shortcut_type.expandShortcuts([tagName], params?.showKeyBoardShortcutsForMouseAim ?? false)
       let showShortcutsNameIfNotAssign = params?.showShortcutsNameIfNotAssign ?? false
       let shortcutsCount = expanded.len()
-      foreach (i, expandedShortcut in expanded)
-      {
+      foreach (i, expandedShortcut in expanded) {
         let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(expandedShortcut)
         let shortcutId = expandedShortcut
         slices.append({
           shortcut = needConfig
-            ? shortcutType.getFirstInput(shortcutId).getConfig()
+            ? shortcutType.getFirstInput(shortcutId, ::g_controls_manager.getPreviewPreset()).getConfig()
             : function() {
-              let input = shortcutType.getFirstInput(shortcutId, null, showShortcutsNameIfNotAssign)
+              let input = shortcutType.getFirstInput(shortcutId, ::g_controls_manager.getPreviewPreset(), showShortcutsNameIfNotAssign)
               return input.getMarkup()
             }
         })
         if (i < (shortcutsCount - 1))
-          slices.append({text = {textValue = this.getSeparator()}})
+          slices.append({ text = { textValue = this.getSeparator() } })
       }
       return slices
     }
@@ -83,23 +81,20 @@ enums.addTypesByGlobalName("g_hint_tag", {
     colorParam = "color="
     sizeParam = "sizeStyle="
     delimiter = " "
-    getViewSlices = function(tagName, _params)
-    {
+    getViewSlices = function(tagName, _params) {
       let paramsList = split_by_chars(tagName, this.delimiter)
       let res = {
         image = ::g_string.cutPrefix(paramsList[0], this.typeName,  "")
         color = null
         sizeStyle = null
       }
-      for(local i = 1; i < paramsList.len(); i++)
-      {
+      for (local i = 1; i < paramsList.len(); i++) {
         res.color = res.color || ::g_string.cutPrefix(paramsList[i], this.colorParam)
         res.sizeStyle = res.sizeStyle || ::g_string.cutPrefix(paramsList[i], this.sizeParam)
       }
       return [res]
     }
-    makeTag = function(params = null)
-    {
+    makeTag = function(params = null) {
       return this.typeName + (params?.image || "")
         + (params?.color      ? this.delimiter + this.colorParam + params.color : "")
         + (params?.sizeStyle  ? this.delimiter + this.sizeParam + params.sizeStyle : "")
@@ -110,15 +105,13 @@ enums.addTypesByGlobalName("g_hint_tag", {
     typeName = "attempts_left" //{{attempts_left}} or {{attempts_left=locId}}
     checkOrder = hintTagCheckOrder.REGULAR
     checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
-    getViewSlices = function(tagName, _params)
-    {
+    getViewSlices = function(tagName, _params) {
       let attempts = ::get_num_attempts_left()
       local attemptsText = attempts < 0 ? loc("options/attemptsUnlimited") : attempts
 
-      if (tagName.len() > this.typeName.len() + 1) //{{attempts_left=locId}}
-      {
+      if (tagName.len() > this.typeName.len() + 1) { //{{attempts_left=locId}}
         let locId = tagName.slice(this.typeName.len() + 1)
-        attemptsText = loc(locId, {attemptsText, attempts})
+        attemptsText = loc(locId, { attemptsText, attempts })
       }
       return [{
         text = attemptsText
@@ -132,8 +125,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
     checkOrder = hintTagCheckOrder.REGULAR
     checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
 
-    getViewSlices = function(tagName, params) //tagName == shortcutId
-    {
+    getViewSlices = function(tagName, params) { //tagName == shortcutId
       let paramsList = split_by_chars(tagName, this.delimiter)
       let shortcut = ::SHORTCUT?[paramsList?[1]]
       if (!::u.isTable(shortcut))
@@ -155,8 +147,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
   return 0
 })
 
-::g_hint_tag.getHintTagType <- function getHintTagType(tagName)
-{
+::g_hint_tag.getHintTagType <- function getHintTagType(tagName) {
   foreach (tagType in this.types)
     if (tagType.checkTag(tagName))
       return tagType

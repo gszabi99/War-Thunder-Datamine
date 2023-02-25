@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -26,16 +27,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   })
 }
 
-::gui_handlers.clanActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.clanActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType           = handlerType.MODAL
   sceneBlkName      = "%gui/clans/clanActivityModal.blk"
   clanData          = null
   memberData        = null
   hasClanExperience = null
 
-  function initScreen()
-  {
+  function initScreen() {
     let maxActivityPerDay = this.clanData.rewardPeriodDays > 0
       ? round(1.0 * this.clanData.maxActivityPerPeriod / this.clanData.rewardPeriodDays)
       : 0
@@ -56,15 +55,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.fillActivityHistory(history)
   }
 
-  function fillActivityHistory(history)
-  {
+  function fillActivityHistory(history) {
     let historyArr = []
-    foreach (day, data in history)
-    {
-      historyArr.append({day = day.tointeger(), data = data})
+    foreach (day, data in history) {
+      historyArr.append({ day = day.tointeger(), data = data })
     }
-    historyArr.sort(function(left, right)
-    {
+    historyArr.sort(function(left, right) {
       return right.day - left.day
     })
 
@@ -102,23 +98,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     rowBlock = ""
     /*body*/
-    foreach(entry in historyArr)
-    {
+    foreach (entry in historyArr) {
       let rowParams = [
         { text = time.buildDateStr(time.daysToSeconds(entry.day)) },
         { text = (::u.isInteger(entry.data) ? entry.data : entry.data?.activity ?? 0).tostring() }
       ]
 
-      if (this.hasClanExperience)
-      {
+      if (this.hasClanExperience) {
         let exp = entry.data?.exp ?? 0
         local expText = exp.tostring()
-        let boost = (entry.data?.expBoost ?? 0)/100.0
+        let boost = (entry.data?.expBoost ?? 0) / 100.0
         let hasBoost = boost > 0
-        if (hasBoost && exp > 0)
-        {
-          let baseExp = entry.data?.expRewardBase ?? round(exp/(1 + boost))
-          expText = colorize("activeTextColor",baseExp.tostring()
+        if (hasBoost && exp > 0) {
+          let baseExp = entry.data?.expRewardBase ?? round(exp / (1 + boost))
+          expText = colorize("activeTextColor", baseExp.tostring()
             + colorize("goodTextColor", " + " + (exp - baseExp).tostring()))
         }
 
@@ -128,7 +121,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
           tooltip = hasBoost
             ? loc("clan/activity_reward/wasBoost",
               { bonus = colorize("activeTextColor",
-                "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(boost))})
+                "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(boost)) })
             : ""
         })
       }

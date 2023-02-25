@@ -1,18 +1,24 @@
 from "%rGui/globals/ui_library.nut" import *
-let {Speed, BarAltitude, Tangage, Accel} = require("%rGui/planeState/planeFlyState.nut")
-let {mpsToKmh, baseLineWidth, radToDeg} = require("ilsConstants.nut")
-let {IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget,
+let { Speed, BarAltitude, Tangage, Accel } = require("%rGui/planeState/planeFlyState.nut")
+let { mpsToKmh, baseLineWidth, radToDeg } = require("ilsConstants.nut")
+let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget,
   BombCCIPMode, RocketMode, CannonMode, TargetPosValid, TargetPos, RadarTargetPos,
-  BombingMode, AirCannonMode} = require("%rGui/planeState/planeToolsState.nut")
-let {compassWrap, generateCompassMarkASP} = require("ilsCompasses.nut")
-let {ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine} = require("commonElements.nut")
+  BombingMode, AirCannonMode } = require("%rGui/planeState/planeToolsState.nut")
+let { compassWrap, generateCompassMarkASP } = require("ilsCompasses.nut")
+let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine } = require("commonElements.nut")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
   IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax } = require("%rGui/radarState.nut")
-let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive} = require("%rGui/planeState/planeWeaponState.nut")
+let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive } = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
-let {floor, ceil} = require("%sqstd/math.nut")
-let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
+let { floor, ceil } = require("%sqstd/math.nut")
+let { cvt } = require("dagor.math")
+let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
+
+let RadarTargetValid = Computed(@() RadarTargetDist.value > 0.0)
+let AirTargetCannonMode = Computed(@() AirCannonMode.value && RadarTargetValid.value)
+let AirNoTargetCannonMode = Computed(@() AirCannonMode.value && !AirTargetCannonMode.value)
+let RadarDistanceMax = Computed(@() AirTargetCannonMode.value ? 5.0 : DistanceMax.value)
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
 let speed = @() {
@@ -39,7 +45,7 @@ let altitude = @() {
 }
 
 let AccelWatch = Computed(@() clamp((50.0 - Accel.value * mpsToKmh), 0, 100).tointeger())
-let acceleration = @(){
+let acceleration = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
   size = [pw(10), ph(2)]
@@ -48,7 +54,7 @@ let acceleration = @(){
   commands = [
     [VECTOR_LINE, 0, 0, 100, 0]
   ]
-  children = @(){
+  children = @() {
     watch = AccelWatch
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
@@ -62,12 +68,12 @@ let acceleration = @(){
   }
 }
 
-let compassMark = @(){
+let compassMark = @() {
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
   color = IlsColor.value
-  fillColor = Color(0,0,0,0)
+  fillColor = Color(0, 0, 0, 0)
   commands = [
     [VECTOR_LINE, 32, 25, 68, 25],
     [VECTOR_POLY, 48, 28, 50, 25, 52, 28]
@@ -77,7 +83,7 @@ let compassMark = @(){
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let RollVisible = Computed(@() CCIPMode.value || !IsRadarVisible.value)
 let rollIndicator = @() {
-  watch = RollVisible
+  watch = [RollVisible, AirTargetCannonMode]
   size = [pw(15), ph(15)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -94,10 +100,10 @@ let rollIndicator = @() {
     (RollVisible.value ? [VECTOR_LINE, 86.9, 23.3, 77.3, 20.7] : []),
     (RollVisible.value ? [VECTOR_LINE, 63.6, 63.6, 56.6, 56.6] : []),
     (RollVisible.value ? [VECTOR_LINE, -63.6, 63.6, -56.6, 56.6] : []),
-    [VECTOR_LINE, -15, 0, -5, 0],
-    [VECTOR_LINE, 15, 0, 5, 0],
-    [VECTOR_LINE, 0, -15, 0, -5],
-    [VECTOR_LINE, 0, 15, 0, 5]
+    (!AirTargetCannonMode.value ? [VECTOR_LINE, -15, 0, -5, 0] : []),
+    (!AirTargetCannonMode.value ? [VECTOR_LINE, 15, 0, 5, 0] : []),
+    (!AirTargetCannonMode.value ? [VECTOR_LINE, 0, -15, 0, -5] : []),
+    (!AirTargetCannonMode.value ? [VECTOR_LINE, 0, 15, 0, 5] : [])
   ]
   children = ASPAirSymbolWrap
 }
@@ -132,7 +138,7 @@ let function getWeaponSlotNumber() {
   return numbers
 }
 
-let connectors = @(){
+let connectors = @() {
   watch = WeaponSlots
   size = [pw(24), ph(3)]
   pos = [pw(38), ph(76)]
@@ -141,7 +147,7 @@ let connectors = @(){
   lineWidth = baseLineWidth * IlsLineScale.value
   commands = getWeaponSlotCommands()
   children = [
-    @(){
+    @() {
       watch = WeaponSlotActive
       size = flex()
       children = getWeaponSlotNumber()
@@ -216,8 +222,8 @@ let function pitchWrap(width, height) {
 }
 
 let function basicInfo(width, height) {
-  return @(){
-    watch = AirCannonMode
+  return @() {
+    watch = [AirCannonMode, AirNoTargetCannonMode]
     size = flex()
     children = [
       speed,
@@ -225,26 +231,26 @@ let function basicInfo(width, height) {
       (!AirCannonMode.value ? compassWrap(width, height, 0.17, generateCompassMarkASP, 0.6, 5.0, false, -1, Fonts.ils31) : null),
       (!AirCannonMode.value ? compassMark : null),
       altitude,
-      (!AirCannonMode.value ? rollIndicator : null),
+      (!AirNoTargetCannonMode.value ? rollIndicator : null),
       pitchWrap(width, height),
       connectors
     ]
   }
 }
 
-let radarMaxDist = @(){
-  watch = DistanceMax
+let radarMaxDist = @() {
+  watch = RadarDistanceMax
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(18), ph(28)]
   color = IlsColor.value
   fontSize = 35
   font = Fonts.ils31
-  text = DistanceMax.value.tointeger()
+  text = RadarDistanceMax.value.tointeger()
 }
 
 let MaxElevation = Computed(@() floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5))
-let radarMaxElev = @(){
+let radarMaxElev = @() {
   watch = MaxElevation
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
@@ -255,7 +261,7 @@ let radarMaxElev = @(){
   text = MaxElevation.value.tointeger()
 }
 
-let RdrTgtDistMarkPos = Computed(@() DistanceMax.value > 0 ? ((DistanceMax.value * 1000.0 - RadarTargetDist.value) * 0.1 / DistanceMax.value ).tointeger() : 0)
+let RdrTgtDistMarkPos = Computed(@() RadarDistanceMax.value > 0 ? ((RadarDistanceMax.value * 1000.0 - RadarTargetDist.value) * 0.1 / RadarDistanceMax.value).tointeger() : 0)
 let curRadarDist = @() {
   watch = [RadarTargetPosValid, RdrTgtDistMarkPos]
   size = [pw(200), ph(5)]
@@ -277,21 +283,21 @@ let curRadarDist = @() {
     } : null]
 }
 
-let minAamDistMarkPos = Computed(@() DistanceMax.value > 0 ? ((DistanceMax.value * 1000.0 - AamLaunchZoneDistMinVal.value) * 0.1 / DistanceMax.value ).tointeger() : 0)
-let maxAamDistMarkPos = Computed(@() DistanceMax.value > 0 ? ((DistanceMax.value * 1000.0 - AamLaunchZoneDistMaxVal.value) * 0.1 / DistanceMax.value ).tointeger() : 0)
+let minAamDistMarkPos = Computed(@() DistanceMax.value > 0 ? ((DistanceMax.value * 1000.0 - AamLaunchZoneDistMinVal.value) * 0.1 / DistanceMax.value).tointeger() : 0)
+let maxAamDistMarkPos = Computed(@() DistanceMax.value > 0 ? ((DistanceMax.value * 1000.0 - AamLaunchZoneDistMaxVal.value) * 0.1 / DistanceMax.value).tointeger() : 0)
 let maxMinLaunchDist = @() {
-  watch = IsAamLaunchZoneVisible
+  watch = [IsAamLaunchZoneVisible, AirTargetCannonMode]
   size = flex()
-  children = IsAamLaunchZoneVisible.value ?
+  children = IsAamLaunchZoneVisible.value && !AirTargetCannonMode.value ?
    [
-     @(){
+     @() {
        watch = minAamDistMarkPos
        size = [pw(180), ph(4)]
        pos = [pw(100), ph(minAamDistMarkPos.value - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.value
      },
-     @(){
+     @() {
        watch = maxAamDistMarkPos
        size = [pw(180), ph(4)]
        pos = [pw(100), ph(maxAamDistMarkPos.value - 2)]
@@ -302,7 +308,7 @@ let maxMinLaunchDist = @() {
    []
 }
 
-let radarDistGrid = @(){
+let radarDistGrid = @() {
   size = [pw(1.5), ph(40)]
   pos = [pw(24), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -346,7 +352,7 @@ let curCCIPDist = @() {
   ]
 }
 
-let ccipDistGrid = @(){
+let ccipDistGrid = @() {
   size = [pw(1.5), ph(40)]
   pos = [pw(24), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -375,7 +381,7 @@ let ccipDistGrid = @(){
   ]
 }
 
-let radarElevGrid = @(){
+let radarElevGrid = @() {
   size = [pw(1.5), ph(40)]
   pos = [pw(74), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -467,12 +473,12 @@ let function createTargetDist(index) {
     ]
   }
 }
-let radarReticle = @(){
+let radarReticle = @() {
   watch = RadarTargetPosValid
   size = flex()
   children = RadarTargetPosValid.value ?
   [
-    @(){
+    @() {
       size = [pw(3), ph(3)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -491,11 +497,10 @@ let radarReticle = @(){
   ] : null
 }
 
-let RadarTargetValid = Computed(@() RadarTargetDist.value > 0.0)
-let radar = @(){
-  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirCannonMode]
+let radar = @() {
+  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode]
   size = flex()
-  children = IsRadarVisible.value && !CCIPMode.value && !AirCannonMode.value ? [
+  children = IsRadarVisible.value && !CCIPMode.value && !AirNoTargetCannonMode.value ? [
     (!Irst.value || RadarTargetValid.value ? radarDistGrid : null),
     (!Irst.value || RadarTargetValid.value ? radarMaxDist : null),
     (!Irst.value && !RadarTargetValid.value ? radarElevGrid : null),
@@ -540,7 +545,7 @@ let function getRadarSubMode() {
   return "ОБЗ"
 }
 
-let currentMode = @(){
+let currentMode = @() {
   watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode]
   size = SIZE_TO_CONTENT
   pos = [pw(15), ph(72)]
@@ -551,7 +556,7 @@ let currentMode = @(){
   text = AirCannonMode.value ? "ВПУ" : (CCIPMode.value ? "ЗМЛ" : (IsRadarVisible.value ? getRadarMode() : "ФИ0"))
 }
 
-let currentSubMode = @(){
+let currentSubMode = @() {
   watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode]
   size = SIZE_TO_CONTENT
   pos = [pw(15), ph(66)]
@@ -562,7 +567,7 @@ let currentSubMode = @(){
   text = getRadarSubMode()
 }
 
-let ccipReticle = @(){
+let ccipReticle = @() {
   size = [pw(3), ph(3)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -580,7 +585,37 @@ let ccipReticle = @(){
   }
 }
 
-let ccip = @(){
+let TargetDistAngle = Computed(@() cvt(RadarTargetDist.value, 0, 1200, -90, 270).tointeger())
+let airGunCcrpMark = @() {
+  watch = [AirTargetCannonMode, TargetPosValid]
+  size = flex()
+  children = [
+    (AirTargetCannonMode.value && TargetPosValid.value ?
+    @(){
+      watch = TargetDistAngle
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(3), ph(3)]
+      color = IlsColor.value
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_SECTOR, 0, 0, 100, 100, -89, TargetDistAngle.value],
+        [VECTOR_LINE, -80, 0, -30, 0],
+        [VECTOR_LINE, 80, 0, 30, 0],
+        [VECTOR_LINE, 0, 80, 0, 30],
+        [VECTOR_LINE, 0, -80, 0, -30]
+      ]
+      behavior = Behaviors.RtPropUpdate
+      update = @() {
+        transform = {
+          translate = TargetPos.value
+        }
+      }
+    } : null)
+  ]
+}
+
+let ccip = @() {
   watch = CCIPMode
   size = flex()
   children = CCIPMode.value ? [
@@ -594,22 +629,22 @@ let ccip = @(){
 }
 
 let shellName = @() {
-  watch = [IlsColor, CurWeaponName, CannonMode]
+  watch = [IlsColor, CurWeaponName, CannonMode, AirCannonMode]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(75), ph(72)]
   color = IlsColor.value
   fontSize = 35
   font = Fonts.ils31
-  text = !CannonMode.value ? (BombingMode.value || BombCCIPMode.value ? "АБ" : loc(CurWeaponName.value)) : ""
+  text = !CannonMode.value && !AirCannonMode.value ? (BombingMode.value || BombCCIPMode.value ? "АБ" : loc(CurWeaponName.value)) : ""
 }
 
-let aamReticle = @(){
+let aamReticle = @() {
   watch = IlsTrackerVisible
   size = flex()
   children = IlsTrackerVisible.value ?
   [
-    @(){
+    @() {
       size = [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -630,10 +665,10 @@ let aamReticle = @(){
 
 let ShellPart = Computed(@() ceil(ShellCnt.value / 37.5).tointeger())
 let impactLine = @() {
-  watch = AirCannonMode
+  watch = [AirCannonMode, AirNoTargetCannonMode]
   size = flex()
   children = AirCannonMode.value ? [
-    bulletsImpactLine,
+    (AirNoTargetCannonMode.value ? bulletsImpactLine : null),
     {
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXT
@@ -654,7 +689,7 @@ let impactLine = @() {
         [VECTOR_RECTANGLE, 0, 0, 100, 100]
       ]
     },
-    @(){
+    @() {
       watch = ShellPart
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXT
@@ -679,7 +714,8 @@ let function Ils31(width, height) {
       ccip,
       shellName,
       aamReticle,
-      impactLine
+      impactLine,
+      airGunCcrpMark
     ]
   }
 }

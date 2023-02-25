@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -14,8 +15,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
   unitId = null
 
   // Creates a real skin decorator, with unitId in name
-  function addResourcesByUnitId(v_unitId)
-  {
+  function addResourcesByUnitId(v_unitId) {
     if (this.unitId)
       return
     this.unitId = v_unitId

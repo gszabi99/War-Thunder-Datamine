@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -122,8 +123,7 @@ enums.addTypesByGlobalName("g_ww_log_type", {
     }
 }, null, "name")
 
-::g_ww_log_type.getLogTypeByName <- function getLogTypeByName(logName)
-{
+::g_ww_log_type.getLogTypeByName <- function getLogTypeByName(logName) {
   return enums.getCachedType(
     "name",
     logName,

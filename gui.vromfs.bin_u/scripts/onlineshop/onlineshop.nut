@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -31,8 +32,7 @@ let payMethodsCfg = [
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 
-::gui_handlers.OnlineShopHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.OnlineShopHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navOnlineShop.blk"
@@ -51,14 +51,12 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
   task = ""
   needFullUpdate = false
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.scene)
       return this.goBack()
 
     ENTITLEMENTS_PRICE.checkUpdate(
-      Callback(function()
-      {
+      Callback(function() {
         this.reinitScreen()
       }, this)
       Callback(function(_result) { this.reinitScreen() }, this)
@@ -70,8 +68,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     this.reinitScreen()
   }
 
-  function reinitScreen(params = {})
-  {
+  function reinitScreen(params = {}) {
     if (!checkObj(this.scene))
       return this.goBack()
 
@@ -95,8 +92,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
     local first = true
     let numBlocks = eblk.blockCount()
-    for (local i = 0; i < numBlocks; i++)
-    {
+    for (local i = 0; i < numBlocks; i++) {
       let ib = eblk.getBlock(i)
       let name = ib.getBlockName()
       if (this.chapter == null && isInArray(ib?.chapter, this.skipChapters))
@@ -111,8 +107,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       }
 
       //load data from eBlk
-      for (local j = 0; j < ib.paramCount(); j++)
-      {
+      for (local j = 0; j < ib.paramCount(); j++) {
         let paramName = ib.getParamName(j)
         if (!(paramName in this.goods[name]))
           this.goods[name][paramName] <- ib.getParamValue(j)
@@ -121,11 +116,10 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       if (ib?.bundle)
         this.bundles[name] <- ib.bundle % "item"
 
-      foreach(param in ["entitlementGift", "aircraftGift", "showEntAsGift"])
-      {
+      foreach (param in ["entitlementGift", "aircraftGift", "showEntAsGift"]) {
         let arr = []
         let list = ib % param
-        foreach(l in list)
+        foreach (l in list)
           if (!isInArray(l, arr))
             arr.append(l)
         this.goods[name][param] <- arr
@@ -141,16 +135,13 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
         this.groupCost[this.goods[name].group] <- getPricePerEntitlement(this.goods[name])
 
       if (this.useRowVisual) {
-        rowsView.append(this.getRowView(this.goods[name], isGold, (idx%2 == 0) ? "yes" :"no"))
+        rowsView.append(this.getRowView(this.goods[name], isGold, (idx % 2 == 0) ? "yes" : "no"))
         if (this.goods[name]?.chapterImage)
           this.chImages[this.goods[name].chapter] <- this.goods[name].chapterImage
       }
-      else
-      {
-        if (this.goods[name]?.chapter)
-        {
-          if (this.goods[name].chapter != curChapter)
-          {
+      else {
+        if (this.goods[name]?.chapter) {
+          if (this.goods[name].chapter != curChapter) {
             curChapter = this.goods[name].chapter
             let view = {
               itemTag = "chapter_item_unlocked"
@@ -168,7 +159,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
           itemIcon = this.getItemIcon(name)
           id = name
           isSelected = first
-          discountText = discount > 0? ("-" + discount + "%") : null
+          discountText = discount > 0 ? ("-" + discount + "%") : null
         }
         data += ::handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
       }
@@ -177,8 +168,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     }
 
     // Buy Eagles, Lions, Premium Account.
-    if (this.useRowVisual)
-    {
+    if (this.useRowVisual) {
       this.guiScene.setUpdatesEnabled(false, false)
 
       this.scene.findObject("wnd_update").setUserData(this)
@@ -201,22 +191,19 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       this.guiScene.setUpdatesEnabled(true, true)
       this.guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, 0))
     }
-    else
-    {// Buy Campaigns & Bonuses.
+    else { // Buy Campaigns & Bonuses.
       this.scene.findObject("chapter_update").setUserData(this)
       this.scene.findObject("chapter_name").setValue(loc("mainmenu/btnOnlineShop"))
 
       let listObj = this.scene.findObject("items_list")
       this.guiScene.replaceContentFromText(this.scene.findObject("items_list"), data, data.len(), this)
 
-      foreach(name, item in this.goods)
-      {
+      foreach (name, item in this.goods) {
         let obj = listObj.findObject("txt_" + name)
-        if (obj)
-        {
+        if (obj) {
           local text = getEntitlementName(item)
           let priceText = this.getItemPriceText(name)
-          if (priceText!="")
+          if (priceText != "")
             text = format("(%s) %s", priceText, text)
           obj.setValue(text)
         }
@@ -234,28 +221,24 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     this.popCloseFunc()
   }
 
-  function popCloseFunc()
-  {
+  function popCloseFunc() {
     if (!this.afterCloseFunc)
       return
     this.afterCloseFunc()
     this.afterCloseFunc = null
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     this.popCloseFunc()
   }
 
-  function getItemPriceText(name)
-  {
+  function getItemPriceText(name) {
     if (name in this.goods)
       return getEntitlementPrice(this.goods[name])
     return ""
   }
 
-  function getItemIcon(name)
-  {
+  function getItemIcon(name) {
     if ((name in this.goods) && isBoughtEntitlement(this.goods[name]))
       return "#ui/gameuiskin#favorite.png"
     return null
@@ -266,14 +249,14 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
     local image = ""
     if (product != null)
-      image = ("image" in product)? $"#ui/onlineShop/{product.image}.ddsx" : ""
+      image = ("image" in product) ? $"#ui/onlineShop/{product.image}.ddsx" : ""
     else
-      image = (productId in this.chImages)? $"#ui/onlineShop/{this.chImages[productId]}.ddsx" : ""
+      image = (productId in this.chImages) ? $"#ui/onlineShop/{this.chImages[productId]}.ddsx" : ""
     this.scene.findObject("item_desc_header_img")["background-image"] = image
 
     this.priceText = this.getItemPriceText(productId)
     this.showSceneBtn("btn_buy_online", product != null && !isBoughtEntitlement(product))
-    this.scene.findObject("btn_buy_online").setValue(loc("mainmenu/btnBuy") + ((this.priceText=="")? "" : format(" (%s)", this.priceText)))
+    this.scene.findObject("btn_buy_online").setValue(loc("mainmenu/btnBuy") + ((this.priceText == "") ? "" : format(" (%s)", this.priceText)))
 
     local discountText = ""
     let discount = ::g_discount.getEntitlementDiscount(product.name)
@@ -282,8 +265,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     this.scene.findObject("buy_online-discount").setValue(discountText)
   }
 
-  function onItemSelect()
-  {
+  function onItemSelect() {
     let listObj = this.scene.findObject("items_list")
     let value = listObj.getValue()
     if (value < 0 || value >= listObj.childrenCount())
@@ -295,12 +277,10 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     this.updateProductInfo(product, this.task)
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     if (!::is_app_active() || ::steam_is_overlay_active() || ::is_builtin_browser_active())
       this.needFullUpdate = true
-    else if (this.needFullUpdate && ::is_online_available())
-    {
+    else if (this.needFullUpdate && ::is_online_available()) {
       this.needFullUpdate = false
       this.taskId = ::update_entitlements_limited()
       if (this.taskId < 0)
@@ -308,8 +288,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/checking"))
-      this.afterSlotOp = function()
-      {
+      this.afterSlotOp = function() {
         if (!checkObj(this.scene))
           return
 
@@ -320,32 +299,29 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     }
   }
 
-  function goForwardIfPurchase()
-  {
+  function goForwardIfPurchase() {
     let taskId = ::purchase_entitlement(this.task)
     let taskOptions = {
       showProgressBox = true
     }
-    let taskSuccessCallback = Callback(function ()
-      {
+    let taskSuccessCallback = Callback(function () {
         this.goForward(this.startFunc)
       }, this)
     ::g_tasker.addTask(taskId, taskOptions, taskSuccessCallback)
   }
 
-  function onStart()  //onBuy
-  {
+  function onStart() {  //onBuy
     let product = this.goods?[this.task]
     if (product == null || isBoughtEntitlement(product))
       return
     if (product?.onlinePurchase ?? false)
       return this.onOnlinePurchase(this.task)
 
-    let costGold = "goldCost" in product? ::get_entitlement_cost_gold(product.name) : 0
+    let costGold = "goldCost" in product ? ::get_entitlement_cost_gold(product.name) : 0
     let price = ::Cost(0, costGold)
     let msgText = ::warningIfGold(
       loc("onlineShop/needMoneyQuestion",
-        {purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance()}),
+        { purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance() }),
       price)
     let curIdx = this.scene.findObject("items_list").getValue()
     let onCancel = @() ::move_mouse_on_child(this.scene.findObject("items_list"), curIdx)
@@ -360,8 +336,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     )
   }
 
-  function onOnlinePurchase(itemId)
-  {
+  function onOnlinePurchase(itemId) {
     if (needShowGuestEmailRegistration()) {
       showGuestEmailRegistration()
       return
@@ -373,9 +348,8 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
     let items = []
     local selItem = null
-    foreach(method in payMethodsCfg)
-      if (payMethods & method.id)
-      {
+    foreach (method in payMethodsCfg)
+      if (payMethods & method.id) {
         let payMethodId = method.id
         let name = "yuNetwork/payMethod/" + method.name
         items.append({
@@ -394,32 +368,29 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     })
     selItem = selItem || name
 
-    ::gui_modal_payment({items = items, owner = this, selItem = selItem, cancel_fn = function() {}})
+    ::gui_modal_payment({ items = items, owner = this, selItem = selItem, cancel_fn = function() {} })
   }
 
-  function onYuplayPurchase(itemId, payMethod, nameLocId)
-  {
+  function onYuplayPurchase(itemId, payMethod, nameLocId) {
     let msgText = loc("onlineShop/needMoneyQuestion/onlinePaymentSystem", {
       purchase = colorize("activeTextColor", getEntitlementName(this.goods[itemId])),
       paymentSystem = colorize("userlogColoredText", loc(nameLocId))
     })
     this.msgBox("yuplay_purchase_ask", msgText,
       [ ["yes", @() this.doYuplayPurchase(itemId, payMethod) ],
-        ["no", function(){}]
-      ], "yes", { cancel_fn = function(){}})
+        ["no", function() {}]
+      ], "yes", { cancel_fn = function() {} })
   }
 
-  function doYuplayPurchase(itemId, payMethod)
-  {
+  function doYuplayPurchase(itemId, payMethod) {
     let guid = bundlesShopInfo.value?[itemId].guid ?? ""
     if (guid == "")
       logerr($"Error: not found guid for {itemId}")
 
-    let response = (guid=="")? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
-    if (response != YU2_OK)
-    {
+    let response = (guid == "") ? -1 : ::yuplay2_buy_entitlement(guid, payMethod)
+    if (response != YU2_OK) {
       let errorText = ::get_yu2_error_text(response)
-      this.msgBox("errorMessageBox", errorText, [["ok", function(){}]], "ok")
+      this.msgBox("errorMessageBox", errorText, [["ok", function() {}]], "ok")
       log($"yuplay2_buy_entitlement have returned {response} with task = {itemId}, guid = {guid}, payMethod = {payMethod}")
       return
     }
@@ -428,16 +399,14 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
     this.msgBox("purchase_done",
       format(loc("userlog/buy_entitlement"), getEntitlementName(this.goods[itemId])),
-      [["ok", @() null]], "ok", { cancel_fn = @() null})
+      [["ok", @() null]], "ok", { cancel_fn = @() null })
   }
 
-  function onApply(_obj)
-  {
+  function onApply(_obj) {
     this.onStart()
   }
 
-  function onRowBuy(obj)
-  {
+  function onRowBuy(obj) {
     if (!obj)
       return
 
@@ -450,8 +419,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     if (!listObj)
       return
     for (local idx = 0; idx < listObj.childrenCount(); idx++)
-      if (listObj.getChild(idx).id == id)
-      {
+      if (listObj.getChild(idx).id == id) {
         listObj.setValue(idx)
         this.onItemSelect()
 
@@ -460,25 +428,21 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       }
   }
 
-  function updateItemIcon(name)
-  {
+  function updateItemIcon(name) {
     if (this.useRowVisual)
       return
 
     let obj = this.scene.findObject("items_list").findObject(name)
     let curIcon = this.getItemIcon(name)
-    if (curIcon && obj)
-    {
+    if (curIcon && obj) {
       let medalObj = obj.findObject("medal_icon")
       if (medalObj)
         medalObj["background-image"] = curIcon
     }
   }
 
-  function goForward(_startFunc)  //no forward from this wnd, only purchase finished.
-  {
-    if (checkObj(this.scene))
-    {
+  function goForward(_startFunc) {  //no forward from this wnd, only purchase finished.
+    if (checkObj(this.scene)) {
       this.onItemSelect()
       this.updateItemIcon(this.task)
       ::update_gamercards()
@@ -486,8 +450,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     ::broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = this.goods?[this.task] ?? {} })
   }
 
-  function onEventModalWndDestroy(_params)
-  {
+  function onEventModalWndDestroy(_params) {
     if (this.isSceneActiveNoModals())
       ::move_mouse_on_child_by_value(this.getObj("items_list"))
   }
@@ -504,15 +467,15 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     let productInfo = bundlesShopInfo.value?[item.name]
 
     if (additionalAmount > 0)
-      savingText = loc("ui/parentheses", {text = loc("charServer/entitlement/firstBuy")})
+      savingText = loc("ui/parentheses", { text = loc("charServer/entitlement/firstBuy") })
     else if (productInfo?.discount_mul)
-      savingText = format(loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul)*100)
+      savingText = format(loc("charServer/entitlement/discount"), (1.0 - productInfo.discount_mul) * 100)
     else if (item?.group && item.group in this.groupCost) {
       let itemPrice = getEntitlementPriceFloat(item)
       let defItemPrice = this.groupCost[item.group]
       if (itemPrice > 0 && defItemPrice && (!isGold || !::steam_is_running())) {
         let calcAmount = amount + additionalAmount
-        local saving = (1 - ((itemPrice * (1 - discount*0.01)) / (calcAmount * defItemPrice))) * 100
+        local saving = (1 - ((itemPrice * (1 - discount * 0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()
         if (saving >= MIN_DISPLAYED_PERCENT_SAVING)
           savingText = format(loc("charServer/entitlement/discount"), saving)
@@ -528,11 +491,11 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     else {
       amount = amount.tointeger()
 
-      let originAmount = isGold? ::Cost(0, amount) : ::Cost(amount, 0)
+      let originAmount = isGold ? ::Cost(0, amount) : ::Cost(amount, 0)
       local addString = ""
       if (additionalAmount > 0) {
-        let addAmount = isGold? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
-        addString = loc("ui/parentheses/space", {text = "+" + addAmount.tostring()})
+        let addAmount = isGold ? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
+        addString = loc("ui/parentheses/space", { text = "+" + addAmount.tostring() })
       }
 
       amountText = originAmount.tostring() + addString
@@ -545,13 +508,12 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       amount = amountText
       savingText = savingText
       cost = this.getItemPriceText(item.name)
-      discount = discount > 0 ? $"-{discount}%": null
+      discount = discount > 0 ? $"-{discount}%" : null
     }
   }
 }
 
-::gui_handlers.OnlineShopRowHandler <- class extends ::gui_handlers.OnlineShopHandler
-{
+::gui_handlers.OnlineShopRowHandler <- class extends ::gui_handlers.OnlineShopHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneNavBlkName = null
@@ -565,7 +527,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       let expire = ::entitlement_expires_in(realname == "PremiumAccount"
         ? ::shop_get_premium_account_ent_name()
         : realname)
-      if (expire>0)
+      if (expire > 0)
         descText = "".concat(descText,
           colorize("chapterUnlockedColor",
             $"{loc("subscription/activeTime")}{loc("ui/colon")}{time.getExpireText(expire)}"))
@@ -575,7 +537,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
   function reinitScreen(params = {}) {
     base.reinitScreen(params)
-    foreach(productId, product in this.goods) {
+    foreach (productId, product in this.goods) {
       this.updateProductInfo(product, productId) //for rows visual the same description for all items
       break
     }

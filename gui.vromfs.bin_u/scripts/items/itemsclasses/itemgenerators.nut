@@ -1,10 +1,13 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 let { round } = require("math")
+let { set_rnd_seed } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
 let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
@@ -31,8 +34,7 @@ local ItemGenerator = class {
 
   _contentUnpacked = null
 
-  constructor(itemDefDesc)
-  {
+  constructor(itemDefDesc) {
     this.id = itemDefDesc.itemdefid
     this.genType = itemDefDesc?.type ?? ""
     this.exchange = itemDefDesc?.exchange ?? ""
@@ -49,22 +51,18 @@ local ItemGenerator = class {
   _exchangeRecipes = null
   _exchangeRecipesUpdateTime = 0
 
-  function getCraftTime()
-  {
+  function getCraftTime() {
     local result = this.rawCraftTime
-    if (this.lifetimeModifier != null)
-    {
+    if (this.lifetimeModifier != null) {
       let mul = this.lifetimeModifier.calculate()
       result = max(1, round(result * mul))
     }
     return result
   }
 
-  function getRecipes(needUpdateRecipesList = true)
-  {
+  function getRecipes(needUpdateRecipesList = true) {
     if (!this._exchangeRecipes
-      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.extInventoryUpdateTime))
-    {
+      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.extInventoryUpdateTime)) {
       let generatorId = this.id
       let generatorCraftTime = this.getCraftTime()
       let parsedRecipes = inventoryClient.parseRecipesString(this.exchange)
@@ -86,11 +84,9 @@ local ItemGenerator = class {
 
       // Adding additional recipes
       local hasAdditionalRecipes = false
-      foreach (itemBlk in workshop.getItemAdditionalRecipesById(this.id))
-      {
+      foreach (itemBlk in workshop.getItemAdditionalRecipesById(this.id)) {
         foreach (paramName in ["fakeRecipe", "trueRecipe"])
-          foreach (itemdefId in itemBlk % paramName)
-          {
+          foreach (itemdefId in itemBlk % paramName) {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
             let gen = collection?[itemdefId]
             let additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
@@ -109,10 +105,9 @@ local ItemGenerator = class {
           }
         break
       }
-      if (hasAdditionalRecipes)
-      {
+      if (hasAdditionalRecipes) {
         local minIdx = this._exchangeRecipes[0].idx
-        ::math.init_rnd(::my_user_id_int64 + this.id)
+        set_rnd_seed(::my_user_id_int64 + this.id)
         this._exchangeRecipes = ::u.shuffle(this._exchangeRecipes)
         foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++
@@ -149,43 +144,37 @@ local ItemGenerator = class {
     return filteredRecipes
   }
 
-  function getRecipesWithComponent(componentItemdefId)
-  {
+  function getRecipesWithComponent(componentItemdefId) {
     return ::u.filter(this.getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
   }
 
-  function _unpackContent(contentRank = null, fromGenId = null)
-  {
+  function _unpackContent(contentRank = null, fromGenId = null) {
     this._contentUnpacked = []
     let parsedBundles = inventoryClient.parseRecipesString(this.bundle)
     let trophyWeightsBlk = ::get_game_settings_blk()?.visualizationTrophyWeights
     let trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
     foreach (set in parsedBundles)
-      foreach (cfg in set.components)
-      {
+      foreach (cfg in set.components) {
         let item = ::ItemsManager.findItemById(cfg.itemdefid)
         let generator = !item ? collection?[cfg.itemdefid] : null
         let rank = contentRank != null ? min(cfg.quantity, contentRank) : cfg.quantity
-        if (item)
-        {
+        if (item) {
           if (item.isHiddenItem())
             continue
-          let b = ::DataBlock()
+          let b = DataBlock()
           b.item =  item.id
           b.rank = rank
           b.fromGenId = fromGenId ?? this.id
           if (this.tags?.showFreq)
             b.dropChance = this.tags.showFreq.tointeger() / 100.0
           if (trophyWeightsBlk != null && trophyWeightsBlockCount > 0
-            && rank <= trophyWeightsBlockCount)
-          {
+            && rank <= trophyWeightsBlockCount) {
             let weightBlock = trophyWeightsBlk.getBlock(rank - 1)
             b.weight = weightBlock.getBlockName()
           }
           this._contentUnpacked.append(b)
         }
-        else if (generator)
-        {
+        else if (generator) {
           let content = generator.getContent(rank, fromGenId ?? cfg.itemdefid)
           this.hasHiddenItems = this.hasHiddenItems || generator.hasHiddenItems
           this.hiddenTopPrizeParams = this.hiddenTopPrizeParams || generator.hiddenTopPrizeParams
@@ -198,15 +187,13 @@ local ItemGenerator = class {
     this.hiddenTopPrizeParams = isBundleHidden ? this.tags : this.hiddenTopPrizeParams
   }
 
-  function getContent(contentRank = null, fromGenId = null)
-  {
+  function getContent(contentRank = null, fromGenId = null) {
     if (!this._contentUnpacked)
       this._unpackContent(contentRank, fromGenId)
     return this._contentUnpacked
   }
 
-  function isHiddenTopPrize(prize)
-  {
+  function isHiddenTopPrize(prize) {
     let content = this.getContent()
     if (!this.hasHiddenItems || !prize?.item)
       return false
@@ -216,19 +203,17 @@ local ItemGenerator = class {
     return true
   }
 
-  function getRecipeByUid(uid)
-  {
+  function getRecipeByUid(uid) {
     return ::u.search(this.getRecipes(), @(r) r.uid == uid)
   }
 
-  function markAllRecipes()
-  {
+  function markAllRecipes() {
     let recipes = this.getRecipes()
     if (!ExchangeRecipes.hasFakeRecipes(recipes))
       return
 
     let markedRecipes = []
-    foreach(recipe in recipes)
+    foreach (recipe in recipes)
       if (recipe.markRecipe(false, false))
         markedRecipes.append(recipe.uid)
 

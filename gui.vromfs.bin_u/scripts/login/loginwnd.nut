@@ -1,3 +1,4 @@
+//-file:plus-string
 
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
@@ -13,10 +14,10 @@ let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
-let { setGuiOptionsMode } = require_native("guiOptions")
+let { setGuiOptionsMode } = require("guiOptions")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { getDistr } = require("auth_wt")
-let {dgs_get_settings} = require("dagor.system")
+let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
@@ -41,8 +42,7 @@ let function setDbgGuestLoginIdPrefix(prefix) {
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
-::gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler
-{
+::gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   sceneBlkName = loginWndBlkPath.value
 
   check2StepAuthCode = false
@@ -68,8 +68,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     "loginbox_password"
   ]
 
-  function initScreen()
-  {
+  function initScreen() {
     animBgLoad()
     setVersionText()
     ::setProjectAwards(this)
@@ -107,8 +106,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       alObj.setValue(lp.autoSave & AUTO_SAVE_FLG_LOGIN)
 
     let spObj = this.scene.findObject("loginbox_autosave_password")
-    if (checkObj(spObj))
-    {
+    if (checkObj(spObj)) {
       spObj.show(!isVietnamese)
       spObj.setValue(lp.autoSave & AUTO_SAVE_FLG_PASS)
       spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 && !isVietnamese)
@@ -138,8 +136,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     let autoLoginEnable = (lp.autoSave & saveLoginAndPassMask) == saveLoginAndPassMask
     local autoLogin = (this.initial_autologin && autoLoginEnable) || (dgs_get_settings()?.yunetwork.forceAutoLogin ?? false)
     let autoLoginObj = this.scene.findObject("loginbox_autologin")
-    if (checkObj(autoLoginObj))
-    {
+    if (checkObj(autoLoginObj)) {
       autoLoginObj.show(!isVietnamese)
       autoLoginObj.enable(autoLoginEnable)
       autoLoginObj.setValue(autoLogin)
@@ -147,23 +144,20 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     this.showSceneBtn("links_block", !::is_platform_shield_tv())
 
-    if ("dgs_get_argv" in getroottable())
-    {
+    if ("dgs_get_argv" in getroottable()) {
       let s = ::dgs_get_argv("stoken")
       if (!::u.isEmpty(s))
         lp.stoken <- s
     }
     else if ("dgs_argc" in getroottable())
-      for (local i = 1; i < ::dgs_argc(); i++)
-      {
+      for (local i = 1; i < ::dgs_argc(); i++) {
         let str = ::dgs_argv(i);
         let idx = str.indexof("-stoken:")
         if (idx != null)
-          lp.stoken <- str.slice(idx+8)
+          lp.stoken <- str.slice(idx + 8)
       }
 
-    if (("stoken" in lp) && lp.stoken != null && lp.stoken != "")
-    {
+    if (("stoken" in lp) && lp.stoken != null && lp.stoken != "") {
       this.stoken = lp.stoken
       this.doLoginDelayed()
       return
@@ -171,8 +165,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     let disableAutoRelogin = getroottable()?.disable_autorelogin_once ?? false
     autoLogin = autoLogin && !disableAutoRelogin
-    if (autoLogin)
-    {
+    if (autoLogin) {
       this.doLoginDelayed()
       return
     }
@@ -180,22 +173,19 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     ::select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     ::webauth_stop()
     ::enable_keyboard_layout_change_tracking(false)
     ::enable_keyboard_locks_change_tracking(false)
   }
 
-  function setDisableSslCertBox(value)
-  {
+  function setDisableSslCertBox(value) {
     let dcObj = this.showSceneBtn("loginbox_disable_ssl_cert", value)
     if (checkObj(dcObj))
       dcObj.setValue(value)
   }
 
-  function checkShardingCircuits()
-  {
+  function checkShardingCircuits() {
     local defValue = 0
     let networkBlk = ::get_network_block()
     let avCircuits = networkBlk.getBlockByName(this.availableCircuitsBlockName)
@@ -206,19 +196,16 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
                     text = loc("circuit/" + configCircuitName)
                  }]
 
-    if (avCircuits && avCircuits.paramCount() > 0)
-    {
+    if (avCircuits && avCircuits.paramCount() > 0) {
       local defaultCircuit = loc("default_circuit", "")
       if (defaultCircuit == "")
         defaultCircuit = configCircuitName
 
       this.shardItems = []
-      for(local i = 0; i < avCircuits.paramCount(); ++i)
-      {
+      for (local i = 0; i < avCircuits.paramCount(); ++i) {
         let param = avCircuits.getParamName(i)
         let value = avCircuits.getParamValue(i)
-        if (param == this.paramName && type(value) == "string")
-        {
+        if (param == this.paramName && type(value) == "string") {
           if (value == defaultCircuit)
             defValue = i
 
@@ -232,16 +219,14 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     let show = this.shardItems.len() > 1
     let shardObj = this.showSceneBtn("sharding_block", show)
-    if (show && checkObj(shardObj))
-    {
+    if (show && checkObj(shardObj)) {
       let dropObj = shardObj.findObject("sharding_dropright_block")
       let shardData = ::create_option_combobox("sharding_list", this.shardItems, defValue, null, true)
       this.guiScene.replaceContentFromText(dropObj, shardData, shardData.len(), this)
     }
   }
 
-  function onChangeAutosave()
-  {
+  function onChangeAutosave() {
     if (!this.isValid())
       return
 
@@ -275,8 +260,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       autoLoginObj.setValue(false)
   }
 
-  function initLanguageSwitch()
-  {
+  function initLanguageSwitch() {
     let canSwitchLang = ::canSwitchGameLocalization()
     this.showSceneBtn("language_selector", canSwitchLang)
     if (!canSwitchLang)
@@ -290,8 +274,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         lang = l
 
     let objLangLabel = this.scene.findObject("label_language")
-    if (checkObj(objLangLabel))
-    {
+    if (checkObj(objLangLabel)) {
       local title = loc("profile/language")
       let titleEn = loc("profile/language/en")
       title += (title == titleEn ? "" : loc("ui/parentheses/space", { text = titleEn })) + ":"
@@ -305,8 +288,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       objLangName.setValue(lang.title)
   }
 
-  function onPopupLanguages(obj)
-  {
+  function onPopupLanguages(obj) {
     if (::gui_handlers.ActionsList.hasActionsListOnObject(obj))
       return this.onClosePopups()
 
@@ -320,8 +302,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       closeOnUnhover = true
       actions = []
     }
-    for (local i = 0; i < this.localizationInfo.len(); i++)
-    {
+    for (local i = 0; i < this.localizationInfo.len(); i++) {
       let lang = this.localizationInfo[i]
       menu.actions.append({
         actionName  = lang.id
@@ -334,15 +315,13 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     ::gui_handlers.ActionsList.open(obj, menu)
   }
 
-  function onClosePopups()
-  {
+  function onClosePopups() {
     let obj = this.scene.findObject("btn_language")
     if (checkObj(obj))
       ::gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
   }
 
-  function onChangeLanguage(langId)
-  {
+  function onChangeLanguage(langId) {
     let no_dump_login = this.scene.findObject("loginbox_username").getValue() || ""
     let no_dump_pass = this.scene.findObject("loginbox_password").getValue() || ""
     let isRemoteComp = this.scene.findObject("loginbox_remote_comp").getValue()
@@ -372,14 +351,12 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       shardingListObj.setValue(shard)
   }
 
-  function requestLogin(no_dump_login)
-  {
+  function requestLogin(no_dump_login) {
     return this.requestLoginWithCode(no_dump_login, "");
   }
 
-  function requestLoginWithCode(no_dump_login, code)
-  {
-    statsd.send_counter("sq.game_start.request_login", 1, {login_type = "regular"})
+  function requestLoginWithCode(no_dump_login, code) {
+    statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
     return ::check_login_pass(no_dump_login,
                               ::get_object_value(this.scene, "loginbox_password", ""),
@@ -392,10 +369,8 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
                              )
   }
 
-  function continueLogin(no_dump_login)
-  {
-    if (this.shardItems)
-    {
+  function continueLogin(no_dump_login) {
+    if (this.shardItems) {
       if (this.shardItems.len() == 1)
         ::set_network_circuit(this.shardItems[0].item)
       else if (this.shardItems.len() > 1)
@@ -429,8 +404,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     ::g_login.addState(LOGIN_STATE.AUTHORIZED)
   }
 
-  function onOk()
-  {
+  function onOk() {
     if (!this.isLoginEditsFilled())
       return
 
@@ -439,56 +413,48 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     this.doLoginWaitJob()
   }
 
-  function doLoginDelayed()
-  {
+  function doLoginDelayed() {
     this.isLoginRequestInprogress = true
     this.guiScene.performDelayed(this, this.doLoginWaitJob)
   }
 
-  function doLoginWaitJob()
-  {
+  function doLoginWaitJob() {
     ::disable_autorelogin_once <- false
     let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
     local result = this.requestLogin(no_dump_login)
     this.proceedAuthorizationResult(result, no_dump_login)
   }
 
-  function onSteamAuthorization(steamSpecCode = null)
-  {
+  function onSteamAuthorization(steamSpecCode = null) {
     this.isSteamAuth = true
     steamSpecCode = steamSpecCode || "steam"
     this.isLoginRequestInprogress = true
     ::disable_autorelogin_once <- false
-    statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam"})
+    statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam" })
     log("Steam Login: check_login_pass with code " + steamSpecCode)
     let result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
     this.proceedAuthorizationResult(result, "")
   }
 
-  function onSsoAuthorization()
-  {
+  function onSsoAuthorization() {
     let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
     let no_dump_url = ::webauth_get_url(no_dump_login)
     openUrl(no_dump_url)
     ::browser_set_external_url(no_dump_url)
   }
 
-  function onSsoAuthorizationComplete(params)
-  {
+  function onSsoAuthorizationComplete(params) {
     ::close_browser_modal()
 
-    if (params.success)
-    {
+    if (params.success) {
       let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
       ::load_local_settings()
       this.continueLogin(no_dump_login);
     }
   }
 
-  function onEventProceedGetTwoStepCode(data)
-  {
-    if (!this.isValid() || this.isLoginRequestInprogress)
-    {
+  function onEventProceedGetTwoStepCode(data) {
+    if (!this.isValid() || this.isLoginRequestInprogress) {
       return
     }
 
@@ -496,22 +462,19 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     let code = data.code
     let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
 
-    if (result == YU2_TIMEOUT && this.requestGet2stepCodeAtempt-- > 0)
-    {
+    if (result == YU2_TIMEOUT && this.requestGet2stepCodeAtempt-- > 0) {
       this.doLoginDelayed()
       return
     }
 
-    if (result == YU2_OK)
-    {
+    if (result == YU2_OK) {
       this.isLoginRequestInprogress = true
       let loginResult = this.requestLoginWithCode(no_dump_login, code)
       this.proceedAuthorizationResult(loginResult, no_dump_login)
     }
   }
 
-  function needTrySteamLink()
-  {
+  function needTrySteamLink() {
     return ::steam_is_running()
            && hasFeature("AllowSteamAccountLinking")
            && ::load_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID) == null
@@ -525,21 +488,18 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     }, @(_res) null)
   }
 
-  function proceedAuthorizationResult(result, no_dump_login)
-  {
+  function proceedAuthorizationResult(result, no_dump_login) {
     this.isLoginRequestInprogress = false
     if (!checkObj(this.scene)) //check_login_pass is not instant
       return
 
     this.was_using_stoken = (this.stoken != "")
     this.stoken = ""
-    switch (result)
-    {
+    switch (result) {
       case YU2_OK:
         if (::steam_is_running()
             && !hasFeature("AllowSteamAccountLinking")
-            && !havePlayerTag("steam"))
-        {
+            && !havePlayerTag("steam")) {
           this.msgBox("steam_relogin_request",
             loc("mainmenu/login/steamRelogin"),
           [
@@ -550,10 +510,9 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
           return
         }
 
-        if (this.needTrySteamLink())
-        {
+        if (this.needTrySteamLink()) {
           let isRemoteComp = ::get_object_value(this.scene, "loginbox_remote_comp", false)
-          statsd.send_counter("sq.game_start.request_login", 1, {login_type = "steam_link"})
+          statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam_link" })
           log("Steam Link Login: check_login_pass")
           let res = ::check_login_pass("", "", "steam", "steam", true, isRemoteComp)
           log("Steam Link Login: link existing account, result = " + res)
@@ -571,8 +530,8 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         this.continueLogin(no_dump_login)
         break
 
-      case YU2_2STEP_AUTH: //error, received if user not logged, because he have 2step authorization activated
-        {
+      case YU2_2STEP_AUTH: {
+        //error, received if user not logged, because he have 2step authorization activated
           this.check2StepAuthCode = true
           this.showSceneBtn("loginbox_code_remember_this_device", true)
           this.showSceneBtn("loginbox_remote_comp", false)
@@ -593,8 +552,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         }
         break
 
-      case YU2_PSN_RESTRICTED:
-        {
+      case YU2_PSN_RESTRICTED: {
           this.msgBox("psn_restricted", loc("yn1/login/PSN_RESTRICTED"),
              [["exit", exitGame ]], "exit")
         }
@@ -606,7 +564,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
           return;
         ::error_message_box("yn1/connect_error", result, // auth error
         [
-          ["recovery", function() {openUrl(loc("url/recovery"), false, false, "login_wnd")}],
+          ["recovery", function() { openUrl(loc("url/recovery"), false, false, "login_wnd") }],
           ["exit", exitGame],
           ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
         ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
@@ -640,13 +598,11 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
   function onLoginErrorTryAgain() {}
 
-  function onKbdWrapDown()
-  {
+  function onKbdWrapDown() {
     setFocusToNextObj(this.scene, this.tabFocusArray, 1)
   }
 
-  function onEventKeyboardLayoutChanged(params)
-  {
+  function onEventKeyboardLayoutChanged(params) {
     let layoutIndicator =
       this.scene.findObject("loginbox_password_layout_indicator")
 
@@ -660,15 +616,13 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     layoutIndicator.setValue(layoutCode)
   }
 
-  function onEventKeyboardLocksChanged(params)
-  {
+  function onEventKeyboardLocksChanged(params) {
     let capsIndicator = this.scene.findObject("loginbox_password_caps_indicator")
     if (checkObj(capsIndicator))
       capsIndicator.show((params.locks & 1) == 1)
   }
 
-  function onSignUp()
-  {
+  function onSignUp() {
     local urlLocId
     if (::steam_is_running())
       urlLocId = "url/signUpSteam"
@@ -677,49 +631,43 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     else
       urlLocId = "url/signUp"
 
-    openUrl(loc(urlLocId, {distr = getDistr()}), false, false, "login_wnd")
+    openUrl(loc(urlLocId, { distr = getDistr() }), false, false, "login_wnd")
   }
 
-  function onForgetPassword()
-  {
+  function onForgetPassword() {
     openUrl(loc("url/recovery"), false, false, "login_wnd")
   }
 
-  function onChangeLogin(obj)
-  {
+  function onChangeLogin(obj) {
     //Don't save value to local, so it doens't appear in logs.
     let res = !::g_string.validateEmail(obj.getValue()) && (this.stoken == "")
-    obj.warning = res? "yes" : "no"
-    obj.warningText = res? "yes" : "no"
-    obj.tooltip = res? loc("tooltip/invalidEmail/possibly") : ""
+    obj.warning = res ? "yes" : "no"
+    obj.warningText = res ? "yes" : "no"
+    obj.tooltip = res ? loc("tooltip/invalidEmail/possibly") : ""
     this.setLoginBtnState()
   }
 
-  function onDoneEnter()
-  {
+  function onDoneEnter() {
     if (!this.check2StepAuthCode)
       this.doLoginWaitJob()
   }
 
-  function onDoneCode()
-  {
+  function onDoneCode() {
     this.doLoginWaitJob()
   }
 
-  function onExit()
-  {
+  function onExit() {
     this.msgBox("login_question_quit_game", loc("mainmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no", @() null]
-      ], "no", { cancel_fn = @() null})
+      ], "no", { cancel_fn = @() null })
   }
 
   isLoginEditsFilled = @() ::get_object_value(this.scene, "loginbox_username", "") != ""
     && ::get_object_value(this.scene, "loginbox_password", "") != ""
 
-  function setLoginBtnState ()
-  {
+  function setLoginBtnState () {
     let loginBtnObj = this.scene.findObject("login_action_button")
     if (!checkObj(loginBtnObj))
       return false
@@ -727,8 +675,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     loginBtnObj.enable = this.isLoginEditsFilled() ? "yes" : "no"
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.onExit()
   }
 
@@ -736,7 +683,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     this.isGuestLogin = true
     this.isLoginRequestInprogress = true
     ::disable_autorelogin_once <- false
-    statsd.send_counter("sq.game_start.request_login", 1, {login_type = "guest"})
+    statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
     log("Guest Login: check_login_pass")
     let result = ::check_login_pass(guestLoginId, nick, "guest", "guest", false, false)
     this.proceedAuthorizationResult(result, "")

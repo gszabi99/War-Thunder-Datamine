@@ -25,7 +25,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -120,6 +120,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -1210,6 +1218,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -4380,7 +4398,7 @@
     },
     "new_aux_caliber_turrets": {},
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "torpedoes_movement_mode": {
       "prevModification": "new_main_caliber_turrets",
@@ -5752,6 +5770,9 @@
       },
       {
         "from": "camo_white*"
+      },
+      {
+        "from": "camo_flatgullgrey*"
       }
     ],
     "set_tex": [
@@ -5764,7 +5785,7 @@
         "param": "camo_skin_tex"
       },
       {
-        "from": "turret_40mm_mk5_twin_c*",
+        "from": "turret_40mm_bofors_mk5_twin_shield_c*",
         "param": "camo_skin_tex"
       },
       {
@@ -5772,7 +5793,11 @@
         "param": "camo_skin_tex"
       },
       {
-        "from": "turret_mk7_bofors_l60_c*",
+        "from": "turret_40mm_bofors_mk7_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_40mm_bofors_staag_mk2_twin_shield_c*",
         "param": "camo_skin_tex"
       },
       {
@@ -5781,6 +5806,10 @@
       },
       {
         "from": "destroyer_battle_2series_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "destroyer_battle_cadiz_c*",
         "param": "camo_skin_tex"
       }
     ]

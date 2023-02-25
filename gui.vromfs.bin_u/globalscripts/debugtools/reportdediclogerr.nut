@@ -3,8 +3,7 @@
 from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let logDL = log_with_prefix("[LOGERR] ")
-let { EventDedicLogerr } = ecs.event
-let { CmdEnableDedicatedLogger } = ecs.sqEvents
+let { mkEventDedicLogerr, CmdEnableDedicatedLogger } = require("dedicLogerrSqEvents.nut")
 let { register_logerr_monitor, clear_logerr_interceptors } = require("dagor.debug")
 
 const INVALID_CONNECTION_ID = -1
@@ -30,7 +29,7 @@ let function sendErrorToClient(_tag, logstring, _timestamp) {
     .filter(@(connId) connId != INVALID_CONNECTION_ID)
   logDL($"send '{logstring}' to {connids.len()} players")
   if (connids.len() != 0)
-    ecs.server_broadcast_net_sqevent(EventDedicLogerr(({ logstring })), connids)
+    ecs.server_broadcast_net_sqevent(mkEventDedicLogerr(({ logstring })), connids)
 }
 
 clear_logerr_interceptors()
@@ -54,7 +53,7 @@ ecs.register_es("enable_send_logerr_msg_es", {
     comps_rq = ["m_player"]
     comps_rw = [["receiveLogerr", ecs.TYPE_BOOL]]
   },
-  {tags = "server"}
+  { tags = "server" }
 )
 
 let function init(hasPermissionToReceiveLogerrs) {

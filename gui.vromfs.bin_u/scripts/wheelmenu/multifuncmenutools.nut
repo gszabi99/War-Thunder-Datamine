@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -14,14 +15,12 @@ local isDebugMode = false
 
 ::debug_multifunc_menu <- @(enable) isDebugMode = enable
 
-let function isEnabledByUnit(config, c, unitId)
-{
+let function isEnabledByUnit(config, c, unitId) {
   if (c == null)
     return false
   if (c?.enable)
     return c.enable(unitId)
-  if (c?.section)
-  {
+  if (c?.section) {
     let sect = config[c.section]
     if (sect?.enable)
       return sect.enable(unitId)
@@ -34,8 +33,7 @@ let function isEnabledByUnit(config, c, unitId)
 }
 
 
-let function handleWheelMenuApply(idx)
-{
+let function handleWheelMenuApply(idx) {
   if (idx < 0)
     getMfmHandler()?.gotoPrevMenuOrQuit()
   else if (this.menu?[idx].sectionId)
@@ -47,14 +45,12 @@ let function handleWheelMenuApply(idx)
 }
 
 
-let function makeMfmSection(cfg, id, unitId, hudUnitType)
-{
+let function makeMfmSection(cfg, id, unitId, hudUnitType) {
   let allowedShortcutIds = ::g_controls_utils.getControlsList({ unitType = unitTypeByHudUnitType?[hudUnitType] }).map(@(s) s.id)
   let sectionConfig = cfg[id]
 
   let menu = []
-  foreach (idx, item in sectionConfig.items)
-  {
+  foreach (idx, item in sectionConfig.items) {
     let c = ::u.isFunction(item) ? item() : item
 
     let isShortcut = "shortcut" in c
@@ -67,21 +63,18 @@ let function makeMfmSection(cfg, id, unitId, hudUnitType)
     local label = ""
     local isEnabled = false
 
-    if (isShortcut)
-    {
+    if (isShortcut) {
       shortcutId = c.shortcut.findvalue(@(id) allowedShortcutIds.indexof(id) != null)
       label = loc("hotkeys/{0}".subst(shortcutId ?? c.shortcut?[0] ?? ""))
       isEnabled = shortcutId != null && isEnabledByUnit(cfg, c, unitId)
     }
-    else if (isSection)
-    {
+    else if (isSection) {
       sectionId = c.section
       let title = getMfmSectionTitle(cfg[sectionId])
       label = "".concat(title, loc("ui/ellipsis"))
       isEnabled = isEnabledByUnit(cfg, c, unitId)
     }
-    else if (isAction)
-    {
+    else if (isAction) {
       action = c.action
       label = c.label
       isEnabled = isEnabledByUnit(cfg, c, unitId) && label != ""
@@ -89,8 +82,7 @@ let function makeMfmSection(cfg, id, unitId, hudUnitType)
 
     local color = isEnabled ? "hudGreenTextColor" : ""
 
-    if (!isEnabled && isDebugMode)
-    {
+    if (!isEnabled && isDebugMode) {
       if (isShortcut)
         shortcutId = c.shortcut?[0]
       isEnabled = isSection || (isShortcut && shortcutId != null)
@@ -123,8 +115,7 @@ let function makeMfmSection(cfg, id, unitId, hudUnitType)
 }
 
 
-local function openMfm(cfg, curSectionId = null, isForward = true)
-{
+local function openMfm(cfg, curSectionId = null, isForward = true) {
   let hudUnitType = getHudUnitType()
   curSectionId = curSectionId ?? $"root_{hudUnitType}"
   if (cfg?[curSectionId] == null)

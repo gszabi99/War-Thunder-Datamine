@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
-let { get_gui_option } = require("guiOptions")
+let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
 let stdMath = require("%sqstd/math.nut")
 let { AMMO, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
 let { getLinkedGunIdx, getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -14,7 +15,6 @@ let { getBulletsSetData,
         getBulletsGroupCount,
         getActiveBulletsGroupInt,
         getBulletsInfoForPrimaryGuns } = require("%scripts/weaponry/bulletsInfo.nut")
-local { getGuiOptionsMode } = require_native("guiOptions")
 
 global enum bulletsAmountState {
   READY
@@ -22,8 +22,7 @@ global enum bulletsAmountState {
   LOW_AMOUNT
 }
 
-::UnitBulletsManager <- class
-{
+::UnitBulletsManager <- class {
   unit = null  //setUnit to change
   bulGroups = null //bulletsGroups
   gunsInfo = null //bulletsInfo for primary guns (guns, total, catridge, groupIndex) //getBulletsInfoForPrimaryGuns
@@ -33,8 +32,7 @@ global enum bulletsAmountState {
   isForcedAvailable = false
   isBulletDataLoading = false
 
-  constructor(v_unit, params = {})
-  {
+  constructor(v_unit, params = {}) {
     this.gunsInfo = []
     this.checkPurchased = getGuiOptionsMode() != ::OPTIONS_MODE_TRAINING
     this.isForcedAvailable = params?.isForcedAvailable ?? false
@@ -43,13 +41,11 @@ global enum bulletsAmountState {
     ::subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
   }
 
-  function getUnit()
-  {
+  function getUnit() {
     return this.unit
   }
 
-  function setUnit(v_unit)
-  {
+  function setUnit(v_unit) {
     if (type(v_unit) == "string")
       v_unit = ::getAircraftByName(v_unit)
     if (this.unit == v_unit)
@@ -59,41 +55,35 @@ global enum bulletsAmountState {
     this.bulGroups = null
   }
 
-  function getBulletsGroups()
-  {
+  function getBulletsGroups() {
     this.checkInitBullets()
     return this.bulGroups
   }
 
-  function getBulletGroupByIndex(groupIdx)
-  {
+  function getBulletGroupByIndex(groupIdx) {
     return getTblValue(groupIdx, this.getBulletsGroups())
   }
 
-  function getBulletGroupBySelectedMod(mod)
-  {
-    foreach(group in this.getBulletsGroups())
+  function getBulletGroupBySelectedMod(mod) {
+    foreach (group in this.getBulletsGroups())
       if (mod.name == group.selectedName)
         return group
     return null
   }
 
-  function getGunTypesCount()
-  {
+  function getGunTypesCount() {
     return this.gunsInfo.len() || 1
   }
 
   getGroupGunInfo = @(linkedIdx, isUniformNoBelts, maxToRespawn) isUniformNoBelts
-    ? this.gunsInfo?[linkedIdx].__update({total = maxToRespawn}) : this.gunsInfo?[linkedIdx]
+    ? this.gunsInfo?[linkedIdx].__update({ total = maxToRespawn }) : this.gunsInfo?[linkedIdx]
 
-  function getUnallocatedBulletCount(bulGroup)
-  {
+  function getUnallocatedBulletCount(bulGroup) {
     return getTblValue("unallocated", bulGroup.gunInfo, 0)
   }
 
   //return isChanged
-  function changeBulletsCount(bulGroup, newCount)
-  {
+  function changeBulletsCount(bulGroup, newCount) {
     let count = bulGroup.bulletsCount
     if (count == newCount)
       return false
@@ -113,19 +103,16 @@ global enum bulletsAmountState {
   }
 
   //will send broadcast event with full list of changed bullets groups
-  function changeBulletsValueByIdx(bulGroup, valueIdx)
-  {
+  function changeBulletsValueByIdx(bulGroup, valueIdx) {
     return this.changeBulletsValue(bulGroup, bulGroup.getBulletNameByIdx(valueIdx))
   }
 
   _bulletsSetValueRecursion = false
-  function changeBulletsValue(bulGroup, bulletName)
-  {
+  function changeBulletsValue(bulGroup, bulletName) {
     if (!bulletName || bulletName == bulGroup.selectedName)
       return
 
-    if (this._bulletsSetValueRecursion)
-    {
+    if (this._bulletsSetValueRecursion) {
       ::script_net_assert_once("bullets set value recursion",
                                 format("Bullets Manager: set bullet recursion detected!! (unit = %s)\nbullet groups =\n%s",
                                   this.unit.name, toString(this.bulGroups)
@@ -137,8 +124,7 @@ global enum bulletsAmountState {
 
     let changedGroups = [bulGroup]
     let gunIdx = bulGroup.getGunIdx()
-    foreach(_gIdx, group in this.bulGroups)
-    {
+    foreach (_gIdx, group in this.bulGroups) {
       if (!group.active
           || group.groupIndex == bulGroup.groupIndex
           || group.getGunIdx() != gunIdx
@@ -158,8 +144,7 @@ global enum bulletsAmountState {
     this._bulletsSetValueRecursion = false
   }
 
-  function checkBulletsCountReady()
-  {
+  function checkBulletsCountReady() {
     let res = {
       status = bulletsAmountState.READY
       unallocated = 0
@@ -168,8 +153,7 @@ global enum bulletsAmountState {
     if (!this.gunsInfo.len())
       return res
 
-    foreach(gInfo in this.gunsInfo)
-    {
+    foreach (gInfo in this.gunsInfo) {
       let unallocated = gInfo.unallocated
       if (unallocated <= 0)
         continue
@@ -195,8 +179,7 @@ global enum bulletsAmountState {
     return res
   }
 
-  function checkChosenBulletsCount(needWarnUnallocated = false, applyFunc = null)
-  {
+  function checkChosenBulletsCount(needWarnUnallocated = false, applyFunc = null) {
     if (getOverrideBullets(this.unit))
       return true
     let readyCounts = this.checkBulletsCountReady()
@@ -225,24 +208,20 @@ global enum bulletsAmountState {
     return false
   }
 
-  function canChangeBulletsCount()
-  {
+  function canChangeBulletsCount() {
     return this.gunsInfo.len() > 0
   }
 
-  function canChangeBulletsActivity()
-  {
+  function canChangeBulletsActivity() {
     return !this.unit.unitType.canUseSeveralBulletsForGun
   }
 
-  function getActiveBulGroupsAmount()
-  {
+  function getActiveBulGroupsAmount() {
     //do not count fake bullets
     return stdMath.number_of_set_bits(this.groupsActiveMask & ((1 << this.unit.unitType.bulletSetsQuantity) - 1))
   }
 
-  function openChooseBulletsWnd(groupIdx, itemParams = null, alignObj = null, align = "bottom")
-  {
+  function openChooseBulletsWnd(groupIdx, itemParams = null, alignObj = null, align = "bottom") {
     let bulGroup = getTblValue(groupIdx, this.getBulletsGroups())
     if (!this.unit || !bulGroup)
       return
@@ -252,12 +231,11 @@ global enum bulletsAmountState {
     let curName = bulGroup.selectedName
 
     let otherSelList = []
-    foreach(gIdx, group in this.getBulletsGroups())
+    foreach (gIdx, group in this.getBulletsGroups())
       if (group.active && gIdx != groupIdx && group.gunInfo == bulGroup.gunInfo)
         otherSelList.append(group.selectedName)
 
-    foreach(_idx, mod in modsList)
-    {
+    foreach (_idx, mod in modsList) {
       if (this.checkPurchased
           && !("isDefaultForGroup" in mod)
           && !::shop_is_modification_purchased(this.unit.name, mod.name))
@@ -286,8 +264,7 @@ global enum bulletsAmountState {
 //******************************* PRIVATE ***********************************************
 //**************************************************************************************
 
-  function checkInitBullets()
-  {
+  function checkInitBullets() {
     if (this.bulGroups)
       return
 
@@ -297,8 +274,7 @@ global enum bulletsAmountState {
     this.validateBulletsCount()
   }
 
-  function loadBulletsData()
-  {
+  function loadBulletsData() {
     if (this.isBulletDataLoading)
       return
 
@@ -308,8 +284,7 @@ global enum bulletsAmountState {
     this.isBulletDataLoading = false
   }
 
-  function loadGunInfo()
-  {
+  function loadGunInfo() {
     this.gunsInfo = []
     if (!this.unit)
       return
@@ -321,8 +296,7 @@ global enum bulletsAmountState {
     }))
   }
 
-  function loadBulGroups()
-  {
+  function loadBulGroups() {
     this.bulGroups = []
     this.groupsActiveMask = this.unit ? getActiveBulletsGroupInt(this.unit, {
       checkPurchased = this.checkPurchased,
@@ -337,8 +311,7 @@ global enum bulletsAmountState {
     let bulletsTotal = this.unit.unitType.canUseSeveralBulletsForGun
       ? this.unit.unitType.bulletSetsQuantity : getBulletsGroupCount(this.unit)
 
-    for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++)
-    {
+    for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++) {
       let linkedIdx = getLinkedGunIdx(groupIndex, this.getGunTypesCount(),
         this.unit.unitType.bulletSetsQuantity)
       let bullets = getOptionsBulletsList(this.unit, groupIndex, false, this.isForcedAvailable)
@@ -358,7 +331,7 @@ global enum bulletsAmountState {
           groupCount = 0
           beltsCount = 0
           isUniform = true
-          bulletType = currBulletType// Helper value to define isUniform
+          bulletType = currBulletType // Helper value to define isUniform
         }
 
       let currCounters = bullGroupsCountersByGun[linkedIdx]
@@ -374,8 +347,7 @@ global enum bulletsAmountState {
     // It means that maxToRespawn currently limits count for each bullet in gun,
     // so for mentioned case total count looks like summ of all maxToRespawn,
     // that actually is true for belts only.
-    foreach (groupIndex, data in bulletDataByGroup)
-    {
+    foreach (groupIndex, data in bulletDataByGroup) {
       let currCounters = bullGroupsCountersByGun[data.linkedIdx]
       let isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
         && currCounters.limitedGroupCount == currCounters.groupCount)
@@ -389,15 +361,13 @@ global enum bulletsAmountState {
     }
   }
 
-  function forcedBulletsCount()
-  {
+  function forcedBulletsCount() {
     if (!this.gunsInfo.len())
       return
 
     let forceBulletGroupByGun = {}
-    foreach(bulGroup in this.bulGroups)
-      if (bulGroup.active && bulGroup.gunInfo.forcedMaxBulletsInRespawn)
-      {
+    foreach (bulGroup in this.bulGroups)
+      if (bulGroup.active && bulGroup.gunInfo.forcedMaxBulletsInRespawn) {
         let gIdx = bulGroup.getGunIdx()
         if (!forceBulletGroupByGun?[gIdx])
           forceBulletGroupByGun[gIdx] <- []
@@ -405,24 +375,21 @@ global enum bulletsAmountState {
         forceBulletGroupByGun[gIdx].append(bulGroup)
       }
 
-    foreach(_idx, gunBullets in forceBulletGroupByGun)
-    {
+    foreach (_idx, gunBullets in forceBulletGroupByGun) {
       let countBullet = gunBullets.len()
 
-      foreach(bulGroup in gunBullets)
+      foreach (bulGroup in gunBullets)
         bulGroup.setBulletsCount(bulGroup.gunInfo.total / countBullet)
     }
   }
 
-  function validateBullets()
-  {
+  function validateBullets() {
     if (!this.gunsInfo.len())
       return
 
     let selectedList = this.gunsInfo.map(@(_v) [])
 
-    foreach(gIdx, bulGroup in this.bulGroups)
-    {
+    foreach (gIdx, bulGroup in this.bulGroups) {
       if (!bulGroup.active)
         continue
       let list = getTblValue(bulGroup.getGunIdx(), selectedList)
@@ -430,8 +397,7 @@ global enum bulletsAmountState {
         continue
 
       //check for duplicate bullets
-      if (!bulGroup.setBulletNotFromList(list))
-      {
+      if (!bulGroup.setBulletNotFromList(list)) {
         bulGroup.active = false
         this.groupsActiveMask = stdMath.change_bit(this.groupsActiveMask, gIdx, 0)
         continue
@@ -442,37 +408,33 @@ global enum bulletsAmountState {
     }
   }
 
-  function validateBulletsCount()
-  {
+  function validateBulletsCount() {
     if (!this.gunsInfo.len())
       return
 
-    foreach(gInfo in this.gunsInfo)
-    {
+    foreach (gInfo in this.gunsInfo) {
       gInfo.unallocated = gInfo.total
       gInfo.notInitedCount = 0
     }
 
     //update unallocated bullets, collect not inited
     local haveNotInited = false
-    foreach(_gIdx, bulGroup in this.bulGroups)
-    {
+    foreach (_gIdx, bulGroup in this.bulGroups) {
       let gInfo = bulGroup.gunInfo
       if (!bulGroup.active || !gInfo)
         continue
 
-      if (bulGroup.bulletsCount < 0)
-      {
+      if (bulGroup.bulletsCount < 0) {
         gInfo.notInitedCount++
         haveNotInited = true
         continue
       }
 
-      if (gInfo.unallocated < bulGroup.bulletsCount)
-      {
+      if (gInfo.unallocated < bulGroup.bulletsCount) {
         bulGroup.setBulletsCount(gInfo.unallocated)
         gInfo.unallocated = 0
-      } else
+      }
+      else
         gInfo.unallocated -= bulGroup.bulletsCount
     }
 
@@ -480,13 +442,11 @@ global enum bulletsAmountState {
       return
 
     //init all active not inited bullets
-    foreach(_gIdx, bulGroup in this.bulGroups)
-    {
+    foreach (_gIdx, bulGroup in this.bulGroups) {
       if (!bulGroup.active || bulGroup.bulletsCount >= 0)
         continue
       let gInfo = bulGroup.gunInfo
-      if (!gInfo || !gInfo.notInitedCount)
-      {
+      if (!gInfo || !gInfo.notInitedCount) {
         assert(false, "UnitBulletsManager Error: Incorrect not inited bullets count or gun not exist for unit " + this.unit.name)
         continue
       }
@@ -499,28 +459,25 @@ global enum bulletsAmountState {
     }
   }
 
-  function updateGroupsActiveMask()
-  {
+  function updateGroupsActiveMask() {
     if (!this.canChangeBulletsActivity())
       return
 
     this.groupsActiveMask = getActiveBulletsGroupInt(this.unit)
-    foreach(gIdx, bulGroup in this.bulGroups)
+    foreach (gIdx, bulGroup in this.bulGroups)
       bulGroup.active = stdMath.is_bit_set(this.groupsActiveMask, gIdx)
   }
 
-  function onEventUnitWeaponChanged(p)
-  {
+  function onEventUnitWeaponChanged(p) {
     if (this.unit && this.unit.name == getTblValue("unitName", p))
       this.updateGroupsActiveMask()
   }
 
-  function onEventUnitBulletsChanged(p)
-  {
+  function onEventUnitBulletsChanged(p) {
     if (!this.unit || this.unit.name != p.unit?.name)
       return
 
-    this.loadBulletsData()// Need to reload data because of maxToRespawn in bullet group might be recalculated
+    this.loadBulletsData() // Need to reload data because of maxToRespawn in bullet group might be recalculated
     if (p.groupIdx in this.bulGroups)
       this.changeBulletsValue(this.bulGroups[p.groupIdx], p.bulletName)
   }

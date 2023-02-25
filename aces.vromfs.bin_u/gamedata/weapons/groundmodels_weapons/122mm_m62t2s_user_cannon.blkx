@@ -574,11 +574,13 @@
   "122mm_ussr_APDS": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 5.4,
+      "mass": 4.5,
+      "damageMass": 2.81,
       "caliber": 0.122,
-      "damageCaliber": 0.05,
-      "ballisticCaliber": 0.06,
+      "damageCaliber": 0.058,
+      "ballisticCaliber": 0.058,
       "speed": 1620.0,
+      "Cx": 0.22805,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds",
@@ -598,13 +600,12 @@
       ],
       "shellAnimation": "video/shells_animations/apds.ivf",
       "bulletName": "122mm_zbm_11",
-      "Cx": 0.218,
       "breakingArmorThicknessEffective": true,
       "breakingArmorThickness": [
         30.0,
-        150.0
+        250.0
       ],
-      "breakingCriticalSpeed": 1560.0,
+      "breakingCriticalSpeed": 1620.0,
       "breakingDistance": 0.1,
       "relativeVelHitShift": [
         300.0,
@@ -649,55 +650,14 @@
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          361.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          360.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          358.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          353.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          338.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          320.0,
-          2000.0
-        ],
-        "ArmorPower2500m": [
-          307.0,
-          2500.0
-        ],
-        "ArmorPower3000m": [
-          282.0,
-          3000.0
-        ],
-        "ArmorPower3500m": [
-          255.0,
-          3500.0
-        ],
-        "ArmorPower4000m": [
-          186.0,
-          4000.0
-        ],
-        "ArmorPower4500m": [
-          153.0,
-          4500.0
-        ],
-        "ArmorPower10000m": [
-          0.0,
-          10000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 1.02,
+          "demarreSpeedPow": 1.47,
+          "demarreMassPow": 0.74,
+          "demarreCaliberPow": 1.07
+        }
       },
       "visual": {
         "range_percent_of_ammo": [

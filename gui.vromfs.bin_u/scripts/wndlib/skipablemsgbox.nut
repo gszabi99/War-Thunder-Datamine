@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.SkipableMsgBox <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/weaponry/skipableMsgBox.blk"
 
@@ -25,8 +25,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   startBtnText = ""
   ableToStartAndSkip = true
 
-  function initScreen()
-  {
+  function initScreen() {
     this.updateSkipCheckBox()
 
     let msgTextObj = this.scene.findObject("msgText")
@@ -42,25 +41,22 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       btnSelectObj.show(this.ableToStartAndSkip)
 
     let btnCancelObj = this.scene.findObject("btn_cancel")
-    if(checkObj(btnCancelObj))
+    if (checkObj(btnCancelObj))
       btnCancelObj.setValue(loc(this.ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
     if (this.startBtnText != "")
       setDoubleTextToButton(this.scene, "btn_select", this.startBtnText)
   }
 
-  function updateSkipCheckBox()
-  {
+  function updateSkipCheckBox() {
     let skipObj = this.scene.findObject("skip_this")
-    if (checkObj(skipObj))
-    {
+    if (checkObj(skipObj)) {
       skipObj.show(this.ableToStartAndSkip && this.skipFunc)
       skipObj.enable(this.ableToStartAndSkip && this.skipFunc)
     }
   }
 
-  function onSkipMessageBox(obj)
-  {
+  function onSkipMessageBox(obj) {
     if (!obj)
       return
 
@@ -68,8 +64,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.skipFunc(obj.getValue())
   }
 
-  function onStart()
-  {
+  function onStart() {
     this.isCanceled = false
     if (this.parentHandler && this.onStartPressed)
       this.isStarted = true
@@ -77,8 +72,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.goBack()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (this.isCanceled)
       ::call_for_handler(this.parentHandler, this.cancelFunc)
     if (this.isStarted)

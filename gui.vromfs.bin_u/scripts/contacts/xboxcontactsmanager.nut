@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,14 +7,14 @@ from "%scripts/dagui_library.nut" import *
 let platformModule = require("%scripts/clientState/platform.nut")
 let extContactsService = require("%scripts/contacts/externalContactsService.nut")
 let { addContact } = require("%scripts/contacts/contactsManager.nut")
+let DataBlock = require("DataBlock")
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
 
 ::g_script_reloader.registerPersistentData("XboxContactsManagerGlobals", persistent, ["isInitedXboxContacts"])
 
-let updateContactXBoxPresence = function(xboxId, isAllowed)
-{
+let updateContactXBoxPresence = function(xboxId, isAllowed) {
   let contact = ::findContactByXboxId(xboxId)
   if (!contact)
     return
@@ -29,8 +30,7 @@ let updateContactXBoxPresence = function(xboxId, isAllowed)
   })
 }
 
-let fetchContactsList = function()
-{
+let fetchContactsList = function() {
   pendingXboxContactsToUpdate.clear()
   //No matter what will be done first,
   //anyway, we will wait all groups data.
@@ -38,10 +38,8 @@ let fetchContactsList = function()
   ::xbox_get_avoid_list_async()
 }
 
-let updateContacts = function(needIgnoreInitedFlag = false)
-{
-  if (!is_platform_xbox || !::isInMenu())
-  {
+let updateContacts = function(needIgnoreInitedFlag = false) {
+  if (!is_platform_xbox || !::isInMenu()) {
     if (needIgnoreInitedFlag && persistent.isInitedXboxContacts)
       persistent.isInitedXboxContacts = false
     return
@@ -54,25 +52,20 @@ let updateContacts = function(needIgnoreInitedFlag = false)
   fetchContactsList()
 }
 
-let tryUpdateContacts = function(contactsBlk)
-{
+let tryUpdateContacts = function(contactsBlk) {
   local haveAnyUpdate = false
   foreach (_group, usersList in contactsBlk)
     haveAnyUpdate = haveAnyUpdate || usersList.paramCount() > 0
 
-  if (!haveAnyUpdate)
-  {
+  if (!haveAnyUpdate) {
     log("XBOX CONTACTS: Update: No changes. No need to server call")
     return
   }
 
   let result = ::request_edit_player_lists(contactsBlk, false)
-  if (result)
-  {
-    foreach(group, playersBlock in contactsBlk)
-    {
-      foreach (uid, isAdding in playersBlock)
-      {
+  if (result) {
+    foreach (group, playersBlock in contactsBlk) {
+      foreach (uid, isAdding in playersBlock) {
         let contact = ::getContact(uid)
         if (!contact)
           continue
@@ -87,8 +80,7 @@ let tryUpdateContacts = function(contactsBlk)
   }
 }
 
-let xboxUpdateContactsList = function(usersTable)
-{
+let xboxUpdateContactsList = function(usersTable) {
   //Create or update exist contacts
   let contactsTable = {}
   foreach (uid, playerData in usersTable)
@@ -98,35 +90,30 @@ let xboxUpdateContactsList = function(usersTable)
       xboxId = playerData.id
     })
 
-  let contactsBlk = ::DataBlock()
-  contactsBlk[EPL_FRIENDLIST] <- ::DataBlock()
-  contactsBlk[EPL_BLOCKLIST]  <- ::DataBlock()
+  let contactsBlk = DataBlock()
+  contactsBlk[EPL_FRIENDLIST] <- DataBlock()
+  contactsBlk[EPL_BLOCKLIST]  <- DataBlock()
 
-  foreach (group, playersArray in pendingXboxContactsToUpdate)
-  {
+  foreach (group, playersArray in pendingXboxContactsToUpdate) {
     let existedXBoxContacts = ::get_contacts_array_by_filter_func(group, platformModule.isXBoxPlayerName)
-    foreach (xboxPlayerId in playersArray)
-    {
+    foreach (xboxPlayerId in playersArray) {
       let contact = contactsTable?[xboxPlayerId]
       if (!contact)
         continue
 
-      if (!contact.isInFriendGroup() && group == EPL_FRIENDLIST)
-      {
+      if (!contact.isInFriendGroup() && group == EPL_FRIENDLIST) {
         contactsBlk[EPL_FRIENDLIST][contact.uid] = true
         if (contact.isInBlockGroup())
           contactsBlk[EPL_BLOCKLIST][contact.uid] = false
       }
-      if (!contact.isInBlockGroup() && group == EPL_BLOCKLIST)
-      {
+      if (!contact.isInBlockGroup() && group == EPL_BLOCKLIST) {
         contactsBlk[EPL_BLOCKLIST][contact.uid] = true
         if (contact.isInFriendGroup())
           contactsBlk[EPL_FRIENDLIST][contact.uid] = false
       }
 
       //Check both lists, as there can be mistakes
-      if (contact.isInFriendGroup() && contact.isInBlockGroup())
-      {
+      if (contact.isInFriendGroup() && contact.isInBlockGroup()) {
         if (group == EPL_FRIENDLIST)
           contactsBlk[EPL_BLOCKLIST][contact.uid] = false
         else
@@ -136,10 +123,8 @@ let xboxUpdateContactsList = function(usersTable)
       //Validate in-game contacts list
       //in case if in xbox contacts list some players
       //are gone. So we need to clear then in game.
-      for (local i = existedXBoxContacts.len() - 1; i >= 0; i--)
-      {
-        if (contact == existedXBoxContacts[i])
-        {
+      for (local i = existedXBoxContacts.len() - 1; i >= 0; i--) {
+        if (contact == existedXBoxContacts[i]) {
           existedXBoxContacts.remove(i)
           break
         }
@@ -154,8 +139,7 @@ let xboxUpdateContactsList = function(usersTable)
   pendingXboxContactsToUpdate.clear()
 }
 
-let proceedXboxPlayersList = function()
-{
+let proceedXboxPlayersList = function() {
   if (!(EPL_FRIENDLIST in pendingXboxContactsToUpdate)
       || !(EPL_BLOCKLIST in pendingXboxContactsToUpdate))
     return
@@ -165,11 +149,9 @@ let proceedXboxPlayersList = function()
     playersList.extend(usersArray)
 
   let knownUsers = {}
-  for (local i = playersList.len() - 1; i >= 0; i--)
-  {
+  for (local i = playersList.len() - 1; i >= 0; i--) {
     let contact = ::findContactByXboxId(playersList[i])
-    if (contact)
-    {
+    if (contact) {
       knownUsers[contact.uid] <- {
         nick = contact.name
         id = playersList.remove(i)
@@ -184,14 +166,12 @@ let proceedXboxPlayersList = function()
   )
 }
 
-let onReceivedXboxListCallback = function(playersList, group)
-{
+let onReceivedXboxListCallback = function(playersList, group) {
   pendingXboxContactsToUpdate[group] <- playersList
   proceedXboxPlayersList()
 }
 
-let xboxOverlayContactClosedCallback = function(playerStatus)
-{
+let xboxOverlayContactClosedCallback = function(playerStatus) {
   if (playerStatus == XBOX_PERSON_STATUS_CANCELED)
     return
 

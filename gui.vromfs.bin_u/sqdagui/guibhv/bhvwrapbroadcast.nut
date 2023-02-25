@@ -7,8 +7,7 @@ let mkWrap = @(notifyId) function(obj, is_down) {
   return RETCODE_HALT
 }
 
-::gui_bhv.wrapBroadcast <- class
-{
+::gui_bhv.wrapBroadcast <- class {
   eventMask = EV_JOYSTICK | EV_PROCESS_SHORTCUTS
 
   onShortcutLeft  = mkWrap("wrap_left")

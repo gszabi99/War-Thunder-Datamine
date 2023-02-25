@@ -1,9 +1,12 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
+let { Point2 } = require("dagor.math")
 let { format } = require("string")
 let { fabs } = require("math")
 let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
@@ -24,7 +27,7 @@ enum avatarPlace { //higher index has more priority to show icon when same icons
 let roundVal = @(val) stdMath.round_by_value(clamp(val, 0.0, 1.0), 0.01)
 
 let function debugAvatars(filePath) {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   if (!blk.tryLoad(filePath))
     return $"Failed to load avatars config from {filePath}"
 
@@ -35,8 +38,7 @@ let function debugAvatars(filePath) {
 register_command(@() debugAvatars("../develop/gameBase/config/avatars.blk"), "debug.avatars")
 register_command(debugAvatars, "debug.avatars_by_file_path")
 
-::gui_handlers.DbgAvatars <- class extends ::BaseGuiHandler
-{
+::gui_handlers.DbgAvatars <- class extends ::BaseGuiHandler {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/debugTools/dbgAvatars.tpl"
 
@@ -74,8 +76,7 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     }
   ]
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.mainAvatarConfig = bhvAvatar.getCurParams()
     bhvAvatar.init({
       getConfig = (@() this.configBlk).bindenv(this)
@@ -97,14 +98,13 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     }
   }
 
-  function initAvatarsList()
-  {
+  function initAvatarsList() {
     this.fullIconsList = []
     this.iconsMap = {}
 
     let mainList = ["cardicon_default", "cardicon_bot"]
     mainList.extend(avatars.getIcons())
-    foreach(name in mainList)
+    foreach (name in mainList)
       this.addAvatarConfig(name, avatarPlace.IN_GAME, this.mainAvatarConfig.getIconPath(name))
 
     let fileMask = "*.png"
@@ -113,19 +113,16 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
       ["menu/images/images/avatars"] = avatarPlace.IN_MAIN_FOLDER,
       ["menu/pkg_dev/images/images/avatars"] = avatarPlace.IN_PKG_DEV,
     }
-    foreach(dirPath, place in dirs)
-    {
-      let filePaths = dagor_fs.scan_folder({root=guiPath + dirPath, vromfs = false, realfs = true, recursive = true, files_suffix=fileMask})
-      foreach(path in filePaths)
+    foreach (dirPath, place in dirs) {
+      let filePaths = dagor_fs.scan_folder({ root = guiPath + dirPath, vromfs = false, realfs = true, recursive = true, files_suffix = fileMask })
+      foreach (path in filePaths)
         this.addAvatarConfig(stdPath.fileName(path).slice(0, -4), place, path)
     }
   }
 
-  function addAvatarConfig(name, place, path)
-  {
+  function addAvatarConfig(name, place, path) {
     local icon = this.iconsMap?[name]
-    if (icon)
-    {
+    if (icon) {
       if (icon.place < place)
         icon.path = path
       icon.place = icon.place | place
@@ -141,9 +138,8 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     this.iconsMap[name] <- icon
   }
 
-  function initScreen()
-  {
-    this.configBlkOriginal = ::DataBlock()
+  function initScreen() {
+    this.configBlkOriginal = DataBlock()
     this.configBlkOriginal.setFrom(this.configBlk)
     this.scene.findObject("edit_update").setUserData(this)
     this.setAvatar("cardicon_default")
@@ -152,19 +148,16 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
   getIconByIdx = @(idx) this.fullIconsList?[idx]?.name ?? ""
   getIconPath = @(name) this.iconsMap?[name]?.path ?? ""
 
-  function save()
-  {
+  function save() {
     this.configBlk.saveToTextFile(this.savePath)
   }
 
-  function saveAndExit()
-  {
+  function saveAndExit() {
     this.save()
     base.goBack()
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (u.isEqual(this.configBlk, this.configBlkOriginal))
       return base.goBack()
 
@@ -176,30 +169,26 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     "yes", { cancel_fn = function() {} })
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     bhvAvatar.init(this.mainAvatarConfig)
   }
 
-  function onAvatarSelect(obj)
-  {
+  function onAvatarSelect(obj) {
     this.setAvatar(this.fullIconsList?[obj.getValue()]?.name)
   }
 
-  function setAvatar(avatar)
-  {
+  function setAvatar(avatar) {
     if (!avatar)
       return
 
     this.isInEditMode = false
     this.selectedAvatar = avatar
-    foreach(name in ["sel_name", "sel_big_icon", "sel_small_icon"])
+    foreach (name in ["sel_name", "sel_big_icon", "sel_small_icon"])
       this.scene.findObject(name).setValue(this.selectedAvatar)
     this.updateEditControls()
   }
 
-  function onSelAvatarSizeChange()
-  {
+  function onSelAvatarSizeChange() {
     bhvAvatar.forceUpdateView(this.scene.findObject("sel_small_icon"))
     let listObj = this.scene.findObject("avatars_list")
     foreach (idx, avatar in this.fullIconsList)
@@ -208,17 +197,14 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     this.updateEditControls()
   }
 
-  function updateEditControls()
-  {
+  function updateEditControls() {
     let avatarBlk = this.getSelAvatarBlk()
-    foreach (s in this.sliders)
-    {
+    foreach (s in this.sliders) {
       let value = s.getValue.call(this)
       this.scene.findObject(s.id + "_text").setValue(value.tostring())
     }
 
-    if (this.shouldUpdateBorder)
-    {
+    if (this.shouldUpdateBorder) {
       let editBorder = this.showSceneBtn("edit_border", this.isInEditMode)
       let mainBorder = this.showSceneBtn("main_border", !this.isInEditMode && avatarBlk.size < 1)
       let curBorder = this.isInEditMode ? editBorder : mainBorder
@@ -227,41 +213,35 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     }
   }
 
-  function getSelAvatarBlk()
-  {
-    if (!(this.selectedAvatar in this.configBlk))
-    {
-      let blk = ::DataBlock()
-      blk.pos = ::Point2(0, 0)
+  function getSelAvatarBlk() {
+    if (!(this.selectedAvatar in this.configBlk)) {
+      let blk = DataBlock()
+      blk.pos = Point2(0, 0)
       blk.size = 1.0
       this.configBlk[this.selectedAvatar] <- blk
     }
     return this.configBlk[this.selectedAvatar]
   }
 
-  function getMousePosPart()
-  {
+  function getMousePosPart() {
     let obj = this.scene.findObject("sel_big_icon")
     let coords = ::get_dagui_mouse_cursor_pos()
     let objPos = obj.getPosRC()
     let objSize = obj.getSize()
-    return ::Point2(roundVal((coords[0] - objPos[0]).tofloat() / (objSize[0] || 1)),
+    return Point2(roundVal((coords[0] - objPos[0]).tofloat() / (objSize[0] || 1)),
                     roundVal((coords[1] - objPos[1]).tofloat() / (objSize[1] || 1)))
   }
 
-  function validateCorners(pos1, pos2)
-  {
-    foreach(key in ["x", "y"])
-      if (pos1[key] > pos2[key])
-      {
+  function validateCorners(pos1, pos2) {
+    foreach (key in ["x", "y"])
+      if (pos1[key] > pos2[key]) {
         let t = pos1[key]
         pos1[key] = pos2[key]
         pos2[key] = t
       }
   }
 
-  function onEditStart(_obj)
-  {
+  function onEditStart(_obj) {
     let avatarBlk = this.getSelAvatarBlk()
     this.editStartPos = this.getMousePosPart()
     avatarBlk.pos = this.editStartPos
@@ -270,28 +250,25 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     this.isInEditMode = true
   }
 
-  function updateEditSize()
-  {
+  function updateEditSize() {
     let avatarBlk = this.getSelAvatarBlk()
-    let pos1 = ::Point2(this.editStartPos.x, this.editStartPos.y)
+    let pos1 = Point2(this.editStartPos.x, this.editStartPos.y)
     let pos2 = this.getMousePosPart()
     this.validateCorners(pos1, pos2)
     avatarBlk.pos = pos1
     avatarBlk.size = max(pos2.x - pos1.x, pos2.y - pos1.y)
   }
 
-  function onEditUpdate(_obj = null, _dt = 0.0)
-  {
-    if (this.isInEditMode)
-    {
+  function onEditUpdate(_obj = null, _dt = 0.0) {
+    if (this.isInEditMode) {
       this.updateEditSize()
       this.onSelAvatarSizeChange()
-    } else
+    }
+    else
       this.checkMainFrameMovement()
   }
 
-  function onEditDone(_obj)
-  {
+  function onEditDone(_obj) {
     if (!this.isInEditMode)
       return
     this.updateEditSize()
@@ -299,8 +276,7 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     this.onSelAvatarSizeChange()
   }
 
-  function checkMainFrameMovement()
-  {
+  function checkMainFrameMovement() {
     let mainBorder = this.scene.findObject("main_border")
     if (!mainBorder.isVisible())
       return
@@ -310,27 +286,24 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     if (size[0] <= 0 || size[1] <= 0)
       return
 
-    local hasChanges =false
+    local hasChanges = false
     if (!u.isEqual(size, this.lastMainBorderSize)
-      || !u.isEqual(pos, this.lastMainBorderPos))
-    {
+      || !u.isEqual(pos, this.lastMainBorderPos)) {
       let avatarBlk = this.getSelAvatarBlk()
       let obj = this.scene.findObject("sel_big_icon")
       let objPos = obj.getPos()
       let objSize = obj.getSize()
 
-      let realPos = ::Point2(roundVal((pos[0] - objPos[0]).tofloat() / objSize[0]),
+      let realPos = Point2(roundVal((pos[0] - objPos[0]).tofloat() / objSize[0]),
                                roundVal((pos[1] - objPos[1]).tofloat() / objSize[1]))
-      if ( fabs(avatarBlk.pos.x - realPos.x) > 0.001
-        || fabs(avatarBlk.pos.y - realPos.y) > 0.001)
-      {
+      if (fabs(avatarBlk.pos.x - realPos.x) > 0.001
+        || fabs(avatarBlk.pos.y - realPos.y) > 0.001) {
         avatarBlk.pos = realPos
         hasChanges = true
       }
 
       let realSize = roundVal(max(size[0], size[1]).tofloat() / objSize[0])
-      if (fabs(avatarBlk.size - realSize) > 0.001)
-      {
+      if (fabs(avatarBlk.size - realSize) > 0.001) {
         avatarBlk.size = realSize
         hasChanges = true
       }
@@ -338,8 +311,7 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
 
     this.lastMainBorderSize = size
     this.lastMainBorderPos = pos
-    if (hasChanges)
-    {
+    if (hasChanges) {
       let avatarBlk = this.getSelAvatarBlk()
       let maxSize = min(1.0 - avatarBlk.pos.x, 1.0 - avatarBlk.pos.y)
       if (avatarBlk.size > maxSize)
@@ -350,26 +322,22 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     }
   }
 
-  function onSave()
-  {
+  function onSave() {
     this.save()
     this.configBlkOriginal.setFrom(this.configBlk)
   }
 
-  function onReset()
-  {
+  function onReset() {
     let avatarBlk = this.getSelAvatarBlk()
     avatarBlk.size = 1.0
-    avatarBlk.pos = ::Point2()
+    avatarBlk.pos = Point2()
     this.onSelAvatarSizeChange()
   }
 
-  function onRestore()
-  {
+  function onRestore() {
     let avatarBlk = this.getSelAvatarBlk()
     let prevAvatarBlk = this.configBlkOriginal?[this.selectedAvatar]
-    if (!prevAvatarBlk)
-    {
+    if (!prevAvatarBlk) {
       this.onReset()
       return
     }

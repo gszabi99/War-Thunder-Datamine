@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -100,7 +101,7 @@ require("%scripts/worldWar/wwInvites.nut")
 require("%scripts/worldWar/wwInviteOperation.nut")
 
 
-foreach(bhvName, bhvClass in ::ww_gui_bhv)
+foreach (bhvName, bhvClass in ::ww_gui_bhv)
   ::replace_script_gui_behaviour(bhvName, bhvClass)
 
 ::ww_event <- function ww_event(name, params = {}) {

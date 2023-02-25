@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -68,8 +68,8 @@
       ],
       "suffix": "1",
       "dmName": "gunner_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -132,8 +132,8 @@
       ],
       "suffix": "2",
       "dmName": "commander_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -196,8 +196,8 @@
       ],
       "suffix": "3",
       "dmName": "loader_01_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -260,8 +260,8 @@
       ],
       "suffix": "4",
       "dmName": "driver_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -324,8 +324,8 @@
       ],
       "suffix": "5",
       "dmName": "loader_02_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -413,6 +413,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -2162,8 +2172,8 @@
       "barrelDP": "gun_barrel_dm",
       "breechDP": "cannon_breech_dm",
       "autoLoader": true,
-      "speedYaw": 30.0,
-      "speedPitch": 30.0,
+      "speedYaw": 90.0,
+      "speedPitch": 45.0,
       "fireConeAngle": 1.0,
       "bullets": 404,
       "salvoAmount": 100.0,

@@ -21,7 +21,7 @@ root{
       max-height:t='400*@sf/@pf_outdated';
       pos:t='50%pw-50%w, 0';
       position:t='relative';
-      background-image:t='#ui/images/new_rank_usa.jpg?P1';
+      background-image:t='#ui/images/new_rank_usa?P1';
     }
     tdiv{
       width:t='pw';

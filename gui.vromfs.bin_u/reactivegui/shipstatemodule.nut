@@ -11,9 +11,9 @@ let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
   aliveCrewMembersCount, driverAlive } = require("crewState.nut")
 let { isVisibleDmgIndicator } = require("hudState.nut")
 let dmModule = require("dmModule.nut")
-let {damageModule, shipSteeringGauge, hudLogBgColor} = require("style/colors.nut").hud
+let { damageModule, shipSteeringGauge, hudLogBgColor } = require("style/colors.nut").hud
 
-let {lerp, sin} = require("%sqstd/math.nut")
+let { lerp, sin } = require("%sqstd/math.nut")
 
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
@@ -207,7 +207,8 @@ let crewCountColor = Computed(function() {
   let current = aliveCrewMembersCount.value
   if (current < minimum) {
     return damageModule.dmModuleDestroyed
-  } else if (current < minimum * 1.1) {
+  }
+  else if (current < minimum * 1.1) {
     return damageModule.dmModuleDamaged
   }
   return damageModule.active
@@ -295,7 +296,7 @@ let steeringComp = {
       color = shipSteeringGauge.mark
       size = [hdpx(12), hdpx(10)]
       hplace = ALIGN_CENTER
-      pos = [pw(-steering.value*50), -hdpx(5)]
+      pos = [pw(-steering.value * 50), -hdpx(5)]
     }
   ]
 }
@@ -303,8 +304,8 @@ let steeringComp = {
 let dollSize = [sh(16), sh(32)]
 let fovSize = [sh(30), sh(30)]
 let fovTopOffset = sh(2)
-let fovPos = [0.5*dollSize[0] - 0.5*fovSize[0],
-  0.5*dollSize[1] - 0.5*fovSize[1] + fovTopOffset]
+let fovPos = [0.5 * dollSize[0] - 0.5 * fovSize[0],
+  0.5 * dollSize[1] - 0.5 * fovSize[1] + fovTopOffset]
 
 let dollFov = @() {
   watch = [ fwdAngle, sightAngle, fov ]
@@ -317,13 +318,13 @@ let dollFov = @() {
   }
   children = [
     {
-      size = [flex(),flex()]
+      size = [flex(), flex()]
       rendObj = ROBJ_IMAGE
       image = images.sightCone
       color = Color(155, 255, 0, 120)
     }
     {
-      size = [flex(),flex()]
+      size = [flex(), flex()]
       rendObj = ROBJ_IMAGE
       image = images.sightCone
       color = Color(155, 255, 0)
@@ -387,7 +388,7 @@ return @() {
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
   padding = isVisibleDmgIndicator.value ? hdpx(10) : 0
-  gap = isVisibleDmgIndicator.value ? {size=[flex(),hdpx(5)]} : 0
+  gap = isVisibleDmgIndicator.value ? { size = [flex(), hdpx(5)] } : 0
   behavior = Behaviors.RecalcHandler
   function onRecalcLayout(_initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {

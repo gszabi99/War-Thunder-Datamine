@@ -20,31 +20,32 @@ let styling = {
         opacity = 1
         _width = fpx(8)
         _height = fpx(8)
-        skipDirPadNav=true
+        skipDirPadNav = true
       }
-    } else {
+    }
+    else {
       return class {
         opacity = 0
         _width = fpx(8)
         _height = fpx(8)
-        skipDirPadNav=true
+        skipDirPadNav = true
       }
     }
   }
 
   ContentRoot = class {
     size = flex()
-    skipDirPadNav=true
+    skipDirPadNav = true
   }
 }
 
 
 let scrollbar = function(scroll_handler) {
-  return scrollbarBase.scroll(scroll_handler, {styling=styling})
+  return scrollbarBase.scroll(scroll_handler, { styling = styling })
 }
 
 
-let makeSideScroll = function(content, options={}) {
+let makeSideScroll = function(content, options = {}) {
   if (!("styling" in options))
     options.styling <- styling
   return scrollbarBase.makeSideScroll(content, options)

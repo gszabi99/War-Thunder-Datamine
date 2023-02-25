@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -42,8 +43,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
 
 //********** PUBLIC **********//
 
-::g_popups.add <- function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0)
-{
+::g_popups.add <- function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0) {
   this.savePopup(
     ::Popup({
         title = title
@@ -60,26 +60,23 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   this.performDelayedFlushPopupsIfCan()
 }
 
-::g_popups.removeByHandler <- function removeByHandler(handler)
-{
+::g_popups.removeByHandler <- function removeByHandler(handler) {
   if (handler == null)
     return
 
-  foreach(_idx, popup in this.popupsList)
-    if (popup.handler == handler)
-    {
+  foreach (_idx, popup in this.popupsList)
+    if (popup.handler == handler) {
       popup.destroy(true)
       this.remove(popup)
     }
 
-  for(local i = this.suspendedPopupsList.len()-1; i >= 0; i--)
+  for (local i = this.suspendedPopupsList.len() - 1; i >= 0; i--)
     if (this.suspendedPopupsList[i].handler == handler)
       this.suspendedPopupsList.remove(i)
 }
 
 //********** PRIVATE **********//
-::g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfCan()
-{
+::g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfCan() {
   let curTime = get_time_msec()
   if (curTime - this.lastPerformDelayedCallTime < LOST_DELAYED_ACTION_MSEC)
     return
@@ -95,11 +92,9 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
       if (this.suspendedPopupsList.len() == 0)
         return
 
-      for(local i = this.suspendedPopupsList.len()-1; i >= 0; i--)
-      {
+      for (local i = this.suspendedPopupsList.len() - 1; i >= 0; i--) {
         let popup = this.suspendedPopupsList[i]
-        if (this.canShowPopup())
-        {
+        if (this.canShowPopup()) {
           ::u.removeFrom(this.suspendedPopupsList, popup)
           this.show(popup)
           if (this.getPopupCount() > this.MAX_POPUPS_ON_SCREEN)
@@ -110,11 +105,9 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   )
 }
 
-::g_popups.show <- function show(popup)
-{
+::g_popups.show <- function show(popup) {
   let popupByGroup = this.getByGroup(popup)
-  if (popupByGroup)
-  {
+  if (popupByGroup) {
     popupByGroup.destroy(true)
     this.remove(popupByGroup, false)
   }
@@ -124,18 +117,14 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   this.popupsList.append(popup)
 }
 
-::g_popups.getPopupCount <- function getPopupCount()
-{
+::g_popups.getPopupCount <- function getPopupCount() {
   return this.popupsList.len()
 }
 
-::g_popups.remove <- function remove(popup, needFlushSuspended = true)
-{
-  for(local i = 0; i < this.popupsList.len(); i++)
-  {
+::g_popups.remove <- function remove(popup, needFlushSuspended = true) {
+  for (local i = 0; i < this.popupsList.len(); i++) {
     let checkedPopup = this.popupsList[i]
-    if (checkedPopup == popup)
-    {
+    if (checkedPopup == popup) {
       this.popupsList.remove(i)
       break
     }
@@ -145,8 +134,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
     this.performDelayedFlushPopupsIfCan()
 }
 
-::g_popups.getByGroup <- function getByGroup(sourcePopup)
-{
+::g_popups.getByGroup <- function getByGroup(sourcePopup) {
   if (!sourcePopup.groupName)
     return null
 
@@ -156,11 +144,10 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   )
 }
 
-::g_popups.savePopup <- function savePopup(newPopup)
-{
+::g_popups.savePopup <- function savePopup(newPopup) {
   local index = -1
   if (newPopup.groupName)
-    index = this.suspendedPopupsList.findindex( @(popup) popup.groupName == newPopup.groupName) ?? -1
+    index = this.suspendedPopupsList.findindex(@(popup) popup.groupName == newPopup.groupName) ?? -1
 
   if (index >= 0)
     this.suspendedPopupsList.remove(index)
@@ -168,8 +155,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   this.suspendedPopupsList.insert(max(index, 0), newPopup)
 }
 
-::g_popups.canShowPopup <- function canShowPopup()
-{
+::g_popups.canShowPopup <- function canShowPopup() {
   let popupNestObj = ::get_active_gc_popup_nest_obj()
   if (!checkObj(popupNestObj))
     return false
@@ -177,17 +163,15 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   return popupNestObj.getModalCounter() == 0
 }
 
-::g_popups.removeInvalidPopups <- function removeInvalidPopups()
-{
-  for(local i = this.popupsList.len()-1; i >= 0; i--)
+::g_popups.removeInvalidPopups <- function removeInvalidPopups() {
+  for (local i = this.popupsList.len() - 1; i >= 0; i--)
     if (!this.popupsList[i].isValidView())
       this.popupsList.remove(i)
 }
 
 //********** EVENT HANDLERDS ***********//
 
-::g_popups.onEventActiveHandlersChanged <- function onEventActiveHandlersChanged(_params)
-{
+::g_popups.onEventActiveHandlersChanged <- function onEventActiveHandlersChanged(_params) {
   this.performDelayedFlushPopupsIfCan()
 }
 

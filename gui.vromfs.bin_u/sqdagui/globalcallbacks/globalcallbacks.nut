@@ -2,7 +2,9 @@
 #explicit-this
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let {assertf} =require("dagor.debug")
+let { assertf } = require("dagor.debug")
+let { parse_json } = require("json")
+
 let callbacks = {
   types = []
 }
@@ -15,11 +17,10 @@ callbacks.template <- {
   onCb = @(_obj, _params) null
   paramsKey = "actionData"
   getParamsMarkup = @(params) $"{this.paramsKey}:t='{::save_to_json(params)}';"
-  cbFromObj = @(obj) this.onCb(obj, obj?.isValid() && (obj?[this.paramsKey] ?? "") != "" ? ::parse_json(obj[this.paramsKey]) : {})
+  cbFromObj = @(obj) this.onCb(obj, obj?.isValid() && (obj?[this.paramsKey] ?? "") != "" ? parse_json(obj[this.paramsKey]) : {})
 }
 
-callbacks.addTypes <- function(typesTable)
-{
+callbacks.addTypes <- function(typesTable) {
   enums.addTypes(this, typesTable,
     function() {
       this.cbName = $"::gcb.{this.id}"

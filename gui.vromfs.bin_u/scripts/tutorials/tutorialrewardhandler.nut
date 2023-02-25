@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialRewardData
 } = require("%scripts/tutorials/tutorialsData.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -14,6 +16,7 @@ let { getMoneyFromDebriefingResult } = require("%scripts/debriefing/debriefingFu
 let { checkRankUpWindow } = require("%scripts/debriefing/rankUpModal.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let { register_command } = require("console")
+let { set_game_mode, get_game_mode } = require("mission")
 
 register_command(
   function () {
@@ -27,7 +30,7 @@ register_command(
     }]
     return ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
       {
-        rewardMarkup = getMissionRewardsMarkup(dataBlk ?? ::DataBlock(), misName, rewardsConfig)
+        rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
         misName = misName
         afterRewardText = dataBlk?[misName].rewardWndInfoText ?? ""
         decorator = null
@@ -72,9 +75,8 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
       })
     }
 
-    foreach(t in checkTutorialsList)
-      if (t.tutorial == this.misName)
-      {
+    foreach (t in checkTutorialsList)
+      if (t.tutorial == this.misName) {
         let image = ::get_country_flag_img("tutorial_" + t.id + "_win")
         if (image == "")
           continue
@@ -95,13 +97,13 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     let window_height = this.scene.findObject("reward_frame").getSize()[1]
     let safe_height = safeAreaMenu.getSafearea()[1] * ::screen_height()
 
-    if(window_height > safe_height) {
+    if (window_height > safe_height) {
       let award_image = this.scene.findObject("award_image")
       let image_height = award_image.getSize()[1]
       let image_new_height = image_height - (window_height - safe_height)
       let k = image_new_height / image_height
       let image_reduce_height = (image_height - image_new_height) / 2
-      award_image["height"] = "{0}pw".subst(k*0.75)
+      award_image["height"] = "{0}pw".subst(k * 0.75)
       award_image["background-position"] = "0, {0}, 0, {1}".subst(image_reduce_height, image_reduce_height)
       award_image["background-repeat"] = "part"
     }
@@ -143,10 +145,10 @@ let function tryOpenTutorialRewardHandler() {
   if (tutorialRewardData.value == null)
     return false
 
-  let mainGameMode = ::get_mp_mode()
-  ::set_mp_mode(GM_TRAINING)  //req to check progress
+  let mainGameMode = get_game_mode()
+  set_game_mode(GM_TRAINING)  //req to check progress
   let progress = ::get_mission_progress(tutorialRewardData.value.fullMissionName)
-  ::set_mp_mode(mainGameMode)
+  set_game_mode(mainGameMode)
 
   if (tutorialRewardData.value.presetFilename != "")
     ::apply_joy_preset_xchange(tutorialRewardData.value.presetFilename)
@@ -157,19 +159,16 @@ let function tryOpenTutorialRewardHandler() {
   let hasDecoratorUnlocked = !tutorialRewardData.value.isResourceUnlocked && (decorator?.isUnlocked() ?? false)
 
   local newCountries = null
-  if (progress!=tutorialRewardData.value.progress || hasDecoratorUnlocked)
-  {
+  if (progress != tutorialRewardData.value.progress || hasDecoratorUnlocked) {
     let misName = tutorialRewardData.value.missionName
 
-    if ((tutorialRewardData.value.progress>=3 && progress>=0 && progress<3) || hasDecoratorUnlocked)
-    {
+    if ((tutorialRewardData.value.progress >= 3 && progress >= 0 && progress < 3) || hasDecoratorUnlocked) {
       let rBlk = ::get_pve_awards_blk()
       let dataBlk = rBlk?[::get_game_mode_name(GM_TRAINING)]
       let miscText = dataBlk?[misName].rewardWndInfoText ?? ""
       let firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData
       let hasSlotReward = firstCompletRewardData.slotReward != ""
-      if (hasSlotReward)
-      {
+      if (hasSlotReward) {
         ::g_crews_list.invalidate()
         ::reinitAllSlotbars()
       }
@@ -189,15 +188,14 @@ let function tryOpenTutorialRewardHandler() {
       {
         misName = misName
         decorator = decorator
-        rewardMarkup = getMissionRewardsMarkup(dataBlk ?? ::DataBlock(), misName, rewardsConfig)
+        rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
         afterRewardText = loc(miscText)
       })
     }
 
-    if (::u.search(reqTutorial, @(val) val == misName) != null)
-    {
+    if (::u.search(reqTutorial, @(val) val == misName) != null) {
       newCountries = ::checkUnlockedCountries()
-      foreach(c in newCountries)
+      foreach (c in newCountries)
         checkRankUpWindow(c, -1, ::get_player_rank_by_country(c))
     }
   }

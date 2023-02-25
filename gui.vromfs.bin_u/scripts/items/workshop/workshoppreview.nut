@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -14,12 +15,10 @@ const minWindowWidthScale = 1.33  //1.33@sf
 
   wSet = null
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     let blk = this.wSet.previewBlk
     let infoBlocks = []
-    for ( local i = 0; i < blk.paramCount(); i++ )
-    {
+    for (local i = 0; i < blk.paramCount(); i++) {
       let name = blk.getParamName(i)
       if (name == "image" || name == "space")
         infoBlocks.append({
@@ -43,8 +42,7 @@ const minWindowWidthScale = 1.33  //1.33@sf
     }
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     this.wSet.markPreviewed()
     ::gui_start_items_list(itemsTab.WORKSHOP, { curSheet = { id = this.wSet.getShopTabId() } })
   }

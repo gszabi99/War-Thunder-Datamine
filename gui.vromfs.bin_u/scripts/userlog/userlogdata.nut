@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
@@ -27,14 +29,11 @@ let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalT
 
 ::g_script_reloader.registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
 
-let function checkPopupUserLog(user_log_blk)
-{
+let function checkPopupUserLog(user_log_blk) {
   if (user_log_blk == null)
     return false
-  foreach (popupItem in ::popup_userlogs)
-  {
-    if (::u.isTable(popupItem))
-    {
+  foreach (popupItem in ::popup_userlogs) {
+    if (::u.isTable(popupItem)) {
       if (popupItem.type != user_log_blk?.type)
         continue
       let rewardType = user_log_blk?.body.rewardType
@@ -50,8 +49,7 @@ let function checkPopupUserLog(user_log_blk)
   return false
 }
 
-local function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = [])
-{
+local function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = []) {
   let body = newUserLog?.body
   if (!body)
     return
@@ -65,8 +63,7 @@ local function combineUserLogs(currentData, newUserLog, combineKey = null, sumPa
   if (!(combineKey in currentData))
     currentData[combineKey] <- {}
 
-  foreach(param, value in body)
-  {
+  foreach (param, value in body) {
     let haveParam = getTblValue(param, currentData[combineKey])
     if (!haveParam)
       currentData[combineKey][param] <- [value]
@@ -140,8 +137,7 @@ local logNameByType = {
 
 ::getLogNameByType <- @(logType) logNameByType?[logType] ?? "unknown"
 
-::get_userlog_image_item <- function get_userlog_image_item(item, params = {})
-{
+::get_userlog_image_item <- function get_userlog_image_item(item, params = {}) {
   let defaultParams = {
     enableBackground = false,
     showAction = false,
@@ -153,23 +149,20 @@ local logNameByType = {
   }
 
   params = defaultParams.__merge(params)
-  return item ? ::handyman.renderCached(("%gui/items/item.tpl"), { items = item.getViewData(params)}) : ""
+  return item ? ::handyman.renderCached(("%gui/items/item.tpl"), { items = item.getViewData(params) }) : ""
 }
 
-::check_new_user_logs <- function check_new_user_logs()
-{
+::check_new_user_logs <- function check_new_user_logs() {
   let total = ::get_user_logs_count()
   let newUserlogsArray = []
-  for(local i=0; i<total; i++)
-  {
-    let blk = ::DataBlock()
+  for (local i = 0; i < total; i++) {
+    let blk = DataBlock()
     ::get_user_log_blk_body(i, blk)
     if (blk?.disabled || isInArray(blk?.type, ::hidden_userlogs))
       continue
 
     let unlockId = blk?.body.unlockId
-    if (unlockId != null && !isUnlockVisible(::g_unlocks.getUnlockById(unlockId)))
-    {
+    if (unlockId != null && !isUnlockVisible(::g_unlocks.getUnlockById(unlockId))) {
       ::disable_user_log_entry(i)
       continue
     }
@@ -179,12 +172,10 @@ local logNameByType = {
   return newUserlogsArray
 }
 
-::collectOldNotifications <- function collectOldNotifications()
-{
+::collectOldNotifications <- function collectOldNotifications() {
   let total = ::get_user_logs_count()
-  for(local i = 0; i < total; i++)
-  {
-    let blk = ::DataBlock()
+  for (local i = 0; i < total; i++) {
+    let blk = DataBlock()
     ::get_user_log_blk_body(i, blk)
     if (!blk?.disabled && checkPopupUserLog(blk)
         && !isInArray(blk.id, ::shown_userlog_notifications))
@@ -192,13 +183,11 @@ local logNameByType = {
   }
 }
 
-::checkAwardsOnStartFrom <- function checkAwardsOnStartFrom()
-{
+::checkAwardsOnStartFrom <- function checkAwardsOnStartFrom() {
   ::checkNewNotificationUserlogs(true)
 }
 
-::checkNewNotificationUserlogs <- function checkNewNotificationUserlogs(onStartAwards = false)
-{
+::checkNewNotificationUserlogs <- function checkNewNotificationUserlogs(onStartAwards = false) {
   if (::getFromSettingsBlk("debug/skipPopups"))
     return
   if (!::g_login.isLoggedIn())
@@ -222,68 +211,60 @@ local logNameByType = {
 
   //Inventory reward logs will not be received in the same time,
   //so need to wait last reward and only then mark logs as seen
-  let inventoryRewards = {cache = {}}
+  let inventoryRewards = { cache = {} }
 
   let total = ::get_user_logs_count()
   local unlocksNeedsPopupWnd = false
   let popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
 
-  for (local i = 0; i < total; i++)
-  {
-    let blk = ::DataBlock()
+  for (local i = 0; i < total; i++) {
+    let blk = DataBlock()
     ::get_user_log_blk_body(i, blk)
 
     if (blk?.disabled || isInArray(blk?.id, ::shown_userlog_notifications))
       continue
 
     //gamercard popups
-    if (checkPopupUserLog(blk))
-    {
+    if (checkPopupUserLog(blk)) {
       if (onStartAwards)
         continue
 
       let title = ""
       local msg = ""
       let logTypeName = ::getLogNameByType(blk?.type)
-      if (blk?.type == EULT_SESSION_RESULT)
-      {
+      if (blk?.type == EULT_SESSION_RESULT) {
         local mission = ""
         if ((blk?.body.locName.len() ?? 0) > 0)
           mission = getMissionLocName(blk?.body, "locName")
         else
           mission = loc("missions/" + (blk?.body.mission ?? ""))
-        let nameLoc = "userlog/"+logTypeName + (blk?.body.win? "/win":"/lose")
+        let nameLoc = "userlog/" + logTypeName + (blk?.body.win ? "/win" : "/lose")
         msg = format(loc(nameLoc), mission) //need more info in log, maybe title.
         ::my_stats.markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
           ::checkNonApprovedResearches(true)
-        ::broadcastEvent("BattleEnded", {eventId = blk?.body.eventId})
+        ::broadcastEvent("BattleEnded", { eventId = blk?.body.eventId })
       }
-      else if (blk?.type == EULT_CHARD_AWARD)
-      {
+      else if (blk?.type == EULT_CHARD_AWARD) {
         let rewardType = blk?.body.rewardType
         if (rewardType == "WagerWin" ||
             rewardType == "WagerFail" ||
             rewardType == "WagerStageWin" ||
-            rewardType == "WagerStageFail")
-        {
+            rewardType == "WagerStageFail") {
           let itemId = blk?.body.id
           let item = ::ItemsManager.findItemById(itemId)
-          if (item != null)
-          {
+          if (item != null) {
             msg = isInArray(rewardType, ["WagerStageWin", "WagerStageFail"])
               ? loc("userlog/" + rewardType) + loc("ui/colon") + colorize("userlogColoredText", item.getName())
-              : loc("userlog/" + rewardType, {wagerName = colorize("userlogColoredText", item.getName())})
+              : loc("userlog/" + rewardType, { wagerName = colorize("userlogColoredText", item.getName()) })
           }
         }
         else
           continue
       }
-      else if (blk?.type == EULT_EXCHANGE_WARBONDS)
-      {
+      else if (blk?.type == EULT_EXCHANGE_WARBONDS) {
         let awardBlk = blk?.body.award
-        if (awardBlk)
-        {
+        if (awardBlk) {
           let priceText = ::g_warbonds.getWarbondPriceText(awardBlk?.cost ?? 0)
           let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
           msg = awardType.getUserlogBuyText(awardBlk, priceText)
@@ -302,8 +283,7 @@ local logNameByType = {
       continue
 
     local markDisabled = false
-    if (blk?.type == EULT_NEW_UNLOCK)
-    {
+    if (blk?.type == EULT_NEW_UNLOCK) {
       if (!blk?.body.unlockId)
         continue
 
@@ -313,8 +293,7 @@ local logNameByType = {
 
       if ((! ::is_unlock_need_popup(blk.body.unlockId)
           && ! ::is_unlock_need_popup_in_menu(blk.body.unlockId))
-        || !(popupMask & USERLOG_POPUP.UNLOCK))
-      {
+        || !(popupMask & USERLOG_POPUP.UNLOCK)) {
         if (!onStartAwards
             && (!blk?.body.popupInDebriefing || !::isHandlerInScene(::gui_handlers.DebriefingModal))
             && (unlockType == UNLOCKABLE_TITLE
@@ -324,8 +303,7 @@ local logNameByType = {
                || unlockType == UNLOCKABLE_ATTACHABLE
                || unlockType == UNLOCKABLE_PILOT
                )
-           )
-        {
+           ) {
           unlocksRewards[blk.body.unlockId] <- true
           seenIdsArray.append(blk?.id)
         }
@@ -333,8 +311,7 @@ local logNameByType = {
         continue
       }
 
-      if (::is_unlock_need_popup_in_menu(blk.body.unlockId))
-      {
+      if (::is_unlock_need_popup_in_menu(blk.body.unlockId)) {
         // if new unlock passes 'is_unlock_need_popup_in_menu'
         // we need to check if there is Popup Dialog
         // needed to be shown by this unlock
@@ -345,7 +322,7 @@ local logNameByType = {
       }
 
       let unlock = {}
-      foreach(name, value in blk.body)
+      foreach (name, value in blk.body)
         unlock[name] <- value
 
       let config = ::build_log_unlock_data(unlock)
@@ -354,28 +331,26 @@ local logNameByType = {
       ::shown_userlog_notifications.append(blk.id)
       continue
     }
-    else if (blk?.type == EULT_RENT_UNIT || blk?.type == EULT_RENT_UNIT_EXPIRED)
-    {
+    else if (blk?.type == EULT_RENT_UNIT || blk?.type == EULT_RENT_UNIT_EXPIRED) {
       let logTypeName = ::getLogNameByType(blk.type)
-      let logName = getTblValue("rentContinue", blk.body, false)? "rent_unit_extended" : logTypeName
+      let logName = getTblValue("rentContinue", blk.body, false) ? "rent_unit_extended" : logTypeName
       let unitName = getTblValue("unit", blk.body)
       let unit = ::getAircraftByName(unitName)
       let config = {
         unitName = unitName
         name = loc("mainmenu/rent/" + logName)
-        desc = loc("userlog/" + logName, {unitName = ::getUnitName(unit, false)})
+        desc = loc("userlog/" + logName, { unitName = ::getUnitName(unit, false) })
         descAlign = "center"
         popupImage = ""
         disableLogId = blk.id
       }
 
-      if (blk?.type == EULT_RENT_UNIT)
-      {
+      if (blk?.type == EULT_RENT_UNIT) {
         config.desc += "\n"
 
         let rentTimeHours = time.secondsToHours(getTblValue("rentTimeLeftSec", blk.body, 0))
         let timeText = colorize("userlogColoredText", time.hoursToString(rentTimeHours))
-        config.desc += loc("mainmenu/rent/rentTimeSec", {time = timeText})
+        config.desc += loc("mainmenu/rent/rentTimeSec", { time = timeText })
 
         config.desc = colorize("activeTextColor", config.desc)
       }
@@ -383,16 +358,14 @@ local logNameByType = {
       rentsTable[unitName + "_" + logTypeName] <- config
       markDisabled = true
     }
-    else if (blk?.type == EULT_OPEN_ALL_IN_TIER)
-    {
+    else if (blk?.type == EULT_OPEN_ALL_IN_TIER) {
       if (onStartAwards || !(popupMask & USERLOG_POPUP.FINISHED_RESEARCHES))
         continue
       combineUserLogs(combinedUnitTiersUserLogs, blk, "unit", ["expToInvUnit", "expToExcess"])
       markDisabled = true
     }
     else if (blk?.type == EULT_OPEN_TROPHY
-             && !getTblValue("everyDayLoginAward", blk.body, false))
-    {
+             && !getTblValue("everyDayLoginAward", blk.body, false)) {
       if ("rentedUnit" in blk.body)
         ignoreRentItems.append(blk.body.rentedUnit + "_" + ::getLogNameByType(EULT_RENT_UNIT))
 
@@ -404,8 +377,7 @@ local logNameByType = {
       let userstatItemRewardData = getUserstatItemRewardData(itemId)
       let isUserstatRewards = userstatItemRewardData != null
       if (item != null && (!item?.shouldAutoConsume || isUserstatRewards) &&
-        (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy"))
-      {
+        (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy")) {
         let trophyRewardTable = ::buildTableFromBlk(blk.body)
         if (isUserstatRewards) {
           trophyRewardTable.__update({
@@ -438,24 +410,20 @@ local logNameByType = {
     else if (blk?.type == EULT_CHARD_AWARD
              && getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward"
              && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
-             && !::isHandlerInScene(::gui_handlers.DebriefingModal))
-    {
-      handler.doWhenActive((@(blk) function() {showEveryDayLoginAwardWnd(blk)})(blk))
+             && !::isHandlerInScene(::gui_handlers.DebriefingModal)) {
+      handler.doWhenActive((@(blk) function() { showEveryDayLoginAwardWnd(blk) })(blk))
     }
-    else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL)
-    {
+    else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL) {
       ::broadcastEvent("BattleTasksIncomeUpdate")
       markDisabled = true
     }
-    else if (blk?.type == EULT_INVENTORY_ADD_ITEM)
-    {
+    else if (blk?.type == EULT_INVENTORY_ADD_ITEM) {
       if (onStartAwards)
         continue
 
       let itemDefId = blk.body?.itemDefId
       let item = ::ItemsManager.getInventoryItemById(itemDefId)
-      if (item && !item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))
-      {
+      if (item && !item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false)) {
         let logTypeName = ::getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}"
         let numItems = blk.body?.quantity ?? blk.body?.amount ?? 1
@@ -487,7 +455,7 @@ local logNameByType = {
         let receipeItem = ::ItemsManager.getItemOrRecipeBundleById(itemDefId)
         if (receipeItem?.forceShowRewardReceiving) {
           if (itemDefId not in inventoryRewards.cache) {
-            inventoryRewards.cache[itemDefId] <- {markSeenIds = [blk.id], rewardsCount = 0, rewardsData = []}
+            inventoryRewards.cache[itemDefId] <- { markSeenIds = [blk.id], rewardsCount = 0, rewardsData = [] }
             //markSeenIds - for disabling them if we will decide to show reward
             //rewardsCount - for check is all rewards we've got
           }
@@ -501,8 +469,7 @@ local logNameByType = {
         }
       }
     }
-    else if (blk?.type == EULT_TICKETS_REMINDER)
-    {
+    else if (blk?.type == EULT_TICKETS_REMINDER) {
       let logTypeName = ::getLogNameByType(blk.type)
       let name = loc($"userlog/{logTypeName}")
       let desc = [colorize("userlogColoredText", ::events.getNameByEconomicName(blk?.body.name))]
@@ -516,8 +483,7 @@ local logNameByType = {
       ::g_popups.add(name, ::g_string.implode(desc, "\n"), null, null, null, logTypeName)
       markDisabled = true
     }
-    else if (blk?.type == EULT_ACTIVATE_ITEM)
-    {
+    else if (blk?.type == EULT_ACTIVATE_ITEM) {
       let uid = blk?.body.uid
       let item = ::ItemsManager.findItemByUid(uid, itemType.DISCOUNT)
       if (item?.isSpecialOffer ?? false) {
@@ -549,24 +515,21 @@ local logNameByType = {
       }
       markDisabled = true
     }
-    else if (blk?.type == EULT_REMOVE_ITEM)
-    {
+    else if (blk?.type == EULT_REMOVE_ITEM) {
       let reason = getTblValue("reason", blk.body, "unknown")
-      if (reason == "unknown" || reason == "consumed")
-      {
+      if (reason == "unknown" || reason == "consumed") {
         let logTypeName = ::getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}/{reason}"
         let itemId = getTblValue("id", blk.body, "")
         let item = ::ItemsManager.findItemById(itemId)
         if (item && item.iType == itemType.TICKET)
           ::g_popups.add("",
-            loc(locId, {itemName = colorize("userlogColoredText", item.getName())}),
+            loc(locId, { itemName = colorize("userlogColoredText", item.getName()) }),
             null, null, null, logTypeName)
       }
       markDisabled = true
     }
-    else if (blk?.type == EULT_BUYING_RESOURCE)
-    {
+    else if (blk?.type == EULT_BUYING_RESOURCE) {
       if (blk?.body?.entName != null && entitlementRewards?[blk.body.entName] == null)
         entitlementRewards[blk.body.entName] <- true
       markDisabled = true
@@ -584,8 +547,7 @@ local logNameByType = {
         })
     }
     else if (blk?.type == EULT_WW_END_OPERATION && (blk.body?.wp ?? 0) > 0) {
-      markDisabled = true
-      ::g_world_war.openOperationRewardPopup(blk.body)
+      ::g_world_war.openOperationRewardPopup(blk)
     }
 
     if (markDisabled)
@@ -593,7 +555,7 @@ local logNameByType = {
   }
 
   if (unlocksNeedsPopupWnd)
-    handler.doWhenActive( (@(handler) function() { ::g_popup_msg.showPopupWndIfNeed(handler) })(handler))
+    handler.doWhenActive((@(handler) function() { ::g_popup_msg.showPopupWndIfNeed(handler) })(handler))
 
   foreach (inventoryItemId, invData in inventoryRewards.cache)
     if (invData.rewardsCount <= 0) {
@@ -621,8 +583,7 @@ local logNameByType = {
 
 
   rentsTable.each(function(config, key) {
-    if (!isInArray(key, ignoreRentItems))
-    {
+    if (!isInArray(key, ignoreRentItems)) {
       if (onStartAwards)
         handler.doWhenActive(@() ::showUnlockWnd(config))
       else
@@ -632,15 +593,13 @@ local logNameByType = {
 
   specialOffers.each(@(config) handler.doWhenActive(@() ::showUnlockWnd(config)))
 
-  foreach(_name, table in combinedUnitTiersUserLogs)
-  {
+  foreach (_name, table in combinedUnitTiersUserLogs) {
     ::gui_start_mod_tier_researched(table)
   }
 }
 
-::checkCountry <- function checkCountry(country, _assertText, country_0_available = false)
-{
-  if (!country || country=="")
+::checkCountry <- function checkCountry(country, _assertText, country_0_available = false) {
+  if (!country || country == "")
     return false
   if (country == "country_0")
     return country_0_available
@@ -666,8 +625,7 @@ local logNameByType = {
  */
 let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHiddenItem()
 
-::isUserlogVisible <- function isUserlogVisible(blk, filter, idx)
-{
+::isUserlogVisible <- function isUserlogVisible(blk, filter, idx) {
   if (blk?.type == null)
     return false
   if (("show" in filter) && !isInArray(blk.type, filter.show))
@@ -685,8 +643,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
   return true
 }
 
-::getUserLogsList <- function getUserLogsList(filter)
-{
+::getUserLogsList <- function getUserLogsList(filter) {
   let logs = [];
   let total = ::get_user_logs_count()
   local needSave = false
@@ -694,10 +651,8 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
   /**
    * If statick tournament reward exist in log, writes it to logs root
    */
-  let grabStatickReward = function (reward, logObj)
-  {
-    if (reward.awardType == "base_win_award")
-    {
+  let grabStatickReward = function (reward, logObj) {
+    if (reward.awardType == "base_win_award") {
       logObj.baseTournamentWp <- getTblValue("wp", reward, 0)
       logObj.baseTournamentGold <- getTblValue("gold", reward, 0)
       return true
@@ -705,9 +660,8 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     return false
   }
 
-  for(local i = total - 1; i >= 0; i--)
-  {
-    let blk = ::DataBlock()
+  for (local i = total - 1; i >= 0; i--) {
+    let blk = DataBlock()
     ::get_user_log_blk_body(i, blk)
 
     if (!::isUserlogVisible(blk, filter, i))
@@ -733,42 +687,36 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
       isAerobaticSmoke = unlock?.isAerobaticSmoke ?? false
     }
 
-    for (local j = 0, c = blk.body.paramCount(); j < c; j++)
-    {
+    for (local j = 0, c = blk.body.paramCount(); j < c; j++) {
       local key = blk.body.getParamName(j)
       if (key in logObj)
         key = "body_" + key
       logObj[key] <- blk.body.getParamValue(j)
     }
     local hasVisibleItem = false
-    for (local j = 0, c = blk.body.blockCount(); j < c; j++)
-    {
+    for (local j = 0, c = blk.body.blockCount(); j < c; j++) {
       let block = blk.body.getBlock(j)
       let name = block.getBlockName()
 
       //can be 2 aircrafts with the same name (cant foreach)
       //trophyMultiAward logs have spare in body too. they no need strange format hacks.
       if (name == "aircrafts"
-          || (name == "spare" && !::PrizesView.isPrizeMultiAward(blk.body)))
-      {
+          || (name == "spare" && !::PrizesView.isPrizeMultiAward(blk.body))) {
         if (!(name in logObj))
           logObj[name] <- []
 
         for (local k = 0; k < block.paramCount(); k++)
-          logObj[name].append({name = block.getParamName(k), value = block.getParamValue(k)})
+          logObj[name].append({ name = block.getParamName(k), value = block.getParamValue(k) })
       }
-      else if (name == "rewardTS")
-      {
+      else if (name == "rewardTS") {
         let reward = ::buildTableFromBlk(block)
-        if (!grabStatickReward(reward, logObj))
-        {
+        if (!grabStatickReward(reward, logObj)) {
           if (!(name in logObj))
             logObj[name] <- []
           logObj[name].append(reward)
         }
       }
-      else if (block instanceof ::DataBlock)
-      {
+      else if (block instanceof DataBlock) {
         if (haveHiddenItem(block?.itemDefId))
           continue
         hasVisibleItem = hasVisibleItem || block?.itemDefId != null
@@ -782,9 +730,8 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
 
     local skip = false
     if ("filters" in filter)
-      foreach(f, values in filter.filters)
-        if (!isInArray((f in logObj)? logObj[f] : null, values))
-        {
+      foreach (f, values in filter.filters)
+        if (!isInArray((f in logObj) ? logObj[f] : null, values)) {
           skip = true
           break
         }
@@ -797,8 +744,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
         && inst?.parentTrophyRandId == logObj.parentTrophyRandId
           && inst?.id == logObj?.id && inst.time == logObj.time)
       : null
-    if (dubIdx != null)
-    {
+    if (dubIdx != null) {
       let curLog = logs[dubIdx]
       // Stack all trophy rewards
       if (curLog?.item && logObj?.item)
@@ -810,17 +756,15 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     }
     // Changes of current logObj above will be used for logObj view only
     // so no need reduce logs array to avoid differences with blk
-    logs.append(dubIdx != null ? logObj.__merge({isDubTrophy = true}) : logObj)
+    logs.append(dubIdx != null ? logObj.__merge({ isDubTrophy = true }) : logObj)
 
-    if ("disableVisible" in filter && filter.disableVisible)
-    {
+    if ("disableVisible" in filter && filter.disableVisible) {
       if (::disable_user_log_entry(i))
         needSave = true
     }
   }
 
-  if (needSave)
-  {
+  if (needSave) {
     log("getUserLogsList - needSave")
     saveOnlineJob()
   }

@@ -2301,130 +2301,6 @@
       ]
     }
   },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "tu-2_2xfab250",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_2xfab250.blk",
-        "tags": {
-          "free": true
-        },
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
-            "iconType": "bombs_middle"
-          }
-        }
-      },
-      {
-        "name": "tu-2_9xfab100",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_9xfab100.blk",
-        "reqModification": "tu-2_pkd-2",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
-            "iconType": "bombs_small"
-          }
-        }
-      },
-      {
-        "name": "tu-2_2xfab500_2xfab250",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_2xfab500_2xfab250.blk",
-        "reqModification": "tu-2_pkd-2",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
-              "iconType": "bombs_middle"
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab500x.blk",
-              "iconType": "bombs_large"
-            }
-          ]
-        }
-      },
-      {
-        "name": "tu-2_4xfab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_4xfab500.blk",
-        "reqModification": "tu-2_pkd-2",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
-              "iconType": "bombs_large"
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab500x.blk",
-              "iconType": "bombs_large"
-            }
-          ]
-        }
-      },
-      {
-        "name": "tu-2_2xfab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_2xfab500.blk",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
-            "iconType": "bombs_large"
-          }
-        }
-      },
-      {
-        "name": "tu-2_1xfab1000",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_1xfab1000.blk",
-        "reqModification": "tu-2_pkd-2",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
-            "iconType": "bombs_special"
-          }
-        }
-      },
-      {
-        "name": "tu-2_1xfab1000_2xfab250",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_1xfab1000_2xfab250.blk",
-        "reqModification": "tu-2_pkd-2",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
-              "iconType": "bombs_middle"
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
-              "iconType": "bombs_special"
-            }
-          ]
-        }
-      },
-      {
-        "name": "tu-2_1xfab1000_2xfab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_1xfab1000_2xfab500.blk",
-        "reqModification": "tu-2_pkd-2",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab500.blk",
-              "iconType": "bombs_large"
-            },
-            {
-              "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
-              "iconType": "bombs_special"
-            }
-          ]
-        }
-      },
-      {
-        "name": "tu-2_default",
-        "blk": "gameData/FlightModels/weaponPresets/tu-2_default.blk",
-        "tags": {
-          "aux": true
-        }
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2671,14 +2547,44 @@
     "turnTime": 42.3217
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "tu-2_pkd-2": {
       "modClass": "weapon",
       "tier": 2,
@@ -2701,103 +2607,555 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
+  "weapon_presets": {
+    "preset": [
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonShVAK.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon1_dm",
-        "bullets": 150,
-        "spread": 1.0
+        "name": "tu-2_default",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_default.blk"
       },
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonShVAK.blk",
-        "emitter": "flare5",
-        "flash": "flare5",
-        "dm": "cannon2_dm",
-        "bullets": 150,
-        "spread": 1.0,
-        "traceOffset": 2
+        "name": "tu-2_postwar_9xfab100",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_9xfab100.blk"
       },
       {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunUB_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare1",
-        "dm": "gunner4_dm",
-        "gunnerDm": "gunner4_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 190,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -25.0,
-            25.0
-          ],
-          "pitch": [
-            0.0,
-            50.0
+        "name": "tu-2_postwar_4x_fab250",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_4x_fab250.blk"
+      },
+      {
+        "name": "tu-2_postwar_6x_fab250",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_6x_fab250.blk"
+      },
+      {
+        "name": "tu_postwar-2_1x_fab500",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_1x_fab500.blk"
+      },
+      {
+        "name": "tu-2_postwar_2x_fab500",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_2x_fab500.blk"
+      },
+      {
+        "name": "tu-2_postwar_3x_fab500",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_3x_fab500.blk"
+      },
+      {
+        "name": "tu-2_postwar_1x_fab1000",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_1x_fab1000.blk"
+      },
+      {
+        "name": "tu-2_postwar_2x_fab1000",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_2x_fab1000.blk"
+      },
+      {
+        "name": "tu-2_postwar_3x_fab1000",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_postwar_3x_fab1000.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 3250.0,
+    "maxloadMassLeftConsoles": 1625.0,
+    "maxloadMassRightConsoles": 1625.0,
+    "maxDisbalance": 1100.0,
+    "HideNodes": {
+      "node": [
+        "antenna",
+        "bomb250kg_pylon1",
+        "bomb250kg_pylon2",
+        "bomb500kg_pylon1",
+        "bomb500kg_pylon2",
+        "bomb1000kg_pylon1",
+        "bomb1000kg_pylon2",
+        "bomb_1000m44_pylon1",
+        "bomb_1000m44_pylon2",
+        "bomb_pylon1",
+        "bomb_pylon2"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Bombing": {
+            "maxDelay": 0.0,
+            "canBeDropped": {
+              "altitude": [
+                -100.0,
+                20000.0
+              ],
+              "tangage": [
+                -95.0,
+                60.0
+              ],
+              "roll": 65.0
+            },
+            "maxDispersionAt": {
+              "altitude": [
+                20.0,
+                10000.0
+              ],
+              "tangage": [
+                -100.0,
+                55.0
+              ],
+              "roll": 65.0
+            },
+            "noDispersionAt": {
+              "altitude": [
+                20.0,
+                6000.0
+              ],
+              "tangage": [
+                -90.0,
+                15.0
+              ],
+              "roll": 40.0
+            },
+            "sightDisappears": {
+              "altitude": [
+                40.0,
+                10000.0
+              ],
+              "tangage": [
+                -100.0,
+                45.0
+              ],
+              "roll": 55.0
+            },
+            "sightStartsFading": {
+              "altitude": [
+                95.0,
+                6000.0
+              ],
+              "tangage": [
+                -30.0,
+                18.0
+              ],
+              "roll": 40.0
+            },
+            "sightEnabled": {
+              "altitude": [
+                20.0,
+                15000.0
+              ],
+              "tangage": [
+                -120.0,
+                60.0
+              ],
+              "roll": 180.0
+            },
+            "maxDelayAt": {
+              "altitude": [
+                -20000.0,
+                20000.0
+              ],
+              "tangage": [
+                -180.0,
+                180.0
+              ],
+              "roll": 180.0
+            },
+            "noDelayAt": {
+              "altitude": [
+                -19999.0,
+                19999.0
+              ],
+              "tangage": [
+                -179.0,
+                179.0
+              ],
+              "roll": 179.0
+            }
+          },
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonShVAK.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "spread": 1.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonShVAK.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "spread": 1.0,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunUB_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare1",
+              "dm": "gunner4_dm",
+              "gunnerDm": "gunner4_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 190,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -25.0,
+                  25.0
+                ],
+                "pitch": [
+                  0.0,
+                  50.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunUB_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun2",
+              "flash": "flare2",
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 250,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun2"
+              },
+              "limits": {
+                "yaw": [
+                  -50.0,
+                  50.0
+                ],
+                "pitch": [
+                  0.0,
+                  40.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunUB_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun3",
+              "flash": "flare3",
+              "dm": "gunner3_dm",
+              "gunnerDm": "gunner3_dm",
+              "gunDm": "gun3_dm",
+              "partsDP": "gun3_dm",
+              "bullets": 350,
+              "turret": {
+                "head": "turret3",
+                "gun": "gun3"
+              },
+              "limits": {
+                "yaw": [
+                  -20.0,
+                  20.0
+                ],
+                "pitch": [
+                  -50.0,
+                  5.0
+                ]
+              }
+            }
           ]
         }
       },
       {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunUB_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun2",
-        "flash": "flare2",
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 250,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2"
-        },
-        "limits": {
-          "yaw": [
-            -50.0,
-            50.0
-          ],
-          "pitch": [
-            0.0,
-            40.0
-          ]
-        }
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large",
+            "name": "fab250_external",
+            "reqModification": "tu-2_pkd-2",
+            "ShowNodes": {
+              "node": [
+                "bomb250kg_pylon1",
+                "bomb_pylon1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+              "emitter": "bomb_250sv_5",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "fab500_external",
+            "reqModification": "tu-2_pkd-2",
+            "ShowNodes": {
+              "node": [
+                "bomb500kg_pylon1",
+                "bomb_pylon1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_500m_44.blk",
+              "emitter": "bomb_500sv_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "fab1000_external",
+            "reqModification": "tu-2_pkd-2",
+            "ShowNodes": {
+              "node": "bomb_1000m44_pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_1000m_44.blk",
+              "emitter": "bomb_1000m44_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          }
+        ]
       },
       {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunUB_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun3",
-        "flash": "flare3",
-        "dm": "gunner3_dm",
-        "gunnerDm": "gunner3_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 350,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun3"
-        },
-        "limits": {
-          "yaw": [
-            -20.0,
-            20.0
-          ],
-          "pitch": [
-            -50.0,
-            5.0
-          ]
-        }
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle_group_x8",
+            "name": "fab100_internal",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb6",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb7",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb8",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb9",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb10",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb11",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb12",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb13",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_100m_43.blk",
+                "emitter": "bomb14",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group_x2",
+            "name": "fab250_x2",
+            "reqModification": "tu-2_pkd-2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+                "emitter": "bomb_250sv_1",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+                "emitter": "bomb_250sv_2",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group_x4",
+            "name": "fab250_x4",
+            "reqModification": "tu-2_pkd-2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+                "emitter": "bomb_250sv_1",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+                "emitter": "bomb_250sv_2",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+                "emitter": "bomb_250sv_3",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+                "emitter": "bomb_250sv_4",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "fab500_internal",
+            "reqModification": "tu-2_pkd-2",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_500m_44.blk",
+              "emitter": "bomb3",
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "fab1000_internal",
+            "reqModification": "tu-2_pkd-2",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_1000m_44.blk",
+              "emitter": "bomb1",
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large",
+            "name": "fab250_external",
+            "reqModification": "tu-2_pkd-2",
+            "ShowNodes": {
+              "node": [
+                "bomb250kg_pylon2",
+                "bomb_pylon2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_44.blk",
+              "emitter": "bomb_250sv_6",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "fab500_external",
+            "reqModification": "tu-2_pkd-2",
+            "ShowNodes": {
+              "node": [
+                "bomb500kg_pylon2",
+                "bomb_pylon2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_500m_44.blk",
+              "emitter": "bomb_500sv_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "fab1000_external",
+            "reqModification": "tu-2_pkd-2",
+            "ShowNodes": {
+              "node": "bomb_1000m44_pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_1000m_44.blk",
+              "emitter": "bomb_1000m44_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          }
+        ]
       }
     ]
   },

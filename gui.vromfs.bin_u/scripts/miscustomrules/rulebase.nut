@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,14 +6,15 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let DataBlock = require("DataBlock")
 let { getAvailableRespawnBases } = require("guiRespawn")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { get_game_mode, get_game_type } = require("mission")
 
-::mission_rules.Base <- class
-{
+::mission_rules.Base <- class {
   missionParams = null
   isSpawnDelayEnabled = false
   isScoreRespawnEnabled = false
@@ -30,17 +32,15 @@ let { GUI } = require("%scripts/utils/configs.nut")
   fullUnitsLimitData = null
   fullEnemyUnitsLimitData = null
 
-  constructor()
-  {
+  constructor() {
     this.initMissionParams()
   }
 
-  function initMissionParams()
-  {
-    this.missionParams = ::DataBlock()
+  function initMissionParams() {
+    this.missionParams = DataBlock()
     ::get_current_mission_desc(this.missionParams)
 
-    let isVersus = isGameModeVersus(::get_game_mode())
+    let isVersus = isGameModeVersus(get_game_mode())
     this.isSpawnDelayEnabled = isVersus && getTblValue("useSpawnDelay", this.missionParams, false)
     this.isTeamScoreRespawnEnabled = isVersus && getTblValue("useTeamSpawnScore", this.missionParams, false)
     this.isScoreRespawnEnabled = this.isTeamScoreRespawnEnabled || (isVersus && getTblValue("useSpawnScore", this.missionParams, false))
@@ -50,8 +50,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     this.needShowLockedSlots = this.missionParams?.needShowLockedSlots ?? true
   }
 
-  function onMissionStateChanged()
-  {
+  function onMissionStateChanged() {
     this.fullUnitsLimitData = null
     this.fullEnemyUnitsLimitData = null
   }
@@ -60,33 +59,28 @@ let { GUI } = require("%scripts/utils/configs.nut")
   /*************************************PUBLIC FUNCTIONS *******************************************/
   /*************************************************************************************************/
 
-  function getMaxRespawns()
-  {
+  function getMaxRespawns() {
     return ::RESPAWNS_UNLIMITED
   }
 
-  function getLeftRespawns()
-  {
+  function getLeftRespawns() {
     local res = ::RESPAWNS_UNLIMITED
     if (!this.isScoreRespawnEnabled && getTblValue("maxRespawns", this.missionParams, 0) > 0)
       res = ::get_respawns_left() //code return spawn score here when spawn score enabled instead of respawns left
     return res
   }
 
-  function hasCustomUnitRespawns()
-  {
+  function hasCustomUnitRespawns() {
     return false
   }
 
-  function getUnitLeftRespawns(unit, teamDataBlk = null)
-  {
+  function getUnitLeftRespawns(unit, teamDataBlk = null) {
     if (!unit || !this.isUnitEnabledByRandomGroups(unit.name))
       return 0
     return this.getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk || this.getMyTeamDataBlk())
   }
 
-  function getUnitLeftWeaponShortText(unit)
-  {
+  function getUnitLeftWeaponShortText(unit) {
     let weaponsLimits = this.getWeaponsLimitsBlk()
     let unitWeaponLimit = getTblValue(unit.name, weaponsLimits, null)
     if (!unitWeaponLimit)
@@ -103,30 +97,26 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return presetNumber + presetIconsText
   }
 
-  function getRespawnInfoTextForUnit(unit)
-  {
+  function getRespawnInfoTextForUnit(unit) {
     let unitLeftRespawns = this.getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED || this.isUnitAvailableBySpawnScore(unit))
       return ""
     return loc("respawn/leftTeamUnit", { num = unitLeftRespawns })
   }
 
-  function getRespawnInfoTextForUnitInfo(unit)
-  {
+  function getRespawnInfoTextForUnitInfo(unit) {
     let unitLeftRespawns = this.getUnitLeftRespawns(unit)
     if (unitLeftRespawns == ::RESPAWNS_UNLIMITED)
       return ""
     return loc("unitInfo/team_left_respawns") + loc("ui/colon") + unitLeftRespawns
   }
 
-  function getSpecialCantRespawnMessage(_unit)
-  {
+  function getSpecialCantRespawnMessage(_unit) {
     return null
   }
 
   //return bitmask is crew can respawn by mission custom state for more easy check is it changed
-  function getCurCrewsRespawnMask()
-  {
+  function getCurCrewsRespawnMask() {
     local res = 0
     if (!this.hasCustomUnitRespawns() || !this.getLeftRespawns())
       return res
@@ -136,7 +126,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!myTeamDataBlk)
       return (1 << crewsList.len()) - 1
 
-    foreach(idx, crew in crewsList)
+    foreach (idx, crew in crewsList)
       if (this.getUnitLeftRespawns(::g_crew.getCrewUnit(crew), myTeamDataBlk) != 0)
         res = res | (1 << idx)
 
@@ -150,44 +140,37 @@ let { GUI } = require("%scripts/utils/configs.nut")
     }
   */
 
-  function clearUnitsLimitData()
-  {
+  function clearUnitsLimitData() {
     this.fullUnitsLimitData = null
   }
 
-  function getFullUnitLimitsData()
-  {
+  function getFullUnitLimitsData() {
     if (!this.fullUnitsLimitData)
       this.fullUnitsLimitData = this.calcFullUnitLimitsData()
     return this.fullUnitsLimitData
   }
 
-  function getFullEnemyUnitLimitsData()
-  {
+  function getFullEnemyUnitLimitsData() {
     if (!this.fullEnemyUnitsLimitData)
       this.fullEnemyUnitsLimitData = this.calcFullUnitLimitsData(false)
     return this.fullEnemyUnitsLimitData
   }
 
-  function getEventDescByRulesTbl(_rulesTbl)
-  {
+  function getEventDescByRulesTbl(_rulesTbl) {
     return ""
   }
 
-  function isStayOnRespScreen()
-  {
+  function isStayOnRespScreen() {
     return ::stay_on_respawn_screen()
   }
 
-  function isAnyUnitHaveRespawnBases()
-  {
+  function isAnyUnitHaveRespawnBases() {
     let country = ::get_local_player_country()
 
     let crewsInfo = ::g_crews_list.get()
-    foreach(crew in crewsInfo)
+    foreach (crew in crewsInfo)
       if (crew.country == country)
-        foreach (slot in crew.crews)
-        {
+        foreach (slot in crew.crews) {
           let airName = ("aircraft" in slot) ? slot.aircraft : ""
           let air = ::getAircraftByName(airName)
           if (air
@@ -203,20 +186,17 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return false
   }
 
-  function getCurSpawnScore()
-  {
+  function getCurSpawnScore() {
     if (this.isTeamScoreRespawnEnabled)
       return getTblValue("teamSpawnScore", ::get_local_mplayer(), 0)
     return this.isScoreRespawnEnabled ? getTblValue("spawnScore", ::get_local_mplayer(), 0) : 0
   }
 
-  function canRespawnOnUnitBySpawnScore(unit)
-  {
+  function canRespawnOnUnitBySpawnScore(unit) {
     return this.isScoreRespawnEnabled ? unit.getSpawnScore() <= this.getCurSpawnScore() : true
   }
 
-  function getMinimalRequiredSpawnScore()
-  {
+  function getMinimalRequiredSpawnScore() {
     local res = -1
     if (!this.isScoreRespawnEnabled)
       return res
@@ -225,8 +205,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     if (!crews)
       return res
 
-    foreach(crew in crews)
-    {
+    foreach (crew in crews) {
       let unit = ::g_crew.getCrewUnit(crew)
       if (!unit
         || !::is_crew_available_in_session(crew.idInCountry, false)
@@ -250,12 +229,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
     ...
   ]
   */
-  function getAvailableToSpawnUnitsData()
-  {
+  function getAvailableToSpawnUnitsData() {
     let res = []
-    if (!(::get_game_type() & (GT_VERSUS | GT_COOPERATIVE)))
+    if (!(get_game_type() & (GT_VERSUS | GT_COOPERATIVE)))
       return res
-    if (::get_game_mode() == GM_SINGLE_MISSION || ::get_game_mode() == GM_DYNAMIC)
+    if (get_game_mode() == GM_SINGLE_MISSION || get_game_mode() == GM_DYNAMIC)
       return res
     if (!::g_mis_loading_state.isCrewsListReceived())
       return res
@@ -267,8 +245,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
       return res
 
     let curSpawnScore = this.getCurSpawnScore()
-    foreach (c in crews)
-    {
+    foreach (c in crews) {
       local comment = ""
       let unit = ::g_crew.getCrewUnit(c)
       if (!unit)
@@ -283,8 +260,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
         continue
 
       if (this.isScoreRespawnEnabled && curSpawnScore >= 0
-        && curSpawnScore < unit.getSpawnScore())
-      {
+        && curSpawnScore < unit.getSpawnScore()) {
         if (curSpawnScore < unit.getMinimumSpawnScore())
           continue
         else
@@ -300,30 +276,25 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return res
   }
 
-  function getUnitFuelPercent(unitName) //return 0 when fuel amount not fixed
-  {
+  function getUnitFuelPercent(unitName) { //return 0 when fuel amount not fixed
     let unitsFuelPercentList = getTblValue("unitsFuelPercentList", this.getCustomRulesBlk())
     return getTblValue(unitName, unitsFuelPercentList, 0)
   }
 
-  function hasWeaponLimits()
-  {
+  function hasWeaponLimits() {
     return this.getWeaponsLimitsBlk() != null
   }
 
-  function isUnitWeaponAllowed(unit, weapon)
-  {
+  function isUnitWeaponAllowed(unit, weapon) {
     return !this.needCheckWeaponsAllowed(unit) || this.getUnitWeaponRespawnsLeft(unit, weapon) != 0
   }
 
-  function getUnitWeaponRespawnsLeft(unit, weapon)
-  {
+  function getUnitWeaponRespawnsLeft(unit, weapon) {
     let limitsBlk = this.getWeaponsLimitsBlk()
     return limitsBlk ? this.getWeaponRespawnsLeftByLimitsBlk(unit, weapon, limitsBlk) : -1
   }
 
-  function needCheckWeaponsAllowed(unit)
-  {
+  function needCheckWeaponsAllowed(unit) {
     return !this.isMissionByUnitsGroups() && (unit.isAir() || unit.isHelicopter())
   }
 
@@ -331,23 +302,19 @@ let { GUI } = require("%scripts/utils/configs.nut")
   /************************************PRIVATE FUNCTIONS *******************************************/
   /*************************************************************************************************/
 
-  function getMisStateBlk()
-  {
+  function getMisStateBlk() {
     return ::get_mission_custom_state(false)
   }
 
-  function getMyStateBlk()
-  {
+  function getMyStateBlk() {
     return ::get_user_custom_state(::my_user_id_int64, false)
   }
 
-  function getCustomRulesBlk()
-  {
+  function getCustomRulesBlk() {
     return getTblValue("customRules", ::get_current_mission_info_cached())
   }
 
-  function getTeamDataBlk(team, keyName)
-  {
+  function getTeamDataBlk(team, keyName) {
     let teamsBlk = getTblValue(keyName, this.getMisStateBlk())
     if (!teamsBlk)
       return null
@@ -356,13 +323,11 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return ::u.isDataBlock(res) ? res : null
   }
 
-  function getMyTeamDataBlk(keyName = "teams")
-  {
+  function getMyTeamDataBlk(keyName = "teams") {
     return this.getTeamDataBlk(::get_mp_local_team(), keyName)
   }
 
-  function getEnemyTeamDataBlk(keyName = "teams")
-  {
+  function getEnemyTeamDataBlk(keyName = "teams") {
     let opponentTeamCode = ::g_team.getTeamByCode(::get_mp_local_team()).opponentTeamCode
     if (opponentTeamCode == Team.none || opponentTeamCode == Team.Any)
       return null
@@ -371,21 +336,18 @@ let { GUI } = require("%scripts/utils/configs.nut")
   }
 
   //return -1 when unlimited
-  function getUnitLeftRespawnsByTeamDataBlk(_unit, _teamDataBlk)
-  {
+  function getUnitLeftRespawnsByTeamDataBlk(_unit, _teamDataBlk) {
     return ::RESPAWNS_UNLIMITED
   }
 
-  function calcFullUnitLimitsData(_isTeamMine = true)
-  {
+  function calcFullUnitLimitsData(_isTeamMine = true) {
     return {
       defaultUnitRespawnsLeft = ::RESPAWNS_UNLIMITED
       unitLimits = [] //::g_unit_limit_classes.LimitBase
     }
   }
 
-  function minRespawns(respawns1, respawns2)
-  {
+  function minRespawns(respawns1, respawns2) {
     if (respawns1 == ::RESPAWNS_UNLIMITED)
       return respawns2
     if (respawns2 == ::RESPAWNS_UNLIMITED)
@@ -393,79 +355,68 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return min(respawns1, respawns2)
   }
 
-  function getWeaponsLimitsBlk()
-  {
+  function getWeaponsLimitsBlk() {
     return getTblValue("weaponList", this.getMyStateBlk())
   }
 
   //return -1 when unlimited
-  function getWeaponRespawnsLeftByLimitsBlk(unit, weapon, weaponLimitsBlk)
-  {
+  function getWeaponRespawnsLeftByLimitsBlk(unit, weapon, weaponLimitsBlk) {
     if (getAmmoCost(unit, weapon.name, AMMO.WEAPON).isZero())
       return -1
 
-    foreach(blk in weaponLimitsBlk % unit.name)
+    foreach (blk in weaponLimitsBlk % unit.name)
       if (blk?.name == weapon.name)
         return max(blk?.respawnsLeft ?? 0, 0)
     return 0
   }
 
-  function getRandomUnitsGroupName(unitName)
-  {
+  function getRandomUnitsGroupName(unitName) {
     let randomGroups = this.getMyStateBlk()?.random_units
     if (!randomGroups)
       return null
-    foreach (unitsGroup in randomGroups)
-    {
+    foreach (unitsGroup in randomGroups) {
       if (unitName in unitsGroup)
         return unitsGroup.getBlockName()
     }
     return null
   }
 
-  function getRandomUnitsList(groupName)
-  {
+  function getRandomUnitsList(groupName) {
     let unitsList = []
     let randomUnitsGroup = this.getMyStateBlk()?.random_units?[groupName]
     if (!randomUnitsGroup)
       return unitsList
 
-    foreach (unitName, _u in randomUnitsGroup)
-    {
+    foreach (unitName, _u in randomUnitsGroup) {
       unitsList.append(unitName)
     }
     return unitsList
   }
 
-  function getRandomUnitsGroupLocName(groupName)
-  {
+  function getRandomUnitsGroupLocName(groupName) {
     return loc("icon/dice/transparent") +
       loc(GUI.get()?.randomSpawnUnitPresets?[groupName]?.name
       ?? "respawn/randomUnitsGroup/name")
   }
 
-  function getRandomUnitsGroupIcon(groupName)
-  {
+  function getRandomUnitsGroupIcon(groupName) {
     return GUI.get()?.randomSpawnUnitPresets?[groupName]?.icon
       ?? "!#ui/unitskin#random_unit.ddsx"
   }
 
-  function isUnitEnabledByRandomGroups(unitName)
-  {
+  function isUnitEnabledByRandomGroups(unitName) {
     let randomGroups = this.getMyStateBlk()?.random_units
     if (!randomGroups)
       return true
 
-    foreach (unitsGroup in randomGroups)
-    {
+    foreach (unitsGroup in randomGroups) {
       if (unitName in unitsGroup)
         return unitsGroup[unitName]
     }
     return true
   }
 
-  function getRandomUnitsGroupLocBattleRating(groupName)
-  {
+  function getRandomUnitsGroupLocBattleRating(groupName) {
     let randomGroups = this.getMyStateBlk()?.random_units?[groupName]
     if (!randomGroups)
       return ""
@@ -478,31 +429,27 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return (minBR != maxBR ? format("%.1f-%.1f", minBR, maxBR) : format("%.1f", minBR))
   }
 
-  function getWeaponForRandomUnit(unit, weaponryName)
-  {
+  function getWeaponForRandomUnit(unit, weaponryName) {
     return this.missionParams?.editSlotbar?[unit.shopCountry]?[unit.name]?[weaponryName]
       ?? getLastWeapon(unit.name)
   }
 
-  function getRandomUnitsGroupLocRank(groupName)
-  {
+  function getRandomUnitsGroupLocRank(groupName) {
     let randomGroups = this.getMyStateBlk()?.random_units?[groupName]
     if (!randomGroups)
       return ""
 
-    let getRank = function(unit) {return unit.rank}
+    let getRank = function(unit) { return unit.rank }
     let valueRank = this.getRandomUnitsGroupValueRange(randomGroups, getRank)
     let minRank = valueRank.minValue
     let maxRank = valueRank.maxValue
     return ::get_roman_numeral(minRank) + ((minRank != maxRank) ? "-" + ::get_roman_numeral(maxRank) : "")
   }
 
-  function getRandomUnitsGroupValueRange(randomGroups, getValue)
-  {
+  function getRandomUnitsGroupValueRange(randomGroups, getValue) {
     local minValue
     local maxValue
-    foreach(name, _u in randomGroups)
-    {
+    foreach (name, _u in randomGroups) {
       let unit = ::getAircraftByName(name)
 
       if (!unit)
@@ -518,8 +465,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     }
   }
 
-  function isUnitForcedVisible(unitName)
-  {
+  function isUnitForcedVisible(unitName) {
     if (this.getMyStateBlk()?.ownAvailableUnits[unitName] == true)
       return true
 
@@ -528,30 +474,25 @@ let { GUI } = require("%scripts/utils/configs.nut")
     return missionUnitName != "" && (this.getMyTeamDataBlk()?.limitedUnits[missionUnitName] ?? -1) >= 0
   }
 
-  function isWorldWarUnit(unitName)
-  {
+  function isWorldWarUnit(unitName) {
     return this.isWorldWar && this.getMyStateBlk()?.ownAvailableUnits?[unitName] == false
   }
 
-  function isUnitAvailableBySpawnScore(_unit)
-  {
+  function isUnitAvailableBySpawnScore(_unit) {
     return false
   }
 
-  function isRespawnAvailable(unit)
-  {
+  function isRespawnAvailable(unit) {
     return this.getUnitLeftRespawns(unit) != 0
       || (this.isUnitAvailableBySpawnScore(unit)
         && this.canRespawnOnUnitBySpawnScore(unit))
   }
 
-  function isEnemyLimitedUnitsVisible()
-  {
+  function isEnemyLimitedUnitsVisible() {
     return false
   }
 
-  function isUnitForcedHiden(unitName)
-  {
+  function isUnitForcedHiden(unitName) {
     return this.getMyStateBlk()?.forcedUnitsStates?[unitName]?.hidden ?? false
   }
 
@@ -560,8 +501,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
   function getUnitsGroups() {
     let fullGroupsList = {}
     foreach (countryBlk in (this.missionParams?.unitGroups ?? []))
-      for (local i = 0; i < countryBlk.blockCount(); i++)
-      {
+      for (local i = 0; i < countryBlk.blockCount(); i++) {
         let groupBlk = countryBlk.getBlock(i)
         let unitList = groupBlk?.unitList
         fullGroupsList[groupBlk.getBlockName()] <- {
@@ -588,6 +528,5 @@ let { GUI } = require("%scripts/utils/configs.nut")
 }
 
 //just for case when empty rules will not the same as base
-::mission_rules.Empty <- class extends ::mission_rules.Base
-{
+::mission_rules.Empty <- class extends ::mission_rules.Base {
 }

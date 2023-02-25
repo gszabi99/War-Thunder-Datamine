@@ -6,8 +6,7 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")  //!!FIX ME: better to make this modules too
 
-let class SecondsUpdater
-{
+let class SecondsUpdater {
   timer = 0.0
   updateFunc = null
   params = null
@@ -15,8 +14,7 @@ let class SecondsUpdater
   timerObj = null
   destroyTimerObjOnFinish = false
 
-  function getUpdaterByNestObj(nestObj_)
-  {
+  function getUpdaterByNestObj(nestObj_) {
     local userData = nestObj_.getUserData()
     if (u.isSecondsUpdater(userData))
       return userData
@@ -32,8 +30,7 @@ let class SecondsUpdater
     return null
   }
 
-  constructor(nestObj_, updateFunc_, useNestAsTimerObj = true, params_ = {})
-  {
+  constructor(nestObj_, updateFunc_, useNestAsTimerObj = true, params_ = {}) {
     if (!updateFunc_)
       return assert(false, "Error: no updateFunc in seconds updater.")
 
@@ -57,8 +54,7 @@ let class SecondsUpdater
     this.timerObj.setUserData(this)
   }
 
-  function createTimerObj(nestObj_)
-  {
+  function createTimerObj(nestObj_) {
     local blkText = "".concat("dummy{id:t='", this.getTimerObjIdByNestObj(nestObj_), "' behavior:t='Timer'}")
     nestObj_.getScene().appendWithBlk(nestObj_, blkText, null)
     local index = nestObj_.childrenCount() - 1
@@ -68,14 +64,12 @@ let class SecondsUpdater
     return null
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     if (this.updateFunc(this.nestObj, this.params))
       this.remove()
   }
 
-  function remove()
-  {
+  function remove() {
     if (!check_obj(this.timerObj))
       return
 
@@ -84,8 +78,7 @@ let class SecondsUpdater
       this.timerObj.getScene().destroyElement(this.timerObj)
   }
 
-  function getTimerObjIdByNestObj(nestObj_)
-  {
+  function getTimerObjIdByNestObj(nestObj_) {
     return $"seconds_updater_{nestObj_?.id ?? ""}"
   }
 }

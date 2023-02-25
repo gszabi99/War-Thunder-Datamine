@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -54,8 +55,7 @@ let function runInstantActions(...) {
   foreach (action in actions)
     action()
 
-  if (instantActionsList.len() == 0 && runInstantActionsTaskId != null)
-  {
+  if (instantActionsList.len() == 0 && runInstantActionsTaskId != null) {
     ::periodic_task_unregister(runInstantActionsTaskId)
     runInstantActionsTaskId = null
   }
@@ -64,7 +64,7 @@ let function runInstantActions(...) {
 let function addDelayedAction(action, delay_ms) {
   if (delay_ms > 0) {
     let callTime = get_time_msec() + delay_ms
-    delayedActionsList.append({action = action, time = callTime})
+    delayedActionsList.append({ action = action, time = callTime })
     delayedActionsList.sort(function (a, b) {
       return (b.time - a.time).tointeger()
     })
@@ -73,8 +73,7 @@ let function addDelayedAction(action, delay_ms) {
       runDelayedActionsTaskId = ::periodic_task_register(this, runDelayedActions, 1)
     }
   }
-  else
-  {
+  else {
     instantActionsList.append(action)
     if (runInstantActionsTaskId == null) {
       runInstantActionsTaskId = ::periodic_task_register_ex(this,

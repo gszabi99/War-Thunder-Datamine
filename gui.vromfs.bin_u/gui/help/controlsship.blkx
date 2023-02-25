@@ -1,179 +1,119 @@
 {
   "tdiv": {
     "id": "help_background_image",
-    "width": "pw",
-    "height": "ph",
+    "size": "pw, ph",
     "background-repeat": "expand",
     "background-color": "@white",
     "tdiv": {
-      "size": "pw, 0.511w",
+      "size": "pw, ph",
       "pos": "0.5pw-0.5w, 0.5ph-0.5h",
       "position": "relative",
       "tdiv": [
         {
-          "id": "throttle_target_point",
-          "pos": "522/1760pw-w, 202/900ph-h/2",
+          "pos": "880/1760pw, 16/900ph",
           "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "id": "turn_left_target_point",
-          "pos": "526/1760pw-w, 260/900ph-h/2",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "id": "backward_target_point",
-          "pos": "957/1760pw, 303/900ph-h/2",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "id": "turn_right_target_point",
-          "pos": "778/1760pw, 202/900ph-h/2",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "size": "128/1760pw, 10/1760pw",
-          "pos": "89/1760pw-w/2, 240/1760pw",
-          "position": "absolute",
-          "tdiv": [
+          "width": "210/1760pw",
+          "flow": "vertical",
+          "controlsHelpFrame": [
             {
-              "height": "ph",
-              "pos": "pw-w, 0",
-              "position": "absolute",
-              "text": [
-                {
-                  "style": "font:@fontHudTiny; color:@white;",
-                  "font-ht": "ph",
-                  "text": "195"
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@white;",
-                  "font-ht": "ph",
-                  "text": " "
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@white;",
-                  "font-ht": "ph",
-                  "text": "#measureUnits/kmh"
-                }
-              ]
+              "width": "pw",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ship_main_engine=max_hold}}"
+              },
+              "textareaNoTab": {
+                "text": "#controls/help/tank_forward"
+              }
             },
             {
-              "height": "ph",
-              "text": [
-                {
-                  "style": "font:@fontHudTiny; color:@gray;",
-                  "font-ht": "ph",
-                  "text": "#HUD/ENGINE_REV_FULL_SHORT"
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@gray;",
-                  "font-ht": "ph",
-                  "text": " "
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@gray;",
-                  "font-ht": "ph",
-                  "text": "#HUD/ENGINE_REV_AHEAD_SHORT"
-                }
-              ]
+              "width": "pw",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ship_main_engine=min_hold}}"
+              },
+              "textareaNoTab": {
+                "text": "#controls/help/ship/backward"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ship_steering=max}}"
+              },
+              "textareaNoTab": {
+                "text": "#controls/help/tank_left"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ship_steering=min}}"
+              },
+              "textareaNoTab": {
+                "text": "#controls/help/tank_right"
+              }
+            },
+            {
+              "width": "pw",
+              "keyDiv": {
+                "behaviour": "bhvHelpFrame",
+                "value": "{{ID_SHIP_FULL_STOP}}"
+              },
+              "textareaNoTab": {
+                "text": "#hotkeys/ID_SHIP_FULL_STOP"
+              }
             }
           ]
         },
         {
-          "size": "128/1760pw, 10/1760pw",
-          "pos": "962/1760pw-w/2, 685/1760pw",
-          "position": "absolute",
-          "tdiv": [
-            {
-              "height": "ph",
-              "pos": "pw-w, 0",
-              "position": "absolute",
-              "text": [
-                {
-                  "style": "font:@fontHudTiny; color:@white;",
-                  "font-ht": "ph",
-                  "text": "128"
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@white;",
-                  "font-ht": "ph",
-                  "text": " "
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@white;",
-                  "font-ht": "ph",
-                  "text": "#measureUnits/kmh"
-                }
-              ]
-            },
-            {
-              "height": "ph",
-              "text": [
-                {
-                  "style": "font:@fontHudTiny; color:@gray;",
-                  "font-ht": "ph",
-                  "text": "#HUD/ENGINE_REV_FULL_SHORT"
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@gray;",
-                  "font-ht": "ph",
-                  "text": " "
-                },
-                {
-                  "style": "font:@fontHudTiny; color:@gray;",
-                  "font-ht": "ph",
-                  "text": "#HUD/ENGINE_REV_AHEAD_SHORT"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "weapon_markers_1_point",
-          "pos": "587/1760pw-w, 54/900ph-h/2",
+          "id": "weapon_is_active_point",
+          "pos": "531/1760pw, 342/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
-          "id": "weapon_markers_2_point",
-          "pos": "749/1760pw-w, 40/900ph-h/2",
+          "id": "weapon_is_not_active_point",
+          "pos": "563/1760pw, 342/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
-          "id": "weapon_markers_frame",
-          "pos": "30/1760pw, 30/900ph",
+          "id": "weapon_is_destroyed_point",
+          "pos": "599/1760pw, 364/900ph",
           "position": "absolute",
-          "width": "400/1760pw",
+          "size": "1@dp, 1@dp"
+        },
+        {
+          "pos": "758/1760pw, 298/900ph",
+          "position": "absolute",
+          "width": "332/1760pw",
           "flow": "vertical",
           "controlsHelpTextArea": [
             {
+              "id": "weapon_is_active_label",
               "width": "pw",
-              "text": "#controls/help/ship/weapon_markers"
+              "text": "#controls/help/ship/weapon_is_active"
+            },
+            {
+              "id": "weapon_is_not_active_label",
+              "width": "pw",
+              "text": "#controls/help/ship/weapon_is_not_active"
+            },
+            {
+              "id": "weapon_is_destroyed_label",
+              "width": "pw",
+              "text": "#controls/help/ship/weapon_is_destroyed"
             },
             {
               "width": "pw",
-              "text": "#controls/help/ship/weapon_markers/white"
-            },
-            {
-              "width": "pw",
-              "text": "#controls/help/ship/weapon_markers/gray"
+              "text": "#controls/help/ship/weapon_reload_time"
             }
           ]
         },
         {
-          "id": "cursor_control_point",
-          "pos": "965/1760pw, 54/900ph-h/2",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "id": "CURSOR_controls_frame",
-          "pos": "1285/1760pw-w, 30/900ph",
+          "pos": "15/1760pw, 16/900ph",
           "position": "absolute",
           "width": "250/1760pw",
           "flow": "vertical",
@@ -197,119 +137,23 @@
               "textareaNoTab": {
                 "text": "#controls/help/ship/firing"
               }
-            }
-          ]
-        },
-        {
-          "id": "crew_count_point",
-          "pos": "156/1760pw, 408/900ph-h/2",
-          "position": "absolute",
-          "size": "1@dp, 1@dp"
-        },
-        {
-          "id": "action_bar_actions",
-          "pos": "657/1760pw-w/2, 440/900ph-h",
-          "position": "absolute",
-          "height": "40/900ph"
-        },
-        {
-          "pos": "557/1760pw-w, 425/900ph-h",
-          "position": "absolute",
-          "width": "200/1760pw",
-          "flow": "vertical",
-          "controlsHelpFrame": [
+            },
             {
-              "id": "ab_repair_label",
               "width": "pw",
-              "keyDiv": {
-                "behaviour": "bhvHelpFrame",
-                "value": "{{ID_SHIP_ACTION_BAR_ITEM_11}}"
-              },
               "textareaNoTab": {
-                "text": "#hotkeys/ID_SHIP_ACTION_BAR_ITEM_11"
-              }
-            },
-            {
-              "id": "ab_extinguisher_label",
-              "width": "pw",
-              "keyDiv": {
-                "behaviour": "bhvHelpFrame",
-                "value": "{{ID_SHIP_ACTION_BAR_ITEM_6}}"
-              },
-              "textareaNoTab": {
-                "text": "#hotkeys/ID_SHIP_ACTION_BAR_ITEM_6"
+                "text": "#controls/help/ship/guide_splash_marker"
               }
             }
           ]
         },
         {
-          "pos": "757/1760pw, 425/900ph-h",
+          "pos": "1112/1760pw, 8/900ph",
           "position": "absolute",
-          "width": "200/1760pw",
-          "flow": "vertical",
-          "controlsHelpFrame": {
-            "id": "ab_breaches_label",
-            "width": "pw",
-            "keyDiv": {
-              "behaviour": "bhvHelpFrame",
-              "value": "{{ID_REPAIR_BREACHES}}"
-            },
-            "textareaNoTab": {
-              "text": "#hotkeys/ID_REPAIR_BREACHES"
-            }
-          }
-        },
-        {
-          "pos": "1545/1760pw, 130/900ph -h",
-          "position": "absolute",
-          "width": "200/1760pw",
-          "min-height": "10",
-          "flow": "vertical",
-          "textareaNoTab": [
-            {
-              "style": "font:@fontHudTiny; color:@black;",
-              "width": "pw",
-              "text": "#hud/target_acquired"
-            },
-            {
-              "style": "font:@fontHudTiny; color:@black;",
-              "width": "pw",
-              "text": "#hud/make_ranging_shot"
-            }
-          ]
-        },
-        {
-          "pos": "1545/1760pw, 320/900ph -h",
-          "position": "absolute",
-          "width": "200/1760pw",
-          "min-height": "10",
-          "flow": "vertical",
-          "textareaNoTab": {
-            "style": "font:@fontHudTiny; color:@black;",
-            "width": "pw",
-            "text": "#hud/target_acquired"
-          },
-          "tdiv": {
-            "textareaNoTab": [
-              {
-                "style": "font:@fontHudTiny; color:@black;",
-                "width": "fw",
-                "text": "#hud/ranging_end_distance"
-              },
-              {
-                "style": "font:@fontHudTiny; color:@black;",
-                "text": "1450"
-              }
-            ]
-          }
-        },
-        {
-          "pos": "1315/1760pw +1@dp, 10/900ph +1@dp",
-          "position": "absolute",
-          "size": "435/1760pw -2@dp, 435/1760pw -2@dp",
+          "size": "638/1760pw, 441/900ph",
           "controlsHelpFrame": [
             {
               "width": "pw",
+              "style": "border: no;",
               "keyDiv": {
                 "behaviour": "bhvHelpFrame",
                 "value": "{{ID_TOGGLE_VIEW_SHIP}}"
@@ -322,6 +166,7 @@
               "pos": "0, ph/2-h/2",
               "position": "absolute",
               "width": "pw",
+              "style": "border: no",
               "keyDiv": {
                 "behaviour": "bhvHelpFrame",
                 "value": "{{ID_LOCK_TARGET}}"
@@ -334,6 +179,8 @@
               "pos": "0, ph -h",
               "position": "absolute",
               "width": "pw",
+              "padding": "2@blockInterval",
+              "style": "border: no; padding: 2@blockInterval",
               "textareaNoTab": {
                 "text": "#controls/help/ship/ranging/distance_obtained"
               }
@@ -483,9 +330,9 @@
           }
         },
         {
-          "pos": "905/1760pw, 475/900ph",
+          "pos": "907/1760pw, 468/900ph",
           "position": "absolute",
-          "width": "300/1760pw",
+          "width": "302/1760pw",
           "flow": "vertical",
           "controlsHelpTextArea": {
             "width": "pw",
@@ -526,13 +373,13 @@
         },
         {
           "id": "ai_shooting_modes_point",
-          "pos": "1027/1760pw, 799/900ph",
+          "pos": "1174/1760pw, 848/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
           "id": "ai_shooting_modes_frame",
-          "pos": "1050/1760pw, 870/900ph-h",
+          "pos": "907/1760pw, 870/900ph-h",
           "position": "absolute",
           "width": "180/1760pw",
           "flow": "vertical",
@@ -559,21 +406,26 @@
         },
         {
           "id": "manual_target_2_point",
-          "pos": "1507/1760pw, 613/900ph",
+          "pos": "1507/1760pw, 604/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
           "id": "manual_target_3_point",
-          "pos": "1601/1760pw, 526/900ph",
+          "pos": "1601/1760pw, 604/900ph",
           "position": "absolute",
           "size": "1@dp, 1@dp"
         },
         {
-          "pos": "1730/1760pw-w, 870/900ph-h",
+          "pos": "1730/1760pw-w, 468/900ph",
           "position": "absolute",
           "width": "458/1760pw",
           "flow": "vertical",
+          "controlsHelpTextArea": {
+            "width": "pw",
+            "text-align": "center",
+            "text": "#controls/help/ship/manual-targeting-short"
+          },
           "tdiv": {
             "width": "pw",
             "controlsHelpFrame": [
@@ -585,128 +437,72 @@
                   "value": "{{ID_SHIP_SELECT_TARGET_AI_PRIM}}"
                 },
                 "textareaNoTab": {
-                  "text": "#hotkeys/ID_SHIP_SELECT_TARGET_AI_PRIM"
+                  "text": "#controls/help/ship/manual-targeting-primary"
                 }
               },
               {
                 "id": "manual_target_2_label",
-                "pos": "5/1760p.p.p.w, 0",
-                "position": "relative",
                 "width": "(pw-8/1760p.p.p.w) / 3",
                 "keyDiv": {
                   "behaviour": "bhvHelpFrame",
                   "value": "{{ID_SHIP_SELECT_TARGET_AI_SEC}}"
                 },
                 "textareaNoTab": {
-                  "text": "#hotkeys/ID_SHIP_SELECT_TARGET_AI_SEC"
+                  "text": "#controls/help/ship/manual-targeting-secondary"
                 }
               },
               {
                 "id": "manual_target_3_label",
-                "pos": "5/1760p.p.p.w, 0",
-                "position": "relative",
                 "width": "fw",
                 "keyDiv": {
                   "behaviour": "bhvHelpFrame",
                   "value": "{{ID_SHIP_SELECT_TARGET_AI_MGUN}}"
                 },
                 "textareaNoTab": {
-                  "text": "#hotkeys/ID_SHIP_SELECT_TARGET_AI_MGUN"
+                  "text": "#controls/help/ship/manual-targeting-anti-aircraft"
                 }
               }
             ]
-          },
-          "controlsHelpTextArea": {
-            "pos": "0, 5/900p.p.h",
-            "position": "relative",
-            "width": "pw",
-            "text": "#controls/help/ship/manual_targeting"
           }
         }
       ],
       "controlsHelpFrame": [
         {
-          "id": "throttle_label",
-          "pos": "402/1760pw-w, 202/900ph-h/2",
+          "pos": "441/1760pw, 16/900ph",
+          "width": "426/1760pw",
           "position": "absolute",
-          "width": "200/1760pw",
-          "keyDiv": {
-            "behaviour": "bhvHelpFrame",
-            "value": "{{ship_main_engine=max_hold}}"
-          },
-          "textareaNoTab": {
-            "text": "#controls/help/tank_forward"
-          }
+          "flow": "vertical",
+          "textareaNoTab": [
+            {
+              "margin-top": "1@blockInterval",
+              "text": "#controls/help/ship/aiming"
+            },
+            {
+              "margin-top": "1@blockInterval",
+              "text": "#controls/help/ship/shells_splash_area"
+            },
+            {
+              "margin-top": "1@blockInterval",
+              "text": "#controls/help/ship/binocular_sight"
+            }
+          ]
         },
         {
-          "id": "turn_left_frame",
-          "pos": "402/1760pw-w, 260/900ph-h/2",
-          "position": "absolute",
-          "width": "200/1760pw",
-          "keyDiv": {
-            "behaviour": "bhvHelpFrame",
-            "value": "{{ship_steering=max}}"
-          },
+          "pos": "1444/1760pw, ph-30/900ph-h",
+          "position": "relative",
+          "width": "282/1760pw",
           "textareaNoTab": {
-            "text": "#controls/help/tank_left"
-          }
-        },
-        {
-          "id": "backward_label",
-          "pos": "934/1760pw, 260/900ph-h/2",
-          "position": "absolute",
-          "width": "200/1760pw",
-          "keyDiv": {
-            "behaviour": "bhvHelpFrame",
-            "value": "{{ship_main_engine=min_hold}}"
-          },
-          "textareaNoTab": {
-            "text": "#controls/help/ship/backward"
-          }
-        },
-        {
-          "id": "turn_right_label",
-          "pos": "934/1760pw, 202/900ph-h/2",
-          "position": "absolute",
-          "width": "200/1760pw",
-          "keyDiv": {
-            "behaviour": "bhvHelpFrame",
-            "value": "{{ship_steering=min}}"
-          },
-          "textareaNoTab": {
-            "text": "#controls/help/tank_right"
-          }
-        },
-        {
-          "id": "turn_right_label",
-          "pos": "1060/1760pw, 356/900ph-h",
-          "position": "absolute",
-          "width": "200/1760pw",
-          "keyDiv": {
-            "behaviour": "bhvHelpFrame",
-            "value": "{{ID_SHIP_FULL_STOP}}"
-          },
-          "textareaNoTab": {
-            "text": "#hotkeys/ID_SHIP_FULL_STOP"
+            "text": "#controls/help/ship/manual_targeting"
           }
         }
       ],
-      "controlsHelpTextArea": [
-        {
-          "id": "crew_count_label",
-          "max-width": "150/1760pw",
-          "pos": "176/1760pw, 408/900ph-h/2",
-          "position": "absolute",
-          "text": "#controls/help/ship/crew_state"
-        },
-        {
-          "id": "torpedo_projection_label",
-          "width": "300/1760pw",
-          "pos": "855/1760pw-w, 870/900ph-h",
-          "position": "absolute",
-          "text": "#controls/help/ship/torpedo/projection"
-        }
-      ]
+      "controlsHelpTextArea": {
+        "id": "torpedo_projection_label",
+        "width": "300/1760pw",
+        "pos": "855/1760pw-w, 870/900ph-h",
+        "position": "absolute",
+        "text": "#controls/help/ship/torpedo/projection"
+      }
     }
   }
 }

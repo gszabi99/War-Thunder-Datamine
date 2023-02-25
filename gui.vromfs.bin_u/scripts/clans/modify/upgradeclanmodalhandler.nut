@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,12 +6,10 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
-::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler
-{
+::gui_handlers.UpgradeClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler {
   owner = null
 
-  function createView()
-  {
+  function createView() {
     return {
       windowHeader = loc("clan/upgrade_clan_wnd_title")
       hasClanTypeSelect = false
@@ -21,8 +20,7 @@ let { format } = require("string")
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.newClanType = this.clanData.clanType.getNextType()
     this.lastShownHintObj = this.scene.findObject("req_newclan_tag")
     base.initScreen()
@@ -41,27 +39,23 @@ let { format } = require("string")
   }
 
   // Override.
-  function updateSubmitButtonText()
-  {
+  function updateSubmitButtonText() {
     let cost = this.clanData.getClanUpgradeCost()
     this.setSubmitButtonText(loc("clan/clan_upgrade/button"), cost)
   }
 
   // Important override.
-  function getSelectedClanType()
-  {
+  function getSelectedClanType() {
     return this.clanData.clanType.getNextType()
   }
 
-  function onSubmit()
-  {
-    if(!this.prepareClanData())
+  function onSubmit() {
+    if (!this.prepareClanData())
       return
     let upgradeCost = this.clanData.getClanUpgradeCost()
     if (upgradeCost <= ::zero_money)
       this.upgradeClan()
-    else if (::check_balance_msgBox(upgradeCost))
-    {
+    else if (::check_balance_msgBox(upgradeCost)) {
       let msgText = ::warningIfGold(
         format(loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
@@ -71,8 +65,7 @@ let { format } = require("string")
     }
   }
 
-  function upgradeClan()
-  {
+  function upgradeClan() {
     if (this.isObsceneWord())
       return
     let clanId = (::my_clan_info != null && ::my_clan_info.id == this.clanData.id) ? "-1" : this.clanData.id
@@ -85,8 +78,7 @@ let { format } = require("string")
     ::g_clans.upgradeClan(clanId, params, this)
   }
 
-  function getDecoratorsList()
-  {
+  function getDecoratorsList() {
     // cannot use non-paid decorators for upgrade
     return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
   }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -29,8 +30,7 @@ enums.addTypesByGlobalName("g_hud_hint_types", {
     nestId = "mission_hints"
     hintStyle = "hudHintCommon"
     isReplaceableByPriority = true
-    isSameReplaceGroup = function (hint1, hint2)
-    {
+    isSameReplaceGroup = function (hint1, hint2) {
       return hint1.hintType == hint2.hintType
     }
   }

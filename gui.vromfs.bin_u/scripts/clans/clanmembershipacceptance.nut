@@ -1,10 +1,10 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let function canChange(clanData)
-{
+let function canChange(clanData) {
   if (!clanData)
     return false
   if (::clan_get_admin_editor_mode())
@@ -14,13 +14,11 @@ let function canChange(clanData)
   return myRights.indexof("CHANGE_INFO") != null
 }
 
-let function getValue(clanData)
-{
+let function getValue(clanData) {
   return (clanData?.status ?? "closed") != "closed"
 }
 
-let function setValue(clanData, value, handler)
-{
+let function setValue(clanData, value, handler) {
   if (!canChange(clanData) || value == getValue(clanData))
     return
 

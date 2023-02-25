@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let DataBlock  = require("DataBlock")
 
 ::g_operations <- {
   operationStatusById = {}
@@ -17,14 +19,12 @@ let { get_time_msec } = require("dagor.time")
 
 /******************* Public ********************/
 
-::g_operations.forcedFullUpdate <- function forcedFullUpdate()
-{
+::g_operations.forcedFullUpdate <- function forcedFullUpdate() {
   this.isUpdateRequired = true
   this.fullUpdate()
 }
 
-::g_operations.fullUpdate <- function fullUpdate()
-{
+::g_operations.fullUpdate <- function fullUpdate() {
   if (!this.isUpdateRequired)
     return
 
@@ -38,19 +38,16 @@ let { get_time_msec } = require("dagor.time")
   this.isUpdateRequired = false
 }
 
-::g_operations.getArmiesByStatus <- function getArmiesByStatus(status)
-{
+::g_operations.getArmiesByStatus <- function getArmiesByStatus(status) {
   return this.getCurrentOperation().armies.getArmiesByStatus(status)
 }
 
-::g_operations.getArmiesCache <- function getArmiesCache()
-{
+::g_operations.getArmiesCache <- function getArmiesCache() {
   return this.getCurrentOperation().armies.armiesByStatusCache
 }
 
 ::g_operations.getAirArmiesNumberByGroupIdx <- function getAirArmiesNumberByGroupIdx(groupIdx,
-  overrideUnitType)
-{
+  overrideUnitType) {
   local armyCount = 0
   foreach (wwArmyByStatus in this.getArmiesCache())
     foreach (wwArmyByGroup in wwArmyByStatus)
@@ -64,10 +61,9 @@ let { get_time_msec } = require("dagor.time")
   return armyCount
 }
 
-::g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side)
-{
+::g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side) {
   let operationUnits = {}
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   ::ww_get_sides_info(blk)
 
   let sidesBlk = blk?["sides"]
@@ -87,8 +83,7 @@ let { get_time_msec } = require("dagor.time")
 
 /***************** Private ********************/
 
-::g_operations.getCurrentOperation <- function getCurrentOperation()
-{
+::g_operations.getCurrentOperation <- function getCurrentOperation() {
   let operationId = ::ww_get_operation_id()
   if (!(operationId in this.operationStatusById))
     this.operationStatusById[operationId] <- ::WwOperationModel()
@@ -98,18 +93,15 @@ let { get_time_msec } = require("dagor.time")
 
 /************* onEvent Handlers ***************/
 
-::g_operations.onEventWWFirstLoadOperation <- function onEventWWFirstLoadOperation(_params)
-{
+::g_operations.onEventWWFirstLoadOperation <- function onEventWWFirstLoadOperation(_params) {
   this.isUpdateRequired = true
 }
 
-::g_operations.onEventWWLoadOperation <- function onEventWWLoadOperation(_params)
-{
+::g_operations.onEventWWLoadOperation <- function onEventWWLoadOperation(_params) {
   this.forcedFullUpdate()
 }
 
-::g_operations.onEventWWArmyPathTrackerStatus <- function onEventWWArmyPathTrackerStatus(params)
-{
+::g_operations.onEventWWArmyPathTrackerStatus <- function onEventWWArmyPathTrackerStatus(params) {
   let armyName = getTblValue("army", params)
   this.getCurrentOperation().armies.updateArmyStatus(armyName)
 }

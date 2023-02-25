@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -122,6 +122,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -1020,6 +1028,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -3271,7 +3289,7 @@
     },
     "new_aux_caliber_turrets": {},
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "torpedoes_movement_mode": {
       "effects": {
@@ -4657,29 +4675,25 @@
     ]
   },
   "user_skin": {
-    "name": "destroyer_daring_class_diana",
+    "name": "destroyer_vifor_class_aquila",
     "replace_tex": {
-      "from": "camo_flatgullgrey*"
+      "from": "camo_black_a26f*"
     },
     "set_tex": [
       {
-        "from": "tt_533mm_quintuple_mk2_c*",
+        "from": "tt_450mm_twin_c*",
         "param": "camo_skin_tex"
       },
       {
-        "from": "turret_114mm_mk6_twin_c*",
+        "from": "turret_152mm_qf_mark1_c*",
         "param": "camo_skin_tex"
       },
       {
-        "from": "turret_40mm_bofors_mk5_twin_shield_c*",
+        "from": "turret_76mm_ansaldo_mod1916_c*",
         "param": "camo_skin_tex"
       },
       {
-        "from": "turret_40mm_bofors_staag_mk2_twin_shield_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "destroyer_daring_class_diana_c*",
+        "from": "destroyer_vifor_class_aquila_c*",
         "param": "camo_skin_tex"
       }
     ]

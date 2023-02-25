@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,9 +8,9 @@ let { set_blk_value_by_path, get_blk_value_by_path } = require("%sqStdLibs/helpe
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let DataBlock = require("DataBlock")
 
-::onUpdateProfile <- function onUpdateProfile(taskId, action, transactionType = ::EATT_UNKNOWN) //code callback on profile update
-{
+::onUpdateProfile <- function onUpdateProfile(taskId, action, transactionType = ::EATT_UNKNOWN) { //code callback on profile update
   if (!::g_login.isProfileReceived())
     ::g_login.onProfileReceived()
 
@@ -22,10 +23,8 @@ let { debug_dump_stack } = require("dagor.debug")
 }
 
 //save/load settings by account. work only after local profile received from host.
-::save_local_account_settings <- function save_local_account_settings(path, value)
-{
-  if (!::should_disable_menu() && !::g_login.isProfileReceived())
-  {
+::save_local_account_settings <- function save_local_account_settings(path, value) {
+  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings write: save_local_account_settings at login state ",
       ::g_login.getStateDebugStr()))
@@ -37,10 +36,8 @@ let { debug_dump_stack } = require("dagor.debug")
     saveProfile()
 }
 
-::load_local_account_settings <- function load_local_account_settings(path, defValue = null)
-{
-  if (!::should_disable_menu() && !::g_login.isProfileReceived())
-  {
+::load_local_account_settings <- function load_local_account_settings(path, defValue = null) {
+  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: load_local_account_settings at login state ",
       ::g_login.getStateDebugStr()))
@@ -52,15 +49,13 @@ let { debug_dump_stack } = require("dagor.debug")
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
-::save_local_shared_settings <- function save_local_shared_settings(path, value)
-{
+::save_local_shared_settings <- function save_local_shared_settings(path, value) {
   let blk = ::get_common_local_settings_blk()
   if (set_blk_value_by_path(blk, path, value))
     saveProfile()
 }
 
-::load_local_shared_settings <- function load_local_shared_settings(path, defValue = null)
-{
+::load_local_shared_settings <- function load_local_shared_settings(path, defValue = null) {
   let blk = ::get_common_local_settings_blk()
   return get_blk_value_by_path(blk, path, defValue)
 }
@@ -68,8 +63,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 
 //save/load settings by account and by screenSize
-::loadLocalByScreenSize <- function loadLocalByScreenSize(name, defValue=null)
-{
+::loadLocalByScreenSize <- function loadLocalByScreenSize(name, defValue = null) {
   if (!::g_login.isProfileReceived())
     return defValue
   let rootName = getRootSizeText()
@@ -79,8 +73,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
   return defValue
 }
 
-::saveLocalByScreenSize <- function saveLocalByScreenSize(name, value)
-{
+::saveLocalByScreenSize <- function saveLocalByScreenSize(name, value) {
   if (!::g_login.isProfileReceived())
     return
   let rootName = getRootSizeText()
@@ -88,27 +81,24 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
   if (cdb?[rootName] != null && type(cdb[rootName]) != "instance")
     cdb[rootName] = null
   if (cdb?[rootName] == null)
-    cdb[rootName] = ::DataBlock()
+    cdb[rootName] = DataBlock()
   if (cdb?[rootName][name] == null)
     cdb[rootName][name] = value
+  else if (cdb[rootName][name] == value)
+    return  //no need save when no changes
   else
-    if (cdb[rootName][name] == value)
-      return  //no need save when no changes
-    else
-      cdb[rootName][name] = value
+    cdb[rootName][name] = value
   saveProfile()
 }
 
 //remove all data by screen size from all size blocks
 //also clear empty size blocks
-::clear_local_by_screen_size <- function clear_local_by_screen_size(name)
-{
+::clear_local_by_screen_size <- function clear_local_by_screen_size(name) {
   if (!::g_login.isProfileReceived())
     return
   let cdb = ::get_local_custom_settings_blk()
   local hasChanges = false
-  for(local idx = cdb.blockCount() - 1; idx >= 0; idx--)
-  {
+  for (local idx = cdb.blockCount() - 1; idx >= 0; idx--) {
     let blk = cdb.getBlock(idx)
     if (!(name in blk))
       continue
@@ -127,10 +117,8 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 }
 
 // Deprecated, for storing new data use load_local_account_settings() instead.
-::loadLocalByAccount <- function loadLocalByAccount(path, defValue=null)
-{
-  if (!::should_disable_menu() && !::g_login.isProfileReceived())
-  {
+::loadLocalByAccount <- function loadLocalByAccount(path, defValue = null) {
+  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: loadLocalByAccount at login state ",
       ::g_login.getStateDebugStr()))
@@ -140,15 +128,13 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
   let cdb = ::get_local_custom_settings_blk()
   let id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
   local profileBlk = cdb?.accounts?[id]
-  if (profileBlk)
-  {
+  if (profileBlk) {
     let value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
   profileBlk = cdb?.accounts?[::my_user_id_str]
-  if (profileBlk)
-  {
+  if (profileBlk) {
     let value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
@@ -157,10 +143,8 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 }
 
 // Deprecated, for storing new data use save_local_account_settings() instead.
-::saveLocalByAccount <- function saveLocalByAccount(path, value, saveFunc = saveProfile)
-{
-  if (!::should_disable_menu() && !::g_login.isProfileReceived())
-  {
+::saveLocalByAccount <- function saveLocalByAccount(path, value, saveFunc = saveProfile) {
+  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: saveLocalByAccount at login state ",
       ::g_login.getStateDebugStr()))

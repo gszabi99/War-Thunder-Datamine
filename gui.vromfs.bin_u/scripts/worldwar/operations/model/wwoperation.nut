@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,15 +9,13 @@ let time = require("%scripts/time.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-enum WW_OPERATION_STATUSES
-{
+enum WW_OPERATION_STATUSES {
   UNKNOWN = -1
   ES_ACTIVE = 1
   ES_PAUSED = 7
 }
 
-enum WW_OPERATION_PRIORITY //bit enum
-{
+enum WW_OPERATION_PRIORITY { //bit enum
   NONE                       = 0
   CAN_JOIN_BY_ARMY_RELATIONS = 0x0001
   CAN_JOIN_BY_MY_CLAN        = 0x0002
@@ -24,8 +23,7 @@ enum WW_OPERATION_PRIORITY //bit enum
   MAX                        = 0xFFFF
 }
 
-::WwOperation <- class
-{
+::WwOperation <- class {
   id = -1
   data = null
   status = WW_OPERATION_STATUSES.UNKNOWN
@@ -36,61 +34,51 @@ enum WW_OPERATION_PRIORITY //bit enum
 
   isFinished = false //this parametr updated from local operation when return main menu of WWar
 
-  constructor(v_data)
-  {
+  constructor(v_data) {
     this.data = v_data
     this.id = getTblValue("_id", this.data, -1)
     this.status = getTblValue("st", this.data, WW_OPERATION_STATUSES.UNKNOWN)
   }
 
-  function isValid()
-  {
+  function isValid() {
     return this.id >= 0
   }
 
-  function isAvailableToJoin()
-  {
+  function isAvailableToJoin() {
     return !this.isFinished &&
-      ( this.status == WW_OPERATION_STATUSES.ES_ACTIVE
-        || this.status == WW_OPERATION_STATUSES.ES_PAUSED )
+      (this.status == WW_OPERATION_STATUSES.ES_ACTIVE
+        || this.status == WW_OPERATION_STATUSES.ES_PAUSED)
   }
 
-  function isEqual(operation)
-  {
+  function isEqual(operation) {
     return operation && operation.id == this.id
   }
 
-  function getMapId()
-  {
+  function getMapId() {
     return getTblValue("map", this.data, "unknown_map")
   }
 
-  function getMap()
-  {
+  function getMap() {
     return getMapByName(this.getMapId())
   }
 
-  function getNameText(full = true)
-  {
+  function getNameText(full = true) {
     return this.getNameTextByIdAndMapName(this.id, full ? this.getMapText() : null)
   }
 
-  static function getNameTextByIdAndMapName(operationId, mapName = null)
-  {
+  static function getNameTextByIdAndMapName(operationId, mapName = null) {
     local res = loc("ui/number_sign") + operationId
     if (mapName)
       res = mapName + " " + res
     return res
   }
 
-  function getMapText()
-  {
+  function getMapText() {
     let map = this.getMap()
     return map ? map.getNameText() : ""
   }
 
-  function getDescription(showClanParticipateStatus = true)
-  {
+  function getDescription(showClanParticipateStatus = true) {
     let txtList = []
     if (showClanParticipateStatus && this.isMyClanParticipate())
       txtList.append(colorize("userlogColoredText", loc("worldwar/yourClanInThisOperation")))
@@ -100,38 +88,33 @@ enum WW_OPERATION_PRIORITY //bit enum
     return ::g_string.implode(txtList, "\n")
   }
 
-  function getStartDateTxt()
-  {
+  function getStartDateTxt() {
     return time.buildDateStr(this.data?.ct ?? 0)
   }
 
-  function getGeoCoordsText()
-  {
+  function getGeoCoordsText() {
     let map = this.getMap()
     return map ? map.getGeoCoordsText() : ""
   }
 
-  function getCantJoinReasonDataBySide(side)
-  {
+  function getCantJoinReasonDataBySide(side) {
     let res = {
       canJoin = false
       country = ""
       reasonText = ""
     }
 
-    if (::g_squad_manager.isSquadMember())
-    {
+    if (::g_squad_manager.isSquadMember()) {
       let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
       if (queue && queue.getQueueWwOperationId() != this.id)
         return res.__update({
-          reasonText = loc("worldWar/cantJoinBecauseOfQueue", {operationInfo = this.getNameText()})
+          reasonText = loc("worldWar/cantJoinBecauseOfQueue", { operationInfo = this.getNameText() })
         })
     }
 
     let countryes = getTblValue(side, this.getCountriesByTeams(), [])
     let assignCountry = this.getMyAssignCountry()
-    if (assignCountry)
-    {
+    if (assignCountry) {
       res.country = assignCountry
       if (!isInArray(assignCountry, countryes))
         res.reasonText = loc("worldWar/cantPlayByThisSide")
@@ -142,11 +125,9 @@ enum WW_OPERATION_PRIORITY //bit enum
     }
 
     local summaryCantJoinReasonText = ""
-    foreach(_idx, country in countryes)
-    {
+    foreach (_idx, country in countryes) {
       let reasonData = this.getCantJoinReasonData(country)
-      if (reasonData.canJoin)
-      {
+      if (reasonData.canJoin) {
         res.canJoin = true
         res.country = country
         return res
@@ -166,8 +147,7 @@ enum WW_OPERATION_PRIORITY //bit enum
     return res
   }
 
-  function getCantJoinReasonData(country)
-  {
+  function getCantJoinReasonData(country) {
     let res = {
       canJoin = false
       reasonText = ""
@@ -175,13 +155,13 @@ enum WW_OPERATION_PRIORITY //bit enum
 
     let lastPlayedCountry = ::g_world_war.lastPlayedOperationCountry
     let lastPlayedOperationId = ::g_world_war.lastPlayedOperationId
-    if (this.isMyClanParticipate() && country != this.getMyClanCountry())// Join to opposite side
+    if (this.isMyClanParticipate() && country != this.getMyClanCountry()) // Join to opposite side
       res.reasonText = loc("worldWar/cantJoinByAnotherSideClan")
     else if (!this.isMyClanParticipate()
       && lastPlayedOperationId && lastPlayedOperationId == this.id
-      && lastPlayedCountry && lastPlayedCountry != country)// Last played out of clan by another country
+      && lastPlayedCountry && lastPlayedCountry != country) // Last played out of clan by another country
       res.reasonText = loc("worldWar/cantPlayByThisSide")
-    else if (!this.canJoinByCountry(country))// No such country in this operation
+    else if (!this.canJoinByCountry(country)) // No such country in this operation
       res.reasonText = loc("worldWar/chooseAvailableCountry")
 
     if (!res.reasonText.len())
@@ -190,11 +170,9 @@ enum WW_OPERATION_PRIORITY //bit enum
     return res
   }
 
-  function join(country, onErrorCb = null, isSilence = false, onSuccess = null, forced = false)
-  {
+  function join(country, onErrorCb = null, isSilence = false, onSuccess = null, forced = false) {
     let cantJoinReason = this.getCantJoinReasonData(country)
-    if (!cantJoinReason.canJoin && !forced)// Forced when invite in operation
-    {
+    if (!cantJoinReason.canJoin && !forced) { // Forced when invite in operation
       if (!isSilence)
         ::showInfoMsgBox(cantJoinReason.reasonText)
       return false
@@ -204,8 +182,7 @@ enum WW_OPERATION_PRIORITY //bit enum
     return this._join(country, onErrorCb, isSilence, onSuccess)
   }
 
-  function _join(country, onErrorCb, isSilence, onSuccess)
-  {
+  function _join(country, onErrorCb, isSilence, onSuccess) {
     let taskId = ::ww_start_war(this.id)
     let cb = Callback(function() {
         ::g_world_war.onJoinOperationSuccess(this.id, country, isSilence, onSuccess)
@@ -219,22 +196,19 @@ enum WW_OPERATION_PRIORITY //bit enum
     return taskId >= 0
   }
 
-  function resetCache()
-  {
+  function resetCache() {
     this.isArmyGroupsDataGathered = false
     this._myClanGroup = null
     this._assignCountry = null
   }
 
-  function gatherArmyGroupsDataOnce()
-  {
+  function gatherArmyGroupsDataOnce() {
     if (this.isArmyGroupsDataGathered)
       return
     this.isArmyGroupsDataGathered = true
 
     let myClanId = ::clan_get_my_clan_id().tointeger()
-    foreach(ag in this.getArmyGroups())
-    {
+    foreach (ag in this.getArmyGroups()) {
       if (ag?.clanId != myClanId)
         continue
 
@@ -243,8 +217,7 @@ enum WW_OPERATION_PRIORITY //bit enum
     }
   }
 
-  function getArmyGroupsBySide(side)
-  {
+  function getArmyGroupsBySide(side) {
     let countriesByTeams = this.getCountriesByTeams()
     let sideCountries = getTblValue(side, countriesByTeams)
 
@@ -256,26 +229,22 @@ enum WW_OPERATION_PRIORITY //bit enum
     )
   }
 
-  function getMyClanGroup()
-  {
+  function getMyClanGroup() {
     this.gatherArmyGroupsDataOnce()
     return this._myClanGroup
   }
 
-  function getMyAssignCountry()
-  {
+  function getMyAssignCountry() {
     this.gatherArmyGroupsDataOnce()
     return this._assignCountry
   }
 
-  function getMyClanCountry()
-  {
+  function getMyClanCountry() {
     let myClanGroup = this.getMyClanGroup()
     return myClanGroup && this.getArmyGroupCountry(myClanGroup)
   }
 
-  function isMyClanSide(side)
-  {
+  function isMyClanSide(side) {
     if (!this.isMyClanParticipate())
       return false
 
@@ -284,38 +253,32 @@ enum WW_OPERATION_PRIORITY //bit enum
     return isInArray(country, countries)
   }
 
-  function isMyClanParticipate()
-  {
+  function isMyClanParticipate() {
     return this.isAvailableToJoin() && this.getMyClanGroup() != null
   }
 
-  function canJoinByMyClan()
-  {
+  function canJoinByMyClan() {
     //can join after change clan only if played by the same country in this operation
     let assignCountry = this.getMyAssignCountry()
     return this.isMyClanParticipate() && (assignCountry == null || assignCountry == this.getMyClanCountry())
   }
 
-  function getArmyGroups()
-  {
+  function getArmyGroups() {
     return getTblValue("armyGroups", this.data, [])
   }
 
-  function getArmyGroupCountry(armyGroup)
-  {
+  function getArmyGroupCountry(armyGroup) {
     return getTblValue("cntr", armyGroup)
   }
 
-  function getCountriesByTeams()
-  {
+  function getCountriesByTeams() {
     let res = {}
     let map = this.getMap()
     if (!map)
       return res
 
     let countryToSide = map.getCountryToSideTbl()
-    foreach(ag in this.getArmyGroups())
-    {
+    foreach (ag in this.getArmyGroups()) {
       let country = this.getArmyGroupCountry(ag)
       let side = getTblValue(country, countryToSide, SIDE_NONE)
       if (side == SIDE_NONE)
@@ -328,21 +291,18 @@ enum WW_OPERATION_PRIORITY //bit enum
     return res
   }
 
-  function canJoinByCountry(country)
-  {
-    foreach(ag in this.getArmyGroups())
+  function canJoinByCountry(country) {
+    foreach (ag in this.getArmyGroups())
       if (this.getArmyGroupCountry(ag) == country)
         return true
     return false
   }
 
-  function isLastPlayed()
-  {
+  function isLastPlayed() {
     return this.id == ::g_world_war.lastPlayedOperationId
   }
 
-  function getPriority()
-  {
+  function getPriority() {
     local res = 0
     let availableByMyClan = this.canJoinByMyClan()
     if (availableByMyClan)

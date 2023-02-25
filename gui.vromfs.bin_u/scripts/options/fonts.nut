@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,7 +8,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { round } = require("math")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { is_stereo_mode } = require_native("vr")
+let { is_stereo_mode } = require("vr")
 let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
@@ -48,14 +49,12 @@ let getFontsSh = screenInfo.getScreenHeightForFonts
 local appliedFontsSh = 0
 local appliedFontsScale = 0
 
-let function update_font_heights(font)
-{
+let function update_font_heights(font) {
   let fontsSh = getFontsSh(::screen_width(), ::screen_height())
   if (appliedFontsSh == fontsSh && appliedFontsScale == font.sizeMultiplier)
     return font;
   log("update_font_heights: screenHt={0} fontSzMul={1}".subst(fontsSh, font.sizeMultiplier))
-  foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
-  {
+  foreach (prefixId in daguiFonts.getRealFontNamePrefixesMap()) {
     setFontDefHt(prefixId, round(getFontInitialHt(prefixId) * font.sizeMultiplier).tointeger())
     log("  font <{0}> sz={1}".subst(prefixId, getFontDefHt(prefixId)))
   }
@@ -81,8 +80,7 @@ let function update_font_heights(font)
   isAvailable = @(_sWidth, _sHeight) true
   getFontSizePx = @(sWidth, sHeight) round(this.sizeMultiplier * getFontsSh(sWidth, sHeight)).tointeger()
   getPixelToPixelFontSizeOutdatedPx = @(_sWidth, _sHeight) 800 //!!TODO: remove this together with old fonts
-  isLowWidthScreen = function()
-  {
+  isLowWidthScreen = function() {
     let sWidth = ::screen_width()
     let sHeight = ::screen_height()
     let mainScreenSize = screenInfo.getMainScreenSizePx(sWidth, sHeight)
@@ -90,8 +88,7 @@ let function update_font_heights(font)
     return 10.0 / 16 * mainScreenSize[0] / sf < 0.99
   }
 
-  genCssString = function()
-  {
+  genCssString = function() {
     let sWidth = ::screen_width()
     let sHeight = ::screen_height()
     let config = {
@@ -104,7 +101,7 @@ let function update_font_heights(font)
       let configStr = toString(config) // warning disable: -declared-never-used
       ::script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
     }
-    foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
+    foreach (prefixId in daguiFonts.getRealFontNamePrefixesMap())
       config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{this.fontGenId}")
     return ::handyman.renderCached("%gui/const/const_fonts_css.tpl", config)
   }
@@ -176,7 +173,7 @@ let function getAvailableFontBySaveId(saveId) {
   if (res && res.isAvailable(::screen_width(), ::screen_height()))
     return res
 
-  foreach(font in ::g_font.types)
+  foreach (font in ::g_font.types)
     if (font.saveIdCompatibility
       && isInArray(saveId, font.saveIdCompatibility)
       && font.isAvailable(::screen_width(), ::screen_height()))
@@ -185,24 +182,21 @@ let function getAvailableFontBySaveId(saveId) {
   return null
 }
 
-::g_font.getAvailableFonts <- function getAvailableFonts()
-{
+::g_font.getAvailableFonts <- function getAvailableFonts() {
   let sWidth = ::screen_width()
   let sHeight = ::screen_height()
   return ::u.filter(this.types, @(f) f.isAvailable(sWidth, sHeight))
 }
 
-::g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight)
-{
+::g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight) {
   local res = null
-  foreach(font in this.types)
+  foreach (font in this.types)
     if (font.isAvailable(sWidth, sHeight) && (!res || font.sizeMultiplier < res.sizeMultiplier))
       res = font
   return res
 }
 
-::g_font.getFixedFont <- function getFixedFont() //return null if can change fonts
-{
+::g_font.getFixedFont <- function getFixedFont() { //return null if can change fonts
   let availableFonts = this.getAvailableFonts()
   return availableFonts.len() == 1 ? availableFonts[0] : null
 }
@@ -211,9 +205,8 @@ let function canChange() {
   return ::g_font.getFixedFont() == null
 }
 
-let function getDefault()
-{
-  let {getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT} = ::g_font //-ident-hides-ident
+let function getDefault() {
+  let { getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT } = ::g_font //-ident-hides-ident
   let fixedFont = getFixedFont()
   if (fixedFont)
     return fixedFont
@@ -237,13 +230,11 @@ let function getDefault()
   return LARGE
 }
 
-::g_font.getCurrent <- function getCurrent()
-{
+::g_font.getCurrent <- function getCurrent() {
   if (!canChange())
     return update_font_heights(getDefault())
 
-  if (!::g_login.isProfileReceived())
-  {
+  if (!::g_login.isProfileReceived()) {
     let fontSaveId = ::getSystemConfigOption(FONTS_SAVE_PATH_CONFIG)
     return update_font_heights((fontSaveId && getAvailableFontBySaveId(fontSaveId))
       || getDefault())
@@ -251,11 +242,9 @@ let function getDefault()
 
   local fontSaveId = ::load_local_account_settings(FONTS_SAVE_PATH)
   local res = getAvailableFontBySaveId(fontSaveId)
-  if (!res) //compatibility with 1.77.0.X
-  {
+  if (!res) { //compatibility with 1.77.0.X
     fontSaveId = ::loadLocalByScreenSize(FONTS_SAVE_PATH)
-    if (fontSaveId)
-    {
+    if (fontSaveId) {
       res = getAvailableFontBySaveId(fontSaveId)
       if (res)
         ::save_local_account_settings(FONTS_SAVE_PATH, fontSaveId)
@@ -271,8 +260,7 @@ let function saveFontToConfig(font) {
 }
 
 //return isChanged
-::g_font.setCurrent <- function setCurrent(font)
-{
+::g_font.setCurrent <- function setCurrent(font) {
   if (!canChange())
     return false
 
@@ -287,14 +275,12 @@ let function saveFontToConfig(font) {
 }
 
 
-::g_font.validateSavedConfigFonts <- function validateSavedConfigFonts()
-{
+::g_font.validateSavedConfigFonts <- function validateSavedConfigFonts() {
   if (canChange())
     saveFontToConfig(this.getCurrent())
 }
 
-::reset_applied_fonts_scale <- function reset_applied_fonts_scale()
-{
+::reset_applied_fonts_scale <- function reset_applied_fonts_scale() {
   log("[fonts] Resetting appliedFontsSh, sizes of font will be set again")
   appliedFontsSh = 0;
   update_font_heights(::g_font.getCurrent());

@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -1015,96 +1015,6 @@
     "horizontal": true
   },
   "class_tags": {},
-  "VehiclePhys": {
-    "Mass": {
-      "Empty": 35000.0,
-      "Fuel": 500.0,
-      "TakeOff": 35500.0,
-      "momentOfInertia": [
-        2.5,
-        2.5,
-        6.0
-      ],
-      "CenterOfGravity": [
-        0.2,
-        0.5,
-        0.0
-      ],
-      "CenterOfGravityClampY": [
-        0.0,
-        0.5
-      ],
-      "AdvancedMass": false,
-      "trackMass": 1300.0
-    },
-    "tracks": {
-      "animationMultiplier": 0.68,
-      "tracksTensionK": [
-        3.5,
-        10.0,
-        2.0
-      ],
-      "trackMesh": "ussr_54_44_004_13g_phys_track_line",
-      "trackLen": 0.137,
-      "trackCount": 90,
-      "trackFadeTime": 0.5,
-      "trackCntPeriod": 2,
-      "trackMaxSinking": 0.17,
-      "trackMaxHeight": 1.16,
-      "height": 0.06,
-      "width": 0.58,
-      "trackStartOffset": 0.05,
-      "fricSideRot": [
-        5.0,
-        0.0,
-        0.6,
-        0.3
-      ]
-    },
-    "collisionProps": {
-      "cls_turret_01": "convex_hull",
-      "cls_body_01": "convex_hull"
-    },
-    "engine": {
-      "horsePowers": 520.0,
-      "maxRPM": 2000.0,
-      "minRPM": 500.0,
-      "manufacturer": "chtz",
-      "model": "v_54"
-    },
-    "mechanics": {
-      "maxBrakeForce": 144000.0,
-      "driveGearRadius": 0.28345,
-      "mainGearRatio": 0.7,
-      "sideGearRatio": 6.78,
-      "gearRatios": {
-        "ratio": [
-          -6.0,
-          0.0,
-          6.0,
-          2.8,
-          2.0,
-          1.43,
-          0.9
-        ]
-      }
-    },
-    "suspension": {
-      "suspensionOffsets": [
-        -0.1,
-        -0.08,
-        0.11
-      ],
-      "defaultGearRadius": 0.405,
-      "frontBackGearRadius": 0.25,
-      "defaultDampeningForce": [
-        120000.0,
-        120000.0
-      ],
-      "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
-    }
-  },
   "PhysSys": {
     "find": "^bone_suspension_(._\\d\\d)$",
     "points": {
@@ -2011,7 +1921,6 @@
       "ex_decor_l_06_dm": {},
       "ex_decor_l_07_dm": {},
       "ex_armor_01_dm": {},
-      "ex_decor_01_dm": {},
       "timber": {
         "armorClass": "ship_wood",
         "armorThickness": 100.0,
@@ -2514,6 +2423,96 @@
       "machine_gunner_04_dm": {}
     }
   },
+  "VehiclePhys": {
+    "Mass": {
+      "Empty": 35500.0,
+      "Fuel": 500.0,
+      "TakeOff": 36000.0,
+      "momentOfInertia": [
+        2.5,
+        2.5,
+        6.0
+      ],
+      "CenterOfGravity": [
+        0.2,
+        0.5,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.5
+      ],
+      "AdvancedMass": false,
+      "trackMass": 1300.0
+    },
+    "tracks": {
+      "animationMultiplier": 0.68,
+      "tracksTensionK": [
+        3.5,
+        10.0,
+        2.0
+      ],
+      "trackMesh": "ussr_54_44_004_13g_phys_track_line",
+      "trackLen": 0.137,
+      "trackCount": 90,
+      "trackFadeTime": 0.5,
+      "trackCntPeriod": 2,
+      "trackMaxSinking": 0.17,
+      "trackMaxHeight": 1.16,
+      "height": 0.06,
+      "width": 0.58,
+      "trackStartOffset": 0.05,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.6,
+        0.3
+      ]
+    },
+    "collisionProps": {
+      "cls_turret_01": "convex_hull",
+      "cls_body_01": "convex_hull"
+    },
+    "engine": {
+      "horsePowers": 520.0,
+      "maxRPM": 2000.0,
+      "minRPM": 500.0,
+      "manufacturer": "chtz",
+      "model": "v_54"
+    },
+    "mechanics": {
+      "maxBrakeForce": 144000.0,
+      "driveGearRadius": 0.28345,
+      "mainGearRatio": 0.7,
+      "sideGearRatio": 6.78,
+      "gearRatios": {
+        "ratio": [
+          -6.0,
+          0.0,
+          6.0,
+          2.8,
+          2.0,
+          1.43,
+          0.9
+        ]
+      }
+    },
+    "suspension": {
+      "suspensionOffsets": [
+        -0.1,
+        -0.08,
+        0.11
+      ],
+      "defaultGearRadius": 0.405,
+      "frontBackGearRadius": 0.25,
+      "defaultDampeningForce": [
+        120000.0,
+        120000.0
+      ],
+      "dampeningRelaxationRatio": 0.4,
+      "dampeningCompressionRatio": 0.15
+    }
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -2642,7 +2641,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_DShK_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_Type_54_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2676,8 +2675,8 @@
             180.0
           ],
           "pitch": [
-            -10.0,
-            60.0
+            -4.5,
+            82.0
           ]
         }
       },

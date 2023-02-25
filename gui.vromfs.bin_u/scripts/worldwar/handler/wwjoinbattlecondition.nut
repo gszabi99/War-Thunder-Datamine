@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 
-::gui_handlers.WwJoinBattleCondition <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.WwJoinBattleCondition <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/worldWar/battleJoinCondition.tpl"
 
@@ -19,16 +19,14 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 
   static maxUnitsInColumn = 8
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
       WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
 
     let team = this.battle.getTeamBySide(this.side)
     local wwUnitsList = []
     if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.OPERATION_UNITS ||
-        unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
-    {
+        unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS) {
       let requiredUnits = this.battle.getUnitsRequiredForJoin(team, this.side)
       wwUnitsList = ::u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(requiredUnits),
         @(unit) !unit.isControlledByAI())
@@ -42,8 +40,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
     let columns = []
     if (wwUnitsList.len() <= this.maxUnitsInColumn)
       columns.append({ unitString = wwUnitsList })
-    else
-    {
+    else {
       let unitsInColumn = wwUnitsList.len() > 2 * this.maxUnitsInColumn
         ? wwUnitsList.len() - wwUnitsList.len() / 2
         : this.maxUnitsInColumn
@@ -54,7 +51,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
     let viewCountryData = getCustomViewCountryData(team.country)
     return {
       countryInfoText = loc("worldwar/help/country_info",
-        {country = colorize("@newTextColor", loc(viewCountryData.locId))})
+        { country = colorize("@newTextColor", loc(viewCountryData.locId)) })
       battleConditionText = loc("worldwar/help/required_units_" + unitAvailability)
       countryIcon = viewCountryData.icon
       columns = columns

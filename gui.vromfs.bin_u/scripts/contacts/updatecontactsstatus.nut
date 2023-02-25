@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,8 +8,9 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { appendOnce, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_time_msec } = require("dagor.time")
+let DataBlock = require("DataBlock")
 
-let UPDATE_DELAY_MSEC = isPlatformSony? 60000 : 1800000 //60 sec for psn, 30 minutes for others
+let UPDATE_DELAY_MSEC = isPlatformSony ? 60000 : 1800000 //60 sec for psn, 30 minutes for others
 let lastUpdate = persist("lastUpdate", @() Watched(0))
 let saveLastUpdate = function() { lastUpdate(get_time_msec()) }
 let canUpdate = @() get_time_msec() - lastUpdate.value >= UPDATE_DELAY_MSEC
@@ -33,7 +35,7 @@ let updateBlocklist = function() {
   pendingUids([])
   saveLastUpdate()
 
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.addBlock("body")
   blk.body.addStr("groupName", EPL_BLOCKLIST)
   foreach (uid in waitingUids)
@@ -52,8 +54,7 @@ let updateBlocklist = function() {
 
         cachedUids.mutate(@(v) v[uid.tostring()] <- get_time_msec())
         let contact = ::getContact(uid)
-        if (!contact)
-        {
+        if (!contact) {
           log($"[UCS]: Fail updating {uid}. Contact not found")
           continue
         }

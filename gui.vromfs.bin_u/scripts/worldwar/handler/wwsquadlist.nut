@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -19,24 +20,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   isFirstSquadInfoUpdate = true
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return { members = array(::g_squad_manager.MAX_SQUAD_SIZE, {}) }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.setUserData(this)
     this.squadListObj = this.scene.findObject("squad_list")
     this.updateSquadInfoPanel()
   }
 
-  function updateSquadInfoPanel()
-  {
+  function updateSquadInfoPanel() {
     let squadMembers = ::g_squad_manager.getMembers()
     local memberIdx = 0
-    foreach (memberData in squadMembers)
-    {
+    foreach (memberData in squadMembers) {
       if (!memberData.online)
         continue
 
@@ -48,16 +45,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       memberIdx++
     }
 
-    for (local i = memberIdx; i < this.squadListObj.childrenCount(); i++)
-    {
+    for (local i = memberIdx; i < this.squadListObj.childrenCount(); i++) {
       let memberObj = this.squadListObj.getChild(i)
       if (checkObj(memberObj))
         this.updateSquadMember(null, memberObj)
     }
   }
 
-  function updateSquadMember(memberData, memberObj)
-  {
+  function updateSquadMember(memberData, memberObj) {
     memberObj.show(!!memberData)
     if (!memberData)
       return
@@ -76,8 +71,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local fullAlertText = ""
     if (!memberData.isWorldWarAvailable)
       alertText = loc("worldWar/noAccess")
-    else if (!memberData.canPlayWorldWar)
-    {
+    else if (!memberData.canPlayWorldWar) {
       alertText = loc("worldWar/noAccess")
       fullAlertText = ::g_world_war.getPlayWorldwarConditionText()
     }
@@ -99,20 +93,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     alertIconObj.tooltip = fullAlertText
   }
 
-  function updateBattleData(battleCountry, battleRemainUnits)
-  {
+  function updateBattleData(battleCountry, battleRemainUnits) {
     this.country = battleCountry
     this.remainUnits = battleRemainUnits
     this.updateSquadInfoPanel()
   }
 
-  function onEventSquadDataUpdated(_params)
-  {
+  function onEventSquadDataUpdated(_params) {
     this.updateSquadInfoPanel()
   }
 
-  function onMemberRClick()
-  {
+  function onMemberRClick() {
     let curMemberIdx = this.squadListObj.getValue()
     if (curMemberIdx < 0 || curMemberIdx >= this.squadListObj.childrenCount())
       return

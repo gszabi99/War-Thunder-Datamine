@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
 
-::gui_handlers.modifyThreadWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.modifyThreadWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/modifyThreadWnd.blk"
 
@@ -25,8 +25,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   moveDiffForBorderPlacesSec = 10
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.threadInfo)
       return
 
@@ -52,8 +51,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.onChangePinned(pinnedCheckObj)
 
     local timeHeader = loc("chat/threadTime")
-    if (this.threadInfo.timeStamp > 0)
-    {
+    if (this.threadInfo.timeStamp > 0) {
       this.threadTime = this.threadInfo.timeStamp
       timeHeader += loc("ui/colon") + time.buildDateTimeStr(this.threadInfo.timeStamp)
     }
@@ -63,8 +61,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.initCategories()
   }
 
-  function initLangs()
-  {
+  function initLangs() {
     this.curLangs = this.threadInfo.langs
 
     let show = ::g_chat.canChooseThreadsLang()
@@ -73,11 +70,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.updateLangButton()
   }
 
-  function updateLangButton()
-  {
+  function updateLangButton() {
     let view = { countries = [] }
-    foreach(chatId in this.curLangs)
-    {
+    foreach (chatId in this.curLangs) {
       let langInfo = ::g_language.getLangInfoByChatId(chatId)
       if (langInfo)
         view.countries.append({ countryIcon = langInfo.icon })
@@ -86,8 +81,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.replaceContentFromText(this.scene.findObject("language_btn"), data, data.len(), this)
   }
 
-  function initCategories()
-  {
+  function initCategories() {
     let show = ::g_chat_categories.isEnabled()
     this.showSceneBtn("thread_category_header", show)
     let cListObj = this.showSceneBtn("categories_list", show)
@@ -95,29 +89,25 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       ::g_chat_categories.fillCategoriesListObj(cListObj, this.threadInfo.category, this)
   }
 
-  function getSelThreadCategoryName()
-  {
+  function getSelThreadCategoryName() {
     let cListObj = this.scene.findObject("categories_list")
     return ::g_chat_categories.getSelCategoryNameByListObj(cListObj, this.threadInfo.category)
   }
 
-  function onChangeTitle(obj)
-  {
+  function onChangeTitle(obj) {
     if (!obj)
       return
     this.curTitle = obj.getValue() || ""
     this.checkValues()
   }
 
-  function checkValues()
-  {
+  function checkValues() {
     this.isValuesValid = ::g_chat.checkThreadTitleLen(this.curTitle)
 
     this.scene.findObject("btn_apply").enable(this.isValuesValid)
   }
 
-  function onApply()
-  {
+  function onApply() {
     if (!this.isValuesValid || !checkObj(this.scene))
       return
 
@@ -137,58 +127,51 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.goBack()
   }
 
-  function onChangeHidden(obj)
-  {
+  function onChangeHidden(obj) {
     if (!obj)
       return
     this.scene.findObject("is_pinned_checkbox").enable(!obj.getValue())
     this.scene.findObject("timestamp_editbox").enable(!obj.getValue())
   }
 
-  function onChangePinned(obj)
-  {
+  function onChangePinned(obj) {
     if (!obj)
       return
     this.scene.findObject("is_hidden_checkbox").enable(!obj.getValue())
   }
 
-  function updateSelTimeText(timestamp)
-  {
+  function updateSelTimeText(timestamp) {
     local text = ""
     if (timestamp >= 0)
       text = " -> " + time.buildDateTimeStr(timestamp)
     this.scene.findObject("new_time_text").setValue(text)
   }
 
-  function onChangeTimeStamp(obj)
-  {
+  function onChangeTimeStamp(obj) {
     let timeStr = obj.getValue() || ""
     this.curTime = timeStr != "" ? time.getTimestampFromStringLocal(timeStr, this.threadTime) : -1
 
     this.updateSelTimeText(this.curTime)
   }
 
-  function goCancelTimeStamp(obj)
-  {
+  function goCancelTimeStamp(obj) {
     if (obj.getValue() == "")
       this.goBack()
     else
       obj.setValue("")
   }
 
-  function setChatTime(timestamp)
-  {
+  function setChatTime(timestamp) {
     let timeText = time.buildTabularDateTimeStr(timestamp, true)
     let timeObj = this.scene.findObject("timestamp_editbox")
     timeObj.setValue(timeText)
     ::select_editbox(timeObj)
   }
 
-  function onPinChatMenu()
-  {
-    let hoursList = [1, 2, 3, 4, 6, 12, 18, 24, 2 * 24, 3 * 24, 5 * 24, 7 * 24, 10 * 24, 14 *24]
+  function onPinChatMenu() {
+    let hoursList = [1, 2, 3, 4, 6, 12, 18, 24, 2 * 24, 3 * 24, 5 * 24, 7 * 24, 10 * 24, 14 * 24]
     let menu = []
-    foreach(hours in hoursList)
+    foreach (hours in hoursList)
       menu.append({
         text = loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
         action = (@(hours) function() {
@@ -199,15 +182,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::gui_right_click_menu(menu, this)
   }
 
-  function onMoveChatMenu()
-  {
+  function onMoveChatMenu() {
     let list = ::g_chat_latest_threads.getList()
     if (!list.len())
       return
 
     let maxPos = min(list.len(), 14)
     let menu = []
-    for(local i = 0; i < maxPos; i++)
+    for (local i = 0; i < maxPos; i++)
       menu.append({
         text = loc("chat/moveThreadToPosition", { place = i + 1 })
         action = (@(i) function() { this.moveChatToPlace(i) })(i)
@@ -215,8 +197,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::gui_right_click_menu(menu, this)
   }
 
-  function moveChatToPlace(place)
-  {
+  function moveChatToPlace(place) {
     let list = ::g_chat_latest_threads.getList()
     if (!list.len())
       return
@@ -240,14 +221,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.setChatTime(timeInt)
   }
 
-  function onLangBtn(obj)
-  {
+  function onLangBtn(obj) {
     if (!this.curLangs)
       return
 
     let optionsList = []
     let langsConfig = ::g_language.getGameLocalizationInfo()
-    foreach(lang in langsConfig)
+    foreach (lang in langsConfig)
       if (lang.isMainChatId)
         optionsList.append({
           text = lang.title
@@ -260,8 +240,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       list = optionsList
       align = "right"
       alignObj = obj
-      onFinalApplyCb = Callback(function(langs)
-                       {
+      onFinalApplyCb = Callback(function(langs) {
                          if (langs.len())
                            this.curLangs = langs
                          else

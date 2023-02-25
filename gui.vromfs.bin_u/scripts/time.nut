@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -35,10 +36,11 @@ let charToLocalUtcDiff = function() {
 
 
 local getFullTimeTable = function(time, fillMissedByTimeTable = null) {
-  foreach(p in timeOrder) {
+  foreach (p in timeOrder) {
     if (!(p in time)) {
       time[p] <- getTblValue(p, fillMissedByTimeTable)
-    } else {
+    }
+    else {
       fillMissedByTimeTable = null  //only higher part from utc
     }
   }
@@ -47,12 +49,11 @@ local getFullTimeTable = function(time, fillMissedByTimeTable = null) {
 
 let getUtcDays = @() timeBase.DAYS_TO_YEAR_1970 + ::get_charserver_time_sec() / timeBase.TIME_DAY_IN_SECONDS
 
-let buildTabularDateTimeStr = function(t, showSeconds = false)
-{
+let buildTabularDateTimeStr = function(t, showSeconds = false) {
   let tm = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
   return showSeconds ?
-    format("%04d-%02d-%02d %02d:%02d:%02d", tm.year, tm.month+1, tm.day, tm.hour, tm.min, tm.sec) :
-    format("%04d-%02d-%02d %02d:%02d", tm.year, tm.month+1, tm.day, tm.hour, tm.min)
+    format("%04d-%02d-%02d %02d:%02d:%02d", tm.year, tm.month + 1, tm.day, tm.hour, tm.min, tm.sec) :
+    format("%04d-%02d-%02d %02d:%02d", tm.year, tm.month + 1, tm.day, tm.hour, tm.min)
 }
 
 
@@ -117,8 +118,7 @@ let reNotNumeric = regexp2(@"\D+")
 let function getTimeTblFromStringImpl(str) {
   let timeOrderLen = timeOrder.len()
   let timeArray = split_by_chars(str, ":- ").filter(@(v) v != "")
-  if (timeArray.len() < timeOrderLen)
-  {
+  if (timeArray.len() < timeOrderLen) {
     if (reDateYmdAtStart.match(str))
       timeArray.resize(timeOrderLen, "0")
     else if (!reTimeHmsAtEnd.match(str))
@@ -127,7 +127,7 @@ let function getTimeTblFromStringImpl(str) {
 
   let res = {}
   let lenDiff = min(0, timeArray.len() - timeOrderLen)
-  for(local p = timeOrderLen - 1; p >= 0; --p) {
+  for (local p = timeOrderLen - 1; p >= 0; --p) {
     let i = p + lenDiff
     if (i < 0) {
       break
@@ -135,7 +135,8 @@ let function getTimeTblFromStringImpl(str) {
 
     if (! reNotNumeric.match(timeArray[i])) {
       res[timeOrder[p]] <- timeArray[i].tointeger()
-    } else {
+    }
+    else {
       return null
     }
   }
@@ -235,12 +236,13 @@ local function processTimeStamps(text) {
 
       local textTime = ""
       if (time == "{time_countdown=") {
-        textTime = timeBase.hoursToString(max( 0, t - ::get_charserver_time_sec() ) / timeBase.TIME_HOUR_IN_SECONDS_F, true, true)
-      } else {
+        textTime = timeBase.hoursToString(max(0, t - ::get_charserver_time_sec()) / timeBase.TIME_HOUR_IN_SECONDS_F, true, true)
+      }
+      else {
         textTime = buildDateTimeStr(t)
       }
-      text = text.slice(0, startIdx - startTime.len()) + textTime + text.slice(endIdx+1)
-    } while(continueSearch)
+      text = text.slice(0, startIdx - startTime.len()) + textTime + text.slice(endIdx + 1)
+    } while (continueSearch)
   }
 
   return text
@@ -276,15 +278,15 @@ let function getExpireText(expireMin) {
     return expireMin + loc("measureUnits/minutes")
 
   let showMin = expireMin < 3 * timeBase.TIME_MINUTE_IN_SECONDS
-  let expireHours = math.floor(expireMin / timeBase.TIME_MINUTE_IN_SECONDS_F + (showMin? 0.0 : 0.5))
+  let expireHours = math.floor(expireMin / timeBase.TIME_MINUTE_IN_SECONDS_F + (showMin ? 0.0 : 0.5))
   if (expireHours < 24)
     return expireHours + loc("measureUnits/hours") +
-           (showMin? " " + (expireMin - timeBase.TIME_MINUTE_IN_SECONDS * expireHours) + loc("measureUnits/minutes") : "")
+           (showMin ? " " + (expireMin - timeBase.TIME_MINUTE_IN_SECONDS * expireHours) + loc("measureUnits/minutes") : "")
 
-  let showHours = expireHours < 3*24
-  let expireDays = math.floor(expireHours / 24.0 + (showHours? 0.0 : 0.5))
+  let showHours = expireHours < 3 * 24
+  let expireDays = math.floor(expireHours / 24.0 + (showHours ? 0.0 : 0.5))
   return expireDays + loc("measureUnits/days") +
-         (showHours? " " + (expireHours - 24*expireDays) + loc("measureUnits/hours") : "")
+         (showHours ? " " + (expireHours - 24 * expireDays) + loc("measureUnits/hours") : "")
 }
 
 

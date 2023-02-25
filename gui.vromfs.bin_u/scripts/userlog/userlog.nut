@@ -1,15 +1,16 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { set_gui_option, get_gui_option } = require("guiOptions")
-
+let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
+} = require("guiOptions")
 let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -36,16 +37,16 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
 ::userlog_pages <- [
   {
-    id="all"
+    id = "all"
     hide = ::hidden_userlogs
   }
   {
-    id="battle"
+    id = "battle"
     show = [EULT_EARLY_SESSION_LEAVE, EULT_SESSION_RESULT,
             EULT_AWARD_FOR_PVE_MODE]
   }
   {
-    id="economic"
+    id = "economic"
     show = [EULT_BUYING_AIRCRAFT, EULT_REPAIR_AIRCRAFT, EULT_REPAIR_AIRCRAFT_MULTI,
             EULT_BUYING_WEAPON, EULT_BUYING_WEAPONS_MULTI, EULT_BUYING_WEAPON_FAIL,
             EULT_SESSION_RESULT, EULT_BUYING_MODIFICATION, EULT_BUYING_SPARE_AIRCRAFT,
@@ -56,8 +57,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
             EULT_BUY_BATTLE, EULT_CONVERT_EXPERIENCE, EULT_SELL_BLUEPRINT,
             EULT_EXCHANGE_WARBONDS, EULT_CLAN_ACTION,
             EULT_BUYENTITLEMENT, EULT_OPEN_TROPHY, EULT_CLAN_UNITS]
-    checkFunc = function(userlogBlk)
-    {
+    checkFunc = function(userlogBlk) {
       let body = userlogBlk?.body
       if (!body)
         return true
@@ -78,12 +78,12 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     }
   }
   {
-    id="achivements"
+    id = "achivements"
     show = [EULT_NEW_RANK, EULT_NEW_UNLOCK, EULT_CHARD_AWARD]
     checkFunc = function(userlog) { return !::g_battle_tasks.isUserlogForBattleTasksGroup(userlog.body) }
   }
   {
-    id="battletasks"
+    id = "battletasks"
     reqFeature = "BattleTasks"
     show = [EULT_PUNLOCK_ACCEPT, EULT_PUNLOCK_CANCELED, EULT_PUNLOCK_REROLL_PROPOSAL,
             EULT_PUNLOCK_EXPIRED, EULT_PUNLOCK_NEW_PROPOSAL, EULT_NEW_UNLOCK, EULT_PUNLOCK_ACCEPT_MULTI]
@@ -91,7 +91,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     checkFunc = function(userlog) { return ::g_battle_tasks.isUserlogForBattleTasksGroup(userlog.body) }
   }
   {
-    id="crew"
+    id = "crew"
     show = [EULT_BUYING_SLOT, EULT_TRAINING_AIRCRAFT, EULT_UPGRADING_CREW,
             EULT_SPECIALIZING_CREW, EULT_PURCHASINGSKILLPOINTS]
   }
@@ -104,23 +104,21 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     unlocks = [UNLOCKABLE_TROPHY]
   }
   {
-    id="onlineShop"
+    id = "onlineShop"
     show = [EULT_BUYENTITLEMENT, EULT_BUYING_UNLOCK]
   }
   {
-    id="worldWar"
+    id = "worldWar"
     reqFeature = "WorldWar"
     show = [EULT_WW_START_OPERATION, EULT_WW_CREATE_OPERATION, EULT_WW_END_OPERATION, EULT_WW_AWARD]
   }
 ]
 
-::gui_modal_userLog <- function gui_modal_userLog()
-{
+::gui_modal_userLog <- function gui_modal_userLog() {
   ::gui_start_modal_wnd(::gui_handlers.UserLogHandler)
 }
 
-::gui_handlers.UserLogHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.UserLogHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/userlog.blk"
 
@@ -139,8 +137,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   logRowTplName = "%gui/userLog/userLogRow.tpl"
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!checkObj(this.scene))
       return this.goBack()
 
@@ -149,18 +146,16 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.fillTabs()
   }
 
-  function fillTabs()
-  {
+  function fillTabs() {
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_SEARCH)
     let value = get_gui_option(::USEROPT_USERLOG_FILTER)
-    let curIdx = (value in ::userlog_pages)? value : 0
+    let curIdx = (value in ::userlog_pages) ? value : 0
 
     let view = {
       tabs = []
     }
-    foreach(idx, page in ::userlog_pages)
-    {
+    foreach (idx, page in ::userlog_pages) {
       if (getTblValue("reqFeature", page) && !hasFeature(page.reqFeature))
         continue
       view.tabs.append({
@@ -180,28 +175,26 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     tabsObj.setValue(curIdx)
   }
 
-  function getNewMessagesByPages()
-  {
+  function getNewMessagesByPages() {
     let res = array(::userlog_pages.len(), 0)
     let total = ::get_user_logs_count()
-    for(local i=0; i<total; i++)
-    {
-      let blk = ::DataBlock()
+    for (local i = 0; i < total; i++) {
+      let blk = DataBlock()
       ::get_user_log_blk_body(i, blk)
 
       if (blk?.disabled) // was seen
         continue
 
-      foreach(idx, page in ::userlog_pages)
+      foreach (idx, page in ::userlog_pages)
         if (::isUserlogVisible(blk, page, i))
           res[idx]++
     }
     return res
   }
 
-  function initPage(page)
-  {
-    if (!page) return
+  function initPage(page) {
+    if (!page)
+      return
     this.curPage = page
 
     this.fullLogs = ::getUserLogsList(this.curPage)
@@ -211,50 +204,46 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.haveNext = false
     this.addLogsPage()
     let childrenCount = this.listObj.childrenCount() - (this.haveNext ? 1 : 0)
-    if (this.selectedIndex < childrenCount || childrenCount > 0)
-    {
+    if (this.selectedIndex < childrenCount || childrenCount > 0) {
       this.selectedIndex = clamp(this.selectedIndex, 0, childrenCount - 1)
       this.listObj.setValue(this.selectedIndex);
     }
     ::move_mouse_on_child_by_value(this.listObj)
 
     let msgObj = this.scene.findObject("middle_message")
-    msgObj.show(this.logs.len()==0)
-    if (this.logs.len()==0)
+    msgObj.show(this.logs.len() == 0)
+    if (this.logs.len() == 0)
       msgObj.setValue(loc("userlog/noMessages"))
   }
 
-  function addLogsPage()
-  {
-    if (this.nextLogId>=this.logs.len())
+  function addLogsPage() {
+    if (this.nextLogId >= this.logs.len())
       return
 
     this.guiScene.setUpdatesEnabled(false, false)
-    let showTo = (this.nextLogId+this.logsPerPage < this.logs.len())? this.nextLogId+this.logsPerPage : this.logs.len()
+    let showTo = (this.nextLogId + this.logsPerPage < this.logs.len()) ? this.nextLogId + this.logsPerPage : this.logs.len()
 
-    local data=""
-    for(local i=this.nextLogId; i<showTo; i++)
-      if (i!=this.nextLogId || !this.haveNext)
-      {
-        let rowName = "row"+this.logs[i].idx
+    local data = ""
+    for (local i = this.nextLogId; i < showTo; i++)
+      if (i != this.nextLogId || !this.haveNext) {
+        let rowName = "row" + this.logs[i].idx
         data += format("expandable { id:t='%s' } ", rowName)
       }
     this.guiScene.appendWithBlk(this.listObj, data, this)
 
-    for(local i=this.nextLogId; i<showTo; i++)
+    for (local i = this.nextLogId; i < showTo; i++)
       this.fillLog(this.logs[i])
-    this.nextLogId=showTo
+    this.nextLogId = showTo
 
-    this.haveNext = this.nextLogId<this.logs.len()
+    this.haveNext = this.nextLogId < this.logs.len()
     if (this.haveNext)
       this.addNextButton(this.logs[this.nextLogId])
 
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  function fillLog(logObj)
-  {
-    let rowName = "row"+logObj.idx
+  function fillLog(logObj) {
+    let rowName = "row" + logObj.idx
     let rowObj = this.listObj.findObject(rowName)
     let rowData = ::get_userlog_view_data(logObj)
     if ((rowData?.descriptionBlk ?? "") != "")
@@ -265,15 +254,13 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
     rowObj.tooltip = rowData.tooltip
     if (logObj.enabled)
-      rowObj.status="owned"
+      rowObj.status = "owned"
   }
 
-  function addNextButton(logObj)
-  {
-    let rowName = "row"+logObj.idx
+  function addNextButton(logObj) {
+    let rowName = "row" + logObj.idx
     local rowObj = this.listObj.findObject(rowName)
-    if (!rowObj)
-    {
+    if (!rowObj) {
       let data = format("expandable { id:t='%s' } ", rowName)
       this.guiScene.appendWithBlk(this.listObj, data, this)
       rowObj = this.listObj.findObject(rowName)
@@ -286,24 +273,20 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.guiScene.replaceContentFromText(rowObj, viewBlk, viewBlk.len(), this)
   }
 
-  function saveOnlineJobWithUpdate()
-  {
+  function saveOnlineJobWithUpdate() {
     this.taskId = saveOnlineJob()
     log("saveOnlineJobWithUpdate")
-    if (this.taskId >= 0)
-    {
+    if (this.taskId >= 0) {
       ::set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = this.updateTabNewIconWidgets
     }
   }
 
-  function markCurrentPageSeen()
-  {
+  function markCurrentPageSeen() {
     local needSave = false
     if (this.fullLogs)
-      foreach(logObj in this.fullLogs)
-        if (logObj.enabled && logObj.idx >= 0 && logObj.idx < ::get_user_logs_count())
-        {
+      foreach (logObj in this.fullLogs)
+        if (logObj.enabled && logObj.idx >= 0 && logObj.idx < ::get_user_logs_count()) {
           if (::disable_user_log_entry(logObj.idx))
             needSave = true
         }
@@ -312,22 +295,17 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       this.saveOnlineJobWithUpdate()
   }
 
-  function markItemSeen(index)
-  {
+  function markItemSeen(index) {
     local needSave = false
 
     let total = ::get_user_logs_count()
     local counter = 0
-    for(local i=total-1; i>=0; i--)
-    {
-      let blk = ::DataBlock()
+    for (local i = total - 1; i >= 0; i--) {
+      let blk = DataBlock()
       ::get_user_log_blk_body(i, blk)
-      if (!isInArray(blk?.type, ::hidden_userlogs))
-      {
-        if (index == counter && !blk?.disabled)
-        {
-          if (::disable_user_log_entry(i))
-          {
+      if (!isInArray(blk?.type, ::hidden_userlogs)) {
+        if (index == counter && !blk?.disabled) {
+          if (::disable_user_log_entry(i)) {
             needSave = true
             break;
           }
@@ -340,14 +318,12 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       this.saveOnlineJobWithUpdate()
   }
 
-  function updateTabNewIconWidgets()
-  {
+  function updateTabNewIconWidgets() {
     if (!checkObj(this.scene))
       return
 
     let newMsgs = this.getNewMessagesByPages()
-    foreach(idx, count in newMsgs)
-    {
+    foreach (idx, count in newMsgs) {
       let obj = this.scene.findObject("img_new_" + ::userlog_pages[idx].id)
       if (checkObj(obj))
         obj.show(count > 0)
@@ -355,8 +331,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::update_gamercards()
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.markCurrentPageSeen()
 
     ::g_tasker.restoreCharCallback()
@@ -367,28 +342,24 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     base.goBack()
   }
 
-  function onUserLog(_obj)
-  {
+  function onUserLog(_obj) {
     this.goBack()
   }
 
-  function onItemSelect(obj)
-  {
+  function onItemSelect(obj) {
     if (!obj)
       return
 
     let index = obj.getValue();
     let childrenCount = obj.childrenCount()
-    if (index != this.selectedIndex && this.selectedIndex != -1)
-    {
+    if (index != this.selectedIndex && this.selectedIndex != -1) {
       this.markItemSeen(this.selectedIndex);
       if (this.selectedIndex < childrenCount)
-        obj.getChild(this.selectedIndex).status=""
+        obj.getChild(this.selectedIndex).status = ""
     }
     this.selectedIndex = index;
 
-    if (this.haveNext && this.selectedIndex == (childrenCount-1))
-    {
+    if (this.haveNext && this.selectedIndex == (childrenCount - 1)) {
       this.addLogsPage()
       obj.setValue(this.selectedIndex)
     }
@@ -401,8 +372,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::move_mouse_on_obj(childObj)
   }
 
-  function onChangePage(obj)
-  {
+  function onChangePage(obj) {
     let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
@@ -412,8 +382,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     if (!newPage || newPage == this.curPage)
       return
 
-    if (this.logs)
-    {
+    if (this.logs) {
       this.markCurrentPageSeen()
       this.updateTabNewIconWidgets()
     }
@@ -422,10 +391,8 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::update_gamercards()
   }
 
-  function onRefresh(_obj)
-  {
-    if (this.logs)
-    {
+  function onRefresh(_obj) {
+    if (this.logs) {
       this.markCurrentPageSeen()
       this.updateTabNewIconWidgets()
     }
@@ -433,26 +400,21 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::update_gamercards()
   }
 
-  function onUpdateItemsDef()
-  {
+  function onUpdateItemsDef() {
     if (this.logs)
-      for(local i=0; i<this.nextLogId; i++)
-      {
+      for (local i = 0; i < this.nextLogId; i++) {
         let logObj = this.logs[i]
-        if (isInArray(logObj.type, [ EULT_INVENTORY_ADD_ITEM, EULT_OPEN_TROPHY ]))
-        {
+        if (isInArray(logObj.type, [ EULT_INVENTORY_ADD_ITEM, EULT_OPEN_TROPHY ])) {
           this.fillLog(logObj)
         }
       }
   }
 
-  function onEventItemsShopUpdate(_params)
-  {
+  function onEventItemsShopUpdate(_params) {
     this.doWhenActiveOnce("onUpdateItemsDef")
   }
 
-  function onUserLogAction(obj)
-  {
+  function onUserLogAction(obj) {
     let logIdx = obj?.logIdx
     let logObj = logIdx != null
       ? ::u.search(this.logs, @(l) l.idx == logIdx.tointeger())

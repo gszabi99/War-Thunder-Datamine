@@ -1,9 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 require("ingameConsoleStore.nut")
+let DataBlock = require("DataBlock")
 let statsd = require("statsd")
 let psnStore = require("sony.store")
 let psnSystem = require("sony.sys")
@@ -27,38 +29,35 @@ let persistent = {
 let defaultsSheetData = {
   WARTHUNDEREAGLES = {
     sortParams = [
-      {param = "releaseDate", asc = false}
-      {param = "releaseDate", asc = true}
-      {param = "price", asc = false}
-      {param = "price", asc = true}
+      { param = "releaseDate", asc = false }
+      { param = "releaseDate", asc = true }
+      { param = "price", asc = false }
+      { param = "price", asc = true }
     ]
     sortSubParam = "name"
     contentTypes = ["eagles"]
   }
   def = {
     sortParams = [
-      {param = "releaseDate", asc = false}
-      {param = "releaseDate", asc = true}
-      {param = "price", asc = false}
-      {param = "price", asc = true}
-      {param = "isBought", asc = false}
-      {param = "isBought", asc = true}
+      { param = "releaseDate", asc = false }
+      { param = "releaseDate", asc = true }
+      { param = "price", asc = false }
+      { param = "price", asc = true }
+      { param = "isBought", asc = false }
+      { param = "isBought", asc = true }
     ]
     contentTypes = [null, ""]
   }
 }
 
 let fillSheetsArray = function(bcEventParams = {}) {
-  if (!shopData.getData().blockCount())
-  {
+  if (!shopData.getData().blockCount()) {
     log("PS4: Ingame Shop: Don't init sheets. CategoriesData is empty")
     return
   }
 
-  if (!persistent.sheetsArray.len())
-  {
-    for (local i = 0; i < shopData.getData().blockCount(); i++)
-    {
+  if (!persistent.sheetsArray.len()) {
+    for (local i = 0; i < shopData.getData().blockCount(); i++) {
       let block = shopData.getData().getBlock(i)
       let categoryId = block.getBlockName()
 
@@ -74,15 +73,12 @@ let fillSheetsArray = function(bcEventParams = {}) {
     }
   }
 
-  foreach (sh in persistent.sheetsArray)
-  {
+  foreach (sh in persistent.sheetsArray) {
     let sheet = sh
-    seenList.setSubListGetter(sheet.getSeenId(), function()
-    {
+    seenList.setSubListGetter(sheet.getSeenId(), function() {
       let res = []
-      let productsList = shopData.getData().getBlockByName(sheet?.categoryId ?? "")?.links ?? ::DataBlock()
-      for (local i = 0; i < productsList.blockCount(); i++)
-      {
+      let productsList = shopData.getData().getBlockByName(sheet?.categoryId ?? "")?.links ?? DataBlock()
+      for (local i = 0; i < productsList.blockCount(); i++) {
         let blockName = productsList.getBlock(i).getBlockName()
         let item = shopData.getShopItem(blockName)
         if (!item)
@@ -102,31 +98,26 @@ subscriptions.addListenersWithoutEnv({
   Ps4ShopDataUpdated = fillSheetsArray
 })
 
-::gui_handlers.Ps4Shop <- class extends ::gui_handlers.IngameConsoleStore
-{
+::gui_handlers.Ps4Shop <- class extends ::gui_handlers.IngameConsoleStore {
   needWaitIcon = true
   isLoadingInProgress = false
 
-  function initScreen()
-  {
-    if (this.canDisplayStoreContents())
-    {
+  function initScreen() {
+    if (this.canDisplayStoreContents()) {
       psnStore.show_icon(psnStore.IconPosition.LEFT)
       base.initScreen()
-      statsd.send_counter("sq.ingame_store.contents", 1, {callsite = "init_screen", status = "ok"})
+      statsd.send_counter("sq.ingame_store.contents", 1, { callsite = "init_screen", status = "ok" })
       return
     }
 
-    statsd.send_counter("sq.ingame_store.contents", 1, {callsite = "init_screen", status = "empty"})
+    statsd.send_counter("sq.ingame_store.contents", 1, { callsite = "init_screen", status = "empty" })
     this.goBack()
   }
 
-  function loadCurSheetItemsList()
-  {
+  function loadCurSheetItemsList() {
     this.itemsList = []
-    let itemsLinks = shopData.getData().getBlockByName(this.curSheet?.categoryId ?? "")?.links ?? ::DataBlock()
-    for (local i = 0; i < itemsLinks.blockCount(); i++)
-    {
+    let itemsLinks = shopData.getData().getBlockByName(this.curSheet?.categoryId ?? "")?.links ?? DataBlock()
+    for (local i = 0; i < itemsLinks.blockCount(); i++) {
       let itemId = itemsLinks.getBlock(i).getBlockName()
       let block = shopData.getShopItem(itemId)
       if (block)
@@ -144,33 +135,29 @@ subscriptions.addListenersWithoutEnv({
     psnStore.hide_icon()
   }
 
-  function canDisplayStoreContents()
-  {
+  function canDisplayStoreContents() {
     let isStoreEmpty = !this.isLoadingInProgress && !this.itemsCatalog.len()
     if (isStoreEmpty)
       psnSystem.show_message(psnSystem.Message.EMPTY_STORE, "", {})
     return !isStoreEmpty
   }
 
-  function onEventPS4ShopSheetsInited(p)
-  {
+  function onEventPS4ShopSheetsInited(p) {
     this.isLoadingInProgress = p?.isLoadingInProgress ?? false
-    if (!this.canDisplayStoreContents())
-    {
+    if (!this.canDisplayStoreContents()) {
       statsd.send_counter("sq.ingame_store.contents", 1,
-        {callsite = "on_event_shop_sheets_inited", status = "empty"})
+        { callsite = "on_event_shop_sheets_inited", status = "empty" })
       this.goBack()
       return
     }
     statsd.send_counter("sq.ingame_store.contents", 1,
-      {callsite = "on_event_shop_sheets_inited", status = "ok"})
+      { callsite = "on_event_shop_sheets_inited", status = "ok" })
 
     this.fillItemsList()
     this.updateItemInfo()
   }
 
-  function onEventPS4IngameShopUpdate(_p)
-  {
+  function onEventPS4IngameShopUpdate(_p) {
     this.curItem = this.getCurItem()
     let wasBought = this.curItem?.isBought
     this.curItem?.updateIsBoughtStatus()
@@ -182,24 +169,23 @@ subscriptions.addListenersWithoutEnv({
     ::g_discount.updateOnlineShopDiscounts()
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     psnStore.hide_icon()
   }
 }
 
 let isChapterSuitable = @(chapter) isInArray(chapter, [null, "", "eagles"])
-let getEntStoreLocId = @() shopData.canUseIngameShop()? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
+let getEntStoreLocId = @() shopData.canUseIngameShop() ? "#topmenu/ps4IngameShop" : "#msgbox/btn_onlineShop"
 
 let openIngameStoreImpl = kwarg(
-  function (chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", forceExternalShop = false) {
+  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown",
+    forceExternalShop = false, _unitName = "") {
     if (!isChapterSuitable(chapter))
       return false
 
     let item = curItemId != "" ? shopData.getShopItem(curItemId) : null
-    if (shopData.canUseIngameShop() && !forceExternalShop)
-    {
-      statsd.send_counter("sq.ingame_store.open", 1, {origin = statsdMetric})
+    if (shopData.canUseIngameShop() && !forceExternalShop) {
+      statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
       ::handlersManager.loadHandler(::gui_handlers.Ps4Shop, {
         itemsCatalog = shopData.getShopItemsTable()
         isLoadingInProgress = !shopData.isItemsUpdated()
@@ -266,9 +252,9 @@ let function openIngameStore(params = {}) {
 return shopData.__merge({
   openIngameStore = openIngameStore
   getEntStoreLocId = getEntStoreLocId
-  getEntStoreIcon = @() shopData.canUseIngameShop()? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
+  getEntStoreIcon = @() shopData.canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
   isEntStoreTopMenuItemHidden = @(...) !shopData.canUseIngameShop() || !::isInMenu()
   getEntStoreUnseenIcon = @() SEEN.EXT_PS4_SHOP
   needEntStoreDiscountIcon = true
-  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({statsdMetric = "topmenu"})
+  openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
 })

@@ -1,9 +1,10 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { is_stereo_mode } = require_native("vr")
+let { is_stereo_mode } = require("vr")
 let { isPlatformPS4, isPlatformPS5, isPlatformPC } = require("%scripts/clientState/platform.nut")
 
 let function isHeadTrackerAvailable() {

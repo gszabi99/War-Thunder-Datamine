@@ -70,30 +70,30 @@ def eid_frnd(eid : EntityId)
   return float(x & 16777215u) / 16777216.f // float values are int uniform only within low 24 bits
 
 
-def push_to_array(var ecs_array : Array implicit; b : block<(var data : auto(Type)#) : void>)
-  using() <| $(var data : Type#)
+def push_to_array(var ecs_array : Array; b : block<(var data : auto(Type)) : void>)
+  using() <| $(var data : Type)
     invoke(b, data)
     push(ecs_array, data)
 
 
-def push_to_object(var main_obj : Object implicit; name : string; b : block<(var obj : auto(Type)#) : void>)
-  using() <| $(var data : Type#)
+def push_to_object(var main_obj : Object; name : string; b : block<(var obj : auto(Type)) : void>)
+  using() <| $(var data : Type)
     invoke(b, data)
     set(main_obj, name, data)
 
 
-def push_to_initializer(var init : ComponentsInitializer; name : string; b : block<(var obj : auto(Type)#) : void>)
-  using() <| $(var data : Type#)
+def push_to_initializer(var init : ComponentsInitializer; name : string; b : block<(var obj : auto(Type)) : void>)
+  using() <| $(var data : Type)
     invoke(b, data)
     set(init, name, data)
 
 def split_template(name : string) : array<string>
   return <- split(name, "+")
 
-def reduce(obj : Object implicit; var res : auto(T) implicit; cb : block<(res : T; elem : ChildComponent) : T>) : T
+def reduce(obj : Object |#; var res : auto(T); cb : block<(res : T; elem : ChildComponent) : T>) : T
   for it in obj
     res = invoke(cb, res, it.value)
   return res
 
-def operator ??(a : das_string const? const implicit; default_value : string)
+def operator ??(a : das_string const?; default_value : string)
   return a != null ? *a |> string() : default_value

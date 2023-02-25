@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -7,6 +8,7 @@ let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
 let { fillTooltip } = require("genericTooltip.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { parse_json } = require("json")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -67,7 +69,7 @@ let function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
     return curInfoObj
   let rootObj = obj.getScene().getRoot()
   local sceneObj = obj
-  while(true) {
+  while (true) {
     let parentObj = sceneObj.getParent()
     if (!parentObj?.isValid() || parentObj.isEqual(rootObj))
       break
@@ -107,13 +109,13 @@ let function showWaitIconForObj(obj) {
 }
 
 let function fillTooltipObj(tooltipObj, tooltipId) {
-  let params = ::parse_json(tooltipId)
+  let params = parse_json(tooltipId)
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return false
 
   let tooltipType = getTooltipType(params.ttype)
   let isSuccess = fillTooltip(tooltipObj, null, tooltipType, params.id, params)
-  if(isSuccess)
+  if (isSuccess)
     tooltipData = ::g_tooltip.addEventListeners(tooltipObj, null, tooltipType, params.id, params)
   return isSuccess
 }
@@ -134,9 +136,8 @@ let function showTooltipForObj(obj) {
   if (!isSuccess)
     return
 
-  if(!obj?.isValid())
-  {
-    ::script_net_assert_once("DelayedTooltip","Invalid object for tooltip")
+  if (!obj?.isValid()) {
+    ::script_net_assert_once("DelayedTooltip", "Invalid object for tooltip")
     return
   }
   let align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT
@@ -217,7 +218,7 @@ let function onHover(obj) {
 
 let function getHoveredChild(listObj) {
   let total = listObj.childrenCount()
-  for(local i = 0; i < total; i++) {
+  for (local i = 0; i < total; i++) {
     let child = listObj.getChild(i)
     if (child?.isValid() && child.isHovered())
       return child
@@ -235,7 +236,7 @@ let mkListCb = @(func, emptyObjFunc = null) function(listObj, _params) {
 
 let mkChildCb = @(func, emptyObjFunc = null) function(childObj, _params) {
   local tgt = childObj.getParent()
-  while(tgt != null && "tooltipId" not in tgt)
+  while (tgt != null && "tooltipId" not in tgt)
     tgt = tgt.getParent()
   if (tgt != null)
     func(tgt, childObj)

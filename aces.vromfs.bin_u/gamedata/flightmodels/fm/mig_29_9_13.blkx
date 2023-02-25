@@ -243,7 +243,7 @@
       "SpinCdloss": 0.12,
       "SpinClloss": 0.03,
       "DownwashType": 2,
-      "DownwashCoeff": 0.8,
+      "DownwashCoeff": 0.4,
       "Areas": {
         "LeftIn": 4.33,
         "LeftMid": 6.33,
@@ -255,7 +255,7 @@
       },
       "Arm": {
         "Arm": [
-          0.18,
+          0.13,
           -0.3,
           2.15
         ],
@@ -288,11 +288,11 @@
         ],
         "AoaShiftAdd2": [
           0.0,
-          0.01
+          0.0
         ],
         "AoaShiftAdd3": [
           10.0,
-          -0.02
+          -0.06
         ]
       },
       "FlapsPolar0": {
@@ -345,37 +345,37 @@
         "ClToCmByMach0": [
           0.0,
           0.0,
-          0.04
+          0.02
         ],
         "ClToCmByMach1": [
           0.5,
           0.0,
-          0.04
+          0.02
         ],
         "ClToCmByMach2": [
-          0.8,
+          0.75,
           0.0,
-          0.1
+          0.06
         ],
         "ClToCmByMach3": [
           0.97,
           0.0,
-          0.1
+          0.05
         ],
         "ClToCmByMach4": [
           0.99,
           0.0,
-          0.12
+          0.06
         ],
         "ClToCmByMach5": [
           1.02,
           0.0,
-          0.1
+          0.04
         ],
         "ClToCmByMach6": [
           1.8,
           0.0,
-          0.1
+          0.04
         ],
         "Cl0": 0.03,
         "alphaCritHigh": 30.0,
@@ -433,38 +433,38 @@
         "CombinedCl": false,
         "ClToCmByMach0": [
           0.0,
-          0.01,
+          0.0,
           0.02
         ],
         "ClToCmByMach1": [
-          0.4,
-          0.05,
-          0.05
+          0.5,
+          0.0,
+          0.02
         ],
         "ClToCmByMach2": [
-          0.85,
-          0.04,
-          0.1
+          0.75,
+          0.0,
+          0.06
         ],
         "ClToCmByMach3": [
           0.97,
-          0.04,
-          0.1
+          0.0,
+          0.05
         ],
         "ClToCmByMach4": [
           0.99,
-          0.03,
-          0.12
+          0.0,
+          0.06
         ],
         "ClToCmByMach5": [
           1.02,
-          0.03,
-          0.1
+          0.0,
+          0.05
         ],
         "ClToCmByMach6": [
           1.8,
-          0.03,
-          0.1
+          0.0,
+          0.05
         ],
         "Cl0": 0.28,
         "alphaCritHigh": 29.0,
@@ -559,7 +559,7 @@
         "alphaCritLow": -21.0,
         "ClCritHigh": 0.15,
         "ClCritLow": -0.15,
-        "CdMin": 0.0075
+        "CdMin": 0.0077
       }
     },
     "HorStabPlane": {
@@ -581,7 +581,7 @@
         "lineClCoeff": 0.055,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.007,
-        "AfterCritMaxDistanceAngle": 44.0,
+        "AfterCritMaxDistanceAngle": 50.0,
         "CxAfterCoeff": 0.01,
         "ClAfterCritHigh": 1.05,
         "ClAfterCritLow": -1.05,
@@ -627,8 +627,8 @@
           0.0
         ],
         "Cl0": 0.01,
-        "alphaCritHigh": 32.0,
-        "alphaCritLow": -32.0,
+        "alphaCritHigh": 38.0,
+        "alphaCritLow": -38.0,
         "ClCritHigh": 1.25,
         "ClCritLow": -1.25,
         "CdMin": 0.009
@@ -1666,8 +1666,8 @@
     }
   },
   "Mass": {
-    "EmptyMass": 10775.0,
-    "MaxFuelMass0": 4529.0,
+    "EmptyMass": 10725.0,
+    "MaxFuelMass0": 4628.0,
     "FuelAccumulatorCapacity0": 120.0,
     "MinimalLoadFactor0": -0.3,
     "FuelAccumulatorFlowRate0": 24.0,
@@ -1694,11 +1694,11 @@
       463.0
     ],
     "Parts": {
-      "tank1_capacity": 507.0,
+      "tank1_capacity": 557.0,
       "tank1_system": 0,
       "tank1_external": false,
       "tank1_priority": 2,
-      "tank2_capacity": 702.0,
+      "tank2_capacity": 752.0,
       "tank2_system": 0,
       "tank2_external": false,
       "tank2_priority": 2,
@@ -1815,7 +1815,12 @@
       "Retractable": true,
       "LeftBrake": true,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.6,
+      "FullBrakeSlidingFrictionMult": [
+        2.0,
+        1.35,
+        50.0,
+        0.4
+      ],
       "WaterFriction": 1.0,
       "SteerType": "Fixed"
     },
@@ -1828,20 +1833,30 @@
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": true,
-      "FullBrakeSlidingFrictionMult": 0.6,
+      "FullBrakeSlidingFrictionMult": [
+        2.0,
+        1.35,
+        50.0,
+        0.4
+      ],
       "WaterFriction": 1.0,
       "SteerType": "Fixed"
     },
     "StrutC": {
       "SpringHeight": 0.466,
-      "SpringCoeff": 115000.0,
-      "SpringDampCoeff": 0.5,
+      "SpringCoeff": 155000.0,
+      "SpringDampCoeff": 0.6,
       "SpringDampForceMaxMult": 2.0,
       "WheelRadus": 0.303,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.5,
+      "FullBrakeSlidingFrictionMult": [
+        2.0,
+        0.65,
+        50.0,
+        0.4
+      ],
       "WaterFriction": 1.0,
       "SteerType": "ManualSteering"
     }
@@ -2200,26 +2215,21 @@
         70.0
       ],
       "RateMax1": [
-        0.0,
-        -70.0,
-        70.0
-      ],
-      "RateMax2": [
         600.0,
         -70.0,
         70.0
       ],
-      "RateMax3": [
+      "RateMax2": [
         900.0,
         -60.0,
         60.0
       ],
-      "RateMax4": [
+      "RateMax3": [
         1100.0,
         -50.0,
         50.0
       ],
-      "RateMax5": [
+      "RateMax4": [
         1300.0,
         -40.0,
         40.0
@@ -2251,8 +2261,8 @@
         "Kd": 0.0,
         "dTau": 0.0208333,
         "Lim": [
-          -0.75,
-          0.75
+          -0.85,
+          0.85
         ]
       },
       "AnglePID": {

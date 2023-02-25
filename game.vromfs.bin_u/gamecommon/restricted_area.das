@@ -3,13 +3,10 @@ require Unit
 require DagorMath
 require %game.utils_common
 
-let
-  identityBox = BBox3(float3(-0.5, 0.0, -0.5), float3(0.5, 1.0, 0.5))
-
 def is_point_in_box_zone(pos : float3; transform : float3x4)
   var zonePos : float3 = inverse(transform) * float3(pos.x, 0.0, pos.z)
   zonePos.y = 0.5
-  return identityBox & zonePos
+  return BBox3(float3(-0.5, 0.0, -0.5), float3(0.5, 1.0, 0.5)) & zonePos
 
 [es(tag=server, no_order)]
 def restricted_area_unit_update_es(act : UpdateStageInfoAct;

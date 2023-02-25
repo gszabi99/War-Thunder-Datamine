@@ -1,11 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let config = ::get_cur_gui_scene()?.getSceneConfig()
-if (config)
-{
+if (config) {
   config.gamepadCursorSpeed = 2.0
   config.gamepadCursorNonLin = 2.5
   config.gamepadCursorDeadZone = 0.15

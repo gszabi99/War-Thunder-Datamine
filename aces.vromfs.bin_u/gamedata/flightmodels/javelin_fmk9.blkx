@@ -2306,16 +2306,112 @@
     "preset": [
       {
         "name": "javelin_fmk9_default",
-        "blk": "gameData/FlightModels/weaponPresets/javelin_fmk9_default.blk"
+        "blk": "gameData/FlightModels/weaponPresets/javelin_fmk9_default.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/cannonADEN.blk",
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 4,
+                "iconType": "cannon_inner"
+              },
+              {
+                "idx": 5,
+                "iconType": "cannon_inner"
+              },
+              {
+                "idx": 7,
+                "iconType": "cannon_inner"
+              },
+              {
+                "idx": 8,
+                "iconType": "cannon_inner"
+              }
+            ]
+          }
+        }
       },
       {
         "name": "javelin_fmk9_default_firestreak_x2",
-        "blk": "gameData/FlightModels/weaponPresets/javelin_fmk9_default_firestreak_x2.blk"
+        "blk": "gameData/FlightModels/weaponPresets/javelin_fmk9_default_firestreak_x2.blk",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/cannonADEN.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "idx": 4,
+                  "iconType": "cannon_inner"
+                },
+                {
+                  "idx": 5,
+                  "iconType": "cannon_inner"
+                },
+                {
+                  "idx": 7,
+                  "iconType": "cannon_inner"
+                },
+                {
+                  "idx": 8,
+                  "iconType": "cannon_inner"
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/uk_firestreak.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "idx": 3,
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "idx": 9,
+                  "iconType": "missile_air_to_air"
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "name": "javelin_fmk9_firestreak",
         "blk": "gameData/FlightModels/weaponPresets/javelin_fmk9_firestreak_x4.blk",
-        "reqModification": "aam_firestreak"
+        "reqModification": "aam_firestreak",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/cannonADEN.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "idx": 5,
+                  "iconType": "cannon_inner"
+                },
+                {
+                  "idx": 7,
+                  "iconType": "cannon_inner"
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/uk_firestreak.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "idx": 4,
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "idx": 8,
+                  "iconType": "missile_air_to_air"
+                }
+              ]
+            }
+          ]
+        }
       }
     ]
   },

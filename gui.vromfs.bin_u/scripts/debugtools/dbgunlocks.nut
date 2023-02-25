@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 let { format } = require("string")
 // warning disable: -file:forbidden-function
 let { getFullUnlockDesc, getUnlockCostText,
@@ -16,8 +18,8 @@ let function debug_show_test_unlocks(chapter = "test", group = null) {
     return
 
   let awardsList = []
-  foreach(_id, unlock in ::g_unlocks.getAllUnlocks())
-    if((!chapter || unlock?.chapter == chapter) && (!group || unlock.group == group))
+  foreach (_id, unlock in ::g_unlocks.getAllUnlocks())
+    if ((!chapter || unlock?.chapter == chapter) && (!group || unlock.group == group))
       awardsList.append(::build_log_unlock_data({ id = unlock.id }))
   let titleText = "debug_show_test_unlocks (total: " + awardsList.len() + ")"
   showUnlocksGroupWnd(awardsList, titleText)
@@ -29,23 +31,19 @@ let function debug_show_all_streaks() {
 
   local total = 0
   let awardsList = []
-  foreach(_id, unlock in ::g_unlocks.getAllUnlocks())
-  {
+  foreach (_id, unlock in ::g_unlocks.getAllUnlocks()) {
     if (unlock.type != "streak" || unlock?.hidden)
       continue
     total++
 
-    if (!::g_unlocks.isUnlockMultiStageLocId(unlock.id))
-    {
+    if (!::g_unlocks.isUnlockMultiStageLocId(unlock.id)) {
       let data = ::build_log_unlock_data({ id = unlock.id })
       data.title = unlock.id
       awardsList.append(data)
     }
-    else
-    {
+    else {
       let paramShift = unlock?.stage.param ?? 0
-      foreach(key, _stageId in ::g_unlocks.multiStageLocId[unlock.id])
-      {
+      foreach (key, _stageId in ::g_unlocks.multiStageLocId[unlock.id]) {
         let stage = ::is_numeric(key) ? key : 99
         let data = ::build_log_unlock_data({ id = unlock.id, stage = stage - paramShift })
         data.title = unlock.id + " / " + stage
@@ -61,13 +59,12 @@ let function debug_show_all_streaks() {
 let function gen_all_unlocks_desc(showCost = false) {
   dlog("GP: gen all unlocks description")
   local res = ""
-  foreach(_id, unlock in ::g_unlocks.getAllUnlocks())
-  {
+  foreach (_id, unlock in ::g_unlocks.getAllUnlocks()) {
     let cfg = ::build_conditions_config(unlock)
     local desc = getFullUnlockDesc(cfg)
     if (showCost)
       desc = $"{desc}\n{getUnlockCostText(cfg)}"
-    res += "\n" + unlock.id + ":" + (desc != ""? "\n" : "") + desc
+    res += "\n" + unlock.id + ":" + (desc != "" ? "\n" : "") + desc
   }
   dlog("GP: res:")
   log(res)
@@ -78,19 +75,18 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
   let fullPath = format("%s/unlocks%s.blk", path, ::get_current_language())
   dlog("GP: gen all unlocks description to " + fullPath)
 
-  let res = ::DataBlock()
+  let res = DataBlock()
   let params = {
     curVal = showValue ? null : "{value}" // warning disable: -forgot-subst
   }
 
-  foreach(id, unlock in ::g_unlocks.getAllUnlocks())
-  {
+  foreach (id, unlock in ::g_unlocks.getAllUnlocks()) {
     let cfg = ::build_conditions_config(unlock)
     local desc = getFullUnlockDesc(cfg, params)
     if (showCost)
       desc = $"{desc}\n{getUnlockCostText(cfg)}"
 
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     blk.name = getUnlockNameText(cfg.unlockType, id)
     blk.desc = desc
     res[id] = blk

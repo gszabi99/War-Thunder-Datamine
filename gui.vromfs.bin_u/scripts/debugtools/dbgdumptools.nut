@@ -1,16 +1,17 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-//-file:undefined-global
 // warning disable: -file:forbidden-function
 
+let DataBlock  = require("DataBlock")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { DBGLEVEL } = require("dagor.system")
 if (DBGLEVEL <= 0)
   return
 
-let { get_mp_session_id_str = @() ::get_mp_session_id() } = require_optional("multiplayer") //compatibility with 2.16.0.X
+let { get_mp_session_id_str } = require("multiplayer")
 let dbg_dump = require("%scripts/debugTools/dbgDump.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let g_path = require("%sqstd/path.nut")
@@ -22,8 +23,13 @@ let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut
 let { havePremium } = require("%scripts/user/premium.nut")
 let { register_command } = require("console")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
+let { get_game_mode, get_game_type } = require("mission")
 
 //==================================================================================================
+let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
+let get_fake_mplayers_list = memoize(@() getroottable()?["_fake_mplayers_list"] ?? {})
+let get_fake_sessionlobby_settings = memoize(@() getroottable()?["_fake_sessionlobby_settings"] ?? {})
+let get_fake_battlelog = memoize(@() getroottable()?["_fake_battlelog"] ?? {})
 
 let function debug_dump_debriefing_save(filename) {
   let debriefingResult = getDebriefingResult()
@@ -32,10 +38,10 @@ let function debug_dump_debriefing_save(filename) {
 
   let list = [
     { id = "stat_get_exp", value = getTblValue("expDump", debriefingResult, {}) }
-    "get_game_type"
-    "get_game_mode"
+    { id = "get_game_type", value = debriefingResult?.gameType ?? get_game_type() }
+    { id = "get_game_mode", value = debriefingResult?.gm ?? get_game_mode() }
     "get_current_mission_info_cached"
-    { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
+    { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); ::get_current_mission_desc(b); return b } }
     { id = "_fake_mplayers_list", value = getTblValue("mplayers_list", debriefingResult, []) }
     { id = "dynamic_apply_status", value = getDynamicResult() }
     { id = "get_mission_status", value = getTblValue("isSucceed", debriefingResult) ? MISSION_STATUS_SUCCESS : MISSION_STATUS_RUNNING }
@@ -78,14 +84,12 @@ let function debug_dump_debriefing_save(filename) {
   let units = []
   let mods  = []
   let exp = getTblValue("expDump", debriefingResult, {})
-  foreach (ut in unitTypes.types)
-  {
+  foreach (ut in unitTypes.types) {
     let unitId = getTblValue("investUnitName" + ut.name, exp, "")
     if (unitId != "")
       units.append([ unitId ])
   }
-  foreach (unitId, data in getTblValue("aircrafts", exp, {}))
-  {
+  foreach (unitId, data in getTblValue("aircrafts", exp, {})) {
     if (!::getAircraftByName(unitId))
       continue
     units.append([ unitId ])
@@ -93,8 +97,7 @@ let function debug_dump_debriefing_save(filename) {
     if (modId != "")
       mods.append([ unitId, modId ])
   }
-  foreach (tbl in ::shop_get_countries_list_with_autoset_units())
-  {
+  foreach (tbl in ::shop_get_countries_list_with_autoset_units()) {
     let unitId = getTblValue("unit", tbl, "")
     let unit = ::getAircraftByName(unitId)
     let args = [ ::getUnitCountry(unit), ::get_es_unit_type(unit) ]
@@ -115,18 +118,18 @@ let function debug_dump_debriefing_save(filename) {
         list.append({ id = id, args = args })
 
   dbg_dump.save(filename, list)
-  return "Debriefing result saved to " + filename
+  return $"Debriefing result saved to {filename}"
 }
 
 let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   if (!dbg_dump.load(filename))
-    return "File not found: " + filename
+    return $"File not found: {filename}"
 
   dbg_dump.loadFuncs({
     is_user_log_for_current_room = function(_idx) { return true }
-    get_user_log_blk_body = @(idx, outBlk) outBlk.setFrom(::_fake_userlogs?[idx] ?? ::DataBlock())
+    get_user_log_blk_body = @(idx, outBlk) outBlk.setFrom(get_fake_userlogs()?[idx] ?? DataBlock())
     get_user_log_time_sec = function(_idx) { return ::get_charserver_time_sec() }
-    disable_user_log_entry = function(idx) { if (idx in ::_fake_userlogs) ::_fake_userlogs[idx].disabled = true }
+    disable_user_log_entry = function(idx) { if (idx in get_fake_userlogs()) get_fake_userlogs()[idx].disabled = true }
     shown_userlog_notifications = []
     autosave_replay = @() null
     is_era_available = function(...) { return true }
@@ -134,30 +137,30 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
       getroottable()?._fake_get_current_mission_desc ?? ::get_current_mission_info_cached())
     get_mplayers_list = function(team, _full) {
       let res = []
-      foreach (v in ::_fake_mplayers_list)
+      foreach (v in get_fake_mplayers_list())
         if (team == GET_MPLAYERS_LIST || v.team == team)
           res.append(v)
       return (res)
     }
     get_local_mplayer = function() {
-      foreach (v in ::_fake_mplayers_list)
+      foreach (v in get_fake_mplayers_list())
         if (v.isLocal)
           return v
       return dbg_dump.getOriginal("get_local_mplayer")()
     }
     is_unlocked = function(unlockType, unlockId) {
-      foreach (logObj in ::_fake_userlogs)
+      foreach (logObj in get_fake_userlogs())
         if (logObj?.body.unlockId == unlockId)
           return true
       return dbg_dump.getOriginal("is_unlocked")(unlockType, unlockId)
     }
   }, false)
 
-  ::SessionLobby.settings = ::_fake_sessionlobby_settings
+  ::SessionLobby.settings = get_fake_sessionlobby_settings()
   ::SessionLobby.playersInfo = getroottable()?._fake_playersInfo ?? {}
   ::SessionLobby.getUnitTypesMask = @() getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
   ::SessionLobby.lastEventName = getroottable()?._fake_sessionlobby_last_event_name ?? ""
-  ::HudBattleLog.battleLog = ::_fake_battlelog
+  ::HudBattleLog.battleLog = get_fake_battlelog()
   initListLabelsSquad()
 
   let _is_in_flight = ::is_in_flight
@@ -176,13 +179,14 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
 let function debug_dump_debriefing_batch_load() {
   let skyquakePath = debug_get_skyquake_path()
   let filesList = dagor_fs.scan_folder({ root = $"{skyquakePath}/gameOnline",
-    files_suffix = "*.blk", recursive = false, vromfs=false, realfs = true
+    files_suffix = "*.blk", recursive = false, vromfs = false, realfs = true
   }).filter(@(v) v.contains("debug_dump_debriefing") && !v.contains("_SKIP.blk"))
     .map(@(v) g_path.fileName(v)).sort().reverse()
   let total = filesList.len()
   let function loadNext() {
     let count = filesList.len()
-    if (!count) return
+    if (!count)
+      return
     let filename = filesList.pop()
     console_print($"[{total - count + 1}/{total}] {filename}")
     ::copy_to_clipboard(filename)
@@ -197,10 +201,8 @@ let function debug_dump_mpstatistics_save(filename) {
   dbg_dump.save(filename, [
     { id = "_fake_mplayers_list", value = ::get_mplayers_list(GET_MPLAYERS_LIST, true) }
     { id = "_fake_playersInfo", value = ::SessionLobby.playersInfo }
-    { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock(); ::get_current_mission_desc(b); return b } }
+    { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); ::get_current_mission_desc(b); return b } }
     "LAST_SESSION_DEBUG_INFO"
-    "get_game_type"
-    "get_game_mode"
     "is_in_flight"
     "get_player_army_for_hud"
     "get_mp_local_team"
@@ -224,15 +226,15 @@ let function debug_dump_mpstatistics_load(filename) {
   if (!dbg_dump.load(filename))
     return "File not found: " + filename
   dbg_dump.loadFuncs({
-    get_current_mission_desc = @(outBlk) outBlk.setFrom(::_fake_get_current_mission_desc)
+    get_current_mission_desc = @(outBlk) outBlk.setFrom(getroottable()?._fake_get_current_mission_desc)
     get_mplayers_list = function(team, _full) {
-      return ::u.filter(::_fake_mplayers_list, @(p) p.team == team || team == GET_MPLAYERS_LIST)
+      return ::u.filter(get_fake_mplayers_list(), @(p) p.team == team || team == GET_MPLAYERS_LIST)
     }
     get_mplayer_by_id = function(id) {
-      return ::u.search(::_fake_mplayers_list, @(p) p.id == id)
+      return ::u.search(get_fake_mplayers_list(), @(p) p.id == id)
     }
     get_local_mplayer = function() {
-      return ::u.search(::_fake_mplayers_list, @(p) p.isLocal) ?? dbg_dump.getOriginal("get_local_mplayer")()
+      return ::u.search(get_fake_mplayers_list(), @(p) p.isLocal) ?? dbg_dump.getOriginal("get_local_mplayer")()
     }
   }, false)
   ::SessionLobby.playersInfo = getroottable()?._fake_playersInfo ?? {}
@@ -249,13 +251,11 @@ let function debug_dump_respawn_save(filename) {
 
   let list = [
     { id = "_fake_mplayers_list", value = ::get_mplayers_list(GET_MPLAYERS_LIST, true) }
-    { id = "_fake_get_current_mission_desc", value = function() { let b = ::DataBlock();
+    { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock();
       ::get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ ::my_user_id_int64, false ] }
     { id = "_fake_mpchat_log", value = require("%scripts/chat/mpChatModel.nut").getLog() }
     "LAST_SESSION_DEBUG_INFO"
-    "get_game_type"
-    "get_game_mode"
     "get_current_mission_info_cached"
     "has_available_slots"
     "get_local_player_country"
@@ -296,14 +296,12 @@ let function debug_dump_respawn_save(filename) {
     "HudBattleLog.battleLog"
   ]
 
-  foreach(id in ::SessionLobby[PERSISTENT_DATA_PARAMS])
+  foreach (id in ::SessionLobby[PERSISTENT_DATA_PARAMS])
     list.append("SessionLobby." + id)
 
-  foreach(crew in ::get_crews_list_by_country(::get_local_player_country()))
-  {
+  foreach (crew in ::get_crews_list_by_country(::get_local_player_country())) {
     let unit = ::g_crew.getCrewUnit(crew)
-    if (unit)
-    {
+    if (unit) {
       foreach (id in [ "get_last_weapon", "get_slot_delay", "get_unit_wp_to_respawn",
         "get_max_spawns_unit_count", "shop_unit_research_status", "shop_is_player_has_unit",
         "shop_is_aircraft_purchased", "wp_get_cost", "wp_get_cost_gold", "get_aircraft_max_fuel" ])
@@ -313,8 +311,7 @@ let function debug_dump_respawn_save(filename) {
       list.append({ id = "is_crew_slot_was_ready_at_host", args = [ crew.idInCountry, unit.name, false ] })
       list.append({ id = "get_aircraft_fuel_consumption", args = [ unit.name, ::get_mission_difficulty(), true ] })
 
-      foreach (weapon in unit.getWeapons())
-      {
+      foreach (weapon in unit.getWeapons()) {
         foreach (id in [ "wp_get_cost2", "wp_get_cost_gold2", "shop_is_weapon_purchased",
           "shop_get_weapon_baseval" ])
           list.append({ id = id, args = [ unit.name, weapon.name ] })
@@ -333,24 +330,24 @@ let function debug_dump_respawn_save(filename) {
 
 let function debug_dump_respawn_load(filename) {
   if (!dbg_dump.load(filename))
-    return "File not found: " + filename
+    return $"File not found: {filename}"
   dbg_dump.loadFuncs({
-    get_current_mission_desc = @(outBlk) outBlk.setFrom(::_fake_get_current_mission_desc)
-    get_mplayers_list = @(team, _full) ::_fake_mplayers_list.filter(
+    get_current_mission_desc = @(outBlk) outBlk.setFrom(getroottable()?._fake_get_current_mission_desc)
+    get_mplayers_list = @(team, _full) get_fake_mplayers_list().filter(
       @(p) p.team == team || team == GET_MPLAYERS_LIST)
-    get_mplayer_by_id = @(id) ::_fake_mplayers_list.filter(@(p) p.id == id)?[0]
-    get_local_mplayer = @() ::_fake_mplayers_list.filter(@(p) p.isLocal)?[0]
-    request_aircraft_and_weapon = @(...) -1
+    get_mplayer_by_id = @(id) get_fake_mplayers_list().filter(@(p) p.id == id)?[0]
+    get_local_mplayer = @() get_fake_mplayers_list().filter(@(p) p.isLocal)?[0]
+    request_aircraft_and_weapon = @(...) - 1
   }, false)
   ::g_mis_custom_state.isCurRulesValid = false
   ::g_mis_custom_state.getCurMissionRules()
   ::g_crews_list.crewsList = []
   initListLabelsSquad()
-  require("%scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
+  require("%scripts/chat/mpChatModel.nut")?.setLog(getroottable()?._fake_mpchat_log)
   ::gui_start_respawn()
   ::broadcastEvent("MpChatLogUpdated")
   ::broadcastEvent("BattleLogMessage")
-  return "Loaded " + filename
+  return $"Loaded {filename}"
 }
 
 //==================================================================================================
@@ -358,7 +355,7 @@ let function debug_dump_respawn_load(filename) {
 let function debug_dump_userlogs_save(filename) {
   let userlogs = []
   for (local i = 0; i < ::get_user_logs_count(); i++) {
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     ::get_user_log_blk_body(i, blk)
     userlogs.append(blk)
   }
@@ -370,16 +367,16 @@ let function debug_dump_userlogs_save(filename) {
 
 let function debug_dump_userlogs_load(filename) {
   if (!dbg_dump.load(filename))
-    return "File not found: " + filename
+    return $"File not found: {filename}"
   dbg_dump.loadFuncs({
-    get_user_logs_count = function() { return ::_fake_userlogs.len() }
-    is_user_log_for_current_room = function(idx) { return ::SessionLobby.roomId && ::SessionLobby.roomId == ::_fake_userlogs?[idx]?.roomId }
-    get_user_log_blk_body = @(idx, outBlk) outBlk.setFrom(::_fake_userlogs?[idx] ?? ::DataBlock())
-    get_user_log_time_sec = function(idx) { return ::_fake_userlogs?[idx]?.timeStamp ?? 0 }
-    disable_user_log_entry = function(idx) { if (idx in ::_fake_userlogs) ::_fake_userlogs[idx].disabled = true }
+    get_user_logs_count = function() { return get_fake_userlogs().len() }
+    is_user_log_for_current_room = function(idx) { return ::SessionLobby.roomId && ::SessionLobby.roomId == get_fake_userlogs()?[idx]?.roomId }
+    get_user_log_blk_body = @(idx, outBlk) outBlk.setFrom(get_fake_userlogs()?[idx] ?? DataBlock())
+    get_user_log_time_sec = function(idx) { return get_fake_userlogs()?[idx]?.timeStamp ?? 0 }
+    disable_user_log_entry = function(idx) { if (idx in get_fake_userlogs()) get_fake_userlogs()[idx].disabled = true }
     shown_userlog_notifications = []
   }, false)
-  return "Loaded " + filename
+  return $"Loaded {filename}"
 }
 
 //==================================================================================================
@@ -389,20 +386,20 @@ let function debug_dump_inventory_save(filename) {
     { id = "_inventoryClient_items",    value = inventoryClient.items }
     { id = "_inventoryClient_itemdefs", value = inventoryClient.itemdefs }
   ])
-  return "Saved " + filename
+  return $"Saved {filename}"
 }
 
 let function debug_dump_inventory_load(filename) {
   if (!dbg_dump.load(filename))
-    return "File not found: " + filename
+    return $"File not found: {filename}"
   dbg_dump.loadFuncs({
     inventory = { request  = @(...) null }
   }, false)
-  inventoryClient.itemdefs = ::_inventoryClient_itemdefs
-  inventoryClient.items    = ::_inventoryClient_items
+  inventoryClient.itemdefs = getroottable()?._inventoryClient_itemdefs ?? {}
+  inventoryClient.items    = getroottable()?._inventoryClient_items ?? []
   ::broadcastEvent("ItemDefChanged")
   ::broadcastEvent("ExtInventoryChanged")
-  return "Loaded " + filename
+  return $"Loaded {filename}"
 }
 
 //==================================================================================================

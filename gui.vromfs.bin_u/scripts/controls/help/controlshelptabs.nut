@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -77,27 +78,24 @@ let tabGroups = [
     ]
   }
   {
-    title = platform.isPlatformXboxOne? "#presets/xboxone/thrustmaster_hotasOne" : "#presets/ps4/thrustmaster_hotas4"
+    title = platform.isPlatformXboxOne ? "#presets/xboxone/thrustmaster_hotasOne" : "#presets/ps4/thrustmaster_hotas4"
     list = [
       helpTypes.HOTAS4_COMMON
     ]
   }
 ]
 
-let function getTabs(contentSet)
-{
+let function getTabs(contentSet) {
   let res = []
-  foreach (group in tabGroups)
-  {
+  foreach (group in tabGroups) {
     let filteredGroup = group.list.filter(@(t) t.needShow(contentSet))
     if (filteredGroup.len() > 0)
-      res.append(group.__merge({list = filteredGroup}))
+      res.append(group.__merge({ list = filteredGroup }))
   }
   return res
 }
 
-let function getPrefferableType(contentSet)
-{
+let function getPrefferableType(contentSet) {
   if (contentSet == HELP_CONTENT_SET.LOADING)
     return helpTypes.MISSION_OBJECTIVES
 
@@ -114,8 +112,7 @@ let function getPrefferableType(contentSet)
     CONTROL_HELP_PATTERN.GAMEPAD,
     CONTROL_HELP_PATTERN.KEYBOARD_MOUSE,
     CONTROL_HELP_PATTERN.RADAR,
-  ])
-  {
+  ]) {
     let helpType = search(helpTypes.types, @(t) t.helpPattern == pattern
       && t.needShow(contentSet)
       && t.showByUnit(unit, unitTag))

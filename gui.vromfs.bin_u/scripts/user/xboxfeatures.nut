@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -11,8 +12,7 @@ let isMultiplayerPrivilegeAvailable = persist("isMultiplayerPrivilegeAvailable",
 local multiplayerPrivelegeCallback = null
 local crossplayPrivelegeCallback = null
 
-let function checkMultiplayerPrivilege(showWarning = false, cb = null)
-{
+let function checkMultiplayerPrivilege(showWarning = false, cb = null) {
   if (!isPlatformXboxOne) {
     cb?()
     return
@@ -22,8 +22,7 @@ let function checkMultiplayerPrivilege(showWarning = false, cb = null)
   ::check_multiplayer_sessions_privilege(showWarning)
 }
 
-::check_multiplayer_sessions_privilege_callback <- function(isAllowed)
-{
+::check_multiplayer_sessions_privilege_callback <- function(isAllowed) {
   isMultiplayerPrivilegeAvailable(isAllowed)
 
   if (isAllowed)

@@ -1,11 +1,11 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { format } = require("string")
-let { get_game_version_str = @() ::get_game_version_str() //compatibility with 2.15.1.X
-} = require("app")
+let { get_game_version_str } = require("app")
 
 local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
   if (!checkObj(nestObj) || firstBtnId == "")
@@ -15,7 +15,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
     secondText = firstText
 
   let fObj = nestObj.findObject(firstBtnId)
-  if(!checkObj(fObj))
+  if (!checkObj(fObj))
     return null
 
   local hasTextBlock = textBlock != null
@@ -29,7 +29,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
 
   fObj.setValue(hasTextBlock ? null : firstText)
   let sObj = ::showBtn($"{firstBtnId}_text", !hasTextBlock, fObj)
-  if(!hasTextBlock && checkObj(sObj))
+  if (!hasTextBlock && checkObj(sObj))
     sObj.setValue(secondText)
 
   return fObj
@@ -45,7 +45,7 @@ let function setColoredDoubleTextToButton(nestObj, btnId, coloredText) {
  * placePriceTextToButton(nestObj, btnId, localizedText, wpCost (int), goldCost (int))
  * placePriceTextToButton(nestObj, btnId, localizedText, cost (Cost) )
  */
-let function placePriceTextToButton(nestObj, btnId, localizedText, arg1=0, arg2=0, fullCost = null) {
+let function placePriceTextToButton(nestObj, btnId, localizedText, arg1 = 0, arg2 = 0, fullCost = null) {
   let cost = ::u.isMoney(arg1) ? arg1 : ::Cost(arg1, arg2)
   let needShowPrice = !cost.isZero()
   let needShowDiscount = needShowPrice && fullCost != null && (fullCost.gold > cost.gold || fullCost.wp > cost.wp)
@@ -71,13 +71,13 @@ let function setHelpTextOnLoading(nestObj = null) {
   if (!checkObj(nestObj))
     return
 
-  let text = ::show_console_buttons? "" : loc("loading/help_tip01")
+  let text = ::show_console_buttons ? "" : loc("loading/help_tip01")
   nestObj.setValue(text)
 }
 
-let function setVersionText(scene=null) {
+let function setVersionText(scene = null) {
   let verObj = scene ? scene.findObject("version_text") : ::get_cur_gui_scene()["version_text"]
-  if(checkObj(verObj))
+  if (checkObj(verObj))
     verObj.setValue(format(loc("mainmenu/version"), get_game_version_str()))
 }
 

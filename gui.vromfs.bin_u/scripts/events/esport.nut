@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -35,7 +36,7 @@ let function getTourDay(tour) {
   // Tournament is active
   if (isInTimerangeByUtcStrings(tour.beginDate, tour.endDate)) {
     let nearestDays = []
-    return tour.tickets.findindex(function(t){
+    return tour.tickets.findindex(function(t) {
           let dTime = now - getTimestampFromStringUtc(t.stopActiveTime)
           nearestDays.append(dTime)
           return now >= getTimestampFromStringUtc(t.startActiveTime) && dTime <= 0 // Session is going now
@@ -55,7 +56,7 @@ let getMatchingEventId = @(tourId, dayNum, isTraining)
   $"{tourId}_day{max(0, dayNum) + 1}{isTraining ? "_train" : ""}"
 let getSharedTourNameByEvent = @(economicName) economicName.split("_day")[0]
 
-let function getEventByDay(tourId, dayNum, isTraining = false){
+let function getEventByDay(tourId, dayNum, isTraining = false) {
  let matchingEventId = getMatchingEventId(tourId, dayNum, isTraining)
  return ::events.getEvent(matchingEventId)
 }
@@ -82,7 +83,7 @@ let function getTourParams(tour) {
   local isTraining
   res.sesLen = sList.len()
   //Session is going now
-  foreach(idx, inst in sList) {
+  foreach (idx, inst in sList) {
     trainingTime = getTimestampFromStringUtc(inst.train.end) - now
     isTraining = trainingTime > 0
     sTime = isInTimerangeByUtcStrings(inst.train.start, inst.train.end)
@@ -90,7 +91,7 @@ let function getTourParams(tour) {
       : isInTimerangeByUtcStrings(inst.battle.start, inst.battle.end)
         ? getTimestampFromStringUtc(inst.battle.end) - now
       : -1
-    if(sTime >= 0) {
+    if (sTime >= 0) {
       res.sesTime = sTime
       res.isSesActive = true
       res.sesIdx = idx
@@ -100,7 +101,7 @@ let function getTourParams(tour) {
     }
   }
   //Nearest coming session
-  foreach(idx, inst in sList){
+  foreach (idx, inst in sList) {
     trainingTime = (!::u.isEmpty(inst.train.start)
         ? getTimestampFromStringUtc(inst.train.start)
         : 0)
@@ -205,7 +206,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     countries.append({
       icon = ::get_country_icon($"{::g_string.trim(cNames[idx])}_round")
       xPos = idx
-      halfLen = 0.5*cNames.len()
+      halfLen = 0.5 * cNames.len()
     })
   }
   return {
@@ -219,15 +220,15 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     eventId = tour.id
     headerImg = isFinished || isSoon ? "#ui/gameuiskin#tournament_finished_header.png"
       : $"#ui/gameuiskin#tournament_{armyId}_header.png"
-    itemBgr =  $"#ui/images/tournament_{armyId}.jpg"
+    itemBgr =  $"#ui/images/tournament_{armyId}"
     tournamentName = loc($"tournament/{tour.id}")
     vehicleType = loc($"tournaments/battle_{armyId}")
     rank = $"{::g_string.utf8ToUpper(loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
     tournamentType = $" {loc("country/VS")} ".join(teamSizes)
-    divisionImg = "#ui/gameuiskin#icon_progress_bar_stage_07.png"//!!!FIX IMG PATH
+    divisionImg = "#ui/gameuiskin#icon_progress_bar_stage_07.png" //!!!FIX IMG PATH
     battleDate = getBattleDateStr(tour)
     battleDay = isFinished ? loc("items/craft_process/finished")
-      : isTourWndAvailable ? loc("tournaments/enumerated_day", {num = day + 1})
+      : isTourWndAvailable ? loc("tournaments/enumerated_day", { num = day + 1 })
       : loc("tournaments/coming_soon")
     battlesNum = isTourWndAvailable
       ? (getBattlesNum(getEventByDay(tour.id, dayNum, isTraining)) ?? tour.tickets[day].battleLimit)
@@ -252,7 +253,7 @@ let function isTourStateChanged(prevState, tourParams) {
       || prevState.isMyTournament != isMyTournament)
 }
 
-let function setSchedulerTimeColor(nestObj, isTraining, txtColor){
+let function setSchedulerTimeColor(nestObj, isTraining, txtColor) {
   let tTimeObj = nestObj.findObject("training_time")
   if (tTimeObj?.isValid())
     tTimeObj.overlayTextColor = isTraining ? txtColor : ""
@@ -283,12 +284,12 @@ let function getSeasonsList() {
     return seasonsList
 
   foreach (s in ::get_tournaments_blk() % "season") {
-    let season = {tournamentList = []}
+    let season = { tournamentList = [] }
     eachParam(s, @(p, id) season[id] <- p)
-    eachBlock(s, function(evnBlk, evnId){
+    eachBlock(s, function(evnBlk, evnId) {
       // Tournament ID means matching event economicName. It's the same as tournament LEADERBOARD id
       // Tournament sharedEconomicName means season id and tha same as SEASON LEADERBOARD id.
-      let tour = {id = evnId}
+      let tour = { id = evnId }
       eachParam(evnBlk, @(p, id) tour[id] <- p)
       foreach (pName in TOUR_PARAM_NAMES) {
         let key = pName
@@ -298,10 +299,10 @@ let function getSeasonsList() {
         if (!curBlk)
           continue
 
-        eachBlock(curBlk, function(paramBlk, paramId){
+        eachBlock(curBlk, function(paramBlk, paramId) {
           let data = {}
           eachParam(paramBlk, @(p, id) data[id] <- p)
-          eachBlock(paramBlk, function(blk, pId){
+          eachBlock(paramBlk, function(blk, pId) {
             if (key == TOUR_PARAM_NAMES.TICKETS) {
               data.id <- paramId
               // Some ticket parameters are in separate block by design,
@@ -329,7 +330,7 @@ let function getSeasonsList() {
         let eTime = getTimestampFromStringUtc(ticket.stopActiveTime)
         foreach (session in tour.scheduler) {
           let curTime = getTimestampFromStringUtc(session.train.start)
-          if ( curTime >= sTime && curTime <= eTime)
+          if (curTime >= sTime && curTime <= eTime)
             day.append(session)
         }
 
@@ -361,7 +362,7 @@ let function getTourActiveTicket(eName, tourId) {
 
 let function getEventMission(curEvent) {
   let list = curEvent?.mission_decl.missions_list ?? {}
-  foreach(key, _val in list)
+  foreach (key, _val in list)
     if (type(key) == "string")
       return key
 

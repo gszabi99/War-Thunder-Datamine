@@ -1,8 +1,12 @@
-from "%scripts/dagui_library.nut" import *
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+from "%scripts/dagui_library.nut" import *
+let { get_option_multiplier, set_option_multiplier,
+  OPTION_AIM_TIME_NONLINEARITY_SHIP, OPTION_AIM_ACCELERATION_DELAY_SHIP,
+  OPTION_MOUSE_Z_SHIP_MULT
+} = require("gameOptions")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -258,7 +262,6 @@ return [
     id = "ship_sensor_cue_z"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() hasFeature("RadarElevationControl")
   }
   {
     id = "ship_zoom"
@@ -299,16 +302,16 @@ return [
   {
     id = "aim_time_nonlinearity_ship"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP, objValue / 100.0)
+      set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP, objValue / 100.0)
   }
   {
     id = "aim_acceleration_delay_ship"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP)
     setValue = @(_joyParams, objValue)
-      ::set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP, objValue / 100.0)
+      set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP, objValue / 100.0)
   }
   {
     id = "mouse_z_ship"
@@ -321,8 +324,8 @@ return [
   {
     id = "mouse_z_mult_ship"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0 * ::get_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT)
-    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT, objValue / 100.0)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT)
+    setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT, objValue / 100.0)
     showFunc = @() hasFeature("EnableMouse")
   }
 //-------------------------------------------------------
@@ -435,6 +438,10 @@ return [
   }
   {
     id = "ID_START_SUPPORT_PLANE_SHIP"
+    checkAssign = false
+  }
+  {
+    id = "ID_SUPPORT_PLANE_ORBITING_SHIP"
     checkAssign = false
   }
   //

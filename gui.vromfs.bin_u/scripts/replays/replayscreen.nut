@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -32,19 +33,16 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 
 ::g_script_reloader.registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay", "current_replay_author"])
 
-::gui_start_replays <- function gui_start_replays()
-{
+::gui_start_replays <- function gui_start_replays() {
   ::gui_start_modal_wnd(::gui_handlers.ReplayScreen)
 }
 
-::gui_start_menuReplays <- function gui_start_menuReplays()
-{
+::gui_start_menuReplays <- function gui_start_menuReplays() {
   ::gui_start_mainmenu()
   ::gui_start_replays()
 }
 
-::gui_start_replay_battle <- function gui_start_replay_battle(sessionId, backFunc)
-{
+::gui_start_replay_battle <- function gui_start_replay_battle(sessionId, backFunc) {
   ::back_from_replays = function() {
     ::SessionLobby.resetPlayersInfo()
     backFunc()
@@ -55,14 +53,12 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
   on_view_replay(::current_replay)
 }
 
-::get_replay_url_by_session_id <- function get_replay_url_by_session_id(sessionId)
-{
+::get_replay_url_by_session_id <- function get_replay_url_by_session_id(sessionId) {
   let sessionIdText = format("%0" + REPLAY_SESSION_ID_MIN_LENGHT + "s", sessionId.tostring())
-  return loc("url/server_wt_game_replay", {sessionId = sessionIdText})
+  return loc("url/server_wt_game_replay", { sessionId = sessionIdText })
 }
 
-::gui_modal_rename_replay <- function gui_modal_rename_replay(base_name, base_path, func_owner, after_rename_func, after_func = null)
-{
+::gui_modal_rename_replay <- function gui_modal_rename_replay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
   ::gui_start_modal_wnd(::gui_handlers.RenameReplayHandler, {
                                                               baseName = base_name
                                                               basePath = base_path
@@ -72,15 +68,13 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
                                                             })
 }
 
-::gui_modal_name_and_save_replay <- function gui_modal_name_and_save_replay(func_owner, after_func)
-{
+::gui_modal_name_and_save_replay <- function gui_modal_name_and_save_replay(func_owner, after_func) {
   let baseName = get_new_replay_filename();
   let basePath = get_replays_dir() + "\\" + baseName;
   ::gui_modal_rename_replay(baseName, basePath, func_owner, null, after_func);
 }
 
-::autosave_replay <- function autosave_replay()
-{
+::autosave_replay <- function autosave_replay() {
   if (is_replay_saved())
     return;
   if (!::get_option_autosave_replays())
@@ -90,46 +84,38 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 
   let replays = get_replays_list();
   local autosaveCount = 0;
-  for (local i = 0; i < replays.len(); i++)
-  {
-    if (replays[i].name.slice(0,1) == ::autosave_replay_prefix)
+  for (local i = 0; i < replays.len(); i++) {
+    if (replays[i].name.slice(0, 1) == ::autosave_replay_prefix)
       autosaveCount++;
   }
   let toDelete = autosaveCount - (::autosave_replay_max_count - 1);
-  for (local d = 0; d < toDelete; d++)
-  {
+  for (local d = 0; d < toDelete; d++) {
     local indexToDelete = -1;
-    for (local i = 0; i < replays.len(); i++)
-    {
-      if (replays[i].name.slice(0,1) != ::autosave_replay_prefix)
+    for (local i = 0; i < replays.len(); i++) {
+      if (replays[i].name.slice(0, 1) != ::autosave_replay_prefix)
         continue;
 
-      if (isCorruptedReplay(replays[i]))
-      {
+      if (isCorruptedReplay(replays[i])) {
         indexToDelete = i;
         break;
       }
     }
-    if (indexToDelete < 0)
-    {
+    if (indexToDelete < 0) {
       //sort by time
       local oldestDate = -1
-      for (local i = 0; i < replays.len(); i++)
-      {
-        if (replays[i].name.slice(0,1) != ::autosave_replay_prefix)
+      for (local i = 0; i < replays.len(); i++) {
+        if (replays[i].name.slice(0, 1) != ::autosave_replay_prefix)
           continue;
 
         let startTime = replays[i]?.startTime ?? -1
-        if (oldestDate < 0 || startTime < oldestDate)
-        {
+        if (oldestDate < 0 || startTime < oldestDate) {
           oldestDate = startTime
           indexToDelete = i;
         }
       }
     }
 
-    if (indexToDelete >= 0)
-    {
+    if (indexToDelete >= 0) {
       on_del_replay(replays[indexToDelete].path);
       replays.remove(indexToDelete);
     }
@@ -139,8 +125,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
   on_save_replay(name); //ignore errors
 }
 
-::gui_handlers.ReplayScreen <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ReplayScreen <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navReplays.blk"
@@ -165,8 +150,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     ::set_presence_to_player("menu")
     this.scene.findObject("chapter_name").setValue(loc("mainmenu/btnReplays"))
     this.scene.findObject("chapter_include_block").show(true)
@@ -176,11 +160,9 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     this.loadReplays()
 
     local selItem = 0
-    if (::current_replay != "")
-    {
-      foreach(index, replay in this.replays)
-        if (replay.path == ::current_replay)
-        {
+    if (::current_replay != "") {
+      foreach (index, replay in this.replays)
+        if (replay.path == ::current_replay) {
           this.curPage = index / this.replaysPerPage
           selItem = index
           break
@@ -193,20 +175,17 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     this.refreshList(selItem)
   }
 
-  function goToPage(obj)
-  {
+  function goToPage(obj) {
     this.curPage = obj.to_page.tointeger()
     this.refreshList(this.curPage * this.replaysPerPage)
   }
 
-  function loadReplays()
-  {
+  function loadReplays() {
     this.replays = get_replays_list()
-    this.replays.sort(@(a,b) b.startTime <=> a.startTime || b.name <=> a.name)
+    this.replays.sort(@(a, b) b.startTime <=> a.startTime || b.name <=> a.name)
   }
 
-  function refreshList(selItem)
-  {
+  function refreshList(selItem) {
     let listObj = this.scene.findObject("items_list")
     if (!checkObj(listObj))
       return
@@ -217,8 +196,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     let view = { items = [] }
     let firstIdx = this.curPage * this.replaysPerPage
     let lastIdx = min(this.replays.len(), ((this.curPage + 1) * this.replaysPerPage))
-    for (local i = firstIdx; i < lastIdx; i++)
-    {
+    for (local i = firstIdx; i < lastIdx; i++) {
       local iconName = "";
       let autosave = ::g_string.startsWith(this.replays[i].name, ::autosave_replay_prefix)
       if (isCorruptedReplay(this.replays[i]))
@@ -244,16 +222,13 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     //depends on get_new_replay_filename() format
     let defaultReplayNameMask =
       regexp2(@"2\d\d\d\.[0-3]\d\.[0-3]\d [0-2]\d\.[0-5]\d\.[0-5]\d*");
-    for (local i = firstIdx; i < lastIdx; i++)
-    {
+    for (local i = firstIdx; i < lastIdx; i++) {
       let obj = this.scene.findObject("txt_replay_" + i);
       local name = this.replays[i].name;
       let hasDateInName = ::g_string.startsWith(name, ::autosave_replay_prefix) || defaultReplayNameMask.match(name)
-      if (!hasDateInName && !isCorruptedReplay(this.replays[i]))
-      {
+      if (!hasDateInName && !isCorruptedReplay(this.replays[i])) {
         let startTime = this.replays[i]?.startTime ?? -1
-        if (startTime >= 0)
-        {
+        if (startTime >= 0) {
           let date = time.buildDateTimeStr(startTime)
           name += colorize("fadedTextColor", loc("ui/parentheses/space", { text = date }))
         }
@@ -261,24 +236,22 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
       obj.setValue(name);
     }
 
-    this.scene.findObject("optionlist-include").show(this.replays.len()>0)
-    this.scene.findObject("info-text").setValue(this.replays.len()? "" : loc("mainmenu/noReplays"))
+    this.scene.findObject("optionlist-include").show(this.replays.len() > 0)
+    this.scene.findObject("info-text").setValue(this.replays.len() ? "" : loc("mainmenu/noReplays"))
 
     ::generatePaginator(this.scene.findObject("paginator_place"),
                         this,
                         this.curPage,
                         ((this.replays.len() - 1) / this.replaysPerPage).tointeger())
 
-    if (this.replays.len() > 0)
-    {
+    if (this.replays.len() > 0) {
       this.updateDescription()
       this.doSelectList()
     }
     this.updateButtons()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let curReplay = this.replays?[this.getCurrentReplayIndex()]
 
     let hoveredReplay = this.isMouseMode ? null : this.replays?[this.hoveredIdx]
@@ -291,8 +264,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     })
   }
 
-  function updateDescription()
-  {
+  function updateDescription() {
     let index = this.getCurrentReplayIndex()
     let objDesc = this.scene.findObject("item_desc")
     //local objPic = objDesc.findObject("item_picture")
@@ -302,34 +274,29 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     //  objPic["background-image"] = pic
     //}
 
-    if (index < 0 || index >= this.replays.len())
-    {
+    if (index < 0 || index >= this.replays.len()) {
       objDesc.findObject("item_desc_text").setValue("")
       return
     }
 
     let replayInfo = get_replay_info(this.replays[index].path)
-    if (replayInfo == null)
-    {
+    if (replayInfo == null) {
       objDesc.findObject("item_name").setValue(this.replays[index].name)
       objDesc.findObject("item_desc_text").setValue(loc("msgbox/error_header"))
     }
-    else
-    {
+    else {
       let corrupted = getTblValue("corrupted", replayInfo, false) // Any error reading headers (including version mismatch).
       let isVersionMismatch = getTblValue("isVersionMismatch", replayInfo, false) // Replay was recorded for in older game version.
       let isHeaderUnreadable = corrupted && !isVersionMismatch // Failed to read header (file not found or incomplete).
 
       local headerText = ""
       local text = ""
-      if (corrupted)
-      {
+      if (corrupted) {
         text = loc(isVersionMismatch ? "replays/versionMismatch" : "replays/corrupted")
         if (::is_dev_version && ("error" in this.replays[index]))
           text += colorize("warningTextColor", "\nDEBUG: " + this.replays[index].error) + "\n\n"
 
-        if (!::is_dev_version || isHeaderUnreadable)
-        {
+        if (!::is_dev_version || isHeaderUnreadable) {
           objDesc.findObject("item_name").setValue(this.replays[index].name)
           objDesc.findObject("item_desc_text").setValue(text)
           let tableObj = this.scene.findObject("session_results")
@@ -345,8 +312,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 
       if (replayInfo.multiplayerGame)
         headerText += loc("mainmenu/btnMultiplayer")
-      if (replayInfo.missionName.len() > 0)
-      {
+      if (replayInfo.missionName.len() > 0) {
         if (replayInfo.multiplayerGame)
           headerText += loc("ui/colon");
         headerText += ::get_mission_name(replayInfo.missionName, replayInfo)
@@ -382,34 +348,29 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     }
   }
 
-  function createSessionResultsTable(replayInfo)
-  {
+  function createSessionResultsTable(replayInfo) {
     local addDescr = ""
     local tables = ""
-    if (hasFeature("extendedReplayInfo") && "comments" in replayInfo)
-    {
+    if (hasFeature("extendedReplayInfo") && "comments" in replayInfo) {
       let replayResultsTable = this.gatherReplayCommentData(replayInfo)
       addDescr = getTblValue("addDescr", replayResultsTable, "")
 
-      foreach (name in replayResultsTable.tablesArray)
-      {
+      foreach (name in replayResultsTable.tablesArray) {
         let rows = replayResultsTable.playersRows[name]
         tables += format("table{id:t='%s_table'; width:t='pw'; baseRow:t='yes' %s}",
           name, rows + getTblValue(name, replayResultsTable.addTableParams, ""))
       }
     }
     let tablesObj = this.scene.findObject("session_results")
-    if (checkObj(tablesObj))
-    {
-      tablesObj.show(tables!="")
+    if (checkObj(tablesObj)) {
+      tablesObj.show(tables != "")
       this.guiScene.replaceContentFromText(tablesObj.findObject("results_table_place"), tables, tables.len(), this)
     }
 
     return addDescr
   }
 
-  function gatherReplayCommentData(replayInfo)
-  {
+  function gatherReplayCommentData(replayInfo) {
     let data = {
       addDescr = ""
       playersRows = {}
@@ -433,8 +394,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     let isRace = !!(gameType & GT_RACE)
     let columnsOrder = isRace ? this.statsColumnsOrderRace : this.statsColumnsOrderPvp
 
-    foreach(name in replayParams)
-    {
+    foreach (name in replayParams) {
       local value = getTblValue(name, replayComments)
       if (!value)
         continue
@@ -445,27 +405,23 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     }
 
     let mplayersList = replayMetadata.buildReplayMpTable(this.replays?[this.getCurrentReplayIndex()]?.path ?? "")
-    if (mplayersList.len())
-    {
-      foreach (mplayer in mplayersList)
-      {
+    if (mplayersList.len()) {
+      foreach (mplayer in mplayersList) {
         local teamName = ""
         if (mplayer.team == Team.A)
           teamName = "teamA"
         else if (mplayer.team == Team.B)
           teamName = "teamB"
 
-        if (!(teamName in playersTables))
-        {
+        if (!(teamName in playersTables)) {
           playersTables[teamName] <- []
           data.tablesArray.append(teamName)
           data.markups[teamName] <- clone this.markup_mptable
           data.markups[teamName].invert = false
-          data.markups[teamName].colorTeam = teamName != ""? (teamName == "teamB"? "red" : "blue") : ""
+          data.markups[teamName].colorTeam = teamName != "" ? (teamName == "teamB" ? "red" : "blue") : ""
         }
 
-        if (mplayer.isLocal && teamName != "")
-        {
+        if (mplayer.isLocal && teamName != "") {
           addTableParams[teamName].team = "blue"
           addTableParams[teamName == "teamA" ? "teamB" : "teamA"].team = "red"
         }
@@ -473,10 +429,9 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
         playersTables[teamName].append(mplayer)
       }
 
-      foreach(team, paramsTable in addTableParams)
-      {
+      foreach (team, paramsTable in addTableParams) {
         local params = ""
-        foreach(name, value in paramsTable)
+        foreach (name, value in paramsTable)
           params += format("%s:t='%s'", name, value)
         data.addTableParams[team] <- params
       }
@@ -488,8 +443,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 
     let rowHeader = []
     let headerArray = []
-    foreach(id in columnsOrder)
-    {
+    foreach (id in columnsOrder) {
       let paramType = ::g_mplayer_param_type.getTypeById(id)
       if (!paramType.isVisible(missionObjectivesMask, gameType, gameMode))
         continue
@@ -509,8 +463,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     if (data.tablesArray.len() == 2 && addTableParams[data.tablesArray[1]].team == "blue")
       data.tablesArray.reverse()
 
-    foreach(idx, name in data.tablesArray)
-    {
+    foreach (idx, name in data.tablesArray) {
       data.rowHeader[name] <- rowHeader
       data.headerArray[name] <- headerArray
 
@@ -533,28 +486,24 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     return data
   }
 
-  function getCurrentReplayIndex()
-  {
+  function getCurrentReplayIndex() {
     let list = this.scene.findObject("items_list")
     return list.getValue() + this.replaysPerPage * this.curPage
   }
 
-  function onItemSelect(_obj)
-  {
+  function onItemSelect(_obj) {
     this.updateDescription()
     this.updateButtons()
   }
 
-  function onItemDblClick(_obj)
-  {
+  function onItemDblClick(_obj) {
     if (::show_console_buttons)
       return
 
     this.onViewReplay()
   }
 
-  function onItemHover(obj)
-  {
+  function onItemHover(obj) {
     if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
@@ -566,15 +515,13 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     this.updateButtons()
   }
 
-  function updateMouseMode()
-  {
+  function updateMouseMode() {
     this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
   doSelectList = @() ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
 
-  function goBack()
-  {
+  function goBack() {
     if (this.isReplayPressed)
       return
     this.isReplayPressed = true
@@ -583,8 +530,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     base.goBack()
   }
 
-  function onViewReplay()
-  {
+  function onViewReplay() {
     let index = this.getCurrentReplayIndex()
     let curReplay = this.replays?[index]
     if (!canPlayReplay(curReplay))
@@ -594,8 +540,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
       return
 
     ::set_presence_to_player("replay")
-    this.guiScene.performDelayed(this, function()
-    {
+    this.guiScene.performDelayed(this, function() {
       if (this.isReplayPressed)
         return
 
@@ -614,24 +559,19 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     })
   }
 
-  function doDelReplay()
-  {
+  function doDelReplay() {
     let index = this.getCurrentReplayIndex()
-    if (index >= 0 && index < this.replays.len())
-    {
+    if (index >= 0 && index < this.replays.len()) {
       on_del_replay(this.replays[index].path)
       this.replays.remove(index)
       this.refreshList(min(index, this.replays.len() - 1))
     }
   }
 
-  function onRenameReplay()
-  {
+  function onRenameReplay() {
     let index = this.getCurrentReplayIndex()
-    if (index >= 0 && index < this.replays.len())
-    {
-      let afterRenameFunc = function(_newName)
-      {
+    if (index >= 0 && index < this.replays.len()) {
+      let afterRenameFunc = function(_newName) {
         this.loadReplays()
         this.refreshList(index)
       }
@@ -640,8 +580,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     }
   }
 
-  function onDelReplay()
-  {
+  function onDelReplay() {
     this.msgBox("del_replay", loc("mainmenu/areYouSureDelReplay"),
     [
       ["yes", this.doDelReplay],
@@ -649,8 +588,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     ], "no")
   }
 
-  function onOpenFolder()
-  {
+  function onOpenFolder() {
     on_open_replays_folder()
   }
 
@@ -666,10 +604,8 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-::gui_handlers.RenameReplayHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
-  function initScreen()
-  {
+::gui_handlers.RenameReplayHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+  function initScreen() {
     if (!this.scene)
       return this.goBack();
 
@@ -685,11 +621,10 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     ::select_editbox(editBoxObj)
   }
 
-  function checkName(newName)
-  {
+  function checkName(newName) {
     if (!newName || newName == "")
       return false;
-    foreach(c in "\\|/<>:?*\"")
+    foreach (c in "\\|/<>:?*\"")
       if (newName.indexof(c.tochar()) != null)
         return false
     if (::g_string.startsWith(newName, ::autosave_replay_prefix))
@@ -697,31 +632,26 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     return true;
   }
 
-  function onChangeValue(_obj)
-  {
+  function onChangeValue(_obj) {
     let newName = this.scene.findObject("edit_box_window_text").getValue()
     let btnOk = this.scene.findObject("btn_ok")
     if (checkObj(btnOk))
       btnOk.inactiveColor = this.checkName(newName) ? "no" : "yes"
   }
 
-  function onOk()
-  {
+  function onOk() {
     let newName = this.scene.findObject("edit_box_window_text").getValue();
-    if (!this.checkName(newName))
-    {
-      this.msgBox("RenameReplayHandler_invalidName",loc("msgbox/invalidReplayFileName"),
+    if (!this.checkName(newName)) {
+      this.msgBox("RenameReplayHandler_invalidName", loc("msgbox/invalidReplayFileName"),
         [["ok", function() {} ]], "ok");
       return;
     }
-    if (newName && newName != "")
-    {
-      if (this.afterRenameFunc && newName != this.baseName)
-      {
+    if (newName && newName != "") {
+      if (this.afterRenameFunc && newName != this.baseName) {
         if (::rename_file(this.basePath, newName))
           this.afterRenameFunc.call(this.funcOwner, newName);
         else
-          this.msgBox("RenameReplayHandler_error",loc("msgbox/cantRenameReplayFile"),
+          this.msgBox("RenameReplayHandler_error", loc("msgbox/cantRenameReplayFile"),
             [["ok", function() {} ]], "ok");
       }
 

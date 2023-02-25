@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -12,8 +13,7 @@ let { needProceedSquadInvitesAccept,
   isPlayerFromXboxSquadList } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
-::g_invites_classes.Squad <- class extends ::BaseInvite
-{
+::g_invites_classes.Squad <- class extends ::BaseInvite {
   //custom class params, not exist in base invite
   squadId = 0
   leaderId = 0
@@ -21,34 +21,28 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   leaderContact = null
   needCheckSystemRestriction = true
 
-  static function getUidByParams(params)
-  {
+  static function getUidByParams(params) {
     return "SQ_" + getTblValue("squadId", params, "")
   }
 
-  function updateCustomParams(params, initial = false)
-  {
+  function updateCustomParams(params, initial = false) {
     this.squadId = getTblValue("squadId", params, this.squadId)
     this.leaderId = getTblValue("leaderId", params, this.leaderId)
 
     this.updateInviterContact()
 
-    if (this.inviterName.len() != 0)
-    {
+    if (this.inviterName.len() != 0) {
       //Don't show invites from xbox players, as notification comes from system overlay
       log("InviteSquad: invitername != 0 " + platformModule.isPlayerFromXboxOne(this.inviterName))
       if (platformModule.isPlayerFromXboxOne(this.inviterName))
         this.setDelayed(true)
     }
-    else
-    {
+    else {
       this.setDelayed(true)
-      let cb = Callback(function(_r)
-                            {
+      let cb = Callback(function(_r) {
                               this.updateInviterContact()
                               log("InviteSquad: Callback: invitername == 0 " + platformModule.isPlayerFromXboxOne(this.inviterName))
-                              if (platformModule.isPlayerFromXboxOne(this.inviterName))
-                              {
+                              if (platformModule.isPlayerFromXboxOne(this.inviterName)) {
                                 this.setDelayed(true)
                                 this.checkAutoAcceptXboxInvite()
                               }
@@ -70,20 +64,17 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.checkAutoAcceptXboxInvite()
   }
 
-  function updateInviterContact()
-  {
+  function updateInviterContact() {
     this.leaderContact = ::getContact(this.leaderId)
     this.updateInviterName()
   }
 
-  function updateInviterName()
-  {
+  function updateInviterName() {
     if (this.leaderContact)
       this.inviterName = this.leaderContact.name
   }
 
-  function checkAutoAcceptXboxInvite()
-  {
+  function checkAutoAcceptXboxInvite() {
     if (!is_platform_xbox
         || !this.leaderContact
         || (this.haveRestrictions() && !::isInMenu())
@@ -127,29 +118,25 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     })
   }
 
-  function isValid()
-  {
+  function isValid() {
     return !this.isAccepted
   }
 
-  function getInviteText()
-  {
+  function getInviteText() {
     return loc("multiplayer/squad/invite/desc",
                  {
                    name = this.getInviterName() || platformModule.getPlayerName(this.inviterName)
                  })
   }
 
-  function getPopupText()
-  {
+  function getPopupText() {
     return loc("multiplayer/squad/invite/desc",
                  {
                    name = this.getInviterName() || platformModule.getPlayerName(this.inviterName)
                  })
   }
 
-  function getRestrictionText()
-  {
+  function getRestrictionText() {
     if (!isMultiplayerPrivilegeAvailable.value)
       return loc("xbox/noMultiplayer")
     if (!this.isAvailableByCrossPlay())
@@ -161,29 +148,25 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     return ""
   }
 
-  function haveRestrictions()
-  {
+  function haveRestrictions() {
     return !::g_squad_manager.canManageSquad()
     || !this.isAvailableByCrossPlay()
     || !this.isAvailableByChatRestriction()
     || !isMultiplayerPrivilegeAvailable.value
   }
 
-  function getIcon()
-  {
+  function getIcon() {
     return "#ui/gameuiskin#lb_each_player_session.svg"
   }
 
   function onSuccessfulReject() {}
 
-  function onSuccessfulAccept()
-  {
+  function onSuccessfulAccept() {
     this.isAccepted = true
     this.remove()
   }
 
-  function accept()
-  {
+  function accept() {
     if (!isMultiplayerPrivilegeAvailable.value) {
       checkAndShowMultiplayerPrivilegeWarning()
       return
@@ -193,7 +176,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       return
 
     let acceptCallback = Callback(this._implAccept, this)
-    let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}
+    let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight") }
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_invite" },
       callback
@@ -205,8 +188,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     callback()
   }
 
-  function reject()
-  {
+  function reject() {
     if (this.isOutdated())
       return this.remove()
 
@@ -217,10 +199,8 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.onSuccessfulReject()
   }
 
-  function _implAccept()
-  {
-    if (this.isOutdated())
-    {
+  function _implAccept() {
+    if (this.isOutdated()) {
       ::g_invites.showExpiredInvitePopup()
       return false
     }

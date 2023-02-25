@@ -1,3 +1,4 @@
+//-file:plus-string
 
 //checked for explicitness
 #no-root-fallback
@@ -7,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
+let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
@@ -27,7 +29,7 @@ register_command(
       isDisassemble = false
       rewardTitle = "workshop/craft_2022_spring/craft_tree/btn_victory"
       rewardListLocId = ""
-      rewardImage = "https://static-ggc.gaijin.net/events/craft_battle_for_arachis/craft_win.jpg"
+      rewardImage = "https://static-ggc.gaijin.net/events/craft_battle_for_arachis/craft_win"
       singleAnimationGuiSound = "gui_music_win",
       [2905356] = [
         {
@@ -42,8 +44,7 @@ register_command(
   },
   "ui.debug_trophy_reward_with_image")
 
-::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {})
-{
+::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {}) {
   if (configsTable.len() == 0)
     return
 
@@ -52,8 +53,7 @@ register_command(
   let params = {}
   foreach (paramName in [ "rewardTitle", "rewardListLocId", "rewardIcon", "isDisassemble",
     "isHidePrizeActionBtn", "singleAnimationGuiSound", "rewardImage", "rewardImageRatio",
-    "reUseRecipeUid" ])
-  {
+    "reUseRecipeUid" ]) {
     if (!(paramName in localConfigsTable))
       continue
 
@@ -62,8 +62,7 @@ register_command(
   }
 
   local tKey = ""
-  foreach(idx, _configsArray in localConfigsTable)
-  {
+  foreach (idx, _configsArray in localConfigsTable) {
     tKey = idx
     break
   }
@@ -82,8 +81,7 @@ register_command(
     ?? ""
 
   let trophyItem = ::ItemsManager.findItemById(itemId)
-  if (!trophyItem)
-  {
+  if (!trophyItem) {
     let configsArrayString = toString(configsArray, 2) // warning disable: -declared-never-used
     let isLoggedIn = ::g_login.isLoggedIn()              // warning disable: -declared-never-used
     let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
@@ -107,8 +105,7 @@ register_command(
   ::gui_start_modal_wnd(::gui_handlers.trophyRewardWnd, params)
 }
 
-::gui_handlers.trophyRewardWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.trophyRewardWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
 
@@ -147,8 +144,7 @@ register_command(
   reUseRecipeUid = null
   reUseRecipe = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.configsArray = this.configsArray ?? []
     this.rewardTitle = this.rewardTitle ?? this.configsArray?[0].rewardTitle
     this.rewardListLocId = this.configsArray?[0].rewardListLocId ?? this.rewardListLocId
@@ -167,8 +163,7 @@ register_command(
     this.scene.findObject("update_timer").setUserData(this)
   }
 
-  function prepareParams()
-  {
+  function prepareParams() {
     this.shouldShowRewardItem = this.trophyItem.iType == itemType.RECIPES_BUNDLE
     this.isBoxOpening = !this.shouldShowRewardItem
       && (this.trophyItem.iType == itemType.TROPHY
@@ -181,8 +176,7 @@ register_command(
       this.reUseRecipe = findGenByReceptUid(this.reUseRecipeUid)?.getRecipeByUid?(this.reUseRecipeUid)
   }
 
-  function setTitle()
-  {
+  function setTitle() {
     let title = this.getTitle()
 
     let titleObj = this.scene.findObject("reward_title")
@@ -208,19 +202,16 @@ register_command(
     }
   )
 
-  function startOpening()
-  {
+  function startOpening() {
     if (this.isRouletteStarted())
       this.useSingleAnimation = false
 
-    ::showBtn(this.useSingleAnimation? "reward_roullete" : "open_chest_animation", false, this.scene) //hide not used animation
-    let animId = this.useSingleAnimation? "open_chest_animation" : "reward_roullete"
+    ::showBtn(this.useSingleAnimation ? "reward_roullete" : "open_chest_animation", false, this.scene) //hide not used animation
+    let animId = this.useSingleAnimation ? "open_chest_animation" : "reward_roullete"
     let animObj = this.scene.findObject(animId)
-    if (checkObj(animObj))
-    {
+    if (checkObj(animObj)) {
       animObj.animation = this.rewardImage == null ? "show" : "hide"
-      if (this.useSingleAnimation)
-      {
+      if (this.useSingleAnimation) {
         this.guiScene.playSound(this.singleAnimationGuiSound ?? "chest_open")
         let delay = ::to_integer_safe(animObj?.chestReplaceDelay, 0)
         ::Timer(animObj, 0.001 * delay, this.openChest, this)
@@ -231,8 +222,7 @@ register_command(
       this.openChest()
   }
 
-  function openChest()
-  {
+  function openChest() {
     if (this.opened)
       return false
     let obj = this.scene.findObject("rewards_list")
@@ -245,8 +235,7 @@ register_command(
 
   notifyTrophyVisible = @() ::broadcastEvent("TrophyContentVisible", { trophyItem = this.trophyItem })
 
-  function updateWnd()
-  {
+  function updateWnd() {
     this.updateImage()
     this.updateRewardText()
     this.updateRewardPostscript()
@@ -263,7 +252,8 @@ register_command(
       layersData = itemToShow.getOpenedBigIcon()
       if (this.opened && this.useSingleAnimation)
         layersData += this.getRewardImage(itemToShow.iconStyle)
-    } else
+    }
+    else
       layersData = itemToShow.getBigIcon()
 
     return layersData
@@ -292,8 +282,7 @@ register_command(
     this.guiScene.replaceContentFromText(imageObjPlace, layersData, layersData.len(), this)
   }
 
-  function updateImage()
-  {
+  function updateImage() {
     if (this.rewardImage == null) {
       this.updateTrophyImage()
       return
@@ -304,8 +293,7 @@ register_command(
     imageObj.height = $"{1.0 / this.rewardImageRatio}pw"
   }
 
-  function updateRewardPostscript()
-  {
+  function updateRewardPostscript() {
     if (!this.opened || !this.useSingleAnimation)
       return
 
@@ -318,11 +306,10 @@ register_command(
     if (!checkObj(obj))
       return
 
-    obj.setValue(loc("trophy/moreRewards", {num = countNotVisibleItems}))
+    obj.setValue(loc("trophy/moreRewards", { num = countNotVisibleItems }))
   }
 
-  function updateRewardText()
-  {
+  function updateRewardText() {
     if (!this.opened)
       return
 
@@ -336,17 +323,16 @@ register_command(
                      header = loc("mainmenu/you_received")
                    })
 
-    if (this.unit && this.unit.isRented())
-    {
+    if (this.unit && this.unit.isRented()) {
       let descTextArray = []
       let totalRentTime = this.unit.getRentTimeleft()
       local rentText = "mainmenu/rent/rent_unit"
       if (totalRentTime > time.hoursToSeconds(this.rentTimeHours))
         rentText = "mainmenu/rent/rent_unit_extended"
 
-      descTextArray.append(colorize("activeTextColor",loc(rentText)))
+      descTextArray.append(colorize("activeTextColor", loc(rentText)))
       let timeText = colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
-      descTextArray.append(colorize("activeTextColor",loc("mainmenu/rent/rentTimeSec", {time = timeText})))
+      descTextArray.append(colorize("activeTextColor", loc("mainmenu/rent/rentTimeSec", { time = timeText })))
       let descText = "\n".join(descTextArray, true)
       if (descText != "")
         this.scene.findObject("prize_desc_text").setValue(descText)
@@ -355,26 +341,22 @@ register_command(
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 
-  function onTakeNavBar()
-  {
+  function onTakeNavBar() {
     if (!this.unit)
       return
 
     this.onTake(this.unit)
   }
 
-  function checkConfigsArray()
-  {
-    foreach(reward in this.configsArray)
-    {
+  function checkConfigsArray() {
+    foreach (reward in this.configsArray) {
       let rewardType = ::trophyReward.getType(reward)
       this.haveItems = this.haveItems || ::trophyReward.isRewardItem(rewardType)
 
-      if (rewardType == "unit" || rewardType == "rentedUnit")
-      {
+      if (rewardType == "unit" || rewardType == "rentedUnit") {
         this.unit = ::getAircraftByName(reward[rewardType]) || this.unit
         //Datablock adapter used only to avoid bug with duplicate timeHours in userlog.
-        this.rentTimeHours = ::DataBlockAdapter(reward)?.timeHours || this.rentTimeHours
+        this.rentTimeHours = DataBlockAdapter(reward)?.timeHours || this.rentTimeHours
         continue
       }
 
@@ -398,11 +380,9 @@ register_command(
       obj.setValue(loc($"decorator/use/{this.decorator.decoratorType.resourceType}"))
   }
 
-  function getRewardImage(trophyStyle = "")
-  {
+  function getRewardImage(trophyStyle = "") {
     local layersData = ""
-    for (local i = 0; i < ::trophyReward.maxRewardsShow; i++)
-    {
+    for (local i = 0; i < ::trophyReward.maxRewardsShow; i++) {
       let config = this.shrinkedConfigsArray?[i]
       if (config)
         layersData += ::trophyReward.getImageByConfig(config, false)
@@ -419,8 +399,7 @@ register_command(
     return ::LayersIcon.genDataFromLayer(layerCfg, layersData)
   }
 
-  function onTake(unitToTake)
-  {
+  function onTake(unitToTake) {
     base.onTake(unitToTake, {
       cellClass = "slotbarClone"
       isNewUnit = true
@@ -428,12 +407,10 @@ register_command(
     })
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     if (!checkObj(this.scene))
       return
 
-    ::show_facebook_screenshot_button(this.scene, this.opened)
     let isShowRewardListBtn = this.opened && (this.configsArray.len() > 1 || this.haveItems)
     local btnObj = this.showSceneBtn("btn_rewards_list", isShowRewardListBtn)
     if (isShowRewardListBtn)
@@ -474,31 +451,27 @@ register_command(
     }
   }
 
-  function onViewRewards()
-  {
+  function onViewRewards() {
     if (!this.checkSkipAnim() || !(this.opened && (this.configsArray.len() > 1 || this.haveItems)))
       return
 
     ::gui_start_open_trophy_rewards_list({ rewardsArray = this.shrinkedConfigsArray,
-      titleLocId = this.getRewardsListLocId()})
+      titleLocId = this.getRewardsListLocId() })
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.trophyItem && !this.checkSkipAnim())
       return
 
     base.goBack()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (this.afterFunc)
       this.afterFunc()
   }
 
-  function checkSkipAnim()
-  {
+  function checkSkipAnim() {
     if (this.animFinished)
       return true
 
@@ -514,21 +487,18 @@ register_command(
     return false
   }
 
-  function onOpenAnimFinish()
-  {
+  function onOpenAnimFinish() {
     this.animFinished = true
     if (!this.openChest())
       this.updateButtons()
   }
 
-  function updateRewardItem() //ext item will come later, so need to wait until it received to show button
-  {
+  function updateRewardItem() { //ext item will come later, so need to wait until it received to show button
     if (!this.haveItems || this.isRewardItemActual)
       return false
 
-    foreach(reward in this.configsArray)
-      if (reward?.item)
-      {
+    foreach (reward in this.configsArray)
+      if (reward?.item) {
         this.rewardItem = ::ItemsManager.getInventoryItemById(reward.item)
         if (!this.rewardItem)
           continue
@@ -541,8 +511,7 @@ register_command(
 
   onTimer = @(_obj, _dt) this.updateRewardItem() && this.updateButtons()
 
-  function onGoToItem()
-  {
+  function onGoToItem() {
     this.goBack()
     if (this.canGoToItem())
       ::gui_start_items_list(-1, { curItem = this.rewardItem })

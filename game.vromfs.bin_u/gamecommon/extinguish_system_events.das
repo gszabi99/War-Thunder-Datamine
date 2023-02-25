@@ -1,5 +1,7 @@
 module extinguish_system_events shared
 require ecs
+require DagorMath
+require WTDamageModel
 
 
 // hanled in das
@@ -33,29 +35,7 @@ struct EventExtinguishSystemAddExtinguisherCount
 struct EventExtinguishSystemTurnOffExtinguisher
 {}
 
-[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
-struct EventFireSystemNetSync
-  isBurning : bool
-  crewBusyRemainingTime : float
-  extinguisherRemainingTime : float
-  timeToNextExtinguisher : float
-  extinguisherCount : int
-  data : IntList const?  // part id, fire params id of burning parts
-
 // handled in cpp
-
-[cpp_event(unicast, with_scheme)]
-struct EventFireSystemStopBurn
-{}
-
-[cpp_event(unicast, with_scheme)]
-struct EventFireSystemOnStartBurnNoOffender
-{}
-
-[cpp_event(unicast, with_scheme)]
-struct EventFireSystemStartSingleBurn
-  partId : int
-  fireParamsId : int
 
 [cpp_event(unicast, with_scheme)]
 struct EventExtinguishSystemOnExtinguisherActivate
@@ -72,3 +52,12 @@ struct EventExtinguishSystemNotifyExtinghuished
 [cpp_event(unicast, with_scheme)]
 struct EventExtinguishSystemNotifyCantExtinguish
 {}
+
+
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventExtinguishSystemNetSync
+  crewBusyRemainingTime : float
+  extinguisherRemainingTime : float
+  timeToNextExtinguisher : float
+  extinguisherCount : int

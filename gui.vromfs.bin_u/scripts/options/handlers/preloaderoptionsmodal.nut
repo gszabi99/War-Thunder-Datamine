@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,16 +14,14 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 
-local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
-{
+local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
 
   isHovered = false
   hoveredId = null
   selectedId = null
 
-  function initScreen()
-  {
+  function initScreen() {
     let listboxFilterHolder = this.scene.findObject("listbox_filter_holder")
     this.guiScene.replaceContent(listboxFilterHolder, "%gui/chapter_include_filter.blk", this)
 
@@ -33,8 +32,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     this.updateButtons()
   }
 
-  function fillLoadingScreenList()
-  {
+  function fillLoadingScreenList() {
     let view = { items = [] }
     foreach (screenId in getFilterBgList()) {
       let isUnlocked = isBgUnlocked(screenId)
@@ -59,8 +57,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     ::move_mouse_on_child_by_value(itemsListObj)
   }
 
-  function updateListItems()
-  {
+  function updateListItems() {
     let itemsListObj = this.scene.findObject("items_list")
     let numItems = itemsListObj.childrenCount()
     for (local i = 0; i < numItems; i++) {
@@ -69,18 +66,15 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function updateBg()
-  {
+  function updateBg() {
     animBgLoad(this.selectedId, this.scene.findObject("animated_bg_picture"))
   }
 
-  function updateSelectedListItem()
-  {
+  function updateSelectedListItem() {
     this.scene.findObject(this.selectedId).banned = isLoadingScreenBanned(this.selectedId) ? "yes" : "no"
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
     let isUnlocked = isBgUnlocked(this.selectedId)
     let isBtnVisible = (isMouseMode && this.scene.findObject(this.selectedId).isVisible()) || this.hoveredId == this.selectedId
@@ -107,8 +101,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
   canBan = @() getFilterBgList()
     .filter(@(id) isBgUnlocked(id) && !isLoadingScreenBanned(id)).len() > 1
 
-  function toggleBan()
-  {
+  function toggleBan() {
     if (!this.isValid())
       return
 
@@ -133,14 +126,12 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     this.updateButtons()
   }
 
-  function onItemDblClick()
-  {
+  function onItemDblClick() {
     if (!::show_console_buttons)
       this.toggleBan()
   }
 
-  function onItemHover(obj)
-  {
+  function onItemHover(obj) {
     if (!::show_console_buttons)
       return
 
@@ -153,8 +144,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     this.updateButtons()
   }
 
-  function onItemSelect(_obj)
-  {
+  function onItemSelect(_obj) {
     let itemsListObj = this.scene.findObject("items_list")
     this.selectedId = itemsListObj.getChild(itemsListObj.getValue()).id
 
@@ -162,8 +152,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     this.updateButtons()
   }
 
-  function onFilterEditBoxCancel()
-  {
+  function onFilterEditBoxCancel() {
     let editBoxObj = this.scene.findObject("filter_edit_box")
     if (editBoxObj.getValue() != "")
       editBoxObj.setValue("")
@@ -171,8 +160,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
       this.guiScene.performDelayed(this, @() this.isValid() && this.goBack())
   }
 
-  function onFilterEditBoxChangeValue(obj)
-  {
+  function onFilterEditBoxChangeValue(obj) {
     let value = obj.getValue()
     let searchStr = ::g_string.utf8ToLower(::g_string.trim(value))
     local isFound = false
@@ -196,8 +184,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     this.updateButtons()
   }
 
-  function onEventProfileUpdated(_p)
-  {
+  function onEventProfileUpdated(_p) {
     this.updateListItems()
     this.updateButtons()
   }
@@ -208,4 +195,4 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
 
 ::gui_handlers.PreloaderOptionsModal <- PreloaderOptionsModal
 
-return @(selectedId = null) ::handlersManager.loadHandler(PreloaderOptionsModal, {selectedId})
+return @(selectedId = null) ::handlersManager.loadHandler(PreloaderOptionsModal, { selectedId })

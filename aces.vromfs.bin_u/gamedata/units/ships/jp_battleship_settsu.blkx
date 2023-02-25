@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "canReloadNonGuns": true,
@@ -111,6 +111,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -1905,6 +1913,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -9182,10 +9200,10 @@
     "ship_rangefinder": {},
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     }
   },
   "unitFx": {
@@ -11601,5 +11619,64 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "jp_camo_navy_green",
+      "nameLocId": "skin/jp_camo_navy_green",
+      "descLocId": "skin/jp_camo_navy_green/desc",
+      "replace_tex": [
+        {
+          "from": "camo_warshipgray*",
+          "to": "jp_camo_navy_green*"
+        },
+        {
+          "from": "camo_warshipdeepgray*",
+          "to": "jp_camo_navy_green*"
+        },
+        {
+          "from": "camo_darkbluebottom*",
+          "to": "jp_camo_navy_green*"
+        }
+      ]
+    },
+    {
+      "name": "jp_camo_multicolor",
+      "nameLocId": "skin/jp_camo_multicolor",
+      "descLocId": "skin/jp_camo_multicolor/desc",
+      "replace_tex": [
+        {
+          "from": "camo_warshipgray*",
+          "to": "jp_camo_multicolor*"
+        },
+        {
+          "from": "camo_warshipdeepgray*",
+          "to": "jp_camo_multicolor*"
+        },
+        {
+          "from": "camo_darkbluebottom*",
+          "to": "jp_camo_multicolor*"
+        }
+      ]
+    },
+    {
+      "name": "jp_camo_asiatic_fleet",
+      "nameLocId": "skin/jp_camo_asiatic_fleet",
+      "descLocId": "skin/jp_camo_asiatic_fleet/desc",
+      "replace_tex": [
+        {
+          "from": "camo_warshipgray*",
+          "to": "jp_camo_asiatic_fleet*"
+        },
+        {
+          "from": "camo_warshipdeepgray*",
+          "to": "jp_camo_asiatic_fleet*"
+        },
+        {
+          "from": "camo_darkbluebottom*",
+          "to": "jp_camo_asiatic_fleet*"
+        }
+      ]
+    }
+  ]
 }

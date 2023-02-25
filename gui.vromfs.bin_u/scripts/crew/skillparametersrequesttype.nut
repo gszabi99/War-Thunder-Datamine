@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,8 +14,7 @@ let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
   types = []
 }
 
-::g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit)
-{
+::g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit) {
   if (unit == null)
     return null
 
@@ -29,13 +29,11 @@ let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
   return res
 }
 
-::g_skill_parameters_request_type._getValues <- function _getValues()
-{
+::g_skill_parameters_request_type._getValues <- function _getValues() {
   return {}
 }
 
-::g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit)
-{
+::g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit) {
   if (unit == null)
     return null
   let cacheUid = this.getCachePrefix() + "Selected"
@@ -45,13 +43,11 @@ let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
 
   let values = this.getValues()
   // Filling values request object with selected values if not set already.
-  foreach (memberData in ::crew_skills)
-  {
+  foreach (memberData in ::crew_skills) {
     let valueMemberName = memberData.id
     if (!(valueMemberName in values))
         values[valueMemberName] <- {}
-    foreach (skillData in memberData.items)
-    {
+    foreach (skillData in memberData.items) {
       let valueSkillName = skillData.name
       if (valueSkillName in values[valueMemberName])
         continue
@@ -65,8 +61,7 @@ let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
   return res
 }
 
-::g_skill_parameters_request_type._getCachePrefix <- function _getCachePrefix()
-{
+::g_skill_parameters_request_type._getCachePrefix <- function _getCachePrefix() {
   return "skillParamRqst" + this.typeName
 }
 
@@ -83,19 +78,16 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
   CURRENT_VALUES = {}
 
   BASE_VALUES = {
-    getValues = function ()
-    {
+    getValues = function () {
       let skillsBlk = ::get_skills_blk()
       let calcBlk = skillsBlk?.crew_skills_calc
       if (calcBlk == null)
         return {}
 
       let values = {}
-      foreach (valueMemberName, memberBlk in calcBlk)
-      {
+      foreach (valueMemberName, memberBlk in calcBlk) {
         values[valueMemberName] <- {}
-        foreach (valueSkillName, _skillBlk in memberBlk)
-        {
+        foreach (valueSkillName, _skillBlk in memberBlk) {
           // Gunner's count is maxed-out as a base value.
           // Everything else is zero'ed.
           local value = 0
@@ -110,8 +102,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
   }
 
   CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP = {
-    getValues = function ()
-    {
+    getValues = function () {
       return {
         specialization = ::g_crew_spec_type.BASIC.code
 
@@ -128,8 +119,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
   }
 
   CURRENT_VALUES_NO_LEADERSHIP = {
-    getValues = function ()
-    {
+    getValues = function () {
       return {
         // This skill is same as leadership but related to aircraft unit type.
         gunner = { members = getMaxSkillValue("gunner", "members") }
@@ -144,19 +134,16 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
   }
 
   MAX_VALUES = {
-    getValues = function ()
-    {
+    getValues = function () {
       let skillsBlk = ::get_skills_blk()
       let calcBlk = skillsBlk?.crew_skills_calc
       if (calcBlk == null)
         return {}
 
       let values = {}
-      foreach (valueMemberName, memberBlk in calcBlk)
-      {
+      foreach (valueMemberName, memberBlk in calcBlk) {
         values[valueMemberName] <- {}
-        foreach (valueSkillName, _skillBlk in memberBlk)
-        {
+        foreach (valueSkillName, _skillBlk in memberBlk) {
           let value = getMaxSkillValue(valueMemberName, valueSkillName)
           values[valueMemberName][valueSkillName] <- value
         }

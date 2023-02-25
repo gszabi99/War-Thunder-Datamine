@@ -3,14 +3,16 @@
 
 let { format } = require("string")
 let { toString } = require("%sqStdLibs/helpers/toString.nut")
+let { frnd } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let cubicBezierSolver = require("%globalScripts/cubicBezierSolver.nut")
 
 //version by 27.01.2011
 //works only when time = 0..1,
 // func(0) = 0,  func(1) = 1
 
-let {PI, sin, cos, fabs} = require("math")
+let { PI, sin, cos, fabs } = require("math")
 
 let function basicFunction(funcName, time) { //time >= -1, time <= 1
   if (time < 0)
@@ -18,41 +20,42 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 //    return 1.0 - basicFunction(funcName, 1.0 + time)
 
   local t = time
-  if (t > 1) t = 1.0
+  if (t > 1)
+    t = 1.0
 
-  switch(funcName) {
-    case "square":           return t*t
-    case "squareInv":        return 1.0 - (1.0-time) * (1.0-time)
+  switch (funcName) {
+    case "square":           return t * t
+    case "squareInv":        return 1.0 - (1.0 - time) * (1.0 - time)
     case "delayedSquareInv": return t < 0.5 ? 1.0 - (1.0 - time * 2) * (1.0 - time * 2) : 1.0
-    case "squareSym":        return (t <= 0.5)? 2*t*t : 1.0 - 2*(1.0-time)*(1.0-time)
-    case "cube":             return t*t*t
-    case "cubeInv":          return 1.0 - (1.0-time) * (1.0-time) * (1.0-time)
+    case "squareSym":        return (t <= 0.5) ? 2 * t * t : 1.0 - 2 * (1.0 - time) * (1.0 - time)
+    case "cube":             return t * t * t
+    case "cubeInv":          return 1.0 - (1.0 - time) * (1.0 - time) * (1.0 - time)
 
-    case "elastic":          return ((t < 0.25)? basicFunction("square", 4.0 * t) : 1.0) +
+    case "elastic":          return ((t < 0.25) ? basicFunction("square", 4.0 * t) : 1.0) +
                                     (1.0 - t) * sin(basicFunction("square", t) * 2.0 * PI)
-    case "elasticSmall":     return ((t < 0.25)? basicFunction("square", 4.0 * t) : 1.0) +
+    case "elasticSmall":     return ((t < 0.25) ? basicFunction("square", 4.0 * t) : 1.0) +
                                     0.1 * (1.0 - t) * sin(basicFunction("square", t) * 2.0 * PI)
 
-    case "delayed_square":   return (t <= 0.5)? 0 : 4.0*(t - 0.5)*(t - 0.5)
-    case "projector":        return (t%(1.0/80)) * 80
+    case "delayed_square":   return (t <= 0.5) ? 0 : 4.0 * (t - 0.5) * (t - 0.5)
+    case "projector":        return (t % (1.0 / 80)) * 80
     case "doubleCos":        return 0.5 + 0.5 * cos(4.0 * t * PI)
 
     //cycled function
     case "doubleBlink":      return 0.5 - 0.5 * cos(4 * PI * t)
-    case "blink":            return (t < 0.1)? 10.0*t : 1.0 - (t-0.1)/0.9
+    case "blink":            return (t < 0.1) ? 10.0 * t : 1.0 - (t - 0.1) / 0.9
     case "sin":              return 0.5 + 0.5 * sin((t * 2.0 - 0.5) * PI)
 
-    case "delayed":          return (t > 0.25) ? 1.0 : 4.0*t
-    case "delayedInv":       return (t > 0.75) ? 0.0 : 4.0*(t - 0.75)
+    case "delayed":          return (t > 0.25) ? 1.0 : 4.0 * t
+    case "delayedInv":       return (t > 0.75) ? 0.0 : 4.0 * (t - 0.75)
 
     case "blinkSin":
-      local val = (t < 0.1)? 10.0*t : 1.0 - (t-0.1)/0.9
+      local val = (t < 0.1) ? 10.0 * t : 1.0 - (t - 0.1) / 0.9
       if (t < 0.5)
         val *= 0.75 + 0.25 * sin((t * 80.0 - 0.5) * PI)
       return val
 
     case "blinkCos":
-      local val = (t < 0.1)? 10.0*t : 1.0 - (t-0.1)/0.9
+      local val = (t < 0.1) ? 10.0 * t : 1.0 - (t - 0.1) / 0.9
       if (t < 0.5)
         val *= 0.75 + 0.25 * cos((t * 40.0 - 0.5) * PI)
       return val
@@ -60,7 +63,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     case "rouletteCubicBezier":
       return cubicBezierSolver.solve(t, 0.16, 0, 0.0, 1.0)
     case "rouletteCubicBezierBackFunc":
-      return 1-cubicBezierSolver.solve(1-t, 0.55,0,0.32,1.42)
+      return 1 - cubicBezierSolver.solve(1 - t, 0.55, 0, 0.32, 1.42)
 
     default:              return t  //linear
   }
@@ -73,31 +76,27 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   let blendK = 4.0 * dt / blendTime
   local dX = (newX - curX) * blendK
   if (fabs(dX) < 1)
-    dX = (dX < 0)? -1 : 1
-  return (blendK > 1)? newX : curX + dX
+    dX = (dX < 0) ? -1 : 1
+  return (blendK > 1) ? newX : curX + dX
 }
 
-::gui_bhv_deprecated.basicSize <- class
-{
+::gui_bhv_deprecated.basicSize <- class {
   timerName = "_size-timer"
   timerPID = ::dagui_propid.add_name_id("_size-timer")
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     if (obj.getFloatProp(this.timerPID, -1) < 0)
       obj.setFloatProp(this.timerPID, this.getFloatObjProp(obj, this.timerName, 0))
     obj.sendNotify("activate")
     return RETCODE_NOTHING
   }
 
-  function onDetach(obj)
-  {
+  function onDetach(obj) {
     obj.sendNotify("deactivate")
     return RETCODE_NOTHING
   }
 
-  function onTimer(obj, dt)
-  {
+  function onTimer(obj, dt) {
     let props = this.getProps(obj)
     props.timer <- obj.getFloatProp(this.timerPID, 0)
     props.timerBefore <- props.timer
@@ -105,7 +104,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
     if (props.blink == "yes") {
       props.blink = "now"
-      props.timer = (props.totalTime >= 0)? 0.0 : 1.0
+      props.timer = (props.totalTime >= 0) ? 0.0 : 1.0
     }
 
     props.timer = this.updateTimer(obj, dt, props)
@@ -129,8 +128,8 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 
   function updateProps(obj, dt, p) {  //p - properties config
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    let way = (p.totalTime >= 0) ? 1.0 : -1.0
+    let wayIdx = (p.totalTime >= 0) ? 0 : 1
 
     let curSize = obj.getSize()
 //    local curSize = [null, null] //!!Temporary for testing
@@ -180,16 +179,16 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 
   function updateTimer(obj, dt, p) {  //p - properties config
-    local timer = p.timer + ((p.totalTime == 0)? 0 : dt / p.totalTime)
+    local timer = p.timer + ((p.totalTime == 0) ? 0 : dt / p.totalTime)
 
     if (timer < 0) {
-      timer = (p.cycled)? timer%1 + 1.0 : 0.0
+      timer = (p.cycled) ? timer % 1 + 1.0 : 0.0
 
       if (p.selfRemoveOnFinish < 0)
         this.selfRemove(obj)
     }
     if (timer > 1) {
-      timer = (p.cycled)? timer%1 : 1.0
+      timer = (p.cycled) ? timer % 1 : 1.0
       if (p.selfRemoveOnFinish > 0)
         this.selfRemove(obj)
     }
@@ -199,8 +198,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   function selfRemove(obj) {
     let guiScene = obj.getScene()
     guiScene.performDelayed(this, (@(obj, guiScene) function() {
-      if (obj && obj.isValid())
-      {
+      if (obj && obj.isValid()) {
         obj.sendNotify("end_edit")
         guiScene.destroyElement(obj)
       }
@@ -209,48 +207,42 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
   function getObjProp(obj, name, defaultRes = "") {
     let prop = obj.getFinalProp(name)
-    return (prop)? prop : defaultRes
+    return (prop) ? prop : defaultRes
   }
 
-  function sendNetAssert(err, obj, header)
-  {
-    ::script_net_assert_once("bhvBasic error",
-                             "bhvBasic error (" + header
-                             + ", obj = " + toString(obj)
-                             + "):\n" + err)
+  function sendNetAssert(err, obj, header) {
+    script_net_assert_once("bhvBasic error",
+                             "".concat("bhvBasic error (", header,
+                             ", obj = ", toString(obj)
+                             ,"):\n",err)
+                          )
   }
 
-  function getIntObjProp(obj, name, defaultRes = 0)
-  {
+  function getIntObjProp(obj, name, defaultRes = 0) {
     local res = this.getObjProp(obj, name, defaultRes)
     if (!res)
       return res
 
-    try
-    {
+    try {
       res = res.tointeger()
     }
-    catch (err)
-    {
-      this.sendNetAssert(err, obj, "to integer prop '" + name + "' = '" + res + "' ")
+    catch (err) {
+      this.sendNetAssert(err, obj, $"to integer prop '{name}' = '{res}' ")
       return defaultRes
     }
     return res
   }
 
-  function getFloatObjProp(obj, name, defaultRes = 0.0)
-  {
+  function getFloatObjProp(obj, name, defaultRes = 0.0) {
     local res = this.getObjProp(obj, name, defaultRes)
     if (!res)
       return res
 
-    try
-    {
+    try {
       res = res.tofloat()
     }
-    catch (err)
-    {
-      this.sendNetAssert(err, obj, "to float prop '" + name + "' = '" + res + "' ")
+    catch (err) {
+      this.sendNetAssert(err, obj, $"to float prop '{name }' = '{res}' ")
       return defaultRes
     }
     return res
@@ -258,9 +250,9 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
   function getBoolObjProp(obj, name, defaultRes = false) {
     let p = this.getObjProp(obj, name)
-    if ((p == "yes")||(p == "true")||(p == "1"))
+    if ((p == "yes") || (p == "true") || (p == "1"))
       return true
-    if ((p == "no")||(p == "false")||(p == "0"))
+    if ((p == "no") || (p == "false") || (p == "0"))
       return false
     return defaultRes
   }
@@ -271,7 +263,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     if (scaleType == "")
       return [1.0, 1.0]
 
-    if ((scaleType == "p")||(scaleType == "parent")) {
+    if ((scaleType == "p") || (scaleType == "parent")) {
       let pSize = obj.getParent().getSize()
       return [0.01 * pSize[0], 0.01 * pSize[1]]
     }
@@ -289,10 +281,10 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     let rootObj = obj.getScene().getRoot()
     let rootSize = rootObj.getSize()
 
-    if ((scaleType == "sh")||(scaleType == "screenheight"))
+    if ((scaleType == "sh") || (scaleType == "screenheight"))
       return [0.01 * rootSize[1], 0.01 * rootSize[1]]
 
-    if ((scaleType == "s")||(scaleType == "screen"))
+    if ((scaleType == "s") || (scaleType == "screen"))
       return [0.01 * rootSize[0], 0.01 * rootSize[1]]
 
     return [1.0, 1.0]
@@ -301,15 +293,14 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   eventMask = EV_TIMER
 }
 
-::gui_bhv_deprecated.basicPos <- class extends ::gui_bhv_deprecated.basicSize
-{
+::gui_bhv_deprecated.basicPos <- class extends ::gui_bhv_deprecated.basicSize {
   timerName = "_pos-timer"
   timerPID = ::dagui_propid.add_name_id("_pos-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
     let parentObj = obj.getParent()
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    let way = (p.totalTime >= 0) ? 1.0 : -1.0
+    let wayIdx = (p.totalTime >= 0) ? 0 : 1
 
     let objSize = obj.getSize()
     let parentSize = parentObj.getSize()
@@ -340,15 +331,13 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     props.hRel <- "left"
 
 
-    if (hStart == null && hEnd == null)
-    {
+    if (hStart == null && hEnd == null) {
       hStart = this.getFloatObjProp(obj, "right-base")
       hEnd   = this.getFloatObjProp(obj, "right-end")
       if (hStart != hEnd)
         props.hRel <- "right"
     }
-    else
-    {
+    else {
       hStart = hStart ?? 0.0
       hEnd  = hEnd ?? 0.0
     }
@@ -357,15 +346,13 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     local vEnd   = this.getFloatObjProp(obj, "top-end", null)
     props.vRel <- "top"
 
-    if (vStart == null && vEnd == null)
-    {
+    if (vStart == null && vEnd == null) {
       vStart = this.getFloatObjProp(obj, "bottom-base")
       vEnd   = this.getFloatObjProp(obj, "bottom-end")
       if (vStart != vEnd)
         props.vRel <- "bottom"
     }
-    else
-    {
+    else {
       vStart = vStart ?? 0.0
       vEnd = vEnd ?? 0.0
     }
@@ -387,14 +374,13 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.basicTransparency <- class extends ::gui_bhv_deprecated.basicSize
-{
+::gui_bhv_deprecated.basicTransparency <- class extends ::gui_bhv_deprecated.basicSize {
   timerName = "_transp-timer"
   timerPID = ::dagui_propid.add_name_id("_transp-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    let way = (p.totalTime >= 0) ? 1.0 : -1.0
+    let wayIdx = (p.totalTime >= 0) ? 0 : 1
 
     let trNew = this.countProp(p.trBase, p.trEnd, p.func[wayIdx], p.timer * way)
 
@@ -425,19 +411,18 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
 //Works just like ::gui_bhv_deprecated.basicTransparency.
 //But all objects with same periods will winkign synchronously.
-::gui_bhv_deprecated.syncTransparency <- class extends ::gui_bhv_deprecated.basicTransparency
-{
+::gui_bhv_deprecated.syncTransparency <- class extends ::gui_bhv_deprecated.basicTransparency {
   function updateTimer(obj, _dt, p) {  //p - properties config
     local timer = ((get_time_msec().tofloat() / 1000) % p.totalTime) / p.totalTime
 
     if (timer < 0) {
-      timer = (p.cycled)? timer%1 + 1.0 : 0.0
+      timer = (p.cycled) ? timer % 1 + 1.0 : 0.0
 
       if (p.selfRemoveOnFinish < 0)
         this.selfRemove(obj)
     }
     if (timer > 1) {
-      timer = (p.cycled)? timer%1 : 1.0
+      timer = (p.cycled) ? timer % 1 : 1.0
       if (p.selfRemoveOnFinish > 0)
         this.selfRemove(obj)
     }
@@ -446,21 +431,18 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 }
 
 //Applied to all childs too. e careful using it.
-::gui_bhv_deprecated.massTransparency <- class extends ::gui_bhv_deprecated.basicTransparency
-{
+::gui_bhv_deprecated.massTransparency <- class extends ::gui_bhv_deprecated.basicTransparency {
   last_transp_PID = ::dagui_propid.add_name_id("_last_transp")
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     obj.sendNotify("activate")
     this.onTimer(obj, 0.0)
     return RETCODE_NOTHING
   }
 
-  function updateProps(obj, dt, p)
-  {
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+  function updateProps(obj, dt, p) {
+    let way = (p.totalTime >= 0) ? 1.0 : -1.0
+    let wayIdx = (p.totalTime >= 0) ? 0 : 1
 
     local transpNew = this.countProp(p.trBase, p.trEnd, p.func[wayIdx], p.timer * way)
     transpNew = clamp(transpNew, 0, 255)
@@ -475,8 +457,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     this.setTranspRecursive(obj, transpNew.tostring())
   }
 
-  function setTranspRecursive(obj, value)
-  {
+  function setTranspRecursive(obj, value) {
     obj.set_prop_latent("color-factor", value)
     obj.updateRendElem()
 
@@ -486,8 +467,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::updateTransparencyRecursive <- function updateTransparencyRecursive(obj, transpNew)
-{
+::updateTransparencyRecursive <- function updateTransparencyRecursive(obj, transpNew) {
   let last_transp_PID = ::dagui_propid.add_name_id("_last_transp")
 
   obj.setIntProp(last_transp_PID, transpNew.tointeger())
@@ -495,18 +475,17 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   obj.updateRendElem()
 
   let totalObjs = obj.childrenCount()
-  for(local i = 0; i < totalObjs; i++)
+  for (local i = 0; i < totalObjs; i++)
     ::updateTransparencyRecursive(obj.getChild(i), transpNew.tostring())
 }
 
-::gui_bhv_deprecated.basicRotation <- class extends ::gui_bhv_deprecated.basicSize
-{
+::gui_bhv_deprecated.basicRotation <- class extends ::gui_bhv_deprecated.basicSize {
   timerName = "_rot-timer"
   timerPID = ::dagui_propid.add_name_id("_rot-timer")
 
   function updateProps(obj, dt, p) {  //p - properties config
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    let way = (p.totalTime >= 0) ? 1.0 : -1.0
+    let wayIdx = (p.totalTime >= 0) ? 0 : 1
 
     let rotNew = this.countProp(p.rotBase, p.rotEnd, p.func[wayIdx], p.timer * way, 1.0, obj)
 
@@ -535,13 +514,11 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.basicFontSize <- class extends ::gui_bhv_deprecated.basicSize
-{
+::gui_bhv_deprecated.basicFontSize <- class extends ::gui_bhv_deprecated.basicSize {
   timerName = "_size-timer"
   timerPID = ::dagui_propid.add_name_id("_size-timer")
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     obj.sendNotify("activate")
     this.onTimer(obj, 0.0)
     return RETCODE_NOTHING
@@ -550,8 +527,8 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   function updateProps(obj, dt, p) {  //p - properties config
     base.updateProps(obj, dt, p)
 
-    let way = (p.totalTime >= 0)? 1.0 : -1.0
-    let wayIdx = (p.totalTime >= 0)? 0 : 1
+    let way = (p.totalTime >= 0) ? 1.0 : -1.0
+    let wayIdx = (p.totalTime >= 0) ? 0 : 1
 
     local fontHtNew = this.countProp(p.fontHtBase, p.fontHtEnd, p.func[wayIdx], p.timer * way, p.scaleK[1])
     fontHtNew = (::blendProp(p.fontHtCur, fontHtNew, p.blendTime, dt)).tointeger()
@@ -559,8 +536,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
       this.setFontHt(obj, fontHtNew)
   }
 
-  function setFontHt(obj, fontHt)
-  {
+  function setFontHt(obj, fontHt) {
     obj["font-ht"] = fontHt
   }
 
@@ -575,27 +551,24 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.basicFontSizeTextArea <- class extends ::gui_bhv_deprecated.basicFontSize
-{
-  function setFontHt(obj, fontHt)
-  {
+::gui_bhv_deprecated.basicFontSizeTextArea <- class extends ::gui_bhv_deprecated.basicFontSize {
+  function setFontHt(obj, fontHt) {
     obj.set_prop_latent("font-ht", fontHt)
     obj.setValue(obj.getValueStr()) //no other way to correct recount text area on change font-ht
   }
 }
 
-::gui_bhv_deprecated.motionCursor <- class extends ::gui_bhv_deprecated.basicSize
-{
+::gui_bhv_deprecated.motionCursor <- class extends ::gui_bhv_deprecated.basicSize {
   function updateProps(obj, dt, p) {
     base.updateProps(obj, dt, p)
     let clicked = this.getBoolObjProp(obj, "clicked", false)
 
-    if ((!clicked)&&(p.timer >= 1.0)) {
+    if ((!clicked) && (p.timer >= 1.0)) {
       obj["clicked"] = "yes"
       this.mouseClick(obj, true)
       return
     }
-    if (clicked&&(p.timer <= 0.0)) {
+    if (clicked && (p.timer <= 0.0)) {
       obj["clicked"] = "no"
       this.mouseClick(obj, false)
     }
@@ -613,8 +586,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
 }
 
-::gui_bhv_deprecated.motionCursorField <- class extends ::gui_bhv_deprecated.basicSize
-{
+::gui_bhv_deprecated.motionCursorField <- class extends ::gui_bhv_deprecated.basicSize {
   function onMouseMove(obj, mx, my, _bits) {
     if (obj.childrenCount() >= 1) {
       let cursor = obj.getChild(0)
@@ -622,7 +594,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
       if (!clicked) {
         let dev = [this.getFloatObjProp(cursor, "_last-x") - mx, this.getFloatObjProp(cursor, "_last-y") - my]
         let rootHeight = obj.getScene().getRoot().getSize()[1]
-        if ((dev[0]*dev[0] + dev[1]*dev[1]) > (this.maxDeviationSq * rootHeight*rootHeight)) {
+        if ((dev[0] * dev[0] + dev[1] * dev[1]) > (this.maxDeviationSq * rootHeight * rootHeight)) {
           cursor.setFloatProp(this.timerPID, 0)
           cursor["_last-x"] = mx.tointeger().tostring()
           cursor["_last-y"] = my.tointeger().tostring()
@@ -643,28 +615,27 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
 ::gui_bhv_deprecated.shakePos <- class extends ::gui_bhv_deprecated.basicPos { //-similar-assigned-expr
   function countProp(propBase, propEnd, func, timer, scale, obj) {
-    if ((timer==0)||(timer==1))
+    if ((timer == 0) || (timer == 1))
       return base.countProp(propBase, propEnd, func, timer, scale, obj)
 
     let deviation = this.getIntObjProp(obj, "deviation")
-    let value = 0.01 * deviation * (2.0 * ::math.frnd() - 1.0)
+    let value = 0.01 * deviation * (2.0 * frnd() - 1.0)
     return scale * (propBase + (propEnd - propBase) * value)
   }
 }
 
 ::gui_bhv_deprecated.shakeRotation <- class extends ::gui_bhv_deprecated.basicRotation { //-similar-assigned-expr
   function countProp(propBase, propEnd, func, timer, scale, obj) {
-    if ((timer==0)||(timer==1))
+    if ((timer == 0) || (timer == 1))
       return base.countProp(propBase, propEnd, func, timer, scale, obj)
 
     let deviation = this.getIntObjProp(obj, "deviation")
-    let value = 0.01 * deviation * (2.0 * ::math.frnd() - 1.0)
+    let value = 0.01 * deviation * (2.0 * frnd() - 1.0)
     return scale * (propBase + (propEnd - propBase) * value)
   }
 }
 
-::gui_bhv_deprecated.multiLayerImage <- class extends ::gui_bhv_deprecated.basicSize
-{
+::gui_bhv_deprecated.multiLayerImage <- class extends ::gui_bhv_deprecated.basicSize {
   eventMask = EV_TIMER
   last_mx_PID = ::dagui_propid.add_name_id("last_mx")
   rotationBasePID = ::dagui_propid.add_name_id("_rotation_base")
@@ -678,8 +649,7 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
   }
   */
 
-  function onTimer(obj, dt)
-  {
+  function onTimer(obj, dt) {
     let mx = ::get_dagui_mouse_cursor_pos_RC()[0]
     local objMx = obj.getIntProp(this.last_mx_PID, 0)
     if (objMx == mx)
@@ -692,20 +662,19 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
     return RETCODE_NOTHING
   }
 
-  function updateChilds(obj, mx, _my)
-  {
+  function updateChilds(obj, mx, _my) {
     let rootSize = obj.getScene().getRoot().getSize()
-    if (mx < 0) mx = 0
-    if (mx > rootSize[0]) mx = rootSize[0]
+    if (mx < 0)
+      mx = 0
+    if (mx > rootSize[0])
+      mx = rootSize[0]
     let deviation = mx.tofloat() - 0.5 * rootSize[0]
 
     let totalObjs = obj.childrenCount()
-    for(local i = 0; i<totalObjs; i++)
-    {
+    for (local i = 0; i < totalObjs; i++) {
       let layerObj = obj.getChild(i)
       let sens = 0.01 * this.getFloatObjProp(layerObj, "layerSensitivity")
-      if (sens != 0)
-      {
+      if (sens != 0) {
         layerObj.set_prop_latent("left", (sens * deviation).tointeger().tostring())
         //layerObj.updateRendElem()
         //layerObj.recalcSize()
@@ -713,11 +682,9 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
       }
 
       let rotSens = 0.01 * this.getFloatObjProp(layerObj, "rotation-sensitivity")
-      if (rotSens != 0)
-      {
+      if (rotSens != 0) {
         local rotBase = layerObj.getFloatProp(this.rotationBasePID)
-        if (rotBase == null)
-        {
+        if (rotBase == null) {
           rotBase = this.getFloatObjProp(layerObj, "rotation")
           layerObj.setFloatProp(this.rotationBasePID, rotBase)
         }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -33,8 +34,7 @@ let canUseIngameShop = @() isPlatformSony && hasFeature("PS4IngameShop")
 local haveItemDiscount = null
 
 // Calls on finish updating skus extended info
-let onFinishCollectData = function(v_categoriesData = null)
-{
+let onFinishCollectData = function(v_categoriesData = null) {
   if (!canUseIngameShop())
     return
 
@@ -42,8 +42,7 @@ let onFinishCollectData = function(v_categoriesData = null)
   isFinishedUpdateItems = true
   haveItemDiscount = null
 
-  if (invalidateSeenList)
-  {
+  if (invalidateSeenList) {
     visibleSeenIds.clear()
     seenList.onListChanged()
   }
@@ -56,7 +55,7 @@ let onFinishCollectData = function(v_categoriesData = null)
 
   //Must call in the end
   log("PSN: Shop Data: Finish update items info")
-  ::broadcastEvent("Ps4ShopDataUpdated", {isLoadingInProgress = false})
+  ::broadcastEvent("Ps4ShopDataUpdated", { isLoadingInProgress = false })
 }
 
 let filterFunc = function(label) {
@@ -66,34 +65,28 @@ let filterFunc = function(label) {
 }
 
 local isCategoriesInitedOnce = false
-let initPs4CategoriesAfterLogin = function()
-{
-  if (!isCategoriesInitedOnce && canUseIngameShop())
-  {
+let initPs4CategoriesAfterLogin = function() {
+  if (!isCategoriesInitedOnce && canUseIngameShop()) {
     persistent.categoriesData.reset()
 
     isCategoriesInitedOnce = true
     invalidateSeenList = true
     isFinishedUpdateItems = false
-    ::broadcastEvent("Ps4ShopDataUpdated", {isLoadingInProgress = true})
+    ::broadcastEvent("Ps4ShopDataUpdated", { isLoadingInProgress = true })
 
     storeData.request(onFinishCollectData, filterFunc)
   }
 }
 
 
-let getVisibleSeenIds = function()
-{
-  if (isFinishedUpdateItems && !visibleSeenIds.len() && persistent.categoriesData.blockCount() && persistent.itemsList.len())
-  {
-    for (local i = 0; i < persistent.categoriesData.blockCount(); i++)
-    {
+let getVisibleSeenIds = function() {
+  if (isFinishedUpdateItems && !visibleSeenIds.len() && persistent.categoriesData.blockCount() && persistent.itemsList.len()) {
+    for (local i = 0; i < persistent.categoriesData.blockCount(); i++) {
       let productsList = persistent.categoriesData.getBlock(i)?.links
       if (productsList == null)
         continue
 
-      for (local j = 0; j < productsList.blockCount(); j++)
-      {
+      for (local j = 0; j < productsList.blockCount(); j++) {
         let item = getShopItem(productsList.getBlock(j).getBlockName())
         if (!item)
           continue
@@ -108,8 +101,7 @@ let getVisibleSeenIds = function()
 
 seenList.setListGetter(getVisibleSeenIds)
 
-let haveAnyItemWithDiscount = function()
-{
+let haveAnyItemWithDiscount = function() {
   if (!persistent.itemsList.len())
     return false
 
@@ -118,8 +110,7 @@ let haveAnyItemWithDiscount = function()
 
   haveItemDiscount = false
   foreach (item in persistent.itemsList)
-    if (item.haveDiscount())
-    {
+    if (item.haveDiscount()) {
       haveItemDiscount = true
       break
     }
@@ -127,13 +118,11 @@ let haveAnyItemWithDiscount = function()
   return haveItemDiscount
 }
 
-let haveDiscount = function()
-{
+let haveDiscount = function() {
   if (!canUseIngameShop())
     return false
 
-  if (!isCategoriesInitedOnce)
-  {
+  if (!isCategoriesInitedOnce) {
     initPs4CategoriesAfterLogin()
     return false
   }
@@ -145,8 +134,7 @@ let haveDiscount = function()
 // We can remake on array of item labels,
 // but for now require only for single item at once.
 let function onSuccessCb(itemsArray) {
-  foreach (itemData in itemsArray)
-  {
+  foreach (itemData in itemsArray) {
     let itemId = itemData.label
     let shopItem = getShopItem(itemId)
 
@@ -157,8 +145,7 @@ let function onSuccessCb(itemsArray) {
   ::broadcastEvent("PS4IngameShopUpdate")
 }
 
-let updateSpecificItemInfo = function(id)
-{
+let updateSpecificItemInfo = function(id) {
   storeData.updateSpecificItemInfo([id], onSuccessCb)
 }
 

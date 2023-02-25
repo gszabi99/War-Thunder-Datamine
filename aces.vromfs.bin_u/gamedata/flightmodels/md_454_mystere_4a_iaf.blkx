@@ -2361,6 +2361,11 @@
         }
       },
       {
+        "name": "md_454_mystere_4a_iaf_4x_380l_fire_bombs",
+        "blk": "gameData/flightModels/weaponPresets/md_454_mystere_4a_iaf_4x_380l_fire_bombs.blk",
+        "reqModification": "il_m380l_mk2"
+      },
+      {
         "name": "md_454_mystere_4a_iaf_matra101_2x500",
         "blk": "gameData/flightModels/weaponPresets/md_454_mystere_4a_iaf_matra101_2x500.blk",
         "reqModification": [
@@ -3285,20 +3290,46 @@
     "turnTime": 24.0
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "hydravlic_power": {
+      "tier": 1,
+      "modClass": "lth",
       "effects": {
         "aileronBooster": 0.9,
         "elevatorBooster": 0.9
       }
     },
-    "hp_105_jet": {},
-    "g_suit": {},
     "new_compressor_jet": {
-      "tier": 1
+      "prevModification": "hydravlic_power",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105_jet": {
+      "prevModification": "new_compressor_jet",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "g_suit": {
+      "tier": 4,
+      "modClass": "armor"
     },
     "aden_air_targets": {},
     "aden_ground_targets": {},
@@ -3309,6 +3340,10 @@
     "aden_new_gun": {
       "reqModification": "aden_belt_pack",
       "tier": 3
+    },
+    "il_m380l_mk2": {
+      "tier": 1,
+      "modClass": "weapon"
     },
     "is_250_50_gp": {
       "modClass": "weapon",

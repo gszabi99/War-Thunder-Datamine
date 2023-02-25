@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -15,7 +16,7 @@ let function getXboxChatEnableStatus(needOverlayMessage = false) {
     return XBOX_COMMUNICATIONS_ALLOWED
 
   if (xboxChatEnabledCache == null || (needOverlayMessage && xboxChatEnabledCache == XBOX_COMMUNICATIONS_BLOCKED))
-    xboxChatEnabledCache = ::can_use_text_chat_with_target("", needOverlayMessage)//myself, block by parent advisory
+    xboxChatEnabledCache = ::can_use_text_chat_with_target("", needOverlayMessage) //myself, block by parent advisory
   return xboxChatEnabledCache
 }
 
@@ -60,8 +61,7 @@ let function isChatEnableWithPlayer(playerName) { //when you have contact, you c
 
 let function attemptShowOverlayMessage(playerName, needCheckInvite = false) { //tries to display Xbox overlay message
   let contact = ::Contact.getByName(playerName)
-  if (contact)
-  {
+  if (contact) {
     if (needCheckInvite)
       contact.canInvite(true)
     else

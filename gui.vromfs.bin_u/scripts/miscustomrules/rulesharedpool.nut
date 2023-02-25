@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,15 +8,12 @@ from "%scripts/dagui_library.nut" import *
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
-::mission_rules.SharedPool <- class extends ::mission_rules.Base
-{
-  function getMaxRespawns()
-  {
+::mission_rules.SharedPool <- class extends ::mission_rules.Base {
+  function getMaxRespawns() {
     return getTblValue("playerMaxSpawns", this.getMyTeamDataBlk(), ::RESPAWNS_UNLIMITED)
   }
 
-  function getLeftRespawns()
-  {
+  function getLeftRespawns() {
     let maxRespawns = this.getMaxRespawns()
     if (maxRespawns == ::RESPAWNS_UNLIMITED)
       return ::RESPAWNS_UNLIMITED
@@ -25,8 +23,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return max(0, maxRespawns - usedSpawns)
   }
 
-  function getRespawnInfoTextForUnit(unit)
-  {
+  function getRespawnInfoTextForUnit(unit) {
     let res = base.getRespawnInfoTextForUnit(unit)
     if (!unit)
       return res
@@ -35,8 +32,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return res + ((res.len() && limitText.len()) ? loc("ui/comma") : "") + limitText
   }
 
-  function getSpecialCantRespawnMessage(unit)
-  {
+  function getSpecialCantRespawnMessage(unit) {
     let expClassName = unit.expClass.getExpClass()
     let activeAtOnce = this.getActiveAtOnceExpClass(expClassName)
     if (activeAtOnce != ::RESPAWNS_UNLIMITED
@@ -54,8 +50,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return null
   }
 
-  function getExpClassLimitTextByUnit(unit)
-  {
+  function getExpClassLimitTextByUnit(unit) {
     let expClassName = unit.expClass.getExpClass()
     let activeAtOnce = this.getActiveAtOnceExpClass(expClassName)
     if (activeAtOnce == ::RESPAWNS_UNLIMITED)
@@ -69,26 +64,22 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return limit.getText()
   }
 
-  function hasCustomUnitRespawns()
-  {
+  function hasCustomUnitRespawns() {
     let myTeamDataBlk = this.getMyTeamDataBlk()
     return "limitedUnits" in myTeamDataBlk || "unlimitedUnits" in myTeamDataBlk
            || "limitedClasses" in myTeamDataBlk || "limitedTags" in myTeamDataBlk
            || "limitedActiveClasses" in myTeamDataBlk
   }
 
-  function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk)
-  {
+  function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk) {
     if (!unit)
       return 0
 
     local res = ::RESPAWNS_UNLIMITED
     let limitedClasses = getTblValue("limitedClasses", teamDataBlk)
-    if (::u.isDataBlock(limitedClasses))
-    {
+    if (::u.isDataBlock(limitedClasses)) {
       let total = limitedClasses.paramCount()
-      for(local i = 0; i < total; i++)
-      {
+      for (local i = 0; i < total; i++) {
         let expClassName = limitedClasses.getParamName(i)
         let expClass = getUnitClassTypeByExpClass(expClassName)
         if (expClass != unit.expClass)
@@ -100,10 +91,9 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     }
 
     let limitedTags = getTblValue("limitedTags", teamDataBlk)
-    if (::u.isDataBlock(limitedTags))
-    {
+    if (::u.isDataBlock(limitedTags)) {
       let total = limitedTags.paramCount()
-      for(local i = 0; i < total; i++)
+      for (local i = 0; i < total; i++)
         if (isInArray(limitedTags.getParamName(i), unit.tags))
           res = this.minRespawns(res, limitedTags.getParamValue(i))
     }
@@ -120,19 +110,16 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return res
   }
 
-  function calcFullUnitLimitsData(_isTeamMine = true)
-  {
+  function calcFullUnitLimitsData(_isTeamMine = true) {
     let res = base.calcFullUnitLimitsData()
 
     let myTeamDataBlk = this.getMyTeamDataBlk()
     res.defaultUnitRespawnsLeft = "unlimitedUnits" in myTeamDataBlk ? 0 : ::RESPAWNS_UNLIMITED
 
     let limitedClasses = getTblValue("limitedClasses", myTeamDataBlk)
-    if (::u.isDataBlock(limitedClasses))
-    {
+    if (::u.isDataBlock(limitedClasses)) {
       let total = limitedClasses.paramCount()
-      for(local i = 0; i < total; i++)
-      {
+      for (local i = 0; i < total; i++) {
         let expClassName = limitedClasses.getParamName(i)
         if (getUnitClassTypeByExpClass(expClassName).isValid())
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitExpClass(expClassName, limitedClasses.getParamValue(i)))
@@ -140,17 +127,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     }
 
     let limitedTags = getTblValue("limitedTags", myTeamDataBlk)
-    if (::u.isDataBlock(limitedTags))
-    {
+    if (::u.isDataBlock(limitedTags)) {
       let total = limitedTags.paramCount()
-      for(local i = 0; i < total; i++)
-      {
+      for (local i = 0; i < total; i++) {
         let tag = limitedTags.getParamName(i)
         let respLeft = limitedTags.getParamValue(i)
 
         let unitType = unitTypes.getByTag(tag)
-        if (unitType != unitTypes.INVALID)
-        {
+        if (unitType != unitTypes.INVALID) {
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
           continue
         }
@@ -164,27 +148,24 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     let unitsGroups = this.getUnitsGroups()
     local blk = getTblValue("limitedUnits", myTeamDataBlk)
     if (::u.isDataBlock(blk))
-      for(local i = 0; i < blk.paramCount(); i++)
+      for (local i = 0; i < blk.paramCount(); i++)
         res.unitLimits.append(::g_unit_limit_classes.LimitByUnitName(blk.getParamName(i), blk.getParamValue(i),
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
     blk = getTblValue("unlimitedUnits", myTeamDataBlk)
     if (::u.isDataBlock(blk))
-      for(local i = 0; i < blk.paramCount(); i++)
+      for (local i = 0; i < blk.paramCount(); i++)
         res.unitLimits.append(::g_unit_limit_classes.LimitByUnitName(blk.getParamName(i), ::RESPAWNS_UNLIMITED,
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
     let activeLimitsBlk = getTblValue("limitedActiveClasses", myTeamDataBlk)
-    if (::u.isDataBlock(activeLimitsBlk))
-    {
+    if (::u.isDataBlock(activeLimitsBlk)) {
       let limitByExpClassName = {}
       let total = activeLimitsBlk.paramCount()
-      for(local i = 0; i < total; i++)
-      {
+      for (local i = 0; i < total; i++) {
         local value = activeLimitsBlk.getParamValue(i)
         local expClassName = activeLimitsBlk.getParamName(i)
-        if (::g_string.endsWith(expClassName, "_perc"))
-        {
+        if (::g_string.endsWith(expClassName, "_perc")) {
           value = this.getAmountByTeamPercent(value)
           expClassName = expClassName.slice(0, expClassName.len() - 5)
         }
@@ -195,7 +176,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       }
 
       let activeBlk = getTblValue("activeClasses", myTeamDataBlk)
-      foreach(expClassName, maxAmount in limitByExpClassName)
+      foreach (expClassName, maxAmount in limitByExpClassName)
         res.unitLimits.append(
           ::g_unit_limit_classes.ActiveLimitByUnitExpClass(
             expClassName,
@@ -208,13 +189,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return res
   }
 
-  function getAmountByTeamPercent(percent)
-  {
+  function getAmountByTeamPercent(percent) {
     return ((percent * ::get_mplayers_count(::get_mp_local_team(), false)) / 100).tointeger()
   }
 
-  function getActiveAtOnceExpClass(expClassName)
-  {
+  function getActiveAtOnceExpClass(expClassName) {
     local res = ::RESPAWNS_UNLIMITED
     let activeLimitsBlk = getTblValue("limitedActiveClasses", this.getMyTeamDataBlk())
     if (!activeLimitsBlk)
@@ -227,8 +206,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return res
   }
 
-  function getCurActiveExpClassAmount(expClassName)
-  {
+  function getCurActiveExpClassAmount(expClassName) {
     let activeBlk = getTblValue("activeClasses", this.getMyTeamDataBlk())
     return getTblValue(expClassName, activeBlk, 0)
   }

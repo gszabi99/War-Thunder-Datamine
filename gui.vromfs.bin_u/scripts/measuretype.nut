@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -51,13 +52,11 @@ enums.addTypesByGlobalName("g_measure_type", {
   UNKNOWN = {
     name = "unknown"
 
-    getMeasureUnitsText = function (value, ...)
-    {
+    getMeasureUnitsText = function (value, ...) {
       return value.tostring()
     }
 
-    getMeasureUnitsName = function ()
-    {
+    getMeasureUnitsName = function () {
       return ""
     }
   }
@@ -129,8 +128,7 @@ enums.addTypesByGlobalName("g_measure_type", {
   HOURS = {
     name = "hours"
 
-    getMeasureUnitsText = function (value, ...)
-    {
+    getMeasureUnitsText = function (value, ...) {
       return time.hoursToString(value, true)
     }
 
@@ -160,9 +158,8 @@ enums.addTypesByGlobalName("g_measure_type", {
 
   PERCENT_FLOAT = {
     name = "percent_float"
-    getMeasureUnitsText = function(value, addMeasureUnits = true, _forceMaxPrecise = false)
-    {
-      return (100.0 * value + 0.5).tointeger() + (addMeasureUnits? this.getMeasureUnitsName() : "")
+    getMeasureUnitsText = function(value, addMeasureUnits = true, _forceMaxPrecise = false) {
+      return (100.0 * value + 0.5).tointeger() + (addMeasureUnits ? this.getMeasureUnitsName() : "")
     }
 
     getMeasureUnitsLocKey = @() "measureUnits/percent"
@@ -172,8 +169,7 @@ enums.addTypesByGlobalName("g_measure_type", {
     name = "file_size"
     unitFactorStep = 1024
     unitNamesList = ["KB", "MB", "GB", "TB"]
-    getMeasureUnitsText = function(value, addMeasureUnits = true, forceMaxPrecise = false)
-    {
+    getMeasureUnitsText = function(value, addMeasureUnits = true, forceMaxPrecise = false) {
       if (forceMaxPrecise || !addMeasureUnits)
         return ceil(value).tointeger() + (addMeasureUnits ? " " + this.getMeasureUnitsName() : "")
 
@@ -181,8 +177,7 @@ enums.addTypesByGlobalName("g_measure_type", {
       local sizeInUnits = ceil(value.tofloat() / this.unitFactorStep)
 
       local usedUnitIdx = 0
-      while (sizeInUnits >= this.unitFactorStep && usedUnitIdx < this.unitNamesList.len() - 1)
-      {
+      while (sizeInUnits >= this.unitFactorStep && usedUnitIdx < this.unitNamesList.len() - 1) {
         sizeInUnits = ceil(sizeInUnits.tofloat() / this.unitFactorStep)
         usedUnitIdx++
       }
@@ -194,12 +189,10 @@ enums.addTypesByGlobalName("g_measure_type", {
   }
 })
 
-::g_measure_type.getTypeByName <- function getTypeByName(name, createIfNotFound = false)
-{
+::g_measure_type.getTypeByName <- function getTypeByName(name, createIfNotFound = false) {
   local res = enums.getCachedType("name", name, ::g_measure_type_cache.byName,
                                       ::g_measure_type, ::g_measure_type.UNKNOWN)
-  if (res == ::g_measure_type.UNKNOWN && createIfNotFound)
-  {
+  if (res == ::g_measure_type.UNKNOWN && createIfNotFound) {
     res = ::inherit_table(::g_measure_type.template, { name = name })
     this.types.append(res)
   }

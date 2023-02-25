@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "smokeScreenActivateTime": 5.0,
@@ -122,6 +122,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -3260,6 +3268,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -14896,10 +14914,10 @@
     },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_rangefinder": {},
     "ship_supportPlane": {}
@@ -16431,5 +16449,52 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "usa_camo_navy_blue",
+      "nameLocId": "skin/usa_camo_navy_blue",
+      "descLocId": "skin/usa_camo_navy_blue/desc",
+      "replace_tex": [
+        {
+          "from": "camo_b15*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_navy_blue*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_atlanticocean",
+      "nameLocId": "skin/usa_camo_atlanticocean",
+      "descLocId": "skin/usa_camo_atlanticocean/desc",
+      "replace_tex": [
+        {
+          "from": "camo_b15*",
+          "to": "usa_camo_atlanticocean*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_atlanticocean*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_pacificfleet",
+      "nameLocId": "skin/usa_camo_pacificfleet",
+      "descLocId": "skin/usa_camo_pacificfleet/desc",
+      "replace_tex": [
+        {
+          "from": "camo_b15*",
+          "to": "usa_camo_pacificfleet*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_pacificfleet*"
+        }
+      ]
+    }
+  ]
 }

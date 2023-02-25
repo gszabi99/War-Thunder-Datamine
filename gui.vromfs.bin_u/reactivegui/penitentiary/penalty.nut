@@ -19,7 +19,7 @@ let function isDevoiced() {
 let function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
   let txts = []
   if (currentPenaltyDesc.value.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
-    txts.append(loc("charServer/mute/permanent"),"\n")
+    txts.append(loc("charServer/mute/permanent"), "\n")
   }
   else {
     local durationTime = time.roundTime(time.secondsToTime(currentPenaltyDesc.value.duration))

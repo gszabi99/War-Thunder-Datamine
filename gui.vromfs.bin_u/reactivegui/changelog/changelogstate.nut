@@ -3,7 +3,7 @@ let { subscribe, send } = require("eventbus")
 
 let versions = persist("versions", @() Watched([]))
 let chosenPatchnoteContent = persist("chosenPatchnoteContent",
-  @() Watched({title = "", text = ""}))
+  @() Watched({ title = "", text = "" }))
 let chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @() Watched(false))
 let patchnotesReceived = persist("patchnotesReceived", @() Watched(false))
 let curPatchnote = persist("curPatchnote", @() Watched(null))

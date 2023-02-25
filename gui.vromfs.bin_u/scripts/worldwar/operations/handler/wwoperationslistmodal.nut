@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,8 +12,7 @@ let { actionWithGlobalStatusRequest,
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
 
@@ -25,8 +25,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   descHandlerWeak = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.map)
       return this.goBack()
 
@@ -38,13 +37,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.fillOperationList()
   }
 
-  function getOpGroup()
-  {
+  function getOpGroup() {
     return getOperationGroupByMapId(this.map.getId())
   }
 
-  function getSortedOperationsData()
-  {
+  function getSortedOperationsData() {
     let opDataList = ::u.map(this.getOpGroup().getOperationsList(),
                                function(o) { return { operation = o, priority = o.getPriority() } })
 
@@ -56,8 +53,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return opDataList
   }
 
-  function getOperationsListView()
-  {
+  function getOperationsListView() {
     if (this.isDescrOnly)
       return null
 
@@ -68,15 +64,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let view = { items = [] }
     local isActiveChapterAdded = false
     local isFinishedChapterAdded = false
-    foreach (_idx, opData in sortedOperationsDataList)
-    {
+    foreach (_idx, opData in sortedOperationsDataList) {
       let operation = opData.operation
       let isAvailableToJoin = operation.isAvailableToJoin()
       let itemColor = isAvailableToJoin ? "activeTextColor" : "commonTextColor"
-      if (isAvailableToJoin)
-      {
-        if (!isActiveChapterAdded)
-        {
+      if (isAvailableToJoin) {
+        if (!isActiveChapterAdded) {
           view.items.append({
             id = "active_group"
             itemText = colorize(itemColor, loc("worldwar/operation/active"))
@@ -85,8 +78,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
           isActiveChapterAdded = true
         }
       }
-      else if (!isFinishedChapterAdded)
-      {
+      else if (!isFinishedChapterAdded) {
         view.items.append({
           id = "finished_group"
           itemText = colorize(itemColor, loc("worldwar/operation/finished"))
@@ -100,8 +92,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       local isLastPlayed = false
       if (operation.isMyClanParticipate())
         icon = ::g_world_war.myClanParticipateIcon
-      else if (operation.isLastPlayed())
-      {
+      else if (operation.isLastPlayed()) {
         icon = ::g_world_war.lastPlayedIcon
         isLastPlayed = true
       }
@@ -117,8 +108,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return view
   }
 
-  function fillOperationList()
-  {
+  function fillOperationList() {
     let view = this.getOperationsListView()
     let isOperationListVisible = view != null
     this.showSceneBtn("chapter_place", isOperationListVisible)
@@ -129,13 +119,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.selectFirstItem(this.opListObj)
   }
 
-  function selectFirstItem(containerObj)
-  {
-    for (local i = 0; i < containerObj.childrenCount(); i++)
-    {
+  function selectFirstItem(containerObj) {
+    for (local i = 0; i < containerObj.childrenCount(); i++) {
       let itemObj = containerObj.getChild(i)
-      if (!itemObj?.collapse_header && itemObj.isEnabled())
-      {
+      if (!itemObj?.collapse_header && itemObj.isEnabled()) {
         this.selOperation = null //force refresh description
         containerObj.setValue(i)
         break
@@ -144,13 +131,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.onItemSelect()
   }
 
-  function refreshSelOperation()
-  {
+  function refreshSelOperation() {
     let idx = this.opListObj.getValue()
     if (idx < 0 || idx >= this.opListObj.childrenCount())
       return false
     let opObj = this.opListObj.getChild(idx)
-    if(!checkObj(opObj))
+    if (!checkObj(opObj))
       return false
 
     let newOperation = opObj?.collapse_header ? null
@@ -162,8 +148,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return isChanged
   }
 
-  function onCollapse(obj)
-  {
+  function onCollapse(obj) {
     if (!checkObj(obj))
       return
 
@@ -172,15 +157,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.doCollapse(headerObj)
   }
 
-  function onCollapsedChapter()
-  {
+  function onCollapsedChapter() {
     let rowObj = this.opListObj.getChild(this.opListObj.getValue())
     if (checkObj(rowObj))
       this.doCollapse(rowObj)
   }
 
-  function doCollapse(obj)
-  {
+  function doCollapse(obj) {
     let containerObj = obj.getParent()
     if (!checkObj(containerObj))
       return
@@ -193,20 +176,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let selectIdx = containerObj.getValue()
     local needReselect = false
 
-    for (local i = 0; i < containerLen; i++)
-    {
+    for (local i = 0; i < containerLen; i++) {
       let itemObj = containerObj.getChild(i)
-      if (!isHeaderFound)
-      {
-        if (itemObj?.collapsing == "yes")
-        {
+      if (!isHeaderFound) {
+        if (itemObj?.collapsing == "yes") {
           itemObj.collapsing = "no"
           itemObj.collapsed = isShow ? "no" : "yes"
           isHeaderFound = true
         }
       }
-      else
-      {
+      else {
         if (itemObj?.collapse_header)
           break
         itemObj.show(isShow)
@@ -225,8 +204,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   //operation select
   _wasSelectedOnce = false
-  function onItemSelect()
-  {
+  function onItemSelect() {
     if (!this.refreshSelOperation() && this._wasSelectedOnce)
       return this.updateButtons()
 
@@ -235,15 +213,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateWindow()
   }
 
-  function updateWindow()
-  {
+  function updateWindow() {
     this.updateTitle()
     this.updateDescription()
     this.updateButtons()
   }
 
-  function updateTitle()
-  {
+  function updateTitle() {
     let titleObj = this.scene.findObject("wnd_title")
     if (!checkObj(titleObj))
       return
@@ -252,8 +228,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.selOperation.getNameText() : this.map.getNameText())
   }
 
-  function updateDescription()
-  {
+  function updateDescription() {
     if (this.descHandlerWeak)
       return this.descHandlerWeak.setDescItem(this.selOperation)
 
@@ -262,16 +237,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.registerSubHandler(handler)
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     ::showBtn("operation_join_block", this.selOperation, this.scene)
 
-    if (!this.selOperation)
-    {
+    if (!this.selOperation) {
       let isListEmpty = this.opListObj.getValue() < 0
       let collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, this.scene)
-      if (!isListEmpty && collapsedChapterBtnObj != null)
-      {
+      if (!isListEmpty && collapsedChapterBtnObj != null) {
         let rowObj = this.opListObj.getChild(this.opListObj.getValue())
         if (rowObj?.isValid())
           collapsedChapterBtnObj.setValue(rowObj?.collapsed == "yes"
@@ -282,12 +254,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       let operationDescText = this.scene.findObject("operation_short_info_text")
       operationDescText.setValue(this.getOpGroup().getOperationsList().len() == 0
         ? loc("worldwar/msg/noActiveOperations")
-        : "" )
+        : "")
       return
     }
 
-    foreach(side in ::g_world_war.getCommonSidesOrder())
-    {
+    foreach (side in ::g_world_war.getCommonSidesOrder()) {
       let cantJoinReasonData = this.selOperation.getCantJoinReasonDataBySide(side)
 
       let sideName = ::ww_side_val_to_name(side)
@@ -296,8 +267,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       joinBtn.findObject("is_clan_participate_img").show(this.selOperation.isMyClanSide(side))
 
       let joinBtnFlagsObj = joinBtn.findObject("side_countries")
-      if (checkObj(joinBtnFlagsObj))
-      {
+      if (checkObj(joinBtnFlagsObj)) {
         let wwMap = this.selOperation.getMap()
         let markUpData = wwMap.getCountriesViewBySide(side, false)
         this.guiScene.replaceContentFromText(joinBtnFlagsObj, markUpData, markUpData.len(), this)
@@ -305,32 +275,27 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function onCreateOperation()
-  {
+  function onCreateOperation() {
     this.goBack()
     ::ww_event("CreateOperation")
   }
 
-  function onJoinOperationSide1()
-  {
+  function onJoinOperationSide1() {
     if (this.selOperation)
       this.joinOperationBySide(SIDE_1)
   }
 
-  function onJoinOperationSide2()
-  {
+  function onJoinOperationSide2() {
     if (this.selOperation)
       this.joinOperationBySide(SIDE_2)
   }
 
-  function joinOperationBySide(side)
-  {
+  function joinOperationBySide(side) {
     if (this.isOperationJoining)
       return
 
     let reasonData = this.selOperation.getCantJoinReasonDataBySide(side)
-    if (reasonData.canJoin)
-    {
+    if (reasonData.canJoin) {
       this.isOperationJoining = true
       return this.selOperation.join(reasonData.country)
     }
@@ -344,24 +309,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     )
   }
 
-  function onEventWWStopWorldWar(_params)
-  {
+  function onEventWWStopWorldWar(_params) {
     this.isOperationJoining = false
   }
 
-  function onEventWWGlobalStatusChanged(p)
-  {
+  function onEventWWGlobalStatusChanged(p) {
     if (p.changedListsMask & WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS)
       this.fillOperationList()
   }
 
-  function onEventQueueChangeState(_params)
-  {
+  function onEventQueueChangeState(_params) {
     this.updateButtons()
   }
 
-  function onModalWndDestroy()
-  {
+  function onModalWndDestroy() {
     base.onModalWndDestroy()
     ::ww_stop_preview()
     setDeveloperMode(false)

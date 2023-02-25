@@ -2110,6 +2110,19 @@
           "fmbc_mk1",
           "frc_mk2"
         ]
+      },
+      {
+        "name": "p-51h-5_2x_mk78_mod2",
+        "blk": "gameData/FlightModels/weaponPresets/p-51h-5_2x_mk78_mod2.blk",
+        "reqModification": "us_mk78_mod0"
+      },
+      {
+        "name": "p-51h-5_2x_mk78_mod2_6xhvar",
+        "blk": "gameData/FlightModels/weaponPresets/p-51h-5_2x_mk78_mod2_6xhvar.blk",
+        "reqModification": [
+          "us_mk78_mod0",
+          "frc_mk2"
+        ]
       }
     ]
   },
@@ -2379,7 +2392,12 @@
       "reqModification": "bmg50_belt_pack",
       "tier": 3
     },
+    "us_mk78_mod0": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "frc_mk2": {
+      "prevModification": "us_mk78_mod0",
       "tier": 2,
       "modClass": "weapon"
     },

@@ -182,8 +182,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1200.0,
-        "maxValue": 1200.0,
+        "minValue": -1500.0,
+        "maxValue": 1500.0,
         "signalWidthMin": 2.0,
         "width": 40.0
       }
@@ -250,7 +250,7 @@
       "range1": 30000.0,
       "range2": 100000.0,
       "range3": 300000.0,
-      "range4": 30000.0
+      "range4": 10000.0
     },
     "boresightLock": {
       "range1": 10000.0
@@ -1431,7 +1431,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 0.7
+            }
           }
         }
       }
@@ -1442,7 +1444,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 0.7
+            }
           }
         },
         "track": {

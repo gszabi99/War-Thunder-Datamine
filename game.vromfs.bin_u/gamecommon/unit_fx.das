@@ -3,11 +3,12 @@ require Unit
 require UnitFx
 require WTDamageModel
 require %game.events
+require %game.fire_system_events
 require %game.utils_common
 
 
 [es]
-def unit_fx_updater_es(info : ecs::UpdateStageInfoAct;
+def unit_fx_updater_es(info : ParallelUpdateFrameDelayed;
                        uid : int;
                        active : bool;
                        var unit_fx : UnitFx)
@@ -52,8 +53,8 @@ def unit_fx_became_delayed_es(evt : Event;
     unit_fx |> stopAll(true)
 
 
-[es(REQUIRE = fire_damage)]
-def unit_fx_event_on_start_burn_es(evt : EventOnStartBurn;
+[es(REQUIRE = fire_damage__isBurn)]
+def unit_fx_event_on_start_burn_es(evt : EventOnStartSingleBurn;
                                    active : bool;
                                    uid : int;
                                    var unit_fx : UnitFx;
@@ -74,9 +75,11 @@ def unit_fx_event_on_start_burn_es(evt : EventOnStartBurn;
       if paramsId == evt.fireParamsId
         return
 
-  var eventId = unit_fx.engineFireFxEventId
-  if fireParams.fxPresetName != ""
-    eventId = unit_fx |> getEventIdByName(fireParams.fxPresetName)
+  var eventId = evt.fireFxId
+  if eventId == -1
+    eventId = unit_fx.engineFireFxEventId
+    if fireParams.fxPresetName != ""
+      eventId = unit_fx |> getEventIdByName(fireParams.fxPresetName)
 
   let fxId = unit_fx |> startFxEvent(eventId, evt.nodeId, evt.offset, evt.dmgPos)
   fire_fx__id |> push(evt.fireId)
@@ -84,7 +87,7 @@ def unit_fx_event_on_start_burn_es(evt : EventOnStartBurn;
   fire_fx__paramsId |> push(evt.fireParamsId)
 
 
-[es(REQUIRE = fire_damage)]
+[es(REQUIRE = fire_damage__isBurn)]
 def unit_fx_stop_single_burn_es(evt : EventOnStopSingleBurn;
                                 active : bool;
                                 uid : int;
@@ -105,7 +108,7 @@ def unit_fx_stop_single_burn_es(evt : EventOnStopSingleBurn;
       fire_fx__paramsId |> erase(i)
 
 
-[es(REQUIRE = fire_damage, on_event=EventOnStopBurn)]
+[es(REQUIRE = fire_damage__isBurn, on_event=EventOnStopBurn)]
 def unit_fx_stop_burn_es(evt : Event;
                          active : bool;
                          uid : int;

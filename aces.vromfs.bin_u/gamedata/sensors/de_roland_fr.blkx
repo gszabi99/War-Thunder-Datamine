@@ -404,7 +404,7 @@
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "stateTo": "radarParked",
+          "stateTo": "radarStandby",
           "actions": {
             "init": {},
             "setRadarStandbyMode": {},
@@ -653,46 +653,6 @@
               "name": "track"
             },
             "setRadar": {}
-          }
-        },
-        "switchRadarOn": {
-          "stateFrom": "radarParked",
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "radarStandby"
-        },
-        "switchRadarOff": {
-          "stateFrom": [
-            "radarStandby",
-            "radarLosLock",
-            "radarVisualLock",
-            "radarTrack"
-          ],
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "radarParked",
-          "actions": {
-            "setRadarStandbyMode": {}
-          }
-        },
-        "switchIrstOn": {
-          "stateFrom": "irstParked",
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "irstStandby"
-        },
-        "switchIrstOff": {
-          "stateFrom": [
-            "irstStandby",
-            "irstLosLock",
-            "irstVisualLock",
-            "irstTrack"
-          ],
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "irstParked",
-          "actions": {
-            "setIrstStandbyMode": {}
           }
         }
       }

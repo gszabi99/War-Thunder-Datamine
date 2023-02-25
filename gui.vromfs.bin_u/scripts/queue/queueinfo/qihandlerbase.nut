@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
 
-::gui_handlers.QiHandlerBase <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.QiHandlerBase <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName   = "%gui/events/eventQueue.blk"
 
@@ -27,14 +27,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   leaveQueueCb = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.initTimer()
     this.checkCurQueue(true)
   }
 
-  function initTimer()
-  {
+  function initTimer() {
     if (!this.hasTimerText || !this.timerUpdateObjId)
       return
 
@@ -43,8 +41,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     timerObj.timer_handler_func = "onUpdate"
   }
 
-  function destroy()
-  {
+  function destroy() {
     if (!this.isValid())
       return
     this.scene.show(false)
@@ -52,8 +49,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.scene = null
   }
 
-  function checkCurQueue(forceUpdate = false)
-  {
+  function checkCurQueue(forceUpdate = false) {
     local q = ::queues.findQueue({}, this.queueTypeMask)
     if (q && !::queues.isQueueActive(q))
       q = null
@@ -67,8 +63,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     this.queue = q
     this.event = this.queue && ::queues.getQueueEvent(this.queue)
-    if (!this.isStatsCreated)
-    {
+    if (!this.isStatsCreated) {
       this.createStats()
       this.isStatsCreated = true
     }
@@ -76,8 +71,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return isQueueChanged
   }
 
-  function onQueueChange()
-  {
+  function onQueueChange() {
     this.scene.show(this.queue != null)
     if (!this.queue)
       return
@@ -86,14 +80,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateStats()
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     if (this.queue)
       this.updateTimer()
   }
 
-  function updateTimer()
-  {
+  function updateTimer() {
     let textObj = this.scene.findObject(this.timerTextObjId)
     let timerObj = this.scene.findObject("wait_time_block")
     let iconObj = this.scene.findObject("queue_wait_icon")

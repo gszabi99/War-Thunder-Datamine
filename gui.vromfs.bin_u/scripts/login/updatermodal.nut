@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -32,8 +33,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
     handler?.onUpdaterCallback(evt)
 })
 
-::gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler
-{
+::gui_handlers.UpdaterModal <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/login/updaterModal.blk"
   timeToShowCancel = 600
@@ -61,8 +61,7 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
 
   onFinishCallback = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.showSceneBtn(this.buttonOkId, false)
     this.showSceneBtn(this.buttonCancelId, false)
 
@@ -77,26 +76,22 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
       this.onFinish()
   }
 
-  function changeBg()
-  {
+  function changeBg() {
     let dynamicBgContainer = this.scene.findObject("animated_bg_picture")
     if (checkObj(dynamicBgContainer))
       animBgLoad("", dynamicBgContainer)
   }
 
-  function resetTimer()
-  {
+  function resetTimer() {
     this.timer = this.timeToShowCancel
     this.showSceneBtn(this.buttonCancelId, false)
   }
 
-  function onUpdaterCallback(evt)
-  {
+  function onUpdaterCallback(evt) {
     if (this.isFinished || !this.isValid())
       return
     let { eventType } = evt
-    switch(eventType)
-    {
+    switch (eventType) {
     case UPDATER_EVENT_STAGE:
       this.stage = evt?.stage
       this.updateText()
@@ -118,72 +113,60 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
     }
   }
 
-  function allowCancelCurrentStage()
-  {
-    if (this.stage == UPDATER_DOWNLOADING || this.stage == UPDATER_DOWNLOADING_YUP)
-    {
-      if (!this.isCancelButtonVisible)
-      {
+  function allowCancelCurrentStage() {
+    if (this.stage == UPDATER_DOWNLOADING || this.stage == UPDATER_DOWNLOADING_YUP) {
+      if (!this.isCancelButtonVisible) {
         this.showSceneBtn(this.buttonCancelId, true)
         this.isCancelButtonVisible = true
       }
       return true
     }
 
-    if (this.isCancelButtonVisible)
-    {
+    if (this.isCancelButtonVisible) {
       this.showSceneBtn(this.buttonCancelId, false)
       this.isCancelButtonVisible = false
     }
     return false
   }
 
-  function onUpdate(_obj, dt)
-  {
+  function onUpdate(_obj, dt) {
     this.bgTimer -= dt
-    if(this.bgTimer <= 0)
-    {
+    if (this.bgTimer <= 0) {
       this.changeBg()
       this.bgTimer = this.bgChangeInterval
     }
 
     this.timer -= dt
-    if (this.timer < 0 && this.allowCancelCurrentStage())
-    {
-      if (!this.wasCancelButtonShownOnce)
-      {
+    if (this.timer < 0 && this.allowCancelCurrentStage()) {
+      if (!this.wasCancelButtonShownOnce) {
         statsd.send_counter("sq.updater.longdownload", 1)
         this.wasCancelButtonShownOnce = true
       }
     }
   }
 
-  function updateProgressbar()
-  {
+  function updateProgressbar() {
     let blockObj = this.scene.findObject("loading_progress_box")
     if (!checkObj(blockObj))
       return
     blockObj.setValue(100 * this.percent)
   }
 
-  function onFinish()
-  {
+  function onFinish() {
     if (this.isFinished)
       return
     this.isFinished = true
 
     if (this.errorCode < 0)
       this.goBack()
-    else
-    {
+    else {
       let errorText = loc("updater/error/" + this.errorCode.tostring())
       this.msgBox("updater_error", errorText, [["ok", this.goBack ]], "ok")
     }
   }
 
-  function updateText()
-  {
-    let {stage, dspeed, etaSec} = this //-ident-hides-ident
+  function updateText() {
+    let { stage, dspeed, etaSec } = this //-ident-hides-ident
     local text = ""
     local textSub = ""
     if (stage == UPDATER_DOWNLOADING)
@@ -193,28 +176,23 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
 
     if (stage == UPDATER_CHECKING_FAST || stage == UPDATER_CHECKING
       || stage == UPDATER_RESPATCH || stage == UPDATER_DOWNLOADING
-      || stage == UPDATER_COPYING)
-    {
+      || stage == UPDATER_COPYING) {
       text += ": ";
       text += floor(this.percent)
       text += "%"
     }
-    if (stage == UPDATER_DOWNLOADING)
-    {
-      if (dspeed > 0)
-      {
+    if (stage == UPDATER_DOWNLOADING) {
+      if (dspeed > 0) {
         local meas = 0.0;
         local desc = loc("updater/dspeed/b");
         meas = dspeed / 1073741824.0; //GB
         if (meas > 0.5)
           desc = loc("updater/dspeed/gb");
-        else
-        {
+        else {
           meas = dspeed / 1048576.0; //MB
           if (meas > 0.5)
             desc = loc("updater/dspeed/mb");
-          else
-          {
+          else {
             meas = dspeed / 1024.0; //KB
             desc = meas > 0.5 ? loc("updater/dspeed/kb") : loc("updater/dspeed/b");
           }
@@ -228,22 +206,19 @@ eventbus.subscribe(ContentUpdaterEventId, function (evt) {
     this.scene.findObject("msgTextSub").setValue(textSub)
   }
 
-  function onCancel()
-  {
+  function onCancel() {
     this.isCancel = true
     statsd.send_counter("sq.updater.cancelled", 1)
     stop_updater()
     this.showSceneBtn(this.buttonCancelId, false)
   }
 
-  function onEventSignOut()
-  {
+  function onEventSignOut() {
     stop_updater()
     statsd.send_counter("sq.updater.signedout", 1)
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (this.onFinishCallback)
       this.onFinishCallback()
     ::g_login.addState(LOGIN_STATE.AUTHORIZED)

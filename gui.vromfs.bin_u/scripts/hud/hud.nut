@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,21 +14,21 @@ let { isProgressVisible, getHudUnitType } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { showHudTankMovementStates } = require("%scripts/hud/hudTankStates.nut")
 let { mpTankHudBlkPath } = require("%scripts/hud/hudBlkPath.nut")
-let { isDmgIndicatorVisible } = require_native("gameplayBinding")
+let { isDmgIndicatorVisible } = require("gameplayBinding")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getActionBarItems, getOwnerUnitName, getActionBarUnitName } = require_native("hudActionBar")
+let { getActionBarItems, getOwnerUnitName, getActionBarUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
 let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut")
 let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
-let { is_benchmark_game_mode } = require("mission")
+let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
 let UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
-let getUnmappedControlsWarningTime = @() ::get_game_mode() == GM_TRAINING ? 180000.0 : 30.0
+let getUnmappedControlsWarningTime = @() get_game_mode() == GM_TRAINING ? 180000.0 : 30.0
 local defaultFontSize = "small"
 
 local controlsHelpShownBits = 0
@@ -44,8 +45,9 @@ let function maybeOfferControlsHelp() {
   ::g_hud_event_manager.onHudEvent("hint:f1_controls_scripted:show", {})
 }
 
-::gui_handlers.Hud <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
+
+::gui_handlers.Hud <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName         = "%gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -104,8 +106,7 @@ let function maybeOfferControlsHelp() {
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.initDargWidgetsList()
     ::init_options()
     ::g_hud_event_manager.init()
@@ -123,7 +124,7 @@ let function maybeOfferControlsHelp() {
     this.loadGameChat()
 
     this.scene.findObject("hud_update").setUserData(this)
-    let gm = ::get_game_mode()
+    let gm = get_game_mode()
     this.showSceneBtn("stats", (gm == GM_DOMINATION || gm == GM_SKIRMISH))
     this.showSceneBtn("voice", (gm == GM_DOMINATION || gm == GM_SKIRMISH))
 
@@ -145,8 +146,7 @@ let function maybeOfferControlsHelp() {
     ]
   }
 
-  function updateControlsAllowMask()
-  {
+  function updateControlsAllowMask() {
     local mask = this.spectatorMode
       ? CtrlsInGui.CTRL_ALLOW_MP_STATISTICS | CtrlsInGui.CTRL_ALLOW_MP_CHAT
         | CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU | CtrlsInGui.CTRL_ALLOW_SPECTATOR
@@ -159,16 +159,13 @@ let function maybeOfferControlsHelp() {
     this.switchControlsAllowMask(mask)
   }
 
-  /*override*/ function onSceneActivate(show)
-  {
+  /*override*/ function onSceneActivate(show) {
     ::g_orders.enableOrders(this.scene.findObject("order_status"))
     base.onSceneActivate(show)
   }
 
-  function loadGameChat()
-  {
-    if (this.curChatData)
-    {
+  function loadGameChat() {
+    if (this.curChatData) {
       ::detachGameChatSceneData(this.curChatData)
       this.curChatData = null
     }
@@ -177,8 +174,7 @@ let function maybeOfferControlsHelp() {
         { selfHideInput = true, selfHideLog = true, selectInputIfFocusLost = true })
   }
 
-  function reinitScreen(params = {})
-  {
+  function reinitScreen(params = {}) {
     this.isReinitDelayed = !this.scene.isVisible() //hud not visible. we just wait for show_hud event
     if (this.isReinitDelayed)
       return
@@ -186,8 +182,7 @@ let function maybeOfferControlsHelp() {
     this.setParams(params)
     if (this.switchHud(this.getHudType()))
       this.loadGameChat()
-    else
-    {
+    else {
       if (this.currentHud && ("reinitScreen" in this.currentHud))
         this.currentHud.reinitScreen()
       hitCameraReinit()
@@ -203,14 +198,11 @@ let function maybeOfferControlsHelp() {
     this.onHudUpdate(null, 0.0)
   }
 
-  function initSubscribes()
-  {
-    ::g_hud_event_manager.subscribe("ReinitHud", function(_eventData)
-      {
+  function initSubscribes() {
+    ::g_hud_event_manager.subscribe("ReinitHud", function(_eventData) {
         this.reinitScreen()
       }, this)
-    ::g_hud_event_manager.subscribe("Cutscene", function(_eventData)
-      {
+    ::g_hud_event_manager.subscribe("Cutscene", function(_eventData) {
         this.reinitScreen()
       }, this)
     ::g_hud_event_manager.subscribe("LiveStatsVisibilityToggled",
@@ -221,8 +213,7 @@ let function maybeOfferControlsHelp() {
       @(_eventData) this.updateMissionProgressPlace(), this)
   }
 
-  function onShowHud(show = true, needApplyPending = true)
-  {
+  function onShowHud(show = true, needApplyPending = true) {
     if (this.currentHud && ("onShowHud" in this.currentHud))
       this.currentHud.onShowHud(show, needApplyPending)
     base.onShowHud(show, needApplyPending)
@@ -230,13 +221,11 @@ let function maybeOfferControlsHelp() {
       this.reinitScreen()
   }
 
-  function switchHud(newHudType)
-  {
+  function switchHud(newHudType) {
     if (!checkObj(this.scene))
       return false
 
-    if (newHudType == this.hudType)
-    {
+    if (newHudType == this.hudType) {
       if (this.isXinput == ::is_xinput_device())
         return false
 
@@ -273,8 +262,7 @@ let function maybeOfferControlsHelp() {
     return true
   }
 
-  function onHudSwitched()
-  {
+  function onHudSwitched() {
     ::handlersManager.updateWidgets()
     this.updateHudVisMode(::FORCE_UPDATE)
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
@@ -286,22 +274,18 @@ let function maybeOfferControlsHelp() {
     this.updateMissionProgressPlace()
   }
 
-  function onEventChangedCursorVisibility(_params)
-  {
+  function onEventChangedCursorVisibility(_params) {
     if (::show_console_buttons)
       this.updateControlsAllowMask()
   }
 
-  function onEventHudActionbarInited(params)
-  {
+  function onEventHudActionbarInited(params) {
     this.updateObjectsSize(params)
   }
 
-  function updateObjectsSize(params = null)
-  {
+  function updateObjectsSize(params = null) {
     let actionBarItemsAmount = params?.actionBarItemsAmount ?? getActionBarItems().len()
-    if (actionBarItemsAmount)
-    {
+    if (actionBarItemsAmount) {
       let actionBarSize = to_pixels("1@hudActionBarItemSize")
       let actionBarOffset = to_pixels("1@hudActionBarItemOffset")
       let screenWidth = to_pixels("sw")
@@ -318,8 +302,7 @@ let function maybeOfferControlsHelp() {
   }
 
   //get means determine in this case, but "determine" is too long for function name
-  function getHudType()
-  {
+  function getHudType() {
     if (::hud_is_in_cutscene())
       return HUD_TYPE.CUTSCENE
     if (this.spectatorMode)
@@ -334,8 +317,7 @@ let function maybeOfferControlsHelp() {
     return hudTypeByHudUnitType?[getHudUnitType()] ?? HUD_TYPE.NONE
   }
 
-  function updateHudVisMode(forceUpdate = false)
-  {
+  function updateHudVisMode(forceUpdate = false) {
     let visMode = ::g_hud_vis_mode.getCurMode()
     if (!forceUpdate && visMode == this.curHudVisMode)
       return
@@ -368,24 +350,20 @@ let function maybeOfferControlsHelp() {
   updateHudVisModeForce = @() this.updateHudVisMode(::FORCE_UPDATE)
   onEventChangedPartHudVisible = @(_) this.doWhenActiveOnce("updateHudVisModeForce")
 
-  function onHudUpdate(_obj=null, dt=0.0)
-  {
+  function onHudUpdate(_obj = null, dt = 0.0) {
     ::g_streaks.onUpdate(dt)
     this.unmappedControlsUpdate(dt)
     this.updateAFKTimeKickText(dt)
   }
 
-  function unmappedControlsCheck()
-  {
+  function unmappedControlsCheck() {
     if (this.spectatorMode || !::is_hud_visible())
       return
 
     let unmapped = ::getUnmappedControlsForCurrentMission()
 
-    if (!unmapped.len())
-    {
-      if (this.ucWarningActive)
-      {
+    if (!unmapped.len()) {
+      if (this.ucWarningActive) {
         this.ucPrevList = unmapped
         this.ucWarningTimeShow = 0.0
         this.unmappedControlsUpdate()
@@ -413,8 +391,7 @@ let function maybeOfferControlsHelp() {
     this.unmappedControlsUpdate()
   }
 
-  function unmappedControlsUpdate(dt=0.0)
-  {
+  function unmappedControlsUpdate(dt = 0.0) {
     if (!this.ucWarningActive)
       return
 
@@ -422,24 +399,21 @@ let function maybeOfferControlsHelp() {
     this.ucWarningTimeShow -= dt
     let winkingNew = this.ucWarningTimeShow > this.ucNoWinkTime
 
-    if (this.ucWarningTimeShow <= 0 || winkingOld != winkingNew)
-    {
+    if (this.ucWarningTimeShow <= 0 || winkingOld != winkingNew) {
       let warningObj = this.scene.findObject("unmapped_shortcuts_warning")
       if (!checkObj(warningObj))
         return
 
       warningObj.wink = "no"
 
-      if (this.ucWarningTimeShow <= 0)
-      {
+      if (this.ucWarningTimeShow <= 0) {
         warningObj.show(false)
         this.ucWarningActive = false
       }
     }
   }
 
-  function warnLowQualityModelCheck()
-  {
+  function warnLowQualityModelCheck() {
     if (this.spectatorMode || !::is_hud_visible())
       return
 
@@ -451,8 +425,7 @@ let function maybeOfferControlsHelp() {
     this.showSceneBtn("low-quality-model-warning", isShow)
   }
 
-  function onEventHudIndicatorChangedSize(params)
-  {
+  function onEventHudIndicatorChangedSize(params) {
     let option = getTblValue("option", params, -1)
     if (option < 0)
       return
@@ -460,16 +433,14 @@ let function maybeOfferControlsHelp() {
     this.changeObjectsSize(option)
   }
 
-  function changeObjectsSize(optionNum)
-  {
+  function changeObjectsSize(optionNum) {
     let option = ::get_option(optionNum)
     let value = (option && option.value != null) ? option.value : 0
     let vMax   = (option?.max ?? 0) != 0 ? option.max : 2
     let size = 1.0 + 0.333 * value / vMax
 
     let table = getTblValue(optionNum, this.objectsTable, {})
-    foreach (id, cssConst in getTblValue("objectsToScale", table, {}))
-    {
+    foreach (id, cssConst in getTblValue("objectsToScale", table, {})) {
       let obj = this.scene.findObject(id)
       if (!checkObj(obj))
         continue
@@ -496,33 +467,27 @@ let function maybeOfferControlsHelp() {
     }
   }
 
-  function getTacticalMapObj()
-  {
+  function getTacticalMapObj() {
     return this.curTacticalMapObj
   }
 
-  function getMultiplayerScoreObj()
-  {
+  function getMultiplayerScoreObj() {
     return this.scene.findObject("hud_multiplayer_score_progress_bar")
   }
 
-  function getDamagePannelObj()
-  {
+  function getDamagePannelObj() {
     return this.scene.findObject("xray_render_dmg_indicator")
   }
 
-  function getTankDebufsObj()
-  {
+  function getTankDebufsObj() {
     return this.scene.findObject("tank_debuffs")
   }
 
-  function updateAFKTimeKick()
-  {
+  function updateAFKTimeKick() {
     this.afkTimeToKick = ::get_mp_kick_countdown()
   }
 
-  function updateAFKTimeKickText(sec)
-  {
+  function updateAFKTimeKickText(sec) {
     let timeToKickAlertObj = this.scene.findObject("time_to_kick_alert_text")
     if (!checkObj(timeToKickAlertObj) || timeToKickAlertObj.getModalCounter() != 0)
       return
@@ -535,22 +500,19 @@ let function maybeOfferControlsHelp() {
     if (!showMessage)
       return
 
-    if (showAlertText)
-    {
+    if (showAlertText) {
       timeToKickAlertObj.setValue(this.afkTimeToKick > 0
-        ? loc("inBattle/timeToKick", {timeToKick = time.secondsToString(this.afkTimeToKick, true, true)})
+        ? loc("inBattle/timeToKick", { timeToKick = time.secondsToString(this.afkTimeToKick, true, true) })
         : "")
 
       let curTime = get_time_msec()
       let prevSeconds = ((curTime - 1000 * sec) / 1000).tointeger()
       let currSeconds = (curTime / 1000).tointeger()
 
-      if (currSeconds != prevSeconds)
-      {
+      if (currSeconds != prevSeconds) {
         timeToKickAlertObj["_blink"] = "yes"
         this.guiScene.playSound("kick_alert")
       }
-
     }
     else if (showTimerText)
       timeToKickAlertObj.setValue(loc("inBattle/timeToKickAlert"))
@@ -560,25 +522,19 @@ let function maybeOfferControlsHelp() {
   // Server message
   //
 
-  function onEventServerMessage(_params)
-  {
+  function onEventServerMessage(_params) {
     let serverMessageTimerObject = this.scene.findObject("server_message_timer")
-    if (checkObj(serverMessageTimerObject))
-    {
+    if (checkObj(serverMessageTimerObject)) {
       SecondsUpdater(serverMessageTimerObject, (@(scene) function (_obj, _params) {
         return !::server_message_update_scene(scene)
       })(this.scene))
     }
   }
 
-  function updateMissionProgressPlace()
-  {
-    if (this.getHudType() == HUD_TYPE.SHIP) {
-      let missionProgressHeight = isProgressVisible() ? to_pixels("@missionProgressHeight") : 0;
-      send("updateDmgIndicatorStates", {
-        size = [0, 0], pos = [0, 0],
-        padding = [0, 0, missionProgressHeight, 0]
-      })
+  function updateMissionProgressPlace() {
+    let curHud = this.getHudType()
+    if (curHud == HUD_TYPE.SHIP || curHud == HUD_TYPE.AIR) {
+      send("updateMissionProgressHeight", getMissionProgressHeight())
       return
     }
 
@@ -592,57 +548,42 @@ let function maybeOfferControlsHelp() {
 
     obj.show(isVisible)
     this.guiScene.applyPendingChanges(false)
-    this.currentHud?.updateChatOffset()
-
-    obj = this.scene.findObject("hud_tank_damage_indicator")
-    if (obj?.isValid())
-      send("updateDmgIndicatorStates", {
-        size = obj.getSize(), pos = obj.getPos(),
-        padding = [0, 0, 0, 0]
-      })
+    this.currentHud?.updateDmgIndicatorState()
   }
 }
 
-::HudCutscene <- class extends ::gui_handlers.BaseUnitHud
-{
+::HudCutscene <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudCutscene.blk"
 }
 
-::HudAir <- class extends ::gui_handlers.BaseUnitHud
-{
+::HudAir <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudAir.blk"
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
     ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_AIRCRAFT)
     this.actionBar = ::ActionBar(this.scene.findObject("hud_action_bar"))
 
     this.updateTacticalMapVisibility()
-    this.updateDmgIndicatorVisibility()
+    this.updateDmgIndicatorSize()
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
 
-    ::g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
-      function(_ed) { this.updateDmgIndicatorVisibility() },
-      this)
     ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      function(_ed) { this.updateDmgIndicatorVisibility() },
+      function(_ed) { this.updateDmgIndicatorSize() },
       this)
   }
 
-  function reinitScreen(_params = {})
-  {
+  function reinitScreen(_params = {}) {
     ::g_hud_display_timers.reinit()
     this.updateTacticalMapVisibility()
-    this.updateDmgIndicatorVisibility()
+    this.updateDmgIndicatorSize()
     this.updateShowHintsNest()
     this.actionBar.reinit()
   }
 
-  function updateTacticalMapVisibility()
-  {
-    let shouldShowMapForAircraft = (::get_game_type() & GT_RACE) != 0 // Race mission
+  function updateTacticalMapVisibility() {
+    let shouldShowMapForAircraft = (get_game_type() & GT_RACE) != 0 // Race mission
       || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") // Strike UCAV in Tanks mission
       || (hasFeature("uavMiniMap") && (::getAircraftByName(getOwnerUnitName())?.isTank() ?? false)) // Scout UCAV in Tanks mission
     let isVisible = shouldShowMapForAircraft && !is_replay_playing()
@@ -650,60 +591,21 @@ let function maybeOfferControlsHelp() {
     this.showSceneBtn("hud_air_tactical_map", isVisible)
   }
 
-  function updateDmgIndicatorVisibility()
-  {
-    this.updateChatOffset()
+  function updateDmgIndicatorSize() {
+    let obj = this.scene.findObject("xray_render_dmg_indicator")
+    if (obj?.isValid())
+      send("updateDmgIndicatorStates", { size = obj.getSize() })
   }
 
-  function updateShowHintsNest()
-  {
+  function updateShowHintsNest() {
     this.showSceneBtn("actionbar_hints_nest", false)
-  }
-
-  function getChatOffset()
-  {
-    if (isDmgIndicatorVisible())
-    {
-      let dmgIndObj = this.scene.findObject("xray_render_dmg_indicator")
-      if (checkObj(dmgIndObj))
-        return this.guiScene.calcString("sh - 1@bhHud", null) - dmgIndObj.getPosRC()[1]
-    }
-
-    let obj = this.scene.findObject("mission_progress_place")
-    if (obj?.isValid() && obj.isVisible())
-      return this.guiScene.calcString("sh - 1@bhHud - @hudPadding", null) - obj.getPosRC()[1]
-
-    return 0
-  }
-
-  _chatOffset = -1
-  function updateChatOffset()
-  {
-    let chatObj = this.scene.findObject("chatPlace")
-    if (!checkObj(chatObj))
-      return
-
-    let offset = this.getChatOffset()
-    if (this._chatOffset == offset)
-      return
-
-    chatObj["margin-bottom"] = offset.tostring()
-    this._chatOffset = offset
   }
 }
 
-::HudTank <- class extends ::gui_handlers.BaseUnitHud
-{
+::HudTank <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = mpTankHudBlkPath.value
 
-  widgetsList = [
-    {
-      widgetId = DargWidgets.DAMAGE_PANEL
-    }
-  ]
-
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
     ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_TANK)
     initIconedHints(this.scene, ES_UNIT_TYPE_TANK)
@@ -719,12 +621,11 @@ let function maybeOfferControlsHelp() {
       @(_eventData) this.updateDamageIndicatorBackground(),
       this)
     ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      function(_ed) { this.updateDmgIndicatorSize() },
+      function(_ed) { this.updateDmgIndicatorState() },
       this)
   }
 
-  function reinitScreen(_params = {})
-  {
+  function reinitScreen(_params = {}) {
     this.actionBar.reinit()
     ::hudEnemyDamage.reinit()
     ::g_hud_display_timers.reinit()
@@ -734,50 +635,57 @@ let function maybeOfferControlsHelp() {
     maybeOfferControlsHelp()
   }
 
-  function updateDamageIndicatorBackground()
-  {
+  function updateDamageIndicatorBackground() {
     let visMode = ::g_hud_vis_mode.getCurMode()
     let isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
     ::showBtn("tank_background", isDmgPanelVisible, this.scene)
   }
 
-  function updateShowHintsNest()
-  {
+  function updateShowHintsNest() {
     this.showSceneBtn("actionbar_hints_nest", true)
   }
 
-  function updateDmgIndicatorSize() {
+  function updateDmgIndicatorState() {
     let obj = this.scene.findObject("hud_tank_damage_indicator")
     if (obj?.isValid())
       send("updateDmgIndicatorStates", {
-        size = obj.getSize(), pos = obj.getPos(),
-        padding = [0, 0, 0, 0]
+        size = obj.getSize()
+        pos = obj.getPos()
       })
   }
 }
 
-::HudHelicopter <- class extends ::gui_handlers.BaseUnitHud
-{
+::HudHelicopter <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
     ::hudEnemyDamage.init(this.scene)
     this.actionBar = ::ActionBar(this.scene.findObject("hud_action_bar"))
     this.updatePosHudMultiplayerScore()
+
+    ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
+      @(_) this.updateDmgIndicatorState(), this)
   }
 
-  function reinitScreen(_params = {})
-  {
+  function reinitScreen(_params = {}) {
     this.actionBar.reinit()
     ::hudEnemyDamage.reinit()
     maybeOfferControlsHelp()
+    this.updateDmgIndicatorState()
+  }
+
+  function updateDmgIndicatorState() {
+    let obj = this.scene.findObject("xray_render_dmg_indicator")
+    if (obj?.isValid())
+      send("updateDmgIndicatorStates", {
+        size = obj.getSize()
+        pos = obj.getPos()
+      })
   }
 }
 
-::HudShip <- class extends ::gui_handlers.BaseUnitHud
-{
+::HudShip <- class extends ::gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudShip.blk"
   widgetsList = [
     {
@@ -786,8 +694,7 @@ let function maybeOfferControlsHelp() {
     }
   ]
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
     ::hudEnemyDamage.init(this.scene)
     ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_SHIP)
@@ -796,8 +703,7 @@ let function maybeOfferControlsHelp() {
     this.updatePosHudMultiplayerScore()
   }
 
-  function reinitScreen(_params = {})
-  {
+  function reinitScreen(_params = {}) {
     this.actionBar.reinit()
     ::hudEnemyDamage.reinit()
     ::g_hud_display_timers.reinit()
@@ -805,19 +711,16 @@ let function maybeOfferControlsHelp() {
   }
 }
 
-::gui_start_hud <- function gui_start_hud()
-{
+::gui_start_hud <- function gui_start_hud() {
   ::handlersManager.loadHandler(::gui_handlers.Hud)
 }
 
-::gui_start_hud_no_chat <- function gui_start_hud_no_chat()
-{
+::gui_start_hud_no_chat <- function gui_start_hud_no_chat() {
   //HUD can determine is he need chat or not
   //this function is left just for back compotibility with cpp code
   ::gui_start_hud()
 }
 
-::gui_start_spectator <- function gui_start_spectator()
-{
+::gui_start_spectator <- function gui_start_spectator() {
   ::handlersManager.loadHandler(::gui_handlers.Hud, { spectatorMode = true })
 }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,12 +7,11 @@ from "%scripts/dagui_library.nut" import *
 
 let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
-local { emulateShortcut } = require_native("controls")
+local { emulateShortcut } = require("controls")
 
 //--------------------------------------------------------------------------------------------------
 
-::gui_handlers.multifuncMenuHandler <- class extends ::gui_handlers.wheelMenuHandler
-{
+::gui_handlers.multifuncMenuHandler <- class extends ::gui_handlers.wheelMenuHandler {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -26,8 +26,7 @@ local { emulateShortcut } = require_native("controls")
   curSectionId = null
   path = null
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
 
     this.path = this.path ?? []
@@ -36,15 +35,13 @@ local { emulateShortcut } = require_native("controls")
     this.updateCaption()
   }
 
-  function updateCaption()
-  {
+  function updateCaption() {
     let objCaption = this.scene.findObject("wheel_menu_category")
     let text = getMfmSectionTitle(this.mfmDescription[this.curSectionId])
     objCaption.setValue(colorize("hudGreenTextColor", text))
   }
 
-  function toggleShortcut(shortcutId)
-  {
+  function toggleShortcut(shortcutId) {
     if (::is_xinput_device())
       this.switchControlsAllowMask(this.wndControlsAllowMaskWhenInactive)
 
@@ -54,8 +51,7 @@ local { emulateShortcut } = require_native("controls")
       this.switchControlsAllowMask(this.wndControlsAllowMaskWhenActive)
   }
 
-  function gotoPrevMenuOrQuit()
-  {
+  function gotoPrevMenuOrQuit() {
     if (this.path.len() == 0)
       return
 
@@ -68,16 +64,13 @@ local { emulateShortcut } = require_native("controls")
       this.quit()
   }
 
-  function gotoSection(sectionId)
-  {
+  function gotoSection(sectionId) {
     openMfm(this.mfmDescription, sectionId)
   }
 
-  function quit()
-  {
-    if (this.isActive)
-    {
-      for ( local i=0; i<this.path.len()-1; i++)
+  function quit() {
+    if (this.isActive) {
+      for (local i = 0; i < this.path.len() - 1; i++)
         this.mfmDescription[this.path[i]]?.onExit()
       this.path.clear()
       this.showScene(false)
@@ -88,8 +81,7 @@ local { emulateShortcut } = require_native("controls")
 //--------------------------------------------------------------------------------------------------
 
 // Called from client
-::on_multifunc_menu_request <- function on_multifunc_menu_request(isShow)
-{
+::on_multifunc_menu_request <- function on_multifunc_menu_request(isShow) {
   if (isShow)
     return openMfm(cfg)
   getMfmHandler()?.quit()

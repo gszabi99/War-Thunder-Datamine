@@ -1,14 +1,18 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
+let { isIPoint3 } = require("%sqStdLibs/helpers/u.nut")
+let { Point2 } = require("dagor.math")
 
 let missionModesList = [
   "missionsWon",
@@ -174,7 +178,7 @@ let function getRankMultipliersTable(blk) {
 }
 
 let function getRangeTextByPoint2(val, formatParams = {}, romanNumerals = false) {
-  if (!(type(val) == "instance" && (val instanceof ::Point2)) && !(type(val) == "table"))
+  if (!(type(val) == "instance" && (val instanceof Point2)) && !(type(val) == "table"))
     return ""
 
   formatParams = formatParamsDefault.__merge(formatParams)
@@ -326,7 +330,7 @@ let function loadMainProgressCondition(blk) {
         }
 
         let values = ("mode" in unlock) ? unlock.mode % "unlock" : []
-        if(values.len() == 0)
+        if (values.len() == 0)
           res.values.append(unlock.id)
         else
           res.values.extend(values)
@@ -441,7 +445,7 @@ let function getDiffValueText(value, formatStr = "%s", lessIsBetter = false) {
 let function getDiffTextArrayByPoint3(val, formatStr = "%s", lessIsBetter = false) {
   let res = []
 
-  if (type(val) != "instance" || !(val instanceof ::Point3)) {
+  if (!isIPoint3(val)) {
     res.append(getDiffValueText(val, formatStr, lessIsBetter))
     return res
   }
@@ -514,8 +518,8 @@ let function loadCondition(blk, unlockMode) {
   else if (t == "playerCountry")
     res.values = (blk % "country")
   else if (t == "playerUnitRank" || t == "offenderUnitRank") {
-    let range = ::Point2(blk?.minRank ?? 0, blk?.maxRank ?? 0)
-    let rangeForEvent = ::Point2(blk?.minRankForEvent ?? range.x, blk?.maxRankForEvent ?? range.y)
+    let range = Point2(blk?.minRank ?? 0, blk?.maxRank ?? 0)
+    let rangeForEvent = Point2(blk?.minRankForEvent ?? range.x, blk?.maxRankForEvent ?? range.y)
     local v = getRankRangeText(range)
     if (!::u.isEqual(range, rangeForEvent)) {
       let valForEvent = getRankRangeText(rangeForEvent)
@@ -527,14 +531,14 @@ let function loadCondition(blk, unlockMode) {
     res.needToShowInHeader = true
   }
   else if (t == "playerUnitMRank" || t == "offenderUnitMRank") {
-    local range = ::Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
-    local rangeForEvent = ::Point2(blk?.minMRankForEvent ?? range.x, blk?.maxMRankForEvent ?? range.y)
+    local range = Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
+    local rangeForEvent = Point2(blk?.minMRankForEvent ?? range.x, blk?.maxMRankForEvent ?? range.y)
     let hasForEventCond = !::u.isEqual(range, rangeForEvent)
-    range = ::Point2(::calc_battle_rating_from_rank(range.x),
+    range = Point2(::calc_battle_rating_from_rank(range.x),
       range.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(range.y) : 0)
     local v = getMRankRangeText(range)
     if (hasForEventCond) {
-      rangeForEvent = ::Point2(::calc_battle_rating_from_rank(rangeForEvent.x),
+      rangeForEvent = Point2(::calc_battle_rating_from_rank(rangeForEvent.x),
         rangeForEvent.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(rangeForEvent.y) : 0)
       let valForEvent = getMRankRangeText(rangeForEvent)
       v = "".concat(v, loc("ui/parentheses/space", {
@@ -619,7 +623,7 @@ let function loadCondition(blk, unlockMode) {
     res.values = t
   }
   else if (t == "higherBR") {
-    let range = ::Point2(blk?.diffBR ?? 0, blk?.diffBRMax ?? 0)
+    let range = Point2(blk?.diffBR ?? 0, blk?.diffBRMax ?? 0)
     let v = getRangeTextByPoint2(range, {
       maxOnlyStr = loc("conditions/unitRank/format_max")
       minOnlyStr = loc("conditions/unitRank/format_min")
@@ -674,7 +678,7 @@ let function loadCondition(blk, unlockMode) {
 // modeType - mode type of conditions with progress
 //   such condition can be only one in list, and always first.
 // modeTypeLocID  - locId for mode type
-let function loadConditionsFromBlk(blk, unlockBlk = ::DataBlock()) {
+let function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
   let res = []
   let mainCond = loadMainProgressCondition(blk) // main condition by modeType
   if (mainCond)

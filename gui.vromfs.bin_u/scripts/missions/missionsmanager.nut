@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ from "%scripts/dagui_library.nut" import *
   isRemoteMission = false
 }
 
-::g_missions_manager.fastStartSkirmishMission <- function fastStartSkirmishMission(mission)
-{
+::g_missions_manager.fastStartSkirmishMission <- function fastStartSkirmishMission(mission) {
   let params = {
     canSwitchMisListType = false
     showAllCampaigns = false
@@ -22,8 +22,7 @@ from "%scripts/dagui_library.nut" import *
   ::handlersManager.loadHandler(::gui_handlers.RemoteMissionModalHandler, params)
 }
 
-::g_missions_manager.startRemoteMission <- function startRemoteMission(params)
-{
+::g_missions_manager.startRemoteMission <- function startRemoteMission(params) {
   let url = params.url
   let name = params.name || "remote_mission"
 
@@ -54,12 +53,11 @@ from "%scripts/dagui_library.nut" import *
                   loc("urlMissions/live/loadAndStartConfirmation", params),
                   [["yes", function() { ::g_url_missions.loadBlk(mission, callback) }],
                    ["no", function() {} ]],
-                  "yes", { cancel_fn = function() {}}
+                  "yes", { cancel_fn = function() {} }
                 )
 }
 
-::on_start_remote_mission <- function on_start_remote_mission(params)
-{
+::on_start_remote_mission <- function on_start_remote_mission(params) {
   ::g_missions_manager.startRemoteMission(params)
 }
 

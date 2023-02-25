@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -14,30 +15,25 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
 const MIN_CREW_COUNT_FOR_WARNING = 2
 
-::g_hud_crew_member._setCrewMemberState <- function _setCrewMemberState(crewIconObj, newStateData)
-{
+::g_hud_crew_member._setCrewMemberState <- function _setCrewMemberState(crewIconObj, newStateData) {
   if (!("state" in newStateData))
     return
 
-  if (newStateData.state == "ok")
-  {
+  if (newStateData.state == "ok") {
     crewIconObj.state = "ok"
   }
-  else if (newStateData.state == "takingPlace" || newStateData.state == "healing")
-  {
+  else if (newStateData.state == "takingPlace" || newStateData.state == "healing") {
     let timeBarObj = crewIconObj.findObject("transfere_indicatior")
     ::g_time_bar.setPeriod(timeBarObj, newStateData.totalTakePlaceTime)
     ::g_time_bar.setCurrentTime(timeBarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
     crewIconObj.state = "transfere"
     crewIconObj.tooltip = loc(this.tooltip)
   }
-  else if (newStateData.state == "dead")
-  {
+  else if (newStateData.state == "dead") {
     crewIconObj.state = "dead"
     crewIconObj.tooltip = loc(this.tooltip)
   }
-  else
-  {
+  else {
     crewIconObj.state = "none"
   }
 }
@@ -75,10 +71,11 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
         cooldownObj["sector-angle-2"] = 0
         iconObj.state = "ok"
         iconObj.tooltip = ""
-      } else {
+      }
+      else {
         cooldownObj["sector-angle-2"] = (val * 360).tointeger()
         iconObj.state = "bad"
-        iconObj.tooltip = loc(this.tooltip, {distance = val * 100})
+        iconObj.tooltip = loc(this.tooltip, { distance = val * 100 })
       }
     }
   }
@@ -87,8 +84,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
     hudEventName = "CrewState:CrewState"
     sceneId = "crew_count"
     setCrewMemberState = function (iconObj, newStateData) {
-      if (newStateData.total <= 0)
-      {
+      if (newStateData.total <= 0) {
         iconObj.show(false)
         return
       }
@@ -122,8 +118,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
       { drivingDirectionModeValue = getConfigValueById("driving_direction_mode") })
     this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
 
-    foreach (crewMemberType in ::g_hud_crew_member.types)
-    {
+    foreach (crewMemberType in ::g_hud_crew_member.types) {
       ::g_hud_event_manager.subscribe(crewMemberType.hudEventName,
         (@(crewMemberType) function (eventData) {
           let crewObj = this.scene.findObject(crewMemberType.sceneId)
@@ -135,13 +130,11 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
     ::hud_request_hud_crew_state()
   }
 
-  function reinit()
-  {
+  function reinit() {
     ::hud_request_hud_crew_state()
   }
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.scene)
   }
 }

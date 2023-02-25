@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let DataBlock = require("DataBlock")
 
 let { getModsTreeSize, generateModsTree, generateModsBgElems,
   isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
@@ -55,33 +57,30 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::tooltip_display_delay <- 2
 ::max_spare_amount <- 100
 
-::enable_modifications <- function enable_modifications(unitName, modNames, enable)
-{
+::enable_modifications <- function enable_modifications(unitName, modNames, enable) {
   modNames = modNames?.filter(@(n) n != "")
   if ((modNames?.len() ?? 0) == 0)
     return
 
-  let db = ::DataBlock()
-  db[unitName] <- ::DataBlock()
+  let db = DataBlock()
+  db[unitName] <- DataBlock()
   foreach (modName in modNames)
     db[unitName][modName] <- enable
   return ::shop_enable_modifications(db)
 }
 
-::enable_current_modifications <- function enable_current_modifications(unitName)
-{
-  let db = ::DataBlock()
-  db[unitName] <- ::DataBlock()
+::enable_current_modifications <- function enable_current_modifications(unitName) {
+  let db = DataBlock()
+  db[unitName] <- DataBlock()
 
   let air = ::getAircraftByName(unitName)
-  foreach(mod in air.modifications)
+  foreach (mod in air.modifications)
     db[unitName][mod.name] <- ::shop_is_modification_enabled(unitName, mod.name)
 
   return ::shop_enable_modifications(db)
 }
 
-::open_weapons_for_unit <- function open_weapons_for_unit(unit, params = {})
-{
+::open_weapons_for_unit <- function open_weapons_for_unit(unit, params = {}) {
   if (!("name" in unit))
     return
   ::aircraft_for_weapons = unit.name
@@ -94,8 +93,7 @@ let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.ty
 
 local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
-::gui_handlers.WeaponsModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.WeaponsModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   items = null
 
   wndWidth = 7
@@ -137,8 +135,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   purchasedModifications = null
   needHideSlotbar = false
 
-  function initScreen()
-  {
+  function initScreen() {
     this.setResearchManually = !this.researchMode
     this.mainModsObj = this.scene.findObject("main_modifications")
 
@@ -149,8 +146,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       + to_pixels($"{this.researchMode ? 2 : 1}@buttonHeight +1@modCellHeight")
 
     let imageBlock = this.scene.findObject("researchMode_image_block")
-    if (imageBlock?.isValid())
-    {
+    if (imageBlock?.isValid()) {
       imageBlock.height = $"{heightInModCell(this.premiumModsHeight)}@modCellHeight"
       imageBlock.show(this.researchMode)
     }
@@ -173,22 +169,19 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.showNewbieResearchHelp()
   }
 
-  function initSlotbar()
-  {
+  function initSlotbar() {
     if (this.researchMode || !::isUnitInSlotbar(this.air) || this.needHideSlotbar)
       return
     this.createSlotbar({
       crewId = ::getCrewByAir(this.air).id
-      showNewSlot=false
-      emptyText="#shop/aircraftNotSelected"
+      showNewSlot = false
+      emptyText = "#shop/aircraftNotSelected"
       afterSlotbarSelect = this.onSlotbarSelect
     })
   }
 
-  function initMainParams()
-  {
-    if (!this.air)
-    {
+  function initMainParams() {
+    if (!this.air) {
       this.goBack()
       return
     }
@@ -199,7 +192,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.updateWndWidth()
 
     let frameObj =  this.scene.findObject("mods_frame")
-    if(frameObj?.isValid())
+    if (frameObj?.isValid())
       frameObj.width = to_pixels($"{this.wndWidth}@modCellWidth + 1.5@modBlockTierNumHeight $min 1@rw")
     let data = "tdiv { id:t='bg_elems'; position:t='absolute'; inactive:t='yes' }"
     this.mainModsObj.setValue(-1)
@@ -218,10 +211,9 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.updateWindowTitle()
   }
 
-  function updateWeaponsAndBulletsLists()
-  {
+  function updateWeaponsAndBulletsLists() {
     this.premiumModsList = []
-    foreach(mod in this.air.modifications)
+    foreach (mod in this.air.modifications)
       if ((!this.researchMode || canResearchMod(this.air, mod))
           && (isModClassPremium(mod)
               || (mod.modClass == "" && getModificationBulletsGroup(mod.name) == "")
@@ -230,8 +222,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
     this.lastBullets = []
     this.bulletsByGroupIndex = {}
-    for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(this.air); groupIndex++)
-    {
+    for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(this.air); groupIndex++) {
       let bulletsList = getBulletsList(this.air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false
       })
@@ -245,19 +236,17 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.expendablesArray = this.getExpendableModificationsArray(this.air)
   }
 
-  function updateWndWidth()
-  {
+  function updateWndWidth() {
     let weaponsAndBulletsLen = 1               //Always one bunle for primary weapons
-      + (isUnitHaveSecondaryWeapons(this.air) ? 1 : 0)//Since we have secondary weapons own window
-      + this.bulletsByGroupIndex.len()
+      +(isUnitHaveSecondaryWeapons(this.air) ? 1 : 0) //Since we have secondary weapons own window
+      +this.bulletsByGroupIndex.len()
       + this.expendablesArray.len()
     let premiumModsLen = this.premiumModsList.len() + (this.air.spare && !this.researchMode ? 1 : 0)
     this.wndWidth = clamp(
       max(weaponsAndBulletsLen, premiumModsLen, getModsTreeSize(this.air).guiPosX), 6, 7)
   }
 
-  function onSlotbarSelect()
-  {
+  function onSlotbarSelect() {
     let newCrew = this.getCurCrew()
     let newUnit = newCrew ? ::g_crew.getCrewUnit(newCrew) : null
     if (!newUnit || newUnit == this.air)
@@ -274,33 +263,27 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.initMainParams()
   }
 
-  function checkOnResearchCurMod()
-  {
-    if (this.researchMode && !this.isAnyModuleInResearch())
-    {
+  function checkOnResearchCurMod() {
+    if (this.researchMode && !this.isAnyModuleInResearch()) {
       let modForResearch = findAnyNotResearchedMod(this.air)
-      if (modForResearch)
-      {
+      if (modForResearch) {
         this.setModificatonOnResearch(modForResearch,
           (@(modForResearch) function() {
             this.updateAllItems()
             let guiPosIdx = getTblValue("guiPosIdx", modForResearch, -1)
             assert(guiPosIdx >= 0, "missing guiPosIdx, mod - " + getTblValue("name", modForResearch, "none") + "; unit - " + this.air.name)
-            this.selectResearchModule(guiPosIdx >= 0? guiPosIdx : 0)
+            this.selectResearchModule(guiPosIdx >= 0 ? guiPosIdx : 0)
           })(modForResearch))
       }
     }
   }
 
-  function selectResearchModule(customPosIdx = -1)
-  {
+  function selectResearchModule(customPosIdx = -1) {
     local modIdx = customPosIdx
-    if (modIdx < 0)
-    {
+    if (modIdx < 0) {
       let finishedResearch = this.researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
-      foreach(item in this.items)
-        if (isModInResearch(this.air, item))
-        {
+      foreach (item in this.items)
+        if (isModInResearch(this.air, item)) {
           modIdx = item.guiPosIdx
           break
         }
@@ -309,45 +292,38 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
 
     if (checkObj(this.mainModsObj) && modIdx >= 0)
-      this.mainModsObj.setValue(modIdx+1)
+      this.mainModsObj.setValue(modIdx + 1)
   }
 
-  function updateWindowTitle()
-  {
+  function updateWindowTitle() {
     let titleObj = this.scene.findObject("wnd_title")
     if (!checkObj(titleObj))
       return
 
     local titleText = loc("mainmenu/btnWeapons") + " " + loc("ui/mdash") + " " + ::getUnitName(this.air)
-    if (this.researchMode)
-    {
+    if (this.researchMode) {
       let modifName = this.researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       titleText = loc("modifications/finishResearch",
-        {modName = getModificationName(this.air, modifName)})
+        { modName = getModificationName(this.air, modifName) })
     }
     titleObj.setValue(titleText)
   }
 
-  function updateWindowHeightAndPos()
-  {
+  function updateWindowHeightAndPos() {
     let frameObj = this.scene.findObject("mods_frame")
-    if (checkObj(frameObj))
-    {
+    if (checkObj(frameObj)) {
       let frameHeight = frameObj.getSize()[1]
       let maxFrameHeight = ::g_dagui_utils.toPixels(this.guiScene, "@maxWeaponsWindowHeight")
 
-      if (frameHeight > maxFrameHeight)
-      {
+      if (frameHeight > maxFrameHeight) {
         let frameHeaderHeight = ::g_dagui_utils.toPixels(this.guiScene, "@frameHeaderHeight")
-        if (frameHeight - frameHeaderHeight < maxFrameHeight)
-        {
+        if (frameHeight - frameHeaderHeight < maxFrameHeight) {
           frameObj.isHeaderHidden = "yes"
           this.showSceneBtn("close_alt_btn", !this.researchMode)
           let researchModeImgObj = this.scene.findObject("researchMode_image_block")
           researchModeImgObj["pos"] = researchModeImgObj["posWithoutHeader"]
         }
-        else
-        {
+        else {
           this.needHideSlotbar = true
           frameObj["pos"] = frameObj["posWithoutSlotbar"]
         }
@@ -355,8 +331,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
   }
 
-  function showNewbieResearchHelp()
-  {
+  function showNewbieResearchHelp() {
     if (!this.researchMode || !tutorialModule.needShowTutorial("researchMod", 1))
       return
 
@@ -375,11 +350,11 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     let steps = [
       {
         obj = ["item_" + newIdx]
-        text = loc("help/newModification", {modName = newModName})
+        text = loc("help/newModification", { modName = newModName })
         nextActionShortcut = "help/OBJ_CLICK"
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = (@(newIdx) function() {this.setModificatonOnResearch(this.items[newIdx], function(){this.updateAllItems()})})(newIdx)
+        cb = (@(newIdx) function() { this.setModificatonOnResearch(this.items[newIdx], function() { this.updateAllItems() }) })(newIdx)
       },
       {
         obj = ["available_free_exp_text"]
@@ -393,13 +368,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     let finItem = this.items[finIdx]
     let balance = ::Cost()
     balance.setFromTbl(::get_balance())
-    if (getItemAmount(this.air, finItem) < 1 && getItemCost(this.air, finItem) <= balance)
-    {
+    if (getItemAmount(this.air, finItem) < 1 && getItemCost(this.air, finItem) <= balance) {
       let finModName = getModificationName(this.air, this.items[finIdx].name, true)
       steps.insert(0,
         {
           obj = ["item_" + finIdx]
-          text = loc("help/finishedModification", {modName = finModName})
+          text = loc("help/finishedModification", { modName = finModName })
           nextActionShortcut = "help/OBJ_CLICK"
           actionType = tutorAction.OBJ_CLICK
           shortcut = ::GAMEPAD_ENTER_SHORTCUT
@@ -410,8 +384,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     ::gui_modal_tutor(steps, this)
   }
 
-  function fillPage()
-  {
+  function fillPage() {
     this.guiScene.setUpdatesEnabled(false, false)
     this.createItem(this.wrapUnitToItem(this.air), weaponsItem.curUnit, this.mainModsObj, 0.0, 0.0)
     this.fillModsTree()
@@ -423,8 +396,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.updateWindowHeightAndPos()
   }
 
-  function fillAvailableRPText()
-  {
+  function fillAvailableRPText() {
     if (!this.researchMode)
       return
 
@@ -434,14 +406,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       freeRPObj.setValue(::get_flush_exp_text(this.availableFlushExp))
   }
 
-  function automaticallySpendAllExcessiveExp() //!!!TEMP function, true func must be from code
-  {
+  function automaticallySpendAllExcessiveExp() { //!!!TEMP function, true func must be from code
     this.showTaskProgressBox()
     this.availableFlushExp = ::shop_get_unit_excess_exp(this.airName)
     let curResModuleName = ::shop_get_researchable_module_name(this.airName)
 
-    if(this.availableFlushExp <= 0 || curResModuleName == "")
-    {
+    if (this.availableFlushExp <= 0 || curResModuleName == "") {
       let afterDoneFunc = function() {
         this.destroyProgressBox()
         this.updateAllItems()
@@ -455,36 +425,30 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.flushItemExp(curResModuleName, this.automaticallySpendAllExcessiveExp)
   }
 
-  function onEventUnitResearch(_params)
-  {
+  function onEventUnitResearch(_params) {
     this.updateAllItems()
   }
 
-  function onEventUnitBought(_params)
-  {
+  function onEventUnitBought(_params) {
     this.isOwn = this.air.isUsable()
     this.updateAllItems()
   }
 
-  function onEventUnitRented(params)
-  {
+  function onEventUnitRented(params) {
     this.onEventUnitBought(params)
   }
 
-  function onEventExpConvert(_params)
-  {
+  function onEventExpConvert(_params) {
     this.updateAllItems()
   }
 
-  function onEventUnitRepaired(_params)
-  {
-    foreach(idx, item in this.items)
+  function onEventUnitRepaired(_params) {
+    foreach (idx, item in this.items)
       if (this.isItemTypeUnit(item.type))
         return this.updateItem(idx)
   }
 
-  function onEventModificationPurchased(params)
-  {
+  function onEventModificationPurchased(params) {
     let modName = params?.modName
     if (modName)
       this.purchasedModifications.append(modName)
@@ -500,8 +464,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   function onEventSlotbarPresetLoaded(_params) { this.onSlotbarSelect() }
   function onEventCrewsListChanged(_params) { this.onSlotbarSelect() }
 
-  function onEventUnitWeaponChanged(_params = null)
-  {
+  function onEventUnitWeaponChanged(_params = null) {
     this.updateAllItems()
     if (!isUnitHaveSecondaryWeapons(this.air) || !needSecondaryWeaponsWnd(this.air))
       return
@@ -512,7 +475,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (selWeapon == null)
       return
 
-    foreach(idx, item in this.items)
+    foreach (idx, item in this.items)
       if (item.type == weaponsItem.weapon) {
         this.items[idx] = selWeapon
         this.updateItem(idx)
@@ -520,18 +483,15 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       }
   }
 
-  function onEventUnitBulletsChanged(_params)
-  {
+  function onEventUnitBulletsChanged(_params) {
     this.updateAllItems()
   }
 
-  function isItemTypeUnit(iType)
-  {
+  function isItemTypeUnit(iType) {
     return iType == weaponsItem.curUnit
   }
 
-  function addItemToList(item, iType)
-  {
+  function addItemToList(item, iType) {
     let idx = this.items.len()
 
     item.type <- iType
@@ -541,8 +501,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return "item_" + idx
   }
 
-  function createItem(item, iType, holderObj, posX, posY)
-  {
+  function createItem(item, iType, holderObj, posX, posY) {
     let id = this.addItemToList(item, iType)
 
     if (this.isItemTypeUnit(iType))
@@ -557,19 +516,17 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       })
   }
 
-  function wrapUnitToItem(unit)
-  {
+  function wrapUnitToItem(unit) {
     return {
       name = unit.name
       unit = unit
     }
   }
 
-  function createUnitItemObj(id, _item, holderObj, posX, posY)
-  {
+  function createUnitItemObj(id, _item, holderObj, posX, posY) {
     let blockObj = this.guiScene.createElementByObject(holderObj, "%gui/weaponry/nextUnitItem.blk", "weapon_item_unit", this)
     let titleObj = blockObj.findObject("nextResearch_title")
-    titleObj.setValue(this.researchMode? loc("mainmenu/nextResearch/title") : "")
+    titleObj.setValue(this.researchMode ? loc("mainmenu/nextResearch/title") : "")
 
     local position = (posX + 0.5).tostring() + "@modCellWidth-0.5w, " + (posY + 0.5).tostring() + "@modCellHeight-0.5h"
     if (this.researchMode)
@@ -581,14 +538,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return unitObj
   }
 
-  function createItemForBundle(id, unit, item, iType, holderObj, handler, params = {})
-  {
+  function createItemForBundle(id, unit, item, iType, holderObj, handler, params = {}) {
     id = this.addItemToList(item, iType)
     return createModItem(id, unit, item, iType, holderObj, handler, params)
   }
 
-  function createBundle(itemsList, itemsType, subType, holderObj, posX, posY)
-  {
+  function createBundle(itemsList, itemsType, subType, holderObj, posX, posY) {
     createModBundle("bundle_" + this.items.len(), this.air, itemsList, itemsType, holderObj, this,
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5, createItemFunc = this.createItemForBundle
@@ -597,13 +552,11 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       })
   }
 
-  function getItemObj(idx)
-  {
+  function getItemObj(idx) {
     return this.scene.findObject("item_" + idx)
   }
 
-  function updateItem(idx)
-  {
+  function updateItem(idx) {
     let itemObj = this.getItemObj(idx)
     if (!checkObj(itemObj) || !(idx in this.items))
       return
@@ -636,8 +589,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     })
   }
 
-  function updateBuyAllButton()
-  {
+  function updateBuyAllButton() {
     let btnId = "btn_buyAll"
     let cost = getAllModsCost(this.air, true)
     let show = !cost.isZero() && ::isUnitUsable(this.air) && hasFeature("BuyAllModifications")
@@ -646,13 +598,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       placePriceTextToButton(this.scene, btnId, loc("mainmenu/btnBuyAll"), cost)
   }
 
-  function updateAllItems()
-  {
+  function updateAllItems() {
     if (!this.isValid())
       return
 
     this.fillAvailableRPText()
-    for(local i = 0; i < this.items.len(); i++)
+    for (local i = 0; i < this.items.len(); i++)
       this.updateItem(i)
     let treeSize = getModsTreeSize(this.air)
     this.updateTiersStatus(treeSize)
@@ -660,15 +611,13 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.updateBuyAllButton()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let isAnyModInResearch = this.isAnyModuleInResearch()
     this.showSceneBtn("btn_exit", this.researchMode && (!isAnyModInResearch || this.availableFlushExp <= 0 || this.setResearchManually))
     this.showSceneBtn("btn_spendExcessExp", this.researchMode && isAnyModInResearch && this.availableFlushExp > 0)
 
     let checkboxObj = this.scene.findObject("auto_purchase_mods")
-    if (checkObj(checkboxObj))
-    {
+    if (checkObj(checkboxObj)) {
       checkboxObj.show(this.isOwn)
       if (this.isOwn)
         checkboxObj.setValue(::get_auto_buy_modifications())
@@ -677,8 +626,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.showSceneBtn("btn_damage_control", this.air.isShipOrBoat() && hasFeature("DamageControl") && isShipDamageControlEnabled(this.air));
   }
 
-  function updateUnitItem(item, itemObj)
-  {
+  function updateUnitItem(item, itemObj) {
     let params = {
       slotbarActions = this.airActions
       getEdiffFunc  = this.getCurrentEdiff.bindenv(this)
@@ -689,8 +637,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     ::fill_unit_item_timers(itemObj.findObject("unit_item"), item.unit, params)
   }
 
-  function isAnyModuleInResearch()
-  {
+  function isAnyModuleInResearch() {
     let module = ::shop_get_researchable_module_name(this.airName)
     if (module == "")
       return false
@@ -702,39 +649,34 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return !isModClassPremium(moduleData)
   }
 
-  function updateItemBundle(item)
-  {
+  function updateItemBundle(item) {
     let bundle = this.getItemBundle(item)
     if (!bundle)
       this.updateItem(item.guiPosIdx)
-    else
-    {
+    else {
       this.updateItem(bundle.guiPosIdx)
-      foreach(bitem in bundle.itemsList)
+      foreach (bitem in bundle.itemsList)
         this.updateItem(bitem.guiPosIdx)
     }
   }
 
-  function createTreeItems(obj, branch, treeOffsetY = 0)
-  {
+  function createTreeItems(obj, branch, treeOffsetY = 0) {
     let branchItems = this.collectBranchItems(branch, [])
-    branchItems.sort(@(a,b) a.tier <=> b.tier || a.guiPosX <=> b.guiPosX)
-    foreach(item in branchItems)
+    branchItems.sort(@(a, b) a.tier <=> b.tier || a.guiPosX <=> b.guiPosX)
+    foreach (item in branchItems)
       this.createItem(item, weaponsItem.modification, obj, item.guiPosX, item.tier + treeOffsetY - 1)
   }
 
-  function collectBranchItems(branch, resItems)
-  {
-    foreach(_idx, item in branch)
-      if (type(item)=="table") //modification
+  function collectBranchItems(branch, resItems) {
+    foreach (_idx, item in branch)
+      if (type(item) == "table") //modification
         resItems.append(item)
-      else if (type(item)=="array") //branch
+      else if (type(item) == "array") //branch
         this.collectBranchItems(item, resItems)
     return resItems
   }
 
-  function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", blockIdPrefix = "")
-  {
+  function createTreeBlocks(obj, columnsList, height, treeOffsetX, treeOffsetY, blockType = "", blockIdPrefix = "") {
     let fullWidth = this.wndWidth - treeOffsetX
     let view = {
       width = fullWidth
@@ -746,11 +688,9 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       rowType = blockType
     }
 
-    if (columnsList.len())
-    {
+    if (columnsList.len()) {
       local headerWidth = 0
-      foreach(idx, column in columnsList)
-      {
+      foreach (idx, column in columnsList) {
         column.needDivLine <- idx > 0
         headerWidth += column.width
         if (column.name && ::utf8_strlen(column.name) > ::header_len_per_cell * column.width)
@@ -764,15 +704,13 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
 
     let needTierArrows = blockIdPrefix != ""
-    for(local i = 1; i <= height; i++)
-    {
+    for (local i = 1; i <= height; i++) {
       let row = {
         width = fullWidth
         top = i - 1
       }
 
-      if(needTierArrows)
-      {
+      if (needTierArrows) {
         row.id <- blockIdPrefix + i
         row.needTierArrow <- i > 1
         row.tierText <- ::get_roman_numeral(i)
@@ -782,38 +720,35 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
 
     let data = ::handyman.renderCached("%gui/weaponry/weaponryBg.tpl", view)
-    if (data!="")
+    if (data != "")
       this.guiScene.appendWithBlk(obj, data, this)
   }
 
-  function createTreeArrows(obj, arrowsList, treeOffsetY)
-  {
+  function createTreeArrows(obj, arrowsList, treeOffsetY) {
     local data = ""
-    foreach(idx, a in arrowsList)
-    {
+    foreach (idx, a in arrowsList) {
       let id = "arrow_" + idx
 
-      if (a.from[0]!=a.to[0]) //hor arrow
+      if (a.from[0] != a.to[0]) //hor arrow
         data += format("modArrow { id:t='%s'; type:t='right'; " +
                          "pos:t='%.1f@modCellWidth-0.5@modArrowLen, %.1f@modCellHeight-0.5h'; " +
                          "width:t='@modArrowLen + %.1f@modCellWidth' " +
                        "}",
-                       id, a.from[0] + 1, a.from[1] - 0.5 + treeOffsetY, a.to[0]-a.from[0]-1
+                       id, a.from[0] + 1, a.from[1] - 0.5 + treeOffsetY, a.to[0] - a.from[0] - 1
                       )
-      else if (a.from[1]!=a.to[1]) //vert arrow
+      else if (a.from[1] != a.to[1]) //vert arrow
         data += format("modArrow { id:t='%s'; type:t='down'; " +
                          "pos:t='%.1f@modCellWidth-0.5w, %.1f@modCellHeight-0.5@modArrowLen'; " +
                          "height:t='@modArrowLen + %.1f@modCellHeight' " +
                        "}",
-                       id, a.from[0] + 0.5, a.from[1] + treeOffsetY, a.to[1]-a.from[1]-1
+                       id, a.from[0] + 0.5, a.from[1] + treeOffsetY, a.to[1] - a.from[1] - 1
                       )
     }
-    if (data!="")
+    if (data != "")
       this.guiScene.appendWithBlk(obj, data, this)
   }
 
-  function fillModsTree()
-  {
+  function fillModsTree() {
     let treeOffsetY = heightInModCell(to_pixels("1@frameHeaderHeight") + this.premiumModsHeight)
     let tree = generateModsTree(this.air)
     if (!tree)
@@ -836,47 +771,40 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       this.scene.findObject("overflow-div")["overflow-x"] = "auto"
   }
 
-  function updateTiersStatus(size)
-  {
+  function updateTiersStatus(size) {
     let tiersArray = this.getResearchedModsArray(size.tier)
-    for(local i = 1; i <= size.tier; i++)
-    {
-      if (tiersArray[i-1] == null)
-      {
+    for (local i = 1; i <= size.tier; i++) {
+      if (tiersArray[i - 1] == null) {
         assert(false, format("No modification data for unit '%s' in tier %s.", this.air.name, i.tostring()))
         break
       }
       let unlocked = isWeaponTierAvailable(this.air, i)
-      let owned = (tiersArray[i-1].notResearched == 0)
-      this.scene.findObject(this.tierIdPrefix + i).type = owned? "owned" : unlocked ? "unlocked" : "locked"
+      let owned = (tiersArray[i - 1].notResearched == 0)
+      this.scene.findObject(this.tierIdPrefix + i).type = owned ? "owned" : unlocked ? "unlocked" : "locked"
 
-      let jObj = this.scene.findObject(this.tierIdPrefix + (i+1).tostring())
-      if(checkObj(jObj))
-      {
-        let modsCountObj = jObj.findObject(this.tierIdPrefix + (i+1).tostring() + "_txt")
-        let countMods = tiersArray[i-1].researched
-        let reqMods = this.air.needBuyToOpenNextInTier[i-1]
-        if(countMods >= reqMods)
-          if(!unlocked)
-          {
+      let jObj = this.scene.findObject(this.tierIdPrefix + (i + 1).tostring())
+      if (checkObj(jObj)) {
+        let modsCountObj = jObj.findObject(this.tierIdPrefix + (i + 1).tostring() + "_txt")
+        let countMods = tiersArray[i - 1].researched
+        let reqMods = this.air.needBuyToOpenNextInTier[i - 1]
+        if (countMods >= reqMods)
+          if (!unlocked) {
             modsCountObj.setValue(countMods.tostring() + loc("weapons_types/short/separator") + reqMods.tostring())
             let tooltipText = "<color=@badTextColor>" + loc("weaponry/unlockTier/reqPrevTiers") + "</color>"
             modsCountObj.tooltip = loc("weaponry/unlockTier/countsBlock/startText") + "\n" +  tooltipText
             jObj.tooltip = tooltipText
           }
-          else
-          {
+          else {
             modsCountObj.setValue("")
             modsCountObj.tooltip = ""
             jObj.tooltip = ""
           }
-        else
-        {
+        else {
           modsCountObj.setValue(countMods.tostring() + loc("weapons_types/short/separator") + reqMods.tostring())
           let req = reqMods - countMods
 
           let tooltipText = loc("weaponry/unlockTier/tooltip",
-                                    { amount = req.tostring(), tier = ::get_roman_numeral(i+1) })
+                                    { amount = req.tostring(), tier = ::get_roman_numeral(i + 1) })
           jObj.tooltip = tooltipText
           modsCountObj.tooltip = loc("weaponry/unlockTier/countsBlock/startText") + "\n" + tooltipText
         }
@@ -884,20 +812,18 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
   }
 
-  function getResearchedModsArray(tiersCount)
-  {
+  function getResearchedModsArray(tiersCount) {
     local tiersArray = []
-    if("modifications" in this.air && tiersCount > 0)
-    {
+    if ("modifications" in this.air && tiersCount > 0) {
       tiersArray = array(tiersCount, null)
-      foreach(mod in this.air.modifications) {
+      foreach (mod in this.air.modifications) {
         if (!isModificationInTree(this.air, mod))
           continue
 
-        let idx = mod.tier-1
-        tiersArray[idx] = tiersArray[idx] || { researched=0, notResearched=0 }
+        let idx = mod.tier - 1
+        tiersArray[idx] = tiersArray[idx] || { researched = 0, notResearched = 0 }
 
-         if(isModResearched(this.air, mod))
+         if (isModResearched(this.air, mod))
            tiersArray[idx].researched++
          else
            tiersArray[idx].notResearched++
@@ -906,8 +832,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return tiersArray
   }
 
-  function fillPremiumMods()
-  {
+  function fillPremiumMods() {
     if (!hasFeature("SpendGold"))
       return
 
@@ -918,7 +843,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     local nextX = offsetX
     if (this.air.spare && !this.researchMode)
       this.createItem(this.air.spare, weaponsItem.spare, this.mainModsObj, nextX++, offsetY)
-    foreach(mod in this.premiumModsList)
+    foreach (mod in this.premiumModsList)
       this.createItem(mod, weaponsItem.modification, this.mainModsObj, nextX++, offsetY)
 
     if (this.researchMode)
@@ -928,24 +853,21 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.createTreeBlocks(this.modsBgObj, columnsList, 1, offsetX, offsetY)
   }
 
-  function getWeaponsColumnData(name = null, width = 1, tooltip = "")
-  {
+  function getWeaponsColumnData(name = null, width = 1, tooltip = "") {
     return { name = name
         width = width
         tooltip = tooltip
       }
   }
 
-  function getExpendableModificationsArray(unit)
-  {
+  function getExpendableModificationsArray(unit) {
     if (!("modifications" in unit))
       return []
 
     return ::u.filter(unit.modifications, isModClassExpendable)
   }
 
-  function fillWeaponsAndBullets()
-  {
+  function fillWeaponsAndBullets() {
     if (this.researchMode)
       return
 
@@ -954,20 +876,17 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     let columnsList = []
     //add primary weapons bundle
     let primaryWeaponsList = []
-    foreach(_i, modName in getPrimaryWeaponsList(this.air))
-    {
-      let mod = (modName=="")? null : getModificationByName(this.air, modName)
+    foreach (_i, modName in getPrimaryWeaponsList(this.air)) {
+      let mod = (modName == "") ? null : getModificationByName(this.air, modName)
       let item = { name = modName, weaponMod = mod }
 
-      if (mod)
-      {
+      if (mod) {
         mod.isPrimaryWeapon <- true
         item.reqModification <- [modName]
       }
-      else
-      {
+      else {
         item.image <- this.air.commonWeaponImage
-        if("weaponUpgrades" in this.air)
+        if ("weaponUpgrades" in this.air)
           item.weaponUpgrades <- this.air.weaponUpgrades
       }
       primaryWeaponsList.append(item)
@@ -977,17 +896,17 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     offsetX++
 
     //add secondary weapons
-    if (isUnitHaveSecondaryWeapons(this.air))
-    {
+    if (isUnitHaveSecondaryWeapons(this.air)) {
       let secondaryWeapons = getSecondaryWeaponsList(this.air)
       this.lastWeapon = validateLastWeapon(this.airName) //real weapon or ..._default
-      log("initial set lastWeapon " + this.lastWeapon )
+      log("initial set lastWeapon " + this.lastWeapon)
       if (needSecondaryWeaponsWnd(this.air)) {
         let selWeapon = secondaryWeapons.findvalue((@(w) w.name == this.lastWeapon).bindenv(this))
           ?? secondaryWeapons?[0]
         if (selWeapon)
           this.createItem(selWeapon, weaponsItem.weapon, this.mainModsObj, offsetX, offsetY)
-      } else
+      }
+      else
         this.createBundle(secondaryWeapons, weaponsItem.weapon, 0, this.mainModsObj, offsetX, offsetY)
       columnsList.append(this.getWeaponsColumnData(
         ::g_weaponry_types.WEAPON.getHeader(this.air)).__merge(
@@ -999,8 +918,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
 
     //add bullets bundle
-    foreach(groupIndex, bulletsList in this.bulletsByGroupIndex)
-    {
+    foreach (groupIndex, bulletsList in this.bulletsByGroupIndex) {
       this.createBundle(getBulletsItemsList(this.air, bulletsList, groupIndex),
         weaponsItem.bullets, groupIndex, this.mainModsObj, offsetX, offsetY)
 
@@ -1014,11 +932,9 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
 
     //add expendables
-    if (this.expendablesArray.len())
-    {
+    if (this.expendablesArray.len()) {
       columnsList.append(this.getWeaponsColumnData(loc("modification/category/expendables")))
-      foreach (mod in this.expendablesArray)
-      {
+      foreach (mod in this.expendablesArray) {
         this.createItem(mod, mod.type, this.mainModsObj, offsetX, offsetY)
         offsetX++
       }
@@ -1027,17 +943,14 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.createTreeBlocks(this.modsBgObj, columnsList, 1, 0, offsetY)
   }
 
-  function updateWeaponsWarning()
-  {
+  function updateWeaponsWarning() {
     let iconObj = this.scene.findObject("weapons_warning")
     if (iconObj?.isValid())
       iconObj.display = (checkUnitSecondaryWeapons(this.air) != UNIT_WEAPONS_READY) ? "show" : "hide"
   }
 
-  function updateBulletsWarning()
-  {
-    for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(this.air); groupIndex++)
-    {
+  function updateBulletsWarning() {
+    for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(this.air); groupIndex++) {
       let bulletsList = getBulletsList(this.air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false })
       if (!bulletsList.values.len() || bulletsList.duplicate)
@@ -1050,36 +963,33 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
   }
 
-  function canBomb(checkPurchase)
-  {
+  function canBomb(checkPurchase) {
     return isUnitHaveAnyWeaponsTags(this.air, [WEAPON_TAG.ROCKET, WEAPON_TAG.BOMB], checkPurchase)
   }
 
-  function getItemBundle(searchItem)
-  {
-    foreach(bundle in this.items)
+  function getItemBundle(searchItem) {
+    foreach (bundle in this.items)
       if (bundle.type == weaponsItem.bundle)
-        foreach(item in bundle.itemsList)
-          if (item.name == searchItem.name && item.type==searchItem.type)
+        foreach (item in bundle.itemsList)
+          if (item.name == searchItem.name && item.type == searchItem.type)
             return bundle
     return null
   }
 
-  function getItemIdxByObj(obj)
-  {
-    if (!obj) return -1
+  function getItemIdxByObj(obj) {
+    if (!obj)
+      return -1
     local id = obj?.holderId ?? ""
     if (id == "")
       id = obj.id
-    if (id.len() <= 5 || id.slice(0,5) != "item_")
+    if (id.len() <= 5 || id.slice(0, 5) != "item_")
       return -1
     let idx = id.slice(5).tointeger()
-    return (idx in this.items)? idx : -1
+    return (idx in this.items) ? idx : -1
   }
 
-  function getItemIdxByName(name)
-  {
-    foreach(idx, item in this.items)
+  function getItemIdxByName(name) {
+    foreach (idx, item in this.items)
       if (item.name == name)
         return idx
 
@@ -1095,51 +1005,43 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return checkObj(itemObj) ? itemObj : null
   }
 
-  function doCurrentItemAction()
-  {
+  function doCurrentItemAction() {
     let itemObj = this.getCurItemObj()
     if (itemObj)
       this.onModAction(itemObj, false)
   }
 
-  function onModItemClick(obj)
-  {
-    if (this.researchMode)
-    {
+  function onModItemClick(obj) {
+    if (this.researchMode) {
       let idx = this.getItemIdxByObj(obj)
       if (idx >= 0)
-        this.mainModsObj.setValue(this.items[idx].guiPosIdx+1)
+        this.mainModsObj.setValue(this.items[idx].guiPosIdx + 1)
       return
     }
 
     this.onModAction(obj, false, ::show_console_buttons)
   }
 
-  function onModItemDblClick(obj)
-  {
+  function onModItemDblClick(obj) {
     this.onModAction(obj)
   }
 
-  function onModActionBtn(obj)
-  {
+  function onModActionBtn(obj) {
     this.onModAction(obj, true, true)
   }
 
-  function onModCheckboxClick(obj)
-  {
+  function onModCheckboxClick(obj) {
     this.onModAction(obj)
   }
 
-  function getSelectedUnit()
-  {
+  function getSelectedUnit() {
     if (!checkObj(this.mainModsObj))
       return null
     let item = this.getSelItemFromNavObj(this.mainModsObj)
-    return (item && this.isItemTypeUnit(item.type))? item : null
+    return (item && this.isItemTypeUnit(item.type)) ? item : null
   }
 
-  function getSelItemFromNavObj(obj)
-  {
+  function getSelItemFromNavObj(obj) {
     let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return null
@@ -1149,47 +1051,42 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return this.items[idx]
   }
 
-  function canPerformAction(item, amount)
-  {
+  function canPerformAction(item, amount) {
     local reason = null
-    if(!this.isOwn)
+    if (!this.isOwn)
       reason = format(loc("weaponry/action_not_allowed"), loc("weaponry/unit_not_bought"))
-    else if (!amount && !canBuyMod(this.air, item))
-    {
+    else if (!amount && !canBuyMod(this.air, item)) {
       local reqTierMods = 0
       local reqMods = ""
-      if("tier" in item)
+      if ("tier" in item)
         reqTierMods = ::getNextTierModsCount(this.air, item.tier - 1)
       if ("reqModification" in item)
         reqMods = getReqModsText(this.air, item)
 
-      if(reqTierMods > 0)
+      if (reqTierMods > 0)
         reason = format(loc("weaponry/action_not_allowed"),
                           loc("weaponry/unlockModTierReq",
                                 { tier = ::roman_numerals[item.tier], amount = (reqTierMods).tostring() }))
-      else if(reqMods.len() > 0)
+      else if (reqMods.len() > 0)
         reason = format(loc("weaponry/action_not_allowed"), loc("weaponry/unlockModsReq") + "\n" + reqMods)
     }
 
-    if(reason != null)
-    {
+    if (reason != null) {
       this.msgBox("not_available", reason, [["ok", function() {} ]], "ok")
       return false
     }
     return true
   }
 
-  function onStickDropDown(obj, show)
-  {
+  function onStickDropDown(obj, show) {
     if (!checkObj(obj))
       return
 
     let id = obj?.id
-    if (!id || id.len() <= 5 || id.slice(0,5) != "item_")
+    if (!id || id.len() <= 5 || id.slice(0, 5) != "item_")
       return base.onStickDropDown(obj, show)
 
-    if (!show)
-    {
+    if (!show) {
       this.curBundleTblObj = null
       return
     }
@@ -1199,8 +1096,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return
   }
 
-  function unstickCurBundle()
-  {
+  function unstickCurBundle() {
     if (!checkObj(this.curBundleTblObj))
       return
     this.onDropDownToggle(this.curBundleTblObj.getParent().getParent()) //need a hoverSize here or bundleItem.
@@ -1226,14 +1122,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       ::move_mouse_on_obj(obj.getParent().getParent().getParent())
   }
 
-  function onModAction(obj, fullAction = true, stickBundle = false)
-  {
+  function onModAction(obj, fullAction = true, stickBundle = false) {
     let idx = this.getItemIdxByObj(obj)
     if (idx < 0)
       return
 
-    if (this.items[idx].type == weaponsItem.bundle)
-    {
+    if (this.items[idx].type == weaponsItem.bundle) {
       if (stickBundle && checkObj(obj))
         this.onDropDownToggle(obj.getParent())
       return
@@ -1241,8 +1135,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.doItemAction(this.items[idx], fullAction)
   }
 
-  function doItemAction(item, fullAction = true)
-  {
+  function doItemAction(item, fullAction = true) {
     let amount = getItemAmount(this.air, item)
     let onlyBuy = !fullAction && !this.getItemBundle(item)
 
@@ -1252,11 +1145,11 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       weaponryPresetsModal.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) //open modal menu for air and helicopter only
       return
     }
-    if(!this.canPerformAction(item, amount))
+    if (!this.canPerformAction(item, amount))
       return
 
     if (item.type == weaponsItem.weapon) {
-      if(getLastWeapon(this.airName) == item.name || !amount) {
+      if (getLastWeapon(this.airName) == item.name || !amount) {
         if (item.cost <= 0)
           return
         return this.onBuy(item.guiPosIdx)
@@ -1271,26 +1164,20 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       ::check_secondary_weapon_mods_recount(this.air)
       return
     }
-    else if (item.type == weaponsItem.primaryWeapon)
-    {
-      if (!onlyBuy)
-      {
+    else if (item.type == weaponsItem.primaryWeapon) {
+      if (!onlyBuy) {
         this.setLastPrimary(item)
         return
       }
     }
-    else if (item.type == weaponsItem.modification)
-    {
-      let groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
-      if (groupDef >= 0)
-      {
+    else if (item.type == weaponsItem.modification) {
+      let groupDef = ("isDefaultForGroup" in item) ? item.isDefaultForGroup : -1
+      if (groupDef >= 0) {
         this.setLastBullets(item, groupDef)
         return
       }
-      else if (!onlyBuy)
-      {
-        if (getModificationBulletsGroup(item.name) != "")
-        {
+      else if (!onlyBuy) {
+        if (getModificationBulletsGroup(item.name) != "") {
           let id = getBulletGroupIndex(this.airName, item.name)
           local isChanged = false
           if (id >= 0)
@@ -1298,37 +1185,30 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
           if (isChanged)
             return
         }
-        else if(amount)
-        {
+        else if (amount) {
           this.switchMod(item)
           return
         }
       }
     }
-    else if (item.type == weaponsItem.expendables)
-    {
-      if (!onlyBuy && amount)
-      {
+    else if (item.type == weaponsItem.expendables) {
+      if (!onlyBuy && amount) {
         this.switchMod(item)
         return
       }
-    }// else
+    } // else
     //if (item.type==weaponsItem.spare)
 
     this.onBuy(item.guiPosIdx)
   }
 
-  function checkResearchOperation(item)
-  {
-    if (canResearchItem(this.air, item, this.availableFlushExp <= 0 && this.setResearchManually))
-    {
+  function checkResearchOperation(item) {
+    if (canResearchItem(this.air, item, this.availableFlushExp <= 0 && this.setResearchManually)) {
       let afterFuncDone = (@(item) function() {
-        this.setModificatonOnResearch(item, function()
-        {
+        this.setModificatonOnResearch(item, function() {
           this.updateAllItems()
           this.selectResearchModule()
-          if (this.researchMode)
-          {
+          if (this.researchMode) {
             if (item && isModResearched(this.air, item))
               this.sendModResearchedStatistic(this.air, item.name)
           }
@@ -1341,22 +1221,19 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return false
   }
 
-  function setModificatonOnResearch(item, afterDoneFunc = null)
-  {
+  function setModificatonOnResearch(item, afterDoneFunc = null) {
     let executeAfterDoneFunc = (@(afterDoneFunc) function() {
         if (afterDoneFunc)
           afterDoneFunc()
       })(afterDoneFunc)
 
-    if (!item || isModResearched(this.air, item))
-    {
+    if (!item || isModResearched(this.air, item)) {
       executeAfterDoneFunc()
       return
     }
 
     this.taskId = ::shop_set_researchable_unit_module(this.airName, item.name)
-    if (this.taskId >= 0)
-    {
+    if (this.taskId >= 0) {
       this.setResearchManually = true
       this.lastResearchMod = item
       ::set_char_cb(this, this.slotOpCb)
@@ -1371,30 +1248,26 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       executeAfterDoneFunc()
   }
 
-  function flushItemExp(modName, afterDoneFunc = null)
-  {
+  function flushItemExp(modName, afterDoneFunc = null) {
     this.checkSaveBulletsAndDo((@(modName, afterDoneFunc) function() {
       this._flushItemExp(modName, afterDoneFunc)
     })(modName, afterDoneFunc))
   }
 
-  function _flushItemExp(modName, afterDoneFunc = null)
-  {
+  function _flushItemExp(modName, afterDoneFunc = null) {
     let executeAfterDoneFunc = (@(afterDoneFunc) function() {
         this.setResearchManually = true
         if (afterDoneFunc)
           afterDoneFunc()
       })(afterDoneFunc)
 
-    if (this.availableFlushExp <= 0)
-    {
+    if (this.availableFlushExp <= 0) {
       executeAfterDoneFunc()
       return
     }
 
     this.taskId = ::flushExcessExpToModule(this.airName, modName)
-    if (this.taskId >= 0)
-    {
+    if (this.taskId >= 0) {
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
@@ -1406,22 +1279,18 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       executeAfterDoneFunc()
   }
 
-  function onAltModAction(obj) //only buy atm before no research.
-  {
+  function onAltModAction(obj) { //only buy atm before no research.
     let idx = this.getItemIdxByObj(obj)
     if (idx < 0)
       return
 
     let item = this.items[idx]
-    if (item.type==weaponsItem.spare)
-    {
+    if (item.type == weaponsItem.spare) {
       ::gui_handlers.UniversalSpareApplyWnd.open(this.air, this.getItemObj(idx))
       return
     }
-    else if (item.type == weaponsItem.modification)
-    {
-      if (getItemAmount(this.air, item) && isModUpgradeable(item.name))
-      {
+    else if (item.type == weaponsItem.modification) {
+      if (getItemAmount(this.air, item) && isModUpgradeable(item.name)) {
         ::gui_handlers.ModUpgradeApplyWnd.open(this.air, item, this.getItemObj(idx))
         return
       }
@@ -1430,31 +1299,27 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.onBuy(idx)
   }
 
-  function onBuy(idx, buyAmount = 0) //buy for wp or gold
-  {
+  function onBuy(idx, buyAmount = 0) { //buy for wp or gold
     if (!this.isOwn)
       return
 
     local item = this.items[idx]
     local open = false
 
-    if (item.type==weaponsItem.bundle)
+    if (item.type == weaponsItem.bundle)
       return getByCurBundle(this.air, item, @(_a, it) this.onBuy(it.guiPosIdx, buyAmount))
 
-    if (item.type==weaponsItem.weapon)
-    {
+    if (item.type == weaponsItem.weapon) {
       if (!::shop_is_weapon_available(this.airName, item.name, false, true))
         return
     }
-    else if (item.type==weaponsItem.primaryWeapon)
-    {
+    else if (item.type == weaponsItem.primaryWeapon) {
       if ("guiPosIdx" in item.weaponMod)
         item = this.items[item.weaponMod.guiPosIdx]
     }
-    else if (item.type==weaponsItem.modification || item.type==weaponsItem.expendables)
-    {
-      let groupDef = ("isDefaultForGroup" in item)? item.isDefaultForGroup : -1
-      if (groupDef>=0)
+    else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) {
+      let groupDef = ("isDefaultForGroup" in item) ? item.isDefaultForGroup : -1
+      if (groupDef >= 0)
         return
 
       open = canResearchMod(this.air, item)
@@ -1463,20 +1328,17 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.checkAndBuyWeaponry(item, open)
   }
 
-  function onBuyAllButton()
-  {
+  function onBuyAllButton() {
     this.onBuyAll()
   }
 
-  function onBuyAll(forceOpen = true, silent = false)
-  {
+  function onBuyAll(forceOpen = true, silent = false) {
     this.checkSaveBulletsAndDo(Callback((@(air, forceOpen, silent) function() {
-      weaponsPurchase(air, {open = forceOpen, silent = silent})
+      weaponsPurchase(air, { open = forceOpen, silent = silent })
     })(this.air, forceOpen, silent), this))
   }
 
-  function setLastBullets(item, groupIdx)
-  {
+  function setLastBullets(item, groupIdx) {
     if (!(groupIdx in this.lastBullets))
       return false
 
@@ -1490,8 +1352,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return isChanged
   }
 
-  function checkAndBuyWeaponry(modItem, open = false)
-  {
+  function checkAndBuyWeaponry(modItem, open = false) {
     let listObj = this.mainModsObj
     let curValue = this.mainModsObj.getValue()
     this.checkSaveBulletsAndDo(Callback(function() {
@@ -1503,18 +1364,16 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }, this))
   }
 
-  function setLastPrimary(item)
-  {
+  function setLastPrimary(item) {
     let lastPrimary = getLastPrimaryWeapon(this.air)
-    if (lastPrimary==item.name)
+    if (lastPrimary == item.name)
       return
-    let mod = getModificationByName(this.air, (item.name=="") ? lastPrimary : item.name)
+    let mod = getModificationByName(this.air, (item.name == "") ? lastPrimary : item.name)
     if (mod)
       this.switchMod(mod, false)
   }
 
-  function switchMod(item, checkCanDisable = true)
-  {
+  function switchMod(item, checkCanDisable = true) {
     let equipped = ::shop_is_modification_enabled(this.airName, item.name)
     if (checkCanDisable && equipped && !isCanBeDisabled(item))
       return
@@ -1524,8 +1383,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.checkSaveBulletsAndDo((@(item, equipped) function() { this.doSwitchMod(item, equipped) })(item, equipped))
   }
 
-  function doSwitchMod(item, equipped)
-  {
+  function doSwitchMod(item, equipped) {
     let taskSuccessCallback = (@(air, item) function() {
       ::updateAirAfterSwitchMod(air, item.name)
       ::broadcastEvent("ModificationChanged")
@@ -1544,34 +1402,28 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       this.doWhenActiveOnce("onEventUnitWeaponChanged")
   }
 
-  function checkSaveBulletsAndDo(func)
-  {
+  function checkSaveBulletsAndDo(func) {
     local needSave = false;
-    for (local groupIndex = 0; groupIndex < this.air.unitType.bulletSetsQuantity; groupIndex++)
-    {
+    for (local groupIndex = 0; groupIndex < this.air.unitType.bulletSetsQuantity; groupIndex++) {
         if (this.lastBullets && groupIndex in this.lastBullets &&
-            this.lastBullets[groupIndex] != ::get_last_bullets(this.airName, groupIndex))
-        {
+            this.lastBullets[groupIndex] != ::get_last_bullets(this.airName, groupIndex)) {
           log("force cln_update due lastBullets '" + this.lastBullets[groupIndex] + "' != '" +
                       ::get_last_bullets(this.airName, groupIndex) + "'")
           needSave = true;
           this.lastBullets[groupIndex] = ::get_last_bullets(this.airName, groupIndex)
         }
     }
-    if (isUnitHaveSecondaryWeapons(this.air) && this.lastWeapon!="" && this.lastWeapon != getLastWeapon(this.airName))
-    {
+    if (isUnitHaveSecondaryWeapons(this.air) && this.lastWeapon != "" && this.lastWeapon != getLastWeapon(this.airName)) {
       log("force cln_update due lastWeapon '" + this.lastWeapon + "' != " + getLastWeapon(this.airName))
       needSave = true;
       this.lastWeapon = getLastWeapon(this.airName)
     }
 
-    if (needSave)
-    {
+    if (needSave) {
       this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
-      if (this.taskId >= 0 && func)
-      {
+      if (this.taskId >= 0 && func) {
         let cb = ::u.isFunction(func) ? Callback(func, this) : func
-        ::g_tasker.addTask(this.taskId, {showProgressBox = true}, cb)
+        ::g_tasker.addTask(this.taskId, { showProgressBox = true }, cb)
       }
     }
     else if (func)
@@ -1579,13 +1431,11 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     return true
   }
 
-  function getAutoPurchaseValue()
-  {
+  function getAutoPurchaseValue() {
     return this.isOwn && ::get_auto_buy_modifications()
   }
 
-  function onChangeAutoPurchaseModsValue(obj)
-  {
+  function onChangeAutoPurchaseModsValue(obj) {
     let value = obj.getValue()
     let savedValue = this.getAutoPurchaseValue()
     if (value == savedValue)
@@ -1595,13 +1445,11 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.checkSaveBulletsAndDo(null)
     this.sendModPurchasedStatistic(this.air)
 
-    if (this.researchMode)
-    {
+    if (this.researchMode) {
       let curResName = ::shop_get_researchable_module_name(this.airName)
       if (getTblValue("name", this.lastResearchMod, "") != curResName)
         this.setModificatonOnResearch(getModificationByName(this.air, curResName))
@@ -1615,22 +1463,19 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     base.goBack()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (!::checkNonApprovedResearches(false) && prepareUnitsForPurchaseMods.haveUnits())
       prepareUnitsForPurchaseMods.checkUnboughtMods()
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     if (this.researchMode && findAnyNotResearchedMod(this.air))
       ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
 
     this.sendModPurchasedStatistic(this.air)
   }
 
-  function getHandlerRestoreData()
-  {
+  function getHandlerRestoreData() {
     if (!this.researchMode || (this.setResearchManually && !this.availableFlushExp))
       return null
     return {
@@ -1641,15 +1486,13 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     }
   }
 
-  function onEventUniversalSpareActivated(_p)
-  {
-    foreach(idx, item in this.items)
+  function onEventUniversalSpareActivated(_p) {
+    foreach (idx, item in this.items)
       if (item.type == weaponsItem.spare)
         this.updateItem(idx)
   }
 
-  function onEventModUpgraded(p)
-  {
+  function onEventModUpgraded(p) {
     if (p.unit != this.air)
       return
     let modName = p.mod.name
@@ -1658,20 +1501,17 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       this.updateItem(itemidx)
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     return this.curEdiff == -1 ? ::get_current_ediff() : this.curEdiff
   }
 
-  function sendModResearchedStatistic(unit, modName)
-  {
+  function sendModResearchedStatistic(unit, modName) {
     ::add_big_query_record("completed_new_research_modification",
         ::save_to_json({ unit = unit.name
           modification = modName }))
   }
 
-  function sendModPurchasedStatistic(unit)
-  {
+  function sendModPurchasedStatistic(unit) {
     if (!unit || !this.purchasedModifications.len())
       return
 
@@ -1686,8 +1526,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 }
 
-::gui_handlers.MultiplePurchase <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.MultiplePurchase <- class extends ::gui_handlers.BaseGuiHandlerWT {
   curValue = 0
   minValue = 0
   maxValue = 1
@@ -1707,10 +1546,8 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/multiplePurchase.blk"
 
-  function initScreen()
-  {
-    if (this.minValue >= this.maxValue)
-    {
+  function initScreen() {
+    if (this.minValue >= this.maxValue) {
       this.goBack()
       return
     }
@@ -1729,27 +1566,25 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       canShowStatusImage = false
     })
 
-    let discountType = this.item.type == weaponsItem.spare? "spare" : (this.item.type == weaponsItem.weapon)? "weapons" : "mods"
+    let discountType = this.item.type == weaponsItem.spare ? "spare" : (this.item.type == weaponsItem.weapon) ? "weapons" : "mods"
     ::showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
 
     this.sceneUpdate()
     ::move_mouse_on_obj(this.scene.findObject("skillSlider"))
   }
 
-  function updateSlider()
-  {
-    this.minUserValue = (this.minUserValue == null)? this.minValue : clamp(this.minUserValue, this.minValue, this.maxValue)
-    this.maxUserValue = (this.maxUserValue == null)? this.maxValue : clamp(this.maxUserValue, this.minValue, this.maxValue)
+  function updateSlider() {
+    this.minUserValue = (this.minUserValue == null) ? this.minValue : clamp(this.minUserValue, this.minValue, this.maxValue)
+    this.maxUserValue = (this.maxUserValue == null) ? this.maxValue : clamp(this.maxUserValue, this.minValue, this.maxValue)
 
-    if (this.curValue <= this.minValue)
-    {
+    if (this.curValue <= this.minValue) {
       let balance = ::get_balance()
       local maxBuy = this.maxValue - this.minValue
       if (maxBuy * this.itemCost.gold > balance.gold && balance.gold >= 0)
         maxBuy = (balance.gold / this.itemCost.gold).tointeger()
       if (maxBuy * this.itemCost.wp > balance.wp && balance.wp >= 0)
         maxBuy = (balance.wp / this.itemCost.wp).tointeger()
-      this.curValue = this.itemCost.gold > 0 ? this.minUserValue: this.minValue + max(maxBuy, 1)
+      this.curValue = this.itemCost.gold > 0 ? this.minUserValue : this.minValue + max(maxBuy, 1)
     }
 
     let sObj = this.scene.findObject("skillSlider")
@@ -1763,27 +1598,23 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     newObj.max = this.maxValue
   }
 
-  function onButtonDec()
-  {
+  function onButtonDec() {
     this.curValue -= 1
     this.sceneUpdate()
   }
 
-  function onButtonInc()
-  {
+  function onButtonInc() {
     this.curValue += 1
     this.sceneUpdate()
   }
 
-  function onButtonMax()
-  {
+  function onButtonMax() {
     this.curValue = this.maxUserValue
     this.sceneUpdate()
   }
 
-  function onProgressChanged(obj)
-  {
-    if(!obj || !this.someAction)
+  function onProgressChanged(obj) {
+    if (!obj || !this.someAction)
       return
 
     local newValue = obj.getValue()
@@ -1799,21 +1630,19 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.sceneUpdate()
   }
 
-  function updateButtonPriceText()
-  {
+  function updateButtonPriceText() {
     let buyValue = this.curValue - this.minValue
     let wpCost = buyValue * this.itemCost.wp
     let eaCost = buyValue * this.itemCost.gold
     placePriceTextToButton(this.scene, "item_price", loc("mainmenu/btnBuy"), wpCost, eaCost)
   }
 
-  function sceneUpdate()
-  {
+  function sceneUpdate() {
     this.scene.findObject("skillSlider").setValue(this.curValue)
     this.scene.findObject("oldSkillProgress").setValue(this.minValue)
     this.scene.findObject("newSkillProgress").setValue(this.curValue)
     let buyValue = this.curValue - this.minValue
-    let buyValueText = buyValue==0? "": ("+" + buyValue.tostring())
+    let buyValueText = buyValue == 0 ? "" : ("+" + buyValue.tostring())
     this.scene.findObject("text_buyingValue").setValue(buyValueText)
     this.scene.findObject("buttonInc").enable(this.curValue < this.maxUserValue)
     this.scene.findObject("buttonMax").enable(this.curValue != this.maxUserValue)
@@ -1821,14 +1650,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     this.updateButtonPriceText()
   }
 
-  function onBuy(_obj)
-  {
+  function onBuy(_obj) {
     if (this.buyFunc)
       this.buyFunc(this.curValue - this.minValue)
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.onExitFunc)
       this.onExitFunc()
     base.goBack()

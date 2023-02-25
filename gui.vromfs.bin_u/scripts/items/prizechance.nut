@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -25,7 +26,7 @@ let function getPrizeChanceLegendMarkup() {
     return ""
 
   let chances = []
-  for(local i = 0; i < chancesBlk.blockCount(); i++) {
+  for (local i = 0; i < chancesBlk.blockCount(); i++) {
     let chanceBlk = chancesBlk.getBlock(i)
     chances.append({
       chanceName = loc($"item/chance/{chanceBlk.getBlockName()}")

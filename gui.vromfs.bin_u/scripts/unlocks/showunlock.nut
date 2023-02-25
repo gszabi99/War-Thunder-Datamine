@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -23,8 +24,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 
 ::delayed_unlock_wnd <- []
-::showUnlockWnd <- function showUnlockWnd(config)
-{
+::showUnlockWnd <- function showUnlockWnd(config) {
   if (::isHandlerInScene(::gui_handlers.ShowUnlockHandler) ||
       ::isHandlerInScene(::gui_handlers.RankUpModal) ||
       ::isHandlerInScene(::gui_handlers.TournamentRewardReceivedWnd))
@@ -33,11 +33,9 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
   ::gui_start_unlock_wnd(config)
 }
 
-::gui_start_unlock_wnd <- function gui_start_unlock_wnd(config)
-{
+::gui_start_unlock_wnd <- function gui_start_unlock_wnd(config) {
   let unlockType = getTblValue("type", config, -1)
-  if (unlockType == UNLOCKABLE_COUNTRY)
-  {
+  if (unlockType == UNLOCKABLE_COUNTRY) {
     if (isInArray(config.id, shopCountriesList))
       return checkRankUpWindow(config.id, -1, 1, config)
     return false
@@ -45,12 +43,11 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
   else if (unlockType == "TournamentReward")
     return ::gui_handlers.TournamentRewardReceivedWnd.open(config)
 
-  ::gui_start_modal_wnd(::gui_handlers.ShowUnlockHandler, { config=config })
+  ::gui_start_modal_wnd(::gui_handlers.ShowUnlockHandler, { config = config })
   return true
 }
 
-::check_delayed_unlock_wnd <- function check_delayed_unlock_wnd(prevUnlockData = null)
-{
+::check_delayed_unlock_wnd <- function check_delayed_unlock_wnd(prevUnlockData = null) {
   disableSeenUserlogs([prevUnlockData?.disableLogId])
 
   if (!::delayed_unlock_wnd.len())
@@ -61,8 +58,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     ::check_delayed_unlock_wnd(unlockData)
 }
 
-::gui_handlers.ShowUnlockHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ShowUnlockHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
   sceneNavBlkName = "%gui/showUnlockTakeAirNavBar.blk"
@@ -75,8 +71,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 
   onDestroyFunc = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.config)
       return
 
@@ -84,8 +79,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     this.guiScene.setUpdatesEnabled(false, false)
     this.scene.findObject("award_name").setValue(this.config.name)
 
-    if (getTblValue("type", this.config, -1) == UNLOCKABLE_AIRCRAFT || "unitName" in this.config)
-    {
+    if (getTblValue("type", this.config, -1) == UNLOCKABLE_AIRCRAFT || "unitName" in this.config) {
       let id = getTblValue("id", this.config)
       let unitName = getTblValue("unitName", this.config, id)
       this.unit = ::getAircraftByName(unitName)
@@ -99,12 +93,11 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     this.updateButtons()
   }
 
-  function updateUnitItem()
-  {
+  function updateUnitItem() {
     if (!this.unit)
       return
 
-    let params = {hasActions = true}
+    let params = { hasActions = true }
     let data = ::build_aircraft_item(this.unit.name, this.unit, params)
     let airObj = this.scene.findObject("reward_aircrafts")
     this.guiScene.replaceContentFromText(airObj, data, data.len(), this)
@@ -113,24 +106,20 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     ::fill_unit_item_timers(airObj.findObject(this.unit.name), this.unit, params)
   }
 
-  function updateTexts()
-  {
+  function updateTexts() {
     let desc = getTblValue("desc", this.config)
-    if (desc)
-    {
+    if (desc) {
       let descObj = this.scene.findObject("award_desc")
-      if (checkObj(descObj))
-      {
+      if (checkObj(descObj)) {
         descObj.setValue(desc)
 
-        if("descAlign" in this.config)
+        if ("descAlign" in this.config)
           descObj["text-align"] = this.config.descAlign
       }
     }
 
     let rewardText = getTblValue("rewardText", this.config, "")
-    if (rewardText != "")
-    {
+    if (rewardText != "") {
       let rewObj = this.scene.findObject("award_reward")
       if (checkObj(rewObj))
         rewObj.setValue(loc("challenge/reward") + " " + this.config.rewardText)
@@ -141,8 +130,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
       nObj.setValue(::get_next_award_text(this.config.id))
   }
 
-  function updateImage()
-  {
+  function updateImage() {
     let image = ::g_language.getLocTextFromConfig(this.config, "popupImage", "")
     if (image == "")
       return
@@ -155,16 +143,14 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 
     if ("ratioHeight" in this.config)
       imgObj["height"] = this.config.ratioHeight + "w"
-    else if ("id" in this.config)
-    {
+    else if ("id" in this.config) {
       let unlockBlk = ::g_unlocks.getUnlockById(this.config.id)
       if (unlockBlk?.aspect_ratio)
         imgObj["height"] = unlockBlk.aspect_ratio + "w"
     }
   }
 
-  function onPostPs4ActivityFeed()
-  {
+  function onPostPs4ActivityFeed() {
     activityFeedPostFunc(
       this.config.ps4ActivityFeedData.config,
       this.config.ps4ActivityFeedData.params,
@@ -173,27 +159,20 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     this.showSceneBtn("btn_post_ps4_activity_feed", false)
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     this.showSceneBtn("btn_sendEmail", getTblValue("showSendEmail", this.config, false)
                                   && !::is_vietnamese_version())
 
-    this.showSceneBtn("btn_postLink", hasFeature("FacebookWallPost")
-                                 && getTblValue("showPostLink", this.config, false))
-
     local linkText = ::g_promo.getLinkText(this.config)
-    if (this.config?.pollId && this.config?.link)
-    {
+    if (this.config?.pollId && this.config?.link) {
       setPollBaseUrl(this.config.pollId, this.config.link)
       linkText = generatePollUrl(this.config.pollId)
     }
 
     let show = linkText != "" && ::g_promo.isLinkVisible(this.config)
     let linkObj = this.showSceneBtn("btn_link_to_site", show)
-    if (show)
-    {
-      if (checkObj(linkObj))
-      {
+    if (show) {
+      if (checkObj(linkObj)) {
         linkObj.link = linkText
         let linkBtnText = ::g_promo.getLinkBtnText(this.config)
         if (linkBtnText != "")
@@ -221,10 +200,9 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     this.showSceneBtn("btn_close", !showSetAir || !this.needShowUnitTutorial)
 
     let buyObj = this.showSceneBtn("btn_buy_unit", canBuy)
-    if (canBuy && checkObj(buyObj))
-    {
+    if (canBuy && checkObj(buyObj)) {
       let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(this.unit.name) })
-      let unitCost = canBuyOnline? ::Cost() : ::getUnitCost(this.unit)
+      let unitCost = canBuyOnline ? ::Cost() : ::getUnitCost(this.unit)
       placePriceTextToButton(this.scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(this.unit))
     }
 
@@ -234,13 +212,10 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     if (showActionBtn)
       actionObj.setValue(actionText)
 
-    ::show_facebook_screenshot_button(this.scene, getTblValue("showShareBtn", this.config, false))
-
     this.showSceneBtn("btn_get_qr", this.config?.qrUrl != null)
   }
 
-  function onTake(unitToTake = null)
-  {
+  function onTake(unitToTake = null) {
     if (!unitToTake && !this.unit)
       return
 
@@ -259,13 +234,11 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     this.needShowUnitTutorial = false
   }
 
-  function onTakeNavBar(_obj)
-  {
+  function onTakeNavBar(_obj) {
     this.onTake()
   }
 
-  function onMsgLink(obj)
-  {
+  function onMsgLink(obj) {
     if (needShowGuestEmailRegistration()) {
       base.goBack()
       showGuestEmailRegistration()
@@ -274,85 +247,65 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 
     if (getTblValue("type", this.config) == "regionalPromoPopup")
       ::add_big_query_record("promo_popup_click",
-        ::save_to_json({ id = this.config?.id ?? this.config?.link ?? this.config?.popupImage ?? - 1 }))
+        ::save_to_json({ id = this.config?.id ?? this.config?.link ?? this.config?.popupImage ?? -1 }))
     openLinkWithSource([ obj?.link, this.config?.forceExternalBrowser ?? false ], "show_unlock")
   }
 
-  function buyUnit()
-  {
+  function buyUnit() {
     unitActions.buy(this.unit, "show_unlock")
   }
 
-  function onEventCrewTakeUnit(_params)
-  {
+  function onEventCrewTakeUnit(_params) {
     if (this.needShowUnitTutorial)
       return this.goBack()
 
     this.updateUnitItem()
   }
 
-  function onEventUnitBought(_params)
-  {
+  function onEventUnitBought(_params) {
     this.updateUnitItem()
     this.updateButtons()
     this.onTake()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     this.onDestroyFunc?()
     ::check_delayed_unlock_wnd(this.config)
   }
 
-  function sendInvitation()
-  {
+  function sendInvitation() {
     this.sendInvitationEmail()
   }
 
-  function sendInvitationEmail()
-  {
+  function sendInvitationEmail() {
     let linkString = format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
     let msg_head = format(loc("mainmenu/invitationHead"), ::my_user_name)
     let msg_body = format(loc("mainmenu/invitationBody"), linkString)
     shell_launch($"mailto:yourfriend@email.com?subject={msg_head}&body={msg_body}")
   }
 
-  function onFacebookPostLink()
-  {
-    let link = format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
-    let message = loc("facebook/wallMessage")
-    ::make_facebook_login_and_do((@(link, message) function() {
-                 ::scene_msg_box("facebook_login", null, loc("facebook/uploading"), null, null)
-                 ::facebook_post_link(link, message)
-               })(link, message), this)
-  }
-
-  function onOk()
-  {
+  function onOk() {
     let onOkFunc = getTblValue("onOkFunc", this.config)
     if (onOkFunc)
       onOkFunc()
     this.goBack()
   }
 
-  function checkUnitTutorial()
-  {
+  function checkUnitTutorial() {
     if (!this.unit)
       return
 
     this.needShowUnitTutorial = tutorialModule.needShowTutorial("takeUnit", 1)
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.needShowUnitTutorial)
       this.onTake()
     else
       base.goBack()
   }
 
-  function onAction()
-  {
+  function onAction() {
     let actionData = ::g_promo.gatherActionParamsData(this.config)
     if (!actionData)
       return
@@ -360,8 +313,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     ::g_promo.launchAction(actionData, this, null)
   }
 
-  function onUnitActivate(obj)
-  {
+  function onUnitActivate(obj) {
     this.openUnitActionsList(obj.findObject(this.unit.name), true)
   }
 

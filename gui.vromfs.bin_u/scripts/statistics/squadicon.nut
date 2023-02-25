@@ -1,24 +1,23 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let listLabelsSquad = {}
-let nextLabel = { team1 = 1, team2 = 1}
+let nextLabel = { team1 = 1, team2 = 1 }
 local topSquads = {}
 let playersInfo = persist("playersInfo", @() Watched({}))
 let { getRealName } = require("%scripts/user/nameMapping.nut")
 
 let getPlayersInfo = @() playersInfo.value
-let function updateIconPlayersInfo()
-{
+let function updateIconPlayersInfo() {
   let sessionPlayersInfo = ::SessionLobby.getPlayersInfo()
   if (sessionPlayersInfo.len() > 0 && !::u.isEqual(playersInfo.value, sessionPlayersInfo))
     playersInfo(clone sessionPlayersInfo)
 }
 
-let function initListLabelsSquad()
-{
+let function initListLabelsSquad() {
   listLabelsSquad.clear()
   nextLabel.team1 = 1
   nextLabel.team2 = 1
@@ -27,27 +26,22 @@ let function initListLabelsSquad()
   updateIconPlayersInfo()
 }
 
-let function updateListLabelsSquad()
-{
-  foreach(label in listLabelsSquad)
+let function updateListLabelsSquad() {
+  foreach (label in listLabelsSquad)
     label.count = 0;
   local team = ""
-  foreach(_uid, member in getPlayersInfo())
-  {
-    team = "team"+member.team
+  foreach (_uid, member in getPlayersInfo()) {
+    team = "team" + member.team
     if (!(team in nextLabel))
       continue
 
     let squadId = member.squad
     if (squadId == INVALID_SQUAD_ID)
       continue
-    if (squadId in listLabelsSquad)
-    {
-      if (listLabelsSquad[squadId].count < 2)
-      {
+    if (squadId in listLabelsSquad) {
+      if (listLabelsSquad[squadId].count < 2) {
         listLabelsSquad[squadId].count++
-        if (listLabelsSquad[squadId].count > 1 && listLabelsSquad[squadId].label == "")
-        {
+        if (listLabelsSquad[squadId].count > 1 && listLabelsSquad[squadId].label == "") {
           listLabelsSquad[squadId].label = nextLabel[team].tostring()
           nextLabel[team]++
         }
@@ -64,8 +58,7 @@ let function updateListLabelsSquad()
   }
 }
 
-let function getSquadInfo(idSquad)
-{
+let function getSquadInfo(idSquad) {
   if (idSquad == INVALID_SQUAD_ID)
     return null
   let squad = (idSquad in listLabelsSquad) ? listLabelsSquad[idSquad] : null
@@ -76,12 +69,11 @@ let function getSquadInfo(idSquad)
   return squad
 }
 
-let function getSquadInfoByMemberName(name)
-{
+let function getSquadInfoByMemberName(name) {
   if (name == "")
     return null
 
-  foreach(_uid, member in getPlayersInfo())
+  foreach (_uid, member in getPlayersInfo())
     if (member.name == name || member.name == getRealName(name))
       return getSquadInfo(member.squad)
 
@@ -89,8 +81,7 @@ let function getSquadInfoByMemberName(name)
 }
 
 let isShowSquad = @() ::SessionLobby.getGameMode() != GM_SKIRMISH
-let function updateTopSquadScore(mplayers)
-{
+let function updateTopSquadScore(mplayers) {
   if (!isShowSquad())
     return
   let teamId = mplayers.len() ? getTblValue("team", mplayers[0], null) : null
@@ -101,8 +92,7 @@ let function updateTopSquadScore(mplayers)
 
   local topSquadScore = 0
   let squads = {}
-  foreach (player in mplayers)
-  {
+  foreach (player in mplayers) {
     let squadScore = getTblValue("squadScore", player, 0)
     if (!squadScore || squadScore < topSquadScore)
       continue
@@ -110,8 +100,7 @@ let function updateTopSquadScore(mplayers)
     let squadId = getTblValue("squadId", getSquadInfoByMemberName(name), INVALID_SQUAD_ID)
     if (squadId == INVALID_SQUAD_ID)
       continue
-    if (squadScore > topSquadScore)
-    {
+    if (squadScore > topSquadScore) {
       topSquadScore = squadScore
       squads.clear()
     }
@@ -123,11 +112,9 @@ let function updateTopSquadScore(mplayers)
   }
 
   local topAvgPlayerScore = 0.0
-  foreach (squadId, data in squads)
-  {
+  foreach (squadId, data in squads) {
     let avg = data.playerScore * 1.0 / data.members
-    if (topSquadId == null || avg > topAvgPlayerScore)
-    {
+    if (topSquadId == null || avg > topAvgPlayerScore) {
       topSquadId = squadId
       topAvgPlayerScore = avg
     }

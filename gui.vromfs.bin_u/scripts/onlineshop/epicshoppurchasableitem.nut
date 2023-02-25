@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -77,7 +78,7 @@ local EpicShopPurchasableItem = class {
   }
 
   update = function(blk) {
-    this.isBought = this.isMultiConsumable? false : ((blk?.PurchasedCount ?? 0) > 0)
+    this.isBought = this.isMultiConsumable ? false : ((blk?.PurchasedCount ?? 0) > 0)
   }
 
   getPriceText = function() {

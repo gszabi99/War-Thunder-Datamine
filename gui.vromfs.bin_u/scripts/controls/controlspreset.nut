@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 ::g_script_reloader.loadOnce("%scripts/controls/controlsPresets.nut")
+let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { copyParamsToTable, eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
@@ -14,16 +16,14 @@ const PRESET_DEFAULT_VERSION = 4
 const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
 
-let function getJoystickBlockV4(blk)
-{
+let function getJoystickBlockV4(blk) {
   if (::u.isDataBlock(blk?["joysticks"]))
     return blk["joysticks"]?["joystickSettings"]
   return null
 }
 
 let dataArranging = {
-  function comparator(lhs, rhs)
-  {
+  function comparator(lhs, rhs) {
     return (this.sortList.indexof(lhs) ?? -1) <=> (this.sortList.indexof(rhs) ?? -1) || lhs <=> rhs
   }
 
@@ -123,8 +123,7 @@ let function isSameMapping(lhs, rhs) {
   /**************************** PUBLIC ****************************/
   /****************************************************************/
 
-  constructor(data = null, presetChain = [])
-  {
+  constructor(data = null, presetChain = []) {
     this.basePresetPaths = {}
     this.hotkeys         = {}
     this.axes            = {}
@@ -135,8 +134,7 @@ let function isSameMapping(lhs, rhs) {
       this.loadFromPreset(data, presetChain)
     else if (::u.isDataBlock(data))
       this.loadFromBlk(data, presetChain)
-    else if ((type(data) == "instance") && (data instanceof ::ControlsPreset))
-    {
+    else if ((type(data) == "instance") && (data instanceof ::ControlsPreset)) {
       this.basePresetPaths = ::u.copy(data.basePresetPaths)
       this.hotkeys         = ::u.copy(data.hotkeys)
       this.axes            = ::u.copy(data.axes)
@@ -152,27 +150,22 @@ let function isSameMapping(lhs, rhs) {
   /*********************** PUBLIC FUNCTIONS ***********************/
   /****************************************************************/
 
-  function resetHotkey(name)
-  {
+  function resetHotkey(name) {
     this.hotkeys[name] <- []
   }
 
-  function resetAxis(name)
-  {
+  function resetAxis(name) {
     this.axes[name] <- this.getDefaultAxis(name)
   }
 
-  function getHotkey(name)
-  {
+  function getHotkey(name) {
     if (!(name in this.hotkeys))
       this.resetHotkey(name)
     return this.hotkeys[name]
   }
 
-  function getAxis(name)
-  {
-    if (!::u.isString(name)) // Workaround to fix SQ critical asserts
-    {
+  function getAxis(name) {
+    if (!::u.isString(name)) { // Workaround to fix SQ critical asserts
       let message = "Error: ControlsPreset.getAxis(name), name must be string"
       ::script_net_assert_once("ControlsPreset.getAxis() failed", message)
       return this.getDefaultAxis("")
@@ -182,19 +175,16 @@ let function isSameMapping(lhs, rhs) {
     return this.axes[name]
   }
 
-  function setHotkey(name, data)
-  {
+  function setHotkey(name, data) {
     this.hotkeys[name] <- ::u.copy(data)
   }
 
-  function setAxis(name, data)
-  {
+  function setAxis(name, data) {
     this.resetAxis(name)
     ::u.extend(this.axes[name], data)
   }
 
-  function isHotkeyShortcutBinded(name, data)
-  {
+  function isHotkeyShortcutBinded(name, data) {
     if (!(name in this.hotkeys))
       return false
 
@@ -205,22 +195,19 @@ let function isSameMapping(lhs, rhs) {
     return false
   }
 
-  function addHotkeyShortcut(name, data)
-  {
+  function addHotkeyShortcut(name, data) {
     if (!(name in this.hotkeys))
       this.hotkeys[name] <- [clone data]
     else if (!this.isHotkeyShortcutBinded(name, data))
       this.hotkeys[name].append(clone data)
   }
 
-  function removeHotkeyShortcut(name, data)
-  {
+  function removeHotkeyShortcut(name, data) {
     if (!(name in this.hotkeys))
       return false
 
     foreach (idx, shortcut in this.hotkeys[name])
-      if (::u.isEqual(shortcut, data))
-      {
+      if (::u.isEqual(shortcut, data)) {
         this.hotkeys[name].remove(idx)
         return true
       }
@@ -228,8 +215,7 @@ let function isSameMapping(lhs, rhs) {
     return false
   }
 
-  static function getDefaultAxis(name = "")
-  {
+  static function getDefaultAxis(name = "") {
     let axis = {
       axisId              = -1
       mouseAxisId         = -1
@@ -339,13 +325,11 @@ let function isSameMapping(lhs, rhs) {
 
   /******** Load and save funtions ********/
 
-  function loadFromPreset(presetPath, presetChain = [])
-  {
+  function loadFromPreset(presetPath, presetChain = []) {
     presetPath = this.compatibility.getActualPresetName(presetPath)
 
     // Check preset load recursion
-    if (presetChain.indexof(presetPath) != null)
-    {
+    if (presetChain.indexof(presetPath) != null) {
       assert(false, "Controls preset require itself. " +
         "Preset chain: " + toString(presetChain) + " > " + presetPath)
       return
@@ -358,8 +342,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function loadFromBlk(blk, presetChain = [])
-  {
+  function loadFromBlk(blk, presetChain = []) {
     local controlsBlk = blk?.controls
     let version = controlsBlk != null ?
       getTblValue("version", controlsBlk, PRESET_DEFAULT_VERSION) :
@@ -371,24 +354,20 @@ let function isSameMapping(lhs, rhs) {
     let shouldForgetBasePresets =
       getTblValue("shouldForgetBasePresets", blk, false)
 
-    if (version < PRESET_ACTUAL_VERSION && ::u.isString(blk?.hotkeysPreset) && blk?.hotkeysPreset != "")
-    {
+    if (version < PRESET_ACTUAL_VERSION && ::u.isString(blk?.hotkeysPreset) && blk?.hotkeysPreset != "") {
       this.loadFromPreset(blk?.hotkeysPreset, presetChain)
       return
     }
 
     let shouldLoadOldControls = (version < PRESET_ACTUAL_VERSION) || shouldBackupOldControls;
-    if (shouldLoadOldControls)
-    {
+    if (shouldLoadOldControls) {
       log("ControlsPreset: BackupOldControls")
-      this.controlsV4Blk = ::DataBlock()
+      this.controlsV4Blk = DataBlock()
       foreach (backupBlock in
         ["hotkeys", "joysticks", "controlsVer", "hotkeysPreset"])
-        if (backupBlock in blk)
-        {
-          if (::u.isDataBlock(blk[backupBlock]))
-          {
-            this.controlsV4Blk[backupBlock] <- ::DataBlock()
+        if (backupBlock in blk) {
+          if (::u.isDataBlock(blk[backupBlock])) {
+            this.controlsV4Blk[backupBlock] <- DataBlock()
             this.controlsV4Blk[backupBlock].setFrom(blk[backupBlock])
           }
           else
@@ -417,9 +396,8 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function saveToBlk(blk)
-  {
-    let controlsBlk = ::DataBlock()
+  function saveToBlk(blk) {
+    let controlsBlk = DataBlock()
     controlsBlk["version"] = PRESET_ACTUAL_VERSION
 
     this.saveBasePresetPathsToBlk(controlsBlk)
@@ -442,8 +420,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function debugPresetStats()
-  {
+  function debugPresetStats() {
     log("ControlsPreset: Stats:"
       + " hotkeys=" + this.hotkeys.len()
       + " axes=" + this.axes.len()
@@ -455,16 +432,14 @@ let function isSameMapping(lhs, rhs) {
 
   /******** Partitial preset apply functions ********/
 
-  function applyControls(appliedPreset)
-  {
+  function applyControls(appliedPreset) {
     appliedPreset.updateDeviceMapping(this.deviceMapping)
 
     foreach (hotkeyName, otherHotkey in appliedPreset.hotkeys)
       this.setHotkey(hotkeyName, otherHotkey)
 
     let usedAxesIds = []
-    foreach (axesName, otherAxis in appliedPreset.axes)
-    {
+    foreach (axesName, otherAxis in appliedPreset.axes) {
       this.setAxis(axesName, otherAxis)
       if (getTblValue("axisId", otherAxis, -1) >= 0)
         usedAxesIds.append(otherAxis["axisId"])
@@ -477,15 +452,13 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function diffControls(basePreset)
-  {
+  function diffControls(basePreset) {
     let hotkeyNames = ::u.keys(basePreset.hotkeys)
     foreach (hotkeyName, _value in this.hotkeys)
       if (!(hotkeyName in basePreset.hotkeys))
         hotkeyNames.append(hotkeyName)
 
-    foreach (hotkeyName in hotkeyNames)
-    {
+    foreach (hotkeyName in hotkeyNames) {
       let hotkey = this.getHotkey(hotkeyName)
       let otherHotkey = basePreset.getHotkey(hotkeyName)
       if (::u.isEqual(hotkey, otherHotkey))
@@ -498,8 +471,7 @@ let function isSameMapping(lhs, rhs) {
         axesNames.append(axisName)
 
     let usedAxesIds = []
-    foreach (axisName in axesNames)
-    {
+    foreach (axisName in axesNames) {
       let axis = this.getAxis(axisName)
       let otherAxis = basePreset.getAxis(axisName)
       let axisAttributeNames = ::u.keys(axis)
@@ -518,8 +490,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function applyBasePreset(presetPath, presetGroup, presetChain = [])
-  {
+  function applyBasePreset(presetPath, presetGroup, presetChain = []) {
     // TODO: fix filter for different presetGroups
     if (presetGroup != "default")
       return
@@ -531,10 +502,8 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function diffBasePresets()
-  {
-    foreach (presetGroup, presetPath in this.basePresetPaths)
-    {
+  function diffBasePresets() {
+    foreach (presetGroup, presetPath in this.basePresetPaths) {
       // TODO: fix filter for different presetGroups
       if (presetGroup != "default")
         return
@@ -552,16 +521,13 @@ let function isSameMapping(lhs, rhs) {
 
   /******** Load controls from blk ********/
 
-  function loadBasePresetsFromBlk(blk, version, presetChain = [])
-  {
-    if (version >= PRESET_ACTUAL_VERSION)
-    {
+  function loadBasePresetsFromBlk(blk, version, presetChain = []) {
+    if (version >= PRESET_ACTUAL_VERSION) {
       if (!("basePresetPaths" in blk))
-        blk["basePresetPaths"] = ::DataBlock()
+        blk["basePresetPaths"] = DataBlock()
       let blkBasePresetPaths = blk["basePresetPaths"]
 
-      if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0)
-      {
+      if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0) {
         blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("keyboard_updates")
         log("ControlsPreset: Compatibility preset added to base presets")
       }
@@ -577,31 +543,26 @@ let function isSameMapping(lhs, rhs) {
       }, this)
     }
 
-    if (presetChain.len() == 1)
-    {
+    if (presetChain.len() == 1) {
       this.basePresetPaths["default"] <- presetChain[0]
       log("ControlsPreset: InitialPreset = " + presetChain[0])
     }
   }
 
-  function loadHotkeysFromBlk(blk, version)
-  {
+  function loadHotkeysFromBlk(blk, version) {
     if (!::u.isDataBlock(blk?["hotkeys"]))
       return
     let blkHotkeys = blk["hotkeys"]
 
-    if (version >= PRESET_ACTUAL_VERSION)
-    {
+    if (version >= PRESET_ACTUAL_VERSION) {
       // Load hotkeys saved after 1.63
       let usedHotkeys = []
-      for (local j = 0; j < blkHotkeys.blockCount(); j++)
-      {
+      for (local j = 0; j < blkHotkeys.blockCount(); j++) {
         let blkHotkey = blkHotkeys.getBlock(j)
         let hotkeyName = blkHotkey.getBlockName()
         let shortcut = []
 
-        for (local k = 0; k < blkHotkey.paramCount(); k++)
-        {
+        for (local k = 0; k < blkHotkey.paramCount(); k++) {
           let deviceType = blkHotkey.getParamName(k)
           let deviceId = getTblValue(deviceType, deviceIdByType, null)
           let buttonId = blkHotkey.getParamValue(k)
@@ -615,19 +576,16 @@ let function isSameMapping(lhs, rhs) {
           })
         }
 
-        if (usedHotkeys.indexof(hotkeyName) == null)
-        {
+        if (usedHotkeys.indexof(hotkeyName) == null) {
           usedHotkeys.append(hotkeyName)
           this.resetHotkey(hotkeyName)
         }
         this.getHotkey(hotkeyName).append(shortcut)
       }
     }
-    else
-    {
+    else {
       // Load hotkeys saved before 1.63
-      foreach (blkEvent in blkHotkeys % "event")
-      {
+      foreach (blkEvent in blkHotkeys % "event") {
         if (!::u.isString(blkEvent?["name"]))
           continue
 
@@ -635,14 +593,12 @@ let function isSameMapping(lhs, rhs) {
         this.resetHotkey(hotkeyName)
 
         let event = []
-        foreach (blkShortcut in blkEvent % "shortcut")
-        {
+        foreach (blkShortcut in blkEvent % "shortcut") {
           if (!::u.isDataBlock(blkShortcut))
             continue
 
           let shortcut = []
-          foreach (blkButton in blkShortcut % "button")
-          {
+          foreach (blkButton in blkShortcut % "button") {
             if (!::u.isInteger(blkButton?["deviceId"]) || !::u.isInteger(blkButton?["buttonId"]))
               continue
 
@@ -659,8 +615,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function loadAxesFromBlk(blk, version)
-  {
+  function loadAxesFromBlk(blk, version) {
     local blkAxes
     if (version >= PRESET_ACTUAL_VERSION)
       blkAxes = blk?["axes"]
@@ -680,8 +635,7 @@ let function isSameMapping(lhs, rhs) {
     }, this)
 
     // Load mouse axes saved before 1.63
-    if (version < PRESET_ACTUAL_VERSION)
-    {
+    if (version < PRESET_ACTUAL_VERSION) {
       let blkMouseAxes = blkAxes?["mouse"]
       let mouseAxes = ::u.copy(this.compatibility.mouseAxesDefaults)
 
@@ -696,8 +650,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function loadParamsFromBlk(blk, version)
-  {
+  function loadParamsFromBlk(blk, version) {
     local blkParams
     if (version >= PRESET_ACTUAL_VERSION)
       blkParams = blk?["params"]
@@ -711,8 +664,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function loadJoyMappingFromBlk(blk, _version)
-  {
+  function loadJoyMappingFromBlk(blk, _version) {
     let blkJoyMapping = blk?.deviceMapping
     if (blkJoyMapping == null)
       return
@@ -739,35 +691,30 @@ let function isSameMapping(lhs, rhs) {
 
   /******** Save controls to blk ********/
 
-  function saveBasePresetPathsToBlk(blk)
-  {
+  function saveBasePresetPathsToBlk(blk) {
     if (!("basePresetPaths" in blk))
-      blk["basePresetPaths"] = ::DataBlock()
+      blk["basePresetPaths"] = DataBlock()
     let blkBasePresetPaths = blk["basePresetPaths"]
 
     foreach (presetGroup, presetPath in this.basePresetPaths)
       blkBasePresetPaths[presetGroup] <- presetPath
   }
 
-  function saveHotkeysToBlk(blk)
-  {
+  function saveHotkeysToBlk(blk) {
     if (!("hotkeys" in blk))
-      blk["hotkeys"] = ::DataBlock()
+      blk["hotkeys"] = DataBlock()
     let blkHotkeys = blk["hotkeys"]
 
     let deviceTypeById = ::u.invert(deviceIdByType)
 
     let hotkeyNames = ::u.keys(this.hotkeys)
     hotkeyNames.sort()
-    foreach (eventName in hotkeyNames)
-    {
+    foreach (eventName in hotkeyNames) {
       let hotkeyData = this.hotkeys[eventName]
 
-      foreach (shortcut in hotkeyData)
-      {
-        let blkShortcut = ::DataBlock()
-        foreach (button in shortcut)
-        {
+      foreach (shortcut in hotkeyData) {
+        let blkShortcut = DataBlock()
+        foreach (button in shortcut) {
           let deviceName = getTblValue(button.deviceId, deviceTypeById, null)
           if (deviceName != null)
             blkShortcut[deviceName] <- button.buttonId
@@ -776,26 +723,24 @@ let function isSameMapping(lhs, rhs) {
       }
 
       if (hotkeyData.len() == 0)
-        blkHotkeys[eventName] <- ::DataBlock()
+        blkHotkeys[eventName] <- DataBlock()
     }
   }
 
 
-  function saveAxesToBlk(blk)
-  {
+  function saveAxesToBlk(blk) {
     if (!("axes" in blk))
-      blk["axes"] = ::DataBlock()
+      blk["axes"] = DataBlock()
     let blkAxes = blk["axes"]
 
-    let compEnv = {sortList = dataArranging.axisAttrOrder}
+    let compEnv = { sortList = dataArranging.axisAttrOrder }
     let axisAttrComporator = dataArranging.comparator.bindenv(compEnv)
 
     let axisNames = ::u.keys(this.axes)
     axisNames.sort()
-    foreach (axisName in axisNames)
-    {
+    foreach (axisName in axisNames) {
       let axisData = this.axes[axisName]
-      let blkAxis = ::DataBlock()
+      let blkAxis = DataBlock()
 
       let attrNames = ::u.keys(axisData)
       attrNames.sort(axisAttrComporator)
@@ -807,13 +752,12 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function saveParamsToBlk(blk)
-  {
+  function saveParamsToBlk(blk) {
     if (!("params" in blk))
-      blk["params"] = ::DataBlock()
+      blk["params"] = DataBlock()
     let blkParams = blk["params"]
 
-    let compEnv = {sortList = dataArranging.paramsOrder}
+    let compEnv = { sortList = dataArranging.paramsOrder }
     let comparator = dataArranging.comparator.bindenv(compEnv)
     let paramNames = ::u.keys(this.params)
     paramNames.sort(comparator)
@@ -822,15 +766,13 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function saveJoyMappingToBlk(blk)
-  {
+  function saveJoyMappingToBlk(blk) {
     if (!("deviceMapping" in blk))
-      blk["deviceMapping"] <- ::DataBlock()
+      blk["deviceMapping"] <- DataBlock()
     let blkJoyMapping = blk["deviceMapping"]
 
-    foreach (joystick in this.deviceMapping)
-    {
-      let blkJoystick = ::DataBlock()
+    foreach (joystick in this.deviceMapping) {
+      let blkJoystick = DataBlock()
       foreach (attr, value in joystick)
         blkJoystick[attr] = value
       blkJoyMapping["joystick"] <- blkJoystick
@@ -840,8 +782,7 @@ let function isSameMapping(lhs, rhs) {
 
   /******** Other functions ********/
 
-  function getBasePresetNames()
-  {
+  function getBasePresetNames() {
     if (!::g_login.isLoggedIn())
       return {} // Because g_controls_presets loads after login.
 
@@ -853,8 +794,7 @@ let function isSameMapping(lhs, rhs) {
   getBasePresetInfo = @(groupName = "default")
     ::g_controls_presets.parsePresetFileName(this.basePresetPaths?[groupName] ?? "")
 
-  function getNumButtons()
-  {
+  function getNumButtons() {
     local count = 0
     foreach (joy in this.deviceMapping)
       count = max(count, joy.buttonsOffset + joy.buttonsCount)
@@ -862,8 +802,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function getNumAxes()
-  {
+  function getNumAxes() {
     local count = 0
     foreach (joy in this.deviceMapping)
       count = max(count, joy.axesOffset + joy.axesCount)
@@ -871,8 +810,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function getButtonName(deviceId, buttonId)
-  {
+  function getButtonName(deviceId, buttonId) {
     if (deviceId != JOYSTICK_DEVICE_0_ID)
       return loc(::get_button_name(deviceId, buttonId)) // C++ function
 
@@ -882,8 +820,7 @@ let function isSameMapping(lhs, rhs) {
     local connected = false
     name = ::get_button_name(deviceId, buttonId) // C++ function
 
-    foreach (idx, joy in this.deviceMapping)
-    {
+    foreach (idx, joy in this.deviceMapping) {
       if (buttonId < joy.buttonsOffset || buttonId >= joy.buttonsOffset + joy.buttonsCount)
         continue
 
@@ -905,8 +842,7 @@ let function isSameMapping(lhs, rhs) {
   }
 
 
-  function getAxisName(axisId)
-  {
+  function getAxisName(axisId) {
     let axisLocalized = loc("composite/axis")
 
     local name = null
@@ -915,8 +851,7 @@ let function isSameMapping(lhs, rhs) {
     if (defaultJoystick)
       name = defaultJoystick.getAxisName(axisId)
 
-    foreach (idx, joy in this.deviceMapping)
-    {
+    foreach (idx, joy in this.deviceMapping) {
       if (axisId < joy.axesOffset || axisId >= joy.axesOffset + joy.axesCount)
         continue
 
@@ -962,8 +897,9 @@ let function isSameMapping(lhs, rhs) {
               })
             totalBindings.axes = max(totalBindings.axes, new.axesOffset + new.axesCount)
             totalBindings.buttons = max(totalBindings.buttons, new.buttonsOffset + new.buttonsCount)
-          } else {
-            lostDevicesIndexes.append({old = oid, new = idx})
+          }
+          else {
+            lostDevicesIndexes.append({ old = oid, new = idx })
           }
         }
       }
@@ -971,7 +907,7 @@ let function isSameMapping(lhs, rhs) {
       if (!found) {
         old["connected"] <- false
         newDevices.append(old)
-        lostDevicesIndexes.append({old = oid, new = newDevices.len() - 1})
+        lostDevicesIndexes.append({ old = oid, new = newDevices.len() - 1 })
       }
     }
 
@@ -1033,15 +969,13 @@ let function isSameMapping(lhs, rhs) {
   /* Compatibility data for blk loading */
 
   static compatibility = {
-    function getActualPresetName(presetPath)
-    {
+    function getActualPresetName(presetPath) {
       if (presetPath == "hotkey.gamepad.blk")
         return "wt/config/hotkeys/hotkey.default.blk"
       return presetPath
     }
 
-    function getActualBasePresetPaths(presetPath)
-    {
+    function getActualBasePresetPaths(presetPath) {
       let indexConfigFolder = presetPath.indexof("config/hotkeys/hotkey")
       if (indexConfigFolder == 0)
         presetPath = $"{controlsPresetConfigPath.value}{presetPath}"

@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {get_mission_time} = require("%rGui/globals/mission.nut")
+let { get_mission_time } = require("%rGui/globals/mission.nut")
 let { ceil } = require("%sqstd/math.nut")
 let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
 let { CoaxialBullets, CoaxialCartridges, CoaxialCartridgeSize,
@@ -14,10 +14,10 @@ let fontHeight = shHud(1.2)
 let bulletWidth = shHud(0.2)
 let itemsGap = shHud(0.4)
 let iconHeight = fontHeight
-let iconWidth = (48.0/20*iconHeight).tointeger()
+let iconWidth = (48.0 / 20 * iconHeight).tointeger()
 
-let inactiveColor = Color(180,180,180)
-let activeColor = Color(255,255,255)
+let inactiveColor = Color(180, 180, 180)
+let activeColor = Color(255, 255, 255)
 
 let barsCount = 20
 
@@ -48,19 +48,19 @@ let function mkProgressBar(bulletsCurrent, bulletsTotal, reloadStartTime, reload
       animations = hasAnimation && idx >= startAnimBulletIdx
         ? [
           {
-            prop=AnimProp.fillColor
+            prop = AnimProp.fillColor
             duration = bulletAnimDelay
-            from=inactiveColor
-            to=inactiveColor
-            play=true
+            from = inactiveColor
+            to = inactiveColor
+            play = true
           },
           {
-            prop=AnimProp.fillColor
+            prop = AnimProp.fillColor
             duration = bulletAnimTime
             delay = bulletAnimDelay
-            from=inactiveColor
-            to=activeColor
-            play=true
+            from = inactiveColor
+            to = activeColor
+            play = true
           }
         ]
         : null
@@ -76,10 +76,10 @@ let function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue
     rendObj = ROBJ_BOX
     size = [boxWidth, boxHeight]
     padding = [0, itemsGap]
-    fillColor = Color(45,52,60,192)
+    fillColor = Color(45, 52, 60, 192)
     borderWidth = hdpx(1)
     borderRadius = hdpx(2)
-    borderColor = Color(30,30,30)
+    borderColor = Color(30, 30, 30)
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     children = [

@@ -1,11 +1,10 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let {
-  get_base_game_version = @() ::get_base_game_version() //compatibility with 2.15.1.X
-} = require("app")
+let { get_base_game_version } = require("app")
 let { is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
 } = require("hangarEventCommand")
 let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
@@ -32,7 +31,7 @@ let function onNewClientVersion(params) {
 let function checkNuclearEvent(params = {}) {
   let needShowNuclearEventAfterStreak = need_show_after_streak()
   if (needShowNuclearEventAfterStreak) {
-    airRaidWndScene({hasVisibleNuclearTimer = false})
+    airRaidWndScene({ hasVisibleNuclearTimer = false })
     return
   }
 
@@ -50,7 +49,7 @@ let function checkNuclearEvent(params = {}) {
   if (isSeenNuclearEvent && !isNewClient)
     return
 
-  airRaidWndScene({hasVisibleNuclearTimer = params?.showTimer ?? !isNewClient})
+  airRaidWndScene({ hasVisibleNuclearTimer = params?.showTimer ?? !isNewClient })
 }
 
 let function bigQuerryForNuclearEvent() {
@@ -64,7 +63,7 @@ let function bigQuerryForNuclearEvent() {
   ::add_big_query_record("nuclear_event", ::save_to_json({
     user = ::my_user_id_str,
     seenInOldClient = is_seen_nuclear_event(),
-    seenInNewClient = is_seen_main_nuclear_event()}))
+    seenInNewClient = is_seen_main_nuclear_event() }))
   ::save_local_account_settings("sendNuclearStatistic", false)
 }
 

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,6 +7,9 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let DataBlock = require("DataBlock")
+let { get_game_mode } = require("mission")
+let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 
 /* API:
   static create(nest, mission = null)
@@ -26,8 +30,7 @@ let { getMissionRewardsMarkup, getMissionLocName } = require("%scripts/missions/
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
-::gui_handlers.MissionDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.MissionDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missionDescr.blk"
 
@@ -46,8 +49,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
                "requirementsItem", "requirements", "baseReward",
                "hotas4_tutorial_usage_restriction"]
 
-  static function create(nest, mission = null)
-  {
+  static function create(nest, mission = null) {
     let params = {
       scene = nest
       curMission = mission
@@ -55,36 +57,31 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     return ::handlersManager.loadHandler(::gui_handlers.MissionDescription, params)
   }
 
-  function initScreen()
-  {
-    this.gm = ::get_game_mode()
+  function initScreen() {
+    this.gm = get_game_mode()
     this.initChaptersImages()
     this.update()
   }
 
-  function initChaptersImages() //!!FIX ME: better to init this once per login
-  {
+  function initChaptersImages() { //!!FIX ME: better to init this once per login
     this.chapterImgList = {}
-    let chaptersBlk = ::DataBlock()
+    let chaptersBlk = DataBlock()
     chaptersBlk.load("config/chapters.blk")
-    foreach(cBlk in chaptersBlk % "images")
+    foreach (cBlk in chaptersBlk % "images")
       if (::u.isDataBlock(cBlk))
         for (local i = 0; i < cBlk.paramCount(); i++)
           this.chapterImgList[cBlk.getParamName(i)] <- true
   }
 
-  function setMission(mission, previewBlk = null)
-  {
+  function setMission(mission, previewBlk = null) {
     this.curMission = mission
     this.mapPreviewBlk = previewBlk
     this.update()
   }
 
-  function update()
-  {
+  function update() {
     local config = {}
-    if (this.curMission)
-    {
+    if (this.curMission) {
       if (::g_mislist_type.isUrlMission(this.curMission))
         config = this.getUrlMissionDescConfig(this.curMission)
       else if (this.curMission.isHeader)
@@ -97,24 +94,22 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     this.updateButtons()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     this.showSceneBtn("btn_url_mission_refresh", ::g_mislist_type.isUrlMission(this.curMission))
   }
 
-  function applyDescConfig(config)
-  {
+  function applyDescConfig(config) {
     let previewBlk = getTblValue("previewBlk", config)
-    ::g_map_preview.setMapPreview(this.scene.findObject("tactical-map"), previewBlk)
+    setMapPreview(this.scene.findObject("tactical-map"), previewBlk)
     this.guiScene.applyPendingChanges(false) //need to refresh object sizes after map appear or disappear
 
     this.guiScene.setUpdatesEnabled(false, false)
 
-    foreach(name in this.descItems)
-      this.getObj("descr-" + name).setValue((name in config)? config[name] : "")
+    foreach (name in this.descItems)
+      this.getObj("descr-" + name).setValue((name in config) ? config[name] : "")
 
-    this.getObj("descr-flag")["background-image"] = ("flag" in config && this.gm != GM_BENCHMARK)? config.flag : ""
-    this.getObj("descr-chapterImg")["background-image"] = ("chapterImg" in config)? config.chapterImg : ""
+    this.getObj("descr-flag")["background-image"] = ("flag" in config && this.gm != GM_BENCHMARK) ? config.flag : ""
+    this.getObj("descr-chapterImg")["background-image"] = ("chapterImg" in config) ? config.chapterImg : ""
 
     let rewardsObj = this.getObj("descr-rewards")
     let isShow = (config?.rewards.len() ?? 0) > 0
@@ -123,11 +118,11 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       this.guiScene.replaceContentFromText(rewardsObj, config.rewards, config.rewards.len(), this)
 
     let countriesObj = this.getObj("descr-countries")
-    if ("countries" in config)
-    {
+    if ("countries" in config) {
       this.guiScene.replaceContentFromText(countriesObj, config.countries, config.countries.len(), this)
       countriesObj.show(true)
-    } else
+    }
+    else
       countriesObj.show(false)
 
     this.guiScene.setUpdatesEnabled(true, true)
@@ -137,18 +132,16 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       nameObj.scrollToView()
   }
 
-  function getHeaderDescConfig(mission)
-  {
+  function getHeaderDescConfig(mission) {
     let config = {}
-    config.name <- loc((mission.isCampaign? "campaigns/" : "chapters/")+mission.id)
-    config.maintext <- loc((mission.isCampaign? "campaigns/" : "chapters/")+mission.id+"/desc", "")
+    config.name <- loc((mission.isCampaign ? "campaigns/" : "chapters/") + mission.id)
+    config.maintext <- loc((mission.isCampaign ? "campaigns/" : "chapters/") + mission.id + "/desc", "")
     if (mission.id in this.chapterImgList)
-      config.chapterImg <- "ui/chapters/"+mission.id
+      config.chapterImg <- "ui/chapters/" + mission.id
     return config
   }
 
-  function getUrlMissionDescConfig(mission)
-  {
+  function getUrlMissionDescConfig(mission) {
     let urlMission = getTblValue("urlMission", mission)
     if (!urlMission)
       return {}
@@ -159,8 +152,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     return config
   }
 
-  function getBlkMissionDescConfig(mission, previewBlk = null)
-  {
+  function getBlkMissionDescConfig(mission, previewBlk = null) {
     let config = {}
     let blk = ::g_mislist_type.isUrlMission(this.curMission)
                 ? this.curMission.urlMission.getMetaInfo()
@@ -171,47 +163,41 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     let gt = ::get_game_type_by_mode(this.gm)
     if (previewBlk)
       config.previewBlk <- previewBlk
-    else
-    {
-      let m = ::DataBlock()
-      m.load(blk.getStr("mis_file",""))
+    else {
+      let m = DataBlock()
+      m.load(blk.getStr("mis_file", ""))
       config.previewBlk <- m
     }
 
     config.name <- mission.misListType.getMissionNameText(mission)
 
     if (this.gm == GM_CAMPAIGN)
-        config.date <- loc("mb/"+mission.id+"/date")
-    else if (this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING)
-    {
-      config.date <- loc("missions/"+mission.id+"/date")
+        config.date <- loc("mb/" + mission.id + "/date")
+    else if (this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
+      config.date <- loc("missions/" + mission.id + "/date")
       config.objectiveItem <- loc("sm_objective") + loc("ui/colon")
-      config.objective <- loc("missions/"+mission.id+"/objective")
+      config.objective <- loc("missions/" + mission.id + "/objective")
 
-      if (checkJoystickThustmasterHotas(false) && this.gm == GM_TRAINING)
-      {
+      if (checkJoystickThustmasterHotas(false) && this.gm == GM_TRAINING) {
         if (::is_mission_for_unittype(blk, ES_UNIT_TYPE_TANK))
           config.hotas4_tutorial_usage_restriction <- loc("tutorials/hotas_restriction/tank")
         else if (mission.chapter == "tutorial_adv")
           config.hotas4_tutorial_usage_restriction <- loc("tutorials/hotas_restriction")
       }
     }
-    if (this.gm == GM_SINGLE_MISSION)
-    {
+    if (this.gm == GM_SINGLE_MISSION) {
       let missionAvailableForCoop = blk.getBool("gt_cooperative", false)
         && ::can_play_gamemode_by_squad(this.gm)
         && !::is_user_mission(blk)
-      config.coop <- missionAvailableForCoop? loc("single_mission/available_for_coop") : ""
+      config.coop <- missionAvailableForCoop ? loc("single_mission/available_for_coop") : ""
     }
-    if (this.gm == GM_CAMPAIGN || this.gm == GM_DYNAMIC)
-    {
+    if (this.gm == GM_CAMPAIGN || this.gm == GM_DYNAMIC) {
       config.objectiveItem <- loc("sm_objective") + loc("ui/colon")
-      config.objective <- loc("mb/"+mission.id+"/objective")
+      config.objective <- loc("mb/" + mission.id + "/objective")
     }
 
-    config.condition <- loc("missions/"+mission.id+"/condition", "")
-    if ((config.condition == "") && (this.gm != GM_TEAMBATTLE) && (this.gm != GM_DOMINATION) && (this.gm != GM_SKIRMISH))
-    {
+    config.condition <- loc("missions/" + mission.id + "/condition", "")
+    if ((config.condition == "") && (this.gm != GM_TEAMBATTLE) && (this.gm != GM_DOMINATION) && (this.gm != GM_SKIRMISH)) {
       local sm_location = blk.getStr("locationName", ::map_to_location(blk.getStr("level", "")))
       if (sm_location != "")
         sm_location = loc("location/" + sm_location)
@@ -228,8 +214,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       config.condition += (config.condition != "" ? "; " : "") + sm_time
       config.condition += (config.condition != "" ? "; " : "") + sm_weather
 
-      if (this.gm == GM_DYNAMIC)
-      {
+      if (this.gm == GM_DYNAMIC) {
         config.date <- config.condition
         config.condition = ""
       }
@@ -239,26 +224,23 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
 
     let aircraft = blk.getStr("player_class", "")
     if ((aircraft != "") && !(gt & GT_VERSUS)
-        && (this.gm != GM_EVENT) && (this.gm != GM_TOURNAMENT) && (this.gm != GM_DYNAMIC) && (this.gm != GM_BUILDER) && (this.gm != GM_BENCHMARK))
-    {
+        && (this.gm != GM_EVENT) && (this.gm != GM_TOURNAMENT) && (this.gm != GM_DYNAMIC) && (this.gm != GM_BUILDER) && (this.gm != GM_BENCHMARK)) {
       config.aircraftItem <- loc("options/aircraft") + loc("ui/colon")
       config.aircraft <- ::getUnitName(aircraft) + "; " +
                  getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", ")
 
       let country = ::getShopCountry(aircraft)
-      log("aircraft = "+aircraft+" country = "+country)
+      log("aircraft = " + aircraft + " country = " + country)
       config.flag <- ::get_country_icon(country, true)
     }
 
 
-    config.maintext <- loc("missions/"+mission.id+"/desc", "")
-    if (this.gm == GM_SKIRMISH && config.maintext != "" && !("objective" in config))
-    {
-      config.objective <- "\n"+config.maintext
+    config.maintext <- loc("missions/" + mission.id + "/desc", "")
+    if (this.gm == GM_SKIRMISH && config.maintext != "" && !("objective" in config)) {
+      config.objective <- "\n" + config.maintext
       config.maintext = ""
     }
-    else if (this.gm == GM_DOMINATION && blk?.timeLimit)
-    {
+    else if (this.gm == GM_DOMINATION && blk?.timeLimit) {
       let option = ::get_option(::USEROPT_TIME_LIMIT)
       let timeLimitText = option.getTitle() + loc("ui/colon") + option.getValueLocText(blk.timeLimit)
       config.maintext += (config.maintext.len() ? "\n\n" : "") + timeLimitText
@@ -268,17 +250,15 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       config.objective <- getMissionLocName(blk, "locDescTeamA")
     else if ((blk?.locDesc.len() ?? 0) > 0)
       config.objective <- getMissionLocName(blk, "locDesc")
-    if (blk.getStr("recommendedPlayers","") != "")
-      config.maintext += format(loc("players_recommended"), blk.getStr("recommendedPlayers","1-4")) + "\n"
+    if (blk.getStr("recommendedPlayers", "") != "")
+      config.maintext += format(loc("players_recommended"), blk.getStr("recommendedPlayers", "1-4")) + "\n"
 
     let rBlk = ::get_pve_awards_blk()
-    if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING)
-    {
+    if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
       let status = max(mission.singleProgress, mission.onlineProgress)
       config.status <- status
       let dataBlk = rBlk?[::get_game_mode_name(this.gm)]
-      if (dataBlk)
-      {
+      if (dataBlk) {
         let rewardsConfig = [{
           highlighted = DIFFICULTY_ARCADE > status
           isComplete = DIFFICULTY_ARCADE <= status
@@ -310,9 +290,8 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
         }
         config.rewards <- getMissionRewardsMarkup(dataBlk, mission.id, rewardsConfig)
       }
-    } else
-    if (this.gm == GM_DYNAMIC && rBlk?.dynamic)
-    {
+    }
+    else if (this.gm == GM_DYNAMIC && rBlk?.dynamic) {
       let dataBlk = rBlk.dynamic
       let rewMoney = ::Cost()
       let xpId = "xpEarnedWinDiff0"
@@ -333,24 +312,20 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       if (mul)
         config.baseReward <- ::buildRewardText(loc("baseReward"), rewMoney.multiply(mul), true, true)
 
-      let reqAir = ("player_class" in mission.blk? mission.blk.player_class : "")
-      if(reqAir != "")
-      {
+      let reqAir = ("player_class" in mission.blk ? mission.blk.player_class : "")
+      if (reqAir != "") {
         config.aircraftItem <- loc("options/aircraft") + loc("ui/colon")
         config.aircraft <- ::getUnitName(reqAir)
       }
     }
 
-    if ((this.gm == GM_SINGLE_MISSION) && (mission.progress >= 4))
-    {
+    if ((this.gm == GM_SINGLE_MISSION) && (mission.progress >= 4)) {
       config.requirementsItem <- loc("unlocks/requirements") + loc("ui/colon")
-      if ("mustHaveUnit" in this.curMission)
-      {
+      if ("mustHaveUnit" in this.curMission) {
         let unitNameLoc = colorize("activeTextColor", ::getUnitName(this.curMission.mustHaveUnit))
         config.requirements <- loc("conditions/char_unit_exist/single", { value = unitNameLoc })
       }
-      else
-      {
+      else {
         let unlockName = mission.blk.chapter + "/" + mission.blk.name
         config.requirements <- getFullUnlockDescByName(unlockName, 1)
       }
@@ -359,8 +334,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
     return config
   }
 
-  function onUrlMissionRefresh(_obj)
-  {
+  function onUrlMissionRefresh(_obj) {
     if (::g_mislist_type.isUrlMission(this.curMission))
       ::g_url_missions.loadBlk(this.curMission)
   }

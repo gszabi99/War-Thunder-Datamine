@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,9 +9,7 @@ let time = require("%scripts/time.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName, getForceWeapTriggerGroup,
-  getAiGunnersState, getAutoturretState, getCurrentTriggerGroup, singleTorpedoSelected, getGuidanceLeadMode
-} = require_native("hudActionBar")
+let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName } = require("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SPECIAL_UNIT, EII_WINCH, EII_WINCH_DETACH, EII_WINCH_ATTACH, EII_TOOLKIT,
   EII_MEDICALKIT, EII_TORPEDO, EII_TORPEDO_SIGHT, EII_HULL_AIMING, EII_DEPTH_CHARGE,
@@ -22,8 +21,9 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
-  GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET
-} = require_native("hudActionBarConst")
+  GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
+  EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR
+} = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
@@ -39,6 +39,13 @@ let getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup) {
   if (cooldownTime)
     res += ("\n" + loc("shop/reloadTime") + " " + time.secondsToString(cooldownTime, true, true))
   return res
+}
+
+let function getCooldownText(actionItem) {
+  let cooldownTime = actionItem?.cooldownTime
+  if (cooldownTime)
+    return $"\n{loc("shop/reloadTime")} {time.secondsToString(cooldownTime, true, true)}"
+  return ""
 }
 
 let getUnit = @() ::getAircraftByName(getActionBarUnitName())
@@ -58,7 +65,7 @@ let getOwnerUnit = @() ::getAircraftByName(getOwnerUnitName())
    */
   isForWheelMenu = @() false
   isForSelectWeaponMenu = @() false
-  canSwitchAutomaticMode =@() false
+  canSwitchAutomaticMode = @() false
 
   _name = ""
   _icon = ""
@@ -70,9 +77,7 @@ let getOwnerUnit = @() ::getAircraftByName(getOwnerUnitName())
   getTitle       = @(_actionItem, _killStreakTag = null) this._title
   getTooltipText = function(actionItem = null) {
     local res = loc("actionBarItem/" + this.getName(actionItem, actionItem?.killStreakUnitTag))
-    let cooldownTime = getTblValue("cooldownTime", actionItem)
-    if (cooldownTime)
-      res += "\n" + loc("shop/reloadTime") + " " + time.secondsToString(cooldownTime, true, true)
+    res = $"{res}{getCooldownText(actionItem)}"
     if (actionItem?.automatic)
       res += "\n" + loc("actionBar/action/automatic")
     return res
@@ -176,8 +181,9 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getShortcut = @(_actionItem, hudUnitType = null)
       hudUnitType == HUD_UNIT_TYPE.SHIP_EX ? "ID_SUBMARINE_WEAPON_TORPEDOES"
         : "ID_SHIP_WEAPON_TORPEDOES"
-    getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      return singleTorpedoSelected() ?  "#ui/gameuiskin#torpedo.png" : this._icon
+    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let isSingleTorpedoSelected = (actionItem?.userHandle ?? 0) == 1
+      return isSingleTorpedoSelected ?  "#ui/gameuiskin#torpedo.png" : this._icon
     }
     getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "torpedoes")
   }
@@ -221,6 +227,67 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       return "ID_ROCKETS"
     }
     getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "rockets")
+  }
+
+  ROCKET_AIR = {
+    code = EII_ROCKET_AIR
+    _name = "rocket_air"
+    _icon = "#ui/gameuiskin#rocket.png"
+    _title = loc("hotkeys/ID_ROCKETS")
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_ROCKETS_HELICOPTER"
+      return "ID_ROCKETS"
+    }
+    getTooltipText = @(actionItem = null) $"{this._title}{getCooldownText(actionItem)}"
+  }
+
+  AGM_AIR = {
+    code = EII_AGM_AIR
+    _name = "agm_air"
+    _icon = "#ui/gameuiskin#atgm_heli_preset.png"
+    _title = loc("hotkeys/ID_AGM")
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_AGM"
+    getTooltipText = @(actionItem = null) $"{this._title}{getCooldownText(actionItem)}"
+  }
+
+  AAM_AIR = {
+    code = EII_AAM_AIR
+    _name = "aam_air"
+    _icon = "#ui/gameuiskin#air_to_air_missile.png"
+    _title = loc("hotkeys/ID_AAM")
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_AAM_HELICOPTER"
+      return "ID_AAM"
+    }
+    getTooltipText = @(actionItem = null) $"{this._title}{getCooldownText(actionItem)}"
+  }
+
+  BOMB_AIR = {
+    code = EII_BOMB_AIR
+    _name = "bomb_air"
+    _icon = "#ui/gameuiskin#bomb_big_01.png"
+    _title = loc("hotkeys/ID_BOMBS")
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_BOMBS_HELICOPTER"
+      return "ID_BOMBS"
+    }
+    getTooltipText = @(actionItem = null) $"{this._title}{getCooldownText(actionItem)}"
+  }
+
+  GUIDED_BOMB_AIR = {
+    code = EII_GUIDED_BOMB_AIR
+    _name = "guided_bomb_air"
+    _icon = "#ui/gameuiskin#bomb_big_01.png"
+    _title = loc("hotkeys/ID_GUIDED_BOMBS")
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_GUIDED_BOMBS_HELICOPTER"
+      return "ID_GUIDED_BOMBS"
+    }
+    getTooltipText = @(actionItem = null) $"{this._title}{getCooldownText(actionItem)}"
   }
 
   GRENADE = {
@@ -376,7 +443,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "special_unit"
     isForWheelMenu = @() true
 
-    getName = function (_actionItem, killStreakTag = null){
+    getName = function (_actionItem, killStreakTag = null) {
       if (::u.isString(killStreakTag))
         return this._name + "_" + killStreakTag
       return ""
@@ -389,8 +456,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       return ""
     }
 
-    getTitle = function (_actionItem, killStreakTag = null)
-    {
+    getTitle = function (_actionItem, killStreakTag = null) {
       if (killStreakTag == "bomber")
         return loc("hotkeys/ID_ACTION_BAR_ITEM_9")
       if (killStreakTag == "attacker")
@@ -478,10 +544,9 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         && (::is_xinput_device() || isPlatformSony || isPlatformXboxOne)
           ? "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
           : null
-    getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      let currentTrigger = getCurrentTriggerGroup()
-      switch (currentTrigger)
-      {
+    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let currentTrigger = actionItem?.userHandle ?? TRIGGER_GROUP_PRIMARY
+      switch (currentTrigger) {
         case TRIGGER_GROUP_PRIMARY:
           return "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
         case TRIGGER_GROUP_SECONDARY:
@@ -504,8 +569,8 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   FORCED_WEAPON = {
     code = EII_FORCED_GUN
     isForSelectWeaponMenu = @() null
-    getTitle = function(_actionItem, _killStreakTag = null) {
-      let forceTrigger = getForceWeapTriggerGroup()
+    getTitle = function(actionItem, _killStreakTag = null) {
+      let forceTrigger = actionItem?.userHandle ?? -1
       switch (forceTrigger) {
         case TRIGGER_GROUP_PRIMARY:
           return loc("hotkeys/ID_FIRE_GM")
@@ -516,8 +581,8 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       }
       return null
     }
-    getShortcut = function(_actionItem, _hudUnitType = null) {
-      local forceTrigger = getForceWeapTriggerGroup()
+    getShortcut = function(actionItem, _hudUnitType = null) {
+      let forceTrigger = actionItem?.userHandle ?? -1
       switch (forceTrigger) {
         case TRIGGER_GROUP_PRIMARY:
           return "ID_FIRE_GM"
@@ -535,8 +600,8 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "ai_gunners"
     _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHIP_TOGGLE_GUNNERS"
-    getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      switch (getAiGunnersState()) {
+    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      switch (actionItem?.userHandle ?? AI_GUNNERS_DISABLED) {
         case AI_GUNNERS_DISABLED:
           return "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
         case AI_GUNNERS_ALL_TARGETS:
@@ -559,9 +624,8 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = loc("hotkeys/ID_TOGGLE_AUTOTURRET_TARGETS")
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_AUTOTURRET_TARGETS"
-    getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      switch (getAutoturretState())
-      {
+    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      switch (actionItem?.userHandle ?? AI_GUNNERS_DISABLED) {
         case AI_GUNNERS_DISABLED:
           return "#ui/gameuiskin#ship_gunner_state_hold_fire.svg"
         case AI_GUNNERS_ALL_TARGETS:
@@ -590,23 +654,29 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         : "ID_START_SUPPORT_PLANE_SHIP"
     getName = function(_actionItem, _killStreakTag = null) {
       let hudUnitType = getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.TANK && getUnit() == getOwnerUnit() ? this._name
-        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && getUnit() == getOwnerUnit() ? "support_plane_ship"
-        : getOwnerUnit()?.isShipOrBoat() ? "switch_to_ship"
+      let unit = getUnit()
+      let ownerUnit = getOwnerUnit()
+      return hudUnitType == HUD_UNIT_TYPE.TANK && unit == ownerUnit ? this._name
+        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && unit == ownerUnit ? "support_plane_ship"
+        : ownerUnit?.isShipOrBoat() ? "switch_to_ship"
         : "switch_to_tank"
     }
-    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
+    getIcon = function(_actionItem, _killStreakTag = null, unit = null, hudUnitType = null) {
       hudUnitType = hudUnitType ?? getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.TANK && getUnit() == getOwnerUnit() ? "#ui/gameuiskin#scout_streak.png"
-        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && getUnit() == getOwnerUnit() ?  "#ui/gameuiskin#shipSupportPlane.png"
-        : getOwnerUnit()?.isShipOrBoat() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
+      unit = unit ?? getUnit()
+      let ownerUnit = getOwnerUnit()
+      return hudUnitType == HUD_UNIT_TYPE.TANK && unit == ownerUnit ? "#ui/gameuiskin#scout_streak.png"
+        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && unit == ownerUnit ?  "#ui/gameuiskin#shipSupportPlane.png"
+        : ownerUnit?.isShipOrBoat() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
         : "#ui/gameuiskin#supportPlane_to_tank_controls.png"
     }
     getTitle = function(_actionItem, _killStreakTag = null) {
       let hudUnitType = getHudUnitType()
-      return hudUnitType == HUD_UNIT_TYPE.TANK && getUnit() == getOwnerUnit() ? this._title
-        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && getUnit() == getOwnerUnit() ? loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
-        : getOwnerUnit()?.isShipOrBoat() ? loc("actionBarItem/switch_to_ship")
+      let unit = getUnit()
+      let ownerUnit = getOwnerUnit()
+      return hudUnitType == HUD_UNIT_TYPE.TANK && unit == ownerUnit ? this._title
+        : hudUnitType != HUD_UNIT_TYPE.AIRCRAFT && unit == ownerUnit ? loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP")
+        : ownerUnit?.isShipOrBoat() ? loc("actionBarItem/switch_to_ship")
         : loc("actionBarItem/switch_to_tank")
     }
   }
@@ -646,7 +716,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#uav_orbiting.png"
     _title = loc("hotkeys/ID_SUPPORT_PLANE_ORBITING")
     isForWheelMenu = @() true
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_ORBITING"
+    getShortcut = function(_actionItem, _hudUnitType = null) {
+      let ownerUnit = getOwnerUnit()
+      return ownerUnit?.isShipOrBoat() ? "ID_SUPPORT_PLANE_ORBITING_SHIP" : "ID_SUPPORT_PLANE_ORBITING"
+   }
   }
 
   SUPPORT_PLANE_CHANGE = {
@@ -716,14 +789,13 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = loc("hotkeys/ID_WEAPON_LEAD_TANK")
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_WEAPON_LEAD_TANK"
-    function getIcon(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      local guidanceLeadMode = getGuidanceLeadMode()
+    function getIcon(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let guidanceLeadMode = actionItem?.userHandle ?? -1
       if (guidanceLeadMode == GUIDANCE_LEAD_MODE_OFF)
         return "#ui/gameuiskin#hover_mode_los.png"
-      else if (guidanceLeadMode == GUIDANCE_LEAD_MODE_ON)
+      if (guidanceLeadMode == GUIDANCE_LEAD_MODE_ON)
         return "#ui/gameuiskin#hover_mode_lead.png"
-      else
-        return "#ui/gameuiskin#hover_mode_auto.png"
+      return "#ui/gameuiskin#hover_mode_auto.png"
     }
   }
 
@@ -756,9 +828,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         : ownerUnit?.isShipOrBoat() ? "switch_to_ship"
         : "switch_to_tank"
     }
-    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+    getIcon = function(_actionItem, _killStreakTag = null, unit = null, _hudUnitType = null) {
       let ownerUnit = getOwnerUnit()
-      return getUnit() == ownerUnit ? this._icon
+      unit = unit ?? getUnit()
+      return unit == ownerUnit ? this._icon
         : ownerUnit?.isShipOrBoat() ? "#ui/gameuiskin#supportPlane_to_ship_controls.png"
         : "#ui/gameuiskin#supportPlane_to_tank_controls.png"
     }

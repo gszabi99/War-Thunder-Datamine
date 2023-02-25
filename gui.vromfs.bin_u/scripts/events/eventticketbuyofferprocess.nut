@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,19 +16,16 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
   currentProcess = null
 }
 
-::g_event_ticket_buy_offer.offerTicket <- function offerTicket(event)
-{
+::g_event_ticket_buy_offer.offerTicket <- function offerTicket(event) {
   assert(this.currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
   this.currentProcess = ::EventTicketBuyOfferProcess(event)
 }
 
-::EventTicketBuyOfferProcess <- class
-{
+::EventTicketBuyOfferProcess <- class {
   _event = null
   _tickets = null
 
-  constructor (event)
-  {
+  constructor (event) {
     this._event = event
     this._tickets = ::events.getEventTickets(event, true)
     foreach (ticket in this._tickets)
@@ -38,14 +36,12 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
       this.handleTickets()
   }
 
-  function onEventItemLimitsUpdated(_params)
-  {
+  function onEventItemLimitsUpdated(_params) {
     subscriptions.removeEventListenersByEnv("ItemLimitsUpdated", this)
     this.handleTickets()
   }
 
-  function handleTickets()
-  {
+  function handleTickets() {
     ::g_event_ticket_buy_offer.currentProcess = null
 
     // Array of tickets with valid limit data.
@@ -55,11 +51,9 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
         availableTickets.append(ticket)
 
     let activeTicket = ::events.getEventActiveTicket(this._event)
-    if (availableTickets.len() == 0)
-    {
+    if (availableTickets.len() == 0) {
       let msgArr = [loc("events/wait_for_sessions_to_finish/main")]
-      if (activeTicket != null)
-      {
+      if (activeTicket != null) {
         let tournamentData = activeTicket.getTicketTournamentData(::events.getEventEconomicName(this._event))
         msgArr.append(loc("events/wait_for_sessions_to_finish/optional", {
           timeleft = time.secondsToString(tournamentData.timeToWait)
@@ -67,8 +61,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
       }
       ::scene_msg_box("cant_join", null,  ::g_string.implode(msgArr, "\n"), [["ok"]], "ok")
     }
-    else
-    {
+    else {
       let windowParams = {
         event = this._event
         tickets = availableTickets

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -24,8 +25,7 @@ local MRoomsHandlers = class {
   isSelfReady = false
   isLeaving = false
 
-  constructor()
-  {
+  constructor() {
     this.roomMembers = []
     this.roomOps = {}
 
@@ -46,23 +46,19 @@ local MRoomsHandlers = class {
       ::matching_rpc_subscribe(notificationName, callback)
   }
 
-  function getRoomId()
-  {
+  function getRoomId() {
     return this.roomId
   }
 
-  function hasSession()
-  {
+  function hasSession() {
     return this.hostId != null
   }
 
-  function isPlayerRoomOperator(user_id)
-  {
+  function isPlayerRoomOperator(user_id) {
     return (user_id in this.roomOps)
   }
 
-  function __cleanupRoomState()
-  {
+  function __cleanupRoomState() {
     if (this.room == null)
       return
 
@@ -79,27 +75,23 @@ local MRoomsHandlers = class {
     ::notify_room_destroyed({})
   }
 
-  function __onHostConnectReady()
-  {
+  function __onHostConnectReady() {
     this.isHostReady = true
     if (this.isSelfReady)
       this.__connectToHost()
   }
 
-  function __onSelfReady()
-  {
+  function __onSelfReady() {
     this.isSelfReady = true
     if (this.isHostReady)
       this.__connectToHost()
   }
 
-  function __addRoomMember(member)
-  {
+  function __addRoomMember(member) {
     if (getTblValue("operator", member.public))
       this.roomOps[member.userId] <- true
 
-    if (getTblValue("host", member.public))
-    {
+    if (getTblValue("host", member.public)) {
       log(format("found host %s (%s)", member.name, member.userId.tostring()))
       this.hostId = member.userId
     }
@@ -110,35 +102,29 @@ local MRoomsHandlers = class {
     this.__updateMemberAttributes(member, curMember)
   }
 
-  function __getRoomMember(user_id)
-  {
+  function __getRoomMember(user_id) {
     foreach (_idx, member in this.roomMembers)
       if (member.userId == user_id)
         return member
     return null
   }
 
-  function __getMyRoomMember()
-  {
+  function __getMyRoomMember() {
     foreach (_idx, member in this.roomMembers)
       if (::is_my_userid(member.userId))
         return member
     return null
   }
 
-  function __removeRoomMember(user_id)
-  {
-    foreach (idx, member in this.roomMembers)
-    {
-      if (member.userId == user_id)
-      {
+  function __removeRoomMember(user_id) {
+    foreach (idx, member in this.roomMembers) {
+      if (member.userId == user_id) {
         this.roomMembers.remove(idx)
         break
       }
     }
 
-    if (user_id == this.hostId)
-    {
+    if (user_id == this.hostId) {
       this.hostId = null
       this.isConnectAllowed = false
       this.isHostReady = false
@@ -151,25 +137,21 @@ local MRoomsHandlers = class {
       this.__cleanupRoomState()
   }
 
-  function __updateMemberAttributes(member, cur_member = null)
-  {
+  function __updateMemberAttributes(member, cur_member = null) {
     if (cur_member == null)
       cur_member = this.__getRoomMember(member.userId)
-    if (cur_member == null)
-    {
+    if (cur_member == null) {
       log(format("failed to update member attributes. member not found in room %s",
                           member.userId.tostring()))
       return
     }
     this.__mergeAttribs(member, cur_member)
 
-    if (member.userId == this.hostId)
-    {
+    if (member.userId == this.hostId) {
       if (member?.public.connect_ready ?? false)
         this.__onHostConnectReady()
     }
-    else if (::is_my_userid(member.userId))
-    {
+    else if (::is_my_userid(member.userId)) {
       let readyStatus = member?.public.ready
       if (readyStatus == true)
         this.__onSelfReady()
@@ -178,12 +160,9 @@ local MRoomsHandlers = class {
     }
   }
 
-  function __mergeAttribs(attr_from, attr_to)
-  {
-    let updateAttribs = function(upd_data, attribs)
-    {
-      foreach (key, value in upd_data)
-      {
+  function __mergeAttribs(attr_from, attr_to) {
+    let updateAttribs = function(upd_data, attribs) {
+      foreach (key, value in upd_data) {
         if (value == null && (key in attribs))
           delete attribs[key]
         else
@@ -194,15 +173,13 @@ local MRoomsHandlers = class {
     let pub = getTblValue("public", attr_from)
     let priv = getTblValue("private", attr_from)
 
-    if (type(priv) == "table")
-    {
+    if (type(priv) == "table") {
       if ("private" in attr_to)
         updateAttribs(priv, attr_to.private)
       else
         attr_to.private <- priv
     }
-    if (type(pub) == "table")
-    {
+    if (type(pub) == "table") {
       if ("public" in attr_to)
         updateAttribs(pub, attr_to.public)
       else
@@ -210,28 +187,24 @@ local MRoomsHandlers = class {
     }
   }
 
-  function __isNotifyForCurrentRoom(notify)
-  {
+  function __isNotifyForCurrentRoom(notify) {
     // ignore all room notifcations after leave has been called
     return !this.isLeaving && this.roomId != INVALID_ROOM_ID && this.roomId == notify.roomId
   }
 
-  function __connectToHost()
-  {
+  function __connectToHost() {
     log("__connectToHost")
     if (!this.hasSession())
       return
 
     let host = this.__getRoomMember(this.hostId)
-    if (!host)
-    {
+    if (!host) {
       log("__connectToHost failed: host is not in the room")
       return
     }
 
     let me = this.__getMyRoomMember()
-    if (!me)
-    {
+    if (!me) {
       log("__connectToHost failed: player is not in the room")
       return
     }
@@ -239,8 +212,7 @@ local MRoomsHandlers = class {
     let hostPub = host.public
     let roomPub = this.room.public
 
-    if (!("room_key" in roomPub))
-    {
+    if (!("room_key" in roomPub)) {
       let mePub = toString(me?.public, 3)          // warning disable: -declared-never-used
       let mePrivate = toString(me?.private, 3)     // warning disable: -declared-never-used
       let meStr = toString(me, 3)                  // warning disable: -declared-never-used
@@ -255,10 +227,9 @@ local MRoomsHandlers = class {
     local serverUrls = [];
     if ("serverURLs" in hostPub)
       serverUrls = hostPub.serverURLs
-    else if ("ip" in hostPub && "port" in hostPub)
-    {
+    else if ("ip" in hostPub && "port" in hostPub) {
       let ip = hostPub.ip
-      let ipStr = format("%u.%u.%u.%u:%d", ip&255, (ip>>8)&255, (ip>>16)&255, ip>>24, hostPub.port)
+      let ipStr = format("%u.%u.%u.%u:%d", ip & 255, (ip >> 8) & 255, (ip >> 16) & 255, ip >> 24, hostPub.port)
       serverUrls.append(ipStr)
     }
 
@@ -266,21 +237,19 @@ local MRoomsHandlers = class {
   }
 
   // notifications
-  function onRoomInvite(notify, send_resp)
-  {
+  function onRoomInvite(notify, send_resp) {
     local inviteData = notify.invite_data
     if (!(type(inviteData) == "table"))
       inviteData = {}
     inviteData.roomId <- notify.roomId
 
     if (::notify_room_invite(inviteData))
-      send_resp({accept = true})
+      send_resp({ accept = true })
     else
-      send_resp({accept = false})
+      send_resp({ accept = false })
   }
 
-  function onRoomMemberJoined(member)
-  {
+  function onRoomMemberJoined(member) {
     if (!this.__isNotifyForCurrentRoom(member))
       return
 
@@ -290,8 +259,7 @@ local MRoomsHandlers = class {
     ::notify_room_member_joined(member)
   }
 
-  function onRoomMemberLeft(member)
-  {
+  function onRoomMemberLeft(member) {
     if (!this.__isNotifyForCurrentRoom(member))
       return
 
@@ -300,8 +268,7 @@ local MRoomsHandlers = class {
     ::notify_room_member_leaved(member)
   }
 
-  function onRoomMemberKicked(member)
-  {
+  function onRoomMemberKicked(member) {
     if (!this.__isNotifyForCurrentRoom(member))
       return
 
@@ -310,8 +277,7 @@ local MRoomsHandlers = class {
     ::notify_room_member_kicked(member)
   }
 
-  function onRoomAttrChanged(notify)
-  {
+  function onRoomAttrChanged(notify) {
     if (!this.__isNotifyForCurrentRoom(notify))
       return
 
@@ -319,8 +285,7 @@ local MRoomsHandlers = class {
     ::notify_room_attribs_changed(notify)
   }
 
-  function onRoomMemberAttrChanged(notify)
-  {
+  function onRoomMemberAttrChanged(notify) {
     if (!this.__isNotifyForCurrentRoom(notify))
       return
 
@@ -328,40 +293,34 @@ local MRoomsHandlers = class {
     ::notify_room_member_attribs_changed(notify)
   }
 
-  function onRoomDestroyed(notify)
-  {
+  function onRoomDestroyed(notify) {
     if (!this.__isNotifyForCurrentRoom(notify))
       return
     this.__cleanupRoomState()
   }
 
-  function onHostNotify(notify)
-  {
+  function onHostNotify(notify) {
     debugTableData(notify)
     if (!this.__isNotifyForCurrentRoom(notify))
       return
 
-    if (notify.hostId != this.hostId)
-    {
+    if (notify.hostId != this.hostId) {
       log("warning: got host notify from host that is not in current room")
       return
     }
 
-    if (notify.roomId != this.getRoomId())
-    {
+    if (notify.roomId != this.getRoomId()) {
       log("warning: got host notify for wrong room")
       return
     }
 
-    if (notify.message == "connect-allowed")
-    {
+    if (notify.message == "connect-allowed") {
       this.isConnectAllowed = true
       this.__connectToHost()
     }
   }
 
-  function onRoomJoinCb(resp)
-  {
+  function onRoomJoinCb(resp) {
     this.__cleanupRoomState()
 
     this.room = resp
@@ -369,24 +328,21 @@ local MRoomsHandlers = class {
     foreach (member in this.room.members)
       this.__addRoomMember(member)
 
-    if (getTblValue("connect_on_join", this.room.public))
-    {
+    if (getTblValue("connect_on_join", this.room.public)) {
       log("room with auto-connect feature")
       this.isSelfReady = true
       this.__onSelfReady()
     }
   }
 
-  function onRoomLeaveCb()
-  {
+  function onRoomLeaveCb() {
     this.__cleanupRoomState()
   }
 }
 
 ::g_mrooms_handlers <- MRoomsHandlers()
 
-::is_my_userid <- function is_my_userid(user_id)
-{
+::is_my_userid <- function is_my_userid(user_id) {
   if (type(user_id) == "string")
     return user_id == ::my_user_id_str
   return user_id == ::my_user_id_int64
@@ -394,21 +350,18 @@ local MRoomsHandlers = class {
 
 // mrooms API
 
-::is_host_in_room <- function is_host_in_room()
-{
+::is_host_in_room <- function is_host_in_room() {
   return ::g_mrooms_handlers.hasSession()
 }
 
-::create_room <- function create_room(params, cb)
-{
+::create_room <- function create_room(params, cb) {
   if ((isPlatformXboxOne || isPlatformSony) &&
       !crossplayModule.isCrossPlayEnabled()) {
     params["crossplayRestricted"] <- true
   }
 
   ::matching_api_func("mrooms.create_room",
-                    function(resp)
-                    {
+                    function(resp) {
                       if (::checkMatchingError(resp, false))
                         ::g_mrooms_handlers.onRoomJoinCb(resp)
                       cb(resp)
@@ -416,20 +369,16 @@ local MRoomsHandlers = class {
                     params)
 }
 
-::destroy_room <- function destroy_room(params, cb)
-{
+::destroy_room <- function destroy_room(params, cb) {
   ::matching_api_func("mrooms.destroy_room", cb, params)
 }
 
-::join_room <- function join_room(params, cb)
-{
+::join_room <- function join_room(params, cb) {
   ::matching_api_func("mrooms.join_room",
-                    function(resp)
-                    {
+                    function(resp) {
                       if (::checkMatchingError(resp, false))
                         ::g_mrooms_handlers.onRoomJoinCb(resp)
-                      else
-                      {
+                      else {
                         resp.roomId <- params?.roomId
                         resp.password <- params?.password
                       }
@@ -438,14 +387,12 @@ local MRoomsHandlers = class {
                     params)
 }
 
-::leave_room <- function leave_room(params, cb)
-{
+::leave_room <- function leave_room(params, cb) {
   let oldRoomId = ::g_mrooms_handlers.getRoomId()
   ::g_mrooms_handlers.isLeaving = true
 
   ::matching_api_func("mrooms.leave_room",
-                    function(resp)
-                    {
+                    function(resp) {
                       if (::g_mrooms_handlers.getRoomId() == oldRoomId)
                         ::g_mrooms_handlers.onRoomLeaveCb()
                       cb(resp)
@@ -453,61 +400,48 @@ local MRoomsHandlers = class {
                     params)
 }
 
-::set_member_attributes <- function set_member_attributes(params, cb)
-{
+::set_member_attributes <- function set_member_attributes(params, cb) {
   ::matching_api_func("mrooms.set_member_attributes", cb, params)
 }
 
-::set_room_attributes <- function set_room_attributes(params, cb)
-{
+::set_room_attributes <- function set_room_attributes(params, cb) {
   log($"[PSMT] setting room attributes: {params?.public?.psnMatchId}")
   ::matching_api_func("mrooms.set_attributes", cb, params)
 }
 
-::kick_member <- function kick_member(params, cb)
-{
+::kick_member <- function kick_member(params, cb) {
   ::matching_api_func("mrooms.kick_from_room", cb, params)
 }
 
-::room_ban_player <- function room_ban_player(params, cb)
-{
+::room_ban_player <- function room_ban_player(params, cb) {
   ::matching_api_func("mrooms.ban_player", cb, params)
 }
 
-::room_unban_player <- function room_unban_player(params, cb)
-{
+::room_unban_player <- function room_unban_player(params, cb) {
   ::matching_api_func("mrooms.unban_player", cb, params)
 }
 
-::room_start_session <- function room_start_session(params, cb)
-{
+::room_start_session <- function room_start_session(params, cb) {
   ::matching_api_func("mrooms.start_session", cb, params)
 }
 
-::room_set_password <- function room_set_password(params, cb)
-{
+::room_set_password <- function room_set_password(params, cb) {
   ::matching_api_func("mrooms.set_password", cb, params)
 }
 
-::room_set_ready_state <- function room_set_ready_state(params, cb)
-{
+::room_set_ready_state <- function room_set_ready_state(params, cb) {
   ::matching_api_func("mrooms.set_ready_state", cb, params)
 }
 
-::invite_player_to_room <- function invite_player_to_room(params, cb)
-{
+::invite_player_to_room <- function invite_player_to_room(params, cb) {
   ::matching_api_func("mrooms.invite_player", cb, params)
 }
 
-::fetch_rooms_list <- function fetch_rooms_list(params, cb)
-{
+::fetch_rooms_list <- function fetch_rooms_list(params, cb) {
   ::matching_api_func("mrooms.fetch_rooms_digest2",
-                    function (resp)
-                    {
-                      if (::checkMatchingError(resp, false))
-                      {
-                        foreach (room in getTblValue("digest", resp, []))
-                        {
+                    function (resp) {
+                      if (::checkMatchingError(resp, false)) {
+                        foreach (room in getTblValue("digest", resp, [])) {
                           let hasPassword = room?.public.hasPassword
                           if (hasPassword != null)
                             room.hasPassword <- hasPassword
@@ -518,30 +452,26 @@ local MRoomsHandlers = class {
                     params)
 }
 
-::serialize_dyncampaign <- function serialize_dyncampaign(_params, cb)
-{
+::serialize_dyncampaign <- function serialize_dyncampaign(_params, cb) {
   let priv = {
     dyncamp = {
       data = ::get_dyncampaign_b64blk()
     }
   }
 
-  ::matching_api_func("mrooms.set_attributes", cb, {private = priv})
+  ::matching_api_func("mrooms.set_attributes", cb, { private = priv })
 }
 
-::get_current_room <- function get_current_room()
-{
+::get_current_room <- function get_current_room() {
   return ::g_mrooms_handlers.getRoomId()
 }
 
-::leave_session <- function leave_session()
-{
+::leave_session <- function leave_session() {
   if (::g_mrooms_handlers.getRoomId() != INVALID_ROOM_ID)
     ::leave_room({}, function(_resp) {})
 }
 
-::is_player_room_operator <- function is_player_room_operator(user_id)
-{
+::is_player_room_operator <- function is_player_room_operator(user_id) {
   return ::g_mrooms_handlers.isPlayerRoomOperator(user_id)
 }
 

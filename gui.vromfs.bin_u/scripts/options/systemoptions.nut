@@ -1,17 +1,19 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
-let { is_stereo_configured, configure_stereo } = require_native("vr")
+let { is_stereo_configured, configure_stereo } = require("vr")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_primary_screen_info } = require("dagor.system")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
-let { applyRestartClient, isClientRestartable,canRestartClient
+let { applyRestartClient, isClientRestartable, canRestartClient
 } = require("%scripts/utils/restartClient.nut")
 
 //------------------------------------------------------------------------------
@@ -31,7 +33,7 @@ local mMaintainDone = false
 const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
 //-------------------------------------------------------------------------------
-let mQualityPresets = ::DataBlock()
+let mQualityPresets = DataBlock()
 mQualityPresets.load("%guiConfig/graphicsPresets.blk")
 
 /*
@@ -53,6 +55,7 @@ let compModeGraphicsOptions = {
     compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
+    xess              = { compMode = false }
     dlss              = { compMode = false }
     dlssSharpness     = { compMode = false }
   }
@@ -84,6 +87,7 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_left"
     items = [
+      "xess"
       "dlss"
       "dlssSharpness"
       "anisotropy"
@@ -147,9 +151,9 @@ let perfValues = [
   // append new values to the end to keep original indexes consistent
 ]
 //------------------------------------------------------------------------------
-let getGuiValue = @(id, defVal=null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
+let getGuiValue = @(id, defVal = null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
 
-let function logError(from="", msg="") {
+let function logError(from = "", msg = "") {
   let fullMsg = $"[sysopt] ERROR {from}: {msg}"
   log(fullMsg)
   return fullMsg
@@ -210,7 +214,7 @@ let function getGuiWidget(id) {
   return checkObj(obj) ? obj : null
 }
 
-local function setGuiValue(id, value, skipUI=false) {
+local function setGuiValue(id, value, skipUI = false) {
   value = validateGuiValue(id, value)
   mCfgCurrent[id] = value
 
@@ -218,8 +222,7 @@ local function setGuiValue(id, value, skipUI=false) {
   if (obj) {
     let desc = getOptionDesc(id)
     local raw = null
-    switch (desc.widgetType)
-    {
+    switch (desc.widgetType) {
       case "checkbox":
       case "slider":
         raw = value
@@ -254,17 +257,14 @@ let function checkChanges(config1, config2) {
     needEngineReload = false
   }
 
-  foreach (id, desc in mSettings)
-  {
+  foreach (id, desc in mSettings) {
     let value1 = config1[id]
     let value2 = config2[id]
-    if (value1 != value2)
-    {
+    if (value1 != value2) {
       changes.needSave = true
 
       let needApply = id != "graphicsQuality"
-      if (needApply)
-      {
+      if (needApply) {
         let requiresRestart = getTblValue("restart", desc)
         if (requiresRestart)
           changes.needClientRestart = true
@@ -286,7 +286,7 @@ let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
 let canUseGraphicsOptions = @() is_platform_pc && hasFeature("GraphicsOptions")
 let canShowGpuBenchmark = @() canUseGraphicsOptions() && platformId != "macosx"
 
-let function updateGuiNavbar(show=true) {
+let function updateGuiNavbar(show = true) {
   let scene = mHandler?.scene
   if (!checkObj(scene))
     return
@@ -339,8 +339,7 @@ let function localizaQualityPreset(presetName) {
 
 let function localize(optionId, valueId) {
   switch (optionId) {
-    case "resolution":
-    {
+    case "resolution": {
       if (valueId == "auto")
         return loc("options/auto")
       else
@@ -378,9 +377,22 @@ let function parseResolution(resolution) {
   }
 }
 
+let function getAvailableXessModes() {
+  let values = ["off"]
+  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
+  if (::is_xess_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
+    values.append("performance")
+  if (::is_xess_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
+    values.append("balanced")
+  if (::is_xess_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
+    values.append("quality")
+  if (::is_xess_quality_available_at_resolution(3, selectedResolution.w, selectedResolution.h))
+    values.append("ultra_quality")
 
-let function getAvailableDlssModes()
-{
+  return values;
+}
+
+let function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
   if (::is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
@@ -426,13 +438,14 @@ mShared = {
 
   setGraphicsQuality = function() {
     local quality = getGuiValue("graphicsQuality", "high")
-    if (mQualityPresets?.texQuality[quality] == null && quality!="custom") {
+    if (mQualityPresets?.texQuality[quality] == null && quality != "custom") {
       quality = getGuiValue("compatibilityMode", false) ? "ultralow" : "high"
       setGuiValue("graphicsQuality", quality)
     }
-    if (quality=="custom") {
+    if (quality == "custom") {
       return
-    } else
+    }
+    else
       mShared.setQualityPreset(quality)
   }
 
@@ -444,7 +457,7 @@ mShared = {
 
   setCompatibilityMode = function() {
     if (getGuiValue("compatibilityMode")) {
-      setGuiValue("backgroundScale",2)
+      setGuiValue("backgroundScale", 2)
       eachBlock(mQualityPresets, function(_, k) {
         let enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].compMode ?? false
         mShared.enableByCompMode(k, enabled)
@@ -465,8 +478,8 @@ mShared = {
 
   setLandquality = function() {
     let lq = getGuiValue("landquality")
-    let cs = (lq==0)? 50 : (lq==4)? 150 : 100
-    setGuiValue("clipmapScale",cs)
+    let cs = (lq == 0) ? 50 : (lq == 4) ? 150 : 100
+    setGuiValue("clipmapScale", cs)
   }
 
   landqualityClick = @() mShared.setLandquality()
@@ -477,9 +490,9 @@ mShared = {
     mShared.setCompatibilityMode()
   }
 
-  graphicsQualityClick = function(silent=false) {
+  graphicsQualityClick = function(silent = false) {
     let quality = getGuiValue("graphicsQuality", "high")
-    if (!silent && quality=="ultralow") {
+    if (!silent && quality == "ultralow") {
       let function ok_func() {
         mShared.graphicsQualityClick(true)
         updateGuiNavbar(true)
@@ -523,7 +536,12 @@ mShared = {
   }
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "ssaa", "dlssSharpness" ])
+    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
+      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
+  }
+
+  xessClick = function() {
+    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -553,8 +571,8 @@ mShared = {
   }
 
   ssrQualityClick = function() {
-    if ((getGuiValue("ssrQuality") > 0) && (getGuiValue("ssaoQuality")==0))
-      setGuiValue("ssaoQuality",1)
+    if ((getGuiValue("ssrQuality") > 0) && (getGuiValue("ssaoQuality") == 0))
+      setGuiValue("ssaoQuality", 1)
   }
 
   contactShadowsQualityClick = function() {
@@ -563,14 +581,12 @@ mShared = {
   }
 
   antiAliasingClick = function() {
-    if (getGuiValue("antialiasing") == "low_taa")
-    {
+    if (getGuiValue("antialiasing") == "low_taa") {
       setGuiValue("backgroundScale", 1.0)
       enableGuiOption("backgroundScale", false)
       enableGuiOption("taau_ratio", true)
     }
-    else
-    {
+    else {
       enableGuiOption("backgroundScale", true)
       enableGuiOption("taau_ratio", false)
     }
@@ -640,7 +656,8 @@ mShared = {
           ["no", cancel_func],
         ], "no",
         { cancel_fn = cancel_func, checkDuplicateId = true })
-    } else
+    }
+    else
       mShared.setCompatibilityMode()
   }
 
@@ -658,7 +675,7 @@ mShared = {
     let data = list.map(parseResolution).filter(@(r)
       (r.w >= minW && r.h >= minH) || r.resolution == curResolution || r.resolution == "auto")
 
-    let sortFunc = @(a,b) a.w <=> b.w  || a.h <=> b.h
+    let sortFunc = @(a, b) a.w <=> b.w  || a.h <=> b.h
     data.sort(sortFunc)
 
     // Fixing the truncated list when working via Remote Desktop (RDP).
@@ -669,8 +686,8 @@ mShared = {
       try{
         psi = get_primary_screen_info()
       }
-      catch(e){
-        log("get_primary_screen_info is not implemented?",e)
+      catch(e) {
+        log("get_primary_screen_info is not implemented?", e)
       }
       let maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
       let maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
@@ -739,7 +756,7 @@ mShared = {
   isVisible - function, for hide options
 */
 mSettings = {
-  resolution = { widgetType="list" def="1024 x 768" blk="video/resolution" restart=true
+  resolution = { widgetType = "list" def = "1024 x 768" blk = "video/resolution" restart = true
     init = function(blk, desc) {
       let curResolution = mShared.getCurResolution(blk, desc)
       desc.values <- mShared.getVideoModes(curResolution)
@@ -748,7 +765,7 @@ mSettings = {
     }
     onChanged = "resolutionClick"
   }
-  mode = { widgetType="list" def="fullscreenwindowed" blk="video/mode" restart=true
+  mode = { widgetType = "list" def = "fullscreenwindowed" blk = "video/mode" restart = true
     init = function(_blk, desc) {
       desc.values <- ["windowed"]
       if (is_platform_windows)
@@ -763,26 +780,40 @@ mSettings = {
       set_blk_value_by_path(blk, "video/windowed", val == "windowed")
     }
   }
-  vsync = { widgetType="list" def="vsync_off" blk="video/vsync" restart=true
+  vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = true
     getFromBlk = function(blk, _desc) {
       let vsync = get_blk_value_by_path(blk, "video/vsync", false)
       let adaptive = ::is_gpu_nvidia() && get_blk_value_by_path(blk, "video/adaptive_vsync", true)
-      return (vsync && adaptive)? "vsync_adaptive" : (vsync)? "vsync_on" : "vsync_off"
+      return (vsync && adaptive) ? "vsync_adaptive" : (vsync) ? "vsync_on" : "vsync_off"
     }
     setToBlk = function(blk, _desc, val) {
-      set_blk_value_by_path(blk, "video/vsync", val!="vsync_off")
-      set_blk_value_by_path(blk, "video/adaptive_vsync", val=="vsync_adaptive")
+      set_blk_value_by_path(blk, "video/vsync", val != "vsync_off")
+      set_blk_value_by_path(blk, "video/adaptive_vsync", val == "vsync_adaptive")
     }
     init = function(_blk, desc) {
       desc.values <- ::is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
     }
     enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
   }
-  graphicsQuality = { widgetType="tabs" def="high" blk="graphicsQuality" restart=false
+  graphicsQuality = { widgetType = "tabs" def = "high" blk = "graphicsQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
   }
-  dlss = { widgetType="list" def="off" blk="video/dlssQuality" restart=false
+  xess = { widgetType = "list" def = "off" blk = "video/xessQuality" restart = false
+    init = function(_blk, desc) {
+      desc.values <- getAvailableXessModes()
+    }
+    onChanged = "xessClick"
+    getFromBlk = function(blk, desc) {
+      let quality = get_blk_value_by_path(blk, desc.blk, -1)
+      return (quality == 0) ? "performance" : (quality == 1) ? "balanced" : (quality == 2) ? "quality" : (quality == 3) ? "ultra_quality" : "off"
+    }
+    setToBlk = function(blk, desc, val) {
+      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : (val == "ultra_quality") ? 3 : -1
+      set_blk_value_by_path(blk, desc.blk, quality)
+    }
+  }
+  dlss = { widgetType = "list" def = "off" blk = "video/dlssQuality" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailableDlssModes()
     }
@@ -796,49 +827,49 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, quality)
     }
   }
-  dlssSharpness = { widgetType="slider" def=0 min=0 max=100 blk="video/dlssSharpness" restart=false
+  dlssSharpness = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/dlssSharpness" restart = false
     enabled = @() getGuiValue("dlss", "off") != "off"
   }
-  anisotropy = { widgetType="list" def="2X" blk="graphics/anisotropy" restart=true
+  anisotropy = { widgetType = "list" def = "2X" blk = "graphics/anisotropy" restart = true
     values = [ "off", "2X", "4X", "8X", "16X" ]
     getFromBlk = function(blk, desc) {
       let anis = get_blk_value_by_path(blk, desc.blk, 2)
-      return (anis==16)? "16X" : (anis==8)? "8X" : (anis==4)? "4X" : (anis==2)? "2X" : "off"
+      return (anis == 16) ? "16X" : (anis == 8) ? "8X" : (anis == 4) ? "4X" : (anis == 2) ? "2X" : "off"
     }
     setToBlk = function(blk, desc, val) {
-      let anis = (val=="16X")? 16 : (val=="8X")? 8 : (val=="4X")? 4 : (val=="2X")? 2 : 1
+      let anis = (val == "16X") ? 16 : (val == "8X") ? 8 : (val == "4X") ? 4 : (val == "2X") ? 2 : 1
       set_blk_value_by_path(blk, desc.blk, anis)
     }
   }
-  msaa = { widgetType="list" def="off" blk="directx/maxaa" restart=true
+  msaa = { widgetType = "list" def = "off" blk = "directx/maxaa" restart = true
     values = [ "off", "on"]
     getFromBlk = function(blk, desc) {
       let msaa = get_blk_value_by_path(blk, desc.blk, 0)
-      return (msaa>0)? "on" :"off"
+      return (msaa > 0) ? "on" : "off"
     }
     setToBlk = function(blk, desc, val) {
-      let msaa = (val=="on")? 2 : 0
+      let msaa = (val == "on") ? 2 : 0
       set_blk_value_by_path(blk, desc.blk, msaa)
     }
   }
-  antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
+  antialiasing = { widgetType = "list" def = "none" blk = "video/postfx_antialiasing" restart = false
   getFromBlk = function(blk, desc) {
     let antiAliasing = get_blk_value_by_path(blk, desc.blk, "none")
-    return (antiAliasing=="high_taa") ? "low_taa" : antiAliasing
+    return (antiAliasing == "high_taa") ? "low_taa" : antiAliasing
   }
     onChanged = "antiAliasingClick"
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
   }
-  taau_ratio = { widgetType="slider" def=100 min=50 max=100 blk="video/temporalResolutionScale" restart=false
+  taau_ratio = { widgetType = "slider" def = 100 min = 50 max = 100 blk = "video/temporalResolutionScale" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
                   && (getGuiValue("antialiasing") == "low_taa")
-    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0)*100.0).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val.tofloat()/100.0) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def / 100.0) * 100.0).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val.tofloat() / 100.0) }
   }
-  ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
+  ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -849,10 +880,10 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, res)
     }
   }
-  latency = { widgetType="list" def="off" blk="video/latency" restart=false
+  latency = { widgetType = "list" def = "off" blk = "video/latency" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailableLatencyModes()
-      desc.items <- desc.values.map(@(value) {text = localize("latency", value), tooltip = loc($"guiHints/latency_{value}") })
+      desc.items <- desc.values.map(@(value) { text = localize("latency", value), tooltip = loc($"guiHints/latency_{value}") })
     }
     getFromBlk = function(blk, desc) {
       let quality = get_blk_value_by_path(blk, desc.blk, -1)
@@ -864,7 +895,7 @@ mSettings = {
     }
     onChanged = "latencyClick"
   }
-  perfMetrics = { widgetType="list" def="fps" blk="video/perfMetrics" restart=false
+  perfMetrics = { widgetType = "list" def = "fps" blk = "video/perfMetrics" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailablePerfMetricsModes()
     }
@@ -877,7 +908,7 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
   }
-  texQuality = { widgetType="list" def="high" blk="graphics/texquality" restart=true
+  texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = true
     init = function(_blk, desc) {
       let dgsTQ = ::get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
       let configTexQuality = desc.values.indexof(::getSystemConfigOption("graphics/texquality", "high")) ?? -1
@@ -898,22 +929,22 @@ mSettings = {
     }
     values =   [ "low", "medium", "high" ]
   }
-  shadowQuality = { widgetType="list" def="high" blk="graphics/shadowQuality" restart=false
+  shadowQuality = { widgetType = "list" def = "high" blk = "graphics/shadowQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
   }
-  waterEffectsQuality = { widgetType="list" def="high" blk="graphics/waterEffectsQuality" restart=false
+  waterEffectsQuality = { widgetType = "list" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
   }
-  compatibilityShadowQuality = { widgetType="list" def="low" blk="graphics/compatibilityShadowQuality" restart=false
+  compatibilityShadowQuality = { widgetType = "list" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
     values = [ "low", "medium" ]
   }
-  fxResolutionQuality= { widgetType="list" def="high" blk="graphics/fxTarget" restart=false
+  fxResolutionQuality = { widgetType = "list" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"
     values = [ "low", "medium", "high", "ultrahigh" ]
   }
-  selfReflection = { widgetType="checkbox" def=true blk="render/selfReflection" restart=false
+  selfReflection = { widgetType = "checkbox" def = true blk = "render/selfReflection" restart = false
   }
-  backgroundScale = { widgetType="slider" def=2 min=0 max=2 blk="graphics/backgroundScale" restart=false
+  backgroundScale = { widgetType = "slider" def = 2 min = 0 max = 2 blk = "graphics/backgroundScale" restart = false
     blkValues = [ 0.7, 0.85, 1.0 ]
     getFromBlk = function(blk, desc) {
       local val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -929,48 +960,48 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, res)
     }
   }
-  landquality = { widgetType="slider" def=0 min=0 max=4 blk="graphics/landquality" restart=false
+  landquality = { widgetType = "slider" def = 0 min = 0 max = 4 blk = "graphics/landquality" restart = false
     onChanged = "landqualityClick"
   }
-  clipmapScale = { widgetType="slider" def=100 min=30 max=150 blk="graphics/clipmapScale" restart=false
-    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
+  clipmapScale = { widgetType = "slider" def = 100 min = 30 max = 150 blk = "graphics/clipmapScale" restart = false
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def / 100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val / 100.0) }
   }
-  rendinstDistMul = { widgetType="slider" def=100 min=50 max=220 blk="graphics/rendinstDistMul" restart=false
-    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
+  rendinstDistMul = { widgetType = "slider" def = 100 min = 50 max = 220 blk = "graphics/rendinstDistMul" restart = false
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def / 100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val / 100.0) }
   }
-  skyQuality = { widgetType="slider" def=1 min=0 max=2 blk="graphics/skyQuality" restart=false
-    getFromBlk = function(blk, desc) { return (2 - get_blk_value_by_path(blk, desc.blk, 2-desc.def)).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, 2-val) }
+  skyQuality = { widgetType = "slider" def = 1 min = 0 max = 2 blk = "graphics/skyQuality" restart = false
+    getFromBlk = function(blk, desc) { return (2 - get_blk_value_by_path(blk, desc.blk, 2 - desc.def)).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, 2 - val) }
   }
-  cloudsQuality = { widgetType="slider" def=1 min=0 max=2 blk="graphics/cloudsQuality" restart=false
+  cloudsQuality = { widgetType = "slider" def = 1 min = 0 max = 2 blk = "graphics/cloudsQuality" restart = false
     onChanged = "cloudsQualityClick"
-    getFromBlk = function(blk, desc) { return (2 - get_blk_value_by_path(blk, desc.blk, 2-desc.def)).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, 2-val) }
+    getFromBlk = function(blk, desc) { return (2 - get_blk_value_by_path(blk, desc.blk, 2 - desc.def)).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, 2 - val) }
   }
-  panoramaResolution = { widgetType="slider" def=8 min=4 max=16 blk="graphics/panoramaResolution" restart=false
-    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def*256) / 256).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val*256) }
+  panoramaResolution = { widgetType = "slider" def = 8 min = 4 max = 16 blk = "graphics/panoramaResolution" restart = false
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def * 256) / 256).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val * 256) }
   }
-  fxDensityMul = { widgetType="slider" def=100 min=20 max=100 blk="graphics/fxDensityMul" restart=false
-    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
+  fxDensityMul = { widgetType = "slider" def = 100 min = 20 max = 100 blk = "graphics/fxDensityMul" restart = false
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def / 100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val / 100.0) }
   }
-  physicsQuality = { widgetType="slider" def=3 min=0 max=5 blk="graphics/physicsQuality" restart=false
+  physicsQuality = { widgetType = "slider" def = 3 min = 0 max = 5 blk = "graphics/physicsQuality" restart = false
   }
-  grassRadiusMul = { widgetType="slider" def=80 min=1 max=180 blk="graphics/grassRadiusMul" restart=false
+  grassRadiusMul = { widgetType = "slider" def = 80 min = 1 max = 180 blk = "graphics/grassRadiusMul" restart = false
     onChanged = "grassClick"
-    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def / 100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val / 100.0) }
   }
-  grass = { widgetType="checkbox" def=true blk="render/grass" restart=false
+  grass = { widgetType = "checkbox" def = true blk = "render/grass" restart = false
   }
-  enableSuspensionAnimation = { widgetType="checkbox" def=false blk="graphics/enableSuspensionAnimation" restart=true
+  enableSuspensionAnimation = { widgetType = "checkbox" def = false blk = "graphics/enableSuspensionAnimation" restart = true
   }
-  alpha_to_coverage = { widgetType="checkbox" def=false blk="video/alpha_to_coverage" restart=false
+  alpha_to_coverage = { widgetType = "checkbox" def = false blk = "video/alpha_to_coverage" restart = false
   }
-  tireTracksQuality = { widgetType="list" def="none" blk="graphics/tireTracksQuality" restart=false
+  tireTracksQuality = { widgetType = "list" def = "none" blk = "graphics/tireTracksQuality" restart = false
     values = [ "none", "medium", "high", "ultrahigh" ]
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 0)
@@ -981,76 +1012,75 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, res)
     }
   }
-  waterQuality = { widgetType="list" def="high" blk="graphics/waterQuality" restart=false
+  waterQuality = { widgetType = "list" def = "high" blk = "graphics/waterQuality" restart = false
     values = [ "low", "medium", "high", "ultrahigh" ]
   }
-  giQuality = { widgetType="list" def="low" blk="graphics/giQuality" restart=false
+  giQuality = { widgetType = "list" def = "low" blk = "graphics/giQuality" restart = false
     values = [ "low", "medium", "high" ], isVisible = @() true
   }
-  dirtSubDiv = { widgetType="list" def="high" blk="graphics/dirtSubDiv" restart=false
+  dirtSubDiv = { widgetType = "list" def = "high" blk = "graphics/dirtSubDiv" restart = false
     values = [ "high", "ultrahigh" ]
     getFromBlk = function(blk, desc) {
       let val = get_blk_value_by_path(blk, desc.blk, 1)
-      return (val==2)? "ultrahigh" : "high"
+      return (val == 2) ? "ultrahigh" : "high"
     }
     setToBlk = function(blk, desc, val) {
-      let res = (val=="ultrahigh")? 2 : 1
+      let res = (val == "ultrahigh") ? 2 : 1
       set_blk_value_by_path(blk, desc.blk, res)
     }
   }
-  ssaoQuality = { widgetType="slider" def=0 min=0 max=2 blk="render/ssaoQuality" restart=false
+  ssaoQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssaoQuality" restart = false
     onChanged = "ssaoQualityClick"
   }
-  ssrQuality = { widgetType="slider" def=0 min=0 max=2 blk="render/ssrQuality" restart=false
+  ssrQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssrQuality" restart = false
     onChanged = "ssrQualityClick"
   }
-  shadows = { widgetType="checkbox" def=true blk="render/shadows" restart=false
+  shadows = { widgetType = "checkbox" def = true blk = "render/shadows" restart = false
   }
-  rendinstGlobalShadows = { widgetType="checkbox" def=true blk="render/rendinstGlobalShadows" restart=false
+  rendinstGlobalShadows = { widgetType = "checkbox" def = true blk = "render/rendinstGlobalShadows" restart = false
   }
-  advancedShore = { widgetType="checkbox" def=false blk="graphics/advancedShore" restart=false
+  advancedShore = { widgetType = "checkbox" def = false blk = "graphics/advancedShore" restart = false
   }
-  mirrorQuality = { widgetType="slider" def=5 min=0 max=10 blk="graphics/mirrorQuality" restart=false
+  mirrorQuality = { widgetType = "slider" def = 5 min = 0 max = 10 blk = "graphics/mirrorQuality" restart = false
   }
-  haze = { widgetType="checkbox" def=false blk="render/haze" restart=false
+  haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
   }
-  softFx = { widgetType="checkbox" def=true blk="render/softFx" restart=false
+  softFx = { widgetType = "checkbox" def = true blk = "render/softFx" restart = false
   }
-  lastClipSize = { widgetType="checkbox" def=false blk="graphics/lastClipSize" restart=false
+  lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
     getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, 4096) == 8192) }
     setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, (val ? 8192 : 4096)) }
   }
-  lenseFlares = { widgetType="checkbox" def=false blk="graphics/lenseFlares" restart=false
+  lenseFlares = { widgetType = "checkbox" def = false blk = "graphics/lenseFlares" restart = false
   }
-  jpegShots = { widgetType="checkbox" def=true blk="debug/screenshotAsJpeg" restart=false }
-  compatibilityMode = { widgetType="checkbox" def=false blk="video/compatibilityMode" restart=true
+  jpegShots = { widgetType = "checkbox" def = true blk = "debug/screenshotAsJpeg" restart = false }
+  compatibilityMode = { widgetType = "checkbox" def = false blk = "video/compatibilityMode" restart = true
     onChanged = "compatibilityModeClick"
   }
-  enableHdr = { widgetType="checkbox" def=false blk="directx/enableHdr" restart=true enabled=@() ::is_hdr_available() }
+  enableHdr = { widgetType = "checkbox" def = false blk = "directx/enableHdr" restart = true enabled = @() ::is_hdr_available() }
   enableVr = {
     widgetType = "checkbox"
     blk = "gameplay/enableVR"
     def = is_stereo_configured()
     getFromBlk = function(_blk, _desc) { return is_stereo_configured() }
-    setToBlk = function(blk, desc, val)
-    {
+    setToBlk = function(blk, desc, val) {
       configure_stereo(val)
       return set_blk_value_by_path(blk, desc.blk, val)
     }
     enabled = @() is_platform_windows && (platformId == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
   }
-  vrMirror = { widgetType="list" def="left" blk="video/vreye" restart=false values = [ "left", "right", "both" ]
+  vrMirror = { widgetType = "list" def = "left" blk = "video/vreye" restart = false values = [ "left", "right", "both" ]
   }
-  vrStreamerMode = { widgetType="checkbox" def=false blk="video/vrStreamerMode" restart=false
+  vrStreamerMode = { widgetType = "checkbox" def = false blk = "video/vrStreamerMode" restart = false
   }
-  displacementQuality = { widgetType="slider" def=2 min=0 max=3 blk="graphics/displacementQuality" restart=false
+  displacementQuality = { widgetType = "slider" def = 2 min = 0 max = 3 blk = "graphics/displacementQuality" restart = false
   }
-  contactShadowsQuality = { widgetType="slider" def=0 min=0 max=2 blk="graphics/contactShadowsQuality" restart=false
+  contactShadowsQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "graphics/contactShadowsQuality" restart = false
     onChanged = "contactShadowsQualityClick"
   }
-  staticShadowsOnEffects = { widgetType="checkbox" def=false blk="render/staticShadowsOnEffects" restart=false
+  staticShadowsOnEffects = { widgetType = "checkbox" def = false blk = "render/staticShadowsOnEffects" restart = false
   }
-  riGpuObjects = { widgetType="checkbox" def=true blk="graphics/riGpuObjects" restart=false
+  riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
   }
 }
 //------------------------------------------------------------------------------
@@ -1060,61 +1090,60 @@ let function validateInternalConfigs() {
     let widgetType = getTblValue("widgetType", desc)
     if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "tabs"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '"+id+"' - 'widgetType' invalid or undefined."))
+        "Option '" + id + "' - 'widgetType' invalid or undefined."))
     if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getFromBlk" in desc) || !("setToBlk" in desc)))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '"+id+"' - 'blk' invalid or undefined. It can be undefined only when both getFromBlk & setToBlk are defined."))
+        "Option '" + id + "' - 'blk' invalid or undefined. It can be undefined only when both getFromBlk & setToBlk are defined."))
     if (("onChanged" in desc) && type(desc.onChanged) != "function")
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '"+id+"' - 'onChanged' function not found in sysopt.shared."))
+        "Option '" + id + "' - 'onChanged' function not found in sysopt.shared."))
 
     let def = getTblValue("def", desc)
     if (def == null)
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '"+id+"' - 'def' undefined."))
+        "Option '" + id + "' - 'def' undefined."))
 
     let uiType = desc.uiType
-    switch (widgetType)
-    {
+    switch (widgetType) {
       case "checkbox":
         if (def != null && uiType != "bool")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '"+id+"' - 'widgetType'/'def' conflict."))
+            "Option '" + id + "' - 'widgetType'/'def' conflict."))
         break
       case "slider":
         if (def != null && uiType != "integer")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '"+id+"' - 'widgetType'/'def' conflict."))
+            "Option '" + id + "' - 'widgetType'/'def' conflict."))
         let invalidVal = -1
         let vMin = desc?.min ?? invalidVal
         let vMax = desc?.max ?? invalidVal
         let safeDef = (def != null) ? def : invalidVal
         if (!("min" in desc) || !("max" in desc) || type(vMin) != uiType || type(vMax) != uiType
-            || vMin > vMax || vMin > safeDef || safeDef > vMax )
+            || vMin > vMax || vMin > safeDef || safeDef > vMax)
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '"+id+"' - 'min'/'def'/'max' conflict."))
+            "Option '" + id + "' - 'min'/'def'/'max' conflict."))
         break
       case "list":
       case "tabs":
         if (def != null && uiType != "string")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '"+id+"' - 'widgetType'/'def' conflict."))
+            "Option '" + id + "' - 'widgetType'/'def' conflict."))
         let values = getTblValue("values", desc, [])
         if (!values.len())
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '"+id+"' - 'values' is empty or undefined."))
+            "Option '" + id + "' - 'values' is empty or undefined."))
         if (def != null && values.len() && !isInArray(def, values))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '"+id+"' - 'def' is not listed in 'values'."))
+            "Option '" + id + "' - 'def' is not listed in 'values'."))
         break
       case "editbox":
         if (def != null && uiType != "integer" && uiType != "float" && uiType != "string")
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-                                     "Option '"+id+"' - 'widgetType'/'def' conflict."))
+                                     "Option '" + id + "' - 'widgetType'/'def' conflict."))
         let maxlength = getTblValue("maxlength", desc, -1)
         if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
-            "Option '"+id+"' - 'maxlength'/'def' conflict."))
+            "Option '" + id + "' - 'maxlength'/'def' conflict."))
         break
     }
   }
@@ -1126,8 +1155,7 @@ let function validateInternalConfigs() {
     if (!(k in mSettings))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Quality presets - k='{k}' is not found in 'settings' table."))
-    if (("graphicsQuality" in mSettings) && ("values" in mSettings.graphicsQuality))
-    {
+    if (("graphicsQuality" in mSettings) && ("values" in mSettings.graphicsQuality)) {
       let qualityValues = mSettings.graphicsQuality.values
       eachParam(v, function(value, qualityId) {
         if (!isInArray(qualityId, qualityValues))
@@ -1140,19 +1168,18 @@ let function validateInternalConfigs() {
     }
   })
 
-  foreach (sectIndex, section in mUiStruct)
-  {
+  foreach (sectIndex, section in mUiStruct) {
     let container = getTblValue("container", section)
     let id = getTblValue("id", section)
     let items = getTblValue("items", section)
     if (!container || (!id && !items))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Array uiStruct - Index "+sectIndex+" contains invalid data."))
-    let ids = items? items : id? [ id ] : []
+        "Array uiStruct - Index " + sectIndex + " contains invalid data."))
+    let ids = items ? items : id ? [ id ] : []
     foreach (itemId in ids)
       if (!(itemId in mSettings))
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Array uiStruct - Option '"+itemId+"' not found in 'settings' table."))
+          "Array uiStruct - Option '" + itemId + "' not found in 'settings' table."))
   }
 
   mScriptValid = !errorsList.len()
@@ -1188,7 +1215,8 @@ let function configRead() {
 let function configWrite() {
   if (! is_platform_pc)
     return;
-  if (!mBlk) return
+  if (!mBlk)
+    return
   log("[sysopt] Saving config:")
   foreach (id, _ in mCfgCurrent) {
     let value = getGuiValue(id)
@@ -1209,7 +1237,7 @@ let function init() {
   foreach (_id, desc in mSettings) {
     if ("init" in desc)
       desc.init(blk, desc)
-    if (("onChanged" in desc) && type(desc.onChanged)=="string")
+    if (("onChanged" in desc) && type(desc.onChanged) == "string")
       desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
     let uiType = ("def" in desc) ? type(desc.def) : null
     desc.uiType <- uiType
@@ -1258,8 +1286,7 @@ let function configMaintain() {
   if (!mScriptValid)
     return
 
-  if (::getSystemConfigOption("graphicsQuality", "high") == "user") // Need to reset
-  {
+  if (::getSystemConfigOption("graphicsQuality", "high") == "user") { // Need to reset
     let isCompatibilityMode = ::getSystemConfigOption("video/compatibilityMode", false)
     ::setSystemConfigOption("graphicsQuality", isCompatibilityMode ? "ultralow" : "high")
   }
@@ -1371,8 +1398,7 @@ let function onGuiOptionChanged(obj) {
 
   local value = null
   let raw = obj.getValue()
-  switch (desc.widgetType)
-  {
+  switch (desc.widgetType) {
     case "checkbox":
       value = raw == true
       break
@@ -1384,8 +1410,7 @@ let function onGuiOptionChanged(obj) {
       value = desc.values[raw]
       break
     case "editbox":
-      switch (desc.uiType)
-      {
+      switch (desc.uiType) {
         case "integer":
           value = (regexp2(@"^\-?\d+$").match(strip(raw))) ? raw.tointeger() : null
           break
@@ -1396,8 +1421,7 @@ let function onGuiOptionChanged(obj) {
           value = raw.tostring()
           break
       }
-      if (value == null)
-      {
+      if (value == null) {
         value = curValue
         setGuiValue(id, value, false)
       }
@@ -1433,11 +1457,9 @@ let function fillGuiOptions(containerObj, handler) {
   mContainerObj = containerObj
   mHandler = handler
 
-  if (::get_video_modes().len() == 0 && !is_platform_windows) // Hiding resolution, mode, vsync.
-  {
+  if (::get_video_modes().len() == 0 && !is_platform_windows) { // Hiding resolution, mode, vsync.
     let topBlockId = "sysopt_top"
-    if (topBlockId in guiScene)
-    {
+    if (topBlockId in guiScene) {
       guiScene.replaceContentFromText(topBlockId, "", 0, handler)
       guiScene[topBlockId].height = 0
     }
@@ -1445,22 +1467,20 @@ let function fillGuiOptions(containerObj, handler) {
 
   configRead()
   let cb = "onSystemOptionChanged"
-  foreach (section in mUiStruct)
-  {
-    if (! guiScene[section.container]) continue
+  foreach (section in mUiStruct) {
+    if (! guiScene[section.container])
+      continue
     let isTable = ("items" in section)
     let ids = isTable ? section.items : [ section.id ]
     local data = ""
-    foreach (id in ids)
-    {
+    foreach (id in ids) {
       let desc = getOptionDesc(id)
       if (!(desc?.isVisible() ?? true))
         continue
 
       desc.widgetId = "sysopt_" + id
       local option = ""
-      switch (desc.widgetType)
-      {
+      switch (desc.widgetType) {
         case "checkbox":
           let config = {
             id = desc.widgetId
@@ -1479,8 +1499,7 @@ let function fillGuiOptions(containerObj, handler) {
         case "tabs":
           let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
           let items = []
-          foreach (valueId in desc.values)
-          {
+          foreach (valueId in desc.values) {
             local warn = loc(format("options/%s_%s/comment", id, valueId), "")
             warn = warn.len() ? ("\n" + colorize("badTextColor", warn)) : ""
 
@@ -1501,8 +1520,7 @@ let function fillGuiOptions(containerObj, handler) {
           break
       }
 
-      if (isTable)
-      {
+      if (isTable) {
         let enable = (desc?.enabled() ?? true) ? "yes" : "no"
         let requiresRestart = getTblValue("restart", desc, false)
         let tooltipExtra = desc?.tooltipExtra ?? ""
@@ -1514,7 +1532,7 @@ let function fillGuiOptions(containerObj, handler) {
             tooltipExtra
           ], true)
         )
-        option = "tr { id:t='" + id + "_tr'; enable:t='" + enable +"' selected:t='no' size:t='pw, " + mRowHeightScale + "@baseTrHeight' overflow:t='hidden' tooltip:t=\"" + tooltip + "\";"+
+        option = "tr { id:t='" + id + "_tr'; enable:t='" + enable + "' selected:t='no' size:t='pw, " + mRowHeightScale + "@baseTrHeight' overflow:t='hidden' tooltip:t=\"" + tooltip + "\";" +
           " td { width:t='0.5pw'; cellType:t='left'; overflow:t='hidden'; height:t='" + mRowHeightScale + "@baseTrHeight' optiontext {text:t='" + label + "'} }" +
           " td { width:t='0.5pw'; cellType:t='right';  height:t='" + mRowHeightScale + "@baseTrHeight' padding-left:t='@optPad'; " + option + " } }"
       }

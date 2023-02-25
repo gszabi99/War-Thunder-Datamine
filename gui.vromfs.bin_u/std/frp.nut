@@ -161,7 +161,7 @@ let function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
     }
     let updateEidProps = (mkCombined == MK_COMBINED_STATE)
       ? function ( eid, val ) {
-          if (eid not in storage) {
+          if (eid not in storage || eidToUpdate?[eid] == TO_DELETE) {
             storage[eid] <- Watched(val)
           }
           else {
@@ -171,7 +171,7 @@ let function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
           triggerableObservable.subscribe(update)
         }
       : function (eid, val) {
-          if (eid not in storage) {
+          if (eid not in storage || eidToUpdate?[eid] == TO_DELETE) {
             storage[eid] <- Watched(val)
             eidToUpdate[eid] <- eid
             triggerableObservable.subscribe(update)

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,10 +9,8 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
 let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
 let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
 
-let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
-{
-  function getSortedGroupsArray()
-  {
+let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler {
+  function getSortedGroupsArray() {
     let selectedGroup = this.getSelectedGroup()
     local groupsArray = this.config.unitsGroupsByCountry?[this.country].groups.values() ?? []
 
@@ -30,15 +29,13 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
     return groupsArray
   }
 
-  function initAvailableUnitsArray()
-  {
+  function initAvailableUnitsArray() {
     this.unitsList = this.getSortedGroupsArray()
     this.unitsList.append(SEL_UNIT_BUTTON.SHOW_MORE)
     return false //for needEmptyCrewButton parameter
   }
 
-  function trainSlotAircraft(unit)
-  {
+  function trainSlotAircraft(unit) {
     slotbarPresets.setGroup({
       crew = this.crew
       group = unit
@@ -46,8 +43,7 @@ let class SelectGroupHandler extends ::gui_handlers.SelectUnitHandler
     })
   }
 
-  function showUnitSlot(objSlot, group, isVisible)
-  {
+  function showUnitSlot(objSlot, group, isVisible) {
     objSlot.show(isVisible)
     objSlot.inactive = isVisible ? "no" : "yes"
     if (!isVisible || objSlot.childrenCount())

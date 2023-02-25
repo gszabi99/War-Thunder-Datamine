@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -17,12 +18,10 @@ let animTimerPid = ::dagui_propid.add_name_id("_transp-timer")
 let baseTransparency = "30"
 focusFrame.setHideTgtImageTimeMsec(200)
 
-focusFrame.setAnimFunction(function(animObj, curTgt, prevTgt)
-{
+focusFrame.setAnimFunction(function(animObj, curTgt, prevTgt) {
   let offsetMax = ::g_dagui_utils.toPixels(animObj.getScene(), "@focusFrameAnimOffsetMax")
   local offset = offsetMax
-  if (prevTgt)
-  {
+  if (prevTgt) {
     let offsetMin = ::g_dagui_utils.toPixels(animObj.getScene(), "@focusFrameAnimOffsetMin")
     let sh = ::screen_height()
     let minSh = 0.2 * sh
@@ -30,8 +29,7 @@ focusFrame.setAnimFunction(function(animObj, curTgt, prevTgt)
     dist = clamp(dist, minSh, sh)
     offset = stdMath.lerp(minSh, sh, offsetMin, offsetMax, dist)
   }
-  foreach(axis, sizeProp in sizeProps)
-  {
+  foreach (axis, sizeProp in sizeProps) {
     animObj[sizeProp[0]] = (curTgt.size[axis] + 2 * offset).tostring()
     animObj[sizeProp[1]] = curTgt.size[axis].tostring()
   }

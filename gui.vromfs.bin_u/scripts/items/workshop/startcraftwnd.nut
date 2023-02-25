@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -14,8 +15,7 @@ let class startCraftWnd extends ::gui_handlers.BaseGuiHandlerWT {
   imageRatio = 1
   showTimeSec = -1
 
-  function initScreen()
-  {
+  function initScreen() {
     let fObj = this.scene.findObject("wnd_frame")
     let startCraftImgWidth = $"{this.imageRatio}@startCraftImgHeight"
     fObj.width = $"{startCraftImgWidth} + 2@framePadding"

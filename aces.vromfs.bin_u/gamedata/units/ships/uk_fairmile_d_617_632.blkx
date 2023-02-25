@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust",
+  "exhaustFx": "ship_exhaust_small",
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "smokeScreenActivateTime": 2.5,
@@ -112,6 +112,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -806,6 +814,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -3839,10 +3857,10 @@
     "ship_rangefinder": {},
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_depth_charge": {
       "prevModification": "20mm_oerlikon_navy_ap_ammo_pack"

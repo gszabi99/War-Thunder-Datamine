@@ -4,7 +4,7 @@
  * Solver for cubic bezier curve with implicit control points at (0,0) and (1.0, 1.0).
  * Adjust at http://cubic-bezier.com/
  */
-let {fabs} = require("math")
+let { fabs } = require("math")
 let function sampleCurveX(t, ax, bx, cx) {
   return ((ax * t + bx) * t + cx) * t
 }
@@ -69,7 +69,7 @@ let function solve(t, p1x, p1y, p2x, p2y) {
   // First and last control points are implied to be (0,0) and (1.0, 1.0).
   let cx = 3.0 * p1x
   let bx = 3.0 * (p2x - p1x) - cx
-  let ax = 1.0 - cx -bx
+  let ax = 1.0 - cx - bx
 
   let cy = 3.0 * p1y
   let by = 3.0 * (p2y - p1y) - cy

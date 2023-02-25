@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,20 +9,18 @@ let { format } = require("string")
 let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
+let { get_game_type, get_cur_game_mode_name } = require("mission")
 
-::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false)
-{
+::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false) {
   ::tactical_map_handler = ::handlersManager.loadHandler(::gui_handlers.TacticalMap,
                            { forceTacticalControl = use_tactical_control })
 }
 
-::gui_start_tactical_map_tc <- function gui_start_tactical_map_tc()
-{
+::gui_start_tactical_map_tc <- function gui_start_tactical_map_tc() {
   ::gui_start_tactical_map(true);
 }
 
-::gui_handlers.TacticalMap <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.TacticalMap <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/tacticalMap.blk"
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true
@@ -44,8 +43,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   wasMenuShift = false
   isActiveTactical = false
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.findObject("update_timer").setUserData(this)
 
     this.subHandlers.append(
@@ -56,8 +54,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     this.initWnd()
   }
 
-  function initWnd()
-  {
+  function initWnd() {
     this.restoreType = ::get_mission_restore_type();
 
     if ((this.restoreType != ERT_TACTICAL_CONTROL))
@@ -65,7 +62,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
     let playerArr = [1]
     this.numUnits = ::get_player_group(this.units, playerArr)
-    log("numUnits = "+this.numUnits)
+    log("numUnits = " + this.numUnits)
 
     this.initData()
 
@@ -73,23 +70,19 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
     local isRespawn = false
 
-    if (this.restoreType == ERT_TACTICAL_CONTROL)
-    {
-      for (local i = 0; i < this.numUnits; i++)
-      {
+    if (this.restoreType == ERT_TACTICAL_CONTROL) {
+      for (local i = 0; i < this.numUnits; i++) {
         if (::is_aircraft_delayed(this.units[i]))
           continue
 
-        if (::is_aircraft_player(this.units[i]))
-        {
+        if (::is_aircraft_player(this.units[i])) {
           if (! ::is_aircraft_active(this.units[i]))
             isRespawn = true
           break
         }
       }
-      if (isRespawn || this.forceTacticalControl)
-      {
-        log("[TMAP] isRespawn = "+isRespawn)
+      if (isRespawn || this.forceTacticalControl) {
+        log("[TMAP] isRespawn = " + isRespawn)
         log("[TMAP] 2 forceTacticalControl = " + this.forceTacticalControl)
         this.isActiveTactical = true
       }
@@ -109,8 +102,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     this.showSceneBtn("screen_button_back", useTouchscreen)
   }
 
-  function reinitScreen(params = {})
-  {
+  function reinitScreen(params = {}) {
     this.setParams(params)
     this.initWnd()
     /*
@@ -121,22 +113,19 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     */
   }
 
-  function updateTitle()
-  {
-    let gt = ::get_game_type()
+  function updateTitle() {
+    let gt = get_game_type()
     local titleText = ::loc_current_mission_name()
     if (gt & GT_VERSUS)
-      titleText = loc("multiplayer/" + ::get_cur_game_mode_name() + "Mode")
+      titleText = loc($"multiplayer/{get_cur_game_mode_name()}Mode")
 
     this.setSceneTitle(titleText, this.scene, "menu-title")
   }
 
-  function update(obj, dt)
-  {
+  function update(obj, dt) {
     this.updateTacticalControl(obj, dt)
 
-    if (::is_respawn_screen())
-    {
+    if (::is_respawn_screen()) {
       this.guiScene.performDelayed({}, function() {
         ::gui_start_respawn()
         ::update_gamercards()
@@ -144,54 +133,44 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     }
   }
 
-  function updateTacticalControl(_obj, _dt)
-  {
+  function updateTacticalControl(_obj, _dt) {
     if (this.restoreType != ERT_TACTICAL_CONTROL)
       return;
     if (!this.isActiveTactical)
       return
 
-    if (this.focus >= 0 && this.focus < this.numUnits)
-    {
+    if (this.focus >= 0 && this.focus < this.numUnits) {
       let isActive = ::is_aircraft_active(this.units[this.focus])
-      if (!isActive)
-      {
+      if (!isActive) {
         this.scene.findObject("objectives_panel").show(false)
         this.scene.findObject("pilots_panel").show(true)
 
         this.onFocusDown(null)
       }
-      if (!::is_aircraft_active(this.units[this.focus]))
-      {
+      if (!::is_aircraft_active(this.units[this.focus])) {
         log("still no active aircraft");
-        this.guiScene.performDelayed(this, function()
-        {
+        this.guiScene.performDelayed(this, function() {
           this.doClose()
         })
         return;
       }
-      if (!isActive)
-      {
+      if (!isActive) {
         ::set_tactical_screen_player(this.units[this.focus], false)
-        this.guiScene.performDelayed(this, function()
-        {
+        this.guiScene.performDelayed(this, function() {
           this.doClose()
         })
       }
     }
 
 
-    for (local i = 0; i < this.numUnits; i++)
-    {
-      if (::is_aircraft_delayed(this.units[i]))
-      {
-        log("unit "+i+" is delayed");
+    for (local i = 0; i < this.numUnits; i++) {
+      if (::is_aircraft_delayed(this.units[i])) {
+        log("unit " + i + " is delayed");
         continue;
       }
 
       let isActive = ::is_aircraft_active(this.units[i]);
-      if (isActive != this.unitsActive[i])
-      {
+      if (isActive != this.unitsActive[i]) {
         let trObj = this.scene.findObject("pilot_name" + i)
         trObj.enable = isActive ? "yes" : "no";
         trObj.inactive = isActive ? null : "yes"
@@ -200,19 +179,16 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     }
   }
 
-  function initData()
-  {
+  function initData() {
     if (this.restoreType != ERT_TACTICAL_CONTROL)
       return;
     this.fillPilotsTable()
 
-    for (local i = 0; i < this.numUnits; i++)
-    {
+    for (local i = 0; i < this.numUnits; i++) {
       if (::is_aircraft_delayed(this.units[i]))
         continue
 
-      if (::is_aircraft_player(this.units[i]))
-      {
+      if (::is_aircraft_player(this.units[i])) {
         this.wasPlayer = i
         this.focus = this.wasPlayer
         break
@@ -222,69 +198,61 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     for (local i = 0; i < this.numUnits; i++)
       this.unitsActive.append(true)
 
-    for (local i = 0; i < this.numUnits; i++)
-    {
+    for (local i = 0; i < this.numUnits; i++) {
       if (::is_aircraft_delayed(this.units[i]))
         continue;
 
       local pilotFullName = ""
       let pilotId = ::get_pilot_name(this.units[i], i)
-      if (pilotId != "")
-      {
-        if (::get_game_type() & GT_COOPERATIVE)
-        {
+      if (pilotId != "") {
+        if (get_game_type() & GT_COOPERATIVE) {
           pilotFullName = pilotId; //player nick
         }
-        else
-        {
+        else {
           pilotFullName = loc(pilotId)
         }
       }
       else
-        pilotFullName = "Pilot "+(i+1).tostring()
+        pilotFullName = "Pilot " + (i + 1).tostring()
 
-      log("pilot "+i+" name = "+pilotFullName+" (id = " + pilotId.tostring()+")")
+      log("pilot " + i + " name = " + pilotFullName + " (id = " + pilotId.tostring() + ")")
 
       this.scene.findObject("pilot_text" + i).setValue(pilotFullName)
       let objTr = this.scene.findObject("pilot_name" + i)
       let isActive = ::is_aircraft_active(this.units[i])
 
-      objTr.mainPlayer = (this.wasPlayer == i)? "yes" : "no"
+      objTr.mainPlayer = (this.wasPlayer == i) ? "yes" : "no"
       objTr.enable = isActive ? "yes" : "no"
       objTr.inactive = isActive ? null : "yes"
-      objTr.selected = (this.focus == i)? "yes" : "no"
+      objTr.selected = (this.focus == i) ? "yes" : "no"
     }
 
     if (this.numUnits > 0)
       setMousePointerInitialPos(this.scene.findObject("pilots_list").getChild(this.wasPlayer))
   }
 
-  function fillPilotsTable()
-  {
+  function fillPilotsTable() {
     local data = ""
-    for(local k = 0; k < this.numUnits; k++)
+    for (local k = 0; k < this.numUnits; k++)
       data += format("tr { id:t = 'pilot_name%d'; css-hier-invalidate:t='all'; td { text { id:t = 'pilot_text%d'; }}}",
                      k, k)
 
     let pilotsObj = this.scene.findObject("pilots_list")
     this.guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
-    pilotsObj.baseRow = (this.numUnits < 13)? "yes" : "rows16"
+    pilotsObj.baseRow = (this.numUnits < 13) ? "yes" : "rows16"
   }
 
-  function updatePlayer()
-  {
+  function updatePlayer() {
     if (!checkObj(this.scene))
       return
 
-    if (this.numUnits && (this.restoreType == ERT_TACTICAL_CONTROL) && this.isActiveTactical)
-    {
+    if (this.numUnits && (this.restoreType == ERT_TACTICAL_CONTROL) && this.isActiveTactical) {
       if (!(this.focus in this.units))
         this.focus = 0
 
       ::set_tactical_screen_player(this.units[this.focus], true)
 
-      for (local i = 0; i < this.numUnits; i++)
-      {
+      for (local i = 0; i < this.numUnits; i++) {
         if (::is_aircraft_delayed(this.units[i]))
           continue
 
@@ -301,8 +269,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     }
 
     let obj = this.scene.findObject("pilot_aircraft")
-    if (obj)
-    {
+    if (obj) {
       let fm = ::get_player_unit_name()
       let unit = ::getAircraftByName(fm)
       local text = ::getUnitName(fm)
@@ -312,8 +279,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     }
   }
 
-  function onFocusDown(_obj)
-  {
+  function onFocusDown(_obj) {
     if (this.restoreType != ERT_TACTICAL_CONTROL)
       return
     if (!this.isActiveTactical)
@@ -325,8 +291,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       this.focus = 0;
 
     local cur = this.focus
-    for (local i = 0; i < this.numUnits; i++)
-    {
+    for (local i = 0; i < this.numUnits; i++) {
       let isActive = ::is_aircraft_active(this.units[cur])
       let isDelayed = ::is_aircraft_delayed(this.units[cur])
       if (isActive && !isDelayed)
@@ -338,16 +303,14 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     }
 
     this.focus = cur
-    if (wasFocus != this.focus)
-    {
+    if (wasFocus != this.focus) {
       this.updatePlayer()
     }
     else
       log("onFocusDown - can't find aircraft that is active and not delayed")
   }
 
-  function onFocusUp(_obj)
-  {
+  function onFocusUp(_obj) {
     if (this.restoreType != ERT_TACTICAL_CONTROL)
       return
     if (!this.isActiveTactical)
@@ -359,8 +322,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       this.focus = this.numUnits - 1;
 
     local cur = this.focus
-    for (local i = 0; i < this.numUnits; i++)
-    {
+    for (local i = 0; i < this.numUnits; i++) {
       let isActive = ::is_aircraft_active(this.units[cur])
       let isDelayed = ::is_aircraft_delayed(this.units[cur])
 
@@ -378,8 +340,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
       this.updatePlayer()
   }
 
-  function onPilotsSelect(_obj)
-  {
+  function onPilotsSelect(_obj) {
     if (this.restoreType != ERT_TACTICAL_CONTROL || !this.isActiveTactical)
       return
 
@@ -391,13 +352,10 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
     this.updatePlayer()
   }
 
-  function doClose()
-  {
+  function doClose() {
     let closeFn = base.goBack
-    this.guiScene.performDelayed(this, function()
-    {
-      if (::is_in_flight())
-      {
+    this.guiScene.performDelayed(this, function() {
+      if (::is_in_flight()) {
         ::close_ingame_gui()
         if (this.isSceneActive())
           closeFn()
@@ -407,8 +365,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 
   goBack  = @() this.doClose()
 
-  function onStart(obj)
-  {
+  function onStart(obj) {
     if ((this.restoreType != ERT_TACTICAL_CONTROL) || !this.isActiveTactical)
       return this.doClose()
 
@@ -426,16 +383,14 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
   }
 }
 
-::addHideToObjStringById <- function addHideToObjStringById(data, objId)
-{
+::addHideToObjStringById <- function addHideToObjStringById(data, objId) {
   let pos = data.indexof("id:t = '" + objId + "';")
   if (pos)
     return data.slice(0, pos) + "display:t='hide'; " + data.slice(pos)
   return data
 }
 
-::is_tactical_map_active <- function is_tactical_map_active()
-{
+::is_tactical_map_active <- function is_tactical_map_active() {
   if (!("TacticalMap" in ::gui_handlers))
     return false
   let curHandler = ::handlersManager.getActiveBaseHandler()

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -15,6 +16,7 @@ let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { hasChat, hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 //-----------------------------
@@ -33,8 +35,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 //  - canComplain
 // ----------------------------
 
-let getPlayerCardInfoTable = function(uid, name)
-{
+let getPlayerCardInfoTable = function(uid, name) {
   let info = {}
   if (uid)
    info.uid <- uid
@@ -47,14 +48,12 @@ let getPlayerCardInfoTable = function(uid, name)
 let showLiveCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableLiveCommunications"))
 let showCrossNetworkCommunicationsRestrictionMsgBox = @() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkCommunications"))
 let showNotAvailableActionPopup = @() ::g_popups.add(null, loc("xbox/actionNotAvailableDiffPlatform"))
-let showBlockedPlayerPopup = @(playerName) ::g_popups.add(null, loc("chat/player_blocked", {playerName = platformModule.getPlayerName(playerName)}))
+let showBlockedPlayerPopup = @(playerName) ::g_popups.add(null, loc("chat/player_blocked", { playerName = platformModule.getPlayerName(playerName) }))
 let showNoInviteForDiffPlatformPopup = @() ::g_popups.add(null, loc("msg/squad/noPlayersForDiffConsoles"))
-let showXboxPlayerMuted = @(playerName) ::g_popups.add(null, loc("popup/playerMuted", {playerName = platformModule.getPlayerName(playerName)}))
+let showXboxPlayerMuted = @(playerName) ::g_popups.add(null, loc("popup/playerMuted", { playerName = platformModule.getPlayerName(playerName) }))
 
-let notifyPlayerAboutRestriction = function(contact, isInvite = false)
-{
-  if (is_platform_xbox)
-  {
+let notifyPlayerAboutRestriction = function(contact, isInvite = false) {
+  if (is_platform_xbox) {
     attemptShowOverlayMessage(contact.name, isInvite)
     return
   }
@@ -68,8 +67,7 @@ let notifyPlayerAboutRestriction = function(contact, isInvite = false)
     showLiveCommunicationsRestrictionMsgBox()
 }
 
-let getActions = function(contact, params)
-{
+let getActions = function(contact, params) {
   let uid = contact.uid
   let uidInt64 = contact.uidInt64
   let name = contact.name
@@ -90,7 +88,7 @@ let getActions = function(contact, params)
   let hasChatEnable = isChatEnabled()
 
   let roomId = params?.roomId
-  let roomData = roomId? ::g_chat.getRoomById(roomId) : null
+  let roomData = roomId ? ::g_chat.getRoomById(roomId) : null
 
   let isMPChat = params?.isMPChat ?? false
   let isMPLobby = params?.isMPLobby ?? false
@@ -126,12 +124,10 @@ let getActions = function(contact, params)
     }
   })
 
-  if (contact.inGameEx && contact.online && ::isInMenu())
-  {
+  if (contact.inGameEx && contact.online && ::isInMenu()) {
     let eventId = contact.gameConfig?.eventId
     let event = ::events.getEvent(eventId)
-    if (event && ::events.isEnableFriendsJoin(event))
-    {
+    if (event && ::events.isEnableFriendsJoin(event)) {
       actions.append({
         text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("contacts/join_team"))
         show = canInviteToSesson
@@ -153,7 +149,7 @@ let getActions = function(contact, params)
   actions.append(
     {
       text = loc("contacts/message")
-      show = !isMe && ::ps4_is_chat_enabled() && hasMenuChat.value && !u.isEmpty(name)
+      show = !isMe && ::ps4_is_chat_enabled() && hasChat.value && !u.isEmpty(name) && hasMenuChatPrivate.value
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       action = function() {
         if (isBlock)
@@ -197,8 +193,7 @@ let getActions = function(contact, params)
 //---- </Common> ------------------
 
 //---- <Squad> --------------------
-  if (hasFeature("Squad"))
-  {
+  if (hasFeature("Squad")) {
     let meLeader = ::g_squad_manager.isSquadLeader()
     let inMySquad = ::g_squad_manager.isInMySquad(name, false)
     let squadMemberData = params?.squadMemberData
@@ -283,27 +278,14 @@ let getActions = function(contact, params)
   }
 //---- </Squad> -------------------
 
-//---- <XBox Specific> ------------
-  if (is_platform_xbox && isXBoxOnePlayer)
-  {
-    let isXboxPlayerMuted = contact.isXboxChatMuted()
-    actions.append({
-      text = isXboxPlayerMuted? loc("mainmenu/btnUnmute") : loc("mainmenu/btnMute")
-      show = !isMe && ::xbox_is_player_in_chat(uidInt64)
-      action = @() ::xbox_mute_chat_player(uidInt64, !isXboxPlayerMuted)
-    })
-  }
-//---- </XBox Specific> -----------
-
 //---- <Clan> ---------------------
   let clanData = params?.clanData
-  if (hasFeature("Clans") && clanData)
-  {
+  if (hasFeature("Clans") && clanData) {
     let clanId = clanData?.id ?? "-1"
     let myClanId = ::clan_get_my_clan_id()
     let isMyClan = myClanId != "-1" && clanId == myClanId
 
-    let myClanRights = isMyClan? ::g_clans.getMyClanRights() : []
+    let myClanRights = isMyClan ? ::g_clans.getMyClanRights() : []
     let isMyRankHigher = ::g_clans.getClanMemberRank(clanData, name) < ::clan_get_role_rank(::clan_get_my_role())
     let isClanAdmin = ::clan_get_admin_editor_mode()
 
@@ -338,8 +320,7 @@ let getActions = function(contact, params)
 //---- </Clan> ---------------------
 
 //---- <Contacts> ------------------
-  if (hasFeature("Friends"))
-  {
+  if (hasFeature("Friends")) {
     let canBlock = !platformModule.isPlatformXboxOne || !isXBoxOnePlayer
 
     actions.append(
@@ -363,11 +344,6 @@ let getActions = function(contact, params)
         text = loc("contacts/psn/friends/request")
         show = !isMe && isPS4Player && !isBlock && !contact.isInPSNFriends()
         action = @() contact.sendPsnFriendRequest(EPL_FRIENDLIST)
-      }
-      {
-        text = loc("contacts/facebooklist/remove")
-        show = params?.curContactGroup == EPL_FACEBOOK && ::isPlayerInContacts(uid, EPL_FACEBOOK)
-        action = @() ::editContactMsgBox(contact, EPL_FACEBOOK, false)
       }
       {
         text = loc("contacts/steamlist/remove")
@@ -416,10 +392,8 @@ let getActions = function(contact, params)
 //---- </In Battle> -----------------
 
 //---- <Chat> -----------------------
-  if (hasMenuChat.value)
-  {
-    if (hasChatEnable && canInviteToChatRoom)
-    {
+  if (hasMenuChat.value) {
+    if (hasChatEnable && canInviteToChatRoom) {
       let inviteMenu = ::g_chat.generateInviteMenu(name)
       actions.append({
         text = loc("chat/invite_to_room")
@@ -456,8 +430,7 @@ let getActions = function(contact, params)
         }
       )
 
-    if (!isMe)
-    {
+    if (!isMe) {
       if (roomData) {
         for (local i = 0; i < roomData.mBlocks.len(); i++) {
           if (roomData.mBlocks[i].from == name || roomData.mBlocks[i].uid == uid) {
@@ -465,7 +438,8 @@ let getActions = function(contact, params)
             break
           }
         }
-      } else {
+      }
+      else {
         let threadInfo = ::g_chat.getThreadInfo(roomId)
         if (threadInfo && threadInfo.ownerNick == name)
           canComplain = true
@@ -487,8 +461,7 @@ let getActions = function(contact, params)
           roomName = roomData ? roomData.getRoomName() : ""
         }
 
-        if (!isMPChat)
-        {
+        if (!isMPChat) {
           let threadInfo = ::g_chat.getThreadInfo(roomId)
           if (threadInfo) {
             chatLog = chatLog != null ? chatLog : {}
@@ -527,8 +500,7 @@ let getActions = function(contact, params)
   return buttons
 }
 
-let showMenu = function(v_contact, handler, params = {})
-{
+let showMenu = function(v_contact, handler, params = {}) {
   let contact = v_contact || verifyContact(params)
   let showMenu = callee()
   if (contact && contact.needCheckXboxId())

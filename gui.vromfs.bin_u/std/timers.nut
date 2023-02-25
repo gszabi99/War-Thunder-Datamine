@@ -1,5 +1,5 @@
 from "dagor.workcycle" import setTimeout, clearTimer
-from "dagor.random" import gfrnd
+from "dagor.random" import frnd
 from "math" import abs
 
 /*
@@ -20,7 +20,7 @@ let function debounce(func, delay_s, delay_s_max = null){
     clearTimer(action)
     let time = delay_s_max == null
       ? delay_s
-      : min(delay_s, delay_s_max) + gfrnd() * abs(delay_s_max - delay_s)
+      : min(delay_s, delay_s_max) + frnd() * abs(delay_s_max - delay_s)
     setTimeout(time, action)
   }
   return debounced

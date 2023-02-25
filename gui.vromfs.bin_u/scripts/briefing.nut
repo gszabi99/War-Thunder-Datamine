@@ -1,17 +1,24 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
-let { setGuiOptionsMode } = require_native("guiOptions")
-let { set_gui_option, get_gui_option } = require("guiOptions")
-let { is_benchmark_game_mode } = require("mission")
+let { setGuiOptionsMode, set_gui_option, get_gui_option } = require("guiOptions")
+let { is_benchmark_game_mode, get_game_mode, get_game_type
+} = require("mission")
+let { get_meta_missions_info, get_meta_mission_info_by_name, do_start_flight,
+  select_mission, select_mission_full, quit_to_debriefing
+} = require("guiMission")
+let { dynamicSetTakeoffMode } = require("dynamicMission")
+let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 
 ::back_from_briefing <- ::gui_start_mainmenu
 
@@ -46,17 +53,15 @@ let { is_benchmark_game_mode } = require("mission")
   arcadeCountry = false
   maxRespawns = -1
   autoBalance = true
-  battleMode = BATTLE_TYPES.AIR// only for random battles, must be removed when new modes will be added
+  battleMode = BATTLE_TYPES.AIR // only for random battles, must be removed when new modes will be added
 }
 
-::gui_start_flight <- function gui_start_flight()
-{
+::gui_start_flight <- function gui_start_flight() {
   ::set_context_to_player("difficulty", ::get_mission_difficulty())
-  ::do_start_flight()
+  do_start_flight()
 }
 
-::gui_start_briefing <- function gui_start_briefing() //Is this function can be called from code atm?
-{
+::gui_start_briefing <- function gui_start_briefing() { //Is this function can be called from code atm?
   //FIX ME: Check below really can be in more easier way.
   if (::handlersManager.getLastBaseHandlerStartFunc()
       && !isInArray(::handlersManager.lastLoadedBaseHandlerName,
@@ -68,8 +73,7 @@ let { is_benchmark_game_mode } = require("mission")
     backSceneFunc = ::back_from_briefing
     isRestart = false
   }
-  params.applyFunc <- function()
-  {
+  params.applyFunc <- function() {
     if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
       ::gui_start_cd_options(::briefing_options_apply, this)
     else
@@ -78,17 +82,15 @@ let { is_benchmark_game_mode } = require("mission")
   ::handlersManager.loadHandler(::gui_handlers.Briefing)
 }
 
-::gui_start_briefing_restart <- function gui_start_briefing_restart()
-{
+::gui_start_briefing_restart <- function gui_start_briefing_restart() {
   log("gui_start_briefing_restart")
   let missionName = ::current_campaign_mission
-  if (missionName != null)
-  {
-    let missionBlk = ::DataBlock()
-    missionBlk.setFrom(::get_meta_mission_info_by_name(::current_campaign_mission))
-    let briefingOptions = ::get_briefing_options(::get_game_mode(), ::get_game_type(), missionBlk)
+  if (missionName != null) {
+    let missionBlk = DataBlock()
+    missionBlk.setFrom(get_meta_mission_info_by_name(::current_campaign_mission))
+    let briefingOptions = ::get_briefing_options(get_game_mode(), get_game_type(), missionBlk)
     if (briefingOptions.len() == 0)
-      return ::restart_current_mission()
+      return restartCurrentMission()
   }
 
   let params = {
@@ -96,10 +98,9 @@ let { is_benchmark_game_mode } = require("mission")
     backSceneFunc = ::gui_start_flight_menu
   }
 
-  let finalApplyFunc = function()
-  {
+  let finalApplyFunc = function() {
     ::set_context_to_player("difficulty", ::get_mission_difficulty())
-    ::restart_current_mission()
+    restartCurrentMission()
   }
   params.applyFunc <- (@(finalApplyFunc) function() {
     if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
@@ -112,14 +113,11 @@ let { is_benchmark_game_mode } = require("mission")
   ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_briefing_restart)
 }
 
-::briefing_options_apply <- function briefing_options_apply()
-{
-  let gt = ::get_game_type()
-  let gm = ::get_game_mode()
-  if (gm == GM_SINGLE_MISSION || gm == GM_DYNAMIC)
-  {
-    if (::SessionLobby.isInRoom())
-    {
+::briefing_options_apply <- function briefing_options_apply() {
+  let gt = get_game_type()
+  let gm = get_game_mode()
+  if (gm == GM_SINGLE_MISSION || gm == GM_DYNAMIC) {
+    if (::SessionLobby.isInRoom()) {
       if (!::is_host_in_room())
         ::SessionLobby.continueCoopWithSquad(::mission_settings);
       else
@@ -127,7 +125,7 @@ let { is_benchmark_game_mode } = require("mission")
           [["cancel", function() {}]], "cancel",
             {
               cancel_fn = function() { ::SessionLobby.continueCoopWithSquad(::mission_settings); },
-              need_cancel_fn = function() {return !::is_host_in_room(); }
+              need_cancel_fn = function() { return !::is_host_in_room(); }
               waitAnim = true,
               delayedButtons = 15
             })
@@ -152,8 +150,7 @@ let { is_benchmark_game_mode } = require("mission")
     return
   }
 
-  if (::SessionLobby.isInRoom())
-  {
+  if (::SessionLobby.isInRoom()) {
     ::SessionLobby.updateRoomAttributes(::mission_settings)
     ::get_cur_base_gui_handler().goForward(::gui_start_mp_lobby)
     return
@@ -167,8 +164,7 @@ let { is_benchmark_game_mode } = require("mission")
 
 ::g_script_reloader.registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
 
-::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk)
-{
+::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk) {
   let optionItems = []
   if (is_benchmark_game_mode() || ::custom_miss_flight)
     return optionItems
@@ -179,7 +175,7 @@ let { is_benchmark_game_mode } = require("mission")
   if (gm != GM_DYNAMIC && missionBlk.getBool("openDiffLevels", true))
     optionItems.append([::USEROPT_DIFFICULTY, "spinner"])
 
-  if (gm==GM_TRAINING)
+  if (gm == GM_TRAINING)
     return optionItems;
 
   if (!missionBlk.paramExists("environment") || (gm == GM_TEAMBATTLE) || (gm == GM_DOMINATION) || (gm == GM_SKIRMISH))
@@ -204,10 +200,8 @@ let { is_benchmark_game_mode } = require("mission")
       && contentPreset.getContentPresets().len() > 0)
     optionItems.append([::USEROPT_CONTENT_ALLOWED_PRESET, "combobox"])
 
-  if (gm == GM_DYNAMIC)
-  {
-    if (missionBlk.paramExists("takeoff_mode"))
-    {
+  if (gm == GM_DYNAMIC) {
+    if (missionBlk.paramExists("takeoff_mode")) {
         ::mission_name_for_takeoff <- missionBlk?.name
         optionItems.append([::USEROPT_TAKEOFF_MODE, "spinner"])
     }
@@ -215,15 +209,13 @@ let { is_benchmark_game_mode } = require("mission")
 //        optionItems.append([::USEROPT_LANDING_MODE, "spinner"])
   }
 
-  if (gt & GT_RACE)
-  {
+  if (gt & GT_RACE) {
     optionItems.append([::USEROPT_RACE_LAPS, "spinner"])
     optionItems.append([::USEROPT_RACE_WINNERS, "spinner"])
     optionItems.append([::USEROPT_RACE_CAN_SHOOT, "spinner"])
   }
 
-  if (gt & GT_VERSUS)
-  {
+  if (gt & GT_VERSUS) {
     if (!missionBlk.paramExists("timeLimit") || gm == GM_SKIRMISH)
       optionItems.append([::USEROPT_TIME_LIMIT, "spinner"])
 //    if (!missionBlk.paramExists("rounds"))
@@ -235,18 +227,16 @@ let { is_benchmark_game_mode } = require("mission")
       optionItems.append([::USEROPT_KILL_LIMIT, "spinner"])
   }
 
-  if (gm == GM_TOURNAMENT)
-  {
+  if (gm == GM_TOURNAMENT) {
     missionBlk.setBool("gt_mp_solo", false)
     missionBlk.setBool("allowJIP", false)
     missionBlk.setBool("isPrivate", false)
     missionBlk.setBool("isBotsAllowed", false)
     missionBlk.setInt("minPlayers", 0)
     missionBlk.setInt("maxPlayers", 0)
-  } else if (gm == GM_DOMINATION || gm == GM_SKIRMISH)
-  {
-    if (gm == GM_SKIRMISH)
-    {
+  }
+  else if (gm == GM_DOMINATION || gm == GM_SKIRMISH) {
+    if (gm == GM_SKIRMISH) {
       optionItems.append([::USEROPT_MISSION_COUNTRIES_TYPE, "spinner"])
       optionItems.append([::USEROPT_BIT_COUNTRIES_TEAM_A, "multiselect"])
       optionItems.append([::USEROPT_BIT_COUNTRIES_TEAM_B, "multiselect"])
@@ -261,13 +251,11 @@ let { is_benchmark_game_mode } = require("mission")
 
     let canUseBots = !(gt & GT_RACE)
     let isBotsAllowed = missionBlk?.isBotsAllowed
-    if (canUseBots && isBotsAllowed == null)
-    {
+    if (canUseBots && isBotsAllowed == null) {
       optionItems.append([::USEROPT_IS_BOTS_ALLOWED, "spinner"])
     }
     if (canUseBots && isBotsAllowed != false
-        && ::is_mission_for_unittype(missionBlk, ES_UNIT_TYPE_TANK))
-    {
+        && ::is_mission_for_unittype(missionBlk, ES_UNIT_TYPE_TANK)) {
       optionItems.append([::USEROPT_USE_TANK_BOTS, "spinner"])
       optionItems.append([::USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, "spinner"])
     }
@@ -280,8 +268,7 @@ let { is_benchmark_game_mode } = require("mission")
     if (!::SessionLobby.isInRoom())
       optionItems.append([::USEROPT_MAX_PLAYERS, "spinner"])
 
-    if (gm == GM_SKIRMISH)
-    {
+    if (gm == GM_SKIRMISH) {
       if (gt & GT_RACE)
         missionBlk.setBool("allowJIP", false)
       else
@@ -294,8 +281,7 @@ let { is_benchmark_game_mode } = require("mission")
   if (gm == GM_SKIRMISH || (::g_squad_manager.isInSquad() && isGameModeCoop(gm)))
     optionItems.append([::USEROPT_CLUSTER, "spinner"])
 
-  if ((gt & GT_SP_USE_SKIN) && !(gt & GT_VERSUS))
-  {
+  if ((gt & GT_SP_USE_SKIN) && !(gt & GT_VERSUS)) {
     let aircraft = missionBlk.getStr("player_class", "")
     ::aircraft_for_weapons = aircraft
     optionItems.append([::USEROPT_SKIN, "spinner"])
@@ -310,15 +296,13 @@ let { is_benchmark_game_mode } = require("mission")
   return optionItems
 }
 
-::if_any_mission_completed_in <- function if_any_mission_completed_in(gm)
-{
-  let mi = ::get_meta_missions_info(gm)
-  for (local i = 0; i < mi.len(); ++i)
-  {
+::if_any_mission_completed_in <- function if_any_mission_completed_in(gm) {
+  let mi = get_meta_missions_info(gm)
+  for (local i = 0; i < mi.len(); ++i) {
     let missionBlk = mi[i]
 
-    let chapterName = missionBlk.getStr("chapter","")
-    let name = missionBlk.getStr("name","")
+    let chapterName = missionBlk.getStr("chapter", "")
+    let name = missionBlk.getStr("name", "")
 
     if (::get_mission_progress(chapterName + "/" + name) < 3) // completed
       return true;
@@ -326,18 +310,15 @@ let { is_benchmark_game_mode } = require("mission")
   return false
 }
 
-::if_any_mission_completed <- function if_any_mission_completed()
-{
+::if_any_mission_completed <- function if_any_mission_completed() {
   return ::if_any_mission_completed_in(GM_CAMPAIGN) ||
          ::if_any_mission_completed_in(GM_SINGLE_MISSION)
 }
 
-::get_mission_types_from_meta_mission_info <- function get_mission_types_from_meta_mission_info(metaInfo)
-{
+::get_mission_types_from_meta_mission_info <- function get_mission_types_from_meta_mission_info(metaInfo) {
   let types = [];
   let missionTypes = metaInfo.getBlockByName("missionType")
-  if (missionTypes)
-  {
+  if (missionTypes) {
     foreach (key, val in missionTypes)
       if (val)
         types.append(key)
@@ -345,8 +326,7 @@ let { is_benchmark_game_mode } = require("mission")
   return types
 }
 
-let function get_mission_desc_text(missionBlk)
-{
+let function get_mission_desc_text(missionBlk) {
   local descrAdd = ""
 
   let sm_location = missionBlk.getStr("locationName",
@@ -363,8 +343,7 @@ let function get_mission_desc_text(missionBlk)
     descrAdd += (descrAdd != "" ? "; " : "") + loc("options/weather" + sm_weather)
 
   let aircraft = missionBlk.getStr("player_class", "")
-  if (aircraft != "")
-  {
+  if (aircraft != "") {
     let sm_aircraft = loc("options/aircraft") + loc("ui/colon") +
       ::getUnitName(aircraft) + "; " +
       getWeaponNameText(aircraft, null, missionBlk.getStr("player_weapons", ""), ", ")
@@ -372,22 +351,19 @@ let function get_mission_desc_text(missionBlk)
     descrAdd += "\n" + sm_aircraft
   }
 
-  if (missionBlk.getStr("recommendedPlayers","") != "")
-    descrAdd += ("\n" + format(loc("players_recommended"), missionBlk.getStr("recommendedPlayers","1-4")) + "\n")
+  if (missionBlk.getStr("recommendedPlayers", "") != "")
+    descrAdd += ("\n" + format(loc("players_recommended"), missionBlk.getStr("recommendedPlayers", "1-4")) + "\n")
 
   return descrAdd
 }
 
-::gui_handlers.Briefing <- class extends ::gui_handlers.GenericOptions
-{
+::gui_handlers.Briefing <- class extends ::gui_handlers.GenericOptions {
   sceneBlkName = "%gui/briefing.blk"
   sceneNavBlkName = "%gui/navBriefing.blk"
 
-  function initScreen()
-  {
-    ::select_controller(true, true)
+  function initScreen() {
     base.initScreen()
-    let gm = ::get_game_mode()
+    let gm = get_game_mode()
     setGuiOptionsMode(::get_options_mode(gm))
 
     let campaignName = ::current_campaign_id
@@ -396,15 +372,14 @@ let function get_mission_desc_text(missionBlk)
     if (campaignName == null || this.missionName == null)
       return
 
-    this.missionBlk = ::DataBlock()
-    this.missionBlk.setFrom(::get_meta_mission_info_by_name(this.missionName))
+    this.missionBlk = DataBlock()
+    this.missionBlk.setFrom(get_meta_mission_info_by_name(this.missionName))
 
     if (gm == GM_EVENT)
       ::mission_settings.coop = true;
     else if ((gm != GM_SINGLE_MISSION) && (gm != GM_USER_MISSION) && (gm != GM_BUILDER))
       ::mission_settings.coop = false;
-    else if (gm == GM_SINGLE_MISSION)
-    {
+    else if (gm == GM_SINGLE_MISSION) {
       if (!this.missionBlk.getBool("gt_cooperative", false) || ::is_user_mission(this.missionBlk))
         ::mission_settings.coop = false;
     }
@@ -416,15 +391,14 @@ let function get_mission_desc_text(missionBlk)
       if (this.missionBlk.getStr("restoreType", "attempts") == "tactical control")
         this.missionBlk.setStr("restoreType", "attempts");
 
-    if (this.isRestart) //temp hack because it doesn't work for some weird reason
-    {
+    if (this.isRestart) { //temp hack because it doesn't work for some weird reason
       this.missionBlk.setBool("isLimitedFuel", ::mission_settings.isLimitedFuel)
       this.missionBlk.setBool("isLimitedAmmo", ::mission_settings.isLimitedAmmo)
     }
 
-    ::select_mission(this.missionBlk, false);
+    select_mission(this.missionBlk, false);
 
-    let gt = ::get_game_type(); //we know it after select_mission()
+    let gt = get_game_type(); //we know it after select_mission()
 
     log(format("[BRIEFING] mode %d, type %d, mission %s", gm, gt, this.missionName))
 
@@ -456,15 +430,13 @@ let function get_mission_desc_text(missionBlk)
     let optionItems = ::get_briefing_options(gm, gt, this.missionBlk)
     let container = ::create_options_container("briefing_options", optionItems, true)
     this.guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
-    if (optionItems.len()>0)
-    {
+    if (optionItems.len() > 0) {
       let listObj = this.showSceneBtn("optionslist", true)
       listObj.height = "" + optionItems.len() + "*@baseTrHeight" //bad solution, but freeheight doesn't work correct
     }
     this.optionsContainers.append(container.descr)
 
-    if (this.restoreType == ERT_TACTICAL_CONTROL)
-    {
+    if (this.restoreType == ERT_TACTICAL_CONTROL) {
       this.showSceneBtn("attempts", false)
       this.showSceneBtn("lbl_attempts", false)
     }
@@ -473,29 +445,25 @@ let function get_mission_desc_text(missionBlk)
       this.showSceneBtn("btn_back", false)
   }
 
-  function onApply(_obj)
-  {
+  function onApply(_obj) {
     this.finalApply(this.missionBlk)
     this.onFinalApply2()
   }
 
-  function finalApply(misBlk)
-  {
+  function finalApply(misBlk) {
     if (!this.isValid())
       return
 
-    let gm = ::get_game_mode()
-    let gt = ::get_game_type()
+    let gm = get_game_mode()
+    let gt = get_game_type()
     local value = ""
 
-    if (!misBlk)
-    {
-      misBlk = ::DataBlock()
+    if (!misBlk) {
+      misBlk = DataBlock()
       ::get_current_mission_info(misBlk)
     }
 
-    if (gm == GM_DYNAMIC)
-    {
+    if (gm == GM_DYNAMIC) {
       ::mission_settings.missionFull = ::mission_settings.dynlist[::mission_settings.currentMissionIdx]
       misBlk.setFrom(::mission_settings.missionFull.mission_settings.mission);
       misBlk.setInt("currentMissionIdx", ::mission_settings.currentMissionIdx);
@@ -507,16 +475,12 @@ let function get_mission_desc_text(missionBlk)
     if (!("loc_name" in misBlk))
       misBlk.setStr("loc_name", "")
 
-    ::select_controller(false, true)
-
     set_gui_option(::USEROPT_NUM_ATTEMPTS, -1)
 
-    if (gm == GM_DYNAMIC)
-    {
+    if (gm == GM_DYNAMIC) {
       misBlk.setStr("difficulty", ::get_option(::USEROPT_DIFFICULTY).values[::mission_settings.diff])
     }
-    else if (this.getObj("difficulty") != null)
-    {
+    else if (this.getObj("difficulty") != null) {
       ::mission_settings.diff = this.getObj("difficulty").getValue();
       misBlk.setStr("difficulty", ::get_option(::USEROPT_DIFFICULTY).values[::mission_settings.diff])
     }
@@ -524,37 +488,33 @@ let function get_mission_desc_text(missionBlk)
       ::mission_settings.diff = 0;
 
     value = this.getOptValue(::USEROPT_LIMITED_FUEL, false)
-    if (value!=null)
-    {
+    if (value != null) {
       ::mission_settings.isLimitedFuel = value
       misBlk.setBool("isLimitedFuel", ::mission_settings.isLimitedFuel)
     }
 
     value = this.getOptValue(::USEROPT_LIMITED_AMMO, false)
-    if (value!=null)
-    {
+    if (value != null) {
       ::mission_settings.isLimitedAmmo = value
       misBlk.setBool("isLimitedAmmo", ::mission_settings.isLimitedAmmo)
     }
 
     value = this.getOptValue(::USEROPT_OPTIONAL_TAKEOFF, false)
-    if (value!=null)
-      misBlk.setBool("takeOffOnStart", value && misBlk.getBool("isOptionalTakeOff",false))
+    if (value != null)
+      misBlk.setBool("takeOffOnStart", value && misBlk.getBool("isOptionalTakeOff", false))
 
     value = this.getOptValue(::USEROPT_DISABLE_AIRFIELDS, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setBool("disableAirfields", value)
 
     value = this.getOptValue(::USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setBool("spawnAiTankOnTankMaps", value)
 
     value = this.getOptValue(::USEROPT_SKIN, false)
-    if (value!=null && (gt & GT_DYNAMIC))
-    {
+    if (value != null && (gt & GT_DYNAMIC)) {
       let ar = ::mission_settings.missionFull.units % "armada";
-      for (local i = 0; i < ar.len(); i++)
-      {
+      for (local i = 0; i < ar.len(); i++) {
         if (ar[i].name.indexof("#player.") != null)
           ar[i].props.skin = value;
       }
@@ -564,8 +524,7 @@ let function get_mission_desc_text(missionBlk)
     misBlk.setBool("gt_cooperative", ::mission_settings.coop)
     misBlk.setBool("gt_versus", (gt & GT_VERSUS))
 
-    if (::mission_settings.coop)
-    {
+    if (::mission_settings.coop) {
       ::mission_settings.players = 4;
       misBlk.setInt("_players", 4)
       misBlk.setInt("maxPlayers", 4)
@@ -576,8 +535,7 @@ let function get_mission_desc_text(missionBlk)
       misBlk.setBool("isBotsAllowed", true)
       misBlk.setBool("autoBalance", false)
     }
-    if (gt & GT_VERSUS)
-    {
+    if (gt & GT_VERSUS) {
       misBlk.setBool("gt_use_lb", true)
       misBlk.setBool("gt_use_replay", true)
       misBlk.setBool("gt_use_stats", true)
@@ -585,38 +543,33 @@ let function get_mission_desc_text(missionBlk)
     }
 
     value = this.getOptValue(::USEROPT_TIME_LIMIT, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setInt("timeLimit", value)
 
     value = this.getOptValue(::USEROPT_KILL_LIMIT, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setInt("killLimit", value)
 
     value = this.getOptValue(::USEROPT_ROUNDS, false)
-    if (value!=null)
-    {
+    if (value != null) {
       misBlk.setInt("rounds", value)
       ::mission_settings.rounds = value
     }
 
     value = this.getOptValue(::USEROPT_VERSUS_RESPAWN, false)
-    if (value!=null)
-    {
+    if (value != null) {
       misBlk.setInt("maxRespawns", value)
       ::mission_settings.maxRespawns = value
     }
 
-    if (gm == GM_SKIRMISH)
-    {
+    if (gm == GM_SKIRMISH) {
       value = this.getOptValue(::USEROPT_ALLOW_JIP, false)
-      if (value != null)
-      {
+      if (value != null) {
         misBlk.setBool("allowJIP", value)
         ::mission_settings.allowJIP = value
       }
 
-      if (::is_skirmish_with_killstreaks(misBlk))
-      {
+      if (::is_skirmish_with_killstreaks(misBlk)) {
         value = this.getOptValue(::USEROPT_USE_KILLSTREAKS, false)
         misBlk.setBool("useKillStreaks", value)
       }
@@ -643,8 +596,7 @@ let function get_mission_desc_text(missionBlk)
 
     misBlk.keepDead = this.getOptValue(::USEROPT_KEEP_DEAD, true)
 
-    if (gm == GM_SKIRMISH)
-    {
+    if (gm == GM_SKIRMISH) {
       value = hasFeature("LiveBroadcast") ? this.getOptValue(::USEROPT_DEDICATED_REPLAY) : false
       misBlk.setBool("dedicatedReplay", value)
       ::mission_settings.dedicatedReplay = value
@@ -656,57 +608,50 @@ let function get_mission_desc_text(missionBlk)
     ::mission_settings.missionURL = misBlk.url
     ::mission_settings.sessionPassword =  ::get_option(::USEROPT_SESSION_PASSWORD).value
 
-    if (misBlk.paramExists("autoBalance"))
-    {
+    if (misBlk.paramExists("autoBalance")) {
       ::mission_settings.autoBalance = misBlk.getBool("autoBalance", true)
     }
 
     value = this.getOptValue(::USEROPT_MIN_PLAYERS, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setInt("minPlayers", value)
 
     value = this.getOptValue(::USEROPT_MAX_PLAYERS, false)
-    if (value!=null)
-    {
+    if (value != null) {
       misBlk.setInt("maxPlayers", value)
       ::mission_settings.players = value;
       misBlk.setInt("_players", value)
     }
-    else if (gt & GT_VERSUS)
-    {
-      if (::SessionLobby.isInRoom())
-      {
+    else if (gt & GT_VERSUS) {
+      if (::SessionLobby.isInRoom()) {
         misBlk.setInt("maxPlayers", ::SessionLobby.getMaxMembersCount())
         ::mission_settings.players = ::SessionLobby.getMaxMembersCount()
       }
-      else
-      {
+      else {
         ::mission_settings.players = ::global_max_players_versus;
         misBlk.setInt("_players", ::global_max_players_versus)
       }
     }
 
     value = this.getOptValue(::USEROPT_CLUSTER, false)
-    if (value!=null)
-      ::mission_settings.cluster <- value
-
+    if (value != null)
+      ::mission_settings.cluster <- value == "auto"
+        ? ::g_clusters.clusters_info.filter(@(info) info.isDefault)[0].name
+        : value
     value = this.getOptValue(::USEROPT_FRIENDS_ONLY, false)
-    if (value!=null)
-    {
+    if (value != null) {
       misBlk.setBool("isPrivate", value)
       ::mission_settings.friendOnly = value
       misBlk.setBool("allowJIP", !value)
       ::mission_settings.allowJIP = !value
     }
-    else if (gm == GM_DYNAMIC)
-    {
+    else if (gm == GM_DYNAMIC) {
       misBlk.setBool("isPrivate", ::mission_settings.friendOnly)
       misBlk.setBool("allowJIP", ! ::mission_settings.friendOnly)
       misBlk.setBool("isBotsAllowed", true)
       misBlk.setBool("autoBalance", false)
     }
-    else if ((gm == GM_SINGLE_MISSION) && (this.guiScene["coop_mode"] != null))
-    {
+    else if ((gm == GM_SINGLE_MISSION) && (this.guiScene["coop_mode"] != null)) {
       misBlk.setBool("isPrivate", ::mission_settings.friendOnly)
       misBlk.setBool("allowJIP", ! ::mission_settings.friendOnly)
     }
@@ -714,19 +659,18 @@ let function get_mission_desc_text(missionBlk)
       ::mission_settings.friendOnly = false
 
     value = this.getOptValue(::USEROPT_TIME, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setStr("environment", value)
 
     value = this.getOptValue(::USEROPT_CLIME, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setStr("weather", value)
 
     value = this.getOptValue(::USEROPT_MISSION_COUNTRIES_TYPE, false)
-    if (value!=null)
+    if (value != null)
       ::mission_settings.countriesType <- value
 
-    foreach(opt in [::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B])
-    {
+    foreach (opt in [::USEROPT_BIT_COUNTRIES_TEAM_A, ::USEROPT_BIT_COUNTRIES_TEAM_B]) {
       let option = ::get_option(opt)
       let obj = this.scene.findObject(option.id)
       if (obj)
@@ -740,27 +684,24 @@ let function get_mission_desc_text(missionBlk)
 
     let mrankMin = this.getOptValue(::USEROPT_BR_MIN, 0)
     let mrankMax = this.getOptValue(::USEROPT_BR_MAX, 0)
-    misBlk.ranks = ::build_blk_from_container({min = mrankMin, max = mrankMax})
-    if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
-    {
+    misBlk.ranks = ::build_blk_from_container({ min = mrankMin, max = mrankMax })
+    if (mrankMin > 0 || mrankMax < getMaxEconomicRank()) {
       ::mission_settings.mrankMin <- mrankMin
       ::mission_settings.mrankMax <- mrankMax
     }
 
     value = this.getOptValue(::USEROPT_CONTENT_ALLOWED_PRESET, false)
-    if (value!=null)
+    if (value != null)
       misBlk.setStr("allowedTagsPreset", value)
 
-    if (gt & GT_RACE)
-    {
+    if (gt & GT_RACE) {
       misBlk.raceLaps = this.getOptValue(::USEROPT_RACE_LAPS)
       misBlk.raceWinners = this.getOptValue(::USEROPT_RACE_WINNERS)
       misBlk.raceForceCannotShoot = !this.getOptValue(::USEROPT_RACE_CAN_SHOOT)
     }
 
     misBlk.setInt("_gameMode", gm)
-    if (::SessionLobby.isInRoom())
-    {
+    if (::SessionLobby.isInRoom()) {
       misBlk.setBool("isPrivate", ::mission_settings.friendOnly)
       misBlk.setBool("allowJIP", ::mission_settings.allowJIP)
     }
@@ -777,12 +718,11 @@ let function get_mission_desc_text(missionBlk)
 
     ::mission_settings.mission = misBlk
 
-    if (gm == GM_DYNAMIC)
-    {
+    if (gm == GM_DYNAMIC) {
       ::mission_settings.missionFull = ::mission_settings.dynlist[::mission_settings.currentMissionIdx]
 
       let mode = ::mission_settings.takeoffMode;
-      ::dynamic_set_takeoff_mode(::mission_settings.missionFull, mode, mode);
+      dynamicSetTakeoffMode(::mission_settings.missionFull, mode, mode)
     }
 
     if (gm == GM_SKIRMISH || gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION)
@@ -792,23 +732,20 @@ let function get_mission_desc_text(missionBlk)
         ::add_last_played("url", misBlk.url, gm, false)
 
     if (gm == GM_DYNAMIC)
-      ::select_mission_full(misBlk, ::mission_settings.missionFull);
+      select_mission_full(misBlk, ::mission_settings.missionFull);
     else
-      ::select_mission(misBlk, false)
+      select_mission(misBlk, false)
   }
 
-  function onFinalApply2()
-  {
+  function onFinalApply2() {
     if (this.isRestart)
       this.applyOptions()
-    else
-    {
+    else {
       ::show_gui(false);
 
       let guihandler = this
       local nextFunc = (@(guihandler) function() {
-          ::get_gui_scene().performDelayed(guihandler, function()
-          {
+          ::get_gui_scene().performDelayed(guihandler, function() {
             ::show_gui(true);
             this.applyOptions()
           })
@@ -818,16 +755,13 @@ let function get_mission_desc_text(missionBlk)
     }
   }
 
-  function goBack()
-  {
-    ::select_controller(false, true)
+  function goBack() {
     base.goBack()
   }
 
-  function onExit()
-  {
+  function onExit() {
     this.showSceneBtn("mission_box", false)
-    ::quit_to_debriefing()
+    quit_to_debriefing()
   }
 
   tempVar = 0

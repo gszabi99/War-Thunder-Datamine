@@ -23,23 +23,19 @@ local focusFrame = {
 
   addAnimObj = @(obj) animObjList.append(obj)
 
-  removeAnimObj = function(obj)
-  {
+  removeAnimObj = function(obj) {
     this.validateObjList()
-    foreach(idx, o in animObjList)
-      if (o.isEqual(obj))
-      {
+    foreach (idx, o in animObjList)
+      if (o.isEqual(obj)) {
         animObjList.remove(idx)
         break
       }
   }
 
-  onSetTarget = function(tgtObj)
-  {
+  onSetTarget = function(tgtObj) {
     local curObj = null
     local curModalCounter = 0
-    foreach(obj in animObjList)
-    {
+    foreach (obj in animObjList) {
       if (!check_obj(obj) || !obj.isVisible() || !obj.isEnabled())
         continue
 
@@ -56,10 +52,8 @@ local focusFrame = {
   }
 
   //!!FIX ME: perform delayed sometimes called instently without real delay. this function try to catch this
-  function playAnimDelayed(curObj, tgtObj, shouldCheckDelayedBug = true)
-  {
-    curObj.getScene().performDelayed(this, function()
-    {
+  function playAnimDelayed(curObj, tgtObj, shouldCheckDelayedBug = true) {
+    curObj.getScene().performDelayed(this, function() {
       if (!check_obj(curObj) || !check_obj(tgtObj))
         return
 
@@ -70,9 +64,8 @@ local focusFrame = {
     })
   }
 
-  validateObjList = function()
-  {
-    for(local i = animObjList.len() - 1; i >= 0; i--)
+  validateObjList = function() {
+    for (local i = animObjList.len() - 1; i >= 0; i--)
       if (!check_obj(animObjList[i]))
          animObjList.remove(i)
   }

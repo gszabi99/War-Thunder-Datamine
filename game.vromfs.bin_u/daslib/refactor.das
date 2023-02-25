@@ -6,7 +6,7 @@ module refactor shared private
 
 require daslib/ast_boost
 require daslib/templates_boost
-require daslib/capture_block
+require daslib/macro_boost
 require daslib/json_boost
 require daslib/defer
 require strings
@@ -34,14 +34,14 @@ struct ExtractMethodDesc
 def JV ( li:LineInfo )
     let fname = li.fileInfo!=null ? string(li.fileInfo.name) : ""
     let tabSize = li.fileInfo?.tabSize ?? 4
-    var kv <- {{
+    var inscope kv <- {{
         "line" => "{int(li.line)}";
         "column" => "{int(li.column)}";
         "last_line" => "{int(li.last_line)}";
         "last_column" => "{int(li.last_column)}";
         "file" => fname;
         "tab" => "{tabSize}"
-    }}; defer_delete(kv)
+    }}
     return JV(kv)
 
 [tag_function_macro(tag="extract_method_tag")]
@@ -113,7 +113,7 @@ def public extract_variable_nonref ( method_name:string; expr )
     return expr
 
 [tag_function(extract_variable_tag),sideeffects]
-def public extract_variable_ref ( method_name:string; var expr:auto(TT)& =const ) : TT&
+def public extract_variable_ref ( method_name:string; var expr:auto(TT)& ==const ) : TT&
     unsafe
         return expr
 

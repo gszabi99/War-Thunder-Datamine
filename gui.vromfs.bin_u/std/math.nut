@@ -58,8 +58,8 @@ let function lerp(valueMin, valueMax, resMin, resMax, value) {
 * f(valueMax) = resMax
 * but result is clamped by min/max values
 */
-let lerpClamped = @(valueMin, valueMax, resMin, resMax, value)
-  lerp(valueMin, valueMax, resMin, resMax, clamp(value, valueMin, valueMax))
+let lerpClamped = @(valueMin, valueMax, resMin, resMax, tvalue)
+  lerp(valueMin, valueMax, resMin, resMax, clamp(tvalue, valueMin, valueMax))
 
 
 let function interpolateArray(arr, value) {

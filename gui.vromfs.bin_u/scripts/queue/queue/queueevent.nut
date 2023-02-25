@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -14,16 +15,14 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
   isCustomModeInTransition = false
   leaveQueueData = null
 
-  function init()
-  {
+  function init() {
     this.name = getTblValue("mode", this.params, "")
     this.shouldQueueCustomMode = this.getShouldQueueCustomMode(this.name)
 
     this.params.clusters <- clone (this.params?.clusters ?? [])
   }
 
-  function addQueueByParams(qParams)
-  {
+  function addQueueByParams(qParams) {
     if ("mrank" in qParams)
       this.params.mrank <- qParams.mrank
 
@@ -32,8 +31,7 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
 
     let cluster = qParams.cluster
     local isClusterAdded = false
-    if (!isInArray(cluster, this.params.clusters))
-    {
+    if (!isInArray(cluster, this.params.clusters)) {
       this.params.clusters.append(cluster)
       isClusterAdded = true
     }
@@ -42,11 +40,9 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     return isClusterAdded
   }
 
-  function removeQueueByParams(leaveData)
-  {
+  function removeQueueByParams(leaveData) {
     let queueUid = getTblValue("queueId", leaveData)
-    if (queueUid == null || (queueUid in this.queueUidsList && this.queueUidsList.len() == 1)) //leave all queues
-    {
+    if (queueUid == null || (queueUid in this.queueUidsList && this.queueUidsList.len() == 1)) { //leave all queues
       this.clearAllQueues()
       return true
     }
@@ -58,11 +54,9 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     return true
   }
 
-  function removeQueueByUid(queueUid)
-  {
+  function removeQueueByUid(queueUid) {
     let cluster = this.queueUidsList[queueUid].cluster
-    if (::u.filter(this.queueUidsList, @(q) q.cluster == cluster).len() <= 1)
-    {
+    if (::u.filter(this.queueUidsList, @(q) q.cluster == cluster).len() <= 1) {
       let idx = this.params.clusters.indexof(cluster)
       if (idx != null)
         this.params.clusters.remove(idx)
@@ -70,41 +64,34 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     base.removeQueueByUid(queueUid)
   }
 
-  function clearAllQueues()
-  {
+  function clearAllQueues() {
     this.params.clusters.clear()
     base.clearAllQueues()
   }
 
   static function getCustomModeSaveId(eventName) { return "queue/customEvent/" + eventName }
-  static function getShouldQueueCustomMode(eventName)
-  {
+  static function getShouldQueueCustomMode(eventName) {
     return ::load_local_account_settings(::queue_classes.Event.getCustomModeSaveId(eventName), false)
   }
-  static function setShouldQueueCustomMode(eventName, shouldSave)
-  {
+  static function setShouldQueueCustomMode(eventName, shouldSave) {
     return ::save_local_account_settings(::queue_classes.Event.getCustomModeSaveId(eventName), shouldSave)
   }
 
-  static function getCustomMgm(eventName)
-  {
+  static function getCustomMgm(eventName) {
     return ::events.getCustomGameMode(::events.getEvent(eventName))
   }
 
-  static function hasCustomModeByEventName(eventName)
-  {
+  static function hasCustomModeByEventName(eventName) {
     return hasFeature("QueueCustomEventRoom") && !!::queue_classes.Event.getCustomMgm(eventName)
   }
 
-  static function hasOptions(eventName)
-  {
+  static function hasOptions(eventName) {
     return ::queue_classes.Event.hasCustomModeByEventName(eventName)
       && ::queue_classes.Event.isAllowedToSwitchCustomMode()
       && !::queues.findQueueByName(eventName, true)
   }
 
-  static function getOptions(eventName)
-  {
+  static function getOptions(eventName) {
     if (!::queue_classes.Event.hasOptions(eventName))
       return null
     return {
@@ -113,20 +100,17 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     }
   }
 
-  function join(successCallback, errorCallback)
-  {
+  function join(successCallback, errorCallback) {
     log("enqueue into event session")
     debugTableData(this.params)
     this._joinQueueImpl(this.getQueryParams(true), successCallback, errorCallback)
   }
 
-  function _joinQueueImpl(queryParams, successCallback, errorCallback, needShowError = true)
-  {
+  function _joinQueueImpl(queryParams, successCallback, errorCallback, needShowError = true) {
     ::enqueue_in_session(
       queryParams,
       function(response) {
-        if (::checkMatchingError(response, needShowError))
-        {
+        if (::checkMatchingError(response, needShowError)) {
           if (this && this.shouldQueueCustomMode)
             this.switchCustomMode(this.shouldQueueCustomMode, true)
           successCallback(response)
@@ -137,10 +121,8 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     )
   }
 
-  function leave(successCallback, errorCallback, needShowError = false)
-  {
-    if (this.isCustomModeInTransition)
-    {
+  function leave(successCallback, errorCallback, needShowError = false) {
+    if (this.isCustomModeInTransition) {
       this.leaveQueueData = {
         successCallback = successCallback
         errorCallback = errorCallback
@@ -151,13 +133,11 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     this._leaveQueueImpl(this.getQueryParams(false), successCallback, errorCallback, needShowError)
   }
 
-  static function leaveAll(successCallback, errorCallback, needShowError = false)
-  {
+  static function leaveAll(successCallback, errorCallback, needShowError = false) {
     ::queue_classes.Event._leaveQueueImpl({}, successCallback, errorCallback, needShowError)
   }
 
-  static function _leaveQueueImpl(queryParams, successCallback, errorCallback, needShowError = false)
-  {
+  static function _leaveQueueImpl(queryParams, successCallback, errorCallback, needShowError = false) {
     ::matching_api_func(
       "match.leave_queue"
       function(response) {
@@ -170,8 +150,7 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     )
   }
 
-  function getQueryParams(isForJoining, customMgm = null)
-  {
+  function getQueryParams(isForJoining, customMgm = null) {
     let qp = {}
     if (customMgm)
       qp.game_mode_id <- customMgm.gameModeId
@@ -202,10 +181,9 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
       qp.players[::my_user_id_str].profileJwt <- queueProfileJwt.value
 
     if (members)
-      foreach(uid, m in members)
-      {
+      foreach (uid, m in members) {
         qp.players[uid] <- {
-          country = ("country" in m)? m.country : ::queues.getQueueCountry(this)
+          country = ("country" in m) ? m.country : ::queues.getQueueCountry(this)
           dislikedMissions = m?.dislikedMissions ?? []
           bannedMissions = m?.bannedMissions ?? []
           fakeName = m?.fakeName ?? false
@@ -226,16 +204,14 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     return qp
   }
 
-  function getQueueData(qParams)
-  {
+  function getQueueData(qParams) {
     return {
       cluster = qParams.cluster
       gameModeId = getTblValue("gameModeId", qParams, -1)
     }
   }
 
-  function getBattleName()
-  {
+  function getBattleName() {
     let event = ::events.getEvent(this.name)
     if (!event)
       return ""
@@ -243,26 +219,22 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
     return ::events.getEventNameText(event)
   }
 
-  function hasCustomMode()
-  {
+  function hasCustomMode() {
     return this.hasCustomModeByEventName(this.name)
   }
 
-  function isCustomModeQUeued()
-  {
+  function isCustomModeQUeued() {
     let customMgm = this.getCustomMgm(this.name)
     if (!customMgm)
       return false
-    return !!::u.search(this.queueUidsList, @(q) q.gameModeId == customMgm.gameModeId )
+    return !!::u.search(this.queueUidsList, @(q) q.gameModeId == customMgm.gameModeId)
   }
 
-  function isCustomModeSwitchedOn()
-  {
+  function isCustomModeSwitchedOn() {
     return this.shouldQueueCustomMode
   }
 
-  function switchCustomMode(shouldQueue, needForceRequest = false)
-  {
+  function switchCustomMode(shouldQueue, needForceRequest = false) {
     if (!this.isAllowedToSwitchCustomMode()
       || (!needForceRequest && shouldQueue == this.shouldQueueCustomMode))
       return
@@ -274,8 +246,7 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
       return
 
     let queue = this
-    let cb = function(_res)
-    {
+    let cb = function(_res) {
       queue.isCustomModeInTransition = false
       queue.afterCustomModeQueueChanged(shouldQueue)
     }
@@ -286,10 +257,8 @@ let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%
       this._leaveQueueImpl(this.getQueryParams(false, this.getCustomMgm(this.name)), cb, cb, false)
   }
 
-  function afterCustomModeQueueChanged(wasShouldQueue)
-  {
-    if (this.leaveQueueData)
-    {
+  function afterCustomModeQueueChanged(wasShouldQueue) {
+    if (this.leaveQueueData) {
       this.leave(this.leaveQueueData.successCallback, this.leaveQueueData.errorCallback, this.leaveQueueData.needShowError)
       return
     }

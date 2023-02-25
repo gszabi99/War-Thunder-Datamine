@@ -1,3 +1,4 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -28,9 +29,6 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   Clans = true
   Battalions = false
   Radio = true
-  Facebook = true
-  FacebookWallPost = true
-  FacebookScreenshots = true
   Events = true
   CreateEventRoom = false
   QueueCustomEventRoom = false
@@ -317,7 +315,7 @@ let function hasFeature(name) {
 
   local confirmingResult = true
   local baseName = name
-  if (name.len() > 1 && name.slice(0,1) == "!") {
+  if (name.len() > 1 && name.slice(0, 1) == "!") {
     confirmingResult = false
     baseName = name.slice(1, name.len())
   }

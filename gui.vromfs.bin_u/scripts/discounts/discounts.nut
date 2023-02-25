@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -40,8 +41,7 @@ local updateGiftUnitsDiscountTask = -1
   discountsList = {}
   consoleEntitlementUnits = {} //It must not be cleared in common func
 
-  function updateOnlineShopDiscounts()
-  {
+  function updateOnlineShopDiscounts() {
     this.consoleEntitlementUnits.clear()
 
     if (!needEntStoreDiscountIcon)
@@ -80,7 +80,7 @@ local updateGiftUnitsDiscountTask = -1
       return
 
     local minUpdateDiscountsTimeSec = null
-    for(local i = 0; i < discountsBlk.blockCount(); i++) {
+    for (local i = 0; i < discountsBlk.blockCount(); i++) {
       let discountConfigBlk = discountsBlk.getBlock(i)
       let platforms = (discountConfigBlk?.platform ?? "pc").split(";")
       local isSuitableForCurrentPlatform = false
@@ -120,8 +120,7 @@ local updateGiftUnitsDiscountTask = -1
   }
 }
 
-::g_discount.clearDiscountsList <- function clearDiscountsList()
-{
+::g_discount.clearDiscountsList <- function clearDiscountsList() {
   foreach (button in buttonsList.value)
     if (button.needDiscountIcon)
       this.discountsList[button.id] <- false
@@ -137,30 +136,26 @@ local updateGiftUnitsDiscountTask = -1
 ::g_discount.clearDiscountsList()
 
 //return 0 if when discount not visible
-::g_discount.getUnitDiscount <- function getUnitDiscount(unit)
-{
+::g_discount.getUnitDiscount <- function getUnitDiscount(unit) {
   if (!this.canBeVisibleOnUnit(unit))
     return 0
   return max(this.getUnitDiscountByName(unit.name),
                this.getEntitlementUnitDiscount(unit.name))
 }
 
-::g_discount.getGroupDiscount <- function getGroupDiscount(list)
-{
+::g_discount.getGroupDiscount <- function getGroupDiscount(list) {
   local res = 0
-  foreach(unit in list)
+  foreach (unit in list)
     res = max(res, this.getUnitDiscount(unit))
   return res
 }
 
-::g_discount.pushDiscountsUpdateEvent <- function pushDiscountsUpdateEvent()
-{
+::g_discount.pushDiscountsUpdateEvent <- function pushDiscountsUpdateEvent() {
   ::update_gamercards()
   ::broadcastEvent("DiscountsDataUpdated")
 }
 
-::g_discount.onEventUnitBought <- function onEventUnitBought(p)
-{
+::g_discount.onEventUnitBought <- function onEventUnitBought(p) {
   let unitName = getTblValue("unitName", p)
   if (!unitName)
     return
@@ -173,8 +168,7 @@ local updateGiftUnitsDiscountTask = -1
   ::get_gui_scene().performDelayed(this, this.pushDiscountsUpdateEvent)
 }
 
-::g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = false)
-{
+::g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = false) {
   this.clearDiscountsList()
 
   let pBlk = ::get_price_blk()
@@ -185,13 +179,11 @@ local updateGiftUnitsDiscountTask = -1
 
   let giftUnits = {}
 
-  foreach(air in ::all_units)
+  foreach (air in ::all_units)
     if (::isCountryAvailable(air.shopCountry)
         && !air.isBought()
-        && air.isVisibleInShop())
-    {
-      if (::isUnitGift(air))
-      {
+        && air.isVisibleInShop()) {
+      if (::isUnitGift(air)) {
         if (isPlatformPC)
           giftUnits[air.name] <- 0
         continue
@@ -213,16 +205,14 @@ local updateGiftUnitsDiscountTask = -1
   this.discountsList.entitlementUnits.__update(this.consoleEntitlementUnits)
 
   local isShopDiscountVisible = false
-  foreach(airName, discount in this.discountsList.airList)
-    if (discount > 0 && this.canBeVisibleOnUnit(::getAircraftByName(airName)))
-    {
+  foreach (airName, discount in this.discountsList.airList)
+    if (discount > 0 && this.canBeVisibleOnUnit(::getAircraftByName(airName))) {
       isShopDiscountVisible = true
       break
     }
   if (!isShopDiscountVisible)
-    foreach(airName, discount in this.discountsList.entitlementUnits)
-      if (discount > 0 && this.canBeVisibleOnUnit(::getAircraftByName(airName)))
-      {
+    foreach (airName, discount in this.discountsList.entitlementUnits)
+      if (discount > 0 && this.canBeVisibleOnUnit(::getAircraftByName(airName))) {
         isShopDiscountVisible = true
         break
       }
@@ -232,8 +222,7 @@ local updateGiftUnitsDiscountTask = -1
     this.pushDiscountsUpdateEvent()
 }
 
-::g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, giftUnits)
-{
+::g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, giftUnits) {
   let discountItemList = ["premium", "warpoints", "eagles", "campaign", "bonuses"]
   local chapter = entlBlock?.chapter
   if (!isInArray(chapter, discountItemList))
@@ -250,8 +239,7 @@ local updateGiftUnitsDiscountTask = -1
 
   this.discountsList.entitlements[entName] <- discount
 
-  if (chapter == "campaign" || chapter == "bonuses")
-  {
+  if (chapter == "campaign" || chapter == "bonuses") {
     if (canUseIngameShop())
       chapter = topMenuOnlineShopId.value
   }
@@ -262,22 +250,20 @@ local updateGiftUnitsDiscountTask = -1
   this.discountsList[chapter] <- chapterVal
 
   if (entlBlock?.aircraftGift)
-    foreach(unitName in entlBlock % "aircraftGift")
+    foreach (unitName in entlBlock % "aircraftGift")
       if (unitName in giftUnits)
         this.discountsList.entitlementUnits[unitName] <- discount
 }
 
-::g_discount.generateDiscountInfo <- function generateDiscountInfo(discountsTable, headerLocId = "")
-{
+::g_discount.generateDiscountInfo <- function generateDiscountInfo(discountsTable, headerLocId = "") {
   local maxDiscount = 0
-  let headerText = loc(headerLocId == ""? "discount/notification" : headerLocId) + "\n"
+  let headerText = loc(headerLocId == "" ? "discount/notification" : headerLocId) + "\n"
   local discountText = ""
-  foreach(locId, discount in discountsTable)
-  {
+  foreach (locId, discount in discountsTable) {
     if (discount <= 0)
       continue
 
-    discountText += loc("discount/list_string", {itemName = loc(locId), discount = discount}) + "\n"
+    discountText += loc("discount/list_string", { itemName = loc(locId), discount = discount }) + "\n"
     maxDiscount = max(maxDiscount, discount)
   }
 
@@ -289,15 +275,13 @@ local updateGiftUnitsDiscountTask = -1
 
   discountText = headerText + discountText
 
-  return {maxDiscount = maxDiscount, discountTooltip = discountText}
+  return { maxDiscount = maxDiscount, discountTooltip = discountText }
 }
 
-::g_discount.updateDiscountNotifications <- function updateDiscountNotifications(scene = null)
-{
-  foreach(name in ["topmenu_research", "changeExp"])
-  {
+::g_discount.updateDiscountNotifications <- function updateDiscountNotifications(scene = null) {
+  foreach (name in ["topmenu_research", "changeExp"]) {
     let id = this.getDiscountIconId(name)
-    let obj = checkObj(scene)? scene.findObject(id) : ::get_cur_gui_scene()[id]
+    let obj = checkObj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
     if (!(obj?.isValid() ?? false))
       continue
 
@@ -310,7 +294,7 @@ local updateGiftUnitsDiscountTask = -1
 
   let section = ::g_top_menu_right_side_sections.getSectionByName("shop")
   let sectionId = section.getTopMenuButtonDivId()
-  let shopObj = checkObj(scene)? scene.findObject(sectionId) : ::get_cur_gui_scene()[sectionId]
+  let shopObj = checkObj(scene) ? scene.findObject(sectionId) : ::get_cur_gui_scene()[sectionId]
   if (!checkObj(shopObj))
     return
 
@@ -319,10 +303,8 @@ local updateGiftUnitsDiscountTask = -1
     return
 
   local haveAnyDiscount = false
-  foreach (column in section.buttons)
-  {
-    foreach (button in column)
-    {
+  foreach (column in section.buttons) {
+    foreach (button in column) {
       if (!button.needDiscountIcon)
         continue
 
@@ -340,40 +322,33 @@ local updateGiftUnitsDiscountTask = -1
   stObj.show(haveAnyDiscount)
 }
 
-::g_discount.getDiscount <- function getDiscount(id, defVal = false)
-{
+::g_discount.getDiscount <- function getDiscount(id, defVal = false) {
   return this.discountsList?[id] ?? defVal
 }
 
-::g_discount.getEntitlementDiscount <- function getEntitlementDiscount(id)
-{
+::g_discount.getEntitlementDiscount <- function getEntitlementDiscount(id) {
   return this.discountsList.entitlements?[id] || 0
 }
 
-::g_discount.getEntitlementUnitDiscount <- function getEntitlementUnitDiscount(unitName)
-{
+::g_discount.getEntitlementUnitDiscount <- function getEntitlementUnitDiscount(unitName) {
   return this.discountsList.entitlementUnits?[unitName] || 0
 }
 
-::g_discount.getUnitDiscountByName <- function getUnitDiscountByName(unitName)
-{
+::g_discount.getUnitDiscountByName <- function getUnitDiscountByName(unitName) {
   return this.discountsList.airList?[unitName] || 0
 }
 
-::g_discount.haveAnyUnitDiscount <- function haveAnyUnitDiscount()
-{
+::g_discount.haveAnyUnitDiscount <- function haveAnyUnitDiscount() {
   return this.discountsList.entitlementUnits.len() > 0 || this.discountsList.airList.len() > 0
 }
 
-::g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
-{
+::g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null) {
   if (!this.haveAnyUnitDiscount())
     return {}
 
   let discountsList = {}
-  foreach(unit in ::all_units)
-    if (!countryId || unit.shopCountry == countryId)
-    {
+  foreach (unit in ::all_units)
+    if (!countryId || unit.shopCountry == countryId) {
       let discount = this.getUnitDiscount(unit)
       if (discount > 0)
         discountsList[unit.name + "_shop"] <- discount

@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -58,8 +58,8 @@
       ],
       "suffix": "1",
       "dmName": "commander_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -122,8 +122,8 @@
       ],
       "suffix": "2",
       "dmName": "driver_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -186,8 +186,8 @@
       ],
       "suffix": "6",
       "dmName": "loader_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -250,8 +250,8 @@
       ],
       "suffix": "4",
       "dmName": "loader_01_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -314,8 +314,8 @@
       ],
       "suffix": "3",
       "dmName": "gunner_dm",
-      "deadHeadAttitudeMin": -40.0,
-      "deadHeadAttitudeMax": -55.0,
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
@@ -403,6 +403,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -2040,7 +2050,7 @@
           1.0,
           5.0
         ],
-        "bullets": 300,
+        "bullets": 350,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
         "accuracyAir": 1.5,
@@ -2141,7 +2151,7 @@
           1.0,
           5.0
         ],
-        "bullets": 300,
+        "bullets": 350,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
         "accuracyAir": 1.5,
@@ -3012,6 +3022,40 @@
   },
   "optics": {
     "driverReticule": "car_driver_optics"
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 100
+        },
+        "ammo_body_02_dm": {
+          "count": 100
+        },
+        "ammo_body_03_dm": {
+          "count": 100
+        },
+        "ammo_body_04_dm": {
+          "count": 100
+        },
+        "ammo_body_05_dm": {
+          "count": 100
+        },
+        "ammo_body_06_dm": {
+          "count": 100
+        },
+        "ammo_turret_dm": {
+          "count": 100
+        }
+      }
+    }
   },
   "modifications": {
     "new_wheels": {},

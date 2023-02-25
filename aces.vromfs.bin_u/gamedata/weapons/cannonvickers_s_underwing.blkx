@@ -12,7 +12,7 @@
   "emitTime": 0.03,
   "aimMinDist": 10.0,
   "aimMaxDist": 1000.0,
-  "maxDeltaAngle": 0.32,
+  "maxDeltaAngle": 0.1,
   "shotFreq": 1.666,
   "traceFreq": 1,
   "bEnablePause": false,
@@ -252,17 +252,6 @@
       ],
       "fuseDelayDist": 0.4,
       "explodeTreshold": 0.2,
-      "explodeHitPower": 33.0,
-      "explodeArmorPower": 8.6,
-      "explodeRadius": [
-        0.105,
-        1.05
-      ],
-      "shutterDamage": true,
-      "shutterDamageRadius": 3.5,
-      "shutterAmount": 70,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 6.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he",
       "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -314,6 +303,37 @@
           0.0,
           1500.0
         ]
+      },
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.5,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                179.0
+              ],
+              "countPortion": 0.5
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                180.0,
+                359.0
+              ],
+              "countPortion": 0.5
+            }
+          ]
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -459,17 +479,6 @@
       ],
       "fuseDelayDist": 0.4,
       "explodeTreshold": 0.2,
-      "explodeHitPower": 33.0,
-      "explodeArmorPower": 8.6,
-      "explodeRadius": [
-        0.105,
-        1.05
-      ],
-      "shutterDamage": true,
-      "shutterDamageRadius": 3.5,
-      "shutterAmount": 70,
-      "shutterArmorPower": 6.0,
-      "shutterHit": 6.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he",
       "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -521,6 +530,37 @@
           0.0,
           1500.0
         ]
+      },
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.5,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                179.0
+              ],
+              "countPortion": 0.5
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                180.0,
+                359.0
+              ],
+              "countPortion": 0.5
+            }
+          ]
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -825,7 +865,7 @@
     ]
   },
   "vickers_S_new_gun": {
-    "maxDeltaAngle": 0.66,
+    "maxDeltaAngle": 0.15,
     "overheat": {
       "overheat": [
         [

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -20,8 +21,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     getIcon = @(playerInfo) $"#ui/gameuiskin#{this.isSpectator(playerInfo) ? this.spectatorIcon : this.stateText}.svg"
 
     isSpectator = @(playerInfo) getTblValue("spectator", playerInfo, false)
-    getText = function(playerInfo = {})
-    {
+    getText = function(playerInfo = {}) {
       let stateLoc = this.stateText.len() ? loc("multiplayer/state/" + this.stateText) : ""
       let roleLoc = this.isSpectator(playerInfo) ? loc("multiplayer/state/player_referee") : ""
       return ::g_string.implode([ roleLoc, stateLoc ], loc("ui/semicolon"))
@@ -82,8 +82,7 @@ enums.addTypesByGlobalName("g_player_state", {
   }
 }, null, "name")
 
-::g_player_state.getStateByPlayerInfo <- function getStateByPlayerInfo(playerInfo)
-{
+::g_player_state.getStateByPlayerInfo <- function getStateByPlayerInfo(playerInfo) {
   if (getTblValue("isBot", playerInfo, false))
     return ::g_player_state.BOT
 

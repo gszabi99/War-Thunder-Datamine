@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -23,8 +24,7 @@ local onSkinReadyToShowCallback = null
 
 local waitingItemDefId = null
 
-let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false)
-{
+let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false) {
   if (!::g_login.isLoggedIn())
     return "not_logged_in"
   if (!::is_in_hangar())
@@ -41,8 +41,7 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
   return  ""
 }
 
-let function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomizationScene = false)
-{
+let function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomizationScene = false) {
   let reason = getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene)
   if (shouldShowFordiddenPopup && reason == "temporarily_forbidden")
     ::g_popups.add("", loc("mainmenu/itemPreviewForbidden"))
@@ -55,8 +54,7 @@ let function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCusto
  * @param {string|null} [skinId] - Skin to apply. Use null for default skin.
  * @param {boolean} [isForApprove] - Enables UI for skin approvement.
  */
-local function showUnitSkin(unitId, skinId = null, isForApprove = false)
-{
+local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   if (!canStartPreviewScene(true, true))
     return
 
@@ -86,11 +84,9 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
   return true
 }
 
-let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null)
-{
+let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null) {
   local unit = null
-  if (forcedUnitId)
-  {
+  if (forcedUnitId) {
     unit = ::getAircraftByName(forcedUnitId)
     return isAvailableFn(unit, false) ? unit : null
   }
@@ -103,16 +99,14 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
   let crews = ::get_crews_list_by_country(countryId)
 
   foreach (crew in crews)
-    if ((crew?.aircraft ?? "") != "")
-    {
+    if ((crew?.aircraft ?? "") != "") {
       unit = ::getAircraftByName(crew.aircraft)
       if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
         return unit
     }
 
   foreach (crew in crews)
-    for (local i = crew.trained.len() - 1; i >= 0; i--)
-    {
+    for (local i = crew.trained.len() - 1; i >= 0; i--) {
       unit = ::getAircraftByName(crew.trained[i])
       if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
         return unit
@@ -151,8 +145,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
  * @param {string} resource - Resource.
  * @param {string} resourceType - Resource type.
  */
-let function showUnitDecorator(unitId, resource, resourceType)
-{
+let function showUnitDecorator(unitId, resource, resourceType) {
   if (!canStartPreviewScene(true, true))
     return
 
@@ -196,8 +189,7 @@ let function showUnitDecorator(unitId, resource, resourceType)
  * @param {function} onSkinReadyToShowCb - Optional custom function to be called when
  *                   skin prepared to show. Function must take params: (unitId, skinId, result).
  */
-let function showResource(resource, resourceType, onSkinReadyToShowCb = null)
-{
+let function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
   if (!canStartPreviewScene(true, true))
     return
 
@@ -205,29 +197,24 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null)
     ? onSkinReadyToShowCb
     : null
 
-  if (guidParser.isGuid(resource))
-  {
+  if (guidParser.isGuid(resource)) {
     downloadProgressBox = ::scene_msg_box("live_resource_requested", null, loc("msgbox/please_wait"),
       [["cancel"]], "cancel", { waitAnim = true, delayedButtons = downloadTimeoutSec })
     ::live_preview_resource_by_guid(resource, resourceType)
   }
-  else
-  {
-    if (resourceType == "skin")
-    {
+  else {
+    if (resourceType == "skin") {
       let unitId = ::g_unlocks.getPlaneBySkinId(resource)
       let skinId  = ::g_unlocks.getSkinNameBySkinId(resource)
       showUnitSkin(unitId, skinId)
     }
-    else if (resourceType == "decal" || resourceType == "attachable")
-    {
+    else if (resourceType == "decal" || resourceType == "attachable") {
       showUnitDecorator(null, resource, resourceType)
     }
   }
 }
 
-let function liveSkinPreview(params)
-{
+let function liveSkinPreview(params) {
   if (!hasFeature("EnableLiveSkins"))
     return "not_allowed"
   let reason = getCantStartPreviewSceneReason(true)
@@ -242,13 +229,11 @@ let function liveSkinPreview(params)
   return res.result
 }
 
-let function onSkinDownloaded(unitId, skinId, result)
-{
+let function onSkinDownloaded(unitId, skinId, result) {
   if (downloadProgressBox)
     ::destroyMsgBox(downloadProgressBox)
 
-  if (onSkinReadyToShowCallback)
-  {
+  if (onSkinReadyToShowCallback) {
     onSkinReadyToShowCallback(unitId, skinId, result)
     onSkinReadyToShowCallback = null
     return
@@ -258,8 +243,7 @@ let function onSkinDownloaded(unitId, skinId, result)
     showUnitSkin(unitId, skinId)
 }
 
-let function marketViewItem(params)
-{
+let function marketViewItem(params) {
   if (::to_integer_safe(params?.appId, 0, false) != APP_ID)
     return
   let assets = ::u.filter(params?.assetClass ?? [], @(asset) asset?.name == "__itemdefid")
@@ -267,8 +251,7 @@ let function marketViewItem(params)
     return
   let itemDefId = ::to_integer_safe(assets?[0]?.value)
   let item = ::ItemsManager.findItemById(itemDefId)
-  if (!item)
-  {
+  if (!item) {
     waitingItemDefId = itemDefId
     return
   }
@@ -277,8 +260,7 @@ let function marketViewItem(params)
     item.doPreview()
 }
 
-let function requestUnitPreview(params)
-{
+let function requestUnitPreview(params) {
   let reason = getCantStartPreviewSceneReason(true)
   if (reason != "")
     return reason
@@ -291,8 +273,7 @@ let function requestUnitPreview(params)
   return "success"
 }
 
-let function onEventItemsShopUpdate(_params)
-{
+let function onEventItemsShopUpdate(_params) {
   if (waitingItemDefId == null)
     return
   let item = ::ItemsManager.findItemById(waitingItemDefId)
@@ -342,11 +323,11 @@ let function showDecoratorAccessRestriction(decorator, unit) {
 
   if (decorator.isLockedByUnit(unit)) {
     let unitsList = []
-    foreach(unitName in decorator.units)
+    foreach (unitName in decorator.units)
       unitsList.append(colorize("userlogColoredText", ::getUnitName(unitName)))
     text.append(loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
       decoratorName = colorize("activeTextColor", decorator.getName()),
-      unitsList = ::g_string.implode(unitsList, ",")}))
+      unitsList = ::g_string.implode(unitsList, ",") }))
   }
 
   if (!decorator.isAllowedByUnitTypes(unit.unitType.tag))

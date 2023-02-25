@@ -2543,6 +2543,16 @@
         "name": "bf-110f-2_rz65_rockets",
         "blk": "gameData/FlightModels/weaponPresets/bf-110f-2_rz65_rockets.blk",
         "reqModification": "bf_110f-2_rz65"
+      },
+      {
+        "name": "bf-110f-2_2xflamm250",
+        "blk": "gameData/FlightModels/weaponPresets/bf-110f-2_2xflamm250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
+        "name": "bf-110f-2_2xflamm500",
+        "blk": "gameData/FlightModels/weaponPresets/bf-110f-2_2xflamm500.blk",
+        "reqModification": "flamm_500"
       }
     ]
   },
@@ -2844,6 +2854,15 @@
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 4
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "flamm_500": {
+      "reqModification": "flamm_250",
+      "modClass": "weapon",
+      "tier": 2
     }
   },
   "cutting": {

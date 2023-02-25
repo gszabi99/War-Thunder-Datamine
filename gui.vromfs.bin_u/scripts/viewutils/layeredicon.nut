@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -66,28 +67,27 @@ let iconLayer = @"iconLayer {
   }
 }
 
-::LayersIcon.initConfigOnce <- function initConfigOnce(blk = null)
-{
+::LayersIcon.initConfigOnce <- function initConfigOnce(blk = null) {
   if (this.config)
     return
 
   if (!blk)
     blk = GUI.get()
   let config = blk?.layered_icons ? ::buildTableFromBlk(blk.layered_icons) : {}
-  if (!("styles" in config)) config.styles <- {}
-  if (!("layers" in config)) config.layers <- {}
+  if (!("styles" in config))
+    config.styles <- {}
+  if (!("layers" in config))
+    config.layers <- {}
   this.config = config
 }
 
-::LayersIcon.refreshConfig <- function refreshConfig()
-{
+::LayersIcon.refreshConfig <- function refreshConfig() {
   ::LayersIcon.config = null
   ::LayersIcon.initConfigOnce(null)
 }
 
-::LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null,
-  defStyle=null, iconParams=null, iconConfig=null, containerSizePx = 0)
-{
+::LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = null,
+  defStyle = null, iconParams = null, iconConfig = null, containerSizePx = 0) {
   this.initConfigOnce()
 
   local data = ""
@@ -96,20 +96,17 @@ let iconLayer = @"iconLayer {
     : iconStyle && (iconStyle in styles) && styles[iconStyle]
   let defStyleCfg = defStyle && (defStyle in styles) && styles[defStyle]
 
-  let usingStyle = styleCfg? styleCfg : defStyleCfg
-  if (usingStyle)
-  {
+  let usingStyle = styleCfg ? styleCfg : defStyleCfg
+  if (usingStyle) {
     let layers = split_by_chars(usingStyle, "; ")
-    foreach (layerName in layers)
-    {
+    foreach (layerName in layers) {
       local layerCfg = this.findLayerCfg(layerName)
       if (!layerCfg)
         continue
 
       let layerId = getTblValue("id", layerCfg, layerName)
       let layerParams = getTblValue(layerId, iconParams)
-      if (layerParams)
-      {
+      if (layerParams) {
         layerCfg = clone layerCfg
         foreach (id, value in layerParams)
           layerCfg[id] <- value
@@ -121,8 +118,7 @@ let iconLayer = @"iconLayer {
         data += ::LayersIcon.genDataFromLayer(layerCfg, "", containerSizePx)
     }
   }
-  else if (image && image != "")
-  {
+  else if (image && image != "") {
     ratio = (ratio && ratio > 0) ? ratio : 1.0
     let size = (ratio == 1.0) ? "ph, ph"
       : (ratio > 1.0) ? format("ph, %.2fph", 1 / ratio)
@@ -135,34 +131,31 @@ let iconLayer = @"iconLayer {
       texSize = ", ".join(texSz.map(@(v) round(v)))
     }
     data = iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize,
-      posX ="(pw-w)/2", posY = "(ph-h)/2",
+      posX = "(pw-w)/2", posY = "(ph-h)/2",
       pos = "absolute", image, props = "" })
   }
 
   return data
 }
 
-::LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size)
-{
+::LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size) {
   return iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize = size,
     posX = "(pw-w)/2", posY = "(ph-h)/2",
     pos = "absolute", image, props = "" })
 }
 
-::LayersIcon.findLayerCfg <- function findLayerCfg(id)
-{
+::LayersIcon.findLayerCfg <- function findLayerCfg(id) {
   return "layers" in this.config ? getTblValue(id.tolower(), this.config.layers) : null
 }
 
-::LayersIcon.findStyleCfg <- function findStyleCfg(id)
-{
+::LayersIcon.findStyleCfg <- function findStyleCfg(id) {
   return "styles" in this.config ? getTblValue(id.tolower(), this.config?.styles) : null
 }
 
 let function calcLayerBaseParams(layerCfg, containerSizePx) {
   let res = {}
 
-  foreach(paramName, table in layersCfgParams) {
+  foreach (paramName, table in layersCfgParams) {
     local result = table?.defaultValue ?? ""
     if (paramName in layerCfg) {
       if (type(layerCfg[paramName]) == "string")
@@ -184,19 +177,18 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
   return res
 }
 
-::LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0)  //need to move it to handyman,
+::LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0) {  //need to move it to handyman,
                                      //but before need to correct cashe it or it will decrease performance
-{
   let baseParams = calcLayerBaseParams(layerCfg, containerSizePx)
 
   let offsetX = getTblValue("offsetX", layerCfg, "")
   let offsetY = getTblValue("offsetY", layerCfg, "")
 
-  let id = getTblValue("id", layerCfg)? "id:t='" + layerCfg.id + "';" : ""
+  let id = getTblValue("id", layerCfg) ? "id:t='" + layerCfg.id + "';" : ""
   let img = getTblValue("img", layerCfg, "")
 
   local props = []
-  foreach(key in [ "background-svg-size" ])
+  foreach (key in [ "background-svg-size" ])
     if (key in layerCfg)
       props.append($"{key}:t='{layerCfg[key]}';")
   props = "".join(props)
@@ -210,12 +202,10 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 }
 
 // For icon customization it is much easier to use replaceIcon() with iconParams, or getIconData() with iconParams.
-::LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLayerCfg, insertLayersArrayCfg)
-{
+::LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLayerCfg, insertLayersArrayCfg) {
   local insertLayers = ""
-  foreach(layerCfg in insertLayersArrayCfg)
-    if (layerCfg)
-    {
+  foreach (layerCfg in insertLayersArrayCfg)
+    if (layerCfg) {
       if (getTblValue("type", layerCfg, "image") == "text")
         insertLayers += ::LayersIcon.getTextDataFromLayer(layerCfg)
       else
@@ -225,9 +215,8 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
   return ::LayersIcon.genDataFromLayer(mainLayerCfg, insertLayers)
 }
 
-::LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image=null, ratio=null,
-  defStyle=null, iconParams=null, iconConfig=null, containerSizePx = 0)
-{
+::LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image = null, ratio = null,
+  defStyle = null, iconParams = null, iconConfig = null, containerSizePx = 0) {
   if (!checkObj(iconObj))
     return
 
@@ -236,18 +225,17 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
   guiScene.replaceContentFromText(iconObj, data, data.len(), null)
 }
 
-::LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg)
-{
+::LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg) {
   local props = format("color:t='%s';", getTblValue("color", layerCfg, "@commonTextColor"))
   props += format("font:t='%s';", getTblValue("font", layerCfg, "@fontNormal"))
-  foreach(id in ["font-ht", "max-width", "text-align", "shadeStyle"])
+  foreach (id in ["font-ht", "max-width", "text-align", "shadeStyle"])
     if (id in layerCfg)
       props += format("%s:t='%s';", id, layerCfg[id])
 
   let idTag = ("id" in layerCfg) ? format("id:t='%s';", ::g_string.stripTags(layerCfg.id)) : ""
 
-  let posX = ("x" in layerCfg)? layerCfg.x.tostring() : "(pw-w)/2"
-  let posY = ("y" in layerCfg)? layerCfg.y.tostring() : "(ph-h)/2"
+  let posX = ("x" in layerCfg) ? layerCfg.x.tostring() : "(pw-w)/2"
+  let posY = ("y" in layerCfg) ? layerCfg.y.tostring() : "(ph-h)/2"
   let position = getTblValue("position", layerCfg, "absolute")
 
   return format("blankTextArea {%s text:t='%s'; pos:t='%s, %s'; position:t='%s'; %s}",

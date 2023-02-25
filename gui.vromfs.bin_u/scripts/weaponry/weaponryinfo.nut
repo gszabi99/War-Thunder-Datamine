@@ -1,8 +1,10 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { Point2 } = require("dagor.math")
 let { format } = require("string")
 let { get_current_mission_name } = require("mission")
 let { eachBlock } = require("%sqstd/datablock.nut")
@@ -82,7 +84,7 @@ let WEAPON_TAG = {
 let WEAPON_TEXT_PARAMS = { //const
   isPrimary             = null //bool or null. When null return descripton for all weaponry.
   weaponPreset          = -1 //int weaponIndex or string weapon name
-  newLine               ="\n" //weapons delimeter
+  newLine               = "\n" //weapons delimeter
   detail                = INFO_DETAIL.FULL
   needTextWhenNoWeapons = true
   ediff                 = null //int. when not set, uses get_current_ediff() function
@@ -97,20 +99,17 @@ let triggerGroupImageParameterById = {
   [TRIGGER_GROUP_MACHINE_GUN]     = "triggerGroupMachineGunImage"
 }
 
-let function isWeaponAux(weapon)
-{
+let function isWeaponAux(weapon) {
   local aux = false
   foreach (tag in weapon.tags)
-    if (tag == "aux")
-    {
+    if (tag == "aux") {
       aux = true
       break
     }
   return aux
 }
 
-let function isWeaponEnabled(unit, weapon)
-{
+let function isWeaponEnabled(unit, weapon) {
   return ::shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
          //temporary hack: check ammo amount for forced units by mission,
          //because shop_is_weapon_available function work incorrect with them
@@ -129,17 +128,14 @@ let getWeaponDisabledMods = @(unit, weapon)
 
 let isDefaultTorpedoes = @(weapon) weapon?.reqModification.contains("ship_torpedoes") ?? false
 
-let function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null)
-{
+let function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = null) {
   if (isWeaponAux(weapon))
     return false
 
-  if (weaponTags != null)
-  {
+  if (weaponTags != null) {
     local hasTag = false
-    foreach(t in weaponTags)
-      if (weapon?[t])
-      {
+    foreach (t in weaponTags)
+      if (weapon?[t]) {
         hasTag = true
         break
       }
@@ -156,8 +152,7 @@ let function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = n
   return true
 }
 
-let function getLastWeapon(unitName)
-{
+let function getLastWeapon(unitName) {
   let res = ::get_last_weapon(unitName)
   if (res != "")
     return res
@@ -166,10 +161,9 @@ let function getLastWeapon(unitName)
   let unit = ::getAircraftByName(unitName)
   if (!unit)
     return res
-  foreach(weapon in unit.getWeapons())
+  foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon)
-        && isWeaponEnabled(unit, weapon))
-    {
+        && isWeaponEnabled(unit, weapon)) {
       ::set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -178,8 +172,7 @@ let function getLastWeapon(unitName)
 
 let getWeaponByName = @(unit, weaponName) unit?.getWeapons().findvalue(@(w) w.name == weaponName)
 
-let function validateLastWeapon(unitName)
-{
+let function validateLastWeapon(unitName) {
   let weaponName = ::get_last_weapon(unitName)
   if (weaponName == "")
     return ""
@@ -193,8 +186,7 @@ let function validateLastWeapon(unitName)
     return weaponName
 
   foreach (weapon in unit.getWeapons())
-    if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon))
-    {
+    if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon)) {
       ::set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -202,8 +194,7 @@ let function validateLastWeapon(unitName)
   return ""
 }
 
-let function setLastWeapon(unitName, weaponName)
-{
+let function setLastWeapon(unitName, weaponName) {
   if (weaponName == getLastWeapon(unitName))
     return
 
@@ -211,27 +202,30 @@ let function setLastWeapon(unitName, weaponName)
   ::broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
 }
 
-let function getWeaponNameByBlkPath(weaponBlkPath)
-{
+let function getWeaponNameByBlkPath(weaponBlkPath) {
   let idxLastSlash = ::g_string.lastIndexOf(weaponBlkPath, "/")
   let idxStart = idxLastSlash != ::g_string.INVALID_INDEX ? (idxLastSlash + 1) : 0
   let idxEnd = ::g_string.endsWith(weaponBlkPath, ".blk") ? -4 : weaponBlkPath.len()
   return weaponBlkPath.slice(idxStart, idxEnd)
 }
 
+let function getWeaponLocNameByBlkPath(weaponBlkPath) {
+  return loc($"weapons/{getWeaponNameByBlkPath(weaponBlkPath)}")
+}
+
 let skipWeaponParams = { num = true, ammo = true, tiers = true }
-let function isWeaponParamsEqual(item1, item2)
-{
+let function isWeaponParamsEqual(item1, item2) {
   if (!item1?.len() || !item2?.len())
     return false
+  if (!item1?.turret  && !item2?.turret) // for not turrets we can compare weapons by localization
+    return getWeaponLocNameByBlkPath(item1.blk) == getWeaponLocNameByBlkPath(item2.blk)
   foreach (key, val in item1)
     if ((key not in skipWeaponParams) && !::u.isEqual(val, item2?[key]))
       return false
   return true
 }
 
-let function isCaliberCannon(caliber_mm)
-{
+let function isCaliberCannon(caliber_mm) {
   return caliber_mm >= 15
 }
 
@@ -254,8 +248,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     local currentTypeName =  weapon?.turret != null ? WEAPON_TYPE.TURRETS : WEAPON_TYPE.CONTAINER_ITEM
     local weaponTag = WEAPON_TAG.BULLET
 
-    if (weaponBlk?.rocketGun)
-    {
+    if (weaponBlk?.rocketGun) {
       currentTypeName = ""
       if (weapon?.trigger)
         if (weapon.trigger == TRIGGER_TYPE.AGM || weapon.trigger == TRIGGER_TYPE.ATGM)
@@ -275,8 +268,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         currentTypeName = WEAPON_TYPE.SMOKE
       weaponTag = WEAPON_TAG.ROCKET
     }
-    else if (weaponBlk?.bombGun)
-    {
+    else if (weaponBlk?.bombGun) {
       if (weapon?.trigger == TRIGGER_TYPE.MINES)
         currentTypeName = WEAPON_TYPE.MINES
       else if (weapon?.trigger == TRIGGER_TYPE.GUIDED_BOMBS)
@@ -285,8 +277,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         currentTypeName = WEAPON_TYPE.BOMBS
       weaponTag = WEAPON_TAG.BOMB
     }
-    else if (weaponBlk?.torpedoGun)
-    {
+    else if (weaponBlk?.torpedoGun) {
       currentTypeName = WEAPON_TYPE.TORPEDOES
       weaponTag = WEAPON_TAG.TORPEDO
     }
@@ -294,8 +285,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       isInArray(weapon.trigger, [ TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON,
         TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.AGM, TRIGGER_TYPE.AAM,
         TRIGGER_TYPE.GUIDED_BOMBS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE,
-        TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]))
-    { //not a turret
+        TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES])) { //not a turret
       currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && type(weaponBlk?.bullet) == "instance"
           && isCaliberCannon(1000 * getTblValue("caliber", weaponBlk?.bullet, 0)))
@@ -332,8 +322,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     if (wConf)
       foreach (wc in (wConf % "Weapon"))
-        if (weaponBlkPath.tolower() == wc.blk.tolower())
-        {
+        if (weaponBlkPath.tolower() == wc.blk.tolower()) {
           item.iconType <- wc?.iconType
           item.amountPerTier <- wc?.amountPerTier
           foreach (t in (wc % "tier"))
@@ -376,8 +365,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     let needBulletParams = !isInArray(currentTypeName,
       [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES])
 
-    if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag])
-    {
+    if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag]) {
       let itemBlk = weaponBlk[weaponTag]
       let isGun = isInArray(currentTypeName, [WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON])
       item.isGun = isGun
@@ -394,17 +382,14 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       item.blk = weaponBlkPath
 
       item.armDistance <- itemBlk?.armDistance ?? 0
-      if (isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM, WEAPON_TYPE.GUIDED_BOMBS ]))
-      {
+      if (isInArray(currentTypeName, [ WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM, WEAPON_TYPE.AAM, WEAPON_TYPE.GUIDED_BOMBS ])) {
         item.machMax  <- itemBlk?.machMax ?? 0
         item.maxSpeed <- (itemBlk?.maxSpeed ?? 0) || (itemBlk?.endSpeed ?? 0)
         if ((itemBlk?.guaranteedRange ?? 0) != 0)
           item.guaranteedRange <- itemBlk.guaranteedRange
 
-        if (itemBlk?.guidance != null || itemBlk?.operated == true )
-        {
-          if (itemBlk?.operated == true)
-          {
+        if (itemBlk?.guidance != null || itemBlk?.operated == true) {
+          if (itemBlk?.operated == true) {
             item.autoAiming <- itemBlk?.autoAiming ?? false
             item.isBeamRider <- itemBlk?.isBeamRider ?? false
             if (itemBlk?.irBeaconBand)
@@ -420,10 +405,8 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
           if ((itemBlk?.timeLife ?? 0) != 0)
             item.timeLife <- itemBlk.timeLife
 
-          if (itemBlk?.guidance != null)
-          {
-            if (itemBlk.guidance?.irSeeker != null)
-            {
+          if (itemBlk?.guidance != null) {
+            if (itemBlk.guidance?.irSeeker != null) {
               let targetSignatureType = itemBlk.guidance.irSeeker?.targetSignatureType != null ?
                 itemBlk.guidance.irSeeker?.targetSignatureType : itemBlk.guidance.irSeeker?.visibilityType
               if (targetSignatureType == "optic")
@@ -432,15 +415,13 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
                 item.guidanceType <- "ir"
               let rangeRearAspect = itemBlk.guidance.irSeeker?.rangeBand0 ?? 0
               let rangeAllAspect  = itemBlk.guidance.irSeeker?.rangeBand1 ?? 0
-              if (currentTypeName == WEAPON_TYPE.AAM)
-              {
+              if (currentTypeName == WEAPON_TYPE.AAM) {
                 item.seekerRangeRearAspect <- rangeRearAspect
                 item.seekerRangeAllAspect  <- rangeAllAspect
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
                   item.allAspect <- rangeAllAspect >= 1000.0
               }
-              else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.guidance.irSeeker?.groundVehiclesAsTarget ?? false))
-              {
+              else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.guidance.irSeeker?.groundVehiclesAsTarget ?? false)) {
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
                   item.seekerRange <- min(rangeRearAspect, rangeAllAspect)
               }
@@ -450,8 +431,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
               if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.irSeeker?.bandMaskToReject ?? 0) != 0)
                 item.seekerECCM <- true
             }
-            else if (itemBlk.guidance?.opticalFlowSeeker != null)
-            {
+            else if (itemBlk.guidance?.opticalFlowSeeker != null) {
               let targetSignatureType = itemBlk.guidance?.opticalFlowSeeker != null ?
                 itemBlk.guidance?.opticalFlowSeeker?.targetSignatureType : itemBlk.guidance?.opticalFlowSeeker?.visibilityType
               if (targetSignatureType == "optic")
@@ -459,8 +439,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
               else
                 item.guidanceType <- "ir"
             }
-            if (itemBlk.guidance?.radarSeeker != null)
-            {
+            if (itemBlk.guidance?.radarSeeker != null) {
               let active = itemBlk.guidance.radarSeeker?.active ?? false
               item.guidanceType <- active ? "ARH" : "SARH"
               local distanceGate = false
@@ -475,8 +454,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
                 item.radarSignal <- "pulse"
               else if (dopplerSpeedGate)
                 item.radarSignal <- "CW"
-              if (itemBlk.guidance.radarSeeker?.receiver != null)
-              {
+              if (itemBlk.guidance.radarSeeker?.receiver != null) {
                 let range = itemBlk.guidance.radarSeeker.receiver?.range ?? 0
                 item.seekerRange <- range
               }
@@ -487,23 +465,20 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
               item.guidanceType = "".concat(item.guidanceType, "+DL")
           }
         }
-        if (currentTypeName == WEAPON_TYPE.AAM)
-        {
+        if (currentTypeName == WEAPON_TYPE.AAM) {
           item.loadFactorMax <- itemBlk?.loadFactorMax ?? 0
           if (weapon?.loadFactorLimit)
             item.loadFactorLimit <- weapon.loadFactorLimit
         }
-        else if (currentTypeName == WEAPON_TYPE.AGM)
-        {
+        else if (currentTypeName == WEAPON_TYPE.AGM) {
           item.operatedDist <- itemBlk?.operatedDist ?? 0
         }
       }
-      else  if (currentTypeName == WEAPON_TYPE.TORPEDOES)
-      {
-        item.dropSpeedRange = itemBlk.getPoint2("dropSpeedRange", ::Point2(0,0))
+      else  if (currentTypeName == WEAPON_TYPE.TORPEDOES) {
+        item.dropSpeedRange = itemBlk.getPoint2("dropSpeedRange", Point2(0, 0))
         if (item.dropSpeedRange.x == 0 && item.dropSpeedRange.y == 0)
           item.dropSpeedRange = null
-        item.dropHeightRange = itemBlk.getPoint2("dropHeightRange", ::Point2(0,0))
+        item.dropHeightRange = itemBlk.getPoint2("dropHeightRange", Point2(0, 0))
         if (item.dropHeightRange.x == 0 && item.dropHeightRange.y == 0)
           item.dropHeightRange = null
         item.maxSpeedInWater <- itemBlk?.maxSpeedInWater ?? 0
@@ -514,8 +489,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       if ([ WEAPON_TYPE.BOMBS, WEAPON_TYPE.GUIDED_BOMBS ].contains(currentTypeName) && weapon?.machLimit)
         item.machLimit <- weapon.machLimit
 
-      if ([ WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS].contains(currentTypeName))
-      {
+      if ([ WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS].contains(currentTypeName)) {
         if (itemBlk?.strikingPart != null)
           item.warhead <- "multidart"
         else if (itemBlk?.smokeShell == true)
@@ -529,8 +503,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       }
     }
 
-    if(isTurret && (weapon?.turret != null))
-    {
+    if (isTurret && (weapon?.turret != null)) {
       let turretInfo = weapon.turret
       item.turret = ::u.isDataBlock(turretInfo) ? turretInfo.head : turretInfo
     }
@@ -541,9 +514,8 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     local weaponName = getWeaponNameByBlkPath(weaponBlkPath)
     local trIdx = -1
-    foreach(idx, t in weapons.weaponsByTypes[currentTypeName])
-      if (weapon.trigger == t.trigger || isWeaponParamsEqual(item, t?.weaponBlocks[weaponName]))
-      {
+    foreach (idx, t in weapons.weaponsByTypes[currentTypeName])
+      if (weapon.trigger == t.trigger || isWeaponParamsEqual(item, t?.weaponBlocks[weaponName])) {
         trIdx = idx
         break
       }
@@ -552,22 +524,19 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     // (except guns, because there exists different guns with equal params)
     if (trIdx >= 0 && (weaponName not in weapons.weaponsByTypes[currentTypeName][trIdx]?.weaponBlocks) && weaponTag != WEAPON_TAG.BULLET)
       foreach (name, existingItem in weapons.weaponsByTypes[currentTypeName][trIdx].weaponBlocks)
-        if (isWeaponParamsEqual(item, existingItem))
-        {
+        if (isWeaponParamsEqual(item, existingItem)) {
           weaponName = name
           break
         }
 
-    if (trIdx < 0)
-    {
+    if (trIdx < 0) {
       weapons.weaponsByTypes[currentTypeName].append({ trigger = weapon.trigger, caliber = 0 })
       trIdx = weapons.weaponsByTypes[currentTypeName].len() - 1
     }
 
     let currentType = weapons.weaponsByTypes[currentTypeName][trIdx]
 
-    if (weaponName not in currentType?.weaponBlocks)
-    {
+    if (weaponName not in currentType?.weaponBlocks) {
       currentType.weaponBlocks <- currentType?.weaponBlocks ?? {}
       currentType.weaponBlocks[weaponName] <- item
       if (item.caliber > currentType.caliber)
@@ -604,8 +573,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 }
 
 //weapon - is a weaponData gathered by addWeaponsFromBlk
-local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
-{
+local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
   let res = []
   let colon = loc("ui/colon")
 
@@ -617,10 +585,8 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
   if (massText)
     res.append("".concat(loc("shop/tank_mass"), " ", massText))
 
-  if (isInArray(weaponType, [ "rockets", "agm", "aam", "guided bombs" ]))
-  {
-    if (weapon?.guidanceType != null || weapon?.autoAiming != null)
-    {
+  if (isInArray(weaponType, [ "rockets", "agm", "aam", "guided bombs" ])) {
+    if (weapon?.guidanceType != null || weapon?.autoAiming != null) {
       let aimingType = weapon?.autoAiming == null ? ""
         : weapon.autoAiming && weapon.isBeamRider ? "beamRiding"
         : weapon.autoAiming ? "semiautomatic"
@@ -635,8 +601,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     if (weapon?.allAspect != null)
       res.append("".concat(loc("missile/aspect"), colon,
         loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
-    if (weapon?.radarSignal)
-    {
+    if (weapon?.radarSignal) {
       let radarSignalTxt = loc($"missile/radarSignal/{weapon.radarSignal}")
       res.append("".concat(loc("missile/radarSignal"), colon, radarSignalTxt))
     }
@@ -672,8 +637,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     if (weapon?.guaranteedRange)
       res.append("".concat(loc("guaranteedRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.guaranteedRange)))
-    if (weapon?.timeLife)
-    {
+    if (weapon?.timeLife) {
       if (weapon?.guidanceType != null || weapon?.autoAiming != null)
         res.append("".concat(loc("missile/timeGuidance"), colon,
           format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds"))))
@@ -685,25 +649,19 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
       res.append("".concat(loc("missile/armingDistance"), colon,
         ::g_measure_type.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
   }
-  else if (weaponType == "torpedoes")
-  {
+  else if (weaponType == "torpedoes") {
     let torpedoMod = "torpedoes_movement_mode"
-    if (::shop_is_modification_enabled(unit.name, torpedoMod))
-    {
+    if (::shop_is_modification_enabled(unit.name, torpedoMod)) {
       let mod = getModificationByName(unit, torpedoMod)
       let diffId = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff()).crewSkillName
       let effects = mod?.effects?[diffId]
       let weaponEffects = effects?.weapons
-      if (weaponEffects)
-      {
+      if (weaponEffects) {
         weapon = clone weapon
-        foreach (weaponMod in weaponEffects)
-        {
+        foreach (weaponMod in weaponEffects) {
           let torpedoAffected = weaponMod?.torpedoAffected ?? ""
-          if (weaponMod && (torpedoAffected == "" || torpedoAffected == weapon.blk))
-          {
-            foreach (k, v in weapon)
-            {
+          if (weaponMod && (torpedoAffected == "" || torpedoAffected == weapon.blk)) {
+            foreach (k, v in weapon) {
               let kEffect = $"{k}Torpedo"
               if ((kEffect in weaponMod) && type(v) == type(weaponMod[kEffect]))
                 weapon[k] += weaponMod[kEffect]
@@ -738,13 +696,11 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     res.append("".concat(loc("bombProperties/machLimit"), colon,
       format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber"))))
 
-  if (weapon.explosiveType != null)
-  {
+  if (weapon.explosiveType != null) {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon
     res.append("".concat(loc("bullet_properties/explosiveType"), colon,
       loc($"explosiveType/{explosiveType}")))
-    if (explosiveMass)
-    {
+    if (explosiveMass) {
       let measureType = ::g_measure_type.getTypeByName("kg", true)
       res.append("".concat(loc("bullet_properties/explosiveMass"), colon,
         measureType.getMeasureUnitsText(explosiveMass)))
@@ -753,11 +709,9 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
         if (tntEqText.len())
           res.append("".concat(loc("bullet_properties/explosiveMassInTNTEquivalent"), colon, tntEqText))
 
-        if (weaponType == "bombs" && unit.unitType != unitTypes.SHIP)
-        {
+        if (weaponType == "bombs" && unit.unitType != unitTypes.SHIP) {
           let destrTexts = getDestructionInfoTexts(explosiveType, explosiveMass, massKg)
-          foreach (key in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"])
-          {
+          foreach (key in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"]) {
             let valueText = destrTexts[$"{key}Text"]
             if (valueText.len())
               res.append("".concat(loc($"bombProperties/{key}"), colon, valueText))
@@ -772,15 +726,14 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
   return "".concat(res.len() ? newLine : "", newLine.join(res))
 }
 
-let function getPrimaryWeaponsList(unit)
-{
-  if(unit.primaryWeaponMods)
+let function getPrimaryWeaponsList(unit) {
+  if (unit.primaryWeaponMods)
     return unit.primaryWeaponMods
 
   unit.primaryWeaponMods = [""]
 
   let airBlk = ::get_full_unit_blk(unit.name)
-  if(!airBlk?.modifications)
+  if (!airBlk?.modifications)
     return unit.primaryWeaponMods
 
   eachBlock(airBlk.modifications, function(modification, modName) {
@@ -791,11 +744,10 @@ let function getPrimaryWeaponsList(unit)
   return unit.primaryWeaponMods
 }
 
-let function getLastPrimaryWeapon(unit)
-{
+let function getLastPrimaryWeapon(unit) {
   let primaryList = getPrimaryWeaponsList(unit)
-  foreach(modName in primaryList)
-    if (modName!="" && ::shop_is_modification_enabled(unit.name, modName))
+  foreach (modName in primaryList)
+    if (modName != "" && ::shop_is_modification_enabled(unit.name, modName))
       return modName
   return ""
 }
@@ -811,7 +763,7 @@ let function getCommonWeapons(unitBlk, primaryMod) {
   let modificationsCount = unitBlk.modifications.blockCount()
   for (local i = 0; i < modificationsCount; i++) {
     let modification = unitBlk.modifications.getBlock(i)
-    if (modification.getBlockName() == primaryMod){
+    if (modification.getBlockName() == primaryMod) {
       if (modification?.effects.commonWeapons)
         return getWeaponsByTypes(unitBlk, modification.effects.commonWeapons)
 
@@ -822,38 +774,36 @@ let function getCommonWeapons(unitBlk, primaryMod) {
   return res
 }
 
-local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
-{
+local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
   if (!unit)
     return null
 
   let unitBlk = ::get_full_unit_blk(unit.name)
-  if( !unitBlk )
+  if (!unitBlk)
     return null
 
   local weapons = {}
   p = WEAPON_TEXT_PARAMS.__merge(p)
   local primaryMod = ""
   local weaponPresetIdx = -1
-  if ((type(p.weaponPreset) == "string") || p.weaponPreset < 0)
-  {
-    if (!p.isPrimary)
-    {
+  if ((type(p.weaponPreset) == "string") || p.weaponPreset < 0) {
+    if (!p.isPrimary) {
       let curWeap = (type(p.weaponPreset) == "string") ? p.weaponPreset : getLastWeapon(unit.name)
-      foreach(idx, w in unit.getWeapons())
+      foreach (idx, w in unit.getWeapons())
         if (w.name == curWeap || (weaponPresetIdx < 0 && !isWeaponAux(w)))
           weaponPresetIdx = idx
       if (weaponPresetIdx < 0)
         return weapons
     }
-    if (p.isPrimary && type(p.weaponPreset)=="string")
+    if (p.isPrimary && type(p.weaponPreset) == "string")
       primaryMod = p.weaponPreset
     else
       primaryMod = getLastPrimaryWeapon(unit)
-  } else
+  }
+  else
     weaponPresetIdx = p.weaponPreset
 
-  if (p.isPrimary || p.isPrimary==null)
+  if (p.isPrimary || p.isPrimary == null)
     weapons = addWeaponsFromBlk({}, getCommonWeapons(unitBlk, primaryMod), unit, p.weaponsFilterFunc)
 
   if (!p.isPrimary) {
@@ -866,76 +816,67 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
   return weapons
 }
 
-let function getSecondaryWeaponsList(unit)
-{
+let function getSecondaryWeaponsList(unit) {
   let weaponsList = []
   let unitName = unit.name
   let lastWeapon = ::get_last_weapon(unitName)
-  foreach(weapon in unit.getWeapons())
-  {
-    if(isWeaponAux(weapon))
+  foreach (weapon in unit.getWeapons()) {
+    if (isWeaponAux(weapon))
       continue
 
     weaponsList.append(weapon)
-    if(lastWeapon=="" && ::shop_is_weapon_purchased(unitName, weapon.name))
+    if (lastWeapon == "" && ::shop_is_weapon_purchased(unitName, weapon.name))
       setLastWeapon(unitName, weapon.name)  //!!FIX ME: remove side effect from getter
   }
 
   return weaponsList
 }
 
-let function getPresetsList(unit, chooseMenuList)
-{
+let function getPresetsList(unit, chooseMenuList) {
   if (!chooseMenuList)
     return getSecondaryWeaponsList(unit)
 
   let weaponsList = []
   foreach (item in chooseMenuList)
-    weaponsList.append(item.weaponryItem.__merge({isEnabled = item.enabled}))
+    weaponsList.append(item.weaponryItem.__merge({ isEnabled = item.enabled }))
   return weaponsList
 }
 
 let getWeaponsStatusName = @(weaponsStatus) weaponsStatusNameByStatusCode[weaponsStatus]
 
-let function isWeaponUnlocked(unit, weapon)
-{
-  foreach(rp in ["reqWeapon", "reqModification"])
+let function isWeaponUnlocked(unit, weapon) {
+  foreach (rp in ["reqWeapon", "reqModification"])
       if (rp in weapon)
         foreach (req in weapon[rp])
           if (rp == "reqWeapon" && !::shop_is_weapon_purchased(unit.name, req))
             return false
-          else
-          if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
+          else if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
             return false
   return true
 }
 
-let function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true)
-{
+let function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true) {
   if (!unit)
     return false
 
-  foreach(w in unit.getWeapons())
+  foreach (w in unit.getWeapons())
     if (::shop_is_weapon_purchased(unit.name, w.name) > 0 || !checkPurchase)
-      foreach(tag in tags)
+      foreach (tag in tags)
         if ((tag in w) && w[tag])
           return true
   return false
 }
 
-let function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, canBeDuplicate = true)
-{
+let function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, canBeDuplicate = true) {
   if (!canBeDuplicate)
     return groupIdx
   return (groupIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
 }
 
-let function checkUnitSecondaryWeapons(unit)
-{
+let function checkUnitSecondaryWeapons(unit) {
   foreach (weapon in getSecondaryWeaponsList(unit))
     if (isWeaponEnabled(unit, weapon) ||
-      (::isUnitUsable(unit) && isWeaponUnlocked(unit, weapon)))
-    {
+      (::isUnitUsable(unit) && isWeaponUnlocked(unit, weapon))) {
       let res = checkAmmoAmount(unit, weapon.name, AMMO.WEAPON)
       if (res != UNIT_WEAPONS_READY)
         return res
@@ -946,18 +887,15 @@ let function checkUnitSecondaryWeapons(unit)
 
 let checkUnitLastWeapon = @(unit) checkAmmoAmount(unit, getLastWeapon(unit.name), AMMO.WEAPON)
 
-let function checkUnitBullets(unit, isCheckAll = false, bulletSet = null)
-{
+let function checkUnitBullets(unit, isCheckAll = false, bulletSet = null) {
   let setLen = bulletSet?.len() ?? unit.unitType.bulletSetsQuantity
-  for (local i = 0; i < setLen; i++)
-  {
+  for (local i = 0; i < setLen; i++) {
     let modifName = bulletSet?[i] ?? ::get_last_bullets(unit.name, i)
-    if((modifName ?? "") == "")
+    if ((modifName ?? "") == "")
       continue
 
-    if ((!isCheckAll && ::shop_is_modification_enabled(unit.name, modifName))//Current mod
-      || (isCheckAll && isWeaponUnlocked(unit, getModificationByName(unit, modifName))))//All unlocked mods
-    {
+    if ((!isCheckAll && ::shop_is_modification_enabled(unit.name, modifName)) //Current mod
+      || (isCheckAll && isWeaponUnlocked(unit, getModificationByName(unit, modifName)))) { //All unlocked mods
       let res = checkAmmoAmount(unit, modifName, AMMO.MODIFICATION)
       if (res != UNIT_WEAPONS_READY)
         return res
@@ -967,21 +905,18 @@ let function checkUnitBullets(unit, isCheckAll = false, bulletSet = null)
   return UNIT_WEAPONS_READY
 }
 
-let function checkUnitWeapons(unit, isCheckAll = false)
-{
+let function checkUnitWeapons(unit, isCheckAll = false) {
   let weaponsState = isCheckAll ? checkUnitSecondaryWeapons(unit) : checkUnitLastWeapon(unit)
   return weaponsState != UNIT_WEAPONS_READY ? weaponsState : checkUnitBullets(unit, isCheckAll)
 }
 
-let function checkBadWeapons()
-{
-  foreach(unit in ::all_units)
-  {
+let function checkBadWeapons() {
+  foreach (unit in ::all_units) {
     if (!unit.isUsable())
       continue
 
     let curWeapon = getLastWeapon(unit.name)
-    if (curWeapon=="")
+    if (curWeapon == "")
       continue
 
     if (!::shop_is_weapon_available(unit.name, curWeapon, false, false) && !::shop_is_weapon_purchased(unit.name, curWeapon))
@@ -989,8 +924,7 @@ let function checkBadWeapons()
   }
 }
 
-let function getOverrideBullets(unit)
-{
+let function getOverrideBullets(unit) {
   if (!unit)
     return null
   let missionName = get_current_mission_name()

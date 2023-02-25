@@ -30,16 +30,12 @@ local dictAsian = {
 
 // Collect language tables
 local function init(langSources) {
-  foreach (varName, _val in dict)
-  {
+  foreach (varName, _val in dict) {
     dict[varName] = []
-    foreach (source in langSources)
-    {
-      foreach (_i, vSrc in (source?[varName] ?? []))
-      {
+    foreach (source in langSources) {
+      foreach (_i, vSrc in (source?[varName] ?? [])) {
         local v
-        switch (type(vSrc))
-        {
+        switch (type(vSrc)) {
           case "string":
             v = regexp2(vSrc)
             break
@@ -156,8 +152,7 @@ local preparewordwhile = {
   replace = "\\1\\1"
 }
 
-local function preparePhrase(text)
-{
+local function preparePhrase(text) {
   local phrase = text
   local buffer = ""
 
@@ -168,16 +163,12 @@ local function preparePhrase(text)
 
   local out = []
 
-  foreach (w in words)
-  {
-    if (w.len() < 3 && ! prepareex.match(w))
-    {
+  foreach (w in words) {
+    if (w.len() < 3 && ! prepareex.match(w)) {
       buffer += w
     }
-    else
-    {
-      if (buffer != "")
-      {
+    else {
+      if (buffer != "") {
         out.append(buffer)
         buffer = ""
       }
@@ -192,8 +183,7 @@ local function preparePhrase(text)
   return out
 }
 
-local function prepareWord(word)
-{
+local function prepareWord(word) {
   // convert to lower
   word = (utf8(word).strtr(alphabet.upper, alphabet.lower)).strip()
 
@@ -203,8 +193,7 @@ local function prepareWord(word)
 
   local post = null
 
-  while (word != post)
-  {
+  while (word != post) {
     post = word
     word = preparewordwhile.pattern.replace(preparewordwhile.replace, word)
   }
@@ -212,8 +201,7 @@ local function prepareWord(word)
   return word
 }
 
-local function checkRegexps(word, regexps, accuse)
-{
+local function checkRegexps(word, regexps, accuse) {
   foreach (reg in regexps)
     if ((reg?.value ?? reg).match(word)) {
       if (debugLogFunc)
@@ -224,8 +212,7 @@ local function checkRegexps(word, regexps, accuse)
 }
 
 // Checks that one word is correct.
-local function checkWord(word)
-{
+local function checkWord(word) {
   word = prepareWord(word)
 
   local status = true
@@ -263,14 +250,12 @@ local function getUnicodeCharsArray(str) {
   return res
 }
 
-local function getMaskedWord(w, maskChar = "*")
-{
+local function getMaskedWord(w, maskChar = "*") {
   return "".join(array(utf8(w).charCount(), maskChar))
 }
 
 // Returns corrected version of phrase.
-local function checkPhrase(text)
-{
+local function checkPhrase(text) {
   local phrase = text
 
   // In Asian languages, there is no spaces to separate words.
@@ -314,14 +299,12 @@ local function checkPhrase(text)
 }
 
 // Checks that phrase is correct.
-local function isPhrasePassing(text)
-{
+local function isPhrasePassing(text) {
   return checkPhrase(text) == text
 }
 
 // Set debug logging func to enable debug mode, or null to disable it.
-local function setDebugLogFunc(funcOrNull)
-{
+local function setDebugLogFunc(funcOrNull) {
   debugLogFunc = funcOrNull
 }
 

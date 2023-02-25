@@ -14,6 +14,8 @@ let highlight      = persist("highlight", @() Watched(null))
 let animHighlight  = Watched(null)
 let pickedList     = persist("pickedList", @() Watched([], FRP_DONT_CHECK_NESTED))
 let viewIdx        = persist("viewIdx", @() Watched(0))
+let showRootsInfo  = persist("showRoots", @() Watched(false))
+let showChildrenInfo=persist("showChildrenInfo", @() Watched(false))
 
 let curData        = Computed(@() pickedList.value?[viewIdx.value])
 
@@ -115,7 +117,7 @@ let mkImageCtor = @(image) @(content) {
     {
       rendObj = ROBJ_IMAGE
       maxHeight = sh(30)
-      keepAspect = true
+      keepAspect = KEEP_ASPECT_FIT
       imageValign = ALIGN_TOP
       imageHalign = ALIGN_LEFT
       image
@@ -204,8 +206,83 @@ let function propPanel(desc) {
   })
 }
 
+let function elemLocationText(elem, builder) {
+  local text = "Source: unknown"
+
+  let location = locate_element_source(elem)
+  if (location)
+    text = $"{location.stack}\n-------\n"
+  return builder ? $"{text}\n(Function)" : $"{text}\n(Table)"
+}
+
+let function updatePickedList(data) {
+  pickedList((data ?? [])
+    .map(@(d) d.__merge({
+      locationText = elemLocationText(d.elem, d.builder)
+    })))
+  viewIdx(0)
+  pickerActive(false)
+  animHighlight(null)
+}
+
 let prepareCallstackText = @(text) //add /t for line wraps
   text.replace("/", "/\t")
+
+let function clickableText(labelText, valueText, onClick = null, highlightBB = null) {
+  let elemSF = Watched(0)
+  return @() {
+    watch = elemSF
+    rendObj = ROBJ_TEXTAREA
+    behavior = [Behaviors.TextArea, Behaviors.Button]
+    function onElemState(sf) {
+      elemSF(sf)
+      if (highlightBB)
+        animHighlight(sf & S_HOVER ? highlightBB : null)
+    }
+    onDetach = @() animHighlight(null)
+    onClick = onClick ?? @() set_clipboard_text(valueText)
+    fontSize
+    color = textColor(elemSF.value)
+    text = $"{labelText} = <color={valColor}>{valueText}</color>"
+  }
+}
+
+let function rootsPanel(roots) {
+  let rootsList = []
+  foreach (root in roots) {
+    let rootInfo = [get_element_info(root.elem)]
+    rootsList.append(
+      clickableText(root.name, root.builderText, @() updatePickedList(rootInfo), root.bbox))
+  }
+  return @() {
+    watch = showRootsInfo
+    flow = FLOW_VERTICAL
+    gap = hdpx(2) // gap here to avoid two buttons being selected at ones (they overlap otherwise) and this breaks highlighting
+    children = [
+      clickableText("---show roots---", showRootsInfo.value, @() showRootsInfo(!showRootsInfo.value))
+    ].extend(showRootsInfo.value ? rootsList : [])
+  }
+}
+
+let function childrenPanel(children) {
+  let childrenList = []
+  foreach (child in children) {
+    let childInfo = [get_element_info(child.elem)]
+    childrenList.append(
+      clickableText(child.name, child.builderText, @() updatePickedList(childInfo), child.bbox))
+  }
+  return @() {
+    watch = showChildrenInfo
+    flow = FLOW_VERTICAL
+    gap = hdpx(2) // gap here to avoid two buttons being selected at ones (they overlap otherwise) and this breaks highlighting
+    children = [
+      clickableText(
+        $"---show children ({childrenList.len()}) ---",
+        showChildrenInfo.value,
+        @() showChildrenInfo(!showChildrenInfo.value))
+    ].extend(showChildrenInfo.value ? childrenList : [])
+  }
+}
 
 let function details() {
   let res = {
@@ -230,28 +307,17 @@ let function details() {
     hangingIndent = sh(3)
   }
 
-  let bb = sel.boundingBox
-  let bbText = $"\{ pos = [{bb.x}, {bb.y}], size = [{bb.width}, {bb.height}] \}"
-  let bboxSF = Watched(0)
-  let bbox = @() {
-    watch = bboxSF
-    rendObj = ROBJ_TEXTAREA
-    behavior = [Behaviors.TextArea, Behaviors.Button]
-    function onElemState(sf) {
-      bboxSF(sf)
-      animHighlight(sf & S_HOVER ? bb : null)
-    }
-    onDetach = @() animHighlight(null)
-    onClick = @() set_clipboard_text(bbText)
-    fontSize
-    color = textColor(bboxSF.value)
-    text = $"bbox = <color={valColor}>{bbText}</color>"
-  }
+  let bb = sel.bbox
+  let bbText = $"\{ pos = [{bb.x}, {bb.y}], size = [{bb.w}, {bb.h}] \}"
+  let bbox = clickableText("bbox", bbText, null, bb)
+
 
   return res.__update({
     flow = FLOW_VERTICAL
     padding = [hdpx(5), hdpx(10)]
-    children = [ bbox ].extend(propPanel(sel.componentDesc)).append(summaryText)
+    children = [ bbox ]
+      .extend(propPanel(sel.componentDesc))
+      .append(rootsPanel(sel.roots), childrenPanel(sel.children), summaryText)
   })
 }
 
@@ -320,21 +386,12 @@ let function animHighlightRect() {
   if (ah == null)
     return res
   return res.__update({
-    size = [ah.width, ah.height]
+    size = [ah.w, ah.h]
     pos = [ah.x, ah.y]
     rendObj = ROBJ_FRAME
     color = 0xFFFFFFFF
     fillColor = 0x40404040
   })
-}
-
-let function elemLocationText(elem, builder) {
-  local text = "Source: unknown"
-
-  let location = locate_element_source(elem)
-  if (location)
-    text = $"{location.stack}\n-------\n"
-  return builder ? $"{text}\n(Function)" : $"{text}\n(Table)"
 }
 
 
@@ -344,16 +401,7 @@ let elementPicker = @() {
   cursor = cursors.normal
   rendObj = ROBJ_SOLID
   color = Color(20,0,0,20)
-  onClick = function(data) {
-    pickedList((data ?? [])
-      .map(@(d) {
-        boundingBox = d.boundingBox
-        componentDesc = d.componentDesc
-        locationText = elemLocationText(d.elem, d.builder)
-      }))
-    viewIdx(0)
-    pickerActive(false)
-  }
+  onClick = updatePickedList
   onChange = @(hl) highlight(hl)
   children = highlightRect
 }

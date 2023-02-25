@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -17,14 +18,12 @@ let time = require("%scripts/time.nut")
   }
 }
 
-let function _getTimeLeft(task)
-{
+let function _getTimeLeft(task) {
   let expireTime = this.expireTimeByGen?[::g_battle_tasks.getGenerationIdInt(task)] ?? this.lastGenExpireTime
   return expireTime - ::get_charserver_time_sec()
 }
 
-::g_battle_task_difficulty._getTimeLeftText <- function _getTimeLeftText(task)
-{
+::g_battle_task_difficulty._getTimeLeftText <- function _getTimeLeftText(task) {
   let timeLeft = this.getTimeLeft(task)
   if (timeLeft < 0)
     return ""
@@ -63,8 +62,7 @@ let function _getTimeLeft(task)
     if (this.expireProcessed?[generationId] ?? false)
       return
 
-    if (generationId != 0)
-    {
+    if (generationId != 0) {
       this.expireProcessed = this.expireProcessed ?? {}
       this.expireProcessed[generationId] <- true
     }
@@ -114,7 +112,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 /*****************************/
 }, null, "name")
 
-::g_battle_task_difficulty.types.sort(function(a,b){
+::g_battle_task_difficulty.types.sort(function(a, b) {
   if (a.executeOrder != b.executeOrder)
     return a.executeOrder > b.executeOrder ? 1 : -1
   return 0
@@ -144,14 +142,14 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     return n == m
   })
 
-  this.cache.byId[taskId] <- res != null? res.name : this.UNKNOWN.name
+  this.cache.byId[taskId] <- res != null ? res.name : this.UNKNOWN.name
   return res
 }
 
 ::g_battle_task_difficulty.getRequiredDifficultyTypeDone <- function getRequiredDifficultyTypeDone(diff) {
   local res = null
   if (diff.executeOrder >= 0)
-    res = ::u.search(this.types, @(t) t.executeOrder == (diff.executeOrder-1))
+    res = ::u.search(this.types, @(t) t.executeOrder == (diff.executeOrder - 1))
 
   return res || ::g_battle_task_difficulty.UNKNOWN
 }
@@ -159,13 +157,13 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 ::g_battle_task_difficulty.getRefreshTimeForAllTypes <- function getRefreshTimeForAllTypes(tasksArray, overrideStatus = false) {
   let processedTimeParamIds = []
   if (!overrideStatus)
-    foreach(task in tasksArray) {
+    foreach (task in tasksArray) {
       let t = this.getDifficultyTypeByTask(task)
       ::u.appendOnce(t.timeParamId, processedTimeParamIds)
     }
 
   let resultArray = []
-  foreach(t in this.types) {
+  foreach (t in this.types) {
     if (isInArray(t.timeParamId, processedTimeParamIds))
       continue
 
@@ -173,7 +171,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 
     let timeText = t.getTimeLeftText(null)
     if (timeText != "")
-      resultArray.append(t.getLocName() + loc("ui/parentheses/space", {text = timeText}))
+      resultArray.append(t.getLocName() + loc("ui/parentheses/space", { text = timeText }))
   }
 
   return resultArray
@@ -187,7 +185,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
   if (reqDiffDone == ::g_battle_task_difficulty.UNKNOWN)
     return true
 
-  foreach(task in tasksArray) {
+  foreach (task in tasksArray) {
     let taskDifficulty = this.getDifficultyTypeByTask(task)
     if (taskDifficulty != reqDiffDone)
       continue
@@ -208,7 +206,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 }
 
 ::g_battle_task_difficulty.updateTimeParamsFromBlk <- function updateTimeParamsFromBlk(blk) {
-  foreach(t in this.types) {
+  foreach (t in this.types) {
     t.lastGenerationId    = blk?[$"{t.timeParamId}PersonalUnlocks_lastGenerationId"]            ?? 0
     t.lastGenTimeSuccess  = blk?[$"{t.timeParamId}PersonalUnlocks_lastGenerationTimeOnSuccess"] ?? -1
     t.lastGenTimeFailure  = blk?[$"{t.timeParamId}PersonalUnlocks_lastGenerationTimeOnFailure"] ?? -1
@@ -241,7 +239,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 }
 
 ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty <- function withdrawTasksArrayByDifficulty(diff, tasks) {
-  return ::u.filter(tasks, @(task) diff == ::g_battle_task_difficulty.getDifficultyTypeByTask(task) )
+  return ::u.filter(tasks, @(task) diff == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
 }
 
 ::g_battle_task_difficulty.getDefaultDifficultyGroup <- function getDefaultDifficultyGroup() {

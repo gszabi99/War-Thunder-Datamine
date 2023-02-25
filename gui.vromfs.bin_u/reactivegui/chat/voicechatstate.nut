@@ -13,7 +13,7 @@ let voiceChatMembers = Watched([])
 local counter = 0 //for voice chat key
 
 let function removeVoiceChatMember(id) { //name (string) or id (int)
-  foreach(idx, member in voiceChatMembers.value)
+  foreach (idx, member in voiceChatMembers.value)
     if ((member.name == id || member.id == id)
         && !member.needShow.value) {
         voiceChatMembers.value.remove(idx)

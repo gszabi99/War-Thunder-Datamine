@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,26 +11,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
-::gui_handlers.ShopViewWnd <- class extends ::gui_handlers.ShopMenuHandler
-{
+::gui_handlers.ShopViewWnd <- class extends ::gui_handlers.ShopMenuHandler {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
 
   needHighlight = false
 
-  static function open(params)
-  {
+  static function open(params) {
     ::handlersManager.loadHandler(::gui_handlers.ShopViewWnd, params)
   }
 
-  function getSceneTplView() { return {hasMaxWindowSize = isSmallScreen} }
+  function getSceneTplView() { return { hasMaxWindowSize = isSmallScreen } }
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
 
-    if(!isSmallScreen)
+    if (!isSmallScreen)
       this.createSlotbar(
         {
           showNewSlot = true,
@@ -39,8 +37,7 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
         "slotbar_place")
   }
 
-  function fillAircraftsList(curName = "")
-  {
+  function fillAircraftsList(curName = "") {
     base.fillAircraftsList(this.needHighlight ? this.curAirName : curName)
 
     if (!this.needHighlight)
@@ -54,8 +51,7 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
       this.highlightUnitsInTree([this.curAirName])
   }
 
-  function onCloseShop()
-  {
+  function onCloseShop() {
     ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
 }
@@ -73,7 +69,7 @@ let function openShopViewWndFromPromo(params) {
     needHighlight = unitName != ""
   })
 
-  let acceptCallback = Callback( function() {
+  let acceptCallback = Callback(function() {
     switchProfileCountry(country)
     showUnitInShop() }, this)
   if (country != profileCountrySq.value)

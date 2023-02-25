@@ -1,15 +1,15 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let MAX_UNKNOWN_IDS_PEER_REQUEST = 100
+const MAX_UNKNOWN_IDS_PEER_REQUEST = 100
+let DataBlock = require("DataBlock")
 
 local requestUnknownXboxIds = function(_playersList, _knownUsers, _cb) {} //forward declaration
-requestUnknownXboxIds = function(playersList, knownUsers, cb)
-{
-  if (!playersList.len())
-  {
+requestUnknownXboxIds = function(playersList, knownUsers, cb) {
+  if (!playersList.len()) {
     //Need to update contacts list, because empty list - means no users,
     //and returns -1, for not to send empty array to char.
     //So, contacts list must be cleared in this case from xbox users.
@@ -26,7 +26,7 @@ requestUnknownXboxIds = function(playersList, knownUsers, cb)
 
   let taskId = ::xbox_find_friends(requestList)
   ::g_tasker.addTask(taskId, null, function() {
-      local blk = ::DataBlock()
+      local blk = DataBlock()
       blk = ::xbox_find_friends_result()
 
       let table = ::buildTableFromBlk(blk)
@@ -50,7 +50,7 @@ let function requestUnknownPSNIds(playersList, knownUsers, cb) {
 
   let taskId = ::ps4_find_friends(requestList)
   ::g_tasker.addTask(taskId, null, function() {
-    local blk = ::DataBlock()
+    local blk = DataBlock()
     blk = ::ps4_find_friends_result()
 
     let table = ::buildTableFromBlk(blk)

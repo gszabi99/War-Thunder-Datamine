@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -23,8 +24,7 @@ let MAIN_FUNC_PARAMS = {
   curEdiff = 0
 }
 
-local function getSlotActionFunctionName(unit, params)
-{
+local function getSlotActionFunctionName(unit, params) {
   params = ACTION_FUNCTION_PARAMS.__merge(params)
 
   if (::isUnitBroken(unit))
@@ -57,8 +57,7 @@ local function getSlotActionFunctionName(unit, params)
   return ""
 }
 
-local function slotMainAction(unit, params = MAIN_FUNC_PARAMS)
-{
+local function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
   if (!unit || ::isUnitGroup(unit) || unit?.isFakeUnit)
     return
 
@@ -79,7 +78,7 @@ local function slotMainAction(unit, params = MAIN_FUNC_PARAMS)
   let isInResearch = ::isUnitInResearch(unit)
   let canFlushSquadronExp = hasFeature("ClanVehicles") && isSquadronVehicle
     && min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit)) > 0
-  if (( params.availableFlushExp > 0
+  if ((params.availableFlushExp > 0
       || !params.setResearchManually
       || (params.isSquadronResearchMode && (canFlushSquadronExp || params.needChosenResearchOfSquadron)))
     && (::canResearchUnit(unit) || isInResearch))

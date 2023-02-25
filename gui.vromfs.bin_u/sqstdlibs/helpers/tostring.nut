@@ -16,6 +16,8 @@ let function tableKeyToString(k) {
   return k
 }
 
+let floatToStr = @(v) "".concat(v, v % 1 != 0 ? "" : ".0")
+
 let DEBUG_TABLE_DATA_PARAMS = {
   recursionLevel = 4,
   addStr = "",
@@ -43,7 +45,7 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
   if (info == null)
     printFn(prefix + "null");
   else {
-    if (isDataBlock(info)) {
+    if (isDataBlock(info) && u.isFunction(info?.getBlockName)) {
       let blockName = (info.getBlockName()!="")? info.getBlockName()+" " : ""
       if (showBlockBrackets)
         printFn(prefix+addStr+blockName+"{")
@@ -54,11 +56,11 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
         local vType = " "
         if (val == null) { val = "null" }
         else if (type(val)=="integer") vType = ":i"
-        else if (type(val)=="float") { vType = ":r"; val = val.tostring() + ((val % 1) ? "" : ".0") }
+        else if (type(val)=="float") { vType = ":r"; val = floatToStr(val) }
         else if (type(val)=="bool") vType = ":b"
         else if (type(val)=="string") { vType = ":t"; val = "'" + val + "'" }
-        else if (u.isPoint2(val)) { vType = ":p2"; val = format("%s, %s", val.x.tostring(), val.y.tostring()) }
-        else if (u.isPoint3(val)) { vType = ":p3"; val = format("%s, %s, %s", val.x.tostring(), val.y.tostring(), val.z.tostring()) }
+        else if (u.isPoint2(val)) { vType = ":p2"; val = format("%s, %s", floatToStr(val.x), floatToStr(val.y)) }
+        else if (u.isPoint3(val)) { vType = ":p3"; val = format("%s, %s, %s", floatToStr(val.x), floatToStr(val.y), floatToStr(val.z)) }
         else if (u.isColor4(val)) { vType = ":c";  val = format("%d, %d, %d, %d", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a) }
         else if (u.isTMatrix(val)) { vType = ":m"
           let arr = []
@@ -108,7 +110,7 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
         else if (dType=="string")
           printFn(prefix+addStr2+idText+" = \"" + data + "\"")
         else if (dType=="float")
-          printFn(prefix+addStr2+idText+" = " + data + ((data % 1) ? "" : ".0"))
+          printFn("".concat(prefix, addStr2, idText, " = ", floatToStr(data)))
         else if (dType=="null")
           printFn(prefix+addStr2+idText+" = null")
         else
@@ -124,7 +126,7 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
       if (iType == "string")
         printFn(prefix + addStr + "\"" + info + "\"")
       else if (iType == "float")
-        printFn(prefix + addStr + info + ((info % 1) ? "" : ".0"))
+        printFn("".concat(prefix, addStr, floatToStr(info)))
       else if (iType == "null")
         printFn(prefix + addStr + "null")
       else
@@ -137,7 +139,7 @@ let function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
 
 toString = function (val, recursion = 1, addStr = "") {
   if (type(val) == "instance") {
-    if (isDataBlock(val)) {
+    if (isDataBlock(val) && u.isFunction(val?.getBlockName)) {
       let rootBlockName = val.getBlockName() ?? ""
       let iv = []
       for (local i = 0; i < val.paramCount(); i++)
@@ -147,9 +149,9 @@ toString = function (val, recursion = 1, addStr = "") {
       return format("DataBlock %s{ %s }", rootBlockName, g_string.implode(iv, ", "))
     }
     else if (u.isPoint2(val))
-      return format("Point2(%s, %s)", val.x.tostring(), val.y.tostring())
+      return format("Point2(%s, %s)", floatToStr(val.x), floatToStr(val.y))
     else if (u.isPoint3(val))
-      return format("Point3(%s, %s, %s)", val.x.tostring(), val.y.tostring(), val.z.tostring())
+      return format("Point3(%s, %s, %s)", floatToStr(val.x), floatToStr(val.y), floatToStr(val.z))
     else if (u.isColor4(val))
       return format("Color4(%d/255.0, %d/255.0, %d/255.0, %d/255.0)", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a)
     else if (u.isTMatrix(val)) {
@@ -158,14 +160,14 @@ toString = function (val, recursion = 1, addStr = "") {
         arr.append(toString(val[i]))
       return "TMatrix(" + g_string.implode(arr, ", ") + ")"
     }
-    else if ("isToStringForDebug" in val)
+    else if (("isToStringForDebug" in val) && u.isFunction(val?.tostring))
       return val.tostring()
     else if ("DaGuiObject" in getroottable() && val instanceof getroottable()["DaGuiObject"])
       return val.isValid()
         ? "DaGuiObject(tag = {0}, id = {1} )".subst(val.tag, val?.id ?? "NULL")
         : "invalid DaGuiObject"
     else {
-      local ret = val?.getmetamethod("_tostring") != null
+      local ret = u.isFunction(val?.getmetamethod) && val.getmetamethod("_tostring") != null
         ? "instance \"{0}\"".subst(val.tostring())
         : "instance"
 
@@ -188,7 +190,7 @@ toString = function (val, recursion = 1, addStr = "") {
   if (type(val) == "string")
     return format("\"%s\"", val)
   if (type(val) == "float")
-    return val.tostring() + ((val % 1) ? "" : ".0")
+    return floatToStr(val)
   if (type(val) != "array" && type(val) != "table")
     return "" + val
   let isArray = type(val) == "array"

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -18,7 +19,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
   function getSceneTplView() {
     this.unitsByType = this.getUnits()
 
-    this.displayableUnitTypes = unitTypes.types.filter(@(t) t.isAvailable()).map(@(t) {typeName = t.typeName})
+    this.displayableUnitTypes = unitTypes.types.filter(@(t) t.isAvailable()).map(@(t) { typeName = t.typeName })
 
     return {
       unitType = this.displayableUnitTypes
@@ -96,7 +97,7 @@ local dbgLongestUnitTooltip = class extends ::BaseGuiHandler {
     if (!unit || !checkObj(this.scene))
       return
 
-    let contentObj = this.scene.findObject(isTesting? "sample_type" : unit.unitType.typeName)
+    let contentObj = this.scene.findObject(isTesting ? "sample_type" : unit.unitType.typeName)
     contentObj.show(true)
     ::showAirInfo(unit, true, contentObj.findObject("air_info_tooltip"), this, {
       showLocalState = false

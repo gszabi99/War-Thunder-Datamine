@@ -53,7 +53,7 @@ class ProfilerDebugAgent : DapiDebugAgent
     def override onInstall ( agent:DebugAgent? ) : void
         this_context().name := "__PROFILER__"
         var args <- get_command_line_arguments()
-        for argv,i in args,range(100500)
+        for argv,i in args,count()
             if argv=="--das-profiler-log-file" && out==null && ((i+1)<length(args))
                 out = fopen(args[i+1], "wb")
             elif argv=="--das-profiler-manual"
@@ -193,7 +193,7 @@ def debug_agent ( ctx : Context )
 
 [_macro]
 def installing
-    if is_compiling_macros_in_module("profiler")
+    if is_compiling_macros_in_module("profiler") && !is_in_completion()
         if !is_in_debug_agent_creation()
             if !has_debug_agent_context("profiler")
                 fork_debug_agent_context(@@debug_agent)

@@ -10,43 +10,43 @@ from "string" import regexp, split_by_chars
     - replace editor in enlisted with this component (it should be already suitable)
 */
 let rexInt = regexp(@"[\+\-]?[0-9]+")
-let function isStringInt(strv){
+let function isStringInt(strv) {
   return rexInt.match(strv) //better use one from string.nut
 }
 
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
-let function isStringFloat(strv){
+let function isStringFloat(strv) {
   return rexFloat.match(strv) //better use one from string.nut
 }
 
 let rexEng = regexp(@"[a-z,A-Z]*")
-let function isStringEng(strv){
+let function isStringEng(strv) {
   return rexEng.match(strv)
 }
-let function isStringLikelyEmail(strv, _verbose=true) {
+let function isStringLikelyEmail(strv, _verbose = true) {
 // this check is not rfc fully compatible. We check that @ exist and correctly used, and that let and domain parts exist and they are correct length.
 // Domain part also have at least one period and main domain at least 2 symbols
 // also come correct emails on google are against RFC, for example a.a.a@gmail.com.
 
-  if (type(strv)!="string")
+  if (type(strv) != "string")
     return false
-  let splitted = split_by_chars(strv,"@")
-  if (splitted.len()<2)
+  let splitted = split_by_chars(strv, "@")
+  if (splitted.len() < 2)
     return false
   local locpart = splitted[0]
-  if (splitted.len()>2)
-    locpart = "@".join(splitted.slice(0,-1))
-  if (locpart.len()>64)
+  if (splitted.len() > 2)
+    locpart = "@".join(splitted.slice(0, -1))
+  if (locpart.len() > 64)
     return false
-  let dompart = splitted[splitted.len()-1]
-  if (dompart.len()>253 || dompart.len()<4) //RFC + domain should be at least x.xx
+  let dompart = splitted[splitted.len() - 1]
+  if (dompart.len() > 253 || dompart.len() < 4) //RFC + domain should be at least x.xx
     return false
   let quotes = locpart.indexof("\"")
-  if (quotes && quotes!=0)
+  if (quotes && quotes != 0)
     return false //quotes only at the begining
-  if (quotes==null && locpart.indexof("@")!=null)
+  if (quotes == null && locpart.indexof("@") != null)
     return false //no @ without quotes
-  if (dompart.indexof(".")==null || dompart.indexof(".")>dompart.len()-3) // warning disable: -func-can-return-null
+  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) // warning disable: -func-can-return-null
     return false  //too short first level domain or no periods
   return true
 }
@@ -72,26 +72,26 @@ let function defaultFrame(inputObj, group, sf) {
 }
 
 let function isValidStrByType(strv, inputType) {
-  if (strv=="")
+  if (strv == "")
     return true
-  if (inputType=="mail")
+  if (inputType == "mail")
      return isStringLikelyEmail(strv)
-  if (inputType=="num")
+  if (inputType == "num")
      return isStringInt(strv) || isStringFloat(strv)
-  if (inputType=="integer")
+  if (inputType == "integer")
      return isStringInt(strv)
-  if (inputType=="float")
+  if (inputType == "float")
      return isStringFloat(strv)
-  if (inputType=="lat")
+  if (inputType == "lat")
      return isStringEng(strv)
   return true
 }
 
 let defaultColors = {
   placeHolderColor = Color(80, 80, 80, 80)
-  textColor = Color(255,255,255)
+  textColor = Color(255, 255, 255)
   backGroundColor = Color(28, 28, 28, 150)
-  highlightFailure = Color(255,60,70)
+  highlightFailure = Color(255, 60, 70)
 }
 
 
@@ -103,9 +103,9 @@ let failAnim = @(trigger) {
   trigger = trigger
 }
 
-let interactiveValidTypes = ["num","lat","integer","float"]
+let interactiveValidTypes = ["num", "lat", "integer", "float"]
 
-let function textInput(text_state, options={}, frameCtor=defaultFrame) {
+let function textInput(text_state, options = {}, frameCtor = defaultFrame) {
   let group = ElemGroup()
   let {
     setValue = @(v) text_state(v), inputType = null,
@@ -140,13 +140,13 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
     onBlur?()
   }
 
-  let function onReturnExt(){
+  let function onReturnExt() {
     if (!isValidResult(text_state.value))
       anim_start(text_state)
     onReturn?()
   }
 
-  let function onEscapeExt(){
+  let function onEscapeExt() {
     if (!isValidResult(text_state.value))
       anim_start(text_state)
     onEscape()
@@ -213,7 +213,7 @@ let function textInput(text_state, options={}, frameCtor=defaultFrame) {
     xmbNode
     imeOpenJoyBtn
 
-    children = (text_state.value?.len() ?? 0)== 0
+    children = (text_state.value?.len() ?? 0) == 0
         && (showPlaceHolderOnFocus || !(stateFlags.value & S_KB_FOCUS))
       ? placeholderObj
       : null

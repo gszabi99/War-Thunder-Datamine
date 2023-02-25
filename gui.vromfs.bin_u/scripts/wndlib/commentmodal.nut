@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_modal_comment <- function gui_modal_comment(owner=null, titleText=null, buttonText=null, callbackFunc=null, isCommentRequired=false) {
+::gui_modal_comment <- function gui_modal_comment(owner = null, titleText = null, buttonText = null, callbackFunc = null, isCommentRequired = false) {
   ::gui_start_modal_wnd(::gui_handlers.commentModalHandler, {
     titleText = titleText
     buttonText = buttonText
@@ -16,10 +17,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   })
 }
 
-::gui_handlers.commentModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
-  function initScreen()
-  {
+::gui_handlers.commentModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+  function initScreen() {
     if (this.titleText && this.titleText.len())
       this.scene.findObject("comment_wnd_title").setValue(this.titleText)
     if (this.buttonText && this.buttonText.len())
@@ -29,20 +28,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::select_editbox(this.scene.findObject("comment_editbox"))
   }
 
-  function onChangeComment()
-  {
+  function onChangeComment() {
     this.comment = this.scene.findObject("comment_editbox").getValue() || ""
     this.scene.findObject("ok_btn").enable(!this.isCommentRequired || this.comment.len() > 0)
   }
 
-  function onOk()
-  {
+  function onOk() {
     this.isConfirmed = true
     this.goBack()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (!this.isConfirmed || !this.callbackFunc || (this.isCommentRequired && this.comment.len() == 0))
       return
 

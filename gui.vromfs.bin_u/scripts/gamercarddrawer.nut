@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,8 +14,7 @@ enum GamercardDrawerState {
   STATE_CLOSING
 }
 
-::gui_handlers.GamercardDrawer <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.GamercardDrawer <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/gamercardDrawer.blk"
   heightPID = ::dagui_propid.add_name_id("height")
@@ -23,21 +23,18 @@ enum GamercardDrawerState {
   currentState = GamercardDrawerState.STATE_CLOSED
   isBlockOtherRestoreFocus = false
 
-  function initScreen()
-  {
+  function initScreen() {
     this.getObj("gamercard_drawer").setUserData(this)
   }
 
-  function isActive() //opening, opened, or closing to open again
-  {
+  function isActive() { //opening, opened, or closing to open again
     if (this.currentState == GamercardDrawerState.STATE_OPENED
         || this.currentState == GamercardDrawerState.STATE_OPENING)
       return true
     return this.currentVisible && checkObj(this.currentTarget)
   }
 
-  function closeDrawer()
-  {
+  function closeDrawer() {
     if (this.currentState == GamercardDrawerState.STATE_CLOSED
         || this.currentState == GamercardDrawerState.STATE_CLOSING)
       return
@@ -46,8 +43,7 @@ enum GamercardDrawerState {
     ::broadcastEvent("GamercardDrawerAnimationStart", { isOpening = false })
   }
 
-  function openDrawer()
-  {
+  function openDrawer() {
     if (this.currentState == GamercardDrawerState.STATE_OPENED
         || this.currentState == GamercardDrawerState.STATE_OPENING)
       return
@@ -56,8 +52,7 @@ enum GamercardDrawerState {
     ::broadcastEvent("GamercardDrawerAnimationStart", { isOpening = true })
   }
 
-  function setOpenAnim(open)
-  {
+  function setOpenAnim(open) {
     let gamercardDrawerObject = this.getObj("gamercard_drawer")
     if (!gamercardDrawerObject)
       return
@@ -71,8 +66,7 @@ enum GamercardDrawerState {
       this.onDrawerDeactivate(gamercardDrawerObject)
   }
 
-  function updateDrawer(params)
-  {
+  function updateDrawer(params) {
     let target = params.target
     let visible = params.visible
     this.isBlockOtherRestoreFocus = params?.isBlockOtherRestoreFocus ?? false
@@ -95,8 +89,7 @@ enum GamercardDrawerState {
     this.setEnableContent()
 
     if ((isTargetChanged && this.currentState != GamercardDrawerState.STATE_CLOSED)
-        || (!isTargetChanged && !this.currentVisible))
-    {
+        || (!isTargetChanged && !this.currentVisible)) {
       this.closeDrawer()
       return
     }
@@ -104,8 +97,7 @@ enum GamercardDrawerState {
     this.openCurTargetIfNeeded()
   }
 
-  function openCurTargetIfNeeded()
-  {
+  function openCurTargetIfNeeded() {
     if (!this.currentVisible || !checkObj(this.currentTarget))
       return
 
@@ -113,8 +105,7 @@ enum GamercardDrawerState {
     this.openDrawer()
   }
 
-  function onDrawerOpen(_obj)
-  {
+  function onDrawerOpen(_obj) {
     this.currentState = GamercardDrawerState.STATE_OPENED
     if (this.currentTarget != null)
       this.setEnableContent(this.currentTarget)
@@ -124,21 +115,17 @@ enum GamercardDrawerState {
     ::broadcastEvent("GamercardDrawerOpened", params)
   }
 
-  function onDrawerClose(_obj)
-  {
+  function onDrawerClose(_obj) {
     this.currentState = GamercardDrawerState.STATE_CLOSED
     this.openCurTargetIfNeeded()
   }
 
-  function onEventRequestToggleVisibility(params)
-  {
+  function onEventRequestToggleVisibility(params) {
     this.updateDrawer(params)
   }
 
-  function onDrawerDeactivate(obj)
-  {
-    switch (this.currentState)
-    {
+  function onDrawerDeactivate(obj) {
+    switch (this.currentState) {
       case GamercardDrawerState.STATE_OPENING:
         this.onDrawerOpen(obj)
         break
@@ -148,26 +135,22 @@ enum GamercardDrawerState {
     }
   }
 
-  function toggleFuncOnObjs(guiObjFunc, obj = null)
-  {
+  function toggleFuncOnObjs(guiObjFunc, obj = null) {
     let objId = obj?.id
     let contentObject = this.getObj("gamercard_drawer_content")
     if (!contentObject)
       return
-    for (local i = 0; i < contentObject.childrenCount(); ++i)
-    {
+    for (local i = 0; i < contentObject.childrenCount(); ++i) {
       let child = contentObject.getChild(i)
       child[guiObjFunc](child?.id == objId)
     }
   }
 
-  function setShowContent(obj = null)
-  {
+  function setShowContent(obj = null) {
     this.toggleFuncOnObjs("show", obj)
   }
 
-  function setEnableContent(obj = null)
-  {
+  function setEnableContent(obj = null) {
     this.toggleFuncOnObjs("enable", obj)
   }
 }

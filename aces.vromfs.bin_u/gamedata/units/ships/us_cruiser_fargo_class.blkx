@@ -26,7 +26,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "smokeScreenActivateTime": 5.0,
@@ -122,6 +122,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -2556,6 +2564,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -13631,10 +13649,10 @@
     },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "ship_rangefinder": {
       "prevModification": "152mm_us_mk34_base_fuse_navy_he_ammo_pack"
@@ -15717,41 +15735,143 @@
       }
     ]
   },
-  "user_skin": {
-    "name": "cruiser_fargo_class",
-    "replace_tex": [
-      {
-        "from": "camo_darkgrey_5d*"
-      },
-      {
-        "from": "camo_hazegray*"
-      }
-    ],
-    "set_tex": [
-      {
-        "from": "turret_127mm_mk32_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "turret_152mm_mk16_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "turret_40mm_bofors_mk1_twin_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "turret_40mm_bofors_mk2_quadruple_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "turret_mk14_oerlikon_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "cruiser_fargo_class_c*",
-        "param": "camo_skin_tex"
-      }
-    ]
-  }
+  "user_skin": [
+    {
+      "name": "cruiser_fargo_class",
+      "replace_tex": [
+        {
+          "from": "camo_darkgrey_5d*"
+        },
+        {
+          "from": "camo_hazegray*"
+        }
+      ],
+      "set_tex": [
+        {
+          "from": "turret_127mm_mk32_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_152mm_mk16_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_40mm_bofors_mk1_twin_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_40mm_bofors_mk2_quadruple_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_mk14_oerlikon_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "cruiser_fargo_class_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    },
+    {
+      "name": "battleship_arkansas",
+      "set_tex": [
+        {
+          "from": "turret_127mm_51_cal_mk7_mk15_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_305mm_twin_mk9_mk7_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_76mm_mk10_cruiser_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_28mm_chicago_piano_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "turret_mk4_oerlicon_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "battleship_arkansas_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    }
+  ],
+  "skin": [
+    {
+      "name": "usa_camo_navy_blue",
+      "nameLocId": "skin/usa_camo_navy_blue",
+      "descLocId": "skin/usa_camo_navy_blue/desc",
+      "replace_tex": [
+        {
+          "from": "camo_royal_blue*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_medium_bluegray*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_navy_blue*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_atlanticocean",
+      "nameLocId": "skin/usa_camo_atlanticocean",
+      "descLocId": "skin/usa_camo_atlanticocean/desc",
+      "replace_tex": [
+        {
+          "from": "camo_royal_blue*",
+          "to": "usa_camo_atlanticocean*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_atlanticocean*"
+        },
+        {
+          "from": "camo_medium_bluegray*",
+          "to": "usa_camo_atlanticocean*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_atlanticocean*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_pacificfleet",
+      "nameLocId": "skin/usa_camo_pacificfleet",
+      "descLocId": "skin/usa_camo_pacificfleet/desc",
+      "replace_tex": [
+        {
+          "from": "camo_royal_blue*",
+          "to": "usa_camo_pacificfleet*"
+        },
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_pacificfleet*"
+        },
+        {
+          "from": "camo_medium_bluegray*",
+          "to": "usa_camo_pacificfleet*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_pacificfleet*"
+        }
+      ]
+    }
+  ]
 }

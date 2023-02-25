@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let DataBlock = require("DataBlock")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -37,11 +39,10 @@ let { LEADER_OPERATION_STATES,
   getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
+let { select_mission } = require("guiMission")
 
-local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
-
-::gui_handlers.InstantDomination <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.InstantDomination <- class extends ::gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
 
   sceneBlkName = "%gui/mainmenu/instantAction.blk"
@@ -56,11 +57,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   curQueue = null
   function getCurQueue() { return this.curQueue }
-  function setCurQueue(value)
-  {
+  function setCurQueue(value) {
     this.curQueue = value
-    if (value != null)
-    {
+    if (value != null) {
       this.initQueueTableHandler()
       this.restoreQueueParams()
     }
@@ -68,14 +67,12 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   curCountry = ""
   function getCurCountry() { return this.curCountry }
-  function setCurCountry(value)
-  {
+  function setCurCountry(value) {
     this.curCountry = value
   }
 
   gamercardDrawerHandler = null
-  function getGamercardDrawerHandler()
-  {
+  function getGamercardDrawerHandler() {
     if (!::handlersManager.isHandlerValid(this.gamercardDrawerHandler))
       this.initGamercardDrawerHandler()
     if (::handlersManager.isHandlerValid(this.gamercardDrawerHandler))
@@ -85,8 +82,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
   }
 
   queueTableHandler = null
-  function getQueueTableHandler()
-  {
+  function getQueueTableHandler() {
     if (!::handlersManager.isHandlerValid(this.queueTableHandler))
       this.initQueueTableHandler()
     if (::handlersManager.isHandlerValid(this.queueTableHandler))
@@ -98,8 +94,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
   newGameModeIconWidget = null
   slotbarPresetsTutorial = null
 
-  function initScreen()
-  {
+  function initScreen() {
     ::enableHangarControls(true)
     // Causes drawer to initialize once.
     this.getGamercardDrawerHandler()
@@ -120,19 +115,16 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     requestAllPatchnotes()
   }
 
-  function reinitScreen(_params)
-  {
+  function reinitScreen(_params) {
     this.inited = false
     this.initScreen()
   }
 
-  function canShowDmViewer()
-  {
+  function canShowDmViewer() {
     return this.getCurQueue() == null
   }
 
-  function initQueueTableHandler()
-  {
+  function initQueueTableHandler() {
     if (::handlersManager.isHandlerValid(this.queueTableHandler))
       return
 
@@ -151,8 +143,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.queueTableHandler = ::handlersManager.loadHandler(::gui_handlers.QueueTable, params)
   }
 
-  function initGamercardDrawerHandler()
-  {
+  function initGamercardDrawerHandler() {
     if (topMenuHandler.value == null)
       return
 
@@ -173,8 +164,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.registerSubHandler(this.gamercardDrawerHandler)
   }
 
-  function initToBattleButton()
-  {
+  function initToBattleButton() {
     if (!this.rootHandlerWeak)
       return
 
@@ -183,8 +173,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       return
 
     let toBattleNest = ::showBtn("gamercard_tobattle", true, this.rootHandlerWeak.scene)
-    if (toBattleNest)
-    {
+    if (toBattleNest) {
       this.rootHandlerWeak.scene.findObject("top_gamercard_bg").needRedShadow = "no"
       let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
         enableEnterKey = !::is_platform_shield_tv()
@@ -196,8 +185,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.rootHandlerWeak.scene.findObject("gamercard_logo").show(false)
     this.gameModeChangeButtonObj = this.rootHandlerWeak.scene.findObject("game_mode_change_button")
 
-    if (!hasFeature("GameModeSelector"))
-    {
+    if (!hasFeature("GameModeSelector")) {
       this.gameModeChangeButtonObj.show(false)
       this.gameModeChangeButtonObj.enable(false)
     }
@@ -207,20 +195,18 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
   }
 
   _lastGameModeId = null
-  function setGameMode(modeId)
-  {
+  function setGameMode(modeId) {
     let gameMode = ::game_mode_manager.getGameModeById(modeId)
     if (gameMode == null || modeId == this._lastGameModeId)
       return
     this._lastGameModeId = modeId
 
-    this.onCountrySelectAction()//bad function naming. Actually this function validates your units and selected country for new mode
+    this.onCountrySelectAction() //bad function naming. Actually this function validates your units and selected country for new mode
     this.setCurrentGameModeName()
     this.reinitSlotbar()
   }
 
-  function setCurrentGameModeName()
-  {
+  function setCurrentGameModeName() {
     if (!checkObj(this.gameModeChangeButtonObj))
       return
 
@@ -230,16 +216,15 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       let gameMode = ::game_mode_manager.getCurrentGameMode()
       let br = recentBR.value
       name = gameMode && gameMode?.text != ""
-        ? gameMode.text + (br > 0 ? loc("mainmenu/BR", {br = format("%.1f", br)}) : "") : ""
+        ? gameMode.text + (br > 0 ? loc("mainmenu/BR", { br = format("%.1f", br) }) : "") : ""
 
-      if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
-      {
+      if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady()) {
         let gameModeId = ::g_squad_manager.getLeaderGameModeId()
         let leaderBR = ::g_squad_manager.getLeaderBattleRating()
-        if(gameModeId != "")
+        if (gameModeId != "")
           name = ::events.getEventNameText(::events.getEvent(gameModeId))
-        if(leaderBR > 0)
-          name += loc("mainmenu/BR", {br = format("%.1f", leaderBR)})
+        if (leaderBR > 0)
+          name += loc("mainmenu/BR", { br = format("%.1f", leaderBR) })
       }
     }
     else
@@ -250,8 +235,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     )
   }
 
-  function updateUnseenGameModesCounter()
-  {
+  function updateUnseenGameModesCounter() {
     if (!checkObj(this.newGameModesWidgetsPlaceObj))
       return
 
@@ -261,51 +245,42 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.newGameModeIconWidget.setValue(::game_mode_manager.getUnseenGameModeCount())
   }
 
-  function goToBattleFromDebriefing()
-  {
+  function goToBattleFromDebriefing() {
     this.determineAndStartAction(true)
   }
 
-  function onEventShowingGameModesUpdated(_params)
-  {
+  function onEventShowingGameModesUpdated(_params) {
     this.updateUnseenGameModesCounter()
   }
 
-  function onEventMyStatsUpdated(_params)
-  {
+  function onEventMyStatsUpdated(_params) {
     this.setCurrentGameModeName()
     this.doWhenActiveOnce("checkNoviceTutor")
     this.updateStartButton()
   }
 
-  function onEventCrewTakeUnit(_params)
-  {
+  function onEventCrewTakeUnit(_params) {
     this.doWhenActiveOnce("onCountrySelectAction")
   }
 
-  function onEventSlotbarPresetLoaded(params)
-  {
+  function onEventSlotbarPresetLoaded(params) {
     if (getTblValue("crewsChanged", params, true))
       this.doWhenActiveOnce("onCountrySelectAction")
   }
 
-  function onEventSquadSetReady(_params)
-  {
+  function onEventSquadSetReady(_params) {
     this.doWhenActiveOnce("updateStartButton")
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     this.doWhenActiveOnce("updateStartButton")
   }
 
-  function onEventCrewChanged(_params)
-  {
+  function onEventCrewChanged(_params) {
     this.doWhenActiveOnce("checkCountries")
   }
 
-  function onEventCheckClientUpdate(params)
-  {
+  function onEventCheckClientUpdate(params) {
     if (!checkObj(this.scene))
       return
 
@@ -320,14 +295,12 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.doWhenActive(@() checkNuclearEvent(params))
   }
 
-  function checkCountries()
-  {
+  function checkCountries() {
     this.onCountrySelectAction()
     return
   }
 
-  function onEventQueueChangeState(p)
-  {
+  function onEventQueueChangeState(p) {
     let _queue = p?.queue
     if (!::queues.checkQueueType(_queue, this.queueMask))
       return
@@ -336,14 +309,12 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::dmViewer.update()
   }
 
-  function onEventCurrentGameModeIdChanged(_params)
-  {
+  function onEventCurrentGameModeIdChanged(_params) {
     this.setGameMode(::game_mode_manager.getCurrentGameModeId())
     this.updateNoticeGMChanged()
   }
 
-  function onEventGameModesUpdated(_params)
-  {
+  function onEventGameModesUpdated(_params) {
     this.setGameMode(::game_mode_manager.getCurrentGameModeId())
     this.updateUnseenGameModesCounter()
     this.guiScene.performDelayed(this, function() {
@@ -353,13 +324,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     })
   }
 
-  function onCountrySelect()
-  {
+  function onCountrySelect() {
     this.checkQueue(this.onCountrySelectAction)
   }
 
-  function onCountrySelectAction()
-  {
+  function onCountrySelectAction() {
     if (!checkObj(this.scene))
       return
     let currentGameMode = ::game_mode_manager.getCurrentGameMode()
@@ -378,12 +347,10 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.startEnabled = countryEnabled && requiredUnitsAvailable && ((!multiSlotEnabled && currentUnitGoodForMode) || (multiSlotEnabled && crewsGoodForMode))
   }
 
-  function getQueueAircraft(country)
-  {
+  function getQueueAircraft(country) {
     let slots = this.getCurQueue() && ::queues.getQueueSlots(this.getCurQueue())
-    if (slots && (country in slots))
-    {
-      foreach(_cIdx, c in ::g_crews_list.get())
+    if (slots && (country in slots)) {
+      foreach (_cIdx, c in ::g_crews_list.get())
         if (c.country == country)
           return ::g_crew.getCrewUnit(country.crews?[slots[country]])
       return null
@@ -391,8 +358,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     return ::getSelAircraftByCountry(country)
   }
 
-  function onTopMenuGoBack(checkTopMenuButtons = false)
-  {
+  function onTopMenuGoBack(checkTopMenuButtons = false) {
     if (!this.getCurQueue() && ::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       return ::g_squad_manager.setReadyFlag()
 
@@ -401,16 +367,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       isCanceledByPlayer = true }))
       return
 
-    if (checkTopMenuButtons && topMenuHandler.value?.leftSectionHandlerWeak != null)
-    {
+    if (checkTopMenuButtons && topMenuHandler.value?.leftSectionHandlerWeak != null) {
       topMenuHandler.value.leftSectionHandlerWeak.switchMenuFocus()
       return
     }
   }
 
   _isToBattleAccessKeyActive = true
-  function setToBattleButtonAccessKeyActive(value)
-  {
+  function setToBattleButtonAccessKeyActive(value) {
     if (value == this._isToBattleAccessKeyActive)
       return
     if (this.toBattleButtonObj == null)
@@ -423,20 +387,18 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       consoleImageObj.show(value && ::show_console_buttons)
   }
 
-  function startManualMission(manualMission)
-  {
-    let missionBlk = ::DataBlock()
+  function startManualMission(manualMission) {
+    let missionBlk = DataBlock()
     missionBlk.setFrom(::get_mission_meta_info(manualMission.name))
-    foreach(name, value in manualMission)
+    foreach (name, value in manualMission)
       if (name != "name")
         missionBlk[name] <- value
-    ::select_mission(missionBlk, false)
+    select_mission(missionBlk, false)
     ::current_campaign_mission = missionBlk.name
-    this.guiScene.performDelayed(this, function() { this.goForward(::gui_start_flight)})
+    this.guiScene.performDelayed(this, function() { this.goForward(::gui_start_flight) })
   }
 
-  function onStart()
-  {
+  function onStart() {
     if (!suggestAndAllowPsnPremiumFeatures())
       return
 
@@ -454,21 +416,18 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.determineAndStartAction()
   }
 
-  function onEventSquadDataUpdated(_params)
-  {
-    if(::g_squad_manager.isSquadLeader())
+  function onEventSquadDataUpdated(_params) {
+    if (::g_squad_manager.isSquadLeader())
       return
 
-    if (::g_squad_manager.isMeReady())
-    {
+    if (::g_squad_manager.isMeReady()) {
       let id = ::g_squad_manager.getLeaderGameModeId()
-      if(id == "" || id == ::game_mode_manager.getCurrentGameModeId())
+      if (id == "" || id == ::game_mode_manager.getCurrentGameModeId())
         this.updateNoticeGMChanged()
       else
         ::game_mode_manager.setLeaderGameMode(id)
     }
-    else
-    {
+    else {
       let id = ::game_mode_manager.getUserGameModeId()
       if (id && id != "")
         ::game_mode_manager.setCurrentGameModeById(id, true)
@@ -479,10 +438,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   onEventOperationInfoUpdated = @(_) this.doWhenActiveOnce("updateStartButton")
 
-  function determineAndStartAction(isFromDebriefing = false)
-  {
-    if (changeStartMission)
-    {
+  function determineAndStartAction(isFromDebriefing = false) {
+    if (changeStartMission) {
       this.startManualMission(changeStartMission)
       return
     }
@@ -497,7 +454,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       return
     }
 
-    if (this.leaveCurQueue({ isLeaderCanJoin = true, isCanceledByPlayer = true}))
+    if (this.leaveCurQueue({ isLeaderCanJoin = true, isCanceledByPlayer = true }))
       return
 
     let curGameMode = ::game_mode_manager.getCurrentGameMode()
@@ -505,8 +462,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
       return
 
-    if (!this.isCrossPlayEventAvailable(event))
-    {
+    if (!this.isCrossPlayEventAvailable(event)) {
       checkAndShowCrossplayWarning(@() ::showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
       return
     }
@@ -534,17 +490,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     , this))
   }
 
-  function isCrossPlayEventAvailable(event)
-  {
+  function isCrossPlayEventAvailable(event) {
     return crossplayModule.isCrossPlayEnabled() || ::events.isEventPlatformOnlyAllowed(event)
   }
 
-  function onStartAction()
-  {
+  function onStartAction() {
     this.checkCountries()
 
-    if (!::is_online_available())
-    {
+    if (!::is_online_available()) {
       let handler = this
       this.goForwardIfOnline((@(handler) function() {
           if (handler && checkObj(handler.scene))
@@ -553,8 +506,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       return
     }
 
-    if (::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
-    {
+    if (::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true })) {
       this.setCurCountry(profileCountrySq.value)
       let gameMode = ::game_mode_manager.getCurrentGameMode()
       if (gameMode == null)
@@ -585,8 +537,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     }
   }
 
-  function startEventBattle(event)
-  {
+  function startEventBattle(event) {
     //!!FIX ME: this is a start random_battles or newbie battles events without check old domination modes
     //can be used as base random battles start for new matching.
     //valid only for newbie events yes
@@ -596,22 +547,19 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::EventJoinProcess(event)
   }
 
-  function showNoSuitableVehiclesMsgBox()
-  {
+  function showNoSuitableVehiclesMsgBox() {
     this.msgBox("cant_fly", loc("events/no_allowed_crafts", " "), [["ok", function() {
       this.startSlotbarPresetsTutorial()
     }]], "ok")
   }
 
-  function showBadCurrentUnitMsgBox()
-  {
+  function showBadCurrentUnitMsgBox() {
     this.msgBox("cant_fly", loc("events/no_allowed_crafts", " "), [["ok", function() {
       this.startSlotbarPresetsTutorial()
     }]], "ok")
   }
 
-  function getRequirementsMsgText()
-  {
+  function getRequirementsMsgText() {
     let gameMode = ::game_mode_manager.getCurrentGameMode()
     if (!gameMode || gameMode.type != RB_GM_TYPE.EVENT)
       return ""
@@ -621,8 +569,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     if (!event)
       return ""
 
-    foreach (team in ::events.getSidesList(event))
-    {
+    foreach (team in ::events.getSidesList(event)) {
       let teamData = ::events.getTeamData(event, team)
       if (!teamData)
         continue
@@ -635,26 +582,23 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       return ""
 
     local msgText = loc("events/no_required_crafts") + loc("ui/colon")
-    foreach(rule in requirements)
+    foreach (rule in requirements)
       msgText += "\n" + ::events.generateEventRule(rule, true)
 
     return msgText
   }
 
-  function showRequirementsMsgBox()
-  {
+  function showRequirementsMsgBox() {
     this.showBadUnitMsgBox(this.getRequirementsMsgText())
   }
 
-  function showBadUnitMsgBox(msgText)
-  {
+  function showBadUnitMsgBox(msgText) {
     let buttonsArray = []
 
     // "Change mode" button
     let curUnitType = ::get_es_unit_type(::get_cur_slotbar_unit())
     let gameMode = ::game_mode_manager.getGameModeByUnitType(curUnitType, -1, true)
-    if (gameMode != null)
-    {
+    if (gameMode != null) {
       buttonsArray.append([
         "#mainmenu/changeMode",
         function () {
@@ -668,19 +612,16 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     // "Change vehicle" button
     let currentGameMode = ::game_mode_manager.getCurrentGameMode()
     local properUnitType = null
-    if (currentGameMode.type == RB_GM_TYPE.EVENT)
-    {
+    if (currentGameMode.type == RB_GM_TYPE.EVENT) {
       let event = ::game_mode_manager.getGameModeEvent(currentGameMode)
-      foreach(unitType in unitTypes.types)
-        if (::events.isUnitTypeRequired(event, unitType.esUnitType))
-        {
+      foreach (unitType in unitTypes.types)
+        if (::events.isUnitTypeRequired(event, unitType.esUnitType)) {
           properUnitType = unitType
           break
         }
     }
 
-    if (this.rootHandlerWeak)
-    {
+    if (this.rootHandlerWeak) {
       buttonsArray.append([
         "#mainmenu/changeVehicle",
         function () {
@@ -693,39 +634,33 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     // "Ok" button
     buttonsArray.append(["ok", function () {}])
 
-    this.msgBox("bad_current_unit", msgText, buttonsArray, "ok"/*"#mainmenu/changeMode"*/, { cancel_fn = function () {} })
+    this.msgBox("bad_current_unit", msgText, buttonsArray, "ok" /*"#mainmenu/changeMode"*/ , { cancel_fn = function () {} })
   }
 
-  function isCurrentGameModeMultiSlotEnabled()
-  {
+  function isCurrentGameModeMultiSlotEnabled() {
     let gameMode = ::game_mode_manager.getCurrentGameMode()
     return ::events.isEventMultiSlotEnabled(getTblValue("source", gameMode, null))
   }
 
-  function onCountryChoose(country)
-  {
-    if (::isCountryAvailable(country))
-    {
+  function onCountryChoose(country) {
+    if (::isCountryAvailable(country)) {
       this.setCurCountry(country)
       this.topMenuSetCountry(this.getCurCountry())
       this.onCountryApply()
     }
   }
 
-  function topMenuSetCountry(country)
-  {
+  function topMenuSetCountry(country) {
     let slotbar = this.getSlotbar()
     if (slotbar)
       slotbar.setCountry(country)
   }
 
-  function onAdvertLinkClick(obj, itype, link)
-  {
+  function onAdvertLinkClick(obj, itype, link) {
     this.proccessLinkFromText(obj, itype, link)
   }
 
-  function onCountryApply()
-  {
+  function onCountryApply() {
     let multiSlotEnabled = this.isCurrentGameModeMultiSlotEnabled()
     if (!this.testCrewsForMode(this.getCurCountry()))
       return this.showNoSuitableVehiclesMsgBox()
@@ -745,15 +680,13 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
                                                // but better to refactor this place after remove old gamemodes
   }
 
-  function checkGameModeTutorial(gameMode)
-  {
-    let checkTutorUnitType = (gameMode.unitTypes.len() == 1)? gameMode.unitTypes[0] : null
+  function checkGameModeTutorial(gameMode) {
+    let checkTutorUnitType = (gameMode.unitTypes.len() == 1) ? gameMode.unitTypes[0] : null
     let diffCode = ::events.getEventDiffCode(::game_mode_manager.getGameModeEvent(gameMode))
     return checkDiffTutorial(diffCode, checkTutorUnitType)
   }
 
-  function updateStartButton()
-  {
+  function updateStartButton() {
     if (!checkObj(this.scene) || !checkObj(this.toBattleButtonObj))
       return
 
@@ -780,8 +713,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
         isCancel = false
       }
     }
-    else
-    {
+    else {
       txt = loc("mainmenu/btnCancel")
       isCancel = true
     }
@@ -796,10 +728,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     topMenuHandler.value?.onQueue.call(topMenuHandler.value, inQueue)
   }
 
-  function afterCountryApply(membersData = null, team = null, event = null)
-  {
-    if (::disable_network())
-    {
+  function afterCountryApply(membersData = null, team = null, event = null) {
+    if (::disable_network()) {
       ::match_search_gm <- GM_DOMINATION
       this.guiScene.performDelayed(this, function() {
         this.goForwardIfOnline(::gui_start_session_list, false)
@@ -810,20 +740,17 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.joinQuery(null, membersData, team, event)
   }
 
-  function joinQuery(query = null, membersData = null, _team = null, event = null)
-  {
+  function joinQuery(query = null, membersData = null, _team = null, event = null) {
     this.leaveCurQueue()
 
     local modeName = ""
     if (event)
       modeName = event.name
-    else
-    {
+    else {
       let gameMode = ::game_mode_manager.getCurrentGameMode()
       modeName = getTblValue("id", gameMode, "")
     }
-    if (!query)
-    {
+    if (!query) {
       query = {
         mode = modeName
         country = this.getCurCountry()
@@ -841,12 +768,11 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       chatDiv = ::getChatDiv(topMenuHandler.value.scene)
     if (!chatDiv && this.scene && this.scene.isValid())
       chatDiv = ::getChatDiv(this.scene)
-    if(chatDiv)
+    if (chatDiv)
       ::switchMenuChatObjIfVisible(chatDiv)
   }
 
-  function leaveCurQueue(options = {})
-  {
+  function leaveCurQueue(options = {}) {
     let queue = this.getCurQueue()
     if (!queue)
       return false
@@ -858,8 +784,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     return true
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.leaveCurQueue({ isLeaderCanJoin = true
       msgId = "squad/only_leader_can_cancel"
       isCanceledByPlayer = true }))
@@ -868,29 +793,24 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.onTopMenuGoBack()
   }
 
-  function checkQueue(func)
-  {
+  function checkQueue(func) {
     if (!this.inited)
       return func()
 
     this.checkedModifyQueue(this.queueMask, func, this.restoreQueueParams)
   }
 
-  function restoreQueueParams()
-  {
+  function restoreQueueParams() {
     let tMsgBox = this.guiScene["req_tutorial_msgbox"]
     if (checkObj(tMsgBox))
       this.guiScene.destroyElement(tMsgBox)
   }
 
-  function testCurrentUnitForMode(country)
-  {
-    if (country == "country_0")
-    {
+  function testCurrentUnitForMode(country) {
+    if (country == "country_0") {
       let option = ::get_option(::USEROPT_COUNTRY)
-      foreach(idx, optionCountryName in option.values)
-        if (optionCountryName != "country_0" && option.items[idx].enabled)
-        {
+      foreach (idx, optionCountryName in option.values)
+        if (optionCountryName != "country_0" && option.items[idx].enabled) {
           let unit = this.getQueueAircraft(optionCountryName)
           if (!unit)
             continue
@@ -903,26 +823,22 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     return ::game_mode_manager.isUnitAllowedForGameMode(unit)
   }
 
-  function testCrewsForMode(country)
-  {
+  function testCrewsForMode(country) {
     let countryToCheckArr = []
-    if (country == "country_0")
-    {//fill countryToCheckArr with countries, allowed by game mode
+    if (country == "country_0") { //fill countryToCheckArr with countries, allowed by game mode
       let option = ::get_option(::USEROPT_COUNTRY)
-      foreach(idx, optionCountryName in option.values)
+      foreach (idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled)
           countryToCheckArr.append(optionCountryName)
     }
     else
       countryToCheckArr.append(country)
 
-    foreach (countryCrews in ::g_crews_list.get())
-    {
+    foreach (countryCrews in ::g_crews_list.get()) {
       if (!isInArray(countryCrews.country, countryToCheckArr))
         continue
 
-      foreach (crew in countryCrews.crews)
-      {
+      foreach (crew in countryCrews.crews) {
         if (!("aircraft" in crew))
           continue
         let unit = ::getAircraftByName(crew.aircraft)
@@ -934,14 +850,12 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     return false
   }
 
-  function checkRequiredUnits(country)
-  {
+  function checkRequiredUnits(country) {
     let gameMode = ::game_mode_manager.getCurrentGameMode()
     return gameMode ? ::events.checkRequiredUnits(::game_mode_manager.getGameModeEvent(gameMode), null, country) : true
   }
 
-  function getIaBlockSelObj(obj)
-  {
+  function getIaBlockSelObj(obj) {
     let value = obj.getValue() || 0
     if (obj.childrenCount() <= value)
       return null
@@ -951,11 +865,10 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       return null
 
     let selObj = obj.findObject(id)
-    return checkObj(selObj)? selObj : null
+    return checkObj(selObj) ? selObj : null
   }
 
-  function onIaBlockActivate(obj)
-  {
+  function onIaBlockActivate(obj) {
     let selObj = this.getIaBlockSelObj(obj)
     if (!selObj)
       return
@@ -963,8 +876,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     selObj.select()
   }
 
-  function onUnlockCrew(obj)
-  {
+  function onUnlockCrew(obj) {
     if (!obj)
       return
     local isGold = false
@@ -984,10 +896,9 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     let msg = format("%s %s?", loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
     this.msgBox("unlock_crew", msg, [
         ["yes", (@(crewId, isGold) function() {
-          this.taskId = ::unlockCrew( crewId, isGold, cost )
+          this.taskId = ::unlockCrew(crewId, isGold, cost)
           ::sync_handler_simulate_signal("profile_reload")
-          if (this.taskId >= 0)
-          {
+          if (this.taskId >= 0) {
             ::set_char_cb(this, this.slotOpCb)
             this.showTaskProgressBox()
             this.afterSlotOp = null
@@ -997,8 +908,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       ], "no")
   }
 
-  function checkNoviceTutor()
-  {
+  function checkNoviceTutor() {
     if (hasFeature("BattleAutoStart"))
       return
 
@@ -1012,8 +922,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     tutorialModule.saveShowedTutorial("toBattle")
   }
 
-  function checkUpgradeCrewTutorial()
-  {
+  function checkUpgradeCrewTutorial() {
     if (!::g_login.isLoggedIn())
       return
 
@@ -1023,14 +932,12 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.tryToStartUpgradeCrewTutorial()
   }
 
-  function getCurrentCrewSlot()
-  {
+  function getCurrentCrewSlot() {
     let slotbar = this.getSlotbar()
     return slotbar && slotbar.getCurrentCrewSlot()
   }
 
-  function tryToStartUpgradeCrewTutorial()
-  {
+  function tryToStartUpgradeCrewTutorial() {
     let curCrew = this.getCurCrew()
     if (curCrew == null || curCrew.isEmpty)
       return
@@ -1077,8 +984,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::gui_modal_tutor(steps, this)
   }
 
-  function toBattleTutor()
-  {
+  function toBattleTutor() {
     let objs = [this.toBattleButtonObj, topMenuHandler.value.getObj("to_battle_console_image")]
     let steps = [{
       obj = [objs]
@@ -1091,8 +997,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     ::gui_modal_tutor(steps, this)
   }
 
-  function startSlotbarPresetsTutorial()
-  {
+  function startSlotbarPresetsTutorial() {
     let tutorialCounter = ::SlotbarPresetsTutorial.getCounter()
     if (tutorialCounter >= ::SlotbarPresetsTutorial.MAX_TUTORIALS)
       return false
@@ -1116,8 +1021,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       this.slotbarPresetsTutorial = null
     }.bindenv(this)
     tutorial.preset = ::game_mode_manager.findPresetValidForGameMode(this.getCurCountry())
-    if (tutorial.startTutorial())
-    {
+    if (tutorial.startTutorial()) {
       this.slotbarPresetsTutorial = tutorial
       return true
     }
@@ -1129,7 +1033,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       if (::my_stats.isMeNewbie())
         return
 
-      let invitedPlayersBlk = ::DataBlock()
+      let invitedPlayersBlk = DataBlock()
       ::get_invited_players_info(invitedPlayersBlk)
       if (invitedPlayersBlk.blockCount() == 0) {
         let gmBlk = ::get_game_settings_blk()
@@ -1158,16 +1062,14 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     })
   }
 
-  function checkShowChangelog()
-  {
+  function checkShowChangelog() {
     this.guiScene.performDelayed({}, function() {
       if (needShowChangelog() && ::get_cur_base_gui_handler().isSceneActiveNoModals())
         ::handlersManager.animatedSwitchScene(openChangelog())
     })
   }
 
-  function checkNewUnitTypeToBattleTutor()
-  {
+  function checkNewUnitTypeToBattleTutor() {
     if (::disable_network()
       || !::my_stats.isStatsLoaded()
       || !hasFeature("NewUnitTypeToBattleTutorial"))
@@ -1184,8 +1086,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.startNewUnitTypeToBattleTutorial()
   }
 
-  function startNewUnitTypeToBattleTutorial()
-  {
+  function startNewUnitTypeToBattleTutorial() {
     let currentGameMode = ::game_mode_manager.getCurrentGameMode()
     if (!currentGameMode)
       return
@@ -1194,9 +1095,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     local gameModeForTutorial = null
     local validPreset = null
     local isNotFoundUnitTypeForTutorial = true
-    local isNotFoundValidPresetForTutorial= false
-    foreach (unitType in unitTypes.types)
-    {
+    local isNotFoundValidPresetForTutorial = false
+    foreach (unitType in unitTypes.types) {
       if (!unitType.isAvailableForFirstChoice()
         || ::my_stats.getTimePlayedOnUnitType(unitType.esUnitType) > 0)
         continue
@@ -1215,10 +1115,8 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
       isNotFoundValidPresetForTutorial = true
     }
 
-    if (!gameModeForTutorial || !validPreset)
-    {
-      if (isNotFoundUnitTypeForTutorial || isNotFoundValidPresetForTutorial)
-      {
+    if (!gameModeForTutorial || !validPreset) {
+      if (isNotFoundUnitTypeForTutorial || isNotFoundValidPresetForTutorial) {
         ::add_big_query_record("new_unit_type_to_battle_tutorial_skipped",
           isNotFoundUnitTypeForTutorial ? "isNotFoundUnitTypeForTutorial" : "isNotFoundValidPreset")
         tutorialModule.saveShowedTutorial("newUnitTypetoBattle")
@@ -1251,71 +1149,61 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     tutorialModule.saveShowedTutorial("newUnitTypetoBattle")
   }
 
-  function updateNoticeGMChanged()
-  {
+  function updateNoticeGMChanged() {
     if (!hasFeature("GameModeSelector"))
       return
 
     local notice = null
     let alertObj = this.scene.findObject("game_mode_notice")
-    if(::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
-    {
+    if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady()) {
       let gameModeId = ::g_squad_manager.getLeaderGameModeId()
-      if(gameModeId && gameModeId != "")
+      if (gameModeId && gameModeId != "")
         notice = loc("mainmenu/leader_gamemode_notice")
       alertObj.hideConsoleImage = "yes"
     }
-    else
-    {
+    else {
       let id = ::game_mode_manager.getUserGameModeId()
       let gameMode = ::game_mode_manager.getGameModeById(id)
-      if((id != "" && gameMode && id != ::game_mode_manager.getCurrentGameModeId()))
+      if ((id != "" && gameMode && id != ::game_mode_manager.getCurrentGameModeId()))
         notice = format(loc("mainmenu/gamemode_change_notice"), gameMode.text)
       alertObj.hideConsoleImage = "no"
     }
 
-    if(notice)
+    if (notice)
       alertObj.setValue(notice)
     alertObj.show(notice)
   }
 
-  function onGMNoticeClick()
-  {
+  function onGMNoticeClick() {
     if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       return
 
     let id = ::game_mode_manager.getUserGameModeId()
-    if(id != "")
-    {
+    if (id != "") {
       ::game_mode_manager.setCurrentGameModeById(id, true)
     }
   }
 
-  function onEventBattleRatingChanged(_params)
-  {
+  function onEventBattleRatingChanged(_params) {
     this.setCurrentGameModeName()
   }
 
-  function checkNonApprovedSquadronResearches()
-  {
+  function checkNonApprovedSquadronResearches() {
     if (isHaveNonApprovedClanUnitResearches())
       clanVehiclesModal.open()
   }
 
-  function onEventClanChanged(_params)
-  {
+  function onEventClanChanged(_params) {
     if (!hasFeature("AutoFlushClanExp"))
       this.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
-  function onEventSquadronExpChanged(_params)
-  {
+  function onEventSquadronExpChanged(_params) {
     if (!hasFeature("AutoFlushClanExp"))
       this.doWhenActiveOnce("checkNonApprovedSquadronResearches")
   }
 
-  function onEventPartnerUnlocksUpdated(_p)
-  {
+  function onEventPartnerUnlocksUpdated(_p) {
     let hasModalObjectVal = this.guiScene.hasModalObject()
     this.doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal))
   }
@@ -1324,8 +1212,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
     this.setCurrentGameModeName()
   }
 
-  function on_show_clan_requests() //FIXME: FUNC in 'on_click' somehow calls
-  {
+  function on_show_clan_requests() { //FIXME: FUNC in 'on_click' somehow calls
     if (::g_clans.isHaveRightsToReviewCandidates())
       ::showClanRequests(::g_clans.getMyClanCandidates(), ::clan_get_my_clan_id(), false);
   }
@@ -1334,8 +1221,7 @@ local { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
 
   onEventOpenGameModeSelect = @(_p) this.openGameModeSelect()
 
-  function openGameModeSelect()
-  {
+  function openGameModeSelect() {
     if (!this.isValid())
       return
 

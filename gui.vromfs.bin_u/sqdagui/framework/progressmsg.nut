@@ -19,20 +19,17 @@ let class Msg {
   showCount = 0
   sceneObj = null
 
-  constructor(uid_, config)
-  {
+  constructor(uid_, config) {
     this.uid = uid_
     this.incrementImpl(config)
   }
 
   isValid = @() this.showCount > 0 && check_obj(this.sceneObj)
 
-  function applyConfig(config)
-  {
+  function applyConfig(config) {
     local hasSceneChanges = false
-    foreach(key in ["text", "onCancelCb", "buttonsDelay"])
-      if ((key in config) && this[key] != config[key])
-      {
+    foreach (key in ["text", "onCancelCb", "buttonsDelay"])
+      if ((key in config) && this[key] != config[key]) {
         if (key != "onCancelCb")
           hasSceneChanges = true
         this[key] = config[key]
@@ -40,15 +37,13 @@ let class Msg {
     return hasSceneChanges
   }
 
-  function increment(config)
-  {
+  function increment(config) {
     if (!this.isValid())
       this.showCount = 0
     this.incrementImpl(config)
   }
 
-  function incrementImpl(config)
-  {
+  function incrementImpl(config) {
     this.showCount++
     let hasSceneChanges = this.applyConfig(config) || !check_obj(this.sceneObj)
     if (!hasSceneChanges)
@@ -63,7 +58,7 @@ let class Msg {
     }, this)
 
     this.sceneObj = ::scene_msg_box(
-      "progressMsg_" + this.uid,
+      $"progressMsg_{this.uid}" ,
       ::get_cur_gui_scene(),
       this.text ?? loc(textLocIdDefault),
       [["cancel", cancelCb]],
@@ -77,15 +72,13 @@ let class Msg {
     ::destroyMsgBox(prevSceneObj)
   }
 
-  function decrement()
-  {
+  function decrement() {
     this.showCount--
     if (!this.isValid())
       this.destroy()
   }
 
-  function destroy()
-  {
+  function destroy() {
     if (this.uid in msgList)
       delete msgList[this.uid]
     ::destroyMsgBox(this.sceneObj)

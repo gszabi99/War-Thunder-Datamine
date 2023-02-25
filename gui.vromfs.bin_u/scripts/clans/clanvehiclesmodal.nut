@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-local handlerClass = class extends vehiclesModal.handlerClass
-{
+local handlerClass = class extends vehiclesModal.handlerClass {
   canQuitByGoBack       = false
 
   wndTitleLocId         = "clan/vehicles"
@@ -19,28 +19,25 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   hasSpendExpProcess = false
 
-  function initScreen()
-  {
+  function initScreen() {
     this.lastSelectedUnit = ::getAircraftByName(::clan_get_researching_unit())
     base.initScreen()
   }
 
-  function getWndTitle()
-  {
+  function getWndTitle() {
     local locId = "shop/distributeSquadronExp"
     let flushExp = ::clan_get_exp()
     if (flushExp <= 0 || this.needChosenResearchOfSquadron())
       locId = "mainmenu/nextResearchSquadronVehicle"
 
     local expText = flushExp ? loc("ui/parentheses/space",
-        {text = ::Balance(0, 0, 0, 0, flushExp).getTextAccordingToBalance()}) : ""
+        { text = ::Balance(0, 0, 0, 0, flushExp).getTextAccordingToBalance() }) : ""
     expText = loc(locId) + expText
 
     return expText
   }
 
-  function getNavBarView()
-  {
+  function getNavBarView() {
     return {
       right = [
         {
@@ -63,15 +60,13 @@ local handlerClass = class extends vehiclesModal.handlerClass
     }
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     this.updateTitle()
     this.updateBuyBtn()
     this.updateSpendExpBtn()
   }
 
-  function updateTitle()
-  {
+  function updateTitle() {
     let titleObj = this.scene.findObject("header_text")
     if (!checkObj(titleObj))
       return
@@ -79,8 +74,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
     titleObj.setValue(this.getWndTitle())
   }
 
-  function updateBuyBtn()
-  {
+  function updateBuyBtn() {
     if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_buy_unit", false)
 
@@ -96,8 +90,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
     placePriceTextToButton(this.scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
   }
 
-  function updateSpendExpBtn()
-  {
+  function updateSpendExpBtn() {
     if (!this.lastSelectedUnit)
       return this.showSceneBtn("btn_spend_exp", false)
 
@@ -115,14 +108,13 @@ local handlerClass = class extends vehiclesModal.handlerClass
         : "shop/investToUnit",
       { unit = ::getUnitName(this.lastSelectedUnit.name) })
     let textValue = flushExp > 0 ? loc("ui/parentheses/space",
-      {text = ::Cost().setSap(flushExp).tostring()}) : ""
+      { text = ::Cost().setSap(flushExp).tostring() }) : ""
     let coloredText = textWord + textValue
 
     setColoredDoubleTextToButton(this.scene, "btn_spend_exp", coloredText)
   }
 
-  function onSpendExcessExp()
-  {
+  function onSpendExcessExp() {
     if (this.hasSpendExpProcess)
       return
 
@@ -132,7 +124,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
     this.hasSpendExpProcess = true
 
-    let afterDoneFunc = Callback(function() {this.hasSpendExpProcess = false}, this)
+    let afterDoneFunc = Callback(function() { this.hasSpendExpProcess = false }, this)
     if (!::isUnitInResearch(unit)) {
       unitActions.setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc)
       return
@@ -157,13 +149,11 @@ local handlerClass = class extends vehiclesModal.handlerClass
 
   needChosenResearchOfSquadron = @() ::clan_get_researching_unit() == ""
 
-  function onBuy()
-  {
+  function onBuy() {
     unitActions.buy(this.lastSelectedUnit, "clan_vehicles")
   }
 
-  function onEventFlushSquadronExp(params)
-  {
+  function onEventFlushSquadronExp(params) {
     let unit = params?.unit
     let isAllResearched = isAllClanUnitsResearched()
     if (!isAllResearched && ::clan_get_exp() > 0)
@@ -174,8 +164,7 @@ local handlerClass = class extends vehiclesModal.handlerClass
     this.goBack()
   }
 
-  function onEventUnitBought(p)
-  {
+  function onEventUnitBought(p) {
     if (isAllClanUnitsResearched())
       return this.goBack()
 

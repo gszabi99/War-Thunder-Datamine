@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
+let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 
 let saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
 
@@ -19,15 +21,13 @@ let function disableSeenUserlogs(idsList) {
       continue
 
     let disableFunc = u.isString(id) ? ::disable_user_log_entry_by_id : ::disable_user_log_entry
-    if (disableFunc(id))
-    {
+    if (disableFunc(id)) {
       needSave = true
       u.appendOnce(id, ::shown_userlog_notifications)
     }
   }
 
-  if (needSave)
-  {
+  if (needSave) {
     log("Userlog: Disable seen logs: save online")
     saveOnlineJob()
   }
@@ -40,8 +40,7 @@ let actionByLogType = {
   [EULT_PUNLOCK_CANCELED]     = @(_log) ::gui_start_battle_tasks_wnd(),
   [EULT_PUNLOCK_NEW_PROPOSAL] = @(_log) ::gui_start_battle_tasks_wnd(),
   [EULT_PUNLOCK_ACCEPT_MULTI] = @(_log) ::gui_start_battle_tasks_wnd(),
-  [EULT_INVITE_TO_TOURNAMENT] = function (logObj)
-  {
+  [EULT_INVITE_TO_TOURNAMENT] = function (logObj) {
     let battleId = logObj?.battleId
     if (battleId == null)
       return
@@ -49,7 +48,7 @@ let actionByLogType = {
     if (!::isInMenu())
       return ::g_invites.showLeaveSessionFirstPopup()
 
-    if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
+    if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
       return
 
     if (!isCrossPlayEnabled())
@@ -66,8 +65,7 @@ let function getTournamentRewardData(logObj) {
   if (!logObj?.rewardTS)
     return []
 
-  foreach(_idx, block in logObj.rewardTS)
-  {
+  foreach (_idx, block in logObj.rewardTS) {
     let result = clone block
 
     result.type <- "TournamentReward"
@@ -78,7 +76,7 @@ let function getTournamentRewardData(logObj) {
     result.value <- reasonNum
     result[block?.fieldName ?? result.reason] <- reasonNum
 
-    res.append(::DataBlockAdapter(result))
+    res.append(DataBlockAdapter(result))
   }
 
   return res

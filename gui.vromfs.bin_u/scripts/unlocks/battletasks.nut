@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -21,8 +23,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::g_battle_tasks <- null
 
-::BattleTasks <- class
-{
+::BattleTasks <- class {
   PLAYER_CONFIG_PATH = "seen/battletasks"
   specialTasksId = "specialTasksPersonalUnlocks"
   dailyTasksId = "dailyPersonalUnlocks"
@@ -49,8 +50,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
   isCompleteEasyTask = null
   hasInCompleteHardTask = null
 
-  constructor()
-  {
+  constructor() {
     this.currentTasksArray = []
     this.activeTasksArray = []
     this.proposedTasksArray = []
@@ -68,8 +68,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
-  function reset()
-  {
+  function reset() {
     this.currentTasksArray.clear()
     this.activeTasksArray.clear()
     this.proposedTasksArray.clear()
@@ -86,8 +85,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     && !::u.isEmpty(this.getTasksArray())
     && isMultiplayerPrivilegeAvailable.value
 
-  function updateTasksData()
-  {
+  function updateTasksData() {
     this.currentTasksArray.clear()
     if (!::g_login.isLoggedIn())
       return
@@ -95,14 +93,14 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     this.updatedProposedTasks()
     this.updatedActiveTasks()
 
-    this.currentTasksArray.sort(function(a,b) {
+    this.currentTasksArray.sort(function(a, b) {
       if (a?._sort_order == null || b?._sort_order == null)
         return 0
 
       if (a._sort_order == b._sort_order)
         return 0
 
-      return a._sort_order > b._sort_order? 1 : -1
+      return a._sort_order > b._sort_order ? 1 : -1
     })
 
     if (::isInMenu())
@@ -111,8 +109,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     ::broadcastEvent("BattleTasksFinishedUpdate")
   }
 
-  function onEventBattleTasksShowAll(params)
-  {
+  function onEventBattleTasksShowAll(params) {
     this.showAllTasksValue = getTblValue("showAllTasksValue", params, false)
     this.updateTasksData()
   }
@@ -120,8 +117,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
   function onEventBattleTasksIncomeUpdate(_params) { this.updateTasksData() }
   function onEventBattleEnded(_params)             { this.updateTasksData() }
 
-  function updatedProposedTasks()
-  {
+  function updatedProposedTasks() {
     let tasksDataBlock = ::get_proposed_personal_unlocks_blk()
     ::g_battle_task_difficulty.updateTimeParamsFromBlk(tasksDataBlock)
     this.lastGenerationId = tasksDataBlock?[this.dailyTasksId + "_lastGenerationId"] ?? 0
@@ -132,9 +128,8 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     this.proposedTasksArray = []
     this.newIconWidgetByTaskId = {}
 
-    for (local i = 0; i < tasksDataBlock.blockCount(); i++)
-    {
-      let task = ::DataBlock()
+    for (local i = 0; i < tasksDataBlock.blockCount(); i++) {
+      let task = DataBlock()
       task.setFrom(tasksDataBlock.getBlock(i))
       task.isActive = false
       this.proposedTasksArray.append(task)
@@ -147,13 +142,11 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     }
   }
 
-  function updatedActiveTasks()
-  {
+  function updatedActiveTasks() {
     let currentActiveTasks = ::get_personal_unlocks_blk()
     this.activeTasksArray.clear()
-    for (local i = 0; i < currentActiveTasks.blockCount(); i++)
-    {
-      let task = ::DataBlock()
+    for (local i = 0; i < currentActiveTasks.blockCount(); i++) {
+      let task = DataBlock()
       task.setFrom(currentActiveTasks.getBlock(i))
 
       if (!this.isBattleTask(task))
@@ -173,29 +166,24 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     }
   }
 
-  function updateRerollCost(tasksDataBlock)
-  {
+  function updateRerollCost(tasksDataBlock) {
     this.rerollCost = ::Cost(getTblValue("_rerollCost", tasksDataBlock, 0),
                         getTblValue("_rerollGoldCost", tasksDataBlock, 0))
   }
 
-  function isTaskActive(task)
-  {
+  function isTaskActive(task) {
     return getTblValue("isActive", task, true)
   }
 
-  function isTaskTimeExpired(task)
-  {
+  function isTaskTimeExpired(task) {
     return ::g_battle_task_difficulty.getDifficultyTypeByTask(task).isTimeExpired(task)
   }
 
-  function isTaskDone(config)
-  {
+  function isTaskDone(config) {
     if (::u.isEmpty(config))
       return false
 
-    if (this.isBattleTask(config))
-    {
+    if (this.isBattleTask(config)) {
       if (!this.getTaskById(config.id))
         return true //Task with old difficulty type, not using anymore
       return ::is_unlocked_scripted(-1, config.id)
@@ -203,24 +191,21 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return ::is_unlocked_scripted(-1, config.id)
   }
 
-  function canGetReward(task)
-  {
+  function canGetReward(task) {
     return this.isBattleTask(task)
            && this.isTaskActual(task)
            && !this.isTaskDone(task)
            && getTblValue("_readyToReward", task, false)
   }
 
-  function canGetAnyReward()
-  {
+  function canGetAnyReward() {
     foreach (task in this.getActiveTasksArray())
       if (this.canGetReward(task))
         return true
     return false
   }
 
-  function canActivateTask(task)
-  {
+  function canActivateTask(task) {
     if (!this.isBattleTask(task))
       return false
 
@@ -241,23 +226,20 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
   function getActiveTasksArray() { return this.activeTasksArray }
   function getWidgetsTable() { return this.newIconWidgetByTaskId }
 
-  function debugClearSeenData()
-  {
+  function debugClearSeenData() {
     this.seenTasks = {}
     this.saveSeenTasksData()
     //!!fix me: need to recount seen data from active tasks
   }
 
-  function loadSeenTasksData(forceLoad = false)
-  {
+  function loadSeenTasksData(forceLoad = false) {
     if (this.seenTasksInited && !forceLoad)
       return true
 
     this.seenTasks.clear()
     let blk = ::loadLocalByAccount(this.PLAYER_CONFIG_PATH)
-    if (type(blk) == "instance" && (blk instanceof ::DataBlock))
-      for (local i = 0; i < blk.paramCount(); i++)
-      {
+    if (type(blk) == "instance" && (blk instanceof DataBlock))
+      for (local i = 0; i < blk.paramCount(); i++) {
         let id = blk.getParamName(i)
         this.seenTasks[id] <- max(blk.getParamValue(i), getTblValue(id, this.seenTasks, 0))
       }
@@ -266,12 +248,10 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return true
   }
 
-  function saveSeenTasksData()
-  {
+  function saveSeenTasksData() {
     let minDay = time.getUtcDays() - this.TASKS_OUT_OF_DATE_DAYS
-    let blk = ::DataBlock()
-    foreach(generation_id, day in this.seenTasks)
-    {
+    let blk = DataBlock()
+    foreach (generation_id, day in this.seenTasks) {
       if (day < minDay && !this.isBattleTaskNew(generation_id))
         continue
 
@@ -281,14 +261,12 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     ::saveLocalByAccount(this.PLAYER_CONFIG_PATH, blk)
   }
 
-  function isBattleTaskNew(generation_id)
-  {
+  function isBattleTaskNew(generation_id) {
     this.loadSeenTasksData()
     return !(generation_id in this.seenTasks)
   }
 
-  function markTaskSeen(generation_id, sendEvent = true, isNew = false)
-  {
+  function markTaskSeen(generation_id, sendEvent = true, isNew = false) {
     let wasNew = this.isBattleTaskNew(generation_id)
     if (wasNew == isNew)
       return false
@@ -303,11 +281,9 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return true
   }
 
-  function markAllTasksSeen()
-  {
+  function markAllTasksSeen() {
     local changeNew = false
-    foreach(task in this.currentTasksArray)
-    {
+    foreach (task in this.currentTasksArray) {
       let generation_id = this.getUniqueId(task)
       let result = this.markTaskSeen(generation_id, false)
       changeNew = changeNew || result
@@ -317,13 +293,11 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       ::broadcastEvent("NewBattleTasksChanged")
   }
 
-  function getUnseenTasksCount()
-  {
+  function getUnseenTasksCount() {
     this.loadSeenTasksData()
 
     local num = 0
-    foreach(_idx, task in this.currentTasksArray)
-    {
+    foreach (_idx, task in this.currentTasksArray) {
       if (!this.isBattleTaskNew(this.getUniqueId(task)))
         continue
 
@@ -332,17 +306,14 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return num
   }
 
-  function getLocalizedTaskNameById(param)
-  {
+  function getLocalizedTaskNameById(param) {
     local task = null
     local id = null
-    if (::u.isDataBlock(param))
-    {
+    if (::u.isDataBlock(param)) {
       task = param
       id = getTblValue("id", param)
     }
-    else if (::u.isString(param))
-    {
+    else if (::u.isString(param)) {
       task = this.getTaskById(param)
       id = param
     }
@@ -352,50 +323,44 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return loc(getTblValue("locId", task, "battletask/" + id))
   }
 
-  function getTaskById(id)
-  {
+  function getTaskById(id) {
     if (::u.isTable(id) || ::u.isDataBlock(id))
       id = getTblValue("id", id)
 
     if (!id)
       return null
 
-    foreach(task in this.activeTasksArray)
+    foreach (task in this.activeTasksArray)
       if (task.id == id)
         return task
 
-    foreach(task in this.proposedTasksArray)
+    foreach (task in this.proposedTasksArray)
       if (task.id == id)
         return task
 
     return null
   }
 
-  function generateUnlockConfigByTask(task)
-  {
+  function generateUnlockConfigByTask(task) {
     local config = ::build_conditions_config(task)
     ::build_unlock_desc(config)
     config.originTask <- task
     return config
   }
 
-  function getUniqueId(task)
-  {
+  function getUniqueId(task) {
     return task.id
   }
 
-  function isController(config)
-  {
+  function isController(config) {
     return getTblValue("_controller", config, false)
   }
 
-  function isAutoAcceptedTask(task)
-  {
+  function isAutoAcceptedTask(task) {
     return getTblValue("_autoAccept", task, false)
   }
 
-  function isBattleTask(task)
-  {
+  function isBattleTask(task) {
     if (::u.isString(task))
       task = this.getTaskById(task)
 
@@ -403,8 +368,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return diff != ::g_battle_task_difficulty.UNKNOWN
   }
 
-  function isUserlogForBattleTasksGroup(body)
-  {
+  function isUserlogForBattleTasksGroup(body) {
     let unlockId = getTblValue("unlockId", body)
     if (unlockId == null)
       return true
@@ -413,28 +377,24 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
   }
 
   //currently it is using in userlog
-  function generateUpdateDescription(logObj)
-  {
+  function generateUpdateDescription(logObj) {
     let res = {}
     let blackList = []
     let whiteList = []
 
     let proposedTasks = this.getProposedTasksArray()
 
-    foreach(taskId, table in logObj)
-    {
+    foreach (taskId, table in logObj) {
       local header = ""
       let diffTypeName = getTblValue("type", table)
-      if (diffTypeName)
-      {
+      if (diffTypeName) {
         if (isInArray(diffTypeName, blackList))
           continue
 
         let diff = ::g_battle_task_difficulty.getDifficultyTypeByName(diffTypeName)
         if (!isInArray(diffTypeName, whiteList)
             && !::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff,
-                                          proposedTasks, this.showAllTasksValue))
-        {
+                                          proposedTasks, this.showAllTasksValue)) {
           blackList.append(diffTypeName)
           continue
         }
@@ -450,14 +410,12 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 
     local data = ""
     local lastUserLogHeader = ""
-    foreach(userlogHeader, arr in res)
-    {
+    foreach (userlogHeader, arr in res) {
       if (arr.len() == 0)
         continue
 
-      data += data == ""? "" : "\n"
-      if (lastUserLogHeader != userlogHeader)
-      {
+      data += data == "" ? "" : "\n"
+      if (lastUserLogHeader != userlogHeader) {
         data += loc("userlog/battletask/type/" + userlogHeader) + loc("ui/colon")
         lastUserLogHeader = userlogHeader
       }
@@ -477,30 +435,26 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return ::g_battle_task_difficulty.EASY
   }
 
-  function generateStringForUserlog(table, taskId)
-  {
+  function generateStringForUserlog(table, taskId) {
     local text = this.getBattleTaskLocIdFromUserlog(table, taskId)
     let cost = ::Cost(getTblValue("cost", table, 0), getTblValue("costGold", table, 0))
     if (!::u.isEmpty(cost))
-      text += loc("ui/parentheses/space", {text = cost.tostring()})
+      text += loc("ui/parentheses/space", { text = cost.tostring() })
 
     return text
   }
 
-  function getBattleTaskLocIdFromUserlog(logObj, taskId)
-  {
-    return "locId" in logObj? loc(logObj.locId) : this.getLocalizedTaskNameById(taskId)
+  function getBattleTaskLocIdFromUserlog(logObj, taskId) {
+    return "locId" in logObj ? loc(logObj.locId) : this.getLocalizedTaskNameById(taskId)
   }
 
-  function getImage(imageName = null)
-  {
+  function getImage(imageName = null) {
     if (imageName)
-      return "ui/images/battle_tasks/" + imageName + ".jpg?P1"
+      return "ui/images/battle_tasks/" + imageName + "?P1"
     return null
   }
 
-  function getTaskStatus(task)
-  {
+  function getTaskStatus(task) {
     if (this.canGetReward(task))
       return "complete"
     if (this.isTaskDone(task))
@@ -510,17 +464,15 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return null
   }
 
-  function getGenerationIdInt(task)
-  {
+  function getGenerationIdInt(task) {
     let taskGenId = task?._generation_id
     if (!taskGenId)
       return 0
 
-    return ::u.isString(taskGenId)? taskGenId.tointeger() : taskGenId
+    return ::u.isString(taskGenId) ? taskGenId.tointeger() : taskGenId
   }
 
-  function isTaskActual(task)
-  {
+  function isTaskActual(task) {
     if (!task?._generation_id)
       return true
 
@@ -529,8 +481,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       || taskGenId == this.specTasksLastGenerationId
   }
 
-  function isTaskUnderControl(checkTask, taskController, typesToCheck = null)
-  {
+  function isTaskUnderControl(checkTask, taskController, typesToCheck = null) {
     if (taskController.id == checkTask.id || taskController?._generation_id != checkTask?._generation_id)
       return false
     if (!typesToCheck)
@@ -539,18 +490,16 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return isInArray(::g_battle_task_difficulty.getDifficultyTypeByTask(checkTask).name, typesToCheck)
   }
 
-  function canCancelTask(task)
-  {
+  function canCancelTask(task) {
     return !this.isTaskDone(task) && !getTblValue("_preventCancel", task, false)
   }
 
-  function getTasksListByControllerTask(taskController, conditions)
-  {
+  function getTasksListByControllerTask(taskController, conditions) {
     let tasksArray = []
     if (!this.isController(taskController))
       return tasksArray
 
-    let unlocksCond = ::u.search(conditions, function(cond) { return cond.type == "char_personal_unlock" } )
+    let unlocksCond = ::u.search(conditions, function(cond) { return cond.type == "char_personal_unlock" })
     let personalUnlocksTypes = unlocksCond && unlocksCond.values
 
     foreach (task in this.currentTasksArray)
@@ -560,15 +509,13 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return tasksArray
   }
 
-  function getTaskWithAvailableAward(tasksArray)
-  {
+  function getTaskWithAvailableAward(tasksArray) {
     return ::u.search(tasksArray, function(task) {
         return this.canGetReward(task)
       }.bindenv(this))
   }
 
-  function getTaskDescription(config = null, paramsCfg = {})
-  {
+  function getTaskDescription(config = null, paramsCfg = {}) {
     if (!config)
       return null
 
@@ -584,14 +531,12 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     if (this.showAllTasksValue)
       taskDescription.append("*Debug info: id - " + config.id)
 
-    if (isPromo)
-    {
+    if (isPromo) {
       if (getTblValue("locDescId", config, "") != "")
         taskDescription.append(loc(config.locDescId))
       taskDescription.append(getUnlockMainCondDescByCfg(config))
     }
-    else
-    {
+    else {
       taskDescription.append(getFullUnlockDesc(config))
 
       if (!this.canGetReward(task)) {
@@ -604,16 +549,15 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       }
 
       let controlledTasks = this.getTasksListByControllerTask(task, config.conditions)
-      foreach (contrTask in controlledTasks)
-      {
+      foreach (contrTask in controlledTasks) {
         taskConditionsList.append({
           unlocked = this.isTaskDone(contrTask)
-          text = colorize(this.isActive(contrTask)? "userlogColoredText" : "", this.getLocalizedTaskNameById(contrTask))
+          text = colorize(this.isActive(contrTask) ? "userlogColoredText" : "", this.getLocalizedTaskNameById(contrTask))
         })
       }
     }
 
-    let progressData = config?.getProgressBarData? config.getProgressBarData() : null
+    let progressData = config?.getProgressBarData ? config.getProgressBarData() : null
     let progressBarValue = config?.curVal != null && config.curVal >= 0
       ? (config.curVal.tofloat() / (config?.maxVal ?? 1) * 1000)
       : 0
@@ -626,7 +570,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       taskUnlocks = taskUnlocksList
       taskStreaks = taskStreaksList
       taskUnlocksList = taskUnlocksList.len() + taskStreaksList.len()
-      taskConditionsList = taskConditionsList.len()? taskConditionsList : null
+      taskConditionsList = taskConditionsList.len() ? taskConditionsList : null
       needShowProgressBar = isPromo && progressData?.show
       progressBarValue = progressBarValue.tointeger()
       isPromo = isPromo
@@ -636,11 +580,10 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return ::handyman.renderCached("%gui/unlocks/battleTasksDescription.tpl", view)
   }
 
-  function getUnlockConditionBlock(text, _id, config, isUnlocked, isFinal, compareOR = false, isBitMode = true)
-  {
+  function getUnlockConditionBlock(text, _id, config, isUnlocked, isFinal, compareOR = false, isBitMode = true) {
     local unlockDesc = compareOR ? loc("hints/shortcut_separator") + "\n" : ""
     unlockDesc += text
-    unlockDesc += compareOR? "" : loc(isFinal? "ui/dot" : "ui/comma")
+    unlockDesc += compareOR ? "" : loc(isFinal ? "ui/dot" : "ui/comma")
 
     return {
       tooltipMarkup = this.getTooltipMarkupByModeType(config)
@@ -681,7 +624,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
           continue
 
         let unlockConfig = ::build_conditions_config(unlockBlk)
-        let isUnlocked = isBitMode? stdMath.is_bit_set(config.curVal, idx) : ::is_unlocked_scripted(-1, unlockId)
+        let isUnlocked = isBitMode ? stdMath.is_bit_set(config.curVal, idx) : ::is_unlocked_scripted(-1, unlockId)
         res.append({
           tooltipMarkup = this.getTooltipMarkupByModeType(unlockConfig)
           text = namesLoc[idx]
@@ -699,8 +642,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     let compareOR = config?.compareOR ?? false
 
     let res = []
-    for (local i = 0; i < namesLoc.len(); i++)
-    {
+    for (local i = 0; i < namesLoc.len(); i++) {
       let unlockId = config.names[i]
       let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
       if (!unlockBlk || !isUnlockVisible(unlockBlk))
@@ -722,22 +664,20 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return res
   }
 
-  function getTooltipMarkupByModeType(config)
-  {
+  function getTooltipMarkupByModeType(config) {
     if (config.type == "char_unit_exist")
-      return UNIT.getMarkup(config.id, {showProgress=true})
+      return UNIT.getMarkup(config.id, { showProgress = true })
 
     if (this.isBattleTask(config.id))
-      return BATTLE_TASK.getMarkup(config.id, {showProgress=true})
+      return BATTLE_TASK.getMarkup(config.id, { showProgress = true })
 
     if (activeUnlocks.value?[config.id] != null)
-      return BATTLE_PASS_CHALLENGE.getMarkup(config.id, {showProgress=true})
+      return BATTLE_PASS_CHALLENGE.getMarkup(config.id, { showProgress = true })
 
-    return UNLOCK.getMarkup(config.id, {showProgress=true})
+    return UNLOCK.getMarkup(config.id, { showProgress = true })
   }
 
-  function getRefreshTimeTextForTask(task)
-  {
+  function getRefreshTimeTextForTask(task) {
     let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
     let timeLeft = diff.getTimeLeft(task)
     if (timeLeft < 0)
@@ -749,13 +689,13 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return "".concat(labelText,  colorize("unlockActiveColor", diff.getTimeLeftText(task)))
   }
 
-  function setUpdateTimer(task, taskBlockObj, addParams = {})
-  {
+  function setUpdateTimer(task, taskBlockObj, addParams = {}) {
     if (!checkObj(taskBlockObj))
       return
 
     let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    if (!diff.hasTimer) return
+    if (!diff.hasTimer)
+      return
 
     local holderObj = taskBlockObj.findObject("task_timer_text")
     if (checkObj(holderObj) && task)
@@ -774,7 +714,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     if (checkObj(holderObj))
       SecondsUpdater(holderObj, function(obj, _params) {
         let timeText = ::g_battle_task_difficulty.EASY.getTimeLeftText(task)
-        obj.setValue(loc("ui/parentheses/space", {text = timeText + loc("icon/timer")}))
+        obj.setValue(loc("ui/parentheses/space", { text = timeText + loc("icon/timer") }))
 
         return timeText == ""
       })
@@ -784,8 +724,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       ::Timer(taskBlockObj, timeLeft + 1, @() diff.notifyTimeExpired(task), this, false, true)
   }
 
-  function getPlaybackPath(playbackName, shouldUseDefaultLang = false)
-  {
+  function getPlaybackPath(playbackName, shouldUseDefaultLang = false) {
     if (::u.isEmpty(playbackName))
       return ""
 
@@ -795,16 +734,14 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       return ""
 
     let path = unlockPlaybackPath.mainPath
-    let abbrev = shouldUseDefaultLang? "en" : ::g_language.getShortName()
+    let abbrev = shouldUseDefaultLang ? "en" : ::g_language.getShortName()
     return path + abbrev + "/" + playbackName + unlockPlaybackPath.fileExtension
   }
 
-  function getRewardMarkUpConfig(task, config)
-  {
+  function getRewardMarkUpConfig(task, config) {
     let rewardMarkUp = {}
     let itemId = getTblValue("userLogId", task)
-    if (itemId)
-    {
+    if (itemId) {
       let item = ::ItemsManager.findItemById(::to_integer_safe(itemId, itemId, false))
       if (item)
         rewardMarkUp.itemMarkUp <- item.getNameMarkup(getTblValue("amount_trophies", task))
@@ -819,7 +756,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
     }
 
-    if(difficulty == ::g_battle_task_difficulty.MEDIUM) {
+    if (difficulty == ::g_battle_task_difficulty.MEDIUM) {
       let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
       if (specialTaskAward?.awardType.hasIncreasingLimit()) {
         let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
@@ -830,13 +767,12 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     if (reward == "" && !rewardMarkUp.len())
       return rewardMarkUp
 
-    let rewardLoc = this.isTaskDone(task)? loc("rewardReceived") : loc("reward")
+    let rewardLoc = this.isTaskDone(task) ? loc("rewardReceived") : loc("reward")
     rewardMarkUp.rewardText <- rewardLoc + loc("ui/colon") + reward
     return rewardMarkUp
   }
 
-  function generateItemView(config, paramsCfg = {})
-  {
+  function generateItemView(config, paramsCfg = {}) {
     let isPromo = paramsCfg?.isPromo ?? false
     let isShortDescription = paramsCfg?.isShortDescription ?? false
 
@@ -847,11 +783,11 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     let isUnlock = "unlockType" in config
 
     let title = isTaskBattleTask ? this.getLocalizedTaskNameById(task.id)
-                : (isUnlock? getUnlockNameText(config.unlockType, config.id) : getTblValue("text", config, ""))
+                : (isUnlock ? getUnlockNameText(config.unlockType, config.id) : getTblValue("text", config, ""))
     let headerCond = isUnlock ? getHeaderCondition(config.conditions) : null
 
     let id = isTaskBattleTask ? task.id : config.id
-    let progressData = config?.getProgressBarData? config.getProgressBarData() : null
+    let progressData = config?.getProgressBarData ? config.getProgressBarData() : null
     let progressBarValue = config?.curVal != null && config.curVal >= 0
       ? (config.curVal.tofloat() / (config?.maxVal ?? 1) * 1000)
       : 0
@@ -867,12 +803,12 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
       taskDifficultyImage = this.getDifficultyImage(task)
       taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
       description = isTaskBattleTask || isUnlock ? this.getTaskDescription(config, paramsCfg) : null
-      reward = isPromo? null : this.getRewardMarkUpConfig(task, config)
-      newIconWidget = isTaskBattleTask ? (this.isTaskActive(task)? null : ::NewIconWidget.createLayout()) : null
+      reward = isPromo ? null : this.getRewardMarkUpConfig(task, config)
+      newIconWidget = isTaskBattleTask ? (this.isTaskActive(task) ? null : ::NewIconWidget.createLayout()) : null
       canGetReward = isTaskBattleTask && isCanGetReward
       canReroll = isTaskBattleTask && !isCanGetReward
-      otherTasksNum = task && isPromo? this.getTotalActiveTasksNum() : null
-      isLowWidthScreen = isPromo? ::is_low_width_screen() : null
+      otherTasksNum = task && isPromo ? this.getTotalActiveTasksNum() : null
+      isLowWidthScreen = isPromo ? ::is_low_width_screen() : null
       isPromo = isPromo
       isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
       needShowProgressValue = taskStatus == null && config?.curVal != null && config.curVal >= 0 && config?.maxVal != null && config.maxVal >= 0
@@ -886,8 +822,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     }
   }
 
-  function getTotalActiveTasksNum()
-  {
+  function getTotalActiveTasksNum() {
     local num = 0
     foreach (task in this.getActiveTasksArray())
       if (this.isTaskActual(task) && !this.isTaskDone(task))
@@ -895,11 +830,9 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return num
   }
 
-  function getDifficultyImage(task)
-  {
+  function getDifficultyImage(task) {
     let difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    if (difficulty.showSeasonIcon)
-    {
+    if (difficulty.showSeasonIcon) {
       let curWarbond = ::g_warbonds.getCurrentWarbond()
       if (curWarbond)
         return curWarbond.getMedalIcon()
@@ -908,8 +841,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return difficulty.image
   }
 
-  function getTasksArrayByIncreasingDifficulty()
-  {
+  function getTasksArrayByIncreasingDifficulty() {
     let typesArray = [
       ::g_battle_task_difficulty.EASY,
       ::g_battle_task_difficulty.MEDIUM,
@@ -917,8 +849,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     ]
 
     let result = []
-    foreach(t in typesArray)
-    {
+    foreach (t in typesArray) {
       let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
       if (arr.len() == 0)
         continue
@@ -930,26 +861,22 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return result
   }
 
-  function filterTasksByGameModeId(tasksArray, gameModeId)
-  {
+  function filterTasksByGameModeId(tasksArray, gameModeId) {
     if (::u.isEmpty(gameModeId))
       return tasksArray
 
     let res = []
-    foreach(task in tasksArray)
-    {
+    foreach (task in tasksArray) {
       if (!this.isBattleTask(task))
         continue
 
       let blk = ::build_conditions_config(task)
-      foreach(condition in blk.conditions)
-      {
+      foreach (condition in blk.conditions) {
         let values = getTblValue("values", condition)
         if (::u.isEmpty(values))
             continue
 
-        if (isInArray(gameModeId, values))
-        {
+        if (isInArray(gameModeId, values)) {
           res.append(task)
           break
         }
@@ -958,8 +885,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return res
   }
 
-  function getTasksArrayByDifficulty(searchArray, difficulty = null)
-  {
+  function getTasksArrayByDifficulty(searchArray, difficulty = null) {
     if (::u.isEmpty(searchArray))
       searchArray = this.currentTasksArray
 
@@ -969,28 +895,24 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return searchArray.filter(@(task) ::g_battle_tasks.isTaskSameDifficulty(task, difficulty))
   }
 
-  function isTaskSameDifficulty(task, difficulty)
-  {
+  function isTaskSameDifficulty(task, difficulty) {
     if (!this.isBattleTask(task))
       return true
 
     return isInArray(task?._choiceType ?? "", difficulty.choiceType)
   }
 
-  function isTaskSuitableForUnitTypeMask(task, unitTypeMask)
-  {
+  function isTaskSuitableForUnitTypeMask(task, unitTypeMask) {
     if (!this.isBattleTask(task))
       return false
 
     let blk = ::build_conditions_config(task)
-    foreach(condition in blk.conditions)
-    {
+    foreach (condition in blk.conditions) {
       let values = getTblValue("values", condition)
       if (::u.isEmpty(values))
         continue
 
-      foreach (value in values)
-      {
+      foreach (value in values) {
         let gameMode = ::game_mode_manager.getGameModeById(value)
         if (!gameMode)
           continue
@@ -1006,8 +928,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return false
   }
 
-  function requestRewardForTask(battleTaskId)
-  {
+  function requestRewardForTask(battleTaskId) {
     if (::u.isEmpty(battleTaskId))
       return
 
@@ -1019,13 +940,12 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     this.sendReceiveRewardRequest(battleTask)
   }
 
-  function sendReceiveRewardRequest(battleTask)
-  {
-    let blk = ::DataBlock()
+  function sendReceiveRewardRequest(battleTask) {
+    let blk = DataBlock()
     blk.unlockName = battleTask.id
 
     let taskId = ::char_send_blk("cln_reward_specific_battle_task", blk)
-    ::g_tasker.addTask(taskId, {showProgressBox = true}, function() {
+    ::g_tasker.addTask(taskId, { showProgressBox = true }, function() {
       ::g_warbonds_view.needShowProgressBarInPromo = true
       ::update_gamercards()
       ::broadcastEvent("BattleTasksIncomeUpdate")
@@ -1033,79 +953,70 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     })
   }
 
-  function rerollTask(task)
-  {
+  function rerollTask(task) {
     if (::u.isEmpty(task))
       return
 
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     blk.unlockName = task.id
 
     let taskId = ::char_send_blk("cln_reroll_battle_task", blk)
-    ::g_tasker.addTask(taskId, {showProgressBox = true},
+    ::g_tasker.addTask(taskId, { showProgressBox = true },
       function() {
-        statsd.send_counter("sq.battle_tasks.reroll_v2", 1, {task_id = (task?._base_id ?? "null")})
+        statsd.send_counter("sq.battle_tasks.reroll_v2", 1, { task_id = (task?._base_id ?? "null") })
         ::broadcastEvent("BattleTasksIncomeUpdate")
       }
     )
   }
 
-  function rerollSpecialTask(task)
-  {
+  function rerollSpecialTask(task) {
     if (::u.isEmpty(task))
       return
 
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     blk.unlockName = task.id
     blk.metaTypeName = this.specialTasksId
 
     let taskId = ::char_send_blk("cln_reroll_all_battle_tasks_for_meta", blk)
-    ::g_tasker.addTask(taskId, {showProgressBox = true},
+    ::g_tasker.addTask(taskId, { showProgressBox = true },
       function() {
-        statsd.send_counter("sq.battle_tasks.special_reroll", 1, {task_id = (task?._base_id ?? "null")})
+        statsd.send_counter("sq.battle_tasks.special_reroll", 1, { task_id = (task?._base_id ?? "null") })
         ::broadcastEvent("BattleTasksIncomeUpdate")
       })
   }
 
-  function canActivateHardTasks()
-  {
+  function canActivateHardTasks() {
     return ::isInMenu()
-      && ::u.search(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this )) != null
-      && ::u.search(this.activeTasksArray, Callback(this.isSpecialBattleTask, this )) == null
+      && ::u.search(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this)) != null
+      && ::u.search(this.activeTasksArray, Callback(this.isSpecialBattleTask, this)) == null
   }
 
-  function isSpecialBattleTask(task)
-  {
+  function isSpecialBattleTask(task) {
     return this.getGenerationIdInt(task) == this.specTasksLastGenerationId
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.reset()
   }
 
-  function onEventLoginComplete(_p)
-  {
+  function onEventLoginComplete(_p) {
     this.reset()
     this.updateTasksData()
   }
 
-  function checkNewSpecialTasks()
-  {
+  function checkNewSpecialTasks() {
     if (!this.canActivateHardTasks())
       return
 
-    let arr = ::u.filter(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this) )
+    let arr = ::u.filter(this.proposedTasksArray, Callback(this.isSpecialBattleTask, this))
     ::gui_start_battle_tasks_select_new_task_wnd(arr)
   }
 
-  function getDifficultyTypeGroup()
-  {
+  function getDifficultyTypeGroup() {
     let result = []
-    foreach(t in ::g_battle_task_difficulty.types)
-    {
+    foreach (t in ::g_battle_task_difficulty.types) {
       let difficultyGroup = t.getDifficultyGroup()
-      if (difficultyGroup =="")
+      if (difficultyGroup == "")
         continue
 
       result.append(t)
@@ -1113,8 +1024,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     return result
   }
 
-  function canInteract(task)
-  {
+  function canInteract(task) {
     let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
     return ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, this.currentTasksArray, this.showAllTasksValue)
   }
@@ -1152,8 +1062,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     this.hasInCompleteHardTask(hasInCompleteHard)
   }
 
-  function checkCurSpecialTask()
-  {
+  function checkCurSpecialTask() {
     if (!this.hasInCompleteHardTask.value)
       return
 

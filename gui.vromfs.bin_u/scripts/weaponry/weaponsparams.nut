@@ -1,16 +1,19 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
+let DataBlock = require("DataBlock")
 
 let saclosMissileBeaconIRSourceBand = persist("saclosMissileBeaconIRSourceBand", @() Watched(4))
 let reloadCooldownTimeByCaliber = persist("reloadCooldownTimeByCaliber", @() Watched({}))
 
 
 let function initWeaponParams() {
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   blk.load("config/gameplay.blk")
-  if(blk?.sensorsConstants)
+  if (blk?.sensorsConstants)
     saclosMissileBeaconIRSourceBand(blk.sensorsConstants?.saclosMissileBeaconInfraRedBrightnessSourceBand ?? 4)
 
   reloadCooldownTimeByCaliber({})

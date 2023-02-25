@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,8 +10,7 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
   let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   wndType = handlerType.MODAL
 
@@ -25,8 +25,7 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
    */
   eventEconomicName = null
 
-  static function open(config)
-  {
+  static function open(config) {
     let params = {
       rewardBlk = config
       eventEconomicName = config.eventId
@@ -34,8 +33,7 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
     return ::handlersManager.loadHandler(::gui_handlers.TournamentRewardReceivedWnd, params)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     let event = ::events.getEventByEconomicName(this.eventEconomicName)
     let nextReward = getNextReward(this.rewardBlk, event)
 
@@ -60,17 +58,13 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
       }
     let blk = ::handyman.renderCached("%gui/tournamentRewardReceived.tpl", view)
     this.guiScene.replaceContentFromText(this.scene.findObject("root-box"), blk, blk.len(), this)
-
-    ::show_facebook_screenshot_button(this.scene)
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     ::check_delayed_unlock_wnd()
   }
 
-  function onOk(_obj)
-  {
+  function onOk(_obj) {
     this.goBack()
   }
 }

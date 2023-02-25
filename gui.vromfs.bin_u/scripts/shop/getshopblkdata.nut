@@ -1,8 +1,10 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { Point2 } = require("dagor.math")
 const COUNT_REQ_FOR_FAKE_UNIT = 2
 
 let fakeUnitConfig = {
@@ -18,8 +20,7 @@ let function genFakeUnitRanges(airBlk, country) {
   let fakeReqUnitsImage = airBlk % "fakeReqUnitImage"
   let fakeReqUnitsRank = airBlk % "fakeReqUnitRank"
   let fakeReqUnitsPosXY = airBlk % "fakeReqUnitPosXY"
-  foreach(idx, unitType in fakeReqUnitsType)
-  {
+  foreach (idx, unitType in fakeReqUnitsType) {
     let range = []
     let fakeUnitParams = fakeUnitConfig.__merge({
       name = unitType
@@ -28,9 +29,8 @@ let function genFakeUnitRanges(airBlk, country) {
       country = country
     })
     if (fakeReqUnitsPosXY?[idx])
-      fakeUnitParams.rankPosXY <-fakeReqUnitsPosXY[idx]
-    for(local i = 0; i < COUNT_REQ_FOR_FAKE_UNIT; i++)
-    {
+      fakeUnitParams.rankPosXY <- fakeReqUnitsPosXY[idx]
+    for (local i = 0; i < COUNT_REQ_FOR_FAKE_UNIT; i++) {
       let reqForFakeUnitParams = fakeUnitConfig.__merge({
         name = fakeUnitParams.name + "_" + i
         image = fakeUnitParams.image
@@ -39,7 +39,7 @@ let function genFakeUnitRanges(airBlk, country) {
         isReqForFakeUnit = true })
       let rankPosXY = fakeUnitParams?.rankPosXY
       if (rankPosXY)
-        reqForFakeUnitParams.rankPosXY <- ::Point2(rankPosXY.x + (rankPosXY.x < 3 ? -i : i), 1)
+        reqForFakeUnitParams.rankPosXY <- Point2(rankPosXY.x + (rankPosXY.x < 3 ? -i : i), 1)
 
       range.append(reqForFakeUnitParams)
     }
@@ -59,8 +59,7 @@ let function getShopBlkTable(selAirName = "") {
 
   let totalCountries = blk.blockCount()
   let selAir = ::getAircraftByName(selAirName)
-  for(local c = 0; c < totalCountries; c++)  //country
-  {
+  for (local c = 0; c < totalCountries; c++) {  //country
     let cblk = blk.getBlock(c)
     let countryData = {
       name = cblk.getBlockName()
@@ -72,8 +71,7 @@ let function getShopBlkTable(selAirName = "") {
       curCountry = countryData.name
 
     let totalPages = cblk.blockCount()
-    for(local p = 0; p < totalPages; p++)
-    {
+    for (local p = 0; p < totalPages; p++) {
       let pblk = cblk.getBlock(p)
       let pageData = {
         name = pblk.getBlockName()
@@ -82,24 +80,21 @@ let function getShopBlkTable(selAirName = "") {
         lines = []
       }
       local selected = false
-      local hasRankPosXY =false
-      local hasFakeUnits =false
-      local hasSquadronUnits =false
+      local hasRankPosXY = false
+      local hasFakeUnits = false
+      local hasSquadronUnits = false
 
       let totalRanges = pblk.blockCount()
-      for(local r = 0; r < totalRanges; r++)
-      {
+      for (local r = 0; r < totalRanges; r++) {
         let rblk = pblk.getBlock(r)
         let rangeData = []
         let totalAirs = rblk.blockCount()
 
-        for(local a = 0; a < totalAirs; a++)
-        {
+        for (local a = 0; a < totalAirs; a++) {
           let airBlk = rblk.getBlock(a)
           let airData = { name = airBlk.getBlockName() }
           local air = ::getAircraftByName(airBlk.getBlockName())
-          if (air)
-          {
+          if (air) {
             selected = selected || air.name == selAirName
 
             if (!air.isVisibleInShop())
@@ -109,12 +104,10 @@ let function getShopBlkTable(selAirName = "") {
             airData.rank <- air.rank
             hasSquadronUnits = hasSquadronUnits || air.isSquadronVehicle()
           }
-          else  //aircraft group
-          {
+          else {  //aircraft group
             airData.airsGroup <- []
             let groupTotal = airBlk.blockCount()
-            for(local ga = 0; ga < groupTotal; ga++)
-            {
+            for (local ga = 0; ga < groupTotal; ga++) {
               let gAirBlk = airBlk.getBlock(ga)
               air = ::getAircraftByName(gAirBlk.getBlockName())
               if (!air || !air.isVisibleInShop())
@@ -126,11 +119,10 @@ let function getShopBlkTable(selAirName = "") {
               selected = selected || air.name == selAirName
               hasSquadronUnits = hasSquadronUnits || air.isSquadronVehicle()
             }
-            if (airData.airsGroup.len()==0)
+            if (airData.airsGroup.len() == 0)
               continue
 
-            if (airData.airsGroup.len()==1)
-            {
+            if (airData.airsGroup.len() == 1) {
               airData.air <- airData.airsGroup[0]
               airData.rawdelete("airsGroup")
             }
@@ -141,13 +133,11 @@ let function getShopBlkTable(selAirName = "") {
             airData.reqAir <- airBlk.reqAir
           if (airBlk?.futureReqAir != null)
             airData.futureReqAir <- airBlk.futureReqAir
-          if (airBlk?.rankPosXY)
-          {
+          if (airBlk?.rankPosXY) {
             airData.rankPosXY <- airBlk.rankPosXY
             hasRankPosXY = true
           }
-          if (airBlk?.fakeReqUnitType)
-          {
+          if (airBlk?.fakeReqUnitType) {
             let fakeUnitRanges = genFakeUnitRanges(airBlk, countryData.name)
             airData.fakeReqUnits <- fakeUnitRanges.map(@(range) (range.top()).name)
             pageData.airList = fakeUnitRanges.extend(pageData.airList)
@@ -161,14 +151,12 @@ let function getShopBlkTable(selAirName = "") {
           pageData.hasRankPosXY <- hasRankPosXY
         if (hasFakeUnits)
           pageData.hasFakeUnits <- hasFakeUnits
-        if (hasSquadronUnits)
-        {
+        if (hasSquadronUnits) {
           pageData.hasSquadronUnits <- hasSquadronUnits
           hasSquadronUnitsInCountry = hasSquadronUnits
         }
       }
-      if (selected)
-      {
+      if (selected) {
         curCountry = countryData.name
         curPage = pageData.name
       }

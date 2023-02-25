@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { regexp } = require("string")
+let DataBlock  = require("DataBlock")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
@@ -24,14 +26,12 @@ let highestVersionSettingsPath = "controls_presets/highest_version_displayed"
 /**
  * Slice version from name and fill version field.
  */
-let function _handleVersion(preset)
-{
+let function _handleVersion(preset) {
   preset.name = preset.id
   preset.version = 0
 
   let versionMatch = versionRegExp.search(preset.name)
-  if (versionMatch)
-  {
+  if (versionMatch) {
     let versionSubstring = preset.name.slice(versionMatch.begin)
     preset.version = versionSubstring.slice(versionDigits.search(versionSubstring).begin).tointeger()
     preset.name = preset.name.slice(0, versionMatch.begin)
@@ -56,8 +56,7 @@ let function _handleVersion(preset)
    * Returns true if new version is available.
    * If custom preset used or user already been asked about last version returns false.
    */
-  function isNewerControlsPresetVersionAvailable()
-  {
+  function isNewerControlsPresetVersionAvailable() {
     let currentPreset = this.getCurrentPresetInfo()
     if (currentPreset.name == "")
       return false
@@ -65,8 +64,7 @@ let function _handleVersion(preset)
     let controlsPresetsList = this.getControlsPresetsList()
     let highestDisplayedVersion = this.getHighestDisplayedPresetVersion(currentPreset.name)
 
-    foreach (value in controlsPresetsList)
-    {
+    foreach (value in controlsPresetsList) {
       let preset = this.parsePresetName(value)
       if (preset.name != currentPreset.name)
         continue
@@ -78,22 +76,18 @@ let function _handleVersion(preset)
     return false
   }
 
-  function getHighestDisplayedPresetVersion(presetName)
-  {
+  function getHighestDisplayedPresetVersion(presetName) {
     return ::load_local_account_settings(highestVersionSettingsPath + "/" + presetName, -1)
   }
 
-  function setHighestDisplayedPresetVersion(presetName, version)
-  {
+  function setHighestDisplayedPresetVersion(presetName, version) {
     ::save_local_account_settings(highestVersionSettingsPath + "/" + presetName, version)
   }
 
-  function getHighestVersionPreset(preset)
-  {
+  function getHighestVersionPreset(preset) {
     let controlsPresetsList = this.getControlsPresetsList()
     local highestVersionPreset = preset
-    foreach (value in controlsPresetsList)
-    {
+    foreach (value in controlsPresetsList) {
       let presetInList = this.parsePresetName(value)
 
       if (presetInList.name != preset.name)
@@ -106,8 +100,7 @@ let function _handleVersion(preset)
     return highestVersionPreset
   }
 
-  function setHighestVersionOfCurrentPreset()
-  {
+  function setHighestVersionOfCurrentPreset() {
     let currentPreset = this.getCurrentPresetInfo()
     if (currentPreset.name == "")
       return
@@ -116,8 +109,7 @@ let function _handleVersion(preset)
     ::save_profile(false)
   }
 
-  function rejectHighestVersionOfCurrentPreset()
-  {
+  function rejectHighestVersionOfCurrentPreset() {
     let currentPreset = this.getCurrentPresetInfo()
     if (currentPreset.name == "")
       return
@@ -129,13 +121,11 @@ let function _handleVersion(preset)
   /**
    * Returns array of version numbers newer than inPreset version
    */
-  function getNewerVersions(inPreset)
-  {
+  function getNewerVersions(inPreset) {
     let result = []
     let controlsPresetsList = this.getControlsPresetsList()
 
-    foreach (value in controlsPresetsList)
-    {
+    foreach (value in controlsPresetsList) {
       let preset = this.parsePresetName(value)
       if (preset.name != inPreset.name)
         continue
@@ -149,14 +139,12 @@ let function _handleVersion(preset)
     return result
   }
 
-  function getPatchNoteTextForCurrentPreset()
-  {
+  function getPatchNoteTextForCurrentPreset() {
     local result = ""
     let currentPreset = this.getCurrentPresetInfo()
     let versions = this.getNewerVersions(currentPreset)
 
-    foreach (version in versions)
-    {
+    foreach (version in versions) {
       let patchNote = loc("presets/" + currentPreset.name + "_ver" + version + "/patchnote", "")
       if (patchNote.len())
         result += (result.len() ? "\n" : "") + patchNote
@@ -173,8 +161,7 @@ let function _handleVersion(preset)
   /**
    * Breaks preset file name string into table {version = @integer, name = @string }
    */
-  function parsePresetFileName(presetFileName)
-  {
+  function parsePresetFileName(presetFileName) {
     let preset = clone this.nullPreset
 
     if (presetFileName.len() < stdPresetPathPrefix.len())
@@ -192,8 +179,7 @@ let function _handleVersion(preset)
    * Build preset data table from presetName (typicaly received from getControlsPresetList)
    * Input argument presetName must be trusted source to generate file name for this preset
    */
-  function parsePresetName(presetName)
-  {
+  function parsePresetName(presetName) {
     let preset = clone this.nullPreset
 
     if (presetName == "")
@@ -213,11 +199,9 @@ let function _handleVersion(preset)
    * because deprecated presets are removed from list.blk
    * while being still in use by some players
    */
-  function getControlsPresetsList()
-  {
-    if (this.presetsListCached == null)
-    {
-      let blk = ::DataBlock()
+  function getControlsPresetsList() {
+    if (this.presetsListCached == null) {
+      let blk = DataBlock()
       blk.load($"{controlsPresetConfigPath.value}config/hotkeys/list.blk")
       local platform = isPlatformSteamDeck ? "steamdeck" : platformId
       this.presetsListCached = (blk?[platform] != null)
@@ -234,8 +218,7 @@ let function _handleVersion(preset)
   /**
    * Return preset file name, converted from preset name.
    */
-  function getControlsPresetFilename(presetName)
-  {
+  function getControlsPresetFilename(presetName) {
     return stdPresetPathPrefix + presetName + ".blk"
   }
 }

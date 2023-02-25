@@ -5,7 +5,7 @@ let { tostring_r } = require("%sqstd/string.nut")
 
 let log = require("%sqstd/log.nut")([
   {
-    compare = @(val) type(val)=="instance" && type(val?.formatAsString)=="function"
+    compare = @(val) type(val) == "instance" && type(val?.formatAsString) == "function"
     tostring = @(val) val.formatAsString()
   }
   {
@@ -22,7 +22,7 @@ return {
   console_print
   wlog
   dlog  //disable: -dlog-warn
-  wdlog = @(watched, prefix = null, transform=null) log.wlog(watched, prefix, transform, log.dlog) //disable: -dlog-warn
+  wdlog = @(watched, prefix = null, transform = null) log.wlog(watched, prefix, transform, log.dlog) //disable: -dlog-warn
   log_with_prefix = with_prefix
   logerr
 }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -128,7 +129,7 @@ let function updateCardStatus(obj, _id, statusTbl) {
 
   let remainingMarkerObj = obj.findObject("remainingMarker")
   remainingMarkerObj.setValue(stashBhvValueConfig(
-    {viewId = "SHOP_SLOT_REMAINING_TIME_UNIT", unitName = unitName}
+    { viewId = "SHOP_SLOT_REMAINING_TIME_UNIT", unitName = unitName }
   ))
 
   let markerObj = showInObj(obj, "unlockMarker", hasObjective)
@@ -364,13 +365,11 @@ let function getGroupStatusTbl(group, params) {
   local hasObjective       = false
   local markerHolderId     = ""
 
-  foreach(unit in unitsList)
-  {
+  foreach (unit in unitsList) {
     let isInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
     let isUsable = ::isUnitUsable(unit)
 
-    if (isInResearch || (::canResearchUnit(unit) && !researchingUnit))
-    {
+    if (isInResearch || (::canResearchUnit(unit) && !researchingUnit)) {
       researchingUnit = unit
       isGroupInResearch = isInResearch
     }
@@ -379,15 +378,13 @@ let function getGroupStatusTbl(group, params) {
     else if (!firstUnboughtUnit && (::canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
       firstUnboughtUnit = unit
 
-    if (isUsable)
-    {
+    if (isUsable) {
       if (::isUnitInSlotbar(unit))
         mountedUnit = unit
       isGroupUsable = true
     }
 
-    if (unit.isRented())
-    {
+    if (unit.isRented()) {
       if (!rentedUnit || unit.getRentTimeleft() <= rentedUnit.getRentTimeleft())
         rentedUnit = unit
     }
@@ -471,9 +468,8 @@ let function getGroupStatusTbl(group, params) {
 let function getGroupTimedStatusTbl(group) {
   local unit = null
   local rentLeft = 0
-  foreach(u in group.airsGroup)
-    if (u.isRented() && (!unit || rentLeft >= u.getRentTimeleft()))
-    {
+  foreach (u in group.airsGroup)
+    if (u.isRented() && (!unit || rentLeft >= u.getRentTimeleft())) {
       unit = u
       rentLeft = u.getRentTimeleft()
     }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -22,8 +23,7 @@ from "%scripts/dagui_library.nut" import *
                              @text == ""   - hide widgetText
 */
 
-::NewIconWidget <- class
-{
+::NewIconWidget <- class {
   widgetContainerTag = "newIconWidget"
   defaultIcon = "#ui/gameuiskin#new_icon.svg"
 
@@ -37,14 +37,12 @@ from "%scripts/dagui_library.nut" import *
 
   icon = null
 
-  constructor(guiScene, containerObj = null)
-  {
+  constructor(guiScene, containerObj = null) {
     this._guiScene = guiScene
     this.setContainer(containerObj)
   }
 
-  static function createLayout(params = {})
-  {
+  static function createLayout(params = {}) {
     let view = {
       needContainer = getTblValue("needContainer", params, true)
       icon = getTblValue("icon", params, ::NewIconWidget.defaultIcon)
@@ -53,29 +51,24 @@ from "%scripts/dagui_library.nut" import *
     return ::handyman.renderCached("%gui/newIconWidget.tpl", view)
   }
 
-  function setContainer(containerObj)
-  {
+  function setContainer(containerObj) {
     this._containerObj = containerObj
-    if (checkObj(this._containerObj))
-    {
+    if (checkObj(this._containerObj)) {
       this._containerObj.setUserData(this.weakref())
       this.update()
     }
   }
 
-  function _updateSubObjects()
-  {
+  function _updateSubObjects() {
     this._textObj = this._getTextObj()
     this._iconObj = this._getIconObj()
   }
 
-  function isValidContainerData()
-  {
+  function isValidContainerData() {
     return checkObj(this._textObj) && checkObj(this._iconObj)
   }
 
-  function validateContent()
-  {
+  function validateContent() {
     if (!checkObj(this._containerObj))
       return
 
@@ -95,34 +88,28 @@ from "%scripts/dagui_library.nut" import *
       this._updateSubObjects()
   }
 
-  function setText(newText)
-  {
+  function setText(newText) {
     this.currentValue = newText
     this.update()
   }
 
-  function setValue(value)
-  {
+  function setValue(value) {
     this.currentValue = value
     this.currentVisibility = value != 0
     this.update()
   }
 
-  function setWidgetVisible(value)
-  {
+  function setWidgetVisible(value) {
     this.currentVisibility = value
     this.update()
   }
 
-  function update()
-  {
+  function update() {
     this.validateContent()
 
-    if (checkObj(this._textObj))
-    {
+    if (checkObj(this._textObj)) {
       let newText = (this.currentValue > 0) ? this.currentValue.tostring() : ""
-      if (checkObj(this._containerObj))
-      {
+      if (checkObj(this._containerObj)) {
          this._containerObj.widgetClass = (newText == "") ? "" : "text"
          this._containerObj.show(this.currentVisibility)
          this._containerObj.enable(this.currentVisibility)
@@ -131,15 +118,13 @@ from "%scripts/dagui_library.nut" import *
     }
   }
 
-  function setIcon(newIcon)
-  {
+  function setIcon(newIcon) {
     this.icon = newIcon
     if (checkObj(this._iconObj))
       this._iconObj["background-image"] = this.icon
   }
 
-  function _getTextObj()
-  {
+  function _getTextObj() {
     if (!checkObj(this._containerObj))
       return null
     let obj = this._containerObj.findObject("new_icon_widget_text")
@@ -148,16 +133,14 @@ from "%scripts/dagui_library.nut" import *
     return obj
   }
 
-  function _getIconObj()
-  {
+  function _getIconObj() {
     if (!checkObj(this._containerObj))
       return null
     let obj = this._containerObj.findObject("new_icon_widget_icon")
     return checkObj(obj) ? obj : null
   }
 
-  static function getWidgetByObj(obj)
-  {
+  static function getWidgetByObj(obj) {
     if (!checkObj(obj))
       return null
     let widget = obj.getUserData()

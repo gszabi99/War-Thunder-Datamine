@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -27,8 +28,7 @@ let playerInfoUpdater = {
     Level = @(myStats) myStats?.rank ?? 0
   }
 
-  function sendValue(id, value)
-  {
+  function sendValue(id, value) {
     if (this.lastSendedData?[id] == value)
       return
 
@@ -36,22 +36,19 @@ let playerInfoUpdater = {
     ::xbox_set_user_stat(id, value)
   }
 
-  function updateStatistics()
-  {
+  function updateStatistics() {
     if (!is_platform_xbox)
       return
 
     let myStats = ::my_stats.getStats()
 
-    foreach (name, func in this.xboxUserInfoStats)
-    {
+    foreach (name, func in this.xboxUserInfoStats) {
       let value = func(myStats)
       this.sendValue(name, value)
     }
   }
 
-  function updatePresence(presence)
-  {
+  function updatePresence(presence) {
     if (!is_platform_xbox || !presence)
       return
 
@@ -63,23 +60,19 @@ let playerInfoUpdater = {
     ::xbox_set_presence(presence.presenceName)
   }
 
-  function onEventMyStatsUpdated(_p)
-  {
+  function onEventMyStatsUpdated(_p) {
     this.updateStatistics()
   }
 
-  function onEventLoginComplete(_p)
-  {
+  function onEventLoginComplete(_p) {
     this.updatePresence(::g_contact_presence.ONLINE)
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.updatePresence(::g_contact_presence.OFFLINE)
   }
 
-  function onEventMyPresenceChanged(presence)
-  {
+  function onEventMyPresenceChanged(presence) {
     if (presence?.status?.in_game)
       return this.updatePresence(::g_contact_presence.IN_GAME)
 

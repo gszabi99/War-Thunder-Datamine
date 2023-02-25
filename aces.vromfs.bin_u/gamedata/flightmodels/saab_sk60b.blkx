@@ -2107,88 +2107,551 @@
     "preset": [
       {
         "name": "saab_sk60b_default",
-        "blk": "gameData/FlightModels/weaponPresets/saab_sk60b_akankapsel_30.blk",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/cannonAkan_m55_underwing.blk",
-            "tier": [
-              {
-                "idx": 5,
-                "amountPerTier": 1.0,
-                "iconType": "machine_gun"
-              },
-              {
-                "idx": 7,
-                "amountPerTier": 1.0,
-                "iconType": "machine_gun"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "saab_sk60b_rb_05a",
-        "blk": "gameData/FlightModels/weaponPresets/saab_sk60b_rb_05a.blk",
-        "reqModification": "rb_05a",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_rb_05a.blk",
-            "amountPerTier": 1.0,
-            "iconType": "missile_air_to_uni",
-            "tier": [
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              }
-            ]
-          }
-        }
+        "blk": "gameData/FlightModels/weaponPresets/saab_sk60b_akankapsel_30.blk"
       },
       {
         "name": "saab_sk60b_145mm_psrak_m49_56",
-        "blk": "gameData/flightModels/weaponPresets/saab_sk60b_145mm_psrak_m49_56.blk",
-        "reqModification": "swe_m49_56",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
-            "amountPerTier": 1.0,
-            "iconType": "rockets_ap_middle"
-          }
-        }
+        "blk": "gameData/flightModels/weaponPresets/saab_sk60b_145mm_psrak_m49_56.blk"
       },
       {
         "name": "saab_sk60b_135mm_srak_m56d",
-        "blk": "gameData/flightModels/weaponPresets/saab_sk60b_135mm_srak_m56d.blk",
-        "reqModification": "swe_m56d",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
-            "amountPerTier": 2.0,
-            "iconType": "rockets_he_large_group_x2",
-            "tier": [
+        "blk": "gameData/flightModels/weaponPresets/saab_sk60b_135mm_srak_m56d.blk"
+      },
+      {
+        "name": "saab_sk60b_rb_05a",
+        "blk": "gameData/FlightModels/weaponPresets/saab_sk60b_rb_05a.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1100.0,
+    "maxloadMassLeftConsoles": 500.0,
+    "maxloadMassRightConsoles": 500.0,
+    "maxDisbalance": 450.0,
+    "HideNodes": {
+      "node": [
+        "pylon_a60_001",
+        "pylon_a60_002",
+        "pylon_a60_003",
+        "pylon_a60_004",
+        "pylon_k60_001",
+        "pylon_k60_002",
+        "rb_05a_launcher_l",
+        "rb_05a_launcher_r",
+        "akankapsel_l",
+        "akankapsel_r"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cover2_dm",
+        "cannon1_dm",
+        "cover3_dm",
+        "cannon2_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "srak_m56d",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": "pylon_a60_001"
+            },
+            "Weapon": [
               {
-                "idx": 3
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_down_001",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
               },
               {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              },
-              {
-                "idx": 9
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_up_001",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
               }
             ]
+          },
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "psrak_m49_56",
+            "reqModification": "swe_m49_56",
+            "ShowNodes": {
+              "node": "pylon_a60_001"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "emitter": "145mm_psrak_m49_001",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.005
+            }
           }
-        }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "srak_m56d",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": "pylon_k60_001"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_down_003",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_up_003",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "psrak_m49_56",
+            "reqModification": "swe_m49_56",
+            "ShowNodes": {
+              "node": "pylon_k60_001"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "emitter": "145mm_psrak_m49_003",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.005
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "rb_05a",
+            "reqModification": "rb_05a",
+            "ShowNodes": {
+              "node": [
+                "pylon_k60_001",
+                "rb_05a_launcher_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb_05a.blk",
+              "emitter": "rb_05a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "machine_gun",
+            "name": "akan_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_k60_001",
+                "akankapsel_l"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover2_dm",
+                "cannon1_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonAkan_m55_underwing.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "srak_m56d",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": "pylon_a60_002"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_down_005",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_up_005",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "psrak_m49_56",
+            "reqModification": "swe_m49_56",
+            "ShowNodes": {
+              "node": "pylon_a60_002"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "emitter": "145mm_psrak_m49_005",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.005
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "srak_m56d",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": "pylon_a60_003"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_down_006",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_up_006",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "psrak_m49_56",
+            "reqModification": "swe_m49_56",
+            "ShowNodes": {
+              "node": "pylon_a60_003"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "emitter": "145mm_psrak_m49_006",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.005
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "srak_m56d",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": "pylon_k60_002"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_down_004",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_up_004",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "psrak_m49_56",
+            "reqModification": "swe_m49_56",
+            "ShowNodes": {
+              "node": "pylon_k60_002"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "emitter": "145mm_psrak_m49_004",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.005
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "rb_05a",
+            "reqModification": "rb_05a",
+            "ShowNodes": {
+              "node": [
+                "pylon_k60_002",
+                "rb_05a_launcher_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb_05a.blk",
+              "emitter": "rb_05a_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "machine_gun",
+            "name": "akan_m55",
+            "ShowNodes": {
+              "node": [
+                "pylon_k60_002",
+                "akankapsel_r"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover3_dm",
+                "cannon2_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonAkan_m55_underwing.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "srak_m56d",
+            "reqModification": "swe_m56d",
+            "ShowNodes": {
+              "node": "pylon_a60_004"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_down_002",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_135mm_srak_m56d.blk",
+                "emitter": "135mm_srak_m56d_up_002",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.001
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_middle",
+            "name": "psrak_m49_56",
+            "reqModification": "swe_m49_56",
+            "ShowNodes": {
+              "node": "pylon_a60_004"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49_56.blk",
+              "emitter": "145mm_psrak_m49_002",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.005
+            }
+          }
+        ]
       }
     ]
   },
@@ -2301,13 +2764,38 @@
     "turnTime": 25.0
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {},
-    "g_suit": {},
-    "new_compressor_jet": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_compressor_jet": {
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105_jet": {
+      "prevModification": "new_compressor_jet",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "g_suit": {
+      "tier": 4,
+      "modClass": "armor"
+    },
     "aden_air_targets": {},
     "aden_ground_targets": {},
     "aden_belt_pack": {

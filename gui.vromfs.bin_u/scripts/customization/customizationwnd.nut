@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -35,8 +36,7 @@ let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
-enum decoratorEditState
-{
+enum decoratorEditState {
   NONE     = 0x0001
   SELECT   = 0x0002
   REPLACE  = 0x0004
@@ -45,18 +45,15 @@ enum decoratorEditState
   EDITING  = 0x0020
 }
 
-enum decalTwoSidedMode
-{
+enum decalTwoSidedMode {
   OFF
   ON
   ON_MIRRORED
 }
 
-::on_decal_job_complete <- function on_decal_job_complete(taskId)
-{
+::on_decal_job_complete <- function on_decal_job_complete(taskId) {
   let callback = getTblValue(taskId, ::g_decorator_type.DECALS.jobCallbacksStack, null)
-  if (callback)
-  {
+  if (callback) {
     callback()
     delete ::g_decorator_type.DECALS.jobCallbacksStack[taskId]
   }
@@ -64,8 +61,7 @@ enum decalTwoSidedMode
   ::broadcastEvent("DecalJobComplete", { taskId = taskId })
 }
 
-::gui_start_decals <- function gui_start_decals(params = null)
-{
+::gui_start_decals <- function gui_start_decals(params = null) {
   if (params?.unit)
     showedUnit(params.unit)
   else if (params?.unitId)
@@ -73,7 +69,7 @@ enum decalTwoSidedMode
 
   if (!showedUnit.value
       ||
-        ( hangar_get_loaded_unit_name() == showedUnit.value.name
+        (hangar_get_loaded_unit_name() == showedUnit.value.name
         && !::is_loaded_model_high_quality()
         && !::check_package_and_ask_download("pkg_main"))
     )
@@ -84,18 +80,15 @@ enum decalTwoSidedMode
   ::handlersManager.loadHandler(::gui_handlers.DecalMenuHandler, params)
 }
 
-::hangar_add_popup <- function hangar_add_popup(text) // called from client
-{
+::hangar_add_popup <- function hangar_add_popup(text) { // called from client
   ::g_popups.add("", loc(text))
 }
 
-::delayed_download_enabled_msg <- function delayed_download_enabled_msg()
-{
+::delayed_download_enabled_msg <- function delayed_download_enabled_msg() {
   if (!::g_login.isProfileReceived())
     return
   let skip = ::load_local_account_settings("skipped_msg/delayedDownloadContent", false)
-  if (!skip)
-  {
+  if (!skip) {
     ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
     {
       parentHandler = ::handlersManager.getActiveBaseHandler()
@@ -106,7 +99,7 @@ enum decalTwoSidedMode
         ::set_option_delayed_download_content(true)
         ::save_local_account_settings("delayDownloadContent", true)
       }
-      cancelFunc = function(){
+      cancelFunc = function() {
         ::set_option_delayed_download_content(false)
         ::save_local_account_settings("delayDownloadContent", false)
       }
@@ -115,15 +108,13 @@ enum decalTwoSidedMode
       }
     })
   }
-  else
-  {
+  else {
     local choosenDDC = ::load_local_account_settings("delayDownloadContent", true)
     ::set_option_delayed_download_content(choosenDDC)
   }
 }
 
-::gui_handlers.DecalMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.DecalMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/customization/customization.blk"
   unit = null
   owner = null
@@ -171,8 +162,7 @@ enum decalTwoSidedMode
 
   decorMenu = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.owner = this
     this.unit = showedUnit.value
     if (!this.unit)
@@ -208,28 +198,24 @@ enum decalTwoSidedMode
 
     loadModel(this.unit.name)
 
-    if (!this.isUnitOwn && !this.previewMode)
-    {
+    if (!this.isUnitOwn && !this.previewMode) {
       let skinId = this.unit.getPreviewSkinId()
       if (skinId != "" && skinId != this.initialAppliedSkinId)
         this.applySkin(skinId, true)
     }
 
-    if (this.preSelectDecorator)
-    {
+    if (this.preSelectDecorator) {
       this.preSelectSlotAndDecorator(this.preSelectDecorator, this.preSelectDecoratorSlot)
       this.preSelectDecorator = null
       this.preSelectDecoratorSlot = -1
     }
   }
 
-  function canRestartSceneNow()
-  {
+  function canRestartSceneNow() {
     return isInArray(this.currentState, [ decoratorEditState.NONE, decoratorEditState.SELECT ])
   }
 
-  function getHandlerRestoreData()
-  {
+  function getHandlerRestoreData() {
     let data = {
       openData = {
       }
@@ -241,14 +227,12 @@ enum decalTwoSidedMode
     return data
   }
 
-  function restoreHandler(stateData)
-  {
+  function restoreHandler(stateData) {
     this.initialAppliedSkinId = stateData.initialAppliedSkinId
     this.initialUserSkinId    = stateData.initialUserSkinId
   }
 
-  function initMainParams()
-  {
+  function initMainParams() {
     this.isUnitOwn = this.unit.isUsable()
     this.isUnitTank = this.unit.isTank()
     this.isUnitShipOrBoat = this.unit.isShipOrBoat()
@@ -264,8 +248,7 @@ enum decalTwoSidedMode
     this.setDmgSkinMode(::hangar_get_loaded_model_damage_state(this.unit.name) == MDS_DAMAGED)
 
     let bObj = this.scene.findObject("btn_testflight")
-    if (checkObj(bObj))
-    {
+    if (checkObj(bObj)) {
       bObj.setValue(this.unit.unitType.getTestFlightText())
       bObj.findObject("btn_testflight_image")["background-image"] = this.unit.unitType.testFlightIcon
     }
@@ -274,8 +257,7 @@ enum decalTwoSidedMode
     this.updateMainGuiElements()
   }
 
-  function updateMainGuiElements()
-  {
+  function updateMainGuiElements() {
     this.updateSlotsBlockByType()
     this.updateSkinList()
     this.updateAutoSkin()
@@ -286,21 +268,18 @@ enum decalTwoSidedMode
     this.updateButtons()
   }
 
-  function updateTitle()
-  {
-    local title = loc(this.isUnitOwn && !this.previewMode? "mainmenu/showroom" : "mainmenu/btnPreview") + " " + loc("ui/mdash") + " "
+  function updateTitle() {
+    local title = loc(this.isUnitOwn && !this.previewMode ? "mainmenu/showroom" : "mainmenu/btnPreview") + " " + loc("ui/mdash") + " "
     if (!this.previewMode || (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)))
       title += ::getUnitName(this.unit.name)
 
-    if (this.previewMode & PREVIEW_MODE.SKIN)
-    {
+    if (this.previewMode & PREVIEW_MODE.SKIN) {
       let skinId = ::g_unlocks.getSkinId(this.unit.name, this.previewSkinId)
       let skin = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
       if (skin)
         title += loc("ui/comma") + loc("options/skin") + " " + colorize(skin.getRarityColor(), skin.getName())
     }
-    else if (this.previewMode & PREVIEW_MODE.DECORATOR)
-    {
+    else if (this.previewMode & PREVIEW_MODE.DECORATOR) {
       let typeText = loc("trophy/unlockables_names/" + this.decoratorPreview.decoratorType.resourceType)
       let nameText = colorize(this.decoratorPreview.getRarityColor(), this.decoratorPreview.getName())
       title += typeText + " " + nameText
@@ -309,21 +288,20 @@ enum decalTwoSidedMode
     this.setSceneTitle(title)
   }
 
-  function updateDecalActionsTexts()
-  {
+  function updateDecalActionsTexts() {
     local bObj = null
     let hasKeyboard = isPlatformPC
 
     //Flip
     let btn_toggle_mirror_text = loc("decals/flip") + (hasKeyboard ? " (F)" : "")
     bObj = this.scene.findObject("btn_toggle_mirror")
-    if(checkObj(bObj))
+    if (checkObj(bObj))
       bObj.setValue(btn_toggle_mirror_text)
 
     //TwoSided
     let text = loc("decals/twosided") + (hasKeyboard ? " (T)" : "") + loc("ui/colon")
     bObj = this.scene.findObject("two_sided_label")
-    if(checkObj(bObj))
+    if (checkObj(bObj))
       bObj.setValue(text)
 
     //Size
@@ -337,21 +315,18 @@ enum decalTwoSidedMode
       bObj.setValue(getAxisTextOrAxisName("decal_rotate"))
   }
 
-  function getSelectedBuiltinSkinId()
-  {
+  function getSelectedBuiltinSkinId() {
     let res = this.previewSkinId || ::hangar_get_last_skin(this.unit.name)
     return res == "" ? "default" : res // hangar_get_last_skin() can return empty string.
   }
 
-  function exportSampleUserSkin(_obj)
-  {
+  function exportSampleUserSkin(_obj) {
     if (!hangar_is_model_loaded())
       return
 
-    if (!::can_save_current_skin_template())
-    {
+    if (!::can_save_current_skin_template()) {
       let message = format(loc("decals/noUserSkinForCurUnit"), ::getUnitName(this.unit.name))
-      this.msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
+      this.msgBox("skin_template_export", message, [["ok", function() {}]], "ok")
       return
     }
 
@@ -360,13 +335,12 @@ enum decalTwoSidedMode
 
     let templateName = "template_" + this.unit.name
     let message = success ? format(loc("decals/successfulLoadedSkinSample"), templateName) : loc("decals/failedLoadedSkinSample")
-    this.msgBox("skin_template_export", message, [["ok", function(){}]], "ok")
+    this.msgBox("skin_template_export", message, [["ok", function() {}]], "ok")
 
     this.updateMainGuiElements()
   }
 
-  function refreshSkinsList(_obj)
-  {
+  function refreshSkinsList(_obj) {
     if (!hangar_is_model_loaded())
       return
 
@@ -385,8 +359,7 @@ enum decalTwoSidedMode
     this.initMainParams()
   }
 
-  function onEventHangarModelLoaded(params = {})
-  {
+  function onEventHangarModelLoaded(params = {}) {
     if (this.previewMode)
       this.removeAllDecorators(false)
 
@@ -400,15 +373,13 @@ enum decalTwoSidedMode
       ::check_package_and_ask_download("pkg_main", null, null, this, "air_in_hangar", this.goBack)
   }
 
-  function onEventDecalJobComplete(_params)
-  {
+  function onEventDecalJobComplete(_params) {
     let isInEditMode = this.currentState & decoratorEditState.EDITING
     if (isInEditMode && this.currentType == ::g_decorator_type.DECALS)
       this.updateDecoratorActionBtnStates()
   }
 
-  function updateAutoSkin()
-  {
+  function updateAutoSkin() {
     if (!this.access_Skins)
       return
 
@@ -419,8 +390,7 @@ enum decalTwoSidedMode
 
     let autoSkinId = "auto_skin_control"
     let controlObj = this.scene.findObject(autoSkinId)
-    if (checkObj(controlObj))
-    {
+    if (checkObj(controlObj)) {
       controlObj.setValue(::g_decorator.isAutoSkinOn(this.unit.name))
       return
     }
@@ -434,13 +404,11 @@ enum decalTwoSidedMode
     this.guiScene.replaceContentFromText(placeObj, markup, markup.len(), this)
   }
 
-  function onAutoSkinchange(obj)
-  {
+  function onAutoSkinchange(obj) {
     ::g_decorator.setAutoSkin(this.unit.name, obj.getValue())
   }
 
-  function updateSkinList()
-  {
+  function updateSkinList() {
     if (!this.access_Skins)
       return
 
@@ -450,8 +418,7 @@ enum decalTwoSidedMode
     let tooltipParams = this.previewMode ? { showAsTrophyContent = true } : null
 
     let skinItems = []
-    foreach(i, decorator in this.skinList.decorators)
-    {
+    foreach (i, decorator in this.skinList.decorators) {
       let access = this.skinList.access[i]
       let canBuy = !this.previewMode && decorator.canBuyUnlock(this.unit)
       let canFindOnMarketplace = !this.previewMode && decorator.canBuyCouponOnMarketplace(this.unit)
@@ -466,7 +433,7 @@ enum decalTwoSidedMode
         images.append({ image = "#ui/gameuiskin#locked.svg", imageNoMargin = true })
 
       if (canBuy)
-        text = loc("ui/parentheses", {text = priceText}) + " " + text
+        text = loc("ui/parentheses", { text = priceText }) + " " + text
       else if (canFindOnMarketplace)
         text = "".concat(loc("currency/gc/sign"), " ", text)
 
@@ -485,18 +452,15 @@ enum decalTwoSidedMode
     this.updateSkinTooltip(curSkinId)
   }
 
-  function updateSkinTooltip(skinId)
-  {
+  function updateSkinTooltip(skinId) {
     let tooltipObj = this.scene.findObject("skinTooltip")
     tooltipObj.tooltipId = DECORATION.getTooltipId($"{this.unit.name}/{skinId}", UNLOCKABLE_SKIN)
   }
 
-  function renewDropright(nestObjId, listObjId, items, index, cb)
-  {
+  function renewDropright(nestObjId, listObjId, items, index, cb) {
     local nestObj = this.scene.findObject(listObjId)
     local needCreateList = false
-    if (!checkObj(nestObj))
-    {
+    if (!checkObj(nestObj)) {
       needCreateList = true
       nestObj = this.scene.findObject(nestObjId)
       if (!checkObj(nestObj))
@@ -509,15 +473,13 @@ enum decalTwoSidedMode
       this.guiScene.replaceContentFromText(nestObj, skinsDropright, skinsDropright.len(), this)
   }
 
-  function updateUserSkinList()
-  {
+  function updateUserSkinList() {
     ::reload_user_skins()
     let userSkinsOption = ::get_option(::USEROPT_USER_SKIN)
     this.renewDropright("user_skins_list", "user_skins_dropright", userSkinsOption.items, userSkinsOption.value, "onUserSkinChanged")
   }
 
-  function createSkinSliders()
-  {
+  function createSkinSliders() {
     if (!this.isUnitOwn || (!this.isUnitTank && !this.isUnitShipOrBoat))
       return
 
@@ -527,8 +489,7 @@ enum decalTwoSidedMode
       options.insert(0, ::USEROPT_TANK_SKIN_CONDITION)
 
     let view = { isTooltipByHold = ::show_console_buttons, rows = [] }
-    foreach(optType in options)
-    {
+    foreach (optType in options) {
       let option = ::get_option(optType)
       view.rows.append({
         id = option.id
@@ -544,8 +505,7 @@ enum decalTwoSidedMode
     this.updateSkinSliders()
   }
 
-  function updateSkinSliders()
-  {
+  function updateSkinSliders() {
     if (!this.isUnitOwn || (!this.isUnitTank && !this.isUnitShipOrBoat))
       return
 
@@ -559,9 +519,8 @@ enum decalTwoSidedMode
     option = ::get_option(::USEROPT_TANK_SKIN_CONDITION)
     let tscId = option.id
     let tscTrObj = this.scene.findObject("tr_" + tscId)
-    if (checkObj(tscTrObj))
-    {
-      tscTrObj.inactiveColor = have_premium? "no" : "yes"
+    if (checkObj(tscTrObj)) {
+      tscTrObj.inactiveColor = have_premium ? "no" : "yes"
       tscTrObj.tooltip = have_premium ? "" : loc("mainmenu/onlyWithPremium")
       let sliderObj = this.scene.findObject(tscId)
       let value = have_premium ? option.value : option.defVal
@@ -572,8 +531,7 @@ enum decalTwoSidedMode
     option = ::get_option(::USEROPT_TANK_CAMO_SCALE)
     let tcsId = option.id
     let tcsTrObj = this.scene.findObject("tr_" + tcsId)
-    if (checkObj(tcsTrObj))
-    {
+    if (checkObj(tcsTrObj)) {
       tcsTrObj.tooltip = canScaleAndRotate ? "" : loc("guiHints/not_available_on_this_camo")
       let sliderObj = this.scene.findObject(tcsId)
       let value = canScaleAndRotate ? option.value : option.defVal
@@ -585,8 +543,7 @@ enum decalTwoSidedMode
     option = ::get_option(::USEROPT_TANK_CAMO_ROTATION)
     let tcrId = option.id
     let tcrTrObj = this.scene.findObject("tr_" + tcrId)
-    if (checkObj(tcrTrObj))
-    {
+    if (checkObj(tcrTrObj)) {
       tcrTrObj.tooltip = canScaleAndRotate ? "" : loc("guiHints/not_available_on_this_camo")
       let sliderObj = this.scene.findObject(tcrId)
       let value = canScaleAndRotate ? option.value : option.defVal
@@ -596,8 +553,7 @@ enum decalTwoSidedMode
     }
   }
 
-  function onChangeTankSkinCondition(obj)
-  {
+  function onChangeTankSkinCondition(obj) {
     if (!checkObj(obj))
       return
 
@@ -606,8 +562,7 @@ enum decalTwoSidedMode
     if (oldValue == newValue)
       return
 
-    if (!havePremium.value)
-    {
+    if (!havePremium.value) {
       obj.setValue(oldValue)
       this.guiScene.performDelayed(this, @()
         this.isValid() && this.askBuyPremium(Callback(this.updateSkinSliders, this)))
@@ -617,16 +572,14 @@ enum decalTwoSidedMode
     this.updateSkinConditionValue(newValue, obj)
   }
 
-  function askBuyPremium(afterCloseFunc)
-  {
+  function askBuyPremium(afterCloseFunc) {
     let msgText = loc("msgbox/noEntitlement/PremiumAccount")
     this.msgBox("no_premium", msgText,
          [["ok", @() this.startOnlineShop("premium", afterCloseFunc) ],
          ["cancel", @() null ]], "ok", { checkDuplicateId = true })
   }
 
-  function updateSkinConditionValue(value, obj)
-  {
+  function updateSkinConditionValue(value, obj) {
     let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
     if (!checkObj(textObj))
       return
@@ -635,28 +588,24 @@ enum decalTwoSidedMode
     ::hangar_set_tank_skin_condition(value)
   }
 
-  function onChangeTankCamoScale(obj)
-  {
+  function onChangeTankCamoScale(obj) {
     if (!checkObj(obj))
       return
 
     let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
-    if (checkObj(textObj))
-    {
+    if (checkObj(textObj)) {
       let value = obj.getValue()
       ::hangar_set_tank_camo_scale(value / TANK_CAMO_SCALE_SLIDER_FACTOR)
       textObj.setValue((::hangar_get_tank_camo_scale_result_value() * 100 + 0.5).tointeger().tostring() + "%")
     }
   }
 
-  function onChangeTankCamoRotation(obj)
-  {
+  function onChangeTankCamoRotation(obj) {
     if (!checkObj(obj))
       return
 
     let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
-    if (checkObj(textObj))
-    {
+    if (checkObj(textObj)) {
       let value = obj.getValue()
       let visualValue = value * 180 / 100
       textObj.setValue((visualValue > 0 ? "+" : "") + visualValue.tostring())
@@ -664,14 +613,12 @@ enum decalTwoSidedMode
     }
   }
 
-  function updateAttachablesSlots()
-  {
+  function updateAttachablesSlots() {
     if (!this.access_Attachables)
       return
 
-    let view = { isTooltipByHold = ::show_console_buttons, buttons = []}
-    for (local i = 0; i < ::g_decorator_type.ATTACHABLES.getMaxSlots(); i++)
-    {
+    let view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
+    for (local i = 0; i < ::g_decorator_type.ATTACHABLES.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, ::g_decorator_type.ATTACHABLES)
       button.id = "slot_attach_" + i
       button.onClick = "onAttachableSlotClick"
@@ -695,11 +642,9 @@ enum decalTwoSidedMode
     attachListObj.setValue(this.curAttachSlot)
   }
 
-  function updateDecalSlots()
-  {
+  function updateDecalSlots() {
     let view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
-    for (local i = 0; i < ::g_decorator_type.DECALS.getMaxSlots(); i++)
-    {
+    for (local i = 0; i < ::g_decorator_type.DECALS.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, ::g_decorator_type.DECALS)
       button.id = "slot_" + i
       button.onClick = "onDecalSlotClick"
@@ -709,8 +654,7 @@ enum decalTwoSidedMode
     }
 
     let dObj = this.scene.findObject("slots_list")
-    if (checkObj(dObj))
-    {
+    if (checkObj(dObj)) {
       let data = ::handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
       this.guiScene.replaceContentFromText(dObj, data, data.len(), this)
     }
@@ -718,8 +662,7 @@ enum decalTwoSidedMode
     dObj.setValue(this.curSlot)
   }
 
-  function getViewButtonTable(slotIdx, decoratorType)
-  {
+  function getViewButtonTable(slotIdx, decoratorType) {
     let canEditDecals = this.isUnitOwn && this.previewSkinId == null
     let slot = this.getSlotInfo(slotIdx, false, decoratorType)
     let decalId = slot.decalId
@@ -730,8 +673,7 @@ enum decalTwoSidedMode
       buttonTooltip = "#mainmenu/decalUnitLocked"
     else if (!canEditDecals)
       buttonTooltip = "#mainmenu/decalSkinLocked"
-    else if (!slot.unlocked)
-    {
+    else if (!slot.unlocked) {
       if (hasFeature("EnablePremiumPurchase"))
         buttonTooltip = "#mainmenu/onlyWithPremium"
       else
@@ -752,23 +694,21 @@ enum decalTwoSidedMode
       image = decoratorType.getImage(decorator)
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
-      tooltipId = slot.isEmpty? null : DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
+      tooltipId = slot.isEmpty ? null : DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
       tooltipOffset = "1@bw, 1@bh + 0.1@sf"
     }
   }
 
   onSlotsHoverChange = @() this.updateButtons()
 
-  function updateButtons(decoratorType = null, needUpdateSlotDivs = true)
-  {
+  function updateButtons(decoratorType = null, needUpdateSlotDivs = true) {
     let isGift   = ::isUnitGift(this.unit)
     local canBuyOnline = ::canBuyUnitOnline(this.unit)
     let canBuyNotResearchedUnit = canBuyNotResearched(this.unit)
     let canBuyIngame = !canBuyOnline && (::canBuyUnit(this.unit) || canBuyNotResearchedUnit)
     let canFindUnitOnMarketplace = !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(this.unit)
 
-    if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0)
-    {
+    if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0) {
       //Override for ingameShop.
       //There is rare posibility, that shop data is empty.
       //Because of external error.
@@ -776,8 +716,7 @@ enum decalTwoSidedMode
     }
 
     local bObj = this.showSceneBtn("btn_buy", canBuyIngame)
-    if (canBuyIngame && checkObj(bObj))
-    {
+    if (canBuyIngame && checkObj(bObj)) {
       let price = canBuyNotResearchedUnit ? this.unit.getOpenCost() : ::getUnitCost(this.unit)
       placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnOrder"), price)
 
@@ -793,8 +732,7 @@ enum decalTwoSidedMode
     local skinDecorator = null
     local skinCouponItemdefId = null
 
-    if (this.isUnitOwn && this.previewSkinId && this.skinList)
-    {
+    if (this.isUnitOwn && this.previewSkinId && this.skinList) {
       let skinIndex = this.skinList.values.indexof(this.previewSkinId) ?? -1
       skinDecorator = this.skinList.decorators?[skinIndex]
       skinCouponItemdefId = skinDecorator?.getCouponItemdefId()
@@ -806,8 +744,7 @@ enum decalTwoSidedMode
     let canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
     bObj = this.showSceneBtn("btn_buy_skin", canBuySkin)
-    if (canBuySkin && checkObj(bObj))
-    {
+    if (canBuySkin && checkObj(bObj)) {
       let price = skinDecorator.getCost()
       placePriceTextToButton(this.scene, "btn_buy_skin", loc("mainmenu/btnOrder"), price)
     }
@@ -897,23 +834,19 @@ enum decalTwoSidedMode
     ::update_gamercards()
   }
 
-  function updateBackButton()
-  {
+  function updateBackButton() {
     let bObj = this.scene.findObject("btn_back")
     if (!bObj?.isValid())
       return
 
-    if (this.currentState & decoratorEditState.EDITING)
-    {
+    if (this.currentState & decoratorEditState.EDITING) {
       bObj.text = loc("mainmenu/btnCancel")
       bObj["skip-navigation"] = "yes"
       return
     }
 
-    if ((this.currentState & decoratorEditState.SELECT) && ::show_console_buttons)
-    {
-      if (this.decorMenu?.isCurCategoryListObjHovered())
-      {
+    if ((this.currentState & decoratorEditState.SELECT) && ::show_console_buttons) {
+      if (this.decorMenu?.isCurCategoryListObjHovered()) {
         bObj.text = loc("mainmenu/btnCollapse")
         bObj["skip-navigation"] = "no"
         return
@@ -924,16 +857,13 @@ enum decalTwoSidedMode
     bObj["skip-navigation"] = "no"
   }
 
-  function isNavigationAllowed()
-  {
+  function isNavigationAllowed() {
     return !(this.currentState & decoratorEditState.EDITING)
   }
 
-  function updateDecoratorActions(show, decoratorType)
-  {
+  function updateDecoratorActions(show, decoratorType) {
     let hintsObj = this.showSceneBtn("decals_hint", show)
-    if (show && checkObj(hintsObj))
-    {
+    if (show && checkObj(hintsObj)) {
       ::showBtnTable(hintsObj, {
         decals_hint_rotate = decoratorType.canRotate()
         decals_hint_resize = decoratorType.canResize()
@@ -951,8 +881,7 @@ enum decalTwoSidedMode
       this.updateDecoratorActionBtnStates()
   }
 
-  function updateDecoratorActionBtnStates()
-  {
+  function updateDecoratorActionBtnStates() {
     // TwoSided
     local obj = this.scene.findObject("two_sided_select")
     if (checkObj(obj))
@@ -960,8 +889,7 @@ enum decalTwoSidedMode
 
     // Flip
     obj = this.scene.findObject("btn_toggle_mirror")
-    if (checkObj(obj))
-    {
+    if (checkObj(obj)) {
       let enabled = ::get_hangar_mirror_current_decal()
       let icon = "#ui/gameuiskin#btn_flip_decal" + (enabled ? "_active" : "") + ".svg"
       let iconObj = obj.findObject("btn_toggle_mirror_img")
@@ -970,8 +898,7 @@ enum decalTwoSidedMode
     }
   }
 
-  function updateSlotsDivsVisibility(decoratorType = null)
-  {
+  function updateSlotsDivsVisibility(decoratorType = null) {
     let inBasicMode = this.currentState & decoratorEditState.NONE
     let showDecalsSlotDiv = this.access_Decals
       && (inBasicMode || (decoratorType == ::g_decorator_type.DECALS && (this.currentState & decoratorEditState.SELECT)))
@@ -985,8 +912,7 @@ enum decalTwoSidedMode
     })
   }
 
-  function updateUnitStatus()
-  {
+  function updateUnitStatus() {
     let obj = this.scene.findObject("unit_status")
     if (!checkObj(obj))
       return
@@ -1000,8 +926,7 @@ enum decalTwoSidedMode
     textObj.overlayTextColor = this.isUnitOwn ? "good" : "bad"
   }
 
-  function updatePreviewedDecoratorInfo()
-  {
+  function updatePreviewedDecoratorInfo() {
     if (this.previewMode != PREVIEW_MODE.DECORATOR)
       return
 
@@ -1017,8 +942,7 @@ enum decalTwoSidedMode
         }))
 
     obj = this.showSceneBtn("previewed_decorator", true)
-    if (obj)
-    {
+    if (obj) {
       let txtApplyDecorator = loc("decoratorPreview/applyManually/" + this.currentType.resourceType)
       let labelObj = obj.findObject("label")
       labelObj.setValue(txtApplyDecorator + loc("ui/colon"))
@@ -1041,13 +965,11 @@ enum decalTwoSidedMode
     }
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     this.showLoadingRot(!hangar_is_model_loaded())
   }
 
-  function getCurrentDecoratorSlot(decoratorType)
-  {
+  function getCurrentDecoratorSlot(decoratorType) {
     if (decoratorType == ::g_decorator_type.UNKNOWN)
       return -1
 
@@ -1057,24 +979,21 @@ enum decalTwoSidedMode
     return this.curSlot
   }
 
-  function setCurrentDecoratorSlot(slotIdx, decoratorType)
-  {
+  function setCurrentDecoratorSlot(slotIdx, decoratorType) {
     if (decoratorType == ::g_decorator_type.DECALS)
       this.curSlot = slotIdx
     else if (decoratorType == ::g_decorator_type.ATTACHABLES)
       this.curAttachSlot = slotIdx
   }
 
-  function onSkinOptionSelect(_obj)
-  {
+  function onSkinOptionSelect(_obj) {
     if (!checkObj(this.scene))
       return
 
     this.updateButtons()
   }
 
-  function onDecalSlotSelect(obj)
-  {
+  function onDecalSlotSelect(obj) {
     if (!checkObj(obj))
       return
 
@@ -1084,16 +1003,14 @@ enum decalTwoSidedMode
     this.updateButtons(::g_decorator_type.DECALS)
   }
 
-  function onDecalSlotActivate(obj)
-  {
+  function onDecalSlotActivate(obj) {
     let value = obj.getValue()
     let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     if (checkObj(childObj))
       this.onDecalSlotClick(childObj)
   }
 
-  function onAttachSlotSelect(obj)
-  {
+  function onAttachSlotSelect(obj) {
     if (!checkObj(obj))
       return
 
@@ -1103,8 +1020,7 @@ enum decalTwoSidedMode
     this.updateButtons(::g_decorator_type.ATTACHABLES)
   }
 
-  function onAttachableSlotActivate(obj)
-  {
+  function onAttachableSlotActivate(obj) {
     let value = obj.getValue()
     let childObj = (value >= 0 && value < obj.childrenCount()) ? obj.getChild(value) : null
     if (!checkObj(childObj))
@@ -1113,13 +1029,11 @@ enum decalTwoSidedMode
     this.onAttachableSlotClick(childObj)
   }
 
-  function onDecalSlotCancel(_obj)
-  {
+  function onDecalSlotCancel(_obj) {
     this.onBtnBack()
   }
 
-  function openDecorationsListForSlot(slotId, actionObj, decoratorType)
-  {
+  function openDecorationsListForSlot(slotId, actionObj, decoratorType) {
     if (!this.checkCurrentUnit())
       return
     if (!this.checkCurrentSkin())
@@ -1147,8 +1061,7 @@ enum decalTwoSidedMode
     this.generateDecorationsList(slot, decoratorType)
   }
 
-  function checkCurrentUnit()
-  {
+  function checkCurrentUnit() {
     if (this.isUnitOwn)
       return true
 
@@ -1160,21 +1073,19 @@ enum decalTwoSidedMode
     return false
   }
 
-  function checkCurrentSkin()
-  {
+  function checkCurrentSkin() {
     if (::u.isEmpty(this.previewSkinId) || !this.skinList)
       return true
 
     let skinIndex = ::find_in_array(this.skinList.values, this.previewSkinId, 0)
     let skinDecorator = this.skinList.decorators[skinIndex]
 
-    if (skinDecorator.canBuyUnlock(this.unit))
-    {
+    if (skinDecorator.canBuyUnlock(this.unit)) {
       let cost = skinDecorator.getCost()
       let priceText = cost.getTextAccordingToBalance()
       let msgText = ::warningIfGold(
         loc("decals/needToBuySkin",
-          {purchase = skinDecorator.getName(), cost = priceText}),
+          { purchase = skinDecorator.getName(), cost = priceText }),
         skinDecorator.getCost())
       this.msgBox("skin_locked", msgText,
         [["ok", (@(previewSkinId) function() { this.buySkin(previewSkinId, cost) })(this.previewSkinId) ],
@@ -1185,34 +1096,29 @@ enum decalTwoSidedMode
     return false
   }
 
-  function checkSlotIndex(slotIdx, decoratorType)
-  {
+  function checkSlotIndex(slotIdx, decoratorType) {
     if (slotIdx < 0)
       return false
 
     if (slotIdx < decoratorType.getAvailableSlots(this.unit))
       return true
 
-    if (hasFeature("EnablePremiumPurchase"))
-    {
+    if (hasFeature("EnablePremiumPurchase")) {
       this.msgBox("no_premium", loc("decals/noPremiumAccount"),
-           [["ok", function()
-            {
+           [["ok", function() {
                this.onOnlineShopPremium()
                this.saveDecorators(true)
             }],
            ["cancel", function() {} ]], "ok")
     }
-    else
-    {
+    else {
       this.msgBox("premium_not_available", loc("charServer/notAvailableYet"),
            [["cancel"]], "cancel")
     }
     return false
   }
 
-  function onAttachableSlotClick(obj)
-  {
+  function onAttachableSlotClick(obj) {
     if (!checkObj(obj))
       return
 
@@ -1222,25 +1128,21 @@ enum decalTwoSidedMode
     this.openDecorationsListForSlot(slotId, obj, ::g_decorator_type.ATTACHABLES)
   }
 
-  function onDecalSlotClick(obj)
-  {
+  function onDecalSlotClick(obj) {
     let slotName = ::getObjIdByPrefix(obj, "slot_")
     let slotId = slotName ? slotName.tointeger() : -1
     this.openDecorationsListForSlot(slotId, obj, ::g_decorator_type.DECALS)
   }
 
-  function onDecalSlotDoubleClick(_obj)
-  {
+  function onDecalSlotDoubleClick(_obj) {
     this.onDecoratorSlotDoubleClick(::g_decorator_type.DECALS)
   }
 
-  function onAttachableSlotDoubleClick(_obj)
-  {
+  function onAttachableSlotDoubleClick(_obj) {
     this.onDecoratorSlotDoubleClick(::g_decorator_type.ATTACHABLES)
   }
 
-  function onDecoratorSlotDoubleClick(decoratorType)
-  {
+  function onDecoratorSlotDoubleClick(decoratorType) {
     let slotIdx = this.getCurrentDecoratorSlot(decoratorType)
     let slotInfo = this.getSlotInfo(slotIdx, false, decoratorType)
     if (slotInfo.isEmpty)
@@ -1251,8 +1153,7 @@ enum decalTwoSidedMode
     this.enterEditDecalMode(slotIdx, decorator)
   }
 
-  function generateDecorationsList(slot, decoratorType)
-  {
+  function generateDecorationsList(slot, decoratorType) {
     if (::u.isEmpty(slot)
         || decoratorType == ::g_decorator_type.UNKNOWN
         || (this.currentState & decoratorEditState.NONE))
@@ -1276,8 +1177,7 @@ enum decalTwoSidedMode
       selCategoryId = path?[0] ?? ""
       selGroupId = path?[1] ?? ""
     }
-    else
-    {
+    else {
       let decal = ::g_decorator.getDecorator(slot.decalId, decoratorType)
       if (decal) {
         selCategoryId = decal.category
@@ -1298,8 +1198,7 @@ enum decalTwoSidedMode
   onEventDecorMenuCollectionIconClick = @(p) this.openCollections(p.decoratorId)
   onCollectionIconClick = @(obj) this.openCollections(obj.holderId)
 
-  function onCollectionButtonClick()
-  {
+  function onCollectionButtonClick() {
     let selectedDecorator = this.decorMenu?.getSelectedDecor()
     if (!isCollectionItem(selectedDecorator))
       return
@@ -1321,12 +1220,11 @@ enum decalTwoSidedMode
   function onEventDecorMenuItemClick(p) {
     let { decorator } = p
     if (!this.decoratorPreview && decorator.isOutOfLimit(this.unit))
-      return ::g_popups.add("", loc("mainmenu/decoratorExceededLimit", {limit = decorator.limit}))
+      return ::g_popups.add("", loc("mainmenu/decoratorExceededLimit", { limit = decorator.limit }))
 
     let curSlotIdx = this.getCurrentDecoratorSlot(this.currentType)
     let isDecal = this.currentType == ::g_decorator_type.DECALS
-    if (!this.decoratorPreview && isDecal)
-    {
+    if (!this.decoratorPreview && isDecal) {
       let isRestrictionShown = showDecoratorAccessRestriction(decorator, this.unit)
       if (isRestrictionShown)
         return
@@ -1345,13 +1243,11 @@ enum decalTwoSidedMode
 
     this.isDecoratorItemUsed = true
 
-    if (!this.decoratorPreview && isDecal)
-    {
+    if (!this.decoratorPreview && isDecal) {
       //getSlotInfo is too slow for decals (~150ms)(because of code func hangar_get_decal_in_slot),
       // so it better to use as last check, so not to worry with lags
       let slotInfo = this.getSlotInfo(curSlotIdx, false, this.currentType)
-      if (!slotInfo.isEmpty && decorator.id != slotInfo.decalId)
-      {
+      if (!slotInfo.isEmpty && decorator.id != slotInfo.decalId) {
         this.currentState = decoratorEditState.REPLACE
         this.currentType.replaceDecorator(curSlotIdx, decorator.id)
         return this.installDecorationOnUnit(decorator)
@@ -1381,18 +1277,15 @@ enum decalTwoSidedMode
     this.onEventDecorMenuItemDblClick({ decorator })
   }
 
-  function onBtnAccept()
-  {
+  function onBtnAccept() {
     this.stopDecalEdition(true)
   }
 
-  function onBtnBack()
-  {
+  function onBtnBack() {
     if (this.currentState & decoratorEditState.NONE)
       return this.goBack()
 
-    if (this.currentState & decoratorEditState.SELECT)
-    {
+    if (this.currentState & decoratorEditState.SELECT) {
       if (this.decorMenu?.isCurCategoryListObjHovered()) {
         this.decorMenu.collapseOpenedCategory()
         this.updateBackButton()
@@ -1409,8 +1302,7 @@ enum decalTwoSidedMode
     this.stopDecalEdition()
   }
 
-  function buyDecorator(decorator, cost, afterPurchDo = null)
-  {
+  function buyDecorator(decorator, cost, afterPurchDo = null) {
     if (!::check_balance_msgBox(decorator.getCost()))
       return false
 
@@ -1427,8 +1319,7 @@ enum decalTwoSidedMode
     return true
   }
 
-  function enterEditDecalMode(slotIdx, decorator)
-  {
+  function enterEditDecalMode(slotIdx, decorator) {
     if ((this.currentState & decoratorEditState.EDITING) || !decorator)
       return
 
@@ -1443,14 +1334,12 @@ enum decalTwoSidedMode
     this.updateSceneOnEditMode(true, decoratorType)
   }
 
-  function updateSceneOnEditMode(isInEditMode, decoratorType, contentUpdate = false)
-  {
+  function updateSceneOnEditMode(isInEditMode, decoratorType, contentUpdate = false) {
     if (decoratorType == ::g_decorator_type.DECALS)
       ::dmViewer.update()
 
     let slotInfo = this.getSlotInfo(this.getCurrentDecoratorSlot(decoratorType), true, decoratorType)
-    if (contentUpdate)
-    {
+    if (contentUpdate) {
       this.updateSlotsBlockByType(decoratorType)
       if (this.isDecoratorItemUsed)
         this.generateDecorationsList(slotInfo, decoratorType)
@@ -1464,15 +1353,13 @@ enum decalTwoSidedMode
       this.isDecoratorItemUsed = false
   }
 
-  function stopDecalEdition(save = false)
-  {
+  function stopDecalEdition(save = false) {
     if (!(this.currentState & decoratorEditState.EDITING))
       return
 
     let decorator = ::g_decorator.getDecorator(this.editableDecoratorId, this.currentType)
 
-    if (!save || !decorator)
-    {
+    if (!save || !decorator) {
       this.currentType.exitEditMode(false, false, Callback(this.afterStopDecalEdition, this))
       return
     }
@@ -1493,32 +1380,28 @@ enum decalTwoSidedMode
     this.setDecoratorInSlot(decorator)
   }
 
-  function askBuyDecoratorOnExitEditMode(decorator)
-  {
+  function askBuyDecoratorOnExitEditMode(decorator) {
     if (!this.currentType.exitEditMode(true, false,
               Callback((@(decorator) function() {
-                          this.askBuyDecorator(decorator, function()
-                            {
+                          this.askBuyDecorator(decorator, function() {
                               ::hangar_save_current_attachables()
                             })
                         })(decorator), this)))
       this.showFailedInstallPopup(decorator)
   }
 
-  function askMarketplaceCouponActionOnExitEditMode(decorator)
-  {
+  function askMarketplaceCouponActionOnExitEditMode(decorator) {
     if (!this.currentType.exitEditMode(true, false,
               Callback(@() this.askMarketplaceCouponAction(decorator), this)))
       this.showFailedInstallPopup(decorator)
   }
 
-  function askBuyDecorator(decorator, afterPurchDo = null)
-  {
+  function askBuyDecorator(decorator, afterPurchDo = null) {
     let cost = decorator.getCost()
     let msgText = ::warningIfGold(
       loc("shop/needMoneyQuestion_purchaseDecal",
-        {purchase = colorize("userlogColoredText", decorator.getName()),
-          cost = cost.getTextAccordingToBalance()}),
+        { purchase = colorize("userlogColoredText", decorator.getName()),
+          cost = cost.getTextAccordingToBalance() }),
       decorator.getCost())
     this.msgBox("buy_decorator_on_preview", msgText,
       [["ok", (@(decorator, afterPurchDo) function() {
@@ -1538,11 +1421,9 @@ enum decalTwoSidedMode
       this.onBtnBack()
   }
 
-  function askMarketplaceCouponAction(decorator)
-  {
+  function askMarketplaceCouponAction(decorator) {
     let inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
-    if (inventoryItem?.canConsume() ?? false)
-    {
+    if (inventoryItem?.canConsume() ?? false) {
       inventoryItem.consume(Callback(function(result) {
         if ((result?.success ?? false) == true)
           this.decorMenu?.updateSelectedCategory(decorator)
@@ -1560,18 +1441,15 @@ enum decalTwoSidedMode
       ], "find_on_marketplace", { cancel_fn = this.onMsgBoxCancel })
   }
 
-  function forceResetInstalledDecorators()
-  {
+  function forceResetInstalledDecorators() {
     this.currentType.removeDecorator(this.getCurrentDecoratorSlot(this.currentType), true)
-    if (this.currentType == ::g_decorator_type.ATTACHABLES)
-    {
+    if (this.currentType == ::g_decorator_type.ATTACHABLES) {
       ::hangar_force_reload_model()
     }
     this.afterStopDecalEdition()
   }
 
-  function setDecoratorInSlot(decorator)
-  {
+  function setDecoratorInSlot(decorator) {
     if (!this.installDecorationOnUnit(decorator))
       return this.showFailedInstallPopup(decorator)
 
@@ -1579,8 +1457,7 @@ enum decalTwoSidedMode
       ::req_unlock_by_client("decal_applied", false)
   }
 
-  function showFailedInstallPopup(decorator)
-  {
+  function showFailedInstallPopup(decorator) {
     let attachAngle = acos(::hangar_get_attachable_tm()[1].y) * 180.0 / PI
     if (attachAngle >= decorator.maxSurfaceAngle)
       ::g_popups.add("", loc("mainmenu/failedInstallAttachableAngle",
@@ -1589,21 +1466,18 @@ enum decalTwoSidedMode
       ::g_popups.add("", loc("mainmenu/failedInstallAttachable"))
   }
 
-  function afterStopDecalEdition()
-  {
+  function afterStopDecalEdition() {
     this.currentState = this.decorMenu?.isOpened ? decoratorEditState.SELECT : decoratorEditState.NONE
     this.updateSceneOnEditMode(false, this.currentType)
   }
 
-  function installDecorationOnUnit(decorator)
-  {
+  function installDecorationOnUnit(decorator) {
     let save = !!decorator && decorator.isUnlocked() && this.previewMode != PREVIEW_MODE.DECORATOR
     return this.currentType.exitEditMode(true, save,
-      Callback( function () { this.onFinishInstallDecoratorOnUnit(true) }, this))
+      Callback(function () { this.onFinishInstallDecoratorOnUnit(true) }, this))
   }
 
-  function onFinishInstallDecoratorOnUnit(isInstalled = false)
-  {
+  function onFinishInstallDecoratorOnUnit(isInstalled = false) {
     if (!isInstalled)
       return
 
@@ -1611,26 +1485,22 @@ enum decalTwoSidedMode
     this.updateSceneOnEditMode(false, this.currentType, true)
   }
 
-  function onOnlineShopEagles()
-  {
+  function onOnlineShopEagles() {
     if (hasFeature("EnableGoldPurchase"))
       this.startOnlineShop("eagles", this.afterReplenishCurrency, "customization")
     else
       ::showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
   }
 
-  function onOnlineShopLions()
-  {
+  function onOnlineShopLions() {
     this.startOnlineShop("warpoints", this.afterReplenishCurrency)
   }
 
-  function onOnlineShopPremium()
-  {
+  function onOnlineShopPremium() {
     this.startOnlineShop("premium", this.checkPremium)
   }
 
-  function checkPremium()
-  {
+  function checkPremium() {
     if (!havePremium.value)
       return
 
@@ -1638,19 +1508,16 @@ enum decalTwoSidedMode
     this.updateMainGuiElements()
   }
 
-  function afterReplenishCurrency()
-  {
+  function afterReplenishCurrency() {
     if (!checkObj(this.scene))
       return
 
     this.updateMainGuiElements()
   }
 
-  function onSkinChange(obj)
-  {
+  function onSkinChange(obj) {
     let skinNum = obj.getValue()
-    if (!this.skinList || !(skinNum in this.skinList.values))
-    {
+    if (!this.skinList || !(skinNum in this.skinList.values)) {
       debug_dump_stack()
       assert(false, "Error: try to set incorrect skin " + this.skinList + ", value = " + skinNum)
       return
@@ -1659,8 +1526,7 @@ enum decalTwoSidedMode
     let skinId = this.skinList.values[skinNum]
     let access = this.skinList.access[skinNum]
 
-    if (this.isUnitOwn && access.isOwn && !this.previewMode)
-    {
+    if (this.isUnitOwn && access.isOwn && !this.previewMode) {
       let curSkinId = ::hangar_get_last_skin(this.unit.name)
       if (!this.previewSkinId && (skinId == curSkinId || (skinId == "" && curSkinId == "default")))
         return
@@ -1669,21 +1535,18 @@ enum decalTwoSidedMode
       this.resetUserSkin(false)
       this.applySkin(skinId)
     }
-    else if (access.isDownloadable)
-    {
+    else if (access.isDownloadable) {
       // Starting skin download...
       showResource(skinId, "skin", Callback(this.onSkinReadyToShow, this))
     }
-    else if (skinId != this.previewSkinId)
-    {
+    else if (skinId != this.previewSkinId) {
       saveSeenSuggestedSkin(this.unit.name, this.previewSkinId)
       this.resetUserSkin(false)
       this.applySkin(skinId, true)
     }
   }
 
-  function onSkinReadyToShow(unitId, skinId, result)
-  {
+  function onSkinReadyToShow(unitId, skinId, result) {
     if (!result || !canStartPreviewScene(true, true) ||
       unitId != this.unit.name || (this.skinList?.values ?? []).indexof(skinId) == null)
         return
@@ -1695,8 +1558,7 @@ enum decalTwoSidedMode
     }, this), 100)
   }
 
-  function onUserSkinChanged(obj)
-  {
+  function onUserSkinChanged(obj) {
     let value = obj.getValue()
     let prevValue = ::get_option(::USEROPT_USER_SKIN).value
     if (prevValue == value)
@@ -1706,8 +1568,7 @@ enum decalTwoSidedMode
     ::hangar_force_reload_model()
   }
 
-  function resetUserSkin(needReloadModel = true)
-  {
+  function resetUserSkin(needReloadModel = true) {
     if (this.previewMode)
       return
 
@@ -1720,44 +1581,36 @@ enum decalTwoSidedMode
       this.updateUserSkinList()
   }
 
-  function applySkin(skinId, previewSkin = false)
-  {
+  function applySkin(skinId, previewSkin = false) {
     if (previewSkin)
       ::hangar_apply_skin_preview(skinId)
-    else
-    {
+    else {
       ::g_decorator.setLastSkin(this.unit.name, skinId, false)
       ::hangar_apply_skin(skinId)
     }
 
-    this.previewSkinId = previewSkin? skinId : null
+    this.previewSkinId = previewSkin ? skinId : null
 
-    if (!previewSkin)
-    {
+    if (!previewSkin) {
       ::save_online_single_job(3210)
       ::save_profile(false)
     }
   }
 
-  function setDmgSkinMode(enable)
-  {
+  function setDmgSkinMode(enable) {
     let cObj = this.scene.findObject("btn_toggle_damaged")
     if (checkObj(cObj))
       cObj.setValue(enable)
   }
 
-  function onToggleDmgSkinState(obj)
-  {
-    ::hangar_show_model_damaged(obj.getValue() ? 1:0)
+  function onToggleDmgSkinState(obj) {
+    ::hangar_show_model_damaged(obj.getValue() ? 1 : 0)
   }
 
-  function onToggleDamaged(obj)
-  {
-    if (this.unit.isAir() || this.unit.isHelicopter())
-    {
+  function onToggleDamaged(obj) {
+    if (this.unit.isAir() || this.unit.isHelicopter()) {
       ::hangar_set_dm_viewer_mode(obj.getValue() ? DM_VIEWER_EXTERIOR : DM_VIEWER_NONE)
-      if (obj.getValue())
-      {
+      if (obj.getValue()) {
         let bObj = this.scene.findObject("dmg_skin_state")
         if (checkObj(bObj))
           bObj.setValue(::hangar_get_loaded_model_damage_state(this.unit.name))
@@ -1771,8 +1624,7 @@ enum decalTwoSidedMode
     this.updateButtons()
   }
 
-  function onBuySkin()
-  {
+  function onBuySkin() {
     let skinId = ::g_unlocks.getSkinId(this.unit.name, this.previewSkinId)
     let previewSkinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
     if (!previewSkinDecorator)
@@ -1792,8 +1644,7 @@ enum decalTwoSidedMode
           ["cancel", function() {} ]], "ok")
   }
 
-  function buySkin(skinName, cost)
-  {
+  function buySkin(skinName, cost) {
     let afterSuccessFunc = Callback((@(skinName) function() {
         ::update_gamercards()
         this.applySkin(skinName)
@@ -1803,8 +1654,7 @@ enum decalTwoSidedMode
     ::g_decorator_type.SKINS.buyFunc(this.unit.name, skinName, cost, afterSuccessFunc)
   }
 
-  function onBtnMarketplaceFindSkin(_obj)
-  {
+  function onBtnMarketplaceFindSkin(_obj) {
     let skinId = ::g_unlocks.getSkinId(this.unit.name, this.previewSkinId)
     let skinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
     let item = ::ItemsManager.findItemById(skinDecorator?.getCouponItemdefId())
@@ -1813,8 +1663,7 @@ enum decalTwoSidedMode
     item.openLink()
   }
 
-  function onBtnMarketplaceConsumeCouponSkin(_obj)
-  {
+  function onBtnMarketplaceConsumeCouponSkin(_obj) {
     let skinId = ::g_unlocks.getSkinId(this.unit.name, this.previewSkinId)
     let skinDecorator = ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
     let itemdefId = skinDecorator?.getCouponItemdefId()
@@ -1831,19 +1680,16 @@ enum decalTwoSidedMode
     }, this), null)
   }
 
-  function getSlotInfo(slotId, checkDecalsList = false, decoratorType = null)
-  {
+  function getSlotInfo(slotId, checkDecalsList = false, decoratorType = null) {
     local isValid = 0 <= slotId
     local decalId = ""
-    if (checkDecalsList && this.decorMenu?.isOpened && slotId == this.getCurrentDecoratorSlot(decoratorType))
-    {
+    if (checkDecalsList && this.decorMenu?.isOpened && slotId == this.getCurrentDecoratorSlot(decoratorType)) {
       let decal = this.decorMenu.getSelectedDecor()
       if (decal)
         decalId = decal.id
     }
 
-    if (decalId == "" && isValid && decoratorType != null)
-    {
+    if (decalId == "" && isValid && decoratorType != null) {
       let liveryName = this.getSelectedBuiltinSkinId()
       decalId = decoratorType.getDecoratorNameInSlot(slotId, this.unit.name, liveryName, false)
       isValid = isValid && slotId < decoratorType.getMaxSlots()
@@ -1857,8 +1703,7 @@ enum decalTwoSidedMode
     }
   }
 
-  function showLoadingRot(flag)
-  {
+  function showLoadingRot(flag) {
     if (this.isLoadingRot == flag)
       return
 
@@ -1868,8 +1713,7 @@ enum decalTwoSidedMode
     this.updateMainGuiElements()
   }
 
-  function onTestFlight()
-  {
+  function onTestFlight() {
     if (!::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
       return
 
@@ -1879,8 +1723,7 @@ enum decalTwoSidedMode
       if (newUnitName == "")
         return setShowUnit(unit)
 
-      if (unit.name != newUnitName)
-      {
+      if (unit.name != newUnitName) {
         ::cur_aircraft_name = newUnitName
         owner.unit = ::getAircraftByName(newUnitName)
         owner.previewSkinId = null
@@ -1895,31 +1738,26 @@ enum decalTwoSidedMode
     })
   }
 
-  function onBuy()
-  {
+  function onBuy() {
     unitActions.buy(this.unit, "customization")
   }
 
-  function onBtnMarketplaceFindUnit(_obj)
-  {
+  function onBtnMarketplaceFindUnit(_obj) {
     let item = ::ItemsManager.findItemById(this.unit.marketplaceItemdefId)
     if (!(item?.hasLink() ?? false))
       return
     item.openLink()
   }
 
-  function onEventUnitBought(_params)
-  {
+  function onEventUnitBought(_params) {
     this.initMainParams()
   }
 
-  function onEventUnitRented(_params)
-  {
+  function onEventUnitRented(_params) {
     this.initMainParams()
   }
 
-  function onBtnDecoratorEdit()
-  {
+  function onBtnDecoratorEdit() {
     this.currentType = this.getCurrentFocusedType()
     let curSlotIdx = this.getCurrentDecoratorSlot(this.currentType)
     let slotInfo = this.getSlotInfo(curSlotIdx, true, this.currentType)
@@ -1927,14 +1765,12 @@ enum decalTwoSidedMode
     this.enterEditDecalMode(curSlotIdx, decorator)
   }
 
-  function onBtnDeleteDecal()
-  {
+  function onBtnDeleteDecal() {
     let decoratorType = this.getCurrentFocusedType()
     this.deleteDecorator(decoratorType, this.getCurrentDecoratorSlot(decoratorType))
   }
 
-  function onDeleteDecal(obj)
-  {
+  function onDeleteDecal(obj) {
     if (!checkObj(obj))
       return
 
@@ -1944,8 +1780,7 @@ enum decalTwoSidedMode
     this.deleteDecorator(::g_decorator_type.DECALS, slotId)
   }
 
-  function onDeleteAttachable(obj)
-  {
+  function onDeleteAttachable(obj) {
     if (!checkObj(obj))
       return
 
@@ -1955,10 +1790,9 @@ enum decalTwoSidedMode
     this.deleteDecorator(::g_decorator_type.ATTACHABLES, slotId)
   }
 
-  function deleteDecorator(decoratorType, slotId)
-  {
+  function deleteDecorator(decoratorType, slotId) {
     let slotInfo = this.getSlotInfo(slotId, false, decoratorType)
-    this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, {name = decoratorType.getLocName(slotInfo.decalId)}),
+    this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, { name = decoratorType.getLocName(slotInfo.decalId) }),
     [
       ["ok", (@(decoratorType, slotInfo) function() {
           decoratorType.removeDecorator(slotInfo.id, true)
@@ -1969,12 +1803,11 @@ enum decalTwoSidedMode
           this.updateButtons(decoratorType, false)
         })(decoratorType, slotInfo)
       ],
-      ["cancel", function(){} ]
+      ["cancel", function() {} ]
     ], "cancel")
   }
 
-  function updateSlotsBlockByType(decoratorType = ::g_decorator_type.UNKNOWN)
-  {
+  function updateSlotsBlockByType(decoratorType = ::g_decorator_type.UNKNOWN) {
     let all = decoratorType == ::g_decorator_type.UNKNOWN
     if (all || decoratorType == ::g_decorator_type.ATTACHABLES)
       this.updateAttachablesSlots()
@@ -1985,18 +1818,15 @@ enum decalTwoSidedMode
     this.updatePenaltyText()
   }
 
-  function onDecorLayoutPresets(_obj)
-  {
+  function onDecorLayoutPresets(_obj) {
     decorLayoutPresets.open(this.unit, this.getSelectedBuiltinSkinId())
   }
 
-  function onSecWeaponsInfo(_obj)
-  {
+  function onSecWeaponsInfo(_obj) {
     weaponryPresetsModal.open({ unit = this.unit })
   }
 
-  function getTwoSidedState()
-  {
+  function getTwoSidedState() {
     let isTwoSided = ::get_hangar_abs()
     let isOppositeMirrored = ::get_hangar_opposite_mirrored()
     return !isTwoSided ? decalTwoSidedMode.OFF
@@ -2004,8 +1834,7 @@ enum decalTwoSidedMode
          : decalTwoSidedMode.ON_MIRRORED
   }
 
-  function setTwoSidedState(idx)
-  {
+  function setTwoSidedState(idx) {
     let isTwoSided = ::get_hangar_abs()
     let isOppositeMirrored = ::get_hangar_opposite_mirrored()
     let needTwoSided  = idx != decalTwoSidedMode.OFF
@@ -2016,60 +1845,51 @@ enum decalTwoSidedMode
       ::set_hangar_opposite_mirrored(needOppositeMirrored)
   }
 
-  function onMirror() // Flip
-  {
+  function onMirror() { // Flip
     ::hangar_mirror_current_decal()
     this.updateDecoratorActionBtnStates()
   }
 
-  function onTwoSided() // TwoSided
-  {
+  function onTwoSided() { // TwoSided
     let obj = this.scene.findObject("two_sided_select")
     if (checkObj(obj))
       obj.setValue((obj.getValue() + 1) % obj.childrenCount())
   }
 
-  function onTwoSidedSelect(obj) // TwoSided select
-  {
+  function onTwoSidedSelect(obj) { // TwoSided select
     this.setTwoSidedState(obj.getValue())
   }
 
-  function onInfo()
-  {
+  function onInfo() {
     if (hasFeature("WikiUnitInfo"))
       openUrl(format(loc("url/wiki_objects"), this.unit.name), false, false, "customization_wnd")
     else
       ::showInfoMsgBox(colorize("activeTextColor", ::getUnitName(this.unit, false)) + "\n" + loc("profile/wiki_link"))
   }
 
-  function clearCurrentDecalSlotAndShow()
-  {
+  function clearCurrentDecalSlotAndShow() {
     if (!checkObj(this.scene))
       return
 
     this.updateSlotsBlockByType()
   }
 
-  function saveDecorators(withProgressBox = false)
-  {
+  function saveDecorators(withProgressBox = false) {
     if (this.previewMode)
       return
     ::g_decorator_type.DECALS.save(this.unit.name, withProgressBox)
     ::g_decorator_type.ATTACHABLES.save(this.unit.name, withProgressBox)
   }
 
-  function showDecoratorsList()
-  {
+  function showDecoratorsList() {
     let show = !!(this.currentState & decoratorEditState.SELECT)
 
     let slotsObj = this.scene.findObject(this.currentType.listId)
-    if (checkObj(slotsObj))
-    {
+    if (checkObj(slotsObj)) {
       let sel = slotsObj.getValue()
-      for (local i = 0; i < slotsObj.childrenCount(); i++)
-      {
+      for (local i = 0; i < slotsObj.childrenCount(); i++) {
         let selectedItem = sel == i && show
-        slotsObj.getChild(i).highlighted = selectedItem? "yes" : "no"
+        slotsObj.getChild(i).highlighted = selectedItem ? "yes" : "no"
       }
     }
 
@@ -2077,8 +1897,7 @@ enum decalTwoSidedMode
     this.decorMenu?.show(show)
   }
 
-  function onScreenClick()
-  {
+  function onScreenClick() {
     if (this.currentState == decoratorEditState.NONE)
       return
 
@@ -2098,39 +1917,33 @@ enum decalTwoSidedMode
     this.enterEditDecalMode(curSlotIdx, curSlotDecorator)
   }
 
-  function onBtnCloseDecalsMenu()
-  {
+  function onBtnCloseDecalsMenu() {
     this.currentState = decoratorEditState.NONE
     this.showDecoratorsList()
     this.currentType = ::g_decorator_type.UNKNOWN
     this.updateButtons()
   }
 
-  function goBack()
-  {
+  function goBack() {
     // clear only when closed by player to can go through test fly with previewed skin
     ::g_decorator.clearLivePreviewParams()
     this.guiScene.performDelayed(this, base.goBack)
     ::hangar_focus_model(false)
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     if (this.isValid())
       this.setDmgSkinMode(false)
     ::hangar_show_model_damaged(MDS_ORIGINAL)
     ::hangar_prem_vehicle_view_close()
 
-    if (this.unit)
-    {
-      if (this.currentState & decoratorEditState.EDITING)
-      {
+    if (this.unit) {
+      if (this.currentState & decoratorEditState.EDITING) {
         this.currentType.exitEditMode(false, false)
         this.currentType.specifyEditableSlot(-1)
       }
 
-      if (this.previewSkinId)
-      {
+      if (this.previewSkinId) {
         saveSeenSuggestedSkin(this.unit.name, this.previewSkinId)
         this.applySkin(::hangar_get_last_skin(this.unit.name), true)
         this.previewSkinId = null
@@ -2138,20 +1951,17 @@ enum decalTwoSidedMode
           ::get_user_skins_profile_blk()[this.unit.name] = this.initialUserSkinId
       }
 
-      if (this.previewMode)
-      {
+      if (this.previewMode) {
         ::hangar_force_reload_model()
       }
-      else
-      {
+      else {
         this.saveDecorators(false)
         ::save_profile(true)
       }
     }
   }
 
-  function getCurrentFocusedType()
-  {
+  function getCurrentFocusedType() {
     if (this.scene.findObject("slots_list").isHovered())
       return ::g_decorator_type.DECALS
     if (this.scene.findObject("slots_attachable_list").isHovered())
@@ -2159,23 +1969,19 @@ enum decalTwoSidedMode
     return ::g_decorator_type.UNKNOWN
   }
 
-  function canShowDmViewer()
-  {
+  function canShowDmViewer() {
     return this.currentState && !(this.currentState & decoratorEditState.EDITING)
   }
 
-  function updatePenaltyText()
-  {
+  function updatePenaltyText() {
     let obj = this.scene.findObject("decal_text_area")
     if (!checkObj(obj))
       return
 
     local txt = ""
-    if (::is_decals_disabled())
-    {
+    if (::is_decals_disabled()) {
       local timeSec = ::get_time_till_decals_disabled()
-      if (timeSec == 0)
-      {
+      if (timeSec == 0) {
         let st = penalty.getPenaltyStatus()
         if ("seconds_left" in st)
           timeSec = st.seconds_left
@@ -2190,27 +1996,23 @@ enum decalTwoSidedMode
     obj.setValue(txt)
   }
 
-  function onEventBeforeStartTestFlight(_params)
-  {
+  function onEventBeforeStartTestFlight(_params) {
     ::handlersManager.requestHandlerRestore(this, this.getclass())
   }
 
-  function onEventItemsShopUpdate(_params)
-  {
+  function onEventItemsShopUpdate(_params) {
     this.updateDecalSlots()
     this.updateAttachablesSlots()
     this.updateSkinList()
     this.updateButtons()
   }
 
-  function initPreviewMode()
-  {
+  function initPreviewMode() {
     if (!this.previewParams)
       return
     if (hangar_get_loaded_unit_name() == this.previewParams.unitName)
       this.removeAllDecorators(false)
-    switch (this.previewMode)
-    {
+    switch (this.previewMode) {
       case PREVIEW_MODE.UNIT:
       case PREVIEW_MODE.SKIN:
         let skinBlockName = this.previewParams.unitName + "/" + this.previewParams.skinName
@@ -2230,38 +2032,30 @@ enum decalTwoSidedMode
     }
   }
 
-  function removeAllDecorators(save)
-  {
+  function removeAllDecorators(save) {
     foreach (decoratorType in [ ::g_decorator_type.DECALS, ::g_decorator_type.ATTACHABLES ])
-      for (local i = 0; i < decoratorType.getAvailableSlots(this.unit); i++)
-      {
+      for (local i = 0; i < decoratorType.getAvailableSlots(this.unit); i++) {
         let slot = this.getSlotInfo(i, false, decoratorType)
         if (!slot.isEmpty)
             decoratorType.removeDecorator(slot.id, save)
       }
   }
 
-  function onEventActiveHandlersChanged(_p)
-  {
+  function onEventActiveHandlersChanged(_p) {
     if (!this.isSceneActiveNoModals())
       this.setDmgSkinMode(false)
   }
 
-  function preSelectSlotAndDecorator(decorator, slotIdx)
-  {
+  function preSelectSlotAndDecorator(decorator, slotIdx) {
     let decoratorType = decorator.decoratorType
-    if (decoratorType == ::g_decorator_type.SKINS)
-    {
+    if (decoratorType == ::g_decorator_type.SKINS) {
       if (this.unit.name == ::g_unlocks.getPlaneBySkinId(decorator.id))
         this.applySkin(::g_unlocks.getSkinNameBySkinId(decorator.id))
     }
-    else
-    {
-      if (slotIdx != -1)
-      {
+    else {
+      if (slotIdx != -1) {
         let listObj = this.scene.findObject(decoratorType.listId)
-        if (checkObj(listObj))
-        {
+        if (checkObj(listObj)) {
           let slotObj = listObj.getChild(slotIdx)
           if (checkObj(slotObj))
             this.openDecorationsListForSlot(slotIdx, slotObj, decoratorType)

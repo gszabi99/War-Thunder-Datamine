@@ -1,19 +1,19 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let {kwarg, memoize} = require("%sqstd/functools.nut")
-let {Computed, Watched} = require("frp")
+let { kwarg, memoize } = require("%sqstd/functools.nut")
+let { Computed, Watched } = require("frp")
 let log = require("%globalScripts/logs.nut")
 let mkWatched = require("%globalScripts/mkWatched.nut")
-let {loc} = require("dagor.localize")
+let { loc } = require("dagor.localize")
 let { debugTableData, toString } = require("%sqStdLibs/helpers/toString.nut")
-let { require_native } = require("%globalScripts/sqModuleHelpers.nut")
 let utf8 = require("utf8")
 let isInArray = @(v, arr) arr.contains(v)
-let {Callback} = require("%sqStdLibs/helpers/callback.nut")
-let {hasFeature} = require("%scripts/user/features.nut")
-let {platformId}  = require("%sqstd/platform.nut")
+let { Callback } = require("%sqStdLibs/helpers/callback.nut")
+let { hasFeature } = require("%scripts/user/features.nut")
+let { platformId }  = require("%sqstd/platform.nut")
 
 let checkObj = @(obj) obj != null && obj?.isValid()
 
@@ -55,7 +55,6 @@ return log.__merge({
   toString
   utf8
   loc
-  require_native
   //frp
   Watched
   Computed

@@ -1,2 +1,2 @@
 #allow-root-table
-return {interop = ::interop}
+return { interop = ::interop }

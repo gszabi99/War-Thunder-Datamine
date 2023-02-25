@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,21 +7,18 @@ from "%scripts/dagui_library.nut" import *
 
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
-::Input.DoubleAxis <- class extends ::Input.InputBase
-{
+::Input.DoubleAxis <- class extends ::Input.InputBase {
   //bit mask array of axis ids from ::JoystickParams().getAxis()
   axisIds = null
 
   deviceId = null
 
-  function getMarkup()
-  {
+  function getMarkup() {
     let data = this.getMarkupData()
     return ::handyman.renderCached(data.template, data.view)
   }
 
-  function getMarkupData()
-  {
+  function getMarkupData() {
     let data = {
       template = "%gui/shortcutAxis.tpl"
       view = {}
@@ -33,18 +31,15 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
     return data
   }
 
-  function getText()
-  {
+  function getText() {
     return ""
   }
 
-  function getDeviceId()
-  {
+  function getDeviceId() {
     return this.deviceId
   }
 
-  function getImage()
-  {
+  function getImage() {
     if (this.deviceId == JOYSTICK_DEVICE_0_ID)
       return gamepadIcons.getGamepadAxisTexture(this.axisIds)
     else if (this.deviceId == STD_MOUSE_DEVICE_ID)
@@ -53,13 +48,11 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
     return null
   }
 
-  function hasImage()
-  {
+  function hasImage() {
     return (this.getImage() ?? "") != ""
   }
 
-  function getConfig()
-  {
+  function getConfig() {
     return {
       inputName = "doubleAxis"
       buttonImage = this.getImage()

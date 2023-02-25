@@ -34,15 +34,11 @@ action_bar_item {
       background-image:t='<<icon>>';
     }
     <</bullets>>
-    tdiv {
+    actionItemCooldown {
       id:t='cooldown'
-      re-type:t='sector';
-      sector-angle-1:t='<<cooldown>>';
-      sector-angle-2:t='360';
-      size:t='pw, ph';
-      position:t='absolute';
-      pos:t='0, 0';
-      background-color:t='#cc0c111c';
+      sector-angle-1:t='<<cooldown>>'
+      inc-factor:t='<<cooldownIncFactor>>'
+      background-color:t='#cc0c111c'
     }
     textarea {
       id:t='amount_text';

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let avatars = require("%scripts/user/avatars.nut")
@@ -124,8 +126,8 @@ let defaultSummaryItem = {
   timeFormat = false
   reqFeature = null
 }
-foreach(idx, stat in statsConfig)
-  foreach(param, value in defaultSummaryItem)
+foreach (idx, stat in statsConfig)
+  foreach (param, value in defaultSummaryItem)
     if (!(param in stat))
       statsConfig[idx][param] <- value
 
@@ -173,8 +175,7 @@ let function getAirsStatsFromBlk(blk) {
       eachBlock(typeBlk, function(airBlk, airName) {
 
         let airData = { name = airName }
-        foreach(stat in airStatsListConfig)
-        {
+        foreach (stat in airStatsListConfig) {
           if ("reqFeature" in stat && !hasAllFeatures(stat.reqFeature))
             continue
 
@@ -194,30 +195,27 @@ let function getAirsStatsFromBlk(blk) {
   return res
 }
 
-let function buildProfileSummaryRowData(config, summary, diffCode, textId = "")
-{
+let function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
   let diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
   if (diff == ::g_difficulty.UNKNOWN)
     return null
 
   let modeList = (type(config.mode) == "array") ? config.mode : [config.mode]
   local value = 0
-  foreach(mode in modeList)
-  {
+  foreach (mode in modeList) {
     let sumData = summary?[mode]?[diff.name]
     if (!sumData)
       continue
 
-    if (config.fm == null)
-    {
+    if (config.fm == null) {
       if (config.id in sumData)
         value += sumData[config.id]
       else
         for (local i = 0; i < statsFm.len(); i++)
           if ((statsFm[i] in sumData) && (config.id in sumData[statsFm[i]]))
             value += sumData[statsFm[i]][config.id]
-    } else
-      if ((config.fm in sumData) && (config.id in sumData[config.fm]))
+    }
+    else if ((config.fm in sumData) && (config.id in sumData[config.fm]))
         value += sumData[config.fm][config.id]
   }
 
@@ -243,17 +241,15 @@ let function fillProfileSummary(sObj, summary, diff) {
   let guiScene = sObj.getScene()
   local data = ""
   let textsToSet = {}
-  foreach(idx, item in statsConfig)
-  {
+  foreach (idx, item in statsConfig) {
     if (!hasAllFeatures(item.reqFeature))
       continue
 
     if (item.header)
       data += ::buildTableRowNoPad("", ["#" + item.name], null,
-                  format("headerRow:t='%s'; ", idx? "yes" : "first"))
+                  format("headerRow:t='%s'; ", idx ? "yes" : "first"))
     else if (item.separateRowsByFm)
-      for (local i = 0; i < statsFm.len(); i++)
-      {
+      for (local i = 0; i < statsFm.len(); i++) {
         let rowId = "row_" + idx + "_" + i
         item.fm = statsFm[i]
         let row = buildProfileSummaryRowData(item, summary, diff, rowId)
@@ -261,7 +257,7 @@ let function fillProfileSummary(sObj, summary, diff) {
           continue
 
         data += row
-        textsToSet["txt_" + rowId] <- loc(item.name) + " (" + loc("mainmenu/type_"+ statsFm[i].tolower()) +")"
+        textsToSet["txt_" + rowId] <- loc(item.name) + " (" + loc("mainmenu/type_" + statsFm[i].tolower()) + ")"
       }
     else {
       let row = buildProfileSummaryRowData(item, summary, diff)
@@ -271,12 +267,11 @@ let function fillProfileSummary(sObj, summary, diff) {
   }
 
   guiScene.replaceContentFromText(sObj, data, data.len(), this)
-  foreach(id, text in textsToSet)
+  foreach (id, text in textsToSet)
     sObj.findObject(id).setValue(text)
 }
 
-let function getCountryMedals(countryId, profileData = null)
-{
+let function getCountryMedals(countryId, profileData = null) {
   let res = []
   let medalsList = profileData?.unlocks?.medal ?? []
   let unlocks = ::g_unlocks.getUnlocksByTypeInBlkOrder("medal")
@@ -293,7 +288,7 @@ let function getPlayerStatsFromBlk(blk) {
     lastDay = blk?.lastDay
     registerDay = blk?.registerDay
     title = blk?.title ?? ""
-    titles = (blk?.titles ?? ::DataBlock()) % "name"
+    titles = (blk?.titles ?? DataBlock()) % "name"
     clanTag = blk?.clanTag ?? ""
     clanName = blk?.clanName ?? ""
     clanType = blk?.clanType ?? 0
@@ -312,9 +307,9 @@ let function getPlayerStatsFromBlk(blk) {
     crews = []
 
     //stats & leaderboards
-    summary = blk?.summary? ::buildTableFromBlk(blk.summary) : {}
-    userstat = blk?.userstat? getAirsStatsFromBlk(blk.userstat) : {}
-    leaderboard = blk?.leaderboard? ::buildTableFromBlk(blk.leaderboard) : {}
+    summary = blk?.summary ? ::buildTableFromBlk(blk.summary) : {}
+    userstat = blk?.userstat ? getAirsStatsFromBlk(blk.userstat) : {}
+    leaderboard = blk?.leaderboard ? ::buildTableFromBlk(blk.leaderboard) : {}
   }
 
   if (blk?.userid != null)
@@ -336,15 +331,13 @@ let function getPlayerStatsFromBlk(blk) {
     player.unlocks[uType][unlock] <- uBlk?.stage ?? 1
   })
 
-  foreach(_i, country in shopCountriesList)
-  {
+  foreach (_i, country in shopCountriesList) {
     let cData = {
       medalsCount = getCountryMedals(country, player).len()
       unitsCount = 0
       eliteUnitsCount = 0
     }
-    if (blk?.aircrafts?[country])
-    {
+    if (blk?.aircrafts?[country]) {
       cData.unitsCount = blk.aircrafts[country].paramCount()
       eachParam(blk.aircrafts[country], function(unitEliteStatus) {
         if (::isUnitEliteByStatus(unitEliteStatus))

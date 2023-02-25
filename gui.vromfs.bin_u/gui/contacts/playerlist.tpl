@@ -96,7 +96,7 @@ contactItem {
         background-image:t='#ui/gameuiskin#btn_blacklist_remove.svg';
       }
     }
-
+    <<#hasMenuChatPrivate>>
     Button_text {
       id:t='btn_message';
       tooltip:t='#contacts/message';
@@ -110,7 +110,7 @@ contactItem {
         background-image:t='#ui/gameuiskin#btn_send_private_message.svg';
       }
     }
-
+    <</hasMenuChatPrivate>>
     Button_text {
       id:t='btn_squadInvite';
       tooltip:t='#contacts/invite';

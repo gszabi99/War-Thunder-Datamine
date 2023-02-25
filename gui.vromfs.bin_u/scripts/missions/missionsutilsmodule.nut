@@ -1,7 +1,12 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
+let { get_game_mode } = require("mission")
+let { setGuiOptionsMode } = require("guiOptions")
+let { restart_mission } = require("guiMission")
 
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
@@ -119,9 +124,15 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
 let getMissionLocName = @(config, key = "locId") "".join(::g_localization.getLocIdsArray(config?[key])
   .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
 
+let function restartCurrentMission() {
+  setGuiOptionsMode(::get_options_mode(get_game_mode()))
+  restart_mission()
+}
+
 return {
   getMissionLocIdsArray
   getMissionRewardsMarkup
   getMissionLocName
   MISSION_OBJECTIVE
+  restartCurrentMission
 }

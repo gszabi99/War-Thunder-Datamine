@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,6 +14,7 @@ let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfil
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { set_option_ptt } = require("chat")
 
 let function get_country_by_team(team_index) {
   local countries = null
@@ -21,8 +23,7 @@ let function get_country_by_team(team_index) {
   return countries?[team_index] ?? ""
 }
 
-::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/options/genericOptions.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -44,8 +45,7 @@ let function get_country_by_team(team_index) {
 
   isOptionInUpdate = false
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.optionsContainers)
       this.optionsContainers = []
     if (this.options)
@@ -54,8 +54,7 @@ let function get_country_by_team(team_index) {
     this.setSceneTitle(this.titleText, this.scene, "menu-title")
   }
 
-  function loadOptions(opt, optId)
-  {
+  function loadOptions(opt, optId) {
     let optListObj = this.scene.findObject("optionslist")
     if (!checkObj(optListObj))
       return assert(false, "Error: cant load options when no optionslist object.")
@@ -70,39 +69,33 @@ let function get_country_by_team(team_index) {
     this.updateLinkedOptions()
   }
 
-  function updateLinkedOptions()
-  {
+  function updateLinkedOptions() {
     this.onLayoutChange(null)
     this.checkMissionCountries()
     this.checkAllowedUnitTypes()
     this.checkBotsOption()
   }
 
-  function applyReturn()
-  {
+  function applyReturn() {
     if (this.applyFunc != null)
       this.applyFunc()
     else
       base.goBack()
   }
 
-  function doApply()
-  {
-    foreach (container in this.optionsContainers)
-    {
+  function doApply() {
+    foreach (container in this.optionsContainers) {
       let objTbl = this.getObj(container.name)
       if (objTbl == null)
         continue
 
-      foreach(_idx, option in container.data)
-      {
-        if(option.controlType == optionControlType.HEADER ||
+      foreach (_idx, option in container.data) {
+        if (option.controlType == optionControlType.HEADER ||
            option.controlType == optionControlType.BUTTON)
           continue
 
         let obj = this.getObj(option.id)
-        if (!checkObj(obj))
-        {
+        if (!checkObj(obj)) {
           ::script_net_assert_once("Bad option",
             "Error: not found obj for option " + option.id + ", type = " + option.type)
           continue
@@ -121,41 +114,34 @@ let function get_country_by_team(team_index) {
     return true
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.cancelFunc != null)
       this.cancelFunc()
     base.goBack()
   }
 
-  function onApply(_obj)
-  {
+  function onApply(_obj) {
     this.applyOptions(true)
   }
 
-  function applyOptions(v_forcedSave = false)
-  {
+  function applyOptions(v_forcedSave = false) {
     this.forcedSave = v_forcedSave
     if (this.doApply())
       this.applyReturn()
   }
 
-  function onApplyOffline(_obj)
-  {
+  function onApplyOffline(_obj) {
     let coopObj = this.getObj("coop_mode")
-    if (coopObj) coopObj.setValue(2)
+    if (coopObj)
+      coopObj.setValue(2)
     this.applyOptions()
   }
 
-  function updateOptionDescr(obj, func) //!!FIXME: use updateOption instead
-  {
+  function updateOptionDescr(obj, func) { //!!FIXME: use updateOption instead
     local newDescr = null
-    foreach (container in this.optionsContainers)
-    {
-      for (local i = 0; i < container.data.len(); ++i)
-      {
-        if (container.data[i].id == obj?.id)
-        {
+    foreach (container in this.optionsContainers) {
+      for (local i = 0; i < container.data.len(); ++i) {
+        if (container.data[i].id == obj?.id) {
           newDescr = func(this.guiScene, obj, container.data[i])
           break
         }
@@ -165,14 +151,10 @@ let function get_country_by_team(team_index) {
         break
     }
 
-    if (newDescr != null)
-    {
-      foreach (container in this.optionsContainers)
-      {
-        for (local i = 0; i < container.data.len(); ++i)
-        {
-          if (container.data[i].id == newDescr.id)
-          {
+    if (newDescr != null) {
+      foreach (container in this.optionsContainers) {
+        for (local i = 0; i < container.data.len(); ++i) {
+          if (container.data[i].id == newDescr.id) {
             container.data[i] = newDescr
             return
           }
@@ -181,49 +163,43 @@ let function get_country_by_team(team_index) {
     }
   }
 
-  function setOptionValueByControlObj(obj)
-  {
+  function setOptionValueByControlObj(obj) {
     let option = this.get_option_by_id(obj?.id)
     if (option)
       ::set_option(option.type, obj.getValue(), option)
     return option
   }
 
-  function updateOptionDelayed(optionType)
-  {
-    this.guiScene.performDelayed(this, function()
-    {
+  function updateOptionDelayed(optionType) {
+    this.guiScene.performDelayed(this, function() {
       if (this.isValid())
         this.updateOption(optionType)
     })
   }
 
-  function updateOption(optionType)
-  {
+  function updateOption(optionType) {
     if (!this.optionsContainers)
       return null
     foreach (container in this.optionsContainers)
-      foreach(idx, option in container.data)
-        if (option.type == optionType)
-        {
+      foreach (idx, option in container.data)
+        if (option.type == optionType) {
           let newOption = ::get_option(optionType, this.optionsConfig)
           container.data[idx] = newOption
           this.updateOptionImpl(newOption)
         }
   }
 
-  function updateOptionImpl(option)
-  {
+  function updateOptionImpl(option) {
     let obj = this.scene.findObject(option.id)
     if (!checkObj(obj))
       return
 
     this.isOptionInUpdate = true
-    if (option.controlType == optionControlType.LIST)
-    {
+    if (option.controlType == optionControlType.LIST) {
       let markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
       this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
-    } else
+    }
+    else
       obj.setValue(option.value)
     this.isOptionInUpdate = false
   }
@@ -238,8 +214,7 @@ let function get_country_by_team(team_index) {
 
   function getOptionObj(option) {
     local obj = this.optionIdToObjCache?[option.id]
-    if (!checkObj(obj))
-    {
+    if (!checkObj(obj)) {
       obj = this.getObj(option.getTrId())
       if (!checkObj(obj))
         return null
@@ -268,14 +243,11 @@ let function get_country_by_team(team_index) {
     obj.enable(status)
   }
 
-  function onNumPlayers(obj)
-  {
-    if (obj != null)
-    {
+  function onNumPlayers(obj) {
+    if (obj != null) {
       let numPlayers = obj.getValue() + 2
       let objPriv = this.getObj("numPrivateSlots")
-      if (objPriv != null)
-      {
+      if (objPriv != null) {
         let numPriv = objPriv.getValue()
         if (numPriv >= numPlayers)
           objPriv.setValue(numPlayers - 1)
@@ -283,14 +255,11 @@ let function get_country_by_team(team_index) {
     }
   }
 
-  function onNumPrivate(obj)
-  {
-    if (obj != null)
-    {
+  function onNumPrivate(obj) {
+    if (obj != null) {
       let numPriv = obj.getValue()
       let objPlayers = this.getObj("numPlayers")
-      if (objPlayers != null)
-      {
+      if (objPlayers != null) {
         let numPlayers = objPlayers.getValue() + 2
         if (numPriv >= numPlayers)
           obj.setValue(numPlayers - 1)
@@ -298,8 +267,7 @@ let function get_country_by_team(team_index) {
     }
   }
 
-  function onVolumeChange(obj)
-  {
+  function onVolumeChange(obj) {
     if (obj.id == "volume_music")
       set_sound_volume(SND_TYPE_MUSIC, obj.getValue() / 100.0, false)
     else if (obj.id == "volume_menu_music")
@@ -327,54 +295,48 @@ let function get_country_by_team(team_index) {
     this.updateOptionValueTextByObj(obj)
   }
 
-  function onFilterEditBoxActivate(){}
+  function onFilterEditBoxActivate() {}
 
-  function onFilterEditBoxChangeValue(){}
+  function onFilterEditBoxChangeValue() {}
 
-  function onFilterEditBoxCancel(){}
+  function onFilterEditBoxCancel() {}
 
-  function onPTTChange(obj)
-  {
-    ::set_option_ptt(::get_option(::USEROPT_PTT).value ? 0 : 1);
+  function onPTTChange(obj) {
+    set_option_ptt(::get_option(::USEROPT_PTT).value ? 0 : 1);
     ::showBtn("ptt_buttons_block", obj.getValue(), this.scene)
   }
 
-  function onVoicechatChange(_obj)
-  {
+  function onVoicechatChange(_obj) {
     ::set_option(::USEROPT_VOICE_CHAT, !::get_option(::USEROPT_VOICE_CHAT).value)
     ::broadcastEvent("VoiceChatOptionUpdated")
   }
 
-  function onInstantOptionApply(obj)
-  {
+  function onInstantOptionApply(obj) {
     this.setOptionValueByControlObj(obj)
   }
 
-  function onChangedPartHudVisible(_obj)
-  {
+  function onChangedPartHudVisible(_obj) {
     ::broadcastEvent("ChangedPartHudVisible")
   }
 
-  function onTankAltCrosshair(obj)
-  {
+  function onTankAltCrosshair(obj) {
     if (this.isOptionInUpdate)
       return
     let option = this.get_option_by_id(obj?.id)
-    if (option && option.values[obj.getValue()] == TANK_ALT_CROSSHAIR_ADD_NEW)
-    {
+    if (option && option.values[obj.getValue()] == TANK_ALT_CROSSHAIR_ADD_NEW) {
       let unit = getPlayerCurUnit()
       let success = ::add_tank_alt_crosshair_template()
       let message = success && unit ? format(loc("hud/successUserSight"), unit.name) : loc("hud/failUserSight")
 
-      this.guiScene.performDelayed(this, function()
-      {
+      this.guiScene.performDelayed(this, function() {
         if (!this.isValid())
           return
 
         ::showInfoMsgBox(message)
         this.updateOption(::USEROPT_TANK_ALT_CROSSHAIR)
       })
-    } else
+    }
+    else
       this.setOptionValueByControlObj(obj)
   }
 
@@ -384,8 +346,7 @@ let function get_country_by_team(team_index) {
       return
 
     let val = obj.getValue()
-    if (val == false)
-    {
+    if (val == false) {
       ::set_option(::USEROPT_PS4_ONLY_LEADERBOARD, true)
       this.updateOption(::USEROPT_PS4_ONLY_LEADERBOARD)
     }
@@ -394,11 +355,9 @@ let function get_country_by_team(team_index) {
       this.enableOptionRow(opt, val)
   }
 
-  function onChangeCrossNetworkChat(obj)
-  {
+  function onChangeCrossNetworkChat(obj) {
     let value = obj.getValue()
-    if (value == true)
-    {
+    if (value == true) {
       //Just send notification that value changed
       this.setCrossNetworkChatValue(null, true, true)
       return
@@ -412,29 +371,25 @@ let function get_country_by_team(team_index) {
         ["no", @() this.setCrossNetworkChatValue(obj, true, false)] //Silently return value
       ],
       "no",
-      {cancel_fn = @() this.setCrossNetworkChatValue(obj, true, false)}
+      { cancel_fn = @() this.setCrossNetworkChatValue(obj, true, false) }
     )
   }
 
-  function onChangeDisplayRealNick(obj)
-  {
+  function onChangeDisplayRealNick(obj) {
     let optValue = ::get_option(::USEROPT_DISPLAY_MY_REAL_NICK).value
-    if(optValue == obj.getValue())
+    if (optValue == obj.getValue())
       return
     ::queues.checkAndStart(null, @() obj.setValue(optValue), "isCanNewflight")
   }
 
-  function setCrossNetworkChatValue(obj, value, needSendNotification = false)
-  {
+  function setCrossNetworkChatValue(obj, value, needSendNotification = false) {
     if (checkObj(obj))
       obj.setValue(value)
 
-    if (needSendNotification)
-    {
+    if (needSendNotification) {
       ::broadcastEvent("CrossNetworkChatOptionChanged")
 
-      if (value == false) //Turn off voice if we turn off crossnetwork opt
-      {
+      if (value == false) { //Turn off voice if we turn off crossnetwork opt
         let voiceOpt = ::get_option(::USEROPT_VOICE_CHAT)
         if (voiceOpt.value == true && voiceOpt?.cb != null) // onVoicechatChange toggles value
           this[voiceOpt.cb](null)
@@ -443,17 +398,15 @@ let function get_country_by_team(team_index) {
       }
 
       let listObj = this.scene.findObject("groups_list")
-      if (checkObj(listObj))
-      {
+      if (checkObj(listObj)) {
         let voiceTabObj = listObj.findObject("voicechat")
         if (checkObj(voiceTabObj))
-          voiceTabObj.inactive = value? "no" : "yes"
+          voiceTabObj.inactive = value ? "no" : "yes"
       }
     }
   }
 
-  function get_option_by_id(id)
-  {
+  function get_option_by_id(id) {
     local res = null;
     foreach (container in this.optionsContainers)
       for (local i = 0; i < container.data.len(); ++i)
@@ -462,8 +415,7 @@ let function get_country_by_team(team_index) {
     return res;
   }
 
-  function find_options_in_containers(optTypeList)
-  {
+  function find_options_in_containers(optTypeList) {
     let res = []
     if (!this.optionsContainers)
       return res
@@ -474,12 +426,10 @@ let function get_country_by_team(team_index) {
     return res
   }
 
-  function findOptionInContainers(optionType)
-  {
+  function findOptionInContainers(optionType) {
     if (!this.optionsContainers)
       return null
-    foreach (container in this.optionsContainers)
-    {
+    foreach (container in this.optionsContainers) {
       let option = ::u.search(container.data, @(o) o.type == optionType)
       if (option)
         return option
@@ -487,41 +437,35 @@ let function get_country_by_team(team_index) {
     return null
   }
 
-  function getSceneOptValue(optName)
-  {
+  function getSceneOptValue(optName) {
     let option = this.get_option_by_id(optName) || ::get_option(optName)
     if (option.values.len() == 0)
       return null
     let obj = this.scene.findObject(option.id)
-    let value = obj? obj.getValue() : option.value
+    let value = obj ? obj.getValue() : option.value
     if (value in option.values)
       return option.values[value]
     return option.values[option.value]
   }
 
-  function onGammaChange(obj)
-  {
+  function onGammaChange(obj) {
     let gamma = obj.getValue() / 100.0
     ::set_option_gamma(gamma, false)
   }
 
-  function onControls(_obj)
-  {
+  function onControls(_obj) {
     this.goForward(::gui_start_controls);
   }
 
-  function onProfileChange(_obj)
-  {
+  function onProfileChange(_obj) {
     this.fillGamercard()
   }
 
-  function onLayoutChange(_obj)
-  {
+  function onLayoutChange(_obj) {
     let countryOption = ::get_option(::USEROPT_MP_TEAM_COUNTRY);
     let cobj = this.getObj(countryOption.id);
     local country = ""
-    if(checkObj(cobj))
-    {
+    if (checkObj(cobj)) {
       country = get_country_by_team(cobj.getValue())
       ::set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
@@ -532,8 +476,7 @@ let function get_country_by_team(team_index) {
       return;
 
     assert(yearObj.childrenCount() == yearOption.values.len())
-    for (local i = 0; i < yearObj.childrenCount(); i++)
-    {
+    for (local i = 0; i < yearObj.childrenCount(); i++) {
       let line = yearObj.getChild(i);
       if (!line)
         continue;
@@ -543,12 +486,10 @@ let function get_country_by_team(team_index) {
 
       local enabled = true
       local tooltip = ""
-      if (::current_campaign && country!="")
-      {
+      if (::current_campaign && country != "") {
         let yearId = $"{country}_{yearOption.values[i]}"
         let unlockBlk = ::g_unlocks.getUnlockById(yearId)
-        if (unlockBlk)
-        {
+        if (unlockBlk) {
           enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
           tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))
         }
@@ -565,22 +506,21 @@ let function get_country_by_team(team_index) {
     yearObj.setValue(value >= 0 ? value : 0);
   }
 
-  function getOptValue(optName, return_default_when_no_obj = true)
-  {
+  function getOptValue(optName, return_default_when_no_obj = true) {
     let option = ::get_option(optName)
     let obj = this.scene.findObject(option.id)
     if (!obj && !return_default_when_no_obj)
       return null
-    let value = obj? obj.getValue() : option.value
+    let value = obj ? obj.getValue() : option.value
     if (option.controlType == optionControlType.LIST)
       return option.values[value]
     return value
   }
 
-  function update_internet_radio(obj)
-  {
+  function update_internet_radio(obj) {
     let option = this.get_option_by_id(obj?.id)
-    if (!option) return
+    if (!option)
+      return
 
     ::set_option(option.type, obj.getValue(), option)
 
@@ -588,13 +528,11 @@ let function get_country_by_team(team_index) {
     this.updateInternerRadioButtons()
   }
 
-  function onMissionCountriesType(_obj)
-  {
+  function onMissionCountriesType(_obj) {
     this.checkMissionCountries()
   }
 
-  function checkMissionCountries()
-  {
+  function checkMissionCountries() {
     if (getTblValue("isEventRoom", this.optionsConfig, false))
       return
 
@@ -603,21 +541,18 @@ let function get_country_by_team(team_index) {
       return
 
     let countriesType = this.getOptValue(::USEROPT_MISSION_COUNTRIES_TYPE)
-    foreach(option in optList)
-    {
+    foreach (option in optList) {
       let show = countriesType == misCountries.CUSTOM
                    || (countriesType == misCountries.SYMMETRIC && option.type == ::USEROPT_BIT_COUNTRIES_TEAM_A)
       this.showOptionRow(option, show)
     }
   }
 
-  function onUseKillStreaks(_obj)
-  {
+  function onUseKillStreaks(_obj) {
     this.checkAllowedUnitTypes()
   }
 
-  function checkAllowedUnitTypes()
-  {
+  function checkAllowedUnitTypes() {
     let option = this.findOptionInContainers(::USEROPT_BIT_UNIT_TYPES)
     if (!option)
       return
@@ -630,8 +565,7 @@ let function get_country_by_team(team_index) {
       this.getOptValue(::USEROPT_USE_KILLSTREAKS, false)
     let allowedUnitTypesMask  = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)
 
-    foreach (unitType in unitTypes.types)
-    {
+    foreach (unitType in unitTypes.types) {
       if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
         continue
       let isShow = !!(allowedUnitTypesMask & unitType.bit)
@@ -647,32 +581,28 @@ let function get_country_by_team(team_index) {
         itemObj.show(useKillStreaks)
   }
 
-  function onOptionBotsAllowed(_obj)
-  {
+  function onOptionBotsAllowed(_obj) {
     this.checkBotsOption()
   }
 
-  function checkBotsOption()
-  {
+  function checkBotsOption() {
     let isBotsAllowed = this.getOptValue(::USEROPT_IS_BOTS_ALLOWED, false)
     if (isBotsAllowed == null) //no such option in current options list
       return
 
     let optList = this.find_options_in_containers([::USEROPT_USE_TANK_BOTS,
       ::USEROPT_USE_SHIP_BOTS])
-    foreach(option in optList)
+    foreach (option in optList)
       this.showOptionRow(option, isBotsAllowed)
   }
 
-  function updateOptionValueTextByObj(obj) //dagui scene callback
-  {
+  function updateOptionValueTextByObj(obj) { //dagui scene callback
     let option = this.get_option_by_id(obj?.id)
     if (option)
       this.updateOptionValueText(option, obj.getValue())
   }
 
-  function updateOptionValueText(option, value)
-  {
+  function updateOptionValueText(option, value) {
     let obj = this.scene.findObject("value_" + option.id)
     if (checkObj(obj))
       obj.setValue(option.getValueLocText(value))
@@ -687,8 +617,7 @@ let function get_country_by_team(team_index) {
   function onDifficultyChange(_obj) {}
 }
 
-::gui_handlers.GenericOptionsModal <- class extends ::gui_handlers.GenericOptions
-{
+::gui_handlers.GenericOptionsModal <- class extends ::gui_handlers.GenericOptions {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
@@ -700,8 +629,7 @@ let function get_country_by_team(team_index) {
   navigationHandlerWeak = null
   headersToOptionsList = {}
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
 
     this.initNavigation()
@@ -710,8 +638,7 @@ let function get_country_by_team(team_index) {
       ::move_mouse_on_obj(this.scene.findObject("btn_apply"))
   }
 
-  function initNavigation()
-  {
+  function initNavigation() {
     let handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
       { scene = this.scene.findObject("control_navigation")
@@ -724,23 +651,20 @@ let function get_country_by_team(team_index) {
     this.navigationHandlerWeak = handler.weakref()
   }
 
-  function doNavigateToSection(navItem)
-  {
+  function doNavigateToSection(navItem) {
     let objTbl = this.scene.findObject(this.currentContainerName)
-    if ( ! checkObj(objTbl))
+    if (! checkObj(objTbl))
       return
 
     local trId = ""
-    foreach(_idx, option in this.getCurrentOptionsList())
-    {
-      if(option.controlType == optionControlType.HEADER
-        && option.id == navItem.id)
-      {
+    foreach (_idx, option in this.getCurrentOptionsList()) {
+      if (option.controlType == optionControlType.HEADER
+        && option.id == navItem.id) {
         trId = option.getTrId()
         break
       }
     }
-    if(::u.isEmpty(trId))
+    if (::u.isEmpty(trId))
       return
 
     let rowObj = objTbl.findObject(trId)
@@ -748,14 +672,12 @@ let function get_country_by_team(team_index) {
       rowObj.scrollToView(true)
   }
 
-  function resetNavigation()
-  {
-    if(this.navigationHandlerWeak)
+  function resetNavigation() {
+    if (this.navigationHandlerWeak)
       this.navigationHandlerWeak.setNavItems([])
   }
 
-  function onTblSelect(_obj)
-  {
+  function onTblSelect(_obj) {
     this.checkCurrentNavigationSection()
 
     if (::show_console_buttons)
@@ -766,32 +688,28 @@ let function get_country_by_team(team_index) {
       ::select_editbox(this.getObj(option.id))
   }
 
-  function checkCurrentNavigationSection()
-  {
+  function checkCurrentNavigationSection() {
     let navItems = this.navigationHandlerWeak.getNavItems()
-    if(navItems.len() < 2)
+    if (navItems.len() < 2)
       return
 
     let currentOption = this.getSelectedOption()
-    if( ! currentOption)
+    if (! currentOption)
       return
 
     let currentHeader = this.getOptionHeader(currentOption)
-    if( ! currentHeader)
+    if (! currentHeader)
       return
 
-    foreach(navItem in navItems)
-    {
-      if(navItem.id == currentHeader.id)
-      {
+    foreach (navItem in navItems) {
+      if (navItem.id == currentHeader.id) {
         this.navigationHandlerWeak.setCurrentItem(navItem)
         return
       }
     }
   }
 
-  function getSelectedOption()
-  {
+  function getSelectedOption() {
     let objTbl = this.scene.findObject(this.currentContainerName)
     if (!checkObj(objTbl))
       return null
@@ -805,58 +723,49 @@ let function get_country_by_team(team_index) {
     return activeOptionsList?[idx]
   }
 
-  function getOptionHeader(option)
-  {
-    foreach(header, optionsArray in this.headersToOptionsList)
-      if(optionsArray.indexof(option) != null)
+  function getOptionHeader(option) {
+    foreach (header, optionsArray in this.headersToOptionsList)
+      if (optionsArray.indexof(option) != null)
         return header
     return null
   }
 
-  function getCurrentOptionsList()
-  {
+  function getCurrentOptionsList() {
     let containerName = this.currentContainerName
     let container = ::u.search(this.optionsContainers, @(c) c.name == containerName)
     return getTblValue("data", container, [])
   }
 
-  function setNavigationItems()
-  {
+  function setNavigationItems() {
     this.headersToOptionsList.clear();
     let headersItems = []
     local lastHeader = null
-    foreach(option in this.getCurrentOptionsList())
-    {
-      if(option.controlType == optionControlType.HEADER)
-      {
+    foreach (option in this.getCurrentOptionsList()) {
+      if (option.controlType == optionControlType.HEADER) {
         lastHeader = option
         this.headersToOptionsList[lastHeader] <- []
-        headersItems.append({id = option.id, text = option.getTitle()})
+        headersItems.append({ id = option.id, text = option.getTitle() })
       }
       else if (lastHeader != null)
         this.headersToOptionsList[lastHeader].append(option)
     }
 
-    if (this.navigationHandlerWeak)
-    {
+    if (this.navigationHandlerWeak) {
       this.navigationHandlerWeak.setNavItems(headersItems)
       this.checkCurrentNavigationSection()
     }
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.applyAtClose)
       this.applyOptions(true)
-    else
-    {
+    else {
       base.goBack()
       this.restoreMainOptions()
     }
   }
 
-  function applyReturn()
-  {
+  function applyReturn() {
     if (!this.applyFunc)
       this.restoreMainOptions()
     base.applyReturn()

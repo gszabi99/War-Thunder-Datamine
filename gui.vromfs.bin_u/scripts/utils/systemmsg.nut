@@ -1,8 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
+let { parse_json } = require("json")
 
 /*
    systemMsg  allow to send messages via config to localize and color on receiver side.
@@ -83,27 +86,22 @@ let getColorByTag = @(tag) colors?[tag] ?? ""
 let locTags = {}
 let getLocId = @(locTag) locTags?[locTag] ?? locTag
 
-let function registerColors(colorsTable) //tag = color
-{
-  foreach(tag, color in colorsTable)
-  {
+let function registerColors(colorsTable) { //tag = color
+  foreach (tag, color in colorsTable) {
     assert(!(tag in colors), "SystemMsg: Duplicate color tag: " + tag + " = " + color)
     colors[tag] <- color
   }
 }
 
-let function registerLocTags(locTagsTable) //tag = locId
-{
-  foreach(tag, locId in locTagsTable)
-  {
+let function registerLocTags(locTagsTable) { //tag = locId
+  foreach (tag, locId in locTagsTable) {
     assert(!(tag in locTags), "SystemMsg: Duplicate locId tag: " + tag + " = " + locId)
     locTags[tag] <- locId
   }
 }
 
 let systemMsg = { //functons here need to be able recursive call self
-  function validateLangConfig(langConfig, valueValidateFunction)
-  {
+  function validateLangConfig(langConfig, valueValidateFunction) {
     return ::u.map(
       langConfig,
       function(value) {
@@ -116,8 +114,7 @@ let systemMsg = { //functons here need to be able recursive call self
     )
   }
 
-  function configToJsonString(langConfig, textValidateFunction = null)
-  {
+  function configToJsonString(langConfig, textValidateFunction = null) {
     if (textValidateFunction)
       langConfig = this.validateLangConfig(langConfig, textValidateFunction)
 
@@ -125,12 +122,10 @@ let systemMsg = { //functons here need to be able recursive call self
     return jsonString
   }
 
-  function convertAny(langConfig, paramValidateFunction = null, separator = "", defaultLocValue = null)
-  {
+  function convertAny(langConfig, paramValidateFunction = null, separator = "", defaultLocValue = null) {
     if (::u.isTable(langConfig))
       return this.convertTable(langConfig, paramValidateFunction)
-    if (::u.isArray(langConfig))
-    {
+    if (::u.isArray(langConfig)) {
       let resArray = ::u.map(langConfig,
         (@(cfg) this.convertAny(cfg, paramValidateFunction) || "").bindenv(this))
       return ::g_string.implode(resArray, separator)
@@ -140,12 +135,10 @@ let systemMsg = { //functons here need to be able recursive call self
     return null
   }
 
-  function convertTable(configTbl, paramValidateFunction = null)
-  {
+  function convertTable(configTbl, paramValidateFunction = null) {
     local res = ""
     let locId = configTbl?[LOC_ID]
-    if (!::u.isString(locId)) //res by value
-    {
+    if (!::u.isString(locId)) { //res by value
       let value = configTbl?[VALUE_ID]
       if (value == null)
         return res
@@ -154,14 +147,11 @@ let systemMsg = { //functons here need to be able recursive call self
       if (paramValidateFunction)
         res = paramValidateFunction(res)
     }
-    else //res by locId with params
-    {
+    else { //res by locId with params
       let params = {}
-      foreach(key, param in configTbl)
-      {
+      foreach (key, param in configTbl) {
         let text = this.convertAny(param, paramValidateFunction, "", "")
-        if (!::u.isEmpty(text))
-        {
+        if (!::u.isEmpty(text)) {
           params[key] <- text
           continue
         }
@@ -181,9 +171,8 @@ let systemMsg = { //functons here need to be able recursive call self
     return res
   }
 
-  function jsonStringToLang(jsonString, paramValidateFunction = null, separator = "")
-  {
-    let langConfig = ::parse_json(jsonString)
+  function jsonStringToLang(jsonString, paramValidateFunction = null, separator = "") {
+    let langConfig = parse_json(jsonString)
     return this.convertAny(langConfig, paramValidateFunction, separator)
   }
 }

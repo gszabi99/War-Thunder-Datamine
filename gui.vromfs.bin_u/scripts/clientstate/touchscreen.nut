@@ -1,11 +1,12 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let isUseThouchscreen = @() !::is_platform_shield_tv() && ::is_thouchscreen_enabled()
+let { is_touchscreen_enabled } = require("controllerState")
 
-let useTouchscreen = isUseThouchscreen()
+let useTouchscreen = !::is_platform_shield_tv() && is_touchscreen_enabled()
 
 let isSmallScreen = useTouchscreen // FIXME: Touch screen is not always small.
 

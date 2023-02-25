@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let time = require("%scripts/time.nut")
@@ -24,6 +26,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 let { openWwOperationRewardPopup
 } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
+let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -40,7 +43,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   isArmyGroupsValid = false
   battles = []
   isBattlesValid = false
-  configurableValues = ::DataBlock()
+  configurableValues = DataBlock()
 
   isLastFlightWasWwBattle = false
 
@@ -58,33 +61,29 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   myClanParticipateIcon = "#ui/gameuiskin#lb_victories_battles.svg"
   lastPlayedIcon = "#ui/gameuiskin#last_played_operation_marker.png"
 
-  defaultDiffCode = DIFFICULTY_ARCADE
+  defaultDiffCode = DIFFICULTY_REALISTIC
 
-  function clearUnitsLists()
-  {
+  function clearUnitsLists() {
     this.infantryUnits = null
     this.artilleryUnits = null
     this.transportUnits = null
   }
 
-  function getInfantryUnits()
-  {
+  function getInfantryUnits() {
     if (this.infantryUnits == null)
       this.infantryUnits = this.getWWConfigurableValue("infantryUnits", this.infantryUnits)
 
     return this.infantryUnits
   }
 
-  function getArtilleryUnits()
-  {
+  function getArtilleryUnits() {
     if (this.artilleryUnits == null)
       this.artilleryUnits = this.getWWConfigurableValue("artilleryUnits", this.artilleryUnits)
 
     return this.artilleryUnits
   }
 
-  function getTransportUnits()
-  {
+  function getTransportUnits() {
     if (this.transportUnits == null)
       this.transportUnits = this.getWWConfigurableValue("transportUnits", this.transportUnits)
 
@@ -97,15 +96,14 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     return null
   }
 
-  function getPlayedOperationText(needMapName = true)
-  {
+  function getPlayedOperationText(needMapName = true) {
     let operation = this.getLastPlayedOperation()
     if (operation != null)
       return operation.getMapText()
 
 
     let nearestAvailableMapToBattle = getNearestMapToBattle()
-    if(!nearestAvailableMapToBattle)
+    if (!nearestAvailableMapToBattle)
       return null
 
     let name = needMapName ? nearestAvailableMapToBattle.getNameText() : loc("mainmenu/btnWorldwar")
@@ -113,7 +111,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
       return loc("worldwar/operation/isNow", { name = name })
 
     return loc("worldwar/operation/willBegin", { name = name
-      time = nearestAvailableMapToBattle.getChangeStateTimeText()})
+      time = nearestAvailableMapToBattle.getChangeStateTimeText() })
   }
 
   function getNewNearestAvailableMapToBattle() {
@@ -170,8 +168,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     addMail({
       user_id = uid.tointeger()
       mail = {
-        operationId = operationId
-        country = getOperationById(operationId)?.getMyAssignCountry()
+        inviteClassName = "Operation"
+        params = {
+          operationId = operationId
+          country = getOperationById(operationId)?.getMyAssignCountry()
+        }
       }
       ttl = 3600
     })
@@ -180,13 +181,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
 ::g_script_reloader.registerPersistentDataFromRoot("g_world_war")
 
-::g_world_war.getSetting <- function getSetting(settingName, defaultValue)
-{
+::g_world_war.getSetting <- function getSetting(settingName, defaultValue) {
   return ::get_game_settings_blk()?.ww_settings?[settingName] ?? defaultValue
 }
 
-::g_world_war.canPlayWorldwar <- function canPlayWorldwar()
-{
+::g_world_war.canPlayWorldwar <- function canPlayWorldwar() {
   if (!isMultiplayerPrivilegeAvailable.value
       || hasMultiplayerRestritionByBalance())
     return false
@@ -202,13 +201,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return !!unit
 }
 
-::g_world_war.canJoinWorldwarBattle <- function canJoinWorldwarBattle()
-{
+::g_world_war.canJoinWorldwarBattle <- function canJoinWorldwarBattle() {
   return ::is_worldwar_enabled() && ::g_world_war.canPlayWorldwar()
 }
 
-::g_world_war.getPlayWorldwarConditionText <- function getPlayWorldwarConditionText(fullText = false)
-{
+::g_world_war.getPlayWorldwarConditionText <- function getPlayWorldwarConditionText(fullText = false) {
   if (!isMultiplayerPrivilegeAvailable.value)
     return loc("xbox/noMultiplayer")
 
@@ -219,24 +216,20 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   let rankText = colorize("@unlockHeaderColor",
     ::get_roman_numeral(this.getSetting("minCraftRank", 0)))
-  return loc("worldWar/playCondition", {rank = rankText})
+  return loc("worldWar/playCondition", { rank = rankText })
 }
 
-::g_world_war.getCantPlayWorldwarReasonText <- function getCantPlayWorldwarReasonText()
-{
+::g_world_war.getCantPlayWorldwarReasonText <- function getCantPlayWorldwarReasonText() {
   return !this.canPlayWorldwar() ? this.getPlayWorldwarConditionText(true) : ""
 }
 
-::g_world_war.openMainWnd <- function openMainWnd(forceOpenMainMenu = false)
-{
+::g_world_war.openMainWnd <- function openMainWnd(forceOpenMainMenu = false) {
   if (!this.checkPlayWorldwarAccess())
     return
 
-  if (!forceOpenMainMenu && ::g_world_war.lastPlayedOperationId)
-  {
+  if (!forceOpenMainMenu && ::g_world_war.lastPlayedOperationId) {
     let operation = getOperationById(::g_world_war.lastPlayedOperationId)
-    if (operation)
-    {
+    if (operation) {
       this.joinOperationById(this.lastPlayedOperationId, this.lastPlayedOperationCountry)
       return
     }
@@ -245,8 +238,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   this.openOperationsOrQueues()
 }
 
-::g_world_war.openWarMap <- function openWarMap()
-{
+::g_world_war.openWarMap <- function openWarMap() {
   let operationId = ::ww_get_operation_id()
   subscribeOperationNotifyOnce(
     operationId,
@@ -261,16 +253,13 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   ::handlersManager.loadHandler(::gui_handlers.WwMap)
 }
 
-::g_world_war.checkPlayWorldwarAccess <- function checkPlayWorldwarAccess()
-{
-  if (!::is_worldwar_enabled())
-  {
+::g_world_war.checkPlayWorldwarAccess <- function checkPlayWorldwarAccess() {
+  if (!::is_worldwar_enabled()) {
     ::show_not_available_msg_box()
     return false
   }
 
-  if (!this.canPlayWorldwar())
-  {
+  if (!this.canPlayWorldwar()) {
     if (!isMultiplayerPrivilegeAvailable.value)
       checkAndShowMultiplayerPrivilegeWarning()
     else if (!isShowGoldBalanceWarning())
@@ -281,8 +270,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return true
 }
 
-::g_world_war.openOperationsOrQueues <- function openOperationsOrQueues(needToOpenBattles = false, map = null)
-{
+::g_world_war.openOperationsOrQueues <- function openOperationsOrQueues(needToOpenBattles = false, map = null) {
   this.stopWar()
 
   if (!this.checkPlayWorldwarAccess())
@@ -297,11 +285,9 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 ::g_world_war.joinOperationById <- function joinOperationById(operationId,
-  country = null, isSilence = false, onSuccess = null, forced = false)
-{
+  country = null, isSilence = false, onSuccess = null, forced = false) {
   let operation = getOperationById(operationId)
-  if (!operation)
-  {
+  if (!operation) {
     if (!isSilence)
       ::showInfoMsgBox(loc("worldwar/operationNotFound"))
     return
@@ -315,12 +301,10 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   operation.join(country, null, isSilence, onSuccess, forced)
 }
 
-::g_world_war.onJoinOperationSuccess <- function onJoinOperationSuccess(operationId, country, isSilence, onSuccess)
-{
+::g_world_war.onJoinOperationSuccess <- function onJoinOperationSuccess(operationId, country, isSilence, onSuccess) {
   let operation = getOperationById(operationId)
   local sideSelectSuccess = false
-  if (operation)
-  {
+  if (operation) {
     if (this.getMyArmyGroup() != null)
       sideSelectSuccess = ::ww_select_player_side_for_army_group_member()
     else
@@ -328,8 +312,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   }
   this.curOperationCountry = country
 
-  if (!sideSelectSuccess)
-  {
+  if (!sideSelectSuccess) {
     this.openOperationsOrQueues()
     return
   }
@@ -347,11 +330,10 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     onSuccess()
 }
 
-::g_world_war.openJoinOperationByIdWnd <- function openJoinOperationByIdWnd()
-{
+::g_world_war.openJoinOperationByIdWnd <- function openJoinOperationByIdWnd() {
   ::gui_modal_editbox_wnd({
     title = loc("mainmenu/operationsMap")
-    charMask="1234567890"
+    charMask = "1234567890"
     allowEmpty = false
     okFunc = function(value) {
       let operationId = ::to_integer_safe(value)
@@ -361,8 +343,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   })
 }
 
-::g_world_war.onEventLoadingStateChange <- function onEventLoadingStateChange(_p)
-{
+::g_world_war.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
   if (!::is_in_flight())
     return
 
@@ -378,13 +359,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     this.updateOperationPreviewAndDo(operationId, null)   //need set operation preview if in WW battle for load operation config
 }
 
-::g_world_war.onEventResetSkipedNotifications <- function onEventResetSkipedNotifications(_p)
-{
+::g_world_war.onEventResetSkipedNotifications <- function onEventResetSkipedNotifications(_p) {
   ::saveLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)
 }
 
-::g_world_war.stopWar <- function stopWar()
-{
+::g_world_war.stopWar <- function stopWar() {
   this.rearZones = null
   this.curOperationCountry = null
 
@@ -398,46 +377,39 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   ::ww_event("StopWorldWar")
 }
 
-::g_world_war.saveLastPlayed <- function saveLastPlayed(operationId, country)
-{
+::g_world_war.saveLastPlayed <- function saveLastPlayed(operationId, country) {
   this.lastPlayedOperationId = operationId
   this.lastPlayedOperationCountry = country
   ::saveLocalByAccount(WW_CUR_OPERATION_SAVE_ID, operationId)
   ::saveLocalByAccount(WW_CUR_OPERATION_COUNTRY_SAVE_ID, country)
 }
 
-::g_world_war.loadLastPlayed <- function loadLastPlayed()
-{
+::g_world_war.loadLastPlayed <- function loadLastPlayed() {
   this.lastPlayedOperationId = ::loadLocalByAccount(WW_CUR_OPERATION_SAVE_ID)
   if (this.lastPlayedOperationId)
     this.lastPlayedOperationCountry = ::loadLocalByAccount(WW_CUR_OPERATION_COUNTRY_SAVE_ID, profileCountrySq.value)
 }
 
-::g_world_war.onEventBeforeProfileInvalidation <- function onEventBeforeProfileInvalidation(_p)
-{
+::g_world_war.onEventBeforeProfileInvalidation <- function onEventBeforeProfileInvalidation(_p) {
   this.stopWar()
 }
 
-::g_world_war.onEventLoginComplete <- function onEventLoginComplete(_p)
-{
+::g_world_war.onEventLoginComplete <- function onEventLoginComplete(_p) {
   this.loadLastPlayed()
   this.updateUserlogsAccess()
 }
 
-::g_world_war.onEventScriptsReloaded <- function onEventScriptsReloaded(_p)
-{
+::g_world_war.onEventScriptsReloaded <- function onEventScriptsReloaded(_p) {
   this.loadLastPlayed()
 }
 
-::g_world_war.leaveWWBattleQueues <- function leaveWWBattleQueues(battle = null)
-{
+::g_world_war.leaveWWBattleQueues <- function leaveWWBattleQueues(battle = null) {
   if (::g_squad_manager.isSquadMember())
     return
 
   ::g_squad_manager.cancelWwBattlePrepare()
 
-  if (battle)
-  {
+  if (battle) {
     let queue = ::queues.findQueueByName(battle.getQueueId())
     ::queues.leaveQueue(queue)
   }
@@ -445,19 +417,16 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     ::queues.leaveQueueByType(QUEUE_TYPE_BIT.WW_BATTLE)
 }
 
-::g_world_war.onEventWWGlobalStatusChanged <- function onEventWWGlobalStatusChanged(p)
-{
+::g_world_war.onEventWWGlobalStatusChanged <- function onEventWWGlobalStatusChanged(p) {
   if (p.changedListsMask & WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS)
     ::g_squad_manager.updateMyMemberData()
 }
 
-::g_world_war.isDebugModeEnabled <- function isDebugModeEnabled()
-{
+::g_world_war.isDebugModeEnabled <- function isDebugModeEnabled() {
   return this.isDebugMode
 }
 
-::g_world_war.setDebugMode <- function setDebugMode(value)
-{
+::g_world_war.setDebugMode <- function setDebugMode(value) {
   if (!hasFeature("worldWarMaster"))
     value = false
 
@@ -468,8 +437,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   ::ww_event("ChangedDebugMode")
 }
 
-::g_world_war.updateArmyGroups <- function updateArmyGroups()
-{
+::g_world_war.updateArmyGroups <- function updateArmyGroups() {
   if (this.isArmyGroupsValid)
     return
 
@@ -477,7 +445,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   this.armyGroups.clear()
 
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   ::ww_get_army_groups_info(blk)
 
   if (!("armyGroups" in blk))
@@ -485,8 +453,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   let itemCount = blk.armyGroups.blockCount()
 
-  for (local i = 0; i < itemCount; i++)
-  {
+  for (local i = 0; i < itemCount; i++) {
     let itemBlk = blk.armyGroups.getBlock(i)
     let group   = ::WwArmyGroup(itemBlk)
 
@@ -496,11 +463,9 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   wwArmyGroupManager.updateManagers()
 }
 
-::g_world_war.getArtilleryUnitParamsByBlk <- function getArtilleryUnitParamsByBlk(blk)
-{
+::g_world_war.getArtilleryUnitParamsByBlk <- function getArtilleryUnitParamsByBlk(blk) {
   let artillery = this.getArtilleryUnits()
-  for (local i = 0; i < blk.blockCount(); i++)
-  {
+  for (local i = 0; i < blk.blockCount(); i++) {
     let wwUnitName = blk.getBlock(i).getBlockName()
     if (wwUnitName in artillery)
       return artillery[wwUnitName]
@@ -509,14 +474,12 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return null
 }
 
-::g_world_war.updateRearZones <- function updateRearZones()
-{
-  let blk = ::DataBlock()
+::g_world_war.updateRearZones <- function updateRearZones() {
+  let blk = DataBlock()
   ::ww_get_rear_zones(blk)
 
   this.rearZones = {}
-  foreach (zoneName, zoneOwner in blk)
-  {
+  foreach (zoneName, zoneOwner in blk) {
     let sideName = ::ww_side_val_to_name(zoneOwner)
     if (!(sideName in this.rearZones))
       this.rearZones[sideName] <- []
@@ -525,58 +488,49 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   }
 }
 
-::g_world_war.getRearZones <- function getRearZones()
-{
+::g_world_war.getRearZones <- function getRearZones() {
   if (!this.rearZones)
     this.updateRearZones()
 
   return this.rearZones
 }
 
-::g_world_war.getRearZonesBySide <- function getRearZonesBySide(side)
-{
+::g_world_war.getRearZonesBySide <- function getRearZonesBySide(side) {
   return this.getRearZones()?[::ww_side_val_to_name(side)] ?? []
 }
 
-::g_world_war.getRearZonesOwnedToSide <- function getRearZonesOwnedToSide(side)
-{
+::g_world_war.getRearZonesOwnedToSide <- function getRearZonesOwnedToSide(side) {
   return this.getRearZonesBySide(side).filter(@(zone) ::ww_get_zone_side_by_name(zone) == side)
 }
 
-::g_world_war.getRearZonesLostBySide <- function getRearZonesLostBySide(side)
-{
+::g_world_war.getRearZonesLostBySide <- function getRearZonesLostBySide(side) {
   return this.getRearZonesBySide(side).filter(@(zone) ::ww_get_zone_side_by_name(zone) != side)
 }
 
-::g_world_war.getSelectedArmies <- function getSelectedArmies()
-{
-  return ::u.map(::ww_get_selected_armies_names(), function(name)
-  {
+::g_world_war.getSelectedArmies <- function getSelectedArmies() {
+  return ::u.map(::ww_get_selected_armies_names(), function(name) {
     return ::g_world_war.getArmyByName(name)
   })
 }
 
-::g_world_war.getSidesStrenghtInfo <- function getSidesStrenghtInfo()
-{
-  let blk = ::DataBlock()
+::g_world_war.getSidesStrenghtInfo <- function getSidesStrenghtInfo() {
+  let blk = DataBlock()
   ::ww_get_sides_info(blk)
 
   let unitsStrenghtBySide = {}
-  foreach(side in this.getCommonSidesOrder())
+  foreach (side in this.getCommonSidesOrder())
     unitsStrenghtBySide[side] <- []
 
   let sidesBlk = blk?["sides"]
   if (sidesBlk == null)
     return unitsStrenghtBySide
 
-  for (local i = 0; i < sidesBlk.blockCount(); ++i)
-  {
+  for (local i = 0; i < sidesBlk.blockCount(); ++i) {
     let wwUnitsList = []
     let sideBlk = sidesBlk.getBlock(i)
     let unitsBlk = sideBlk["units"]
 
-    for (local j = 0; j < unitsBlk.blockCount(); ++j)
-    {
+    for (local j = 0; j < unitsBlk.blockCount(); ++j) {
       let unitsTypeBlk = unitsBlk.getBlock(j)
       let unitTypeBlk = unitsTypeBlk?["units"]
       wwUnitsList.extend(wwActionsWithUnitsList.loadUnitsFromBlk(unitTypeBlk))
@@ -590,10 +544,9 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return unitsStrenghtBySide
 }
 
-::g_world_war.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side)
-{
+::g_world_war.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side) {
   let allOperationUnits = {}
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   ::ww_get_sides_info(blk)
 
   let sidesBlk = blk?["sides"]
@@ -611,33 +564,28 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return allOperationUnits
 }
 
-::g_world_war.filterArmiesByManagementAccess <- function filterArmiesByManagementAccess(armiesArray)
-{
+::g_world_war.filterArmiesByManagementAccess <- function filterArmiesByManagementAccess(armiesArray) {
   return ::u.filter(armiesArray, function(army) { return army.hasManageAccess() })
 }
 
-::g_world_war.haveManagementAccessForSelectedArmies <- function haveManagementAccessForSelectedArmies()
-{
+::g_world_war.haveManagementAccessForSelectedArmies <- function haveManagementAccessForSelectedArmies() {
   let armiesArray = this.getSelectedArmies()
   return this.filterArmiesByManagementAccess(armiesArray).len() > 0
 }
 
-::g_world_war.getMyAccessLevelListForCurrentBattle <- function getMyAccessLevelListForCurrentBattle()
-{
+::g_world_war.getMyAccessLevelListForCurrentBattle <- function getMyAccessLevelListForCurrentBattle() {
   let list = {}
   if (!::ww_is_player_on_war())
     return list
 
-  foreach(group in this.getArmyGroups())
-  {
+  foreach (group in this.getArmyGroups()) {
     list[group.owner.armyGroupIdx] <- group.getAccessLevel()
   }
 
   return list
 }
 
-::g_world_war.haveManagementAccessForAnyGroup <- function haveManagementAccessForAnyGroup()
-{
+::g_world_war.haveManagementAccessForAnyGroup <- function haveManagementAccessForAnyGroup() {
   local result = ::u.search(this.getMyAccessLevelListForCurrentBattle(),
     function(access) {
       return access & WW_BATTLE_ACCESS.MANAGER
@@ -646,15 +594,13 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return result >= WW_BATTLE_ACCESS.MANAGER
 }
 
-::g_world_war.isSquadsInviteEnable <- function isSquadsInviteEnable()
-{
+::g_world_war.isSquadsInviteEnable <- function isSquadsInviteEnable() {
   return hasFeature("WorldWarSquadInvite") &&
          ::g_world_war.haveManagementAccessForAnyGroup() &&
          ::clan_get_my_clan_id().tointeger() >= 0
 }
 
-::g_world_war.isGroupAvailable <- function isGroupAvailable(group, accessList = null)
-{
+::g_world_war.isGroupAvailable <- function isGroupAvailable(group, accessList = null) {
   if (!group || !group.isValid() || !group.owner.isValid())
     return false
 
@@ -666,8 +612,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 // return array of WwArmyGroup
-::g_world_war.getArmyGroups <- function getArmyGroups(filterFunc = null)
-{
+::g_world_war.getArmyGroups <- function getArmyGroups(filterFunc = null) {
   this.updateArmyGroups()
 
   return filterFunc ? ::u.filter(this.armyGroups, filterFunc) : this.armyGroups
@@ -675,8 +620,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
 
 // return array of WwArmyGroup
-::g_world_war.getArmyGroupsBySide <- function getArmyGroupsBySide(side, filterFunc = null)
-{
+::g_world_war.getArmyGroupsBySide <- function getArmyGroupsBySide(side, filterFunc = null) {
   return this.getArmyGroups(
     (@(side, filterFunc) function (group) {
       if (group.owner.side != side)
@@ -689,8 +633,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
 
 // return WwArmyGroup or null
-::g_world_war.getArmyGroupByArmy <- function getArmyGroupByArmy(army)
-{
+::g_world_war.getArmyGroupByArmy <- function getArmyGroupByArmy(army) {
   return ::u.search(this.getArmyGroups(),
     (@(army) function (group) {
       return group.isMyArmy(army)
@@ -698,25 +641,21 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   )
 }
 
-::g_world_war.getMyArmyGroup <- function getMyArmyGroup()
-{
+::g_world_war.getMyArmyGroup <- function getMyArmyGroup() {
   return ::u.search(this.getArmyGroups(),
-      function(group)
-      {
+      function(group) {
         return isInArray(::my_user_id_int64, group.observerUids)
       }
     )
 }
 
-::g_world_war.getArmyByName <- function getArmyByName(armyName)
-{
+::g_world_war.getArmyByName <- function getArmyByName(armyName) {
   if (!armyName)
     return null
   return ::WwArmy(armyName)
 }
 
-::g_world_war.getArmyByArmyGroup <- function getArmyByArmyGroup(armyGroup)
-{
+::g_world_war.getArmyByArmyGroup <- function getArmyByArmyGroup(armyGroup) {
   let armyName = ::u.search(::ww_get_armies_names(), (@(armyGroup) function(armyName) {
       let army = ::g_world_war.getArmyByName(armyName)
       return armyGroup.isMyArmy(army)
@@ -727,8 +666,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return ::g_world_war.getArmyByName(armyName)
 }
 
-::g_world_war.getBattleById <- function getBattleById(battleId)
-{
+::g_world_war.getBattleById <- function getBattleById(battleId) {
   let battles = this.getBattles(
       (@(battleId) function(checkedBattle) {
         return checkedBattle.id == battleId
@@ -739,22 +677,18 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 
-::g_world_war.getAirfieldByIndex <- function getAirfieldByIndex(index)
-{
+::g_world_war.getAirfieldByIndex <- function getAirfieldByIndex(index) {
   return ::WwAirfield(index)
 }
 
 
-::g_world_war.getAirfieldsCount <- function getAirfieldsCount()
-{
+::g_world_war.getAirfieldsCount <- function getAirfieldsCount() {
   return ::ww_get_airfields_count();
 }
 
-::g_world_war.getAirfieldsArrayBySide <- function getAirfieldsArrayBySide(side, filterType = "ANY")
-{
+::g_world_war.getAirfieldsArrayBySide <- function getAirfieldsArrayBySide(side, filterType = "ANY") {
   let res = []
-  for (local index = 0; index < this.getAirfieldsCount(); index++)
-  {
+  for (local index = 0; index < this.getAirfieldsCount(); index++) {
     let field = this.getAirfieldByIndex(index)
     let airfieldType = field.airfieldType.name
     if (field.isMySide(side) && (filterType == "ANY" || filterType == airfieldType))
@@ -764,14 +698,12 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return res
 }
 
-::g_world_war.getBattles <- function getBattles(filterFunc = null, forced = false)
-{
+::g_world_war.getBattles <- function getBattles(filterFunc = null, forced = false) {
   this.updateBattles(forced)
   return filterFunc ? ::u.filter(this.battles, filterFunc) : this.battles
 }
 
-::g_world_war.getBattleForArmy <- function getBattleForArmy(army, _playerSide = SIDE_NONE)
-{
+::g_world_war.getBattleForArmy <- function getBattleForArmy(army, _playerSide = SIDE_NONE) {
   if (!army)
     return null
 
@@ -782,14 +714,12 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   )
 }
 
-::g_world_war.isBattleAvailableToPlay <- function isBattleAvailableToPlay(wwBattle)
-{
+::g_world_war.isBattleAvailableToPlay <- function isBattleAvailableToPlay(wwBattle) {
   return wwBattle && wwBattle.isValid() && !wwBattle.isAutoBattle() && !wwBattle.isFinished()
 }
 
 
-::g_world_war.updateBattles <- function updateBattles(forced = false)
-{
+::g_world_war.updateBattles <- function updateBattles(forced = false) {
   if (this.isBattlesValid && !forced)
     return
 
@@ -797,7 +727,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   this.battles.clear()
 
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   ::ww_get_battles_info(blk)
 
   if (!("battles" in blk))
@@ -805,8 +735,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   let itemCount = blk.battles.blockCount()
 
-  for (local i = 0; i < itemCount; i++)
-  {
+  for (local i = 0; i < itemCount; i++) {
     let itemBlk = blk.battles.getBlock(i)
     let battle   = ::WwBattle(itemBlk)
 
@@ -816,16 +745,14 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 
-::g_world_war.updateConfigurableValues <- function updateConfigurableValues()
-{
+::g_world_war.updateConfigurableValues <- function updateConfigurableValues() {
   this.clearUnitsLists()
-  let blk = ::DataBlock()
+  let blk = DataBlock()
   ::ww_get_configurable_values(blk)
   this.configurableValues = blk
   // ----- FIX ME: Weapon masks data should be received from char -----
-  if (!("fighterCountAsAssault" in this.configurableValues))
-  {
-    this.configurableValues.fighterCountAsAssault = ::DataBlock()
+  if (!("fighterCountAsAssault" in this.configurableValues)) {
+    this.configurableValues.fighterCountAsAssault = DataBlock()
     this.configurableValues.fighterCountAsAssault.mgun    = false
     this.configurableValues.fighterCountAsAssault.cannon  = false
     this.configurableValues.fighterCountAsAssault.gunner  = false
@@ -846,53 +773,45 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 
-::g_world_war.onEventWWLoadOperationFirstTime <- function onEventWWLoadOperationFirstTime(_params = {})
-{
+::g_world_war.onEventWWLoadOperationFirstTime <- function onEventWWLoadOperationFirstTime(_params = {}) {
   this.updateConfigurableValues()
 }
 
-::g_world_war.onEventWWLoadOperation <- function onEventWWLoadOperation(_params = {})
-{
+::g_world_war.onEventWWLoadOperation <- function onEventWWLoadOperation(_params = {}) {
   this.isArmyGroupsValid = false
   this.isBattlesValid = false
 }
 
-::g_world_war.getWWConfigurableValue <- function getWWConfigurableValue(paramPath, defaultValue)
-{
+::g_world_war.getWWConfigurableValue <- function getWWConfigurableValue(paramPath, defaultValue) {
   return get_blk_value_by_path(this.configurableValues, paramPath, defaultValue)
 }
 
-::g_world_war.getOperationObjectives <- function getOperationObjectives()
-{
-  let blk = ::DataBlock()
+::g_world_war.getOperationObjectives <- function getOperationObjectives() {
+  let blk = DataBlock()
   ::ww_get_operation_objectives(blk)
   return blk
 }
 
-::g_world_war.isCurrentOperationFinished <- function isCurrentOperationFinished()
-{
+::g_world_war.isCurrentOperationFinished <- function isCurrentOperationFinished() {
   if (!::ww_is_operation_loaded())
     return false
 
   return ::ww_get_operation_winner() != SIDE_NONE
 }
 
-::g_world_war.getReinforcementsInfo <- function getReinforcementsInfo()
-{
-  let blk = ::DataBlock()
+::g_world_war.getReinforcementsInfo <- function getReinforcementsInfo() {
+  let blk = DataBlock()
   ::ww_get_reinforcements_info(blk)
   return blk
 }
 
-::g_world_war.getReinforcementsArrayBySide <- function getReinforcementsArrayBySide(side)
-{
+::g_world_war.getReinforcementsArrayBySide <- function getReinforcementsArrayBySide(side) {
   let reinforcementsInfo = this.getReinforcementsInfo()
   if (reinforcementsInfo?.reinforcements == null)
     return []
 
   let res = []
-  for (local i = 0; i < reinforcementsInfo.reinforcements.blockCount(); i++)
-  {
+  for (local i = 0; i < reinforcementsInfo.reinforcements.blockCount(); i++) {
     let reinforcement = reinforcementsInfo.reinforcements.getBlock(i)
     let wwReinforcementArmy = ::WwReinforcementArmy(reinforcement)
     if (hasFeature("worldWarMaster") ||
@@ -905,20 +824,17 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return res
 }
 
-::g_world_war.getMyReinforcementsArray <- function getMyReinforcementsArray()
-{
+::g_world_war.getMyReinforcementsArray <- function getMyReinforcementsArray() {
   return ::u.filter(this.getReinforcementsArrayBySide(::ww_get_player_side()),
-    function(reinf) { return reinf.hasManageAccess()}
+    function(reinf) { return reinf.hasManageAccess() }
   )
 }
 
-::g_world_war.getMyReadyReinforcementsArray <- function getMyReadyReinforcementsArray()
-{
+::g_world_war.getMyReadyReinforcementsArray <- function getMyReadyReinforcementsArray() {
   return ::u.filter(this.getMyReinforcementsArray(), function(reinf) { return reinf.isReady() })
 }
 
-::g_world_war.hasSuspendedReinforcements <- function hasSuspendedReinforcements()
-{
+::g_world_war.hasSuspendedReinforcements <- function hasSuspendedReinforcements() {
   return ::u.search(
       this.getMyReinforcementsArray(),
       function(reinf) {
@@ -927,8 +843,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     ) != null
 }
 
-::g_world_war.getReinforcementByName <- function getReinforcementByName(name, blk = null)
-{
+::g_world_war.getReinforcementByName <- function getReinforcementByName(name, blk = null) {
   if (!name || !name.len())
     return null
   if (!blk)
@@ -936,8 +851,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   if (!blk?.reinforcements)
     return null
 
-  for (local i = 0; i < blk.reinforcements.blockCount(); i++)
-  {
+  for (local i = 0; i < blk.reinforcements.blockCount(); i++) {
     let reinforcement = blk.reinforcements.getBlock(i)
     if (!reinforcement)
       continue
@@ -949,21 +863,18 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return null
 }
 
-::g_world_war.sendReinforcementRequest <- function sendReinforcementRequest(cellIdx, name)
-{
-  let params = ::DataBlock()
+::g_world_war.sendReinforcementRequest <- function sendReinforcementRequest(cellIdx, name) {
+  let params = DataBlock()
   params.setInt("cellIdx", cellIdx)
   params.setStr("name", name)
   return ::ww_send_operation_request("cln_ww_emplace_reinforcement", params)
 }
 
-::g_world_war.isArmySelected <- function isArmySelected(armyName)
-{
+::g_world_war.isArmySelected <- function isArmySelected(armyName) {
   return isInArray(armyName, ::ww_get_selected_armies_names())
 }
 
-::g_world_war.moveSelectedArmyToCell <- function moveSelectedArmyToCell(cellIdx, params = {})
-{
+::g_world_war.moveSelectedArmyToCell <- function moveSelectedArmyToCell(cellIdx, params = {}) {
   let army = getTblValue("army", params)
   if (!army)
     return
@@ -972,12 +883,10 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   let targetAirfieldIdx = getTblValue("targetAirfieldIdx", params, -1)
   let target = getTblValue("target", params)
 
-  let blk = ::DataBlock()
-  if (targetAirfieldIdx >= 0)
-  {
+  let blk = DataBlock()
+  if (targetAirfieldIdx >= 0) {
     let airfield = ::g_world_war.getAirfieldByIndex(targetAirfieldIdx)
-    if (::g_ww_unit_type.isAir(army.unitType) && army.isMySide(airfield.side))
-    {
+    if (::g_ww_unit_type.isAir(army.unitType) && army.isMySide(airfield.side)) {
       moveType = "EMT_BACK_TO_AIRFIELD"
       blk.setInt("targetAirfieldIdx", targetAirfieldIdx)
     }
@@ -1005,15 +914,13 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
 // TODO: make this function to work like moveSelectedArmyToCell
 // to avoid duplication code for ground and air arimies.
-::g_world_war.moveSelectedArmiesToCell <- function moveSelectedArmiesToCell(cellIdx, armies = [], target = null, appendPath = false)
-{
+::g_world_war.moveSelectedArmiesToCell <- function moveSelectedArmiesToCell(cellIdx, armies = [], target = null, appendPath = false) {
   //MOVE TYPE - EMT_ATTACK always
   if (cellIdx < 0  || armies.len() == 0)
     return
 
-  let params = ::DataBlock()
-  for (local i = 0; i < armies.len(); i++)
-  {
+  let params = DataBlock()
+  for (local i = 0; i < armies.len(); i++) {
     params.addStr("army" + i, armies[i].name)
     params.addInt("targetCellIdx" + i, cellIdx)
   }
@@ -1028,8 +935,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 
-::g_world_war.playArmyActionSound <- function playArmyActionSound(soundId, wwArmy)
-{
+::g_world_war.playArmyActionSound <- function playArmyActionSound(soundId, wwArmy) {
   if (!wwArmy || !wwArmy.isValid())
     return
 
@@ -1040,13 +946,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 
-::g_world_war.moveSelectedArmes <- function moveSelectedArmes(toX, toY, target = null, append = false)
-{
+::g_world_war.moveSelectedArmes <- function moveSelectedArmes(toX, toY, target = null, append = false) {
   if (!::g_world_war.haveManagementAccessForSelectedArmies())
     return
 
-  if (!this.hasEntrenchedInList(::ww_get_selected_armies_names()))
-  {
+  if (!this.hasEntrenchedInList(::ww_get_selected_armies_names())) {
     this.requestMoveSelectedArmies(toX, toY, target, append)
     return
   }
@@ -1072,18 +976,15 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 
-::g_world_war.requestMoveSelectedArmies <- function requestMoveSelectedArmies(toX, toY, target, append)
-{
+::g_world_war.requestMoveSelectedArmies <- function requestMoveSelectedArmies(toX, toY, target, append) {
   let groundArmies = []
   let selectedArmies = ::ww_get_selected_armies_names()
-  for (local i = selectedArmies.len() - 1; i >=0 ; i--)
-  {
+  for (local i = selectedArmies.len() - 1; i >= 0 ; i--) {
     let army = ::g_world_war.getArmyByName(selectedArmies.remove(i))
     if (!army.isValid())
       continue
 
-    if (::g_ww_unit_type.isAir(army.unitType))
-    {
+    if (::g_ww_unit_type.isAir(army.unitType)) {
       let cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
       let targetAirfieldIdx = ::ww_find_airfield_by_coordinates(toX, toY)
       ::g_world_war.moveSelectedArmyToCell(cellIdx, {
@@ -1098,18 +999,15 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     groundArmies.append(army)
   }
 
-  if (groundArmies.len())
-  {
+  if (groundArmies.len()) {
     let cellIdx = ::ww_get_map_cell_by_coords(toX, toY)
     this.moveSelectedArmiesToCell(cellIdx, groundArmies, target, append)
   }
 }
 
 
-::g_world_war.hasEntrenchedInList <- function hasEntrenchedInList(armyNamesList)
-{
-  for (local i = 0; i < armyNamesList.len(); i++)
-  {
+::g_world_war.hasEntrenchedInList <- function hasEntrenchedInList(armyNamesList) {
+  for (local i = 0; i < armyNamesList.len(); i++) {
     let army = this.getArmyByName(armyNamesList[i])
     if (army && army.isEntrenched())
       return true
@@ -1118,20 +1016,18 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 
-::g_world_war.stopSelectedArmy <- function stopSelectedArmy()
-{
+::g_world_war.stopSelectedArmy <- function stopSelectedArmy() {
   let filteredArray = this.filterArmiesByManagementAccess(this.getSelectedArmies())
   if (!filteredArray.len())
     return
 
-  let params = ::DataBlock()
-  foreach(idx, army in filteredArray)
+  let params = DataBlock()
+  foreach (idx, army in filteredArray)
     params.addStr("army" + idx, army.name)
   ::ww_send_operation_request("cln_ww_stop_armies", params)
 }
 
-::g_world_war.entrenchSelectedArmy <- function entrenchSelectedArmy()
-{
+::g_world_war.entrenchSelectedArmy <- function entrenchSelectedArmy() {
   let filteredArray = this.filterArmiesByManagementAccess(this.getSelectedArmies())
   if (!filteredArray.len())
     return
@@ -1140,22 +1036,21 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   if (!entrenchedArmies.len())
     return
 
-  let params = ::DataBlock()
-  foreach(idx, army in entrenchedArmies)
+  let params = DataBlock()
+  foreach (idx, army in entrenchedArmies)
     params.addStr("army" + idx, army.name)
   ::get_cur_gui_scene()?.playSound("ww_unit_entrench")
   ::ww_send_operation_request("cln_ww_entrench_armies", params)
 }
 
-::g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(cellIdx, unitsList, owner, target = null)
-{
+::g_world_war.moveSelectedAircraftsToCell <- function moveSelectedAircraftsToCell(cellIdx, unitsList, owner, target = null) {
   if (cellIdx < 0)
     return -1
 
   if (unitsList.len() == 0)
     return -1
 
-  let params = ::DataBlock()
+  let params = DataBlock()
   let airfieldIdx = ::ww_get_selected_airfield()
   params.addInt("targetCellIdx", cellIdx)
   params.addInt("airfield", airfieldIdx)
@@ -1164,8 +1059,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   params.addInt("armyGroupIdx", owner.armyGroupIdx)
 
   local i = 0
-  foreach (unitName, unitTable in unitsList)
-  {
+  foreach (unitName, unitTable in unitsList) {
     if (unitTable.count == 0)
       continue
 
@@ -1184,8 +1078,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return ::ww_send_operation_request("cln_ww_move_army_to", params)
 }
 
-::g_world_war.sortUnitsByTypeAndCount <- function sortUnitsByTypeAndCount(a, b)
-{
+::g_world_war.sortUnitsByTypeAndCount <- function sortUnitsByTypeAndCount(a, b) {
   let aType = a.wwUnitType.code
   let bType = b.wwUnitType.code
   if (aType != bType)
@@ -1193,8 +1086,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return a.count - b.count
 }
 
-::g_world_war.sortUnitsBySortCodeAndCount <- function sortUnitsBySortCodeAndCount(a, b)
-{
+::g_world_war.sortUnitsBySortCodeAndCount <- function sortUnitsBySortCodeAndCount(a, b) {
   let aSortCode = a.wwUnitType.sortCode
   let bSortCode = b.wwUnitType.sortCode
   if (aSortCode != bSortCode)
@@ -1205,15 +1097,13 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return aCount.tointeger() - bCount.tointeger()
 }
 
-::g_world_war.getOperationTimeSec <- function getOperationTimeSec()
-{
+::g_world_war.getOperationTimeSec <- function getOperationTimeSec() {
   return time.millisecondsToSecondsInt(::ww_get_operation_time_millisec())
 }
 
-::g_world_war.requestLogs <- function requestLogs(loadAmount, useLogMark, cb, errorCb)
-{
+::g_world_war.requestLogs <- function requestLogs(loadAmount, useLogMark, cb, errorCb) {
   let logMark = useLogMark ? ::g_ww_logs.lastMark : ""
-  let reqBlk = ::DataBlock()
+  let reqBlk = DataBlock()
   reqBlk.setInt("count", loadAmount)
   reqBlk.setStr("last", logMark)
   let taskId = ::ww_operation_request_log(reqBlk)
@@ -1224,8 +1114,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     ::g_tasker.addTask(taskId, null, cb, errorCb)
 }
 
-::g_world_war.getSidesOrder <- function getSidesOrder()
-{
+::g_world_war.getSidesOrder <- function getSidesOrder() {
   local playerSide = ::ww_get_player_side()
   if (playerSide == SIDE_NONE)
     playerSide = SIDE_1
@@ -1234,41 +1123,35 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return [ playerSide, enemySide ]
 }
 
-::g_world_war.getCommonSidesOrder <- function getCommonSidesOrder()
-{
+::g_world_war.getCommonSidesOrder <- function getCommonSidesOrder() {
   return [SIDE_1, SIDE_2]
 }
 
-::g_world_war.getOppositeSide <- function getOppositeSide(side)
-{
+::g_world_war.getOppositeSide <- function getOppositeSide(side) {
   return side == SIDE_2 ? SIDE_1 : SIDE_2
 }
 
-::g_world_war.get_last_weapon_preset <- function get_last_weapon_preset(unitName)
-{
+::g_world_war.get_last_weapon_preset <- function get_last_weapon_preset(unitName) {
   let unit = ::getAircraftByName(unitName)
   if (!unit)
     return ""
 
   let weaponName = ::loadLocalByAccount(WW_UNIT_WEAPON_PRESET_PATH + unitName, "")
   let weapons = unit.getWeapons()
-  foreach(weapon in weapons)
+  foreach (weapon in weapons)
     if (weapon.name == weaponName)
       return weaponName
 
   return weapons?[0].name ?? ""
 }
 
-::g_world_war.set_last_weapon_preset <- function set_last_weapon_preset(unitName, weaponName)
-{
+::g_world_war.set_last_weapon_preset <- function set_last_weapon_preset(unitName, weaponName) {
   ::saveLocalByAccount(WW_UNIT_WEAPON_PRESET_PATH + unitName, weaponName)
 }
 
-::g_world_war.collectUnitsData <- function collectUnitsData(unitsArray, isViewStrengthList = true)
-{
+::g_world_war.collectUnitsData <- function collectUnitsData(unitsArray, isViewStrengthList = true) {
   let collectedUnits = {}
-  foreach(wwUnit in unitsArray)
-  {
+  foreach (wwUnit in unitsArray) {
     let id = isViewStrengthList ? wwUnit.stengthGroupExpClass : wwUnit.expClass
     if (!(id in collectedUnits))
       collectedUnits[id] <- wwUnit
@@ -1279,31 +1162,11 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return collectedUnits
 }
 
-::g_world_war.addSquadInviteToWWBattle <- function addSquadInviteToWWBattle(params)
-{
-  let squadronId = params?.squadronId
-  let operationId = params?.battle?.operationId
-  let battleId = params?.battle?.battleId
-  if (!squadronId || !operationId || !battleId)
-    return
-
-  if (squadronId != ::clan_get_my_clan_id() || !::g_squad_manager.isSquadLeader())
-    return
-
-  ::g_invites.addInvite(::g_invites_classes.WwOperationBattle, {
-    operationId = operationId,
-    battleId = battleId
-  })
-  ::g_invites.rescheduleInvitesTask()
-}
-
-::g_world_war.getSaveOperationLogId <- function getSaveOperationLogId()
-{
+::g_world_war.getSaveOperationLogId <- function getSaveOperationLogId() {
   return WW_LAST_OPERATION_LOG_SAVE_ID + ::ww_get_operation_id()
 }
 
-::g_world_war.updateUserlogsAccess <- function updateUserlogsAccess()
-{
+::g_world_war.updateUserlogsAccess <- function updateUserlogsAccess() {
   if (!::is_worldwar_enabled())
     return
 
@@ -1315,20 +1178,17 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
       ::hidden_userlogs.remove(i)
 }
 
-::g_world_war.updateOperationPreviewAndDo <- function updateOperationPreviewAndDo(operationId, cb, hasProgressBox = false)
-{
+::g_world_war.updateOperationPreviewAndDo <- function updateOperationPreviewAndDo(operationId, cb, hasProgressBox = false) {
   operationPreloader.loadPreview(operationId, cb, hasProgressBox)
 }
 
-::g_world_war.onEventWWOperationPreviewLoaded <- function onEventWWOperationPreviewLoaded(_params = {})
-{
+::g_world_war.onEventWWOperationPreviewLoaded <- function onEventWWOperationPreviewLoaded(_params = {}) {
   this.isArmyGroupsValid = false
   this.isBattlesValid = false
   this.updateConfigurableValues()
 }
 
-::g_world_war.popupCharErrorMsg <- function popupCharErrorMsg(groupName = null, titleText = "", errorMsgId = null)
-{
+::g_world_war.popupCharErrorMsg <- function popupCharErrorMsg(groupName = null, titleText = "", errorMsgId = null) {
   errorMsgId = errorMsgId ?? ::get_char_error_msg()
   if (!errorMsgId)
     return
@@ -1342,9 +1202,8 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     ::g_popups.add(titleText, popupText, null, null, null, groupName)
 }
 
-::g_world_war.getCurMissionWWBattleName <- function getCurMissionWWBattleName()
-{
-  let misBlk = ::DataBlock()
+::g_world_war.getCurMissionWWBattleName <- function getCurMissionWWBattleName() {
+  let misBlk = DataBlock()
   ::get_current_mission_desc(misBlk)
 
   let battleId = misBlk?.customRules?.battleId
@@ -1355,9 +1214,8 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return battle ? battle.getView().getBattleName() : ""
 }
 
-::g_world_war.getCurMissionWWOperationName <- function getCurMissionWWOperationName()
-{
-  let misBlk = ::DataBlock()
+::g_world_war.getCurMissionWWOperationName <- function getCurMissionWWOperationName() {
+  let misBlk = DataBlock()
   ::get_current_mission_desc(misBlk)
 
   let operationId = misBlk?.customRules?.operationId
@@ -1368,7 +1226,8 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   return operation ? operation.getNameText() : ""
 }
 ::g_world_war.openOperationRewardPopup <- function openOperationRewardPopup(logObj) {
-  openWwOperationRewardPopup(logObj)
+  if (getGlobalStatusData())
+    openWwOperationRewardPopup(logObj)
 }
 
 ::subscribe_handler(::g_world_war, ::g_listener_priority.DEFAULT_HANDLER)

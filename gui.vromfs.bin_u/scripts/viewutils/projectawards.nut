@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,20 +7,20 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 
-::setProjectAwards <- function setProjectAwards(handler)
-{
+::setProjectAwards <- function setProjectAwards(handler) {
   let guiScene = ::get_cur_gui_scene()
   let awardsObj = guiScene && guiScene["project-awards"]
-  if (! checkObj(awardsObj)) return
+  if (! checkObj(awardsObj))
+    return
   let blk = GUI.get()
-  if (!blk?.project_awards?.en) return
+  if (!blk?.project_awards?.en)
+    return
 
   local lang = loc("current_lang")
   lang = blk.project_awards?[lang] ? lang : "en"
   let set = blk.project_awards[lang] % "i"
   local data = ""
-  for (local i=0; i<set.len(); i++)
-  {
+  for (local i = 0; i < set.len(); i++) {
     let item = set[i]
     let img = ("img" in item) ? item.img : ""
     let title = ("title" in item) ? loc(item.title) : ""

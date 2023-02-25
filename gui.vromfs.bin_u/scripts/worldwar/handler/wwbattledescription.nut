@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
+let DataBlock  = require("DataBlock")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let wwHelpSlotbarGroupsModal = require("%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut")
@@ -17,12 +19,12 @@ let { getOperationById, getMapByName
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 
 // Temporary image. Has to be changed after receiving correct art
-const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0.jpg?P1"
+const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
 
-global enum WW_BATTLE_VIEW_MODES
-{
+global enum WW_BATTLE_VIEW_MODES {
   BATTLE_LIST,
   SQUAD_INFO,
   QUEUE_INFO
@@ -36,8 +38,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
   isHidden = true
 }
 
-::gui_handlers.WwBattleDescription <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.WwBattleDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/battleDescriptionWindow.tpl"
@@ -72,18 +73,14 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
   hasSlotbarByUnitsGroups = false
 
-  static function open(battle)
-  {
-    if (battle.isValid())
-    {
-      if (!battle.isStillInOperation())
-      {
+  static function open(battle) {
+    if (battle.isValid()) {
+      if (!battle.isStillInOperation()) {
         battle = ::WwBattle()
         ::g_popups.add("", loc("worldwar/battle_finished"),
           null, null, null, "battle_finished")
       }
-      else if (battle.isAutoBattle())
-      {
+      else if (battle.isAutoBattle()) {
         battle = ::WwBattle()
         ::g_popups.add("", loc("worldwar/battleIsInAutoMode"),
           null, null, null, "battle_in_auto_mode")
@@ -96,18 +93,16 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       })
   }
 
-  function getSceneTplContainerObj()
-  {
+  function getSceneTplContainerObj() {
     return this.scene.findObject("root-box")
   }
 
   getSceneTplView = @() {}
 
-  function initScreen()
-  {
+  function initScreen() {
     this.battlesListObj = this.scene.findObject("items_list")
     let battleListData = ::handyman.renderCached(this.sceneTplBattleList,
-      { items = array(this.minCountBattlesInList, DEFAULT_BATTLE_ITEM_CONFIG)})
+      { items = array(this.minCountBattlesInList, DEFAULT_BATTLE_ITEM_CONFIG) })
     this.guiScene.appendWithBlk(this.battlesListObj, battleListData, this)
     this.curBattleListMap = []
     this.initQueueInfo()
@@ -127,8 +122,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.requestQueuesData()
   }
 
-  function initQueueInfo()
-  {
+  function initQueueInfo() {
     let queueInfoObj = this.scene.findObject("queue_info")
     if (!checkObj(queueInfoObj))
       return
@@ -139,17 +133,14 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.queueInfoHandlerWeak = handler.weakref()
   }
 
-  function updateForceSelectedBattle()
-  {
+  function updateForceSelectedBattle() {
     let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
-    if (queue)
-    {
+    if (queue) {
       let battleWithQueue = this.getQueueBattle(queue)
       if (battleWithQueue && battleWithQueue.isValid() && this.curBattleInList.id != battleWithQueue.id)
         this.curBattleInList = this.getBattleById(battleWithQueue.id)
     }
-    else
-    {
+    else {
       let wwBattleName = ::g_squad_manager.getWwOperationBattle()
       if (wwBattleName && this.curBattleInList.id != wwBattleName)
         this.curBattleInList = this.getBattleById(wwBattleName)
@@ -159,8 +150,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       this.curBattleInList = this.getFirstBattleInListMap()
   }
 
-  function initSquadList()
-  {
+  function initSquadList() {
     let squadInfoObj = this.scene.findObject("squad_info")
     if (!checkObj(squadInfoObj))
       return
@@ -172,8 +162,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.updateBattleSquadListData()
   }
 
-  function reinitBattlesList(isForceUpdate = false)
-  {
+  function reinitBattlesList(isForceUpdate = false) {
     if (!wwQueuesData.isDataValid())
       this.requestQueuesData()
 
@@ -182,8 +171,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
     this.curBattleListMap = currentBattleListMap
 
-    if (needRefillBattleList)
-    {
+    if (needRefillBattleList) {
       let view = this.getBattleListView()
       this.fillBattleList(view)
       this.curBattleListItems = clone view.items
@@ -199,8 +187,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       this.showSceneBtn("items_list", this.curBattleListMap.len() > 0)
   }
 
-  function validateCurQueue()
-  {
+  function validateCurQueue() {
     let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (!queue)
       return
@@ -210,25 +197,21 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       ::g_world_war.leaveWWBattleQueues()
   }
 
-  function validateSquadInfo()
-  {
+  function validateSquadInfo() {
     let wwBattleName = ::g_squad_manager.getWwOperationBattle()
     if (wwBattleName && (wwBattleName != this.operationBattle.id || !this.operationBattle.isValid()))
       ::g_squad_manager.cancelWwBattlePrepare()
   }
 
-  function getBattleById(battleId, _searchInCurList = true)
-  {
+  function getBattleById(battleId, _searchInCurList = true) {
     return ::g_world_war.getBattleById(battleId)
   }
 
-  function isBattleValid(battleId)
-  {
+  function isBattleValid(battleId) {
     return this.getBattleById(battleId).isValid()
   }
 
-  function updateWindow()
-  {
+  function updateWindow() {
     this.updateViewMode()
     this.updateDescription()
     this.updateSlotbar()
@@ -236,8 +219,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.updateDurationTimer()
   }
 
-  function updateTitle()
-  {
+  function updateTitle() {
     let titleTextObj = this.scene.findObject("battle_description_frame_text")
     if (!checkObj(titleTextObj))
       return
@@ -246,13 +228,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       this.getTitleText() : loc("worldwar/prepare_battle"))
   }
 
-  function getTitleText()
-  {
+  function getTitleText() {
     return loc("userlog/page/battle")
   }
 
-  function updateDurationTimer()
-  {
+  function updateDurationTimer() {
     if (this.battleDurationTimer && this.battleDurationTimer.isValid())
       this.battleDurationTimer.destroy()
 
@@ -260,12 +240,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       @() this.updateBattleStatus(this.operationBattle.getView(this.getPlayerSide())), this, true)
   }
 
-  function isBattleAvailableToMatching(battle, country)
-  {
+  function isBattleAvailableToMatching(battle, country) {
     if (battle.getBattleActivateLeftTime() > 0)
       return false
 
-    if(!battle.hasAvailableUnits())
+    if (!battle.hasAvailableUnits())
       return false
 
     let side = this.getPlayerSide(battle)
@@ -282,8 +261,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return true
   }
 
-  function getBattleListView()
-  {
+  function getBattleListView() {
     let wwBattlesView = ::u.map(this.curBattleListMap,
       function(battle) {
         return this.createBattleListItemView(battle)
@@ -292,10 +270,8 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return { items = wwBattlesView }
   }
 
-  function selectItemInList()
-  {
-    if (!this.curBattleListItems.len())
-    {
+  function selectItemInList() {
+    if (!this.curBattleListItems.len()) {
       this.curBattleInList = this.getEmptyBattle()
       return
     }
@@ -311,12 +287,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       this.battlesListObj.setValue(idx)
   }
 
-  function fillBattleList(view)
-  {
+  function fillBattleList(view) {
     this.guiScene.setUpdatesEnabled(false, false)
     let newList = view.items
     let total = max(newList.len(), this.curBattleListItems?.len?() ?? 0)
-    for(local i = 0; i < total; i++)
+    for (local i = 0; i < total; i++)
       this.updateBattleInList(i, this.curBattleListItems?[i], newList?[i])
 
     this.showSceneBtn("no_active_battles_text", this.curBattleListMap.len() == 0)
@@ -327,29 +302,25 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
     local maxSectorNameWidth = 0
     let sectorNameTextObjs = []
-    foreach(item in view.items)
-    {
+    foreach (item in view.items) {
       let sectorNameTxtObj = this.scene.findObject("mission_item_prefix_text_" + item.id)
-      if (checkObj(sectorNameTxtObj))
-      {
+      if (checkObj(sectorNameTxtObj)) {
         sectorNameTextObjs.append(sectorNameTxtObj)
         maxSectorNameWidth = max(maxSectorNameWidth, sectorNameTxtObj.getSize()[0])
       }
     }
 
     let sectorWidth = maxSectorNameWidth
-    foreach(sectorNameTextObj in sectorNameTextObjs)
+    foreach (sectorNameTextObj in sectorNameTextObjs)
       sectorNameTextObj["min-width"] = sectorWidth
   }
 
-  function battlesSort(battleA, battleB)
-  {
+  function battlesSort(battleA, battleB) {
     return battleB.isActive() <=> battleA.isActive()
       || battleA.getOrdinalNumber() <=> battleB.getOrdinalNumber()
   }
 
-  function createBattleListItemView(battleData)
-  {
+  function createBattleListItemView(battleData) {
     let playerSide = this.getPlayerSide(battleData)
     let battleView = battleData.getView(playerSide)
     let view = {
@@ -363,14 +334,13 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
     if (battleData.isActive() || battleData.isFinished())
       view.itemText <- battleData.getLocName(playerSide)
-    else
-    {
+    else {
       let battleSides = ::g_world_war.getSidesOrder()
       let teamsData = battleView.getTeamBlockByIconSize(
         battleSides, WW_ARMY_GROUP_ICON_SIZE.SMALL, false,
-        {hasArmyInfo = false, hasVersusText = true, canAlignRight = false})
+        { hasArmyInfo = false, hasVersusText = true, canAlignRight = false })
       local teamsMarkUp = ""
-      foreach(_idx, army in teamsData)
+      foreach (_idx, army in teamsData)
         teamsMarkUp += army.armies.armyViews
 
       view.additionalDescription <- teamsMarkUp
@@ -379,16 +349,14 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return view
   }
 
-  function getSelectedBattlePrefixText(battleData)
-  {
+  function getSelectedBattlePrefixText(battleData) {
     let battleView = battleData.getView()
     let battleName = colorize("newTextColor", battleView.getShortBattleName())
     let sectorName = battleData.getSectorName()
     return battleName + (!::u.isEmpty(sectorName) ? " " + sectorName : "")
   }
 
-  function updateSlotbar()
-  {
+  function updateSlotbar() {
     let side = this.getPlayerSide()
     let availableCountries = getOperationById(::ww_get_operation_id())?.getCountriesByTeams()[side]
     let isSlotbarVisible = (availableCountries?.len() ?? 0) > 0
@@ -407,12 +375,12 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     let availableUnits = playerTeam != null ? this.operationBattle.getTeamRemainUnits(playerTeam)
       : this.hasSlotbarByUnitsGroups ? ::all_units : operationUnits
     if (this.hasSlotbarByUnitsGroups)
-      setCurPreset(map.getId() ,unitsGroupsByCountry)
+      setCurPreset(map.getId(), unitsGroupsByCountry)
 
     this.createSlotbar(
       {
         singleCountry = assignCountry
-        customViewCountryData = {[assignCountry]  = getCustomViewCountryData(assignCountry, map.getId(), true)}
+        customViewCountryData = { [assignCountry]  = getCustomViewCountryData(assignCountry, map.getId(), true) }
         availableUnits = availableUnits
         customUnitsList = this.hasSlotbarByUnitsGroups ? null : operationUnits
       }.__update(this.getSlotbarParams()),
@@ -438,13 +406,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     ? slotbarWidget.create(params)
     : ::gui_handlers.SlotbarWidget.create(params)
 
-  function getGameModeNameText()
-  {
+  function getGameModeNameText() {
     return this.operationBattle.getView(this.getPlayerSide()).getFullBattleName()
   }
 
-  function getMap()
-  {
+  function getMap() {
     let operation = getOperationById(::ww_get_operation_id())
     if (operation == null)
       return null
@@ -456,8 +422,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return map
   }
 
-  function getCustomUnitsListNameText()
-  {
+  function getCustomUnitsListNameText() {
     let operation = getOperationById(::ww_get_operation_id())
     if (operation)
       return operation.getMapText()
@@ -465,8 +430,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return ""
   }
 
-  function updateDescription()
-  {
+  function updateDescription() {
     let descrObj = this.scene.findObject("item_desc")
     if (!checkObj(descrObj))
       return
@@ -483,8 +447,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
     this.showSceneBtn("operation_loading_wait_anim", battle.isValid() && !isOperationBattleLoaded && !battle.isFinished())
 
-    if (!battle.isValid() || !isOperationBattleLoaded || battle.isFinished())
-    {
+    if (!battle.isValid() || !isOperationBattleLoaded || battle.isFinished()) {
       this.showSceneBtn("battle_info", battle.isFinished())
       this.showSceneBtn("teams_block", false)
       this.showSceneBtn("tactical_map_block", false)
@@ -495,18 +458,15 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
     let battleSides = ::g_world_war.getSidesOrder()
     let teamsData = battleView.getTeamsDataBySides(battleSides)
-    foreach(idx, teamData in teamsData)
-    {
+    foreach (idx, teamData in teamsData) {
       let teamObjHeaderInfo = this.scene.findObject($"team_header_info_{idx}")
-      if (checkObj(teamObjHeaderInfo))
-      {
+      if (checkObj(teamObjHeaderInfo)) {
         let teamHeaderInfoBlk = ::handyman.renderCached(this.sceneTplTeamHeaderInfo, teamData)
         this.guiScene.replaceContentFromText(teamObjHeaderInfo, teamHeaderInfoBlk, teamHeaderInfoBlk.len(), this)
       }
 
       let teamObjPlace = this.scene.findObject($"team_unit_info_{idx}")
-      if (checkObj(teamObjPlace))
-      {
+      if (checkObj(teamObjPlace)) {
         let teamBlk = ::handyman.renderCached(this.sceneTplTeamRight, teamData)
         this.guiScene.replaceContentFromText(teamObjPlace, teamBlk, teamBlk.len(), this)
       }
@@ -516,8 +476,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.updateBattleStatus(battleView)
   }
 
-  function fillOperationBackground()
-  {
+  function fillOperationBackground() {
     let battleBgObj = this.scene.findObject("battle_background")
     if (!checkObj(battleBgObj))
       return
@@ -525,8 +484,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     battleBgObj["background-image"] = this.getOperationBackground()
   }
 
-  function getOperationBackground()
-  {
+  function getOperationBackground() {
     let curOperation = getOperationById(::ww_get_operation_id())
     if (!curOperation)
       return WW_OPERATION_DEFAULT_BG_IMAGE
@@ -538,37 +496,33 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return curMap.getBackground()
   }
 
-  function fillOperationInfoText()
-  {
+  function fillOperationInfoText() {
   }
 
-  function loadMap(playerSide)
-  {
+  function loadMap(playerSide) {
     let tacticalMapObj = this.scene.findObject("tactical_map_single")
     if (!checkObj(tacticalMapObj))
       return
 
     local misFileBlk = null
     let misData = this.operationBattle.missionInfo
-    if (misData != null)
-    {
-      let missionBlk = ::DataBlock()
+    if (misData != null) {
+      let missionBlk = DataBlock()
       missionBlk.setFrom(misData)
 
-      misFileBlk = ::DataBlock()
-      misFileBlk.load(missionBlk.getStr("mis_file",""))
+      misFileBlk = DataBlock()
+      misFileBlk.load(missionBlk.getStr("mis_file", ""))
     }
     else
       log("Error: WWar: Battle with id=" + this.operationBattle.id + ": not found mission info for mission " + this.operationBattle.missionName)
 
-    ::g_map_preview.setMapPreview(tacticalMapObj, misFileBlk)
+    setMapPreview(tacticalMapObj, misFileBlk)
     let playerTeam = this.operationBattle.getTeamBySide(playerSide)
     if (playerTeam && "name" in playerTeam)
       ::tactical_map_set_team_for_briefing(::get_mp_team_by_team_name(playerTeam.name))
   }
 
-  function updateViewMode()
-  {
+  function updateViewMode() {
     let newViewMode = this.getViewMode()
     if (newViewMode == this.currViewMode)
       return
@@ -588,8 +542,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.updateTitle()
   }
 
-  function getViewMode()
-  {
+  function getViewMode() {
     if (::queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
       return WW_BATTLE_VIEW_MODES.QUEUE_INFO
 
@@ -601,15 +554,13 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return WW_BATTLE_VIEW_MODES.BATTLE_LIST
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let isViewBattleList = this.currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST
     this.showSceneBtn("btn_battles_filters", this.hasBattleFilter && isViewBattleList)
     this.showSceneBtn("invite_squads_button",
       this.hasSquadsInviteButton && ::g_world_war.isSquadsInviteEnable())
 
-    if (!this.curBattleInList.isValid())
-    {
+    if (!this.curBattleInList.isValid()) {
       this.showSceneBtn("cant_join_reason_txt", false)
       this.showSceneBtn("btn_join_battle", false)
       this.showSceneBtn("btn_leave_battle", false)
@@ -634,8 +585,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     local warningText = ""
     local fullWarningText = ""
 
-    if (!::g_squad_manager.isInSquad() || ::g_squad_manager.getOnlineMembersCount() == 1)
-    {
+    if (!::g_squad_manager.isInSquad() || ::g_squad_manager.getOnlineMembersCount() == 1) {
       isJoinBattleActive = isJoinBattleVisible && cantJoinReasonData.canJoin
       warningText = this.currViewMode != WW_BATTLE_VIEW_MODES.QUEUE_INFO
         ? this.getWarningText(cantJoinReasonData, joinWarningData)
@@ -645,21 +595,17 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
         : joinWarningData.fullWarningText
     }
     else
-      switch (this.currViewMode)
-      {
+      switch (this.currViewMode) {
         case WW_BATTLE_VIEW_MODES.BATTLE_LIST:
-          if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData))
-          {
+          if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData)) {
             isJoinBattleActive = false
             warningText = cantJoinReasonData.reasonText
           }
-          else if (this.canPrerareSquadForBattle(cantJoinReasonData))
-          {
+          else if (this.canPrerareSquadForBattle(cantJoinReasonData)) {
             isJoinBattleActive = false
             warningText = cantJoinReasonData.reasonText
           }
-          else if (!::g_squad_manager.readyCheck(false))
-          {
+          else if (!::g_squad_manager.readyCheck(false)) {
             isJoinBattleActive = false
             warningText = loc("squad/not_all_in_operation")
           }
@@ -667,8 +613,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
           break
 
         case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
-          if (::g_squad_manager.isSquadMember())
-          {
+          if (::g_squad_manager.isSquadMember()) {
             isJoinBattleVisible = !::g_squad_manager.isMyCrewsReady
             isLeaveBattleVisible = ::g_squad_manager.isMyCrewsReady
             battleText = ::g_squad_manager.isMyCrewsReady
@@ -681,8 +626,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
           break
 
         case WW_BATTLE_VIEW_MODES.QUEUE_INFO:
-          if (::g_squad_manager.isSquadMember())
-          {
+          if (::g_squad_manager.isSquadMember()) {
             isJoinBattleVisible = false
             isLeaveBattleVisible = true
             isLeaveBattleActive = false
@@ -717,30 +661,26 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.updateAutoPresetButton(joinWarningData)
 
     let btnSlotbarHelpObj = this.showSceneBtn("btn_slotbar_help", this.hasSlotbarByUnitsGroups)
-    if (this.hasSlotbarByUnitsGroups)
-    {
+    if (this.hasSlotbarByUnitsGroups) {
       let isHelpUnseen = wwHelpSlotbarGroupsModal.isUnseen()
       this.showSceneBtn("btn_slotbar_help_unseen_icon", isHelpUnseen)
       btnSlotbarHelpObj.hasUnseenIcon = isHelpUnseen ? "yes" : "no"
     }
   }
 
-  function getWarningText(cantJoinReasonData, joinWarningData)
-  {
+  function getWarningText(cantJoinReasonData, joinWarningData) {
     return !cantJoinReasonData.canJoin ? cantJoinReasonData.reasonText
       : joinWarningData.needShow ? joinWarningData.warningText
       : ""
   }
 
-  function getFullWarningText(cantJoinReasonData, joinWarningData)
-  {
+  function getFullWarningText(cantJoinReasonData, joinWarningData) {
     return !cantJoinReasonData.canJoin ? cantJoinReasonData.fullReasonText
       : joinWarningData.needShow ? joinWarningData.fullWarningText
       : ""
   }
 
-  function canPrerareSquadForBattle(cantJoinReasonData)
-  {
+  function canPrerareSquadForBattle(cantJoinReasonData) {
     return !cantJoinReasonData.canJoin &&
            (cantJoinReasonData.code == WW_BATTLE_CANT_JOIN_REASON.WRONG_SIDE
             || cantJoinReasonData.code == WW_BATTLE_CANT_JOIN_REASON.NOT_ACTIVE
@@ -750,22 +690,19 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
             || cantJoinReasonData.code == WW_BATTLE_CANT_JOIN_REASON.NO_AVAILABLE_UNITS)
   }
 
-  function canGatherAllSquadMembersForBattle(cantJoinReasonData)
-  {
+  function canGatherAllSquadMembersForBattle(cantJoinReasonData) {
     return cantJoinReasonData.canJoin
         || cantJoinReasonData.code != WW_BATTLE_CANT_JOIN_REASON.SQUAD_MEMBERS_NO_WW_ACCESS
   }
 
-  function updateBattleStatus(battleView)
-  {
+  function updateBattleStatus(battleView) {
     let statusObj = this.scene.findObject("battle_status_text")
     if (checkObj(statusObj))
       statusObj.setValue(battleView.getBattleStatusWithCanJoinText())
 
     let needShowWinChance = battleView.needShowWinChance()
     let winCahnceObj = this.showSceneBtn("win_chance", needShowWinChance)
-    if (needShowWinChance && winCahnceObj)
-    {
+    if (needShowWinChance && winCahnceObj) {
       let winCahnceTextObj = winCahnceObj.findObject("win_chance_text")
       let percent = battleView.getAutoBattleWinChancePercentText()
       if (checkObj(winCahnceTextObj) && percent != "")
@@ -775,28 +712,25 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     }
 
     let battleTimeObj = this.scene.findObject("battle_time_text")
-    if (checkObj(battleTimeObj) && battleView.needShowTimer())
-    {
+    if (checkObj(battleTimeObj) && battleView.needShowTimer()) {
       local battleTimeText = ""
       let timeStartAutoBattle = battleView.getTimeStartAutoBattle()
       if (battleView.hasBattleDurationTime())
         battleTimeText = loc("debriefing/BattleTime") + loc("ui/colon") +
           battleView.getBattleDurationTime()
-      else if (battleView.hasBattleActivateLeftTime())
-      {
+      else if (battleView.hasBattleActivateLeftTime()) {
         this.isSelectedBattleActive = false
         battleTimeText = loc("worldWar/can_join_countdown") + loc("ui/colon") +
           battleView.getBattleActivateLeftTime()
-      } else if (timeStartAutoBattle != "")
-      {
+      }
+      else if (timeStartAutoBattle != "") {
         this.isSelectedBattleActive = false
         battleTimeText = loc("worldWar/will_start_auto_battle") + loc("ui/colon")
           + timeStartAutoBattle
       }
       battleTimeObj.setValue(battleTimeText)
 
-      if (!this.isSelectedBattleActive && !battleView.hasBattleActivateLeftTime() && timeStartAutoBattle == "")
-      {
+      if (!this.isSelectedBattleActive && !battleView.hasBattleActivateLeftTime() && timeStartAutoBattle == "") {
         this.isSelectedBattleActive = true
         this.updateDescription()
         this.updateButtons()
@@ -811,22 +745,19 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
     let hasInfo = !::u.isEmpty(playersInfoText)
     this.showSceneBtn("teams_info", hasInfo)
-    if (hasInfo)
-    {
+    if (hasInfo) {
       let playersTextObj = this.scene.findObject("number_of_players")
       if (checkObj(playersTextObj))
         playersTextObj.setValue(playersInfoText)
     }
   }
 
-  function onOpenSquadsListModal(_obj)
-  {
+  function onOpenSquadsListModal(_obj) {
     ::gui_handlers.WwMyClanSquadInviteModal.open(
       ::ww_get_operation_id(), this.operationBattle.id, profileCountrySq.value)
   }
 
-  function onEventWWUpdateWWQueues(params)
-  {
+  function onEventWWUpdateWWQueues(params) {
     this.reinitBattlesList()
 
     let hasQueueForCurBattle = params?.queuesData[this.curBattleInList.id] != null
@@ -836,13 +767,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     }
   }
 
-  function onEventPresetsByGroupsChanged(_params)
-  {
+  function onEventPresetsByGroupsChanged(_params) {
     this.updateAutoPresetButton(null)
   }
 
-  function updateAutoPresetButton(joinWarningData)
-  {
+  function updateAutoPresetButton(joinWarningData) {
     if (!this.curBattleInList.isValid()) {
       this.showSceneBtn("btn_auto_preset", false)
       return
@@ -861,11 +790,9 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     }
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (::g_squad_manager.isInSquad() && ::g_squad_manager.getOnlineMembersCount() > 1)
-      switch (this.currViewMode)
-      {
+      switch (this.currViewMode) {
         case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
           if (::g_squad_manager.isSquadLeader())
             this.msgBox("ask_leave_squad", loc("squad/ask/cancel_fight"),
@@ -893,8 +820,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     base.goBack()
   }
 
-  function onShowHelp(obj)
-  {
+  function onShowHelp(obj) {
     if (!checkObj(obj))
       return
 
@@ -907,23 +833,18 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     })
   }
 
-  function onJoinBattle()
-  {
+  function onJoinBattle() {
     let side = this.getPlayerSide()
     let cantJoinReasonData = this.operationBattle.getCantJoinReasonData(side, false)
-    switch (this.currViewMode)
-    {
+    switch (this.currViewMode) {
       case WW_BATTLE_VIEW_MODES.BATTLE_LIST:
         if (!::g_squad_manager.isInSquad() || ::g_squad_manager.getOnlineMembersCount() == 1)
           this.tryToJoin(side)
-        else if (::g_squad_manager.isSquadLeader())
-        {
-          if (::g_squad_manager.readyCheck(false))
-          {
+        else if (::g_squad_manager.isSquadLeader()) {
+          if (::g_squad_manager.readyCheck(false)) {
             if (!hasFeature("WorldWarSquadInfo"))
               this.tryToJoin(side)
-            else
-            {
+            else {
               if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData))
                 ::showInfoMsgBox(cantJoinReasonData.fullReasonText)
               else if (this.canPrerareSquadForBattle(cantJoinReasonData))
@@ -932,8 +853,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
                 ::g_squad_manager.startWWBattlePrepare(this.operationBattle.id)
             }
           }
-          else
-          {
+          else {
             if (!this.canGatherAllSquadMembersForBattle(cantJoinReasonData))
               ::showInfoMsgBox(cantJoinReasonData.fullReasonText)
             else
@@ -947,8 +867,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       case WW_BATTLE_VIEW_MODES.SQUAD_INFO:
         if (::g_squad_manager.isSquadLeader())
           this.tryToJoin(side)
-        else
-        {
+        else {
           if (cantJoinReasonData.canJoin)
             this.tryToSetCrewsReadyFlag()
           else
@@ -958,17 +877,14 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     }
   }
 
-  function tryToJoin(side)
-  {
+  function tryToJoin(side) {
     this.queueInfoHandlerWeak.hideQueueInfoObj()
     this.operationBattle.tryToJoin(side)
   }
 
-  function tryToSetCrewsReadyFlag()
-  {
+  function tryToSetCrewsReadyFlag() {
     let warningData = this.operationBattle.getWarningReasonData(this.getPlayerSide())
-    if (warningData.needMsgBox && !::loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false))
-    {
+    if (warningData.needMsgBox && !::loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)) {
       ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
         {
           parentHandler = this
@@ -984,15 +900,12 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.setCrewsReadyFlag()
   }
 
-  function setCrewsReadyFlag()
-  {
+  function setCrewsReadyFlag() {
     ::g_squad_manager.setCrewsReadyFlag()
   }
 
-  function onLeaveBattle()
-  {
-    switch (this.currViewMode)
-    {
+  function onLeaveBattle() {
+    switch (this.currViewMode) {
       case WW_BATTLE_VIEW_MODES.BATTLE_LIST:
         if (::g_squad_manager.isInSquad() && ::g_squad_manager.isSquadMember())
           ::g_squad_manager.setReadyFlag()
@@ -1012,13 +925,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.curBattleIdInQueue = ""
   }
 
-  function onItemSelect()
-  {
+  function onItemSelect() {
     this.updateSelectedItem(false)
   }
 
-  function updateSelectedItem(_isForceUpdate = false)
-  {
+  function updateSelectedItem(_isForceUpdate = false) {
     this.refreshSelBattle()
     let newOperationBattle = this.getBattleById(this.curBattleInList.id)
     let isBattleEqual = this.operationBattle.isEqual(newOperationBattle)
@@ -1031,12 +942,10 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.updateWindow()
   }
 
-  function updateBattleSquadListData()
-  {
+  function updateBattleSquadListData() {
     local country = null
     local remainUnits = null
-    if (this.operationBattle && this.operationBattle.isValid() && !this.operationBattle.isFinished())
-    {
+    if (this.operationBattle && this.operationBattle.isValid() && !this.operationBattle.isFinished()) {
       let side = this.getPlayerSide()
       let team = this.operationBattle.getTeamBySide(side)
       country = team?.country
@@ -1046,8 +955,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       this.squadListHandlerWeak.updateBattleData(country, remainUnits)
   }
 
-  function refreshSelBattle()
-  {
+  function refreshSelBattle() {
     let idx = this.battlesListObj.getValue()
     if (idx < 0 || idx >= this.battlesListObj.childrenCount())
       return
@@ -1059,13 +967,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.curBattleInList = this.getBattleById(opObj.id)
   }
 
-  function getEmptyBattle()
-  {
+  function getEmptyBattle() {
     return ::WwBattle()
   }
 
-  function syncSquadCountry()
-  {
+  function syncSquadCountry() {
     if (!::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader())
       return
     if (this.getViewMode() != WW_BATTLE_VIEW_MODES.SQUAD_INFO)
@@ -1076,17 +982,14 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       switchProfileCountry(squadCountry)
   }
 
-  function onEventSquadDataUpdated(_params)
-  {
+  function onEventSquadDataUpdated(_params) {
     let wwBattleName = ::g_squad_manager.getWwOperationBattle()
     let squadCountry = ::g_squad_manager.getWwOperationCountry()
     let selectedBattleName = this.curBattleInList.id
     this.updateViewMode()
 
-    if (wwBattleName)
-    {
-      if (!::g_squad_manager.isInSquad() || ::g_squad_manager.getOnlineMembersCount() == 1)
-      {
+    if (wwBattleName) {
+      if (!::g_squad_manager.isInSquad() || ::g_squad_manager.getOnlineMembersCount() == 1) {
         ::g_squad_manager.cancelWwBattlePrepare()
         return
       }
@@ -1100,8 +1003,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
           if (this.isValid())
             this.syncSquadCountry()
         })
-      else
-        if (isBattleDifferent)
+      else if (isBattleDifferent)
           this.reinitBattlesList(true)
     }
 
@@ -1124,13 +1026,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       [ ["yes", Callback(@() this.goBack(), this)] ], "yes", { cancel_fn = null })
   }
 
-  function onEventCrewTakeUnit(_params)
-  {
+  function onEventCrewTakeUnit(_params) {
     this.updateButtons()
   }
 
-  function onEventQueueChangeState(_params)
-  {
+  function onEventQueueChangeState(_params) {
     if (this.getPlayerSide() == SIDE_NONE)
       return
 
@@ -1139,36 +1039,30 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     this.updateButtons()
   }
 
-  function onEventSlotbarPresetLoaded(_params)
-  {
+  function onEventSlotbarPresetLoaded(_params) {
     this.guiScene.performDelayed(this, function() {
       if (this.isValid())
         this.updateButtons()
     })
   }
 
-  function onEventWWLoadOperation(_params)
-  {
+  function onEventWWLoadOperation(_params) {
     this.reinitBattlesList()
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     this.requestQueuesData()
   }
 
-  function requestQueuesData()
-  {
+  function requestQueuesData() {
     wwQueuesData.requestData()
   }
 
-  function getFirstBattleInListMap()
-  {
+  function getFirstBattleInListMap() {
     if (!this.curBattleListItems || !this.curBattleListItems.len())
       return this.getEmptyBattle()
 
-    foreach(item in this.curBattleListItems)
-    {
+    foreach (item in this.curBattleListItems) {
       let battle = this.getBattleById(item.id)
       if (battle.isValid())
         return battle
@@ -1177,15 +1071,13 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return this.getEmptyBattle()
   }
 
-  function createBattleListMap()
-  {
+  function createBattleListMap() {
     let battles = ::g_world_war.getBattles(::g_world_war.isBattleAvailableToPlay)
     battles.sort(this.battlesSort)
     return battles
   }
 
-  function getQueueBattle(queue)
-  {
+  function getQueueBattle(queue) {
     let battleId = queue.getQueueWwBattleId()
     if (!battleId)
       return null
@@ -1193,21 +1085,18 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return this.getBattleById(battleId)
   }
 
-  static function getPlayerSide(_battle = null)
-  {
+  static function getPlayerSide(_battle = null) {
     return ::ww_get_player_side()
   }
 
-  function hasChangedInBattleListMap(newBattleListMap)
-  {
+  function hasChangedInBattleListMap(newBattleListMap) {
     if (this.curBattleListMap == null)
       return true
 
     if (newBattleListMap.len() != this.curBattleListMap.len())
       return true
 
-    foreach(idx, newbattle in newBattleListMap)
-    {
+    foreach (idx, newbattle in newBattleListMap) {
       let curBattle = this.curBattleListMap[idx]
       if (newbattle.id != curBattle.id || newbattle.status != curBattle.status)
         return true
@@ -1216,13 +1105,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return false
   }
 
-  function onShowSlotbarHelp(_obj)
-  {
+  function onShowSlotbarHelp(_obj) {
     wwHelpSlotbarGroupsModal.open()
   }
 
-  function onRunAutoPreset(_obj)
-  {
+  function onRunAutoPreset(_obj) {
     if (this.slotbarWeak?.slotbarOninit ?? false)
       return
 
@@ -1236,8 +1123,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     )
   }
 
-  function generateAutoPreset()
-  {
+  function generateAutoPreset() {
     let side = this.getPlayerSide()
     let team = this.operationBattle.getTeamBySide(side)
     if (!team)
@@ -1247,8 +1133,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     if (country == null)
       return
 
-    if (!::isCountryAllCrewsUnlockedInHangar(country))
-    {
+    if (!::isCountryAllCrewsUnlockedInHangar(country)) {
       ::showInfoMsgBox(loc("charServer/updateError/52"), "slotbar_presets_forbidden")
       return
     }
@@ -1257,17 +1142,14 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     generatePreset(teamUnits, country, this.hasSlotbarByUnitsGroups)
   }
 
-  function onOpenBattlesFilters(_obj)
-  {
+  function onOpenBattlesFilters(_obj) {
   }
 
-  function onHelp()
-  {
+  function onHelp() {
     ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
-  function getWndHelpConfig()
-  {
+  function getWndHelpConfig() {
     let res = {
       textsBlk = "%gui/worldWar/wwBattlesModalHelp.blk"
       objContainer = this.scene.findObject("root-box")
@@ -1314,13 +1196,11 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     return res
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     return ::g_world_war.defaultDiffCode
   }
 
-  function updateBattleInList(idx, curBattle, newBattle)
-  {
+  function updateBattleInList(idx, curBattle, newBattle) {
     if (curBattle == newBattle || (::u.isEqual(curBattle, newBattle)))
       return
 
@@ -1348,16 +1228,14 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       newBattle.additionalDescription.len(), this)
   }
 
-  function getBattleObj(idx)
-  {
+  function getBattleObj(idx) {
     if (this.battlesListObj.childrenCount() > idx)
       return this.battlesListObj.getChild(idx)
 
-    return this.battlesListObj.getChild(idx-1).getClone(this.battlesListObj, this)
+    return this.battlesListObj.getChild(idx - 1).getClone(this.battlesListObj, this)
   }
 
-  function getSlotbarActions()
-  {
+  function getSlotbarActions() {
     if (this.hasSlotbarByUnitsGroups)
       return [ "autorefill", "aircraft", "changeUnitsGroup", "weapons", "sec_weapons", "crew", "info", "repair" ]
     else

@@ -6,14 +6,14 @@ let hudLogs = require("hudLogs.nut")
 let voiceChat = require("chat/voiceChat.nut")
 let { safeAreaSizeHud } = require("style/screenState.nut")
 let fireControl = require("shipFireControl.nut")
-let { dmgIndicatorStates } = require("%rGui/hudState.nut")
+let { missionProgressHeight } = require("%rGui/hudState.nut")
 let { radarComponent } = require("shipHudComponents.nut")
 
 
-let shipHud = @(){
-  watch = [safeAreaSizeHud, dmgIndicatorStates]
+let shipHud = @() {
+  watch = [safeAreaSizeHud, missionProgressHeight]
   size = [SIZE_TO_CONTENT, flex()]
-  padding = dmgIndicatorStates.value.padding
+  padding = [0, 0, missionProgressHeight.value, 0]
   margin = safeAreaSizeHud.value.borders
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM

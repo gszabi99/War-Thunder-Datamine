@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -14,13 +15,11 @@ let { get_time_msec } = require("dagor.time")
   requestUpdated = false
 }
 
-::g_ww_map_armies_status_manager.requestUpdate <- function requestUpdate()
-{
+::g_ww_map_armies_status_manager.requestUpdate <- function requestUpdate() {
   this.requestUpdated = true
 }
 
-::g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesByStatus()
-{
+::g_ww_map_armies_status_manager.updateArmiesByStatus <- function updateArmiesByStatus() {
   if (!this.requestUpdated)
     return
 
@@ -30,8 +29,7 @@ let { get_time_msec } = require("dagor.time")
 
   this._resetCache()
 
-  foreach(armyName in ::ww_get_armies_names())
-  {
+  foreach (armyName in ::ww_get_armies_names()) {
     let army = ::g_world_war.getArmyByName(armyName)
     if (!army.hasManageAccess())
       continue
@@ -46,8 +44,7 @@ let { get_time_msec } = require("dagor.time")
       cacheByStatus.common.append(army)
   }
 
-  foreach(_status, cache in this.armiesStateCache)
-  {
+  foreach (_status, cache in this.armiesStateCache) {
     cache.surrounded.sort(::WwArmy.sortArmiesByUnitType)
     cache.common.sort(::WwArmy.sortArmiesByUnitType)
   }
@@ -58,13 +55,11 @@ let { get_time_msec } = require("dagor.time")
   ::ww_event("MapArmiesByStatusUpdated")
 }
 
-::g_ww_map_armies_status_manager.getArmiesByStatus <- function getArmiesByStatus(status)
-{
+::g_ww_map_armies_status_manager.getArmiesByStatus <- function getArmiesByStatus(status) {
   return getTblValue(status, this.armiesStateCache, {})
 }
 
-::g_ww_map_armies_status_manager._resetCache <- function _resetCache()
-{
+::g_ww_map_armies_status_manager._resetCache <- function _resetCache() {
   this.armiesStateCache = {}
   let statusesByCaching = [
       WW_ARMY_ACTION_STATUS.IDLE,
@@ -73,7 +68,7 @@ let { get_time_msec } = require("dagor.time")
       WW_ARMY_ACTION_STATUS.IN_BATTLE
     ]
 
-  foreach(status in statusesByCaching)
+  foreach (status in statusesByCaching)
     this.armiesStateCache[status] <- {
       common = []
       surrounded = []

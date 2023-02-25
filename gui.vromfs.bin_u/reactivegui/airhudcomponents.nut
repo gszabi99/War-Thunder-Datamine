@@ -2,9 +2,9 @@ from "%rGui/globals/ui_library.nut" import *
 
 //script used for common script between Helicopter and aircraft
 let { bw, bh, rw, rh } = require("style/screenState.nut")
-let {IsTwsActivated, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible} = require("twsState.nut")
-let {mkRadar} = require("radarComponent.nut")
-let {IsRadarVisible, IsRadar2Visible, IsRadarHudVisible} = require("radarState.nut")
+let { IsTwsActivated, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible } = require("twsState.nut")
+let { mkRadar } = require("radarComponent.nut")
+let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("radarState.nut")
 let tws = require("tws.nut")
 
 
@@ -41,12 +41,12 @@ let radarPic = Picture("!ui/gameuiskin#radar_stby_icon.png")
 let radarElement = @(colorWatch, posWatched, size) function() {
   let radarVisible = IsRadarVisible.value || IsRadar2Visible.value
   let res = { watch = [IsRadarVisible, IsRadar2Visible, colorWatch, rw, bw, rh, bh, CollapsedIcon, IsRadarHudVisible] }
-  if (radarVisible || !CollapsedIcon.value){
+  if (radarVisible || !CollapsedIcon.value) {
     return res.__update({
       children = mkRadar(posWatched, size, true, colorWatch)
     })
   }
-  if (IsRadarHudVisible.value){
+  if (IsRadarHudVisible.value) {
     return res.__update({
       pos = [bw.value + 0.75 * rw.value, bh.value + 0.1 * rh.value]
       size = [sh(5), sh(5)]

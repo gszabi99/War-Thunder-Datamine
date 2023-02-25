@@ -37,10 +37,12 @@
   "bullet": {
     "bulletCount": 25,
     "mass": 4.13,
+    "damageMass": 2.78,
     "caliber": 0.1,
-    "damageCaliber": 0.05,
+    "damageCaliber": 0.055,
     "ballisticCaliber": 0.055,
     "speed": 1415.0,
+    "Cx": 0.22805,
     "maxDistance": 10000.0,
     "normalizationPreset": "apcr",
     "ricochetPreset": "apds",
@@ -61,13 +63,12 @@
     "shellAnimation": "video/shells_animations/apds.ivf",
     "bulletName": "100mm_zbm8",
     "onHitChanceMultExplFuel": 0.1,
-    "Cx": 0.218,
     "breakingArmorThicknessEffective": true,
     "breakingArmorThickness": [
       30.0,
-      150.0
+      250.0
     ],
-    "breakingCriticalSpeed": 1400.0,
+    "breakingCriticalSpeed": 1415.0,
     "breakingDistance": 0.1,
     "relativeVelHitShift": [
       300.0,
@@ -112,55 +113,14 @@
         10000.0
       ]
     },
-    "armorpower": {
-      "ArmorPower0m": [
-        299.0,
-        10.0
-      ],
-      "ArmorPower100m": [
-        298.0,
-        100.0
-      ],
-      "ArmorPower500m": [
-        291.0,
-        500.0
-      ],
-      "ArmorPower1000m": [
-        272.0,
-        1000.0
-      ],
-      "ArmorPower1500m": [
-        253.0,
-        1500.0
-      ],
-      "ArmorPower2000m": [
-        249.0,
-        2000.0
-      ],
-      "ArmorPower2500m": [
-        243.0,
-        2500.0
-      ],
-      "ArmorPower3000m": [
-        225.0,
-        3000.0
-      ],
-      "ArmorPower3500m": [
-        211.0,
-        3500.0
-      ],
-      "ArmorPower4000m": [
-        162.0,
-        4000.0
-      ],
-      "ArmorPower4500m": [
-        143.0,
-        4500.0
-      ],
-      "ArmorPower10000m": [
-        0.0,
-        10000.0
-      ]
+    "damage": {
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 1.02,
+        "demarreSpeedPow": 1.47,
+        "demarreMassPow": 0.74,
+        "demarreCaliberPow": 1.07
+      }
     },
     "visual": {
       "range_percent_of_ammo": [

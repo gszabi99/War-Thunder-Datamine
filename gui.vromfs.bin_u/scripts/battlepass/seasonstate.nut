@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -47,7 +48,7 @@ let levelExp = Computed(function() {
     return res
   let stageIdx = stages.findindex(@(s) curProgress < s.progress)
   if (stageIdx != null) {
-    let expForPrevLevel = stages?[stageIdx-1].progress ?? 0
+    let expForPrevLevel = stages?[stageIdx - 1].progress ?? 0
     return {
       level = stageIdx
       curLevelExp = curProgress - expForPrevLevel
@@ -61,7 +62,7 @@ let levelExp = Computed(function() {
   let lastStageIdx = stages.len() - 1
   let loopStageIdx = (basicUnlock.value?.startStageLoop ?? 1) - 1
   let loopStage = stages?[loopStageIdx] ?? stages[lastStageIdx]
-  let prevLoopStage = stages?[loopStageIdx-1]
+  let prevLoopStage = stages?[loopStageIdx - 1]
   let progressForStage = prevLoopStage == null ? loopStage.progress
     : loopStage.progress - prevLoopStage.progress
   let freeExp = curProgress - loopStage.progress
@@ -134,7 +135,7 @@ battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
   let itemsToRequest = []
   foreach (config in (itemsConfigForRequest ?? [])) {
     foreach (_key, value in config) {
-      let itemId = ::to_integer_safe(value, value, false)
+      let itemId = ::to_integer_safe(value, value, false) //-param-pos
       if (::ItemsManager.isItemdefId(itemId))
         itemsToRequest.append(itemId)
     }

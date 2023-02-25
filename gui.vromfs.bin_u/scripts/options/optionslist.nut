@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,7 +10,7 @@ let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let soundDevice = require("soundDevice")
-let { is_stereo_mode } = require_native("vr")
+let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -17,7 +18,6 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 
 let getSystemOptions = @() {
@@ -113,7 +113,7 @@ let getMainOptions = function() {
       [::USEROPT_ACTIVATE_AIRBORNE_RADAR_ON_SPAWN, "spinner"],
       [::USEROPT_USE_RECTANGULAR_RADAR_INDICATOR, "spinner"],
       [::USEROPT_RADAR_TARGET_CYCLING, "spinner"],
-      [::USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner", hasFeature("RadarElevationControl")],
+      [::USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner"],
       [::USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [::USEROPT_AIR_RADAR_SIZE, "slider"],
@@ -156,6 +156,11 @@ let getMainOptions = function() {
       [::USEROPT_COMMANDER_CAMERA_IN_VIEWS, "spinner"],
       [::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER, "spinner"],
       [::USEROPT_HUD_SHOW_TANK_GUNS_AMMO, "spinner", hasFeature("MachineGunsAmmoIndicator")],
+      [::USEROPT_HIT_INDICATOR_SIMPLIFIED, "switchbox", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_RADIUS, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_ALPHA, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_SCALE, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_HIT_INDICATOR_FADE_TIME, "slider", hasFeature("advancedHitIndicator")],
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
@@ -286,8 +291,7 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
   ]
 }
 
-let getVoicechatOptions = function()
-{
+let getVoicechatOptions = function() {
   let voiceOptions = {
     name = "voicechat"
     fillFuncName = "fillVoiceChatOptions"
@@ -299,19 +303,12 @@ let getVoicechatOptions = function()
     ]
   }
 
-  if (!isPlatformSony)
-  {
+  if (!isPlatformSony) {
     if (soundDevice.get_record_devices().len() > 0)
       voiceOptions.options.insert(1, [::USEROPT_VOICE_DEVICE_IN, "combobox"])
   }
 
   return voiceOptions
-}
-
-let getSocialOptions = @() {
-  name = "social"
-  fillFuncName = "fillSocialOptions"
-  options = []
 }
 
 let getInternetRadioOptions = @() {
@@ -336,9 +333,6 @@ let getOptionsList = function() {
 
   if (hasFeature("Radio"))
     options.append(getInternetRadioOptions())
-
-  if (isAvailableFacebook())
-    options.append(getSocialOptions())
 
   return options
 }

@@ -25,4 +25,4 @@ foreach (fn in [
                  "bhvControlsInput.nut"
                  "bhvAnim.nut"
                ])
-  g_script_reloader.loadOnce("%sqDagui/guiBhv/" + fn)
+  g_script_reloader.loadOnce($"%sqDagui/guiBhv/{fn}")

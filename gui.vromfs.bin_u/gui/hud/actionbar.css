@@ -1,3 +1,7 @@
+hudActionBar {
+  behaviour:bhvUpdateByWatched;
+}
+
 actionBarItemDiv {
   size:1@hudActionBarItemSize, 1@hudActionBarItemSize;
   background-svg-size:1@hudActionBarItemSize, 1@hudActionBarItemSize;
@@ -80,4 +84,15 @@ changeAmount[increase_amount=yes] {
 
 changeAmount[increase_amount=no] {
   color:@badTextColor;
+}
+
+actionItemCooldown {
+  re-type:sector;
+  behavior:increment;
+  size:pw, ph;
+  position:absolute;
+  sector-angle-2:360;
+  inc-target:sector-angle-1;
+  inc-max:360;
+  inc-is-cyclic:no;
 }

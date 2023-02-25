@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
-::WwBattleView <- class
-{
+::WwBattleView <- class {
   id = ""
   battle = null
 
@@ -39,8 +39,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
   playerSide = null // need for show view for global battle
 
-  constructor(v_battle = null, customPlayerSide = null)
-  {
+  constructor(v_battle = null, customPlayerSide = null) {
     this.battle = v_battle || ::WwBattle()
     this.playerSide = customPlayerSide ?? this.battle.getSide(profileCountrySq.value)
     this.missionName = this.battle.getMissionName()
@@ -49,59 +48,49 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.maxPlayersPerArmy = this.battle.maxPlayersPerArmy
   }
 
-  function getId()
-  {
+  function getId() {
     return this.battle.id
   }
 
-  function getMissionName()
-  {
+  function getMissionName() {
     return this.name
   }
 
-  function getShortBattleName()
-  {
-    return loc("worldWar/shortBattleName", {number = this.battle.getOrdinalNumber()})
+  function getShortBattleName() {
+    return loc("worldWar/shortBattleName", { number = this.battle.getOrdinalNumber() })
   }
 
-  function getBattleName()
-  {
+  function getBattleName() {
     if (!this.battle.isValid())
       return ""
 
-    return loc("worldWar/battleName", {number = this.battle.getOrdinalNumber()})
+    return loc("worldWar/battleName", { number = this.battle.getOrdinalNumber() })
   }
 
-  function getFullBattleName()
-  {
+  function getFullBattleName() {
     return ::g_string.implode([this.getBattleName(), this.battle.getLocName(this.playerSide)], loc("ui/comma"))
   }
 
-  function defineTeamBlock(sides)
-  {
+  function defineTeamBlock(sides) {
     this.teamBlock = this.getTeamBlockByIconSize(sides, WW_ARMY_GROUP_ICON_SIZE.BASE)
   }
 
   getTeamsDataBySides = @(sides) this.getTeamBlockByIconSize(sides, WW_ARMY_GROUP_ICON_SIZE.BASE, true)
 
-  function getTeamBlockByIconSize(sides, iconSize, isInBattlePanel = false, param = null)
-  {
-    if (iconSize == WW_ARMY_GROUP_ICON_SIZE.MEDIUM)
-    {
+  function getTeamBlockByIconSize(sides, iconSize, isInBattlePanel = false, param = null) {
+    if (iconSize == WW_ARMY_GROUP_ICON_SIZE.MEDIUM) {
       if (this.largeArmyGroupIconTeamBlock == null)
         this.largeArmyGroupIconTeamBlock = this.getTeamsData(sides, iconSize, isInBattlePanel, param)
 
       return this.largeArmyGroupIconTeamBlock
     }
-    else if (iconSize == WW_ARMY_GROUP_ICON_SIZE.SMALL)
-    {
+    else if (iconSize == WW_ARMY_GROUP_ICON_SIZE.SMALL) {
       if (this.mediumArmyGroupIconTeamBlock == null)
         this.mediumArmyGroupIconTeamBlock = this.getTeamsData(sides, iconSize, isInBattlePanel, param)
 
       return this.mediumArmyGroupIconTeamBlock
     }
-    else
-    {
+    else {
       if (this.teamBlock == null)
         this.teamBlock = this.getTeamsData(sides, WW_ARMY_GROUP_ICON_SIZE.BASE, isInBattlePanel, param)
 
@@ -109,16 +98,14 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     }
   }
 
-  function getTeamsData(sides, iconSize, isInBattlePanel, param)
-  {
+  function getTeamsData(sides, iconSize, isInBattlePanel, param) {
     let teams = []
     local maxSideArmiesNumber = 0
     local isVersusTextAdded = false
     let hasArmyInfo = getTblValue("hasArmyInfo", param, true)
     let hasVersusText = getTblValue("hasVersusText", param)
     let canAlignRight = getTblValue("canAlignRight", param, true)
-    foreach(sideIdx, side in sides)
-    {
+    foreach (sideIdx, side in sides) {
       let team = this.battle.getTeamBySide(side)
       if (!team)
         continue
@@ -132,23 +119,19 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
       let mapName = getOperationById(::ww_get_operation_id())?.getMapId() ?? ""
       let armyViews = []
-      foreach (country, armiesArray in team.countries)
-      {
+      foreach (country, armiesArray in team.countries) {
         let countryIcon = getCustomViewCountryData(country, mapName).icon
         armies.countryIcon = countryIcon
         armies.countryIconBig = countryIcon
-        foreach(army in armiesArray)
-        {
+        foreach (army in armiesArray) {
           let armyView = army.getView()
           armyView.setSelectedSide(this.playerSide)
           armyViews.append(armyView)
         }
       }
 
-      if (armyViews.len())
-      {
-        if (hasVersusText && !isVersusTextAdded)
-        {
+      if (armyViews.len()) {
+        if (hasVersusText && !isVersusTextAdded) {
           armyViews.top().setHasVersusText(true)
           isVersusTextAdded = true
         }
@@ -200,8 +183,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return teams
   }
 
-  function getTeamSizeText(team)
-  {
+  function getTeamSizeText(team) {
     if (this.battle.isAutoBattle())
       return loc("worldWar/unavailable_for_team")
 
@@ -216,38 +198,33 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       loc("worldwar/battle/playersMinMax", { min = minPlayers, max = maxPlayers })
   }
 
-  function unitsList(wwUnits, isReflected, hasLineSpacing)
-  {
+  function unitsList(wwUnits, isReflected, hasLineSpacing) {
     let view = { infoSections = [{
-      columns = [{unitString = wwActionsWithUnitsList.getUnitsListViewParams({
+      columns = [{ unitString = wwActionsWithUnitsList.getUnitsListViewParams({
         wwUnits = wwUnits
         params = { needShopInfo = true }
-      })}]
+      }) }]
       multipleColumns = false
       reflect = isReflected
       isShowTotalCount = true
       hasSpaceBetweenUnits = hasLineSpacing
-    }]}
+    }] }
     return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList.tpl", view)
   }
 
-  function isStarted()
-  {
+  function isStarted() {
     return this.battle.isStarted()
   }
 
-  function hasBattleDurationTime()
-  {
+  function hasBattleDurationTime() {
     return this.battle.getBattleDurationTime() > 0
   }
 
-  function hasBattleActivateLeftTime()
-  {
+  function hasBattleActivateLeftTime() {
     return this.battle.getBattleActivateLeftTime() > 0
   }
 
-  function getBattleDurationTime()
-  {
+  function getBattleDurationTime() {
     let durationTime = this.battle.getBattleDurationTime()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
@@ -255,8 +232,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return ""
   }
 
-  function getBattleActivateLeftTime()
-  {
+  function getBattleActivateLeftTime() {
     let durationTime = this.battle.getBattleActivateLeftTime()
     if (durationTime > 0)
       return time.hoursToString(time.secondsToHours(durationTime), false, true)
@@ -264,8 +240,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return ""
   }
 
-  function getBattleStatusTextLocId()
-  {
+  function getBattleStatusTextLocId() {
     if (!this.battle.isStillInOperation())
       return "worldwar/battle_finished"
 
@@ -279,8 +254,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     if (this.battle.isAutoBattle())
       return "worldwar/battleIsInAutoMode"
 
-    if (this.battle.isConfirmed())
-    {
+    if (this.battle.isConfirmed()) {
       if (this.battle.isPlayerTeamFull())
         return "worldwar/battleIsFull"
       else
@@ -290,29 +264,24 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return "worldwar/battle_finished"
   }
 
-  function getAutoBattleWinChancePercentText()
-  {
+  function getAutoBattleWinChancePercentText() {
     let percent = this.battle.getTeamBySide(this.playerSide)?.autoBattleWinChancePercent
     return percent != null ? percent + loc("measureUnits/percent") : ""
   }
 
-  function needShowWinChance()
-  {
+  function needShowWinChance() {
     return  this.battle.isWaiting() || this.battle.status == EBS_ACTIVE_AUTO
   }
 
-  function getBattleStatusText()
-  {
+  function getBattleStatusText() {
     return this.battle.isValid() ? loc(this.getBattleStatusTextLocId()) : ""
   }
 
-  function getBattleStatusDescText()
-  {
+  function getBattleStatusDescText() {
     return this.battle.isValid() ? loc(this.getBattleStatusTextLocId() + "/desc") : ""
   }
 
-  function getCanJoinText()
-  {
+  function getCanJoinText() {
     if (this.playerSide == SIDE_NONE || ::g_squad_manager.isSquadMember())
       return ""
 
@@ -320,8 +289,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     local canJoinLocKey = ""
     if (currentBattleQueue != null)
       canJoinLocKey = "worldWar/canJoinStatus/in_queue"
-    else if (this.battle.isStarted())
-    {
+    else if (this.battle.isStarted()) {
       let cantJoinReasonData = this.battle.getCantJoinReasonData(this.playerSide, false)
       if (cantJoinReasonData.canJoin)
         canJoinLocKey = this.battle.isPlayerTeamFull()
@@ -334,8 +302,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return ::u.isEmpty(canJoinLocKey) ? "" : loc(canJoinLocKey)
   }
 
-  function getBattleStatusWithTimeText()
-  {
+  function getBattleStatusWithTimeText() {
     local text = this.getBattleStatusText()
     let durationText = this.getBattleDurationTime()
     if (!::u.isEmpty(durationText))
@@ -344,8 +311,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return text
   }
 
-  function getBattleStatusWithCanJoinText()
-  {
+  function getBattleStatusWithCanJoinText() {
     if (!this.battle.isValid())
       return ""
 
@@ -357,8 +323,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return text
   }
 
-  function getStatus()
-  {
+  function getStatus() {
     if (!this.battle.isStillInOperation() || this.battle.isFinished())
       return "Finished"
     if (this.battle.isStarting())
@@ -371,16 +336,13 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return "Inactive"
   }
 
-  function getIconImage()
-  {
+  function getIconImage() {
     return (this.getStatus() == "Full" || this.battle.isFinished()) ?
       "#ui/gameuiskin#battles_closed" : "#ui/gameuiskin#battles_open.png"
   }
 
-  function hasControlTooltip()
-  {
-    if (this.battle.isStillInOperation())
-    {
+  function hasControlTooltip() {
+    if (this.battle.isStillInOperation()) {
       let status = this.getStatus()
       if (status == "Active" || status == "Full")
         return true
@@ -391,41 +353,34 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     return false
   }
 
-  function getReplayBtnTooltip()
-  {
-    return loc("mainmenu/btnViewReplayTooltip", {sessionID = this.battle.getSessionId()})
+  function getReplayBtnTooltip() {
+    return loc("mainmenu/btnViewReplayTooltip", { sessionID = this.battle.getSessionId() })
   }
 
-  function isAutoBattle()
-  {
+  function isAutoBattle() {
     return this.battle.isAutoBattle()
   }
 
-  function hasTeamsInfo()
-  {
+  function hasTeamsInfo() {
     return this.battle.isValid() && this.battle.isConfirmed()
   }
 
-  function hasQueueInfo()
-  {
+  function hasQueueInfo() {
     return this.battle.isValid() && this.battle.hasQueueInfo()
   }
 
-  function getTotalPlayersInfoText()
-  {
+  function getTotalPlayersInfoText() {
     return loc("worldwar/totalPlayers") + loc("ui/colon") +
       colorize("newTextColor", this.battle.getTotalPlayersInfo(this.playerSide))
   }
 
-  function getTotalQueuePlayersInfoText()
-  {
+  function getTotalQueuePlayersInfoText() {
     return loc("worldwar/totalInQueue") + loc("ui/colon") +
       colorize("newTextColor", this.battle.getTotalPlayersInQueueInfo(this.playerSide))
   }
   needShowTimer = @() !this.battle.isFinished()
 
-  function getTimeStartAutoBattle()
-  {
+  function getTimeStartAutoBattle() {
     if (!this.battle.isWaiting())
       return ""
 

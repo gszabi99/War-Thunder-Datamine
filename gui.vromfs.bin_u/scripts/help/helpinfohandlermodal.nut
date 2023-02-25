@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -27,13 +28,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   objContainer = null
 
-  static function openHelp(handler)
-  {
+  static function openHelp(handler) {
     ::gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
   }
 
-  static function open(wndInfoConfig, wndScene)
-  {
+  static function open(wndInfoConfig, wndScene) {
     if (!wndInfoConfig)
       return
 
@@ -44,8 +43,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return ::handlersManager.loadHandler(::gui_handlers.HelpInfoHandlerModal, params)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.config)
       return this.goBack()
 
@@ -63,23 +61,21 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     //update messages visibility to correct update other messages positions
     let highlightList = []
-    foreach(idx, link in links)
-    {
+    foreach (idx, link in links) {
       let objBlock = ::guiTutor.getBlockFromObjData(link.obj, this.objContainer)
 
       if (!link?.msgId)
         link.msgId <- null
 
       let msgObj = link.msgId ? this.scene.findObject(link.msgId) : null
-      if (checkObj(msgObj))
-      {
+      if (checkObj(msgObj)) {
         msgObj.show(!!objBlock)
         if ("text" in link)
           msgObj.setValue(link.text)
       }
 
       if (objBlock && (link?.highlight ?? true))
-        highlightList.append(objBlock.__merge({id = "lightObj_" + idx}))
+        highlightList.append(objBlock.__merge({ id = "lightObj_" + idx }))
     }
 
     this.guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions
@@ -97,8 +93,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     links = ::u.keysReplace(this.config.links, { msgId = "start", obj = "end" })
   }
 
-  function consoleNext()
-  {
+  function consoleNext() {
     this.goBack()
   }
 }

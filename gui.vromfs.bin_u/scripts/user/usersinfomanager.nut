@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { get_time_msec } = require("dagor.time")
+let DataBlock = require("DataBlock")
 let avatars = require("%scripts/user/avatars.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 
@@ -24,8 +26,7 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
                                                                     }
 **/
 
-enum userInfoEventName
-{
+enum userInfoEventName {
   UPDATED = "UserInfoManagerDataUpdated"
 }
 
@@ -35,16 +36,13 @@ let usersInfo = {}
 let usersForRequest = {}
 local haveRequest = false
 
-let function _getResponseWidthoutRequest(users)
-{
+let function _getResponseWidthoutRequest(users) {
   local fastResponse = {}
   let currentTime = get_time_msec()
-  foreach (userId in users)
-  {
+  foreach (userId in users) {
     let curUserInfo = usersInfo?[userId]
     if (curUserInfo == null ||
-        currentTime - curUserInfo.updatingLastTime > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC)
-    {
+        currentTime - curUserInfo.updatingLastTime > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC) {
       fastResponse = null
       break
     }
@@ -54,25 +52,20 @@ let function _getResponseWidthoutRequest(users)
   return fastResponse
 }
 
-let function _requestDataCommonSuccessCallback(response)
-{
+let function _requestDataCommonSuccessCallback(response) {
   local isUpdated = false
-  foreach(uid, newUserInfo in response)
-  {
+  foreach (uid, newUserInfo in response) {
     local curUserInfo = usersInfo?[uid]
-    if (curUserInfo != null)
-    {
-      foreach(key, _value in newUserInfo)
-        if (newUserInfo[key] != curUserInfo?[key])
-        {
+    if (curUserInfo != null) {
+      foreach (key, _value in newUserInfo)
+        if (newUserInfo[key] != curUserInfo?[key]) {
           curUserInfo[key] <- newUserInfo[key]
           isUpdated = true
         }
     }
-    else
-    {
+    else {
       curUserInfo = {}
-      foreach(key, value in newUserInfo)
+      foreach (key, value in newUserInfo)
         curUserInfo[key] <- value
       isUpdated = true
     }
@@ -85,11 +78,9 @@ let function _requestDataCommonSuccessCallback(response)
     ::broadcastEvent(userInfoEventName.UPDATED, { usersInfo = response })
 }
 
-let function _convertServerResponse(response)
-{
+let function _convertServerResponse(response) {
   let res = {}
-  foreach(uid, userInfo in response)
-  {
+  foreach (uid, userInfo in response) {
     let pilotId = userInfo?.pilotId ?? ""
     let convertedData = {
       uid = uid
@@ -106,39 +97,35 @@ let function _convertServerResponse(response)
   return res
 }
 
-let function clearRequestArray(users)
-{
-  foreach(uid,_ in users)
-    if(uid in usersForRequest)
+let function clearRequestArray(users) {
+  foreach (uid, _ in users)
+    if (uid in usersForRequest)
       usersForRequest.rawdelete(uid)
 }
 
-let function getUserListRequest(users = {})
-{
+let function getUserListRequest(users = {}) {
   let reqList = []
 
-  foreach(uid,_ in users)
-  {
+  foreach (uid, _ in users) {
     reqList.append(uid)
 
-    if(reqList.len() == MAX_REQUESTED_UID_NUM)
+    if (reqList.len() == MAX_REQUESTED_UID_NUM)
       return reqList
   }
   return reqList
 }
 
-let function requestUsersInfo(users, successCb = null, errorCb = null)
-{
-  if(haveRequest)
+let function requestUsersInfo(users, successCb = null, errorCb = null) {
+  if (haveRequest)
     return
 
   let fastResponse = _getResponseWidthoutRequest(users)
-  if(fastResponse != null && successCb != null)
+  if (fastResponse != null && successCb != null)
     return successCb(fastResponse)
 
   let usersList = ::g_string.implode(users, ";")
 
-  let requestBlk = ::DataBlock()
+  let requestBlk = DataBlock()
   requestBlk.setStr("usersList", usersList)
 
   let function fullSuccessCb(response) {
@@ -159,8 +146,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null)
   ::g_tasker.charRequestBlk("cln_get_users_terse_info", requestBlk, { showErrorMessageBox = false }, fullSuccessCb, fullErrorCb)
 }
 
-let function updateUsersInfo()
-{
+let function updateUsersInfo() {
   clearTimer(updateUsersInfo)
   let updateUsersInfo_ = callee()
   let function errorCb(_) {
@@ -170,20 +156,19 @@ let function updateUsersInfo()
 
   let userListForRequestgetUser = getUserListRequest(usersForRequest)
 
-  if(userListForRequestgetUser.len() == 0)
+  if (userListForRequestgetUser.len() == 0)
     return
 
   requestUsersInfo(userListForRequestgetUser, null, errorCb)
 }
 
-let function requestUserInfoData(userId)
-{
+let function requestUserInfoData(userId) {
   clearTimer(updateUsersInfo)
 
   if ((userId not in usersForRequest) && (userId not in usersInfo))
     usersForRequest[userId] <- true
 
-  if(usersForRequest.len() == 0)
+  if (usersForRequest.len() == 0)
     return
 
   setTimeout(0.3, updateUsersInfo)

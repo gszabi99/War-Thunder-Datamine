@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,12 +9,10 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
-::gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler
-{
+::gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
-  function initScreen()
-  {
+  function initScreen() {
     animBgLoad()
     setVersionText()
     ::setProjectAwards(this)
@@ -37,30 +36,27 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
   }
 
-  function doLogin()
-  {
+  function doLogin() {
     log("DMM Login: check_login_pass")
     log("DMM Login: dmm_user_id " + ::dgs_get_argv("dmm_user_id"))
     log("DMM Login: dmm_token " + ::dgs_get_argv("dmm_token"))
-    statsd.send_counter("sq.game_start.request_login", 1, {login_type = "dmm"})
+    statsd.send_counter("sq.game_start.request_login", 1, { login_type = "dmm" })
     let ret = ::check_login_pass(::dgs_get_argv("dmm_user_id"),
       ::dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
     this.proceedAuthorizationResult(ret)
   }
 
-  function proceedAuthorizationResult(result)
-  {
+  function proceedAuthorizationResult(result) {
     if (!checkObj(this.scene)) //check_login_pass is not instant
       return
 
-    switch (result)
-    {
+    switch (result) {
       case YU2_OK:
         ::set_login_pass("", "", 0)
         ::g_login.addState(LOGIN_STATE.AUTHORIZED)
         break
       case YU2_NOT_FOUND:
-        this.msgBox("dmm_error_not_found_user", loc("yn1/error/DMM_NOT_FOUND", {link = loc("warthunder_dmm_link")}),
+        this.msgBox("dmm_error_not_found_user", loc("yn1/error/DMM_NOT_FOUND", { link = loc("warthunder_dmm_link") }),
         [
           ["exit", exitGame ],
           ["tryAgain", Callback(this.doLogin, this)]
@@ -75,17 +71,15 @@ let exitGame = require("%scripts/utils/exitGame.nut")
     }
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.onExit()
   }
 
-  function onExit()
-  {
+  function onExit() {
     this.msgBox("login_question_quit_game", loc("mainmenu/questionQuitGame"),
       [
         ["yes", exitGame],
         ["no", @() null]
-      ], "no", { cancel_fn = @() null})
+      ], "no", { cancel_fn = @() null })
   }
 }

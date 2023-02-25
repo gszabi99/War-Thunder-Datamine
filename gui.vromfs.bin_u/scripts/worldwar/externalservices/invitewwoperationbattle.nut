@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,21 +9,18 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
-::g_invites_classes.WwOperationBattle <- class extends ::BaseInvite
-{
+::g_invites_classes.WwOperationBattle <- class extends ::BaseInvite {
   squadronId = -1
   operationId = -1
   battleId = ""
 
   inviteActiveColor = "userlogColoredText"
 
-  static function getUidByParams(params)
-  {
+  static function getUidByParams(params) {
     return "WW_" + (params?.operationId ?? "null") + "_" + (params?.battleId ?? "null")
   }
 
-  function updateCustomParams(params, initial = false)
-  {
+  function updateCustomParams(params, initial = false) {
     this.operationId = params?.operationId ?? this.operationId
     this.battleId = params?.battleId ?? this.battleId
 
@@ -33,8 +31,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
       return
 
     ::add_event_listener("WWGlobalStatusChanged",
-      function (p)
-      {
+      function (p) {
         if (!(p.changedListsMask & WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS))
           return
 
@@ -49,48 +46,40 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
     this.setTimedParams(0, ::get_charserver_time_sec() + WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC)
   }
 
-  function getOperation()
-  {
+  function getOperation() {
     return getOperationById(this.operationId)
   }
 
-  function isValid()
-  {
+  function isValid() {
     return this.isDelayed || !!this.getOperation()
   }
 
-  function getInviteText()
-  {
+  function getInviteText() {
     let operation = this.getOperation()
     return loc("worldwar/inviteSquadsText", {
       operation = colorize(this.inviteActiveColor, operation ? operation.getNameText() : this.operationId)
     })
   }
 
-  function getPopupText()
-  {
+  function getPopupText() {
     return this.getInviteText()
   }
 
-  function getIcon()
-  {
+  function getIcon() {
     return "#ui/gameuiskin#battles_open.png"
   }
 
-  function haveRestrictions()
-  {
+  function haveRestrictions() {
     return !::isInMenu()
   }
 
-  function getRestrictionText()
-  {
+  function getRestrictionText() {
     if (this.haveRestrictions())
       return loc("invite/session/cant_apply_in_flight")
     return ""
   }
 
-  function accept()
-  {
+  function accept() {
     ::queues.checkAndStart(
       Callback(function() {
         ::g_world_war.joinOperationById(this.operationId, null, false,
@@ -102,8 +91,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
       null, "isCanNewflight")
   }
 
-  function onEventQueueChangeState(p)
-  {
+  function onEventQueueChangeState(p) {
     if (p?.queue?.params?.operationId == this.operationId &&
         p?.queue?.params?.battleId == this.battleId)
       this.remove()

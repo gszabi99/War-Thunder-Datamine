@@ -22,6 +22,7 @@ struct Template
     blockArgName : table<string; string>
     annArg : table<string; lambda<(var ann: AnnotationDeclaration):void> >
     blkArg : table<string; array<VariablePtr>>
+    tag2expr : table<string; smart_ptr<Expression>>
 
 def kaboomVarField ( var self:Template; name,prefix,suffix:string )
     //! Adds a rule to to the template to replace a variable field access with a prefix and suffix.
@@ -31,6 +32,10 @@ def kaboomVarField ( var self:Template; name,prefix,suffix:string )
 def replaceVariable ( var self:Template; name:string; var expr : smart_ptr<ast::Expression> )
     //! Adds a rule to the template to replace a variable with an expression.
     self.var2expr[name] <- expr
+
+def replaceVarTag ( var self:Template; name:string; var expr : smart_ptr<ast::Expression> )
+    //! Adds a rule to the template to replace a variable tag with an expression.
+    self.tag2expr[name] <- expr
 
 def replaceArgumentWithList ( var self:Template; name:string; blka:array<VariablePtr> )
     //! Adds a rule to the template to replace a block argument with a list of variables.
@@ -67,11 +72,7 @@ def replaceType ( var self:Template; name,newName:string )
     //! Adds a rule to the template to replace a type alias with another type alias, specified by name.
     self.type2type[name] = newName
 
-def replaceTypeWithTypeDecl ( var self:Template; name:string; var st : StructurePtr  )
-    //! Adds a rule to the template to replace a type alias with another type alias, specified by type declaration.
-    self.type2etype[name] <- new [[TypeDecl() at=st.at, baseType=Type tStructure, structType = get_ptr(st)]]
-
-def replaceTypeWithTypeDecl ( var self:Template; name:string; var expr : TypeDeclPtr  )
+def replaceTypeWithTypeDecl ( var self:Template; name:string; var expr : TypeDeclPtr )
     //! Adds a rule to the template to replace a type alias with another type alias, specified by type declaration.
     self.type2etype[name] <- expr
 
@@ -95,6 +96,15 @@ class private TemplateVisitor : AstVisitor
     [[do_not_delete]] rules : Template?
     def TemplateVisitor ( r : Template? )
         rules = r
+    def override visitExprTag ( var expr:smart_ptr<ExprTag> ) : ExpressionPtr
+        if expr.name=="v"
+            if expr.subexpr is ExprVar
+                let tn = string((expr.subexpr as ExprVar).name)
+                if key_exists(rules.tag2expr, tn)
+                    var rexpr <- clone_expression(rules.tag2expr[tn])
+                    rexpr.at = expr.at
+                    return rexpr
+        return expr
     def override visitExprIsVariant(var expr:smart_ptr<ExprIsVariant>) : ExpressionPtr
         let fname = string(expr.name)
         if rules.field2name |> key_exists(fname)
@@ -181,22 +191,22 @@ class private TemplateVisitor : AstVisitor
             if key_exists(rules.blockArgName, vn)
                 arg.name := rules.blockArgName[vn]
         for ann in blk.annotations
-            rules.annArg |> find_if_exists("{ann.annotation.name}") <| $(cb)
-                (*cb) |> invoke(*ann)
+            rules.annArg |> get("{ann.annotation.name}") <| $(cb)
+                cb |> invoke(*ann)
         let nargs = blk.arguments.length
         for ai in range(nargs)
             let rai = nargs - ai - 1
             assume arg = blk.arguments[rai]
             let vname = string(arg.name)
             if key_exists(rules.blkArg, vname)
-                var new_args <- [{for a in rules.blkArg[vname];
-                    new [[Variable()
-                        at=arg.at,
-                        name:=a.name,
-                        _type <- clone_type(a._type),
-                        init <- clone_expression(a.init)
-                    ]]
-                }]
+                var new_args : array<VariablePtr>
+                for a in rules.blkArg[vname]
+                    new_args |> emplace_new <| new [[Variable()
+                            at=arg.at,
+                            name:=a.name,
+                            _type <- clone_type(a._type),
+                            init <- clone_expression(a.init)
+                        ]]
                 new_args |> reverse
                 blk.arguments |> erase(rai)
                 for na in new_args
@@ -216,7 +226,9 @@ class private TemplateVisitor : AstVisitor
             if arg is ExprVar
                 let vname = string((arg as ExprVar).name)
                 if key_exists(rules.var2exprList, vname)
-                    var new_args <- [{for a in rules.var2exprList[vname]; clone_expression(a)}]
+                    var new_args : array<ExpressionPtr>
+                    for a in rules.var2exprList[vname]
+                        new_args |> emplace_new <| clone_expression(a)
                     new_args |> reverse
                     arguments |> erase(rai)
                     for na in new_args
@@ -386,14 +398,21 @@ def public add_array_ptr_ref ( var a : array<smart_ptr<auto(TT)>> ) : array<smar
     var q := a
     return <- q
 
-def public add_type_ptr_ref ( var a : TypeDeclPtr ) : TypeDeclPtr
+def public add_type_ptr_ref ( var a : TypeDeclPtr; flags:TypeDeclFlags ) : TypeDeclPtr
     //! Implementation details for the reification. This adds any array to the rules.
-    var q := a
+    // var q := a
+    var q <- clone_type(a)
+    q.flags |= flags & (
+            TypeDeclFlags ref | TypeDeclFlags removeRef
+        |   TypeDeclFlags temporary | TypeDeclFlags removeTemporary
+        |   TypeDeclFlags _implicit | TypeDeclFlags explicitConst
+        |   TypeDeclFlags removeConstant | TypeDeclFlags removeDim
+        )
     return <- q
 
-def public add_type_ptr_ref ( var a : StructurePtr ) : StructurePtr
+def public add_type_ptr_ref ( var st : StructurePtr; flags:TypeDeclFlags ) : TypeDeclPtr
     //! Implementation details for the reification. This adds any array to the rules.
-    return a // notice,
+    return new [[TypeDecl() at=st.at, baseType=Type tStructure, structType = get_ptr(st), flags=flags]]
 
 def private generatedExpr( var expr : ExpressionPtr ) : ExpressionPtr
     expr.genFlags |= ExprGenFlags generated
@@ -425,15 +444,20 @@ class private QRulesVisitor : AstVisitor
                 baseType = Type alias,
                 alias := new_tag_name
             ]]
+            ntyp.flags |= typ.flags & ~TypeDeclFlags isTag
             rblock.list |> emplace_new <| new [[ExprCall() at=typ.at,
                 name:="replaceTypeWithTypeDecl",
                 arguments:=[{ExpressionPtr
                     new [[ExprVar() at=typ.at, name:="rules"]];
                     new [[ExprConstString() at=typ.at, value:=new_tag_name]] |> generatedExpr();
                     new [[ExprCall() at=typ.at, name:="add_type_ptr_ref",
-                        arguments := [{ExpressionPtr[1] clone_expression(typ.firstType.dimExpr[0]) }]
+                        arguments := [{ExpressionPtr
+                            clone_expression(typ.firstType.dimExpr[0]);
+                            new [[ExprConstBitfield() at=typ.at, value:=ntyp.flags]]
+                        }]
                     ]]
-                }]]]
+                }]
+            ]]
             return <- ntyp
         if typ.firstType != null
             visitTD(typ.firstType)
@@ -679,7 +703,7 @@ class private  AstQCallMacro : AstCallMacro
     //! This macro implements expression reification
     apply_call = "apply_qmacro"
     macro_call = "qmacro"
-    def override canVisitArguments ( call:smart_ptr<ExprCallMacro> ) : bool
+    def override canVisitArgument ( call:smart_ptr<ExprCallMacro>; argIndex:int ) : bool
         return false    // nop, this one is just like quote
     def wrap_call ( var expr:ExpressionPtr ) : ExpressionPtr
         return expr
@@ -771,6 +795,8 @@ class private AstQNamedMacro : AstCallMacro
     //! This macro implements expression reification for the named expressions (function, variable, etc.)
     apply_call = "apply_qmacro_function"
     macro_call = "qmacro_function"
+    def override canVisitArgument ( call:smart_ptr<ExprCallMacro>; argIndex:int ) : bool
+        return argIndex==0
     def override visit ( prog:ProgramPtr; mod:Module?; var call:smart_ptr<ExprCallMacro> ) : ExpressionPtr
         if call.arguments.length != 2
             macro_error(prog,call.at,"expecting 2 arguments, {macro_call}(name,expression)")
@@ -806,6 +832,8 @@ class private AstQVariableMacro : AstQNamedMacro
 class private AstQNamedClassMacro : AstCallMacro
     apply_call = "apply_qmacro_method"
     macro_call = "qmacro_method"
+    def override canVisitArgument ( call:smart_ptr<ExprCallMacro>; argIndex:int ) : bool
+        return argIndex==0 || argIndex==1
     //! This macro implements expression reification for the named expressions (function, variable, etc.)
     def override visit ( prog:ProgramPtr; mod:Module?; var call:smart_ptr<ExprCallMacro> ) : ExpressionPtr
         if call.arguments.length != 3

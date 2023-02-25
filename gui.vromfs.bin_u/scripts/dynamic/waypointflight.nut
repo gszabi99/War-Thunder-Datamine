@@ -1,21 +1,30 @@
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { Point3 } = require("dagor.math")
 let { slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { mgBeginMission, mgAcceptMission, mgFullLogs, mgSetInt, mgCreateStartPoint,
+  mgCreateStartLookAt, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt,
+  getDistancePerMinute, getAnyPlayerFighter, mgSetupAirfield, mgRemoveStrParam,
+  mgSetDistToAction, gmMarkCutsceneArmadaLooksLike, mgGetMissionSector, mgGetLevelName,
+  mgEnsurePointsInMap, mgSetMinMaxAircrafts
+} = require("dynamicMission")
+let { get_warpoints_blk } = require("blkGetters")
 
 local waypointFlightWpHeightNext = 0
 local waypointFlightWpHeight = 0
 
 let function wpHeightCalc() {
-  waypointFlightWpHeightNext = ::rndRange(-1000, 1000);
+  waypointFlightWpHeightNext = rndRange(-1000, 1000)
   waypointFlightWpHeight = waypointFlightWpHeight + waypointFlightWpHeightNext
   if (waypointFlightWpHeight >= 1000)
     return
 
   waypointFlightWpHeight = waypointFlightWpHeight - waypointFlightWpHeightNext
-  waypointFlightWpHeightNext = ::rndRange(0, 1000)
+  waypointFlightWpHeightNext = rndRange(0, 1000)
   waypointFlightWpHeight = waypointFlightWpHeight + waypointFlightWpHeightNext
 }
 
@@ -23,89 +32,91 @@ let function genWayPointFlightMission(isFreeFlight) {
   if (!isFreeFlight)
     return
 
-  ::mgBeginMission("gameData/missions/dynamic_campaign/objectives/free_flight_preset01.blk");
-  let startHeight = ::rndRange(1500, 3000);
-  let startPos = ::mgCreateStartPoint(startHeight);
+  mgBeginMission("gameData/missions/dynamic_campaign/objectives/free_flight_preset01.blk")
+  let startHeight = rndRange(1500, 3000)
+  let startPos = mgCreateStartPoint(startHeight)
 
-  ::mgSetDistToAction(10000);
-  ::mgSetupAirfield(startPos, 1000);
+  mgSetDistToAction(10000)
+  mgSetupAirfield(startPos, 1000)
 
-  let ws = ::get_warpoints_blk();
-  local wpMax = ws.dynPlanesMaxCost;
-  let startLookAt = ::mgCreateStartLookAt();
-  let playerFighterPlane = ::getAnyPlayerFighter(0, wpMax);
+  let ws = get_warpoints_blk()
+  local wpMax = ws.dynPlanesMaxCost
+  let startLookAt = mgCreateStartLookAt()
+  let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
   if (playerFighterPlane == "")
-    return;
+    return
 
-  let playerSpeed = ::getDistancePerMinute(playerFighterPlane);
+  let playerSpeed = getDistancePerMinute(playerFighterPlane)
 
   waypointFlightWpHeightNext = 0
   waypointFlightWpHeight = startHeight
 
-  local maxWpOnSpeed = 9;
-  local maxTimeOnSpeed = 40;
-  if (playerSpeed > 7000) {
-    maxWpOnSpeed = 7
-    maxTimeOnSpeed = 35
-  }
+  local maxWpOnSpeed = 9
+  local maxTimeOnSpeed = 40
   if (playerSpeed > 10000) {
     maxWpOnSpeed = 5
     maxTimeOnSpeed = 30
   }
-
-  let wpDist = playerSpeed*1.0/60;
-
-  wpMax = ::rndRangeInt(4,maxWpOnSpeed);
-
-  ::mgSetInt("variables/wp_max", wpMax);
-
-  local lastWp = "";
-  local secondToLastWp = "";
-  ::mgSetupArea("waypoint01", startPos, startLookAt, 180+::rndRange(-60,60), wpDist*maxTimeOnSpeed, 0);
-  wpHeightCalc()
-  ::mgSetupArea("waypoint02", "waypoint01", startPos, ::rndRange(-60,60), -wpDist*::rndRange(10,maxTimeOnSpeed),
-    waypointFlightWpHeightNext);
-  wpHeightCalc()
-
-  let offsetPoints = [startPos, "waypoint01", "waypoint02"];
-
-  for (local j = 2; j<10; j++) {
-    if (wpMax > j) {
-      ::mgSetupArea("waypoint0"+(j+1), "waypoint0"+j, "waypoint0"+(j-1), ::rndRange(-60,60),
-        -wpDist*::rndRange(10,maxTimeOnSpeed), waypointFlightWpHeightNext);
-      wpHeightCalc()
-      offsetPoints.append("waypoint0"+(j+1));
-      lastWp = "waypoint0"+(j+1);
-      secondToLastWp = "waypoint0"+j;
-    } else ::mgRemoveStrParam("mission_settings/briefing/part", "waypoint0"+(j+1));
+  else if (playerSpeed > 7000) {
+    maxWpOnSpeed = 7
+    maxTimeOnSpeed = 35
   }
 
-  ::mgSetupArea("evac", lastWp, secondToLastWp, ::rndRange(-60,60),
-    -wpDist*maxTimeOnSpeed, waypointFlightWpHeightNext);
+  let wpDist = playerSpeed * 1.0 / 60
 
-  offsetPoints.append("evac");
-  ::mgEnsurePointsInMap(offsetPoints);
+  wpMax = rndRangeInt(4, maxWpOnSpeed)
 
-  ::mgSetupArea("evac_forCut", "evac", lastWp, 0, 2000, 0);
+  mgSetInt("variables/wp_max", wpMax)
 
-  ::mgSetupArmada("#player.any", startPos, ::Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane);
-  ::mgSetupArmada("#player_cut.any", startPos, ::Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane);
-  ::gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.any");
+  local lastWp = ""
+  local secondToLastWp = ""
+  mgSetupArea("waypoint01", startPos, startLookAt, 180 + rndRange(-60, 60), wpDist * maxTimeOnSpeed, 0)
+  wpHeightCalc()
+  mgSetupArea("waypoint02", "waypoint01", startPos, rndRange(-60, 60), -wpDist * rndRange(10, maxTimeOnSpeed),
+    waypointFlightWpHeightNext)
+  wpHeightCalc()
 
-  ::mgSetInt("mission_settings/mission/wpAward", 0);
+  let offsetPoints = [startPos, "waypoint01", "waypoint02"]
+
+  for (local j = 2; j < 10; j++) {
+    if (wpMax > j) {
+      mgSetupArea($"waypoint0{j+1}", $"waypoint0{j}", $"waypoint0{j-1}", rndRange(-60, 60),
+        -wpDist * rndRange(10, maxTimeOnSpeed), waypointFlightWpHeightNext)
+      wpHeightCalc()
+      offsetPoints.append($"waypoint0{j+1}")
+      lastWp = $"waypoint0{j+1}"
+      secondToLastWp = $"waypoint0{j}"
+    }
+    else
+      mgRemoveStrParam("mission_settings/briefing/part", $"waypoint0{j+1}")
+  }
+
+  mgSetupArea("evac", lastWp, secondToLastWp, rndRange(-60, 60),
+    -wpDist * maxTimeOnSpeed, waypointFlightWpHeightNext)
+
+  offsetPoints.append("evac")
+  mgEnsurePointsInMap(offsetPoints)
+
+  mgSetupArea("evac_forCut", "evac", lastWp, 0, 2000, 0)
+
+  mgSetupArmada("#player.any", startPos, Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane)
+  mgSetupArmada("#player_cut.any", startPos, Point3(0, 0, 0), "waypoint01", "", 4, 4, playerFighterPlane)
+  gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.any")
+
+  mgSetInt("mission_settings/mission/wpAward", 0)
 
   if (playerFighterPlane == "")
     return
 
-  ::mgSetMinMaxAircrafts("player", "", 1, 8)
+  mgSetMinMaxAircrafts("player", "", 1, 8)
 
-  slidesReplace(::mgGetLevelName(), ::mgGetMissionSector(), "none")
+  slidesReplace(mgGetLevelName(), mgGetMissionSector(), "none")
 
-//  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/test_wpFlight_temp.blk");
-  if (::mgFullLogs())
-    debug_dump_stack();
+//  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/test_wpFlight_temp.blk")
+  if (mgFullLogs())
+    debug_dump_stack()
 
-  ::mgAcceptMission();
+  mgAcceptMission()
 }
 
 return {

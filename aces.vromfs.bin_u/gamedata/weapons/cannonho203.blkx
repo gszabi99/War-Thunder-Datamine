@@ -85,17 +85,6 @@
     ],
     "fuseDelayDist": 0.4,
     "explodeTreshold": 0.3,
-    "explodeHitPower": 38.0,
-    "explodeArmorPower": 6.0,
-    "explodeRadius": [
-      0.11,
-      1.1
-    ],
-    "shutterDamage": true,
-    "shutterDamageRadius": 2.3,
-    "shutterAmount": 50,
-    "shutterArmorPower": 8.0,
-    "shutterHit": 4.0,
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "explosionEffect": "hit_39_58mm_metal_he",
     "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -149,6 +138,37 @@
         0.0,
         1500.0
       ]
+    },
+    "damage": {
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.5,
+        "segment": [
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              179.0
+            ],
+            "countPortion": 0.5
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              180.0,
+              359.0
+            ],
+            "countPortion": 0.5
+          }
+        ]
+      }
+    },
+    "shatterDamage": {
+      "breachConeAngle": 45.0
     },
     "visual": {
       "range_percent_of_ammo": [

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,8 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
-::mission_rules.NumSpawnsByUnitType <- class extends ::mission_rules.Base
-{
+::mission_rules.NumSpawnsByUnitType <- class extends ::mission_rules.Base {
   needLeftRespawnOnSlots = true
   customUnitRespawnsAllyListHeaderLocId  = "multiplayer/personalUnitsLeftHeader"
 
@@ -17,19 +17,16 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   allowedUnitTypesList   = null
   allowedUnitClassesList = null
 
-  function getUnitLeftRespawns(unit, _teamDataBlk = null)
-  {
+  function getUnitLeftRespawns(unit, _teamDataBlk = null) {
     return this.getUnitLeftRespawnsByRestrictionRule(unit, this.getRestrictionRule())
   }
 
   //stateData is a table or blk
-  function getUnitLeftRespawnsByRestrictionRule(unit, rule, stateData = null)
-  {
+  function getUnitLeftRespawnsByRestrictionRule(unit, rule, stateData = null) {
     if (!unit)
       return 0
     stateData = stateData || this.getMyStateBlk()
-    switch (rule)
-    {
+    switch (rule) {
       case "type":
         return this.getUnitTypeLeftRespawns(::get_es_unit_type(unit), stateData)
       case "class":
@@ -43,13 +40,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return 0
   }
 
-  function hasCustomUnitRespawns()
-  {
+  function hasCustomUnitRespawns() {
     return true
   }
 
-  function getSpecialCantRespawnMessage(unit)
-  {
+  function getSpecialCantRespawnMessage(unit) {
     let leftRespawns = this.getUnitLeftRespawns(unit)
     if (leftRespawns)
       return null
@@ -59,8 +54,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     local icon = ""
     local name = ""
-    switch (this.getRestrictionRule())
-    {
+    switch (this.getRestrictionRule()) {
       case "type":
         icon = unit.unitType.fontIcon
         name = unit.unitType.getArmyLocName()
@@ -84,8 +78,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
                  })
   }
 
-  function getCurCrewsRespawnMask()
-  {
+  function getCurCrewsRespawnMask() {
     local res = 0
     if (!this.getLeftRespawns())
       return res
@@ -95,19 +88,17 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     if (!myStateBlk)
       return (1 << crewsList.len()) - 1
 
-    foreach(idx, crew in crewsList)
+    foreach (idx, crew in crewsList)
       if (this.getUnitLeftRespawns(::g_crew.getCrewUnit(crew)) != 0)
         res = res | (1 << idx)
     return res
   }
 
-  function getRespawnInfoTextForUnit(unit)
-  {
+  function getRespawnInfoTextForUnit(unit) {
     return this.getRespawnInfoText(unit, this.getMyStateBlk())
   }
 
-  function getRespawnInfoTextForUnitInfo(unit)
-  {
+  function getRespawnInfoTextForUnitInfo(unit) {
     let cantRespawnMsg = this.getSpecialCantRespawnMessage(unit)
     return cantRespawnMsg ? colorize("@badTextColor", cantRespawnMsg) :
       loc("multiplayer/leftTeamUnit", { num = this.getUnitLeftRespawns(unit) })
@@ -115,14 +106,11 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   //unit is Unit, or null to get info about all listed units
   //stateData is a table or blk
-  function getRespawnInfoText(unit, stateData)
-  {
-    switch(this.getRestrictionRule())
-    {
+  function getRespawnInfoText(unit, stateData) {
+    switch (this.getRestrictionRule()) {
       case "type":
         let res = []
-        foreach(unitType in this.getAllowedUnitTypes())
-        {
+        foreach (unitType in this.getAllowedUnitTypes()) {
           if (unit && unit.esUnitType != unitType.esUnitType)
             continue
 
@@ -133,8 +121,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
       case "class":
         let res = []
-        foreach(classType in this.getAllowedUnitClasses())
-        {
+        foreach (classType in this.getAllowedUnitClasses()) {
           if (unit && unit.expClass != classType)
             continue
 
@@ -145,8 +132,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
       case "type_and_class":
         let res = []
-        foreach(unitType in this.getKnownUnitTypes())
-        {
+        foreach (unitType in this.getKnownUnitTypes()) {
           if (unit && unit.esUnitType != unitType.esUnitType)
             continue
 
@@ -156,8 +142,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
           local classesText = []
           let classTypes = ::u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
-          foreach (classType in classTypes)
-          {
+          foreach (classType in classTypes) {
             if (unit && unit.expClass != classType)
               continue
 
@@ -167,8 +152,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
           classesText = ::g_string.implode(classesText, loc("ui/comma"))
 
           local typeText = unitType.fontIcon + typeResp
-          if (classesText != "")
-          {
+          if (classesText != "") {
             if (unit)
               typeText = ::g_string.implode([ typeText, classesText ], loc("ui/comma"))
             else
@@ -181,33 +165,28 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return ""
   }
 
-  function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) //stateData is a table or blk
-  {
+  function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) { //stateData is a table or blk
     let respawns = stateData?[(isDsUnitType ? esUnitType : ::get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
     return max(0, respawns) //dont have unlimited respawns
   }
 
-  function getUnitClassLeftRespawns(expClass, stateData) //stateData is a table or blk
-  {
+  function getUnitClassLeftRespawns(expClass, stateData) { //stateData is a table or blk
     let respawns = stateData?[expClass] ?? 0
     return max(0, respawns) //dont have unlimited respawns
   }
 
-  function getUnitInitialRespawns(unit)
-  {
+  function getUnitInitialRespawns(unit) {
     return this.getUnitLeftRespawnsByRestrictionRule(unit, this.getRestrictionRule(), this.getCustomRulesBlk()?.ruleSet)
   }
 
-  function getEventDescByRulesTbl(rulesTbl)
-  {
+  function getEventDescByRulesTbl(rulesTbl) {
     let baseRules = rulesTbl?.ruleSet ?? {}
     this.getRestrictionRule(baseRules)
     this.collectAllowedTypeAndClasses(baseRules)
     return loc("multiplayer/flyouts") + loc("ui/colon") + this.getRespawnInfoText(null, baseRules)
   }
 
-  function calcFullUnitLimitsData(_isTeamMine = true)
-  {
+  function calcFullUnitLimitsData(_isTeamMine = true) {
     let res = base.calcFullUnitLimitsData()
 
     local stateData = this.getMyStateBlk()
@@ -217,19 +196,15 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     let needUnitTypes   = this.getAllowedUnitTypes().len()   != 0
     let needUnitClasses = this.getAllowedUnitClasses().len() != 0
 
-    foreach(unitType in this.getKnownUnitTypes())
-    {
-      if (needUnitTypes)
-      {
+    foreach (unitType in this.getKnownUnitTypes()) {
+      if (needUnitTypes) {
         let respLeft  = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
         res.unitLimits.append(::g_unit_limit_classes.LimitByUnitType(unitType.typeName, respLeft))
       }
 
-      if (needUnitClasses)
-      {
+      if (needUnitClasses) {
         let classTypes = ::u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
-        foreach(classType in classTypes)
-        {
+        foreach (classType in classTypes) {
           let expClassName = classType.getExpClass()
           local respLeft  = this.getUnitClassLeftRespawns(expClassName, stateData)
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitExpClass(expClassName, respLeft))
@@ -240,10 +215,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return res
   }
 
-  function getRestrictionRule(baseRules = null)
-  {
-    if (!this.restrictionRule)
-    {
+  function getRestrictionRule(baseRules = null) {
+    if (!this.restrictionRule) {
       baseRules = baseRules || this.getCustomRulesBlk()?.ruleSet
       let value = baseRules?.restriction_rule ?? "type"
       let validValues = [ "type", "class", "type_and_class" ]
@@ -252,29 +225,25 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     return this.restrictionRule
   }
 
-  function getKnownUnitTypes()
-  {
+  function getKnownUnitTypes() {
     if (!this.knownUnitTypesList)
       this.collectAllowedTypeAndClasses()
     return this.knownUnitTypesList
   }
 
-  function getAllowedUnitTypes()
-  {
+  function getAllowedUnitTypes() {
     if (!this.allowedUnitTypesList)
       this.collectAllowedTypeAndClasses()
     return this.allowedUnitTypesList
   }
 
-  function getAllowedUnitClasses()
-  {
+  function getAllowedUnitClasses() {
     if (!this.allowedUnitClassesList)
       this.collectAllowedTypeAndClasses()
     return this.allowedUnitClassesList
   }
 
-  function collectAllowedTypeAndClasses(baseRules = null)
-  {
+  function collectAllowedTypeAndClasses(baseRules = null) {
     baseRules  = baseRules || this.getCustomRulesBlk()?.ruleSet
     let rule = this.getRestrictionRule()
     let needUnitTypes   = isInArray(rule, [ "type",  "type_and_class" ])
@@ -286,8 +255,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     let checkedDsUnitTypes = []
 
-    foreach(unitType in unitTypes.types)
-    {
+    foreach (unitType in unitTypes.types) {
       if (!unitType.isAvailable())
         continue
 
@@ -297,18 +265,15 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       checkedDsUnitTypes.append(dsUnitType)
 
       if (needUnitTypes)
-        if (this.getUnitTypeLeftRespawns(unitType.esUnitType, baseRules) > 0)
-        {
+        if (this.getUnitTypeLeftRespawns(unitType.esUnitType, baseRules) > 0) {
           this.allowedUnitTypesList.append(unitType)
           ::u.appendOnce(unitType, this.knownUnitTypesList)
         }
 
-      if (needUnitClasses)
-      {
+      if (needUnitClasses) {
         let unitTypeClassTypes = ::u.filter(unitClassType.types, @(c) c.unitTypeCode == unitType.esUnitType)
-        foreach(classType in unitTypeClassTypes)
-          if (this.getUnitClassLeftRespawns(classType.getExpClass(), baseRules) > 0)
-          {
+        foreach (classType in unitTypeClassTypes)
+          if (this.getUnitClassLeftRespawns(classType.getExpClass(), baseRules) > 0) {
             ::u.appendOnce(classType, this.allowedUnitClassesList)
             ::u.appendOnce(unitType, this.knownUnitTypesList)
           }

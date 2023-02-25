@@ -10,14 +10,15 @@ let defStyling = {
         _height = sh(1)
       }
     }
-    else return class{
+    else
+      return class{
         _width = sh(1)
         _height = sh(1)
     }
   }
   Knob = class {
     rendObj = ROBJ_SOLID
-    colorCalc = @(sf) (sf & S_ACTIVE) ? Color(255,255,255)
+    colorCalc = @(sf) (sf & S_ACTIVE) ? Color(255, 255, 255)
                     : (sf & S_HOVER)  ? Color(110, 120, 140, 80)
                                       : Color(110, 120, 140, 160)
   }
@@ -40,7 +41,7 @@ let function calcBarSize(bar_class, axis) {
 }
 
 
-let function scrollbar(scroll_handler, options={}) {
+let function scrollbar(scroll_handler, options = {}) {
   let stateFlags = Watched(0)
   let styling   = options?.styling ?? defStyling
   let barClass  = options?.barStyle ?? styling.Bar
@@ -67,7 +68,8 @@ let function scrollbar(scroll_handler, options={}) {
       contentSize = elem.getContentWidth()
       elemSize = elem.getWidth()
       scrollPos = elem.getScrollOffsX()
-    } else {
+    }
+    else {
       contentSize = elem.getContentHeight()
       elemSize = elem.getHeight()
       scrollPos = elem.getScrollOffsY()
@@ -123,9 +125,9 @@ let function scrollbar(scroll_handler, options={}) {
       size = calcBarSize(cls, axis)
 
       children = [
-        {size=[flex(fValue), flex(fValue)]}
+        { size = [flex(fValue), flex(fValue)] }
         knob
-        {size=[flex(maxV-fValue), flex(maxV-fValue)]}
+        { size = [flex(maxV - fValue), flex(maxV - fValue)] }
       ]
 
       onChange = @(val) axis == 0
@@ -195,14 +197,14 @@ let function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 }
 
 
-let function makeHVScrolls(content, options={}) {
+let function makeHVScrolls(content, options = {}) {
   let styling = options?.styling ?? defStyling
   let scrollHandler = options?.scrollHandler ?? ScrollHandler()
   let rootBase = options?.rootBase ?? styling.ContentRoot
 
   let function contentRoot() {
     local bhv = rootBase?.behavior ?? []
-    if (type(bhv)!="array")
+    if (type(bhv) != "array")
       bhv = [bhv]
     else
       bhv = clone bhv
@@ -228,16 +230,16 @@ let function makeHVScrolls(content, options={}) {
         clipChildren = true
         children = [
           contentRoot
-          scrollbar(scrollHandler, options.__merge({orientation=O_VERTICAL}))
+          scrollbar(scrollHandler, options.__merge({ orientation = O_VERTICAL }))
         ]
       }
-      scrollbar(scrollHandler, options.__merge({orientation=O_HORIZONTAL}))
+      scrollbar(scrollHandler, options.__merge({ orientation = O_HORIZONTAL }))
     ]
   }
 }
 
 
-let function makeVertScroll(content, options={}) {
+let function makeVertScroll(content, options = {}) {
   let o = clone options
   o.orientation <- O_VERTICAL
   o.scrollAlign <- o?.scrollAlign ?? ALIGN_RIGHT
@@ -245,7 +247,7 @@ let function makeVertScroll(content, options={}) {
 }
 
 
-let function makeHorizScroll(content, options={}) {
+let function makeHorizScroll(content, options = {}) {
   let o = clone options
   o.orientation <- O_HORIZONTAL
   o.scrollAlign <- o?.scrollAlign ?? ALIGN_BOTTOM

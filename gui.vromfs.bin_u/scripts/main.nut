@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 #default:no-func-decl-sugar
 #default:no-class-decl-sugar
@@ -18,6 +19,16 @@ global const ARMY_GROUP = "army"
 global const UNIT_WEAPONS_ZERO    = 0
 global const UNIT_WEAPONS_WARNING = 1
 global const UNIT_WEAPONS_READY   = 2
+
+let test_flight_unit_info = {}
+::get_test_flight_unit_info <- @() freeze(test_flight_unit_info)
+::update_test_flight_unit_info <- function(info) {
+  test_flight_unit_info.clear()
+  test_flight_unit_info.__update(info)
+}
+
+::get_mp_kick_countdown <- @() 1000000
+
 require("%scripts/worldWar/worldWarConst.nut")
 require("%globalScripts/ui_globals.nut")
 
@@ -34,6 +45,8 @@ require("%scripts/clientState/errorHandling.nut")
 ::handyman <- require("%sqStdLibs/helpers/handyman.nut").handyman
 
 let { get_local_unixtime } = require("dagor.time")
+let { set_rnd_seed } = require("dagor.random")
+
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
@@ -83,8 +96,7 @@ global enum EVENT_TYPE { //bit values for easy multi-type search
   ANY             = 15,
   ANY_BASE_EVENTS = 5,
 }
- global enum GAME_EVENT_TYPE
-{
+ global enum GAME_EVENT_TYPE {
   // Used for events that are neither race nor tournament.
   TM_NONE = "TM_NONE"
 
@@ -128,9 +140,7 @@ global enum ps4_activity_feed {
 
 global enum bit_activity {
   NONE              = 0,
-  PS4_ACTIVITY_FEED = 1,
-  FACEBOOK          = 2,
-  ALL               = 3
+  PS4_ACTIVITY_FEED = 1
 }
 
 global enum itemsTab {
@@ -223,8 +233,7 @@ global enum RespawnOptUpdBit {
   SMOKE_TYPE    = 0x08
 }
 
-global enum INFO_DETAIL //text detalization level. for weapons and modifications names and descriptions
-{
+global enum INFO_DETAIL { //text detalization level. for weapons and modifications names and descriptions
   LIMITED_11 //must to fit in 11 symbols
   SHORT      //short info, like name. mostly in a single string.
   FULL       //full description
@@ -329,9 +338,8 @@ global enum ONLINE_SHOP_TYPES {
 global const LEADERBOARD_VALUE_TOTAL = "value_total"
 global const LEADERBOARD_VALUE_INHISTORY = "value_inhistory"
 
-::randomize <- function randomize()
-{
-  ::math.init_rnd(get_local_unixtime())
+::randomize <- function randomize() {
+  set_rnd_seed(get_local_unixtime())
 }
 ::randomize()
 
@@ -350,7 +358,7 @@ subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 ::add_big_query_record <- require("chard")?.addBigQueryRecord
   ?? ::add_big_query_record // Compatibility with 2.15.0.X
 
-foreach(fn in [
+foreach (fn in [
   "%scripts/debugTools/dbgToString.nut"
   "%sqDagui/framework/framework.nut"
 ])
@@ -435,16 +443,15 @@ foreach (fn in [
 
   //used for SSO login
   "%scripts/onlineShop/browserWnd.nut"
-])
-{
+]) {
   ::g_script_reloader.loadOnce(fn)
 }
 
 if (::g_script_reloader.isInReloading)
-  foreach(bhvName, bhvClass in ::gui_bhv)
+  foreach (bhvName, bhvClass in ::gui_bhv)
     ::replace_script_gui_behaviour(bhvName, bhvClass)
 
-foreach(bhvName, bhvClass in ::gui_bhv_deprecated)
+foreach (bhvName, bhvClass in ::gui_bhv_deprecated)
   ::add_script_gui_behaviour(bhvName, bhvClass)
 
 ::u.registerClass(
@@ -486,8 +493,7 @@ let platform = require("%scripts/clientState/platform.nut")
 //------- vvv files after login vvv ----------
 
 local isFullScriptsLoaded = false
-::load_scripts_after_login_once <- function load_scripts_after_login_once()
-{
+::load_scripts_after_login_once <- function load_scripts_after_login_once() {
   if (isFullScriptsLoaded)
     return
   isFullScriptsLoaded = true
@@ -538,8 +544,7 @@ local isFullScriptsLoaded = false
     || ::getFromSettingsBlk("benchmarkMode", false)
     || ::getFromSettingsBlk("viewReplay", false)
 
-  ::should_disable_menu <- function should_disable_menu()
-  {
+  ::should_disable_menu <- function should_disable_menu() {
     return shouldDisableMenu
   }
 }
@@ -548,8 +553,7 @@ if (is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug
   ::setSystemConfigOption("debug/netLogerr", true)
 
 if (::g_login.isAuthorized() //scripts reload
-    || ::should_disable_menu())
-{
+    || ::should_disable_menu()) {
   ::load_scripts_after_login_once()
   if (!::g_script_reloader.isInReloading)
     ::run_reactive_gui()

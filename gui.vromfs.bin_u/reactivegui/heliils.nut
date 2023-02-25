@@ -1,9 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, MfdColor} = require("airState.nut")
-let {paramsTable, horSpeed, vertSpeed, rocketAim, taTarget} = require("airHudElems.nut")
+let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, MfdColor } = require("airState.nut")
+let { paramsTable, horSpeed, vertSpeed, rocketAim, taTarget } = require("airHudElems.nut")
 let compass = require("compass.nut")
-let {hudFontHgt, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
@@ -12,7 +12,7 @@ let styleLineForeground = {
   fontFxColor = fontOutlineColor
   fontFxFactor = fontOutlineFxFactor
   fontFx = FFT_GLOW
-  fontSize = hudFontHgt*2
+  fontSize = hudFontHgt * 2
 }
 
 let pilotSh = @(h) h * IlsPosSize[3] / 100
@@ -41,7 +41,7 @@ let function ilsHud(elemStyle) {
     lineWidth = LINE_WIDTH * 3
     color = MfdColor.value
   })
-  return @(){
+  return @() {
     watch = [IsIlsEnabled, MfdColor]
     pos = [IlsPosSize[0], IlsPosSize[1]]
     children = IsIlsEnabled.value ?
@@ -60,7 +60,7 @@ let function ilsMovingMarks(style) {
     lineWidth = LINE_WIDTH * 3
     color = MfdColor.value
   })
-  return @(){
+  return @() {
     watch = [IsIlsEnabled, MfdColor]
     children = IsIlsEnabled.value ?
     [

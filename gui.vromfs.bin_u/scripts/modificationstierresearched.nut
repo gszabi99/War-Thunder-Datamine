@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,10 +10,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 
-::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config)
-{
-  foreach(param, value in config)
-  {
+::gui_start_mod_tier_researched <- function gui_start_mod_tier_researched(config) {
+  foreach (param, value in config) {
     if (::u.isArray(value) && value.len() == 1)
       config[param] = value[0]
   }
@@ -30,8 +29,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
   ::gui_start_modal_wnd(::gui_handlers.ModificationsTierResearched, wndParams)
 }
 
-::gui_handlers.ModificationsTierResearched <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ModificationsTierResearched <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 
@@ -43,8 +41,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
   postConfig = null
   postCustomConfig = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.expReward)
       this.expReward = ::Cost()
 
@@ -61,8 +58,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
       nameObj.setValue(loc(locTextId + "/header"))
 
     let imgObj = this.scene.findObject("award_image")
-    if (checkObj(imgObj))
-    {
+    if (checkObj(imgObj)) {
       local imageId = ::getUnitCountry(this.unit) + "_" + ::getUnitTypeTextByUnit(this.unit).tolower()
       if (isLastResearchedModule)
         imageId += "_unit"
@@ -71,24 +67,21 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 
       local imagePath = ::get_country_flag_img(imageId)
       if (imagePath == "")
-        imagePath = "#ui/images/elite_" + (this.unit?.isTank()? "tank" : "vehicle") + "_revard.jpg?P1"
+        imagePath = "#ui/images/elite_" + (this.unit?.isTank() ? "tank" : "vehicle") + "_revard?P1"
 
       imgObj["background-image"] = imagePath
     }
 
     local tierText = ""
-    if (::u.isArray(this.tier))
-    {
+    if (::u.isArray(this.tier)) {
       if (this.tier.len() == 1)
         tierText = this.tier.top()
       else if (this.tier.len() == 2)
         tierText = ::get_roman_numeral(this.tier[0]) + loc("ui/comma") + ::get_roman_numeral(this.tier[1])
-      else
-      {
+      else {
         local maxTier = 0
         local minTier = this.tier.len()
-        foreach(t in this.tier)
-        {
+        foreach (t in this.tier) {
           maxTier = max(maxTier, t)
           minTier = min(minTier, t)
         }
@@ -99,8 +92,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
       tierText = ::get_roman_numeral(this.tier)
 
     local msgText = loc(locTextId, { tier = tierText, unitName = ::getUnitName(this.unit) })
-    if (!this.expReward.isZero())
-    {
+    if (!this.expReward.isZero()) {
       msgText += "\n" + loc("reward") + loc("ui/colon") + loc("userlog/open_all_in_tier/resName",
                         { resUnitExpInvest = this.expReward.tostring(),
                           resUnitName = ::getUnitName(this.unitInResearch)
@@ -108,15 +100,12 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
     }
 
     let descObj = this.scene.findObject("award_desc")
-    if (checkObj(descObj))
-    {
+    if (checkObj(descObj)) {
       descObj["text-align"] = "center"
       descObj.setValue(msgText)
     }
 
-    this.showSceneBtn("btn_upload_facebook_wallPost", hasFeature("FacebookWallPost") && isLastResearchedModule)
-    if (isLastResearchedModule)
-    {
+    if (isLastResearchedModule) {
       this.postConfig = {
         locId = "researched_unit"
         subType = ps4_activity_feed.RESEARCHED_UNIT
@@ -133,19 +122,11 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
     }
   }
 
-  function onFacebookLoginAndPostMessage(obj)
-  {
-    activityFeedPostFunc(this.postConfig, this.postCustomConfig, bit_activity.FACEBOOK)
-    obj.enable(false)
-  }
-
-  function onOk()
-  {
+  function onOk() {
     this.goBack()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     ::broadcastEvent("UpdateResearchingUnit", { unitName = this.unitInResearch })
     ::checkNonApprovedResearches(true)
     activityFeedPostFunc(this.postConfig, this.postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)

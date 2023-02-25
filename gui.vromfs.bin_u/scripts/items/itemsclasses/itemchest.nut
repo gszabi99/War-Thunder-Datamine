@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -26,10 +27,8 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
   categoryWeight = null
   categoryByItems = null
 
-  function getGenerator()
-  {
-    if (!this._isInitialized)
-    {
+  function getGenerator() {
+    if (!this._isInitialized) {
       this._isInitialized = true
       let genIds = inventoryClient.getChestGeneratorItemdefIds(this.id)
       let genId = genIds.findvalue(@(genId) (ItemGenerators.get(genId)?.bundle ?? "") != "")
@@ -38,23 +37,20 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     return this.generator
   }
 
-  function getOpenedBigIcon()
-  {
+  function getOpenedBigIcon() {
     return ""
   }
 
   canConsume = @() this.isInventoryItem
 
-  function consume(cb, params)
-  {
+  function consume(cb, params) {
     if (base.consume(cb, params))
       return true
 
     if (!this.uids || !this.uids.len() || !this.canConsume() || !this.hasUsableRecipe())
       return false
 
-    if (this.shouldAutoConsume)
-    {
+    if (this.shouldAutoConsume) {
       params.cb <- cb
       params.shouldSkipMsgBox <- true
       ExchangeRecipes.tryUse(this.getRelatedRecipes(), this, params)
@@ -64,8 +60,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     return false
   }
 
-  function getMainActionData(isShort = false, params = {})
-  {
+  function getMainActionData(isShort = false, params = {}) {
     if (this.canOpenForGold() && this.isInventoryItem && this.amount > 0) {
       let openCost = this.getOpenForGoldRecipe()?.getOpenCost(this)
       if (openCost != null)
@@ -95,16 +90,14 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     needRecipeMarkup = recipe.isMultipleItems
   })
 
-  function getContent()
-  {
+  function getContent() {
     return this.getGenerator()?.getContent() ?? []
   }
 
   getDescRecipesText    = @(params) ExchangeRecipes.getRequirementsText(this.getRelatedRecipes(), this, params)
   getDescRecipesMarkup  = @(params) ExchangeRecipes.getRequirementsMarkup(this.getRelatedRecipes(), this, params)
 
-  function getDescription()
-  {
+  function getDescription() {
     let params = { receivedPrizes = false }
 
     let content = this.getContent()
@@ -121,8 +114,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     ], "\n")
   }
 
-  function getLongDescription()
-  {
+  function getLongDescription() {
     return this.itemDef?.tags?.hideDesc ? "" : (this.itemDef?.description ?? "")
   }
 
@@ -131,8 +123,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
       : this._getDescHeader
   }
 
-  function getLongDescriptionMarkup(params = null)
-  {
+  function getLongDescriptionMarkup(params = null) {
     params = params || {}
     params.receivedPrizes <- false
     params.needShowDropChance <- this.needShowDropChance()
@@ -150,11 +141,11 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
       let categoryByItemsArray = this.getCategoryByItems()
       if (params.needShowDropChance && categoryWeightArray.len() > 0) {
         params.categoryWeight <- categoryWeightArray
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(),clone params))
+        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
       }
       else if (categoryByItemsArray.len() > 0) {
         params.categoryByItems <- categoryByItemsArray
-        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(),clone params))
+        prizeMarkupArray.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(), clone params))
       }
       else
         prizeMarkupArray.append(::PrizesView.getPrizesStacksView(content, this.getDescHeaderFunction(), params))
@@ -163,44 +154,37 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
     return "".join(prizeMarkupArray)
   }
 
-  function _getDescHeader(fixedAmount = 1)
-  {
+  function _getDescHeader(fixedAmount = 1) {
     let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
     let headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
     return colorize("grayOptionColor", headerText)
   }
 
-  function getHiddenItemsDesc()
-  {
+  function getHiddenItemsDesc() {
     if (!this.getGenerator()?.hasHiddenItems || !this.getContent().len())
       return null
     return colorize("grayOptionColor", loc("trophy/chest_contents/other"))
   }
 
-  function getHiddenTopPrizeParams()
-  {
+  function getHiddenTopPrizeParams() {
     return this.getGenerator()?.hiddenTopPrizeParams
   }
 
-  function isHiddenTopPrize(prize)
-  {
+  function isHiddenTopPrize(prize) {
     return this.getGenerator()?.isHiddenTopPrize(prize) ?? false
   }
 
-  function canPreview()
-  {
+  function canPreview() {
     let content = this.getContent()
     return content.len() == 1 && content[0].item != null
       && ::ItemsManager.findItemById(content[0].item)?.canPreview()
   }
 
-  function doPreview()
-  {
+  function doPreview() {
     ::ItemsManager.findItemById(this.getContent()?[0]?.item)?.doPreview()
   }
 
-  function doMainAction(cb, handler, params = null)
-  {
+  function doMainAction(cb, handler, params = null) {
     if (this.buy(cb, handler, params))
       return true
     if (!this.uids || !this.uids.len())
@@ -291,7 +275,7 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
       return paramsArray
 
     let res = [$"{prizeType}_{weight}"]
-    for (local i = 2;i < paramsArray.len();i++)
+    for (local i = 2; i < paramsArray.len(); i++)
       res.append(paramsArray[i])
 
     return res

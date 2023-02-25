@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -9,8 +10,7 @@ let editContactsList = require("%scripts/contacts/editContacts.nut")
 
 local isDisableContactsBroadcastEvents = false
 
-let function verifyContact(params)
-{
+let function verifyContact(params) {
   let name = params?.playerName
   local newContact = ::getContact(params?.uid, name, params?.clanTag)
   if (!newContact && name)
@@ -19,14 +19,13 @@ let function verifyContact(params)
   return newContact
 }
 
-let function addContactGroup(group)
-{
-  if(::contacts_groups.contains(group))
+let function addContactGroup(group) {
+  if (::contacts_groups.contains(group))
     return
 
   ::contacts_groups.insert(2, group)
   ::contacts[group] <- []
-  if(!isDisableContactsBroadcastEvents)
+  if (!isDisableContactsBroadcastEvents)
     ::broadcastEvent(contactEvent.CONTACTS_GROUP_ADDED)
 }
 
@@ -45,16 +44,15 @@ let function addContact(v_contact, groupName, params = {}) {
   return contact
 }
 
-let function clear_contacts()
-{
+let function clear_contacts() {
   ::contacts_groups = []
-  foreach(_num, group in ::contacts_groups_default)
+  foreach (_num, group in ::contacts_groups_default)
     ::contacts_groups.append(group)
   ::contacts = {}
-  foreach(list in ::contacts_groups)
+  foreach (list in ::contacts_groups)
     ::contacts[list] <- []
 
-  if(!isDisableContactsBroadcastEvents)
+  if (!isDisableContactsBroadcastEvents)
     ::broadcastEvent("ContactsCleared")
 }
 
@@ -64,8 +62,7 @@ let function updateContactsGroups(params) {
   clear_contacts()
 
   let friendsToRemove = []
-  foreach(listName, list in params.groups)
-  {
+  foreach (listName, list in params.groups) {
     if (list == null
         || (
             ::contacts_groups_default.findvalue(@(gr) gr == listName) == null
@@ -77,8 +74,7 @@ let function updateContactsGroups(params) {
        )
       continue
 
-    foreach (p in list)
-    {
+    foreach (p in list) {
       let playerUid = p?.userId
       let playerName = p?.nick
       let playerClanTag = p?.clanTag
@@ -89,16 +85,14 @@ let function updateContactsGroups(params) {
         clanTag = playerClanTag
       })
 
-      if (!player)
-      {
+      if (!player) {
         let myUserId = ::my_user_id_int64 // warning disable: -declared-never-used
         let errText = playerUid ? "player not found" : "not valid data"
         ::script_net_assert_once("not found contact for group", errText)
         continue
       }
 
-      if (listName == EPL_FRIENDLIST && !isPs4XboxOneInteractionAvailable(playerName))
-      {
+      if (listName == EPL_FRIENDLIST && !isPs4XboxOneInteractionAvailable(playerName)) {
         friendsToRemove.append(player)
         continue
       }
@@ -106,7 +100,7 @@ let function updateContactsGroups(params) {
   }
 
   if (friendsToRemove.len())
-    editContactsList({[false] = friendsToRemove}, EPL_FRIENDLIST)
+    editContactsList({ [false] = friendsToRemove }, EPL_FRIENDLIST)
 
   isDisableContactsBroadcastEvents = false
 }

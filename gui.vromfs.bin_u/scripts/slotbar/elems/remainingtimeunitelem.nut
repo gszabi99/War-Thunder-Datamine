@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,7 +12,7 @@ let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 
 elemModelType.addTypes({
   REMAINING_TIME_UNIT = {
-    function init(){
+    function init() {
       ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     }
 
@@ -29,7 +30,7 @@ elemViewType.addTypes({
   SHOP_REMAINING_TIME_UNIT = {
     model = elemModelType.REMAINING_TIME_UNIT
 
-    function updateView(obj, _params){
+    function updateView(obj, _params) {
       let isVisible = this.model.isVisible()
       obj.show(isVisible)
       if (!isVisible)
@@ -47,9 +48,9 @@ elemViewType.addTypes({
   COUNTRY_REMAINING_TIME_UNIT = {
     model = elemModelType.REMAINING_TIME_UNIT
 
-    function updateView(obj, _params){
+    function updateView(obj, _params) {
       local isVisible = topMenuShopActive.value && this.model.isVisible()
-      if (!isVisible){
+      if (!isVisible) {
         obj.show(isVisible)
         return
       }
@@ -73,15 +74,15 @@ elemViewType.addTypes({
   SHOP_PAGES_REMAINING_TIME_UNIT = {
     model = elemModelType.REMAINING_TIME_UNIT
 
-    function updateView(obj, _params){
+    function updateView(obj, _params) {
       local isVisible = topMenuShopActive.value && this.model.isVisible()
-      if (!isVisible){
+      if (!isVisible) {
         obj.show(isVisible)
         return
       }
 
-      foreach(promUnit in promoteUnits.value){
-        if(promUnit.unit.shopCountry == obj.countryId && promUnit.unit.unitType.armyId == obj.armyId){
+      foreach (promUnit in promoteUnits.value) {
+        if (promUnit.unit.shopCountry == obj.countryId && promUnit.unit.unitType.armyId == obj.armyId) {
           obj.show(true)
           return
         }
@@ -93,7 +94,7 @@ elemViewType.addTypes({
   SHOP_SLOT_REMAINING_TIME_UNIT = {
     model = elemModelType.REMAINING_TIME_UNIT
 
-    function updateView(obj, params){
+    function updateView(obj, params) {
       obj.show(promoteUnits.value?[params?.unitName].isActive)
 
     }

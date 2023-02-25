@@ -1,18 +1,18 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {Speed, Altitude, ClimbSpeed, Roll, Accel} = require("%rGui/planeState/planeFlyState.nut");
-let {IlsColor,  BombingMode, TargetPosValid, TargetPos, CannonMode,
+let { Speed, Altitude, ClimbSpeed, Roll, Accel } = require("%rGui/planeState/planeFlyState.nut");
+let { IlsColor,  BombingMode, TargetPosValid, TargetPos, CannonMode,
         DistToSafety,  DistToTarget, BombCCIPMode, RocketMode,
         RadarTargetPosValid, RadarTargetPos, IlsLineScale,
-        AimLockPos, AimLockValid, TimeBeforeBombRelease} = require("%rGui/planeState/planeToolsState.nut")
-let {mpsToKmh, baseLineWidth} = require("ilsConstants.nut")
-let {compassWrap, generateCompassMarkASP} = require("ilsCompasses.nut")
-let {ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark} = require("commonElements.nut")
-let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
-let {DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceScale,
-  HasAzimuthScale, IsCScopeVisible} = require("%rGui/radarState.nut")
-let {mode} = require("%rGui/radarComponent.nut")
-let {cvt} = require("dagor.math")
+        AimLockPos, AimLockValid, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
+let { mpsToKmh, baseLineWidth } = require("ilsConstants.nut")
+let { compassWrap, generateCompassMarkASP } = require("ilsCompasses.nut")
+let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark } = require("commonElements.nut")
+let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
+let { DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceScale,
+  HasAzimuthScale, IsCScopeVisible } = require("%rGui/radarState.nut")
+let { mode } = require("%rGui/radarComponent.nut")
+let { cvt } = require("dagor.math")
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let ASPSpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
@@ -176,7 +176,7 @@ let ASPRadarMode = @() {
   watch = [RadarModeNameId, IsRadarVisible, Irst]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(-7) , Irst.value ? ph(50) : ph(15)]
+  pos = [pw(-7),  Irst.value ? ph(50) : ph(15)]
   color = IlsColor.value
   fontSize = 35
   font = Fonts.hud
@@ -371,7 +371,7 @@ let function ASP23CCIP(width, height, isIpp) {
 }
 
 let IPPAccelWatch = Computed(@() clamp((50.0 - Accel.value * mpsToKmh), 0, 100).tointeger())
-let IPPAcceleration = @(){
+let IPPAcceleration = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
   size = [pw(10), ph(5)]
@@ -384,7 +384,7 @@ let IPPAcceleration = @(){
     [VECTOR_LINE, 75, 25, 75, 25],
     [VECTOR_LINE, 50, 0, 50, 50]
   ]
-  children = @(){
+  children = @() {
     watch = IPPAccelWatch
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
@@ -399,7 +399,7 @@ let IPPAcceleration = @(){
 }
 
 let IPPClimbWatch = Computed(@() clamp((3.0 - ClimbSpeed.value) / 6.0 * 100.0, 0, 100).tointeger())
-let IPPClimb = @(){
+let IPPClimb = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
   size = [pw(5), ph(30)]
@@ -513,7 +513,7 @@ let function ASP23ModeSelector(width, height, isIPP) {
 
 
 
-let createTargetDistJ7E = @(index) function(){
+let createTargetDistJ7E = @(index) function() {
   let target = targets[index]
   let distanceRel = HasDistanceScale.value ? target.distanceRel : 0.9
 

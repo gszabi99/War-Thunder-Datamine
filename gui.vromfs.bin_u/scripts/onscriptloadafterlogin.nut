@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -149,12 +150,12 @@ foreach (fn in [
   "%scripts/controls/input/doubleAxis.nut"
   "%scripts/controls/input/image.nut"
   "%scripts/controls/input/keyboardAxis.nut"
+  "%scripts/help/helpWnd.nut"
   "%scripts/controls/controlsWizard.nut"
   "%scripts/controls/controlsType.nut"
   "%scripts/controls/AxisControls.nut"
   "%scripts/controls/aircraftHelpers.nut"
   "%scripts/controls/gamepadCursorControlsSplash.nut"
-  "%scripts/help/helpWnd.nut"
   "%scripts/help/helpInfoHandlerModal.nut"
   "%scripts/joystickInterface.nut"
 
@@ -290,7 +291,6 @@ foreach (fn in [
   "%scripts/penitentiary/tribunal.nut"
 
   "%scripts/social/friends.nut"
-  "%scripts/social/facebook.nut"
 
   "%scripts/gamercardDrawer.nut"
 
@@ -391,8 +391,7 @@ foreach (fn in [
   "%scripts/matching/serviceNotifications/mrooms.nut"
 
   "%scripts/gamepadSceneSettings.nut"
-])
-{
+]) {
   ::g_script_reloader.loadOnce(fn)
 }
 

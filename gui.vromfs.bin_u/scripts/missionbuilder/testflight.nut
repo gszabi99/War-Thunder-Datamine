@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,28 +12,25 @@ let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/u
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getCdBaseDifficulty } = require_native("guiOptions")
-let { getActionBarUnitName } = require_native("hudActionBar")
+let { getCdBaseDifficulty, set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
+let { getActionBarUnitName } = require("hudActionBar")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
+let { select_training_mission } = require("guiMission")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
 
-::gui_start_testflight <- function gui_start_testflight(params = {})
-{
+::gui_start_testflight <- function gui_start_testflight(params = {}) {
   ::gui_start_modal_wnd(::gui_handlers.TestFlight, params)
   ::last_called_gui_testflight = ::handlersManager.getLastBaseHandlerStartFunc()
 }
 
-::mergeToBlk <- function mergeToBlk(sourceTable, blk)  //!!FIX ME: this used only for missionBuilderVehicleConfigForBlk and better to remove this also
-{
+::mergeToBlk <- function mergeToBlk(sourceTable, blk) {  //!!FIX ME: this used only for missionBuilderVehicleConfigForBlk and better to remove this also
   foreach (idx, val in sourceTable)
     blk[idx] = val
 }
 
-::gui_handlers.TestFlight <- class extends ::gui_handlers.GenericOptionsModal
-{
+::gui_handlers.TestFlight <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
@@ -50,8 +48,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 
   slobarActions = ["autorefill", "aircraft", "crew", "weapons", "repair"]
 
-  function initScreen()
-  {
+  function initScreen() {
     this.unit = this.unit ?? showedUnit.value
     if (!this.unit)
       return this.goBack()
@@ -64,8 +61,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.showSceneBtn("btn_select", true)
 
     this.needSlotbar = this.needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(this.unit)
-    if (this.needSlotbar)
-    {
+    if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
       frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
       frameObj.pos = "50%pw-50%w, 1@battleBtnBottomOffset-h"
@@ -81,17 +77,14 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 
     this.guiScene.setUpdatesEnabled(true, true)
 
-    if (this.needSlotbar)
-    {
+    if (this.needSlotbar) {
       switchProfileCountry(this.unit.shopCountry) //select country for slotbar
       showedUnit(this.unit) //select unit for slotbar
       this.createSlotbar()
     }
-    else
-    {
+    else {
       let unitNestObj = this.scene.findObject("unit_nest")
-      if (checkObj(unitNestObj))
-      {
+      if (checkObj(unitNestObj)) {
         let airData = ::build_aircraft_item(this.unit.name, this.unit)
         this.guiScene.appendWithBlk(unitNestObj, airData, this)
         ::fill_unit_item_timers(unitNestObj.findObject(this.unit.name), this.unit)
@@ -122,8 +115,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.checkCountermeasureSeriesPeriodsRow()
   }
 
-  function checkBulletsRows()
-  {
+  function checkBulletsRows() {
     if (type(::aircraft_for_weapons) != "string")
       return
     let air = ::getAircraftByName(::aircraft_for_weapons)
@@ -131,14 +123,12 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
       return
 
     let bulletGroups = this.weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
-    foreach(_idx, bulGroup in bulletGroups)
+    foreach (_idx, bulGroup in bulletGroups)
       this.showOptionRow(bulGroup.getOption(), bulGroup.active)
   }
 
-  function updateWeaponsSelector()
-  {
-    if (this.weaponsSelectorWeak)
-    {
+  function updateWeaponsSelector() {
+    if (this.weaponsSelectorWeak) {
       this.weaponsSelectorWeak.setUnit(this.unit)
       return
     }
@@ -159,23 +149,20 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.registerSubHandler(handler)
   }
 
-  function getCantFlyText(checkUnit)
-  {
+  function getCantFlyText(checkUnit) {
     return !checkUnit.unitType.isAvailable() ?
       loc("mainmenu/unitTypeLocked") : checkUnit.unitType.getTestFlightUnavailableText()
   }
 
-  function updateOptionsArray()
-  {
+  function updateOptionsArray() {
     if (this.optionsConfig == null) {
       let diffOpt = ::get_option(::USEROPT_DIFFICULTY)
-      this.optionsConfig = { diffCode = diffOpt.diffCode[diffOpt.value]}
+      this.optionsConfig = { diffCode = diffOpt.diffCode[diffOpt.value] }
     }
     this.options = [
       [::USEROPT_DIFFICULTY, "spinner"],
     ]
-    if (this.unit?.isAir() || this.unit?.isHelicopter?())
-    {
+    if (this.unit?.isAir() || this.unit?.isHelicopter?()) {
       this.options.append([::USEROPT_LIMITED_FUEL, "spinner"])
       this.options.append([::USEROPT_LIMITED_AMMO, "spinner"])
     }
@@ -209,8 +196,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
         [::USEROPT_COUNTERMEASURES_SERIES, "spinner"]
       )
 
-    if (this.unit?.isShipOrBoat())
-    {
+    if (this.unit?.isShipOrBoat()) {
       this.options.append(
         [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
         [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
@@ -226,8 +212,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     return this.options
   }
 
-  function updateAircraft()
-  {
+  function updateAircraft() {
     this.updateButtons()
     this.updateWeaponsSelector()
 
@@ -236,7 +221,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     let optListObj = this.scene.findObject("optionslist")
     let textObj = this.scene.findObject("no_options_textarea")
     optListObj.show(showOptions)
-    textObj.setValue(showOptions? "" : this.getCantFlyText(this.unit))
+    textObj.setValue(showOptions ? "" : this.getCantFlyText(this.unit))
 
     let hObj = this.scene.findObject("header_name")
     if (!checkObj(hObj))
@@ -250,7 +235,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 
     this.updateOptionsArray()
 
-    ::test_flight_aircraft <- this.unit
+    ::update_test_flight_unit_info({unit = this.unit})
     ::cur_aircraft_name = this.unit.name
     ::aircraft_for_weapons = this.unit.name
     set_gui_option(::USEROPT_AIRCRAFT, this.unit.name)
@@ -262,34 +247,29 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.updateLinkedOptions()
   }
 
-  function isBuilderAvailable()
-  {
+  function isBuilderAvailable() {
     return ::isUnitAvailableForGM(this.unit, GM_BUILDER)
   }
-  function isTestFlightAvailable()
-  {
+  function isTestFlightAvailable() {
     return ::isTestFlightAvailable(this.unit, this.shouldSkipUnitCheck)
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     if (!checkObj(this.scene))
       return
 
     this.scene.findObject("btn_builder").inactiveColor = this.isBuilderAvailable() ? "no" : "yes"
-    this.scene.findObject("btn_select").inactiveColor = this.isTestFlightAvailable()? "no" : "yes"
+    this.scene.findObject("btn_select").inactiveColor = this.isTestFlightAvailable() ? "no" : "yes"
   }
 
-  function onMissionBuilder()
-  {
+  function onMissionBuilder() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_QMB
         maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
       }))
       return
 
-    if (!this.isBuilderAvailable())
-    {
+    if (!this.isBuilderAvailable()) {
       this.saveAircraftOptions()
 
       if (this.needSlotbar) // There is a slotbar in this scene
@@ -301,8 +281,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
       return
     }
 
-    this.applyFunc = function()
-    {
+    this.applyFunc = function() {
       this.saveAircraftOptions()
 
       ::gui_start_builder()
@@ -311,8 +290,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.applyOptions()
   }
 
-  function onApply(_obj)
-  {
+  function onApply(_obj) {
     let bulletsManager = this.weaponsSelectorWeak?.bulletsManager
     if (!bulletsManager || !bulletsManager.checkChosenBulletsCount())
       return
@@ -323,7 +301,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
       return this.onMissionBuilder()
 
     if (!this.isTestFlightAvailable())
-      return this.msgBox("not_available", this.getCantFlyText(this.unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
+      return this.msgBox("not_available", this.getCantFlyText(this.unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
 
     if (isInArray(this.getSceneOptValue(::USEROPT_DIFFICULTY), ["hardcore", "custom"]))
       if (!::check_diff_pkg(::g_difficulty.SIMULATOR.diffCode))
@@ -337,10 +315,8 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 
     ::queues.checkAndStart(
       Callback(function() {
-        this.applyFunc = function()
-        {
-          if (get_gui_option(::USEROPT_DIFFICULTY) == "custom")
-          {
+        this.applyFunc = function() {
+          if (get_gui_option(::USEROPT_DIFFICULTY) == "custom") {
             ::gui_start_cd_options(this.startTestFlight, this) // See "MissionDescriptor::loadFromBlk"
             this.doWhenActiveOnce("updateSceneDifficulty")
           }
@@ -355,13 +331,11 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     )
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     this.updateButtons()
   }
 
-  function startTestFlight()
-  {
+  function startTestFlight() {
     let misName = this.getTestFlightMisName(this.unit.testFlight)
     let misBlk = ::get_mission_meta_info(misName)
     if (!misBlk)
@@ -385,18 +359,16 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 
     actionBarInfo.cacheActionDescs(getActionBarUnitName())
 
-    ::select_training_mission(misBlk)
+    select_training_mission(misBlk)
     this.guiScene.performDelayed(this, ::gui_start_flight)
   }
 
-  function getTestFlightMisName(misName)
-  {
+  function getTestFlightMisName(misName) {
     let lang = ::g_language.getLanguageName()
     return ::get_game_settings_blk()?.testFlight_override?[lang]?[misName] ?? misName
   }
 
-  function saveAircraftOptions()
-  {
+  function saveAircraftOptions() {
     if (!this.unit)
       return
 
@@ -421,14 +393,14 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
         difficulty    = difValue,
         isLimitedFuel = limitedFuel.value,
         isLimitedAmmo = limitedAmmo.value,
-        fuelAmount    = (fuelValue.tofloat()/1000000.0),
+        fuelAmount    = (fuelValue.tofloat() / 1000000.0),
     }
   }
 
   function updateBulletCountOptions(updUnit) {
     local bulIdx = 0
     let bulletGroups = this.weaponsSelectorWeak ? this.weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
-    foreach(idx, bulGroup in bulletGroups) {
+    foreach (idx, bulGroup in bulletGroups) {
       bulIdx = idx
       local name = ""
       local count = 0
@@ -442,7 +414,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     }
     ++bulIdx
 
-    while(bulIdx < BULLETS_SETS_QUANTITY) {
+    while (bulIdx < BULLETS_SETS_QUANTITY) {
       set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
       ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
       set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
@@ -450,8 +422,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     }
   }
 
-  function onDifficultyChange(obj)
-  {
+  function onDifficultyChange(obj) {
     this.updateVerticalTargetingOption()
     this.updateSceneDifficulty()
 
@@ -462,64 +433,54 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.updateOption(::USEROPT_BOMB_ACTIVATION_TIME)
   }
 
-  function updateSceneDifficulty()
-  {
+  function updateSceneDifficulty() {
     if (this.getSlotbar())
       this.getSlotbar().updateDifficulty()
 
     let unitNestObj = this.unit ? this.scene.findObject("unit_nest") : null
-    if (checkObj(unitNestObj))
-    {
+    if (checkObj(unitNestObj)) {
       let obj = unitNestObj.findObject("rank_text")
       if (checkObj(obj))
         obj.setValue(::get_unit_rank_text(this.unit, null, true, this.getCurrentEdiff()))
     }
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     let diffValue = this.getSceneOptValue(::USEROPT_DIFFICULTY)
     let difficulty = (diffValue == "custom") ?
       ::g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       ::g_difficulty.getDifficultyByName(diffValue)
-    if (difficulty.diffCode != -1)
-    {
+    if (difficulty.diffCode != -1) {
       let battleType = ::get_battle_type_by_unit(this.unit)
       return difficulty.getEdiff(battleType)
     }
     return ::get_current_ediff()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (this.afterCloseFunc)
       this.afterCloseFunc()
   }
 
-  function onEventCrewChanged(_p)
-  {
+  function onEventCrewChanged(_p) {
     this.doWhenActiveOnce("setUnitFromSlotbar")
   }
 
-  function onEventCountryChanged(_p)
-  {
+  function onEventCountryChanged(_p) {
     this.doWhenActiveOnce("setUnitFromSlotbar")
   }
 
-  function setUnitFromSlotbar()
-  {
+  function setUnitFromSlotbar() {
     if (!this.needSlotbar)
       return
 
     let crewUnit = ::get_cur_slotbar_unit()
-    if (crewUnit == this.unit || crewUnit == null)
-    {
+    if (crewUnit == this.unit || crewUnit == null) {
       this.updateButtons()
       return
     }
 
-    this.applyFunc = Callback(function()
-      {
+    this.applyFunc = Callback(function() {
         this.unit = crewUnit
         this.updateAircraft()
         this.applyFunc = null
@@ -545,22 +506,21 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     ::enable_current_modifications(this.unit.name)
   }
 
-  function onMyWeaponOptionUpdate(obj)
-  {
+  function onMyWeaponOptionUpdate(obj) {
     let option = this.get_option_by_id(obj?.id)
-    if (!option) return
+    if (!option)
+      return
 
     ::set_option(option.type, obj.getValue(), option)
     if ("hints" in option)
       obj.tooltip = option.hints[ obj.getValue() ]
     else if ("hint" in option)
-      obj.tooltip = ::g_string.stripTags( loc(option.hint, "") )
+      obj.tooltip = ::g_string.stripTags(loc(option.hint, ""))
     this.checkBulletsRows()
     this.updateWeaponOptions()
   }
 
-  function onTripleAerobaticsSmokeSelected(obj)
-  {
+  function onTripleAerobaticsSmokeSelected(obj) {
     let option = this.get_option_by_id(obj?.id)
     if (!option)
       return
@@ -569,8 +529,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.updateTripleAerobaticsSmokeOptions()
   }
 
-  function checkRocketDisctanceFuseRow()
-  {
+  function checkRocketDisctanceFuseRow() {
     let option = this.findOptionInContainers(::USEROPT_ROCKET_FUSE_DIST)
     if (!option)
       return
@@ -578,8 +537,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.showOptionRow(option, !!this.unit && (getCurrentPreset(this.unit)?.hasRocketDistanceFuse ?? false))
   }
 
-  function checkBombActivationTimeRow()
-  {
+  function checkBombActivationTimeRow() {
     let option = this.findOptionInContainers(::USEROPT_BOMB_ACTIVATION_TIME)
     if (!option)
       return
@@ -587,8 +545,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.showOptionRow(option, !!this.unit && (getCurrentPreset(this.unit)?.bomb ?? false))
   }
 
-  function checkBombSeriesRow()
-  {
+  function checkBombSeriesRow() {
     let option = this.findOptionInContainers(::USEROPT_BOMB_SERIES)
     if (!option)
       return
@@ -598,29 +555,25 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     this.updateOption(::USEROPT_BOMB_SERIES)
   }
 
-  function checkCountermeasurePeriodsRow()
-  {
+  function checkCountermeasurePeriodsRow() {
     let option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
     if (option)
       this.showOptionRow(option, hasCountermeasures(this.unit))
   }
 
-  function checkCountermeasureSeriesRow()
-  {
+  function checkCountermeasureSeriesRow() {
     let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
     if (option)
       this.showOptionRow(option, hasCountermeasures(this.unit))
   }
 
-  function checkCountermeasureSeriesPeriodsRow()
-  {
+  function checkCountermeasureSeriesPeriodsRow() {
     let option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
     if (option)
       this.showOptionRow(option, hasCountermeasures(this.unit))
   }
 
-  function checkDepthChargeActivationTimeRow()
-  {
+  function checkDepthChargeActivationTimeRow() {
     let option = this.findOptionInContainers(::USEROPT_DEPTHCHARGE_ACTIVATION_TIME)
     if (!option)
       return
@@ -629,8 +582,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
       && (getCurrentPreset(this.unit)?.hasDepthCharge ?? false))
   }
 
-  function updateTripleAerobaticsSmokeOptions()
-  {
+  function updateTripleAerobaticsSmokeOptions() {
     let aerobaticsSmokeOptions = this.find_options_in_containers([
       ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
       ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
@@ -641,7 +593,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
       return
 
     let show = isTripleColorSmokeAvailable()
-    foreach(option in aerobaticsSmokeOptions)
+    foreach (option in aerobaticsSmokeOptions)
       this.showOptionRow(option, show)
   }
 
@@ -655,8 +607,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
       && (getCurrentPreset(this.unit)?.torpedo ?? false))
   }
 
-  function updateVerticalTargetingOption()
-  {
+  function updateVerticalTargetingOption() {
     let optList = this.find_options_in_containers([::USEROPT_GUN_VERTICAL_TARGETING])
     if (!optList.len())
       return
@@ -664,7 +615,7 @@ let { set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
     if (diffName == null) //no such option in current options list
       return
 
-    foreach(option in optList)
+    foreach (option in optList)
       this.showOptionRow(option, diffName != ::g_difficulty.ARCADE.name)
   }
 

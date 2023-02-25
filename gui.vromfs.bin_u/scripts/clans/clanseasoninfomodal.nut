@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,16 +10,14 @@ let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::show_clan_season_info <- function show_clan_season_info(difficulty)
-{
+::show_clan_season_info <- function show_clan_season_info(difficulty) {
   ::gui_start_modal_wnd(
     ::gui_handlers.clanSeasonInfoModal,
-    {difficulty = difficulty}
+    { difficulty = difficulty }
   )
 }
 
-::gui_handlers.clanSeasonInfoModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.clanSeasonInfoModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
@@ -27,8 +26,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   rewardsListObj = null
   selectedIndex  = 0
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!::g_clan_seasons.isEnabled())
       return this.goBack()
     this.rewardsListObj = this.scene.findObject("rewards_list")
@@ -41,27 +39,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.selectListItem()
   }
 
-  function fillRewardsList()
-  {
+  function fillRewardsList() {
     let view = this.getRewardsView(this.difficulty)
     let markup = ::handyman.renderCached("%gui/clans/clanSeasonInfoListItem.tpl", view)
     this.guiScene.appendWithBlk(this.rewardsListObj, markup, this)
   }
 
-  function getRewardsView(diff)
-  {
+  function getRewardsView(diff) {
     let view = { rewardsList = [] }
     let rewards = ::g_clan_seasons.getSeasonRewardsList(diff)
     if (::u.isEmpty(rewards))
       return view
 
     let seasonName = ::g_clan_seasons.getSeasonName()
-    foreach(reward in rewards)
-    {
+    foreach (reward in rewards) {
       local title = ""
       local medal = ""
-      switch(reward.rType)
-      {
+      switch (reward.rType) {
         case CLAN_SEASON_MEDAL_TYPE.PLACE:
           title = loc("clan/season_award/place/place" + reward.place)
           medal = "place" + reward.place
@@ -87,8 +81,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         condition = loc("userLog/clanDuelRewardClanRating") + " " + reward.rating
 
       local gold = ""
-      if (reward.gold)
-      {
+      if (reward.gold) {
         let value = reward.goldMin ?
           (::Cost(0, reward.goldMin).tostring() + loc("ui/mdash") + ::Cost(0, reward.goldMax).tostring()) :
           ::Cost(0, reward.gold).tostring()
@@ -98,13 +91,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       let prizesList = {}
       let prizes = ::g_clan_seasons.getRegaliaPrizes(reward.regalia)
       let limits = ::g_clan_seasons.getUniquePrizesCounts(reward.regalia)
-      foreach (prize in prizes)
-      {
+      foreach (prize in prizes) {
         let prizeType = prize.type
         let collection = []
 
-        if (prizeType == "clanTag")
-        {
+        if (prizeType == "clanTag") {
           let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
           let tagTxt = ::u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
           let tooltipBase = loc("clan/clan_tag_decoration") + loc("ui/colon")
@@ -117,11 +108,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
               tooltip = tooltipBase + colorize("activeTextColor", decorator.start + tagTxt + decorator.end)
             })
         }
-        else if (prizeType == "decal")
-        {
+        else if (prizeType == "decal") {
           let decorType = ::g_decorator_type.DECALS
-          foreach (decalId in prize.list)
-          {
+          foreach (decalId in prize.list) {
             let decal = ::g_decorator.getDecorator(decalId, decorType)
             collection.append({
               id = decalId
@@ -169,8 +158,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return view
   }
 
-  function onShowBonuses(obj)
-  {
+  function onShowBonuses(obj) {
     let bonusesObj = checkObj(obj) ? obj.getParent().findObject("bonuses_panel") : null
     if (!checkObj(bonusesObj))
       return
@@ -182,8 +170,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     obj["tooltip"] = isShow ? "" : loc("mainmenu/btnExpand")
   }
 
-  function selectListItem()
-  {
+  function selectListItem() {
     if (this.rewardsListObj.childrenCount() <= 0)
       return
 
@@ -194,21 +181,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::move_mouse_on_child(this.rewardsListObj, this.selectedIndex)
   }
 
-  function onItemSelect(obj)
-  {
+  function onItemSelect(obj) {
     let listChildrenCount = this.rewardsListObj.childrenCount()
     let index = obj.getValue()
     this.selectedIndex = (index >= 0 && index < listChildrenCount) ? index : 0
   }
 
-  function showBonusesByActivateItem(obj)
-  {
+  function showBonusesByActivateItem(obj) {
     let btnObj = getSelectedChild(obj)?.findObject("show_bonuses_btn")
     if (btnObj?.isValid())
       this.onShowBonuses(btnObj)
   }
 
-  function onBtnMoreInfo(_obj)
-  {
+  function onBtnMoreInfo(_obj) {
   }
 }

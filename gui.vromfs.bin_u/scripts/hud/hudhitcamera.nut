@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -113,7 +114,7 @@ let function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null)
 
 let function updateFadeAnimation() {
   let needFade = stopFadeTimeS > 0
-  scene["transp-time"] = needFade ? (stopFadeTimeS*1000).tointeger() : 1
+  scene["transp-time"] = needFade ? (stopFadeTimeS * 1000).tointeger() : 1
   scene["transp-base"] = needFade ? 255 : 0
   scene["transp-end"]  = needFade ? 0 : 255
   scene.setFloatProp(animTimerPid, 0.0)
@@ -238,7 +239,7 @@ let function showCrewCount() {
   crewNestObj._blink = "yes"
 
   let data = "".concat("hitCameraLostCrewText { text:t='",
-    colorize("warningTextColor", crewLostCount),"' }")
+    colorize("warningTextColor", crewLostCount), "' }")
   ::get_cur_gui_scene().prependWithBlk(
     crewNestObj.findObject("lost_crew_count"), data, this)
 
@@ -392,8 +393,7 @@ let function onEnemyPartDamage(data) {
   local partDmName = null
   local isPartKilled = data?.partKilled ?? false
 
-  if (!unitInfo.isKilled)
-  {
+  if (!unitInfo.isKilled) {
     partName = data?.partName
     if (!partName || !isInArray(partName, unitInfo.trackedPartNames))
       return
@@ -512,8 +512,7 @@ addListenersWithoutEnv({
   }
 })
 
-::on_hit_camera_event <- function on_hit_camera_event(mode, result = DM_HIT_RESULT_NONE, info = {}) // called from client
-{
+::on_hit_camera_event <- function on_hit_camera_event(mode, result = DM_HIT_RESULT_NONE, info = {}) { // called from client
   onHitCameraEvent(mode, result, info)
 
   if (isKillingHitResult(result))

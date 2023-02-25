@@ -1,8 +1,10 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 let { isUnlockVisibleOnCurPlatform, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
+let DataBlock = require("DataBlock")
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
 const FAVORITE_UNLOCKS_LIMIT = 20
@@ -18,8 +20,8 @@ let function loadFavorites() {
     favoriteInvisibleUnlocks.reset()
   }
   else {
-    favoriteUnlocks = ::DataBlock()
-    favoriteInvisibleUnlocks = ::DataBlock()
+    favoriteUnlocks = DataBlock()
+    favoriteInvisibleUnlocks = DataBlock()
   }
 
   if (!::g_login.isProfileReceived())
@@ -62,7 +64,7 @@ let canAddFavorite = @() getFavoriteUnlocksNum() < FAVORITE_UNLOCKS_LIMIT
 let isUnlockFav = @(id) id in getFavoriteUnlocks()
 
 let function saveFavorites() {
-  let saveBlk = ::DataBlock()
+  let saveBlk = DataBlock()
   saveBlk.setFrom(favoriteInvisibleUnlocks)
 
   eachBlock(getFavoriteUnlocks(), function(_, unlockId) {
@@ -134,7 +136,7 @@ let function unlockToFavorites(obj, updateCb = null) {
 
   ::g_unlock_view.fillUnlockFavCheckbox(obj)
 
-  if(updateCb)
+  if (updateCb)
     updateCb()
 }
 

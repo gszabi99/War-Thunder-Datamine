@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
 const MROOM_INFO_OUTDATE_TIME    = 600000
 
-::MRoomInfo <- class
-{
+::MRoomInfo <- class {
   roomId = -1
   lastUpdateTime = -MROOM_INFO_OUTDATE_TIME
   lastRequestTime = -MROOM_INFO_OUTDATE_TIME
@@ -20,35 +20,29 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
   roomData = null
   isRoomDestroyed = false
 
-  constructor(v_roomId)
-  {
+  constructor(v_roomId) {
     this.roomId = v_roomId
   }
 
-  function isValid()
-  {
+  function isValid() {
     return this.lastRequestTime < 0 || this.isRequestInProgress() || !this.isOutdated()
   }
 
-  function isOutdated()
-  {
+  function isOutdated() {
     return this.lastUpdateTime + MROOM_INFO_OUTDATE_TIME < get_time_msec()
   }
 
-  function isRequestInProgress()
-  {
+  function isRequestInProgress() {
     return this.lastAnswerTime < this.lastRequestTime
         && this.lastRequestTime + MROOM_INFO_REQUEST_TIMEOUT > get_time_msec()
   }
 
-  function canRequest()
-  {
+  function canRequest() {
     return !this.isRoomDestroyed && !this.isRequestInProgress()
         && this.lastAnswerTime + MROOM_INFO_UPDATE_DELAY < get_time_msec()
   }
 
-  function checkRefresh()
-  {
+  function checkRefresh() {
     if (!this.canRequest())
       return
 
@@ -60,12 +54,10 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
     )
   }
 
-  function onRefreshCb(params)
-  {
+  function onRefreshCb(params) {
     this.lastAnswerTime = get_time_msec()
 
-    if (params.error == SERVER_ERROR_ROOM_NOT_FOUND)
-    {
+    if (params.error == SERVER_ERROR_ROOM_NOT_FOUND) {
       this.lastUpdateTime = this.lastAnswerTime
       this.isRoomDestroyed = true
       this.roomData = null
@@ -82,8 +74,7 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
     ::broadcastEvent("MRoomInfoUpdated", { roomId = this.roomId })
   }
 
-  function getFullRoomData()
-  {
+  function getFullRoomData() {
     this.checkRefresh()
     if (this.isOutdated())
       this.roomData = null

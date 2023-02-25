@@ -132,7 +132,7 @@ def fn_or_es_apply(var func; var arguments; var body : ExpressionPtr; var bundle
       var emplaceIdx = i
       for argName, argType in arg._type.argNames, arg._type.argTypes
         let fieldName = "{argName}"
-        let conflictingFuncArgAt = find(funcArgsTbl, fieldName)
+        let conflictingFuncArgAt = unsafe(funcArgsTbl?[fieldName])
         if conflictingFuncArgAt != null
           macro_error(compiling_program(), **conflictingFuncArgAt, "function argument '{fieldName}' shadows component with name '{bundleArgName}.{fieldName}'")
         if key_exists(bundleByFieldName, fieldName)
@@ -320,7 +320,7 @@ class RestoreFieldsAndCallsVisitor : AstVisitor
       var r2v = expr.value as ExprRef2Value
       if r2v.subexpr is ExprVar
         let bundleName = string((r2v.subexpr as ExprVar).name)
-        let availableFields = availableBundles |> find(bundleName)
+        let availableFields = unsafe(availableBundles?[bundleName])
         if availableFields != null
           if *availableFields |> find_index("{expr.name}") != -1
             changed = true
@@ -354,7 +354,7 @@ class RestoreFieldsAndCallsVisitor : AstVisitor
         let bundleNames <- "{(arg as ExprConstString).value}" |> split(",")
         var availableFields : table<string; bool>
         for bundleName in bundleNames
-          let bundleFields = availableBundles |> find(bundleName)
+          let bundleFields = unsafe(availableBundles?[bundleName])
           if bundleFields != null
             for bundleField in *bundleFields
               availableFields[bundleField] = true

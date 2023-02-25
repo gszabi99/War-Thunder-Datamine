@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -13,7 +14,7 @@ from "%scripts/dagui_library.nut" import *
     this.update(blk)
   }
 
-  function update(blk){
+  function update(blk) {
     if (!blk)
       return
 

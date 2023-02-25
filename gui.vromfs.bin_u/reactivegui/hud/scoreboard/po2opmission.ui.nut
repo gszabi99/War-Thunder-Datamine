@@ -5,7 +5,7 @@ let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let timeFillColor = Computed(@() roundTimeLeft.value > 0 ? 0xB200AF0E : 0xB2AF0100)
 
 let blockWidth = hdpx(156)
-let iconWidth = (0.33*blockWidth).tointeger()
+let iconWidth = (0.33 * blockWidth).tointeger()
 let blockHeight = hdpx(36)
 let borderWidth = hdpx(2)
 

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,16 +12,14 @@ let { ceil, floor, sqrt } = require("math")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
-::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy)
-{
+::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy) {
   if (!trophy)
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.TrophyGroupShopWnd, {trophy = trophy})
+  ::gui_start_modal_wnd(::gui_handlers.TrophyGroupShopWnd, { trophy = trophy })
 }
 
-::gui_handlers.TrophyGroupShopWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.TrophyGroupShopWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/items/trophyGroupShop.tpl"
@@ -32,30 +31,25 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
   focusIdx = -1
 
-  function initScreen()
-  {
+  function initScreen() {
     this.updateTrophyInfo()
     this.updateContent()
   }
 
-  function updateContent()
-  {
+  function updateContent() {
     this.fillTrophiesList()
     this.setDescription()
     this.updateHeader()
     this.setupSelection()
   }
 
-  function setDescription()
-  {
+  function setDescription() {
     this.infoHandler?.updateHandlerData(this.trophy)
   }
 
-  function setupSelection()
-  {
+  function setupSelection() {
     for (local i = 0; i < this.trophy.numTotal; i++)
-      if (!this.isTrophyPurchased(i))
-      {
+      if (!this.isTrophyPurchased(i)) {
         let listObj = this.getItemsListObj()
         listObj.setValue(i)
         ::move_mouse_on_child(listObj, i)
@@ -63,14 +57,12 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
       }
   }
 
-  function updateTrophyInfo()
-  {
+  function updateTrophyInfo() {
     this.trophyInfo = ::get_trophy_info(this.trophy.id)
     this.loadBitMask()
   }
 
-  function loadBitMask()
-  {
+  function loadBitMask() {
     this.bitMask = getTblValue("openMask", this.trophyInfo)
     if (this.bitMask)
       return
@@ -78,31 +70,28 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
     this.bitMask = 0
   }
 
-  function updateHeader()
-  {
+  function updateHeader() {
     let headerObj = this.scene.findObject("group_trophy_header")
     if (!checkObj(headerObj))
       return
 
     let restText = getTblValue("openCount", this.trophyInfo, 0) + loc("ui/slash") + this.trophy.numTotal
-    headerObj.setValue(loc("mainmenu/itemReceived") + loc("ui/parentheses/space", {text = restText}))
+    headerObj.setValue(loc("mainmenu/itemReceived") + loc("ui/parentheses/space", { text = restText }))
   }
 
-  function getMaxSizeInItems(reduceSize = false)
-  {
+  function getMaxSizeInItems(reduceSize = false) {
     let freeWidth = this.guiScene.calcString("1@trophiesGroupAvailableWidth", null)
     let freeHeight = this.guiScene.calcString("1@requiredItemsInColumnInPixels", null)
 
-    let singleItemSizeTable = this.countSize({w = 1, h = 1}, reduceSize)
+    let singleItemSizeTable = this.countSize({ w = 1, h = 1 }, reduceSize)
 
     let freeRow = freeWidth / singleItemSizeTable.width
     let freeColumn = freeHeight / singleItemSizeTable.height
 
-    return {row = freeRow, column = freeColumn}
+    return { row = freeRow, column = freeColumn }
   }
 
-  function updateScreenSize()
-  {
+  function updateScreenSize() {
     local maxAvailRatio = this.getMaxSizeInItems()
     let reduceSize = (maxAvailRatio.row * maxAvailRatio.column) < this.trophy.numTotal
     if (reduceSize)
@@ -110,8 +99,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
     local itemsInRow = 0
     local itemsInColumn = sqrt(this.trophy.numTotal).tointeger()
-    for (local i = itemsInColumn; i > 0; i--)
-    {
+    for (local i = itemsInColumn; i > 0; i--) {
       let columns = this.trophy.numTotal / i
       if (columns > maxAvailRatio.column)
         break
@@ -123,31 +111,27 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
       break
     }
 
-    if (itemsInRow == 0)
-    {
+    if (itemsInRow == 0) {
       itemsInRow =  floor(sqrt((maxAvailRatio.row.tofloat() / maxAvailRatio.column) * this.trophy.numTotal + 0.5)) || 1
       itemsInColumn = ceil(this.trophy.numTotal / itemsInRow)
     }
 
-    return this.countSize({w = itemsInRow, h = itemsInColumn}, reduceSize)
+    return this.countSize({ w = itemsInRow, h = itemsInColumn }, reduceSize)
   }
 
-  function countSize(ratio, reduceSize = false)
-  {
-    let mult = reduceSize? "0.5" : "1"
+  function countSize(ratio, reduceSize = false) {
+    let mult = reduceSize ? "0.5" : "1"
     let height = ratio.h * this.guiScene.calcString(mult + "@itemHeight + 1@itemSpacing", null)
     let width = ratio.w * this.guiScene.calcString(mult + "@itemWidth + 1@itemSpacing", null)
 
-    return {width = width, height = height, smallItems = reduceSize? "yes" : "no"}
+    return { width = width, height = height, smallItems = reduceSize ? "yes" : "no" }
   }
 
-  function fillTrophiesList()
-  {
+  function fillTrophiesList() {
     let view = this.updateScreenSize()
     view.trophyItems <- ""
 
-    for (local i = 0; i < this.trophy.numTotal; i++)
-    {
+    for (local i = 0; i < this.trophy.numTotal; i++) {
       let isOpened = this.isTrophyPurchased(i)
       view.trophyItems += ::handyman.renderCached(("%gui/items/item.tpl"), {
         items = this.trophy.getViewData({
@@ -159,7 +143,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
           itemHighlight = !isOpened,
           isItemLocked = isOpened,
           itemIndex = i.tostring()
-        })})
+        }) })
     }
 
     let data = ::handyman.renderCached(this.sceneTplName, view)
@@ -167,53 +151,45 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
     this.infoHandler = itemInfoHandler(this.scene.findObject("item_info_desc_place"))
   }
 
-  function isTrophyPurchased(value)
-  {
+  function isTrophyPurchased(value) {
     return stdMath.is_bit_set(this.bitMask, value)
   }
 
-  function onItemAction(obj)
-  {
+  function onItemAction(obj) {
     if (checkObj(obj) && obj?.holderId)
       this.doAction(obj.holderId.tointeger())
   }
 
   onSelectedItemAction = @() this.doAction(this.getItemsListObj().getValue())
 
-  function doAction(index)
-  {
-    this.trophy.doMainAction(Callback((@(index) function(_params) {this.afterSuccessBoughtItemAction(index)})(index), this),
+  function doAction(index) {
+    this.trophy.doMainAction(Callback((@(index) function(_params) { this.afterSuccessBoughtItemAction(index) })(index), this),
                         this,
-                        {index = index})
+                        { index = index })
   }
 
-  function afterSuccessBoughtItemAction(value)
-  {
+  function afterSuccessBoughtItemAction(value) {
     this.updateTrophyInfo()
 
     this.focusIdx = value
     this.updateContent()
   }
 
-  function onItemsListFocusChange()
-  {
+  function onItemsListFocusChange() {
     if (this.isValid())
       this.updateButtonsBar()
   }
 
-  function getItemsListObj()
-  {
+  function getItemsListObj() {
     return this.scene.findObject("items_list")
   }
 
-  function updateButtonsBar()
-  {
+  function updateButtonsBar() {
     let isButtonsBarVisible = !::show_console_buttons || this.getItemsListObj().isHovered()
     this.showSceneBtn("item_actions_bar", isButtonsBarVisible)
   }
 
-  function updateButtons(obj = null)
-  {
+  function updateButtons(obj = null) {
     if (!checkObj(obj))
       return
 

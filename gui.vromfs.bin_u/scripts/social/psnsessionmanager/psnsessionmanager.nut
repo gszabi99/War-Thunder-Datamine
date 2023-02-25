@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -47,15 +48,15 @@ let getLocalizedTextInfo = function(locIdsArray) {
 
 let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
   ? [
-      {roomId = ::SessionLobby.roomId}
-      {inviterUid = ::my_user_id_str}
-      {sType = PSN_SESSION_TYPE.SKIRMISH}
+      { roomId = ::SessionLobby.roomId }
+      { inviterUid = ::my_user_id_str }
+      { sType = PSN_SESSION_TYPE.SKIRMISH }
     ]
   : sType == PSN_SESSION_TYPE.SQUAD
     ? [
-        {squadId = ::my_user_id_str}
-        {leaderId = ::g_squad_manager.getLeaderUid()}
-        {sType = PSN_SESSION_TYPE.SQUAD}
+        { squadId = ::my_user_id_str }
+        { leaderId = ::g_squad_manager.getLeaderUid() }
+        { sType = PSN_SESSION_TYPE.SQUAD }
       ]
     : []
 
@@ -169,7 +170,7 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
   : {}
 
 let getSessionJoinData = @(pushContextId, isSpectator = false) {
-  [isSpectator? "spectators" : "players"] = [{
+  [isSpectator ? "spectators" : "players"] = [{
     accountId = "me"
     platform = "me"
     pushContexts = [{ pushContextId = pushContextId }]
@@ -324,7 +325,7 @@ addListenersWithoutEnv({
                 dumpSessionData(sId, PSN_SESSION_TYPE.SQUAD, pushContextId, {})
             }
           )
-        else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.value))) {// Squad implicitly created || Autotransfer on login
+        else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.value))) { // Squad implicitly created || Autotransfer on login
           create(
             PSN_SESSION_TYPE.SQUAD,
             function(sId, err) {
@@ -372,7 +373,7 @@ addListenersWithoutEnv({
         let sessionData = getSessionData(PSN_SESSION_TYPE.SQUAD, pushContextId)
         dumpSessionData(sessionId, PSN_SESSION_TYPE.SQUAD, pushContextId, sessionData)
       }, this)
-    )})
+    ) })
   }
   GameIntentJoinSession = proceedInvite
   MainMenuReturn = function(_p) {

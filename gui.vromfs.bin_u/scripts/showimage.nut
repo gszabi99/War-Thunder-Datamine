@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,13 +11,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
-::view_fullscreen_image <- function view_fullscreen_image(obj)
-{
+::view_fullscreen_image <- function view_fullscreen_image(obj) {
   ::handlersManager.loadHandler(::gui_handlers.ShowImage, { showObj = obj })
 }
 
-::gui_handlers.ShowImage <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ShowImage <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 
@@ -33,8 +32,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
   timer = 0.0
   moveBack = false
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!checkObj(this.showObj))
       return this.goBack()
 
@@ -44,7 +42,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
       ::g_dagui_utils.toPixels(this.guiScene, this.showObj?["max-height"] ?? "@rh", this.showObj)
     ]
 
-    if (!image || image=="" || !this.maxSize[0] || !this.maxSize[1])
+    if (!image || image == "" || !this.maxSize[0] || !this.maxSize[1])
       return this.goBack()
 
     this.scene.findObject("image_update").setUserData(this)
@@ -52,20 +50,18 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     this.baseSize = this.showObj.getSize()
     this.basePos = this.showObj.getPosRC()
     let rootSize = this.guiScene.getRoot().getSize()
-    this.basePos = [this.basePos[0] + this.baseSize[0]/2, this.basePos[1] + this.baseSize[1]/2]
-    this.lastPos = [rootSize[0]/2, rootSize[1]/2]
+    this.basePos = [this.basePos[0] + this.baseSize[0] / 2, this.basePos[1] + this.baseSize[1] / 2]
+    this.lastPos = [rootSize[0] / 2, rootSize[1] / 2]
 
     local sizeKoef = 1.0
-    if (this.maxSize[0] > 0.9*rootSize[0])
-      sizeKoef = 0.9*rootSize[0] / this.maxSize[0]
-    if (this.maxSize[1] > 0.9*rootSize[1])
-    {
-      let koef2 = 0.9*rootSize[1] / this.maxSize[1]
+    if (this.maxSize[0] > 0.9 * rootSize[0])
+      sizeKoef = 0.9 * rootSize[0] / this.maxSize[0]
+    if (this.maxSize[1] > 0.9 * rootSize[1]) {
+      let koef2 = 0.9 * rootSize[1] / this.maxSize[1]
       if (koef2 < sizeKoef)
         sizeKoef = koef2
     }
-    if (sizeKoef < 1.0)
-    {
+    if (sizeKoef < 1.0) {
       this.maxSize[0] = (this.maxSize[0] * sizeKoef).tointeger()
       this.maxSize[1] = (this.maxSize[1] * sizeKoef).tointeger()
     }
@@ -82,28 +78,23 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     this.onUpdate(null, 0.0)
   }
 
-  function countProp(baseVal, maxVal, t)
-  {
+  function countProp(baseVal, maxVal, t) {
     local div = maxVal - baseVal
-    div *= 1.0 - (t - 1)*(t - 1)
-    return (baseVal+ div).tointeger().tostring()
+    div *= 1.0 - (t - 1) * (t - 1)
+    return (baseVal + div).tointeger().tostring()
   }
 
-  function onUpdate(_obj, dt)
-  {
+  function onUpdate(_obj, dt) {
     if (this.frameObj && this.frameObj.isValid()
-        && ((!this.moveBack && this.timer < this.resizeTime) || (this.moveBack && this.timer > 0)))
-    {
-      this.timer += this.moveBack? -dt : dt
+        && ((!this.moveBack && this.timer < this.resizeTime) || (this.moveBack && this.timer > 0))) {
+      this.timer += this.moveBack ? -dt : dt
       local t = this.timer / this.resizeTime
-      if (t >= 1.0)
-      {
+      if (t >= 1.0) {
         t = 1.0
         this.timer = this.resizeTime
         this.scene.findObject("btn_back").show(true)
       }
-      if (this.moveBack && t <= 0.0)
-      {
+      if (this.moveBack && t <= 0.0) {
         t = 0.0
         this.timer = 0.0
         this.goBack() //performDelayed inside
@@ -117,10 +108,8 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     }
   }
 
-  function onBack()
-  {
-    if (!this.moveBack)
-    {
+  function onBack() {
+    if (!this.moveBack) {
       this.moveBack = true
       this.scene.findObject("btn_back").show(false)
     }
@@ -132,8 +121,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
  * ratio   @float  - image width/height ratio (default = 1)
  * maxSize @array|@integer - max size in pixels. Array ([w, h]) or integer (used for both sides) (0 = unlimited).
  **/
-::gui_start_image_wnd <- function gui_start_image_wnd(image = null, ratio = 1, maxSize = 0)
-{
+::gui_start_image_wnd <- function gui_start_image_wnd(image = null, ratio = 1, maxSize = 0) {
   if (::u.isEmpty(image))
     return
 
@@ -146,8 +134,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     handler.reinitScreen(params)
 }
 
-::gui_handlers.ShowImageSimple <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ShowImageSimple <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 
@@ -155,8 +142,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
   ratio = 1
   maxSize = 0
 
-  function initScreen()
-  {
+  function initScreen() {
     let rootObj = this.scene.findObject("root-box")
     if (!checkObj(rootObj))
       return this.goBack()
@@ -178,8 +164,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     let height = ::screen_height() / 1.5
     local size = [ this.ratio * height, height ]
 
-    if (size[0] > this.maxSize[0] || size[1] > this.maxSize[1])
-    {
+    if (size[0] > this.maxSize[0] || size[1] > this.maxSize[1]) {
       let maxSizeRatio = this.maxSize[0] * 1.0 / this.maxSize[1]
       if (maxSizeRatio > this.ratio)
         size = [ this.ratio * this.maxSize[1], this.maxSize[1] ]
@@ -204,14 +189,12 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
     this.scene.findObject("btn_back").show(true)
   }
 
-  function reinitScreen(params = {})
-  {
+  function reinitScreen(params = {}) {
     this.setParams(params)
     this.initScreen()
   }
 
-  function onBack()
-  {
+  function onBack() {
     this.goBack()
   }
 }

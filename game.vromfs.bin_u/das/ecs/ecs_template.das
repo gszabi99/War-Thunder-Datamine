@@ -105,9 +105,8 @@ class CreateTemplateAnnotation : AstStructureAnnotation
     if is_in_aot() //|| find_index_if(each(args), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(group, a.sValue);}) != -1
       st.fields |> clear()
       return true
-    var parents : array<string>
+    var inscope parents : array<string>
     var tags : array<uint>
-    defer_delete(parents)
     var hadErrors = false
     for a in args
       if a.name == "extends"
@@ -115,13 +114,13 @@ class CreateTemplateAnnotation : AstStructureAnnotation
           errors := "{errors}\nextends argument {a} has to be of string type"
           hadErrors = true
         else
-          parents |> emplace(string(a.sValue))
+          parents |> push(string(a.sValue))
       elif a.name == "tag"
         if a.basicType != Type tString
           errors := "{errors}\tag argument {a} has to be of string type"
           hadErrors = true
         else
-          tags |> emplace(ecs_hash(string(a.sValue)))
+          tags |> push(ecs_hash(string(a.sValue)))
     createTemplate2(group, ecs_hash(string(st.at.fileInfo.name)), string(st.name), parents) <| $(var cmp : CreatingTemplate)
       for tag in tags
         cmp |> creating_template_addTag(tag)

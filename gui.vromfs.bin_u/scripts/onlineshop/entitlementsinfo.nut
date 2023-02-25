@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -31,7 +32,7 @@ let function updateBundlesShopInfo() {
         let resList = {}
         foreach (id, guid in bundlesList)
           if (guid in res.items)
-            resList[id] <- res.items[guid].__merge({guid})
+            resList[id] <- res.items[guid].__merge({ guid })
           else
             log($"[ENTITLEMENTS INFO] Skip saving {id} - {guid}")
         bundlesShopInfo(resList)

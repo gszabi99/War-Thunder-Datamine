@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,8 +12,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
   getRewardTooltipId, getConditionText, isRewardReceived
 } = require("%scripts/events/eventRewards.nut")
 
-::gui_handlers.EventRewardsWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.EventRewardsWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/events/eventRewardsWnd.tpl"
@@ -41,7 +41,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
     if (tabsList.len() == 0)
       return
 
-    ::handlersManager.loadHandler(::gui_handlers.EventRewardsWnd, {tabsList})
+    ::handlersManager.loadHandler(::gui_handlers.EventRewardsWnd, { tabsList })
   }
 
   function initScreen() {
@@ -53,7 +53,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
         navImagesText = this.tabsList.len() > 1 ? ::get_navigation_images_text(idx, this.tabsList.len()) : ""
         selected = idx == 0
       })
-    let data = ::handyman.renderCached(this.sceneTplName, {tabs})
+    let data = ::handyman.renderCached(this.sceneTplName, { tabs })
     this.guiScene.replaceContentFromText(this.scene.findObject("root-box"), data, data.len(), this)
 
     this.updateRewards()
@@ -65,20 +65,19 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
     if (!curTabData)
       return
 
-    let {event, rewards, finalAwardDate, tourId} = curTabData
+    let { event, rewards, finalAwardDate, tourId } = curTabData
     let eventEconomicName = finalAwardDate ? tourId : ::events.getEventEconomicName(event)
     let view = {
       total      = rewards.len()
       baseReward = (@(event) function () {
         let reward = getBaseVictoryReward(event)
-        return reward ? loc("tournaments/reward/everyVictory",  {reward = reward}) : reward
+        return reward ? loc("tournaments/reward/everyVictory",  { reward = reward }) : reward
       })(event)
       items = (@(rewards, _event) function () {
         local even = true
         let res = []
-        foreach(conditionName, condition in rewards)
-          foreach (idx, blk in condition)
-          {
+        foreach (conditionName, condition in rewards)
+          foreach (idx, blk in condition) {
             even = !even
             let item = {
               index           = idx
@@ -107,9 +106,9 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
     if (!curTabData)
       return
 
-    let {event, rewards, finalAwardDate, tourId} = curTabData
+    let { event, rewards, finalAwardDate, tourId } = curTabData
     let eventEconomicName = finalAwardDate ? tourId : ::events.getEventEconomicName(event)
-    foreach(conditionId, rewardsInCondition in rewards)
+    foreach (conditionId, rewardsInCondition in rewards)
       foreach (idx, blk in rewardsInCondition)
         if (!isRewardReceived(blk, eventEconomicName)) {
           let index = idx

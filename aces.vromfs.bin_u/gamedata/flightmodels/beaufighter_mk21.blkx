@@ -2482,7 +2482,7 @@
   "gunnerFps": {
     "pos": [
       -0.25,
-      0.25,
+      0.17,
       0.0
     ],
     "head": "turret1"
@@ -2512,6 +2512,29 @@
             "iconType": "rockets_he_small"
           }
         }
+      },
+      {
+        "name": "beaufighter_mk21_mc250_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc250_bomb.blk",
+        "reqModification": "sea_hawk_2x250lb"
+      },
+      {
+        "name": "beaufighter_mk21_mc500_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc500_bomb.blk",
+        "reqModification": "sea_hawk_2x500lb"
+      },
+      {
+        "name": "beaufighter_mk21_mc250_mc500_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc250_mc500_bomb.blk",
+        "reqModification": [
+          "sea_hawk_2x250lb",
+          "sea_hawk_2x500lb"
+        ]
+      },
+      {
+        "name": "beaufighter_mk21_mc1000_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/beaufighter_mk21_mc1000_bomb.blk",
+        "reqModification": "sea_hawk_2x1000lb"
       }
     ]
   },
@@ -2650,8 +2673,8 @@
     "cd_98": {},
     "air_extinguisher": {
       "image": "#ui/gameuiskin#engine_extinguisher.png",
-      "tier": 4,
-      "modClass": "weapon",
+      "tier": 3,
+      "modClass": "armor",
       "invertEnableLogic": false
     },
     "CdMin_Fuse": {},
@@ -2703,10 +2726,24 @@
       "modClass": "weapon",
       "tier": 1
     },
+    "sea_hawk_2x250lb": {
+      "reqModification": "beaufighter_tsc",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "sea_hawk_2x500lb": {
+      "reqModification": "sea_hawk_2x250lb",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "sea_hawk_2x1000lb": {
+      "reqModification": "sea_hawk_2x500lb",
+      "modClass": "weapon",
+      "tier": 4
+    },
     "beaufighter_rsc": {
       "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "beaufighter_tsc"
+      "tier": 2
     }
   },
   "user_skin": {

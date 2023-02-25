@@ -2247,46 +2247,6 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m55.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 90,
-        "spread": 1.0
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m55.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 90,
-        "spread": 1.0
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m55.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon3_dm",
-        "bullets": 90,
-        "spread": 1.0
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m55.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "bullets": 90,
-        "spread": 1.0
-      }
-    ]
-  },
   "sensors": {
     "sensor": [
       {
@@ -2299,6 +2259,12 @@
       }
     ]
   },
+  "commonWeapons": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
   "weapon_presets": {
     "preset": [
       {
@@ -2310,22 +2276,257 @@
         "blk": "gameData/flightModels/weaponPresets/saab_j32b_default_rb24_missiles.blk"
       },
       {
-        "name": "saab_j32b_75mm_srak_m57b",
-        "blk": "gameData/flightModels/weaponPresets/saab_j32b_75mm_srak_m57b.blk",
-        "reqModification": "swe_m57b"
-      },
-      {
         "name": "saab_j32b_rb24_missiles",
-        "blk": "gameData/flightModels/weaponPresets/saab_j32b_rb24_missiles.blk",
-        "reqModification": "swe_rb24"
+        "blk": "gameData/flightModels/weaponPresets/saab_j32b_rb24_missiles.blk"
       },
       {
-        "name": "saab_j32b_75mm_srak_m57b_2xrb24",
-        "blk": "gameData/flightModels/weaponPresets/saab_j32b_75mm_srak_m57b_2xrb24.blk",
-        "reqModification": [
-          "swe_m57b",
-          "swe_rb24"
+        "name": "saab_j32b_75mm_srak_m57b",
+        "blk": "gameData/flightModels/weaponPresets/saab_j32b_75mm_srak_m57b.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 520.0,
+    "maxloadMassLeftConsoles": 260.0,
+    "maxloadMassRightConsoles": 260.0,
+    "maxDisbalance": 210.0,
+    "HideNodes": {
+      "node": [
+        "aero_3b_001",
+        "aero_3b_002",
+        "aero_3b_003",
+        "aero_3b_004",
+        "a_balk1_l",
+        "a_balk1_add_l",
+        "a_balk1_l_bomb",
+        "a_balk2_l",
+        "a_balk2_add_l",
+        "a_balk2_l_bomb",
+        "a_balk3_l",
+        "a_balk3_add_l",
+        "a_balk3_l_bomb",
+        "a_balk4_l",
+        "a_balk4_add_l",
+        "a_balk4_l_bomb",
+        "a_balk5_l",
+        "a_balk5_add_l",
+        "a_balk5_l_bomb",
+        "a_balk6_l",
+        "a_balk6_add_l",
+        "a_balk6_l_bomb",
+        "a_balk1_r",
+        "a_balk1_add_r",
+        "a_balk1_r_bomb",
+        "a_balk2_r",
+        "a_balk2_add_r",
+        "a_balk2_r_bomb",
+        "a_balk3_r",
+        "a_balk3_add_r",
+        "a_balk3_r_bomb",
+        "a_balk4_r",
+        "a_balk4_add_r",
+        "a_balk4_r_bomb",
+        "a_balk5_r",
+        "a_balk5_add_r",
+        "a_balk5_r_bomb",
+        "a_balk6_r",
+        "a_balk6_add_r",
+        "a_balk6_r_bomb",
+        "b_balk1_l",
+        "b_balk2_l",
+        "b_balk1_r",
+        "b_balk2_r",
+        "c_balk1_l",
+        "c_balk2_l",
+        "c_balk1_r",
+        "c_balk2_r",
+        "s_balk1_l",
+        "s_balk2_l",
+        "s_balk3_l",
+        "s_balk4_l",
+        "s_balk5_l",
+        "s_balk6_l",
+        "s_balk1_r",
+        "s_balk2_r",
+        "s_balk3_r",
+        "s_balk4_r",
+        "s_balk5_r",
+        "s_balk6_r",
+        "d_balk"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 90,
+              "spread": 1.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 90,
+              "spread": 1.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon3_dm",
+              "bullets": 90,
+              "spread": 1.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m55.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "bullets": 90,
+              "spread": 1.0
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air",
+          "name": "rb24_default",
+          "ShowNodes": {
+            "node": [
+              "s_balk4_l",
+              "aero_3b_001"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/swd_rb24_default.blk",
+            "emitter": "us_aim_9e_001",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": [
+                "s_balk2_l",
+                "aero_3b_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "us_aim_9e_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "swe_m57b",
+            "reqModification": "swe_m57b",
+            "ShowNodes": {
+              "node": "c_balk1_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m57b.blk",
+              "emitter": "rakkaps_m57_b001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
         ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "rb24",
+            "reqModification": "swe_rb24",
+            "ShowNodes": {
+              "node": [
+                "c_balk1_r",
+                "aero_3b_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb24.blk",
+              "emitter": "us_aim_9e_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "swe_m57b",
+            "reqModification": "swe_m57b",
+            "ShowNodes": {
+              "node": "c_balk1_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/swd_arak_m57b.blk",
+              "emitter": "rakkaps_m57_b002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air",
+          "name": "rb24_default",
+          "ShowNodes": {
+            "node": [
+              "s_balk4_r",
+              "aero_3b_004"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/swd_rb24_default.blk",
+            "emitter": "us_aim_9e_004",
+            "bullets": 1
+          }
+        }
       }
     ]
   },
@@ -2432,13 +2633,44 @@
     "turnTime": 25.0
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {},
-    "g_suit": {},
-    "new_compressor_jet": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_compressor_jet": {
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105_jet": {
+      "prevModification": "new_compressor_jet",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "g_suit": {
+      "tier": 3,
+      "modClass": "armor"
+    },
+    "air_extinguisher": {
+      "prevModification": "g_suit",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "aden_air_targets": {},
     "aden_ground_targets": {},
     "aden_belt_pack": {

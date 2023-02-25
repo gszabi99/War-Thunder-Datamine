@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -28,7 +29,7 @@ local CollectionsSet = class {
     this.collectionItems = []
 
     let collectionItemsBlk = blk?.collectionItems
-    for(local i = 0; i < (collectionItemsBlk?.paramCount() ?? 0); i++) {
+    for (local i = 0; i < (collectionItemsBlk?.paramCount() ?? 0); i++) {
       let resource = ::g_decorator.getDecoratorByResource(
         collectionItemsBlk.getParamValue(i), collectionItemsBlk.getParamName(i))
       if (resource != null)
@@ -44,7 +45,7 @@ local CollectionsSet = class {
 
   function getView(countItemsInRow, collectionTopPos, collectionHeight, collectionNum) {
     let collectionItemsTopPos = $"{collectionTopPos} + 1@buttonHeight + 1@blockInterval"
-    let rowCount = ceil(this.collectionItems.len() / (countItemsInRow*1.0))
+    let rowCount = ceil(this.collectionItems.len() / (countItemsInRow * 1.0))
     let deltaTopPos = "".concat("0.5*(", collectionHeight, "-1@buttonHeight+1@blockInterval-",
       rowCount, "@collectionItemSizeWithIndent)")
     local unlockedItemsCount = 0
@@ -118,7 +119,7 @@ local CollectionsSet = class {
         resource = r.id
         resourceType = r.decoratorType.resourceType
       }),
-      { receivedPrizes = true}, false)
+      { receivedPrizes = true }, false)
   }
 }
 

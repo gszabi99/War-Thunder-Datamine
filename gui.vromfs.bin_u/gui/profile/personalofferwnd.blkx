@@ -1,0 +1,81 @@
+{
+  "root": {
+    "type": "big",
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "position": "absolute",
+      "width": "80%sh",
+      "max-width": "1080*@sf/@pf + 2@framePadding",
+      "max-height": "@rh",
+      "class": "wndNav",
+      "frame_header": {
+        "activeText": {
+          "id": "title",
+          "width": "p.p.w-2@buttonHeight",
+          "caption": "yes",
+          "pare-text": "yes",
+          "text": "#specialOffer"
+        },
+        "Button_close": {
+          "id": "btn_close"
+        }
+      },
+      "img": {
+        "id": "offer_image",
+        "width": "pw",
+        "height": "0.75w",
+        "max-width": "1080*@sf/@pf",
+        "max-height": "810*@sf/@pf",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "background-image": "#ui/images/first_battle_eagle?P1"
+      },
+      "tdiv": {
+        "width": "pw",
+        "max-height": "fh",
+        "pos": "0, 1@framePadding",
+        "position": "relative",
+        "flow": "vertical",
+        "overflow-y": "auto",
+        "tdiv": {
+          "id": "offer_markup",
+          "pos": "0.5pw-0.5w, 0",
+          "position": "relative",
+          "flow": "vertical"
+        }
+      },
+      "navBar": {
+        "navLeft": {
+          "textareaNoTab": {
+            "id": "time_expired_text",
+            "pos": "1@buttonMargin, ph/2-h/2",
+            "position": "relative"
+          }
+        },
+        "navRight": {
+          "Button_text": {
+            "id": "btn_buy",
+            "on_click": "onBuy",
+            "hideText": "yes",
+            "btnName": "X",
+            "visualStyle": "purchase",
+            "buttonWink": {},
+            "buttonGlance": {},
+            "textarea": {
+              "id": "btn_buy_text",
+              "class": "buttonText"
+            },
+            "ButtonImg": {}
+          }
+        }
+      }
+    }
+  },
+  "timer": {
+    "id": "update_timer",
+    "timer_handler_func": "onTimer",
+    "timer_interval_msec": "1000"
+  }
+}

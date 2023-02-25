@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { get_game_mode } = require("mission")
 
 ::gui_handlers.RemoteMissionModalHandler <- class extends ::gui_handlers.CampaignChapter {
   wndType = handlerType.MODAL
@@ -12,18 +14,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   mission = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (this.mission == null)
       return this.goBack()
 
-    this.gm = ::get_game_mode()
+    this.gm = get_game_mode()
     this.curMission = this.mission
     this.setMission()
   }
 
-  function getModalOptionsParam(optionItems, applyFunc)
-  {
+  function getModalOptionsParam(optionItems, applyFunc) {
     return {
       options = optionItems
       applyAtClose = false

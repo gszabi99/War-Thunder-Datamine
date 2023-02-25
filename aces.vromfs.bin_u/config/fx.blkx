@@ -112,52 +112,6 @@
     "dirt": "ground",
     "ice": "snow"
   },
-  "splashEffects": {
-    "name": "water_splash_medium_bow",
-    "horzVel": [
-      1.0,
-      5.0
-    ],
-    "horzVelScale": [
-      0.1,
-      2.0
-    ],
-    "vertVel": [
-      0.1,
-      1.5
-    ],
-    "velSq": [
-      2.0,
-      10.0
-    ],
-    "velSqScale": [
-      0.0,
-      1.0
-    ]
-  },
-  "backSplashEffects": {
-    "name": "water_splash_massive",
-    "horzVel": [
-      1.0,
-      5.0
-    ],
-    "horzVelScale": [
-      0.0,
-      1.0
-    ],
-    "vertVel": [
-      0.0,
-      1.0
-    ],
-    "velSq": [
-      2.0,
-      10.0
-    ],
-    "velSqScale": [
-      0.0,
-      1.0
-    ]
-  },
   "propSplashEffects_underwater": {
     "name": "ship_propeller_underwater_splashes",
     "horzVel": [
@@ -179,29 +133,6 @@
     "velSqScale": [
       0.5,
       0.8
-    ]
-  },
-  "propSplashEffects": {
-    "name": "ship_propeller_water_splashes",
-    "horzVel": [
-      0.2,
-      1.0
-    ],
-    "horzVelScale": [
-      0.5,
-      5.0
-    ],
-    "vertVel": [
-      0.1,
-      6.0
-    ],
-    "velSq": [
-      0.2,
-      2.0
-    ],
-    "velSqScale": [
-      0.6,
-      1.0
     ]
   },
   "platform_instance_k": {
@@ -358,6 +289,17 @@
     "sfxEvent": "wreck_explosion",
     "soundEnableDistance": 5000.0
   },
+  "collision_dust_plane": {
+    "fx": "dust_plane_collision_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "farPlane": 5000.0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "wreck_explosion",
+    "soundEnableDistance": 5000.0
+  },
   "minor_engine_smoke": {
     "fx": "smoke_minor_engine_cmps_fx",
     "alphaHeightRange": [
@@ -448,6 +390,34 @@
     "farPlane": 10000.0,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
+  },
+  "catapult_fire_ejection": {
+    "fx": "catapult_fire_air_ejection_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "pilot_seat_rocket"
+  },
+  "catapult_double_fire_ejection": {
+    "fx": "catapult_air_ejection_double_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "pilot_seat_rocket"
+  },
+  "catapult_expl_ejection": {
+    "fx": "catapult_explosion_air_ejection_cabin_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "pilot_seat_eject",
+    "soundEnableDistance": 5000.0
   },
   "major_fuel_smoke": {
     "fx": "smoke_minor_engine_cmps_fx",
@@ -2542,8 +2512,16 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "tank_exhaust": {
-    "fx": "smoke_exhaust_small_cmps_fx",
+  "tank_exhaust_big": {
+    "fx": "smoke_exhaust_big_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 4,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_exhaust_med": {
+    "fx": "smoke_exhaust_med_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "onePointNumber": 4,
@@ -2572,16 +2550,16 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "ship_exhaust_large": {
-    "fx": "smoke_exhaust_large_cmps_fx",
+  "ship_exhaust_med": {
+    "fx": "smoke_exhaust_ship_med_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "farPlane": 15000.0,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "ship_exhaust": {
-    "fx": "smoke_exhaust_ship_cmps_fx",
+  "ship_exhaust_small": {
+    "fx": "smoke_exhaust_ship_small_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "onePointNumber": 6,
@@ -7445,7 +7423,7 @@
     "onePointNumber": 5,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "metal_grid_fall",
+    "sfxEvent": "barbwire",
     "soundEnableDistance": 50.0
   },
   "ad_dust_bollard": {

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,11 +6,11 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
+let DataBlock  = require("DataBlock")
 let { parseDiscountDescription, createDiscountDescriptionSortData,
   sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
 
-::items_classes.Discount <- class extends ::BaseItem
-{
+::items_classes.Discount <- class extends ::BaseItem {
   static iType = itemType.DISCOUNT
   static defaultLocId = "personalDiscount"
   static defaultIconStyle = "default_personal_discount"
@@ -32,8 +33,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
   //params which can can be different in stack but still need for stack description
   static stackVariables = [ "countryName", "rank", "entitlementName"]
 
-  constructor(blk, invBlk = null, slotData = null)
-  {
+  constructor(blk, invBlk = null, slotData = null) {
     this.canBuy = hasFeature("CanBuyDiscountItems")
     base.constructor(blk, invBlk, slotData)
     this.purchasesCount = invBlk?.purchasesCount ?? 0
@@ -49,8 +49,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     this.discountDescriptionDataItems = []
   }
 
-  function _initPersonalDiscountParams()
-  {
+  function _initPersonalDiscountParams() {
     if (this.discountDescBlk == null)
       return
 
@@ -60,23 +59,21 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     this.discountDescBlk = null
   }
 
-  /* override */ function doMainAction(cb, handler, params = null)
-  {
+  /* override */ function doMainAction(cb, handler, params = null) {
     let baseResult = base.doMainAction(cb, handler, params)
     if (!baseResult)
       return this.activateDiscount(cb, handler)
     return true
   }
 
-  function activateDiscount(cb, handler)
-  {
+  function activateDiscount(cb, handler) {
     if (this.isActive() || !this.isInventoryItem)
       return false
 
     if (this.uids == null || this.uids.len() == 0)
       return false
 
-    let blk = ::DataBlock()
+    let blk = DataBlock()
     blk.setStr("name", this.uids[0])
 
     let taskId = ::char_send_blk("cln_set_current_personal_discount", blk)
@@ -89,22 +86,19 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return true
   }
 
-  function getName(colored = true)
-  {
+  function getName(colored = true) {
     let discountDescriptionData = this.getDiscountDescriptionDataItems()
     if (discountDescriptionData.len() == 0)
       return base.getName(colored)
     local item = discountDescriptionData[0]
-    if (item.type == "aircraft")
-    {
+    if (item.type == "aircraft") {
       let hasMultipleVehicles = (discountDescriptionData.len() > 1 &&
         discountDescriptionData[1].type == "aircraft" &&
         discountDescriptionData[1].category == discountDescriptionData[0].category)
-      if (hasMultipleVehicles)
-      {
+      if (hasMultipleVehicles) {
         item = {
           category = item.category
-          type ="aircraft/multiple"
+          type = "aircraft/multiple"
           discountValue = this.getMaxDiscountByCategoryAndType(item.category, "aircraft")
         }
       }
@@ -112,13 +106,11 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return this.getDataItemDescription(item)
   }
 
-  function getDescriptionTitle()
-  {
+  function getDescriptionTitle() {
     return base.getName()
   }
 
-  function getMainActionData(isShort = false, params = {})
-  {
+  function getMainActionData(isShort = false, params = {}) {
     let res = base.getMainActionData(isShort, params)
     if (res)
       return res
@@ -130,12 +122,10 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return res
   }
 
-  function isActive(...)
-  {
+  function isActive(...) {
     if (!this.isInventoryItem || this.uids == null)
       return false
-    for (local i = ::get_current_personal_discount_count() - 1; i >= 0; --i)
-    {
+    for (local i = ::get_current_personal_discount_count() - 1; i >= 0; --i) {
       let currentDiscountUid = ::get_current_personal_discount_uid(i)
       if (isInArray(currentDiscountUid, this.uids))
         return true
@@ -143,11 +133,9 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return false
   }
 
-  function getDescription()
-  {
+  function getDescription() {
     local result = ""
-    if (this.isActive() && this.purchasesMaxCount != 0)
-    {
+    if (this.isActive() && this.purchasesMaxCount != 0) {
       let locParams = {
         purchasesCount = this.purchasesCount
         purchasesMaxCount = this.purchasesMaxCount
@@ -159,8 +147,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     if (expireText != "")
       result += expireText + "\n"
 
-    foreach (item in this.getDiscountDescriptionDataItems())
-    {
+    foreach (item in this.getDiscountDescriptionDataItems()) {
       if (result != "")
         result += "\n"
       result += this.getDataItemDescription(item)
@@ -168,8 +155,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return result
   }
 
-  function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return val + "%" })
-  {
+  function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return val + "%" }) {
     let value = getTblValue("discountValue", dataItem, 0)
     if (value)
       return toTextFunc(value)
@@ -182,8 +168,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return res
   }
 
-  function getDataItemDescription(dataItem)
-  {
+  function getDataItemDescription(dataItem) {
     let nameId = this.isSpecialOffer ? "specialOffer" : "discount"
     local locId = $"item/{nameId}/description/{dataItem.category}"
     if ("type" in dataItem)
@@ -231,24 +216,20 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return locParams
   }
 
-  function getMaxDiscountByCategoryAndType(category, dType)
-  {
+  function getMaxDiscountByCategoryAndType(category, dType) {
     local result = 0
-    foreach (dataItem in this.getDiscountDescriptionDataItems())
-    {
+    foreach (dataItem in this.getDiscountDescriptionDataItems()) {
       if (dataItem.category == category && dataItem.type == dType)
         result = max(result, dataItem.discountValue)
     }
     return result
   }
 
-  function isFixedType()
-  {
+  function isFixedType() {
     return this.getDiscountDescriptionDataItems().len() == 1
   }
 
-  function canStack(item)
-  {
+  function canStack(item) {
     let fixedType = this.isFixedType()
     if (item.isFixedType() != fixedType)
       return false
@@ -258,24 +239,22 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     let discountDescriptionData = this.getDiscountDescriptionDataItems()
     let data1 = discountDescriptionData[0]
     let data2 = item.getDiscountDescriptionDataItems()[0]
-    foreach(p in this.stackBases)
+    foreach (p in this.stackBases)
       if (getTblValue(p, data1) != getTblValue(p, data2))
         return false
     return true
   }
 
-  function updateStackParams(stackParams)
-  {
+  function updateStackParams(stackParams) {
     if (!this.isFixedType())
       return
 
     let data = this.getDiscountDescriptionDataItems()[0]
     if (!stackParams.len()) //stack not inited
-      foreach(p in this.stackBases)
+      foreach (p in this.stackBases)
         stackParams[p] <- getTblValue(p, data)
 
-    foreach(p in this.stackVariables)
-    {
+    foreach (p in this.stackVariables) {
       let pValue = getTblValue(p, data)
       let stackValue = getTblValue(p, stackParams, pValue)
       stackParams[p] <- (pValue == stackValue) ? pValue : null
@@ -288,8 +267,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     stackParams.discountMax <- maxValue ? max(maxValue, value) : value
   }
 
-  function getLayerText(colored = true)
-  {
+  function getLayerText(colored = true) {
     let discountDescriptionData = this.getDiscountDescriptionDataItems()
     if (discountDescriptionData.len() == 0)
       return this.getName(colored)
@@ -306,23 +284,20 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
     return $"{loc(discountType, "")}{loc("ui/colon")}{discountValue}"
   }
 
-  function getStackName(stackParams)
-  {
+  function getStackName(stackParams) {
     if (!stackParams.len())  //!fixedType
       return base.getName()
     return this.getDataItemDescription(stackParams)
   }
 
-  function getIcon(addItemName = true)
-  {
+  function getIcon(addItemName = true) {
     local layers = base.getIcon()
     if (addItemName && !this.needHideTextOnIcon)
       layers += this._getTextLayer()
     return layers
   }
 
-  function _getTextLayer()
-  {
+  function _getTextLayer() {
     let layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
     if (!layerCfg)
       return ""

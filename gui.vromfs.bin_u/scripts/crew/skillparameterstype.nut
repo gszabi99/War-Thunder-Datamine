@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -25,20 +26,18 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   getValue = defaultGetValue
 
   parseColumns = function(paramData, columnTypes,
-    parametersByRequestType, selectedParametersByRequestType, resArray)
-  {
+    parametersByRequestType, selectedParametersByRequestType, resArray) {
     let parameterName = paramData.name
     local measureType = getMeasureTypeBySkillParameterName(parameterName)
     let isNotFoundMeasureType = measureType == ::g_measure_type.UNKNOWN
     let sign = this.getDiffSign(parametersByRequestType, parameterName)
     let needMemberName = paramData.valuesArr.len() > 1
     let parsedMembers = []
-    foreach(idx, value in paramData.valuesArr)
-    {
-      if(isInArray(value.memberName, parsedMembers))
+    foreach (idx, value in paramData.valuesArr) {
+      if (isInArray(value.memberName, parsedMembers))
         continue
 
-      if(isNotFoundMeasureType)
+      if (isNotFoundMeasureType)
         measureType = getMeasureTypeBySkillParameterName(value.skillName)
 
       let parameterView = {
@@ -65,10 +64,8 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   }
 
   parseColumnTypes = function(columnTypes, parametersByRequestType, selectedParametersByRequestType,
-    measureType, sign, parameterView, params = null)
-  {
-    foreach (columnType in columnTypes)
-    {
+    measureType, sign, parameterView, params = null) {
+    foreach (columnType in columnTypes) {
       let prevValue = this.getValue(
         columnType.previousParametersRequestType, parametersByRequestType, params)
 
@@ -88,8 +85,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
     }
   }
 
-  getDiffSign = function(parametersByRequestType, parameterName)
-  {
+  getDiffSign = function(parametersByRequestType, parameterName) {
     let params = { parameterName = parameterName, idx = 0, columnIndex = 0 }
     let baseValue = this.getValue(
       ::g_skill_parameters_column_type.BASE.currentParametersRequestType, parametersByRequestType, params)
@@ -98,8 +94,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
     return maxValue >= baseValue
   }
 
-  getProgressBarValue = function(parametersByRequestType, params = null)
-  {
+  getProgressBarValue = function(parametersByRequestType, params = null) {
     let currentParameterValue = this.getValue(
       ::g_skill_parameters_request_type.CURRENT_VALUES, parametersByRequestType, params)
     let maxParameterValue = this.getValue(
@@ -124,16 +119,14 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
     ]
 
     parseColumns = function(paramData, columnTypes,
-                            parametersByRequestType, selectedParametersByRequestType, resArray)
-    {
+                            parametersByRequestType, selectedParametersByRequestType, resArray) {
       let currentDistanceErrorData = paramData.valuesArr
       if (!currentDistanceErrorData.len())
         return
 
       let sign = this.getDiffSign(parametersByRequestType, paramData.name)
 
-      foreach (i, parameterTable in currentDistanceErrorData[0].value)
-      {
+      foreach (i, parameterTable in currentDistanceErrorData[0].value) {
         let descriptionLocParams = {
           errorText = ::g_measure_type.ALTITUDE.getMeasureUnitsText(parameterTable.error, true, true)
         }
@@ -164,7 +157,6 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
   }
 })
 
-::g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName)
-{
+::g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName) {
   return enums.getCachedType("paramNames", paramName, cache.byParamName, this, this.DEFAULT)
 }

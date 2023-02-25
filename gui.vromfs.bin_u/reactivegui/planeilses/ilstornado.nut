@@ -1,16 +1,16 @@
 from "%rGui/globals/ui_library.nut" import *
 let { Aoa, ClimbSpeed, Altitude, Speed, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
-let {baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {IlsColor, IlsLineScale, TargetPos, RocketMode, CannonMode, BombCCIPMode, BombingMode,
-  TargetPosValid, DistToTarget, RadarTargetDist, TimeBeforeBombRelease, TvvMark} = require("%rGui/planeState/planeToolsState.nut")
-let {cvt} = require("dagor.math")
+let { baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { IlsColor, IlsLineScale, TargetPos, RocketMode, CannonMode, BombCCIPMode, BombingMode,
+  TargetPosValid, DistToTarget, RadarTargetDist, TimeBeforeBombRelease, TvvMark } = require("%rGui/planeState/planeToolsState.nut")
+let { cvt } = require("dagor.math")
 let string = require("string")
-let {SUMAltitude} = require("commonElements.nut")
+let { SUMAltitude } = require("commonElements.nut")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
-let {sin, cos} = require("math")
+let { sin, cos } = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
-let {IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState} = require("%rGui/rocketAamAimState.nut")
+let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 
 let SUMAoaMarkH = Computed(@() cvt(Aoa.value, 0, 25, 100, 0).tointeger())
 let SUMAoa = @() {
@@ -97,12 +97,12 @@ let adlMarker = @() {
   size = flex()
   children = TargetPosValid.value ? [
     mainReticle,
-    (CCIPMode.value ? @(){
+    (CCIPMode.value ? @() {
       watch = CcipReticleSector
       size = [pw(5), pw(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
-      fillColor = Color(0, 0, 0, 0  )
+      fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.value
       commands = [
         [VECTOR_SECTOR, 0, 0, 95, 95, -90, CcipReticleSector.value],
@@ -140,7 +140,7 @@ let function pitch(width, height, generateFunc) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.06]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.12]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.12]
       }
     }
   }
@@ -206,12 +206,12 @@ let function generatePitchLine(num) {
 }
 
 let ReticleSector = Computed(@() cvt(RadarTargetDist.value, 0.0, 4000.0, -90.0, 269.0).tointeger())
-let TargetByRadar = Computed(@() RadarTargetDist.value >= 0.0 )
-let gunReticle = @(){
+let TargetByRadar = Computed(@() RadarTargetDist.value >= 0.0)
+let gunReticle = @() {
   watch = [TargetByRadar, CCIPMode, BombingMode]
   size = flex()
   children = CCIPMode.value || BombingMode.value ? null : (TargetByRadar.value ? [
-    @(){
+    @() {
       watch = ReticleSector
       size = [pw(5), pw(5)]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -259,7 +259,7 @@ let gunReticle = @(){
 }
 
 let AltThousandAngle = Computed(@() (Altitude.value * metrToFeet % 1000 / 2.7777 - 90.0).tointeger())
-let altCircle = @(){
+let altCircle = @() {
   watch = [CCIPMode, BombingMode]
   size = [pw(16), pw(16)]
   pos = [pw(58.5), ph(18.5)]
@@ -283,7 +283,7 @@ let altCircle = @(){
         [VECTOR_LINE, 80.6, 9.5, 80.6, 9.5]
       ]
       children = [
-        @(){
+        @() {
           watch = AltThousandAngle
           rendObj = ROBJ_VECTOR_CANVAS
           size = [pw(50), ph(50)]
@@ -303,11 +303,11 @@ let altCircle = @(){
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let ReticleSectorAam = Computed(@() cvt(RadarTargetDist.value, 0.0, 10000.0, -90.0, 269.0).tointeger())
-let aamReticle = @(){
+let aamReticle = @() {
   watch = [isAAMMode, IlsTrackerVisible]
   size = [pw(8), ph(8)]
   children = isAAMMode.value && IlsTrackerVisible.value ? [
-    @(){
+    @() {
       watch = TargetByRadar
       rendObj = ROBJ_VECTOR_CANVAS
       size = flex()
@@ -350,7 +350,7 @@ let aamReticle = @(){
 }
 
 let ccrpTimeAngle = Computed(@() cvt(TimeBeforeBombRelease.value, 0.0, 60.0, -90.0, 269.0).tointeger())
-let ccrp = @(){
+let ccrp = @() {
   watch = BombingMode
   size = flex()
   children = BombingMode.value ? [

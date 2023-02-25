@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ let { round } = require("math")
 
 let { set_protection_analysis_editing } = require("hangarEventCommand")
 
-::gui_handlers.ProtectionAnalysisHint <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ProtectionAnalysisHint <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/dmViewer/protectionAnalysisHint.blk"
 
@@ -77,20 +77,17 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
           partNames.append(prefix + loc("dmg_msg_short/" + partId))
       return ::g_string.implode(partNames, "\n")
     }
-    angle = function(val)
-    {
+    angle = function(val) {
       return loc("bullet_properties/hitAngle") + loc("ui/colon") +
         colorize("activeTextColor", round(val)) + loc("measureUnits/deg")
     }
-    headingAngle = function(val)
-    {
+    headingAngle = function(val) {
       return loc("protection_analysis/hint/headingAngle") + loc("ui/colon") +
         colorize("activeTextColor", round(val)) + loc("measureUnits/deg")
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.cursorObj = this.scene.findObject("target_cursor")
     this.cursorObj.setUserData(this)
 
@@ -100,8 +97,7 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     this.cursorRadius = this.cursorObj.getSize()[0] / 2
   }
 
-  function onEventProtectionAnalysisResult(params)
-  {
+  function onEventProtectionAnalysisResult(params) {
     this.update(params)
   }
 
@@ -146,17 +142,15 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     this.hintObj.findObject("dmviewer_desc").setValue(desc)
   }
 
-  function onTargetingCursorTimer(obj, _dt)
-  {
-    if(!checkObj(obj))
+  function onTargetingCursorTimer(obj, _dt) {
+    if (!checkObj(obj))
       return
     let cursorPos = ::get_dagui_mouse_cursor_pos_RC()
     obj.left = cursorPos[0] - this.cursorRadius
     obj.top  = cursorPos[1] - this.cursorRadius
   }
 
-  function onDMViewerHintTimer(obj, _dt)
-  {
+  function onDMViewerHintTimer(obj, _dt) {
     ::dmViewer.placeHint(obj)
   }
 }

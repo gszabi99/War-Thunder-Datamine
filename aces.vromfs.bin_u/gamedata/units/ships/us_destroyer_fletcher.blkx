@@ -25,7 +25,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -120,6 +120,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -1018,6 +1026,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -4285,10 +4303,10 @@
     },
     "new_aa_caliber_turrets": {},
     "new_aux_caliber_turrets": {
-      "reqModification": "new_aa_caliber_turrets"
+      "prevModification": "new_aa_caliber_turrets"
     },
     "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
+      "prevModification": "new_aux_caliber_turrets"
     },
     "torpedoes_movement_mode": {
       "effects": {
@@ -6396,28 +6414,58 @@
       "name": "usa_camo_navy_blue",
       "nameLocId": "skin/usa_camo_navy_blue",
       "descLocId": "skin/usa_camo_navy_blue/desc",
-      "replace_tex": {
-        "from": "camo_navygrey_5*",
-        "to": "usa_camo_navy_blue*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_navy_blue*"
+        }
+      ]
     },
     {
       "name": "usa_camo_blue_spots",
       "nameLocId": "skin/usa_camo_blue_spots",
       "descLocId": "skin/usa_camo_blue_spots/desc",
-      "replace_tex": {
-        "from": "camo_navygrey_5*",
-        "to": "usa_camo_blue_spots*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_blue_spots*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_blue_spots*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_blue_spots*"
+        }
+      ]
     },
     {
       "name": "usa_camo_blackgray_spots",
       "nameLocId": "skin/usa_camo_blackgray_spots",
       "descLocId": "skin/usa_camo_blackgray_spots/desc",
-      "replace_tex": {
-        "from": "camo_navygrey_5*",
-        "to": "usa_camo_blackgray_spots*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_blackgray_spots*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_blackgray_spots*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_blackgray_spots*"
+        }
+      ]
     }
   ]
 }

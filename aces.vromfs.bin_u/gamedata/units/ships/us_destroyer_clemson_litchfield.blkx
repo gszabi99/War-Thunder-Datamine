@@ -25,7 +25,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_med",
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "smokeScreenActivateTime": 5.0,
@@ -125,6 +125,14 @@
       {
         "from": "flag_ireland_01_c*",
         "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
       },
       {
         "from": "airplane_ger_ar196_c*",
@@ -1150,6 +1158,16 @@
         "type": "engineFan",
         "turnSpeed": 1.0,
         "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
       },
       {
         "type": "waterJetShutter",
@@ -2609,10 +2627,10 @@
     "fireDirecting": {
       "dmPartMain": "bridge_dm",
       "dmPart": "rangefinder_01_dm",
-      "measureAccuracy": 0.85,
-      "targetLockTime": 24.0,
-      "calcTime": 14.0,
-      "rotationSpeed": 20.0,
+      "measureAccuracy": 0.9,
+      "targetLockTime": 10.0,
+      "calcTime": 5.0,
+      "rotationSpeed": 24.0,
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
@@ -3158,6 +3176,16 @@
     "detectionHeight": 30.0
   },
   "modifications": {
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {
+      "prevModification": "ship_tool_kit"
+    },
+    "new_ship_pumps": {},
+    "new_main_caliber_turrets": {
+      "prevModification": "new_aux_caliber_turrets"
+    },
+    "new_aux_caliber_turrets": {},
+    "ship_rangefinder": {},
     "new_ship_hull": {},
     "new_ship_rudder": {
       "prevModification": "new_ship_hull"
@@ -3165,10 +3193,6 @@
     "new_ship_screw": {},
     "new_ship_engine": {
       "prevModification": "new_ship_screw"
-    },
-    "ship_tool_kit": {},
-    "manual_ship_extinguisher": {
-      "prevModification": "ship_tool_kit"
     },
     "ship_smoke_screen_system_mod": {},
     "ship_anti_fragmentation_protection": {
@@ -3199,7 +3223,6 @@
         }
       }
     },
-    "new_ship_pumps": {},
     "ship_ammo_wetting": {
       "effects": {
         "damagePartsOverride": {
@@ -3223,12 +3246,7 @@
     "76mm_usa_mk27_navy_HE": {},
     "76mm_usa_navy_common": {},
     "76mm_usa_navy_common_ammo_pack": {},
-    "ship_torpedoes": {},
-    "ship_rangefinder": {},
-    "new_aux_caliber_turrets": {},
-    "new_main_caliber_turrets": {
-      "reqModification": "new_aux_caliber_turrets"
-    }
+    "ship_torpedoes": {}
   },
   "sound": {
     "EngineName": "engine_shipmid01",
@@ -4733,28 +4751,58 @@
       "name": "usa_camo_navy_blue",
       "nameLocId": "skin/usa_camo_navy_blue",
       "descLocId": "skin/usa_camo_navy_blue/desc",
-      "replace_tex": {
-        "from": "camo_navygrey_5*",
-        "to": "usa_camo_navy_blue*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_navy_blue*"
+        }
+      ]
     },
     {
       "name": "usa_camo_blue_spots",
       "nameLocId": "skin/usa_camo_blue_spots",
       "descLocId": "skin/usa_camo_blue_spots/desc",
-      "replace_tex": {
-        "from": "camo_navygrey_5*",
-        "to": "usa_camo_blue_spots*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_blue_spots*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_blue_spots*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_blue_spots*"
+        }
+      ]
     },
     {
       "name": "usa_camo_blackgray_spots",
       "nameLocId": "skin/usa_camo_blackgray_spots",
       "descLocId": "skin/usa_camo_blackgray_spots/desc",
-      "replace_tex": {
-        "from": "camo_navygrey_5*",
-        "to": "usa_camo_blackgray_spots*"
-      }
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_blackgray_spots*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_blackgray_spots*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_blackgray_spots*"
+        }
+      ]
     }
   ]
 }

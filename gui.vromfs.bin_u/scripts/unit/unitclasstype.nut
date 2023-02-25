@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -17,6 +18,7 @@ unitClassType.template <- {
   expClassName = "" //filled automatically
   unitTypeCode = ES_UNIT_TYPE_INVALID
   checkOrder = -1
+  isDeprecated = false
 
   /** Returns localized name of unit class type. */
   getShortName = @() loc($"mainmenu/type_{this.name}")
@@ -97,8 +99,7 @@ enums.addTypes(unitClassType, {
     unitTypeCode = ES_UNIT_TYPE_TANK
     checkOrder = checkOrder++
 
-    getExpClass = function ()
-    {
+    getExpClass = function () {
       // Name in uppercase.
       return "exp_SPAA"
     }
@@ -109,6 +110,7 @@ enums.addTypes(unitClassType, {
     name = "ship"
     unitTypeCode = ES_UNIT_TYPE_SHIP
     checkOrder = checkOrder++
+    isDeprecated = true
   }
 
   TORPEDO_BOAT = {
@@ -167,8 +169,7 @@ enums.addTypes(unitClassType, {
     checkOrder = checkOrder++
   }
 },
-function()
-{
+function() {
   this.expClassName = this.code == EUCT_SPAA ? this.name.toupper() : this.name
 })
 

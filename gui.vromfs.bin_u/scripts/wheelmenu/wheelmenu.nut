@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -17,8 +18,7 @@ let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 
 const ITEMS_PER_PAGE = 8
 
-::gui_start_wheelmenu <- function gui_start_wheelmenu(params, isUpdate = false)
-{
+::gui_start_wheelmenu <- function gui_start_wheelmenu(params, isUpdate = false) {
   let defaultParams = {
     menu = []
     callbackFunc = null
@@ -40,8 +40,7 @@ const ITEMS_PER_PAGE = 8
   return handler
 }
 
-::close_cur_wheelmenu <- function close_cur_wheelmenu()
-{
+::close_cur_wheelmenu <- function close_cur_wheelmenu() {
   local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
@@ -71,8 +70,7 @@ const ITEMS_PER_PAGE = 8
 
 ::dagui_propid.add_name_id("index") // for navigation with mouse in wheelmenu
 
-::gui_handlers.wheelMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.wheelMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/wheelMenu/wheelmenu.blk"
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
@@ -110,8 +108,7 @@ const ITEMS_PER_PAGE = 8
   pagesTotal = 1
   itemsTotal = 0
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.menu || !checkObj(this.scene))
       return this.close()
 
@@ -120,8 +117,7 @@ const ITEMS_PER_PAGE = 8
     this.guiScene = this.scene.getScene()
     this.showScene(true)
     this.fill(true)
-    if (this.axisEnabled)
-    {
+    if (this.axisEnabled) {
       this.watchAxis = ::joystickInterface.getWheelMenuAxisWatch(unitTypeByHudUnitType?[getHudUnitType()])
       this.stuckAxis = ::joystickInterface.getAxisStuck(this.watchAxis)
       this.joystickSelection = null
@@ -141,14 +137,12 @@ const ITEMS_PER_PAGE = 8
     this.wndControlsAllowMask = this.wndControlsAllowMaskWhenActive
   }
 
-  function reinitScreen(params = {})
-  {
+  function reinitScreen(params = {}) {
     this.setParams(params)
     this.initScreen()
   }
 
-  function updateContent(params = {})
-  {
+  function updateContent(params = {}) {
     this.setParams(params)
     if ((this.menu?.len() ?? 0) == 0 || !checkObj(this.scene))
       return this.close()
@@ -156,8 +150,7 @@ const ITEMS_PER_PAGE = 8
     this.fill()
   }
 
-  function fill(isInitial = false)
-  {
+  function fill(isInitial = false) {
     this.itemsTotal = 0
     foreach (idx, v in this.menu)
       if (v != null)
@@ -173,22 +166,19 @@ const ITEMS_PER_PAGE = 8
       this.highlightItemBySide(this.joystickSelection, true)
   }
 
-  function fillMenuItems()
-  {
+  function fillMenuItems() {
     let startIdx = this.pageIdx * ITEMS_PER_PAGE
 
     let itemsCount = max(this.itemsTotal - startIdx, ITEMS_PER_PAGE)
     this.btnSetIdx = this.btnSetsConfig.len() - 1
     for (local i = 0; i < this.btnSetsConfig.len(); i++)
-      if (this.btnSetsConfig[i].len() >= itemsCount)
-        {
+      if (this.btnSetsConfig[i].len() >= itemsCount) {
           this.btnSetIdx = i
           break
         }
     let btnSet = this.btnSetsConfig[this.btnSetIdx]
 
-    foreach (suffix in this.joystickSides)
-    {
+    foreach (suffix in this.joystickSides) {
       let btnIdx = btnSet.indexof(suffix)
       let index = btnIdx != null ? (startIdx + btnIdx) : this.invalidIndex
       let item = this.menu?[index]
@@ -196,14 +186,12 @@ const ITEMS_PER_PAGE = 8
       let enabled = isShow && (item?.wheelmenuEnabled ?? true)
       let bObj = this.showSceneBtn($"wheelmenuItem{suffix}", isShow)
 
-      if (checkObj(bObj))
-      {
+      if (checkObj(bObj)) {
         let buttonType = item?.buttonType ?? ""
         if (buttonType != "")
           bObj.type = buttonType
 
-        if (isShow)
-        {
+        if (isShow) {
           let content = bObj.findObject("content")
           let blk = ::handyman.renderCached(this.contentTemplate, item)
           this.guiScene.replaceContentFromText(content, blk, blk.len(), this)
@@ -216,8 +204,7 @@ const ITEMS_PER_PAGE = 8
     }
   }
 
-  function updatePageInfo()
-  {
+  function updatePageInfo() {
     let shouldShowPages = this.pagesTotal > 1
     let objPageInfo = this.scene.findObject("wheel_menu_page")
     objPageInfo.setValue(shouldShowPages
@@ -226,20 +213,17 @@ const ITEMS_PER_PAGE = 8
     this.showSceneBtn("btnSwitchPage", shouldShowPages)
   }
 
-  function updateTitlePos()
-  {
+  function updateTitlePos() {
     let obj = this.scene.findObject("wheel_menu_title")
     let startIdx = this.pageIdx * ITEMS_PER_PAGE
     let hasTopItem = this.menu?[startIdx + 7] != null
     obj.top = hasTopItem ? obj?.topWithTopMenuItem : obj?.topWithoutTopMenuItem
   }
 
-  function updateSelectShortcutImage()
-  {
+  function updateSelectShortcutImage() {
     let obj = this.scene.findObject("wheelmenu_select_shortcut")
     local isShow = ::show_console_buttons && this.axisEnabled
-    if (isShow)
-    {
+    if (isShow) {
       let shortcuts = this.watchAxis?[0]
       let shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
       isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
@@ -249,17 +233,15 @@ const ITEMS_PER_PAGE = 8
     obj.show(isShow)
   }
 
-  function onWheelmenuItemClick(obj)
-  {
-    if (!obj || (!this.mouseEnabled && !useTouchscreen && !::is_cursor_visible_in_gui()) )
+  function onWheelmenuItemClick(obj) {
+    if (!obj || (!this.mouseEnabled && !useTouchscreen && !::is_cursor_visible_in_gui()))
       return
 
     let index = obj.index.tointeger()
     this.sendAvailableAnswerDelayed(index)
   }
 
-  function onWheelmenuAxisInputTimer(_obj=null, _dt=null)
-  {
+  function onWheelmenuAxisInputTimer(_obj = null, _dt = null) {
     if (!this.axisEnabled || this.isKbdShortcutDown)
       return
 
@@ -272,8 +254,7 @@ const ITEMS_PER_PAGE = 8
     this.highlightItemBySide(this.joystickSides?[side])
   }
 
-  function highlightItemBySide(selection, isForced = false)
-  {
+  function highlightItemBySide(selection, isForced = false) {
     if (selection == this.joystickSelection && !isForced)
       return
 
@@ -288,41 +269,36 @@ const ITEMS_PER_PAGE = 8
     this.joystickSelection = selection
   }
 
-  function highlightItemByBtnIdx(btnIdx)
-  {
+  function highlightItemByBtnIdx(btnIdx) {
     let selection = this.btnSetsConfig[this.btnSetIdx]?[btnIdx]
     this.highlightItemBySide(selection)
   }
 
-  function activateSelectedItem()
-  {
-    if (! this.joystickSelection) return
+  function activateSelectedItem() {
+    if (! this.joystickSelection)
+      return
 
     let bObj = this.scene.findObject("wheelmenuItem" + this.joystickSelection)
     let index = bObj && bObj.index.tointeger()
     this.sendAvailableAnswerDelayed(index)
   }
 
-  function onWheelmenuAccesskeyApply(_obj)
-  {
+  function onWheelmenuAccesskeyApply(_obj) {
     this.activateSelectedItem()
   }
 
-  function onWheelmenuAccesskeyCancel(_obj)
-  {
+  function onWheelmenuAccesskeyCancel(_obj) {
     this.sendAnswerAndClose(this.invalidIndex)
   }
 
-  function onWheelmenuSwitchPage(_obj)
-  {
+  function onWheelmenuSwitchPage(_obj) {
     this.pageIdx = (this.pageIdx + 1) % this.pagesTotal
     this.fill()
   }
 
   function onVoiceMessageSwitchChannel(_obj) {}
 
-  function onShortcutSelectCallback(btnIdx, isDown)
-  {
+  function onShortcutSelectCallback(btnIdx, isDown) {
     let index = (this.pageIdx * ITEMS_PER_PAGE) + btnIdx
     if (!this.isItemAvailable(index))
       return false
@@ -333,18 +309,15 @@ const ITEMS_PER_PAGE = 8
     return true // processed
   }
 
-  function onActivateItemCallback()
-  {
+  function onActivateItemCallback() {
     this.activateSelectedItem()
   }
 
-  function isItemAvailable(index)
-  {
+  function isItemAvailable(index) {
     return (this.menu?[index].name ?? "") != "" && (this.menu?[index].wheelmenuEnabled ?? true)
   }
 
-  function sendAvailableAnswerDelayed(index)
-  {
+  function sendAvailableAnswerDelayed(index) {
     if (this.isItemAvailable(index))
       this.guiScene.performDelayed(this, function() {
         if (this.isValid())
@@ -352,33 +325,28 @@ const ITEMS_PER_PAGE = 8
       })
   }
 
-  function sendAnswerAndClose(index)
-  {
-    if (index!=null)
+  function sendAnswerAndClose(index) {
+    if (index != null)
       this.applyIndex = index
     this.close()
   }
 
-  function showScene(show)
-  {
+  function showScene(show) {
     this.scene.show(show)
     this.scene.enable(show)
     this.isActive = show
     this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
   }
 
-  function close()
-  {
+  function close() {
     this.doApply()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     this.doApply()
   }
 
-  function doApply()
-  {
+  function doApply() {
     if (!this.callbackFunc)
       return
 

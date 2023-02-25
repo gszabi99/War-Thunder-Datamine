@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 
-::gui_start_voicemenu <- function gui_start_voicemenu(config)
-{
+::gui_start_voicemenu <- function gui_start_voicemenu(config) {
   if (::isPlayerDedicatedSpectator())
     return null
 
@@ -33,15 +33,13 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
   return handler
 }
 
-::close_cur_voicemenu <- function close_cur_voicemenu()
-{
+::close_cur_voicemenu <- function close_cur_voicemenu() {
   let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.voiceMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
 }
 
-::gui_handlers.voiceMenuHandler <- class extends ::gui_handlers.wheelMenuHandler
-{
+::gui_handlers.voiceMenuHandler <- class extends ::gui_handlers.wheelMenuHandler {
   wndType = handlerType.CUSTOM
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -54,18 +52,15 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
   squadMsg = false
   category = ""
 
-  function initScreen()
-  {
+  function initScreen() {
     base.initScreen()
     this.updateChannelInfo()
     this.updateFastVoiceMessagesTable()
   }
 
-  function updateChannelInfo()
-  {
+  function updateChannelInfo() {
     let objTitle = this.scene.findObject("wheel_menu_category")
-    if (checkObj(objTitle))
-    {
+    if (checkObj(objTitle)) {
       local text = loc(this.squadMsg ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD" : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
         + loc("ui/colon")
       if (this.category != "")
@@ -79,19 +74,16 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
     this.showSceneBtn("btnSwitchChannel", canUseButtons && ::g_squad_manager.isInSquad(true))
   }
 
-  function getChatMode()
-  {
-    return this.squadMsg? "squad" : "team"
+  function getChatMode() {
+    return this.squadMsg ? "squad" : "team"
   }
 
-  function updateFastVoiceMessagesTable()
-  {
+  function updateFastVoiceMessagesTable() {
     this.showSceneBtn("fast_shortcuts_block", true)
     let isConsoleMode = ::get_is_console_mode_enabled()
     let textRawParam = format("chatMode:t='%s'; padding-left:t='1@bw'", this.getChatMode())
     let messagesArray = []
-    for (local i = 0; i < NUM_FAST_VOICE_MESSAGES; i++)
-    {
+    for (local i = 0; i < NUM_FAST_VOICE_MESSAGES; i++) {
       let messageIndex = ::get_option_favorite_voice_message(i)
       if (messageIndex < 0)
         continue
@@ -103,33 +95,30 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
         continue
 
       let cells = [
-        {id = "name", textType = "text", textRawParam = textRawParam,
+        { id = "name", textType = "text", textRawParam = textRawParam,
          text = format(loc(getVoiceMessageNames()[messageIndex].name + "_0"),
-                         loc("voice_message_target_placeholder"))}
+                         loc("voice_message_target_placeholder")) }
       ]
 
-      let shortcutInputs = shortcutType.getInputs({ shortcutId = fastShortcutId}, KWARG_NON_STRICT)
+      let shortcutInputs = shortcutType.getInputs({ shortcutId = fastShortcutId }, KWARG_NON_STRICT)
       local shortcutInput = null
-      foreach(_idx, input in shortcutInputs)
-      {
+      foreach (_idx, input in shortcutInputs) {
         if (!shortcutInput)
           shortcutInput = input
 
-        if (isConsoleMode && input.getDeviceId() == JOYSTICK_DEVICE_0_ID)
-        {
+        if (isConsoleMode && input.getDeviceId() == JOYSTICK_DEVICE_0_ID) {
           shortcutInput = input
           break
         }
       }
 
-      if (shortcutInput)
-      {
+      if (shortcutInput) {
         if (shortcutInput.getDeviceId() == JOYSTICK_DEVICE_0_ID)
-          cells.append({rawParam = shortcutInput.getMarkup()})
+          cells.append({ rawParam = shortcutInput.getMarkup() })
         else
-          cells.append({text = shortcutInput.getText(),
+          cells.append({ text = shortcutInput.getText(),
                         textType = "textareaNoTab",
-                        textRawParam = "overlayTextColor:t='disabled'"})
+                        textRawParam = "overlayTextColor:t='disabled'" })
       }
 
       messagesArray.append(::buildTableRow(fastShortcutId, cells))
@@ -142,8 +131,7 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
       this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
   }
 
-  function onVoiceMessageSwitchChannel(_obj)
-  {
+  function onVoiceMessageSwitchChannel(_obj) {
     ::switch_voice_message_list_in_squad()
   }
 

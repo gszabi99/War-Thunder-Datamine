@@ -2227,6 +2227,16 @@
         "name": "Ju87_B2_default",
         "blk": "gameData/FlightModels/weaponPresets/Ju-87B-2_default.blk",
         "reqModification": "etc50_4_mod"
+      },
+      {
+        "name": "ju-87b-2_flamm_250",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87b-2_flamm_250.blk",
+        "reqModification": "flamm_250"
+      },
+      {
+        "name": "ju-87b-2_flamm_500",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87b-2_flamm_500.blk",
+        "reqModification": "flamm_500"
       }
     ]
   },
@@ -4259,6 +4269,15 @@
       "reqModLevel": 7.0,
       "tier": 2,
       "modClass": "weapon"
+    },
+    "flamm_250": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "flamm_500": {
+      "reqModification": "flamm_250",
+      "modClass": "weapon",
+      "tier": 2
     }
   },
   "default_skin_tomoe": {

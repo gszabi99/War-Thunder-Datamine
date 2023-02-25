@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -18,7 +19,8 @@ let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 local skyquakePath = debug_get_skyquake_path()
 
 let function debug_check_unlocalized_resources() {
-  if (!::is_dev_version) return
+  if (!::is_dev_version)
+    return
 
   dlog($"debug_check_unlocalized_resources() // {::get_current_language()} // listed in log")
   local count = 0
@@ -28,11 +30,9 @@ let function debug_check_unlocalized_resources() {
   count = 0
   foreach (unit in ::all_units)
     if (unit.isInShop)
-      foreach (suffix in ["_shop", "_0", "_1", "_2"])
-      {
+      foreach (suffix in ["_shop", "_0", "_1", "_2"]) {
         local localeId = unit.name + suffix
-        if (loc(localeId, "") == "")
-        {
+        if (loc(localeId, "") == "") {
           log("    " + localeId)
           count++
         }
@@ -44,12 +44,10 @@ let function debug_check_unlocalized_resources() {
   count = 0
   local placeholder = loc("encyclopedia/no_unit_description")
   foreach (unit in ::all_units)
-    if (unit.isInShop)
-    {
+    if (unit.isInShop) {
       local localeId = "encyclopedia/" + unit.name + "/desc"
       local text = loc(localeId, "")
-      if (text == "" || text == placeholder)
-      {
+      if (text == "" || text == placeholder) {
         log("    " + localeId)
         count++
       }
@@ -60,17 +58,14 @@ let function debug_check_unlocalized_resources() {
   log("SKINS")
   count = 0
   foreach (unit in ::all_units)
-    if (unit.isInShop)
-    {
+    if (unit.isInShop) {
       if (unit.skins.len() == 0)
         unit.skins = ::get_skins_for_unit(unit.name) //always returns at least one entry
 
       foreach (skin in unit.skins)
-        if (skin.name.len())
-        {
+        if (skin.name.len()) {
           local localeId = unit.name + "/" + skin.name
-          if (loc(localeId, "") == "")
-          {
+          if (loc(localeId, "") == "") {
             log("    " + localeId)
             count++
           }
@@ -83,12 +78,10 @@ let function debug_check_unlocalized_resources() {
   count = 0
   local blk = ::get_decals_blk()
   local total = blk.blockCount()
-  for (local i = 0; i < total; i++)
-  {
+  for (local i = 0; i < total; i++) {
     local dblk = blk.getBlock(i)
     local localeId = "decals/" + dblk.getBlockName()
-    if (loc(localeId, "") == "")
-    {
+    if (loc(localeId, "") == "") {
       log("    " + localeId)
       count++
     }
@@ -97,7 +90,8 @@ let function debug_check_unlocalized_resources() {
 }
 
 let function debug_check_unit_naming() {
-  if (!::is_dev_version) return 0
+  if (!::is_dev_version)
+    return 0
 
   local ids = {}
   local names = {}
@@ -110,14 +104,12 @@ let function debug_check_unit_naming() {
   log(brief[brief.len() - 1])
 
   foreach (unit in ::all_units)
-    if (unit.isInShop)
-    {
+    if (unit.isInShop) {
       if (!ids?[unit.shopCountry])
         ids[unit.shopCountry] <- []
       ids[unit.shopCountry].append(unit.name)
     }
-  foreach (c, unitIds in ids)
-  {
+  foreach (c, unitIds in ids) {
     unitIds.sort()
     names[c] <- {}
     foreach (suffix in suffixes)
@@ -128,12 +120,10 @@ let function debug_check_unit_naming() {
   count = 0
   foreach (c, unitIds in ids)
     foreach (unitId in unitIds)
-      foreach (suffix in suffixes)
-      {
+      foreach (suffix in suffixes) {
         local locId = unitId + suffix
         local locName = loc(locId)
-        if (locName == locId)
-        {
+        if (locName == locId) {
           locName = ""
           log(format("    \"%s\" - not found in localization", locId))
           count++
@@ -149,8 +139,7 @@ let function debug_check_unit_naming() {
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       for (local j = i + 1; j < unitIds.len(); j++)
-        if (names[c]._shop[i] != "" && names[c]._shop[j] != "" && names[c]._shop[i] == names[c]._shop[j])
-        {
+        if (names[c]._shop[i] != "" && names[c]._shop[j] != "" && names[c]._shop[i] == names[c]._shop[j]) {
           log(format("    '%s_shop', '%s_shop' - both units named \"%s\"",
             unitIds[i], unitIds[j], names[c]._shop[i]))
           count++
@@ -164,8 +153,7 @@ let function debug_check_unit_naming() {
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       for (local j = i + 1; j < unitIds.len(); j++)
-        if (names[c]._0[i] != "" && names[c]._0[j] != "" && names[c]._0[i] == names[c]._0[j])
-        {
+        if (names[c]._0[i] != "" && names[c]._0[j] != "" && names[c]._0[i] == names[c]._0[j]) {
           log(format("    '%s_0', '%s_0' - both units named \"%s\"",
             unitIds[i], unitIds[j], names[c]._0[i]))
           count++
@@ -179,8 +167,7 @@ let function debug_check_unit_naming() {
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._0[i] != "" &&
-        ::utf8_strlen(names[c]._shop[i]) > ::utf8_strlen(names[c]._0[i]))
-      {
+        ::utf8_strlen(names[c]._shop[i]) > ::utf8_strlen(names[c]._0[i])) {
         log(format("    '%s_shop' (\"%s\") is longer than '%s_0' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._shop[i], unitIds[i], names[c]._0[i]))
         count++
@@ -194,8 +181,7 @@ let function debug_check_unit_naming() {
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._1[i] != "" &&
-        ::utf8_strlen(names[c]._1[i]) > ::utf8_strlen(names[c]._shop[i]))
-      {
+        ::utf8_strlen(names[c]._1[i]) > ::utf8_strlen(names[c]._shop[i])) {
         log(format("    '%s_1' (\"%s\") is longer than '%s_shop' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._1[i], unitIds[i], names[c]._shop[i]))
         count++
@@ -208,12 +194,10 @@ let function debug_check_unit_naming() {
   count = 0
   foreach (c, unitIds in ids)
     foreach (idx, unitId in unitIds)
-      foreach (suffix in suffixes)
-      {
+      foreach (suffix in suffixes) {
         local name = names[c][suffix][idx]
         local fixed = regexp2(@"\s\s").replace(" ", strip(name))
-        if (name.len() > fixed.len())
-        {
+        if (name.len() > fixed.len()) {
           log(format("    \"%s%s\" - need to trim space characters here: \"%s\"",
             unitId, suffix, name))
           count++
@@ -242,13 +226,11 @@ let function debug_check_unit_naming() {
     }
   }
   local cfg = configs?[locale] ?? configs.Other
-  foreach (c, unitIds in ids)
-  {
+  foreach (c, unitIds in ids) {
     if (cfg?.countriesCheck && !isInArray(c, cfg.countriesCheck))
       continue
     foreach (idx, unitId in unitIds)
-      foreach (suffix in suffixes)
-      {
+      foreach (suffix in suffixes) {
         local origName = names[c][suffix][idx]
         local nameLow = ::g_string.utf8ToLower(origName)
         local fixed = cfg.suspiciousChars.replace("_", nameLow)
@@ -344,13 +326,11 @@ local unitImagesCheckCfgs = [
   },
 ]
 
-local function unitImagesSearchEverywhere(fn, files, unit, cfg)
-{
+local function unitImagesSearchEverywhere(fn, files, unit, cfg) {
   local res = []
   foreach (pathKey in [ "pathRel", "pathDev" ])
     foreach (unitTag, subDir in cfg.subDirs)
-      if (files[unitTag][pathKey].indexof(fn) != null)
-      {
+      if (files[unitTag][pathKey].indexof(fn) != null) {
         local path = ::g_string.replace("/".concat(cfg[pathKey], subDir, fn), "/", "\\")
         if (res.findvalue(@(v) v.path == path) == null)
           res.append({
@@ -368,14 +348,11 @@ let function debug_check_unit_images(verbose = false) {
   local info      = 0
   local printFunc = console_print
 
-  foreach (cfg in unitImagesCheckCfgs)
-  {
+  foreach (cfg in unitImagesCheckCfgs) {
     local files = {}
-    foreach (unitTag, subDir in cfg.subDirs)
-    {
+    foreach (unitTag, subDir in cfg.subDirs) {
       files[unitTag] <- {}
-      foreach (pathKey in [ "pathRel", "pathDev" ])
-      {
+      foreach (pathKey in [ "pathRel", "pathDev" ]) {
         local list = dagor_fs.scan_folder({ root = $"{cfg[pathKey]}/{subDir}",
           files_suffix = cfg.mask, vromfs = false, realfs = true, recursive = true })
         files[unitTag][pathKey] <- list.map(@(path) stdpath.fileName(path).tolower()).sort()
@@ -384,27 +361,23 @@ let function debug_check_unit_images(verbose = false) {
 
     cfg?.onStart()
     local units = cfg?.filterUnits ? unitsList.filter(cfg.filterUnits) : unitsList
-    foreach (_idx, unit in units)
-    {
+    foreach (_idx, unit in units) {
       local fn = cfg.getImgFnForUnit(unit).tolower()
       local unitTag = unit.unitType.getCrewTag()
       local unitSrc = unit.isPkgDev ? "pkg_dev" : "release"
       local pathKey = unit.isPkgDev ? "pathDev" : "pathRel"
 
-      if (fn == "" || fn == cfg.placeholderFn)
-      {
+      if (fn == "" || fn == cfg.placeholderFn) {
         local valueTxt = fn == "" ? "empty string" : $"placeholder: \"{fn}\""
         local expectedFn = cfg.getImgFnByUnitId(unit.name).tolower()
         local located = unitImagesSearchEverywhere(expectedFn, files, unit, cfg)?[0]
 
-        if (located != null)
-        {
+        if (located != null) {
           // Image exists, no need to use a placeholder.
           errors++
           printFunc($"ERROR: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt} (but image exists: \"{located.path}\")")
         }
-        else
-        {
+        else {
           // Image not exists, placeholder is used.
           local isError = !unit.isPkgDev
           if (isError)
@@ -418,12 +391,10 @@ let function debug_check_unit_images(verbose = false) {
         continue
       }
 
-      if (files[unitTag][pathKey].indexof(fn) == null)
-      {
+      if (files[unitTag][pathKey].indexof(fn) == null) {
         // Image not exists, or has wrong location.
         local imgUnit = ::getAircraftByName(cfg.getUnitIdByImgFn(fn))
-        if (imgUnit != null && imgUnit != unit && unit.isPkgDev && !imgUnit.isPkgDev)
-        {
+        if (imgUnit != null && imgUnit != unit && unit.isPkgDev && !imgUnit.isPkgDev) {
           local unitTag2 = imgUnit.unitType.getCrewTag()
           local pathKey2 = imgUnit.isPkgDev ? "pathDev" : "pathRel"
           if (files[unitTag2][pathKey2].indexof(fn) != null)
@@ -445,16 +416,14 @@ let function debug_check_unit_images(verbose = false) {
         expectedPath = ::g_string.replace(expectedPath, "/", "\\")
         printFunc($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" {accidentText}: \"{expectedPath}\"{comment}")
       }
-      else
-      {
+      else {
         // Image exists, lets search for duplicates.
         local locatedList = unitImagesSearchEverywhere(fn, files, unit, cfg)
         if (locatedList.len() > 1) {
           local expectedPath = "/".concat(cfg[pathKey], cfg.subDirs[unitTag], fn)
           expectedPath = ::g_string.replace(expectedPath, "/", "\\")
           foreach (located in locatedList)
-            if (located.path != expectedPath)
-            {
+            if (located.path != expectedPath) {
               warnings++
               printFunc($"WARNING: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" exists: \"{expectedPath}\" (but has a DUPLICATE: \"{located.path}\")")
             }
@@ -476,9 +445,8 @@ let function debug_cur_level_auto_skins() {
     fullDebugtext += " ( " + skinLocations.debugLocationMask(skinLocations.getMaskByLevel(level)) + " )"
 
   local total = 0
-  foreach(unit in ::all_units)
-    if (unit.unitType.isSkinAutoSelectAvailable())
-    {
+  foreach (unit in ::all_units)
+    if (unit.unitType.isSkinAutoSelectAvailable()) {
       total++
       fullDebugtext += "\n" + unit.name + " -> "
         + ::g_string.implode(::g_decorator.getBestSkinsList(unit.name, true), ", ")
@@ -490,10 +458,9 @@ let function debug_cur_level_auto_skins() {
 
 let function debug_all_skins_without_location_mask() {
   local totalList = []
-  foreach(unit in ::all_units)
+  foreach (unit in ::all_units)
     if (unit.unitType.isSkinAutoSelectAvailable())
-      foreach(skin in unit.getSkins())
-      {
+      foreach (skin in unit.getSkins()) {
         if (skin.name == "")
           continue
         local mask = skinLocations.getSkinLocationsMask(skin.name, unit.name)

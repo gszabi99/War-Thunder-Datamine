@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   ::gui_start_modal_wnd(::gui_handlers.PaymentHandler, params)
 }
 
-::gui_handlers.PaymentHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.PaymentHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/payment.blk"
   owner           = null
@@ -20,27 +20,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   selItem = null
   cancel_fn = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.initPaymentsList()
   }
 
-  function initPaymentsList()
-  {
+  function initPaymentsList() {
     let paymentsObj = this.scene.findObject("content")
-    foreach (idx, item in this.items)
-    {
+    foreach (idx, item in this.items) {
       let payItem = this.guiScene.createElementByObject(paymentsObj, "%gui/paymentItem.blk", "paymentItem", this)
-      payItem.id = "payment_"+idx
+      payItem.id = "payment_" + idx
       payItem.tooltip = loc(getTblValue("name", item, ""))
       payItem.findObject("payIcon")["background-image"] = getTblValue("icon", item, "")
-      payItem.findObject("payText").setValue(getTblValue("icon", item, "")=="" ? loc(getTblValue("name", item, "")) : "")
+      payItem.findObject("payText").setValue(getTblValue("icon", item, "") == "" ? loc(getTblValue("name", item, "")) : "")
     }
     ::move_mouse_on_child(paymentsObj)
   }
 
-  function onPaymentSelect(obj)
-  {
+  function onPaymentSelect(obj) {
     if (!obj)
       return
     if (!this.items)

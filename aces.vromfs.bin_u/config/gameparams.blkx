@@ -368,13 +368,18 @@
   "enableBotTorpedoShooting": true,
   "torpedoShootByBotMaxDistance": 7500.0,
   "preventBotsLeavingBattleArea": true,
-  "enableAutoTorpedoGunsSwitch": true,
   "wheelFireFxName": "tank_fire_track",
   "wheelFireTimers": [
     7.0,
     3.0
   ],
   "enableFlightModelDamageTexture": false,
+  "maxDistanceForUpdateWithShipPhys": 800.0,
+  "maxDistanceForDetailedUpdateShipPhys": 400.0,
+  "dynLightsShadows_z_bias": -0.00012,
+  "dynLightsShadows_slope_z_bias": -0.2,
+  "dynLightsShadows_shader_z_bias": 0.006,
+  "dynLightsShadows_shader_slope_z_bias": 0.016,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -6929,6 +6934,12 @@
       }
     }
   },
+  "commonScenes": {
+    "scene": "gameData/scenes/common_scene.blk"
+  },
+  "commonClientScenes": {
+    "scene": "gameData/scenes/common_client_scene.blk"
+  },
   "shipBigCaliberPenetrationDistances": {
     "dist": [
       1000.0,
@@ -7997,7 +8008,7 @@
     "shotDirDetectAngle": 4.0,
     "depthChargeDetectDistance": 50.0,
     "navalMineDetectDistance": 160.0,
-    "sightLineDistMax": 12000.0
+    "sightLineDistMax": 22000.0
   },
   "antialiasing": {
     "fxaaQuality": 29,
@@ -12488,10 +12499,6 @@
       ]
     }
   },
-  "facebook": {
-    "website": "http://www.facebook.com",
-    "permissions": "public_profile,user_friends"
-  },
   "oculusGui": {
     "uiDepth": 5.0,
     "uiVFovScale": 0.765,
@@ -12783,192 +12790,357 @@
     },
     "viewer_xray": {
       "p": [
-        "aps_sensor_",
-        "aps_launcher_",
-        "driver_",
-        "machine_gunner_",
-        "loader_",
-        "commander_",
-        "gunner_",
-        "optic_",
-        "drive_turret_h_",
-        "drive_turret_v_",
-        "cannon_breech_",
-        "fuel_tank_",
-        "ammo_",
-        "radiator_",
-        "radio_station_",
         "sonar_",
-        "engine_",
-        "transmission_",
-        "steering_gear_",
-        "engine_room_",
-        "gun_barrel_dm",
-        "gun_barrel_0",
-        "gun_barrel_1",
-        "tt_",
-        "torpedo_0",
-        "torpedo_1",
-        "torpedo_2",
-        "torpedo_3",
-        "mg_",
         "composite_armor_hull_",
         "composite_armor_turret_",
         "ex_era_hull_",
         "ex_era_turret_",
-        "antenna_target_location_",
-        "antenna_target_tagging_",
-        "antenna_target_tagging_mount_",
-        "countermeasure_",
-        "fire_director_",
-        "fire_director_mount_",
-        "catapult_",
-        "catapult_mount_",
-        "aircraft_",
-        "coal_bunker_",
-        "fire_control_room_",
-        "rangefinder_",
-        "rangefinder_mount_",
-        "handling_room_",
+        {
+          "name": "aps_sensor_",
+          "xrayColor": "47vj/w=="
+        },
+        {
+          "name": "aps_launcher_",
+          "xrayColor": "zAAA/w=="
+        },
+        {
+          "name": "driver_",
+          "xrayColor": "0sem/w=="
+        },
+        {
+          "name": "machine_gunner_",
+          "xrayColor": "0sem/w=="
+        },
+        {
+          "name": "loader_",
+          "xrayColor": "0sem/w=="
+        },
+        {
+          "name": "commander_dm",
+          "xrayColor": "0sem/w=="
+        },
+        {
+          "name": "gunner_",
+          "xrayColor": "0sem/w=="
+        },
+        {
+          "name": "ammo_",
+          "xrayColor": "zAAA/w=="
+        },
+        {
+          "name": "fuel_tank_",
+          "xrayColor": "/5kA/w=="
+        },
+        {
+          "name": "cannon_breech_",
+          "xrayColor": "7lBQ/w=="
+        },
+        {
+          "name": "drive_turret_v_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "drive_turret_h_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "optic_",
+          "xrayColor": "n8Xo/w=="
+        },
+        {
+          "name": "commander_panoramic_sight_",
+          "xrayColor": "n8Xo/w=="
+        },
+        {
+          "name": "radiator_",
+          "xrayColor": "uc2w/w=="
+        },
+        {
+          "name": "radio_station_",
+          "xrayColor": "/f2U/w=="
+        },
+        {
+          "name": "engine_",
+          "xrayColor": "S6ZQ/w=="
+        },
+        {
+          "name": "transmission_",
+          "xrayColor": "e7xf/w=="
+        },
+        {
+          "name": "steering_gear_",
+          "xrayColor": "opjA/w=="
+        },
+        {
+          "name": "engine_room_",
+          "xrayColor": "S6ZQ/w=="
+        },
+        {
+          "name": "gun_barrel_dm",
+          "xrayColor": "7lBQ/w=="
+        },
+        {
+          "name": "gun_barrel_0",
+          "xrayColor": "7lBQ/w=="
+        },
+        {
+          "name": "gun_barrel_1",
+          "xrayColor": "7lBQ/w=="
+        },
+        {
+          "name": "tt_",
+          "xrayColor": "7lBQ/w=="
+        },
+        {
+          "name": "torpedo_0",
+          "xrayColor": "zAAA/w=="
+        },
+        {
+          "name": "torpedo_1",
+          "xrayColor": "zAAA/w=="
+        },
+        {
+          "name": "torpedo_2",
+          "xrayColor": "zAAA/w=="
+        },
+        {
+          "name": "torpedo_3",
+          "xrayColor": "zAAA/w=="
+        },
+        {
+          "name": "mg_",
+          "xrayColor": "7lBQ/w=="
+        },
+        {
+          "name": "antenna_target_location_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "antenna_target_tagging_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "antenna_target_tagging_mount_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "countermeasure_",
+          "xrayColor": "47vj/w=="
+        },
+        {
+          "name": "fire_director_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "fire_director_mount_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "fire_control_room_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "rangefinder_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "rangefinder_mount_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "handling_room_",
+          "xrayColor": "WKXs/w=="
+        },
+        {
+          "name": "catapult_",
+          "xrayColor": "3s69/w=="
+        },
+        {
+          "name": "catapult_mount_",
+          "xrayColor": "3s69/w=="
+        },
+        {
+          "name": "aircraft_",
+          "xrayColor": "3s69/w=="
+        },
+        {
+          "name": "coal_bunker_",
+          "xrayColor": "77tr/w=="
+        },
         {
           "name": "depth_charge_0",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_1",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_2",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_3",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_4",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_5",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_6",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_7",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_8",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_9",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_l",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "depth_charge_r",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "mine_0",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "mine_1",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "mine_2",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "mine_3",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "mine_4",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "mine_5",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "mine_6",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "auxiliary_caliber_turret",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "7lBQ/w=="
         },
         {
           "name": "auxiliary_caliber_gun",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "7lBQ/w=="
         },
         {
           "name": "main_caliber_gun",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "7lBQ/w=="
         },
         {
           "name": "main_caliber_turret",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "7lBQ/w=="
         },
         {
           "name": "aa_gun",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "7lBQ/w=="
         },
         {
           "name": "aa_turret",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "7lBQ/w=="
         },
         {
           "name": "depth_charge_r",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "ammunition_storage",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "ammunition_storage_shells",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "ammunition_storage_charges",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
           "name": "ammunition_storage_aux",
-          "unit": "ship"
+          "unit": "ship",
+          "xrayColor": "zAAA/w=="
         },
         {
-          "name": "coal_bunker",
-          "unit": "ship"
+          "name": "coal_bunker_",
+          "unit": "ship",
+          "xrayColor": "77tr/w=="
         },
         {
-          "name": "bridge",
-          "unit": "ship"
+          "name": "bridge_",
+          "unit": "ship",
+          "xrayColor": "opjA/w=="
         },
         {
-          "name": "funnel",
-          "unit": "ship"
+          "name": "funnel_",
+          "unit": "ship",
+          "xrayColor": "uc2w/w=="
         },
         {
-          "name": "pump",
-          "unit": "ship"
+          "name": "pump_",
+          "unit": "ship",
+          "xrayColor": "zMzM/w=="
         },
         {
-          "name": "elevator",
-          "unit": "ship"
+          "name": "elevator_",
+          "unit": "ship",
+          "xrayColor": "9MzM/w=="
         }
       ]
     },
@@ -13757,6 +13929,38 @@
         },
         {
           "name": "wheel_r_01_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "type_16_mcv"
+        },
+        {
+          "name": "wheel_r_01_",
           "modelNames": "aubl_74_60_70m"
         },
         {
@@ -14170,6 +14374,118 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "gmc_cckw_353_m45_quad"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_l_07_",
+          "modelNames": "sdkfz_251_9"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_10"
+        },
+        {
+          "name": "wheel_l_07_",
+          "modelNames": "sdkfz_251_10"
         },
         {
           "name": "wheel_r_01_",
@@ -14177,6 +14493,54 @@
         },
         {
           "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_21"
+        },
+        {
+          "name": "wheel_l_07_",
           "modelNames": "sdkfz_251_21"
         },
         {
@@ -14185,6 +14549,54 @@
         },
         {
           "name": "wheel_l_01_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_05_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_05_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_06_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_06_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_r_07_",
+          "modelNames": "sdkfz_251_22"
+        },
+        {
+          "name": "wheel_l_07_",
           "modelNames": "sdkfz_251_22"
         },
         {
@@ -14901,14 +15313,6 @@
         },
         {
           "name": "wheel_r_01_",
-          "modelNames": "sdkfz_251_9"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "sdkfz_251_9"
-        },
-        {
-          "name": "wheel_r_01_",
           "modelNames": "vab_santal"
         },
         {
@@ -14994,6 +15398,102 @@
         {
           "name": "wheel_l_02_",
           "modelNames": "fiat_cm52"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "hj_9"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_222"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sdkfz_222_early"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "pantsyr_s1"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "m53_59"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "m53_59"
         }
       ]
     },
@@ -15305,34 +15805,107 @@
     },
     "viewer_xray": {
       "p": [
-        "pilot",
-        "gunner",
-        "wingcontrol",
-        "wingcontrol",
-        "wingcontrol",
-        "tailcontrol",
-        "transmission",
-        "engine_shaft",
-        "propeller_shaft",
-        "spar",
-        "engine",
-        "tank",
-        "oil",
-        "water",
-        "cannon",
-        "mgun",
-        "gun0",
-        "gun1",
-        "gun2",
-        "gun3",
-        "gun4",
-        "gun5",
-        "gun6",
-        "gun7",
-        "gun8",
-        "gun9",
-        "radar",
-        "ext_armor"
+        "ext_armor",
+        {
+          "name": "pilot",
+          "xrayColor": "0sem/w=="
+        },
+        {
+          "name": "gunner",
+          "xrayColor": "0sem/w=="
+        },
+        {
+          "name": "wingcontrol",
+          "xrayColor": "opjA/w=="
+        },
+        {
+          "name": "tailcontrol",
+          "xrayColor": "opjA/w=="
+        },
+        {
+          "name": "transmission",
+          "xrayColor": "e7xf/w=="
+        },
+        {
+          "name": "engine_shaft",
+          "xrayColor": "e7xf/w=="
+        },
+        {
+          "name": "propeller_shaft",
+          "xrayColor": "e7xf/w=="
+        },
+        {
+          "name": "spar",
+          "xrayColor": "zMzM/w=="
+        },
+        {
+          "name": "engine",
+          "xrayColor": "S6ZQ/w=="
+        },
+        {
+          "name": "tank",
+          "xrayColor": "/5kA/w=="
+        },
+        {
+          "name": "oil",
+          "xrayColor": "uc2w/w=="
+        },
+        {
+          "name": "water",
+          "xrayColor": "uc2w5g=="
+        },
+        {
+          "name": "cannon",
+          "xrayColor": "7lBQ/w=="
+        },
+        {
+          "name": "mgun",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun0",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun1",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun2",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun3",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun4",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun5",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun6",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun7",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun8",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "gun9",
+          "xrayColor": "7lBQ5g=="
+        },
+        {
+          "name": "radar",
+          "xrayColor": "WKXs/w=="
+        }
       ]
     },
     "body": {
@@ -16047,7 +16620,10 @@
         "airfield_flight_light_blue",
         "airfield_flight_light_red",
         "airfield_flight_light_green",
-        "airfield_flight_light_yellow"
+        "airfield_flight_light_yellow",
+        "japan_i_400_dmg_dp_01",
+        "japan_i_400_dmg_dp_02",
+        "japan_i_400_dmg_dp_03"
       ]
     },
     "hideForMode1": {
@@ -16449,7 +17025,9 @@
         "bucket_wheel_excavator_crane_platform",
         "bucket_wheel_excavator_jib",
         "bucket_wheel_excavator_hull",
-        "bucket_wheel_excavator_wheel"
+        "bucket_wheel_excavator_wheel",
+        "searchlight_tower_winter_a",
+        "searchlight_tower_winter_a_dmg"
       ]
     },
     "badLod1ForStaticShadow": {
@@ -17087,6 +17665,194 @@
       ]
     ]
   },
+  "tankExhaustSettings": {
+    "scale": {
+      "row": [
+        [
+          0.0,
+          0.3
+        ],
+        [
+          0.1,
+          0.5
+        ],
+        [
+          0.5,
+          0.6
+        ],
+        [
+          0.9,
+          0.7
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "alpha": {
+      "row": [
+        [
+          0.0,
+          0.2
+        ],
+        [
+          0.1,
+          0.3
+        ],
+        [
+          0.5,
+          0.6
+        ],
+        [
+          0.9,
+          0.8
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "velocity": {
+      "row": [
+        [
+          0.0,
+          0.2
+        ],
+        [
+          0.1,
+          0.3
+        ],
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.9,
+          0.6
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "spawnRate": {
+      "row": [
+        [
+          0.0,
+          0.3
+        ],
+        [
+          0.1,
+          0.7
+        ],
+        [
+          0.5,
+          0.8
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "shipExhaustSettings": {
+    "scale": {
+      "row": [
+        [
+          0.0,
+          0.3
+        ],
+        [
+          0.1,
+          0.6
+        ],
+        [
+          0.5,
+          0.7
+        ],
+        [
+          0.9,
+          0.9
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "alpha": {
+      "row": [
+        [
+          0.0,
+          0.2
+        ],
+        [
+          0.1,
+          0.3
+        ],
+        [
+          0.5,
+          0.6
+        ],
+        [
+          0.9,
+          0.9
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "velocity": {
+      "row": [
+        [
+          0.0,
+          0.2
+        ],
+        [
+          0.1,
+          0.5
+        ],
+        [
+          0.5,
+          0.8
+        ],
+        [
+          0.9,
+          0.9
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    },
+    "spawnRate": {
+      "row": [
+        [
+          0.0,
+          0.3
+        ],
+        [
+          0.1,
+          0.7
+        ],
+        [
+          0.5,
+          0.8
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
   "DofGunnerFPSCamera": {
     "enable": true,
     "nearStartDist": 1.0,
@@ -17367,6 +18133,13 @@
   "rocketMotorParams": {
     "rocketYZVelocityMultiplier": 1.0
   },
+  "shellBallisticsParams": {
+    "useCxiMach": false,
+    "applyWingAreaMultToCxAoA": true,
+    "props": {
+      "CxAoA": 0.3
+    }
+  },
   "dropSplashes": {
     "splashesCount": 10000,
     "distance": 50.0,
@@ -17501,7 +18274,7 @@
   },
   "holeRenderingRadiusConstants": {
     "maxRadius": 0.75,
-    "minRadius": 0.05,
+    "minRadius": 0.12,
     "explosionRadiusMult": 0.8,
     "caliberRadiusMult": 1.5,
     "applyCaliberRadiusIfExplosion": false,
@@ -17514,20 +18287,17 @@
     "useCaliberOnRadius": true,
     "holeOneEntryPointForHe": true,
     "mininmumRadiusForShrapnel": 0.01,
-    "minRadiusForBulletHoles": [
-      0.01,
-      0.0
-    ],
     "minCaliberForBulletHoles": 0.014,
     "multForBurnRadius": 0.2,
     "minBurnRadius": 0.01,
     "maxBurnRadius": 1.0,
     "multForBulletHolesRadius": 1.0,
+    "minRadiusForBulletHoles": 0.01,
     "maxRadiusForBulletHoles": 0.1,
     "multForRadiusDiffMark": 1.0,
     "minRadiusDiffMark": -1.0,
     "maxRadiusDiffMark": 1.0,
-    "multForRadiusShrapnelDecal": 1.0,
+    "multForRadiusShrapnelDecal": 1.3,
     "minRadiusShrapnelDecal": 0.15,
     "maxRadiusShrapnelDecal": 10.0,
     "multForRadiusBulletDiffMark": 1.0,
@@ -17585,7 +18355,15 @@
     "useProjectedDecalsForSplashDecals": true,
     "useExplosionPatch": true,
     "multRadiusForTracedExplosionPatch": 1.0,
-    "multRadiusForProjectedExplosionPatch": 1.5
+    "multRadiusForProjectedExplosionPatch": 1.0,
+    "burnMarkRadiusMultBomber": 0.8,
+    "burnMarkRadiusMultOther": 0.5,
+    "burnMarkOpacityDeltaTime": 6.0,
+    "burnMarkMaxOpacity": 0.93,
+    "maximumRayPerProximityDamage": 15,
+    "minRadiusProximityDamage": 0.6,
+    "maxRadiusProximityDamage": 0.7,
+    "numProximityDamageVisualPerPart": 3
   },
   "cutting": {
     "diffMarksTex": "dyn_decals_atlas_a",
@@ -18044,8 +18822,8 @@
   "prefetchEffects": {
     "name": [
       "explosion_ship_big",
-      "tank_exhaust",
-      "ship_exhaust",
+      "tank_exhaust_med",
+      "ship_exhaust_med",
       "ad_metal",
       "ad_metal_small",
       "ad_wood_small",
@@ -18086,5 +18864,16 @@
       "location_ground_papers",
       "dust_pieces"
     ]
+  },
+  "ambientWindParams": {
+    "maxWindNoiseSpeed": 30.0,
+    "minWindNoiseSpeed": 1.0,
+    "maxWindNoiseScale": 100.0,
+    "minWindNoiseScale": 12.0,
+    "minWindNoiseStrength": 8.0,
+    "maxWindNoiseStrength": 40.0,
+    "maxWindNoisePerpendicularStrength": 0.5,
+    "minWindNoisePerpendicularStrength": 0.2,
+    "windNoiseTextureName": "perlin_noise_wind_ati1n"
   }
 }

@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {TurretYaw, TurretPitch} = require("planeState/planeWeaponState.nut")
-let {Roll} = require("planeState/planeFlyState.nut")
+let { TurretYaw, TurretPitch } = require("planeState/planeWeaponState.nut")
+let { Roll } = require("planeState/planeFlyState.nut")
 let agmAimState = require("agmAimState.nut")
 let AgmTrackerVisible = agmAimState.TrackerVisible
 let AgmTrackerAngle = agmAimState.TrackerAngle

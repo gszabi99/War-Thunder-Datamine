@@ -1,0 +1,61 @@
+{
+  "bombGun": true,
+  "preset_cost": 100,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "it_250kg_napalm_aerea_559g1",
+  "bomb": {
+    "mass": 253.0,
+    "explosiveType": "aerea_64057",
+    "explosiveMass": 260.0,
+    "bombName": "it_250kg_napalm_aerea_559g1",
+    "dragCx": 0.07,
+    "caliber": 0.75,
+    "length": 3.28,
+    "distFromCmToStab": 1.2,
+    "sound": [
+      "weapon.bomb_std",
+      "weapon.bomb_mid"
+    ],
+    "useDelayExplosion": false,
+    "waterExplosionEffect": "explosion_napalm_fireball",
+    "explosionFx": "explosion_napalm_fireball",
+    "explosionPatchRadius": 12.0,
+    "iconType": "napalm_large",
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    },
+    "splash": {
+      "innerRadius": 7.0,
+      "outerRadius": 12.0,
+      "penetration": 24.0,
+      "damage": 6200.0,
+      "damageType": "napalm"
+    },
+    "fireDamage": {
+      "velocityMult": 3.5,
+      "maxFlightTime": 10.0,
+      "maxFlightDistance": 50.0,
+      "maxRise": 10.0,
+      "lifeTime": 30.0,
+      "penetration": 10.0,
+      "damage": 10.0,
+      "damageType": "napalm",
+      "radius": 7.0,
+      "fxType": "explosion_napalm_wrackages",
+      "burnFxType": "explosion_napalm_firespot",
+      "burnFxSize": 12.0,
+      "scorchMarginSize": 1.0,
+      "scorchStrength": 1.0,
+      "scorchDuration": 10.0,
+      "emitterCount": 3,
+      "emitterDispersion": 0.7
+    }
+  }
+}

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -9,10 +10,8 @@ let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
-::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData)
-{
-  if (!::clan_get_admin_editor_mode())
-  {
+::gui_start_change_role_wnd <- function gui_start_change_role_wnd(contact, clanData) {
+  if (!::clan_get_admin_editor_mode()) {
     let myClanRights = ::g_clans.getMyClanRights()
     let leadersCount = ::g_clans.getLeadersCount(clanData)
     if (contact.name == ::my_user_name
@@ -35,8 +34,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     })
 }
 
-::gui_handlers.clanChangeRoleModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.clanChangeRoleModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanChangeRoleWindow.blk"
   changeRolePlayer = null
@@ -44,21 +42,19 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
   adminMode = false
   clanType = ::g_clan_type.UNKNOWN
 
-  function initScreen()
-  {
+  function initScreen() {
     this.roles = [];
     this.adminMode = ::clan_get_admin_editor_mode()
     local roleOptions = "";
     let roleListObj = this.scene.findObject("change_role_list");
     let titleObj = this.scene.findObject("title_text");
-    let myRole = this.adminMode? ECMR_CLANADMIN : ::clan_get_my_role()
+    let myRole = this.adminMode ? ECMR_CLANADMIN : ::clan_get_my_role()
     let myRank = ::clan_get_role_rank(myRole)
 
     if (checkObj(titleObj))
       titleObj.setValue("{0} {1}".subst(loc("clan/changeRoleTitle"), getPlayerName(this.changeRolePlayer.name)))
 
-    for (local role = 0; role<ECMR_MAX_TOTAL; role++)
-    {
+    for (local role = 0; role < ECMR_MAX_TOTAL; role++) {
        let roleName = ::clan_get_role_name(role);
        if (!roleName)
          continue;
@@ -77,30 +73,27 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     this.roles.sort(this.sortRoles)
 
     local curIdx = 0
-    foreach(idx, role in this.roles)
-    {
+    foreach (idx, role in this.roles) {
       roleOptions += format("shopFilter { id:t='role_%d'; shopFilterText { id:t='text'; width:t='pw'; %s } %s } \n",
         idx,
-        role.current? "style:t='color:@mainPlayerColor'; ": "",
-        role.enabled? "" : "enable:t='no'; "
+        role.current ? "style:t='color:@mainPlayerColor'; " : "",
+        role.enabled ? "" : "enable:t='no'; "
       )
       if (role.current)
         curIdx = idx
     }
 
     this.guiScene.replaceContentFromText(roleListObj, roleOptions, roleOptions.len(), this)
-    foreach(idx, role in this.roles)
-    {
-      let option = this.scene.findObject("role_"+idx)
-      option.findObject("text").setValue(loc("clan/"+role.name))
-      option.tooltip = (role.current? (loc("clan/currentRole")+"\n\n") : "") + lbDataType.ROLE.getPrimaryTooltipText(role.id)
+    foreach (idx, role in this.roles) {
+      let option = this.scene.findObject("role_" + idx)
+      option.findObject("text").setValue(loc("clan/" + role.name))
+      option.tooltip = (role.current ? (loc("clan/currentRole") + "\n\n") : "") + lbDataType.ROLE.getPrimaryTooltipText(role.id)
     }
     roleListObj.setValue(curIdx)
     ::move_mouse_on_child(roleListObj, curIdx)
   }
 
-  function sortRoles(role1, role2)
-  {
+  function sortRoles(role1, role2) {
     let rank1 = getTblValue("rank", role1, -1)
     let rank2 = getTblValue("rank", role2, -1)
     if (rank1 != rank2)
@@ -108,21 +101,19 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
     return 0
   }
 
-  function onApply()
-  {
+  function onApply() {
     let roleListObj = this.scene.findObject("change_role_list");
     let newRoleIdx = roleListObj.getValue();
 
     if (!(newRoleIdx in this.roles))
       return;
 
-    if (this.roles[newRoleIdx].current)
-    {
+    if (this.roles[newRoleIdx].current) {
       this.goBack();
       return;
     }
 
-    let msg = loc("clan/roleChanged") + " " + loc("clan/"+this.roles[newRoleIdx].name)
+    let msg = loc("clan/roleChanged") + " " + loc("clan/" + this.roles[newRoleIdx].name)
     let taskId = ::clan_request_change_member_role(this.changeRolePlayer.uid, this.roles[newRoleIdx].name)
 
     if (taskId >= 0 && !this.adminMode)
@@ -133,7 +124,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
       ::g_popups.add(null, msg)
     }
 
-    ::g_tasker.addTask(taskId, {showProgressBox = true}, onTaskSuccess)
+    ::g_tasker.addTask(taskId, { showProgressBox = true }, onTaskSuccess)
     this.goBack()
   }
 }

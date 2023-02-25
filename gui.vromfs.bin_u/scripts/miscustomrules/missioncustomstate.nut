@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,13 +16,11 @@ foreach (fn in [
                ])
   ::g_script_reloader.loadOnce("%scripts/misCustomRules/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
 
-::on_custom_mission_state_changed <- function on_custom_mission_state_changed()
-{
+::on_custom_mission_state_changed <- function on_custom_mission_state_changed() {
   ::g_mis_custom_state.onMissionStateChanged()
 }
 
-::on_custom_user_state_changed <- function on_custom_user_state_changed(userId64)
-{
+::on_custom_user_state_changed <- function on_custom_user_state_changed(userId64) {
   ::g_mis_custom_state.onUserStateChanged(userId64)
 }
 
@@ -30,8 +29,7 @@ foreach (fn in [
   isCurRulesValid = false
 }
 
-::g_mis_custom_state.getCurMissionRules <- function getCurMissionRules()
-{
+::g_mis_custom_state.getCurMissionRules <- function getCurMissionRules() {
   if (this.isCurRulesValid)
     return this.curRules
 
@@ -50,26 +48,22 @@ foreach (fn in [
   return this.curRules
 }
 
-::g_mis_custom_state.getCurMissionRulesName <- function getCurMissionRulesName()
-{
+::g_mis_custom_state.getCurMissionRulesName <- function getCurMissionRulesName() {
   let mis = ::is_in_flight() ? ::get_current_mission_info_cached() : null
   return mis?.customRules.guiName ?? mis?.customRules.name
 }
 
-::g_mis_custom_state.findRulesClassByName <- function findRulesClassByName(rulesName)
-{
+::g_mis_custom_state.findRulesClassByName <- function findRulesClassByName(rulesName) {
   return getTblValue(::g_string.toUpper(rulesName, 1), ::mission_rules, ::mission_rules.Empty)
 }
 
-::g_mis_custom_state.onMissionStateChanged <- function onMissionStateChanged()
-{
+::g_mis_custom_state.onMissionStateChanged <- function onMissionStateChanged() {
   if (this.curRules)
     this.curRules.onMissionStateChanged()
   ::broadcastEvent("MissionCustomStateChanged")
 }
 
-::g_mis_custom_state.onUserStateChanged <- function onUserStateChanged(userId64)
-{
+::g_mis_custom_state.onUserStateChanged <- function onUserStateChanged(userId64) {
   if (userId64 != ::my_user_id_int64)
     return
 
@@ -78,8 +72,7 @@ foreach (fn in [
   //::broadcastEvent("UserCustomStateChanged", { userId64 = userId64 }) //not used ATM but maybe needed in future
 }
 
-::g_mis_custom_state.onEventLoadingStateChange <- function onEventLoadingStateChange(_p)
-{
+::g_mis_custom_state.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
   this.isCurRulesValid = false
 }
 

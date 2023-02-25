@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,10 +8,8 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
-::gui_handlers.WwQueueDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription
-{
-  function mapCountriesToView(side, _amountByCountry, joinedCountries)
-  {
+::gui_handlers.WwQueueDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription {
+  function mapCountriesToView(side, _amountByCountry, joinedCountries) {
     let countriesByTeams = this.descItem.getCountriesByTeams()
     let countries = countriesByTeams?[side] ?? []
     let mapName = this.descItem.getId()
@@ -32,7 +31,7 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
         let customLocId = customViewCountryData.locId
         let countryNameText = countryId == customLocId
           ? loc(countryId)
-          : "".concat(loc(customLocId), loc("ui/parentheses/space", {text = loc(countryId)}))
+          : "".concat(loc(customLocId), loc("ui/parentheses/space", { text = loc(countryId) }))
         return {
           countryNameText = countryNameText
           countryId       = countryId
@@ -55,8 +54,7 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
       : ""
   }
 
-  function updateCountriesList()
-  {
+  function updateCountriesList() {
     let obj = this.scene.findObject("div_before_text")
     if (!checkObj(obj))
       return

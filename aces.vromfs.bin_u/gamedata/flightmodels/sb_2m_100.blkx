@@ -1906,11 +1906,6 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          0.2
-        ],
         "type": "leftHand",
         "detachedNodeYpr": [
           0.0,
@@ -1921,6 +1916,11 @@
           1.0,
           -1.0,
           1.0
+        ],
+        "flexionDir": [
+          0.0,
+          -1.0,
+          0.2
         ]
       },
       {
@@ -1928,11 +1928,6 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [
-          0.0,
-          -1.0,
-          -0.5
-        ],
         "type": "rightHand",
         "detachedNodeYpr": [
           0.0,
@@ -1943,6 +1938,11 @@
           1.0,
           -1.0,
           1.0
+        ],
+        "flexionDir": [
+          0.0,
+          -1.0,
+          -0.5
         ]
       },
       {
@@ -1951,9 +1951,9 @@
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
         "flexionDir": [
-          0.0,
+          0.3,
           1.0,
-          0.3
+          0.0
         ]
       },
       {
@@ -1962,9 +1962,9 @@
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
         "flexionDir": [
-          0.0,
+          -0.3,
           1.0,
-          -0.3
+          0.0
         ]
       }
     ]
@@ -2179,6 +2179,30 @@
     ],
     "lightAttenuation": 5.0,
     "devices": {
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "pedals3": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
       "speed": [
         0.0,
         277.778
@@ -2725,6 +2749,12 @@
   },
   "modifications": {
     "cd_98": {},
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher.png",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "CdMin_Fuse": {},
     "new_cover": {},
     "structure_str": {

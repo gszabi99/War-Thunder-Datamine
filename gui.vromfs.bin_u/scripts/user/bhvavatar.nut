@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -14,14 +15,12 @@ local intIconToString = @(_id) ""
 local getIconPath = @(icon) icon
 local getConfig = @() null
 
-let class BhvAvatar
-{
+let class BhvAvatar {
   eventMask    = EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
   isFullPID    = ::dagui_propid.add_name_id("isFull")
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     this.setIsFull(obj, obj?.isFull == "yes")
     if (obj?.value)
       this.setStringValue(obj, this.validateStrValue(obj.value))
@@ -29,8 +28,7 @@ let class BhvAvatar
     return RETCODE_NOTHING
   }
 
-  function validateStrValue(strValue)
-  {
+  function validateStrValue(strValue) {
     if (strValue in getConfig())
       return strValue
     if (string.isStringInteger(strValue))
@@ -39,24 +37,21 @@ let class BhvAvatar
   }
 
   function isFull(obj) { return !!obj.getIntProp(this.isFullPID, 0) }
-  function setIsFull(obj, newIsFull)
-  {
+  function setIsFull(obj, newIsFull) {
     if (newIsFull == this.isFull(obj))
       return false
     obj.setIntProp(this.isFullPID, newIsFull ? 1 : 0)
     return true
   }
 
-  function setStringValue(obj, strValue)
-  {
+  function setStringValue(obj, strValue) {
     if (obj?.value == strValue)
       return false
     obj.value = strValue
     return true
   }
 
-  function setValue(obj, newValue)
-  {
+  function setValue(obj, newValue) {
     local shouldUpdate = false
     if (u.isBool(newValue))
       shouldUpdate = this.setIsFull(obj, newValue)
@@ -69,8 +64,7 @@ let class BhvAvatar
       this.updateView(obj)
   }
 
-  function updateView(obj)
-  {
+  function updateView(obj) {
     let image = obj?.value ?? ""
     let hasImage = image != ""
     obj.set_prop_latent("background-image", hasImage ? getIconPath(image) : "")
@@ -78,8 +72,7 @@ let class BhvAvatar
     if (!hasImage)
       return
 
-    if (this.isFull(obj))
-    {
+    if (this.isFull(obj)) {
       obj.set_prop_latent("background-repeat",  "stretch")
       obj.set_prop_latent("background-position", "0")
       obj.set_prop_latent("background-svg-size", "pw,ph")

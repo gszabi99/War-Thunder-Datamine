@@ -1,4 +1,5 @@
 module extinguish_system_common shared
+require app
 require dm
 require DmFire
 require WTDamageModel
@@ -21,11 +22,7 @@ def is_crew_busy(is_burning : bool; is_assisting : bool; crew_busy_time : float)
   return (is_burning || is_assisting) && crew_busy_time > 0.0
 
 
-def can_be_extinguished_with_extinguisher(fire_damage : FireDamageComponent&)
-  for fire_data in fire_damage.data
-    if fire_data.startTime > 0.0lf
-      let fire_params = get_fire_params(fire_data.fireParamsId)
-      if fire_params.extinguisherEffective
-        return true
-  return false
+def extinguish_system_can_reignite(last_extinguish_time : float)
+  let app = get_app()
+  return last_extinguish_time < 0.f || float(app.usefulTotalTime) > last_extinguish_time + app.gameParams.reignitionDelayAfterExtinguisherUse;
 

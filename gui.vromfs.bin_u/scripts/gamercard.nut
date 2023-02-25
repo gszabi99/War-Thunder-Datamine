@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,11 +16,10 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { boosterEffectType, haveActiveBonusesByEffectType } = require("%scripts/items/boosterEffect.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { money_type } = require("%scripts/money.nut")
+let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
-::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
-{
-  if (!checkObj(scene))
-  {
+::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
+  if (!checkObj(scene)) {
     scene = ::getLastGamercardScene()
     if (!scene)
       return
@@ -45,12 +45,10 @@ let { money_type } = require("%scripts/money.nut")
 
   let getObj = @(id) scene.findObject(id)
   local showClanTag = false
-  foreach(name, val in cfg)
-  {
+  foreach (name, val in cfg) {
     let obj = getObj($"{prefix}{name}")
     if (checkObj(obj))
-      switch(name)
-      {
+      switch (name) {
         case "country":
           obj["background-image"] = ::get_country_icon(val)
           break
@@ -64,8 +62,7 @@ let { money_type } = require("%scripts/money.nut")
           if (val != null)
             obj["background-image"] = $"#ui/gameuiskin#prestige{val}.png"
           let titleObj = getObj($"{prefix}prestige_title")
-          if (titleObj)
-          {
+          if (titleObj) {
             let prestigeTitle = (val > 0)
                                   ? loc($"rank/prestige{val}")
                                   : ""
@@ -75,15 +72,14 @@ let { money_type } = require("%scripts/money.nut")
         case "exp":
           let expTable = ::get_cur_exp_table("", cfg)
           obj.setValue(expTable
-            ? ::nbsp.concat(::g_language.decimalFormat(expTable.exp), "/", ::g_language.decimalFormat(expTable.rankExp))
+            ? ::nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
             : "")
-          obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), ::g_language.decimalFormat(cfg.exp))
+          obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
           break
         case "clanTag":
           let isVisible = hasFeature("Clans") && val != ""
           showClanTag = isVisible
-          if (isVisible)
-          {
+          if (isVisible) {
             let clanTagName = ::checkClanTagForDirtyWords(val.tostring())
             let btnText = obj.findObject($"{prefix}{name}_name")
             if (checkObj(btnText))
@@ -94,35 +90,35 @@ let { money_type } = require("%scripts/money.nut")
           break
         case "gold":
           let moneyInst = ::Money(money_type.none, 0, val)
-          let valStr = moneyInst.toStringWithParams({isGoldAlwaysShown = true})
+          let valStr = moneyInst.toStringWithParams({ isGoldAlwaysShown = true })
 
           let tooltipText = "\n".concat(colorize("activeTextColor", valStr), loc("mainmenu/gold"))
           obj.getParent().tooltip = tooltipText
 
-          obj.setValue(moneyInst.toStringWithParams({isGoldAlwaysShown = true, needIcon = false}))
+          obj.setValue(moneyInst.toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
           break
         case "balance":
-          let valStr = ::g_language.decimalFormat(val)
+          let valStr = decimalFormat(val)
           let tooltipText = "\n".concat(::getWpPriceText(colorize("activeTextColor", valStr), true),
             loc("mainmenu/warpoints"),
             ::get_current_bonuses_text(boosterEffectType.WP))
 
           let buttonObj = obj.getParent()
           buttonObj.tooltip = tooltipText
-          buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false)? "yes" : "no"
-          buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true)? "yes" : "no"
+          buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false) ? "yes" : "no"
+          buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true) ? "yes" : "no"
 
           obj.setValue(valStr)
           break
         case "free_exp":
-          let valStr = ::Balance(0,0,val).toStringWithParams({isFrpAlwaysShown = true})
+          let valStr = ::Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })
           let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
             loc("currency/freeResearchPoints/desc"),
             ::get_current_bonuses_text(boosterEffectType.RP))
 
           obj.tooltip = tooltipText
-          obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false)? "yes" : "no"
-          obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true)? "yes" : "no"
+          obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false) ? "yes" : "no"
+          obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true) ? "yes" : "no"
           break
         case "name":
           local valStr
@@ -141,11 +137,9 @@ let { money_type } = require("%scripts/money.nut")
     return
 
   //checklogs
-  if (hasFeature("UserLog"))
-  {
+  if (hasFeature("UserLog")) {
     let objBtn = getObj($"{prefix}userlog_btn")
-    if(checkObj(objBtn))
-    {
+    if (checkObj(objBtn)) {
       let newLogsCount = ::check_new_user_logs().len()
       let haveNew = newLogsCount > 0
       let tooltip = haveNew ?
@@ -156,8 +150,7 @@ let { money_type } = require("%scripts/money.nut")
 
   ::update_gamercards_chat_info(prefix)
 
-  if (hasFeature("Friends"))
-  {
+  if (hasFeature("Friends")) {
     let friendsOnline = ::getFriendsOnlineNum()
     let cObj = getObj($"{prefix}contacts")
     if (checkObj(cObj))
@@ -165,40 +158,35 @@ let { money_type } = require("%scripts/money.nut")
 
     let fObj = getObj($"{prefix}friends_online")
     if (checkObj(fObj))
-      fObj.setValue(friendsOnline > 0? friendsOnline.tostring() : "")
+      fObj.setValue(friendsOnline > 0 ? friendsOnline.tostring() : "")
   }
 
   let totalText = []
   let premAccName = ::shop_get_premium_account_ent_name()
-  foreach(name in ["PremiumAccount", "RateWeek"])
-  {
+  foreach (name in ["PremiumAccount", "RateWeek"]) {
     local entName = name
     if (entName == "PremiumAccount")
       entName = premAccName
     let expire = ::entitlement_expires_in(entName)
     local text = loc("mainmenu/noPremium")
     local premPic = "#ui/gameuiskin#sub_premium_noactive.svg"
-    if (expire > 0)
-    {
+    if (expire > 0) {
       text = loc("ui/colon").concat(loc($"charServer/entitlement/{name}"), time.getExpireText(expire))
       totalText.append(text)
       premPic = "#ui/gameuiskin#sub_premiumaccount.svg"
     }
     let obj = getObj($"{prefix}{name}")
-    if (obj && obj.isValid())
-    {
+    if (obj && obj.isValid()) {
       let icoObj = obj.findObject("gc_prempic")
       if (checkObj(icoObj))
         icoObj["background-image"] = premPic
       obj.tooltip = text
     }
   }
-  if (totalText.len() > 0)
-  {
+  if (totalText.len() > 0) {
     let name = $"{prefix}subscriptions"
     let obj = getObj(name)
-    if (obj && obj.isValid())
-    {
+    if (obj && obj.isValid()) {
       obj.show(true)
       obj.tooltip = "\n".join(totalText)
     }
@@ -243,14 +231,12 @@ let { money_type } = require("%scripts/money.nut")
                              gc_userlog_btn = hasFeature("UserLog")
                            }
 
-  foreach(id, status in buttonsShowTable)
-  {
+  foreach (id, status in buttonsShowTable) {
     let bObj = getObj(id)
-    if (checkObj(bObj))
-    {
+    if (checkObj(bObj)) {
       bObj.show(status)
       bObj.enable(status)
-      bObj.inactive = status? "no" : "yes"
+      bObj.inactive = status ? "no" : "yes"
       if (status)
         bObj["skip-navigation"] = skipNavigation
     }
@@ -267,13 +253,11 @@ let { money_type } = require("%scripts/money.nut")
                                 gc_BattlePassProgress = canSpendGold && is_in_menu
                               }
 
-  foreach(id, status in buttonsEnableTable)
-  {
+  foreach (id, status in buttonsEnableTable) {
     let pObj = getObj(id)
-    if (checkObj(pObj))
-    {
+    if (checkObj(pObj)) {
       pObj.enable(status)
-      pObj.inactive = status? "no" : "yes"
+      pObj.inactive = status ? "no" : "yes"
     }
   }
   let squadWidgetObj = getObj("gamercard_squad_widget")
@@ -286,12 +270,10 @@ let { money_type } = require("%scripts/money.nut")
   ::update_gc_invites(scene)
 }
 
-::update_gamercards <- function update_gamercards()
-{
+::update_gamercards <- function update_gamercards() {
   let info = ::get_profile_info()
   local needUpdateGamerCard = false
-  for(local idx=::last_gamercard_scenes.len()-1; idx>=0; idx--)
-  {
+  for (local idx = ::last_gamercard_scenes.len() - 1; idx >= 0; idx--) {
     let s = ::last_gamercard_scenes[idx]
     if (!s || !s.isValid())
       ::last_gamercard_scenes.remove(idx)
@@ -307,18 +289,15 @@ let { money_type } = require("%scripts/money.nut")
   ::broadcastEvent("UpdateGamercard")
 }
 
-::do_with_all_gamercards <- function do_with_all_gamercards(func)
-{
-  foreach(scene in ::last_gamercard_scenes)
+::do_with_all_gamercards <- function do_with_all_gamercards(func) {
+  foreach (scene in ::last_gamercard_scenes)
     if (checkObj(scene))
       func(scene)
 }
 
 ::last_gamercard_scenes <- []
-::add_gamercard_scene <- function add_gamercard_scene(scene)
-{
-  for(local idx=::last_gamercard_scenes.len()-1; idx>=0; idx--)
-  {
+::add_gamercard_scene <- function add_gamercard_scene(scene) {
+  for (local idx = ::last_gamercard_scenes.len() - 1; idx >= 0; idx--) {
     let s = ::last_gamercard_scenes[idx]
     if (!checkObj(s))
       ::last_gamercard_scenes.remove(idx)
@@ -328,38 +307,33 @@ let { money_type } = require("%scripts/money.nut")
   ::last_gamercard_scenes.append(scene)
 }
 
-::set_last_gc_scene_if_exist <- function set_last_gc_scene_if_exist(scene)
-{
-  foreach(idx, gcs in ::last_gamercard_scenes)
+::set_last_gc_scene_if_exist <- function set_last_gc_scene_if_exist(scene) {
+  foreach (idx, gcs in ::last_gamercard_scenes)
     if (checkObj(gcs) && scene.isEqual(gcs)
-        && idx < ::last_gamercard_scenes.len()-1)
-    {
+        && idx < ::last_gamercard_scenes.len() - 1) {
       ::last_gamercard_scenes.remove(idx)
       ::last_gamercard_scenes.append(scene)
       break
     }
 }
 
-::getLastGamercardScene <- function getLastGamercardScene()
-{
-  if(::last_gamercard_scenes.len() > 0)
-    for(local i = ::last_gamercard_scenes.len() - 1; i >= 0; i--)
-      if(checkObj(::last_gamercard_scenes[i]))
+::getLastGamercardScene <- function getLastGamercardScene() {
+  if (::last_gamercard_scenes.len() > 0)
+    for (local i = ::last_gamercard_scenes.len() - 1; i >= 0; i--)
+      if (checkObj(::last_gamercard_scenes[i]))
         return ::last_gamercard_scenes[i]
       else
         ::last_gamercard_scenes.remove(i)
   return null
 }
 
-::update_gc_invites <- function update_gc_invites(scene)
-{
+::update_gc_invites <- function update_gc_invites(scene) {
   let haveNew = ::g_invites.newInvitesAmount > 0
   ::update_gc_button(scene.findObject("gc_invites_btn"), haveNew)
 }
 
-::update_gc_button <- function update_gc_button(obj, isNew, tooltip = null)
-{
-  if(!checkObj(obj))
+::update_gc_button <- function update_gc_button(obj, isNew, tooltip = null) {
+  if (!checkObj(obj))
     return
 
   if (tooltip)
@@ -375,15 +349,13 @@ let { money_type } = require("%scripts/money.nut")
     objGlow.wink = isNew ? "yes" : "no"
 }
 
-::get_active_gc_popup_nest_obj <- function get_active_gc_popup_nest_obj()
-{
+::get_active_gc_popup_nest_obj <- function get_active_gc_popup_nest_obj() {
   let gcScene = ::getLastGamercardScene()
   let nestObj = gcScene ? gcScene.findObject("chatPopupNest") : null
   return checkObj(nestObj) ? nestObj : null
 }
 
-::update_clan_alert_icon <- function update_clan_alert_icon()
-{
+::update_clan_alert_icon <- function update_clan_alert_icon() {
   let needAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
   ::do_with_all_gamercards(
     (@(needAlert) function(scene) {
@@ -391,8 +363,7 @@ let { money_type } = require("%scripts/money.nut")
     })(needAlert))
 }
 
-::update_gamercards_chat_info <- function update_gamercards_chat_info(prefix = "gc_")
-{
+::update_gamercards_chat_info <- function update_gamercards_chat_info(prefix = "gc_") {
   if (!::gchat_is_enabled() || !hasMenuChat.value)
     return
 

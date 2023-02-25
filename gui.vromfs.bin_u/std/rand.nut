@@ -84,7 +84,7 @@ let class Rand{
     }
   }
 
-  static grnd = random.grnd
+  static rnd = random.rnd
   static gauss_rnd = random.gauss_rnd
   static uint_noise1D = random.uint_noise1D
 

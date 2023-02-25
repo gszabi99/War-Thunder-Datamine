@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -19,7 +20,7 @@ let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
   static hasTopMenuResearch = false
 
   function initScreen() {
-    let textArea = (this.guiScene/"credits-text"/"textarea")
+    let textArea = (this.guiScene / "credits-text" / "textarea")
     ::load_text_content_to_gui_object(textArea, "%lang/credits.txt")
     ::enableHangarControls(true)
   }

@@ -8,6 +8,7 @@
       "clipmap_materialMap": "explosion_patch_ground_mat",
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
       "rendinstProps": {
         "kinetic_penetration": {
           "tc": [
@@ -118,6 +119,7 @@
       "materialParamsMap": "explosion_patch_ps_m",
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
       "rendinstProps": {
         "kinetic_penetration": {
           "tc": [
@@ -226,6 +228,7 @@
       "normalMap": "explosion_patch_rocks_n",
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
       "rendinstProps": {
         "kinetic_penetration": {
           "tc": [
@@ -334,6 +337,7 @@
       "normalMap": "explosion_patch_rocks_n",
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
       "rendinstProps": {
         "kinetic_penetration": {
           "tc": [
@@ -463,8 +467,13 @@
       "normalMap": "explosion_patch_ps_n",
       "colorMap": "explosion_patch_ps_c",
       "materialParamsMap": "explosion_patch_ps_m",
+      "minVolumeBias": 0.05,
+      "minTraceDist": 0.1,
+      "maxTraceDist": 0.5,
+      "parallaxDepthLimit": 1.0,
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
       "props": {
         "kinetic_penetration": {
           "tc": [
@@ -667,6 +676,7 @@
       "materialParamsMap": "explosion_patch_ps_m",
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
       "rendinstProps": {
         "kinetic_penetration": {
           "tc": [
@@ -777,6 +787,7 @@
       "materialParamsMap": "explosion_patch_ps_m",
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
       "props": {
         "kinetic_penetration": {
           "tc": [
@@ -925,6 +936,10 @@
       "materialParamsMap": "explosion_patch_ps_m",
       "rendinst_normalMap": "dyn_decals_atlas_n",
       "rendinst_colorMap": "dyn_decals_atlas_a",
+      "minVolumeBias": 0.3,
+      "minTraceDist": 0.5,
+      "maxTraceDist": 1.5,
+      "parallaxDepthLimit": 0.1,
       "props": {
         "kinetic_penetration": {
           "tc": [
@@ -933,7 +948,7 @@
             0.25,
             1.0
           ],
-          "sizeScale": 6.0
+          "sizeScale": 4.0
         },
         "kinetic_non_penetration": {
           "tc": [
@@ -942,25 +957,25 @@
             0.25,
             1.0
           ],
-          "sizeScale": 6.0
+          "sizeScale": 4.0
         },
         "explosive_penetration": {
           "tc": [
-            0.0,
-            0.75,
             0.25,
+            0.75,
+            0.5,
             1.0
           ],
-          "sizeScale": 5.0
+          "sizeScale": 20.0
         },
         "explosive_non_penetration": {
           "tc": [
-            0.0,
-            0.75,
             0.25,
+            0.75,
+            0.5,
             1.0
           ],
-          "sizeScale": 5.0
+          "sizeScale": 20.0
         },
         "kinetic_sabot_penetration": {
           "tc": [
@@ -1040,22 +1055,22 @@
         },
         "explosive_penetration": {
           "tc": [
-            0.0,
-            0.0,
-            1.0,
-            0.5
+            0.25,
+            0.75,
+            0.5,
+            1.0
           ],
-          "sizeScale": 7.0,
+          "sizeScale": 4.0,
           "randomCount": 4
         },
         "explosive_non_penetration": {
           "tc": [
-            0.0,
-            0.0,
-            1.0,
-            0.5
+            0.25,
+            0.75,
+            0.5,
+            1.0
           ],
-          "sizeScale": 7.0,
+          "sizeScale": 4.0,
           "randomCount": 4
         },
         "kinetic_sabot_penetration": {
@@ -1116,6 +1131,158 @@
             0.5
           ],
           "sizeScale": 1.5,
+          "randomCount": 4
+        },
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "shrapnel_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        }
+      }
+    },
+    "shrapnelAircraftSteel": {
+      "shader": "explosion_patch_color",
+      "normalMap": "dyn_decals_atlas_n",
+      "colorMap": "dyn_decals_atlas_a",
+      "materialParamsMap": "dyn_decals_atlas_m",
+      "minVolumeBias": 0.3,
+      "minTraceDist": 0.5,
+      "maxTraceDist": 1.5,
+      "parallaxDepthLimit": 0.05,
+      "props": {
+        "kinetic_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "kinetic_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "kinetic_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "heat_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "heat_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "kinetic_discard_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "kinetic_discard_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
+          "randomCount": 4
+        },
+        "shrapnel_non_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 4.0,
           "randomCount": 4
         }
       }
@@ -1135,7 +1302,7 @@
             0.25,
             0.25
           ],
-          "sizeScale": 2.0
+          "sizeScale": 5.0
         },
         "kinetic_non_penetration": {
           "tc": [
@@ -1144,25 +1311,25 @@
             0.5,
             0.25
           ],
-          "sizeScale": 2.0
+          "sizeScale": 5.0
         },
         "explosive_penetration": {
           "tc": [
-            0.5,
             0.0,
-            0.75,
+            0.0,
+            0.25,
             0.25
           ],
-          "sizeScale": 5.0
+          "sizeScale": 15.0
         },
         "explosive_non_penetration": {
           "tc": [
-            0.75,
+            0.25,
             0.0,
-            1.0,
+            0.5,
             0.25
           ],
-          "sizeScale": 5.0
+          "sizeScale": 15.0
         }
       },
       "rendinstProps": {
@@ -1188,9 +1355,9 @@
         },
         "explosive_penetration": {
           "tc": [
-            0.0,
-            0.5,
+            0.25,
             0.75,
+            0.5,
             1.0
           ],
           "sizeScale": 7.0,
@@ -1198,9 +1365,9 @@
         },
         "explosive_non_penetration": {
           "tc": [
-            0.0,
-            0.5,
+            0.25,
             0.75,
+            0.5,
             1.0
           ],
           "sizeScale": 7.0,
@@ -1265,6 +1432,190 @@
           ],
           "sizeScale": 1.0,
           "randomCount": 3
+        },
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "shrapnel_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            1.0
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        }
+      }
+    },
+    "shrapnelAircraftWood": {
+      "shader": "explosion_patch_color",
+      "normalMap": "dyn_decals_atlas_n",
+      "colorMap": "dyn_decals_atlas_a",
+      "materialParamsMap": "dyn_decals_atlas_m",
+      "props": {
+        "kinetic_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            1.0
+          ],
+          "sizeScale": 6.0,
+          "randomCount": 3
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            1.0
+          ],
+          "sizeScale": 6.0,
+          "randomCount": 3
+        },
+        "kinetic_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "kinetic_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "heat_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "heat_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "kinetic_discard_sabot_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "kinetic_discard_sabot_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        },
+        "shrapnel_non_penetration": {
+          "tc": [
+            0.0,
+            0.5,
+            0.75,
+            1.0
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 3
+        }
+      }
+    },
+    "burnMarkAircraft": {
+      "shader": "explosion_patch_vol",
+      "normalMap": "",
+      "colorMap": "perlin_noise_wind_ati1n",
+      "materialParamsMap": "",
+      "props": {
+        "burn_mark": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 1
+        }
+      }
+    },
+    "proximityShrapnel": {
+      "shader": "explosion_patch_color",
+      "normalMap": "proxy_fuse_shrapnell_decals_atlas_m",
+      "colorMap": "proxy_fuse_shrapnell_decals_atlas_a",
+      "materialParamsMap": "proxy_fuse_shrapnell_decals_atlas_n",
+      "props": {
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 4
         }
       }
     }

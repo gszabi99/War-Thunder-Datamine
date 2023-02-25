@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,16 +9,14 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-::gui_handlers.EditClanModalhandler <- class extends ::gui_handlers.ModifyClanModalHandler
-{
+::gui_handlers.EditClanModalhandler <- class extends ::gui_handlers.ModifyClanModalHandler {
   owner = null
 
   isMyClan = false
   adminMode = false
   myRights = null
 
-  function createView()
-  {
+  function createView() {
     return {
       windowHeader = loc("clan/edit_clan_wnd_title")
       hasClanTypeSelect = false
@@ -28,8 +27,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.newClanType = this.clanData.clanType
     this.lastShownHintObj = this.scene.findObject("req_newclan_name")
     base.initScreen()
@@ -44,12 +42,11 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 
     let regionEditBoxObj = this.scene.findObject("newclan_region")
     regionEditBoxObj.setValue(this.clanData.region)
-    if (!this.clanData.isRegionChangeAvailable())
-    {
+    if (!this.clanData.isRegionChangeAvailable()) {
       let regionChangeTime = this.clanData.getRegionChangeAvailableTime()
       let regionChangeTimeText = loc(
         "clan/clan_can_change_region_in",
-        {time = time.buildDateTimeStr(regionChangeTime)}
+        { time = time.buildDateTimeStr(regionChangeTime) }
       )
       this.scene.findObject("region_change_cooldown").setValue(regionChangeTimeText)
       regionEditBoxObj.enable(false)
@@ -63,8 +60,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     this.update()
   }
 
-  function editClanInfo()
-  {
+  function editClanInfo() {
     if (this.isObsceneWord())
       return
 
@@ -82,18 +78,15 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
   }
 
 
-  function hasChangedPrimaryInfo()
-  {
+  function hasChangedPrimaryInfo() {
     return this.newClanName != this.clanData.name || this.newClanTag != this.clanData.tag
   }
 
 
-  function isPrimaryInfoChangeFree()
-  {
+  function isPrimaryInfoChangeFree() {
     let decorators = this.getDecoratorsList()
     let currentDecorator = decorators[this.newClanTagDecoration]
-    if (this.newClanTag != this.clanData.lastPaidTag)
-    {
+    if (this.newClanTag != this.clanData.lastPaidTag) {
       if (::g_clans.stripClanTagDecorators(this.newClanTag) != ::g_clans.stripClanTagDecorators(this.clanData.tag) || !currentDecorator.free)
         return false
     }
@@ -103,8 +96,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
   }
 
 
-  function hasChangedSecondaryInfo()
-  {
+  function hasChangedSecondaryInfo() {
     if (this.newClanSlogan != this.clanData.slogan)
       return true
     if (this.newClanDescription != this.clanData.desc)
@@ -116,8 +108,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     return false
   }
 
-  function getCost(changedPrimary, changedSecondary)
-  {
+  function getCost(changedPrimary, changedSecondary) {
     if (changedPrimary && !this.isPrimaryInfoChangeFree())
       return this.newClanType.getPrimaryInfoChangeCost()
     if (changedSecondary)
@@ -125,8 +116,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     return clone ::zero_money
   }
 
-  function onFieldChange(_obj)
-  {
+  function onFieldChange(_obj) {
     if (!this.prepareClanData(true, true))
       return
 
@@ -134,29 +124,26 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
   }
 
   // Override.
-  function updateSubmitButtonText()
-  {
+  function updateSubmitButtonText() {
     let changedPrimary = this.hasChangedPrimaryInfo()
     let changedSecondary = this.hasChangedSecondaryInfo()
     let cost = this.getCost(changedPrimary, changedSecondary)
     this.setSubmitButtonText(loc("clan/btnSaveClanInfo"), cost)
   }
 
-  function onSubmit()
-  {
-    if(!this.prepareClanData(true))
+  function onSubmit() {
+    if (!this.prepareClanData(true))
       return
     let changedPrimary = this.hasChangedPrimaryInfo()
     let changedSecondary = this.hasChangedSecondaryInfo()
     if (!changedPrimary && !changedSecondary)
       return this.goBack()
 
-    let cost = this.getCost( changedPrimary, changedSecondary )
+    let cost = this.getCost(changedPrimary, changedSecondary)
 
     if (cost <= ::zero_money)
       this.editClanInfo()
-    else if (::check_balance_msgBox(cost))
-    {
+    else if (::check_balance_msgBox(cost)) {
       let text = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > ::zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
@@ -167,13 +154,11 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
   }
 
   // Important override.
-  function getSelectedClanType()
-  {
+  function getSelectedClanType() {
     return this.clanData.clanType
   }
 
-  function update()
-  {
+  function update() {
     this.isMyClan = ::clan_get_my_clan_id() == this.clanData.id
     this.adminMode = ::clan_get_admin_editor_mode()
     this.myRights = []
@@ -183,8 +168,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     this.updateButtons()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let canUpgrade = this.clanData.clanType.canUpgradeMembers(this.clanData.mlimit)
     let haveLeaderRight = isInArray("LEADER", this.myRights)
 
@@ -192,11 +176,10 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
                           ((this.isMyClan && haveLeaderRight) || this.adminMode) &&
                           canUpgrade
 
-    if (upgradeMembersButtonVisible)
-    {
+    if (upgradeMembersButtonVisible) {
       let cost = ::clan_get_admin_editor_mode() ? ::Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
       let upgStep = this.clanData.clanType.getMembersUpgradeStep()
-      placePriceTextToButton(this.scene, "btn_upg_members", loc("clan/members_upgrade_button", {step = upgStep}), cost)
+      placePriceTextToButton(this.scene, "btn_upg_members", loc("clan/members_upgrade_button", { step = upgStep }), cost)
     }
 
     this.showSceneBtn("btn_upg_members", upgradeMembersButtonVisible)
@@ -204,11 +187,9 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
   }
 
   // Override
-  function onUpgradeMembers()
-  {
+  function onUpgradeMembers() {
     let cost = ::clan_get_admin_editor_mode() ? ::Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
-    if (::check_balance_msgBox(cost))
-    {
+    if (::check_balance_msgBox(cost)) {
       let step = this.clanData.clanType.getMembersUpgradeStep()
       let msgText = ::warningIfGold(loc("clan/needMoneyQuestion_upgradeMembers",
           { step = step,
@@ -220,16 +201,13 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     }
   }
 
-  function upgradeMembers()
-  {
+  function upgradeMembers() {
     ::g_clans.upgradeClanMembers(this.clanData.id)
   }
 
   // Override
-  function onEventClanInfoUpdate(_p)
-  {
-    if (this.clanData && this.clanData.id == ::clan_get_my_clan_id())
-    {
+  function onEventClanInfoUpdate(_p) {
+    if (this.clanData && this.clanData.id == ::clan_get_my_clan_id()) {
       if (!::my_clan_info)
         return this.goBack()
       this.clanData = ::my_clan_info
@@ -239,8 +217,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     this.update()
   }
 
-  function onEventClanInfoAvailable(p)
-  {
+  function onEventClanInfoAvailable(p) {
     if (p.clanId != this.clanData.id)
       return
 
@@ -251,23 +228,20 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
     this.update()
   }
 
-  function onDisbandClan()
-  {
+  function onDisbandClan() {
     if ((!this.isMyClan || !isInArray("LEADER", this.myRights)) && !::clan_get_admin_editor_mode())
       return;
 
     this.msgBox("disband_clan", loc("clan/disbandClanConfirmation"),
       [
-        ["yes", function()
-        {
-          ::g_clans.disbandClan(this.isMyClan ? "-1" : this.clanData.id ,this)
+        ["yes", function() {
+          ::g_clans.disbandClan(this.isMyClan ? "-1" : this.clanData.id, this)
         }],
         ["no",  function() {} ],
-      ], "no", { cancel_fn = function(){}} );
+      ], "no", { cancel_fn = function() {} });
   }
 
-  function getDecoratorsList()
-  {
+  function getDecoratorsList() {
     return ::g_clan_tag_decorator.getDecorators({
       clanType = this.newClanType
       rewardsList = this.clanData.getAllRegaliaTags()

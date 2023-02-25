@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -50,6 +50,74 @@
     true
   ],
   "rearmSmokeTimeOnField": 60.0,
+  "controlDevices": {
+    "device": [
+      {
+        "type": "turretTurnH",
+        "turnSpeed": 0.6,
+        "node": "bone_roll_turret_h",
+        "node_handle": "bone_roll_turret_h_handle"
+      },
+      {
+        "type": "turretTurnV",
+        "turnSpeed": -1.0,
+        "node": "bone_roll_turret_v",
+        "node_handle": "bone_roll_turret_v_handle"
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -3.0,
+        "node": "bone_roll_driver",
+        "absoluteValue": true
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": -5.0,
+        "node": "bone_roll_engine_01"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 5.0,
+        "node": "bone_roll_engine_02"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_03"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": -1.7,
+        "node": "body_shutter_l",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": 1.7,
+        "node": "body_shutter_r",
+        "absoluteValue": true,
+        "progressive": true
+      }
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -101,9 +169,6 @@
       "turret_01_bottom_dm": {
         "armorThickness": 15.0
       },
-      "turret_01_back_dm": {
-        "armorThickness": 20.0
-      },
       "turret_03_back_dm": {
         "armorThickness": 5.0
       },
@@ -143,6 +208,9 @@
       },
       "turret_01_front_dm": {
         "armorThickness": 50.0
+      },
+      "turret_01_back_dm": {
+        "armorThickness": 20.0
       },
       "turret_03_bottom_dm": {
         "armorThickness": 20.0
@@ -2061,6 +2129,35 @@
             20.0
           ]
         }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "speedYaw": 0.0,
+        "speedPitch": 0.0,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "drive_turret_h_dm",
+          "rotatedTurret": "bone_turret"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -9.0,
+            19.0
+          ]
+        }
       }
     ]
   },
@@ -2072,9 +2169,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 51300.0,
+      "Empty": 45400.0,
       "Fuel": 700.0,
-      "TakeOff": 52000.0,
+      "TakeOff": 46100.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -2248,6 +2345,16 @@
       "rotation": 0.5,
       "collisionNode": "cls_turret"
     }
+  },
+  "commanderView": {
+    "aimModeAvailable": true,
+    "optics": "commander_optics_square",
+    "zoomOutFov": 7.47,
+    "zoomInFov": 7.37,
+    "sightSize": [
+      0.146,
+      0.103
+    ]
   },
   "unitFx": {
     "event": [
@@ -3136,6 +3243,35 @@
             },
             {
               "trigger": "gunner3",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "speedYaw": 0.0,
+              "speedPitch": 0.0,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "turret": {
+                "head": "bone_turret",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "drive_turret_h_dm",
+                "rotatedTurret": "bone_turret"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -9.0,
+                  19.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner3",
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/76mm_nato_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
@@ -3152,6 +3288,7 @@
               "defaultPitch": 0.0,
               "allowableDelta": 360.0,
               "salvo": 2,
+              "salvoDelay": 0.5,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": 1.0,

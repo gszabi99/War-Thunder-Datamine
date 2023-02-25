@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -20,49 +21,41 @@ from "%scripts/dagui_library.nut" import *
   unit = null
 }
 
-::g_crew_short_cache.resetCache <- function resetCache(newCrewId, newUnit = null)
-{
+::g_crew_short_cache.resetCache <- function resetCache(newCrewId, newUnit = null) {
   this.cache.clear()
   this.cacheCrewid = newCrewId
   this.unit = newUnit ?? ::g_crew.getCrewUnit(::get_crew_by_id(this.cacheCrewid))
 }
 
-::g_crew_short_cache.getData <- function getData(crewId, newUnit, cacheUid)
-{
+::g_crew_short_cache.getData <- function getData(crewId, newUnit, cacheUid) {
   if (crewId != this.cacheCrewid || newUnit != this.unit)
     return null
   return getTblValue(cacheUid, this.cache)
 }
 
-::g_crew_short_cache.setData <- function setData(crewId, newUnit, cacheUid, data)
-{
+::g_crew_short_cache.setData <- function setData(crewId, newUnit, cacheUid, data) {
   if (crewId != this.cacheCrewid || newUnit != this.unit)
     this.resetCache(crewId, newUnit)
   this.cache[cacheUid] <- data
 }
 
-::g_crew_short_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(_params)
-{
+::g_crew_short_cache.onEventCrewSkillsChanged <- function onEventCrewSkillsChanged(_params) {
   this.resetCache(this.cacheCrewid, this.unit)
 }
 
-::g_crew_short_cache.onEventCrewNewSkillsChanged <- function onEventCrewNewSkillsChanged(_params)
-{
+::g_crew_short_cache.onEventCrewNewSkillsChanged <- function onEventCrewNewSkillsChanged(_params) {
   this.resetCache(this.cacheCrewid, this.unit)
 }
 
-::g_crew_short_cache.onEventCrewTakeUnit <- function onEventCrewTakeUnit(_params)
-{
+::g_crew_short_cache.onEventCrewTakeUnit <- function onEventCrewTakeUnit(_params) {
   this.resetCache(this.cacheCrewid)
 }
 
-::g_crew_short_cache.onEventQualificationIncreased <- function onEventQualificationIncreased(_params)
-{
+::g_crew_short_cache.onEventQualificationIncreased <- function onEventQualificationIncreased(_params) {
   this.resetCache(this.cacheCrewid, this.unit)
 }
 
-::g_crew_short_cache.onEventCrewSkillsReloaded <- function onEventCrewSkillsReloaded(_params)
-{
+::g_crew_short_cache.onEventCrewSkillsReloaded <- function onEventCrewSkillsReloaded(_params) {
   this.resetCache(this.cacheCrewid, this.unit)
 }
 

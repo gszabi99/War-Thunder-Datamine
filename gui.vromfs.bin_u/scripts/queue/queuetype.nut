@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -26,13 +27,12 @@ enum qTypeCheckOrder {
   getQueueClass = @(_params) ::queue_classes.Event
   useSlots = true
 
-  prepareQueueParams = function(params)
-  {
+  prepareQueueParams = function(params) {
     if (this.useSlots)
-      if(!("slots" in params))
+      if (!("slots" in params))
         params.slots <- getSelSlotsData().slots
 
-    if(!("clusters" in params))
+    if (!("clusters" in params))
       params.clusters <- clustersModule.getCurrentClusters()
 
     return params
@@ -73,8 +73,7 @@ enums.addTypesByGlobalName("g_queue_type",
       useSlots = false
 
       isParamsCorresponds = @(params) "battleId" in params
-      prepareQueueParams = function(params)
-      {
+      prepareQueueParams = function(params) {
         let wwBattle = params?.wwBattle
         let side = params?.side ?? SIDE_1
         return {
@@ -96,7 +95,7 @@ enums.addTypesByGlobalName("g_queue_type",
           function(response) {
             let queuesInfo = {}
             let responseQueues = getTblValue("queues", response, [])
-            foreach(battleQueueInfo in responseQueues)
+            foreach (battleQueueInfo in responseQueues)
               if (battleQueueInfo?.battleId)
                 queuesInfo[battleQueueInfo.battleId] <- battleQueueInfo
 
@@ -119,7 +118,7 @@ enums.addTypesByGlobalName("g_queue_type",
 ::g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params) {
   if (!params)
     return this.UNKNOWN
-  foreach(qType in this.types)
+  foreach (qType in this.types)
     if (qType.isParamsCorresponds(params))
       return qType
   return this.UNKNOWN

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,9 +6,11 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 
+let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { round } = require("math")
 let { format, split_by_chars } = require("string")
+let { get_game_mode } = require("mission")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
@@ -67,16 +70,14 @@ if need - put commented in array above
 
 ::g_script_reloader.registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unlocked_countries"])
 
-::build_aircraft_item <- function build_aircraft_item(id, air, params = {})
-{
+::build_aircraft_item <- function build_aircraft_item(id, air, params = {}) {
   local res = ""
   let defaultStatus = "none"
 
   let showBR = getTblValue("showBR", params, hasFeature("GlobalShowBattleRating"))
   let curEdiff = ("getEdiffFunc" in params) ?  params.getEdiffFunc() : ::get_current_ediff()
 
-  if (air && !::isUnitGroup(air) && !air?.isFakeUnit)
-  {
+  if (air && !::isUnitGroup(air) && !air?.isFakeUnit) {
     let isLocalState        = params?.isLocalState ?? true
     let forceNotInResearch  = params?.forceNotInResearch ?? false
     local inactive            = params?.inactive ?? false
@@ -104,8 +105,7 @@ if need - put commented in array above
     let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
 
     local status = params?.status ?? defaultStatus
-    if (status == defaultStatus)
-    {
+    if (status == defaultStatus) {
       let bitStatus = unitStatus.getBitStatus(air, params)
       if (bit_unit_status.locked & bitStatus)
         inactive = shopResearchMode
@@ -178,8 +178,7 @@ if need - put commented in array above
       spareCount                = spareCount ? spareCount + loc("icon/spare") : ""
     }
 
-    if (specType)
-    {
+    if (specType) {
       itemButtonsView.itemButtons.specTypeIcon <- specType.trainedIcon
       itemButtonsView.itemButtons.specTypeTooltip <- specType.getName()
     }
@@ -193,8 +192,7 @@ if need - put commented in array above
     let airResearchProgressView = {
       airResearchProgress = []
     }
-    if (showProgress)
-    {
+    if (showProgress) {
       airResearchProgressView.airResearchProgress.append({
         airResearchProgressValue            = unitReqExp > 0 ? (unitExpGranted.tofloat() / unitReqExp * 1000).tointeger() : 0
         airResearchProgressType             = "new"
@@ -203,8 +201,7 @@ if need - put commented in array above
         airResearchProgressHasPaused        = true
         airResearchProgressHasDisplay       = false
       })
-      if (unitExpGranted > diffExp)
-      {
+      if (unitExpGranted > diffExp) {
         airResearchProgressView.airResearchProgress.append({
           airResearchProgressValue            = ((unitExpGranted.tofloat() - diffExp) / unitReqExp * 1000).tointeger()
           airResearchProgressType             = "old"
@@ -246,7 +243,7 @@ if need - put commented in array above
       shopItemTextId      = id + "_txt"
       shopItemText        = ::get_slot_unit_name_text(air, params)
       progressText        = progressText
-      progressStatus      = showProgress? ::get_unit_item_progress_status(air, params) : ""
+      progressStatus      = showProgress ? ::get_unit_item_progress_status(air, params) : ""
       progressBlk         = ::handyman.renderCached("%gui/slotbar/airResearchProgress.tpl", airResearchProgressView)
       showInService       = (params?.showInService ?? false) && isUsable
       isMounted           = isMounted
@@ -270,21 +267,19 @@ if need - put commented in array above
       && (::is_respawn_screen()
         || !::is_player_unit_alive()
         || ::get_player_unit_name() != air.name)
-    if (isShowAsRandomUnit)
-    {
+    if (isShowAsRandomUnit) {
       resView.shopAirImg = missionRules.getRandomUnitsGroupIcon(groupName)
       resView.shopItemType = ""
       resView.unitClassIcon = ""
       resView.isElite = false
       resView.unitRarity = ""
       resView.unitRankText = ""
-      resView.tooltipId = RANDOM_UNIT.getTooltipId(air.name, {groupName = groupName})
+      resView.tooltipId = RANDOM_UNIT.getTooltipId(air.name, { groupName = groupName })
     }
 
     res = ::handyman.renderCached("%gui/slotbar/slotbarSlotSingle.tpl", resView)
   }
-  else if (air && ::isUnitGroup(air)) //group of aircrafts
-  {
+  else if (air && ::isUnitGroup(air)) { //group of aircrafts
     let groupStatus         = params?.status ?? defaultStatus
     let forceNotInResearch  = params?.forceNotInResearch ?? false
     let shopResearchMode    = params?.shopResearchMode ?? false
@@ -317,13 +312,11 @@ if need - put commented in array above
 
     let isSquadronResearchMode = params?.isSquadronResearchMode ?? false
 
-    foreach(a in air.airsGroup)
-    {
+    foreach (a in air.airsGroup) {
       let isInResearch = !forceNotInResearch && ::isUnitInResearch(a)
       let isUsable = ::isUnitUsable(a)
 
-      if (isInResearch || (::canResearchUnit(a) && !researchingUnit))
-      {
+      if (isInResearch || (::canResearchUnit(a) && !researchingUnit)) {
         researchingUnit = a
         isGroupInResearch = isInResearch
       }
@@ -332,15 +325,13 @@ if need - put commented in array above
       else if (!firstUnboughtUnit && (::canBuyUnit(a) || ::canBuyUnitOnline(a)))
         firstUnboughtUnit = a
 
-      if (showInService && isUsable)
-      {
+      if (showInService && isUsable) {
         if (::isUnitInSlotbar(a))
           mountedUnit = a
         isGroupUsable = true
       }
 
-      if (a.isRented())
-      {
+      if (a.isRented()) {
         if (!rentedUnit || a.getRentTimeleft() <= rentedUnit.getRentTimeleft())
           rentedUnit = a
       }
@@ -366,12 +357,11 @@ if need - put commented in array above
             | bit_unit_status.inResearch
             | bit_unit_status.canResearch)
           ))
-        || isSquadronResearchMode)
-      {
+        || isSquadronResearchMode) {
         if (!(bitStatus & bit_unit_status.locked) || isSquadronResearchMode)
           bitStatus = bit_unit_status.disabled
         inactive = true
-      }
+    }
 
     // Unit selection priority: 1) rented, 2) researching, 3) mounted, 4) first unbougt,
     //   5) last bought, 6) first in group.
@@ -414,8 +404,7 @@ if need - put commented in array above
 
     local showProgress = false
     local unitExpProgressValue = 0
-    if (researchingUnit)
-    {
+    if (researchingUnit) {
       showProgress = true
       let unitExpGranted = ::getUnitExp(researchingUnit)
       let unitReqExp = ::getUnitReqExp(researchingUnit)
@@ -479,8 +468,7 @@ if need - put commented in array above
     })
     res = ::handyman.renderCached("%gui/slotbar/slotbarSlotGroup.tpl", groupSlotView)
   }
-  else if (air?.isFakeUnit)  //fake unit slot
-  {
+  else if (air?.isFakeUnit) {  //fake unit slot
     let isReqForFakeUnit  = air?.isReqForFakeUnit ?? false
     let isLocalState      = params?.isLocalState ?? true
     let isFakeAirRankOpen = isLocalState && ::get_units_count_at_rank(air?.rank,
@@ -508,27 +496,23 @@ if need - put commented in array above
     })
     res = ::handyman.renderCached("%gui/slotbar/slotbarSlotFake.tpl", fakeSlotView)
   }
-  else //empty air slot
-  {
+  else { //empty air slot
     let specType = params?.specType
     let itemButtonsView = { itemButtons = {
       specIconBlock = specType != null
-    }}
+    } }
 
-    if (specType)
-    {
+    if (specType) {
       itemButtonsView.itemButtons.specTypeIcon <- specType.trainedIcon
       itemButtonsView.itemButtons.specTypeTooltip <- specType.getName()
     }
 
     local crewLevelInfoData = ""
     let unitForCrewInfo = params?.forceCrewInfoUnit
-    if (unitForCrewInfo)
-    {
+    if (unitForCrewInfo) {
       let crewId = params?.crewId ?? -1
       let crew = crewId >= 0 ? ::get_crew_by_id(crewId) : null
-      if (crew)
-      {
+      if (crew) {
         let crewLevelText = ::g_crew.getCrewLevel(crew, unitForCrewInfo,
           unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
         let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
@@ -567,17 +551,14 @@ if need - put commented in array above
   return res
 }
 
-::fill_unit_item_timers <- function fill_unit_item_timers(holderObj, unit, _params = {})
-{
+::fill_unit_item_timers <- function fill_unit_item_timers(holderObj, unit, _params = {}) {
   if (!checkObj(holderObj) || !unit)
     return
 
   local rentedUnit = null
-  if (::isUnitGroup(unit))
-  {
+  if (::isUnitGroup(unit)) {
     rentedUnit = unit.airsGroup[0]
-    foreach(u in unit.airsGroup)
-    {
+    foreach (u in unit.airsGroup) {
       if (u.isRented())
         if (!rentedUnit || u.getRentTimeleft() <= rentedUnit.getRentTimeleft())
           rentedUnit = u
@@ -594,11 +575,9 @@ if need - put commented in array above
 
     // Unit rent time
     let isRented = rentedUnit.isRented()
-    if (isRented)
-    {
+    if (isRented) {
       let objRentProgress = obj.findObject("rent_progress")
-      if (checkObj(objRentProgress))
-      {
+      if (checkObj(objRentProgress)) {
         let totalRentTimeSec = ::rented_units_get_last_max_full_rent_time(rentedUnit.name) || -1
         let progress = 360 - round(360.0 * rentedUnit.getRentTimeleft() / totalRentTimeSec).tointeger()
         if (objRentProgress["sector-angle-1"] != progress)
@@ -607,8 +586,7 @@ if need - put commented in array above
         isActive = true
       }
     }
-    else // at rent time over
-    {
+    else { // at rent time over
       let rentInfo = ::get_unit_item_rent_info(rentedUnit, params)
 
       let objRentIcon = obj.findObject("rent_icon")
@@ -623,8 +601,7 @@ if need - put commented in array above
   })(rentedUnit))
 }
 
-::get_slot_obj_id <- function get_slot_obj_id(countryId, idInCountry, isBonus = false)
-{
+::get_slot_obj_id <- function get_slot_obj_id(countryId, idInCountry, isBonus = false) {
   assert(countryId != null, "Country ID is null.")
   assert(idInCountry != null, "Crew IDX is null.")
   local objId = format("slot_%s_%s", countryId.tostring(), idInCountry.tostring())
@@ -633,24 +610,21 @@ if need - put commented in array above
   return objId
 }
 
-::get_slot_obj <- function get_slot_obj(slotbarObj, countryId, idInCountry)
-{
+::get_slot_obj <- function get_slot_obj(slotbarObj, countryId, idInCountry) {
   if (!checkObj(slotbarObj))
     return null
   let slotObj = slotbarObj.findObject(::get_slot_obj_id(countryId, idInCountry))
   return checkObj(slotObj) ? slotObj : null
 }
 
-::get_unit_item_rent_info <- function get_unit_item_rent_info(unit, params)
-{
+::get_unit_item_rent_info <- function get_unit_item_rent_info(unit, params) {
   let info = {
     hasIcon     = false
     hasProgress = false
     progress    = 0
   }
 
-  if (unit)
-  {
+  if (unit) {
     let showAsTrophyContent = getTblValue("showAsTrophyContent", params, false)
     let offerRentTimeHours  = getTblValue("offerRentTimeHours", params, 0)
     let hasProgress = unit.isRented() && !showAsTrophyContent
@@ -670,8 +644,7 @@ if need - put commented in array above
   return info
 }
 
-::get_slot_unit_name_text <- function get_slot_unit_name_text(unit, params)
-{
+::get_slot_unit_name_text <- function get_slot_unit_name_text(unit, params) {
   local res = ::getUnitName(unit)
   let missionRules = getTblValue("missionRules", params)
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
@@ -679,8 +652,7 @@ if need - put commented in array above
     res = missionRules.getRandomUnitsGroupLocName(groupName)
   if (missionRules && missionRules.isWorldWarUnit(unit.name))
     res = loc("icon/worldWar/colored") + res
-  if (missionRules && missionRules.needLeftRespawnOnSlots)
-  {
+  if (missionRules && missionRules.needLeftRespawnOnSlots) {
     let leftRespawns = missionRules.getUnitLeftRespawns(unit)
     let leftWeaponPresetsText = missionRules.getUnitLeftWeaponShortText(unit)
     local text = leftRespawns != ::RESPAWNS_UNLIMITED
@@ -700,8 +672,7 @@ if need - put commented in array above
 
 ::is_unit_price_text_long <- @(text) ::utf8_strlen(::g_dagui_utils.removeTextareaTags(text)) > 13
 
-::get_unit_item_price_text <- function get_unit_item_price_text(unit, params)
-{
+::get_unit_item_price_text <- function get_unit_item_price_text(unit, params) {
   let isLocalState        = getTblValue("isLocalState", params, true)
   let haveRespawnCost     = getTblValue("haveRespawnCost", params, false)
   let haveSpawnDelay      = getTblValue("haveSpawnDelay", params, false)
@@ -713,37 +684,32 @@ if need - put commented in array above
   if (curSlotIdInCountry >= 0 && ::is_spare_aircraft_in_slot(curSlotIdInCountry))
     priceText += loc("spare/spare/short") + " "
 
-  if ((haveRespawnCost || haveSpawnDelay) && getTblValue("unlocked", params, true))
-  {
+  if ((haveRespawnCost || haveSpawnDelay) && getTblValue("unlocked", params, true)) {
     let spawnDelay = slotDelayData != null
-      ? slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime)/1000).tointeger()
+      ? slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime) / 1000).tointeger()
       : ::get_slot_delay(unit.name)
     if (haveSpawnDelay && spawnDelay > 0)
       priceText += time.secondsToString(spawnDelay)
-    else
-    {
+    else {
       let txtList = []
       local wpToRespawn = ::get_unit_wp_to_respawn(unit.name)
-      if (wpToRespawn > 0 && ::is_crew_available_in_session(curSlotIdInCountry, false))
-      {
+      if (wpToRespawn > 0 && ::is_crew_available_in_session(curSlotIdInCountry, false)) {
         let sessionWpBalance = getTblValue("sessionWpBalance", params, 0)
         wpToRespawn += getTblValue("weaponPrice", params, 0)
-        txtList.append(::colorTextByValues(::Cost(wpToRespawn).toStringWithParams({isWpAlwaysShown = true}),
+        txtList.append(::colorTextByValues(::Cost(wpToRespawn).toStringWithParams({ isWpAlwaysShown = true }),
           sessionWpBalance, wpToRespawn, true, false))
       }
 
       let reqUnitSpawnScore = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
       let totalSpawnScore = getTblValue("totalSpawnScore", params, -1)
-      if (reqUnitSpawnScore > 0 && totalSpawnScore > -1)
-      {
+      if (reqUnitSpawnScore > 0 && totalSpawnScore > -1) {
         local spawnScoreText = reqUnitSpawnScore
         if (reqUnitSpawnScore > totalSpawnScore)
           spawnScoreText = "<color=@badTextColor>" + reqUnitSpawnScore + "</color>"
-        txtList.append(loc("shop/spawnScore", {cost = spawnScoreText}))
+        txtList.append(loc("shop/spawnScore", { cost = spawnScoreText }))
       }
 
-      if (txtList.len())
-      {
+      if (txtList.len()) {
         local spawnCostText = ::g_string.implode(txtList, ", ")
         if (priceText.len())
           spawnCostText = loc("ui/parentheses", { text = spawnCostText })
@@ -752,15 +718,14 @@ if need - put commented in array above
     }
   }
 
-  if (::is_in_flight())
-  {
+  if (::is_in_flight()) {
     let maxSpawns = ::get_max_spawns_unit_count(unit.name)
-    if (curSlotIdInCountry >= 0 && maxSpawns > 1)
-    {
+    if (curSlotIdInCountry >= 0 && maxSpawns > 1) {
       let leftSpawns = maxSpawns - ::get_num_used_unit_spawns(curSlotIdInCountry)
       priceText += format("(%s/%s)", leftSpawns.tostring(), maxSpawns.tostring())
     }
-  } else if (isLocalState && priceText == "") {
+  }
+  else if (isLocalState && priceText == "") {
     let { overlayPrice = -1, showAsTrophyContent = false, isReceivedPrizes = false } = params
     priceText = overlayPrice >= 0 ? ::getPriceAccordingToPlayersCurrency(overlayPrice, 0, true)
       : getUnitShopPriceText(unit)
@@ -772,8 +737,7 @@ if need - put commented in array above
   return priceText
 }
 
-::get_unit_item_research_progress_text <- function get_unit_item_research_progress_text(unit, _params, priceText = "")
-{
+::get_unit_item_research_progress_text <- function get_unit_item_research_progress_text(unit, _params, priceText = "") {
   if (!::u.isEmpty(priceText))
     return ""
   if (!::canResearchUnit(unit))
@@ -794,8 +758,7 @@ if need - put commented in array above
     : ::Cost().setRp(unitExpReq - unitExpCur).tostring()
 }
 
-::get_unit_item_progress_status <- function get_unit_item_progress_status(unit, params)
-{
+::get_unit_item_progress_status <- function get_unit_item_progress_status(unit, params) {
   let isSquadronVehicle   = unit?.isSquadronVehicle?()
   let unitExpReq          = ::getUnitReqExp(unit)
   let unitExpGranted      = ::getUnitExp(unit)
@@ -815,22 +778,19 @@ if need - put commented in array above
            : ""
 }
 
-::get_unit_rank_text <- function get_unit_rank_text(unit, crew = null, showBR = false, ediff = -1)
-{
+::get_unit_rank_text <- function get_unit_rank_text(unit, crew = null, showBR = false, ediff = -1) {
   let isInFlight = ::is_in_flight()
   if ((unit?.hideBrForVehicle ?? false) ||
       (isInFlight && ::g_mis_custom_state.getCurMissionRules().isWorldWar))
     return ""
 
   let reserveText = ::g_string.stripTags(loc("shop/reserve"))
-  if (::isUnitGroup(unit))
-  {
+  if (::isUnitGroup(unit)) {
     local isReserve = false
     local rank = 0
     local minBR = 0
     local maxBR = 0
-    foreach(u in unit.airsGroup)
-    {
+    foreach (u in unit.airsGroup) {
       isReserve = isReserve || ::isUnitDefault(u)
       rank = rank || u.rank
       let br = u.getBattleRating(ediff)
@@ -858,19 +818,16 @@ if need - put commented in array above
            showBR ? battleRatingStr : ::get_roman_numeral(unit.rank)
 }
 
-::is_crew_locked_by_prev_battle <- function is_crew_locked_by_prev_battle(crew)
-{
+::is_crew_locked_by_prev_battle <- function is_crew_locked_by_prev_battle(crew) {
   return ::isInMenu() && getTblValue("lockedTillSec", crew, 0) > 0
 }
 
-::isUnitUnlocked <- function isUnitUnlocked(unit, curSlotCountryId, curSlotIdInCountry, country, missionRules, needDbg = false)
-{
+::isUnitUnlocked <- function isUnitUnlocked(unit, curSlotCountryId, curSlotIdInCountry, country, missionRules, needDbg = false) {
   let crew = ::g_crews_list.get()[curSlotCountryId].crews[curSlotIdInCountry]
   local unlocked = !::is_crew_locked_by_prev_battle(crew)
-  if (unit)
-  {
+  if (unit) {
     unlocked = unlocked && (!country || ::is_crew_available_in_session(curSlotIdInCountry, needDbg))
-    unlocked = unlocked && (::isUnitAvailableForGM(unit, ::get_game_mode()) || ::is_in_flight())
+    unlocked = unlocked && (::isUnitAvailableForGM(unit, get_game_mode()) || ::is_in_flight())
       && (!unit.disableFlyout || !::is_in_flight())
       && (missionRules?.isUnitEnabledBySessionRank(unit) ?? true)
     if (unlocked && !::SessionLobby.canChangeCrewUnits() && !::is_in_flight()
@@ -881,8 +838,7 @@ if need - put commented in array above
   return unlocked
 }
 
-::isCountryAllCrewsUnlockedInHangar <- function isCountryAllCrewsUnlockedInHangar(countryId)
-{
+::isCountryAllCrewsUnlockedInHangar <- function isCountryAllCrewsUnlockedInHangar(countryId) {
   foreach (tbl in ::g_crews_list.get())
     if (tbl.country == countryId)
       foreach (crew in tbl.crews)
@@ -891,14 +847,12 @@ if need - put commented in array above
   return true
 }
 
-::getBrokenSlotsCount <- function getBrokenSlotsCount(country)
-{
+::getBrokenSlotsCount <- function getBrokenSlotsCount(country) {
   local count = 0
-  foreach(c in ::g_crews_list.get())
+  foreach (c in ::g_crews_list.get())
     if (!country || country == c.country)
-      foreach(crew in c.crews)
-        if (("aircraft" in crew) && crew.aircraft!="")
-        {
+      foreach (crew in c.crews)
+        if (("aircraft" in crew) && crew.aircraft != "") {
           let hp = ::shop_get_aircraft_hp(crew.aircraft)
           if (hp >= 0 && hp < 1)
             count++
@@ -906,39 +860,34 @@ if need - put commented in array above
   return count
 }
 
-::get_crew_by_id <- function get_crew_by_id(id)
-{
-  foreach(_cId, cList in ::g_crews_list.get())
+::get_crew_by_id <- function get_crew_by_id(id) {
+  foreach (_cId, cList in ::g_crews_list.get())
     if ("crews" in cList)
-      foreach(_idx, crew in cList.crews)
-       if (crew.id==id)
+      foreach (_idx, crew in cList.crews)
+       if (crew.id == id)
          return crew
   return null
 }
 
-::getCrewByAir <- function getCrewByAir(air)
-{
-  foreach(country in ::g_crews_list.get())
+::getCrewByAir <- function getCrewByAir(air) {
+  foreach (country in ::g_crews_list.get())
     if (country.country == air.shopCountry)
-      foreach(crew in country.crews)
-        if (("aircraft" in crew) && crew.aircraft==air.name)
+      foreach (crew in country.crews)
+        if (("aircraft" in crew) && crew.aircraft == air.name)
           return crew
   return null
 }
 
-::isUnitInSlotbar <- function isUnitInSlotbar(air)
-{
+::isUnitInSlotbar <- function isUnitInSlotbar(air) {
   return ::getCrewByAir(air) != null
 }
 
-::getSlotbarUnitTypes <- function getSlotbarUnitTypes(country)
-{
+::getSlotbarUnitTypes <- function getSlotbarUnitTypes(country) {
   let res = []
-  foreach(countryData in ::g_crews_list.get())
+  foreach (countryData in ::g_crews_list.get())
     if (countryData.country == country)
-      foreach(crew in countryData.crews)
-        if (("aircraft" in crew) && crew.aircraft != "")
-        {
+      foreach (crew in countryData.crews)
+        if (("aircraft" in crew) && crew.aircraft != "") {
           let unit = ::getAircraftByName(crew.aircraft)
           if (unit)
             ::u.appendOnce(::get_es_unit_type(unit), res)
@@ -946,27 +895,24 @@ if need - put commented in array above
   return res
 }
 
-::get_crews_list_by_country <- function get_crews_list_by_country(country)
-{
-  foreach(countryData in ::g_crews_list.get())
+::get_crews_list_by_country <- function get_crews_list_by_country(country) {
+  foreach (countryData in ::g_crews_list.get())
     if (countryData.country == country)
       return countryData.crews
   return []
 }
 
-::save_selected_crews <- function save_selected_crews()
-{
+::save_selected_crews <- function save_selected_crews() {
   if (!::g_login.isLoggedIn())
     return
 
-  let blk = ::DataBlock()
-  foreach(cIdx, country in ::g_crews_list.get())
+  let blk = DataBlock()
+  foreach (cIdx, country in ::g_crews_list.get())
     blk[country.country] = getTblValue(cIdx, ::selected_crews, 0)
   ::saveLocalByAccount("selected_crews", blk)
 }
 
-::init_selected_crews <- function init_selected_crews(forceReload = false)
-{
+::init_selected_crews <- function init_selected_crews(forceReload = false) {
   if (!forceReload && (!::g_crews_list.get().len() || ::selected_crews.len() == ::g_crews_list.get().len()))
     return
 
@@ -974,15 +920,12 @@ if need - put commented in array above
   local needSave = false
 
   ::selected_crews = array(::g_crews_list.get().len(), 0)
-  foreach(cIdx, country in ::g_crews_list.get())
-  {
+  foreach (cIdx, country in ::g_crews_list.get()) {
     let crewIdx = selCrewsBlk?[country.country] ?? 0
     if ((country?.crews[crewIdx].aircraft ?? "") != "")
       ::selected_crews[cIdx] = crewIdx
-    else
-    {
-      if (!selectAvailableCrew(cIdx))
-      {
+    else {
+      if (!selectAvailableCrew(cIdx)) {
         let unitId = ::getReserveAircraftName({ country = country.country })
         if (unitId != "")
           batchTrainCrew([{
@@ -998,17 +941,14 @@ if need - put commented in array above
   ::broadcastEvent("CrewChanged")
 }
 
-::select_crew_silent_no_check <- function select_crew_silent_no_check(countryId, idInCountry)
-{
-  if (::selected_crews[countryId] != idInCountry)
-  {
+::select_crew_silent_no_check <- function select_crew_silent_no_check(countryId, idInCountry) {
+  if (::selected_crews[countryId] != idInCountry) {
     ::selected_crews[countryId] = idInCountry
     ::save_selected_crews()
   }
 }
 
-::select_crew <- function select_crew(countryId, idInCountry, airChanged = false)
-{
+::select_crew <- function select_crew(countryId, idInCountry, airChanged = false) {
   ::init_selected_crews()
   if ((countryId not in ::selected_crews)
       || (::selected_crews[countryId] == idInCountry && !airChanged))
@@ -1019,28 +959,24 @@ if need - put commented in array above
   ::g_squad_utils.updateMyCountryData(!::is_in_flight())
 }
 
-::getSelAircraftByCountry <- function getSelAircraftByCountry(country)
-{
+::getSelAircraftByCountry <- function getSelAircraftByCountry(country) {
   ::init_selected_crews()
-  foreach(cIdx, c in ::g_crews_list.get())
+  foreach (cIdx, c in ::g_crews_list.get())
     if (c.country == country)
       return ::g_crew.getCrewUnit(c.crews?[::selected_crews[cIdx]])
   return null
 }
 
-::get_cur_slotbar_unit <- function get_cur_slotbar_unit()
-{
+::get_cur_slotbar_unit <- function get_cur_slotbar_unit() {
   return ::getSelAircraftByCountry(profileCountrySq.value)
 }
 
-::is_unit_enabled_for_slotbar <- function is_unit_enabled_for_slotbar(unit, params)
-{
+::is_unit_enabled_for_slotbar <- function is_unit_enabled_for_slotbar(unit, params) {
   if (!unit || unit.disableFlyout)
     return false
 
   local res = true
-  if (params?.eventId)
-  {
+  if (params?.eventId) {
     res = false
     let event = ::events.getEvent(params.eventId)
     if (event)
@@ -1057,8 +993,7 @@ if need - put commented in array above
     res = ::game_mode_manager.isUnitAllowedForGameMode(unit)
 
   let missionRules = params?.missionRules
-  if (res && missionRules)
-  {
+  if (res && missionRules) {
     let isAvaliableUnit = (missionRules.getUnitLeftRespawns(unit) != 0
       || missionRules.isUnitAvailableBySpawnScore(unit))
       && missionRules.isUnitEnabledByRandomGroups(unit.name)
@@ -1072,16 +1007,14 @@ if need - put commented in array above
   return res
 }
 
-::isUnitInCustomList <- function isUnitInCustomList(unit, params)
-{
+::isUnitInCustomList <- function isUnitInCustomList(unit, params) {
   if (!unit)
     return false
 
   return params?.customUnitsList ? unit.name in params.customUnitsList : true
 }
 
-::initSlotbarTopBar <- function initSlotbarTopBar(slotbarObj, show)
-{
+::initSlotbarTopBar <- function initSlotbarTopBar(slotbarObj, show) {
   if (!checkObj(slotbarObj))
     return
 
@@ -1104,16 +1037,14 @@ if need - put commented in array above
     obj.setValue(::get_auto_refill(1))
 }
 
-::isCountryAvailable <- function isCountryAvailable(country)
-{
-  if (country=="country_0" || country=="")
+::isCountryAvailable <- function isCountryAvailable(country) {
+  if (country == "country_0" || country == "")
     return true
 
   return isInArray(country, ::unlocked_countries) || ::is_country_available(country)
 }
 
-::unlockCountry <- function unlockCountry(country, hideInUserlog = false, reqUnlock = true)
-{
+::unlockCountry <- function unlockCountry(country, hideInUserlog = false, reqUnlock = true) {
   if (reqUnlock)
     ::req_unlock_by_client(country, hideInUserlog)
 
@@ -1121,25 +1052,21 @@ if need - put commented in array above
     ::unlocked_countries.append(country)
 }
 
-::checkUnlockedCountries <- function checkUnlockedCountries()
-{
+::checkUnlockedCountries <- function checkUnlockedCountries() {
   let curUnlocked = []
   if (isNeedFirstCountryChoice())
     return curUnlocked
 
   let unlockAll = ::disable_network() || hasFeature("UnlockAllCountries") || isDiffUnlocked(1, ES_UNIT_TYPE_AIRCRAFT)
   let wasInList = ::unlocked_countries.len()
-  foreach(_i, country in shopCountriesList)
-    if (::is_country_available(country))
-    {
-      if (!isInArray(country, ::unlocked_countries))
-      {
+  foreach (_i, country in shopCountriesList)
+    if (::is_country_available(country)) {
+      if (!isInArray(country, ::unlocked_countries)) {
         ::unlocked_countries.append(country)
         curUnlocked.append(country)
       }
     }
-    else if (unlockAll)
-    {
+    else if (unlockAll) {
       ::unlockCountry(country, !::g_login.isLoggedIn())
       curUnlocked.append(country)
     }
@@ -1148,14 +1075,12 @@ if need - put commented in array above
   return curUnlocked
 }
 
-::checkUnlockedCountriesByAirs <- function checkUnlockedCountriesByAirs() //starter packs
-{
+::checkUnlockedCountriesByAirs <- function checkUnlockedCountriesByAirs() { //starter packs
   local haveUnlocked = false
-  foreach(air in ::all_units)
+  foreach (air in ::all_units)
     if (!::isUnitDefault(air)
         && ::isUnitUsable(air)
-        && !::isCountryAvailable(air.shopCountry))
-    {
+        && !::isCountryAvailable(air.shopCountry)) {
       ::unlockCountry(air.shopCountry)
       haveUnlocked = true
     }

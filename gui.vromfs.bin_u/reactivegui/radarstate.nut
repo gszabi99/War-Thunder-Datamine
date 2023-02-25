@@ -186,8 +186,8 @@ let IsForestallVisible = Watched(false)
 
 let UseLockZoneRotated = Watched(false)
 let FoV = Watched(0)
-let ScanZoneWatched = Watched({x0=0,x1=0,x2=0,x3=0,y0=0,y1=0,y2=0,y3=0})
-let LockZoneWatched = Watched({x0=0, y0=0, x1=0, y1=0, x2=0, y2=0, x3=0, y3=0})
+let ScanZoneWatched = Watched({ x0 = 0, x1 = 0, x2 = 0, x3 = 0, y0 = 0, y1 = 0, y2 = 0, y3 = 0 })
+let LockZoneWatched = Watched({ x0 = 0, y0 = 0, x1 = 0, y1 = 0, x2 = 0, y2 = 0, x3 = 0, y3 = 0 })
 let IsScanZoneAzimuthVisible = Watched(false)
 let IsScanZoneElevationVisible = Watched(false)
 let IsLockZoneVisible = Watched(false)
@@ -257,7 +257,7 @@ interop.updateBlinking <- function(isTargetBlink, isSpeedBlink) {
 
 interop.clearTargets <- function() {
   local needUpdate = false
-  for(local i = 0; i < targets.len(); ++i) {
+  for (local i = 0; i < targets.len(); ++i) {
     if (targets[i] != null) {
       targets[i] = null
       needUpdate = true
@@ -335,7 +335,7 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
   }
   else {
     let screenTarget = screenTargets[id]
-    let new_tgt = screenTarget.__merge({x,y,dist,
+    let new_tgt = screenTarget.__merge({ x, y, dist,
       losHorSpeed = los_hor_speed
       losVerSpeed = los_ver_speed
       losSpeed = los_speed
@@ -384,11 +384,11 @@ interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg,
 
 
 interop.resetTargetsFlags <- function() {
-  foreach(target in screenTargets)
+  foreach (target in screenTargets)
     if (target)
       target.isUpdated = false
 
-  foreach(marker in azimuthMarkers)
+  foreach (marker in azimuthMarkers)
     if (marker)
       marker.isUpdated = false
 }
@@ -396,7 +396,7 @@ interop.resetTargetsFlags <- function() {
 
 interop.clearUnusedTargets <- function() {
   local needUpdate = false
-  foreach(id, target in screenTargets)
+  foreach (id, target in screenTargets)
     if (target && !target.isUpdated) {
       screenTargets[id] = null
       needUpdate = true
@@ -405,12 +405,12 @@ interop.clearUnusedTargets <- function() {
     ScreenTargetsTrigger.trigger()
 
   needUpdate = false
-  foreach(id, marker in azimuthMarkers)
+  foreach (id, marker in azimuthMarkers)
     if (marker && !marker.isUpdated && radarState.currentTime.value > marker.targetTime + targetLifeTime) {
       azimuthMarkers[id] = null
       needUpdate = true
     }
-  if(needUpdate)
+  if (needUpdate)
     AzimuthMarkersTrigger.trigger()
 }
 
@@ -428,17 +428,17 @@ interop.updateSelectedTarget <- function(x, y) {
 
 interop.updateScanZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
   let curVal = ScanZoneWatched.value
-  if ( curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
+  if (curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
     || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
-    ScanZoneWatched({x0, y0, x1, y1, x2, y2, x3, y3})
+    ScanZoneWatched({ x0, y0, x1, y1, x2, y2, x3, y3 })
   }
 }
 
 interop.updateLockZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
   let curVal = LockZoneWatched.value
-  if ( curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
+  if (curVal.x0 != x0 || curVal.y0 != y0 || curVal.x1 != x1 || curVal.y1 != y1
     || curVal.x2 != x2 || curVal.y2 != y2 || curVal.x3 != x3 || curVal.y3 != y3) {
-    LockZoneWatched({x0, x1, x2, x3, y0, y1, y2, y3})
+    LockZoneWatched({ x0, x1, x2, x3, y0, y1, y2, y3 })
   }
 }
 
@@ -446,7 +446,7 @@ interop.updateLockZone <- function(x0, y0, x1, y1, x2, y2, x3, y3) {
 interop.updateRadarPosSize <- function(x, y, w, h) {
   let curVal = radarPosSize.value
   if (curVal.x != x || curVal.y != y || curVal.w != w || curVal.h != h)
-    radarPosSize({x, y, w, h})
+    radarPosSize({ x, y, w, h })
 }
 
 interopGen({

@@ -1,6 +1,7 @@
 module linear shared
 require math
 require DagorSystem
+require DagorMath
 
 
 [generic] // closest_pt_on_seg from dag_mathUtils.h
@@ -37,6 +38,24 @@ def distance_sq_to_line(point, a, dir) : float
   let t = dot(point - a, dir)
   let pt = a + dir * float3(t)
   return distance_sq(point, pt)
+
+[generic]
+def point_to_plane_dst(p, norm, point_in_plane : float3) : float
+  return dot(point_in_plane, norm) - dot(p, norm)
+
+[generic]
+def point_to_tm_dst(p : float3; tm : float3x4) : float
+  let axd = length(tm[0])
+  let ayd = length(tm[1])
+  let azd = length(tm[2])
+
+  let v = tm[3] - p
+
+  let dx = max(.0, dot(v, tm[0]) * safeinv(axd) - 0.5 * axd)
+  let dy = max(.0, dot(v, tm[1]) * safeinv(ayd) - 0.5 * ayd)
+  let dz = max(.0, dot(v, tm[2]) * safeinv(azd) - 0.5 * azd)
+
+  return length(float3(dx, dy, dz))
 
 def is_2d_lines_crossed(startL1, endL1, startL2, endL2 : float2) : bool
   let den = (endL2.y - startL2.y) * (endL1.x - startL1.x) - (endL2.x - startL2.x) * (endL1.y - startL1.y)

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let time = require("%scripts/time.nut")
+let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
@@ -20,14 +22,12 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   partnerExectutedUnlocks = {}
 }
 
-::g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks()
-{
+::g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks() {
   if (!this.canRefreshData())
     return
 
   this.lastRequestTime = get_time_msec()
-  let successCb = function(result)
-  {
+  let successCb = function(result) {
     ::g_partner_unlocks.lastUpdateTime = get_time_msec()
     if (!::g_partner_unlocks.applyNewPartnerUnlockData(result))
       return
@@ -35,15 +35,14 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
     ::broadcastEvent("PartnerUnlocksUpdated")
   }
 
-  let requestBlk = ::DataBlock()
+  let requestBlk = DataBlock()
   ::g_tasker.charRequestBlk("cln_get_partner_executed_unlocks",
                             requestBlk,
                             { showErrorMessageBox = false },
                             successCb)
 }
 
-::g_partner_unlocks.canRefreshData <- function canRefreshData()
-{
+::g_partner_unlocks.canRefreshData <- function canRefreshData() {
   if (this.lastRequestTime > this.lastUpdateTime && this.lastRequestTime + this.REQUEST_TIMEOUT_MSEC > get_time_msec())
     return false
   if (this.lastUpdateTime + this.UPDATE_TIMEOUT_MSEC > get_time_msec())
@@ -52,13 +51,11 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   return true
 }
 
-::g_partner_unlocks.getPartnerUnlockTime <- function getPartnerUnlockTime(unlockId)
-{
+::g_partner_unlocks.getPartnerUnlockTime <- function getPartnerUnlockTime(unlockId) {
   if (::u.isEmpty(unlockId))
     return null
 
-  if (!(unlockId in this.partnerExectutedUnlocks))
-  {
+  if (!(unlockId in this.partnerExectutedUnlocks)) {
     if (::is_unlocked_scripted(-1, unlockId))
       this.requestPartnerUnlocks()
     return null
@@ -67,8 +64,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   return this.partnerExectutedUnlocks[unlockId]
 }
 
-::g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockData(result)
-{
+::g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockData(result) {
   if (!::u.isDataBlock(result))
     return false
 
@@ -80,8 +76,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   return true
 }
 
-::g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(unlockId, durationMin = null)
-{
+::g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(unlockId, durationMin = null) {
   if (!unlockId)
     return true
   let startSec = this.getPartnerUnlockTime(unlockId)
@@ -97,8 +92,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   return endSec > ::get_charserver_time_sec()
 }
 
-::g_partner_unlocks.onEventSignOut <- function onEventSignOut(_p)
-{
+::g_partner_unlocks.onEventSignOut <- function onEventSignOut(_p) {
   this.lastRequestTime = -9999999999
   this.lastUpdateTime = -9999999999
   this.partnerExectutedUnlocks = {}

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -22,16 +23,14 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
   ownTitles = null
   titlesList = null
 
-  static function open()
-  {
-    if(!::isInMenu() || !::my_stats.getStats())
+  static function open() {
+    if (!::isInMenu() || !::my_stats.getStats())
       return
 
     ::handlersManager.loadHandler(::gui_handlers.ChooseTitle)
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.ownTitles = ::my_stats.getTitles()
     this.titlesList = ::g_unlocks.getAllUnlocksWithBlkOrder()
       .filter(@(u) u?.type == "title" && isUnlockVisible(u))
@@ -39,8 +38,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     this.curTitle = ::my_stats.getStats().title
 
     let hasUnseen = seenTitles.getNewCount() > 0
-    local titlesData = this.titlesList.map(function(name)
-    {
+    local titlesData = this.titlesList.map(function(name) {
       let locText = loc("title/" + name)
       let isOwn = this.isOwnTitle(name)
       return {
@@ -62,15 +60,15 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     let titleHeight = to_pixels("1@buttonHeight")
     let gRatioColumns = stdMath.calc_golden_ratio_columns(titlesData.len(),
       titleWidth / (titleHeight || 1))
-    let maxColumns = (to_pixels("1@rw - 1@scrollBarSize") / titleWidth ).tointeger() || 1
+    let maxColumns = (to_pixels("1@rw - 1@scrollBarSize") / titleWidth).tointeger() || 1
     let columns = clamp(gRatioColumns, min(3, maxColumns), maxColumns)
 
     //sort alphabetically, and by columns
     titlesData.sort(@(a, b) a.lowerText <=> b.lowerText)
     let orderedData = []
     let rows = ceil(titlesData.len().tofloat() / columns).tointeger()
-    for(local i = 0; i < rows; i++)
-      for(local j = i; j < titlesData.len(); j += rows)
+    for (local i = 0; i < rows; i++)
+      for (local j = i; j < titlesData.len(); j += rows)
         orderedData.append(titlesData[j])
     titlesData = orderedData
     this.titlesList = orderedData.map(@(t) t.name)
@@ -84,8 +82,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     ::move_mouse_on_child_by_value(this.scene.findObject("titles_list"))
     this.updateButtons()
   }
@@ -117,8 +114,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     this.showSceneBtn("btn_apply", isOwn)
   }
 
-  function onTitleSelect(obj)
-  {
+  function onTitleSelect(obj) {
     let title = this.getSelTitle(obj)
     if (this.isOwnTitle(title)) {
       seenTitles.markSeen(title)
@@ -171,8 +167,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
         showProgressBox = true
         progressBoxText = loc("charServer/checking")
       },
-      function()
-      {
+      function() {
        ::my_stats.clearStats()
        ::my_stats.getStats()
       })
@@ -180,8 +175,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     this.goBack()
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     seenTitles.markSeen()
   }
 }

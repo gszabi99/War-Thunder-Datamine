@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,49 +9,41 @@ let boosterEffectType = {
     name = "xpRate"
     currencyMark = loc("currency/researchPoints/sign/colored")
     abbreviation = "xp"
-    checkBooster = function(booster)
-    {
+    checkBooster = function(booster) {
       return getTblValue("xpRate", booster, 0) != 0
     }
-    getValue = function(booster)
-    {
+    getValue = function(booster) {
       return getTblValue("xpRate", booster, 0)
     }
-    getText = function(value, colored = false, showEmpty = true)
-    {
+    getText = function(value, colored = false, showEmpty = true) {
       if (value == 0 && !showEmpty)
         return ""
-      return ::Cost().setRp(value).toStringWithParams({isColored = colored})
+      return ::Cost().setRp(value).toStringWithParams({ isColored = colored })
     }
   }
   WP = {
     name = "wpRate"
     currencyMark = loc("warpoints/short/colored")
     abbreviation = "wp"
-    checkBooster = function(booster)
-    {
+    checkBooster = function(booster) {
       return getTblValue("wpRate", booster, 0) != 0
     }
-    getValue = function(booster)
-    {
+    getValue = function(booster) {
       return getTblValue("wpRate", booster, 0)
     }
-    getText = function(value, colored = false, showEmpty = true)
-    {
+    getText = function(value, colored = false, showEmpty = true) {
       if (value == 0 && !showEmpty)
         return ""
-      return ::Cost(value).toStringWithParams({isWpAlwaysShown = true, isColored = colored})
+      return ::Cost(value).toStringWithParams({ isWpAlwaysShown = true, isColored = colored })
     }
   }
 }
 
-let function getActiveBoostersArray(effectType = null)
-{
+let function getActiveBoostersArray(effectType = null) {
   let res = []
   let total = ::get_current_booster_count(::INVALID_USER_ID)
   let bonusType = effectType ? effectType.name : null
-  for (local i = 0; i < total; i++)
-  {
+  for (local i = 0; i < total; i++) {
     let uid = ::get_current_booster_uid(::INVALID_USER_ID, i)
     let item = ::ItemsManager.findItemByUid(uid, itemType.BOOSTER)
     if (!item || (bonusType && item[bonusType] == 0) || !item.isActive(true))
@@ -65,11 +58,10 @@ let function getActiveBoostersArray(effectType = null)
   return res
 }
 
-let function sortByParam(arr, param)
-{
+let function sortByParam(arr, param) {
   let sortByBonus = (@(param) function(a, b) {
     if (a[param] != b[param])
-      return a[param] > b[param]? -1 : 1
+      return a[param] > b[param] ? -1 : 1
     return 0
   })(param)
 
@@ -89,13 +81,11 @@ let function sortByParam(arr, param)
  * }
  * Public and personal arrays of boosters sorted by effect type
  */
-let function sortBoosters(boosters, effectType)
-{
+let function sortBoosters(boosters, effectType) {
   let res = {
     maxSortOrder = 0
   }
-  foreach(booster in boosters)
-  {
+  foreach (booster in boosters) {
     res.maxSortOrder = max(getTblValue("maxSortOrder", res, 0), booster.sortOrder)
     if (!getTblValue(booster.sortOrder, res))
       res[booster.sortOrder] <- {
@@ -116,10 +106,9 @@ let function sortBoosters(boosters, effectType)
   return res
 }
 
-let function getBoostersEffectsArray(itemsArray, effectType)
-{
+let function getBoostersEffectsArray(itemsArray, effectType) {
   let res = []
-  foreach(item in itemsArray)
+  foreach (item in itemsArray)
     res.append(item[effectType.name])
   return res
 }
@@ -130,15 +119,12 @@ let function getBoostersEffectsArray(itemsArray, effectType)
  *   <boosterEffectType.name> = <value in percent>
  * }
  */
-let function getBoostersEffects(boosters)
-{
+let function getBoostersEffects(boosters) {
   let result = {}
-  foreach (effectType in boosterEffectType)
-  {
+  foreach (effectType in boosterEffectType) {
     result[effectType.name] <- 0
     let sortedBoosters = sortBoosters(boosters, effectType)
-    for (local i = 0; i <= sortedBoosters.maxSortOrder; i++)
-    {
+    for (local i = 0; i <= sortedBoosters.maxSortOrder; i++) {
       if (!(i in sortedBoosters))
         continue
       result[effectType.name] +=
@@ -149,16 +135,14 @@ let function getBoostersEffects(boosters)
   return result
 }
 
-let function hasActiveBoosters(effectType, personal)
-{
+let function hasActiveBoosters(effectType, personal) {
   let items = ::ItemsManager.getInventoryList(itemType.BOOSTER, (
       @(effectType, personal) @(item) item.isActive(true) && effectType.checkBooster(item)
-        && item.personal == personal )(effectType, personal))
+        && item.personal == personal)(effectType, personal))
   return items.len() != 0
 }
 
-let function haveActiveBonusesByEffectType(effectType, personal = false)
-{
+let function haveActiveBonusesByEffectType(effectType, personal = false) {
   return hasActiveBoosters(effectType, personal)
     || (personal
         && (::get_cyber_cafe_bonus_by_effect_type(effectType) > 0.0

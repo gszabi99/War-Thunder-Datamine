@@ -11,13 +11,13 @@ require daslib/ast_boost
 require daslib/is_local
 
 [tag_function(safe_addr_tag)]
-def public safe_addr(var x : auto(T)& = const) : T-& ? #
+def public safe_addr(var x : auto(T)& ==const) : T-& ? #
     //! returns temporary pointer to the given expression
     unsafe
         return reinterpret<T-&?#>(addr(x))
 
 [tag_function(safe_addr_tag)]
-def public safe_addr(x : auto(T)& = const) : T-& ? const #
+def public safe_addr(x : auto(T)& ==const) : T-& ? const #
     unsafe
         return reinterpret<T-&? const #>(addr(x))
 
@@ -31,28 +31,47 @@ class SafeAddrMacro : AstFunctionAnnotation
         return [[ExpressionPtr]]
 
 // [tag_function(temp_addr_tag)]
-def public temp_ptr(x : auto(T)? implicit = const) : T ? const #
+def public temp_ptr(x : auto(T)? implicit ==const) : T ? const #
     //! returns temporary pointer from a given pointer
     unsafe
         return reinterpret<T? const #>(x)
 
 // [tag_function(temp_addr_tag)]
-def public temp_ptr(var x : auto(T)? implicit = const) : T ?#
+def public temp_ptr(var x : auto(T)? implicit ==const) : T ?#
     unsafe
         return reinterpret<T?#>(x)
+
+[tag_function(shared_addr_tag)]
+def public shared_addr ( tab:table<auto(KEY); auto(VAL)>; k:KEY )
+    return unsafe(find(tab,k))
+
+[tag_function(shared_addr_tag)]
+def public shared_addr ( val:auto(VALUE)& )
+    //! returns address of the given shared variable. it's safe because shared variables never go out of scope
+    return unsafe(addr(val))
+
+[tag_function_macro(tag="shared_addr_tag")]
+class SharedAddrMacro : AstFunctionAnnotation
+    //! This macro reports an error if shared_addr is attempted on anything other that shared global variables.
+    def override verifyCall ( var call : smart_ptr<ExprCallFunc>; args,progArgs:AnnotationArgumentList; var errors : das_string ) : bool
+        if is_shared_expr(ExpressionPtr(call.arguments[0]))
+            return true
+        compiling_program() |> macro_error(call.at,"{call.name} can only be used with shared global variables")
+        return false
+
 
 /*
 
 // this breaks safety. i.e. a:array<FOO>; temp_addr(a[0]); resize(a,100500)
 
 [tag_function(temp_addr_tag)]
-def public temp_addr(var x : auto(T)& = const) : T-& ? #
+def public temp_addr(var x : auto(T)& ==const) : T-& ? #
     //! returns temporary pointer to the given expression
     unsafe
         return reinterpret<T-&?#>(addr(x))
 
 [tag_function(temp_addr_tag)]
-def public temp_addr(x : auto(T)& = const) : T-& ? const #
+def public temp_addr(x : auto(T)& ==const) : T-& ? const #
     unsafe
         return reinterpret<T-&? const #>(addr(x))
 

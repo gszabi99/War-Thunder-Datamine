@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -14,7 +15,7 @@ let { is_running } = require("steam")
 
 local openReviewWnd = @(...) null
 if (isPlatformXboxOne)
-  openReviewWnd = require("%xboxLib/store.nut").request_review
+  openReviewWnd = @(...) ::xbox_show_rate_and_review()
 else if (is_running())
   openReviewWnd = require("steamRateGameWnd.nut").open
 
@@ -108,7 +109,7 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 
   if (isWin) {
-    winsInARow(winsInARow.value+1)
+    winsInARow(winsInARow.value + 1)
 
     local totalKills = 0
     debriefingRows.each(function(b) {
@@ -131,21 +132,14 @@ let function setNeedShowRate(debriefingResult, myPlace) {
   }
 }
 
-/*
 let function tryOpenXboxRateReviewWnd() {
   if (!isPlatformXboxOne)
     return
 
-  openReviewWnd(function(openedReviewWnd) {
-    //On XBOX could be any errors on displaying wnd
-    //so we send data only if code returns success
-    if (openedReviewWnd) {
-      ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, ::get_charserver_time_sec())
-      ::add_big_query_record("rate", ::save_to_json({ from = "xbox" }))
-    }
-  })
+  openReviewWnd()
+  ::save_local_account_settings(RATE_WND_TIME_SAVE_ID, ::get_charserver_time_sec())
+  ::add_big_query_record("rate", ::save_to_json({ from = "xbox" }))
 }
-*/
 
 let function tryOpenSteamRateReview(forceShow = false) {
   if (!forceShow && (!is_running() || !hasFeature("SteamRateGame")))
@@ -171,7 +165,7 @@ let function checkShowRateWnd() {
     || ::load_local_account_settings(RATE_WND_TIME_SAVE_ID, 0) > 0)
     return
 
-  // tryOpenXboxRateReviewWnd()
+  tryOpenXboxRateReviewWnd()
   tryOpenSteamRateReview()
 
   // in case of error, show in next launch.

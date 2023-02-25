@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,8 +16,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   ::gui_start_modal_wnd(::gui_handlers.EditBoxHandler, params)
 }
 
-::gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler
-{
+::gui_handlers.EditBoxHandler <- class extends ::BaseGuiHandler {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/editBoxWindow.blk"
   okFunc = null
@@ -44,8 +44,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   editBoxObj = null
   needOpenIMEonInit = true
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.findObject("edit_box_window_header").setValue(this.title)
     this.checkWarningFunc = this.checkWarningFunc ?? @(...) true
 
@@ -55,7 +54,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let isEnabled = this.editBoxEnableFunc ? this.editBoxEnableFunc() : true
     this.editBoxObj.enable(isEnabled)
     if (this.editBoxTextOnDisable)
-      this.editBoxObj["edit-hint"] = isEnabled? "" : this.editBoxTextOnDisable
+      this.editBoxObj["edit-hint"] = isEnabled ? "" : this.editBoxTextOnDisable
     if (this.value)
       this.editBoxObj.setValue(this.value)
     if (this.maxLen)
@@ -78,18 +77,15 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (this.okBtnText != "")
       setColoredDoubleTextToButton(this.scene, "btn_ok", this.okBtnText)
 
-    if (isEnabled)
-    {
+    if (isEnabled) {
       this.guiScene.applyPendingChanges(false)
       ::select_editbox(this.editBoxObj)
     }
   }
 
-  function onChangeValue(obj)
-  {
+  function onChangeValue(obj) {
     let curVal = obj.getValue() || ""
-    if (this.validateFunc)
-    {
+    if (this.validateFunc) {
       let newVal = this.validateFunc(curVal)
       if (newVal != curVal)
         return obj.setValue(newVal)
@@ -98,26 +94,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateWarningByValue(obj, curVal)
   }
 
-  function isApplyEnabled(curVal)
-  {
+  function isApplyEnabled(curVal) {
     return (this.checkButtonFunc == null || this.checkButtonFunc(curVal))
            && (this.allowEmpty || curVal != "")
   }
 
-  function updateBtnByValue(curVal)
-  {
+  function updateBtnByValue(curVal) {
     this.scene.findObject("btn_ok").enable(this.isApplyEnabled(curVal))
   }
 
   function updateWarningByValue(obj, curVal) {
     let res = !this.checkWarningFunc(curVal)
-    obj.warning = res? "yes" : "no"
-    obj.warningText = res? "yes" : "no"
+    obj.warning = res ? "yes" : "no"
+    obj.warningText = res ? "yes" : "no"
     obj.tooltip = res ? this.editboxWarningTooltip : ""
   }
 
-  function onOk()
-  {
+  function onOk() {
     this.value = this.editBoxObj.getValue() || ""
     if (this.isApplyEnabled(this.value))
       return this.guiScene.performDelayed(this, this.goBack)
@@ -125,17 +118,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.value = null
   }
 
-  function goBack()
-  {
+  function goBack() {
     if (this.value || this.canCancel)
       base.goBack()
-    else
-      if (this.cancelFunc)
+    else if (this.cancelFunc)
         ::call_for_handler(this.owner, this.cancelFunc)
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
     if (this.value && this.okFunc)
       if (this.owner)
         this.okFunc.call(this.owner, this.value)

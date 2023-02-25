@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -16,26 +17,22 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")
 
-::gui_handlers.BattleTasksPromoHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.BattleTasksPromoHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
 
   sceneBlkName = "%gui/empty.blk"
   savePathBattleTasksDiff = "promo/battleTasksDiff"
 
-  static function open(params)
-  {
+  static function open(params) {
     ::handlersManager.loadHandler(::gui_handlers.BattleTasksPromoHandler, params)
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.scene.setUserData(this)
     this.updateHandler()
   }
 
-  function updateHandler()
-  {
+  function updateHandler() {
     let id = this.scene.id
     local difficultyGroupArray = []
 
@@ -51,8 +48,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
     let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
     // 2) Search for task by selected gameMode
-    if (!reqTask && currentGameModeId)
-    {
+    if (!reqTask && currentGameModeId) {
       local curDifficultyGroup = ::load_local_account_settings(this.savePathBattleTasksDiff,
         ::g_battle_task_difficulty.getDefaultDifficultyGroup())
       let activeTasks = ::u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
@@ -75,28 +71,24 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     let promoView = copyParamsToTable(::g_promo.getConfig()?[id])
     local view = {}
 
-    if (reqTask)
-    {
+    if (reqTask) {
       let config = ::build_conditions_config(reqTask)
       ::build_unlock_desc(config)
 
       let itemView = ::g_battle_tasks.generateItemView(config, { isPromo = true })
       itemView.canReroll = false
-      view = ::u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null? val1 : val2 })
+      view = ::u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null ? val1 : val2 })
       view.collapsedText <- ::g_promo.getCollapsedText(view, id)
 
       currentWarbond = ::g_warbonds.getCurrentWarbond()
-      if (currentWarbond && currentWarbond.levelsArray.len())
-      {
+      if (currentWarbond && currentWarbond.levelsArray.len()) {
         showProgressBar = (isTaskWithReward || ::g_warbonds_view.needShowProgressBarInPromo)
           && ::g_battle_task_difficulty.getDifficultyTypeByTask(reqTask).canIncreaseShopLevel
-        if (showProgressBar)
-        {
+        if (showProgressBar) {
           local curLevel = currentWarbond.getCurrentShopLevel()
           local nextLevel = curLevel + 1
           local markUp = ::g_warbonds_view.getProgressBoxMarkUp()
-          if (currentWarbond.isMaxLevelReached())
-          {
+          if (currentWarbond.isMaxLevelReached()) {
             nextLevel = curLevel
             curLevel -= 1
           }
@@ -104,26 +96,23 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
           markUp += ::g_warbonds_view.getLevelItemMarkUp(currentWarbond, nextLevel, "pw-50%w")
           view.warbondLevelPlace <- markUp
         }
-        else if (!isTaskWithReward)
-        {
+        else if (!isTaskWithReward) {
           view.isConsoleMode <- ::show_console_buttons
           view.newItemsAvailable <- currentWarbond.needShowNewItemsNotifications()
           view.unseenIcon <- SEEN.WARBONDS_SHOP
         }
       }
     }
-    else
-    {
+    else {
       promoView.id <- id
       view = ::g_battle_tasks.generateItemView(promoView, { isPromo = true })
       view.collapsedText <- ::g_promo.getCollapsedText(promoView, id)
       view.refreshTimer <- true
     }
 
-    if (!(view.needShowProgressBar ?? false) && view.needShowProgressValue)
-    {
+    if (!(view.needShowProgressBar ?? false) && view.needShowProgressValue) {
       let progressValueText = loc("ui/parentheses/space",
-        {text = "".concat(view.progressValue, "/", view.progressMaxValue)})
+        { text = "".concat(view.progressValue, "/", view.progressMaxValue) })
       view.collapsedText = $"{view.collapsedText}{progressValueText}"
     }
     let maxTextWidth = to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
@@ -159,7 +148,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     }
 
     let data = ::handyman.renderCached("%gui/promo/promoBattleTasks.tpl",
-      { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME})
+      { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME })
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
     ::g_battle_tasks.setUpdateTimer(reqTask, this.scene)
@@ -167,18 +156,15 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
       ::g_warbonds_view.updateProgressBar(currentWarbond, this.scene, true)
   }
 
-  function onGetRewardForTask(obj)
-  {
+  function onGetRewardForTask(obj) {
     ::g_battle_tasks.requestRewardForTask(obj?.task_id)
   }
 
-  function onWarbondsShop(_obj)
-  {
+  function onWarbondsShop(_obj) {
     ::g_warbonds.openShop()
   }
 
-  function onSelectDifficultyBattleTasks(obj)
-  {
+  function onSelectDifficultyBattleTasks(obj) {
     let index = obj.getValue()
     if (index < 0 || index >= obj.childrenCount())
       return
@@ -190,17 +176,14 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
     ::save_local_account_settings(this.savePathBattleTasksDiff, difficultyGroup)
 
-    this.guiScene.performDelayed(this, function()
-    {
+    this.guiScene.performDelayed(this, function() {
       this.updateHandler()
     })
   }
 
-  function getDifficultyRadioButtonsListByTasks(tasksArray, difficultyTypeArray, curDifficultyGroup)
-  {
+  function getDifficultyRadioButtonsListByTasks(tasksArray, difficultyTypeArray, curDifficultyGroup) {
     let result = []
-    foreach(btDiffType in difficultyTypeArray)
-    {
+    foreach (btDiffType in difficultyTypeArray) {
       let difficultyGroup = btDiffType.getDifficultyGroup()
       let tasksByDiff = ::u.search(tasksArray,
           @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task) == btDiffType))
@@ -217,8 +200,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   }
 
   function performAction(obj) { ::g_promo.performAction(this, obj) }
-  function performActionCollapsed(obj)
-  {
+  function performActionCollapsed(obj) {
     let buttonObj = obj.getParent()
     this.performAction(buttonObj.findObject(::g_promo.getActionParamsKey(buttonObj.id)))
   }

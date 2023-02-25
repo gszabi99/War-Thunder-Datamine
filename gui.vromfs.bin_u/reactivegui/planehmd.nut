@@ -2,9 +2,9 @@ from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 
-let {HmdVisible} = require("%rGui/rocketAamAimState.nut")
-let {HmdSensorVisible} = require("%rGui/radarState.nut")
-let {BlkFileName} = require("planeState/planeToolsState.nut")
+let { HmdVisible } = require("%rGui/rocketAamAimState.nut")
+let { HmdSensorVisible } = require("%rGui/radarState.nut")
+let { BlkFileName } = require("planeState/planeToolsState.nut")
 
 let hmdShelZoom = require("planeHmds/hmdShelZoom.nut")
 let hmdVtas = require("planeHmds/hmdVtas.nut")
@@ -28,7 +28,7 @@ let hmdSetting = Computed(function() {
 
 let planeHmd = @(width, height) function() {
 
-  let {isShelZoom, isVtas} = hmdSetting.value
+  let { isShelZoom, isVtas } = hmdSetting.value
   return {
     watch = [hmdSetting, HmdVisible, HmdSensorVisible]
     children = HmdVisible.value || HmdSensorVisible.value ? [

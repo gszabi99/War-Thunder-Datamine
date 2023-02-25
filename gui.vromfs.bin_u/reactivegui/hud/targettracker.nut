@@ -159,7 +159,7 @@ let function targetSizeComponent(
     pos = [0, 0]
     size = SIZE_TO_CONTENT
     watch = [TargetX, TargetY]
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value >= 0.2, loop = true, easing = InOutSine, trigger = targetSizeTrigger}]
+    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value >= 0.2, loop = true, easing = InOutSine, trigger = targetSizeTrigger }]
     children = targetSize(colorWatched, width, height, is_static_pos)
   }
 }

@@ -29,7 +29,7 @@
         "max-height": "600*@sf/@pf_outdated",
         "pos": "50%pw-50%w, 0",
         "position": "relative",
-        "background-image": "#ui/images/login_reward.jpg?P1",
+        "background-image": "#ui/images/login_reward?P1",
         "dummy": {
           "id": "award_image_button",
           "link": "",
@@ -96,66 +96,12 @@
       },
       "navBar": {
         "navLeft": {
-          "Button_text": [
-            {
-              "id": "btn_postLink",
-              "_on_click": "onFacebookPostLink",
-              "display": "hide",
-              "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo.svg",
-                "input-transparent": "yes"
-              },
-              "text": {
-                "id": "text_facebook_action",
-                "pos": "0,50%ph-50%h",
-                "position": "relative",
-                "text": "#facebook/postLink",
-                "input-transparent": "yes"
-              }
-            },
-            {
-              "id": "btn_upload_facebook_scrn",
-              "display": "hide",
-              "pressAction": "share",
-              "on_click": "onFacebookLoginAndPostScrnshot",
-              "tooltip": "",
-              "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo.svg",
-                "input-transparent": "yes"
-              },
-              "text": {
-                "id": "text_facebook_action",
-                "pos": "0,50%ph-50%h",
-                "position": "relative",
-                "text": "#mainmenu/btnUploadFacebookScreenshot",
-                "input-transparent": "yes"
-              }
-            },
-            {
-              "id": "btn_upload_facebook_wallPost",
-              "display": "hide",
-              "pressAction": "share",
-              "on_click": "onFacebookLoginAndPostMessage",
-              "tooltip": "",
-              "cardImg": {
-                "background-image": "#ui/gameuiskin#facebook_logo.svg",
-                "input-transparent": "yes"
-              },
-              "text": {
-                "id": "text_facebook_action",
-                "pos": "0,50%ph-50%h",
-                "position": "relative",
-                "text": "#facebook/postLink",
-                "input-transparent": "yes"
-              }
-            },
-            {
-              "id": "btn_sendEmail",
-              "display": "hide",
-              "text": "#mainmenu/btnSendEmail",
-              "on_click": "sendInvitation"
-            }
-          ]
+          "Button_text": {
+            "id": "btn_sendEmail",
+            "display": "hide",
+            "text": "#mainmenu/btnSendEmail",
+            "on_click": "sendInvitation"
+          }
         },
         "navRight": {
           "Button_text": [

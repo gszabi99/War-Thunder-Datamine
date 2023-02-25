@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -16,14 +17,13 @@ const ROOM_LIST_TIME_OUT = 180000
 const MAX_SESSIONS_LIST_LEN = 1000
 const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
-::MRoomsList <- class
-{
+::MRoomsList <- class {
   id = ""
   roomsList = null
   requestParams = null
 
-  lastUpdateTimeMsec = - ROOM_LIST_TIME_OUT
-  lastRequestTimeMsec = - ROOM_LIST_REQUEST_TIME_OUT
+  lastUpdateTimeMsec = -ROOM_LIST_TIME_OUT
+  lastRequestTimeMsec = -ROOM_LIST_REQUEST_TIME_OUT
   isInUpdate = false
   curRoomsFilter = null
   queuedRoomsFilter = null
@@ -34,8 +34,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 /*************************************PUBLIC FUNCTIONS *******************************************/
 /*************************************************************************************************/
 
-  static function getMRoomsListByRequestParams(requestParams)
-  {
+  static function getMRoomsListByRequestParams(requestParams) {
     local roomsListId = SKIRMISH_ROOMS_LIST_ID //empty request params is a skirmish
     if ("eventEconomicName" in requestParams)
       roomsListId = "economicName:" + requestParams.eventEconomicName
@@ -46,8 +45,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     return listById[roomsListId]
   }
 
-  constructor(roomsListId, request)
-  {
+  constructor(roomsListId, request) {
     this.id = roomsListId
     this.roomsList = []
     this.requestParams = request || {}
@@ -67,25 +65,21 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     return curTime - this.lastRequestTimeMsec >= ROOM_LIST_REQUEST_TIME_OUT
   }
 
-  function validateList()
-  {
+  function validateList() {
     if (get_time_msec() - this.lastUpdateTimeMsec >= ROOM_LIST_TIME_OUT)
       this.roomsList.clear()
   }
 
-  function getList()
-  {
+  function getList() {
     this.validateList()
     return this.roomsList
   }
 
-  function getRoom(roomId)
-  {
+  function getRoom(roomId) {
     return ::u.search(this.getList(), (@(roomId) function(r) { return r.roomId == roomId })(roomId))
   }
 
-  function requestList(filter)
-  {
+  function requestList(filter) {
     let roomsFilter = this.getFetchRoomsParams(filter)
     let curTime = get_time_msec()
     if (this.isUpdateTimedout(curTime))
@@ -117,8 +111,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 /************************************PRIVATE FUNCTIONS *******************************************/
 /*************************************************************************************************/
 
-  function requestListCb(p, hideFullRooms)
-  {
+  function requestListCb(p, hideFullRooms) {
     this.isInUpdate = false
 
     let digest = ::checkMatchingError(p, false) ? getTblValue("digest", p) : null
@@ -172,8 +165,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     }
   }
 
-  function getFetchRoomsParams(ui_filter)
-  {
+  function getFetchRoomsParams(ui_filter) {
     let filter = {}
     let res = {
       group = "custom-lobby" // "xbox-lobby" for xbox
@@ -224,10 +216,8 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     return res
   }
 
-  function updateRoomsList(rooms, hideFullRooms) //can be called each update
-  {
-    if (rooms.len() > MAX_SESSIONS_LIST_LEN)
-    {
+  function updateRoomsList(rooms, hideFullRooms) { //can be called each update
+    if (rooms.len() > MAX_SESSIONS_LIST_LEN) {
       let message = format("Error in SessionLobby::updateRoomsList:\nToo long rooms list - %d", rooms.len())
       ::script_net_assert_once("too long rooms list", message)
 
@@ -235,13 +225,12 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     }
 
     this.roomsList.clear()
-    foreach(room in rooms)
+    foreach (room in rooms)
       if (this.isRoomVisible(room, hideFullRooms))
         this.roomsList.append(room)
   }
 
-  function isRoomVisible(room, hideFullRooms)
-  {
+  function isRoomVisible(room, hideFullRooms) {
     let userUid = ::SessionLobby.getRoomCreatorUid(room)
     if (userUid && ::isPlayerInContacts(userUid, EPL_BLOCKLIST))
       return false

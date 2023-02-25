@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -11,8 +12,7 @@ const BANNED_SCREENS_SAVE_ID = "preloaderOptions/bannedScreens"
 local bannedScreens = {}
 local isInited = false
 
-let function initOnce()
-{
+let function initOnce() {
   if (isInited || !::g_login.isProfileReceived())
     return
 
@@ -33,14 +33,12 @@ let function initOnce()
   ::save_local_account_settings(BANNED_SCREENS_SAVE_ID, bannedScreens)
 }
 
-let function invalidateCache()
-{
+let function invalidateCache() {
   bannedScreens.clear()
   isInited = false
 }
 
-let function toggleLoadingScreenBan(screenId)
-{
+let function toggleLoadingScreenBan(screenId) {
   initOnce()
   if (!isInited)
     return
@@ -53,8 +51,7 @@ let function toggleLoadingScreenBan(screenId)
   ::save_local_account_settings(BANNED_SCREENS_SAVE_ID, bannedScreens)
 }
 
-let function isLoadingScreenBanned(screenId)
-{
+let function isLoadingScreenBanned(screenId) {
   initOnce()
   return screenId in bannedScreens
 }

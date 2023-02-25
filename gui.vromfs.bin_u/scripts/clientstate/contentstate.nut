@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -16,8 +17,7 @@ local getClientDownloadProgressText = @() ""
 local isHistoricalCampaignDownloading = @() false
 
 
-let function getSonyTotalProgress(chunks)
-{
+let function getSonyTotalProgress(chunks) {
   local downloaded = 0.0
   local total = 100.0 * chunks.len()
   foreach (chunk in chunks)
@@ -28,15 +28,14 @@ let function getSonyTotalProgress(chunks)
 
 let function getSonyProgressText(chunks) {
   let percent = getSonyTotalProgress(chunks)
-  local text = loc("msgbox/downloadPercent", {percent = percent})
+  local text = loc("msgbox/downloadPercent", { percent = percent })
   if (percent >= 100)
     text += "\n" + loc("msgbox/relogin_required")
   return text
 }
 
 
-if (platformModule.isPlatformPS4)
-{
+if (platformModule.isPlatformPS4) {
   let PS4_CHUNK_COCKPITS = 10
   let PS4_CHUNK_HQ_GENERIC = 19 // Downloaded last
   let PS4_CHUNK_HQ_AIRCRAFT = 20
@@ -56,8 +55,7 @@ if (platformModule.isPlatformPS4)
   getClientDownloadProgressText = @() getSonyProgressText(fullClientChunks)
   isHistoricalCampaignDownloading = @() !::ps4_is_chunk_available(PS4_CHUNK_HISTORICAL_CAMPAIGN)
 }
-else if (platformModule.isPlatformPS5)
-{
+else if (platformModule.isPlatformPS5) {
   let PS5_CHUNK_FULL_CLIENT = 1
   let PS5_CHUNK_HISTORICAL_CAMPAIGN = 2
 
@@ -65,8 +63,7 @@ else if (platformModule.isPlatformPS5)
   getClientDownloadProgressText = @() getSonyProgressText([PS5_CHUNK_FULL_CLIENT])
   isHistoricalCampaignDownloading = @() !::ps4_is_chunk_available(PS5_CHUNK_HISTORICAL_CAMPAIGN)
 }
-else if (platformModule.isPlatformXboxOne)
-{
+else if (platformModule.isPlatformXboxOne) {
   isConsoleClientFullyDownloaded = @() ::package_get_status("pkg_main") == PACKAGE_STATUS_OK
   getClientDownloadProgressText = @() isConsoleClientFullyDownloaded()
       ? (loc("download/finished") + "\n" + loc("msgbox/relogin_required"))

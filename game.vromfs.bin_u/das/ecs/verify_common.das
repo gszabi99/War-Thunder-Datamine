@@ -66,7 +66,7 @@ def validate_template(name : string; comps : table<string; uint>; cb : block<(su
   cb |> invoke(res, tmplPtr)
 
 
-def find_template(comps : table<string; uint>; cb : block<(name : string implicit; tmpl : ecs::Template#) : bool>) : bool
+def find_template(comps : table<string; uint>; cb : block<(name : string#; tmpl : ecs::Template#) : bool>) : bool
   var res = false
   getTemplateDB() |> find_templateDB() <| $ [unused_argument(name)] (tmplName; tmpl)
     let compTypes & = getComponentTypes()
@@ -128,7 +128,7 @@ def req_template(comps : table<string; uint>) : bool
   return res
 
 
-def dump_system(name : string; system : EntitySystemDesc implicit)
+def dump_system(name : string#; system : EntitySystemDesc#)
   let events = build_string() <| $(str)
     system |> getEvSet() <| $(evt)
       str |> write(evt)
@@ -141,7 +141,7 @@ struct ReqSystemFilter
   anyEvents : table<uint>
 
 
-def find_event_handler(filter : ReqSystemFilter; cb : block<(name : string implicit; system : EntitySystemDesc#) : bool>)
+def find_event_handler(filter : ReqSystemFilter; cb : block<(name : string#; system : EntitySystemDesc#) : bool>)
   var res = false
   find_systemDB() <| $ [unused_argument(system)] (name; system)
 

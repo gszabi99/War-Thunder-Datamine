@@ -1,15 +1,16 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock  = require("DataBlock")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears,
   TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
 
-::items_classes.Trophy <- class extends ::BaseItem
-{
+::items_classes.Trophy <- class extends ::BaseItem {
   static iType = itemType.TROPHY
   static defaultLocId = "trophy"
   static defaultIconStyle = "default_chest_debug"
@@ -43,8 +44,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
   beginDate = null
   endDate = null
 
-  constructor(blk, invBlk = null, slotData = null)
-  {
+  constructor(blk, invBlk = null, slotData = null) {
     base.constructor(blk, invBlk, slotData)
 
     this.subtrophyShowAsPack = blk?.subtrophyShowAsPack
@@ -73,18 +73,15 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
       blksArray.insert(0, blk.prizes) //if prizes block exist, it's content must be shown in the first place
 
     this.contentRaw = []
-    foreach (datablock in blksArray)
-    {
+    foreach (datablock in blksArray) {
       let content = datablock % "i"
       content.extend(datablock % "d")
-      foreach (p in content)
-      {
-        let prize = ::DataBlock()
+      foreach (p in content) {
+        let prize = DataBlock()
         prize.setFrom(p)
 
         let needMultiAwardInfo = p?.ranksRange != null && p?.resourceType != null && p.blockCount() == 0
-        if (needMultiAwardInfo)
-        {
+        if (needMultiAwardInfo) {
           prize["multiAwardsOnWorthGold"] = 0
           prize.addBlock(p.resourceType).setFrom(p)
         }
@@ -165,10 +162,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     return res
   }
 
-  function _unpackContent(recursionUsedIds, useRecursion = true)
-  {
-    if (isInArray(this.id, recursionUsedIds))
-    {
+  function _unpackContent(recursionUsedIds, useRecursion = true) {
+    if (isInArray(this.id, recursionUsedIds)) {
       log("id = " + this.id)
       debugTableData(recursionUsedIds)
       ::script_net_assert_once("trophy recursion",
@@ -178,26 +173,21 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
 
     recursionUsedIds.append(this.id)
     let content = []
-    foreach (i in this.contentRaw)
-    {
-      if (!i?.trophy || i?.showAsPack)
-      {
+    foreach (i in this.contentRaw) {
+      if (!i?.trophy || i?.showAsPack) {
         content.append(i)
         continue
       }
 
       let subTrophy = ::ItemsManager.findItemById(i?.trophy)
       let countMul = i?.count ?? 1
-      if (subTrophy)
-      {
+      if (subTrophy) {
         if (getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
           content.append(i)
-        else
-        {
+        else {
           let subContent = subTrophy.getContent(recursionUsedIds)
-          foreach (sc in subContent)
-          {
-            let si = ::DataBlock()
+          foreach (sc in subContent) {
+            let si = DataBlock()
             si.setFrom(sc)
 
             if (countMul != 1)
@@ -212,22 +202,18 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     return content
   }
 
-  function getContent(recursionUsedIds = [])
-  {
+  function getContent(recursionUsedIds = []) {
     if (!this.contentUnpacked.len())
       this.contentUnpacked = this._unpackContent(recursionUsedIds)
     return this.contentUnpacked
   }
 
-  function getContentNoRecursion()
-  {
+  function getContentNoRecursion() {
     return this._unpackContent([], false)
   }
 
-  function _extractTopPrize(recursionUsedIds)
-  {
-    if (isInArray(this.id, recursionUsedIds))
-    {
+  function _extractTopPrize(recursionUsedIds) {
+    if (isInArray(this.id, recursionUsedIds)) {
       log("id = " + this.id)
       debugTableData(recursionUsedIds)
       ::script_net_assert_once("trophy recursion",
@@ -237,13 +223,11 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
 
     recursionUsedIds.append(this.id)
     local topPrizeBlk = null
-    foreach(prize in this.contentRaw)
-    {
+    foreach (prize in this.contentRaw) {
       if (prize?.ignoreForTrophyType)
         continue
 
-      if (prize?.trophy)
-      {
+      if (prize?.trophy) {
         let subTrophy = ::ItemsManager.findItemById(prize.trophy)
         topPrizeBlk = subTrophy ? subTrophy.getTopPrize(recursionUsedIds) : null
       }
@@ -252,7 +236,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
       }
 
       if (topPrizeBlk != null) {
-        this.topPrize = ::DataBlock()
+        this.topPrize = DataBlock()
         this.topPrize.setFrom(topPrizeBlk)
         this.topPrize.count = (prize?.count ?? 1) * (this.topPrize?.count ?? 1)
         break
@@ -261,22 +245,19 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     recursionUsedIds.pop()
   }
 
-  function getTopPrize(recursionUsedIds = [])
-  {
+  function getTopPrize(recursionUsedIds = []) {
     if (!this.topPrize)
       this._extractTopPrize(recursionUsedIds)
     return this.topPrize
   }
 
-  function getCost(ignoreCanBuy = false)
-  {
+  function getCost(ignoreCanBuy = false) {
     if (this.isCanBuy() || ignoreCanBuy)
       return ::Cost(::wp_get_trophy_cost(this.id), ::wp_get_trophy_cost_gold(this.id))
     return ::Cost()
   }
 
-  function getTrophyImage(id)
-  {
+  function getTrophyImage(id) {
     let layerStyle = ::LayersIcon.findLayerCfg(id)
     if (layerStyle)
       return ::LayersIcon.genDataFromLayer(layerStyle)
@@ -284,35 +265,29 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     return ::LayersIcon.getIconData(id, this.defaultIcon, 1.0, this.defaultIconStyle)
   }
 
-  function getUsingStyle()
-  {
+  function getUsingStyle() {
     if (this.needOpenTrophyGroupOnBuy())
       return this.groupTrophyStyle
     return this.iconStyle
   }
 
-  function getIcon(_addItemName = true)
-  {
+  function getIcon(_addItemName = true) {
     return this.getTrophyImage(this.getUsingStyle())
   }
 
-  function getBigIcon()
-  {
+  function getBigIcon() {
     return this.getTrophyImage(this.getUsingStyle() + "_big")
   }
 
-  function getOpenedIcon()
-  {
+  function getOpenedIcon() {
     return this.getTrophyImage(this.getUsingStyle() + "_opened")
   }
 
-  function getOpenedBigIcon()
-  {
+  function getOpenedBigIcon() {
     return this.getTrophyImage(this.getUsingStyle() + "_opened_big")
   }
 
-  function getName(colored = true)
-  {
+  function getName(colored = true) {
     let content = this.getContent()
     if (this.showNameAsSingleAward && content.len() == 1) {
       let awardCount = content[0]?.count ?? 1
@@ -328,8 +303,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
       name = loc("item/" + this.defaultLocId)
 
     let showType = this.showTypeInName != null ? this.showTypeInName : !hasCustomName
-    if (showType)
-    {
+    if (showType) {
       local prizeTypeName = ""
       if (this.showRangePrize)
         prizeTypeName = ::PrizesView.getPrizesListText(content)
@@ -343,25 +317,21 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     return name
   }
 
-  function getDescription()
-  {
+  function getDescription() {
     return ::PrizesView.getPrizesListText(this.getContent(), this._getDescHeader)
   }
 
-  function _getDescHeader(fixedAmount = 1)
-  {
+  function _getDescHeader(fixedAmount = 1) {
     let locId = (fixedAmount > 1) ? "trophy/chest_contents/many" : "trophy/chest_contents"
     local headerText = loc(locId, { amount = colorize("commonTextColor", fixedAmount) })
     return colorize("grayOptionColor", headerText)
   }
 
-  function getLongDescription()
-  {
+  function getLongDescription() {
     return ""
   }
 
-  function getLongDescriptionMarkup(params = null)
-  {
+  function getLongDescriptionMarkup(params = null) {
     params = params || {}
     params.showAsTrophyContent <- true
     params.receivedPrizes <- false
@@ -370,13 +340,11 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     return ::PrizesView.getPrizesStacksView(this.getContent(), this._getDescHeader, params)
   }
 
-  function getShortDescription(colored = true)
-  {
+  function getShortDescription(colored = true) {
     return this.getName(colored)
   }
 
-  function getContentIconData()
-  {
+  function getContentIconData() {
     if (this.showCountryFlag != "")
       return {
         contentIcon = ::get_country_icon(this.showCountryFlag)
@@ -395,9 +363,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     return res
   }
 
-  function _requestBuy(params = {})
-  {
-    let blk = ::DataBlock()
+  function _requestBuy(params = {}) {
+    let blk = DataBlock()
     blk["name"] = this.id
     blk["index"] = getTblValue("index", params, -1)
     blk["cost"] = params.cost
@@ -405,38 +372,32 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     return ::char_send_blk("cln_buy_trophy", blk)
   }
 
-  function getMainActionData(isShort = false, params = {})
-  {
+  function getMainActionData(isShort = false, params = {}) {
     if (!this.isInventoryItem && this.needOpenTrophyGroupOnBuy())
       return { btnName = loc("mainmenu/btnExpand") }
 
     return base.getMainActionData(isShort, params)
   }
 
-  function doMainAction(cb, handler, params = null)
-  {
+  function doMainAction(cb, handler, params = null) {
     if (!this.isInventoryItem && this.needOpenTrophyGroupOnBuy())
       return ::gui_start_open_trophy_group_shop_wnd(this)
     return base.doMainAction(cb, handler, params)
   }
 
-  function skipRoulette()
-  {
+  function skipRoulette() {
     return this.instantOpening
   }
 
-  function isAllowSkipOpeningAnim()
-  {
+  function isAllowSkipOpeningAnim() {
     return true
   }
 
-  function needOpenTrophyGroupOnBuy()
-  {
+  function needOpenTrophyGroupOnBuy() {
     return this.isGroupTrophy && !::isHandlerInScene(::gui_handlers.TrophyGroupShopWnd)
   }
 
-  function getOpeningCaption()
-  {
+  function getOpeningCaption() {
     return loc(this.openingCaptionLocId || "mainmenu/trophyReward/title")
   }
 

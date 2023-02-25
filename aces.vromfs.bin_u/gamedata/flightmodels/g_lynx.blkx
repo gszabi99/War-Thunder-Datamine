@@ -1116,284 +1116,379 @@
   },
   "commonWeapons": {
     "Weapon": {
-      "dummy": true,
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/dummy_weapon.blk",
-      "emitter": "optic1_gun",
-      "parkInDeadzone": false,
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "speedYaw": 25.0,
-      "speedPitch": 25.0,
-      "aimForOperatedShell": true,
-      "turret": {
-        "head": "optic1_turret",
-        "gun": "optic1_gun",
-        "playerControllable": false,
-        "mainTurret": true
-      },
-      "limits": {
-        "yaw": [
-          -115.0,
-          90.0
-        ],
-        "pitch": [
-          -50.0,
-          25.0
-        ]
-      }
-    },
-    "hideDmParts": {
-      "node": [
-        "flares1_dm",
-        "flares2_dm"
-      ]
+      "slot": 0,
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
     "preset": [
       {
-        "name": "lynx_ah_mk1_default",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_hydra_70_m247_cannon.blk",
-        "tags": {
-          "free": true
-        },
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
+        "name": "g_lynx_default",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_default.blk"
+      },
+      {
+        "name": "g_lynx_4_stinger",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_4_stinger.blk"
+      },
+      {
+        "name": "g_lynx_4_hellfire",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_4_hellfire.blk"
+      },
+      {
+        "name": "g_lynx_8_hellfire",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_8_hellfire.blk"
+      },
+      {
+        "name": "g_lynx_4_TOW",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_4_TOW.blk"
+      },
+      {
+        "name": "g_lynx_8_TOW",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_8_TOW.blk"
+      },
+      {
+        "name": "g_lynx_cannon",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_cannon.blk"
+      },
+      {
+        "name": "g_lynx_8_hellfire_cannon_stinger",
+        "blk": "gameData/flightModels/weaponPresets/g_lynx_8_hellfire_cannon_stinger.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 550.0,
+    "maxloadMassLeftConsoles": 260.0,
+    "maxloadMassRightConsoles": 260.0,
+    "maxDisbalance": 200.0,
+    "HideNodes": {
+      "node": [
+        "gear_l1",
+        "gear_r1",
+        "lynx_pylon_cannon_cover",
+        "lynx_cannon_cover",
+        "lynx_cannon",
+        "lynx_pylon_cannon_cover2",
+        "lynx_pylon_hellfire_hydra_l",
+        "lynx_pylon_l",
+        "lynx_pylon_hellfire_l",
+        "lynx_pylon_hellfire_hydra_r",
+        "lynx_pylon_r",
+        "lynx_pylon_hellfire_r",
+        "lynx_pylon_hydra_l",
+        "lynx_pylon_hydra_r",
+        "lynx_pylon_tow_l",
+        "lynx_pylon_tow_r",
+        "lynx_pylon_stinger_l",
+        "lynx_pylon_stinger_l1",
+        "lynx_pylon_stinger_r",
+        "lynx_pylon_cannon_cover1",
+        "lynx_pylon_stinger_r1"
+      ]
+    },
+    "HideDmParts": {
+      "node": "cannon1_dm"
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": [
+          {
+            "name": "default_common",
+            "Weapon": {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "parkInDeadzone": false,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "playerControllable": false,
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -115.0,
+                  90.0
+                ],
+                "pitch": [
+                  -50.0,
+                  25.0
+                ]
+              }
+            }
+          },
+          {
+            "name": "ltc_common",
+            "ShowNodes": {
+              "node": [
+                "gear_l1",
+                "gear_r1"
               ]
             },
-            {
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "parkInDeadzone": false,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "playerControllable": false,
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -115.0,
+                    90.0
+                  ],
+                  "pitch": [
+                    -50.0,
+                    25.0
+                  ]
+                }
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 96,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 96,
+                "external": true,
+                "separate": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large",
+            "name": "hydra",
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_l",
+                "lynx_pylon_hellfire_hydra_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "emitter": "m261_lwl_b001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type_helfire_x4",
+            "name": "hellfire",
+            "reqModification": "ah_1_AGM_114_8",
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_hellfire_hydra_l",
+                "lynx_pylon_l",
+                "lynx_pylon_hellfire_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
+              "emitter": "pylon_m272_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type1_x4_late",
+            "name": "tow",
+            "reqModification": "ah_1_TOW2",
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_tow_l",
+                "lynx_pylon_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/tow2_tube_x4.blk",
+              "emitter": "tow_tube_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "machine_gun",
+            "name": "oerlicon",
+            "ShowDmParts": {
+              "node": "cannon1_dm"
+            },
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_cannon_cover",
+                "lynx_cannon_cover",
+                "lynx_cannon"
+              ]
+            },
+            "Weapon": {
+              "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonOerliconKAD_B.blk",
-              "tier": {
-                "idx": 7
-              }
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "bullets": 570,
+              "spread": 1.5,
+              "dm": "cannon1_dm",
+              "traceOffset": 1,
+              "counterIndex": 1,
+              "external": true
             }
-          ]
+          },
+          {
+            "iconType": "missile_air_to_air_group",
+            "name": "atas_left",
+            "reqModification": "stinger_aam",
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_stinger_l",
+                "lynx_pylon_stinger_l1",
+                "lynx_pylon_cannon_cover2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/atas_2x_stinger_left.blk",
+              "emitter": "aim92_stinger_pod_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air_group",
+          "name": "atas_right",
+          "reqModification": "stinger_aam",
+          "ShowNodes": {
+            "node": [
+              "lynx_pylon_stinger_r",
+              "lynx_pylon_cannon_cover1",
+              "lynx_pylon_stinger_r1"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/containers/atas_2x_stinger_right.blk",
+            "emitter": "aim92_stinger_pod_002",
+            "external": true,
+            "separate": true,
+            "machLimit": 1.01
+          }
         }
       },
       {
-        "name": "lynx_ah_mk1_hydra_70_m247_cannon_stinger",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_hydra_70_m247_cannon_stinger.blk",
-        "reqModification": "stinger_aam",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large",
+            "name": "hydra",
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_r",
+                "lynx_pylon_hellfire_hydra_r"
               ]
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk",
-              "amountPerTier": 2.0,
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "blk": "gameData/Weapons/cannonOerliconKAD_B.blk",
-              "tier": {
-                "idx": 7
-              }
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
+              "emitter": "m261_lwl_b002",
+              "external": true,
+              "machLimit": 1.01
             }
-          ]
-        }
-      },
-      {
-        "name": "lynx_ah_mk1_8_TOW2_cannon_stinger",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_8_TOW2_cannon_stinger.blk",
-        "reqModification": [
-          "ah_1_TOW2",
-          "stinger_aam"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_bgm_71_tow2_heli.blk",
-              "amountPerTier": 4.0,
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
+          },
+          {
+            "iconType": "atgm_type_helfire_x4",
+            "name": "hellfire",
+            "reqModification": "ah_1_AGM_114_8",
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_hellfire_hydra_r",
+                "lynx_pylon_r",
+                "lynx_pylon_hellfire_r"
               ]
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk",
-              "amountPerTier": 2.0,
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "blk": "gameData/Weapons/cannonOerliconKAD_B.blk",
-              "tier": {
-                "idx": 7
-              }
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/m272_hellfire_b_x4.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
-          ]
-        }
-      },
-      {
-        "name": "lynx_ah_mk1_8_hellfire_cannon_stinger",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_8_hellfire_cannon_stinger.blk",
-        "reqModification": [
-          "ah_1_AGM_114_8",
-          "stinger_aam"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
-              "amountPerTier": 4.0,
-              "iconType": "atgm_type_helfire_x4",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
+          },
+          {
+            "iconType": "atgm_type1_x4_late",
+            "name": "tow",
+            "reqModification": "ah_1_TOW2",
+            "ShowNodes": {
+              "node": [
+                "lynx_pylon_tow_r",
+                "lynx_pylon_r"
               ]
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk",
-              "amountPerTier": 2.0,
-              "tier": {
-                "idx": 5
-              }
-            },
-            {
-              "blk": "gameData/Weapons/cannonOerliconKAD_B.blk",
-              "tier": {
-                "idx": 7
-              }
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/tow2_tube_x4.blk",
+              "emitter": "tow_tube_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
-          ]
-        }
-      },
-      {
-        "name": "lynx_ah_mk1_hydra_70_m247_4x_stinger",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_hydra_70_m247_4x_stinger.blk",
-        "reqModification": "stinger_aam",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk",
-              "amountPerTier": 19.0,
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk",
-              "amountPerTier": 2.0,
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "lynx_ah_mk1_8_TOW2_4x_stinger",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_8_TOW2_4x_stinger.blk",
-        "reqModification": [
-          "ah_1_TOW2",
-          "stinger_aam"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_bgm_71_tow2_heli.blk",
-              "amountPerTier": 2.0,
-              "iconType": "atgm_type1_x4_late",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk",
-              "amountPerTier": 2.0,
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "lynx_ah_mk1_8_hellfire_4x_stinger",
-        "blk": "gameData/flightModels/weaponPresets/lynx_ah_mk1_8_hellfire_4x_stinger.blk",
-        "reqModification": [
-          "ah_1_AGM_114_8",
-          "stinger_aam"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_hellfire_agm_114_b.blk",
-              "amountPerTier": 4.0,
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_aim92_stinger.blk",
-              "amountPerTier": 2.0,
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            }
-          ]
-        }
+          }
+        ]
       }
     ]
   },
@@ -1468,60 +1563,9 @@
       "group": "countermeasures",
       "effects": {
         "commonWeapons": {
-          "Weapon": [
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "parkInDeadzone": false,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "playerControllable": false,
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [
-                  -115.0,
-                  90.0
-                ],
-                "pitch": [
-                  -50.0,
-                  25.0
-                ]
-              }
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 96,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 96,
-              "external": true,
-              "separate": false
-            }
-          ],
-          "hideDmParts": {
-            "node": [
-              "flares1_dm",
-              "flares2_dm"
-            ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "ltc_common"
           }
         }
       }

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -17,8 +18,7 @@ let { reloadCooldownTimeByCaliber } = require("%scripts/weaponry/weaponsParams.n
 let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 
-let function getReloadTimeByCaliber(caliber, ediff = null)
-{
+let function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
   if (diff != ::g_difficulty.ARCADE)
     return null
@@ -29,8 +29,7 @@ let getTextNoWeapons = @(unit, isPrimary) isPrimary ? loc("weapon/noPrimaryWeapo
   : (unit.isAir() || unit.isHelicopter()) ? loc("weapon/noSecondaryWeapon")
   : loc("weapon/noAdditionalWeapon")
 
-local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
-{
+local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
   local text = ""
   unit = type(unit) == "string" ? ::getAircraftByName(unit) : unit
   if (!unit)
@@ -45,36 +44,29 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
   if (::u.isEmpty(weapons) && p.needTextWhenNoWeapons)
     text += getTextNoWeapons(unit, p.isPrimary)
   let stackableWeapons = [WEAPON_TYPE.TURRETS]
-  foreach (weaponType, triggers in (weapons?.weaponsByTypes ?? {}))
-  {
+  foreach (weaponType, triggers in (weapons?.weaponsByTypes ?? {})) {
     triggers.sort(@(a, b) b.caliber <=> a.caliber)
 
-    if (isInArray(weaponType, stackableWeapons))
-    {  //merge stackable in one
-      for(local i=0; i<triggers.len(); i++)
-      {
+    if (isInArray(weaponType, stackableWeapons)) {  //merge stackable in one
+      for (local i = 0; i < triggers.len(); i++) {
         triggers[i][weaponType] <- 1
         local sameIdx = -1
-        for(local j=0; j<i; j++)
-          if (triggers[i].weaponBlocks.len() == triggers[j].weaponBlocks.len())
-          {
+        for (local j = 0; j < i; j++)
+          if (triggers[i].weaponBlocks.len() == triggers[j].weaponBlocks.len()) {
             local same = true
-            foreach(wName, w in triggers[j].weaponBlocks)
-              if ((wName not in triggers[i].weaponBlocks) || triggers[i].weaponBlocks[wName].num!=w.num)
-              {
+            foreach (wName, w in triggers[j].weaponBlocks)
+              if ((wName not in triggers[i].weaponBlocks) || triggers[i].weaponBlocks[wName].num != w.num) {
                 same = false
                 break
               }
-            if (same)
-            {
+            if (same) {
               sameIdx = j
               break
             }
           }
-        if (sameIdx>=0)
-        {
+        if (sameIdx >= 0) {
           triggers[sameIdx][weaponType]++
-          foreach(wName, w in triggers[i].weaponBlocks)
+          foreach (wName, w in triggers[i].weaponBlocks)
             triggers[sameIdx].weaponBlocks[wName].ammo += w.ammo
           triggers.remove(i)
           i--
@@ -85,52 +77,43 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
     let isShortDesc = p.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
     local weapTypeCount = 0 //for shortDesc only
     let gunNames = {}     //for shortDesc only
-    foreach (trigger in triggers)
-    {
+    foreach (trigger in triggers) {
       local tText = ""
       foreach (weaponName, weapon in trigger.weaponBlocks) {
-        if (tText != "" && weapTypeCount==0)
+        if (tText != "" && weapTypeCount == 0)
           tText += p.newLine
 
-        if (isInArray(weaponType, CONSUMABLE_TYPES))
-        {
-          if (isShortDesc)
-          {
+        if (isInArray(weaponType, CONSUMABLE_TYPES)) {
+          if (isShortDesc) {
             tText = "".concat(tText, loc($"weapons/{weaponName}/short"))
             if (!p.isSingle && weapon.ammo > 1)
               tText = "".concat(tText, " ", format(loc("weapons/counter/right/short"), weapon.ammo))
           }
-          else
-          {
+          else {
             tText = "".concat(tText, loc($"weapons/{weaponName}"),
               p.isSingle ? "" : format(loc("weapons/counter"), weapon.ammo))
             if (weaponType == "torpedoes" && p.isPrimary != null &&
-                isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) // torpedoes drop for unit only
-            {
-              if (weapon.dropSpeedRange)
-              {
+                isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) { // torpedoes drop for unit only
+              if (weapon.dropSpeedRange) {
                 let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
                 let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-                tText += "\n"+format( loc("weapons/drop_speed_range"),
-                  "{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps })) )
+                tText += "\n" + format(loc("weapons/drop_speed_range"),
+                  "{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps })))
               }
               if (weapon.dropHeightRange)
-                tText += "\n"+format(loc("weapons/drop_height_range"),
+                tText += "\n" + format(loc("weapons/drop_height_range"),
                   countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y]))
             }
             if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
               tText += getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, p.newLine + ::nbsp + ::nbsp + ::nbsp + ::nbsp)
           }
         }
-        else
-        {
-          if (isShortDesc)
-          {
-            if(!(TRIGGER_TYPE.TURRETS in trigger) && gunNames?[weaponName] == null)
+        else {
+          if (isShortDesc) {
+            if (!(TRIGGER_TYPE.TURRETS in trigger) && gunNames?[weaponName] == null)
               gunNames[weaponName] <- weapon.num
           }
-          else
-          {
+          else {
             tText += loc($"weapons/{weaponName}")
             if (weapon.num > 1)
               tText += format(loc("weapons/counter"), weapon.num)
@@ -138,13 +121,10 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
             if (!p.isSingle && weapon.ammo > 0)
               tText = "".concat(tText, " (", loc("shop/ammo"), loc("ui/colon"), weapon.ammo, ")")
 
-            if (!unit.unitType.canUseSeveralBulletsForGun)
-            {
+            if (!unit.unitType.canUseSeveralBulletsForGun) {
               local rTime = getReloadTimeByCaliber(weapon.caliber, p.ediff)
-              if (rTime)
-              {
-                if (p.isLocalState)
-                {
+              if (rTime) {
+                if (p.isLocalState) {
                   let difficulty = ::get_difficulty_by_ediff(p.ediff ?? ::get_current_ediff())
                   let key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
                   let speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
@@ -159,34 +139,30 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
       }
 
       if (isShortDesc)
-        weapTypeCount += (TRIGGER_TYPE.TURRETS in trigger)? trigger[TRIGGER_TYPE.TURRETS] : 0
-      else
-      {
-        if (TRIGGER_TYPE.TURRETS in trigger) // && !unit.unitType.canUseSeveralBulletsForGun)
-        {
-          if(trigger[TRIGGER_TYPE.TURRETS] > 1)
+        weapTypeCount += (TRIGGER_TYPE.TURRETS in trigger) ? trigger[TRIGGER_TYPE.TURRETS] : 0
+      else {
+        if (TRIGGER_TYPE.TURRETS in trigger) { // && !unit.unitType.canUseSeveralBulletsForGun)
+          if (trigger[TRIGGER_TYPE.TURRETS] > 1)
             tText = format(loc("weapons/turret_number"), trigger[TRIGGER_TYPE.TURRETS]) + tText
           else
             tText = ::g_string.utf8ToUpper(loc("weapons_types/turrets"), 1) + loc("ui/colon") + tText
         }
       }
 
-      if (tText!="")
-        text += ((text!="")? p.newLine : "") + tText
+      if (tText != "")
+        text += ((text != "") ? p.newLine : "") + tText
     }
     if (weapTypeCount == 0 && gunNames.len() == 0)
       continue
 
     text = text != "" ? "".concat(text, p.newLine) : ""
-    if (isShortDesc)
-    {
-      if (weapTypeCount > 0)//Turrets
+    if (isShortDesc) {
+      if (weapTypeCount > 0) //Turrets
         text = "".concat(text, loc($"weapons_types/{weaponType}"), ::nbsp,
           format(loc("weapons/counter/right/short"), weapTypeCount))
-      if (gunNames.len() > 0)//Guns
-      {
+      if (gunNames.len() > 0) { //Guns
         let gunsTxt = []
-        foreach(name, count in gunNames)
+        foreach (name, count in gunNames)
           gunsTxt.append("".concat(loc($"weapons/{name}"), count > 1
             ? $"{::nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
         text = $"{text}{(loc("ui/comma")).join(gunsTxt)}"
@@ -197,21 +173,19 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
         format(loc("weapons/counter"), weapTypeCount))
   }
 
-  if (text=="" && p.needTextWhenNoWeapons)
+  if (text == "" && p.needTextWhenNoWeapons)
     text = getTextNoWeapons(unit, p.isPrimary)
 
   return text
 }
 
-let function getWeaponNameText(unit, isPrimary = null, weaponPreset=-1, newLine=", ")
-{
+let function getWeaponNameText(unit, isPrimary = null, weaponPreset = -1, newLine = ", ") {
   return getWeaponInfoText(unit,
     { isPrimary = isPrimary, weaponPreset = weaponPreset, newLine = newLine, detail = INFO_DETAIL.SHORT })
 }
 
 
-let function getWeaponXrayDescText(weaponBlk, unit, ediff)
-{
+let function getWeaponXrayDescText(weaponBlk, unit, ediff) {
   let weaponsArr = []
   ::u.appendOnce((::u.copy(weaponBlk)), weaponsArr)
   let weaponTypes = addWeaponsFromBlk({}, weaponsArr, unit)
@@ -223,8 +197,7 @@ let function getWeaponXrayDescText(weaponBlk, unit, ediff)
 }
 
 
-let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
-{
+let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
   let unitBlk = ::get_full_unit_blk(unit.name)
   let primaryWeapon = getLastPrimaryWeapon(unit)
   let secondaryWeapon = getLastWeapon(unit.name)
@@ -245,8 +218,7 @@ let function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
 }
 
 // return short desc of unit.weapons[weaponPresetNo], like M\C\B\T
-local function getWeaponShortType(_unit, weapon)
-{
+local function getWeaponShortType(_unit, weapon) {
   let textArr = []
   if (weapon.frontGun)
     textArr.append(loc("weapons_types/short/guns"))
@@ -262,8 +234,7 @@ local function getWeaponShortType(_unit, weapon)
   return loc("weapons_types/short/separator").join(textArr)
 }
 
-local function getWeaponShortTypeFromWpName(wpName, unit = null)
-{
+local function getWeaponShortTypeFromWpName(wpName, unit = null) {
   if (!wpName || type(wpName) != "string")
     return ""
 
@@ -273,8 +244,7 @@ local function getWeaponShortTypeFromWpName(wpName, unit = null)
   if (!unit)
     return ""
 
-  foreach (weapon in unit.getWeapons())
-  {
+  foreach (weapon in unit.getWeapons()) {
     if (wpName == weapon.name)
       return getWeaponShortType(unit, weapon)
   }
@@ -282,14 +252,12 @@ local function getWeaponShortTypeFromWpName(wpName, unit = null)
   return ""
 }
 
-let function getDefaultBulletName(unit)
-{
+let function getDefaultBulletName(unit) {
   if (!("modifications" in unit))
     return ""
 
   let ignoreGroups = [null, ""]
-  for (local modifNo = 0; modifNo < unit.modifications.len(); modifNo++)
-  {
+  for (local modifNo = 0; modifNo < unit.modifications.len(); modifNo++) {
     let modif = unit.modifications[modifNo]
     let modifName = modif.name;
 
@@ -306,28 +274,24 @@ let function getDefaultBulletName(unit)
   return ""
 }
 
-let function getModItemName(unit, item, limitedName = true)
-{
+let function getModItemName(unit, item, limitedName = true) {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getLocName(unit, item, limitedName)
 }
 
-let function getReqModsText(unit, item)
-{
+let function getReqModsText(unit, item) {
   local reqText = ""
-  foreach(rp in ["reqWeapon", "reqModification"])
+  foreach (rp in ["reqWeapon", "reqModification"])
       if (rp in item)
         foreach (req in item[rp])
           if (rp == "reqWeapon" && !::shop_is_weapon_purchased(unit.name, req))
-            reqText += ((reqText=="")?"":"\n") + loc(rp) + loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
-          else
-          if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
-            reqText += ((reqText=="")?"":"\n") + loc(rp) + loc("ui/colon")
+            reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
+          else if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
+            reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon")
               + getModificationName(unit, req)
   return reqText
 }
 
-let function getBulletsListHeader(unit, bulletsList)
-{
+let function getBulletsListHeader(unit, bulletsList) {
   local locId = ""
   if (bulletsList.weaponType == WEAPON_TYPE.ROCKETS)
     locId = "modification/_rockets"
@@ -337,10 +301,9 @@ let function getBulletsListHeader(unit, bulletsList)
     locId = "modification/_flares"
   else if (bulletsList.weaponType == WEAPON_TYPE.SMOKE)
     locId = "modification/_smoke_screen"
-  else if (bulletsList.weaponType == WEAPON_TYPE.GUNS)
-  {
+  else if (bulletsList.weaponType == WEAPON_TYPE.GUNS) {
     if (unit.unitType.canUseSeveralBulletsForGun)
-      locId = isCaliberCannon(bulletsList.caliber)? "modification/_tank_gun_pack" : "modification/_tank_minigun_pack"
+      locId = isCaliberCannon(bulletsList.caliber) ? "modification/_tank_gun_pack" : "modification/_tank_minigun_pack"
     else
       locId = bulletsList.isTurretBelt ? "modification/_turret_belt_pack/short" : "modification/_belt_pack/short"
   }
@@ -350,8 +313,7 @@ let function getBulletsListHeader(unit, bulletsList)
 }
 
 //include spawn score cost
-let function getFullItemCostText(unit, item, spawnScoreOnly = false)
-{
+let function getFullItemCostText(unit, item, spawnScoreOnly = false) {
   local res = ""
   let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
   let misRules = ::g_mis_custom_state.getCurMissionRules()
@@ -359,8 +321,7 @@ let function getFullItemCostText(unit, item, spawnScoreOnly = false)
   if ((!::is_in_flight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
     res = wType.getCost(unit, item).tostring()
 
-  if (::is_in_flight() && misRules.isScoreRespawnEnabled)
-  {
+  if (::is_in_flight() && misRules.isScoreRespawnEnabled) {
     let scoreCostText = wType.getScoreCostText(unit, item)
     if (scoreCostText.len())
       res += (res.len() ? ", " : "") + scoreCostText

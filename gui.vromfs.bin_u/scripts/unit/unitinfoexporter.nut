@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,10 +6,11 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let {UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX} = require("%scripts/unit/unitInfoType.nut")
+let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX } = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 
 const COUNTRY_GROUP = "country"
@@ -34,8 +36,7 @@ let class UnitInfoExporter {
   fullBlk = null
   unitsList = null
 
-  constructor(genLangsList = ["English", "Russian"], genPath = "export") //null - export all langs
-  {
+  constructor(genLangsList = ["English", "Russian"], genPath = "export") { //null - export all langs
     if (!this.isReadyStartExporter())
       return
 
@@ -58,18 +59,15 @@ let class UnitInfoExporter {
     ::get_main_gui_scene().performDelayed(this, this.nextLangExport)
   }
 
-  function _tostring()
-  {
+  function _tostring() {
     return format("Exporter(%s, '%s')", toString(this.langsList), this.path)
   }
 
-  function isReadyStartExporter()
-  {
+  function isReadyStartExporter() {
     if (!this.activeUnitInfoExporters.len())
       return true
 
-    if (this.activeUnitInfoExporters[0].isStuck())
-    {
+    if (this.activeUnitInfoExporters[0].isStuck()) {
       this.activeUnitInfoExporters[0].remove()
       return true
     }
@@ -78,27 +76,23 @@ let class UnitInfoExporter {
     return false
   }
 
-  function isValid()
-  {
-    foreach(_idx, exporter in this.activeUnitInfoExporters)
+  function isValid() {
+    foreach (_idx, exporter in this.activeUnitInfoExporters)
       if (exporter == this)
         return true
     return false
   }
 
-  function isStuck()
-  {
+  function isStuck() {
     return get_time_msec() - this.lastActiveTime < this.EXPORT_TIME_OUT
   }
 
-  function updateActive()
-  {
+  function updateActive() {
     this.lastActiveTime = get_time_msec()
   }
 
-  function remove()
-  {
-    foreach(idx, exporter in this.activeUnitInfoExporters)
+  function remove() {
+    foreach (idx, exporter in this.activeUnitInfoExporters)
       if (exporter == this)
         this.activeUnitInfoExporters.remove(idx)
 
@@ -122,10 +116,8 @@ let class UnitInfoExporter {
     })
   }
 
-  function nextLangExport()
-  {
-    if (!this.langsList.len())
-    {
+  function nextLangExport() {
+    if (!this.langsList.len()) {
       this.remove()
       this.debugLog("Exporter: DONE.")
       return
@@ -143,23 +135,21 @@ let class UnitInfoExporter {
     return format("%scalculationParameters.blk", relPath)
   }
 
-  function getLangFullPath()
-  {
+  function getLangFullPath() {
     let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
     return format("%sunitInfo%s.blk", relPath, this.curLang)
   }
 
-  function startExport()
-  {
+  function startExport() {
     this.debugLog($"Exporter: start export for lang {this.curLang}")
-    this.fullBlk = ::DataBlock()
+    this.fullBlk = DataBlock()
     this.exportUnitType(this.fullBlk)
     this.exportCountry(this.fullBlk)
     this.exportRank(this.fullBlk)
     this.exportCommonParams(this.fullBlk)
 
-    this.fullBlk[BASE_GROUP] = ::DataBlock()
-    this.fullBlk[EXTENDED_GROUP] = ::DataBlock()
+    this.fullBlk[BASE_GROUP] = DataBlock()
+    this.fullBlk[EXTENDED_GROUP] = DataBlock()
 
     this.unitsList = ::all_units.values()
 
@@ -168,95 +158,84 @@ let class UnitInfoExporter {
     this.processUnits()
   }
 
-  function finishExport(fBlk)
-  {
+  function finishExport(fBlk) {
     fBlk.saveToTextFile(this.getLangFullPath())
     ::get_main_gui_scene().performDelayed(this, this.nextLangExport) //delay to show exporter logs
   }
 
-  function exportUnitType(fBlk)
-  {
-    fBlk[ARMY_GROUP] = ::DataBlock()
+  function exportUnitType(fBlk) {
+    fBlk[ARMY_GROUP] = DataBlock()
 
-    foreach(unitType in unitTypes.types)
+    foreach (unitType in unitTypes.types)
       if (unitType != unitTypes.INVALID)
         fBlk[ARMY_GROUP][unitType.armyId] = unitType.getArmyLocName()
   }
 
-  function exportCountry(fBlk)
-  {
-    fBlk[COUNTRY_GROUP] = ::DataBlock()
+  function exportCountry(fBlk) {
+    fBlk[COUNTRY_GROUP] = DataBlock()
 
-    foreach(country in shopCountriesList)
+    foreach (country in shopCountriesList)
       fBlk[COUNTRY_GROUP][country] = loc(country)
   }
 
-  function exportRank(fBlk)
-  {
-    fBlk[RANK_GROUP] = ::DataBlock()
+  function exportRank(fBlk) {
+    fBlk[RANK_GROUP] = DataBlock()
     fBlk[RANK_GROUP].header = loc("shop/age")
-    fBlk[RANK_GROUP].texts = ::DataBlock()
+    fBlk[RANK_GROUP].texts = DataBlock()
 
-    for(local rank = 1; rank <= ::max_country_rank; rank++)
+    for (local rank = 1; rank <= ::max_country_rank; rank++)
       fBlk[RANK_GROUP]["texts"][rank.tostring()] = ::get_roman_numeral(rank)
   }
 
-  function exportCommonParams(fBlk)
-  {
-    fBlk[COMMON_PARAMS_GROUP] = ::DataBlock()
+  function exportCommonParams(fBlk) {
+    fBlk[COMMON_PARAMS_GROUP] = DataBlock()
 
-    foreach(infoType in ::g_unit_info_type.types)
+    foreach (infoType in ::g_unit_info_type.types)
       fBlk[COMMON_PARAMS_GROUP][infoType.id] = infoType.exportCommonToDataBlock()
   }
 
-  function onEventUnitModsRecount(_params)
-  {
+  function onEventUnitModsRecount(_params) {
     this.processUnits()
   }
 
-  function processUnits()
-  {
-    while (this.unitsList.len())
-    {
-        if(!this.exportCurUnit(this.fullBlk, this.unitsList[this.unitsList.len() - 1]))
+  function processUnits() {
+    while (this.unitsList.len()) {
+        if (!this.exportCurUnit(this.fullBlk, this.unitsList[this.unitsList.len() - 1]))
           return
         this.unitsList.pop()
     }
     this.finishExport(this.fullBlk)
   }
 
-  function exportCurUnit(fBlk, curUnit)
-  {
+  function exportCurUnit(fBlk, curUnit) {
     if (!curUnit.isInShop)
       return true
 
     this.debugLog($"Exporter: process unit {curUnit.name}; {this.unitsList.len()} left")
-    if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars)
-    {
+    if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars) {
       this.debugLog($"Exporter: wait for calculating parameters for unit {curUnit.name}")
       return ::check_unit_mods_update(curUnit, null, true, true)
     }
 
-    let groupId = curUnit.showOnlyWhenBought? EXTENDED_GROUP : BASE_GROUP
+    let groupId = curUnit.showOnlyWhenBought ? EXTENDED_GROUP : BASE_GROUP
 
     let armyId = curUnit.unitType.armyId
 
     let countryId = curUnit.shopCountry
 
-    if(countryId == null || countryId == "")
+    if (countryId == null || countryId == "")
       return true;
 
     let rankId = curUnit.rank.tostring()
 
-    let unitBlk = ::DataBlock()
+    let unitBlk = DataBlock()
 
     let configurations = [UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX]
 
     foreach (conf in configurations) {
-      foreach(infoType in ::g_unit_info_type.types)
-      {
+      foreach (infoType in ::g_unit_info_type.types) {
         let blk = infoType.exportToDataBlock(curUnit, conf)
-        if(blk?.hide ?? false)
+        if (blk?.hide ?? false)
           continue
         unitBlk[infoType.id] = blk
       }
@@ -269,8 +248,7 @@ let class UnitInfoExporter {
   }
 }
 
-let function exportUnitInfo(params)
-{
+let function exportUnitInfo(params) {
   UnitInfoExporter(params["langs"], params["path"])
   return "ok"
 }

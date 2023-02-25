@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -27,8 +28,7 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
   }
 
   let crewSkillPoints = ::g_crew.getCrewSkillPoints(crewData)
-  foreach (categorySkill in skillCategory.skillItems)
-  {
+  foreach (categorySkill in skillCategory.skillItems) {
     if (categorySkill.isVisible(crewUnitType))
       continue
     let skillItem = categorySkill.skillItem

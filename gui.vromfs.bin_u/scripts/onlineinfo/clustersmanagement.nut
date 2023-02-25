@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 let { getCountryCode } = require("auth_wt")
+let { getClustersByCountry } = require("%scripts/onlineInfo/defaultClusters.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
@@ -20,8 +22,7 @@ let function cacheUnstableClustersOnce() {
     eachParam(blk, @(v, k) v ? unstableClusters.append(k) : null)
 }
 
-let function isClusterUnstable(clusterName)
-{
+let function isClusterUnstable(clusterName) {
   cacheUnstableClustersOnce()
   return unstableClusters.contains(clusterName)
 }
@@ -37,8 +38,7 @@ let mkCluster = @(name) {
 ::g_clusters <- {
   clusters_info = []
 
-  function forceUpdateClustersList()
-  {
+  function forceUpdateClustersList() {
     if (!::is_online_available())
       return
 
@@ -46,8 +46,7 @@ let mkCluster = @(name) {
     this.__update_clusters_list()
   }
 
-  function onClustersLoaded(params)
-  {
+  function onClustersLoaded(params) {
     log("[MM] clusters loaded")
     debugTableData(params)
 
@@ -58,42 +57,43 @@ let mkCluster = @(name) {
     this.clusters_info.clear()
     foreach (_idx, val in params.clusters)
       this.clusters_info.append(mkCluster(val))
+
+    this.updateDefaultClusters()
     //TODO: need to update clusters in GUI
 
     return this.clusters_info.len() > 0
   }
 
-  function onClustersChanged(params)
-  {
-    if ("added" in params)
-    {
-      foreach (cluster in params.added)
-      {
+  function updateDefaultClusters() {
+    let defaults = getClustersByCountry(getCountryCode())
+    this.clusters_info.each(@(info) info.isDefault <- defaults.contains(info.name))
+    let hasDefault = this.clusters_info.findindex(@(info) info.isDefault) != null
+    if (!hasDefault)
+      this.clusters_info.each(@(info) info.isDefault = true)
+  }
+
+  function onClustersChanged(params) {
+    if ("added" in params) {
+      foreach (cluster in params.added) {
         local found = false
-        foreach (_idx, c in this.clusters_info)
-        {
-          if (c.name == cluster)
-          {
+        foreach (_idx, c in this.clusters_info) {
+          if (c.name == cluster) {
             found = true
             break
           }
         }
-        if (!found)
-        {
+        if (!found) {
           this.clusters_info.append(mkCluster(cluster))
           log("[MM] cluster added " + cluster)
+          this.updateDefaultClusters()
         }
       }
     }
 
-    if ("removed" in params)
-    {
-      foreach (cluster in params.removed)
-      {
-        foreach (idx, c in this.clusters_info)
-        {
-          if (c.name == cluster)
-          {
+    if ("removed" in params) {
+      foreach (cluster in params.removed) {
+        foreach (idx, c in this.clusters_info) {
+          if (c.name == cluster) {
             this.clusters_info.remove(idx)
             break
           }
@@ -110,35 +110,31 @@ let mkCluster = @(name) {
   __clusters_fetching = false
   __fetch_counter = 0
 
-  function __update_clusters_list()
-  {
+  function __update_clusters_list() {
     if (this.__clusters_fetching)
       return
 
     this.__clusters_fetching = true
     this.__fetch_counter++
     ::fetch_clusters_list(null,
-      function(params)
-      {
+      function(params) {
         if (!this)
           return
 
         this.__clusters_fetching = false
 
         if (::checkMatchingError(params, false)
-            && this.onClustersLoaded(params))
-        {
+            && this.onClustersLoaded(params)) {
           this.__fetch_counter = 0
           return
         }
 
         //clusters not loaded or broken data
-        if (this.__fetch_counter < MAX_FETCH_RETRIES)
-        {
+        if (this.__fetch_counter < MAX_FETCH_RETRIES) {
           log("fetch cluster error, retry - " + this.__fetch_counter)
           this.__update_clusters_list()
-        } else
-        {
+        }
+        else {
           ::checkMatchingError(params, true)
           if (!::is_dev_version)
             startLogout()
@@ -146,23 +142,19 @@ let mkCluster = @(name) {
       }.bindenv(::g_clusters))
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.clusters_info.clear()
   }
 
-  function onEventScriptsReloaded(_p)
-  {
+  function onEventScriptsReloaded(_p) {
     this.forceUpdateClustersList()
   }
 
-  function onEventMatchingConnect(_p)
-  {
+  function onEventMatchingConnect(_p) {
     this.forceUpdateClustersList()
   }
 
-  function getClusterLocName(clusterName)
-  {
+  function getClusterLocName(clusterName) {
     if (clusterName.indexof("wthost") != null)
       return clusterName
     return loc("cluster/" + clusterName)

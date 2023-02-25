@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
@@ -69,6 +71,15 @@ let function isViewModeTutorAvailableForUser() {
   return res
 }
 
+let descByPartId = {
+  tank = {
+    function getTitle(params, unit) {
+       let manufacturer = unit?.info[params.name].manufacturer ?? unit?.info.tanks_params.manufacturer
+       return manufacturer == null ? null : loc($"armor_class/{manufacturer}")
+    }
+  }
+}
+
 ::dmViewer <- {
   [PERSISTENT_DATA_PARAMS] = [ "active", "view_mode", "_currentViewMode", "isDebugMode",
     "isVisibleExternalPartsArmor", "isVisibleExternalPartsXray" ]
@@ -128,15 +139,13 @@ let function isViewModeTutorAvailableForUser() {
 
   _currentViewMode = DM_VIEWER_NONE
   function getCurrentViewMode() { return this._currentViewMode }
-  function setCurrentViewMode(value)
-  {
+  function setCurrentViewMode(value) {
     this._currentViewMode = value
     ::hangar_set_dm_viewer_mode(value)
     this.updateNoPartsNotification()
   }
 
-  function init(handler)
-  {
+  function init(handler) {
     this.screen = [ ::screen_width(), ::screen_height() ]
     this.unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
     this.offset = [ this.screen[1] * 0.1, 0 ]
@@ -145,7 +154,7 @@ let function isViewModeTutorAvailableForUser() {
     this.absoluteArmorThreshold = cfgBlk?.armor_thickness_absolute_threshold ?? this.absoluteArmorThreshold
     this.relativeArmorThreshold = cfgBlk?.armor_thickness_relative_threshold ?? this.relativeArmorThreshold
     this.showStellEquivForArmorClassesList = (cfgBlk?.show_steel_thickness_equivalent_for_armor_class
-      ?? ::DataBlock()) % "o"
+      ?? DataBlock()) % "o"
 
     this.updateUnitInfo()
     let timerObj = handler.getObj("dmviewer_hint")
@@ -156,22 +165,20 @@ let function isViewModeTutorAvailableForUser() {
     this.update()
   }
 
-  function updateSecondaryMods()
-  {
+  function updateSecondaryMods() {
     if (this.isDebugBatchExportProcess) {
       this.isSecondaryModsValid = true
       return
     }
 
-    if( ! this.unit)
+    if (! this.unit)
       return
     this.isSecondaryModsValid = ::check_unit_mods_update(this.unit)
             && ::check_secondary_weapon_mods_recount(this.unit)
   }
 
-  function onEventSecondWeaponModsUpdated(params)
-  {
-    if( ! this.unit || this.unit.name != params?.unit.name)
+  function onEventSecondWeaponModsUpdated(params) {
+    if (! this.unit || this.unit.name != params?.unit.name)
       return
     this.isSecondaryModsValid = true
     this.resetXrayCache()
@@ -179,20 +186,17 @@ let function isViewModeTutorAvailableForUser() {
     this.reinit()
   }
 
-  function resetXrayCache()
-  {
+  function resetXrayCache() {
     this.xrayDescriptionCache.clear()
   }
 
-  function canUse()
-  {
+  function canUse() {
     let hangarUnitName = hangar_get_current_unit_name()
     let hangarUnit = ::getAircraftByName(hangarUnitName)
     return hasFeature("DamageModelViewer") && hangarUnit
   }
 
-  function reinit()
-  {
+  function reinit() {
     if (!::g_login.isLoggedIn())
       return
 
@@ -200,13 +204,12 @@ let function isViewModeTutorAvailableForUser() {
     this.update()
   }
 
-  function updateUnitInfo(fircedUnitId = null)
-  {
+  function updateUnitInfo(fircedUnitId = null) {
     let unitId = fircedUnitId || hangar_get_current_unit_name()
     if (this.unit && unitId == this.unit.name)
       return
     this.unit = ::getAircraftByName(unitId)
-    if( ! this.unit)
+    if (! this.unit)
       return
     this.crew = ::getCrewByAir(this.unit)
     this.loadUnitBlk()
@@ -219,8 +222,7 @@ let function isViewModeTutorAvailableForUser() {
     this.updateSecondaryMods()
   }
 
-  function updateNoPartsNotification()
-  {
+  function updateNoPartsNotification() {
     let isShow = hasLoadedModel()
       && this.getCurrentViewMode() == DM_VIEWER_ARMOR && ::hangar_get_dm_viewer_parts_count() == 0
     let handler = ::handlersManager.getActiveBaseHandler()
@@ -233,31 +235,28 @@ let function isViewModeTutorAvailableForUser() {
     this.clearHint()
   }
 
-  function loadUnitBlk()
-  {
+  function loadUnitBlk() {
     // Unit weapons and sensors are part of unit blk, should be unloaded togeter with unitBlk
     this.clearCachedUnitBlkNodes()
     this.unitBlk = ::get_full_unit_blk(this.unit.name)
   }
 
-  function getUnitWeaponList()
-  {
-    if(this.unitWeaponBlkList == null)
+  function getUnitWeaponList() {
+    if (this.unitWeaponBlkList == null)
       this.recacheWeapons()
     return this.unitWeaponBlkList
   }
 
-  function recacheWeapons()
-  {
+  function recacheWeapons() {
     this.unitWeaponBlkList = []
-    if( ! this.unitBlk)
+    if (! this.unitBlk)
       return
 
     let primaryList = [ getLastPrimaryWeapon(this.unit) ]
     foreach (modName in getPrimaryWeaponsList(this.unit))
       ::u.appendOnce(modName, primaryList)
 
-    foreach(modName in primaryList)
+    foreach (modName in primaryList)
       foreach (weapon in getCommonWeapons(this.unitBlk, modName))
         if (weapon?.blk && !weapon?.dummy)
           ::u.appendOnce(weapon, this.unitWeaponBlkList, false, compareWeaponFunc)
@@ -268,10 +267,8 @@ let function isViewModeTutorAvailableForUser() {
         ::u.appendOnce(::u.copy(weap), this.unitWeaponBlkList, false, compareWeaponFunc)
   }
 
-  function getUnitSensorsList()
-  {
-    if (this.unitSensorsBlkList == null)
-    {
+  function getUnitSensorsList() {
+    if (this.unitSensorsBlkList == null) {
       local sensorsBlk = this.findAnyModEffectValue("sensors")
       let isMod = sensorsBlk != null
       sensorsBlk = sensorsBlk ?? this.unitBlk?.sensors
@@ -287,15 +284,13 @@ let function isViewModeTutorAvailableForUser() {
     return this.unitSensorsBlkList
   }
 
-  function collectArmorClassToSteelMuls()
-  {
+  function collectArmorClassToSteelMuls() {
     let res = {}
     let armorClassesBlk = blkOptFromPath("gameData/damage_model/armor_classes.blk")
     let steelArmorQuality = armorClassesBlk?.ship_structural_steel.armorQuality ?? 0
     if (this.unitBlk?.DamageParts == null || steelArmorQuality == 0)
       return res
-    for (local i = 0; i < this.unitBlk.DamageParts.blockCount(); i++)
-    {
+    for (local i = 0; i < this.unitBlk.DamageParts.blockCount(); i++) {
       let blk = this.unitBlk.DamageParts.getBlock(i)
       if (this.showStellEquivForArmorClassesList.contains(blk?.armorClass) && res?[blk.armorClass] == null)
         res[blk.armorClass] <- (armorClassesBlk?[blk.armorClass].armorQuality ?? 0) / steelArmorQuality
@@ -303,13 +298,12 @@ let function isViewModeTutorAvailableForUser() {
     return res
   }
 
-  function toggle(state = null)
-  {
+  function toggle(state = null) {
     if (state == this.view_mode)
       return
 
     this.view_mode =
-      (state == null) ? (( this.view_mode + 1 ) % this.modes.len()) :
+      (state == null) ? ((this.view_mode + 1) % this.modes.len()) :
       (state in this.modes) ? state :
       DM_VIEWER_NONE
 
@@ -320,8 +314,7 @@ let function isViewModeTutorAvailableForUser() {
       this.clearHint()
   }
 
-  function show(vis = true)
-  {
+  function show(vis = true) {
     this.active = vis
     let viewMode = (this.active && this.canUse()) ? this.view_mode : DM_VIEWER_NONE
     this.setCurrentViewMode(viewMode)
@@ -330,8 +323,7 @@ let function isViewModeTutorAvailableForUser() {
     this.repaint()
   }
 
-  function update()
-  {
+  function update() {
     this.updateNoPartsNotification()
 
     local newActive = this.canUse() && !::handlersManager.isAnyModalHandlerActive()
@@ -343,8 +335,7 @@ let function isViewModeTutorAvailableForUser() {
     if (topMenuHandler.value?.isSceneActive() ?? false)
       newActive = newActive && topMenuHandler.value.canShowDmViewer()
 
-    if (newActive == this.active)
-    {
+    if (newActive == this.active) {
       this.repaint()
       return false
     }
@@ -414,41 +405,36 @@ let function isViewModeTutorAvailableForUser() {
     ::gui_modal_tutor(steps, handler, true)
   }
 
-  function repaint()
-  {
+  function repaint() {
     let handler = ::handlersManager.getActiveBaseHandler()
     if (!handler)
       return
 
     local obj = ::showBtn("air_info_dmviewer_listbox", this.canUse(), handler.scene)
-    if(!checkObj(obj))
+    if (!checkObj(obj))
       return
 
     obj.setValue(this.view_mode)
 
     // Protection analysis button
-    if (hasFeature("DmViewerProtectionAnalysis"))
-    {
+    if (hasFeature("DmViewerProtectionAnalysis")) {
       obj = handler.scene.findObject("dmviewer_protection_analysis_btn")
       if (checkObj(obj))
         obj.show(this.view_mode == DM_VIEWER_ARMOR && (this.unit?.unitType.canShowProtectionAnalysis() ?? false))
     }
 
     // Outer parts visibility toggle in Armor and Xray modes
-    if (hasFeature("DmViewerExternalArmorHiding"))
-    {
+    if (hasFeature("DmViewerExternalArmorHiding")) {
       let isTankOrShip = this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat())
       obj = handler.scene.findObject("dmviewer_show_external_dm")
-      if (checkObj(obj))
-      {
+      if (checkObj(obj)) {
         let isShowOption = this.view_mode == DM_VIEWER_ARMOR && isTankOrShip
         obj.show(isShowOption)
         if (isShowOption)
           obj.setValue(this.isVisibleExternalPartsArmor)
       }
       obj = handler.scene.findObject("dmviewer_show_extra_xray")
-      if (checkObj(obj))
-      {
+      if (checkObj(obj)) {
         let isShowOption = this.view_mode == DM_VIEWER_XRAY && isTankOrShip
         obj.show(isShowOption)
         if (isShowOption)
@@ -466,11 +452,11 @@ let function isViewModeTutorAvailableForUser() {
 
     // Customization navbar button
     obj = handler.scene.findObject("btn_dm_viewer")
-    if(!checkObj(obj))
+    if (!checkObj(obj))
       return
 
     let modeNameCur  = this.modes[ this.view_mode  ]
-    let modeNameNext = this.modes[ ( this.view_mode + 1 ) % this.modes.len() ]
+    let modeNameNext = this.modes[ (this.view_mode + 1) % this.modes.len() ]
 
     obj.tooltip = loc("mainmenu/viewDamageModel/tooltip_" + modeNameNext)
     obj.setValue(loc("mainmenu/btn_dm_viewer_" + modeNameNext))
@@ -480,19 +466,16 @@ let function isViewModeTutorAvailableForUser() {
       objIcon["background-image"] = "#ui/gameuiskin#btn_dm_viewer_" + modeNameCur + ".svg"
   }
 
-  function clearHint()
-  {
-    this.updateHint({ thickness = 0, name = null, posX = 0, posY = 0})
+  function clearHint() {
+    this.updateHint({ thickness = 0, name = null, posX = 0, posY = 0 })
   }
 
-  function clearCachedUnitBlkNodes()
-  {
+  function clearCachedUnitBlkNodes() {
     this.unitWeaponBlkList = null
     this.unitSensorsBlkList = null
   }
 
-  function getHintObj()
-  {
+  function getHintObj() {
     let handler = ::handlersManager.getActiveBaseHandler()
     if (!handler)
       return null
@@ -500,22 +483,17 @@ let function isViewModeTutorAvailableForUser() {
     return checkObj(res) ? res : null
   }
 
-  function resetPrevHint()
-  {
+  function resetPrevHint() {
     this.prevHintParams = {}
   }
 
-  function hasPrevHint()
-  {
+  function hasPrevHint() {
     return this.prevHintParams.len() != 0
   }
 
-  function updateHint(params)
-  {
-    if (!this.active)
-    {
-      if (this.hasPrevHint())
-      {
+  function updateHint(params) {
+    if (!this.active) {
+      if (this.hasPrevHint()) {
         this.resetPrevHint()
         let hintObj = this.getHintObj()
         if (hintObj)
@@ -527,13 +505,12 @@ let function isViewModeTutorAvailableForUser() {
     local needUpdatePos = false
     local needUpdateContent = false
 
-    if(this.view_mode == DM_VIEWER_XRAY)
+    if (this.view_mode == DM_VIEWER_XRAY)
       // change tooltip info only for new unit part
       needUpdateContent = (getTblValue("name", params, true) != getTblValue("name", this.prevHintParams, false))
     else
       foreach (key, val in params)
-        if (val != getTblValue(key, this.prevHintParams))
-        {
+        if (val != getTblValue(key, this.prevHintParams)) {
           if (key == "posX" || key == "posY")
             needUpdatePos = true
           else
@@ -545,7 +522,7 @@ let function isViewModeTutorAvailableForUser() {
     this.prevHintParams = params
 
     let obj = this.getHintObj()
-    if(!obj)
+    if (!obj)
       return
     if (needUpdatePos && !needUpdateContent)
       return this.placeHint(obj)
@@ -556,14 +533,13 @@ let function isViewModeTutorAvailableForUser() {
     if (!isVisible)
       return
 
-    local info = { title="", desc="" }
+    local info = { title = "", desc = "" }
     let isUseCache = this.view_mode == DM_VIEWER_XRAY && !this.isDebugMode
     let cacheId = getTblValue("name", params, "")
 
     if (isUseCache && (cacheId in this.xrayDescriptionCache))
       info = this.xrayDescriptionCache[cacheId]
-    else
-    {
+    else {
       info = this.getPartTooltipInfo(nameId, params)
       info.title = ::stringReplace(info.title, " ", ::nbsp)
       info.desc  = ::stringReplace(info.desc,  " ", ::nbsp)
@@ -592,9 +568,8 @@ let function isViewModeTutorAvailableForUser() {
     this.placeHint(obj)
   }
 
-  function placeHint(obj)
-  {
-    if(!checkObj(obj))
+  function placeHint(obj) {
+    if (!checkObj(obj))
       return
     let guiScene = obj.getScene()
 
@@ -606,52 +581,52 @@ let function isViewModeTutorAvailableForUser() {
     obj.pos = format("%d, %d", posX, posY)
   }
 
-  function getPartNameId(params)
-  {
+  function getPartNameId(params) {
     local nameId = getTblValue("name", params) || ""
     if (this.view_mode != DM_VIEWER_XRAY || nameId == "")
       return nameId
 
     nameId = getTblValue(nameId, this.xrayRemap, nameId)
-    foreach(re in this.prepareNameId)
+    foreach (re in this.prepareNameId)
       nameId = re.pattern.replace(re.replace, nameId)
     if (nameId == "gunner")
       nameId += "_" + ::getUnitTypeTextByUnit(this.unit).tolower()
     return nameId
   }
 
-  function getPartNameLocText(nameId)
-  {
+  function getPartNameLocText(nameId) {
     local localizedName = ""
     let localizationSources = ["armor_class/", "dmg_msg_short/", "weapons_types/"]
     let nameVariations = [nameId]
     let idxSeparator = nameId.indexof("_")
-    if(idxSeparator)
+    if (idxSeparator)
       nameVariations.append(nameId.slice(0, idxSeparator))
-    if(this.unit != null)
+    if (this.unit != null)
       nameVariations.append(::getUnitTypeText(this.unit.esUnitType).tolower() + "_" + nameId)
-    if (this.unit?.esUnitType ==ES_UNIT_TYPE_BOAT)
+    if (this.unit?.esUnitType == ES_UNIT_TYPE_BOAT)
       nameVariations.append($"ship_{nameId}")
 
-    foreach(localizationSource in localizationSources)
-      foreach(nameVariant in nameVariations)
-      {
+    foreach (localizationSource in localizationSources)
+      foreach (nameVariant in nameVariations) {
         let locId = "".concat(localizationSource, nameVariant)
         localizedName = doesLocTextExist(locId) ? loc(locId, "") : ""
-        if(localizedName != "")
+        if (localizedName != "")
           return ::g_string.utf8ToUpper(localizedName, 1);
       }
     return nameId
   }
 
-  function getPartLocNameByBlkFile(locKeyPrefix, blkFilePath, blk)
-  {
+  function getPartTitle(params, unit) {
+    let partId = params?.nameId ?? ""
+    return descByPartId?[partId].getTitle(params, unit) ?? this.getPartNameLocText(params?.partLocId ?? partId)
+  }
+
+  function getPartLocNameByBlkFile(locKeyPrefix, blkFilePath, blk) {
     let nameLocId = $"{locKeyPrefix}/{blk?.nameLocId ?? fileName(blkFilePath).slice(0, -4)}"
     return doesLocTextExist(nameLocId) ? loc(nameLocId) : (blk?.name ?? nameLocId)
   }
 
-  function getPartTooltipInfo(nameId, params)
-  {
+  function getPartTooltipInfo(nameId, params) {
     let res = {
       title       = ""
       desc        = ""
@@ -666,8 +641,7 @@ let function isViewModeTutorAvailableForUser() {
 
     params.nameId <- nameId
 
-    switch (this.view_mode)
-    {
+    switch (this.view_mode) {
       case DM_VIEWER_ARMOR:
         res.desc = this.getDescriptionInArmorMode(params)
         break
@@ -677,7 +651,7 @@ let function isViewModeTutorAvailableForUser() {
         break
     }
 
-    res.title = this.getPartNameLocText(params?.partLocId ?? params.nameId)
+    res.title = this.getPartTitle(params, this.unit)
 
     return res
   }
@@ -802,8 +776,7 @@ let function isViewModeTutorAvailableForUser() {
     return ""
   }
 
-  function getDescriptionInArmorMode(params)
-  {
+  function getDescriptionInArmorMode(params) {
     let desc = []
 
     let solid = getTblValue("solid", params)
@@ -811,12 +784,10 @@ let function isViewModeTutorAvailableForUser() {
     let thickness = getTblValue("thickness", params)
     let effectiveThickness = getTblValue("effective_thickness", params)
 
-    if (solid && variableThickness)
-    {
+    if (solid && variableThickness) {
       desc.append(loc("armor_class/variable_thickness_armor"))
     }
-    else if (thickness)
-    {
+    else if (thickness) {
       let thicknessStr = thickness.tostring()
       desc.append(loc("armor_class/thickness") + ::nbsp +
         colorize("activeTextColor", thicknessStr) + ::nbsp + loc("measureUnits/mm"))
@@ -825,29 +796,25 @@ let function isViewModeTutorAvailableForUser() {
     let normalAngleValue = getTblValue("normal_angle", params, null)
     if (normalAngleValue != null)
       desc.append(loc("armor_class/normal_angle") + ::nbsp +
-        (normalAngleValue+0.5).tointeger() + ::nbsp + loc("measureUnits/deg"))
+        (normalAngleValue + 0.5).tointeger() + ::nbsp + loc("measureUnits/deg"))
 
     let angleValue = getTblValue("angle", params, null)
     if (angleValue != null)
       desc.append(loc("armor_class/impact_angle") + ::nbsp + round(angleValue) + ::nbsp + loc("measureUnits/deg"))
 
-    if (effectiveThickness)
-    {
-      if (solid)
-      {
+    if (effectiveThickness) {
+      if (solid) {
         desc.append(loc("armor_class/armor_dimensions_at_point") + ::nbsp +
           colorize("activeTextColor", round(effectiveThickness)) +
           ::nbsp + loc("measureUnits/mm"))
 
-        if ((this.armorClassToSteel?[params.name] ?? 0) != 0)
-        {
+        if ((this.armorClassToSteel?[params.name] ?? 0) != 0) {
           let equivSteelMm = round(effectiveThickness * this.armorClassToSteel[params.name])
           desc.append(loc("shop/armorThicknessEquivalent/steel",
             { thickness = "".concat(colorize("activeTextColor", equivSteelMm), " ", loc("measureUnits/mm")) }))
         }
       }
-      else
-      {
+      else {
         let effectiveThicknessClamped = min(effectiveThickness,
           min((this.relativeArmorThreshold * thickness).tointeger(), this.absoluteArmorThreshold))
 
@@ -857,7 +824,7 @@ let function isViewModeTutorAvailableForUser() {
       }
     }
 
-    if(this.isDebugMode)
+    if (this.isDebugMode)
       desc.append("\n" + colorize("badTextColor", params.nameId))
 
     let rawPartName = getTblValue("raw_name", params)
@@ -867,11 +834,9 @@ let function isViewModeTutorAvailableForUser() {
     return ::g_string.implode(desc, "\n")
   }
 
-  function getFirstFound(dataArray, getter, defValue = null)
-  {
+  function getFirstFound(dataArray, getter, defValue = null) {
     local result = null
-    foreach (data in dataArray)
-    {
+    foreach (data in dataArray) {
       result = getter(data)
       if (result != null)
         break
@@ -879,8 +844,7 @@ let function isViewModeTutorAvailableForUser() {
     return result ?? defValue
   }
 
-  function getCrewMemberBlkByDMPart(crewBlk, dmPart)
-  {
+  function getCrewMemberBlkByDMPart(crewBlk, dmPart) {
     let l = crewBlk.blockCount()
     for (local i = 0; i < l; i++) {
       let memberBlk = crewBlk.getBlock(i)
@@ -890,28 +854,25 @@ let function isViewModeTutorAvailableForUser() {
     return null
   }
 
-  function findBlockByName(blk, name)
-  {
+  function findBlockByName(blk, name) {
     if (blk.getBlockByName(name) != null)
       return true
     for (local b = 0; b < blk.blockCount(); b++)
-      if (findBlockByName(blk.getBlock(b), name))
+      if (this.findBlockByName(blk.getBlock(b), name))
         return true
     return false
   }
 
-  function findBlockByNameWithParamValue(blk, blockName, paramName, paramValue)
-  {
+  function findBlockByNameWithParamValue(blk, blockName, paramName, paramValue) {
     if (blk.getBlockByName(blockName)?[paramName] == paramValue)
       return true
     for (local b = 0; b < blk.blockCount(); b++)
-      if (findBlockByNameWithParamValue(blk.getBlock(b), blockName, paramName, paramValue))
+      if (this.findBlockByNameWithParamValue(blk.getBlock(b), blockName, paramName, paramValue))
         return true
     return false
   }
 
-  function getDescriptionInXrayMode(params)
-  {
+  function getDescriptionInXrayMode(params) {
     if (!this.unit || !this.unitBlk)
       return ""
 
@@ -924,8 +885,7 @@ let function isViewModeTutorAvailableForUser() {
 
     let desc = []
 
-    switch (partId)
-    {
+    switch (partId) {
       case "commander":
       case "driver":
       case "gunner_tank":
@@ -945,12 +905,10 @@ let function isViewModeTutorAvailableForUser() {
         break
 
       case "engine":              // Engines
-        switch (this.unit.esUnitType)
-        {
+        switch (this.unit.esUnitType) {
           case ES_UNIT_TYPE_TANK:
             let infoBlk = this.findAnyModEffectValue("engine") ?? this.unitBlk?.VehiclePhys.engine
-            if(infoBlk)
-            {
+            if (infoBlk) {
               let engineModelName = this.getEngineModelName(infoBlk)
               desc.append(engineModelName)
 
@@ -970,12 +928,11 @@ let function isViewModeTutorAvailableForUser() {
                           + loc("measureUnits/displacement", { num = infoBlk.displacement.tointeger() }))
             }
 
-            if ( ! this.isSecondaryModsValid)
+            if (! this.isSecondaryModsValid)
               this.updateSecondaryMods()
 
             let currentParams = this.unit?.modificators[this.difficulty.crewSkillName]
-            if (this.isSecondaryModsValid && currentParams && currentParams.horsePowers && currentParams.maxHorsePowersRPM)
-            {
+            if (this.isSecondaryModsValid && currentParams && currentParams.horsePowers && currentParams.maxHorsePowersRPM) {
               desc.append(format("%s %s (%s %d %s)", loc("engine_power") + loc("ui/colon"),
                 ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(currentParams.horsePowers),
                 loc("shop/unitValidCondition"), currentParams.maxHorsePowersRPM.tointeger(), loc("measureUnits/rpm")))
@@ -1002,10 +959,9 @@ let function isViewModeTutorAvailableForUser() {
             let enginePartId = infoBlk?.part_id ?? ("Engine" + partIndex.tostring())
             let engineTypeId = "EngineType" + (fmBlk?[enginePartId].Type ?? -1).tostring()
             local engineBlk = fmBlk?[engineTypeId] ?? fmBlk?[enginePartId]
-            if (!engineBlk)
-            { // try to find booster
+            if (!engineBlk) { // try to find booster
               local numEngines = 0
-              while(("Engine" + numEngines) in fmBlk)
+              while (("Engine" + numEngines) in fmBlk)
                 numEngines ++
               let boosterPartIndex = partIndex - numEngines //engine3_dm -> Booster0
               engineBlk = fmBlk?[$"Booster{boosterPartIndex}"]
@@ -1020,8 +976,7 @@ let function isViewModeTutorAvailableForUser() {
               engineType = "turboshaft"
             if (engineType != "")
               engineInfo.append(loc($"plane_engine_type/{engineType}"))
-            if (engineType == "inline" || engineType == "radial")
-            {
+            if (engineType == "inline" || engineType == "radial") {
               let cylinders = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.Cylinders ?? b?.cylinders, 0)
               if (cylinders > 0)
                 engineInfo.append(cylinders + loc("engine_cylinders_postfix"))
@@ -1032,15 +987,13 @@ let function isViewModeTutorAvailableForUser() {
 
             // display cooling type only for Inline and Radial engines
             if ((engineType == "inline" || engineType == "radial")
-                && "IsWaterCooled" in engineMainBlk)           // Plane : Engine : Cooling
-            {
+                && "IsWaterCooled" in engineMainBlk) {           // Plane : Engine : Cooling
               let coolingKey = engineMainBlk?.IsWaterCooled ? "water" : "air"
               desc.append(loc("plane_engine_cooling_type") + loc("ui/colon")
               + loc("plane_engine_cooling_type_" + coolingKey))
             }
 
-            if (!this.isSecondaryModsValid)
-            {
+            if (!this.isSecondaryModsValid) {
               this.updateSecondaryMods()
               break;
             }
@@ -1053,8 +1006,7 @@ let function isViewModeTutorAvailableForUser() {
             local afterburneThrustMaxCoef = 1
             let engineThrustMaxBlk = engineMainBlk?.ThrustMax
 
-            if (engineThrustMaxBlk)
-            {
+            if (engineThrustMaxBlk) {
               thrustMaxCoef = engineThrustMaxBlk?.ThrustMaxCoeff_0_0 ?? 1
               afterburneThrustMaxCoef = engineThrustMaxBlk?.ThrAftMaxCoeff_0_0 ?? 1
             }
@@ -1066,8 +1018,7 @@ let function isViewModeTutorAvailableForUser() {
             local thrustMult = 1.0
             local thrustTakeoffMult = 1.0
             local modeIdx = 0
-            while (true)
-            {
+            while (true) {
               let modeBlk = engineMainBlk?[$"Mode{++modeIdx}"]
               if (modeBlk?.ThrustMult == null)
                 break
@@ -1081,12 +1032,10 @@ let function isViewModeTutorAvailableForUser() {
             // for planes modifications have delta values
             let thrustModDelta = (this.unit?.modificators[this.difficulty.crewSkillName].thrust ?? 0) / KGF_TO_NEWTON
             let horsepowerModDelta = this.unit?.modificators[this.difficulty.crewSkillName].horsePowers ?? 0
-            switch(engineType)
-            {
+            switch (engineType) {
               case "inline":
               case "radial":
-                if (throttleBoost > 1)
-                {
+                if (throttleBoost > 1) {
                   powerMax = horsePowerValue
                   powerTakeoff = horsePowerValue * throttleBoost * afterburnerBoost
                 }
@@ -1110,8 +1059,7 @@ let function isViewModeTutorAvailableForUser() {
               case "jet":
               case "pvrd":
               default:
-                if (throttleBoost > 1 && afterburnerBoost > 1)
-                {
+                if (throttleBoost > 1 && afterburnerBoost > 1) {
                   thrustTakeoff = thrustValue * thrustTakeoffMult * afterburnerBoost
                   thrustMax = thrustValue * thrustMult
                 }
@@ -1127,27 +1075,23 @@ let function isViewModeTutorAvailableForUser() {
             thrustTakeoff = getTblValue("thrust_takeoff", infoBlk, thrustTakeoff)
 
             // display power values
-            if (powerMax > 0)
-            {
+            if (powerMax > 0) {
               powerMax += horsepowerModDelta
               desc.append(loc("engine_power_max") + loc("ui/colon")
                 + ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(powerMax))
             }
-            if (powerTakeoff > 0)
-            {
+            if (powerTakeoff > 0) {
               powerTakeoff += horsepowerModDelta
               desc.append(loc("engine_power_takeoff") + loc("ui/colon")
                 + ::g_measure_type.HORSEPOWERS.getMeasureUnitsText(powerTakeoff))
             }
-            if (thrustMax > 0)
-            {
+            if (thrustMax > 0) {
               thrustMax += thrustModDelta
               thrustMax *= thrustMaxCoef
               desc.append(loc("engine_thrust_max") + loc("ui/colon")
                 + ::g_measure_type.THRUST_KGF.getMeasureUnitsText(thrustMax))
             }
-            if (thrustTakeoff > 0)
-            {
+            if (thrustTakeoff > 0) {
               let afterburnerBlk = engineBlk?.Afterburner
               let thrustTakeoffLocId = (afterburnerBlk?.Type == AFTERBURNER_CHAMBER &&
                 (afterburnerBlk?.IsControllable ?? false))
@@ -1168,8 +1112,7 @@ let function isViewModeTutorAvailableForUser() {
 
       case "transmission":
         let info = this.unitBlk?.VehiclePhys?.mechanics
-        if (info)
-        {
+        if (info) {
           let manufacturer = info?.manufacturer ? loc("transmission_manufacturer/" + info.manufacturer,
             loc("engine_manufacturer/" + info.manufacturer, ""))
                                : ""
@@ -1179,8 +1122,7 @@ let function isViewModeTutorAvailableForUser() {
             (props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
           let maxSpeed = this.unit?.modificators?[this.difficulty.crewSkillName]?.maxSpeed ?? 0
-          if (maxSpeed && info?.gearRatios)
-          {
+          if (maxSpeed && info?.gearRatios) {
             local gearsF = 0
             local gearsB = 0
             local ratioF = 0
@@ -1217,8 +1159,7 @@ let function isViewModeTutorAvailableForUser() {
       case "ammunition_storage_charges":
       case "ammunition_storage_aux":
         let isShipOrBoat = this.unit.isShipOrBoat()
-        if (isShipOrBoat)
-        {
+        if (isShipOrBoat) {
           let ammoQuantity = this.getAmmoQuantityByPartName(partName)
           if (ammoQuantity > 1)
             desc.append(loc("shop/ammo") + loc("ui/colon") + ammoQuantity)
@@ -1226,8 +1167,7 @@ let function isViewModeTutorAvailableForUser() {
         let stowageInfo = this.getAmmoStowageInfo(null, partName, isShipOrBoat)
         if (stowageInfo.isCharges)
           params.partLocId <- isShipOrBoat ? "ship_charges_storage" : "ammo_charges"
-        if (stowageInfo.firstStageCount)
-        {
+        if (stowageInfo.firstStageCount) {
           local txt = loc(isShipOrBoat ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage")
           if (this.unit.isTank())
             txt += loc("ui/comma") + stowageInfo.firstStageCount + " " + loc("measureUnits/pcs")
@@ -1242,7 +1182,7 @@ let function isViewModeTutorAvailableForUser() {
 
         weaponPartName = ::stringReplace(partName, partId, "gun_barrel")
         let weaponInfoBlk = this.getWeaponByXrayPartName(weaponPartName, partName)
-        if( ! weaponInfoBlk)
+        if (! weaponInfoBlk)
           break
         let isHorizontal = partId == "drive_turret_h"
         desc.extend(this.getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, isHorizontal, !isHorizontal))
@@ -1255,8 +1195,7 @@ let function isViewModeTutorAvailableForUser() {
           { label = "avionics_sight_cannon", ccipKey = "haveCCIPForGun",    ccrpKey = "haveCCRPForGun"     }
           { label = "avionics_sight_rocket", ccipKey = "haveCCIPForRocket", ccrpKey = "haveCCRPForRocket"  }
           { label = "avionics_sight_bomb",   ccipKey = "haveCCIPForBombs",  ccrpKey = "haveCCRPForBombs"   }
-        ])
-        {
+        ]) {
           let haveCcip = this.unitBlk?[cfg.ccipKey] ?? false
           let haveCcrp = this.unitBlk?[cfg.ccrpKey] ?? false
           if (haveCcip || haveCcrp)
@@ -1265,23 +1204,19 @@ let function isViewModeTutorAvailableForUser() {
         }
 
         let nightVisionBlk = this.findAnyModEffectValue("nightVision")
-        if (partId == "pilot")
-        {
+        if (partId == "pilot") {
           if (nightVisionBlk?.pilotIr != null)
             desc.append(loc("modification/night_vision_system"))
         }
-        else
-        {
+        else {
           if (nightVisionBlk?.gunnerIr != null)
             desc.append(loc("modification/night_vision_system"))
         }
 
         if ((this.unitBlk?.haveOpticTurret || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER) && this.unitBlk?.gunnerOpticFps != null)
-          if (this.unitBlk?.cockpit.sightOutFov != null || this.unitBlk?.cockpit.sightInFov != null)
-          {
+          if (this.unitBlk?.cockpit.sightOutFov != null || this.unitBlk?.cockpit.sightInFov != null) {
             let optics = this.getOpticsParams(this.unitBlk?.cockpit.sightOutFov ?? 0, this.unitBlk?.cockpit.sightInFov ?? 0)
-            if (optics.zoom != "")
-            {
+            if (optics.zoom != "") {
               let visionModes = loc("ui/comma").join([
                 { mode = "tv",   have = nightVisionBlk?.sightIr != null || nightVisionBlk?.sightThermal != null }
                 { mode = "lltv", have = nightVisionBlk?.sightIr != null }
@@ -1292,22 +1227,19 @@ let function isViewModeTutorAvailableForUser() {
             }
           }
 
-        foreach (sensorBlk in this.getUnitSensorsList())
-        {
+        foreach (sensorBlk in this.getUnitSensorsList()) {
           let sensorFilePath = sensorBlk.getStr("blk", "")
           if (sensorFilePath == "")
             continue
-          let sensorPropsBlk = ::DataBlock()
+          let sensorPropsBlk = DataBlock()
           sensorPropsBlk.load(sensorFilePath)
           local sensorType = sensorPropsBlk.getStr("type", "")
-          if (sensorType == "radar")
-          {
+          if (sensorType == "radar") {
             local isRadar = false
             local isIrst = false
             local isTv = false
             let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
-            for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++)
-            {
+            for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
               let transiverBlk = transiversBlk.getBlock(t)
               let targetSignatureType = transiverBlk?.targetSignatureType != null ? transiverBlk?.targetSignatureType : transiverBlk?.visibilityType
               if (targetSignatureType == "infraRed")
@@ -1372,19 +1304,17 @@ let function isViewModeTutorAvailableForUser() {
         if (this.unit.isShipOrBoat())
           break
 
-        foreach (sensorBlk in this.getUnitSensorsList())
-        {
+        foreach (sensorBlk in this.getUnitSensorsList()) {
           if ((sensorBlk % "dmPart").findindex(@(v) v == partName) == null)
             continue
 
           let sensorFilePath = sensorBlk.getStr("blk", "")
           if (sensorFilePath == "")
             continue
-          let sensorPropsBlk = ::DataBlock()
+          let sensorPropsBlk = DataBlock()
           sensorPropsBlk.load(sensorFilePath)
           let sensorType = sensorPropsBlk.getStr("type", "")
-          if (sensorType == "radar")
-          {
+          if (sensorType == "radar") {
             desc.append("".concat(loc("xray/model"), loc("ui/colon"),
               this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
 
@@ -1396,8 +1326,7 @@ let function isViewModeTutorAvailableForUser() {
             local searchZoneAzimuthWidth = 0.0
             local searchZoneElevationWidth = 0.0
             let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
-            for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++)
-            {
+            for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
               let transiverBlk = transiversBlk.getBlock(t)
               let range = transiverBlk.getReal("range", 0.0)
               rangeMax = max(rangeMax, range)
@@ -1406,22 +1335,18 @@ let function isViewModeTutorAvailableForUser() {
                 isIrst = true
               else if (targetSignatureType == "optic")
                 isTv = true
-              else
-              {
+              else {
                 isRadar = true
                 radarFreqBand = transiverBlk.getInt("band", 8)
               }
-              if (transiverBlk?.antenna != null)
-              {
-                if (transiverBlk.antenna?.azimuth != null && transiverBlk.antenna?.elevation != null)
-                {
+              if (transiverBlk?.antenna != null) {
+                if (transiverBlk.antenna?.azimuth != null && transiverBlk.antenna?.elevation != null) {
                   let azimuthWidth = 2.0 * (transiverBlk.antenna.azimuth?.angleHalfSens ?? 0.0)
                   let elevationWidth = 2.0 * (transiverBlk.antenna.elevation?.angleHalfSens ?? 0.0)
                   searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, azimuthWidth)
                   searchZoneElevationWidth = max(searchZoneElevationWidth, elevationWidth)
                 }
-                else
-                {
+                else {
                   let width = 2.0 * (transiverBlk.antenna?.angleHalfSens ?? 0.0)
                   searchZoneAzimuthWidth = max(searchZoneAzimuthWidth, width)
                   searchZoneElevationWidth = max(searchZoneElevationWidth, width)
@@ -1435,16 +1360,14 @@ let function isViewModeTutorAvailableForUser() {
             local lookDownHeadOn = false
             local lookDownAllAspects = false
             let signalsBlk = sensorPropsBlk.getBlockByName("signals")
-            for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++)
-            {
+            for (local s = 0; s < (signalsBlk?.blockCount() ?? 0); s++) {
               let signalBlk = signalsBlk.getBlock(s)
               anglesFinder = anglesFinder || signalBlk.getBool("anglesFinder", true)
               iff = iff || signalBlk.getBool("friendFoeId", false)
               let groundClutter = signalBlk.getBool("groundClutter", false)
               let distanceBlk = signalBlk.getBlockByName("distance")
               let dopplerSpeedBlk = signalBlk.getBlockByName("dopplerSpeed")
-              if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false))
-              {
+              if (dopplerSpeedBlk && dopplerSpeedBlk.getBool("presents", false)) {
                 let dopplerSpeedMin = dopplerSpeedBlk.getReal("minValue", 0.0)
                 let dopplerSpeedMax = dopplerSpeedBlk.getReal("maxValue", 0.0)
                 if (signalBlk.getBool("mainBeamDopplerSpeed", false) &&
@@ -1466,14 +1389,12 @@ let function isViewModeTutorAvailableForUser() {
             local radarType = ""
             if (isRadar)
               radarType = "radar"
-            if (isIrst)
-            {
+            if (isIrst) {
               if (radarType != "")
                 radarType = radarType + "_"
               radarType = radarType + "irst"
             }
-            if (isTv)
-            {
+            if (isTv) {
               if (radarType != "")
                 radarType = radarType + "_"
               radarType = radarType + "tv"
@@ -1482,8 +1403,7 @@ let function isViewModeTutorAvailableForUser() {
               radarType = "" + radarType
             else if (isSearchRadar)
               radarType = "search_" + radarType
-            else if (isTrackRadar)
-            {
+            else if (isTrackRadar) {
               if (anglesFinder)
                 radarType = "track_" + radarType
               else
@@ -1495,39 +1415,32 @@ let function isViewModeTutorAvailableForUser() {
             desc.append(loc("radar_range_max") + loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
 
             let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
-            for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++)
-            {
+            for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++) {
               let scanPatternBlk = scanPatternsBlk.getBlock(p)
               let scanPatternType = scanPatternBlk.getStr("type", "")
               local major = 0.0
               local minor = 0.0
               local rowMajor = true
-              if (scanPatternType == "cylinder")
-              {
+              if (scanPatternType == "cylinder") {
                 major = 360.0
                 minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
                 rowMajor = scanPatternBlk.getBool("rowMajor", true)
               }
-              else if (scanPatternType == "pyramide")
-              {
+              else if (scanPatternType == "pyramide") {
                 major = 2.0 * scanPatternBlk.getReal("width", 0.0)
                 minor = scanPatternBlk.getReal("barHeight", 0.0) * scanPatternBlk.getInt("barsCount", 0)
                 rowMajor = scanPatternBlk.getBool("rowMajor", true)
               }
-              else if (scanPatternType == "cone")
-              {
+              else if (scanPatternType == "cone") {
                 major = 2.0 * scanPatternBlk.getReal("width", 0.0)
                 minor = major
               }
-              if (major * minor > searchZoneAzimuthWidth * searchZoneElevationWidth)
-              {
-                if (rowMajor)
-                {
+              if (major * minor > searchZoneAzimuthWidth * searchZoneElevationWidth) {
+                if (rowMajor) {
                   searchZoneAzimuthWidth = major
                   searchZoneElevationWidth = minor
                 }
-                else
-                {
+                else {
                   searchZoneAzimuthWidth = minor
                   searchZoneElevationWidth = major
                 }
@@ -1539,8 +1452,7 @@ let function isViewModeTutorAvailableForUser() {
                 round(searchZoneElevationWidth), loc("measureUnits/deg")))
             if (lookDownHeadOn)
               desc.append(loc("radar_ld_head_on"))
-            if (lookDownAllAspects)
-            {
+            if (lookDownAllAspects) {
               if (this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat()))
                 desc.append(loc("radar_ld"))
               else
@@ -1552,8 +1464,7 @@ let function isViewModeTutorAvailableForUser() {
               desc.append(loc("radar_iff"))
             if (isSearchRadar && hasTws)
               desc.append(loc("radar_tws"))
-            if (isTrackRadar)
-            {
+            if (isTrackRadar) {
               let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
               if (hasBVR)
                 desc.append(loc("radar_bvr_mode"))
@@ -1575,14 +1486,12 @@ let function isViewModeTutorAvailableForUser() {
       case "countermeasure":
 
         let counterMeasuresBlk = this.unitBlk?.counterMeasures
-        if (counterMeasuresBlk)
-        {
-          for (local i = 0; i < counterMeasuresBlk.blockCount(); i++)
-          {
+        if (counterMeasuresBlk) {
+          for (local i = 0; i < counterMeasuresBlk.blockCount(); i++) {
             let cmBlk = counterMeasuresBlk.getBlock(i)
             if (cmBlk?.dmPart != partName || (cmBlk?.blk ?? "") == "")
               continue
-            let info = ::DataBlock()
+            let info = DataBlock()
             info.load(cmBlk.blk)
 
             desc.append("".concat(loc("xray/model"), loc("ui/colon"),
@@ -1591,16 +1500,14 @@ let function isViewModeTutorAvailableForUser() {
             foreach (cfg in [
               { label = "xray/ircm_protected_sector/hor",  sectorKey = "azimuthSector",   directionKey = "azimuth"   }
               { label = "xray/ircm_protected_sector/vert", sectorKey = "elevationSector", directionKey = "elevation" }
-            ])
-            {
+            ]) {
               let sector = round(info?[cfg.sectorKey] ?? 0.0)
               local direction = round((info?[cfg.directionKey] ?? 0.0) * 2.0) / 2
               if (sector == 0)
                 continue
               let deg = loc("measureUnits/deg")
               local comment = ""
-              if (direction != 0 && sector < 360)
-              {
+              if (direction != 0 && sector < 360) {
                 direction %= 360
                 if (direction < 0)
                   direction += 360
@@ -1630,13 +1537,10 @@ let function isViewModeTutorAvailableForUser() {
 
       case "aps_launcher":
         let activeProtectionSystemBlk = this.unitBlk?.ActiveProtectionSystem
-        if (activeProtectionSystemBlk)
-        {
-          for (local i = 0; i < activeProtectionSystemBlk.blockCount(); i++)
-          {
+        if (activeProtectionSystemBlk) {
+          for (local i = 0; i < activeProtectionSystemBlk.blockCount(); i++) {
             let moduleBlk = activeProtectionSystemBlk.getBlock(i)
-            if (moduleBlk?.launcherDmPart == partName)
-            {
+            if (moduleBlk?.launcherDmPart == partName) {
               desc.extend(this.getAPSDesc(moduleBlk))
               break
             }
@@ -1648,9 +1552,8 @@ let function isViewModeTutorAvailableForUser() {
       case "auxiliary_caliber_turret":
       case "aa_turret":
         weaponPartName = ::stringReplace(partName, "turret", "gun")
-        foreach(weapon in this.getUnitWeaponList())
-          if (weapon?.turret?.gunnerDm == partName && weapon?.breechDP)
-          {
+        foreach (weapon in this.getUnitWeaponList())
+          if (weapon?.turret?.gunnerDm == partName && weapon?.breechDP) {
             weaponPartName = weapon.breechDP
             break
           }
@@ -1675,26 +1578,22 @@ let function isViewModeTutorAvailableForUser() {
         local weaponInfoBlk = null
         let weaponTrigger = getTblValue("weapon_trigger", params)
         let triggerParam = "trigger"
-        if (weaponTrigger)
-        {
+        if (weaponTrigger) {
           let weaponList = this.getUnitWeaponList()
-          foreach(weapon in weaponList)
-          {
-            if (triggerParam in weapon && weapon[triggerParam] == weaponTrigger)
-            {
+          foreach (weapon in weaponList) {
+            if (triggerParam in weapon && weapon[triggerParam] == weaponTrigger) {
               weaponInfoBlk = weapon
               break
             }
           }
         }
 
-        if (!weaponInfoBlk)
-        {
+        if (!weaponInfoBlk) {
           weaponPartName = weaponPartName || partName
           weaponInfoBlk = this.getWeaponByXrayPartName(weaponPartName)
         }
 
-        if( ! weaponInfoBlk)
+        if (! weaponInfoBlk)
           break
 
         let isSpecialBullet = isInArray(partId, [ "torpedo", "depth_charge", "mine" ])
@@ -1707,9 +1606,9 @@ let function isViewModeTutorAvailableForUser() {
         let shouldShowAmmoInTitle = isSpecialBulletEmitter
         let ammoTxt = ammo > 1 && shouldShowAmmoInTitle ? format(loc("weapons/counter"), ammo) : ""
 
-        if(weaponName != "")
+        if (weaponName != "")
           desc.append("".concat(loc($"weapons/{weaponName}"), ammoTxt))
-        if(weaponInfoBlk && ammo > 1 && !shouldShowAmmoInTitle)
+        if (weaponInfoBlk && ammo > 1 && !shouldShowAmmoInTitle)
           desc.append(loc("shop/ammo") + loc("ui/colon") + ammo)
 
         if (isSpecialBullet || isSpecialBulletEmitter)
@@ -1718,8 +1617,7 @@ let function isViewModeTutorAvailableForUser() {
           let status = this.getWeaponStatus(weaponPartName, weaponInfoBlk)
           desc.extend(this.getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status))
           desc.append(this.getMassInfo(blkOptFromPath(weaponBlkLink)))
-          if (status?.isPrimary || status?.isSecondary)
-          {
+          if (status?.isPrimary || status?.isSecondary) {
             if (weaponInfoBlk?.autoLoader)
               desc.append(loc("xray/ammo/auto_load"))
             let firstStageCount = this.getAmmoStowageInfo(weaponInfoBlk?.trigger).firstStageCount
@@ -1742,8 +1640,7 @@ let function isViewModeTutorAvailableForUser() {
 
         let tankInfo = []
 
-        if ("protected" in tankInfoTable)
-        {
+        if ("protected" in tankInfoTable) {
           tankInfo.append(tankInfoTable.protected ?
           loc("fuelTank/selfsealing") :
           loc("fuelTank/not_selfsealing"))
@@ -1770,8 +1667,7 @@ let function isViewModeTutorAvailableForUser() {
         if (info.titleLoc != "")
           params.nameId <- info.titleLoc
 
-        foreach (data in info.referenceProtectionArray)
-        {
+        foreach (data in info.referenceProtectionArray) {
           if (::u.isPoint2(data.angles))
             desc.append(loc("shop/armorThicknessEquivalent/angles",
               { angle1 = abs(data.angles.y), angle2 = abs(data.angles.x) }))
@@ -1788,11 +1684,9 @@ let function isViewModeTutorAvailableForUser() {
 
         let blockSep = desc.len() ? "\n" : ""
 
-        if (info.isComposite && !::u.isEmpty(info.layersArray)) // composite armor
-        {
+        if (info.isComposite && !::u.isEmpty(info.layersArray)) { // composite armor
           let texts = []
-          foreach (layer in info.layersArray)
-          {
+          foreach (layer in info.layersArray) {
             local thicknessText = ""
             if (::u.isFloat(layer?.armorThickness) && layer.armorThickness > 0)
               thicknessText = round(layer.armorThickness).tostring()
@@ -1885,30 +1779,26 @@ let function isViewModeTutorAvailableForUser() {
     return description
   }
 
-  function getEngineModelName(infoBlk)
-  {
+  function getEngineModelName(infoBlk) {
     return " ".join([
       infoBlk?.manufacturer ? loc($"engine_manufacturer/{infoBlk.manufacturer}") : ""
       infoBlk?.model ? loc($"engine_model/{infoBlk.model}") : ""
     ], true)
   }
 
-  function getFireControlSystems(key, node)
-  {
+  function getFireControlSystems(key, node) {
     return this.getUnitSensorsList()
       .filter(@(blk) blk.getBlockName() == "fireDirecting" && (blk % key).findvalue(@(v) v == node) != null)
   }
 
-  function getNumFireControlNodes(mainNode, nodeId)
-  {
+  function getNumFireControlNodes(mainNode, nodeId) {
     return this.getFireControlSystems("dmPartMain", mainNode)
       .map(@(fcBlk) fcBlk % "dmPart")
       .map(@(nodes) nodes.filter(@(node) node.indexof(nodeId) == 0).len())
       .reduce(@(sum, num) sum + num, 0)
   }
 
-  function getFireControlTriggerGroups(fcBlk)
-  {
+  function getFireControlTriggerGroups(fcBlk) {
     let groupsBlk = fcBlk?.triggerGroupUse
     if (!groupsBlk)
       return []
@@ -1921,15 +1811,13 @@ let function isViewModeTutorAvailableForUser() {
     return res
   }
 
-  function getFireControlWeaponNames(fcBlk)
-  {
+  function getFireControlWeaponNames(fcBlk) {
     let triggerGroups = this.getFireControlTriggerGroups(fcBlk)
     let weapons = this.getUnitWeaponList().filter(@(w) triggerGroups.contains(w?.triggerGroup) && w?.blk)
     return unique(weapons, @(w) w.blk).map(@(w) getWeaponNameByBlkPath(w.blk))
   }
 
-  function getFireControlAccuracy(fcBlk)
-  {
+  function getFireControlAccuracy(fcBlk) {
     let accuracy = fcBlk?.measureAccuracy
     if (!accuracy)
       return -1
@@ -1937,18 +1825,15 @@ let function isViewModeTutorAvailableForUser() {
     return round(accuracy / this.getModEffect("ship_rangefinder", "shipDistancePrecisionErrorMult") * 100)
   }
 
-  function getModEffect(modId, effectId)
-  {
+  function getModEffect(modId, effectId) {
     if (::shop_is_modification_enabled(this.unit.name, modId))
       return 1.0
 
     return ::get_modifications_blk()?.modifications[modId].effects[effectId] ?? 1.0
   }
 
-  function findAnyModEffectValue(effectId)
-  {
-    for (local b = 0; b < (this.unitBlk?.modifications.blockCount() ?? 0); b++)
-    {
+  function findAnyModEffectValue(effectId) {
+    for (local b = 0; b < (this.unitBlk?.modifications.blockCount() ?? 0); b++) {
       let modBlk = this.unitBlk.modifications.getBlock(b)
       let value = modBlk?.effects[effectId]
       if (value != null
@@ -1958,9 +1843,8 @@ let function isViewModeTutorAvailableForUser() {
     return null
   }
 
-  function getOpticsParams(zoomOutFov, zoomInFov)
-  {
-    let fovToZoom = @(fov) sin(80/2*PI/180)/sin(fov/2*PI/180)
+  function getOpticsParams(zoomOutFov, zoomInFov) {
+    let fovToZoom = @(fov) sin(80 / 2 * PI / 180) / sin(fov / 2 * PI / 180)
     let fovOutIn = [zoomOutFov, zoomInFov].filter(@(fov) fov > 0)
     let zoom = fovOutIn.map(@(fov) fovToZoom(fov))
     if (zoom.len() == 2 && abs(zoom[0] - zoom[1]) < 0.1) {
@@ -2007,71 +1891,65 @@ let function isViewModeTutorAvailableForUser() {
       desc.append("".concat(loc("xray/model"), loc("ui/colon"), loc($"aps/{model}")))
     if (horAngles)
       desc.append("".concat(loc("xray/aps/protected_sector/hor"), loc("ui/colon"),
-        ( horAngles.x + horAngles.y == 0
+        (horAngles.x + horAngles.y == 0
           ? format("±%d%s", abs(horAngles.y), deg)
-          : format("%+d%s/%+d%s", horAngles.x, deg, horAngles.y, deg) ) ) )
+          : format("%+d%s/%+d%s", horAngles.x, deg, horAngles.y, deg))))
     if (verAngles)
       desc.append("".concat(loc("xray/aps/protected_sector/vert"), loc("ui/colon"),
-        ( verAngles.x + verAngles.y == 0
+        (verAngles.x + verAngles.y == 0
           ? format("±%d%s", abs(verAngles.y), deg)
-          : format("%+d%s/%+d%s", verAngles.x, deg, verAngles.y, deg) ) ) )
+          : format("%+d%s/%+d%s", verAngles.x, deg, verAngles.y, deg))))
     if (reloadTime)
       desc.append("".concat(loc("xray/aps/reloadTime"), loc("ui/colon"),
-        reloadTime, " ", loc("measureUnits/seconds") ) )
+        reloadTime, " ", loc("measureUnits/seconds")))
     if (reactionTime)
       desc.append("".concat(loc("xray/aps/reactionTime"), loc("ui/colon"),
-        reactionTime * 1000, " ", loc("measureUnits/milliseconds") ) )
+        reactionTime * 1000, " ", loc("measureUnits/milliseconds")))
     if (targetSpeed)
       desc.append("".concat(loc("xray/aps/targetSpeed"), loc("ui/colon"),
-        $"{targetSpeed.x}-{targetSpeed.y}", " ", loc("measureUnits/metersPerSecond_climbSpeed") ) )
+        $"{targetSpeed.x}-{targetSpeed.y}", " ", loc("measureUnits/metersPerSecond_climbSpeed")))
     if (shotCount)
       desc.append("".concat(loc("xray/aps/shotCount"), loc("ui/colon"),
-        shotCount, " " , loc("measureUnits/pcs") ) )
+        shotCount, " ",  loc("measureUnits/pcs")))
     return desc
   }
 
-  function getWeaponTotalBulletCount(partId, weaponInfoBlk)
-  {
-    if (partId == "cannon_breech")
-    {
+  function getWeaponTotalBulletCount(partId, weaponInfoBlk) {
+    if (partId == "cannon_breech") {
       local result = 0
       let currentBreechDp = weaponInfoBlk?.breechDP
       if (!currentBreechDp)
         return result
-      foreach(weapon in this.getUnitWeaponList())
-      {
+      foreach (weapon in this.getUnitWeaponList()) {
         if (weapon?.breechDP == currentBreechDp)
           result += getTblValue("bullets", weapon, 0)
       }
       return result
-    } else
+    }
+    else
       return getTblValue("bullets", weaponInfoBlk, 0)
   }
 
-  function getInfoBlk(partName = null)
-  {
+  function getInfoBlk(partName = null) {
     let sources = [this.unitBlk]
     let unitTags = getTblValue(this.unit.name, ::get_unittags_blk(), null)
     if (unitTags != null)
       sources.insert(0, unitTags)
     local infoBlk = this.getFirstFound(sources, @(b) partName ? b?.info?[partName] : b?.info)
     if (infoBlk && partName != null && "alias" in infoBlk)
-      infoBlk = getInfoBlk(infoBlk.alias)
+      infoBlk = this.getInfoBlk(infoBlk.alias)
     return infoBlk
   }
 
-  function getXrayViewerDataByDmPartName(partName)
-  {
+  function getXrayViewerDataByDmPartName(partName) {
     let dataBlk = this.unitBlk && this.unitBlk?.xray_viewer_data
     local partIdx = null
     if (dataBlk)
-      for (local b = 0; b < dataBlk.blockCount(); b++)
-      {
+      for (local b = 0; b < dataBlk.blockCount(); b++) {
         let blk = dataBlk.getBlock(b)
         if (blk?.xrayDmPart == partName)
           return blk
-        if (blk?.xrayDmPartFmt != null)
-        {
+        if (blk?.xrayDmPartFmt != null) {
           partIdx = partIdx ?? this.extractIndexFromDmPartName(partName)
           if (partIdx != -1
               && partIdx >= (blk?.xrayDmPartRange.x ?? -1) && partIdx <= (blk?.xrayDmPartRange.y ?? -1)
@@ -2082,12 +1960,10 @@ let function isViewModeTutorAvailableForUser() {
     return null
   }
 
-  function getAmmoQuantityByPartName(partName)
-  {
+  function getAmmoQuantityByPartName(partName) {
     let ammoStowages = this.unitBlk?.ammoStowages
     if (ammoStowages)
-      for (local i = 0; i < ammoStowages.blockCount(); i++)
-      {
+      for (local i = 0; i < ammoStowages.blockCount(); i++) {
         let blk = ammoStowages.getBlock(i)
         foreach (blockName in [ "shells", "charges" ])
           foreach (shells in blk % blockName)
@@ -2097,49 +1973,42 @@ let function isViewModeTutorAvailableForUser() {
     return 0
   }
 
-  function getWeaponByXrayPartName(weaponPartName, linkedPartName = null)
-  {
+  function getWeaponByXrayPartName(weaponPartName, linkedPartName = null) {
     let turretLinkedParts = [ "horDriveDm", "verDriveDm" ]
     let partLinkSources = [ "dm", "barrelDP", "breechDP", "maskDP", "gunDm", "ammoDP", "emitter" ]
     let partLinkSourcesGenFmt = [ "emitterGenFmt", "ammoDpGenFmt" ]
     let weaponList = this.getUnitWeaponList()
-    foreach(weapon in weaponList)
-    {
+    foreach (weapon in weaponList) {
       if (linkedPartName != null && weapon?.turret != null)
-        foreach(partKey in turretLinkedParts)
-          if(weapon.turret?[partKey] == linkedPartName)
+        foreach (partKey in turretLinkedParts)
+          if (weapon.turret?[partKey] == linkedPartName)
             return weapon
-      foreach(linkKey in partLinkSources)
-        if(linkKey in weapon && weapon[linkKey] == weaponPartName)
+      foreach (linkKey in partLinkSources)
+        if (linkKey in weapon && weapon[linkKey] == weaponPartName)
           return weapon
-      if (::u.isPoint2(weapon?.emitterGenRange))
-      {
+      if (::u.isPoint2(weapon?.emitterGenRange)) {
         let rangeMin = min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
         let rangeMax = max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
-        foreach(linkKeyFmt in partLinkSourcesGenFmt)
-          if (weapon?[linkKeyFmt])
-          {
-            if (weapon[linkKeyFmt].indexof("%02d") == null)
-            {
+        foreach (linkKeyFmt in partLinkSourcesGenFmt)
+          if (weapon?[linkKeyFmt]) {
+            if (weapon[linkKeyFmt].indexof("%02d") == null) {
               assert(false, "Bad weapon param " + linkKeyFmt + "='" + weapon[linkKeyFmt] +
                 "' on " + this.unit.name)
               continue
             }
-            for(local i = rangeMin; i <= rangeMax; i++)
+            for (local i = rangeMin; i <= rangeMax; i++)
               if (format(weapon[linkKeyFmt], i) == weaponPartName)
                 return weapon
           }
       }
-      if("partsDP" in weapon && weapon["partsDP"].indexof(weaponPartName) != null)
+      if ("partsDP" in weapon && weapon["partsDP"].indexof(weaponPartName) != null)
         return weapon
     }
     return null
   }
 
-  function getWeaponStatus(weaponPartName, weaponInfoBlk)
-  {
-    switch (this.unit.esUnitType)
-    {
+  function getWeaponStatus(weaponPartName, weaponInfoBlk) {
+    switch (this.unit.esUnitType) {
       case ES_UNIT_TYPE_TANK:
         let blkPath = weaponInfoBlk?.blk ?? ""
         let blk = blkOptFromPath(blkPath)
@@ -2176,8 +2045,7 @@ let function isViewModeTutorAvailableForUser() {
 
   getSign = @(n) n < 0 ? -1 : 1
 
-  function getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, needAxisX, needAxisY)
-  {
+  function getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, needAxisX, needAxisY) {
     let desc = []
     let needSingleAxis = !needAxisX || !needAxisY
     let status = this.getWeaponStatus(weaponPartName, weaponInfoBlk)
@@ -2205,8 +2073,7 @@ let function isViewModeTutorAvailableForUser() {
       desc.append(" ".concat(loc(g.label), anglesText))
     }
 
-    if (needSingleAxis || status.isPrimary || this.unit?.isShipOrBoat())
-    {
+    if (needSingleAxis || status.isPrimary || this.unit?.isShipOrBoat()) {
       let unitModificators = this.unit?.modificators?[this.difficulty.crewSkillName]
       foreach (a in [
         { need = needAxisX, modifName = "turnTurretSpeed",      blkName = "speedYaw",
@@ -2218,8 +2085,7 @@ let function isViewModeTutorAvailableForUser() {
           continue
 
         local speed = 0
-        switch (this.unit.esUnitType)
-        {
+        switch (this.unit.esUnitType) {
           case ES_UNIT_TYPE_TANK:
             let mainTurretSpeed = unitModificators?[a.modifName] ?? 0
             let value = weaponInfoBlk?[a.blkName] ?? 0
@@ -2243,8 +2109,7 @@ let function isViewModeTutorAvailableForUser() {
             break
         }
 
-        if (speed)
-        {
+        if (speed) {
           let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", round(speed))
           desc.append(loc("crewSkillParameter/" + a.modifName) + loc("ui/colon") +
             speedTxt + loc("measureUnits/deg_per_sec"))
@@ -2252,13 +2117,11 @@ let function isViewModeTutorAvailableForUser() {
       }
     }
 
-    if (this.unit?.isTank())
-    {
+    if (this.unit?.isTank()) {
       let gunStabilizer = weaponInfoBlk?.gunStabilizer
       let isStabilizerX = needAxisX && gunStabilizer?.hasHorizontal
       let isStabilizerY = needAxisY && gunStabilizer?.hasVertical
-      if (isStabilizerX || isStabilizerY)
-      {
+      if (isStabilizerX || isStabilizerY) {
         let valueLoc = needSingleAxis ? "options/yes"
           : (isStabilizerX ? "shop/gunStabilizer/twoPlane" : "shop/gunStabilizer/vertical")
         desc.append(loc("shop/gunStabilizer") + " " + loc(valueLoc))
@@ -2268,8 +2131,7 @@ let function isViewModeTutorAvailableForUser() {
     return desc
   }
 
-  function getGunReloadTimeMax(weaponInfoBlk)
-  {
+  function getGunReloadTimeMax(weaponInfoBlk) {
     let weaponInfo = blkOptFromPath(weaponInfoBlk?.blk)
     let reloadTime = weaponInfoBlk?.reloadTime ?? weaponInfo?.reloadTime
     if (reloadTime)
@@ -2282,8 +2144,7 @@ let function isViewModeTutorAvailableForUser() {
     return null
   }
 
-  function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status)
-  {
+  function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status) {
     local shotFreqRPM = 0.0 // rounds/min
     local reloadTimeS = 0 // sec
     local firstStageShotFreq = 0.0
@@ -2292,8 +2153,7 @@ let function isViewModeTutorAvailableForUser() {
     let isCartridge = weaponBlk?.reloadTime != null
     local cyclicShotFreqS  = weaponBlk?.shotFreq ?? 0.0 // rounds/sec
 
-    switch (this.unit.esUnitType)
-    {
+    switch (this.unit.esUnitType) {
       case ES_UNIT_TYPE_AIRCRAFT:
       case ES_UNIT_TYPE_HELICOPTER:
         shotFreqRPM = cyclicShotFreqS * 60
@@ -2308,15 +2168,13 @@ let function isViewModeTutorAvailableForUser() {
           break
 
         local mainGunReloadTime = this.unit?.modificators?[this.difficulty.crewSkillName]?.reloadTime ?? 0.0
-        if (!mainGunReloadTime && this.crew)
-        {
+        if (!mainGunReloadTime && this.crew) {
           let crewSkillParams = getParametersByCrewId(this.crew.id, this.unit.name)
           let crewSkill = crewSkillParams?[this.difficulty.crewSkillName]?.loader
           mainGunReloadTime = crewSkill?.loading_time_mult?.tankLoderReloadingTime ?? 0.0
         }
 
-        if (weaponInfoBlk.blk == mainWeaponInfoBlk.blk)
-        {
+        if (weaponInfoBlk.blk == mainWeaponInfoBlk.blk) {
           reloadTimeS = mainGunReloadTime
           break
         }
@@ -2325,8 +2183,7 @@ let function isViewModeTutorAvailableForUser() {
         if (!thisGunReloadTimeMax)
           break
 
-        if (weaponInfoBlk?.autoLoader)
-        {
+        if (weaponInfoBlk?.autoLoader) {
           reloadTimeS = thisGunReloadTimeMax
           break
         }
@@ -2341,22 +2198,18 @@ let function isViewModeTutorAvailableForUser() {
       case ES_UNIT_TYPE_BOAT:
       case ES_UNIT_TYPE_SHIP:
         if (isCartridge)
-          if (this.crew)
-          {
+          if (this.crew) {
             let crewSkillParams = getParametersByCrewId(this.crew.id, this.unit.name)
             let crewSkill = crewSkillParams?[this.difficulty.crewSkillName]?.ship_artillery
-            foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ])
-            {
+            foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ]) {
               reloadTimeS = (crewSkill?[c]?[$"weapons/{weaponName}"]) ?? 0.0
               if (reloadTimeS)
                 break
             }
           }
-          else
-          {
+          else {
             let wpcostUnit = ::get_wpcost_blk()?[this.unit.name]
-            foreach (c in [ "shipMainCaliberReloadTime", "shipAuxCaliberReloadTime", "shipAntiAirCaliberReloadTime" ])
-            {
+            foreach (c in [ "shipMainCaliberReloadTime", "shipAuxCaliberReloadTime", "shipAntiAirCaliberReloadTime" ]) {
               reloadTimeS = wpcostUnit?[$"{c}_{weaponName}"] ?? 0.0
               if (reloadTimeS)
                 break
@@ -2369,10 +2222,9 @@ let function isViewModeTutorAvailableForUser() {
           @(inst) inst.trigger  == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
         shotFreqRPM = cyclicShotFreqS * 60
 
-        if (this.haveFirstStageShells(weaponInfoBlk?.trigger))
-        {
+        if (this.haveFirstStageShells(weaponInfoBlk?.trigger)) {
           firstStageShotFreq = shotFreqRPM
-          shotFreqRPM *= 1/this.getAmmoStowageReloadTimeMult(weaponInfoBlk?.trigger)
+          shotFreqRPM *= 1 / this.getAmmoStowageReloadTimeMult(weaponInfoBlk?.trigger)
         }
         break
     }
@@ -2383,15 +2235,13 @@ let function isViewModeTutorAvailableForUser() {
         round(firstStageShotFreq),
         loc("measureUnits/rounds_per_min")], " "))
 
-    if (shotFreqRPM)
-    {
+    if (shotFreqRPM) {
       shotFreqRPM = ::round(shotFreqRPM, shotFreqRPM > 600 ? -1
         : shotFreqRPM < 10 ? 1
         : 0)
       desc.append(" ".concat(loc("shop/shotFreq"), shotFreqRPM, loc("measureUnits/rounds_per_min")))
     }
-    if (reloadTimeS)
-    {
+    if (reloadTimeS) {
       reloadTimeS = (reloadTimeS % 1) ? format("%.1f", reloadTimeS) : format("%d", reloadTimeS)
       desc.append(loc("shop/reloadTime") + " " + reloadTimeS + " " + loc("measureUnits/seconds"))
     }
@@ -2403,9 +2253,9 @@ let function isViewModeTutorAvailableForUser() {
       return null
 
     let ammoCount = this.unitBlk.ammoStowages.blockCount()
-    for(local i = 0; i < ammoCount; i++) {
+    for (local i = 0; i < ammoCount; i++) {
       let ammo = this.unitBlk.ammoStowages.getBlock(i)
-      if((ammo % "weaponTrigger").findvalue(@(inst) inst == trigger))
+      if ((ammo % "weaponTrigger").findvalue(@(inst) inst == trigger))
         return (ammo % "shells").findvalue(@(inst) inst?[paramName])
     }
     return null
@@ -2417,11 +2267,9 @@ let function isViewModeTutorAvailableForUser() {
 
   // Gets info either by weaponTrigger (for guns and turrets)
   // or by ammoStowageId (for tank stowage or ship ammo storage)
-  function getAmmoStowageInfo(weaponTrigger, ammoStowageId = null, collectOnlyThisStowage = false)
-  {
+  function getAmmoStowageInfo(weaponTrigger, ammoStowageId = null, collectOnlyThisStowage = false) {
     let res = { firstStageCount = 0, isAutoLoad = false, isCharges = false }
-    for (local ammoNum = 1; ammoNum <= 20; ammoNum++) // tanks use 1, ships use 1 - ~10.
-    {
+    for (local ammoNum = 1; ammoNum <= 20; ammoNum++) { // tanks use 1, ships use 1 - ~10.
       let ammoId = $"ammo{ammoNum}"
       let stowage = this.unitBlk?.ammoStowages?[ammoId]
       if (!stowage)
@@ -2432,17 +2280,14 @@ let function isViewModeTutorAvailableForUser() {
         let unitName = this.unit?.name // warning disable: -declared-never-used
         ::script_net_assert_once("ammoStowages_contains_non-unique_ammo", "ammoStowages contains non-unique ammo")
       }
-      foreach (blockName in [ "shells", "charges" ])
-      {
-        foreach (block in (stowage % blockName))
-        {
+      foreach (blockName in [ "shells", "charges" ]) {
+        foreach (block in (stowage % blockName)) {
           if (ammoStowageId && !block?[ammoStowageId])
             continue
           res.isCharges = blockName == "charges"
           if (block?.autoLoad)
             res.isAutoLoad = true
-          if (block?.firstStage || block?.autoLoad)
-          {
+          if (block?.firstStage || block?.autoLoad) {
             if (ammoStowageId && collectOnlyThisStowage)
               res.firstStageCount += block?[ammoStowageId]?.count ?? 0
             else
@@ -2456,8 +2301,7 @@ let function isViewModeTutorAvailableForUser() {
     return res
   }
 
-  function getModernArmorParamsByDmPartName(partName)
-  {
+  function getModernArmorParamsByDmPartName(partName) {
     local res = {
       isComposite = ::g_string.startsWith(partName, "composite_armor")
       titleLoc = ""
@@ -2467,8 +2311,7 @@ let function isViewModeTutorAvailableForUser() {
     }
 
     let blk = this.getXrayViewerDataByDmPartName(partName)
-    if (blk)
-    {
+    if (blk) {
       res.titleLoc = blk?.titleLoc ?? ""
 
       let referenceProtectionBlocks = blk?.referenceProtectionTable ? (blk.referenceProtectionTable % "i")
@@ -2481,18 +2324,16 @@ let function isViewModeTutorAvailableForUser() {
       })
 
       let armorParams = { armorClass = "", armorThickness = 0.0 }
-      let armorLayersArray = (blk?.armorArrayText ?? ::DataBlock()) % "layer"
+      let armorLayersArray = (blk?.armorArrayText ?? DataBlock()) % "layer"
 
-      foreach (layer in armorLayersArray)
-      {
+      foreach (layer in armorLayersArray) {
         let info = this.getDamagePartParamsByDmPartName(layer?.dmPart, armorParams)
         if (layer?.xrayTextThickness != null)
           info.armorThickness = layer.xrayTextThickness
         res.layersArray.append(info)
       }
     }
-    else
-    {
+    else {
       let armorParams = { armorClass = "", kineticProtectionEquivalent = 0, cumulativeProtectionEquivalent = 0 }
       let info = this.getDamagePartParamsByDmPartName(partName, armorParams)
       res.referenceProtectionArray = [{
@@ -2506,15 +2347,13 @@ let function isViewModeTutorAvailableForUser() {
     return res
   }
 
-  function getDamagePartParamsByDmPartName(partName, paramsTbl)
-  {
+  function getDamagePartParamsByDmPartName(partName, paramsTbl) {
     local res = clone paramsTbl
     if (!this.unitBlk?.DamageParts)
       return res
     let dmPartsBlk = this.unitBlk.DamageParts
     res = ::u.tablesCombine(res, dmPartsBlk, @(a, b) b == null ? a : b, null, false)
-    for (local b = 0; b < dmPartsBlk.blockCount(); b++)
-    {
+    for (local b = 0; b < dmPartsBlk.blockCount(); b++) {
       let groupBlk = dmPartsBlk.getBlock(b)
       if (!groupBlk || !groupBlk?[partName])
         continue
@@ -2525,20 +2364,16 @@ let function isViewModeTutorAvailableForUser() {
     return res
   }
 
-  function extractIndexFromDmPartName(partName)
-  {
+  function extractIndexFromDmPartName(partName) {
     let strArr = partName.split("_")
     let l = strArr.len()
     return (l > 2 && strArr[l - 1] == "dm") ? ::to_integer_safe(strArr[l - 2], -1, false) : -1
   }
 
-  function checkPartLocId(partId, partName, weaponInfoBlk, params)
-  {
-    switch (this.unit.esUnitType)
-    {
+  function checkPartLocId(partId, partName, weaponInfoBlk, params) {
+    switch (this.unit.esUnitType) {
       case ES_UNIT_TYPE_TANK:
-        if (partId == "gun_barrel" &&  weaponInfoBlk?.blk)
-        {
+        if (partId == "gun_barrel" &&  weaponInfoBlk?.blk) {
           let status = this.getWeaponStatus(partName, weaponInfoBlk)
           params.partLocId <- status.isPrimary ? "weapon/primary"
             : status.isMachinegun ? "weapon/machinegun"
@@ -2558,84 +2393,73 @@ let function isViewModeTutorAvailableForUser() {
     }
   }
 
-  function trimBetween(source, from, to, strict = true)
-  {
+  function trimBetween(source, from, to, strict = true) {
     local beginIndex = source.indexof(from) ?? -1
     let endIndex = source.indexof(to) ?? -1
-    if(strict && (beginIndex == -1 || endIndex == -1 || beginIndex >= endIndex))
+    if (strict && (beginIndex == -1 || endIndex == -1 || beginIndex >= endIndex))
       return null
-    if(beginIndex == -1)
+    if (beginIndex == -1)
       beginIndex = 0
     beginIndex += from.len()
-    if(endIndex == -1)
+    if (endIndex == -1)
       beginIndex = source.len()
     return source.slice(beginIndex, endIndex)
   }
 
-  function getMassInfo(data)
-  {
+  function getMassInfo(data) {
     let massPatterns = [
       { variants = ["mass", "Mass"], langKey = "mass/kg" },
       { variants = ["mass_lbs", "Mass_lbs"], langKey = "mass/lbs" }
     ]
-    foreach(pattern in massPatterns)
-      foreach(nameVariant in pattern.variants)
-        if(nameVariant in data)
+    foreach (pattern in massPatterns)
+      foreach (nameVariant in pattern.variants)
+        if (nameVariant in data)
           return format(loc("shop/tank_mass") + " " + loc(pattern.langKey), data[nameVariant])
     return "";
   }
 
-  function showExternalPartsArmor(isShow)
-  {
+  function showExternalPartsArmor(isShow) {
     this.isVisibleExternalPartsArmor = isShow
     ::hangar_show_external_dm_parts_change(isShow)
   }
 
-  function showExternalPartsXray(isShow)
-  {
+  function showExternalPartsXray(isShow) {
     this.isVisibleExternalPartsXray = isShow
     ::hangar_show_hidden_xray_parts_change(isShow)
   }
 
-  function onEventActiveHandlersChanged(_p)
-  {
+  function onEventActiveHandlersChanged(_p) {
     this.update()
   }
 
-  function onEventHangarModelLoading(_p)
-  {
+  function onEventHangarModelLoading(_p) {
     this.reinit()
   }
 
-  function onEventHangarModelLoaded(_p)
-  {
+  function onEventHangarModelLoaded(_p) {
     this.reinit()
   }
 
-  function onEventUnitModsRecount(p)
-  {
+  function onEventUnitModsRecount(p) {
     if (p?.unit != this.unit)
       return
     this.clearCachedUnitBlkNodes()
     this.resetXrayCache()
   }
 
-  function onEventUnitWeaponChanged(p)
-  {
+  function onEventUnitWeaponChanged(p) {
     if (!this.unit || p?.unitName != this.unit.name)
       return
     this.clearCachedUnitBlkNodes()
     this.resetXrayCache()
   }
 
-  function onEventCurrentGameModeIdChanged(_p)
-  {
+  function onEventCurrentGameModeIdChanged(_p) {
     this.difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
     this.resetXrayCache()
   }
 
-  function onEventGameLocalizationChanged(_p)
-  {
+  function onEventGameLocalizationChanged(_p) {
     this.resetXrayCache()
   }
 }
@@ -2643,7 +2467,6 @@ let function isViewModeTutorAvailableForUser() {
 ::g_script_reloader.registerPersistentDataFromRoot("dmViewer")
 ::subscribe_handler(::dmViewer, ::g_listener_priority.DEFAULT_HANDLER)
 
-::on_hangar_damage_part_pick <- function on_hangar_damage_part_pick(params) // Called from API
-{
+::on_hangar_damage_part_pick <- function on_hangar_damage_part_pick(params) { // Called from API
   ::dmViewer.updateHint(params)
 }

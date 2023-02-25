@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -13,26 +14,23 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
 }
 
-::g_hud_reward_message.getMessageByCode <- function getMessageByCode(code)
-{
+::g_hud_reward_message.getMessageByCode <- function getMessageByCode(code) {
   return enums.getCachedType("code", code, this.cache.byCode,
     ::g_hud_reward_message, ::g_hud_reward_message.UNKNOWN)
 }
 
 
-::g_hud_reward_message._getViewClass <- function _getViewClass(rewardValue)
-{
+::g_hud_reward_message._getViewClass <- function _getViewClass(rewardValue) {
   return rewardValue >= 0 ? this.viewClass : "penalty"
 }
 
-::g_hud_reward_message._getText <- function _getText(rewardValue, counter, expClass)
-{
+::g_hud_reward_message._getText <- function _getText(rewardValue, counter, expClass) {
   local result = loc(this.locFn(expClass))
   if (rewardValue < 0)
     result += loc("warpoints/friendly_fire_penalty")
 
   if (counter > 1)
-    result = loc("warpoints/counter", {counter = counter}) + result
+    result = loc("warpoints/counter", { counter = counter }) + result
 
   return result
 }

@@ -2,16 +2,16 @@ from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
 let string = require("string")
-let {floor} = require("math")
+let { floor } = require("math")
 let activeOrder = require("activeOrder.nut")
 let shipStateModule = require("shipStateModule.nut")
 let hudLogs = require("hudLogs.nut")
-let {depthLevel, waterDist, wishDist, buoyancyEx} = require("shipState.nut")
-let {isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
+let { depthLevel, waterDist, wishDist, buoyancyEx } = require("shipState.nut")
+let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
-  IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible} = require("shellState.nut")
+  IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible } = require("shellState.nut")
 let voiceChat = require("chat/voiceChat.nut")
-let {safeAreaSizeHud} = require("style/screenState.nut")
+let { safeAreaSizeHud } = require("style/screenState.nut")
 
 let styleLine = {
   color = Color(255, 255, 255, 255)
@@ -28,7 +28,7 @@ let styleShipHudText = {
   fontFx = FFT_GLOW
 }
 
-let function getDepthColor(depth){
+let function getDepthColor(depth) {
   let green = depth < 2 ? 255 : 0
   let blue =  depth < 1 ? 255 : 0
   return Color(255, green, blue, 255)
@@ -38,7 +38,7 @@ let function getDepthColor(depth){
 let shVertSpeedScaleWidth = sh(1)
 let shVertSpeedHeight = sh(20)
 
-let function depthLevelCmp(){
+let function depthLevelCmp() {
   return styleShipHudText.__merge({
     color = getDepthColor(depthLevel.value)
     watch = [depthLevel, waterDist]
@@ -46,7 +46,7 @@ let function depthLevelCmp(){
     text = floor(waterDist.value).tostring()
   })
 }
-let function wishDistCmp(){
+let function wishDistCmp() {
   return styleShipHudText.__merge({
     watch = [depthLevel, wishDist]
     color = getDepthColor(depthLevel.value)
@@ -55,10 +55,10 @@ let function wishDistCmp(){
   })
 }
 
-let function buoyancyExCmp(){
+let function buoyancyExCmp() {
   let height = sh(1.)
   return styleLine.__merge({
-    pos = [-shVertSpeedScaleWidth, -height*0.5]
+    pos = [-shVertSpeedScaleWidth, -height * 0.5]
     transform = {
       translate = [0, shVertSpeedHeight * 0.01 * clamp(50 - buoyancyEx.value * 50.0, 0, 100)]
     }
@@ -71,7 +71,7 @@ let function buoyancyExCmp(){
     ]
   })
 }
-let function depthLevelLineCmp(){
+let function depthLevelLineCmp() {
   return styleLine.__merge({
     watch = depthLevel
     size = [shVertSpeedScaleWidth, shVertSpeedHeight]
@@ -93,7 +93,7 @@ let function depthLevelLineCmp(){
 }
 let childrenShVerSpeed = [
   depthLevelCmp
-  { size = [shVertSpeedScaleWidth*3, shVertSpeedScaleWidth] }
+  { size = [shVertSpeedScaleWidth * 3, shVertSpeedScaleWidth] }
   { children = [depthLevelLineCmp, buoyancyExCmp] }
   wishDistCmp
 ]
@@ -119,7 +119,7 @@ let shellAimGimbal = function(line_style, color_func) {
     ]
   })
 
-  return @(){
+  return @() {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = SIZE_TO_CONTENT
@@ -142,7 +142,7 @@ let shellAimTracker = function(line_style, color_func) {
     ]
   })
 
-  return @(){
+  return @() {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = SIZE_TO_CONTENT
@@ -153,7 +153,7 @@ let shellAimTracker = function(line_style, color_func) {
     children = IsTrackerVisible.value ? [circle] : null
   }
 }
-let function mkShellComp(watches, textCtor){
+let function mkShellComp(watches, textCtor) {
   return @() styleShipHudText.__merge({
     watch = watches
     text = textCtor()
@@ -163,7 +163,7 @@ let function mkShellComp(watches, textCtor){
 let shellAltitude = {
   flow = FLOW_HORIZONTAL
   children = [
-    styleShipHudText.__merge({text = $"{loc("hud/depth")} "})
+    styleShipHudText.__merge({ text = $"{loc("hud/depth")} " })
     mkShellComp(altitude,
         @() cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(max(0, -altitude.value), false))
   ]
@@ -213,7 +213,7 @@ let function ShipShellAimState() {
   }
 }
 
-let shipHud = @(){
+let shipHud = @() {
   watch = safeAreaSizeHud
   size = [SIZE_TO_CONTENT, flex()]
   margin = safeAreaSizeHud.value.borders

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -23,8 +24,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 }
 
-::g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj, queue, event)
-{
+::g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj, queue, event) {
   let needRankInfo = ::events.needRankInfoInQueue(event)
   let headerColumns = []
   let view = {
@@ -44,7 +44,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 
   //fillheader
-  foreach(_i, countryName in shopCountriesList)
+  foreach (_i, countryName in shopCountriesList)
     headerColumns.append({
       image = ::get_country_icon(countryName, false, !::events.isCountryAvailable(event, countryName))
     })
@@ -54,22 +54,20 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   let myRank = ::queues.getMyRankInQueue(queue)
   let countriesSets = ::events.getAllCountriesSets(event)
   local canMeetCountries = {}
-  foreach(cSet in countriesSets)
+  foreach (cSet in countriesSets)
     if (myCountry in cSet.allCountries)
       canMeetCountries = ::u.tablesCombine(canMeetCountries, cSet.allCountries, function(_a, _b) { return true })
 
-  if (needRankInfo)
-  {
+  if (needRankInfo) {
     headerColumns.insert(0, { text = "#sm_era" })
-    for(local rank = 1; rank <= ::max_country_rank; ++rank)
-    {
+    for (local rank = 1; rank <= ::max_country_rank; ++rank) {
       let row = {
         rowParam = "queueTableRow"
         columns = [{ text = ::get_roman_numeral(rank) }]
         isEven = rank % 2 == 0
       }
 
-      foreach(_i, country in shopCountriesList)
+      foreach (_i, country in shopCountriesList)
         row.columns.append({
           id = country + "_" + rank
           text = ::events.isCountryAvailable(event, country) ? "0" : "-"
@@ -86,25 +84,21 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   nestObj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
 }
 
-::g_qi_view_utils.updateViewByCountries <- function updateViewByCountries(nestObj, queue, curCluster)
-{
+::g_qi_view_utils.updateViewByCountries <- function updateViewByCountries(nestObj, queue, curCluster) {
   let queueStats = queue && queue.queueStats
   if (!queueStats)
     return
 
   let event = ::queues.getQueueEvent(queue)
-  if (::events.needRankInfoInQueue(event))
-  {
+  if (::events.needRankInfoInQueue(event)) {
     let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
     let countryOption = ::get_option(::USEROPT_COUNTRY)
-    foreach(countryName in countryOption.values)
-    {
+    foreach (countryName in countryOption.values) {
       if (!::events.isCountryAvailable(event, countryName))
         continue
 
       let ranksQueueTable = countriesQueueTable?[countryName]
-      for(local rank = 1; rank <= ::max_country_rank; ++rank)
-      {
+      for (local rank = 1; rank <= ::max_country_rank; ++rank) {
         let tdTextObj = nestObj.findObject(countryName + "_" + rank)
         if (!checkObj(tdTextObj))
           continue
@@ -113,8 +107,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       }
     }
   }
-  else
-  {
+  else {
     let totalTextObj = nestObj.findObject("total_in_queue")
     if (checkObj(totalTextObj))
       totalTextObj.setValue(loc("multiplayer/playersInQueue") + loc("ui/colon")
@@ -123,8 +116,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 }
 
 //update text and icon of queue each second until all queues finish.
-::g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, textObj, iconObj, txt=null)
-{
+::g_qi_view_utils.updateShortQueueInfo <- function updateShortQueueInfo(timerObj, textObj, iconObj, txt = null) {
   if (!checkObj(timerObj))
     return
   SecondsUpdater(timerObj, (@(textObj, iconObj) function(_obj, _p) {

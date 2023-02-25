@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { setTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
+let { frnd } = require("dagor.random")
 let { register_command } = require("console")
 
 local isChatOn = false
@@ -21,7 +23,7 @@ let function immitateVoiceChat() {
   let dt = curStepTime - lastStepTime
   lastStepTime = curStepTime
 
-  if (::math.frnd() * 1000 > dt * avgEventPerSec)
+  if (frnd() * 1000 > dt * avgEventPerSec)
     return
 
   let members = ::g_squad_manager.isInSquad() ? ::g_squad_manager.getOnlineMembers()

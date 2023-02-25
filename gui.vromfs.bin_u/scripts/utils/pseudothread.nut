@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -10,22 +11,18 @@ let PT_STEP_STATUS = {
   SUSPEND = 2
 }
 
-let function startPseudoThread(actionsList, onCrash = null, step = 0)
-{
+let function startPseudoThread(actionsList, onCrash = null, step = 0) {
   let self = callee()
   ::handlersManager.doDelayed(function() {
     local curStep = step
-    while(curStep in actionsList)
-    {
+    while (curStep in actionsList) {
       local stepStatus = PT_STEP_STATUS.NEXT_STEP
       try {
         stepStatus = actionsList[curStep]()
       }
-      catch(e)
-      {
+      catch(e) {
         log("Crash in pseudo thread step = " + curStep + ", status = " + stepStatus)
-        if (onCrash)
-        {
+        if (onCrash) {
           onCrash()
           return
         }

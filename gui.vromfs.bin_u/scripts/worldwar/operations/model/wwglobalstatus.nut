@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
+let DataBlock  = require("DataBlock")
 
 local refreshMinTimeSec = 180
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
@@ -54,14 +56,14 @@ let function updateCurData(newData) {
 let function onGlobalStatusReceived(newData) {
   lastUpdatetTime(get_time_msec())
   local changedListsMask = 0
-  foreach(gsType in ::g_ww_global_status_type.types)
+  foreach (gsType in ::g_ww_global_status_type.types)
     if (!::u.isEqual(gsType.getData(curData.value), gsType.getData(newData)))
       changedListsMask = changedListsMask | gsType.typeMask
 
   if (!changedListsMask)
     return
 
-  foreach(gsType in ::g_ww_global_status_type.types)
+  foreach (gsType in ::g_ww_global_status_type.types)
     if (gsType.invalidateByOtherStatusType & changedListsMask)
       changedListsMask = changedListsMask | gsType.typeMask
 
@@ -72,7 +74,7 @@ let function onGlobalStatusReceived(newData) {
 
 //special actions with global status in successCb
 let function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOptions = null, onSuccessCb = null) {
-  if (isDeveloperMode.value) {// Force full global status request in developer mode
+  if (isDeveloperMode.value) { // Force full global status request in developer mode
     actionName = "cln_ww_global_status"
     requestBlk = null
   }
@@ -85,15 +87,15 @@ let function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOp
   }, this)
 
   if (requestBlk == null)
-    requestBlk = ::DataBlock()
+    requestBlk = DataBlock()
 
   ::g_tasker.charRequestJson(actionName, requestBlk, taskOptions, cb)
 }
 
 let function onEventMyClanIdChanged(_p) {
-  foreach(op in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList())
+  foreach (op in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList())
     op.resetCache()
-  foreach(q in ::g_ww_global_status_type.QUEUE.getList())
+  foreach (q in ::g_ww_global_status_type.QUEUE.getList())
     q.resetCache()
   pushStatusChangedEvent(WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
                          | WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
@@ -110,10 +112,10 @@ let function refreshGlobalStatusData(refreshDelay = null) {
   if (!canRefreshData(refreshDelay))
     return
 
-  if (isDeveloperMode.value)// Full global status includes all data from short and queue statuses
+  if (isDeveloperMode.value) // Full global status includes all data from short and queue statuses
     return actionWithGlobalStatusRequest("cln_ww_global_status")
 
-  let requestBlk = ::DataBlock()
+  let requestBlk = DataBlock()
   if (::is_in_clan())
     requestBlk.clanId = ::clan_get_my_clan_id()
   if (::g_world_war.lastPlayedOperationId != null)

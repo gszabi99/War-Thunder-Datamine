@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -7,8 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::showClanRequests <- function showClanRequests(candidatesData, clanId, owner)
-{
+::showClanRequests <- function showClanRequests(candidatesData, clanId, owner) {
   ::gui_start_modal_wnd(::gui_handlers.clanRequestsModal,
     {
       candidatesData = candidatesData,
@@ -18,8 +18,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::g_clans.markClanCandidatesAsViewed()
 }
 
-::gui_handlers.clanRequestsModal <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.clanRequestsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanRequests.blk";
   owner = null;
@@ -33,8 +32,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   rowsPerPage = 10
   clanId = "-1"
 
-  function initScreen()
-  {
+  function initScreen() {
     this.myRights = ::g_clans.getMyClanRights()
     this.memListModified = false
     let isMyClan = !::my_clan_info ? false : (::my_clan_info.id == this.clanId ? true : false)
@@ -42,20 +40,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.fillRequestList()
   }
 
-  function fillRequestList()
-  {
+  function fillRequestList() {
     this.rowTexts = [];
     this.candidatesList = [];
 
-    foreach(candidate in this.candidatesData)
-    {
+    foreach (candidate in this.candidatesData) {
       let rowTemp = {};
-      foreach(item in ::clan_candidate_list)
-      {
+      foreach (item in ::clan_candidate_list) {
         let value = item.id in candidate ? candidate[item.id] : 0
-        rowTemp[item.id] <- {value = value, text = item.type.getShortTextByValue(value)}
+        rowTemp[item.id] <- { value = value, text = item.type.getShortTextByValue(value) }
       }
-      this.candidatesList.append({nick = candidate.nick, uid = candidate.uid });
+      this.candidatesList.append({ nick = candidate.nick, uid = candidate.uid });
       this.rowTexts.append(rowTemp);
     }
     //dlog("GP: candidates texts");
@@ -64,8 +59,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateRequestList()
   }
 
-  function updateRequestList()
-  {
+  function updateRequestList() {
     if (!checkObj(this.scene))
       return;
 
@@ -76,13 +70,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local data = "";
 
     let headerRow = [];
-    foreach(item in ::clan_candidate_list)
-    {
+    foreach (item in ::clan_candidate_list) {
       let name = "#clan/" + (item.id == "date" ? "requestDate" : item.id);
       headerRow.append({
         id = item.id,
         text = name,
-        tdalign="center",
+        tdalign = "center",
       });
     }
     data = ::buildTableRow("row_header", headerRow, null,
@@ -90,29 +83,26 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let startIdx = this.curPage * this.rowsPerPage
     let lastIdx = min((this.curPage + 1) * this.rowsPerPage, this.rowTexts.len())
-    for(local i=startIdx; i < lastIdx; i++)
-    {
-      let rowName = "row_"+i;
+    for (local i = startIdx; i < lastIdx; i++) {
+      let rowName = "row_" + i;
       let rowData = [];
 
-      foreach(item in ::clan_candidate_list)
-      {
+      foreach (item in ::clan_candidate_list) {
         rowData.append({
           id = item.id,
           text = "",
         });
       }
-      data += ::buildTableRow(rowName, rowData, (i-startIdx)%2==0, "");
+      data += ::buildTableRow(rowName, rowData, (i - startIdx) % 2 == 0, "");
     }
 
     this.guiScene.setUpdatesEnabled(false, false);
     this.guiScene.replaceContentFromText(tblObj, data, data.len(), this);
 
-    for(local i=startIdx; i < lastIdx; i++)
-    {
+    for (local i = startIdx; i < lastIdx; i++) {
       let row = this.rowTexts[i]
-      foreach(item, itemValue in row)
-        tblObj.findObject("row_"+i).findObject("txt_"+item).setValue(itemValue.text);
+      foreach (item, itemValue in row)
+        tblObj.findObject("row_" + i).findObject("txt_" + item).setValue(itemValue.text);
     }
 
     tblObj.setValue(1) //after header
@@ -120,22 +110,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::move_mouse_on_child_by_value(tblObj)
     this.onSelect()
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.rowTexts.len()-1) / this.rowsPerPage).tointeger())
+    ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.rowTexts.len() - 1) / this.rowsPerPage).tointeger())
   }
 
-  function goToPage(obj)
-  {
+  function goToPage(obj) {
     this.curPage = obj.to_page.tointeger()
     this.updateRequestList()
   }
 
-  function onSelect()
-  {
+  function onSelect() {
     this.curCandidate = null;
-    if (this.candidatesList && this.candidatesList.len()>0)
-    {
+    if (this.candidatesList && this.candidatesList.len() > 0) {
       let objTbl = this.scene.findObject("candidatesList");
-      let index = objTbl.getValue() + this.curPage*this.rowsPerPage - 1; //header
+      let index = objTbl.getValue() + this.curPage * this.rowsPerPage - 1; //header
       if (index in this.candidatesList)
         this.curCandidate = this.candidatesList[index];
     }
@@ -144,19 +131,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.showSceneBtn("btn_user_options", this.curCandidate != null && ::show_console_buttons)
   }
 
-  function onUserCard()
-  {
+  function onUserCard() {
     if (this.curCandidate)
       ::gui_modal_userCard({ uid = this.curCandidate.uid })
   }
 
-  function onUserRClick()
-  {
+  function onUserRClick() {
     this.openUserPopupMenu()
   }
 
-  function onUserAction()
-  {
+  function onUserAction() {
     let table = this.scene.findObject("candidatesList")
     if (!checkObj(table))
       return
@@ -169,8 +153,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.openUserPopupMenu(position)
   }
 
-  function openUserPopupMenu(position = null)
-  {
+  function openUserPopupMenu(position = null) {
     if (!this.curCandidate)
       return
 
@@ -178,29 +161,24 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::gui_right_click_menu(menu, this, position)
   }
 
-  function onRequestApprove()
-  {
+  function onRequestApprove() {
     ::g_clans.approvePlayerRequest(this.curCandidate.uid, this.clanId)
   }
 
-  function onRequestReject()
-  {
+  function onRequestReject() {
     ::g_clans.rejectPlayerRequest(this.curCandidate.uid, this.clanId)
   }
 
-  function hideCandidateByName(name)
-  {
+  function hideCandidateByName(name) {
     if (!name)
       return
 
     this.memListModified = true
-    foreach(idx, candidate in this.rowTexts)
-      if (candidate.nick.value == name)
-      {
+    foreach (idx, candidate in this.rowTexts)
+      if (candidate.nick.value == name) {
         this.rowTexts.remove(idx)
-        foreach(cIdx, player in this.candidatesList)
-          if (player.nick == name)
-          {
+        foreach (cIdx, player in this.candidatesList)
+          if (player.nick == name) {
             this.candidatesList.remove(cIdx)
             break
           }
@@ -213,23 +191,20 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.goBack()
   }
 
-  function afterModalDestroy()
-  {
-    if(this.memListModified)
-    {
-      if(::clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
+  function afterModalDestroy() {
+    if (this.memListModified) {
+      if (::clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
         this.owner.reinitClanWindow()
       //else
       //  ::requestMyClanData(true)
     }
   }
 
-  function onDeleteFromBlacklist(){}
+  function onDeleteFromBlacklist() {}
 
-  function onEventClanCandidatesListChanged(p)
-  {
+  function onEventClanCandidatesListChanged(p) {
     let uid = p?.userId
-    let candidate = ::u.search(this.candidatesList, @(candidate) candidate.uid == uid )
+    let candidate = ::u.search(this.candidatesList, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
 }

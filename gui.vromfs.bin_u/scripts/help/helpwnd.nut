@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,23 +16,21 @@ let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
 let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { EII_BULLET } = require_native("hudActionBarConst")
+let { EII_BULLET } = require("hudActionBarConst")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
-::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet)
-{
+::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet) {
   ::gui_start_modal_wnd(::gui_handlers.helpWndModalHandler, {
     isStartedFromMenu  = isStartedFromMenu
     contentSet = contentSet
   })
 }
 
-::gui_start_flight_menu_help <- function gui_start_flight_menu_help()
-{
-  if (!hasFeature("ControlsHelp"))
-  {
+::gui_start_flight_menu_help <- function gui_start_flight_menu_help() {
+  if (!hasFeature("ControlsHelp")) {
     ::get_gui_scene().performDelayed(getroottable(), function() {
       ::close_ingame_gui()
       if (::is_game_paused())
@@ -41,12 +40,11 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
   }
   let needFlightMenu = !::get_is_in_flight_menu() && !::is_flight_menu_disabled();
   if (needFlightMenu)
-    ::get_cur_base_gui_handler().goForward(function(){::gui_start_flight_menu()})
+    ::get_cur_base_gui_handler().goForward(function() { ::gui_start_flight_menu() })
   ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
 }
 
-::gui_handlers.helpWndModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.helpWndModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/help/helpWnd.blk"
 
@@ -66,12 +64,11 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
   modifierSymbols = null
 
   kbdKeysRemapByLang = {
-    German = { Y = "Z", Z = "Y"}
+    German = { Y = "Z", Z = "Y" }
     French = { Q = "A", A = "Q", W = "Z", Z = "W" }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.preset = this.preset || ::g_controls_manager.getCurPreset()
     this.visibleTabs = helpTabs.getTabs(this.contentSet)
     this.fillTabs()
@@ -84,8 +81,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     ::g_hud_event_manager.onHudEvent("helpOpened")
   }
 
-  function fillTabs()
-  {
+  function fillTabs() {
     let tabsObj = this.scene.findObject("tabs_list")
     let countVisibleTabs = this.visibleTabs.len()
 
@@ -93,12 +89,10 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
     this.curTabIdx = 0
     let view = { tabs = [] }
-    foreach (idx, group in this.visibleTabs)
-    {
+    foreach (idx, group in this.visibleTabs) {
       local isSelected = false
       foreach (sIdx, subTab in group.list)
-        if (subTab == preselectedTab)
-        {
+        if (subTab == preselectedTab) {
           isSelected = true
           this.curSubTabIdx = sIdx
           this.curTabIdx = idx
@@ -117,8 +111,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.fillSubTabs()
   }
 
-  function fillSubTabs()
-  {
+  function fillSubTabs() {
     let subTabsList = this.visibleTabs[this.curTabIdx].list
 
     let isSubTabsVisible = subTabsList.len() > 1
@@ -127,10 +120,8 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       return
 
     let view = { items = [] }
-    if (isSubTabsVisible)
-    {
-      foreach (idx, tType in subTabsList)
-      {
+    if (isSubTabsVisible) {
+      foreach (idx, tType in subTabsList) {
         view.items.append({
           text = tType.subTabName
           selected = idx == this.curSubTabIdx
@@ -144,14 +135,12 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.fillSubTabContent()
   }
 
-  function getCurrentSubTab()
-  {
+  function getCurrentSubTab() {
     let list = this.visibleTabs[this.curTabIdx].list
     return list?[this.curSubTabIdx] ?? list?[0]
   }
 
-  function onHelpSheetChange(obj)
-  {
+  function onHelpSheetChange(obj) {
     let selTabIdx = obj.getValue()
     if (this.curTabIdx == selTabIdx)
       return
@@ -160,8 +149,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.fillSubTabs()
   }
 
-  function onHelpSubSheetChange(obj)
-  {
+  function onHelpSubSheetChange(obj) {
     let selTabIdx = obj.getValue()
     if (obj.childrenCount() > 1 && this.curSubTabIdx == selTabIdx)
       return
@@ -170,8 +158,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.fillSubTabContent()
   }
 
-  function fillSubTabContent()
-  {
+  function fillSubTabContent() {
     let tab = this.getCurrentSubTab()
     if (!tab)
       return
@@ -198,17 +185,14 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     })
   }
 
-  function showTabSpecificControls(tab)
-  {
+  function showTabSpecificControls(tab) {
     let countryRelatedObjs = getTblValue("countryRelatedObjs", tab, null)
-    if (countryRelatedObjs != null)
-    {
+    if (countryRelatedObjs != null) {
       local selectedCountry = profileCountrySq.value.slice(8)
       selectedCountry = (selectedCountry in countryRelatedObjs) ? selectedCountry : tab.defaultValues.country
       let selectedCountryConfig = countryRelatedObjs?[selectedCountry] ?? []
-      foreach(_key, countryConfig in countryRelatedObjs)
-        foreach (_idx, value in countryConfig)
-        {
+      foreach (_key, countryConfig in countryRelatedObjs)
+        foreach (_idx, value in countryConfig) {
           let obj = this.scene.findObject(value)
           if (checkObj(obj))
             obj.show(isInArray(value, selectedCountryConfig))
@@ -216,8 +200,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }
   }
 
-  function fillTabLinkLines(tab)
-  {
+  function fillTabLinkLines(tab) {
     let linkLines = getTblValue("linkLines", tab, null)
     this.scene.findObject("link_lines_block").show(linkLines != null)
     if (linkLines == null)
@@ -238,15 +221,14 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.guiScene.replaceContentFromText(this.scene.findObject("link_lines_block"), linesData, linesData.len(), this)
   }
 
-  function fillHelpPage()
-  {
+  function fillHelpPage() {
     let tab = this.getCurrentSubTab()
     if (!tab)
       return
 
     let basePresets = this.preset.getBasePresetNames()
     let haveIconsForControls = ::is_xinput_device() ||
-      (search(basePresets, @(val) val == "keyboard"|| val == "keyboard_shooter") != null)
+      (search(basePresets, @(val) val == "keyboard" || val == "keyboard_shooter") != null)
     this.showDefaultControls(haveIconsForControls)
     if ("moveControlsFrames" in tab)
       tab.moveControlsFrames(haveIconsForControls, this.scene)
@@ -265,8 +247,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
   //---------------------------- HELPER FUNCTIONS ----------------------------//
 
-  function getModifierSymbol(id)
-  {
+  function getModifierSymbol(id) {
     if (id in this.modifierSymbols)
       return this.modifierSymbols[id]
 
@@ -281,8 +262,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     return this.modifierSymbols[id]
   }
 
-  function fillAllTexts()
-  {
+  function fillAllTexts() {
     this.remapKeyboardKeysByLang()
 
     let scTextFull = []
@@ -291,31 +271,25 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
     let shortcutsList = ::g_controls_utils.getControlsList({
       unitType = this.pageUnitType,
-      unitTags = this.pageUnitTag? [this.pageUnitTag] : []
+      unitTags = this.pageUnitTag ? [this.pageUnitTag] : []
     }).filter(@(item) item.needShowInHelp)
 
-    for(local i=0; i<shortcutsList.len(); i++)
-    {
+    for (local i = 0; i < shortcutsList.len(); i++) {
       let item = shortcutsList[i]
-      let name = (type(item)=="table")? item.id : item
-      let isAxis = type(item)=="table" && item.type == CONTROL_TYPE.AXIS
-      let isHeader = type(item)=="table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
+      let name = (type(item) == "table") ? item.id : item
+      let isAxis = type(item) == "table" && item.type == CONTROL_TYPE.AXIS
+      let isHeader = type(item) == "table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
       let shortcutNames = []
       let axisModifyerButtons = []
       local scText = ""
 
-      if (isHeader)
-      {
+      if (isHeader) {
         scTextFull.append([colorize("activeTextColor", loc("hotkeys/" + name))])
       }
-      else
-      {
-        if (isAxis)
-        {
-          foreach (axisSc in shortcutsAxisListModule.types)
-          {
-            if (axisSc.type == CONTROL_TYPE.AXIS_SHORTCUT)
-            {
+      else {
+        if (isAxis) {
+          foreach (axisSc in shortcutsAxisListModule.types) {
+            if (axisSc.type == CONTROL_TYPE.AXIS_SHORTCUT) {
               axisModifyerButtons.append(axisSc.id)
               if (axisSc.id == "")
                 shortcutNames.append(name)
@@ -331,35 +305,34 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
         let btnList = {} //btnName = isMain
 
         //--- F1 help window ---
-        for(local sc=0; sc<shortcuts.len(); sc++)
-        {
+        for (local sc = 0; sc < shortcuts.len(); sc++) {
           let text = this.getShortcutText(shortcuts[sc], btnList, true)
-          if (text!="" && (!isAxis || axisModifyerButtons[sc] != "")) //do not show axis text (axis buttons only)
-            scText += ((scText!="")? ";  ":"") +
-            (isAxis? this.getModifierSymbol(axisModifyerButtons[sc]) : "") +
+          if (text != "" && (!isAxis || axisModifyerButtons[sc] != "")) //do not show axis text (axis buttons only)
+            scText += ((scText != "") ? ";  " : "") +
+            (isAxis ? this.getModifierSymbol(axisModifyerButtons[sc]) : "") +
             text;
         }
 
-        scText = loc((isAxis? "controls/":"hotkeys/") + name) + loc("ui/colon") + scText
+        scText = loc((isAxis ? "controls/" : "hotkeys/") + name) + loc("ui/colon") + scText
 
-        foreach(btnName, isMain in btnList)
-          if (btnName in tipTexts)
-          {
+        foreach (btnName, isMain in btnList)
+          if (btnName in tipTexts) {
             tipTexts[btnName].isMain = tipTexts[btnName].isMain || isMain
             if (isMain)
               tipTexts[btnName].text = scText + "\n" + tipTexts[btnName].text
             else
               tipTexts[btnName].text += "\n" + scText
-          } else
+          }
+          else
             tipTexts[btnName] <- { text = scText, isMain = isMain }
 
-        scTextFull[scTextFull.len()-1].append(scText)
+        scTextFull[scTextFull.len() - 1].append(scText)
       }
     }
 
     //set texts and tooltips
-    let view = {texts = [] }
-    foreach(_idx, textsArr in scTextFull)
+    let view = { texts = [] }
+    foreach (_idx, textsArr in scTextFull)
       view.texts.append({
         width = 100.0 / (scTextFull.len() || 1) + "%pw"
         viewclass = "parInvert"
@@ -371,26 +344,22 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
 
     let kbdObj = this.scene.findObject("keyboard_div")
-    foreach(btnName, btn in tipTexts)
-    {
+    foreach (btnName, btn in tipTexts) {
       let objId = ::stringReplace(btnName, " ", "_")
       let tipObj = kbdObj.findObject(objId)
-      if (tipObj)
-      {
+      if (tipObj) {
         tipObj.tooltip = btn.text
         if (btn.isMain)
           tipObj.mainKey = "yes"
       }
-      else
-      {
+      else {
         log("tipObj = " + objId + " not found in the scene!")
         debugTableData(btn)
       }
     }
   }
 
-  function remapKeyboardKeysByLang()
-  {
+  function remapKeyboardKeysByLang() {
     let map = getTblValue(::g_language.getLanguageName(), this.kbdKeysRemapByLang)
     if (!map)
       return
@@ -399,68 +368,60 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       return
 
     let replaceData = {}
-    foreach(key, val in map)
-    {
+    foreach (key, val in map) {
       let textObj = kbdObj.findObject(val)
       replaceData[val] <- {
         obj = kbdObj.findObject(key)
         text = (checkObj(textObj) && textObj.text) || val
       }
     }
-    foreach(id, data in replaceData)
-      if (data.obj.isValid())
-      {
+    foreach (id, data in replaceData)
+      if (data.obj.isValid()) {
         data.obj.id = id
         data.obj.setValue(data.text)
       }
   }
 
-  function getShortcutText(shortcut, btnList, color = true)
-  {
+  function getShortcutText(shortcut, btnList, color = true) {
     local scText = ""
-    for(local i=0; i<shortcut.len(); i++)
-    {
+    for (local i = 0; i < shortcut.len(); i++) {
       let sc = shortcut[i]
-      if (!sc) continue
+      if (!sc)
+        continue
 
       local text = ""
-      for (local k = 0; k < sc.dev.len(); k++)
-      {
-        text += ((k != 0)? " + ":"") + ::getLocalizedControlName(this.preset, sc.dev[k], sc.btn[k])
+      for (local k = 0; k < sc.dev.len(); k++) {
+        text += ((k != 0) ? " + " : "") + ::getLocalizedControlName(this.preset, sc.dev[k], sc.btn[k])
         local btnName = this.preset.getButtonName(sc.dev[k], sc.btn[k])
-        if (btnName=="MWUp" || btnName=="MWDown")
+        if (btnName == "MWUp" || btnName == "MWDown")
           btnName = "MMB"
         if (btnName in btnList)
-          btnList[btnName] = btnList[btnName] || (i==0)
+          btnList[btnName] = btnList[btnName] || (i == 0)
         else
-          btnList[btnName] <- (i==0)
+          btnList[btnName] <- (i == 0)
       }
-      if (text!="")
-        scText += ((scText!="")? ", ":"") + (color? ("<color=@hotkeyColor>" + text + "</color>") : text)
+      if (text != "")
+        scText += ((scText != "") ? ", " : "") + (color ? ("<color=@hotkeyColor>" + text + "</color>") : text)
     }
     return scText
   }
 
-  function initGamepadPage()
-  {
+  function initGamepadPage() {
     this.guiScene.setUpdatesEnabled(false, false)
     this.updateGamepadIcons()
     this.updateGamepadTexts()
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  function updateGamepadIcons()
-  {
-    foreach(name, _val in gamepadIcons.fullIconsList)
-    {
+  function updateGamepadIcons() {
+    foreach (name, _val in gamepadIcons.fullIconsList) {
       let obj = this.scene.findObject("ctrl_img_" + name)
       if (checkObj(obj))
         obj["background-image"] = gamepadIcons.getTexture(name)
     }
   }
 
-  function updateGamepadTexts()
-  {
+  function updateGamepadTexts() {
     let forceButtons = (this.pageUnitType == unitTypes.AIRCRAFT) ? ["camx"] : (this.pageUnitType == unitTypes.TANK) ? ["ID_ACTION_BAR_ITEM_5"] : []
     let ignoreButtons = ["ID_CONTINUE_SETUP"]
     let ignoreAxis = ["camx", "camy"]
@@ -469,32 +430,30 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let curJoyParams = ::JoystickParams()
     curJoyParams.setFrom(::joystick_get_cur_settings())
     let axisIds = [
-      { id="joy_axis_l", x=0, y=1 }
-      { id="joy_axis_r", x=2, y=3 }
+      { id = "joy_axis_l", x = 0, y = 1 }
+      { id = "joy_axis_r", x = 2, y = 3 }
     ]
 
     let joystickButtons = array(gamepadIcons.TOTAL_BUTTON_INDEXES, null)
-    let joystickAxis = array(axisIds.len()*2, null)
+    let joystickAxis = array(axisIds.len() * 2, null)
 
     let scList = ::g_controls_utils.getControlsList({
       unitType = this.pageUnitType,
-      unitTags = this.pageUnitTag? [this.pageUnitTag] : []
+      unitTags = this.pageUnitTag ? [this.pageUnitTag] : []
     })
 
     let shortcutNames = scList.filter(function(sc) {
       if (sc.type == CONTROL_TYPE.SHORTCUT || sc.type == CONTROL_TYPE.AXIS_SHORTCUT)
         return ignoreButtons.findvalue(@(b) b == sc.id) == null || forceButtons.findvalue(@(b) b == sc.id) != null
 
-      if (sc.type == CONTROL_TYPE.AXIS)
-      {
+      if (sc.type == CONTROL_TYPE.AXIS) {
         if (forceButtons.findvalue(@(b) b == sc.id) != null)
           return true // Puts "camx" axis as a shortcut.
         if (ignoreAxis.findvalue(@(b) b == sc.id) != null)
           return false
 
         let axisId = curJoyParams.getAxis(sc.axisIndex).axisId
-        if (axisId != -1 && axisId < joystickAxis.len())
-        {
+        if (axisId != -1 && axisId < joystickAxis.len()) {
           joystickAxis[axisId] = joystickAxis[axisId] || []
           joystickAxis[axisId].append(sc.id)
         }
@@ -504,19 +463,16 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }).map(@(sc) sc.id)
 
     let shortcuts = ::get_shortcuts(shortcutNames, this.preset)
-    foreach (i, item in shortcuts)
-    {
+    foreach (i, item in shortcuts) {
       if (item.len() == 0)
         continue
 
-      foreach(_itemIdx, itemButton in item)
-      {
+      foreach (_itemIdx, itemButton in item) {
         if (itemButton.dev.len() > 1) ///!!!TEMP: need to understand, how to show doubled/tripled/etc. shortcuts
           continue
 
-        foreach(idx, devId in itemButton.dev)
-          if (devId == JOYSTICK_DEVICE_0_ID)
-          {
+        foreach (idx, devId in itemButton.dev)
+          if (devId == JOYSTICK_DEVICE_0_ID) {
             let btnId = itemButton.btn[idx]
             if (!(btnId in joystickButtons))
               continue
@@ -527,21 +483,18 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       }
     }
 
-    let bullet = "-"+ ::nbsp
-    foreach (btnId, actions in joystickButtons)
-    {
+    let bullet = "-" + ::nbsp
+    foreach (btnId, actions in joystickButtons) {
       let idSuffix = gamepadIcons.getButtonNameByIdx(btnId)
       if (idSuffix == "")
         continue
 
       let tObj = this.scene.findObject("joy_" + idSuffix)
-      if (checkObj(tObj))
-      {
+      if (checkObj(tObj)) {
         local title = ""
         local tooltip = ""
 
-        if (actions)
-        {
+        if (actions) {
           local titlesCount = 0
           let sliceBtn = "button"
           let sliceDirpad = "dirpad"
@@ -550,57 +503,53 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
           if (slicedSuffix == sliceBtn || slicedSuffix == sliceDirpad)
             maxActionsInTitle = 1
 
-          for (local a=0; a<actions.len(); a++)
-          {
+          for (local a = 0; a < actions.len(); a++) {
             let actionId = actions[a]
 
             local shText = loc("hotkeys/" + actionId)
             if (getTblValue(actionId, customLocalization, null))
               shText = loc(customLocalization[actionId])
 
-            if (titlesCount < maxActionsInTitle)
-            {
-              title += (title.len()? (loc("ui/semicolon") + "\n"): "") + shText
+            if (titlesCount < maxActionsInTitle) {
+              title += (title.len() ? (loc("ui/semicolon") + "\n") : "") + shText
               titlesCount++
             }
 
-            tooltip += (tooltip.len()? "\n" : "") + bullet + shText
+            tooltip += (tooltip.len() ? "\n" : "") + bullet + shText
           }
         }
-        title = title.len()? title : "---"
-        tooltip = tooltip.len()? tooltip : loc("controls/unmapped")
+        title = title.len() ? title : "---"
+        tooltip = tooltip.len() ? tooltip : loc("controls/unmapped")
         tooltip = loc("controls/help/press") + loc("ui/colon") + "\n" + tooltip
         tObj.setValue(title)
         tObj.tooltip = tooltip
       }
     }
 
-    foreach (axis in axisIds)
-    {
+    foreach (axis in axisIds) {
       let tObj = this.scene.findObject(axis.id)
-      if (checkObj(tObj))
-      {
-        let actionsX = (axis.x < joystickAxis.len() && joystickAxis[axis.x])? joystickAxis[axis.x] : []
-        let actionsY = (axis.y < joystickAxis.len() && joystickAxis[axis.y])? joystickAxis[axis.y] : []
+      if (checkObj(tObj)) {
+        let actionsX = (axis.x < joystickAxis.len() && joystickAxis[axis.x]) ? joystickAxis[axis.x] : []
+        let actionsY = (axis.y < joystickAxis.len() && joystickAxis[axis.y]) ? joystickAxis[axis.y] : []
 
-        let actionIdX = actionsX.len()? actionsX[0] : null
+        let actionIdX = actionsX.len() ? actionsX[0] : null
         let isIgnoredX = actionIdX && isInArray(actionIdX, ignoreAxis)
-        let titleX = (actionIdX && !isIgnoredX)? loc("controls/" + actionIdX) : "---"
+        let titleX = (actionIdX && !isIgnoredX) ? loc("controls/" + actionIdX) : "---"
 
-        let actionIdY = actionsY.len()? actionsY[0] : null
+        let actionIdY = actionsY.len() ? actionsY[0] : null
         let isIgnoredY = actionIdY && isInArray(actionIdY, ignoreAxis)
-        let titleY = (actionIdY && !isIgnoredY)? loc("controls/" + actionIdY) : "---"
+        let titleY = (actionIdY && !isIgnoredY) ? loc("controls/" + actionIdY) : "---"
 
         local tooltipX = ""
-        for (local a=0; a<actionsX.len(); a++)
-          tooltipX += (tooltipX.len()? "\n" : "") + bullet + loc("controls/" + actionsX[a])
-        tooltipX = tooltipX.len()? tooltipX : loc("controls/unmapped")
+        for (local a = 0; a < actionsX.len(); a++)
+          tooltipX += (tooltipX.len() ? "\n" : "") + bullet + loc("controls/" + actionsX[a])
+        tooltipX = tooltipX.len() ? tooltipX : loc("controls/unmapped")
         tooltipX = loc("controls/help/mouse_aim_x") + loc("ui/colon") + "\n" + tooltipX
 
         local tooltipY = ""
-        for (local a=0; a<actionsY.len(); a++)
-          tooltipY += (tooltipY.len()? "\n" : "") + bullet + loc("controls/" + actionsY[a])
-        tooltipY = tooltipY.len()? tooltipY : loc("controls/unmapped")
+        for (local a = 0; a < actionsY.len(); a++)
+          tooltipY += (tooltipY.len() ? "\n" : "") + bullet + loc("controls/" + actionsY[a])
+        tooltipY = tooltipY.len() ? tooltipY : loc("controls/unmapped")
         tooltipY = loc("controls/help/mouse_aim_y") + loc("ui/colon") + "\n" + tooltipY
 
         let title = titleX + " + " + titleY
@@ -611,16 +560,14 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }
 
     let tObj = this.scene.findObject("joy_btn_share")
-    if (checkObj(tObj))
-    {
+    if (checkObj(tObj)) {
       let title = loc(helpMarkup.btnBackLocId)
       tObj.setValue(title)
       tObj.tooltip = loc("controls/help/press") + loc("ui/colon") + "\n" + title
     }
 
     let mouseObj = this.scene.findObject("joy_mouse")
-    if (checkObj(mouseObj))
-    {
+    if (checkObj(mouseObj)) {
       let mouse_aim_x = (this.pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_x" : "controls/gm_mouse_aim_x"
       let mouse_aim_y = (this.pageUnitType == unitTypes.AIRCRAFT) ? "controls/mouse_aim_y" : "controls/gm_mouse_aim_y"
 
@@ -635,8 +582,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }
   }
 
-  function showDefaultControls(isDefaultControls)
-  {
+  function showDefaultControls(isDefaultControls) {
     let tab = this.getCurrentSubTab()
     if (!tab)
       return
@@ -653,14 +599,13 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let view = {
       rows = []
     }
-    foreach (item in frameForHideIds)
-    {
+    foreach (item in frameForHideIds) {
       let shortcutId = getTblValue("shortcut", item)
       if (!shortcutId)
         continue
 
       let rowData = {
-        text = loc("controls/help/"+shortcutId+"_0")
+        text = loc("controls/help/" + shortcutId + "_0")
         shortcutMarkup = ::g_shortcut_type.getShortcutMarkup(shortcutId, this.preset)
       }
       view.rows.append(rowData)
@@ -670,8 +615,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.guiScene.replaceContentFromText(defControlsFrame, markup, markup.len(), this)
   }
 
-  function updatePlatformControls()
-  {
+  function updatePlatformControls() {
     let isGamepadPreset = ::is_xinput_device()
 
     let buttonsList = {
@@ -687,8 +631,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
 
   }
 
-  function fillMissionObjectivesTexts()
-  {
+  function fillMissionObjectivesTexts() {
     let misHelpBlkPath = ::g_mission_type.getHelpPathForCurrentMission()
     if (misHelpBlkPath == null)
       return
@@ -697,21 +640,17 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     this.guiScene.replaceContent(sheetObj, misHelpBlkPath, this)
 
     let airCaptureZoneDescTextObj = this.scene.findObject("air_capture_zone_desc")
-    if (checkObj(airCaptureZoneDescTextObj))
-    {
+    if (checkObj(airCaptureZoneDescTextObj)) {
       local altitudeBottom = 0
       local altitudeTop = 0
 
       let misInfoBlk = ::get_mission_meta_info(get_current_mission_name())
       let misBlk = misInfoBlk?.mis_file ? blkFromPath(misInfoBlk.mis_file) : null
       let areasBlk = misBlk?.areas
-      if (areasBlk)
-      {
-        for (local i = 0; i < areasBlk.blockCount(); i++)
-        {
+      if (areasBlk) {
+        for (local i = 0; i < areasBlk.blockCount(); i++) {
           let block = areasBlk.getBlock(i)
-          if (block && block.type == "Cylinder" && isTMatrix(block.tm))
-          {
+          if (block && block.type == "Cylinder" && isTMatrix(block.tm)) {
             altitudeBottom = ceil(block.tm[3].y)
             altitudeTop = ceil(block.tm[1].y + block.tm[3].y)
             break
@@ -719,8 +658,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
         }
       }
 
-      if (altitudeBottom && altitudeTop)
-      {
+      if (altitudeBottom && altitudeTop) {
         airCaptureZoneDescTextObj.setValue(loc("hints/tutorial_newbie/air_domination/air_capture_zone") + " " +
           loc("hints/tutorial_newbie/air_domination/air_capture_zone/altitudes", {
           altitudeBottom = colorize("userlogColoredText", altitudeBottom),
@@ -730,29 +668,24 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }
   }
 
-  function fillHotas4Image()
-  {
+  function fillHotas4Image() {
     let imgObj = this.scene.findObject("image")
     if (!checkObj(imgObj))
       return
 
-    imgObj["background-image"] = loc("thrustmaster_tflight_hotas_4_controls_image", "")
+    imgObj["background-image"] = hotasControlImagePath
   }
 
-  function afterModalDestroy()
-  {
-    if (this.isStartedFromMenu)
-    {
+  function afterModalDestroy() {
+    if (this.isStartedFromMenu) {
       let curHandler = ::handlersManager.getActiveBaseHandler()
       if (curHandler != null && curHandler instanceof ::gui_handlers.FlightMenu)
         curHandler.onResumeRaw()
     }
   }
 
-  function fillActionBars(tab)
-  {
-    foreach (actionBar in (tab?.actionBars ?? []))
-    {
+  function fillActionBars(tab) {
+    foreach (actionBar in (tab?.actionBars ?? [])) {
       let obj = this.scene.findObject(actionBar?.nest)
       let actionBarItems = actionBar?.items ?? []
       if (!checkObj(obj) || !actionBarItems.len())
@@ -770,8 +703,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     }
   }
 
-  function buildActionbarItemView(item, actionBar)
-  {
+  function buildActionbarItemView(item, actionBar) {
     let actionBarType = ::g_hud_action_bar_type.getByActionItem(item)
     let viewItem = {}
 

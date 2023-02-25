@@ -1,10 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       BombingMode} = require("%rGui/planeState/planeToolsState.nut")
-let {Tas, Roll} = require("%rGui/planeState/planeFlyState.nut");
-let {mpsToKnots, baseLineWidth} = require("ilsConstants.nut")
-let {cvt} = require("dagor.math")
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
+       BombingMode } = require("%rGui/planeState/planeToolsState.nut")
+let { Tas, Roll } = require("%rGui/planeState/planeFlyState.nut");
+let { mpsToKnots, baseLineWidth } = require("ilsConstants.nut")
+let { cvt } = require("dagor.math")
 
 let buccaneerSpdVal = Computed(@() cvt(Tas.value * mpsToKnots, 300, 600, 0, 100).tointeger())
 let buccaneerSpeed = @() {

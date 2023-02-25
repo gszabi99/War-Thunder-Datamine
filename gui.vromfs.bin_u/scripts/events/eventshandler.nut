@@ -1,9 +1,11 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
@@ -21,11 +23,12 @@ let { needShowOverrideSlotbar, getCustomViewCountryData } = require("%scripts/ev
 let { eachParam } = require("%sqstd/datablock.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require_native("guiOptions")
+let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -39,8 +42,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
  * Chapter has greater priority but it's bad prctice to use both options
  * simultaneously.
  */
-::gui_start_modal_events <- function gui_start_modal_events(options = {})
-{
+::gui_start_modal_events <- function gui_start_modal_events(options = {}) {
   if (!suggestAndAllowPsnPremiumFeatures())
     return
 
@@ -55,11 +57,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   local eventId = null
   local chapterId = getTblValue ("chapter", options, null)
 
-  if (chapterId)
-  {
+  if (chapterId) {
     let chapter = ::events.chapters.getChapter(chapterId)
-    if (chapter && !chapter.isEmpty())
-    {
+    if (chapter && !chapter.isEmpty()) {
       let chapterEvents = chapter.getEvents()
       eventId = chapterEvents[0]
     }
@@ -67,8 +67,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
   eventId = eventId || getTblValue("event", options, null)
 
-  if (eventId == null)
-  {
+  if (eventId == null) {
     local lastPlayedEvent = ::events.getLastPlayedEvent()
     eventId = getTblValue("name", lastPlayedEvent, ::events.getFeaturedEvent())
     chapterId = ::events.getEventsChapter(::events.getEvent(eventId))
@@ -80,8 +79,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   })
 }
 
-::gui_handlers.EventsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.EventsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   eventsListObj  = null
@@ -105,8 +103,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   selectedIdx = -1
   isMouseMode = true
 
-  function initScreen()
-  {
+  function initScreen() {
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
     this.eventsListObj = this.scene.findObject("items_list")
@@ -129,13 +126,11 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   //----CONTROLLER----//
-  function onItemSelect()
-  {
+  function onItemSelect() {
     this.onItemSelectAction()
   }
 
-  function onItemSelectAction(onlyChanged = true)
-  {
+  function onItemSelectAction(onlyChanged = true) {
     let curEventIdx = this.eventsListObj.getValue()
     let rowId = this.listMap?[curEventIdx]
     if (rowId == null)
@@ -144,10 +139,10 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     let newEventId = newEvent?.name ?? ""
     let newChapterId = newEvent != null ? ::events.getEventsChapter(newEvent) : rowId
 
-    if(onlyChanged && newChapterId == this.curChapterId && this.curEventId == newEventId)
+    if (onlyChanged && newChapterId == this.curChapterId && this.curEventId == newEventId)
       return
 
-    if (newChapterId == this.curChapterId && this.curEventId==newEventId)
+    if (newChapterId == this.curChapterId && this.curEventId == newEventId)
       return this.updateWindow()
 
     this.checkQueue((@(newEventId) function () {
@@ -159,8 +154,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       function() { this.selectEvent(this.curEventId) })
   }
 
-  function updateWindow()
-  {
+  function updateWindow() {
     let event = ::events.getEvent(this.curEventId)
     let showOverrideSlotbar = needShowOverrideSlotbar(::events.getEvent(this.curEventId))
     if (showOverrideSlotbar)
@@ -180,13 +174,11 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     this.updateButtons()
   }
 
-  function selectEvent(eventId)
-  {
+  function selectEvent(eventId) {
     if (eventId == "" || !checkObj(this.eventsListObj))
       return false
-    for(local i = 0; i < this.eventsListObj.childrenCount(); i++)
-      if (this.eventsListObj.getChild(i).id == eventId)
-      {
+    for (local i = 0; i < this.eventsListObj.childrenCount(); i++)
+      if (this.eventsListObj.getChild(i).id == eventId) {
         this.eventsListObj.setValue(i)
         this.onItemSelectAction()
         return true
@@ -194,18 +186,15 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     return false
   }
 
-  function onJoinEvent()
-  {
+  function onJoinEvent() {
     this.joinEvent()
   }
 
-  function goToBattleFromDebriefing()
-  {
+  function goToBattleFromDebriefing() {
     this.joinEvent(true)
   }
 
-  function joinEvent(isFromDebriefing = false)
-  {
+  function joinEvent(isFromDebriefing = false) {
     let event = ::events.getEvent(this.curEventId)
     if (!event)
       return
@@ -237,13 +226,11 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       })
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     this.checkAskOpenRoomsList()
   }
 
-  function checkAskOpenRoomsList()
-  {
+  function checkAskOpenRoomsList() {
     if (!this.canAskAboutRoomsList
         || !this.isQueueWasStartedWithRoomsList
         || !this.queueToShow)
@@ -256,8 +243,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       return
 
     let maxCount = eventRoomsListCfgBlk?.askBeforeOpenCount ?? SHOW_RLIST_BEFORE_OPEN_DEFAULT
-    if (maxCount < ::load_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0))
-    {
+    if (maxCount < ::load_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0)) {
       this.canAskAboutRoomsList = false
       return
     }
@@ -284,8 +270,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     })
   }
 
-  function onLeaveEvent()
-  {
+  function onLeaveEvent() {
     if (!::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
                                              Callback(this.onLeaveEventActions, this)))
       return
@@ -293,19 +278,16 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       this.onLeaveEventActions()
   }
 
-  function getCurEventQueue()
-  {
+  function getCurEventQueue() {
     let q = ::queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
     return (q && ::queues.isQueueActive(q)) ? q : null
   }
 
-  function isInEventQueue()
-  {
+  function isInEventQueue() {
     return this.queueToShow != null  //to all interface work consistent with view
   }
 
-  function onLeaveEventActions()
-  {
+  function onLeaveEventActions() {
     let q = this.getCurEventQueue()
     if (!q)
       return
@@ -313,8 +295,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     ::queues.leaveQueue(q, { isCanceledByPlayer = true })
   }
 
-  function onEventQueueChangeState(p)
-  {
+  function onEventQueueChangeState(p) {
     if (!::queues.isEventQueue(p?.queue))
       return
 
@@ -328,57 +309,48 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     this.updateButtons()
   }
 
-  function onEventAfterJoinEventRoom(_event)
-  {
+  function onEventAfterJoinEventRoom(_event) {
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
-  function onOpenClusterSelect(obj)
-  {
+  function onOpenClusterSelect(obj) {
     ::queues.checkAndStart(
-      Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
+      Callback(@() openClustersMenuWnd(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
   }
 
-  function onEventEventsDataUpdated(_params)
-  {
+  function onEventEventsDataUpdated(_params) {
     this.fillEventsList()
   }
 
-  function onEventClusterChange(_params)
-  {
+  function onEventClusterChange(_params) {
     this.updateClusters()
   }
 
-  function updateClusters()
-  {
+  function updateClusters() {
     clustersModule.updateClusters(this.scene.findObject("cluster_select_button"))
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.checkedForward(base.goBack)
   }
 
-  function goBackShortcut()
-  {
+  function goBackShortcut() {
     if (this.isInEventQueue())
       this.onLeaveEvent()
     else
       this.goBack()
   }
 
-  function checkQueue(func, cancelFunc = null)
-  {
+  function checkQueue(func, cancelFunc = null) {
     if (this.skipCheckQueue)
       return func()
 
     this.checkedModifyQueue(QUEUE_TYPE_BIT.EVENT, func, cancelFunc)
   }
 
-  function restoreQueueParams()
-  {
+  function restoreQueueParams() {
     if (!this.queueToShow || !checkObj(this.scene))
       return
 
@@ -394,12 +366,12 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (this.curEventId == "") {
       this.collapseChapter(this.curChapterId)
       this.updateButtons()
-    } else
+    }
+    else
       this.joinEvent()
   }
 
-  function onItemHover(obj)
-  {
+  function onItemHover(obj) {
     if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
@@ -411,60 +383,50 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     this.updateButtons()
   }
 
-  function onHoveredItemSelect(_obj)
-  {
+  function onHoveredItemSelect(_obj) {
     if (this.hoveredIdx != -1 && checkObj(this.eventsListObj))
       this.eventsListObj.setValue(this.hoveredIdx)
   }
 
-  function updateMouseMode()
-  {
+  function updateMouseMode() {
     this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
-  function onEventSquadStatusChanged(_params)
-  {
+  function onEventSquadStatusChanged(_params) {
     this.updateButtons()
   }
 
-  function onEventSquadSetReady(_params)
-  {
+  function onEventSquadSetReady(_params) {
     this.updateButtons()
   }
 
-  function onEventSquadDataUpdated(_p)
-  {
+  function onEventSquadDataUpdated(_p) {
     this.updateButtons()
   }
 
-  function onDestroy()
-  {
+  function onDestroy() {
     seenEvents.markSeen(::events.getEventsForEventsWindow())
     resetSlotbarOverrided()
   }
 
-  function getHandlerRestoreData()
-  {
+  function getHandlerRestoreData() {
     return {
       openData = { curEventId = this.curEventId }
     }
   }
 
-  function onRoomsList()
-  {
+  function onRoomsList() {
     ::gui_handlers.EventRoomsHandler.open(::events.getEvent(this.curEventId), true)
     this.canAskAboutRoomsList = false
     ::save_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID,
       ::load_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0) + 1)
   }
 
-  function onDownloadPack()
-  {
+  function onDownloadPack() {
     ::events.checkEventFeaturePacks(::events.getEvent(this.curEventId))
   }
 
-  function onQueueOptions(obj)
-  {
+  function onQueueOptions(obj) {
     let optionsData = ::queue_classes.Event.getOptions(this.curEventId)
     if (!optionsData)
       return
@@ -487,23 +449,20 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   //----END_CONTROLLER----//
 
   //----VIEW----//
-  function showEventDescription(eventId)
-  {
+  function showEventDescription(eventId) {
     let event = ::events.getEvent(eventId)
     this.eventDescription.selectEvent(event)
     if (event != null)
       seenEvents.markSeen(event.name)
   }
 
-  function onEventItemBought(params)
-  {
+  function onEventItemBought(params) {
     let item = getTblValue("item", params)
     if (item && item.isForEvent(this.curEventId))
       this.updateButtons()
   }
 
-  function checkQueueInfoBox()
-  {
+  function checkQueueInfoBox() {
     if (!this.queueToShow || ::handlersManager.isHandlerValid(this.queueInfoHandlerWeak))
       return
 
@@ -518,8 +477,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     this.queueInfoHandlerWeak = queueHandler
   }
 
-  function updateQueueInterface()
-  {
+  function updateQueueInterface() {
     if (!this.queueToShow || !::queues.isQueueActive(this.queueToShow))
       this.queueToShow = this.getCurEventQueue()
     this.checkQueueInfoBox()
@@ -530,8 +488,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       slotbar.shade(this.isInEventQueue())
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let event = ::events.getEvent(this.curEventId)
     let isEvent = event != null
     let isHeader = this.curChapterId != "" && this.curEventId == ""
@@ -562,8 +519,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     local uncoloredStartText = startText
 
     let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
-    if (battlePriceText.len() > 0)
-    {
+    if (battlePriceText.len() > 0) {
       startText += format(" (%s)", battlePriceText)
       uncoloredStartText += format(" (%s)", ::events.getEventBattleCostText(
         event, "activeTextColor", true, false))
@@ -576,8 +532,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
     let isShowCollapseBtn = isCurItemInFocus && isHeader
     let collapsedButtonObj = this.showSceneBtn("btn_collapsed_chapter", isShowCollapseBtn)
-    if (isShowCollapseBtn)
-    {
+    if (isShowCollapseBtn) {
       let isCollapsedChapter = this.getCollapsedChapters()?[this.curChapterId]
       startText = loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
       collapsedButtonObj.setValue(startText)
@@ -593,8 +548,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     let pack = isCurItemInFocus && isEvent ? ::events.getEventReqPack(event, true) : null
     let needDownloadPack = pack != null && !::have_package(pack)
     let packBtn = this.showSceneBtn("btn_download_pack", needDownloadPack)
-    if (needDownloadPack && packBtn)
-    {
+    if (needDownloadPack && packBtn) {
       packBtn.tooltip = ::get_pkg_loc_name(pack)
       packBtn.setValue(loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
     }
@@ -603,17 +557,14 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       && ::queue_classes.Event.hasOptions(event.name))
   }
 
-  function fillEventsList()
-  {
+  function fillEventsList() {
     let chapters = ::events.getChapters()
     let needSkipCrossplayEvent = isPlatformSony && !isCrossPlayEnabled()
 
     let view = { items = [] }
-    foreach (chapter in chapters)
-    {
+    foreach (chapter in chapters) {
       let eventItems = []
-      foreach (eventName in chapter.getEvents())
-      {
+      foreach (eventName in chapter.getEvents()) {
         let event = ::events.getEvent(eventName)
         if (needSkipCrossplayEvent && !::events.isEventPlatformOnlyAllowed(event))
           continue
@@ -646,10 +597,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
     let cId = this.curEventId
     this.listMap = view.items.map(@(v) v.id)
-    this.selectedIdx = this.listMap.findindex(@(rowId) rowId == cId ) ?? 0
+    this.selectedIdx = this.listMap.findindex(@(rowId) rowId == cId) ?? 0
 
-    if (this.selectedIdx <= 0)
-    {
+    if (this.selectedIdx <= 0) {
       this.selectedIdx = 1 //0 index is header
       this.curEventId = "" //curEvent not found
       this.curChapterId = ""
@@ -661,11 +611,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     eachParam(this.getCollapsedChapters(), @(_, chapterId) this.collapseChapter(chapterId), this)
   }
 
-  function getEventNameForListBox(event)
-  {
+  function getEventNameForListBox(event) {
     local text = ::events.getEventNameText(event)
-    if (needShowCrossPlayInfo())
-    {
+    if (needShowCrossPlayInfo()) {
       let isPlatformOnlyAllowed = ::events.isEventPlatformOnlyAllowed(event)
       text = getTextWithCrossplayIcon(!isPlatformOnlyAllowed, text)
       if (!isPlatformOnlyAllowed && !isCrossPlayEnabled())
@@ -678,60 +626,51 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     return text
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     let event = ::events.getEvent(this.curEventId)
     let ediff = event ? ::events.getEDiffByEvent(event) : -1
     return ediff != -1 ? ediff : ::get_current_ediff()
   }
 
-  function onEventCountryChanged(_p)
-  {
+  function onEventCountryChanged(_p) {
     this.updateButtons()
   }
 
-  function onCollapse(obj)
-  {
+  function onCollapse(obj) {
     if (!obj?.id)
       return
     this.collapseChapter(::g_string.cutPrefix(obj.id, "btn_", obj.id))
     this.updateButtons()
   }
 
-  function onCollapsedChapter()
-  {
+  function onCollapsedChapter() {
     this.collapseChapter(this.curChapterId)
     this.updateButtons()
   }
 
-  function collapseChapter(chapterId)
-  {
+  function collapseChapter(chapterId) {
     let chapterObj = this.eventsListObj.findObject(chapterId)
-    if ( ! chapterObj)
+    if (! chapterObj)
       return
     let collapsed = chapterObj.collapsed == "yes" ? true : false
     let curChapter = ::events.chapters.getChapter(chapterId)
-    if( ! curChapter)
+    if (! curChapter)
       return
-    foreach (eventName in curChapter.getEvents())
-    {
+    foreach (eventName in curChapter.getEvents()) {
       let eventObj = this.eventsListObj.findObject(eventName)
-      if( ! checkObj(eventObj))
+      if (! checkObj(eventObj))
         continue
       eventObj.show(collapsed)
       eventObj.enable(collapsed)
     }
 
-    if (chapterId == this.curChapterId)
-    {
+    if (chapterId == this.curChapterId) {
       let chapters = ::events.getChapters()
       local totalRows = -1
-      foreach(chapter in chapters)
-        if (chapter.getEvents().len() > 0)
-        {
+      foreach (chapter in chapters)
+        if (chapter.getEvents().len() > 0) {
           totalRows++
-          if (chapter.name == this.curChapterId)
-          {
+          if (chapter.name == this.curChapterId) {
             this.eventsListObj.setValue(totalRows)
             break
           }
@@ -745,20 +684,17 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     ::saveLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, this.getCollapsedChapters())
   }
 
-  function getCollapsedChapters()
-  {
-    if(this.collapsedChapters == null)
-      this.collapsedChapters = ::loadLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, ::DataBlock())
+  function getCollapsedChapters() {
+    if (this.collapsedChapters == null)
+      this.collapsedChapters = ::loadLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, DataBlock())
     return this.collapsedChapters
   }
   //----END_VIEW----//
 }
 
-::get_events_handler <- function get_events_handler()
-{
+::get_events_handler <- function get_events_handler() {
   local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
-  if (!handler)
-  {
+  if (!handler) {
     ::gui_start_modal_events(null)
     handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
   }
@@ -766,9 +702,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 }
 
 let function openEventsWndFromPromo(owner, params = []) {
-  let eventId = params.len() > 0? params[0] : null
+  let eventId = params.len() > 0 ? params[0] : null
   owner.checkedForward(@() this.goForwardIfOnline(
-    @() ::gui_start_modal_events({event = eventId}), false, true))
+    @() ::gui_start_modal_events({ event = eventId }), false, true))
 }
 
 let getEventsPromoText = @() ::events.getEventsVisibleInEventsWindowCount() == 0
@@ -790,8 +726,7 @@ addPromoButtonConfig({
     local show = this.isShowAllCheckBoxEnabled()
     if (show)
       buttonObj = ::showBtn(id, show, this.scene)
-    else
-    {
+    else {
       show = hasFeature("Events")
         && ::events.getEventsVisibleInEventsWindowCount()
         && isMultiplayerPrivilegeAvailable.value

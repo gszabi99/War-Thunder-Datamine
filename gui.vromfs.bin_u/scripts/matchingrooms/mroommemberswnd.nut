@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 
 
-::gui_handlers.MRoomMembersWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.MRoomMembersWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/mRoomMembersWnd.tpl"
@@ -21,14 +21,12 @@ let time = require("%scripts/time.nut")
   teams = null
   playersListWidgetWeak = null
 
-  static function open(room)
-  {
+  static function open(room) {
     if (room)
       ::handlersManager.loadHandler(::gui_handlers.MRoomMembersWnd, { room = room })
   }
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     let view = {
       maxRows = this.getMaxTeamSize()
     }
@@ -56,8 +54,7 @@ let time = require("%scripts/time.nut")
     return view
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.setFullRoomInfo()
     this.teams = ::g_team.getTeams()
 
@@ -77,14 +74,12 @@ let time = require("%scripts/time.nut")
     this.initRoomTimer()
   }
 
-  function updateTeamsHeader()
-  {
+  function updateTeamsHeader() {
     let headerNest = this.scene.findObject("teams_header")
 
     let countTbl = ::SessionLobby.getMembersCountByTeams(this.room)
     let countTblReady = ::SessionLobby.getMembersCountByTeams(this.room, true)
-    foreach(team in this.teams)
-    {
+    foreach (team in this.teams) {
       let teamObj = headerNest.findObject("num_team" + team.id)
       if (!checkObj(teamObj))
         continue
@@ -104,21 +99,17 @@ let time = require("%scripts/time.nut")
     ::update_team_css_label(headerNest)
   }
 
-  function getMaxTeamSize()
-  {
+  function getMaxTeamSize() {
     let mgm = ::SessionLobby.getMGameMode(this.room)
     return mgm ? ::events.getMaxTeamSize(mgm) : ::SessionLobby.getMaxMembersCount(this.room) / 2
   }
 
-  function initRoomTimer()
-  {
+  function initRoomTimer() {
     let timerObj = this.scene.findObject("event_time")
-    SecondsUpdater(timerObj, Callback(function(obj, _params)
-    {
+    SecondsUpdater(timerObj, Callback(function(obj, _params) {
       local text = ""
       let startTime = ::SessionLobby.getRoomSessionStartTime(this.room)
-      if (startTime > 0)
-      {
+      if (startTime > 0) {
         let secToStart = startTime - ::get_matching_server_time()
         if (secToStart <= 0)
           text = loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
@@ -129,8 +120,7 @@ let time = require("%scripts/time.nut")
     }, this))
   }
 
-  function setFullRoomInfo()
-  {
+  function setFullRoomInfo() {
     let roomInfo = ::g_mroom_info.get(this.room.roomId)
     if (roomInfo.isRoomDestroyed)
       return this.goBack()
@@ -140,28 +130,23 @@ let time = require("%scripts/time.nut")
       this.room = fullRoom
   }
 
-  function onEventMRoomInfoUpdated(p)
-  {
-    if (p.roomId == this.room.roomId)
-    {
+  function onEventMRoomInfoUpdated(p) {
+    if (p.roomId == this.room.roomId) {
       this.setFullRoomInfo()
       this.updateTeamsHeader()
     }
   }
 
-  function openUserCard(player)
-  {
+  function openUserCard(player) {
     if (player && !player.isBot)
       ::gui_modal_userCard({ name = player.name, uid = player.userId.tostring() })
   }
 
-  function onUserRClick(player)
-  {
+  function onUserRClick(player) {
     ::session_player_rmenu(this, player)
   }
 
-  function onUserActions(_obj)
-  {
+  function onUserActions(_obj) {
     if (!this.playersListWidgetWeak)
       return
 
@@ -170,8 +155,7 @@ let time = require("%scripts/time.nut")
     ::session_player_rmenu(this, player, null, pos)
   }
 
-  function onUpdate(_obj, _dt)
-  {
+  function onUpdate(_obj, _dt) {
     ::g_mroom_info.get(this.room.roomId).checkRefresh()
   }
 }

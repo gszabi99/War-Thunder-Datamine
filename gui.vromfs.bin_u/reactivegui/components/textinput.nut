@@ -10,7 +10,7 @@ let hudFrame = @(inputObj, group, sf) {
   size = [flex(), fpx(30) + 2 * (dp() + fpx(3))]
   fillColor = colors.menu.textInputBgColor
   borderColor = colors.menu.textInputBorderColor
-  borderWidth = [dp()]
+  borderWidth = [hdpx(1), hdpx(1), hdpx(2), hdpx(1)]
 
   group = group
   children = [ inputObj,
@@ -20,8 +20,8 @@ let hudFrame = @(inputObj, group, sf) {
 
 
 let export = class {
-  hud = @(text_state, options={}) textInput(text_state, options, hudFrame)
-  _call = @(_self, text_state, options={}) textInput(text_state, options)
+  hud = @(text_state, options = {}) textInput(text_state, options, hudFrame)
+  _call = @(_self, text_state, options = {}) textInput(text_state, options)
 }()
 
 

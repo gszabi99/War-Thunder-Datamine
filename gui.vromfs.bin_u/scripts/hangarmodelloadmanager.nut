@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,8 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let eventbus = require("eventbus")
 let { hangar_load_model, hangar_get_current_unit_name, hangar_get_loaded_unit_name } = require("hangar")
 
-enum HangarModelLoadState
-{
+enum HangarModelLoadState {
   LOADING
   LOADED
 }

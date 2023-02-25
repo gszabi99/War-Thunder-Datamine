@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {VdiColor} = require("%rGui/planeState/planeToolsState.nut")
+let { VdiColor } = require("%rGui/planeState/planeToolsState.nut")
 let baseLineWidth = hdpx(2 * LINE_WIDTH)
-let {compassWrap} = require("%rGui/planeIlses/ilsCompasses.nut")
-let {Tangage, Roll} = require("%rGui/planeState/planeFlyState.nut")
+let { compassWrap } = require("%rGui/planeIlses/ilsCompasses.nut")
+let { Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
 
-local airSymbol = @(){
+local airSymbol = @() {
   watch = VdiColor
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
@@ -30,7 +30,7 @@ let generateCompassMark = function(num, _elemWidth, _font) {
     children = [
       @() {
         watch = VdiColor
-        size = [baseLineWidth * 2, baseLineWidth * ((num % 10 == 0 ) ? 7 : 4)]
+        size = [baseLineWidth * 2, baseLineWidth * ((num % 10 == 0) ? 7 : 4)]
         rendObj = ROBJ_SOLID
         color = VdiColor.value
         lineWidth = baseLineWidth
@@ -136,7 +136,7 @@ let function pitch(width, height) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.015]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.1]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
       }
     }
   }

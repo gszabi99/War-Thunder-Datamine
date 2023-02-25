@@ -3,6 +3,7 @@
 from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let { register_command } = require("console")
+let { EventDedicLogerr, mkCmdEnableDedicatedLogger } = require("dedicLogerrSqEvents.nut")
 
 let subscriptions = []
 
@@ -16,11 +17,11 @@ let function unsubscribeDedicLogerr(action) {
 }
 
 let enableDedicLogerr = @(isEnable = true)
-  ecs.client_request_broadcast_net_sqevent(ecs.event.CmdEnableDedicatedLogger({ isEnable }))
+  ecs.client_request_broadcast_net_sqevent(mkCmdEnableDedicatedLogger({ isEnable }))
 
 ecs.register_es("dedic_logerr_listener_es",
   {
-    [ecs.sqEvents.EventDedicLogerr] = @(evt, _eid, _comp) onLogerr(evt?.data.logstring ?? "")
+    [EventDedicLogerr] = @(evt, _eid, _comp) onLogerr(evt?.data.logstring ?? "")
   },
   {})
 

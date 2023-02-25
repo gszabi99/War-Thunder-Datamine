@@ -1,8 +1,11 @@
-from "%scripts/dagui_library.nut" import *
+//checked for plus_string
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+from "%scripts/dagui_library.nut" import *
+let { get_option_multiplier, set_option_multiplier,
+  OPTION_CAMERA_SMOOTH, OPTION_CAMERA_MOUSE_SPEED
+} = require("gameOptions")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
 
@@ -59,15 +62,15 @@ return [
   {
     id = "camera_mouse_speed"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0*(::get_option_multiplier(OPTION_CAMERA_MOUSE_SPEED) - MIN_CAMERA_SPEED) / (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED)
-    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_CAMERA_MOUSE_SPEED, MIN_CAMERA_SPEED + (objValue / 100.0) * (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED))
+    value = @(_joyParams) 100.0 * (get_option_multiplier(OPTION_CAMERA_MOUSE_SPEED) - MIN_CAMERA_SPEED) / (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED)
+    setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_CAMERA_MOUSE_SPEED, MIN_CAMERA_SPEED + (objValue / 100.0) * (MAX_CAMERA_SPEED - MIN_CAMERA_SPEED))
     showFunc = @() hasFeature("EnableMouse")
   }
   {
     id = "camera_smooth"
     type = CONTROL_TYPE.SLIDER
-    value = @(_joyParams) 100.0*::get_option_multiplier(OPTION_CAMERA_SMOOTH) / MAX_CAMERA_SMOOTH
-    setValue = @(_joyParams, objValue) ::set_option_multiplier(OPTION_CAMERA_SMOOTH, (objValue / 100.0) * MAX_CAMERA_SMOOTH)
+    value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_CAMERA_SMOOTH) / MAX_CAMERA_SMOOTH
+    setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_CAMERA_SMOOTH, (objValue / 100.0) * MAX_CAMERA_SMOOTH)
   }
   {
     id = "zoom_sens"

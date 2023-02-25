@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -12,8 +13,7 @@ const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
 const WW_QUEUES_DATA_TIME_OUT = 10000 //ms
 
 
-local WwQueuesData = class
-{
+local WwQueuesData = class {
   data = {}
   lastUpdateTimeMsec = -WW_QUEUES_DATA_TIME_OUT
   lastRequestTimeMsec = -1
@@ -23,14 +23,12 @@ local WwQueuesData = class
      ******************************* PUBLIC FUNCTIONS *******************************
      ******************************************************************************** */
 
-  function isNewest()
-  {
+  function isNewest() {
     return (!this.isInUpdate &&
       get_time_msec() - this.lastUpdateTimeMsec < this.getRefreshMinTimeMsec())
   }
 
-  function canRequestByTime()
-  {
+  function canRequestByTime() {
     let refreshMinTime = this.getRefreshMinTimeMsec()
     let checkTime = this.isInUpdate
       ? refreshMinTime * MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH
@@ -38,29 +36,24 @@ local WwQueuesData = class
     return  get_time_msec() - this.lastRequestTimeMsec >= checkTime
   }
 
-  function canRequest()
-  {
+  function canRequest() {
     return !this.isNewest() && this.canRequestByTime()
   }
 
-  function isDataValid()
-  {
+  function isDataValid() {
     return (get_time_msec() - this.lastUpdateTimeMsec < WW_QUEUES_DATA_TIME_OUT)
   }
 
-  function validateData()
-  {
+  function validateData() {
     if (!this.isDataValid())
       this.data = {}
   }
 
-  function getData()
-  {
+  function getData() {
     return this.data
   }
 
-  function requestData()
-  {
+  function requestData() {
     if (!this.canRequest())
       return false
 
@@ -78,8 +71,7 @@ local WwQueuesData = class
      ******************************* PRIVATE FUNCTIONS ******************************
      ******************************************************************************** */
 
-  function requestDataCb(queuesData)
-  {
+  function requestDataCb(queuesData) {
     this.isInUpdate = false
     this.lastUpdateTimeMsec = get_time_msec()
     this.data = queuesData
@@ -87,8 +79,7 @@ local WwQueuesData = class
     ::ww_event("UpdateWWQueues", { queuesData })
   }
 
-  function requestError(_taskResult)
-  {
+  function requestError(_taskResult) {
     this.isInUpdate = false
   }
 

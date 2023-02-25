@@ -3,11 +3,11 @@ let cross_call = require("%rGui/globals/cross_call.nut")
 
 let interopGen = require("interopGen.nut")
 let compass = require("compass.nut")
-let {PI, cos, sin, fabs, sqrt} = require("%sqstd/math.nut")
-let {CompassValue} = require("compassState.nut")
-let {greenColor, greenColorGrid} = require("style/airHudStyle.nut")
-let {fwdAngle, fov} = require("shipState.nut")
-let {IsRadarVisible} = require("radarState.nut")
+let { PI, cos, sin, fabs, sqrt } = require("%sqstd/math.nut")
+let { CompassValue } = require("compassState.nut")
+let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
+let { fwdAngle, fov } = require("shipState.nut")
+let { IsRadarVisible } = require("radarState.nut")
 
 let redColor = Color(255, 109, 108, 255)
 let greyColor = Color(45, 60, 60, 255)
@@ -61,7 +61,7 @@ let background = {
   rendObj = ROBJ_VECTOR_CANVAS
   size = [fcsWidth, fcsWidth]
   color = greenColorGrid
-  fillColor = Color(0,32,0,120)
+  fillColor = Color(0, 32, 0, 120)
   lineWidth = hdpx(LINE_WIDTH)
   commands = [
     [VECTOR_ELLIPSE, 50, 50, 50, 50]
@@ -154,7 +154,7 @@ let targetSpeed = @() {
   font = Fonts.tiny_text_hud
   pos = [0, sh(1)]
   color = greenColorGrid
-  margin = [0,0,0,sh(1)]
+  margin = [0, 0, 0, sh(1)]
 }
 
 let progress = @() {
@@ -227,7 +227,7 @@ let progressBar = @() {
   }
 }
 
-let function drawArrow(x, y, dirX, dirY, color, fill=false, scale=1) {
+let function drawArrow(x, y, dirX, dirY, color, fill = false, scale = 1) {
   let arrowSize = sh(2)
   local arrowCommands = []
 
@@ -235,7 +235,8 @@ let function drawArrow(x, y, dirX, dirY, color, fill=false, scale=1) {
     arrowCommands = dirX == 0
       ? [[VECTOR_POLY, 0, 0, 25, dirY * 50, -25, dirY * 50]]
       : [[VECTOR_POLY, 0, 0, -dirX * 50, 25, -dirX * 50, -25]]
-  } else {
+  }
+  else {
     arrowCommands = dirX == 0 ? [
         [VECTOR_LINE, 0, dirY * 5, 25,  dirY * 55],
         [VECTOR_LINE, 0, dirY * 5, -25, dirY * 55]

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,8 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
-::SlotbarPresetsList <- class
-{
+::SlotbarPresetsList <- class {
   scene = null
   ownerWeak = null
   maxPresets = 0
@@ -15,8 +15,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   NULL_PRESET_DATA = { isEnabled = false, title = "" } //const
 
-  constructor(handler)
-  {
+  constructor(handler) {
     this.ownerWeak = handler.weakref()
     if (!checkObj(this.ownerWeak.scene))
       return
@@ -38,26 +37,22 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT)
   }
 
-  function destroy()
-  {
+  function destroy() {
     if (!this.isValid())
       return
     this.scene.getScene().replaceContentFromText(this.scene, "", 0, null)
     this.scene = null
   }
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.scene)
   }
 
-  function getCurCountry()
-  {
+  function getCurCountry() {
     return this.ownerWeak ? this.ownerWeak.getCurSlotbarCountry() : ""
   }
 
-  function getPresetsData()
-  {
+  function getPresetsData() {
     let curPresetIdx = this.getCurPresetIdx()
     let res = ::u.mapAdvanced(::slotbarPresets.list(this.getCurCountry()),
       @(l, idx, ...) {
@@ -69,9 +64,8 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     return res
   }
 
-  function update()
-  {
-    if(isSmallScreen)
+  function update() {
+    if (isSmallScreen)
       return
 
     let listObj = this.getListObj()
@@ -81,7 +75,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     let newPresetsData = this.getPresetsData()
     let curPresetIdx = this.getCurPresetIdx()
     local hasVisibleChanges = curPresetIdx != listObj.getValue()
-    for(local i = 0; i < this.maxPresets; i++)
+    for (local i = 0; i < this.maxPresets; i++)
       if (this.updatePresetObj(listObj.getChild(i), this.curPresetsData[i], newPresetsData[i]))
         hasVisibleChanges = true
 
@@ -94,8 +88,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     this.updateSizes(true)
   }
 
-  function updatePresetObj(obj, wasData, newData)
-  {
+  function updatePresetObj(obj, wasData, newData) {
     if (::u.isEqual(wasData, newData))
       return false
 
@@ -108,15 +101,13 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     return true
   }
 
-  function showObj(obj, needShow)
-  {
+  function showObj(obj, needShow) {
     obj.show(needShow)
     obj.enable(needShow)
   }
 
   _lastListWidth = 0
-  function updateSizes(needFullRecount = false)
-  {
+  function updateSizes(needFullRecount = false) {
     this.scene.getScene().applyPendingChanges(false)
     let listObj = this.getListObj()
     local availWidth = listObj.getSize()[0]
@@ -129,8 +120,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     //count all sizes
     let widthList = []
     local totalWidth = 0
-    for(local i = 0; i < this.maxPresets; i++)
-    {
+    for (local i = 0; i < this.maxPresets; i++) {
       local width = 0
       if (this.curPresetsData[i].isEnabled)
         width = listObj.getChild(i).getSize()[0]
@@ -140,9 +130,8 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
     //update all items visibility
     let curPresetIdx = this.getCurPresetIdx()
-    for(local i = this.maxPresets - 1; i >= 0; i--)
-      if (this.curPresetsData[i].isEnabled)
-      {
+    for (local i = this.maxPresets - 1; i >= 0; i--)
+      if (this.curPresetsData[i].isEnabled) {
         let isVisible = totalWidth <= availWidth || i == curPresetIdx
         this.showObj(listObj.getChild(i), isVisible)
         if (!isVisible)
@@ -150,37 +139,32 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       }
   }
 
-  function getCurPresetIdx() //current choosen preset
-  {
+  function getCurPresetIdx() { //current choosen preset
     return ::slotbarPresets.getCurrent(this.getCurCountry(), 0)
   }
 
-  function getSelPresetIdx() //selected preset in view
-  {
+  function getSelPresetIdx() { //selected preset in view
     let listObj = this.getListObj()
     if (!listObj)
       return this.getCurPresetIdx()
 
     let value = listObj.getValue()
-    if (value < 0 || value >= (listObj.childrenCount() -1)) //last index is button 'presets'
+    if (value < 0 || value >= (listObj.childrenCount() - 1)) //last index is button 'presets'
       return -1
     return value
   }
 
-  function isPresetChanged()
-  {
+  function isPresetChanged() {
     let idx = this.getSelPresetIdx()
     return idx != this.getCurPresetIdx()
   }
 
-  function applySelect()
-  {
+  function applySelect() {
     if (!::slotbarPresets.canLoad(true, this.getCurCountry()))
       return this.update()
 
     let idx = this.getSelPresetIdx()
-    if (idx < 0)
-    {
+    if (idx < 0) {
       this.update()
       return ::gui_choose_slotbar_preset(this.ownerWeak)
     }
@@ -192,22 +176,18 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     this.update()
   }
 
-  function onPresetChange()
-  {
+  function onPresetChange() {
     if ((this.ownerWeak?.getSlotbar().slotbarOninit ?? false) || !this.isPresetChanged())
       return
 
     this.checkChangePresetAndDo(this.applySelect)
   }
 
-  function checkChangePresetAndDo(action)
-  {
+  function checkChangePresetAndDo(action) {
     ::queues.checkAndStart(
-      Callback(function()
-      {
+      Callback(function() {
         ::g_squad_utils.checkSquadUnreadyAndDo(
-          Callback(function()
-          {
+          Callback(function() {
              if (!("beforeSlotbarChange" in this.ownerWeak))
                return action()
 
@@ -224,44 +204,36 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     )
   }
 
-  function onSlotsChoosePreset(_obj)
-  {
+  function onSlotsChoosePreset(_obj) {
     this.checkChangePresetAndDo(function () {
       ::gui_choose_slotbar_preset(this.ownerWeak)
     })
   }
 
-  function onEventSlotbarPresetLoaded(_p)
-  {
+  function onEventSlotbarPresetLoaded(_p) {
     this.update()
   }
 
-  function onEventSlotbarPresetsChanged(_p)
-  {
+  function onEventSlotbarPresetsChanged(_p) {
     this.update()
   }
 
-  function onEventVoiceChatOptionUpdated(_p)
-  {
+  function onEventVoiceChatOptionUpdated(_p) {
     this.updateSizes(true)
   }
 
-  function onEventClanChanged(_p)
-  {
+  function onEventClanChanged(_p) {
     this.updateSizes(true)
   }
 
-  function onEventSquadStatusChanged(_p)
-  {
-    this.scene.getScene().performDelayed(this, function()
-    {
+  function onEventSquadStatusChanged(_p) {
+    this.scene.getScene().performDelayed(this, function() {
       if (this.isValid())
         this.updateSizes()
     })
   }
 
-  function getListObj()
-  {
+  function getListObj() {
     if (!checkObj(this.scene))
       return null
     let obj = this.scene.findObject("slotbar-presetsList")
@@ -270,8 +242,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     return null
   }
 
-  function getPresetsButtonObj()
-  {
+  function getPresetsButtonObj() {
     if (this.scene == null)
       return null
     let obj = this.scene.findObject("btn_slotbar_presets")
@@ -284,8 +255,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
    * Returns list child object if specified preset is in slotbar
    * list or "Presets" button object if preset not found.
    */
-  function getListChildByPresetIdx(presetIdx)
-  {
+  function getListChildByPresetIdx(presetIdx) {
     let listObj = this.getListObj()
     if (listObj == null)
       return null

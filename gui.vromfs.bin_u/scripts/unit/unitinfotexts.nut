@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,8 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { round, fabs } = require("math")
 
-global enum bit_unit_status
-{
+global enum bit_unit_status {
   locked      = 1
   canResearch = 2
   inResearch  = 4
@@ -123,11 +123,9 @@ let function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transp
     return ""; //not found
 
   local role = unitRoleByName?[unit.name] ?? ""
-  if (role == "")
-  {
-    foreach(tag in unit.tags)
-      if (tag in unitRoleByTag)
-      {
+  if (role == "") {
+    foreach (tag in unit.tags)
+      if (tag in unitRoleByTag) {
         role = unitRoleByTag[tag]
         break
       }
@@ -145,7 +143,7 @@ let function getUnitBasicRole(unit) {
   if (!basicRoles || !basicRoles.len())
     return ""
 
-  foreach(tag in unit.tags)
+  foreach (tag in unit.tags)
     if (isInArray(tag, basicRoles))
       return getRoleName(tag)
   return getRoleName(basicRoles[0])
@@ -164,13 +162,11 @@ let function getUnitRoleIcon(source) {
   return unitRoleFontIcons?[role] ?? ""
 }
 
-let function getUnitTooltipImage(unit)
-{
+let function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
     return unit.customTooltipImage
 
-  switch (::get_es_unit_type(unit))
-  {
+  switch (::get_es_unit_type(unit)) {
     case ES_UNIT_TYPE_AIRCRAFT:       return $"ui/aircrafts/{unit.name}.ddsx"
     case ES_UNIT_TYPE_HELICOPTER:     return $"ui/aircrafts/{unit.name}.ddsx"
     case ES_UNIT_TYPE_TANK:           return $"ui/tanks/{unit.name}.ddsx"
@@ -180,8 +176,7 @@ let function getUnitTooltipImage(unit)
   return ""
 }
 
-let function getFullUnitRoleText(unit)
-{
+let function getFullUnitRoleText(unit) {
   let tags = unit?.tags
   if (tags == null)
     return ""
@@ -193,9 +188,8 @@ let function getFullUnitRoleText(unit)
   let basicRoles = basicUnitRoles?[::get_es_unit_type(unit)] ?? []
   local basicRole = ""
   let textsList = []
-  foreach(tag in tags)
-    if (tag.len()>5 && tag.slice(0, 5)=="type_")
-    {
+  foreach (tag in tags)
+    if (tag.len() > 5 && tag.slice(0, 5) == "type_") {
       if (!isInArray(tag, basicRoles))
         textsList.append(getRoleTextByTag(tag))
       else if (basicRole == "") {
@@ -211,35 +205,30 @@ let function getFullUnitRoleText(unit)
   return basicRole != "" ? getRoleTextByTag(basicRole) : ""
 }
 
-let function getChanceToMeetText(battleRating1, battleRating2)
-{
+let function getChanceToMeetText(battleRating1, battleRating2) {
   let brDiff = fabs(battleRating1.tofloat() - battleRating2.tofloat())
   local brData = null
-  foreach(data in chancesText)
+  foreach (data in chancesText)
     if (!brData
         || (data.brDiff <= brDiff && data.brDiff > brData.brDiff))
       brData = data
-  return brData? colorize(brData.color, loc(brData.text)) : ""
+  return brData ? colorize(brData.color, loc(brData.text)) : ""
 }
 
-let function getShipMaterialTexts(unitId)
-{
+let function getShipMaterialTexts(unitId) {
   let res = {}
   let blk = ::get_wpcost_blk()?[unitId ?? ""]?.Shop
   let parts = [ "hull", "superstructure" ]
-  foreach (part in parts)
-  {
+  foreach (part in parts) {
     let material  = blk?[part + "Material"]  ?? ""
     let thickness = blk?[part + "Thickness"] ?? 0.0
-    if (thickness && material)
-    {
+    if (thickness && material) {
       res[part + "Label"] <- loc("info/ship/part/" + part)
       res[part + "Value"] <- loc("armor_class/" + material + "/short", loc("armor_class/" + material)) +
         loc("ui/comma") + round(thickness) + " " + loc("measureUnits/mm")
     }
   }
-  if (res?.superstructureValue && res?.superstructureValue == res?.hullValue)
-  {
+  if (res?.superstructureValue && res?.superstructureValue == res?.hullValue) {
     res.hullLabel += " " + loc("clan/rankReqInfoCondType_and") + " " +
       ::g_string.utf8ToLower(res.superstructureLabel)
     res.rawdelete("superstructureLabel")
@@ -248,8 +237,7 @@ let function getShipMaterialTexts(unitId)
   return res
 }
 
-let function getUnitItemStatusText(bitStatus, isGroup = false)
-{
+let function getUnitItemStatusText(bitStatus, isGroup = false) {
   local statusText = ""
   if (bit_unit_status.locked & bitStatus)
     statusText = "locked"
@@ -278,8 +266,7 @@ let function getUnitItemStatusText(bitStatus, isGroup = false)
   return statusText
 }
 
-let function getUnitRarity(unit)
-{
+let function getUnitRarity(unit) {
   if (::isUnitDefault(unit))
     return "reserve"
   if (::isUnitSpecial(unit))

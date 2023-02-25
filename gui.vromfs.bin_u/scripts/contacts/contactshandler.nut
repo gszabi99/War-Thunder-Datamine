@@ -1,28 +1,31 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { parse_json } = require("json")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
-let { isAvailableFacebook } = require("%scripts/social/facebookStates.nut")
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
+let { is_chat_message_empty } = require("chat")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
 
-::ContactsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::ContactsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   searchText = ""
 
@@ -49,19 +52,17 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   searchGroupLastShowState = false
 
 
-  constructor(gui_scene, params = {})
-  {
+  constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
     ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     this.listNotPlayerChildsByGroup = {}
   }
 
-  function initScreen(obj, resetList = true)
-  {
+  function initScreen(obj, resetList = true) {
     if (checkObj(this.scene) && this.scene.isEqual(obj))
       return
 
-    foreach(group in ::contacts_groups)
+    foreach (group in ::contacts_groups)
       ::contacts[group].sort(::sortContacts)
 
     this.sceneShow(false)
@@ -73,20 +74,17 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.closeSearchGroup()
   }
 
-  function isValid()
-  {
+  function isValid() {
     return true
   }
 
-  function getControlsAllowMask()
-  {
+  function getControlsAllowMask() {
     if (!this.isContactsWindowActive() || !this.scene.isEnabled())
       return CtrlsInGui.CTRL_ALLOW_FULL
     return this.wndControlsAllowMask
   }
 
-  function updateControlsAllowMask()
-  {
+  function updateControlsAllowMask() {
     if (!::last_contacts_scene_show)
       return
 
@@ -100,32 +98,27 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.switchControlsAllowMask(mask)
   }
 
-  function switchScene(obj, newOwner = null, onlyShow = false)
-  {
-    if (!checkObj(obj) || (checkObj(this.scene) && this.scene.isEqual(obj)))
-    {
+  function switchScene(obj, newOwner = null, onlyShow = false) {
+    if (!checkObj(obj) || (checkObj(this.scene) && this.scene.isEqual(obj))) {
       if (!onlyShow || !::last_contacts_scene_show)
         this.sceneShow()
-    } else
-    {
+    }
+    else {
       ::contacts_prev_scenes.append({ scene = this.scene, show = ::last_contacts_scene_show, owner = this.owner })
       this.owner = newOwner
       this.initScreen(obj, false)
     }
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.sceneShow(false)
   }
 
-  function checkScene()
-  {
+  function checkScene() {
     if (checkObj(this.scene))
       return true
 
-    for(local i=::contacts_prev_scenes.len()-1; i>=0; i--)
-    {
+    for (local i = ::contacts_prev_scenes.len() - 1; i >= 0; i--) {
       let prevScene = ::contacts_prev_scenes[i].scene
       if (checkObj(prevScene)) {
         let handler = ::contacts_prev_scenes[i].owner
@@ -137,20 +130,20 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
         this.sceneChanged = true
         this.sceneShow(::contacts_prev_scenes[i].show || ::last_contacts_scene_show)
         return true
-      } else
+      }
+      else
         ::contacts_prev_scenes.remove(i)
     }
     this.scene = null
     return false
   }
 
-  function sceneShow(show=null)
-  {
+  function sceneShow(show = null) {
     if (!this.checkScene())
       return
 
     let wasVisible = this.scene.isVisible()
-    if (show==null)
+    if (show == null)
       show = !wasVisible
     if (!show)
       this.loadSizes()
@@ -158,11 +151,9 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.scene.show(show)
     this.scene.enable(show)
     ::last_contacts_scene_show = show
-    if (show)
-    {
+    if (show) {
       this.validateCurGroup()
-      if (!this.reloadSceneData())
-      {
+      if (!this.reloadSceneData()) {
         this.setSavedSizes()
         this.fillContactsList()
         this.closeSearchGroup()
@@ -174,10 +165,8 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.updateControlsAllowMask()
   }
 
-  function loadSizes()
-  {
-    if (this.isContactsWindowActive())
-    {
+  function loadSizes() {
+    if (this.isContactsWindowActive()) {
       ::contacts_sizes = {}
       let obj = this.scene.findObject("contacts_wnd")
       ::contacts_sizes.pos <- obj.getPosRC()
@@ -187,18 +176,14 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }
 
-  function setSavedSizes()
-  {
-    if (!::contacts_sizes)
-    {
+  function setSavedSizes() {
+    if (!::contacts_sizes) {
       let data = ::loadLocalByScreenSize("contacts_sizes")
-      if (data)
-      {
-        ::contacts_sizes = ::parse_json(data)
+      if (data) {
+        ::contacts_sizes = parse_json(data)
         if (!("pos" in ::contacts_sizes) || !("size" in ::contacts_sizes))
           ::contacts_sizes = null
-        else
-        {
+        else {
           ::contacts_sizes.pos[0] = ::contacts_sizes.pos[0].tointeger()
           ::contacts_sizes.pos[1] = ::contacts_sizes.pos[1].tointeger()
           ::contacts_sizes.size[0] = ::contacts_sizes.size[0].tointeger()
@@ -207,31 +192,28 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       }
     }
 
-    if (this.isContactsWindowActive() && ::contacts_sizes)
-    {
+    if (this.isContactsWindowActive() && ::contacts_sizes) {
       let obj = this.scene.findObject("contacts_wnd")
-      if (!obj) return
+      if (!obj)
+        return
 
       let rootSize = this.guiScene.getRoot().getSize()
-      for(local i=0; i<=1; i++) //pos chat in screen
-        if (::contacts_sizes.pos[i] < topMenuBorders[i][0]*rootSize[i])
-          ::contacts_sizes.pos[i] = (topMenuBorders[i][0]*rootSize[i]).tointeger()
-        else
-          if (::contacts_sizes.pos[i]+::contacts_sizes.size[i] > topMenuBorders[i][1]*rootSize[i])
-            ::contacts_sizes.pos[i] = (topMenuBorders[i][1]*rootSize[i] - ::contacts_sizes.size[i]).tointeger()
+      for (local i = 0; i <= 1; i++) //pos chat in screen
+        if (::contacts_sizes.pos[i] < topMenuBorders[i][0] * rootSize[i])
+          ::contacts_sizes.pos[i] = (topMenuBorders[i][0] * rootSize[i]).tointeger()
+        else if (::contacts_sizes.pos[i] + ::contacts_sizes.size[i] > topMenuBorders[i][1] * rootSize[i])
+            ::contacts_sizes.pos[i] = (topMenuBorders[i][1] * rootSize[i] - ::contacts_sizes.size[i]).tointeger()
 
       obj.pos = ::contacts_sizes.pos[0] + ", " + ::contacts_sizes.pos[1]
       obj.size = ::contacts_sizes.size[0] + ", " + ::contacts_sizes.size[1]
     }
   }
 
-  function reloadSceneData()
-  {
+  function reloadSceneData() {
     if (!this.checkScene())
       return false
 
-    if (!this.scene.findObject("contacts_wnd"))
-    {
+    if (!this.scene.findObject("contacts_wnd")) {
       this.sceneChanged = true
       this.guiScene = this.scene.getScene()
       this.guiScene.replaceContent(this.scene, "%gui/contacts/contacts.blk", this)
@@ -243,21 +225,17 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     return false
   }
 
-  function onUpdate(_obj, dt)
-  {
-    if (::last_contacts_scene_show)
-    {
+  function onUpdate(_obj, dt) {
+    if (::last_contacts_scene_show) {
       this.updateSizesTimer -= dt
-      if (this.updateSizesTimer <= 0)
-      {
+      if (this.updateSizesTimer <= 0) {
         this.updateSizesTimer = this.updateSizesDelay
         this.loadSizes()
       }
     }
   }
 
-  function needRebuildPlayersList(gName, listObj)
-  {
+  function needRebuildPlayersList(gName, listObj) {
     if (gName == ::EPLX_SEARCH)
       return true //this group often refilled by other objects
     let count = ::contacts[gName].len() + getTblValue(gName, this.listNotPlayerChildsByGroup, -100000)
@@ -266,12 +244,12 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
   needShowContactHoverButtons = @() !::show_console_buttons
 
-  function buildPlayersList(gName, _showOffline=true)
-  {
+  function buildPlayersList(gName, _showOffline = true) {
     let playerListView = {
       playerListItem = []
       playerButton = []
       needHoverButtons = this.needShowContactHoverButtons()
+      hasMenuChatPrivate = hasMenuChatPrivate.value
     }
     this.listNotPlayerChildsByGroup[gName] <- 0
     if (gName != this.searchGroup) {
@@ -282,28 +260,23 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       })
       this.listNotPlayerChildsByGroup[gName] = 2
     }
-    foreach(idx, contactData in ::contacts[gName])
-    {
+    foreach (idx, contactData in ::contacts[gName]) {
       playerListView.playerListItem.append({
         blockID = "player_" + gName + "_" + idx
         contactUID = contactData.uid
         pilotIcon = contactData.pilotIcon
       })
     }
-    if (gName == EPL_FRIENDLIST && ::isInMenu())
-    {
+    if (gName == EPL_FRIENDLIST && ::isInMenu()) {
       if (hasFeature("Invites"))
         playerListView.playerButton.append(this.createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend.png", "onInviteFriend"))
-      if (isAvailableFacebook())
-        playerListView.playerButton.append(this.createPlayerButtonView("btnFacebookFriendsAdd", "#ui/gameuiskin#btn_facebook_friends_add.png", "onFacebookFriendsAdd"))
     }
 
     this.listNotPlayerChildsByGroup[gName] = this.listNotPlayerChildsByGroup[gName] + playerListView.playerButton.len()
     return ::handyman.renderCached(("%gui/contacts/playerList.tpl"), playerListView)
   }
 
-  function createPlayerButtonView(gId, gIcon, callback)
-  {
+  function createPlayerButtonView(gId, gIcon, callback) {
     if (!gId || gId == "")
       return {}
 
@@ -316,14 +289,12 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }
 
-  function updatePlayersList(gName)
-  {
+  function updatePlayersList(gName) {
     local sel = -1
-    let selUid = (this.curPlayer && this.curGroup==gName)? this.curPlayer.uid : ""
+    let selUid = (this.curPlayer && this.curGroup == gName) ? this.curPlayer.uid : ""
 
     let gObj = this.scene.findObject("contacts_groups")
-    foreach(fIdx, f in ::contacts[gName])
-    {
+    foreach (fIdx, f in ::contacts[gName]) {
       let obj = gObj.findObject("player_" + gName + "_" + fIdx)
       if (!checkObj(obj))
         continue
@@ -332,8 +303,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       let contactNameObj = obj.findObject("contactName")
       contactNameObj.setValue(fullName)
       let contactPresenceObj = obj.findObject("contactPresence")
-      if (checkObj(contactPresenceObj))
-      {
+      if (checkObj(contactPresenceObj)) {
         contactPresenceObj.setValue(f.getPresenceText())
         contactPresenceObj["color-factor"] = f.presence.iconTransparency
       }
@@ -350,14 +320,12 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     return sel
   }
 
-  function fillPlayersList(gName)
-  {
+  function fillPlayersList(gName) {
     let listObj = this.scene.findObject("contacts_groups").findObject("group_" + gName)
     if (!listObj)
       return
 
-    if (this.needRebuildPlayersList(gName, listObj))
-    {
+    if (this.needRebuildPlayersList(gName, listObj)) {
       let data = this.buildPlayersList(gName)
       this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
     }
@@ -366,10 +334,8 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     return this.updatePlayersList(gName)
   }
 
-  function updateContactButtonsForGroup(gName)
-  {
-    foreach (idx, contact in ::contacts[gName])
-    {
+  function updateContactButtonsForGroup(gName) {
+    foreach (idx, contact in ::contacts[gName]) {
       let contactObject = this.scene.findObject(format("player_%s_%s", gName.tostring(), idx.tostring()))
       contactObject.contact_buttons_contact_uid = contact.uid
 
@@ -390,20 +356,19 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       ::g_world_war.inviteToWwOperation(this.curPlayer.uid)
   }
 
-  function updateContactButtonsVisibility(contact, contact_buttons_holder)
-  {
+  function updateContactButtonsVisibility(contact, contact_buttons_holder) {
     if (!this.checkScene())
       return
 
-    let isFriend = contact? contact.isInFriendGroup() : false
-    let isBlock = contact? contact.isInBlockGroup() : false
-    let isMe = contact? contact.isMe() : false
+    let isFriend = contact ? contact.isInFriendGroup() : false
+    let isBlock = contact ? contact.isInBlockGroup() : false
+    let isMe = contact ? contact.isMe() : false
     let contactName = contact?.name ?? ""
 
     let isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
     let canBlock = !isPlayerFromXboxOne
-    let canChat = contact? contact.canChat() : true
-    let canInvite = contact? contact.canInvite() : true
+    let canChat = contact ? contact.canChat() : true
+    let canInvite = contact ? contact.canInvite() : true
     let canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
     let canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
                                      || platformModule.isPlayerFromPS4(contactName)
@@ -436,7 +401,6 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       this.updateButtonInviteText(btnObj, contact.uidInt64)
 
     ::showBtn("btn_usercard", hasFeature("UserCards"), contact_buttons_holder)
-    ::showBtn("btn_facebookFriends", isAvailableFacebook() && !platformModule.isPlatformSony, contact_buttons_holder)
     ::showBtn("btn_squadInvite_bottom", false, contact_buttons_holder)
   }
 
@@ -466,47 +430,39 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }"
 
-  function getIndexOfGroup(group_name)
-  {
+  function getIndexOfGroup(group_name) {
     let contactsGroups = this.scene.findObject("contacts_groups")
-    for (local idx = contactsGroups.childrenCount() - 1; idx >= 0; --idx)
-    {
+    for (local idx = contactsGroups.childrenCount() - 1; idx >= 0; --idx) {
       let childObject = contactsGroups.getChild(idx)
       let groupListObject = childObject.getChild(childObject.childrenCount() - 1)
-      if (groupListObject?.id == "group_" + group_name)
-      {
+      if (groupListObject?.id == "group_" + group_name) {
         return idx
       }
     }
     return -1
   }
 
-  function getGroupByName(group_name)
-  {
+  function getGroupByName(group_name) {
     let contactsGroups = this.scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups))
-    {
+    if (checkObj(contactsGroups)) {
       let groupListObject = contactsGroups.findObject("group_" + group_name)
       return groupListObject.getParent()
     }
     return null
   }
 
-  function setSearchGroupVisibility(value)
-  {
+  function setSearchGroupVisibility(value) {
     local groupObject = this.getGroupByName(this.searchGroup)
     groupObject.show(value)
     groupObject.enable(value)
     this.searchGroupLastShowState = value
   }
 
-  function onSearchEditBoxActivate(obj)
-  {
+  function onSearchEditBoxActivate(obj) {
     this.doSearch(obj)
   }
 
-  function doSearch(editboxObj = null)
-  {
+  function doSearch(editboxObj = null) {
     if (!editboxObj)
       editboxObj = this.scene.findObject("search_edit_box")
     if (!checkObj(editboxObj))
@@ -518,11 +474,9 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       return
 
     let contactsGroups = this.scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups))
-    {
+    if (checkObj(contactsGroups)) {
       let searchGroupIndex = this.getIndexOfGroup(this.searchGroup)
-      if (searchGroupIndex != -1)
-      {
+      if (searchGroupIndex != -1) {
         this.setSearchGroupVisibility(true)
         contactsGroups.setValue(searchGroupIndex)
         this.onSearch(null)
@@ -530,10 +484,8 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }
 
-  function onSearchEditBoxCancelEdit(obj)
-  {
-    if (this.curGroup == this.searchGroup)
-    {
+  function onSearchEditBoxCancelEdit(obj) {
+    if (this.curGroup == this.searchGroup) {
       this.closeSearchGroup()
       return
     }
@@ -544,14 +496,12 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       obj.setValue("")
   }
 
-  function onSearchEditBoxChangeValue(obj)
-  {
+  function onSearchEditBoxChangeValue(obj) {
     this.setSearchText(platformModule.getPlayerName(obj.getValue()), false)
     this.applyContactFilter()
   }
 
-  function onContactsFocus(obj)
-  {
+  function onContactsFocus(obj) {
     let isValidCurScene = checkObj(this.scene)
     if (!isValidCurScene) {
       this.curHoverObjId = null
@@ -566,28 +516,23 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.setSearchAdviceVisibility(!::show_console_buttons && this.curHoverObjId == "search_edit_box")
   }
 
-  function setSearchText(search_text, set_in_edit_box = true)
-  {
+  function setSearchText(search_text, set_in_edit_box = true) {
     this.searchText = ::g_string.utf8ToLower(search_text)
-    if (set_in_edit_box)
-    {
+    if (set_in_edit_box) {
       let searchEditBox = this.scene.findObject("search_edit_box")
-      if (checkObj(searchEditBox))
-      {
+      if (checkObj(searchEditBox)) {
         searchEditBox.setValue(search_text)
       }
     }
   }
 
-  function applyContactFilter()
-  {
+  function applyContactFilter() {
     if (this.curGroup == ""
         || this.curGroup == this.searchGroup
         || !(this.curGroup in ::contacts))
       return
 
-    foreach (idx, contact_data in ::contacts[this.curGroup])
-    {
+    foreach (idx, contact_data in ::contacts[this.curGroup]) {
       let contactObjectName = "player_" + this.curGroup + "_" + idx
       let contactObject = this.scene.findObject(contactObjectName)
       if (!checkObj(contactObject))
@@ -601,19 +546,18 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }
 
-  function fillContactsList()
-  {
+  function fillContactsList() {
     if (!this.checkScene())
       return
 
     let gObj = this.scene.findObject("contacts_groups")
-    if (!gObj) return
+    if (!gObj)
+      return
     this.guiScene.setUpdatesEnabled(false, false)
 
     local data = ""
     let groups_array = this.getContactsGroups()
-    foreach(_gIdx, gName in groups_array)
-    {
+    foreach (_gIdx, gName in groups_array) {
       ::contacts[gName].sort(::sortContacts)
       local activateEvent = "onPlayerMsg"
       if (::show_console_buttons || !isChatEnabled())
@@ -624,8 +568,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
         "group_" + gName, gData, activateEvent)
     }
     this.guiScene.replaceContentFromText(gObj, data, data.len(), this)
-    foreach (gName in groups_array)
-    {
+    foreach (gName in groups_array) {
       this.updateContactButtonsForGroup(gName)
       if (gName == this.searchGroup)
         this.setSearchGroupVisibility(this.searchGroupLastShowState)
@@ -634,8 +577,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.applyContactFilter()
 
     let selected = [-1, -1]
-    foreach(gIdx, gName in groups_array)
-    {
+    foreach (gIdx, gName in groups_array) {
       if (gName == this.searchGroup && !this.searchGroupLastShowState)
         continue
 
@@ -652,7 +594,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
     if (::contacts[groups_array[selected[0]]].len() > 0)
       gObj.findObject("group_" + groups_array[selected[0]]).setValue(
-              (selected[1]>=0)? selected[1] : 0)
+              (selected[1] >= 0) ? selected[1] : 0)
 
     this.guiScene.setUpdatesEnabled(true, true)
 
@@ -664,10 +606,10 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     let gObj = this.scene.findObject("contacts_groups")
     let groups = this.getContactsGroups()
 
-    if(groups.len() != gObj.childrenCount())
+    if (groups.len() != gObj.childrenCount())
       return true
 
-    for(local i = 0; i < groups.len(); i++){
+    for (local i = 0; i < groups.len(); i++) {
       local groupId = $"group_{groups[i]}"
       let curGroupObj = gObj.getChild(i).findObject(groupId)
       if (!(curGroupObj?.isValid() ?? false))
@@ -676,19 +618,16 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     return false
   }
 
-  function updateContactsGroup(groupName)
-  {
+  function updateContactsGroup(groupName) {
     if (!this.isContactsWindowActive())
       return
 
-    if(this.isGroupListChanged())
-    {
+    if (this.isGroupListChanged()) {
       this.fillContactsList()
       return
     }
 
-    if (groupName && !(groupName in ::contacts))
-    {
+    if (groupName && !(groupName in ::contacts)) {
       if (this.curGroup == groupName)
         this.curGroup = ""
 
@@ -698,33 +637,28 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       return
     }
 
-    if (groupName && groupName in ::contacts)
-    {
+    if (groupName && groupName in ::contacts) {
       ::contacts[groupName].sort(::sortContacts)
       this.fillPlayersList(groupName)
     }
     else
-      foreach(group in this.getContactsGroups())
-        if (group in ::contacts)
-        {
+      foreach (group in this.getContactsGroups())
+        if (group in ::contacts) {
           ::contacts[group].sort(::sortContacts)
           this.fillPlayersList(group)
         }
   }
 
-  function onEventContactsGroupUpdate(params)
-  {
+  function onEventContactsGroupUpdate(params) {
     this.validateCurGroup()
     this.updateContactsGroup(params?.groupName)
   }
 
-  function onEventContactsGroupAdd(_)
-  {
+  function onEventContactsGroupAdd(_) {
     this.fillContactsList()
   }
 
-  function onEventModalWndDestroy(_params)
-  {
+  function onEventModalWndDestroy(_params) {
     this.checkScene()
   }
 
@@ -737,15 +671,13 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       ::move_mouse_on_child(groupsObj.getChild(value), 0) //header
   }
 
-  function onGroupSelectImpl(obj)
-  {
+  function onGroupSelectImpl(obj) {
     this.selectItemInGroup(obj, false)
     this.applyContactFilter()
   }
 
   prevGroup = -1
-  function onGroupSelect(obj)
-  {
+  function onGroupSelect(obj) {
     this.onGroupSelectImpl(obj)
     if (!::is_mouse_last_time_used() && this.prevGroup != obj.getValue()) {
       this.guiScene.applyPendingChanges(false)
@@ -757,7 +689,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   function selectHoveredGroup() {
     let listObj = this.scene.findObject("contacts_groups")
     let total = listObj.childrenCount()
-    for(local i = 0; i < total; i++) {
+    for (local i = 0; i < total; i++) {
       let child = listObj.getChild(i)
       if (!child.isValid() || !child.isHovered())
         continue
@@ -767,26 +699,22 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }
 
-  function onGroupActivate(obj)
-  {
+  function onGroupActivate(obj) {
     this.selectItemInGroup(obj, true)
     this.applyContactFilter()
   }
 
-  function onGroupCancel(_obj)
-  {
+  function onGroupCancel(_obj) {
     this.goBack()
   }
 
   onPlayerCancel = @(_obj) ::is_mouse_last_time_used() ? this.goBack() : this.selectCurContactGroup()
 
-  function onSearchButtonClick(_obj)
-  {
+  function onSearchButtonClick(_obj) {
     this.doSearch()
   }
 
-  function onBtnSelect(_obj)
-  {
+  function onBtnSelect(_obj) {
     if (!this.checkScene())
       return
 
@@ -794,16 +722,14 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       this.selectHoveredGroup()
     else if (this.curHoverObjId == "search_edit_box")
       this.doSearch()
-    else
-    {
+    else {
       let groupObj = this.scene.findObject("group_" + this.curGroup)
       if (groupObj?.isValid())
         this.onPlayerMenu(groupObj)
     }
   }
 
-  function selectItemInGroup(obj, switchFocus = false)
-  {
+  function selectItemInGroup(obj, switchFocus = false) {
     let groups = this.getContactsGroups()
     let value = obj.getValue()
     if (!(value in groups))
@@ -818,7 +744,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     if (::contacts[this.curGroup].len() == 0)
       return
 
-    if (listObj.getValue()<0 && ::contacts[this.curGroup].len() > 0)
+    if (listObj.getValue() < 0 && ::contacts[this.curGroup].len() > 0)
       listObj.setValue(0)
 
     this.onPlayerSelect(listObj)
@@ -828,9 +754,9 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       ::move_mouse_on_child(listObj, listObj.getValue())
   }
 
-  function onPlayerSelect(obj)
-  {
-    if (!obj) return
+  function onPlayerSelect(obj) {
+    if (!obj)
+      return
 
     let value = obj.getValue()
     if ((this.curGroup in ::contacts) && (value in ::contacts[this.curGroup]))
@@ -839,8 +765,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       this.curPlayer = null
   }
 
-  function onPlayerMenu(obj)
-  {
+  function onPlayerMenu(obj) {
     let value = obj.getValue()
     if (value < 0 || value >= obj.childrenCount())
       return
@@ -857,8 +782,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       this.sendClickButton(childObj)
   }
 
-  function sendClickButton(obj)
-  {
+  function sendClickButton(obj) {
     let clickName = obj?.on_click
     if (!clickName || !(clickName in this))
       return
@@ -866,8 +790,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this[clickName]()
   }
 
-  function onPlayerRClick(obj)
-  {
+  function onPlayerRClick(obj) {
     if (!this.checkScene() || !checkObj(obj))
       return
 
@@ -877,8 +800,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       return
 
     let idx = id.slice(prefix.len()).tointeger()
-    if ((this.curGroup in ::contacts) && (idx in ::contacts[this.curGroup]))
-    {
+    if ((this.curGroup in ::contacts) && (idx in ::contacts[this.curGroup])) {
       let listObj = this.scene.findObject("group_" + this.curGroup)
       if (!listObj)
         return
@@ -889,23 +811,19 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
   }
 
-  function onCloseSearchGroupClicked(_obj)
-  {
+  function onCloseSearchGroupClicked(_obj) {
     this.closeSearchGroup()
   }
 
-  function closeSearchGroup()
-  {
+  function closeSearchGroup() {
     if (!this.checkScene())
       return
 
     let contactsGroups = this.scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups))
-    {
+    if (checkObj(contactsGroups)) {
       this.setSearchGroupVisibility(false)
       let searchGroupIndex = this.getIndexOfGroup(this.searchGroup)
-      if (contactsGroups.getValue() == searchGroupIndex)
-      {
+      if (contactsGroups.getValue() == searchGroupIndex) {
         this.setSearchText("")
         let friendsGroupIndex = this.getIndexOfGroup(EPL_FRIENDLIST)
         contactsGroups.setValue(friendsGroupIndex)
@@ -914,22 +832,18 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.applyContactFilter()
   }
 
-  function setSearchAdviceVisibility(value)
-  {
-    foreach (_idx, groupName in this.getContactsGroups())
-    {
+  function setSearchAdviceVisibility(value) {
+    foreach (_idx, groupName in this.getContactsGroups()) {
       let searchAdviceID = "group_" + groupName + "_search_advice"
       let searchAdviceObject = this.scene.findObject(searchAdviceID)
-      if (checkObj(searchAdviceObject))
-      {
+      if (checkObj(searchAdviceObject)) {
         searchAdviceObject.show(value)
         searchAdviceObject.enable(value)
       }
     }
   }
 
-  function showCurPlayerRClickMenu(position = null)
-  {
+  function showCurPlayerRClickMenu(position = null) {
     playerContextMenu.showMenu(this.curPlayer, this,
       {
         position = position
@@ -941,20 +855,17 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       })
   }
 
-  function isContactsWindowActive()
-  {
+  function isContactsWindowActive() {
     return this.checkScene() && ::last_contacts_scene_show;
   }
 
-  function updateButtonInviteText(btnObj, uid)
-  {
+  function updateButtonInviteText(btnObj, uid) {
     btnObj.tooltip = ::g_squad_manager.hasApplicationInMySquad(uid)
         ? loc("squad/accept_membership")
         : loc("squad/invite_player")
   }
 
-  function updateConsoleButtons()
-  {
+  function updateConsoleButtons() {
     if (!this.checkScene())
       return
 
@@ -970,19 +881,12 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
         : "contacts/choosePlayer"))
   }
 
-  function onFacebookFriendsAdd()
-  {
-    this.onFacebookLoginAndAddFriends()
-  }
-
-  function editPlayerInList(obj, listName, add)
-  {
+  function editPlayerInList(obj, listName, add) {
     this.updateCurPlayer(obj)
     ::editContactMsgBox(this.curPlayer, listName, add)
   }
 
-  function updateCurPlayer(button_object)
-  {
+  function updateCurPlayer(button_object) {
     if (!checkObj(button_object))
       return
 
@@ -1006,28 +910,23 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     listObject.setValue(idx)
   }
 
-  function onFriendAdd(obj)
-  {
+  function onFriendAdd(obj) {
     this.editPlayerInList(obj, EPL_FRIENDLIST, true)
   }
 
-  function onFriendRemove(obj)
-  {
+  function onFriendRemove(obj) {
     this.editPlayerInList(obj, EPL_FRIENDLIST, false)
   }
 
-  function onBlacklistAdd(obj)
-  {
+  function onBlacklistAdd(obj) {
     this.editPlayerInList(obj, EPL_BLOCKLIST, true)
   }
 
-  function onBlacklistRemove(obj)
-  {
+  function onBlacklistRemove(obj) {
     this.editPlayerInList(obj, EPL_BLOCKLIST, false)
   }
 
-  function onPlayerMsg(obj)
-  {
+  function onPlayerMsg(obj) {
     this.updateCurPlayer(obj)
     if (!this.curPlayer || !this.owner)
       return
@@ -1035,8 +934,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     ::openChatPrivate(this.curPlayer.name, this.owner)
   }
 
-  function onSquadInvite(obj)
-  {
+  function onSquadInvite(obj) {
     this.updateCurPlayer(obj)
 
     if (!isMultiplayerPrivilegeAvailable.value) {
@@ -1061,29 +959,26 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       ::g_squad_manager.inviteToSquad(uid, name)
   }
 
-  function onUsercard(obj)
-  {
+  function onUsercard(obj) {
     this.updateCurPlayer(obj)
     if (this.curPlayer)
       ::gui_modal_userCard(this.curPlayer)
   }
 
-  function onCancelSearchEdit(obj)
-  {
-    if (!obj) return
+  function onCancelSearchEdit(obj) {
+    if (!obj)
+      return
 
     let value = obj.getValue()
-    if (!value || value=="")
-    {
+    if (!value || value == "") {
       if (::show_console_buttons)
         this.onPlayerCancel(obj)
       else
         this.goBack()
-    } else
-    {
+    }
+    else {
       obj.setValue("")
-      if (this.searchShowDefaultOnReset)
-      {
+      if (this.searchShowDefaultOnReset) {
         this.fillDefaultSearchList()
         this.updateSearchList()
       }
@@ -1091,22 +986,19 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     this.searchShowNotFound = false
   }
 
-  function getSearchObj()
-  {
+  function getSearchObj() {
     return this.checkScene() ? this.scene.findObject("search_edit_box") : null
   }
 
-  function onSearch(_obj)
-  {
+  function onSearch(_obj) {
     let sObj = this.getSearchObj()
-    if (!sObj || this.searchInProgress) return
+    if (!sObj || this.searchInProgress)
+      return
     local value = sObj.getValue()
     if (!value || value == "*")
       return
-    if (::is_chat_message_empty(value))
-    {
-      if (this.searchShowDefaultOnReset)
-      {
+    if (is_chat_message_empty(value)) {
+      if (this.searchShowDefaultOnReset) {
         this.fillDefaultSearchList()
         this.updateSearchList()
       }
@@ -1120,8 +1012,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     searchGroupActiveTextObject.setValue($"{searchGroupText}: {value}")
 
     let taskId = ::find_nicks_by_prefix(value, this.maxSearchPlayers, true)
-    if (taskId >= 0)
-    {
+    if (taskId >= 0) {
       this.searchInProgress = true
       ::contacts[this.searchGroup] <- []
       this.updateSearchList()
@@ -1129,20 +1020,17 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     ::g_tasker.addTask(taskId, null, Callback(this.onSearchCb, this))
   }
 
-  function onSearchCb()
-  {
+  function onSearchCb() {
     this.searchInProgress = false
 
-    local searchRes = ::DataBlock()
+    local searchRes = DataBlock()
     searchRes = ::get_nicks_find_result_blk()
     ::contacts[this.searchGroup] <- []
 
     local brokenData = false
-    for (local i = 0; i < searchRes.paramCount(); i++)
-    {
+    for (local i = 0; i < searchRes.paramCount(); i++) {
       let contact = ::getContact(searchRes.getParamName(i), searchRes.getParamValue(i))
-      if (contact)
-      {
+      if (contact) {
         if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name))
           ::contacts[this.searchGroup].append(contact)
       }
@@ -1150,8 +1038,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
         brokenData = true
     }
 
-    if (brokenData)
-    {
+    if (brokenData) {
       let errText = "broken result on find_nicks_by_prefix cb: \n" + toString(searchRes)
       ::script_net_assert_once("broken searchCb data", errText)
     }
@@ -1161,8 +1048,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       ::move_mouse_on_child_by_value(this.scene.findObject("group_" + this.searchGroup))
   }
 
-  function updateSearchList()
-  {
+  function updateSearchList() {
     if (!this.checkScene())
       return
 
@@ -1175,69 +1061,58 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     local sel = -1
     if (::contacts[this.searchGroup].len() > 0)
       sel = this.fillPlayersList(this.searchGroup)
-    else
-    {
+    else {
       local data = ""
       if (this.searchInProgress)
         data = "animated_wait_icon { pos:t='0.5(pw-w),0.03sh'; position:t='absolute'; background-rotation:t='0' }"
       else if (this.searchShowNotFound)
         data = "textAreaCentered { text:t='#contacts/searchNotFound'; enable:t='no' }"
-      else
-      {
+      else {
         this.fillDefaultSearchList()
         sel = this.fillPlayersList(this.searchGroup)
         data = null
       }
 
-      if (data)
-      {
+      if (data) {
         this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
         this.searchShowNotFound = true
       }
     }
     this.guiScene.setUpdatesEnabled(true, true)
 
-    if (this.curGroup == this.searchGroup)
-    {
+    if (this.curGroup == this.searchGroup) {
       if (::contacts[this.searchGroup].len() > 0)
-        listObj.setValue(sel>0? sel : 0)
+        listObj.setValue(sel > 0 ? sel : 0)
       this.onPlayerSelect(listObj)
     }
   }
 
-  function fillDefaultSearchList()
-  {
+  function fillDefaultSearchList() {
     ::contacts[this.searchGroup] <- []
   }
 
-  function onInviteFriend()
-  {
+  function onInviteFriend() {
     showViralAcquisitionWnd()
   }
 
-  function onEventContactsUpdated(_params)
-  {
+  function onEventContactsUpdated(_params) {
     this.updateContactsGroup(null)
   }
 
-  function onEventSquadStatusChanged(_p)
-  {
+  function onEventSquadStatusChanged(_p) {
     this.updateContactsGroup(null)
   }
 
-  function validateCurGroup()
-  {
+  function validateCurGroup() {
     if (!(this.curGroup in ::contacts))
       this.curGroup = ""
   }
 
-  function onEventActiveHandlersChanged(_p)
-  {
+  function onEventActiveHandlersChanged(_p) {
     this.checkActiveScene()
   }
 
-  function checkActiveScene()
-  {
+  function checkActiveScene() {
     if (!checkObj(this.scene) || this.owner == null) {
       this.checkScene()
       return

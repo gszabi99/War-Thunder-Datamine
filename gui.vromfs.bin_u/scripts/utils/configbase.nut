@@ -1,17 +1,18 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let DataBlock = require("DataBlock")
 
-let class ConfigBase
-{
+let class ConfigBase {
   //main params to set in constructor
   id = ""
   isActual = null // function() { return true }
   requestUpdate = null  //function() { return -1 }
-  getImpl = null //function() { return ::DataBlock() }
+  getImpl = null //function() { return DataBlock() }
   cbName = "ConfigUpdate"
   onConfigUpdate = null //function()
   needScriptedCache = false
@@ -26,9 +27,8 @@ let class ConfigBase
   errorCbList = null
   cache = null
 
-  constructor(params)
-  {
-    foreach(key, value in params)
+  constructor(params) {
+    foreach (key, value in params)
       if (key in this)
         this[key] = value
 
@@ -36,20 +36,17 @@ let class ConfigBase
       this.isActual = function() { return true }
     if (!this.requestUpdate)
       this.requestUpdate = function() { return -1 }
-    if (!this.getImpl)
-    {
+    if (!this.getImpl) {
       assert(false, "Configs: Not exist 'get' function in config " + this.id)
-      this.getImpl = function() { return ::DataBlock() }
+      this.getImpl = function() { return DataBlock() }
     }
     this.cbList = []
     this.errorCbList = []
   }
 
-  function get()
-  {
+  function get() {
     this.checkUpdate()
-    if (this.needScriptedCache)
-    {
+    if (this.needScriptedCache) {
       if (!this.cache)
         this.cache = this.getImpl()
       return this.cache
@@ -57,10 +54,8 @@ let class ConfigBase
     return this.getImpl()
   }
 
-  function checkUpdate(cb = null, onErrorCb = null, showProgressBox = false, fireCbWhenNoRequest = true)
-  {
-    if (this.isActual())
-    {
+  function checkUpdate(cb = null, onErrorCb = null, showProgressBox = false, fireCbWhenNoRequest = true) {
+    if (this.isActual()) {
       if (fireCbWhenNoRequest)
         cb?()
       return true
@@ -70,34 +65,30 @@ let class ConfigBase
     return false
   }
 
-  function addCbToList(cb, onErrorCb)
-  {
+  function addCbToList(cb, onErrorCb) {
     if (cb)
       this.cbList.append(cb)
     if (onErrorCb)
       this.errorCbList.append(onErrorCb)
   }
 
-  function isRequestInProgress()
-  {
+  function isRequestInProgress() {
     return this.lastRequestTime > this.lastUpdateTime
         && this.lastRequestTime + this.requestTimeoutMsec > get_time_msec()
   }
 
-  function canRequest(forceUpdate = false)
-  {
+  function canRequest(forceUpdate = false) {
     return (!this.isRequestInProgress() && ::isInMenu()
            && (forceUpdate || this.lastRequestTime + this.requestDelayMsec < get_time_msec()))
   }
 
-  function onUpdateComplete()
-  {
+  function onUpdateComplete() {
     this.invalidateCache()
     this.onConfigUpdate?()
 
     ::broadcastEvent(this.cbName)
 
-    foreach(cb in this.cbList)
+    foreach (cb in this.cbList)
       cb()
     this.cbList.clear()
     this.errorCbList.clear()
@@ -105,30 +96,26 @@ let class ConfigBase
     this.lastUpdateTime = get_time_msec()
   }
 
-  function onUpdateError(errCode)
-  {
-    foreach(cb in this.errorCbList)
+  function onUpdateError(errCode) {
+    foreach (cb in this.errorCbList)
       cb(errCode)
     this.cbList.clear()
     this.errorCbList.clear()
   }
 
-  function update(cb = null, onErrorCb = null, showProgressBox = false, forceUpdate = false)
-  {
-    if (!this.canRequest(forceUpdate))
-    {
+  function update(cb = null, onErrorCb = null, showProgressBox = false, forceUpdate = false) {
+    if (!this.canRequest(forceUpdate)) {
       if (this.isRequestInProgress())
         this.addCbToList(cb, onErrorCb)
       else
-        onErrorCb?(-2)
+        onErrorCb?( - 2)
       return
     }
 
     let taskId = this.requestUpdate()
-    if (taskId == -1)
-    {
+    if (taskId == -1) {
       ::update_entitlements_limited() //code sure that he better know about prices actuality, so need to update profile
-      onErrorCb?(-2)
+      onErrorCb?( - 2)
       return
     }
 
@@ -140,8 +127,7 @@ let class ConfigBase
     ::g_tasker.addTask(taskId, { showProgressBox }, successCb, errorCb)
   }
 
-  function invalidateCache()
-  {
+  function invalidateCache() {
     this.cache = null
   }
 }

@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -6,16 +7,16 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
 
-let function getEnumValName(strEnumName, value, skipSynonyms=false) {
+let function getEnumValName(strEnumName, value, skipSynonyms = false) {
   assert(type(strEnumName) == "string", "strEnumName must be enum name as a string")
   let constants = getconsttable()
   let enumTable = (strEnumName in constants) ? constants[strEnumName] : {}
   local name = ""
   foreach (constName, constVal in enumTable)
-    if (constVal == value)
-    {
+    if (constVal == value) {
       name += (name.len() ? " || " : "") + format("%s.%s", strEnumName, constName)
-      if (skipSynonyms) break
+      if (skipSynonyms)
+        break
     }
   return name
 }
@@ -25,8 +26,7 @@ let function bitMaskToSstring(strEnumName, mask) {
   let enumTable = getconsttable()?[strEnumName] ?? {}
   local res = ""
   foreach (constName, constVal in enumTable)
-    if (stdMath.number_of_set_bits(constVal) == 1 && (constVal & mask))
-    {
+    if (stdMath.number_of_set_bits(constVal) == 1 && (constVal & mask)) {
       res += (res.len() ? " | " : "") + constName
       mask = mask & ~constVal //ignore duplicates
     }

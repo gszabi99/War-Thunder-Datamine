@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,7 +16,7 @@ let { format } = require("string")
 const MAX_FETCH_RETRIES = 5
 
 let requestedGameModesTimeOut = 10000 //ms
-local lastRequestTimeMsec = - requestedGameModesTimeOut
+local lastRequestTimeMsec = -requestedGameModesTimeOut
 local requestedGameModes = []
 
 ::g_matching_game_modes <- {
@@ -24,8 +25,7 @@ local requestedGameModes = []
   __fetching = false
   __fetch_counter = 0
 
-  function forceUpdateGameModes()
-  {
+  function forceUpdateGameModes() {
     if (!::is_online_available())
       return
 
@@ -34,37 +34,32 @@ local requestedGameModes = []
     this.fetchGameModes()
   }
 
-  function fetchGameModes()
-  {
+  function fetchGameModes() {
     if (this.__fetching)
       return
 
     this.__gameModes.clear()
     this.__fetching = true
     this.__fetch_counter++
-    ::fetch_game_modes_digest({timeout = 60},
-      function (result)
-      {
+    ::fetch_game_modes_digest({ timeout = 60 },
+      function (result) {
         if (!this)
           return
 
         this.__fetching = false
 
         let canRetry = this.__fetch_counter < MAX_FETCH_RETRIES
-        if (::checkMatchingError(result, !canRetry))
-        {
+        if (::checkMatchingError(result, !canRetry)) {
           this.__loadGameModesFromList(result?.modes ?? [])
           this.__fetch_counter = 0
           return
         }
 
-        if (!canRetry)
-        {
+        if (!canRetry) {
           if (!::is_dev_version)
             startLogout()
         }
-        else
-        {
+        else {
           log("fetch gamemodes error, retry - " + this.__fetch_counter)
           this.fetchGameModes()
         }
@@ -72,20 +67,16 @@ local requestedGameModes = []
     )
   }
 
-  function getModeById(gameModeId)
-  {
+  function getModeById(gameModeId) {
     return this.__gameModes?[gameModeId]
   }
 
-  function  onGameModesChangedNotify(added_list, removed_list, changed_list)
-  {
+  function  onGameModesChangedNotify(added_list, removed_list, changed_list) {
     local needNotify = false
     let needToFetchGmList = []
 
-    if (removed_list)
-    {
-      foreach (modeInfo in removed_list)
-      {
+    if (removed_list) {
+      foreach (modeInfo in removed_list) {
         let { gameModeId = -1, name = "" } = modeInfo
         log($"matching game mode removed '{name}' [{gameModeId}]")
         this.__removeGameMode(gameModeId)
@@ -93,20 +84,16 @@ local requestedGameModes = []
       }
     }
 
-    if (added_list)
-    {
-      foreach (modeInfo in added_list)
-      {
+    if (added_list) {
+      foreach (modeInfo in added_list) {
         let { gameModeId = -1, name = "" } = modeInfo
         log($"matching game mode added '{name}' [{gameModeId}]")
         needToFetchGmList.append(gameModeId)
       }
     }
 
-    if (changed_list)
-    {
-      foreach (modeInfo in changed_list)
-      {
+    if (changed_list) {
+      foreach (modeInfo in changed_list) {
         let gameModeId = modeInfo?.gameModeId
         if (gameModeId == null)
           continue
@@ -118,8 +105,7 @@ local requestedGameModes = []
 
         log($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
 
-        if (disabled && visible == false && active == false)
-        {
+        if (disabled && visible == false && active == false) {
           needNotify = true
           this.__removeGameMode(gameModeId)
           continue
@@ -146,11 +132,9 @@ local requestedGameModes = []
   }
 
 // private section
-  function __notifyGmChanged()
-  {
+  function __notifyGmChanged() {
     let gameEventsOldFormat = {}
-    foreach (_gm_id, modeInfo in this.__gameModes)
-    {
+    foreach (_gm_id, modeInfo in this.__gameModes) {
       if (::events.isCustomGameMode(modeInfo))
         continue
       if ("team" in modeInfo && !("teamA" in modeInfo) && !("teamB" in modeInfo))
@@ -160,16 +144,13 @@ local requestedGameModes = []
     ::events.updateEventsData(gameEventsOldFormat)
   }
 
-  function __removeGameMode(game_mode_id)
-  {
+  function __removeGameMode(game_mode_id) {
     if (game_mode_id in this.__gameModes)
       delete this.__gameModes[game_mode_id]
   }
 
-  function __onGameModesUpdated(modes_list)
-  {
-    foreach (modeInfo in modes_list)
-    {
+  function __onGameModesUpdated(modes_list) {
+    foreach (modeInfo in modes_list) {
       let gameModeId = modeInfo.gameModeId
       let idx = requestedGameModes.indexof(gameModeId)
       if (idx != null)
@@ -181,43 +162,36 @@ local requestedGameModes = []
     this.__notifyGmChanged();
   }
 
-  function __loadGameModesFromList(gm_list)
-  {
-    ::fetch_game_modes_info({byId = gm_list, timeout = 60},
-      function (result)
-      {
+  function __loadGameModesFromList(gm_list) {
+    ::fetch_game_modes_info({ byId = gm_list, timeout = 60 },
+      function (result) {
         if (!::checkMatchingError(result) || ("modes" not in result))
           return
         ::g_matching_game_modes.__onGameModesUpdated(result.modes)
       })
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.__gameModes.clear()
     this.__fetching = false
     this.__fetch_counter = 0
   }
 
-  function onEventScriptsReloaded(_p)
-  {
+  function onEventScriptsReloaded(_p) {
     this.forceUpdateGameModes()
   }
 
   //no need to request gameModes before configs inited
-  function onEventLoginComplete(_p)
-  {
+  function onEventLoginComplete(_p) {
     this.forceUpdateGameModes()
   }
 
-  function getGameModesByEconomicName(economicName)
-  {
+  function getGameModesByEconomicName(economicName) {
     return ::u.filter(this.__gameModes,
       (@(economicName) function(g) { return ::events.getEventEconomicName(g) == economicName })(economicName))
   }
 
-  function requestGameModeById(gameModeId)
-  {
+  function requestGameModeById(gameModeId) {
     let isRequested = isInArray(gameModeId, requestedGameModes)
     if (isRequested
       && (get_time_msec() - lastRequestTimeMsec <= requestedGameModesTimeOut))
@@ -229,10 +203,9 @@ local requestedGameModes = []
     this.__loadGameModesFromList([gameModeId])
   }
 
-  function getGameModeIdsByEconomicName(economicName)
-  {
+  function getGameModeIdsByEconomicName(economicName) {
     let res = []
-    foreach(id, gm in this.__gameModes)
+    foreach (id, gm in this.__gameModes)
       if (::events.getEventEconomicName(gm) == economicName)
         res.append(id)
     return res

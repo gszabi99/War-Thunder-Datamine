@@ -1,14 +1,14 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let {regexp} = require("string")
+let { regexp } = require("string")
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
 
-enum URL_CHECK_ORDER
-{
+enum URL_CHECK_ORDER {
   BY_URL_REGEXP
   UNKNOWN
 }
@@ -82,12 +82,11 @@ enums.addTypesByGlobalName("g_url_type", {
   }
 
   WARTHUNDER_COM = {
-    supportedLangs = ["ru", "en","pl","de","cz","fr","es","tr","pt"] //ru - forward to warthunder.ru
+    supportedLangs = ["ru", "en", "pl", "de", "cz", "fr", "es", "tr", "pt"] //ru - forward to warthunder.ru
     urlRegexpList = [
       regexp(@"^https?:\/\/warthunder\.com" + URL_ANY_ENDING),
     ]
-    applyLangKey = function(url, langKey)
-    {
+    applyLangKey = function(url, langKey) {
       let keyBeforeLang = ".com/"
       let idx = url.indexof(keyBeforeLang)
       if (idx == null)
@@ -104,15 +103,13 @@ enums.addTypesByGlobalName("g_url_type", {
   }
 }, null, "typeName")
 
-::g_url_type.types.sort(function(a,b)
-{
+::g_url_type.types.sort(function(a, b) {
   if (a.sortOrder != b.sortOrder)
     return a.sortOrder > b.sortOrder ? 1 : -1
   return 0
 })
 
-::g_url_type.getByUrl <- function getByUrl(url)
-{
+::g_url_type.getByUrl <- function getByUrl(url) {
   foreach (urlType in this.types)
     if (urlType.isCorrespondsToUrl(url))
       return urlType

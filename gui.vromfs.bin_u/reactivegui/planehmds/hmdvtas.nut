@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {IlsColor, IlsLineScale} = require("%rGui/planeState/planeToolsState.nut")
-let {HmdVisible, GuidanceLockState, HmdDesignation, HmdFovMult} = require("%rGui/rocketAamAimState.nut")
-let {HmdSensorVisible, HmdSensorDesignation} = require("%rGui/radarState.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { IlsColor, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
+let { HmdVisible, GuidanceLockState, HmdDesignation, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
+let { HmdSensorVisible, HmdSensorDesignation } = require("%rGui/radarState.nut")
 
-let {baseLineWidth} = require("hmdConstants.nut")
+let { baseLineWidth } = require("hmdConstants.nut")
 
 let function crosshair(width, _height) {
   return @() {

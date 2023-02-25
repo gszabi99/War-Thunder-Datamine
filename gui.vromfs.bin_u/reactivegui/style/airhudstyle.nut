@@ -14,13 +14,13 @@ local redHex = 0xFF0000
 local alphaHex = 0xFF000000
 
 // some element doesn't appear clear in black => use white
-let isDarkColor = memoize(function(color){
+let isDarkColor = memoize(function(color) {
   let sumOfRGB = (color & blueHex) + ((color & greenHex) >> 8) + ((color & redHex) >> 16)
   return sumOfRGB < 100
 })
 
-let isColorOrWhite = memoize(function(color){
-  return isDarkColor(color) ? Color(255,255,255, (color & alphaHex) >> 24) : color
+let isColorOrWhite = memoize(function(color) {
+  return isDarkColor(color) ? Color(255, 255, 255, (color & alphaHex) >> 24) : color
 })
 
 let function fadeColor(color, transparency) {
@@ -40,7 +40,7 @@ let function relativCircle(percent, circleSize) {
   if (percent >= 0.99999999)
     return [ [VECTOR_ELLIPSE, 0, 0, circleSize * 1.3, circleSize * 1.3] ]
   else
-    return [ [VECTOR_SECTOR, 0, 0, circleSize, circleSize, -90, -90+360*percent] ]
+    return [ [VECTOR_SECTOR, 0, 0, circleSize, circleSize, -90, -90 + 360 * percent] ]
 }
 
 let styleText = {
@@ -63,5 +63,5 @@ let styleLineForeground = {
   fontSize = hudFontHgt
 }
 
-return {hudFontHgt, greenColor, fontOutlineColor, backgroundColor, targetSectorColor, greenColorGrid, fontOutlineFxFactor
-    isDarkColor, isColorOrWhite, redHex, greenHex, blueHex, fadeColor, styleText, styleLineForeground, mixColor, relativCircle}
+return { hudFontHgt, greenColor, fontOutlineColor, backgroundColor, targetSectorColor, greenColorGrid, fontOutlineFxFactor
+    isDarkColor, isColorOrWhite, redHex, greenHex, blueHex, fadeColor, styleText, styleLineForeground, mixColor, relativCircle }

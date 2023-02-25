@@ -1,14 +1,14 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let {IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetPos, RadarTargetDist,
+let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetPos, RadarTargetDist,
   BombingMode, BombCCIPMode, RocketMode, CannonMode,
   TargetPosValid, TargetPos } = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, metrToNavMile} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
+let { baseLineWidth, metrToNavMile } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
 let { Roll, Tangage, Altitude } = require("%rGui/planeState/planeFlyState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let {compassWrap, generateCompassMarkF14} = require("ilsCompasses.nut")
+let { compassWrap, generateCompassMarkF14 } = require("ilsCompasses.nut")
 let { flyDirection } = require("commonElements.nut")
 let { AVQ7CCRP } = require("ilsAVQ7.nut")
 
@@ -111,7 +111,7 @@ let targetDist = @() {
   ] : null
 }
 
-let altPos = Computed(@() (100 - min(Altitude.value / 48.768 , 100)).tointeger())
+let altPos = Computed(@() (100 - min(Altitude.value / 48.768,  100)).tointeger())
 let altmetr = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
@@ -362,7 +362,7 @@ let function pitchAir(width, height) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) / 60]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) / 30]
+        pivot = [0.5, (90.0 - Tangage.value) / 30]
       }
     }
   }
@@ -388,7 +388,7 @@ let function pitchGround(width, height) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.1]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.2]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.2]
       }
     }
   }

@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -52,7 +52,24 @@
     "ex_decor_08_dm": true,
     "ex_decor_09_dm": true,
     "ex_decor_01_dm": true,
-    "ex_armor_02_dm": true
+    "ex_armor_02_dm": true,
+    "ex_decor_l_12_dm": true,
+    "ex_decor_l_11_dm": true,
+    "ex_decor_r_10_dm": true,
+    "ex_decor_r_11_dm": true,
+    "ex_armor_01_dm": true,
+    "ex_decor_l_07_dm": true,
+    "ex_armor_turret_r_01_dm": true,
+    "ex_armor_turret_r_02_dm": true,
+    "ex_armor_turret_r_03_dm": true,
+    "ex_armor_turret_l_01_dm": true,
+    "ex_armor_turret_l_02_dm": true,
+    "ex_armor_turret_l_03_dm": true,
+    "ex_armor_09_dm": true,
+    "ex_decor_13_dm": true,
+    "ex_decor_l_09_dm": true,
+    "ex_decor_r_06_dm": true,
+    "ex_decor_r_08_dm": true
   },
   "tank_crew": {
     "changeTimeMult": 1.0,
@@ -1085,7 +1102,11 @@
     "hp": 10000.0,
     "hull": {
       "body_front_dm": {
-        "armorThickness": 100.0
+        "armorThickness": 100.0,
+        "ignoreSolidDimension": true
+      },
+      "body_side_dm": {
+        "armorThickness": 90.0
       },
       "superstructure_side_dm": {
         "armorThickness": 90.0
@@ -1117,9 +1138,6 @@
     },
     "turret": {
       "armorClass": "CHA_tank",
-      "body_side_dm": {
-        "armorThickness": 90.0
-      },
       "turret_01_back_dm": {
         "armorThickness": 100.0
       },

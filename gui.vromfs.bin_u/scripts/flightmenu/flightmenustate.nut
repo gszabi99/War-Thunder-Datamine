@@ -1,22 +1,21 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { is_benchmark_game_mode } = require("mission")
+let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 
-let function canRestart()
-{
+let function canRestart() {
   return !::is_multiplayer()
-    && ![ GM_DYNAMIC, GM_BENCHMARK ].contains(::get_game_mode())
+    && ![ GM_DYNAMIC, GM_BENCHMARK ].contains(get_game_mode())
     && !is_benchmark_game_mode()
-    && (::get_game_type() & GT_COOPERATIVE) == 0
+    && (get_game_type() & GT_COOPERATIVE) == 0
     && ::get_mission_status() != MISSION_STATUS_SUCCESS
 }
 
-let function canBailout()
-{
-  let gm = ::get_game_mode()
+let function canBailout() {
+  let gm = get_game_mode()
   return (::get_mission_restore_type() != ERT_MANUAL || gm == GM_TEST_FLIGHT)
     && !is_benchmark_game_mode()
     && !::is_camera_not_flight()

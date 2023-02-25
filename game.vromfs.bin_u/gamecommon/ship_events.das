@@ -33,14 +33,14 @@ struct EventShipOnGotBreach
 struct EventShipAddFatalBreach
   localPos : float3
   localNormal : float3
-  partId : int
+  packedPartId : uint
   offenderUnitId : int
   offenderBulletId : int
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventShipAddBreach
   id : int
-  partId : int
+  packedPartId : uint
   localPos : float3
   localNormal : float3
   size : float

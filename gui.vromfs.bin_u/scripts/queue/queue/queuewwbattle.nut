@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -6,15 +7,12 @@ from "%scripts/dagui_library.nut" import *
 
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 
-::queue_classes.WwBattle <- class extends ::queue_classes.Base
-{
-  function init()
-  {
+::queue_classes.WwBattle <- class extends ::queue_classes.Base {
+  function init() {
     this.name = this.getName(this.params)
   }
 
-  function join(successCallback, errorCallback)
-  {
+  function join(successCallback, errorCallback) {
     ::request_matching(
       "worldwar.join_battle",
       successCallback,
@@ -23,13 +21,11 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
     )
   }
 
-  function leave(successCallback, errorCallback, needShowError = false)
-  {
+  function leave(successCallback, errorCallback, needShowError = false) {
     this.leaveAll(successCallback, errorCallback, needShowError)
   }
 
-  static function leaveAll(successCallback, errorCallback, needShowError = false)
-  {
+  static function leaveAll(successCallback, errorCallback, needShowError = false) {
     ::request_matching(
       "worldwar.leave_battle",
       successCallback,
@@ -39,18 +35,15 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
     )
   }
 
-  static function getName(params)
-  {
+  static function getName(params) {
     return getTblValue("operationId", params, "") + "_" + getTblValue("battleId", params, "")
   }
 
-  function getBattleName()
-  {
+  function getBattleName() {
     return loc("mainmenu/btnWorldwar")
   }
 
-  function getQueueWwBattleId()
-  {
+  function getQueueWwBattleId() {
     return this.params?.battleId ?? ""
   }
 
@@ -74,8 +67,7 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
         [::my_user_id_str] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
       }
 
-    foreach (member in queueMembersParams)
-    {
+    foreach (member in queueMembersParams) {
       member.crafts_info = this.createCraftsInfoConfig(member.crafts_info)
     }
 
@@ -84,8 +76,7 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
 
   function createCraftsInfoConfig(craftsInfo) {
     let res = []
-    foreach(idx, unitName in craftsInfo)
-    {
+    foreach (idx, unitName in craftsInfo) {
       let unit = ::getAircraftByName(unitName)
       if (unit == null)
         continue

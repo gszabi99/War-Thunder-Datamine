@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -22,9 +23,9 @@ from "%scripts/dagui_library.nut" import *
  *        Data in its original state.
  */
 let { isDataBlock } = require("%sqstd/datablock.nut")
+let DataBlock = require("DataBlock")
 
-let keyToStr = function(key)
-{
+let keyToStr = function(key) {
   let t = type(key)
   return t == "string" ? key
     : t == "integer"   ? "__int_"   + key
@@ -33,8 +34,7 @@ let keyToStr = function(key)
     : "__unsupported"
 }
 
-let strToKey = function(str)
-{
+let strToKey = function(str) {
   return !::g_string.startsWith(str, "__")   ? str
     : ::g_string.startsWith(str, "__int_")   ? ::g_string.slice(str, 6).tointeger()
     : ::g_string.startsWith(str, "__float_") ? ::g_string.slice(str, 8).tofloat()
@@ -42,11 +42,9 @@ let strToKey = function(str)
     : "__unsupported"
 }
 
-let function dataToBlk(data)
-{
+let function dataToBlk(data) {
   let dataType = isDataBlock(data) ? "DataBlock" : type(data)
-  switch (dataType)
-  {
+  switch (dataType) {
     case "null":
       return "__null"
     case "bool":
@@ -56,15 +54,15 @@ let function dataToBlk(data)
       return data
     case "array":
     case "table":
-      let blk = ::DataBlock()
+      let blk = DataBlock()
       let isArray = ::u.isArray(data)
       if (isArray)
         blk.__array <- true
-      foreach(key, value in data)
+      foreach (key, value in data)
         blk[isArray ? ("array" + key) : keyToStr(key)] = dataToBlk(value)
       return blk
     case "DataBlock":
-      let blk = ::DataBlock()
+      let blk = DataBlock()
       blk.setFrom(data)
       blk.__datablock <- true
       return blk
@@ -73,33 +71,27 @@ let function dataToBlk(data)
   }
 }
 
-let function blkToData(blk)
-{
-  if (::u.isString(blk) && ::g_string.startsWith(blk, "__unsupported"))
-  {
+let function blkToData(blk) {
+  if (::u.isString(blk) && ::g_string.startsWith(blk, "__unsupported")) {
     return null
   }
-  if (!isDataBlock(blk))
-  {
+  if (!isDataBlock(blk)) {
     return blk == "__null" ? null : blk
   }
-  if (blk?.__datablock)
-  {
-    let res = ::DataBlock()
+  if (blk?.__datablock) {
+    let res = DataBlock()
     res.setFrom(blk)
     res.__datablock = null
     return res
   }
-  if (blk?.__array)
-  {
+  if (blk?.__array) {
     let res = []
     for (local i = 0; i < blk.blockCount() + blk.paramCount() - 1; i++)
       res.append(blkToData(blk["array" + i]))
     return res
   }
   let res = {}
-  for (local b = 0; b < blk.blockCount(); b++)
-  {
+  for (local b = 0; b < blk.blockCount(); b++) {
     let block = blk.getBlock(b)
     res[strToKey(block.getBlockName())] <- blkToData(block)
   }

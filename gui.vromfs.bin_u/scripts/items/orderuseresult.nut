@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,8 +11,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   types = []
 }
 
-::g_order_use_result._createResultMessage <- function _createResultMessage(addErrorHeader)
-{
+::g_order_use_result._createResultMessage <- function _createResultMessage(addErrorHeader) {
   local resultMessage = (this == ::g_order_use_result.OK || !addErrorHeader)
     ? ""
     : loc("orderUseResult/error") + "\n"
@@ -89,8 +89,7 @@ enums.addTypesByGlobalName("g_order_use_result", {
   }
 })
 
-::g_order_use_result.getOrderUseResultByCode <- function getOrderUseResultByCode(useResultCode)
-{
+::g_order_use_result.getOrderUseResultByCode <- function getOrderUseResultByCode(useResultCode) {
   return enums.getCachedType("code", useResultCode, ::g_order_use_result_cache.byCode,
     ::g_order_use_result, ::g_order_use_result.UNKNOWN)
 }

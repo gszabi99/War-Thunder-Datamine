@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -13,14 +14,13 @@ let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
-local XboxShopPurchasableItem = class
-{
+local XboxShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
   imagePath = null
 
   id = ""
   entitlementId = ""
-  categoryId = [-1]
+  categoriesList = null //list of available filters
   releaseDate = 0
   price = 0.0         // Price with discount as number
   listPrice = 0.0     // Original price without discount as number
@@ -42,8 +42,7 @@ local XboxShopPurchasableItem = class
   isMultiConsumable = false
   needHeader = true
 
-  constructor(blk)
-  {
+  constructor(blk) {
     this.id = blk.getBlockName()
     this.entitlementId = getEntitlementId(this.id)
 
@@ -52,10 +51,10 @@ local XboxShopPurchasableItem = class
     if (this.isMultiConsumable)
       this.defaultIconStyle = "reward_gold"
 
-    this.categoryId = [xbItemType]
+    this.categoriesList = [xbItemType]
     let entConfig = getEntitlementConfig(this.entitlementId)
     if ("aircraftGift" in entConfig)
-      this.categoryId = entConfig.aircraftGift.map(@(unitId) ::getAircraftByName(unitId)?.unitType.typeName)
+      this.categoriesList = entConfig.aircraftGift.map(@(unitId) ::getAircraftByName(unitId)?.unitType.typeName)
     else if (!this.isMultiConsumable)
       log($"[XBOX SHOP ITEM] not found aircraftGift in entitlementConfig, {this.entitlementId}, {this.id}")
 
@@ -100,12 +99,12 @@ local XboxShopPurchasableItem = class
       return ""
 
     return colorize(
-      this.haveDiscount()? "goodTextColor" : "",
-      this.price == 0.0? loc("shop/free") : $"{this.price} {this.currencyCode}"
+      this.haveDiscount() ? "goodTextColor" : "",
+      this.price == 0.0 ? loc("shop/free") : $"{this.price} {this.currencyCode}"
     )
   }
 
-  updateIsBoughtStatus = @() this.isBought = this.isMultiConsumable? false : ::xbox_is_item_bought(this.id)
+  updateIsBoughtStatus = @() this.isBought = this.isMultiConsumable ? false : ::xbox_is_item_bought(this.id)
   haveDiscount = @() this.price != null && this.listPrice != null && !this.isBought && this.listPrice > 0.0 && this.price != this.listPrice
   getDiscountPercent = function() {
     if (this.price == null || this.listPrice == null)

@@ -564,11 +564,11 @@
     "bullet": {
       "bulletCount": 20,
       "mass": 2.6,
-      "caliber": 0.075,
-      "speed": 1110.0,
       "damageMass": 1.1,
+      "caliber": 0.075,
+      "damageCaliber": 0.05,
       "ballisticCaliber": 0.05,
-      "damageCaliber": 0.038,
+      "speed": 1110.0,
       "Cx": 0.25759,
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
@@ -580,8 +580,8 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apds_tank",
-      "slopeEffectPreset": "apds",
+      "bulletType": "apds_early_tank",
+      "slopeEffectPreset": "apds_early",
       "fresnel": [
         0.23,
         0.1,
@@ -589,6 +589,13 @@
       ],
       "shellAnimation": "video/shells_animations/apds.ivf",
       "bulletName": "75mm_slpprj_m49",
+      "breakingArmorThicknessEffective": true,
+      "breakingArmorThickness": [
+        30.0,
+        150.0
+      ],
+      "breakingCriticalSpeed": 1160.0,
+      "breakingDistance": 0.1,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -635,9 +642,9 @@
       "damage": {
         "kinetic": {
           "damageType": "generic",
-          "demarrePenetrationK": 1.0,
+          "demarrePenetrationK": 1.32,
           "demarreSpeedPow": 1.43,
-          "demarreMassPow": 0.71,
+          "demarreMassPow": 0.739,
           "demarreCaliberPow": 1.07
         }
       },

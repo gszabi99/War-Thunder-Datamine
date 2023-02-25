@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,6 +9,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 
 let function getStandartTooltip(lbDataType, value) {
   let shortText = lbDataType.getShortTextByValue(value)
@@ -45,7 +47,7 @@ enums.addTypes(lbDataType, {
 
       return (!allowNegative && value < 0)
         ? loc("leaderboards/notAvailable")
-        : ::getShortTextFromNum(stdMath.round_by_value(value, 1))
+        : shortTextFromNum(stdMath.round_by_value(value, 1))
     }
 
     function getPrimaryTooltipText(value, allowNegative = false) {
@@ -158,7 +160,7 @@ enums.addTypes(lbDataType, {
       return loc($"clan/{::clan_get_role_name(value)}")
     }
 
-    function getPrimaryTooltipText(value, _allowNegative =false) {
+    function getPrimaryTooltipText(value, _allowNegative = false) {
       local res = "".concat(loc("clan/roleRights"), " \n")
       let rights = ::clan_get_role_rights(value)
 

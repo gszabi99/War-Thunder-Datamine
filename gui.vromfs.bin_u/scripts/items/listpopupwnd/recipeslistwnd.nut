@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -15,8 +16,7 @@ let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 
-::gui_handlers.RecipesListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.RecipesListWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/recipesListWnd.tpl"
 
@@ -32,8 +32,7 @@ local MIN_ITEMS_IN_ROW = 7
   showRecipeAsProduct = false
   showTutorial = false
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.recipesList = clone this.recipesList
     let hasMarkers = ExchangeRecipes.hasFakeRecipes(this.recipesList)
     if (hasMarkers)
@@ -45,7 +44,7 @@ local MIN_ITEMS_IN_ROW = 7
     this.curRecipe = this.recipesList[0]
 
     local maxRecipeLen = 1
-    foreach(r in this.recipesList)
+    foreach (r in this.recipesList)
       maxRecipeLen = max(maxRecipeLen, r.getVisibleMarkupComponents())
 
     let recipeWidthPx = maxRecipeLen * to_pixels("0.5@itemWidth")
@@ -58,8 +57,7 @@ local MIN_ITEMS_IN_ROW = 7
     local itemsInRow = 0 //some columns are thinner than max
     local columnWidth = 0
     let separatorsIdx = []
-    foreach(i, recipe in this.recipesList)
-    {
+    foreach (i, recipe in this.recipesList) {
       let recipeWidth = recipe.getVisibleMarkupComponents()
       columnWidth = max(columnWidth, recipeWidth)
       if (i == 0 || (i % rows))
@@ -83,13 +81,12 @@ local MIN_ITEMS_IN_ROW = 7
       showRecipeAsProduct = this.showRecipeAsProduct
     }
 
-    foreach(key in ["headerText", "buttonText"])
+    foreach (key in ["headerText", "buttonText"])
       res[key] <- this[key]
     return res
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.needMarkRecipes = ExchangeRecipes.hasFakeRecipes(this.recipesList)
     let recipesListObj = this.scene.findObject("recipes_list")
@@ -104,8 +101,7 @@ local MIN_ITEMS_IN_ROW = 7
       this.startTutorial()
   }
 
-  function startTutorial()
-  {
+  function startTutorial() {
     let steps = [{
       obj = this.getUsableRecipeObjs().map(@(r) { obj = r, hasArrow = true })
       text = loc("workshop/tutorial/selectRecipe")
@@ -125,8 +121,7 @@ local MIN_ITEMS_IN_ROW = 7
     ::gui_modal_tutor(steps, this, true)
   }
 
-  function selectRecipe()
-  {
+  function selectRecipe() {
     let recipesListObj = this.scene.findObject("recipes_list")
     if (!recipesListObj?.isValid())
       return
@@ -145,8 +140,7 @@ local MIN_ITEMS_IN_ROW = 7
     recipesListObj.setValue(idx)
   }
 
-  function getUsableRecipeObjs()
-  {
+  function getUsableRecipeObjs() {
     let res = []
     let recipesListObj = this.scene.findObject("recipes_list")
     foreach (recipe in this.recipesList)
@@ -155,8 +149,7 @@ local MIN_ITEMS_IN_ROW = 7
     return res
   }
 
-  function updateCurRecipeInfo()
-  {
+  function updateCurRecipeInfo() {
     let infoObj = this.scene.findObject("selected_recipe_info")
     let markup = this.curRecipe ? this.curRecipe.getTextMarkup() + this.curRecipe.getMarkDescMarkup() : ""
     this.guiScene.replaceContentFromText(infoObj, markup, markup.len(), this)
@@ -164,14 +157,13 @@ local MIN_ITEMS_IN_ROW = 7
     this.updateButtons()
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     local btnObj = this.scene.findObject("btn_apply")
     btnObj.inactiveColor = this.curRecipe?.isUsable && !this.curRecipe.isRecipeLocked() ? "no" : "yes"
 
     local btnText = loc(this.curRecipe.getActionButtonLocId() ?? this.buttonText)
     if (this.curRecipe.hasCraftTime())
-      btnText += " " + loc("ui/parentheses", {text = this.curRecipe.getCraftTimeText()})
+      btnText += " " + loc("ui/parentheses", { text = this.curRecipe.getCraftTimeText() })
     btnObj.setValue(btnText)
 
     if (!this.needMarkRecipes)
@@ -182,8 +174,7 @@ local MIN_ITEMS_IN_ROW = 7
     btnObj.setValue(this.getMarkBtnText())
   }
 
-  function onRecipeSelect(obj)
-  {
+  function onRecipeSelect(obj) {
     let newRecipe = this.recipesList?[obj.getValue()]
     if (!u.isRecipe(newRecipe) || newRecipe == this.curRecipe)
       return
@@ -191,8 +182,7 @@ local MIN_ITEMS_IN_ROW = 7
     this.updateCurRecipeInfo()
   }
 
-  function onRecipeApply()
-  {
+  function onRecipeApply() {
     if (this.curRecipe && this.curRecipe.isRecipeLocked())
       return ::scene_msg_box("cant_cancel_craft", null,
         colorize("badTextColor", loc(this.curRecipe.getCantAssembleMarkedFakeLocId())),
@@ -210,18 +200,17 @@ local MIN_ITEMS_IN_ROW = 7
     ? "item/recipes/unmarkFake"
     : "item/recipes/markFake")
 
-  function onRecipeMark()
-  {
-    if(!this.curRecipe || !this.needMarkRecipes)
+  function onRecipeMark() {
+    if (!this.curRecipe || !this.needMarkRecipes)
       return
 
     this.curRecipe.markRecipe(true)
-    let recipeObj = this.scene.findObject("id_"+ this.curRecipe.uid)
+    let recipeObj = this.scene.findObject("id_" + this.curRecipe.uid)
     if (!checkObj(recipeObj))
       return
 
     recipeObj.isRecipeLocked = this.curRecipe.isRecipeLocked() ? "yes" : "no"
-    let markImgObj = recipeObj.findObject("img_"+ this.curRecipe.uid)
+    let markImgObj = recipeObj.findObject("img_" + this.curRecipe.uid)
     markImgObj["background-image"] = this.curRecipe.getMarkIcon()
     markImgObj.tooltip = this.curRecipe.getMarkTooltip()
     this.updateCurRecipeInfo()

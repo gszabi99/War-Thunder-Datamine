@@ -1,4 +1,6 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "hudMessages" import *
 
 //checked for explicitness
 #no-root-fallback
@@ -11,9 +13,9 @@ let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { send } = require("eventbus")
+let { doesLocTextExist } = require("dagor.localize")
 
-enum BATTLE_LOG_FILTER
-{
+enum BATTLE_LOG_FILTER {
   HERO      = 0x0001
   SQUADMATE = 0x0002
   ALLY      = 0x0004
@@ -164,26 +166,22 @@ enum BATTLE_LOG_FILTER
     null                  // 21   ECT_LIGHT_CYAN
   ]
 
-  function init()
-  {
+  function init() {
     this.reset(true)
 
-    ::g_hud_event_manager.subscribe("HudMessage", function(msg)
-      {
+    ::g_hud_event_manager.subscribe("HudMessage", function(msg) {
         this.onHudMessage(msg)
       }, this)
   }
 
-  function reset(safe = false)
-  {
+  function reset(safe = false) {
     if (safe && this.battleLog.len() && this.battleLog[this.battleLog.len() - 1].time < ::get_usefull_total_time())
       return
     this.battleLog = []
     send("clearBattleLog", {})
   }
 
-  function onHudMessage(msg)
-  {
+  function onHudMessage(msg) {
     if (!isInArray(msg.type, this.supportedMsgTypes))
       return
 
@@ -197,11 +195,9 @@ enum BATTLE_LOG_FILTER
       foreach (logEntry in this.battleLog)
         if (logEntry.msg.id == msg.id)
           return
-    if (msg.id == -1 && msg.text != "")
-    {
+    if (msg.id == -1 && msg.text != "") {
       let skipDupTime = now - this.skipDuplicatesSec
-      for (local i = this.battleLog.len() - 1; i >= 0; i--)
-      {
+      for (local i = this.battleLog.len() - 1; i >= 0; i--) {
         if (this.battleLog[i].time < skipDupTime)
           break
         if (this.battleLog[i].msg.text == msg.text)
@@ -210,8 +206,7 @@ enum BATTLE_LOG_FILTER
     }
 
     local filters = 0
-    if (msg.type == HUD_MSG_MULTIPLAYER_DMG)
-    {
+    if (msg.type == HUD_MSG_MULTIPLAYER_DMG) {
       let p1 = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
       let p2 = ::get_mplayer_by_id(msg?.victimPlayerId ?? ::my_user_id_int64)
       let t1Friendly = ::is_team_friendly(msg?.team ?? Team.A)
@@ -228,8 +223,7 @@ enum BATTLE_LOG_FILTER
       if (filters == 0)
         filters = filters | BATTLE_LOG_FILTER.OTHER
     }
-    else
-    {
+    else {
       let player = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
       let localPlayer = ::get_local_mplayer()
       if (msg.text.indexof("\x1B011") != null || player?.isLocal)
@@ -246,8 +240,7 @@ enum BATTLE_LOG_FILTER
 
     let timestamp = time.secondsToString(now, false) + " "
     local message = ""
-    switch (msg.type)
-    {
+    switch (msg.type) {
       // All players messages
       case HUD_MSG_MULTIPLAYER_DMG: // Any player unit damaged or destroyed
         let text = this.msgMultiplayerDmgToText(msg)
@@ -275,8 +268,7 @@ enum BATTLE_LOG_FILTER
     ::broadcastEvent("BattleLogMessage", logEntry)
   }
 
-  function getFilters()
-  {
+  function getFilters() {
     return [
       { id = BATTLE_LOG_FILTER.ALL,   title = "chat/all" },
       { id = BATTLE_LOG_FILTER.SQUAD, title = "chat/squad" },
@@ -284,18 +276,15 @@ enum BATTLE_LOG_FILTER
     ]
   }
 
-  function getLength()
-  {
+  function getLength() {
     return this.battleLog.len()
   }
 
-  function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0)
-  {
+  function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0) {
     filter = filter || BATTLE_LOG_FILTER.ALL
     let lines = []
     for (local i = this.battleLog.len() - 1; i >= 0 ; i--)
-      if (this.battleLog[i].filters & filter)
-      {
+      if (this.battleLog[i].filters & filter) {
         lines.insert(0, this.battleLog[i].message)
         if (limit && lines.len() == limit)
           break
@@ -303,11 +292,9 @@ enum BATTLE_LOG_FILTER
     return ::g_string.implode(lines, "\n")
   }
 
-  function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0)
-  {
+  function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0) {
     let player = ::get_mplayer_by_id(playerId)
-    if (player && is_replay_playing())
-    {
+    if (player && is_replay_playing()) {
       player.isLocal = spectatorWatchedHero.id == player.id
       player.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
@@ -315,13 +302,11 @@ enum BATTLE_LOG_FILTER
       colorize(::get_team_color(teamId), unitNameLoc) // AI
   }
 
-  function getUnitTypeEx(msg, isVictim = false)
-  {
+  function getUnitTypeEx(msg, isVictim = false) {
     let uType = getTblValue(isVictim ? "victimUnitType" : "unitType", msg)
 
     local res = getTblValue(uType, this.utToEsUnitType, ES_UNIT_TYPE_INVALID)
-    if (res == ES_UNIT_TYPE_INVALID) //we do not receive unitType for player killer unit, but can easy get it by unitName
-    {
+    if (res == ES_UNIT_TYPE_INVALID) { //we do not receive unitType for player killer unit, but can easy get it by unitName
       let unit = ::getAircraftByName(msg[isVictim ? "victimUnitName" : "unitName"])
       if (unit)
         res = unit.esUnitType
@@ -330,25 +315,32 @@ enum BATTLE_LOG_FILTER
     return res
   }
 
-  function getUnitTypeSuffix(unitType)
-  {
+  function getUnitTypeSuffix(unitType) {
     return getTblValue(unitType, this.unitTypeSuffix, this.unitTypeSuffix[ES_UNIT_TYPE_TANK])
   }
 
-  function getActionTextIconic(msg)
-  {
+  function getActionTextIconic(msg) {
     let msgAction = msg?.action ?? "kill"
     local iconId = msgAction
     if (msgAction == "kill")
       iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, false))
     if (msgAction == "kill" || msgAction == "crash")
       iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, true))
+    let icon = loc($"icon/hud_msg_mp_dmg/{iconId}")
     let actionColor = msg?.isKill ?? true ? "userlogColoredText" : "silver"
-    return colorize(actionColor, loc("icon/hud_msg_mp_dmg/" + iconId))
+
+    let killerProjectileKey = msg?.killerProjectileName ?? ""
+    if (killerProjectileKey == "")
+      return colorize(actionColor, icon)
+
+    let killerProjectileName = doesLocTextExist(killerProjectileKey)
+      ? loc(killerProjectileKey)
+      : loc($"weapons/{killerProjectileKey}/short", "")
+
+    return colorize(actionColor, $"{icon}{killerProjectileName}")
   }
 
-  function getActionTextVerbal(msg)
-  {
+  function getActionTextVerbal(msg) {
     let victimUnitType = this.getUnitTypeEx(msg, true)
     let msgAction = msg?.action ?? "kill"
     let verb = getTblValue(victimUnitType, getTblValue(msgAction, this.actionVerbs, {}), msgAction)
@@ -357,8 +349,7 @@ enum BATTLE_LOG_FILTER
     return colorize(color, loc(verb))
   }
 
-  function msgMultiplayerDmgToText(msg, iconic = false)
-  {
+  function msgMultiplayerDmgToText(msg, iconic = false) {
     let what = iconic ? this.getActionTextIconic(msg) : this.getActionTextVerbal(msg)
     let who  = this.getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? ::my_user_name, msg?.team ?? Team.A)
     let whom = this.getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? ::my_user_name, msg?.victimTeam ?? Team.B)
@@ -369,8 +360,7 @@ enum BATTLE_LOG_FILTER
     return ::g_string.implode(sequence, " ")
   }
 
-  function msgStreakToText(msg, forceThirdPerson = false)
-  {
+  function msgStreakToText(msg, forceThirdPerson = false) {
     let playerId = msg?.playerId ?? -1
     let localPlayerId = is_replay_playing() ? spectatorWatchedHero.id : ::get_local_mplayer().id
     let isLocal = !forceThirdPerson && playerId == localPlayerId
@@ -379,14 +369,11 @@ enum BATTLE_LOG_FILTER
     return isLocal ? what : format("%s %s", this.getUnitNameEx(playerId), what)
   }
 
-  function msgEscapeCodesToCssColors(sequence)
-  {
+  function msgEscapeCodesToCssColors(sequence) {
     local ret = ""
-    foreach (w in split_by_chars(sequence, "\x1B"))
-    {
-      if (w.len() >= 3 && this.rePatternNumeric.match(w.slice(0, 3)))
-      {
-        let color = getTblValue(w.slice(0,3).tointeger(), this.escapeCodeToCssColor)
+    foreach (w in split_by_chars(sequence, "\x1B")) {
+      if (w.len() >= 3 && this.rePatternNumeric.match(w.slice(0, 3))) {
+        let color = getTblValue(w.slice(0, 3).tointeger(), this.escapeCodeToCssColor)
         let value = w.slice(3)
         ret += color ? colorize(color, value) : value
       }

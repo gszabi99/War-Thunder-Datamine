@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -83,6 +83,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -137,6 +147,9 @@
       },
       "superstructure_bottom_dm": {
         "armorThickness": 15.0
+      },
+      "turret_01_front_dm": {
+        "armorThickness": 22.0
       },
       "ex_armor_l_01_dm": {
         "armorThickness": 10.0
@@ -276,9 +289,6 @@
       "turret_01_top_dm": {
         "armorThickness": 22.0
       },
-      "turret_01_front_dm": {
-        "armorThickness": 22.0
-      },
       "turret_01_bottom_dm": {
         "armorThickness": 30.0
       },
@@ -295,10 +305,10 @@
         "armorThickness": 30.0
       },
       "ex_armor_02_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 22.0
       },
       "ex_armor_03_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 22.0
       }
     },
     "mask": {
@@ -338,18 +348,30 @@
     },
     "gun": {
       "armorClass": "tank_barrel",
-      "hp": 150.0,
-      "armorThickness": 30.0,
-      "gun_barrel_dm": {
-        "armorThickness": 20.0,
-        "hp": 120.0
-      },
+      "hp": 250.0,
+      "armorThickness": 40.0,
+      "gun_barrel_dm": {},
       "gun_barrel_01_dm": {
-        "armorThickness": 20.0,
-        "hp": 120.0
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
       },
-      "gun_barrel_02_dm": {},
+      "gun_barrel_02_dm": {
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
+      },
       "gun_barrel_03_dm": {
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
+      },
+      "gun_barrel_04_dm": {
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
+      },
+      "gun_barrel_05_dm": {
         "armorThrough": 10.0,
         "armorThickness": 5.0,
         "hp": 50.0
@@ -790,18 +812,18 @@
     }
   },
   "attachables": {
-    "superstructure_back_dm": false,
-    "body_front_dm": [
-      false,
-      true
-    ],
+    "superstructure_back_dm": true,
+    "body_front_dm": true,
     "ex_decor_r_03_dm": true,
     "ex_decor_r_04_dm": true,
     "ex_decor_r_05_dm": true,
     "ex_decor_l_03_dm": true,
     "ex_decor_l_04_dm": true,
     "ex_decor_l_05_dm": true,
-    "ex_armor_01_dm": true
+    "ex_armor_01_dm": true,
+    "ex_armor_r_12_dm": true,
+    "ex_armor_l_13_dm": true,
+    "ex_armor_02_dm": true
   },
   "sound": {
     "EngineName": "engine_char_b1",
@@ -1955,24 +1977,22 @@
         }
       },
       {
-        "trigger": "gunner2",
-        "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/8mm_Hotchkiss_Mle1914_user_machinegun.blk",
-        "emitter": "bone_mg_body_01",
+        "trigger": "gunner1",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/8mm_Ksp_m36_user_machinegun.blk",
+        "emitter": "bone_mg_body_v",
         "flash": "emtr_mg_flame_01",
-        "allowableDelta": 30.0,
-        "barrelDP": "gun_barrel_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "useAnimFlashNode": true,
-        "speedYaw": 20.0,
-        "speedPitch": 20.0,
+        "barrelDP": "gun_barrel_01_dm",
+        "breechDP": "cannon_breech_01_dm",
+        "speedYaw": 5.5,
+        "speedPitch": 4.0,
         "fireConeAngle": [
           1.0,
           15.0
         ],
-        "bullets": 5000,
-        "isBulletBelt": true,
+        "bullets": 1000,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 3.0,
         "accuracyAir": 0.0,
@@ -1985,8 +2005,8 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
-          "head": "bone_mg_body_01",
-          "gun": "bone_mg_body_01",
+          "head": "bone_mg_body_h",
+          "gun": "bone_mg_body_v",
           "gunnerDm": "machine_gunner_dm"
         },
         "limits": {

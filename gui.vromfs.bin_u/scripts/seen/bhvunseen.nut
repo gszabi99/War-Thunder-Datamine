@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let u = require("%sqStdLibs/helpers/u.nut")
+let { parse_json } = require("json")
 let seenList = require("%scripts/seen/seenList.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
 
@@ -17,21 +19,18 @@ let seenListEvents = require("%scripts/seen/seenListEvents.nut")
   when need only listId without entities, you can setValue(listId) without preprocessing
 */
 
-let BhvUnseen = class
-{
+let BhvUnseen = class {
   eventMask    = EV_ON_CMD
   valuePID     = ::dagui_propid.add_name_id("value")
 
-  function onAttach(obj)
-  {
+  function onAttach(obj) {
     if (obj?.value)
       this.setNewConfig(obj, this.buildConfig(obj.value))
     this.updateView(obj)
     return RETCODE_NOTHING
   }
 
-  function buildConfig(value)
-  {
+  function buildConfig(value) {
     local seenData = this.getVerifiedData(value)
 
     if (!::u.isArray(seenData))
@@ -42,19 +41,17 @@ let BhvUnseen = class
     return ::u.map(seenData, (@(s) this.getConfig(s)).bindenv(this))
   }
 
-  function getVerifiedData(value)
-  {
+  function getVerifiedData(value) {
     return ::u.isString(value)
       ? seenList.isSeenList(value)
         ? { listId = value }
-        : ::parse_json(value)
+        : parse_json(value)
       : ::u.isTable(value)
         ? value
         : null
   }
 
-  function getConfig(valueTbl)
-  {
+  function getConfig(valueTbl) {
     if (!valueTbl?.listId)
       return null
 
@@ -70,30 +67,26 @@ let BhvUnseen = class
     }
   }
 
-  function setValue(obj, valueTbl)
-  {
+  function setValue(obj, valueTbl) {
     this.setNewConfig(obj, this.buildConfig(valueTbl))
     this.updateView(obj)
     return u.isString(valueTbl) || u.isTable(valueTbl)
   }
 
-  function setNewConfig(obj, config)
-  {
+  function setNewConfig(obj, config) {
     obj.setUserData(config) //this is single direct link to config.
                             //So destroy object, or change user data invalidate old subscriptions.
     if (!config)
       return
 
-    foreach (seenData in config)
-    {
+    foreach (seenData in config) {
       if (!seenData?.seen)
         continue
 
       local entities = seenData?.entitiesList
       if (entities)
-        foreach(entity in entities)
-          if (seenData.seen.isSubList(entity))
-          {
+        foreach (entity in entities)
+          if (seenData.seen.isSubList(entity)) {
             entities = null //when has sublist, need to subscribe for any changes for current seen list
             seenData.hasCounter = true
             break
@@ -104,22 +97,19 @@ let BhvUnseen = class
     }
   }
 
-  function getOnSeenChangedCb(obj)
-  {
+  function getOnSeenChangedCb(obj) {
     let bhvClass = this
     return @() checkObj(obj) && bhvClass.updateView(obj)
   }
 
-  function updateView(obj)
-  {
+  function updateView(obj) {
     let config = obj.getUserData()
     local hasCounter = false
     local count = 0
 
     if (config)
       foreach (seenData in config)
-        if (seenData)
-        {
+        if (seenData) {
           count += seenData.seen.getNewCount(seenData.entitiesList)
           hasCounter = hasCounter || seenData.hasCounter
         }

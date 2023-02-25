@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let DataBlock  = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 ::g_item_limits <- {
 
@@ -27,8 +29,7 @@ let { get_time_msec } = require("dagor.time")
 // Public
 //
 
-::g_item_limits.requestLimits <- function requestLimits(isBlocking = false)
-{
+::g_item_limits.requestLimits <- function requestLimits(isBlocking = false) {
   if (this.requestLockTime < max(get_time_msec() - this.REQUEST_UNLOCK_TIMEOUT * 1000, 0))
     this.isRequestLocked = false
 
@@ -37,14 +38,12 @@ let { get_time_msec } = require("dagor.time")
 
   let curTime = get_time_msec()
 
-  let requestBlk = ::DataBlock()
+  let requestBlk = DataBlock()
   local requestSize = 0
-  while (this.itemNamesQueue.len() > 0 && this.checkRequestSize(requestSize))
-  {
+  while (this.itemNamesQueue.len() > 0 && this.checkRequestSize(requestSize)) {
     let itemName = this.itemNamesQueue.pop()
     let limitData = this.getLimitDataByItemName(itemName)
-    if (limitData.lastUpdateTime < max(curTime - this.ITEM_REFRESH_TIME * 1000, 0))
-    {
+    if (limitData.lastUpdateTime < max(curTime - this.ITEM_REFRESH_TIME * 1000, 0)) {
       requestBlk["name"] <- itemName
       ++requestSize
     }
@@ -61,11 +60,9 @@ let { get_time_msec } = require("dagor.time")
   let taskOptions = {
     showProgressBox = isBlocking
   }
-  let taskCallback = function (result = YU2_OK)
-    {
+  let taskCallback = function (result = YU2_OK) {
       ::g_item_limits.isRequestLocked = false
-      if (result == YU2_OK)
-      {
+      if (result == YU2_OK) {
         let resultBlk = ::get_items_count_for_limits_result()
         ::g_item_limits.onRequestComplete(resultBlk)
       }
@@ -74,21 +71,18 @@ let { get_time_msec } = require("dagor.time")
   return ::g_tasker.addTask(taskId, taskOptions, taskCallback, taskCallback)
 }
 
-::g_item_limits.enqueueItem <- function enqueueItem(itemName)
-{
+::g_item_limits.enqueueItem <- function enqueueItem(itemName) {
   ::u.appendOnce(itemName, this.itemNamesQueue)
 }
 
-::g_item_limits.requestLimitsForItem <- function requestLimitsForItem(itemId, forceRefresh = false)
-{
+::g_item_limits.requestLimitsForItem <- function requestLimitsForItem(itemId, forceRefresh = false) {
   if (forceRefresh)
     this.getLimitDataByItemName(itemId).lastUpdateTime = -1
   this.enqueueItem(itemId)
   this.requestLimits()
 }
 
-::g_item_limits.getLimitDataByItemName <- function getLimitDataByItemName(itemName)
-{
+::g_item_limits.getLimitDataByItemName <- function getLimitDataByItemName(itemName) {
   return getTblValue(itemName, this.limitDataByItemName) || this.createLimitData(itemName)
 }
 
@@ -96,10 +90,8 @@ let { get_time_msec } = require("dagor.time")
 // Private
 //
 
-::g_item_limits.onRequestComplete <- function onRequestComplete(resultBlk)
-{
-  for (local i = resultBlk.blockCount() - 1; i >= 0; --i)
-  {
+::g_item_limits.onRequestComplete <- function onRequestComplete(resultBlk) {
+  for (local i = resultBlk.blockCount() - 1; i >= 0; --i) {
     let itemBlk = resultBlk.getBlock(i)
     let itemName = itemBlk.getBlockName()
     let limitData = this.getLimitDataByItemName(itemName)
@@ -111,8 +103,7 @@ let { get_time_msec } = require("dagor.time")
   this.requestLimits()
 }
 
-::g_item_limits.createLimitData <- function createLimitData(itemName)
-{
+::g_item_limits.createLimitData <- function createLimitData(itemName) {
   assert(
     !(itemName in this.limitDataByItemName),
     format("Limit data with name %s already exists.", itemName)
@@ -129,7 +120,6 @@ let { get_time_msec } = require("dagor.time")
   return limitData
 }
 
-::g_item_limits.checkRequestSize <- function checkRequestSize(requestSize)
-{
+::g_item_limits.checkRequestSize <- function checkRequestSize(requestSize) {
   return this.MAX_REQUEST_SIZE == 0 || requestSize < this.MAX_REQUEST_SIZE
 }

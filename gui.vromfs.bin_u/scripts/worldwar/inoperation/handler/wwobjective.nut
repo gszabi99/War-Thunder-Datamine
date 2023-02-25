@@ -1,17 +1,19 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { Point2 } = require("dagor.math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let DataBlock  = require("DataBlock")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 
-::gui_handlers.wwObjective <- class extends ::BaseGuiHandler
-{
+::gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarObjectivesInfo.tpl"
   sceneBlkName = null
@@ -29,31 +31,26 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   restrictShownObjectives = false
   hasObjectiveDesc = false
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return {
       reqFullMissionObjectsButton = this.reqFullMissionObjectsButton
     }
   }
 
-  function getSceneTplContainerObj()
-  {
+  function getSceneTplContainerObj() {
     return this.scene
   }
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.scene) && checkObj(this.scene.findObject("ww_mission_objectives"))
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.update()
     this.checkTimers()
   }
 
-  function update()
-  {
+  function update() {
     let placeObj = this.scene.findObject("ww_mission_objectives")
     if (!checkObj(placeObj))
       return
@@ -75,11 +72,9 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
-  function checkTimers()
-  {
+  function checkTimers() {
     this.timersArray = []
-    foreach (_id, dataBlk in this.staticBlk)
-    {
+    foreach (_id, dataBlk in this.staticBlk) {
       let statusBlk = this.getStatusBlock(dataBlk)
       let oType = ::g_ww_objective_type.getTypeByTypeName(dataBlk?.type)
       let handler = this
@@ -88,26 +83,23 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     }
   }
 
-  function updateObjectivesData()
-  {
+  function updateObjectivesData() {
     let objectivesBlk = ::g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 
-    this.staticBlk = ::u.copy(objectivesBlk?.data) || ::DataBlock()
-    this.dynamicBlk = ::u.copy(objectivesBlk?.status) || ::DataBlock()
+    this.staticBlk = ::u.copy(objectivesBlk?.data) || DataBlock()
+    this.dynamicBlk = ::u.copy(objectivesBlk?.status) || DataBlock()
   }
 
-  function canShowObjective(objBlock, checkType = true, isForceVisible = false)
-  {
+  function canShowObjective(objBlock, checkType = true, isForceVisible = false) {
     if (::g_world_war.isDebugModeEnabled())
       return true
 
     if (this.needShowOperationDesc && !isForceVisible && !objBlock?.showInOperationDesc)
       return false
 
-    if (checkType)
-    {
+    if (checkType) {
       let oType = ::g_ww_objective_type.getTypeByTypeName(objBlock?.type)
       let isDefender = oType.isDefender(objBlock, ::ww_side_val_to_name(this.side))
 
@@ -124,11 +116,10 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     return true
   }
 
-  function getShowMaxObjectivesCount()
-  {
+  function getShowMaxObjectivesCount() {
     let winner = ::ww_get_operation_winner()
     if (this.restrictShownObjectives && winner != SIDE_NONE)
-      return ::Point2(1, 0)
+      return Point2(1, 0)
 
     let objectivesCount = this.getObjectivesCount()
 
@@ -147,27 +138,27 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     let blockHeight = content1BlockHeight - busyHeight
 
     local headers = 0
-    if (objectivesCount.x > 0) headers++
-    if (objectivesCount.y > 0) headers++
+    if (objectivesCount.x > 0)
+      headers++
+    if (objectivesCount.y > 0)
+      headers++
     let reservedHeight = guiScene.calcString("1@frameHeaderHeight + " + headers + "@objectiveBlockHeaderHeight", null)
 
     let availObjectivesHeight = blockHeight - reservedHeight
 
     let singleObjectiveHeight = guiScene.calcString("1@objectiveHeight", null)
     let allowObjectives = availObjectivesHeight / singleObjectiveHeight
-    let res = ::Point2(0, 0)
+    let res = Point2(0, 0)
     res.x = max(1, min(objectivesCount.x, allowObjectives))
     if (allowObjectives > res.x)
       res.y = max(1, min(objectivesCount.y, allowObjectives))
     return res
   }
 
-  function getObjectivesCount(checkType = true)
-  {
-    let objectivesCount = ::Point2(0,0)
+  function getObjectivesCount(checkType = true) {
+    let objectivesCount = Point2(0, 0)
     foreach (block in this.staticBlk)
-      if (this.canShowObjective(block, checkType))
-      {
+      if (this.canShowObjective(block, checkType)) {
         if (block?.mainObjective)
           objectivesCount.x++
         else
@@ -177,28 +168,24 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     return objectivesCount
   }
 
-  function onEventWWAFKTimerStop(_params)
-  {
+  function onEventWWAFKTimerStop(_params) {
     this.recalculateTopPosition()
   }
 
-  function onEventWWAFKTimerStart(params)
-  {
-    if(params?.needResize ?? false)
+  function onEventWWAFKTimerStart(params) {
+    if (params?.needResize ?? false)
       this.setTopPosition(0)
     else
       this.recalculateTopPosition()
   }
 
-  function setTopPosition(value)
-  {
+  function setTopPosition(value) {
     if (!this.restrictShownObjectives)
       return
     this.scene.getScene()["content_block_1"].top = value
   }
 
-  function recalculateTopPosition()
-  {
+  function recalculateTopPosition() {
     if (!this.restrictShownObjectives)
       return
 
@@ -210,8 +197,10 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     let busyHeight = guiScene["operation_info"].getSize()[1]
 
     local headers = 0
-    if (objectivesCount.x > 0) headers++
-    if (objectivesCount.y > 0) headers++
+    if (objectivesCount.x > 0)
+      headers++
+    if (objectivesCount.y > 0)
+      headers++
 
     let reservedHeight = guiScene.calcString("1@frameHeaderHeight + "
       + headers + "@objectiveBlockHeaderHeight", null)
@@ -221,8 +210,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     this.setTopPosition(content1BlockHeight - busyHeight - reservedHeight - objectivesHeight)
   }
 
-  function getObjectiveBlocksArray()
-  {
+  function getObjectiveBlocksArray() {
     this.recalculateTopPosition()
     let availableObjectiveSlots = this.getShowMaxObjectivesCount()
     let objectivesList = this.getObjectivesList(availableObjectiveSlots)
@@ -233,8 +221,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       countryIcon = groups[0].getCountryIcon()
 
     let objectiveBlocks = []
-    foreach (name in ["primary", "secondary"])
-    {
+    foreach (name in ["primary", "secondary"]) {
       let arr = objectivesList[name]
       objectiveBlocks.append({
           id = name,
@@ -248,18 +235,16 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     return objectiveBlocks
   }
 
-  function getAFKStatusBlock()
-  {
+  function getAFKStatusBlock() {
     if (!::g_world_war.isCurrentOperationFinished())
       return null
     foreach (idx, inst in this.staticBlk)
-      if(::g_string.startsWith(idx, "dont_afk") && this.getStatusBlock(inst)?.winner)
+      if (::g_string.startsWith(idx, "dont_afk") && this.getStatusBlock(inst)?.winner)
         return inst
     return null
   }
 
-  function getObjectivesList(availableObjectiveSlots, checkType = true)
-  {
+  function getObjectivesList(availableObjectiveSlots, checkType = true) {
     local list = {
       primary = []
       secondary = []
@@ -269,12 +254,11 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     let statusBlk = this.getAFKStatusBlock()
     list.primary = statusBlk ? [statusBlk] : []
     list.primaryCount = list.primary.len()
-    if(list.primaryCount)
+    if (list.primaryCount)
       return list
 
-    let usedObjectiveSlots = ::Point2(0,0)
-    for (local i = 0; i < this.staticBlk.blockCount(); i++)
-    {
+    let usedObjectiveSlots = Point2(0, 0)
+    for (local i = 0; i < this.staticBlk.blockCount(); i++) {
       let objBlock = this.staticBlk.getBlock(i)
       if (!this.canShowObjective(objBlock, checkType, true))
         continue
@@ -290,26 +274,23 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
       objBlock.id <- objBlock.getBlockName()
 
-      if (objBlock?.mainObjective && usedObjectiveSlots.x < availableObjectiveSlots.x)
-      {
+      if (objBlock?.mainObjective && usedObjectiveSlots.x < availableObjectiveSlots.x) {
         usedObjectiveSlots.x++
         list.primary.append(objBlock)
       }
-      else if (usedObjectiveSlots.y < availableObjectiveSlots.y)
-      {
+      else if (usedObjectiveSlots.y < availableObjectiveSlots.y) {
         usedObjectiveSlots.y++
         list.secondary.append(objBlock)
       }
     }
 
     if (::u.isEmpty(list.primary) && checkType)
-      list = this.getObjectivesList(::Point2(1,0), false)
+      list = this.getObjectivesList(Point2(1, 0), false)
 
     return list
   }
 
-  function getObjectiveViewsArray(objectives)
-  {
+  function getObjectiveViewsArray(objectives) {
     return ::u.mapAdvanced(objectives, Callback(
       @(dataBlk, idx, arr)
         ::WwObjectiveView(
@@ -321,8 +302,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       this))
   }
 
-  function onEventWWLoadOperation(_params)
-  {
+  function onEventWWLoadOperation(_params) {
     let objectivesBlk = ::g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
@@ -331,36 +311,30 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     this.checkTimers()
   }
 
-  function onEventWWOperationFinished(_params)
-  {
+  function onEventWWOperationFinished(_params) {
     this.update()
     this.checkTimers()
   }
 
-  function onTabChange()
-  {
+  function onTabChange() {
     this.updateReinforcementSpeedup()
   }
 
-  function updateDynamicData(objectivesBlk)
-  {
-    this.dynamicBlk = ::u.copy(objectivesBlk?.status) || ::DataBlock()
+  function updateDynamicData(objectivesBlk) {
+    this.dynamicBlk = ::u.copy(objectivesBlk?.status) || DataBlock()
     this.updateDynamicDataBlocks()
     this.updateReinforcementSpeedup()
   }
 
-  function updateDynamicDataBlocks()
-  {
+  function updateDynamicDataBlocks() {
     for (local i = 0; i < this.staticBlk.blockCount(); i++)
       this.updateDynamicDataBlock(this.staticBlk.getBlock(i))
   }
 
-  function updateReinforcementSpeedup()
-  {
+  function updateReinforcementSpeedup() {
     local reinforcementSpeedup = 0
     foreach (objectiveBlk in this.staticBlk)
-      if (this.canShowObjective(objectiveBlk, true))
-      {
+      if (this.canShowObjective(objectiveBlk, true)) {
         let statusBlock = this.getStatusBlock(objectiveBlk)
         let oType = ::g_ww_objective_type.getTypeByTypeName(objectiveBlk?.type)
         let sideEnumVal = ::ww_side_val_to_name(this.side)
@@ -371,8 +345,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     ::ww_event("ReinforcementSpeedupUpdated", { speedup = reinforcementSpeedup })
   }
 
-  function updateDynamicDataBlock(objectiveBlk)
-  {
+  function updateDynamicDataBlock(objectiveBlk) {
     let objectiveBlockId = objectiveBlk.getBlockName()
     let statusBlock = this.getStatusBlock(objectiveBlk)
 
@@ -396,8 +369,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (checkObj(titleObj))
       titleObj.setValue(oType.getName(objectiveBlk, statusBlock, sideEnumVal))
 
-    foreach (block in result)
-    {
+    foreach (block in result) {
       if (!("id" in block))
         continue
 
@@ -406,8 +378,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
         continue
 
       foreach (textId in ["pName", "pValue"])
-        if (textId in block)
-        {
+        if (textId in block) {
           let nameObj = updatableParamObj.findObject(textId)
           if (checkObj(nameObj))
             nameObj.setValue(block[textId])
@@ -418,36 +389,30 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     }
 
     if (zones.len())
-      foreach(zone in zones)
-      {
+      foreach (zone in zones) {
         let zoneObj = objectiveObj.findObject(zone.id)
         if (checkObj(zoneObj))
           zoneObj.team = zone.team
       }
 
     let descObj = objectiveObj.findObject("updatable_data_text")
-    if (checkObj(descObj))
-    {
+    if (checkObj(descObj)) {
       let text = oType.getUpdatableParamsDescriptionText(objectiveBlk, statusBlock, sideEnumVal)
       descObj.setValue(text)
     }
   }
 
-  function getStatusBlock(blk)
-  {
+  function getStatusBlock(blk) {
     return this.dynamicBlk.getBlockByName(blk?.guiStatusBlk ?? blk.getBlockName())
   }
 
-  function onOpenFullMissionObjects()
-  {
+  function onOpenFullMissionObjects() {
     ::gui_handlers.WwObjectivesInfo.open()
   }
 
-  function onHoverName(obj)
-  {
+  function onHoverName(obj) {
     let zonesList = []
-    for (local i = 0; i < obj.childrenCount(); i++)
-    {
+    for (local i = 0; i < obj.childrenCount(); i++) {
       let zoneObj = obj.getChild(i)
       if (!checkObj(zoneObj))
         continue
@@ -458,8 +423,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       ::ww_mark_zones_as_outlined_by_name(zonesList)
   }
 
-  function onHoverLostName(_obj)
-  {
+  function onHoverLostName(_obj) {
     ::ww_clear_outlined_zones()
   }
 }

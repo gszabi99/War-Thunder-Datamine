@@ -15,7 +15,7 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "tank_exhaust",
+  "exhaustFx": "tank_exhaust_med",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
@@ -88,6 +88,16 @@
         "node": "bone_roll_engine_04"
       },
       {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
         "type": "waterJetShutter",
         "turnSpeed": 1.5,
         "maxValue": -1.7,
@@ -139,6 +149,10 @@
       },
       "ex_armor_01_dm": {
         "armorThickness": 50.0
+      },
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       }
     },
     "turret": {
@@ -222,7 +236,9 @@
         "hidableInViewer": true
       },
       "turret_03_top_dm": {},
-      "turret_03_side_dm": {}
+      "turret_03_side_dm": {},
+      "ex_decor_r_08_dm": {},
+      "ex_decor_l_08_dm": {}
     },
     "chassis": {
       "hp": 250.0,
@@ -1248,6 +1264,18 @@
     "defaultDistance": 1000.0,
     "vertical": true,
     "horizontal": true
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "titleLoc": "RHA_tank_modern",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm",
+          "xrayTextThickness": 5.0
+        }
+      }
+    }
   },
   "sound": {
     "EngineName": "engine_m3_bradley",
@@ -2397,10 +2425,10 @@
     ]
   },
   "cockpit": {
-    "zoomOutFov": 8.37,
+    "zoomOutFov": 7.37,
     "zoomInFov": 7.37,
     "sightFov": 3.9,
-    "sightName": "m504",
+    "sightName": "cotac_m581",
     "headPos": [
       0.0,
       4.0,

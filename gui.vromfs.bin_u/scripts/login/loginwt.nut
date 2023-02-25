@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -5,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let statsd = require("statsd")
+let DataBlock = require("DataBlock")
 let { get_authenticated_url_sso } = require("url")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
@@ -25,7 +27,7 @@ let { isNeedFirstCountryChoice,
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
-let { parse }          = require("json")
+let { get_meta_missions_info } = require("guiMission")
 
 
 ::my_user_id_str <- ""
@@ -41,8 +43,7 @@ let { parse }          = require("json")
 ::g_login.shouldRestartPseudoThread <- false
 ::g_login[PERSISTENT_DATA_PARAMS].append("initOptionsPseudoThread")
 
-::gui_start_startscreen <- function gui_start_startscreen()
-{
+::gui_start_startscreen <- function gui_start_startscreen() {
   bqSendStart()
 
   log($"platformId is '{platformId }'")
@@ -53,14 +54,12 @@ let { parse }          = require("json")
   ::g_login.startLoginProcess()
 }
 
-::gui_start_after_scripts_reload <- function gui_start_after_scripts_reload()
-{
+::gui_start_after_scripts_reload <- function gui_start_after_scripts_reload() {
   ::g_login.setState(LOGIN_STATE.AUTHORIZED) //already authorized to char
   ::g_login.startLoginProcess(true)
 }
 
-::on_sign_out <- function on_sign_out()  //!!FIX ME: better to full replace this function by SignOut event
-{
+::on_sign_out <- function on_sign_out() {  //!!FIX ME: better to full replace this function by SignOut event
   if (!("resetChat" in getroottable())) //scripts not loaded
     return
 
@@ -74,14 +73,12 @@ let { parse }          = require("json")
   ::abandoned_researched_items_for_session = []
 }
 
-let function go_to_account_web_page(bqKey = "")
-{
+let function go_to_account_web_page(bqKey = "") {
   let urlBase = format("/user.php?skin_lang=%s", ::g_language.getShortName())
   openUrl(get_authenticated_url_sso(urlBase).url, false, false, bqKey)
 }
 
-::g_login.loadLoginHandler <- function loadLoginHandler()
-{
+::g_login.loadLoginHandler <- function loadLoginHandler() {
   local hClass = ::gui_handlers.LoginWndHandler
   if (isPlatformSony)
     hClass = ::gui_handlers.LoginWndHandlerPs4
@@ -98,10 +95,8 @@ let function go_to_account_web_page(bqKey = "")
   ::handlersManager.loadHandler(hClass)
 }
 
-::g_login.onAuthorizeChanged <- function onAuthorizeChanged()
-{
-  if (!this.isAuthorized())
-  {
+::g_login.onAuthorizeChanged <- function onAuthorizeChanged() {
+  if (!this.isAuthorized()) {
     if (::g_login.initOptionsPseudoThread)
       ::g_login.initOptionsPseudoThread.clear()
     ::broadcastEvent("SignOut")
@@ -114,8 +109,7 @@ let function go_to_account_web_page(bqKey = "")
     })
 }
 
-::g_login.initConfigs <- function initConfigs(cb)
-{
+::g_login.initConfigs <- function initConfigs(cb) {
   ::broadcastEvent("AuthorizeComplete")
   ::load_scripts_after_login_once()
   ::run_reactive_gui()
@@ -158,8 +152,8 @@ let function go_to_account_web_page(bqKey = "")
     function() {
       ::ItemsManager.collectUserlogItemdefs()
       let arr = []
-      foreach(unit in ::all_units)
-        if(unit.marketplaceItemdefId != null)
+      foreach (unit in ::all_units)
+        if (unit.marketplaceItemdefId != null)
           arr.append(unit.marketplaceItemdefId)
 
       ::ItemsManager.requestItemsByItemdefIds(arr)
@@ -179,8 +173,7 @@ let function go_to_account_web_page(bqKey = "")
 
       updatePlayerRankByCountries()
     }
-    function()
-    {
+    function() {
       ::unlocked_countries = [] //reinit countries
       ::checkUnlockedCountries()
       ::checkUnlockedCountriesByAirs()
@@ -188,48 +181,39 @@ let function go_to_account_web_page(bqKey = "")
       if (isNeedFirstCountryChoice())
         ::broadcastEvent("AccountReset")
     }
-    function()
-    {
+    function() {
       checkUnlocksByAbTest()
     }
-    function()
-    {
+    function() {
       // FIXME: it is better to get string from NDA text!
       let versions = ["nda_version", "eula_version"]
-      foreach (sver in versions)
-      {
+      foreach (sver in versions) {
         let l = loc(sver, "-1")
         try { getroottable()[sver] = l.tointeger() }
-        catch(e) { assert(0, "can't convert '"+l+"' to version "+sver) }
+        catch(e) { assert(0, "can't convert '" + l + "' to version " + sver) }
       }
 
       if (::should_agree_eula(::nda_version, ::TEXT_NDA))
         ::gui_start_eula(::TEXT_NDA)
-      else
-      if (::should_agree_eula(::eula_version, ::TEXT_EULA))
+      else if (::should_agree_eula(::eula_version, ::TEXT_EULA))
         ::gui_start_eula(::TEXT_EULA)
     }
-    function()
-    {
+    function() {
       if (::should_agree_eula(::nda_version, ::TEXT_NDA) || ::should_agree_eula(::eula_version, ::TEXT_EULA))
         return PT_STEP_STATUS.SUSPEND
       return null
     }
-    function()
-    {
+    function() {
       if (fxOptions.needShowHdrSettingsOnStart())
         fxOptions.openHdrSettings()
     }
-    function()
-    {
+    function() {
       if (fxOptions.needShowHdrSettingsOnStart())
         return PT_STEP_STATUS.SUSPEND
       return null
     }
-    function()
-    {
-      if (isNeedFirstCountryChoice())
-      {
+    function() {
+      if (isNeedFirstCountryChoice()) {
         ::g_matching_game_modes.forceUpdateGameModes()
         ::gui_start_countryChoice()
         ::gui_handlers.FontChoiceWnd.markSeen()
@@ -238,14 +222,12 @@ let function go_to_account_web_page(bqKey = "")
       else
         tutorialModule.saveVersion(0)
     }
-    function()
-    {
+    function() {
       if (isNeedFirstCountryChoice())
         return PT_STEP_STATUS.SUSPEND
       return null
     }
-    function()
-    {
+    function() {
       ::g_login.initOptionsPseudoThread = null
       cb()
     }
@@ -254,8 +236,7 @@ let function go_to_account_web_page(bqKey = "")
   startPseudoThread(this.initOptionsPseudoThread, startLogout)
 }
 
-::g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(_p)
-{
+::g_login.onEventGuiSceneCleared <- function onEventGuiSceneCleared(_p) {
   //work only after scripts reload
   if (!this.shouldRestartPseudoThread)
     return
@@ -264,21 +245,18 @@ let function go_to_account_web_page(bqKey = "")
     return
 
   ::get_cur_gui_scene().performDelayed(getroottable(),
-    function()
-    {
+    function() {
       ::handlersManager.loadHandler(::gui_handlers.WaitForLoginWnd)
       startPseudoThread(::g_login.initOptionsPseudoThread, startLogout)
     })
 }
 
-::g_login.afterScriptsReload <- function afterScriptsReload()
-{
+::g_login.afterScriptsReload <- function afterScriptsReload() {
   if (this.initOptionsPseudoThread)
     this.shouldRestartPseudoThread = true
 }
 
-::g_login.onLoggedInChanged <- function onLoggedInChanged()
-{
+::g_login.onLoggedInChanged <- function onLoggedInChanged() {
   if (!this.isLoggedIn())
     return
 
@@ -288,40 +266,12 @@ let function go_to_account_web_page(bqKey = "")
   ::broadcastEvent("LoginComplete")
 
   //animatedSwitchScene sync function, so we need correct finish current call
-  ::get_cur_gui_scene().performDelayed(getroottable(), function()
-  {
+  ::get_cur_gui_scene().performDelayed(getroottable(), function() {
     ::handlersManager.markfullReloadOnSwitchScene()
     ::handlersManager.animatedSwitchScene(function() {
       ::g_login.firstMainMenuLoad()
     })
   })
-
-  // Personal offers example for developers
-  if (::is_dev_version)
-  {
-    let personalOffers = require("personalOffers")
-    let count          = personalOffers.count()
-
-    log($"PersonalOffers: count = {count}")
-    for (local i = 0; i < count; ++i)
-    {
-      let offer = personalOffers.get(i)
-      log($" get({i}): {typeof offer} [{offer.len()}]")
-      debugTableData(offer)
-    }
-
-    {
-      let offer = personalOffers.find("some-key")
-      log($" find: {typeof offer} [{offer.len()}]")
-    }
-
-    for (local i = 0; i < count; ++i)
-    {
-      let offer = personalOffers.get(i)
-      let json  = parse(offer.text)
-      ::g_popups.add(json?.title, json?.message)
-    }
-  }
 }
 
 let function needAutoStartBattle() {
@@ -337,8 +287,7 @@ let function needAutoStartBattle() {
   return true
 }
 
-::g_login.firstMainMenuLoad <- function firstMainMenuLoad()
-{
+::g_login.firstMainMenuLoad <- function firstMainMenuLoad() {
   let isAutoStart = needAutoStartBattle()
   let handler = isAutoStart
     ? ::handlersManager.loadHandler(::gui_handlers.AutoStartBattleHandler)
@@ -353,14 +302,12 @@ let function needAutoStartBattle() {
   handler.doWhenActive(@() ::tribunal.checkComplaintCounts())
   handler.doWhenActive(@() ::menu_chat_handler?.checkVoiceChatSuggestion())
 
-  if (!::fetch_profile_inited_once())
-  {
+  if (!::fetch_profile_inited_once()) {
     if (::get_num_real_devices() == 0 && !is_platform_android)
       ::setControlTypeByID("ct_mouse")
     else if (::is_platform_shield_tv())
       ::setControlTypeByID("ct_xinput")
-    else if (!isPlatformSteamDeck)
-    {
+    else if (!isPlatformSteamDeck) {
       let onlyDevicesChoice = !hasFeature("Profile")
       handler.doWhenActive(function() { ::gui_start_controls_type_choice(onlyDevicesChoice) })
     }
@@ -368,18 +315,16 @@ let function needAutoStartBattle() {
   else if (!::fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })
 
-  if (::g_login.isProfileReceived() && ::g_controls_presets.isNewerControlsPresetVersionAvailable())
-  {
+  if (::g_login.isProfileReceived() && ::g_controls_presets.isNewerControlsPresetVersionAvailable()) {
     let patchNoteText = ::g_controls_presets.getPatchNoteTextForCurrentPreset()
     ::scene_msg_box("new_controls_version_msg_box", null,
       loc("mainmenu/new_controls_version_msg_box", { patchnote = patchNoteText }),
       [["yes", function () { ::g_controls_presets.setHighestVersionOfCurrentPreset() }],
        ["no", function () { ::g_controls_presets.rejectHighestVersionOfCurrentPreset() }]
-      ], "yes", { cancel_fn = function () { ::g_controls_presets.rejectHighestVersionOfCurrentPreset() }})
+      ], "yes", { cancel_fn = function () { ::g_controls_presets.rejectHighestVersionOfCurrentPreset() } })
   }
 
-  if (::show_console_buttons)
-  {
+  if (::show_console_buttons) {
     if (::g_login.isProfileReceived() && ::gui_handlers.GampadCursorControlsSplash.shouldDisplay())
       handler.doWhenActive(@() ::gui_handlers.GampadCursorControlsSplash.open())
   }
@@ -391,10 +336,10 @@ let function needAutoStartBattle() {
       loc("mainmenu/email_not_verified"),
       [
         ["later", function() {} ],
-        ["verify", function() {go_to_account_web_page("email_verification_popup")}]
+        ["verify", function() { go_to_account_web_page("email_verification_popup") }]
       ],
-      "later", { cancel_fn = function() {}}
-    )})
+      "later", { cancel_fn = function() {} }
+    ) })
 
   if (hasFeature("CheckTwoStepAuth") && !havePlayerTag("2step"))
     handler.doWhenActive(function () {
@@ -405,7 +350,7 @@ let function needAutoStartBattle() {
         [{
           id = "acitvate"
           text = loc("msgbox/btn_activate")
-          func = function() {go_to_account_web_page("2step_auth_popup")}
+          func = function() { go_to_account_web_page("2step_auth_popup") }
         }]
       )
     })
@@ -424,32 +369,27 @@ let function needAutoStartBattle() {
     onMainMenuReturnActions.value?.onMainMenuReturn(handler, true)
 }
 
-::g_login.statsdOnLogin <- function statsdOnLogin()
-{
+::g_login.statsdOnLogin <- function statsdOnLogin() {
   statsd.send_counter("sq.game_start.login", 1)
 
-  if (::get_controls_preset() == "")
-  {
+  if (::get_controls_preset() == "") {
     log("statsd_on_login customcontrols")
     statsd.send_counter("sq.customcontrols", 1)
   }
 
-  if (isPlatformSony)
-  {
+  if (isPlatformSony) {
     if (!::ps4_is_chat_enabled())
       ::add_big_query_record("ps4.restrictions.chat", "")
     if (!::ps4_is_ugc_enabled())
       ::add_big_query_record("ps4.restrictions.ugc", "")
   }
 
-  if (is_platform_windows)
-  {
+  if (is_platform_windows) {
     local anyUG = false
 
-    let mis_array = ::get_meta_missions_info(GM_SINGLE_MISSION)
+    let mis_array = get_meta_missions_info(GM_SINGLE_MISSION)
     foreach (misBlk in mis_array)
-      if (::is_user_mission(misBlk))
-      {
+      if (::is_user_mission(misBlk)) {
         statsd.send_counter("sq.ug.goodum", 1)
         anyUG = true
         log("statsd_on_login ug.goodum " + (misBlk?.name ?? "null"))
@@ -458,15 +398,12 @@ let function needAutoStartBattle() {
 
     let userSkins = ::get_user_skins_blk()
     local haveUserSkin = false
-    for (local i = 0; i < userSkins.blockCount(); i++)
-    {
+    for (local i = 0; i < userSkins.blockCount(); i++) {
       let air = userSkins.getBlock(i)
       let skins = air % "skin"
-      foreach (skin in skins)
-      {
+      foreach (skin in skins) {
         let folder = skin.name
-        if (folder.indexof("template") == null)
-        {
+        if (folder.indexof("template") == null) {
           haveUserSkin = true
           anyUG = true
           log("statsd_on_login ug.haveus " + folder + " for " + air.getBlockName())
@@ -480,26 +417,22 @@ let function needAutoStartBattle() {
       statsd.send_counter("sq.ug.haveus", 1)
 
     let cdb = ::get_user_skins_profile_blk()
-    for (local i = 0; i < cdb.paramCount(); i++)
-    {
+    for (local i = 0; i < cdb.paramCount(); i++) {
       let skin = cdb.getParamValue(i)
-      if ((type(skin) == "string") && (skin != "") && (skin.indexof("template")==null))
-      {
+      if ((type(skin) == "string") && (skin != "") && (skin.indexof("template") == null)) {
         anyUG = true
         statsd.send_counter("sq.ug.useus", 1)
-        log("statsd_on_login ug.useus "+skin)
+        log("statsd_on_login ug.useus " + skin)
         break;
       }
     }
 
-    let lcfg = ::DataBlock()
+    let lcfg = DataBlock()
     ::get_localization_blk_copy(lcfg)
-    if (lcfg.locTable != null)
-    {
+    if (lcfg.locTable != null) {
       let files = lcfg.locTable % "file"
       foreach (file in files)
-        if (file.indexof("usr_") != null)
-        {
+        if (file.indexof("usr_") != null) {
           anyUG = true
           log("statsd_on_login ug.langum " + file)
           statsd.send_counter("sq.ug.langum", 1)
@@ -507,8 +440,7 @@ let function needAutoStartBattle() {
         }
     }
 
-    if (anyUG)
-    {
+    if (anyUG) {
       log("statsd_on_login ug.any")
       statsd.send_counter("sq.ug.any", 1)
     }

@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -9,8 +10,7 @@ let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcuts
 let { MAX_DEADZONE, MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys
-{
+::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/joystickAxisInput.blk"
   sceneNavBlkName = null
@@ -33,8 +33,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   changedAxes = null
   optionTableId = "axis_setup_table"
 
-  function initScreen()
-  {
+  function initScreen() {
     this.axisRawValues = []
     this.axisShortcuts = []
     this.dontCheckControlsDupes = []
@@ -65,7 +64,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.reinitAutodetectAxis()
 
     if ("modifiersId" in this.axisItem)
-      foreach(name, shortcutId in this.axisItem.modifiersId)
+      foreach (name, shortcutId in this.axisItem.modifiersId)
         shortcutsAxisListModule[name].shortcutId = shortcutId
 
     this.fillAxisDropright()
@@ -73,11 +72,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateAxisRelativeOptions(axis.relative)
   }
 
-  function reinitAutodetectAxis()
-  {
+  function reinitAutodetectAxis() {
     let autodetectChBxObj = this.scene.findObject("autodetect_checkbox")
-    if (checkObj(autodetectChBxObj))
-    {
+    if (checkObj(autodetectChBxObj)) {
       autodetectChBxObj.setValue(this.autodetectAxis)
       this.onChangeAutodetect(autodetectChBxObj)
 
@@ -86,11 +83,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function getAxisRawValues(device, idx)
-  {
+  function getAxisRawValues(device, idx) {
     local res = getTblValue(idx, this.axisRawValues)
-    if (!res)
-    {
+    if (!res) {
       if (this.axisRawValues.len() <= idx)
         this.axisRawValues.resize(idx + 1, null)
 
@@ -99,15 +94,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
               def = rawPos,
               last = rawPos,
               stuckTime = 0.0,
-              inited = ::is_axis_digital(idx) || rawPos!=0
+              inited = ::is_axis_digital(idx) || rawPos != 0
             }
       this.axisRawValues[idx] = res
     }
     return res
   }
 
-  function fillAxisTable(axis)
-  {
+  function fillAxisTable(axis) {
     let axisControlsTbl = this.scene.findObject(this.optionTableId)
     if (!checkObj(axisControlsTbl))
       return
@@ -115,13 +109,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let hideAxisOptionsArray = this.axisItem?.hideAxisOptions ?? []
 
     local data = ""
-    foreach (idx, item in shortcutsAxisListModule.types)
-    {
+    foreach (idx, item in shortcutsAxisListModule.types) {
       local addTrParams = ""
       if (isInArray(item.id, hideAxisOptionsArray))
         addTrParams = "hiddenTr:t='yes'; inactive:t='yes';"
 
-      let hotkeyData = ::buildHotkeyItem(idx, this.shortcuts, item, axis, idx%2 == 0, addTrParams)
+      let hotkeyData = ::buildHotkeyItem(idx, this.shortcuts, item, axis, idx % 2 == 0, addTrParams)
       data += hotkeyData.markup
     }
 
@@ -135,51 +128,46 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (checkObj(relObj))
       relObj.setValue(axis.relative ? 1 : 0)
 
-    this.updateAxisItemsPos([0,0])
+    this.updateAxisItemsPos([0, 0])
     this.updateButtons()
 
-    foreach(item in shortcutsAxisListModule.types)
-      if (item.type == CONTROL_TYPE.SLIDER)
-      {
+    foreach (item in shortcutsAxisListModule.types)
+      if (item.type == CONTROL_TYPE.SLIDER) {
         let slideObj = this.scene.findObject(item.id)
         if (checkObj(slideObj))
           this.onSliderChange(slideObj)
       }
   }
 
-  function onChangeAxisRelative(obj)
-  {
+  function onChangeAxisRelative(obj) {
     if (!checkObj(obj))
       return
 
     this.updateAxisRelativeOptions(obj.getValue())
   }
 
-  function updateAxisRelativeOptions(isRelative)
-  {
+  function updateAxisRelativeOptions(isRelative) {
     local txtObj = null
     txtObj = this.scene.findObject("txt_rangeMax")
     if (checkObj(txtObj))
-      txtObj.setValue(loc(isRelative? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
+      txtObj.setValue(loc(isRelative ? "hotkeys/rangeInc" : "hotkeys/rangeMax"))
 
     txtObj = this.scene.findObject("txt_rangeMin")
     if (checkObj(txtObj))
-      txtObj.setValue(loc(isRelative? "hotkeys/rangeDec" : "hotkeys/rangeMin"))
+      txtObj.setValue(loc(isRelative ? "hotkeys/rangeDec" : "hotkeys/rangeMin"))
 
-    foreach (item in [shortcutsAxisListModule.kRelSpd, shortcutsAxisListModule.kRelStep])
-    {
+    foreach (item in [shortcutsAxisListModule.kRelSpd, shortcutsAxisListModule.kRelStep]) {
       let idx = shortcutsAxisListModule.types.indexof(item)
       let obj = this.scene.findObject($"table_row_{idx}")
       if (!checkObj(obj))
         continue
 
-      obj.inactive = isRelative? "no" : "yes"
-      obj.enable = isRelative? "yes" : "no"
+      obj.inactive = isRelative ? "no" : "yes"
+      obj.enable = isRelative ? "yes" : "no"
     }
   }
 
-  function onSliderChange(obj)
-  {
+  function onSliderChange(obj) {
     let textObj = obj?.id && obj.getParent().findObject(obj.id + "_value")
     if (!checkObj(textObj))
       return
@@ -198,8 +186,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     textObj.setValue(valueText)
   }
 
-  function fillAxisDropright()
-  {
+  function fillAxisDropright() {
     let listObj = this.scene.findObject("axis_list")
     if (!checkObj(listObj))
       return
@@ -209,18 +196,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.numAxisInList = this.curDevice ? curPreset.getNumAxes() : 0
 
     local data = "option { id:t='axisopt_'; text:t='#joystick/axis_not_assigned' }\n"
-    for(local i=0; i<this.numAxisInList; i++)
+    for (local i = 0; i < this.numAxisInList; i++)
       data += format("option { id:t='axisopt_%d'; text:t='%s' }\n",
               i, ::g_string.stripTags(::remapAxisName(curPreset, i)))
 
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
-    listObj.setValue(this.curDevice? (this.bindAxisNum+1) : 0)
+    listObj.setValue(this.curDevice ? (this.bindAxisNum + 1) : 0)
 
     this.updateAxisListValue()
   }
 
-  function updateAxisListValue()
-  {
+  function updateAxisListValue() {
     if (this.bindAxisNum > this.numAxisInList)
       return
 
@@ -237,39 +223,33 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     listObj.setValue(this.bindAxisNum + 1)
   }
 
-  function onChangeAutodetect(obj)
-  {
+  function onChangeAutodetect(obj) {
     this.autodetectAxis = obj.getValue()
     this.updateAutodetectButtonStyle()
   }
 
-  function updateAutodetectButtonStyle()
-  {
+  function updateAutodetectButtonStyle() {
     let obj = this.scene.findObject("btn_axis_autodetect")
-    if (checkObj(obj))
-    {
-      let text = loc("mainmenu/btn" + (this.autodetectAxis? "StopAutodetect":"AutodetectAxis"))
+    if (checkObj(obj)) {
+      let text = loc("mainmenu/btn" + (this.autodetectAxis ? "StopAutodetect" : "AutodetectAxis"))
       obj.tooltip = text
       obj.text = text
 
       let imgObj = obj.findObject("autodetect_img")
       if (checkObj(imgObj))
-        imgObj["background-image"] = "#ui/gameuiskin#btn_autodetect_" + (this.autodetectAxis? "off" : "on") + ".svg"
+        imgObj["background-image"] = "#ui/gameuiskin#btn_autodetect_" + (this.autodetectAxis ? "off" : "on") + ".svg"
     }
   }
 
-  function onAxisReset()
-  {
+  function onAxisReset() {
     this.bindAxisNum = -1
 
     ::set_controls_preset("")
     this.curJoyParams.resetAxis(this.setupAxisMode)
     let axis = this.curJoyParams.getAxis(this.setupAxisMode)
 
-    foreach (item in shortcutsAxisListModule.types)
-    {
-      if (item.type == CONTROL_TYPE.SLIDER || item.type == CONTROL_TYPE.SPINNER || item.type == CONTROL_TYPE.SWITCH_BOX)
-      {
+    foreach (item in shortcutsAxisListModule.types) {
+      if (item.type == CONTROL_TYPE.SLIDER || item.type == CONTROL_TYPE.SPINNER || item.type == CONTROL_TYPE.SWITCH_BOX) {
         let slideObj = this.scene.findObject(item.id)
         if (checkObj(slideObj))
           slideObj.setValue(item.value.call(this, axis))
@@ -279,21 +259,18 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function clearBinds(item)
-  {
+  function clearBinds(item) {
     let event = this.shortcuts[item.shortcutId]
     event.clear()
     this.onShortcutChange(item.shortcutId)
   }
 
-  function onAxisBindChange(obj)
-  {
+  function onAxisBindChange(obj) {
     this.bindAxisNum = obj.getValue() - 1
     ::u.appendOnce(this.axisItem.modifiersId[""], this.changedShortcuts)
   }
 
-  function onAxisRestore()
-  {
+  function onAxisRestore() {
     let axis = this.curJoyParams.getAxis(this.setupAxisMode)
     this.bindAxisNum = axis.axisId
     this.updateAxisListValue()
@@ -301,8 +278,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   getScById = @(scId) shortcutsAxisListModule.types?[(scId ?? "-1").tointeger()]
 
-  function onAxisInputTimer(_obj, dt)
-  {
+  function onAxisInputTimer(_obj, dt) {
     if (this.scene.getModalCounter() > 0)
       return
 
@@ -315,29 +291,25 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local deviation = 12000 //foundedAxis deviation, cant be lower than a initial value
     let totalAxes = this.curDevice.getNumAxes()
 
-    for (local i = 0; i < totalAxes; i++)
-    {
+    for (local i = 0; i < totalAxes; i++) {
       let rawValues = this.getAxisRawValues(this.curDevice, i)
       let rawPos = this.curDevice.getAxisPosRaw(i)
-      if (!rawValues.inited && rawPos!=0)
-      {
+      if (!rawValues.inited && rawPos != 0) {
         rawValues.def = rawPos //reinit
         rawValues.inited = true
       }
       let dPos = rawPos - rawValues.def
 
-      if (abs(dPos) > deviation)
-      {
+      if (abs(dPos) > deviation) {
         foundAxis = i
         deviation = abs(dPos)
 
-        if (fabs(rawPos-rawValues.last) < 1000)  //check stucked axes
-        {
+        if (fabs(rawPos - rawValues.last) < 1000) {  //check stucked axes
           rawValues.stuckTime += dt
           if (rawValues.stuckTime > 3.0)
             rawValues.def = rawPos //change cur value to def becoase of stucked
-        } else
-        {
+        }
+        else {
           rawValues.last = rawPos
           rawValues.stuckTime = 0.0
         }
@@ -369,32 +341,30 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let devVal = val
     if (isInv)
-      val = -1*val
+      val = -1 * val
 
-    val = val*kMul+kAdd
+    val = val * kMul + kAdd
 
-    let valSign = val < 0? -1 : 1
+    let valSign = val < 0 ? -1 : 1
 
     if (val > 1.0)
       val = 1.0
     else if (val < -1.0)
       val = -1.0
 
-    val = fabs(val) < deadzone? 0 : valSign * ((fabs(val) - deadzone) / (1.0 - deadzone))
+    val = fabs(val) < deadzone ? 0 : valSign * ((fabs(val) - deadzone) / (1.0 - deadzone))
 
     val = valSign * (pow(fabs(val), (1 + nonlin)))
 
     this.updateAxisItemsPos([val, devVal])
   }
 
-  function updateAxisItemsPos(valsArray)
-  {
+  function updateAxisItemsPos(valsArray) {
     if (type(valsArray) != "array")
       return
 
     let objectsArray = ["test-game-box", "test-real-box"]
-    foreach(idx, id in objectsArray)
-    {
+    foreach (idx, id in objectsArray) {
       let obj = this.scene.findObject(id)
       if (!checkObj(obj))
         continue
@@ -404,21 +374,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function checkZoomOnMWheel()
-  {
-    if (this.bindAxisNum < 0 || !this.axisItem || this.axisItem.id!="zoom")
+  function checkZoomOnMWheel() {
+    if (this.bindAxisNum < 0 || !this.axisItem || this.axisItem.id != "zoom")
       return false
 
     let mWheelId = "mouse_z"
     let wheelObj = this.scene.findObject(mWheelId)
-    if (!wheelObj) return false
+    if (!wheelObj)
+      return false
 
-    foreach(item in ::shortcutsList)
-      if (item.id == mWheelId)
-      {
+    foreach (item in ::shortcutsList)
+      if (item.id == mWheelId) {
         let value = wheelObj.getValue()
-        if (("values" in item) && (value in item.values) && (item.values[value]=="zoom"))
-        {
+        if (("values" in item) && (value in item.values) && (item.values[value] == "zoom")) {
           let msg = format(loc("msg/zoomAssignmentsConflict"), loc("controls/mouse_z"))
           this.msgBox("zoom_axis_assigned", msg,
           [
@@ -427,8 +395,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
                 wheelObj.setValue(0)
               this.doAxisApply()
             })(wheelObj)],
-            ["cancel", function()
-            {
+            ["cancel", function() {
               this.bindAxisNum = -1
               this.doAxisApply()
             }]
@@ -440,25 +407,23 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return false
   }
 
-  function doAxisApply()
-  {
+  function doAxisApply() {
     let alreadyBindedAxes = this.findBindedAxes(this.bindAxisNum, this.axisItem.checkGroup)
-    if (alreadyBindedAxes.len() == 0)
-    {
+    if (alreadyBindedAxes.len() == 0) {
       this.doBindAxis()
       return
     }
 
     local actionText = ""
-    foreach(item in alreadyBindedAxes)
-      actionText += ((actionText=="")? "":", ") + loc("controls/" + item.id)
+    foreach (item in alreadyBindedAxes)
+      actionText += ((actionText == "") ? "" : ", ") + loc("controls/" + item.id)
     let msg = loc("hotkeys/msg/unbind_axis_question", {
-      action=actionText
+      action = actionText
     })
     this.msgBox("controls_axis_bind_existing_axis", msg, [
       ["add", function() { this.doBindAxis() }],
       ["replace", function() {
-        foreach(item in alreadyBindedAxes) {
+        foreach (item in alreadyBindedAxes) {
           this.curJoyParams.bindAxis(item.axisIndex, -1)
           this.changedAxes.append(item)
         }
@@ -468,15 +433,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ], "add")
   }
 
-  function findBindedAxes(curAxisId, checkGroup)
-  {
+  function findBindedAxes(curAxisId, checkGroup) {
     if (curAxisId < 0 || !this.axisItem.checkAssign)
       return []
 
     let res = []
-    foreach(item in ::shortcutsList)
-      if (item.type == CONTROL_TYPE.AXIS && item != this.axisItem && (checkGroup & item.checkGroup))
-      {
+    foreach (item in ::shortcutsList)
+      if (item.type == CONTROL_TYPE.AXIS && item != this.axisItem && (checkGroup & item.checkGroup)) {
         let axis = this.curJoyParams.getAxis(item.axisIndex)
         if (curAxisId == axis.axisId)
           res.append(item)
@@ -484,8 +447,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return res
   }
 
-  function doBindAxis()
-  {
+  function doBindAxis() {
     this.curDevice = ::joystick_get_default()
     ::set_controls_preset(""); //custom mode
     this.curJoyParams.bindAxis(this.setupAxisMode, this.bindAxisNum)
@@ -494,8 +456,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.performDelayed(this, this.closeWnd)
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let item = this.getCurItem()
     if (!item)
       return
@@ -505,13 +466,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.showSceneBtn("btn_axis_assign", showScReset)
   }
 
-  function onTblSelect()
-  {
+  function onTblSelect() {
     this.updateButtons()
   }
 
-  function onTblDblClick()
-  {
+  function onTblDblClick() {
     let item = this.getCurItem()
     if (!item)
       return
@@ -520,30 +479,25 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.callAssignButton()
   }
 
-  function callAssignButton()
-  {
+  function callAssignButton() {
     ::assignButtonWindow(this, this.onAssignButton)
   }
 
-  function onAssignButton(dev, btn)
-  {
-    if (dev.len() > 0 && dev.len() == btn.len())
-    {
+  function onAssignButton(dev, btn) {
+    if (dev.len() > 0 && dev.len() == btn.len()) {
       let item = this.getCurItem()
       if (item)
         this.bindShortcut(dev, btn, item)
     }
   }
 
-  function findButtons(devs, btns, curItem)
-  {
+  function findButtons(devs, btns, curItem) {
     let res = []
 
     if (::find_in_array(this.dontCheckControlsDupes, curItem.shortcutId) < 0)
       foreach (idx, event in this.shortcuts)
         if (this.axisItem.checkGroup & this.shortcutItems[idx].checkGroup)
-          foreach (button_index, button in event)
-          {
+          foreach (button_index, button in event) {
             if (!button || button.dev.len() != devs.len())
               continue
             local numEqual = 0
@@ -559,8 +513,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return res
   }
 
-  function getShortcutLocId(reqNameId, fullName = true)
-  {
+  function getShortcutLocId(reqNameId, fullName = true) {
     if (!(reqNameId in this.shortcutItems))
       return ""
 
@@ -568,45 +521,41 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local reqName = reqItem.id
 
     if ("modifiersId" in reqItem)
-      foreach(name, shortcutId in reqItem.modifiersId)
-        if (shortcutId == reqNameId)
-        {
-          reqName = (fullName? reqItem.id + (name == ""? "" : "_"): "") + name
+      foreach (name, shortcutId in reqItem.modifiersId)
+        if (shortcutId == reqNameId) {
+          reqName = (fullName ? reqItem.id + (name == "" ? "" : "_") : "") + name
           break
         }
 
     return reqName
   }
 
-  function bindShortcut(devs, btns, item)
-  {
+  function bindShortcut(devs, btns, item) {
     if (!(item.shortcutId in this.shortcuts))
       return
 
     let curBinding = this.findButtons(devs, btns, item)
-    if (curBinding.len() == 0)
-    {
+    if (curBinding.len() == 0) {
       this.doBind(devs, btns, item)
       return
     }
 
-    for(local i = 0; i < curBinding.len(); i++)
+    for (local i = 0; i < curBinding.len(); i++)
       if (curBinding[i][0] == item.shortcutId)
         return
 
     local actions = ""
-    foreach(_idx, shortcut in curBinding)
-      actions += (actions == ""? "" : ", ") + loc("hotkeys/" + this.getShortcutLocId(shortcut[0]))
+    foreach (_idx, shortcut in curBinding)
+      actions += (actions == "" ? "" : ", ") + loc("hotkeys/" + this.getShortcutLocId(shortcut[0]))
 
-    let msg = loc("hotkeys/msg/unbind_question", {action = actions})
+    let msg = loc("hotkeys/msg/unbind_question", { action = actions })
 
     this.msgBox("controls_axis_bind_existing_shortcut", msg, [
       ["add", (@(devs, btns, item) function() {
         this.doBind(devs, btns, item)
       })(devs, btns, item)],
       ["replace", (@(curBinding, devs, btns, item) function() {
-        foreach(binding in curBinding)
-        {
+        foreach (binding in curBinding) {
           this.shortcuts[binding[0]].remove(binding[1])
           this.onShortcutChange(binding[0])
         }
@@ -617,8 +566,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     return
   }
 
-  function doBind(devs, btns, item)
-  {
+  function doBind(devs, btns, item) {
     let event = this.shortcuts[item.shortcutId]
     event.append({
                    dev = devs,
@@ -632,27 +580,24 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.onShortcutChange(item.shortcutId)
   }
 
-  function updateShortcutText(shortcutId)
-  {
+  function updateShortcutText(shortcutId) {
     if (!(shortcutId in this.shortcuts) ||
       !isInArray(shortcutId, ::u.values(this.axisItem.modifiersId)))
       return
 
     let itemId = this.getShortcutLocId(shortcutId, false)
-    let obj = this.scene.findObject("txt_sc_"+ itemId)
+    let obj = this.scene.findObject("txt_sc_" + itemId)
 
     if (checkObj(obj))
-      obj.setValue(::get_shortcut_text({shortcuts = this.shortcuts, shortcutId = shortcutId}))
+      obj.setValue(::get_shortcut_text({ shortcuts = this.shortcuts, shortcutId = shortcutId }))
   }
 
-  function onShortcutChange(shortcutId)
-  {
+  function onShortcutChange(shortcutId) {
     this.updateShortcutText(shortcutId)
     ::u.appendOnce(shortcutId, this.changedShortcuts)
   }
 
-  function onButtonReset()
-  {
+  function onButtonReset() {
     let item = this.getCurItem()
     if (!item)
       return
@@ -661,26 +606,22 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.onShortcutChange(item.shortcutId)
   }
 
-  function doApplyJoystick()
-  {
+  function doApplyJoystick() {
     if (this.curJoyParams != null)
       this.doApplyJoystickImpl(shortcutsAxisListModule.types, this.curJoyParams.getAxis(this.setupAxisMode))
   }
 
-  function onApply()
-  {
+  function onApply() {
     if (!this.checkZoomOnMWheel())
       this.doAxisApply()
   }
 
-  function afterModalDestroy()
-  {
-    ::broadcastEvent("ControlsChangedShortcuts", {changedShortcuts = this.changedShortcuts})
-    ::broadcastEvent("ControlsChangedAxes", {changedAxes = this.changedAxes})
+  function afterModalDestroy() {
+    ::broadcastEvent("ControlsChangedShortcuts", { changedShortcuts = this.changedShortcuts })
+    ::broadcastEvent("ControlsChangedAxes", { changedAxes = this.changedAxes })
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.onApply()
   }
 

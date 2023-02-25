@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -8,8 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
-::gui_handlers.debugWndHandler <- class extends ::BaseGuiHandler
-{
+::gui_handlers.debugWndHandler <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/debugFrame.blk"
   wndType = handlerType.MODAL
 
@@ -22,8 +22,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
   callbacksContext = null
 
-  function initScreen()
-  {
+  function initScreen() {
     this.isExist = this.blkName ? ::is_existing_file(this.blkName, false) : false
     this.tplName = (this.blkName ?? "").endswith(".tpl") ? this.blkName : null
     this.tplParams = this.tplParams || {}
@@ -32,8 +31,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     this.updateWindow()
   }
 
-  function reinitScreen(params)
-  {
+  function reinitScreen(params) {
     let _blkName = getTblValue("blkName", params, this.blkName)
     let _tplParams = getTblValue("tplParams", params, this.tplParams)
     if (_blkName == this.blkName && ::u.isEqual(_tplParams, this.tplParams))
@@ -48,14 +46,12 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     this.updateWindow()
   }
 
-  function updateWindow()
-  {
+  function updateWindow() {
     if (!checkObj(this.scene))
       return
 
     let obj = this.scene.findObject("debug_wnd_content_box")
-    if (!this.isExist)
-    {
+    if (!this.isExist) {
       let txt = (this.blkName == null ? "No file specified." :
         ("File not found: \"" + colorize("userlogColoredText", this.blkName) + "\""))
         + "~nUsage examples:"
@@ -65,8 +61,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
       return this.guiScene.replaceContentFromText(obj, data, data.len(), this.callbacksContext)
     }
 
-    if (this.tplName)
-    {
+    if (this.tplName) {
       let data = ::handyman.render(loadTemplateText(this.tplName), this.tplParams)
       this.guiScene.replaceContentFromText(obj, data, data.len(), this.callbacksContext)
     }
@@ -77,32 +72,27 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
       this.callbacksContext.onCreate(obj)
   }
 
-  function checkModify()
-  {
+  function checkModify() {
     if (!this.isExist)
       return
     let modified = ::get_file_modify_time_sec(this.blkName)
     if (modified < 0)
       return
 
-    if (this.lastModified < 0)
-    {
+    if (this.lastModified < 0) {
       this.lastModified = modified
       return
     }
 
-    if (this.lastModified != modified)
-    {
+    if (this.lastModified != modified) {
       this.lastModified = modified
       this.updateWindow()
     }
   }
 
-  function onUpdate(_obj, dt)
-  {
+  function onUpdate(_obj, dt) {
     this.checkTimer -= dt
-    if (this.checkTimer < 0)
-    {
+    if (this.checkTimer < 0) {
       this.checkTimer += 0.5
       this.checkModify()
     }

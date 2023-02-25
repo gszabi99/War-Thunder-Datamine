@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -11,8 +12,7 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
 ::g_tutorials_manager <- {
   actions = []
 
-  function canAct()
-  {
+  function canAct() {
     if (!::isInMenu())
       return false
     if (::isHandlerInScene(::gui_handlers.ShopCheckResearch))
@@ -20,35 +20,30 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
     return true
   }
 
-  function processActions()
-  {
+  function processActions() {
     if (!this.actions.len() || !this.canAct())
       return
 
-    while(this.actions.len())
+    while (this.actions.len())
       if (this.actions.remove(0)())
         break
   }
 
-  function onEventModalWndDestroy(_params)
-  {
+  function onEventModalWndDestroy(_params) {
     this.processActions()
   }
 
-  function onEventSignOut(_p)
-  {
+  function onEventSignOut(_p) {
     this.actions.clear()
   }
 
-  function onEventCrewTakeUnit(params)
-  {
+  function onEventCrewTakeUnit(params) {
     let unit = getTblValue("unit", params)
     this.actions.append((@(unit) function() { return this.checkTutorialOnSetUnit(unit) })(unit).bindenv(this))
     this.processActions()
   }
 
-  function checkTutorialOnSetUnit(unit)
-  {
+  function checkTutorialOnSetUnit(unit) {
     if (!unit)
       return false
 

@@ -106,16 +106,7 @@
           "id": "spectator_hud_damage",
           "size": "0.15@shHud, 0.15@shHud",
           "position": "absolute",
-          "pos": "1@spectatorTableWidth +0.01@shHud, ph-h",
-          "dmgIndicator": {
-            "id": "xray_render_dmg_indicator_spectator",
-            "size": "pw, ph"
-          }
-        },
-        {
-          "id": "spectator_hud_action_bar",
-          "position": "absolute",
-          "pos": "pw/2-w/2, ph-h"
+          "pos": "1@spectatorTableWidth +0.01@shHud, ph-h"
         },
         {
           "pos": "pw/2-w/2, ph-h - 0.06@shHud - 1@sIco",
@@ -641,6 +632,14 @@
           }
         }
       ],
+      "hudActionBar": {
+        "id": "spectator_hud_action_bar",
+        "position": "absolute",
+        "pos": "pw/2-w/2, ph-h",
+        "tdiv": {
+          "id": "actions_nest"
+        }
+      },
       "toggleButton": [
         {
           "id": "btnToggleStats1",

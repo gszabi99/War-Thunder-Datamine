@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -21,8 +22,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   currentReinforcementName = null
   reinforcementSpeedup = -1
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     return {
       consoleButtonsIconName = ::show_console_buttons ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
       controlHelpText = ::show_console_buttons ? null : loc("key/RMB")
@@ -30,37 +30,31 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function getSceneTplContainerObj()
-  {
+  function getSceneTplContainerObj() {
     return this.scene
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.readyArmiesNames = []
     this.armiesBlocks = []
     this.updateScene()
   }
 
-  function isValid()
-  {
+  function isValid() {
     return checkObj(this.scene) && checkObj(this.scene.findObject("reinforcements_list"))
   }
 
-  function updateScene()
-  {
+  function updateScene() {
     this.fillReinforcementsList()
     this.fillTimer()
   }
 
-  function onEventWWLoadOperation(_params)
-  {
+  function onEventWWLoadOperation(_params) {
     this.updateScene()
     this.readyArmiesNames.clear()
   }
 
-  function updateReinforcementsList()
-  {
+  function updateReinforcementsList() {
     let playerSide = ::ww_get_player_side()
 
     this.armiesBlocks.clear()
@@ -72,8 +66,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (reinforcementsInfo?.reinforcements == null)
       return
 
-    for (local i = 0; i < reinforcementsInfo.reinforcements.blockCount(); i++)
-    {
+    for (local i = 0; i < reinforcementsInfo.reinforcements.blockCount(); i++) {
       let reinforcement = reinforcementsInfo.reinforcements.getBlock(i)
       let wwReinforcementArmy = ::WwReinforcementArmy(reinforcement)
       if (!hasFeature("worldWarMaster") &&
@@ -95,13 +88,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.armiesBlocks.extend(newArmies)
   }
 
-  function showDeployHint(isVisible = false)
-  {
+  function showDeployHint(isVisible = false) {
     this.showSceneBtn("deploy_hint_nest", isVisible)
   }
 
-  function onChangeArmyValue(obj)
-  {
+  function onChangeArmyValue(obj) {
     this.updateSelectedArmy(false, false)
     if (this.currentReinforcementName != obj.armyName)
       this.guiScene.playSound("ww_reinforcement_select")
@@ -111,8 +102,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::ww_event("SelectedReinforcement", { name = this.currentReinforcementName })
   }
 
-  function onEventWWMapRequestReinforcement(params)
-  {
+  function onEventWWMapRequestReinforcement(params) {
     if (!this.currentReinforcementName)
       return
 
@@ -122,8 +112,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       Callback(this.onSendReinforcementError, this))
   }
 
-  function afterSendReinforcement()
-  {
+  function afterSendReinforcement() {
     if (!checkObj(this.scene))
       return
 
@@ -140,14 +129,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       ::g_world_war.playArmyActionSound("deploySound", wwArmy)
   }
 
-  function onSendReinforcementError(_err)
-  {
+  function onSendReinforcementError(_err) {
     ::g_world_war.popupCharErrorMsg("reinforcement_deploy_error")
-    ::ww_event("ShowRearZones", {name = this.currentReinforcementName})
+    ::ww_event("ShowRearZones", { name = this.currentReinforcementName })
   }
 
-  function fillReinforcementsList()
-  {
+  function fillReinforcementsList() {
     this.updateReinforcementsList()
 
     this.showSceneBtn("no_reinforcements_text", this.armiesBlocks.len() == 0)
@@ -170,8 +157,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.updateSelectedArmy(true, false)
   }
 
-  function fillReinforcementsSpeed(newSpeedup)
-  {
+  function fillReinforcementsSpeed(newSpeedup) {
     if (this.reinforcementSpeedup == newSpeedup)
       return
 
@@ -180,10 +166,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     local speedText = ""
-    if (newSpeedup > 0)
-    {
+    if (newSpeedup > 0) {
       speedText = colorize("goodTextColor", loc("keysPlus") + newSpeedup)
-      speedText = loc("worldwar/state/reinforcement_arrival_speed", {speedup = speedText})
+      speedText = loc("worldwar/state/reinforcement_arrival_speed", { speedup = speedText })
     }
     else
       speedText = loc("worldwar/state/reinforcement_arrival_basic_speed")
@@ -192,8 +177,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.reinforcementSpeedup = newSpeedup
   }
 
-  function fillArmiesList(viewsArray, id, isReady)
-  {
+  function fillArmiesList(viewsArray, id, isReady) {
     let placeObj = this.scene.findObject(id)
     if (!checkObj(placeObj))
       return
@@ -211,23 +195,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
-  function onEventWWMapClearSelection(_params)
-  {
+  function onEventWWMapClearSelection(_params) {
     this.updateSelectedArmy(false, false)
   }
 
-  function onEventWWMapClearSelectionBySelectedObject(_params)
-  {
+  function onEventWWMapClearSelectionBySelectedObject(_params) {
     this.updateSelectedArmy(false, false)
   }
 
-  function onEventWWReinforcementSpeedupUpdated(params)
-  {
+  function onEventWWReinforcementSpeedupUpdated(params) {
     this.fillReinforcementsSpeed(params?.speedup ?? 0)
   }
 
-  function updateSelectedArmy(select, destroy)
-  {
+  function updateSelectedArmy(select, destroy) {
     if (::u.isEmpty(this.currentReinforcementName))
       return
 
@@ -235,8 +215,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         return reinf.name == currentReinforcementName
       })(this.currentReinforcementName))
 
-    if (!selectedArmy)
-    {
+    if (!selectedArmy) {
       //search in existed, because army can already be an army, not a reinforcement
       let army = ::g_world_war.getArmyByName(this.currentReinforcementName)
       if (!army.isValid())
@@ -246,11 +225,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     let obj = this.scene.findObject(selectedArmy.getView().getId())
-    if (checkObj(obj))
-    {
+    if (checkObj(obj)) {
       obj.setValue(select)
-      if (destroy)
-      {
+      if (destroy) {
         let placeObj = obj.getParent()
         this.guiScene.destroyElement(obj)
         this.showSceneBtn("no_reinforcements_text", placeObj.childrenCount() == 0)
@@ -262,8 +239,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.currentReinforcementName = null
   }
 
-  function fillTimer()
-  {
+  function fillTimer() {
     let placeObj = this.scene.findObject("reinforcements_list")
     if (!checkObj(placeObj))
       return
@@ -273,11 +249,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.updateDelay,
       (@(placeObj) function() {
         local haveNewReinforcementsReady = false
-        foreach (reinforcementHandler in this.armiesBlocks)
-        {
+        foreach (reinforcementHandler in this.armiesBlocks) {
           let id = reinforcementHandler.getView().getId()
-          if (reinforcementHandler.isReady() && !isInArray(id, this.readyArmiesNames))
-          {
+          if (reinforcementHandler.isReady() && !isInArray(id, this.readyArmiesNames)) {
             this.readyArmiesNames.append(id)
             haveNewReinforcementsReady = true
           }
@@ -295,15 +269,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this, true)
   }
 
-  function selectFirstArmyBySide(side)
-  {
+  function selectFirstArmyBySide(side) {
     let reinforcementsObj = this.scene.findObject("ready_reinforcements_list")
     if (reinforcementsObj.childrenCount())
       reinforcementsObj.getChild(0).setValue(true)
 
     foreach (army in this.armiesBlocks)
-      if (army.isReady() && ::ww_side_val_to_name(army.getArmySide()) == side)
-      {
+      if (army.isReady() && ::ww_side_val_to_name(army.getArmySide()) == side) {
         let armyView = army.getView()
         if (!armyView)
           continue

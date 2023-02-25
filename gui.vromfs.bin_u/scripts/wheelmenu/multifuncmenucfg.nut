@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
@@ -8,7 +9,7 @@ let vehicleModel = require("vehicleModel")
 let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
 let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
-let { emulateShortcut } = require_native("controls")
+let { emulateShortcut } = require("controls")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
@@ -25,6 +26,7 @@ let hasChite = memoize(@(unitId) ::get_full_unit_blk(unitId)?.parachutes != null
 let hasCockpitDoor = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
 let hasBayDoor = memoizeByMission(@(_unitId) vehicleModel.hasBayDoor())
 let hasSchraegeMusik = memoize(@(_unitId) vehicleModel.hasSchraegeMusik())
+let hasThrustReverse = memoize(@(_unitId) vehicleModel.hasThrustReverse())
 let hasExternalFuelTanks = memoizeBySpawn(@(_unitId) vehicleModel?.hasExternalFuelTanks() ?? false)
 let hasCountermeasureFlareGuns = memoize(@(_unitId) vehicleModel.hasCountermeasureFlareGuns())
 let hasCountermeasureSystemIRCM = memoize(@(_unitId) vehicleModel.hasCountermeasureSystemIRCM())
@@ -84,7 +86,7 @@ local savedEngineControlBitMask = 0xFF
 let function selectControlEngine(engineNum) {
   savedEngineControlBitMask = vehicleModel.getEngineControlBitMask()
   for (local idx = 0; idx < vehicleModel.getEnginesCount(); idx++)
-    if ((idx == engineNum-1) != is_bit_set(savedEngineControlBitMask, idx))
+    if ((idx == engineNum - 1) != is_bit_set(savedEngineControlBitMask, idx))
       toggleShortcut($"ID_TOGGLE_{idx+1}_ENGINE_CONTROL")
 }
 let function restoreControlEngines() {
@@ -337,7 +339,7 @@ let cfg = {
       null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
       { shortcut = [ "ID_COMPLEX_ENGINE" ] }
       { section = "control_engines_separately" }
-      null
+      { shortcut = [ "ID_AIR_REVERSE" ], enable = hasThrustReverse }
       null
       null
     ]

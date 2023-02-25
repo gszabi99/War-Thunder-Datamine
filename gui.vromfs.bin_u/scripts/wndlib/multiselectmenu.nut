@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -30,13 +31,11 @@ let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config)
-{
+::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config) {
   ::handlersManager.loadHandler(::gui_handlers.MultiSelectMenu, config)
 }
 
-::gui_handlers.MultiSelectMenu <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.MultiSelectMenu <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false
@@ -55,8 +54,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   sndSwitchOn = null
   sndSwitchOff = null
 
-  function getSceneTplView()
-  {
+  function getSceneTplView() {
     this.initListValues()
 
     return {
@@ -67,8 +65,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.list)
       return this.goBack()
 
@@ -77,14 +74,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     ::move_mouse_on_child(this.scene.findObject("multi_select"), 0)
   }
 
-  function initListValues()
-  {
+  function initListValues() {
     if (!this.list)
       return
 
     local mask = 0
-    foreach(idx, option in this.list)
-    {
+    foreach (idx, option in this.list) {
       option.show <- getTblValue("show", option, true)
       mask = stdMath.change_bit(mask, idx, getTblValue("selected", option))
     }
@@ -93,14 +88,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.currentBitMask = mask
   }
 
-  function getCurValuesArray()
-  {
+  function getCurValuesArray() {
     let selOptions = ::get_array_by_bit_value(this.currentBitMask, this.list)
     return ::u.map(selOptions, function(o) { return getTblValue("value", o) })
   }
 
-  function onChangeValue(obj)
-  {
+  function onChangeValue(obj) {
     this.currentBitMask = obj.getValue()
     if (this.onChangeValuesBitMaskCb)
       this.onChangeValuesBitMaskCb(this.currentBitMask)
@@ -108,8 +101,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       this.onChangeValueCb(this.getCurValuesArray())
   }
 
-  function close()
-  {
+  function close() {
     this.goBack()
 
     if (this.currentBitMask == this.initialBitMask)

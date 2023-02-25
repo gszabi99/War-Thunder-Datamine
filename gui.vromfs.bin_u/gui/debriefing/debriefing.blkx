@@ -467,36 +467,87 @@
                               "on_click": "onViewAwards",
                               "total-input-transparent": "yes",
                               "skip-navigation": "yes",
+                              "margin-top": "1@blockInterval",
                               "tdiv": {
-                                "height": "ph",
+                                "size": "pw, ph",
                                 "pos": "0.5pw-0.5w, 0",
                                 "position": "relative",
+                                "flow": "vertical",
                                 "tdiv": [
                                   {
-                                    "id": "awards_list_unlocks",
-                                    "width": "1@debriefingUnlockIconSize",
-                                    "height": "ph",
-                                    "margin": "1@debrPad",
+                                    "id": "awards_list_challenges",
+                                    "pos": "0.5pw - 0.5w, 0",
+                                    "position": "relative",
+                                    "size": "pw, 1@debriefingUnlockIconSize",
                                     "overflow": "visible",
-                                    "flow": "vertical",
                                     "display": "hide",
                                     "behavior": "PosNavigator",
                                     "navigatorShortcuts": "active",
                                     "on_activate": "onViewAwards"
                                   },
                                   {
-                                    "id": "awards_list_streaks",
-                                    "width": "1@debriefingUnlockIconSize",
-                                    "height": "ph",
-                                    "margin": "1@debrPad",
-                                    "overflow": "visible",
-                                    "flow": "vertical",
-                                    "display": "hide",
-                                    "behavior": "PosNavigator",
-                                    "navigatorShortcuts": "active",
-                                    "on_activate": "onViewAwards"
+                                    "size": "pw, fh",
+                                    "pos": "0.5pw-0.5w, 0",
+                                    "position": "relative",
+                                    "flow": "horizontal",
+                                    "tdiv": [
+                                      {
+                                        "id": "awards_list_unlocks",
+                                        "pos": "pw/9, 0",
+                                        "size": "1@debriefingUnlockIconSize, ph",
+                                        "position": "absolute",
+                                        "overflow": "visible",
+                                        "flow": "vertical",
+                                        "display": "hide",
+                                        "behavior": "PosNavigator",
+                                        "navigatorShortcuts": "active",
+                                        "on_activate": "onViewAwards"
+                                      },
+                                      {
+                                        "id": "awards_list_streaks",
+                                        "pos": "5pw/9, 0",
+                                        "size": "1@debriefingUnlockIconSize, ph",
+                                        "position": "absolute",
+                                        "overflow": "visible",
+                                        "flow": "vertical",
+                                        "display": "hide",
+                                        "behavior": "PosNavigator",
+                                        "navigatorShortcuts": "active",
+                                        "on_activate": "onViewAwards"
+                                      }
+                                    ]
                                   }
-                                ]
+                                ],
+                                "div": {
+                                  "id": "btn_challenge_div",
+                                  "width": "pw",
+                                  "pos": "pw/2 - w/2, 0",
+                                  "display": "hide",
+                                  "flow": "vertical",
+                                  "margin": "0, 1@blockInterval",
+                                  "Button_text": {
+                                    "id": "btn_challenge",
+                                    "navButtonFont": "yes",
+                                    "class": "battle",
+                                    "css-hier-invalidate": "yes",
+                                    "_on_click": "onGotoChallenge",
+                                    "pattern": {
+                                      "type": "bright_texture"
+                                    },
+                                    "buttonWink": {
+                                      "_transp-timer": "0"
+                                    },
+                                    "buttonGlance": {},
+                                    "ButtonImg": {},
+                                    "btnText": {
+                                      "id": "btn_next_text",
+                                      "text": "#mainmenu/btnUnlockChallenge"
+                                    }
+                                  },
+                                  "rowSeparator": {
+                                    "margin-top": "1@blockInterval"
+                                  }
+                                }
                               }
                             }
                           ]
@@ -931,25 +982,6 @@
                     "display": "hide",
                     "enable": "no",
                     "ButtonImg": {}
-                  },
-                  {
-                    "id": "btn_upload_facebook_scrn",
-                    "on_click": "onFacebookLoginAndPostScrnshot",
-                    "display": "hide",
-                    "tooltip": "",
-                    "btnName": "LB",
-                    "ButtonImg": {},
-                    "cardImg": {
-                      "background-image": "#ui/gameuiskin#facebook_logo.svg",
-                      "input-transparent": "yes"
-                    },
-                    "text": {
-                      "id": "text_facebook_action",
-                      "pos": "0,50%ph-50%h",
-                      "position": "relative",
-                      "text": "#mainmenu/btnUploadFacebookScreenshot",
-                      "input-transparent": "yes"
-                    }
                   },
                   {
                     "id": "btn_user_options",

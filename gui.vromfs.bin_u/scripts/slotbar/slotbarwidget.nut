@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -28,8 +29,7 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
-::gui_handlers.SlotbarWidget <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.SlotbarWidget <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotbar/slotbar.blk"
   ownerWeak = null
@@ -113,14 +113,12 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   needCheckUnitUnlock = false
   slotbarHintText = ""
 
-  static function create(params)
-  {
+  static function create(params) {
     let nest = params?.scene
     if (!checkObj(nest))
       return null
 
-    if (params?.shouldAppendToObject ?? true) //we append to nav-bar by default
-    {
+    if (params?.shouldAppendToObject ?? true) { //we append to nav-bar by default
       let data = "slotbarDiv { id:t='nav-slotbar' }"
       nest.getScene().appendWithBlk(nest, data)
       params.scene = nest.findObject("nav-slotbar")
@@ -129,15 +127,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return ::handlersManager.loadHandler(::gui_handlers.SlotbarWidget, params)
   }
 
-  function destroy()
-  {
+  function destroy() {
     if (checkObj(this.scene))
       this.guiScene.replaceContentFromText(this.scene, "", 0, null)
     this.scene = null
   }
 
-  function initScreen()
-  {
+  function initScreen() {
     this.headerObj = this.scene.findObject("header_countries")
     this.crewsObj =  this.scene.findObject("countries_crews")
 
@@ -145,29 +141,25 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.isSceneLoaded = true
     this.refreshAll()
 
-    if (this.hasResearchesBtn)
-    {
+    if (this.hasResearchesBtn) {
       let slotbarHeaderNestObj = this.scene.findObject("slotbar_buttons_place")
       if (checkObj(slotbarHeaderNestObj))
         slotbarHeaderNestObj["offset"] = "yes"
     }
   }
 
-  function setParams(params)
-  {
+  function setParams(params) {
     base.setParams(params)
     if (this.ownerWeak)
       this.ownerWeak = this.ownerWeak.weakref()
     this.validateParams()
-    if (this.isSceneLoaded)
-    {
+    if (this.isSceneLoaded) {
       this.loadedCountries.clear() //params can change visual style and visibility of crews
       this.refreshAll()
     }
   }
 
-  function validateParams()
-  {
+  function validateParams() {
     this.showNewSlot = this.showNewSlot ?? !this.singleCountry
     this.showEmptySlot = this.showEmptySlot ?? !this.singleCountry
     this.hasExtraInfoBlock = this.hasExtraInfoBlock ?? !this.singleCountry
@@ -178,14 +170,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.onSlotActivate = this.onSlotActivate ?? this.defaultOnSlotActivateFunc
 
     //update callbacks
-    foreach(funcName in ["beforeSlotbarSelect", "afterSlotbarSelect", "onSlotDblClick", "onCountryChanged",
+    foreach (funcName in ["beforeSlotbarSelect", "afterSlotbarSelect", "onSlotDblClick", "onCountryChanged",
         "beforeFullUpdate", "afterFullUpdate", "onSlotBattleBtn", "applySlotSelectionOverride"])
       if (this[funcName])
         this[funcName] = callback.make(this[funcName], this.ownerWeak)
   }
 
-  function refreshAll()
-  {
+  function refreshAll() {
     this.fillCountries()
 
     if (!this.singleCountry)
@@ -197,8 +188,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       this.ownerWeak.setSlotbarPresetsListAvailable(this.needPresetsPanel && ::SessionLobby.canChangeCrewUnits())
   }
 
-  function getForcedCountry() //return null if you have countries choice
-  {
+  function getForcedCountry() { //return null if you have countries choice
     if (this.singleCountry)
       return this.singleCountry
     if (!::SessionLobby.canChangeCountry())
@@ -208,8 +198,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return null
   }
 
-  function addCrewData(list, params)
-  {
+  function addCrewData(list, params) {
     let crew = params?.crew
     let data = {
       crew = crew,
@@ -242,8 +231,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return data
   }
 
-  function gatherVisibleCrewsConfig(onlyForCountryIdx = null)
-  {
+  function gatherVisibleCrewsConfig(onlyForCountryIdx = null) {
     let res = []
     let country = this.getForcedCountry()
     let needNewSlot = !::g_crews_list.isCrewListOverrided && this.showNewSlot
@@ -251,8 +239,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let needEmptySlot = !::g_crews_list.isCrewListOverrided && needShowLockedSlots && this.showEmptySlot
 
     let crewsListFull = ::g_crews_list.get()
-    for(local c = 0; c < crewsListFull.len(); c++)
-    {
+    for (local c = 0; c < crewsListFull.len(); c++) {
       if (onlyForCountryIdx != null && onlyForCountryIdx != c)
         continue
 
@@ -275,8 +262,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         continue
 
       let crewsList = crewsListFull[c].crews
-      foreach(crewIdInCountry, crew in crewsList)
-      {
+      foreach (crewIdInCountry, crew in crewsList) {
         let unit = this.getCrewUnit(crew)
 
         if (!unit && !needEmptySlot)
@@ -289,15 +275,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         local status = bit_unit_status.empty
         let isUnitForcedVisible = this.missionRules && this.missionRules.isUnitForcedVisible(unitName)
         let isUnitForcedHiden = this.missionRules && this.missionRules.isUnitForcedHiden(unitName)
-        if (unit)
-        {
+        if (unit) {
           status = getBitStatus(unit)
           if (!isUnlocked)
             status = bit_unit_status.locked
           else if (!::is_crew_slot_was_ready_at_host(crew.idInCountry, unit.name, false))
             status = bit_unit_status.broken
-          else
-          {
+          else {
             local disabled = !::is_unit_enabled_for_slotbar(unit, this)
             if (this.checkRespawnBases)
               disabled = disabled || !getAvailableRespawnBases(unit.tags).len()
@@ -332,22 +316,19 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   }
 
   //calculate selected crew and country by slotbar params
-  function calcSelectedCrewData(crewsConfig)
-  {
+  function calcSelectedCrewData(crewsConfig) {
     let forcedCountry = this.getForcedCountry()
     local unitShopCountry = forcedCountry || profileCountrySq.value
     local curUnit = getShowedUnit()
     local curCrewId = this.crewId
 
-    if (!forcedCountry && !curCrewId)
-    {
+    if (!forcedCountry && !curCrewId) {
       if (!::isCountryAvailable(unitShopCountry) && ::unlocked_countries.len() > 0)
         unitShopCountry = ::unlocked_countries[0]
       if (curUnit && curUnit.shopCountry != unitShopCountry)
         curUnit = null
     }
-    else if (forcedCountry && this.curSlotIdInCountry >= 0)
-    {
+    else if (forcedCountry && this.curSlotIdInCountry >= 0) {
       let curCrew = getCrew(this.curSlotCountryId, this.curSlotIdInCountry)
       if (curCrew)
         curCrewId = curCrew.id
@@ -358,23 +339,20 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
     local isFoundCurUnit = false
     local selCrewData = null
-    foreach(countryData in crewsConfig)
-    {
+    foreach (countryData in crewsConfig) {
       if (!countryData.isEnabled)
         continue
 
       //when current crew not available in this mission, first available crew will be selected.
       local firstAvailableCrewData = null
       let selCrewidInCountry = ::selected_crews?[countryData.id]
-      foreach(crewData in countryData.crews)
-      {
+      foreach (crewData in countryData.crews) {
         let crew = crewData.crew
         let unit = crewData.unit
         let isSelectable = crewData.isSelectable
         if ((crew?.id != null && curCrewId == crew.id)
           || (unit && unit == curUnit)
-          || (!crew && this.shouldSelectCrewRecruit))
-        {
+          || (!crew && this.shouldSelectCrewRecruit)) {
           selCrewData = crewData
           isFoundCurUnit = true
           if (isSelectable)
@@ -401,14 +379,11 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   }
 
   //get crew data selected in country (selected_crews[curSlotCountryId])
-  function getSelectedCrewDataInCountry(countryData)
-  {
+  function getSelectedCrewDataInCountry(countryData) {
     local selCrewData = null
     let selCrewIdInCountry = ::selected_crews?[countryData.id]
-    foreach(crewData in countryData.crews)
-    {
-      if (crewData.idInCountry == selCrewIdInCountry)
-      {
+    foreach (crewData in countryData.crews) {
+      if (crewData.idInCountry == selCrewIdInCountry) {
         selCrewData = crewData
         break
       }
@@ -419,18 +394,15 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return selCrewData
   }
 
-  function fillCountries()
-  {
+  function fillCountries() {
     if (!::g_login.isLoggedIn())
       return
-    if (this.slotbarOninit)
-    {
+    if (this.slotbarOninit) {
       ::script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
       return
     }
 
-    if (!::g_crews_list.get().len())
-    {
+    if (!::g_crews_list.get().len()) {
       if (::g_login.isLoggedIn() && (::isProductionCircuit() || ::get_cur_circuit_name() == "nightly"))
         ::scene_msg_box("no_connection", null, loc("char/no_connection"), [["ok", startLogout ]], "ok")
       return
@@ -461,8 +433,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
     local selCountryIdx = 0
     let ediff = getShopDiffCode()
-    foreach(idx, countryData in crewsConfig)
-    {
+    foreach (idx, countryData in crewsConfig) {
       let country = countryData.country
       if (countryData.id == this.selectedCrewData?.idCountry)
         selCountryIdx = idx
@@ -493,7 +464,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let countriesObjsCount = countriesNestObj.childrenCount()
     local needUpdateCountriesMarkup = countriesObjsCount != countriesView.countries.len()
     if (!needUpdateCountriesMarkup)
-      for (local i = 0;i < countriesObjsCount; i++) {
+      for (local i = 0; i < countriesObjsCount; i++) {
          needUpdateCountriesMarkup = countriesView.countries.findindex(
            function(v) {
              let countryObj = countriesNestObj.getChild(i)
@@ -502,8 +473,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
          if (needUpdateCountriesMarkup)
            break
       }
-    if (needUpdateCountriesMarkup)
-    {
+    if (needUpdateCountriesMarkup) {
       let countriesData = ::handyman.renderCached("%gui/slotbar/slotbarCountryItem.tpl", countriesView)
       this.guiScene.replaceContentFromText(countriesNestObj, countriesData, countriesData.len(), this)
     }
@@ -512,8 +482,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (prevCountriesNestValue == selCountryIdx)
       this.onHeaderCountry(countriesNestObj)
 
-    if (this.selectedCrewData)
-    {
+    if (this.selectedCrewData) {
       let selItem = ::get_slot_obj(this.crewsObj, this.selectedCrewData.idCountry, this.selectedCrewData.idInCountry)
       if (selItem)
         this.guiScene.performDelayed(this, function() {
@@ -533,17 +502,14 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let needEvent = this.selectedCrewData
       && ((this.curSlotCountryId >= 0 && this.curSlotCountryId != this.selectedCrewData.idCountry)
         || (this.curSlotIdInCountry >= 0 && this.curSlotIdInCountry != this.selectedCrewData.idInCountry))
-    if (needEvent)
-    {
+    if (needEvent) {
       let cObj = this.scene.findObject("airs_table_" + this.selectedCrewData.idCountry)
-      if (checkObj(cObj))
-      {
+      if (checkObj(cObj)) {
         this.skipCheckAirSelect = true
         this.onSlotbarSelect(cObj)
       }
     }
-    else
-    {
+    else {
       this.curSlotCountryId   = this.selectedCrewData?.idCountry ?? -1
       this.curSlotIdInCountry = this.selectedCrewData?.idInCountry ?? -1
       ::select_crew(this.curSlotCountryId, this.curSlotIdInCountry)
@@ -554,8 +520,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     ::shop_get_first_win_xp_rate(country),
     ::shop_get_first_win_wp_rate(country), "item")
 
-  function fillCountryContent(countryData, tblObj)
-  {
+  function fillCountryContent(countryData, tblObj) {
     this.updateSlotbarHint()
     if (this.loadedCountries?[countryData.id] == ::g_crews_list.version
       || !checkObj(tblObj))
@@ -572,9 +537,8 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (selCrewData)
       tblObj.setValue(selCrewData.crewIdVisible)
 
-    foreach(crewData in countryData.crews)
-      if (crewData.unit)
-      {
+    foreach (crewData in countryData.crews)
+      if (crewData.unit) {
         let id = ::get_slot_obj_id(countryData.id, crewData.idInCountry)
         ::fill_unit_item_timers(tblObj.findObject(id), crewData.unit)
         let bonusId = ::get_slot_obj_id(countryData.id, crewData.idInCountry, true)
@@ -582,8 +546,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       }
   }
 
-  function checkUpdateCountryInScene(countryIdx)
-  {
+  function checkUpdateCountryInScene(countryIdx) {
     if (this.loadedCountries?[countryIdx] == ::g_crews_list.version)
       return
 
@@ -594,45 +557,37 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.fillCountryContent(countryData, this.scene.findObject("airs_table_" + countryData.id))
   }
 
-  function getCurSlotUnit()
-  {
+  function getCurSlotUnit() {
     return ::g_crew.getCrewUnit(getCrew(this.curSlotCountryId, this.curSlotIdInCountry))
   }
 
-  function getCurCrew() //will return null when selected recruitCrew
-  {
+  function getCurCrew() { //will return null when selected recruitCrew
     return getCrew(this.curSlotCountryId, this.curSlotIdInCountry)
   }
 
-  function getCurCountry()
-  {
+  function getCurCountry() {
     return ::g_crews_list.get()?[this.curSlotCountryId]?.country ?? ""
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     if (::u.isFunction(this.ownerWeak?.getCurrentEdiff))
       return this.ownerWeak.getCurrentEdiff()
     return ::get_current_ediff()
   }
 
-  function getSlotbarActions()
-  {
+  function getSlotbarActions() {
     return this.slotbarActions ?? this.ownerWeak?.getSlotbarActions?()
   }
 
-  function getCurrentAirsTable()
-  {
+  function getCurrentAirsTable() {
     return this.scene.findObject("airs_table_" + this.curSlotCountryId)
   }
 
-  function getCurrentCrewSlot()
-  {
+  function getCurrentCrewSlot() {
     return ::get_slot_obj(this.scene, this.curSlotCountryId, this.curSlotIdInCountry)
   }
 
-  function getHangarFallbackUnitParams()
-  {
+  function getHangarFallbackUnitParams() {
     return {
       country = this.getCurCountry()
       slotbarUnits = (::g_crews_list.get()?[this.curSlotCountryId].crews ?? [])
@@ -641,16 +596,14 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
   }
 
-  function getSlotIdByObjId(slotObjId, countryId)
-  {
-    let prefix = "td_slot_"+countryId+"_"
+  function getSlotIdByObjId(slotObjId, countryId) {
+    let prefix = "td_slot_" + countryId + "_"
     if (!::g_string.startsWith(slotObjId, prefix))
       return -1
     return ::to_integer_safe(slotObjId.slice(prefix.len()), -1)
   }
 
-  function getSelSlotDataByObj(obj)
-  {
+  function getSelSlotDataByObj(obj) {
     let res = {
       isValid = false
       countryId = -1
@@ -672,13 +625,11 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return res
   }
 
-  function onSlotbarSelect(obj)
-  {
+  function onSlotbarSelect(obj) {
     if (!checkObj(obj))
       return
 
-    if (this.slotbarOninit || this.skipCheckAirSelect || !this.shouldCheckQueue)
-    {
+    if (this.slotbarOninit || this.skipCheckAirSelect || !this.shouldCheckQueue) {
       this.onSlotbarSelectImpl(obj)
       this.skipCheckAirSelect = false
     }
@@ -689,8 +640,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
             this.onSlotbarSelectImpl(obj)
         })(obj),
         (@(obj) function() {
-          if (checkObj(obj))
-          {
+          if (checkObj(obj)) {
             this.skipCheckAirSelect = true
             this.selectTblAircraft(obj, ::selected_crews[this.curSlotCountryId])
           }
@@ -698,8 +648,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       )
   }
 
-  function onSlotbarSelectImpl(obj)
-  {
+  function onSlotbarSelectImpl(obj) {
     if (!checkObj(obj))
       return
 
@@ -710,18 +659,15 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         && this.curSlotIdInCountry == selSlot.crewIdInCountry)
       return
 
-    if (this.beforeSlotbarSelect)
-    {
+    if (this.beforeSlotbarSelect) {
       this.ignoreCheckSlotbar = true
       this.beforeSlotbarSelect(
-        Callback(function()
-        {
+        Callback(function() {
           this.ignoreCheckSlotbar = false
           if (checkObj(obj))
             this.applySlotSelection(obj, selSlot)
         }, this),
-        Callback(function()
-        {
+        Callback(function() {
           this.ignoreCheckSlotbar = false
           if (this.curSlotCountryId != selSlot.countryId)
             this.setCountry(::g_crews_list.get()?[this.curSlotCountryId]?.country)
@@ -737,8 +683,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function applySlotSelectionDefault(_prevSlot, restorePrevSelection) {
     let crew = getCrew(this.curSlotCountryId, this.curSlotIdInCountry)
-    if (crew)
-    {
+    if (crew) {
       let unit = this.getCrewUnit(crew)
       if (unit != null || (!isCountrySlotbarHasUnits(crew.country) && this.curSlotIdInCountry == 0))
         this.setCrewUnit(unit)
@@ -753,7 +698,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let country = ::g_crews_list.get()[this.curSlotCountryId].country
 
     let rawCost = ::get_crew_slot_cost(country)
-    let cost = rawCost? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
+    let cost = rawCost ? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
     if (!::check_balance_msgBox(cost)) {
       restorePrevSelection()
       return
@@ -780,8 +725,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       ], "ok")
   }
 
-  function applySlotSelection(obj, selSlot)
-  {
+  function applySlotSelection(obj, selSlot) {
     let prevSlot = { countryId = this.curSlotCountryId, crewIdInCountry = this.curSlotIdInCountry }
     this.curSlotCountryId = selSlot.countryId
     this.curSlotIdInCountry = selSlot.crewIdInCountry
@@ -801,16 +745,14 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
    * Selects crew in slotbar with specified id
    * as if player clicked slot himself.
    */
-  function selectCrew(crewIdInCountry)
-  {
+  function selectCrew(crewIdInCountry) {
     let objId = "airs_table_" + this.curSlotCountryId
     let obj = this.scene.findObject(objId)
     if (checkObj(obj))
       this.selectTblAircraft(obj, crewIdInCountry)
   }
 
-  function selectTblAircraft(tblObj, slotIdInCountry=0)
-  {
+  function selectTblAircraft(tblObj, slotIdInCountry = 0) {
     if (!checkObj(tblObj) || slotIdInCountry < 0)
       return
     let slotIdx = this.getSlotIdxBySlotIdInCountry(tblObj, slotIdInCountry)
@@ -819,23 +761,19 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     tblObj.setValue(slotIdx)
   }
 
-  function getSlotIdxBySlotIdInCountry(tblObj, slotIdInCountry)
-  {
+  function getSlotIdxBySlotIdInCountry(tblObj, slotIdInCountry) {
     if (!tblObj.childrenCount())
       return -1
-    if (tblObj?.id != "airs_table_" + this.curSlotCountryId)
-    {
+    if (tblObj?.id != "airs_table_" + this.curSlotCountryId) {
       let tblObjId = tblObj?.id         // warning disable: -declared-never-used
       let countryId = this.curSlotCountryId  // warning disable: -declared-never-used
       ::script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
       return -1
     }
-    let prefix = "td_slot_" + this.curSlotCountryId +"_"
-    for(local i = 0; i < tblObj.childrenCount(); i++)
-    {
+    let prefix = "td_slot_" + this.curSlotCountryId + "_"
+    for (local i = 0; i < tblObj.childrenCount(); i++) {
       let id = ::getObjIdByPrefix(tblObj.getChild(i), prefix)
-      if (!id)
-      {
+      if (!id) {
         let objId = tblObj.getChild(i).id // warning disable: -declared-never-used
         ::script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
         continue
@@ -848,8 +786,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return -1
   }
 
-  function onSlotbarDblClick()
-  {
+  function onSlotbarDblClick() {
     if (!this.isValid())
       return
     let cellObj = this.scene.findObject($"td_slot_{this.curSlotCountryId}_{this.curSlotIdInCountry}")
@@ -858,14 +795,12 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.onSlotDblClick(this.getCurCrew())
   }
 
-  function checkSelectCountryByIdx(obj)
-  {
+  function checkSelectCountryByIdx(obj) {
     let idx = obj.getValue()
     let countryIdx = ::to_integer_safe(
       ::getObjIdByPrefix(obj.getChild(idx), "header_country"), this.curSlotCountryId)
     if (this.curSlotCountryId >= 0 && this.curSlotCountryId != countryIdx && countryIdx in ::g_crews_list.get()
-        && !::isCountryAvailable(::g_crews_list.get()[countryIdx].country) && ::unlocked_countries.len())
-    {
+        && !::isCountryAvailable(::g_crews_list.get()[countryIdx].country) && ::unlocked_countries.len()) {
       this.msgBox("notAvailableCountry", loc("mainmenu/countryLocked/tooltip"),
              [["ok", (@(obj) function() {
                if (checkObj(obj))
@@ -876,12 +811,10 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return true
   }
 
-  function checkCreateCrewsNest(countryData)
-  {
+  function checkCreateCrewsNest(countryData) {
     let countriesCount = this.crewsObj.childrenCount()
     let animBlockId = "crews_anim_" + countryData.idx
-    for (local i = 0; i < countriesCount; i++)
-    {
+    for (local i = 0; i < countriesCount; i++) {
       let animObj = this.crewsObj.getChild(i)
       animObj.animation = animObj?.id == animBlockId ? "show" : "hide"
 
@@ -904,11 +837,9 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.guiScene.appendWithBlk(this.crewsObj, blk, this)
   }
 
-  function onHeaderCountry(obj)
-  {
+  function onHeaderCountry(obj) {
     let countryData = this.getCountryDataByObject(obj)
-    if (this.slotbarOninit || this.skipCheckCountrySelect)
-    {
+    if (this.slotbarOninit || this.skipCheckCountrySelect) {
       this.onSlotbarCountryImpl(countryData)
       this.skipCheckCountrySelect = false
       return
@@ -916,42 +847,34 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
     let lockedCountryData = this.getLockedCountryData?()
     if (lockedCountryData != null
-      && !isInArray(countryData.country, lockedCountryData.availableCountries))
-    {
+      && !isInArray(countryData.country, lockedCountryData.availableCountries)) {
       this.setCountry(profileCountrySq.value)
       ::showInfoMsgBox(lockedCountryData.reasonText)
     }
-    else
-    {
+    else {
       this.switchSlotbarCountry(this.headerObj, countryData)
     }
   }
 
-  function onCountriesListDblClick()
-  {
+  function onCountriesListDblClick() {
     if (this.onCountryDblClick)
       this.onCountryDblClick()
   }
 
-  function switchSlotbarCountry(obj, countryData)
-  {
-    if (!this.shouldCheckQueue)
-    {
-      if (this.checkSelectCountryByIdx(obj))
-      {
+  function switchSlotbarCountry(obj, countryData) {
+    if (!this.shouldCheckQueue) {
+      if (this.checkSelectCountryByIdx(obj)) {
         this.onSlotbarCountryImpl(countryData)
         ::slotbarPresets.setCurrentGameModeByPreset(countryData.country)
       }
     }
-    else
-    {
+    else {
       if (!this.checkSelectCountryByIdx(obj))
         return
 
       this.checkedCrewAirChange(
         function() {
-          if (checkObj(obj))
-          {
+          if (checkObj(obj)) {
             this.onSlotbarCountryImpl(countryData)
             ::slotbarPresets.setCurrentGameModeByPreset(countryData.country)
           }
@@ -964,11 +887,9 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
   }
 
-  function setCountry(country)
-  {
-    foreach(idx, c in ::g_crews_list.get())
-      if (c.country == country)
-      {
+  function setCountry(country) {
+    foreach (idx, c in ::g_crews_list.get())
+      if (c.country == country) {
         let hObj = this.scene.findObject("header_countries")
         if (!checkObj(hObj) || hObj.getValue() == idx)
           break
@@ -980,8 +901,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       }
   }
 
-  function getCountryDataByObject(obj)
-  {
+  function getCountryDataByObject(obj) {
     if (!checkObj(obj))
       return null
 
@@ -999,16 +919,14 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     }
   }
 
-  function onSlotbarCountryImpl(countryData)
-  {
+  function onSlotbarCountryImpl(countryData) {
     if (!countryData)
       return
 
     this.checkCreateCrewsNest(countryData)
     this.checkUpdateCountryInScene(countryData.idx)
 
-    if (!this.singleCountry)
-    {
+    if (!this.singleCountry) {
       if (!this.checkSelectCountryByIdx(this.headerObj))
         return
 
@@ -1021,8 +939,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.onSlotbarCountryChanged()
   }
 
-  function onSlotbarCountryChanged()
-  {
+  function onSlotbarCountryChanged() {
     if (this.ownerWeak?.presetsListWeak)
       this.ownerWeak.presetsListWeak.update()
     if (this.onCountryChanged)
@@ -1033,8 +950,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
   function nextCountry(_obj) { this.switchCountry(1) }
 
-  function switchCountry(way)
-  {
+  function switchCountry(way) {
     if (this.singleCountry)
       return
 
@@ -1044,12 +960,11 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
     let curValue = hObj.getValue()
     let value = getNearestSelectableChildIndex(hObj, curValue, way)
-    if(value != curValue)
+    if (value != curValue)
       hObj.setValue(value)
   }
 
-  function onSlotChangeAircraft()
-  {
+  function onSlotChangeAircraft() {
     let crew = this.getCurCrew()
     if (!crew)
       return
@@ -1067,37 +982,32 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     )
   }
 
-  function shade(shouldShade)
-  {
+  function shade(shouldShade) {
     if (this.isShaded == shouldShade)
       return
 
     this.isShaded = shouldShade
     let shadeObj = this.scene.findObject("slotbar_shade")
-    if(checkObj(shadeObj))
+    if (checkObj(shadeObj))
       shadeObj.animation = this.isShaded ? "show" : "hide"
     if (::show_console_buttons)
       this.updateConsoleButtonsVisible(!this.isShaded)
   }
 
-  function updateConsoleButtonsVisible(isVisible)
-  {
+  function updateConsoleButtonsVisible(isVisible) {
     this.showSceneBtn("prev_country_btn", isVisible)
     this.showSceneBtn("next_country_btn", isVisible)
   }
 
-  function forceUpdate()
-  {
+  function forceUpdate() {
     this.updateSlotbarImpl()
   }
 
-  function fullUpdate()
-  {
+  function fullUpdate() {
     this.doWhenActiveOnce("updateSlotbarImpl")
   }
 
-  function updateSlotbarImpl()
-  {
+  function updateSlotbarImpl() {
     if (this.ignoreCheckSlotbar)
       return
 
@@ -1113,8 +1023,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       this.afterFullUpdate()
   }
 
-  function checkSlotbar()
-  {
+  function checkSlotbar() {
     if (this.ignoreCheckSlotbar || !::isInMenu())
       return
 
@@ -1129,26 +1038,22 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       this.refreshAll()
   }
 
-  function onSceneActivate(show)
-  {
+  function onSceneActivate(show) {
     base.onSceneActivate(show)
     if (this.checkActiveForDelayedAction())
       this.checkSlotbar()
   }
 
-  function onEventModalWndDestroy(p)
-  {
+  function onEventModalWndDestroy(p) {
     base.onEventModalWndDestroy(p)
     if (this.checkActiveForDelayedAction())
       this.checkSlotbar()
   }
 
-  function purchaseNewSlot(country)
-  {
+  function purchaseNewSlot(country) {
     this.ignoreCheckSlotbar = true
 
-    let onTaskSuccess = Callback(function()
-    {
+    let onTaskSuccess = Callback(function() {
       this.ignoreCheckSlotbar = false
       this.onSlotChangeAircraft()
     }, this)
@@ -1160,8 +1065,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   }
 
   //return GuiBox of visible slotbar units
-  function getBoxOfUnits()
-  {
+  function getBoxOfUnits() {
     let obj = this.scene.findObject("airs_table_" + this.curSlotCountryId)
     if (!checkObj(obj))
       return null
@@ -1174,8 +1078,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   }
 
   //return GuiBox of visible slotbar countries
-  function getBoxOfCountries()
-  {
+  function getBoxOfCountries() {
     let headerCountriesObj = this.scene.findObject("header_countries")
     if (!checkObj(headerCountriesObj))
       return null
@@ -1183,13 +1086,11 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return ::GuiBox().setFromDaguiObj(headerCountriesObj)
   }
 
-  function getSlotsData(unitId = null, slotCrewId = -1, withEmptySlots = false)
-  {
+  function getSlotsData(unitId = null, slotCrewId = -1, withEmptySlots = false) {
     let unitSlots = []
-    foreach(countryId, countryData in ::g_crews_list.get())
+    foreach (countryId, countryData in ::g_crews_list.get())
       if (!this.singleCountry || countryData.country == this.singleCountry)
-        foreach (idInCountry, crew in countryData.crews)
-        {
+        foreach (idInCountry, crew in countryData.crews) {
           if (slotCrewId != -1 && slotCrewId != (crew?.id ?? -1))
             continue
           let unit = this.getCrewUnit(crew)
@@ -1208,43 +1109,36 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     return unitSlots
   }
 
-  function getCrewUnit(crew)
-  {
+  function getCrewUnit(crew) {
     return ::g_crew.getCrewUnit(crew)
   }
 
-  function updateDifficulty(unitSlots = null)
-  {
+  function updateDifficulty(unitSlots = null) {
     unitSlots = unitSlots || this.getSlotsData()
 
     let showBR = hasFeature("SlotbarShowBattleRating")
     let curEdiff = this.getCurrentEdiff()
 
-    foreach (slot in unitSlots)
-    {
+    foreach (slot in unitSlots) {
       let obj = slot.obj.findObject("rank_text")
-      if (checkObj(obj))
-      {
+      if (checkObj(obj)) {
         local unitRankText = ::get_unit_rank_text(slot.unit, slot.crew, showBR, curEdiff)
         obj.setValue(unitRankText)
       }
     }
   }
 
-  function updateCrews(unitSlots = null)
-  {
+  function updateCrews(unitSlots = null) {
     if (::g_crews_list.isCrewListOverrided)
       return
 
     unitSlots = unitSlots || this.getSlotsData()
 
-    foreach (slot in unitSlots)
-    {
+    foreach (slot in unitSlots) {
       slot.obj["crewStatus"] = ::get_crew_status(slot.crew, slot.unit)
 
       local obj = slot.obj.findObject("crew_level")
-      if (checkObj(obj))
-      {
+      if (checkObj(obj)) {
         let crewLevelText = slot.unit
           ? ::g_crew.getCrewLevel(slot.crew, slot.unit, slot.unit.getCrewUnitType()).tointeger().tostring()
           : ""
@@ -1252,22 +1146,19 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       }
 
       obj = slot.obj.findObject("crew_spec")
-      if (checkObj(obj))
-      {
+      if (checkObj(obj)) {
         let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(slot.crew, slot.unit).trainedIcon
         obj["background-image"] = crewSpecIcon
       }
     }
   }
 
-  function onSlotBattle(_obj)
-  {
+  function onSlotBattle(_obj) {
     if (this.onSlotBattleBtn)
       this.onSlotBattleBtn()
   }
 
-  function onEventCrewsListChanged(_p)
-  {
+  function onEventCrewsListChanged(_p) {
     this.guiScene.performDelayed(this, function() {
       if (!this.isValid() || this.lastUpdatedVersion == ::g_crews_list.version)
         return
@@ -1276,22 +1167,19 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     })
   }
 
-  function onEventCrewSkillsChanged(params)
-  {
+  function onEventCrewSkillsChanged(params) {
     let crew = getTblValue("crew", params)
     if (crew)
       this.updateCrews(this.getSlotsData(null, crew.id))
   }
 
-  function onEventQualificationIncreased(params)
-  {
+  function onEventQualificationIncreased(params) {
     let unit = getTblValue("unit", params)
     if (unit)
       this.updateCrews(this.getSlotsData(unit.name))
   }
 
-  function onEventAutorefillChanged(params)
-  {
+  function onEventAutorefillChanged(params) {
     if (!("id" in params) || !("value" in params))
       return
 
@@ -1300,18 +1188,15 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       obj.setValue(params.value)
   }
 
-  function updateSlotRowView(countryData, tblObj)
-  {
+  function updateSlotRowView(countryData, tblObj) {
     if (!countryData)
       return
 
     let slotsData = []
-    foreach(crewData in countryData.crews)
-    {
+    foreach (crewData in countryData.crews) {
       let id = ::get_slot_obj_id(countryData.id, crewData.idInCountry)
       let crew = crewData.crew
-      if (!crew)
-      {
+      if (!crew) {
         let unitItem = ::build_aircraft_item(
           id,
           null,
@@ -1355,7 +1240,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
           showLocalState = isLocalState
           needCrewModificators = true
           needShopInfo = this.needCheckUnitUnlock
-          crewId = crew?.id}
+          crewId = crew?.id }
         missionRules = this.missionRules
         forceCrewInfoUnit = this.unitForSpecType
         isLocalState = isLocalState
@@ -1376,15 +1261,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   getCrewDataParams = @(_crewData) {}
   getSlotbar = @() this
 
-  function setCrewUnit(unit)
-  {
+  function setCrewUnit(unit) {
     setShowUnit(unit, this.getHangarFallbackUnitParams())
     //need to send event when crew in country not changed, because main unit changed.
     ::select_crew(this.curSlotCountryId, this.curSlotIdInCountry, true)
   }
 
-  function getDefaultDblClickFunc()
-  {
+  function getDefaultDblClickFunc() {
     return Callback(function(crew) {
       if (::g_crews_list.isCrewListOverrided)
         return
@@ -1403,10 +1286,8 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.onSlotActivate(this.getCurCrew())
   }
 
-  function defaultOnSlotActivateFunc(_crew)
-  {
-    if (this.hasActions && !::g_crews_list.isCrewListOverrided)
-    {
+  function defaultOnSlotActivateFunc(_crew) {
+    if (this.hasActions && !::g_crews_list.isCrewListOverrided) {
       if (isCountrySlotbarHasUnits(profileCountrySq.value))
         this.openUnitActionsList(this.getCurrentCrewSlot())
       else
@@ -1419,8 +1300,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       return
 
     unitSlots = unitSlots ?? this.getSlotsData()
-    foreach (slot in unitSlots)
-    {
+    foreach (slot in unitSlots) {
       let obj = slot.obj.findObject("weapons_icon")
       let unit = slot.unit
       if (!checkObj(obj) || unit == null)

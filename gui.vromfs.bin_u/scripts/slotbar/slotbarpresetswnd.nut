@@ -1,3 +1,4 @@
+//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -10,13 +11,11 @@ let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil } = require("math")
 
-::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null)
-{
+::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null) {
   return ::handlersManager.loadHandler(::gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
 }
 
-::gui_handlers.ChooseSlotbarPreset <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ChooseSlotbarPreset <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarChoosePreset.blk"
 
@@ -28,15 +27,13 @@ let { ceil } = require("math")
   listIdxPID = ::dagui_propid.add_name_id("listIdx")
   hoveredValue = -1
 
-  function initScreen()
-  {
+  function initScreen() {
     if (this.ownerWeak)
       this.ownerWeak = this.ownerWeak.weakref()
     this.reinit(null, true)
   }
 
-  function reinit(showPreset = null, verbose = false)
-  {
+  function reinit(showPreset = null, verbose = false) {
     if (!::slotbarPresets.canLoad(verbose))
       return this.goBack()
 
@@ -50,8 +47,7 @@ let { ceil } = require("math")
       return
 
     let view = { items = [] }
-    foreach (idx, preset in this.presets)
-    {
+    foreach (idx, preset in this.presets) {
       local title = preset.title
       if (idx == this.activePreset)
         title += ::nbsp + loc("shop/current")
@@ -73,26 +69,22 @@ let { ceil } = require("math")
     this.restoreFocusDelayed()
   }
 
-  function updateDescription()
-  {
+  function updateDescription() {
     let objDesc = this.scene.findObject("item_desc")
     if (!checkObj(objDesc))
       return
 
-    if (this.chosenValue in this.presets)
-    {
+    if (this.chosenValue in this.presets) {
       let preset = this.presets[this.chosenValue]
       let perRow = 3
       let unitItems = []
 
       local presetBattleRatingText = ""
-      if (hasFeature("SlotbarShowBattleRating"))
-      {
+      if (hasFeature("SlotbarShowBattleRating")) {
         let ediff = this.getCurrentEdiff()
         local battleRatingMin = 0
         local battleRatingMax = 0
-        foreach (unitId in preset.units)
-        {
+        foreach (unitId in preset.units) {
           let unit = ::getAircraftByName(unitId)
           let br = unit ? unit.getBattleRating(ediff) : 0.0
           battleRatingMin = !battleRatingMin ? br : min(battleRatingMin, br)
@@ -102,7 +94,7 @@ let { ceil } = require("math")
         presetBattleRatingText = loc("shop/battle_rating") + loc("ui/colon") + battleRatingRange + "\n"
       }
 
-      let gameMode = ::game_mode_manager.getGameModeById(preset.gameModeId)??
+      let gameMode = ::game_mode_manager.getGameModeById(preset.gameModeId) ??
                        ::game_mode_manager.getCurrentGameMode()
       let presetGameMode = gameMode != null ? loc("options/mp_mode") +
                                                 loc("ui/colon") + gameMode.text + "\n" : ""
@@ -115,8 +107,7 @@ let { ceil } = require("math")
 
       let unitsMarkupList = []
       let filteredUnits = preset.units.filter(@(u) u != "")
-      foreach(idx, unitId in filteredUnits)
-      {
+      foreach (idx, unitId in filteredUnits) {
         let unit = ::getAircraftByName(unitId)
         if (!unit)
           continue
@@ -146,8 +137,7 @@ let { ceil } = require("math")
       foreach (unitItem in unitItems)
         ::fill_unit_item_timers(objDesc.findObject(unitItem.id), unitItem.unit, unitItem.params)
     }
-    else
-    {
+    else {
       let data = format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(loc("shop/slotbarPresets/presetUnknown")))
       this.guiScene.replaceContentFromText(objDesc, data, data.len(), this)
     }
@@ -155,8 +145,7 @@ let { ceil } = require("math")
     this.updateButtons()
   }
 
-  function getCurrentEdiff()
-  {
+  function getCurrentEdiff() {
     let slotbar = this.ownerWeak && this.ownerWeak.getSlotbar()
     return slotbar ? slotbar.getCurrentEdiff() : ::get_current_ediff()
   }
@@ -166,10 +155,8 @@ let { ceil } = require("math")
       ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   })
 
-  function updateButtons()
-  {
-    if (::show_console_buttons)
-    {
+  function updateButtons() {
+    if (::show_console_buttons) {
       let isAnyPresetHovered = this.hoveredValue != -1
       let isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
       ::showBtnTable(this.scene, {
@@ -196,8 +183,8 @@ let { ceil } = require("math")
         btn_preset_rename = canEdit
         btn_preset_delete = canEdit && ::slotbarPresets.canErase() && isNonCurrentPresetSelected
         btn_preset_load   = ::slotbarPresets.canLoad()  && isAnyPresetSelected && selectedPresetEnabled
-        btn_preset_move_up= canEdit && isAnyPresetSelected && this.chosenValue > 0
-        btn_preset_move_dn= canEdit && isAnyPresetSelected && this.chosenValue < this.presets.len() - 1
+        btn_preset_move_up = canEdit && isAnyPresetSelected && this.chosenValue > 0
+        btn_preset_move_dn = canEdit && isAnyPresetSelected && this.chosenValue < this.presets.len() - 1
     })
 
     let objBtn = this.scene.findObject("btn_preset_load")
@@ -205,8 +192,7 @@ let { ceil } = require("math")
       objBtn.text = loc(isNonCurrentPresetSelected ? "mainmenu/btnApply" : "mainmenu/btnClose")
   }
 
-  function onItemSelect(_obj)
-  {
+  function onItemSelect(_obj) {
     let objPresets = this.scene.findObject("items_list")
     if (!checkObj(objPresets))
       return
@@ -214,25 +200,22 @@ let { ceil } = require("math")
     this.updateDescription()
   }
 
-  function showNotAllowedMessage()
-  {
+  function showNotAllowedMessage() {
     let reason = ::slotbarPresets.havePresetsReserve()
       ? loc("shop/slotbarPresetsReserve",
-        { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus], unitTypes = ::slotbarPresets.getPresetsReseveTypesText()})
+        { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus], unitTypes = ::slotbarPresets.getPresetsReseveTypesText() })
       : loc("shop/slotbarPresetsMax")
     ::showInfoMsgBox(format(loc("weaponry/action_not_allowed"), reason))
   }
 
-  function onBtnPresetAdd(_obj)
-  {
+  function onBtnPresetAdd(_obj) {
     if (::slotbarPresets.canCreate())
       ::slotbarPresets.create()
     else
       this.showNotAllowedMessage()
   }
 
-  function onBtnPresetCopy(_obj)
-  {
+  function onBtnPresetCopy(_obj) {
     if (!(this.chosenValue in this.presets))
       return
 
@@ -242,8 +225,7 @@ let { ceil } = require("math")
       this.showNotAllowedMessage()
   }
 
-  function onBtnPresetDelete(_obj)
-  {
+  function onBtnPresetDelete(_obj) {
     if (!::slotbarPresets.canErase() || !(this.chosenValue in this.presets))
       return
 
@@ -263,42 +245,35 @@ let { ceil } = require("math")
     ], "cancel", { data_below_text = comment })
   }
 
-  function onBtnPresetLoad(_obj)
-  {
+  function onBtnPresetLoad(_obj) {
     let handler = this
     this.checkedCrewModify((@(handler, chosenValue) function () {
       if (::slotbarPresets.canLoad())
-        if (chosenValue in this.presets)
-        {
+        if (chosenValue in this.presets) {
           ::slotbarPresets.load(chosenValue)
           handler.goBack()
         }
     })(handler, this.chosenValue))
   }
 
-  function onBtnPresetMoveUp(_obj)
-  {
+  function onBtnPresetMoveUp(_obj) {
     ::slotbarPresets.move(this.chosenValue, -1)
   }
 
-  function onBtnPresetMoveDown(_obj)
-  {
+  function onBtnPresetMoveDown(_obj) {
     ::slotbarPresets.move(this.chosenValue, 1)
   }
 
-  function onBtnPresetRename(_obj)
-  {
+  function onBtnPresetRename(_obj) {
     ::slotbarPresets.rename(this.chosenValue)
   }
 
-  function onBtnPresetSelect(_obj)
-  {
-    if(this.hoveredValue != -1)
+  function onBtnPresetSelect(_obj) {
+    if (this.hoveredValue != -1)
       this.scene.findObject("items_list")?.setValue(this.hoveredValue)
   }
 
-  function onItemHover(obj)
-  {
+  function onItemHover(obj) {
     if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
@@ -309,25 +284,21 @@ let { ceil } = require("math")
     this.updateButtons()
   }
 
-  function onItemDblClick(obj)
-  {
+  function onItemDblClick(obj) {
     if (::show_console_buttons)
       return
     this.onBtnPresetLoad(obj)
   }
 
-  function onEventSlotbarPresetLoaded(_params)
-  {
+  function onEventSlotbarPresetLoaded(_params) {
     this.reinit()
   }
 
-  function onEventSlotbarPresetsChanged(params)
-  {
+  function onEventSlotbarPresetsChanged(params) {
     this.reinit(getTblValue("showPreset", params, -1))
   }
 
-  function onEventModalWndDestroy(_params)
-  {
+  function onEventModalWndDestroy(_params) {
     if (this.isSceneActiveNoModals())
       this.restoreFocusDelayed()
   }

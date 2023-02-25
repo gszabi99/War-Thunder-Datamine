@@ -1,3 +1,4 @@
+//checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
@@ -22,8 +23,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     value = 0
   }
 */
-::gui_choose_image <- function gui_choose_image(config, applyFunc, owner)
-{
+::gui_choose_image <- function gui_choose_image(config, applyFunc, owner) {
   ::handlersManager.loadHandler(::gui_handlers.ChooseImage, {
                                   config = config
                                   owner = owner
@@ -31,8 +31,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
                                 })
 }
 
-::gui_handlers.ChooseImage <- class extends ::gui_handlers.BaseGuiHandlerWT
-{
+::gui_handlers.ChooseImage <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chooseImage/chooseImage.blk"
 
@@ -53,15 +52,13 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
   value = -1
   contentObj = null
 
-  function initScreen()
-  {
+  function initScreen() {
     if (!this.config || !("options" in this.config))
       return this.goBack()
 
     this.options = []
-    let configValue = ("value" in this.config)? this.config.value : -1
-    foreach(idx, option in this.config.options)
-    {
+    let configValue = ("value" in this.config) ? this.config.value : -1
+    foreach (idx, option in this.config.options) {
       let isVisible = getTblValue("show", option, true)
       if (!isVisible)
         continue
@@ -82,20 +79,17 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     this.showSceneBtn("btn_select", ::show_console_buttons)
   }
 
-  function initItemsPerPage()
-  {
+  function initItemsPerPage() {
     this.guiScene.applyPendingChanges(false)
     let listObj = this.scene.findObject("images_list")
     let cfg = ::g_dagui_utils.countSizeInItems(listObj, this.imageButtonSize, this.imageButtonSize, this.imageButtonInterval, this.imageButtonInterval)
 
     //update size for single page
-    if (cfg.itemsCountX * cfg.itemsCountY > this.options.len())
-    {
+    if (cfg.itemsCountX * cfg.itemsCountY > this.options.len()) {
       let total = max(this.options.len(), this.minAmountButtons)
       local columns = min(stdMath.calc_golden_ratio_columns(total), cfg.itemsCountX)
       local rows = ceil(total.tofloat() / columns).tointeger()
-      if (rows > cfg.itemsCountY)
-      {
+      if (rows > cfg.itemsCountY) {
         rows = cfg.itemsCountY
         columns = ceil(total.tofloat() / rows).tointeger()
       }
@@ -107,8 +101,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     this.itemsPerPage = cfg.itemsCountX * cfg.itemsCountY
   }
 
-  function fillPage()
-  {
+  function fillPage() {
     let view = {
       avatars = []
     }
@@ -118,8 +111,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     let end = min((this.currentPage + 1) * this.itemsPerPage, this.options.len()) - 1
     let selIdx = this.valueInited ? min(this.contentObj.getValue(), end - start)
       : clamp(this.value - start, 0, end - start)
-    for (local i = start; i <= end; i++)
-    {
+    for (local i = start; i <= end; i++) {
       let item = this.options[i]
       let avatar = {
         id          = i
@@ -145,8 +137,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     this.updateButtons()
   }
 
-  function updatePaginator()
-  {
+  function updatePaginator() {
     let paginatorObj = this.scene.findObject("paginator_place")
     ::generatePaginator(paginatorObj, this, this.currentPage, (this.options.len() - 1) / this.itemsPerPage)
 
@@ -159,21 +150,18 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       nextUnseen && bhvUnseen.makeConfigStr(nextUnseen.listId, nextUnseen.entities))
   }
 
-  function goToPage(obj)
-  {
+  function goToPage(obj) {
     this.markCurPageSeen()
     this.currentPage = obj.to_page.tointeger()
     this.fillPage()
   }
 
-  function chooseImage(idx)
-  {
+  function chooseImage(idx) {
     this.choosenValue = idx
     this.goBack()
   }
 
-  function onImageChoose(_obj)
-  {
+  function onImageChoose(_obj) {
     let selIdx = this.getSelIconIdx()
 
     if (!(this.options?[selIdx].enabled ?? false))
@@ -182,8 +170,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     this.chooseImage(selIdx)
   }
 
-  function onImageSelect()
-  {
+  function onImageSelect() {
     if (this.isPageFill)
       return
 
@@ -195,16 +182,14 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       seenList.get(item.seenListId).markSeen(item?.seenEntity)
   }
 
-  function onDblClick()
-  {
+  function onDblClick() {
     let selIdx = this.getSelIconIdx()
     let option = this.options?[selIdx]
 
     if (!option)
       return
 
-    if (option.enabled)
-    {
+    if (option.enabled) {
       this.chooseImage(selIdx)
       return
     }
@@ -265,14 +250,12 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     this.msgBox("question_buy_unlock", title, [["ok", onOk], ["cancel"]], "cancel")
   }
 
-  function goToMarketplace(item)
-  {
+  function goToMarketplace(item) {
     if (item?.hasLink())
       item.openLink()
   }
 
-  function onAction()
-  {
+  function onAction() {
     let selIdx = this.getSelIconIdx()
 
     if (selIdx < 0)
@@ -280,23 +263,20 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 
     let option = this.options?[selIdx]
 
-    if ((option?.enabled ?? false) || option?.marketplaceItemdefId == null)
-    {
+    if ((option?.enabled ?? false) || option?.marketplaceItemdefId == null) {
       this.chooseImage(selIdx)
       return
     }
 
     let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
 
-    if (inventoryItem != null)
-    {
+    if (inventoryItem != null) {
       inventoryItem.consume(Callback(function(result) {
         if (result?.success ?? false)
           this.chooseImage(selIdx)
       }, this), null)
     }
-    else
-    {
+    else {
       let item = ::ItemsManager.findItemById(option.marketplaceItemdefId)
 
       if (item)
@@ -304,15 +284,13 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     }
   }
 
-  function getSelIconIdx()
-  {
+  function getSelIconIdx() {
     if (!checkObj(this.contentObj))
       return -1
     return this.contentObj.getValue() + this.currentPage * this.itemsPerPage
   }
 
-  function updateButtons()
-  {
+  function updateButtons() {
     let option = getTblValue(this.getSelIconIdx(), this.options)
     let cost = ::get_unlock_cost(option.unlockId)
     let canBuy = !option.enabled && !cost.isZero()
@@ -336,8 +314,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       return
     }
 
-    if (option?.enabled)
-    {
+    if (option?.enabled) {
       btn.setValue(loc("mainmenu/btnSelect"))
       return
     }
@@ -350,9 +327,8 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       btn.setValue(loc("msgbox/btn_find_on_marketplace"))
   }
 
-  function afterModalDestroy()
-  {
-    if (!this.applyFunc || this.choosenValue==null)
+  function afterModalDestroy() {
+    if (!this.applyFunc || this.choosenValue == null)
       return
 
     if (this.owner)
@@ -361,13 +337,11 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       this.applyFunc(this.options[this.choosenValue])
   }
 
-  function getTooltipObjFunc()
-  {
+  function getTooltipObjFunc() {
     return getTblValue("tooltipObjFunc", this.config)
   }
 
-  function onImageTooltipOpen(obj)
-  {
+  function onImageTooltipOpen(obj) {
     let id = ::getTooltipObjId(obj)
     let func = this.getTooltipObjFunc()
     if (!id || !func)
@@ -378,20 +352,17 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       obj["class"] = "empty"
   }
 
-  function goBack()
-  {
+  function goBack() {
     this.markCurPageSeen()
     base.goBack()
   }
 
-  function getSeenConfig(start, end)
-  {
+  function getSeenConfig(start, end) {
     let res = {
       listId = null
       entities = []
     }
-    for(local i = end; i >= start; i--)
-    {
+    for (local i = end; i >= start; i--) {
       let item = this.options[i]
       if (!item?.seenListId || !item?.seenEntity)
         continue
@@ -402,8 +373,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     return res.listId ? res : null
   }
 
-  function markCurPageSeen()
-  {
+  function markCurPageSeen() {
     let seenConfig = this.getSeenConfig(this.currentPage * this.itemsPerPage,
       min((this.currentPage + 1) * this.itemsPerPage, this.options.len()) - 1)
     if (seenConfig)

@@ -1,18 +1,18 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
-let {IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
+let { IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
       IlsAtgmTargetPos, IlsAtgmLocked, AtgmTargetDist, TargetPosValid,
       TargetPos, RocketMode, CannonMode, BombCCIPMode, DistToTarget,
       BombingMode } = require("%rGui/planeState/planeToolsState.nut")
-let {baseLineWidth, metrToFeet, mpsToKnots, metrToMile} = require("ilsConstants.nut")
-let {GuidanceLockResult} = require("%rGui/guidanceConstants.nut")
-let {compassWrap, generateCompassMarkShim} = require("ilsCompasses.nut")
-let {Tangage, BarAltitude, Altitude, Speed, Roll} = require("%rGui/planeState/planeFlyState.nut");
-let {round, cos, sin, PI} = require("%sqstd/math.nut")
-let {cvt} = require("dagor.math")
-let {GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("%rGui/rocketAamAimState.nut")
-let {ShellCnt}  = require("%rGui/planeState/planeWeaponState.nut");
+let { baseLineWidth, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
+let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
+let { compassWrap, generateCompassMarkShim } = require("ilsCompasses.nut")
+let { Tangage, BarAltitude, Altitude, Speed, Roll } = require("%rGui/planeState/planeFlyState.nut");
+let { round, cos, sin, PI } = require("%sqstd/math.nut")
+let { cvt } = require("dagor.math")
+let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
+let { ShellCnt }  = require("%rGui/planeState/planeWeaponState.nut");
 
 let SpeedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let a10Speed = @() {
@@ -82,7 +82,7 @@ let function pitch(width, height, generateFunc) {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.05]
         rotate = -Roll.value
-        pivot=[0.5, (90.0 - Tangage.value) * 0.1]
+        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
       }
     }
   }
@@ -147,7 +147,7 @@ let function generatePitchLine(num) {
   }
 }
 
-let maverickDist = Computed( @() (AtgmTargetDist.value < 0 ? -1 : AtgmTargetDist.value * metrToMile * 10.0).tointeger())
+let maverickDist = Computed(@() (AtgmTargetDist.value < 0 ? -1 : AtgmTargetDist.value * metrToMile * 10.0).tointeger())
 let maverickAimMark = @() {
   watch = IlsAtgmLocked
   rendObj = ROBJ_VECTOR_CANVAS
@@ -184,8 +184,8 @@ let maverickAimMark = @() {
 }
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
-let ccipDistF = Computed( @() cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
-let ccipDistM = Computed( @() (DistToTarget.value < 0 || DistToTarget.value >= 10000 ? -1 : DistToTarget.value * metrToMile * 10.0).tointeger())
+let ccipDistF = Computed(@() cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
+let ccipDistM = Computed(@() (DistToTarget.value < 0 || DistToTarget.value >= 10000 ? -1 : DistToTarget.value * metrToMile * 10.0).tointeger())
 let gunAimMark = @() {
   watch = [TargetPosValid, CCIPMode]
   size = flex()
@@ -261,7 +261,7 @@ let function KaiserTvvLinked(width, height) {
   return {
     size = flex()
     children = [
-      @(){
+      @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = [pw(4), ph(4)]
