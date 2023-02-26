@@ -276,7 +276,7 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
       data = weaponry ? ::handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"),
         getTierDescTbl(this.unit, getTierTooltipParams(weaponry, item.name, this.curTierIdx))) : ""
     }
-    this.guiScene.replaceContentFromText(descObj, data, data.len())
+    this.guiScene.replaceContentFromText(descObj, data, data.len(), null)
   }
 
   function onModItemDblClick(_obj) {

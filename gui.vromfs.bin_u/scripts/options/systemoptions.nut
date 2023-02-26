@@ -1540,7 +1540,7 @@ let function fillGuiOptions(containerObj, handler) {
       data += option
     }
 
-    guiScene.replaceContentFromText(section.container, data, data.len(), handler)
+    guiScene.replaceContentFromText(guiScene[section.container], data, data.len(), handler)
   }
 
   guiScene.setUpdatesEnabled(true, true)

@@ -97,7 +97,8 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
 
     let view = { presets = this.getPresetsView() }
     let blk = ::handyman.renderCached("%gui/options/gpuBenchmarkPreset.tpl", view)
-    this.guiScene.replaceContentFromText("resultsList", blk, blk.len(), this)
+    this.guiScene.replaceContentFromText(
+      this.scene.findObject("resultsList"), blk, blk.len(), this)
   }
 
   function presetApplyImpl(presetName) {
