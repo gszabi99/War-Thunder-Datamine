@@ -2114,6 +2114,111 @@
       }
     }
   },
+  "PhysSys": {
+    "find": "bone_suspension_(\\w)_(\\d+)$",
+    "points": {
+      "lever": {
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2"
+      },
+      "suspension_01_02": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_02"
+      },
+      "suspension_01_03": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_03"
+      },
+      "suspension_01_04": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_04"
+      },
+      "suspension_01_05": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_05"
+      },
+      "wheel": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "limitMax": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": "lever",
+          "find": "bone_wheel_"
+        }
+      }
+    },
+    "constraints": {
+      "edge": [
+        {
+          "from": "lever",
+          "to": "wheel"
+        },
+        {
+          "from": "suspension_01_05",
+          "to": "wheel",
+          "moveNodes": false
+        },
+        {
+          "from": "suspension_01_03",
+          "to": "wheel",
+          "moveNodes": false
+        }
+      ]
+    }
+  },
   "repairParts": {
     "wheel_l_01_dm": {
       "speed": 1.7,

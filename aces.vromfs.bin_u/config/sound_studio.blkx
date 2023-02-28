@@ -579,7 +579,10 @@
         "sounds/engines",
         "sounds/outside/engines",
         "sounds/fx/everywhere/ground/suspension",
-        "sounds/fx/everywhere/ground/turrets"
+        "sounds/fx/everywhere/ground/turrets",
+        "sounds/fx/everywhere/aircraft/outside_mechanisation",
+        "sounds/fx/everywhere/aircraft/canopy",
+        "sounds/fx/everywhere/aircraft/wheel_hit"
       ],
       "volLimits": [
         27.0,
@@ -2229,6 +2232,50 @@
       "eventBack": "engine05_rd33_WEP_ai",
       "eventSurround": "",
       "eventLod1": "engine05_rd33_WEP_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_cockpit_l",
+      "event_cockpit_r": "engine05_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_r79b300_WEP_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_r79b300_WEP_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_r79b300_WEP_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -7390,6 +7437,56 @@
       "event_start_cockpit_r": "engine05_rd33_start_cockpit_r",
       "event_stop_cockpit_l": "engine05_rd33_stop_cockpit_l",
       "event_stop_cockpit_r": "engine05_rd33_stop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_r79b300_WEP": {
+    "startTimeout": 9.0,
+    "stopTimeout": 0.1,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_r79b300_start",
+      "eventStop": "engine05_r79b300_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_r79b300_WEP",
+      "eventSurround": "",
+      "eventLod1": "engine05_r79b300_WEP",
+      "rpmSmooth": 0.01,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_r79b300_WEP_cockpit_l",
+      "event_cockpit_r": "engine05_r79b300_WEP_cockpit_r",
+      "event_start_cockpit_l": "engine05_r79b300_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_r79b300_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_r79b300_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_r79b300_stop_cockpit_r",
       "leftPos": [
         -0.5,
         1.0,
@@ -16799,6 +16896,11 @@
       "path": "ground/effects",
       "event": "reload_cannon_20mm",
       "time": 4.0
+    },
+    "grd_cannon_mag_reload": {
+      "path": "ground/effects",
+      "event": "reload_cannon_aa_mag",
+      "time": 5.0
     },
     "grd_begleitpanzer_reload": {
       "path": "ground/effects",

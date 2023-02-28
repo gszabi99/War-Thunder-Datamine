@@ -38,9 +38,6 @@
   "smokeScreenFx": "smokescreen_no_therm_big",
   "canReloadNonGuns": true,
   "perfectRangefinder": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1900,15 +1897,15 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 54000.0,
+      "Empty": 64000.0,
       "momentOfInertia": [
-        7.0,
-        25.0,
-        12.0
+        16.0,
+        58.0,
+        33.0
       ],
       "CenterOfGravity": [
         -4.4,
-        -0.5,
+        -1.1,
         0.0
       ]
     },
@@ -1917,20 +1914,20 @@
     },
     "engines": {
       "maxSpeed": 25.72,
-      "maxReverseSpeed": 9.0,
+      "maxReverseSpeed": 11.0,
       "speedToTime": {
         "row": [
           [
-            5.0,
-            2.2
+            5.2,
+            5.2
           ],
           [
-            10.0,
-            3.7
+            10.5,
+            8.3
           ],
           [
             25.72,
-            8.5
+            15.2
           ]
         ]
       },
@@ -1938,15 +1935,15 @@
         "row": [
           [
             2.0,
-            1.8
+            2.3
           ],
           [
             4.0,
-            3.5
+            4.3
           ],
           [
-            9.0,
-            7.1
+            11.0,
+            9.0
           ]
         ]
       },
@@ -1983,7 +1980,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 0.55,
+      "mulReaction": 0.65,
       "rudder": [
         {
           "pos": [
@@ -1991,7 +1988,7 @@
             -1.2,
             0.85
           ],
-          "area": 0.6,
+          "area": 1.6,
           "deflection": 36.0,
           "dmPart": "steering_gear_01_dm"
         },
@@ -2001,11 +1998,67 @@
             -1.2,
             -0.85
           ],
-          "area": 0.6,
+          "area": 1.6,
           "deflection": 36.0,
           "dmPart": "steering_gear_01_dm"
         }
-      ]
+      ],
+      "hydrofoils": {
+        "hydrofoil": [
+          {
+            "euler": [
+              -1.0,
+              90.0,
+              12.0
+            ],
+            "pos": [
+              6.2,
+              -0.8,
+              -1.3
+            ],
+            "size": [
+              1.8,
+              3.1
+            ],
+            "maxV": 62.0,
+            "polar": {
+              "Cl0": 0.015,
+              "CdMin": 0.0011,
+              "lineClCoeff": 0.045,
+              "ClCritHigh": 0.6,
+              "ClCritLow": -0.52,
+              "alphaCritHigh": 4.0,
+              "alphaCritLow": -3.0
+            }
+          },
+          {
+            "euler": [
+              1.0,
+              -90.0,
+              12.0
+            ],
+            "pos": [
+              6.2,
+              -0.8,
+              1.3
+            ],
+            "size": [
+              1.8,
+              3.1
+            ],
+            "maxV": 62.0,
+            "polar": {
+              "Cl0": 0.015,
+              "CdMin": 0.0011,
+              "lineClCoeff": 0.045,
+              "ClCritHigh": 0.6,
+              "ClCritLow": -0.52,
+              "alphaCritHigh": 4.0,
+              "alphaCritLow": -3.0
+            }
+          }
+        ]
+      }
     }
   },
   "commonWeapons": {
@@ -2248,12 +2301,12 @@
   "cockpit": {
     "headPos": [
       0.0,
-      7.7,
-      -22.0
+      8.0,
+      -24.0
     ],
     "headPosOnShooting": [
-      2.3,
-      7.8,
+      2.5,
+      8.0,
       0.0
     ],
     "detectionHeigh": 7.96,
@@ -3076,7 +3129,7 @@
       {
         "node": "main_caliber_turret_01",
         "idx": 1,
-        "mass": 1030.0,
+        "mass": 800.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
@@ -3085,7 +3138,7 @@
       {
         "node": "main_caliber_turret_02",
         "idx": 2,
-        "mass": 1030.0,
+        "mass": 800.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
@@ -3094,7 +3147,7 @@
       {
         "node": "tt_02",
         "idx": 3,
-        "mass": 700.0,
+        "mass": 500.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
@@ -3103,11 +3156,31 @@
       {
         "node": "tt_03",
         "idx": 4,
-        "mass": 700.0,
+        "mass": 500.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "tt_03_dm"
+      }
+    ]
+  },
+  "user_skin": {
+    "name": "type153_pfeil",
+    "replace_tex": {
+      "from": "camo_lichtgrau*"
+    },
+    "set_tex": [
+      {
+        "from": "turret_40mm_bofors_sak315_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "tt_533mm_brave_borderer_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "type153_pfeil_c*",
+        "param": "camo_skin_tex"
       }
     ]
   }

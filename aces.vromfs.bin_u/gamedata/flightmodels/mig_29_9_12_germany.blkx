@@ -11,6 +11,7 @@
   "ils31": true,
   "hmdShelZoom": true,
   "haveCCRPForGun": true,
+  "havePointOfInterestDesignator": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -1975,8 +1976,8 @@
       0.0
     ],
     "mirrorNorm": [
-      -1.0,
-      0.1,
+      -0.998,
+      -0.07,
       0.0
     ],
     "mirrorNode": [
@@ -2083,6 +2084,11 @@
         0.0,
         1.0
       ],
+      "gears": [
+        0.0,
+        1.0
+      ],
+      "gear_fixed": true,
       "flaps": [
         0.0,
         1.0
@@ -2229,11 +2235,16 @@
             1.0,
             1.0
           ],
-          "page": {
-            "type": "radar",
-            "radarScale": 0.8,
-            "hideRadarBackground": true
-          }
+          "page": [
+            {
+              "type": "ils_duplicate"
+            },
+            {
+              "type": "radar",
+              "radarScale": 0.8,
+              "hideRadarBackground": true
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2250,7 +2261,8 @@
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
-            "ilsColor": "Cv8KeA=="
+            "ilsColor": "Cv8KeA==",
+            "bloomForce": 0.12
           }
         }
       ]
@@ -2449,7 +2461,7 @@
               {
                 "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
@@ -2458,7 +2470,7 @@
               {
                 "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
                 "external": true,

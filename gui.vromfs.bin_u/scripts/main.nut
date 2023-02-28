@@ -42,6 +42,7 @@ require("%globalScripts/version.nut")
 require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
+
 ::handyman <- require("%sqStdLibs/helpers/handyman.nut").handyman
 
 let { get_local_unixtime } = require("dagor.time")
@@ -552,8 +553,7 @@ local isFullScriptsLoaded = false
 if (is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug/netLogerr") == null)
   ::setSystemConfigOption("debug/netLogerr", true)
 
-if (::g_login.isAuthorized() //scripts reload
-    || ::should_disable_menu()) {
+if (::g_login.isAuthorized() || ::should_disable_menu()) { //scripts reload
   ::load_scripts_after_login_once()
   if (!::g_script_reloader.isInReloading)
     ::run_reactive_gui()

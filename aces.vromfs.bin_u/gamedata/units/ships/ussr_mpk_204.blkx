@@ -18,8 +18,8 @@
   "customUpdateDiv": 5,
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
-  "ikPilotMaxUpdateDistance": 60.0,
-  "ikPilotMaxRenderDistance": 60.0,
+  "ikPilotMaxUpdateDistance": 80.0,
+  "ikPilotMaxRenderDistance": 80.0,
   "useSimpleDeathConditionsAndEffects": false,
   "type": "typeSubmarineChaser",
   "expClass": "exp_submarine_chaser",
@@ -1522,34 +1522,34 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 650000.0,
+      "Empty": 580000.0,
       "momentOfInertia": [
-        43.0,
-        170.0,
-        112.0
+        46.0,
+        270.0,
+        190.0
       ],
       "CenterOfGravity": [
         -5.0,
-        -1.0,
+        -0.8,
         0.0
       ]
     },
     "engines": {
       "maxSpeed": 18.01,
-      "maxReverseSpeed": 5.6,
+      "maxReverseSpeed": 7.6,
       "speedToTime": {
         "row": [
           [
-            3.0,
-            4.8
+            5.0,
+            5.1
           ],
           [
-            5.6,
-            9.1
+            8.6,
+            8.4
           ],
           [
             18.01,
-            15.2
+            17.5
           ]
         ]
       },
@@ -1557,15 +1557,15 @@
         "row": [
           [
             2.0,
-            2.5
+            2.6
           ],
           [
-            3.0,
-            3.4
+            4.0,
+            5.5
           ],
           [
-            5.6,
-            7.5
+            7.6,
+            11.9
           ]
         ]
       },
@@ -1644,14 +1644,14 @@
     "headPos": [
       0.0,
       10.0,
-      -44.0
+      -45.0
     ],
     "headPosOnShooting": [
-      10.0,
-      10.0,
+      12.0,
+      12.0,
       0.0
     ],
-    "detectionHeigh": 11.3,
+    "detectionHeigh": 14.1,
     "cameraAhead": true
   },
   "sound": {
@@ -3119,8 +3119,8 @@
       },
       {
         "node": "auxiliary_caliber_gun_01",
-        "idx": 6,
-        "mass": 1000.0,
+        "idx": 3,
+        "mass": 700.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
@@ -3128,12 +3128,36 @@
       },
       {
         "node": "auxiliary_caliber_gun_02",
-        "idx": 7,
-        "mass": 1000.0,
+        "idx": 4,
+        "mass": 700.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
         "collisionNode": "auxiliary_caliber_gun_02_dm"
+      }
+    ]
+  },
+  "user_skin": {
+    "name": "mpk_204",
+    "replace_tex": {
+      "from": "camo_bluegray*"
+    },
+    "set_tex": [
+      {
+        "from": "tt_ota_40_204_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "rocket_launcher_rby6000_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "turret_57mm_ak725_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "mpk_204_c*",
+        "param": "camo_skin_tex"
       }
     ]
   }
