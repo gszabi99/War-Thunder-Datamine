@@ -38,7 +38,7 @@ let fillUserNick = function (nestObj, _headerLocId = null) {
       userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}.png" : ""
       userName = colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
     })
-  guiScene.replaceContentFromText(nestObj, data, data.len())
+  guiScene.replaceContentFromText(nestObj, data, data.len(), null)
 }
 
 return {

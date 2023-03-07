@@ -118,7 +118,8 @@ local ItemExternal = class extends ::BaseItem {
       this.amountByUids = {}
       if ("itemid" in itemDesc)
         this.addUid(itemDesc.itemid, itemDesc.quantity)
-      this.lastChangeTimestamp = time.getTimestampFromIso8601(itemDesc?.timestamp)
+      if (itemDesc?.timestamp != null)
+        this.lastChangeTimestamp = time.getTimestampFromIso8601(itemDesc.timestamp)
       this.tradeableTimestamp = this.getTradebleTimestamp(itemDesc)
       this.craftedFrom = itemDesc?.craftedFrom ?? ""
     }
@@ -159,7 +160,9 @@ local ItemExternal = class extends ::BaseItem {
         || this.tradeableTimestamp != this.getTradebleTimestamp(itemDesc))
       return false
     this.addUid(itemDesc.itemid, itemDesc.quantity)
-    this.lastChangeTimestamp = max(this.lastChangeTimestamp, time.getTimestampFromIso8601(itemDesc?.timestamp))
+    if (itemDesc?.timestamp != null)
+      this.lastChangeTimestamp = max(this.lastChangeTimestamp,
+        time.getTimestampFromIso8601(itemDesc.timestamp))
     return true
   }
 
