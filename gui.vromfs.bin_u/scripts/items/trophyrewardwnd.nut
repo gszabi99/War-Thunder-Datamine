@@ -17,6 +17,7 @@ let { findGenByReceptUid } = require("%scripts/items/itemsClasses/itemGenerators
 let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
 let { register_command } = require("console")
+let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
 
 register_command(
   function () {
@@ -191,7 +192,7 @@ register_command(
     : this.isCreation() ? this.trophyItem.getCreationCaption()
     : this.trophyItem.getOpeningCaption()
 
-  isRouletteStarted = @() ::ItemsRoulette.init(
+  isRouletteStarted = @() initItemsRoulette(
     this.trophyItem.id,
     this.configsArray,
     this.scene,
@@ -226,7 +227,7 @@ register_command(
     if (this.opened)
       return false
     let obj = this.scene.findObject("rewards_list")
-    ::ItemsRoulette.skipAnimation(obj)
+    skipItemsRouletteAnimation(obj)
     this.opened = true
     this.updateWnd()
     this.notifyTrophyVisible()

@@ -42,7 +42,7 @@ let { get_game_mode } = require("mission")
 
     let guiScene = ::get_gui_scene()
     let container = ::create_options_container("controls", this.options, true)
-    guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
+    guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     this.optionsContainers = [container.descr]
 
     this.checkHeadtrackRows()

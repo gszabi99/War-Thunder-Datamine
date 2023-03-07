@@ -1,7 +1,7 @@
 {
   "model": "tornado_ids_it_mod95",
   "fmFile": "/fm/tornado_ids_it_mod95.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.11,
   "gearSinkRangeC": 0.212,
@@ -9,10 +9,12 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
+  "haveCCRPForGun": true,
   "ilsTornado": true,
   "isBwOpticSight": true,
   "hasOpticTurret": true,
@@ -2457,6 +2459,7 @@
       0.605,
       0.0
     ],
+    "hasAirCannonIlsMode": true,
     "mirror": true,
     "mirrorPos": [
       4.606,
@@ -4042,13 +4045,7 @@
         "from": "tornado_ids_it_mod95_c*"
       },
       {
-        "from": "tornado_ids_it_mod95_c_dmg*"
-      },
-      {
         "from": "tornado_ids_it_mod95_n*"
-      },
-      {
-        "from": "tornado_ids_it_mod95_n_dmg*"
       }
     ]
   },

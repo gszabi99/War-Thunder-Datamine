@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let { getRgbStrFromHsv } = require("colorCorrector")
 
 ::hudEnemyDamage <- {
   // HitCamera HUE color range is: 160 (100%hp) - 0 (0%hp).
@@ -220,7 +221,7 @@ let { format } = require("string")
     let value = 1.0 / thresholdShowHealthBelow * showHp
     let hue =  showHp ? (this.hueHpMin + (this.hueHpMax - this.hueHpMin) * value) : this.hueKill
     let brightness =  showHp ? (this.brightnessHpMin - (this.brightnessHpMin - this.brightnessHpMax) * value) : brightnessKill
-    let color = format("#%s", ::get_color_from_hsv(hue, 1, brightness))
+    let color = format("#%s", getRgbStrFromHsv(hue, 1, brightness))
     this.showPart(partName, color, !showHp)
   }
 

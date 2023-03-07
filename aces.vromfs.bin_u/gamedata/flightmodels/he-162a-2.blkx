@@ -8,6 +8,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "ignoreArcadeWep": true,
   "isCapableOfAttackTurn": false,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -2148,27 +2149,15 @@
         "from": "he_162a_2_a*"
       },
       {
-        "from": "he_162a_2_a_dmg*"
-      },
-      {
         "from": "he_162a_2_n*"
-      },
-      {
-        "from": "he_162a_2_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "he_162a_2_a*",
-        "to": "he_162a_2_a_tomoe*"
-      },
-      {
-        "from": "he_162a_2_a_dmg*",
-        "to": "he_162a_2_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "he_162a_2_a*",
+      "to": "he_162a_2_a_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

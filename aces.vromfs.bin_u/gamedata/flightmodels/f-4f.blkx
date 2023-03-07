@@ -1,7 +1,7 @@
 {
   "model": "f_4f",
   "fmFile": "fm/f-4f.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.42,
@@ -10,6 +10,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "ilsLCOSS": true,
   "havePointOfInterestDesignator": true,
   "gyroscopicSightOverSensors": true,
@@ -4100,27 +4101,15 @@
         "from": "f_4f_c*"
       },
       {
-        "from": "f_4f_c_dmg*"
-      },
-      {
         "from": "f_4f_n*"
-      },
-      {
-        "from": "f_4f_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_4f_c*",
-        "to": "f_4f_c_tomoe*"
-      },
-      {
-        "from": "f_4f_c_dmg*",
-        "to": "f_4f_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_4f_c*",
+      "to": "f_4f_c_tomoe*"
+    }
   },
   "parachutes": {
     "emitterRange": [

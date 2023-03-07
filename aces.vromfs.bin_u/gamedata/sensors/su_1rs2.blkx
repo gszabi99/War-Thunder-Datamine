@@ -6,7 +6,7 @@
       "power": 600.0,
       "band": 10,
       "rcs": 5.0,
-      "range": 20000.0,
+      "range": 21000.0,
       "rangeMax": 30000.0,
       "antenna": {
         "angleHalfSens": 2.0,
@@ -34,8 +34,8 @@
         45.0
       ],
       "elevationLimits": [
-        -5.0,
-        82.0
+        -15.0,
+        75.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 80.0,
@@ -55,8 +55,8 @@
         45.0
       ],
       "elevationLimits": [
-        -5.0,
-        82.0
+        -15.0,
+        75.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 80.0,
@@ -76,8 +76,8 @@
         45.0
       ],
       "elevationLimits": [
-        -5.0,
-        82.0
+        -15.0,
+        75.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 60.0,
@@ -92,11 +92,11 @@
     "irstLosLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -45.0,
-        45.0
+        -90.0,
+        90.0
       ],
       "elevationLimits": [
-        -5.0,
+        -10.0,
         82.0
       ],
       "yawStabLimit": 180.0,
@@ -113,11 +113,11 @@
     "irstTrack": {
       "type": "no",
       "azimuthLimits": [
-        -45.0,
-        45.0
+        -90.0,
+        90.0
       ],
       "elevationLimits": [
-        -5.0,
+        -10.0,
         82.0
       ],
       "yawStabLimit": 180.0,
@@ -130,6 +130,7 @@
       "groundClutter": false,
       "angularAccuracy": 0.014,
       "distanceAccuracy": 3.0,
+      "targetRadiusMin": 1.475,
       "absDopplerSpeed": true,
       "track": true,
       "distance": {
@@ -140,7 +141,7 @@
       "dopplerSpeed": {
         "presents": true,
         "minValue": 10.0,
-        "maxValue": 1000.0,
+        "maxValue": 1100.0,
         "signalWidthMin": 5.0,
         "width": 0.0
       }

@@ -200,25 +200,28 @@
     },
     "turret_cha": {
       "armorClass": "RHA_tank_modern",
-      "gun_mask_01_dm": {
-        "armorThickness": 30.0,
-        "solidArmorTestDepth": 50.0
-      },
-      "gun_mask_02_dm": {
-        "armorThickness": 30.0
-      },
-      "gun_mask_03_dm": {
-        "armorThickness": 30.0
-      },
-      "gun_mask_05_dm": {
-        "armorThickness": 60.0
-      },
       "gun_mask_dm": {
         "armorThickness": 30.0
       }
     },
     "hull_turret_cha": {
       "armorClass": "RHA_tank_modern",
+      "gun_mask_01_dm": {
+        "armorThickness": 30.0,
+        "ignoreSolidDimension": true
+      },
+      "gun_mask_02_dm": {
+        "armorThickness": 30.0,
+        "ignoreSolidDimension": true
+      },
+      "gun_mask_03_dm": {
+        "armorThickness": 30.0,
+        "ignoreSolidDimension": true
+      },
+      "gun_mask_05_dm": {
+        "armorThickness": 25.0,
+        "ignoreSolidDimension": true
+      },
       "turret_06_front_dm": {
         "armorThickness": 25.0
       },
@@ -2260,7 +2263,7 @@
         "parkInDeadzone": false,
         "speedYaw": 90.0,
         "speedPitch": 90.0,
-        "bullets": 1700,
+        "bullets": 1000,
         "isBulletBelt": true,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -2419,8 +2422,8 @@
       "horsePowers": 1500.0,
       "maxRPM": 2700.0,
       "minRPM": 1700.0,
-      "manufacturer": "perkins",
-      "model": "cv12_6a"
+      "manufacturer": "mtu",
+      "model": "mt_883"
     },
     "mechanics": {
       "maxBrakeForce": 250000.0,
@@ -2428,8 +2431,8 @@
       "mainGearRatio": 3.45,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 13.0,
-      "manufacturer": "david_brown",
-      "model": "tn54e",
+      "manufacturer": "renk",
+      "model": "hswl_295",
       "type": "auto",
       "gearRatios": {
         "ratio": [
@@ -3433,7 +3436,7 @@
               "parkInDeadzone": false,
               "speedYaw": 90.0,
               "speedPitch": 90.0,
-              "bullets": 1700,
+              "bullets": 1000,
               "isBulletBelt": true,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,

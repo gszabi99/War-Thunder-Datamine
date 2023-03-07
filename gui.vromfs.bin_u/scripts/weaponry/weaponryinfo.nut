@@ -20,6 +20,8 @@ let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut
 let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
 } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getTntEquivalentText, getDestructionInfoTexts } = require("%scripts/weaponry/dmgModel.nut")
+let { set_unit_option } = require("guiOptions")
+let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -153,7 +155,7 @@ let function isWeaponVisible(unit, weapon, onlySelectable = true, weaponTags = n
 }
 
 let function getLastWeapon(unitName) {
-  let res = ::get_last_weapon(unitName)
+  let res = getSavedWeapon(unitName)
   if (res != "")
     return res
 
@@ -164,6 +166,7 @@ let function getLastWeapon(unitName) {
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon)
         && isWeaponEnabled(unit, weapon)) {
+      set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
       ::set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -173,7 +176,7 @@ let function getLastWeapon(unitName) {
 let getWeaponByName = @(unit, weaponName) unit?.getWeapons().findvalue(@(w) w.name == weaponName)
 
 let function validateLastWeapon(unitName) {
-  let weaponName = ::get_last_weapon(unitName)
+  let weaponName = getSavedWeapon(unitName)
   if (weaponName == "")
     return ""
 
@@ -187,6 +190,7 @@ let function validateLastWeapon(unitName) {
 
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon)) {
+      set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
       ::set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
@@ -198,6 +202,7 @@ let function setLastWeapon(unitName, weaponName) {
   if (weaponName == getLastWeapon(unitName))
     return
 
+  set_unit_option(unitName, ::USEROPT_WEAPONS, weaponName)
   ::set_last_weapon(unitName, weaponName)
   ::broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
 }
@@ -525,6 +530,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     if (trIdx >= 0 && (weaponName not in weapons.weaponsByTypes[currentTypeName][trIdx]?.weaponBlocks) && weaponTag != WEAPON_TAG.BULLET)
       foreach (name, existingItem in weapons.weaponsByTypes[currentTypeName][trIdx].weaponBlocks)
         if (isWeaponParamsEqual(item, existingItem)) {
+          existingItem.tiers = item.tiers.__merge(existingItem.tiers)
           weaponName = name
           break
         }
@@ -819,7 +825,7 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
 let function getSecondaryWeaponsList(unit) {
   let weaponsList = []
   let unitName = unit.name
-  let lastWeapon = ::get_last_weapon(unitName)
+  let lastWeapon = getSavedWeapon(unitName)
   foreach (weapon in unit.getWeapons()) {
     if (isWeaponAux(weapon))
       continue
@@ -890,8 +896,8 @@ let checkUnitLastWeapon = @(unit) checkAmmoAmount(unit, getLastWeapon(unit.name)
 let function checkUnitBullets(unit, isCheckAll = false, bulletSet = null) {
   let setLen = bulletSet?.len() ?? unit.unitType.bulletSetsQuantity
   for (local i = 0; i < setLen; i++) {
-    let modifName = bulletSet?[i] ?? ::get_last_bullets(unit.name, i)
-    if ((modifName ?? "") == "")
+    let modifName = bulletSet?[i] ?? getSavedBullets(unit.name, i)
+    if (modifName == "")
       continue
 
     if ((!isCheckAll && ::shop_is_modification_enabled(unit.name, modifName)) //Current mod

@@ -13,13 +13,22 @@ let { abs } = require("math")
 let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let time = require("%scripts/time.nut")
-let colorCorrector = require("colorCorrector")
+let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, TARGET_HUE_SPECTATOR_ALLY,
+  TARGET_HUE_SPECTATOR_ENEMY, TARGET_HUE_RELOAD, TARGET_HUE_RELOAD_DONE, TARGET_HUE_AIRCRAFT_HUD,
+  TARGET_HUE_AIRCRAFT_PARAM_HUD, TARGET_HUE_HELICOPTER_CROSSHAIR, TARGET_HUE_HELICOPTER_HUD,
+  TARGET_HUE_HELICOPTER_PARAM_HUD, TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH,
+  TARGET_HUE_HELICOPTER_MFD, TARGET_HUE_ARBITER_HUD, setHsb, getAlertAircraftHues,
+  setAlertAircraftHues, getAlertHelicopterHues, setAlertHelicopterHues,
+  getRgbStrFromHsv, getRgbIntFromHsv } = require("colorCorrector")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let globalEnv = require("globalEnv")
 let avatars = require("%scripts/user/avatars.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
-let optionsUtils = require("%scripts/options/optionsUtils.nut")
+let { checkArgument, createDefaultOption, fillBoolOption,
+  fillHueSaturationBrightnessOption, fillHueOption, fillMultipleHueOption,
+  fillDynMapOption, setHSVOption_ThermovisionColor,
+  fillHSVOption_ThermovisionColor } = require("%scripts/options/optionsUtils.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let soundDevice = require("soundDevice")
@@ -220,17 +229,11 @@ local isWaitMeasureEvent = false
   return notFoundValue
 }
 
-::get_block_hsv_color <- function get_block_hsv_color(h, s = 1.0, v = 1.0) {
-  if (h > 360)
-    h -= 360
-  return ::get_color_from_hsv(h, s, v)
-}
-
 ::create_option_list <- function create_option_list(id, items, value, cb, isFull, spinnerType = null, optionTag = null, params = null) {
-  if (!optionsUtils.checkArgument(id, items, "array"))
+  if (!checkArgument(id, items, "array"))
     return ""
 
-  if (!optionsUtils.checkArgument(id, value, "integer"))
+  if (!checkArgument(id, value, "integer"))
     return ""
 
   let view = {
@@ -247,9 +250,9 @@ local isWaitMeasureEvent = false
     let opt = type(item) == "string" ? { text = item } : clone item
     opt.selected <- idx == value
     if ("hue" in item)
-      opt.hueColor <- ::get_block_hsv_color(item.hue, item?.sat ?? 0.7, item?.val ?? 0.7)
+      opt.hueColor <- getRgbStrFromHsv(item.hue, item?.sat ?? 0.7, item?.val ?? 0.7)
     if ("hues" in item)
-      opt.smallHueColor <- item.hues.map(@(hue) { color = ::get_block_hsv_color(hue) })
+      opt.smallHueColor <- item.hues.map(@(hue) { color = getRgbStrFromHsv(hue, 1.0, 1.0) })
 
     if ("rgb" in item)
       opt.hueColor <- item.rgb
@@ -304,9 +307,9 @@ local isWaitMeasureEvent = false
 }
 
 ::create_option_row_listbox <- function create_option_row_listbox(id, items, value, cb, isFull, listClass = "options") {
-  if (!optionsUtils.checkArgument(id, items, "array"))
+  if (!checkArgument(id, items, "array"))
     return ""
-  if (!optionsUtils.checkArgument(id, value, "integer"))
+  if (!checkArgument(id, value, "integer"))
     return ""
 
   local data = "id:t = '" + id + "'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "")
@@ -338,8 +341,8 @@ local isWaitMeasureEvent = false
 
 ::create_option_row_multiselect <- function create_option_row_multiselect(params) {
   let option = params?.option
-  if (!optionsUtils.checkArgument(option?.id, option?.items, "array") ||
-    !optionsUtils.checkArgument(option?.id, option?.value, "integer"))
+  if (!checkArgument(option?.id, option?.items, "array") ||
+    !checkArgument(option?.id, option?.value, "integer"))
       return ""
 
   let view = {
@@ -372,10 +375,10 @@ local isWaitMeasureEvent = false
 }
 
 ::create_option_vlistbox <- function create_option_vlistbox(id, items, value, cb, isFull) {
-  if (!optionsUtils.checkArgument(id, items, "array"))
+  if (!checkArgument(id, items, "array"))
     return ""
 
-  if (!optionsUtils.checkArgument(id, value, "integer"))
+  if (!checkArgument(id, value, "integer"))
     return ""
 
   local data = ""
@@ -393,7 +396,7 @@ local isWaitMeasureEvent = false
 }
 
 ::create_option_slider <- function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
-  if (!optionsUtils.checkArgument(id, value, "integer"))
+  if (!checkArgument(id, value, "integer"))
     return ""
 
   let minVal = params?.min ?? 0
@@ -430,7 +433,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   get_volume_limits(sndType))
 
 ::get_option <- function get_option(optionId, context = null) {
-  let descr = optionsUtils.createDefaultOption()
+  let descr = createDefaultOption()
   descr.type = optionId
   descr.context = context
 
@@ -521,29 +524,29 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_INSTRUCTOR_GROUND_AVOIDANCE:
-      optionsUtils.fillBoolOption(descr, "instructorGroundAvoidance", OPTION_INSTRUCTOR_GROUND_AVOIDANCE); break;
+      fillBoolOption(descr, "instructorGroundAvoidance", OPTION_INSTRUCTOR_GROUND_AVOIDANCE); break;
     case ::USEROPT_INSTRUCTOR_GEAR_CONTROL:
-      optionsUtils.fillBoolOption(descr, "instructorGearControl", OPTION_INSTRUCTOR_GEAR_CONTROL); break;
+      fillBoolOption(descr, "instructorGearControl", OPTION_INSTRUCTOR_GEAR_CONTROL); break;
     case ::USEROPT_INSTRUCTOR_FLAPS_CONTROL:
-      optionsUtils.fillBoolOption(descr, "instructorFlapsControl", OPTION_INSTRUCTOR_FLAPS_CONTROL); break;
+      fillBoolOption(descr, "instructorFlapsControl", OPTION_INSTRUCTOR_FLAPS_CONTROL); break;
     case ::USEROPT_INSTRUCTOR_ENGINE_CONTROL:
-      optionsUtils.fillBoolOption(descr, "instructorEngineControl", OPTION_INSTRUCTOR_ENGINE_CONTROL); break;
+      fillBoolOption(descr, "instructorEngineControl", OPTION_INSTRUCTOR_ENGINE_CONTROL); break;
     case ::USEROPT_INSTRUCTOR_SIMPLE_JOY:
-      optionsUtils.fillBoolOption(descr, "instructorSimpleJoy", OPTION_INSTRUCTOR_SIMPLE_JOY); break;
+      fillBoolOption(descr, "instructorSimpleJoy", OPTION_INSTRUCTOR_SIMPLE_JOY); break;
     case ::USEROPT_MAP_ZOOM_BY_LEVEL:
-      optionsUtils.fillBoolOption(descr, "storeMapZoomByLevel", OPTION_MAP_ZOOM_BY_LEVEL); break;
+      fillBoolOption(descr, "storeMapZoomByLevel", OPTION_MAP_ZOOM_BY_LEVEL); break;
     case ::USEROPT_HIDE_MOUSE_SPECTATOR:
-      optionsUtils.fillBoolOption(descr, "hideMouseInSpectator", OPTION_HIDE_MOUSE_SPECTATOR); break;
+      fillBoolOption(descr, "hideMouseInSpectator", OPTION_HIDE_MOUSE_SPECTATOR); break;
     case ::USEROPT_SHOW_COMPASS_IN_TANK_HUD:
-      optionsUtils.fillBoolOption(descr, "showCompassInTankHud", OPTION_SHOW_COMPASS_IN_TANK_HUD); break;
+      fillBoolOption(descr, "showCompassInTankHud", OPTION_SHOW_COMPASS_IN_TANK_HUD); break;
     case ::USEROPT_FIX_GUN_IN_MOUSE_LOOK:
-      optionsUtils.fillBoolOption(descr, "fixGunInMouseLook", OPTION_FIX_GUN_IN_MOUSE_LOOK); break;
+      fillBoolOption(descr, "fixGunInMouseLook", OPTION_FIX_GUN_IN_MOUSE_LOOK); break;
     case ::USEROPT_ENABLE_SOUND_SPEED:
-      optionsUtils.fillBoolOption(descr, "enableSoundSpeed", OPTION_ENABLE_SOUND_SPEED); break;
+      fillBoolOption(descr, "enableSoundSpeed", OPTION_ENABLE_SOUND_SPEED); break;
     case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
-      optionsUtils.fillBoolOption(descr, "pitchBlockerWhileBraking", OPTION_PITCH_BLOCKER_WHILE_BRACKING); break;
+      fillBoolOption(descr, "pitchBlockerWhileBraking", OPTION_PITCH_BLOCKER_WHILE_BRACKING); break;
     case ::USEROPT_SAVE_DIR_WHILE_SWITCH_TRIGGER:
-      optionsUtils.fillBoolOption(descr, "saveDirWhileSwitchTrigger", OPTION_SAVE_DIR_WHILE_SWITCH_TRIGGER); break;
+      fillBoolOption(descr, "saveDirWhileSwitchTrigger", OPTION_SAVE_DIR_WHILE_SWITCH_TRIGGER); break;
     case ::USEROPT_SOUND_RESET_VOLUMES:
       descr.id = "sound_reset_volumes"
       descr.controlType = optionControlType.BUTTON
@@ -2976,7 +2979,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       descr.items = []
       descr.optionCb = "onLayoutChange"
-      optionsUtils.fillDynMapOption(descr)
+      fillDynMapOption(descr)
       break
 
     case ::USEROPT_DYN_ZONE:
@@ -3635,11 +3638,11 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_HUE_ALLY:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_ally", 226, ::get_hue(colorCorrector.TARGET_HUE_ALLY))
+      fillHueOption(descr, "color_picker_hue_ally", ::get_hue(TARGET_HUE_ALLY), 226)
       break
 
     case ::USEROPT_HUE_ENEMY:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_enemy", 3, ::get_hue(colorCorrector.TARGET_HUE_ENEMY))
+      fillHueOption(descr, "color_picker_hue_enemy", ::get_hue(TARGET_HUE_ENEMY), 3)
       break
 
     case ::USEROPT_STROBE_ALLY:
@@ -3657,23 +3660,23 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_HUE_SQUAD:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_squad", 472, ::get_hue(colorCorrector.TARGET_HUE_SQUAD))
+      fillHueOption(descr, "color_picker_hue_squad", ::get_hue(TARGET_HUE_SQUAD), 472)
       break
 
     case ::USEROPT_HUE_SPECTATOR_ALLY:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_spectator_ally", 112, ::get_hue(colorCorrector.TARGET_HUE_SPECTATOR_ALLY))
+      fillHueOption(descr, "color_picker_hue_spectator_ally", ::get_hue(TARGET_HUE_SPECTATOR_ALLY), 112)
       break
 
     case ::USEROPT_HUE_SPECTATOR_ENEMY:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_spectator_enemy", 292, ::get_hue(colorCorrector.TARGET_HUE_SPECTATOR_ENEMY))
+      fillHueOption(descr, "color_picker_hue_spectator_enemy", ::get_hue(TARGET_HUE_SPECTATOR_ENEMY), 292)
       break
 
     case ::USEROPT_HUE_RELOAD:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_reload", 3, ::get_hue(colorCorrector.TARGET_HUE_RELOAD))
+      fillHueOption(descr, "color_picker_hue_reload", ::get_hue(TARGET_HUE_RELOAD), 3)
       break
 
     case ::USEROPT_HUE_RELOAD_DONE:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_reload_done", 472, ::get_hue(colorCorrector.TARGET_HUE_RELOAD_DONE))
+      fillHueOption(descr, "color_picker_hue_reload_done", ::get_hue(TARGET_HUE_RELOAD_DONE), 472)
       break
 
     case ::USEROPT_AIR_DAMAGE_DISPLAY:
@@ -3691,52 +3694,52 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_HUE_AIRCRAFT_PARAM_HUD:
-      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_param_hud",
-        10, 0.0, 0.9, ::get_hue(colorCorrector.TARGET_HUE_AIRCRAFT_PARAM_HUD))
+      fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_param_hud",
+        10, 0.0, 0.9, ::get_hue(TARGET_HUE_AIRCRAFT_PARAM_HUD))
       break;
 
     case ::USEROPT_HUE_AIRCRAFT_HUD_ALERT:
-      optionsUtils.fillMultipleHueOption(descr, "color_picker_hue_aircraft_hud_alert", colorCorrector.getAlertAircraftHues())
+      fillMultipleHueOption(descr, "color_picker_hue_aircraft_hud_alert", getAlertAircraftHues())
       break;
 
     case ::USEROPT_HUE_AIRCRAFT_HUD:
-      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_hud",
-        122, 1.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_AIRCRAFT_HUD))
+      fillHueSaturationBrightnessOption(descr, "color_picker_hue_aircraft_hud",
+        122, 1.0, 1.0, ::get_hue(TARGET_HUE_AIRCRAFT_HUD))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_CROSSHAIR:
-      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_crosshair",
-        122, 0.7, 0.7, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_CROSSHAIR))
+      fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_crosshair",
+        122, 1.0, 1.0, ::get_hue(TARGET_HUE_HELICOPTER_CROSSHAIR))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD:
-      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_hud",
-        122, 1.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD))
+      fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_hud",
+        122, 1.0, 1.0, ::get_hue(TARGET_HUE_HELICOPTER_HUD))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_PARAM_HUD:
-      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_param_hud",
-        122, 1.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_PARAM_HUD))
+      fillHueSaturationBrightnessOption(descr, "color_picker_hue_helicopter_param_hud",
+        122, 1.0, 1.0, ::get_hue(TARGET_HUE_HELICOPTER_PARAM_HUD))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD_ALERT:
       if (hasFeature("reactivGuiForAircraft"))
-        optionsUtils.fillMultipleHueOption(descr, "color_picker_hue_helicopter_hud_alert", colorCorrector.getAlertHelicopterHues())
+        fillMultipleHueOption(descr, "color_picker_hue_helicopter_hud_alert", getAlertHelicopterHues())
       else
-        optionsUtils.fillHueOption(descr, "color_picker_hue_helicopter_hud_alert", 0, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH))
+        fillHueOption(descr, "color_picker_hue_helicopter_hud_alert", ::get_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH), 0)
       break;
 
     case ::USEROPT_HUE_ARBITER_HUD:
-      optionsUtils.fillHueSaturationBrightnessOption(descr, "color_picker_hue_arbiter_hud",
-        64, 0.0, 1.0, ::get_hue(colorCorrector.TARGET_HUE_ARBITER_HUD)) // white default
+      fillHueSaturationBrightnessOption(descr, "color_picker_hue_arbiter_hud",
+        64, 0.0, 1.0, ::get_hue(TARGET_HUE_ARBITER_HUD)) // white default
       break;
 
     case ::USEROPT_HUE_HELICOPTER_MFD:
-      optionsUtils.fillHueOption(descr, "color_picker_hue_helicopter_mfd", 112, ::get_hue(colorCorrector.TARGET_HUE_HELICOPTER_MFD))
+      fillHueOption(descr, "color_picker_hue_helicopter_mfd", ::get_hue(TARGET_HUE_HELICOPTER_MFD), 112, 1.0, 1.0)
       break;
 
     case ::USEROPT_HUE_TANK_THERMOVISION:
-      optionsUtils.fillHSVOption_ThermovisionColor(descr)
+      fillHSVOption_ThermovisionColor(descr)
       break;
 
     case ::USEROPT_HORIZONTAL_SPEED:
@@ -4729,37 +4732,37 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_HUE_SQUAD:
-      ::set_hue(colorCorrector.TARGET_HUE_SQUAD, descr.values[value]);
+      ::set_hue(TARGET_HUE_SQUAD, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_ALLY:
-      ::set_hue(colorCorrector.TARGET_HUE_ALLY, descr.values[value]);
+      ::set_hue(TARGET_HUE_ALLY, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_ENEMY:
-      ::set_hue(colorCorrector.TARGET_HUE_ENEMY, descr.values[value]);
+      ::set_hue(TARGET_HUE_ENEMY, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_SPECTATOR_ALLY:
-      ::set_hue(colorCorrector.TARGET_HUE_SPECTATOR_ALLY, descr.values[value]);
+      ::set_hue(TARGET_HUE_SPECTATOR_ALLY, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_SPECTATOR_ENEMY:
-      ::set_hue(colorCorrector.TARGET_HUE_SPECTATOR_ENEMY, descr.values[value]);
+      ::set_hue(TARGET_HUE_SPECTATOR_ENEMY, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_RELOAD:
-      ::set_hue(colorCorrector.TARGET_HUE_RELOAD, descr.values[value]);
+      ::set_hue(TARGET_HUE_RELOAD, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_RELOAD_DONE:
-      ::set_hue(colorCorrector.TARGET_HUE_RELOAD_DONE, descr.values[value]);
+      ::set_hue(TARGET_HUE_RELOAD_DONE, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
@@ -4780,41 +4783,39 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
 
     case ::USEROPT_HUE_AIRCRAFT_HUD:
-      local { sat = 1.0, val = 1.0 } = descr.items[value]
-      colorCorrector.setHsb(colorCorrector.TARGET_HUE_AIRCRAFT_HUD, descr.values[value], sat, val);
+      let { sat = 1.0, val = 1.0 } = descr.items[value]
+      setHsb(TARGET_HUE_AIRCRAFT_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_AIRCRAFT_PARAM_HUD:
-      local { sat = 1.0, val = 1.0 } = descr.items[value]
-      colorCorrector.setHsb(colorCorrector.TARGET_HUE_AIRCRAFT_PARAM_HUD, descr.values[value], sat, val);
+      let { sat = 1.0, val = 1.0 } = descr.items[value]
+      setHsb(TARGET_HUE_AIRCRAFT_PARAM_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_AIRCRAFT_HUD_ALERT:
-      colorCorrector.setAlertAircraftHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
+      let [ v1, v2, v3 ] = descr.values[value]
+      setAlertAircraftHues(v1, v2, v3, value);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_CROSSHAIR:
-      let { sat = 0.7, val = 0.7 } = descr.items[value]
-      let curVal = descr.values[value]
-      let ccTarget = colorCorrector.TARGET_HUE_HELICOPTER_CROSSHAIR
-      colorCorrector.setHsb(ccTarget, curVal, sat, val);
+      let { sat = 1.0, val = 1.0 } = descr.items[value]
+      setHsb(TARGET_HUE_HELICOPTER_CROSSHAIR, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
-      let color = colorCorrector.correctHueTarget(curVal, ccTarget)
-      hueHeliCrosshairOpt(color)
+      hueHeliCrosshairOpt(getRgbIntFromHsv(descr.values[value], sat, val))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD:
-      local { sat = 1.0, val = 1.0 } = descr.items[value]
-      colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_HUD, descr.values[value], sat, val);
+      let { sat = 1.0, val = 1.0 } = descr.items[value]
+      setHsb(TARGET_HUE_HELICOPTER_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_PARAM_HUD:
-      local { sat = 1.0, val = 1.0 } = descr.items[value]
-      colorCorrector.setHsb(colorCorrector.TARGET_HUE_HELICOPTER_PARAM_HUD, descr.values[value], sat, val);
+      let { sat = 1.0, val = 1.0 } = descr.items[value]
+      setHsb(TARGET_HUE_HELICOPTER_PARAM_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
@@ -4832,25 +4833,25 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_HUE_HELICOPTER_HUD_ALERT:
       if (hasFeature("reactivGuiForAircraft"))
-        colorCorrector.setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
+        setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
       else
-        ::set_hue(colorCorrector.TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH, descr.values[value]);
+        ::set_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_MFD:
-      ::set_hue(colorCorrector.TARGET_HUE_HELICOPTER_MFD, descr.values[value]);
+      ::set_hue(TARGET_HUE_HELICOPTER_MFD, descr.values[value]);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_ARBITER_HUD:
       let { sat = 0.0, val = 1.0 } = descr.items[value]
-      colorCorrector.setHsb(colorCorrector.TARGET_HUE_ARBITER_HUD, descr.values[value], sat, val);
+      setHsb(TARGET_HUE_ARBITER_HUD, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_TANK_THERMOVISION:
-      optionsUtils.setHSVOption_ThermovisionColor(descr, descr.values[value])
+      setHSVOption_ThermovisionColor(descr, descr.values[value])
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
       set_gui_option(optionId, value)
       break;

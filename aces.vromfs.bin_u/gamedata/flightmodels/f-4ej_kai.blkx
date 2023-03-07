@@ -6,6 +6,7 @@
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
+  "haveCCRPForGun": true,
   "haveCCRPForBombs": true,
   "ilsShimadzu": true,
   "havePointOfInterestDesignator": true,
@@ -15,9 +16,9 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -31,6 +32,7 @@
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_i_24_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2329,8 +2331,8 @@
     }
   ],
   "attach": {
-    "pilot1": "pilot_it_late_500",
-    "pilot2": "pilot_it_late_500"
+    "pilot2": "pilot_it_late_500",
+    "pilot1": "pilot_it_late_500"
   },
   "Params": {
     "Range": 1380.0
@@ -4053,13 +4055,7 @@
         "from": "f_4ej_kai_c*"
       },
       {
-        "from": "f_4ej_kai_c_dmg*"
-      },
-      {
         "from": "f_4ej_kai_n*"
-      },
-      {
-        "from": "f_4ej_kai_n_dmg*"
       }
     ]
   },
@@ -4070,16 +4066,42 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_4ej_kai_c*",
-        "to": "f_4ej_kai_c_tomoe*"
-      },
-      {
-        "from": "f_4ej_kai_c_dmg*",
-        "to": "f_4ej_kai_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_4ej_kai_c*",
+      "to": "f_4ej_kai_c_tomoe*"
+    }
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": [
+      "blister1",
+      "blister2"
+    ],
+    "seat": [
+      "seat_02",
+      "seat_01"
+    ],
+    "fxEmitter": [
+      "blister1",
+      "blister2"
+    ],
+    "fxType": "catapult_expl_ejection"
   },
   "parachutes": {
     "emitterRange": [

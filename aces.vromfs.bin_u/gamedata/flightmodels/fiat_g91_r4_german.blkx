@@ -11,6 +11,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1100kph",
@@ -2540,16 +2541,8 @@
         "to": "fiat_g91_r4_luft_tiger_c*"
       },
       {
-        "from": "fiat_g91_r4_c_dmg*",
-        "to": "fiat_g91_r4_luft_tiger_c_dmg*"
-      },
-      {
         "from": "fiat_g91_r4_n*",
         "to": "fiat_g91_r4_luft_tiger_n*"
-      },
-      {
-        "from": "fiat_g91_r4_n_dmg*",
-        "to": "fiat_g91_r4_luft_tiger_n_dmg*"
       },
       {
         "from": "fiat_g91_r4_dop_c*",
@@ -2566,16 +2559,8 @@
           "to": "fiat_g91_r4_germany_c*"
         },
         {
-          "from": "fiat_g91_r4_c_dmg*",
-          "to": "fiat_g91_r4_germany_c_dmg*"
-        },
-        {
           "from": "fiat_g91_r4_n*",
           "to": "fiat_g91_r4_germany_n*"
-        },
-        {
-          "from": "fiat_g91_r4_n_dmg*",
-          "to": "fiat_g91_r4_germany_n_dmg*"
         },
         {
           "from": "fiat_g91_r4_dop_c*",
@@ -2585,29 +2570,17 @@
     },
     {
       "name": "bicolor_tomoe",
-      "replace_tex": [
-        {
-          "from": "fiat_g91_r4_c*",
-          "to": "fiat_g91_r4_germany_c_tomoe*"
-        },
-        {
-          "from": "fiat_g91_r4_c_dmg*",
-          "to": "fiat_g91_r4_germany_c_tomoe_dmg*"
-        }
-      ]
+      "replace_tex": {
+        "from": "fiat_g91_r4_c*",
+        "to": "fiat_g91_r4_germany_c_tomoe*"
+      }
     }
   ],
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "fiat_g91_r4_c*",
-        "to": "fiat_g91_r4_luft_tiger_c_tomoe*"
-      },
-      {
-        "from": "fiat_g91_r4_c_dmg*",
-        "to": "fiat_g91_r4_luft_tiger_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "fiat_g91_r4_c*",
+      "to": "fiat_g91_r4_luft_tiger_c_tomoe*"
+    }
   },
   "turbulence": {
     "segmentlength": 100.0,

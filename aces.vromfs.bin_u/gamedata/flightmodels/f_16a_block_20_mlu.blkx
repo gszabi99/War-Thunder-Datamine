@@ -2,7 +2,7 @@
   "model": "f_16a_block_20_mlu",
   "fmFile": "fm/f_16a_block_20_mlu.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
   "haveCCIPForRocket": true,
@@ -17,9 +17,9 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "instructorCritMult": [
@@ -45,6 +45,7 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2032,7 +2033,7 @@
       ],
       "rpm": [
         0.0,
-        10200.0
+        15400.0
       ],
       "oil_pressure": [
         0.0,
@@ -2046,9 +2047,17 @@
         0.0,
         15.0
       ],
+      "fuel_consume_hour": [
+        0.0,
+        1000.0
+      ],
+      "fuel_consume_min": [
+        0.0,
+        100.0
+      ],
       "fuel_consume": [
         0.0,
-        800.0
+        10.0
       ],
       "fuel": [
         0.0,
@@ -2109,6 +2118,17 @@
         {
           "textureArea": [
             0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": {
+            "type": "map"
+          }
+        },
+        {
+          "textureArea": [
+            0.5,
             0.5,
             1.0,
             1.0
@@ -2128,8 +2148,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.2,
-              0.2
+              0.25,
+              0.25
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -3113,15 +3133,36 @@
         "from": "f_16a_block_20_mlu_c*"
       },
       {
-        "from": "f_16a_block_20_mlu_c_dmg*"
-      },
-      {
         "from": "f_16a_block_20_mlu_n*"
-      },
-      {
-        "from": "f_16a_block_20_mlu_n_dmg*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": [
+      "seat_01",
+      "blister2",
+      "blister3"
+    ],
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "parachutes": {
     "emitterRange": [

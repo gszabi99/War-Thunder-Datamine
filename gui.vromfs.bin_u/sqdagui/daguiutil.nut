@@ -15,6 +15,7 @@ global enum ALIGN {
   TOP    = "top"
   RIGHT  = "right"
   BOTTOM = "bottom"
+  CENTER = "center"
 }
 
 let DEFAULT_OVERRIDE_PARAMS = {

@@ -2,7 +2,7 @@
   "model": "f_16a_block_15_adf",
   "fmFile": "fm/f_16a_block_15_adf.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
   "haveCCIPForGun": true,
@@ -12,9 +12,9 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "instructorCritMult": [
@@ -40,6 +40,7 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2026,7 +2027,7 @@
       ],
       "rpm": [
         0.0,
-        16550.0
+        14000.0
       ],
       "oil_pressure": [
         0.0,
@@ -2656,15 +2657,36 @@
         "from": "f_16a_block_15_adf_c*"
       },
       {
-        "from": "f_16a_block_15_adf_c_dmg*"
-      },
-      {
         "from": "f_16a_block_15_adf_n*"
-      },
-      {
-        "from": "f_16a_block_15_adf_n_dmg*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": [
+      "seat_01",
+      "blister2",
+      "blister3"
+    ],
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

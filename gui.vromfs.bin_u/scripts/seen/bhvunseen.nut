@@ -42,6 +42,8 @@ let BhvUnseen = class {
   }
 
   function getVerifiedData(value) {
+    if (value == "")
+      return null
     return ::u.isString(value)
       ? seenList.isSeenList(value)
         ? { listId = value }

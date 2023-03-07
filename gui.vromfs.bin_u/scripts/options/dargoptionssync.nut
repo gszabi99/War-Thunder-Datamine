@@ -3,9 +3,9 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
-let { correctHueTarget, TARGET_HUE_HELICOPTER_CROSSHAIR } = require("colorCorrector")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
+let { getRgbIntFromHsv } = require("colorCorrector")
 
 let function mkUseroptHardWatched(id, defValue = null) {
   let opt = mkHardWatched(id, defValue)
@@ -13,23 +13,20 @@ let function mkUseroptHardWatched(id, defValue = null) {
   return opt
 }
 
-let crosshairColorOpt = mkUseroptHardWatched("crosshairColorOpt", 0xF0F0F0)
-let hueHeliCrosshairOpt = mkUseroptHardWatched("hueHeliCrosshairOpt", 0xF0F0F0)
-
-let function getOptVal(id) {
-  let opt = ::get_option(id)
-  return opt.values[opt.value]
-}
+let crosshairColorOpt = mkUseroptHardWatched("crosshairColorOpt", 0xFFFFFFFF)
+let hueHeliCrosshairOpt = mkUseroptHardWatched("hueHeliCrosshairOpt", 0xFFFFFFFF)
 
 let function getCrosshairColor() {
-  let optVal = getOptVal(::USEROPT_CROSSHAIR_COLOR)
-  return color4ToInt(::crosshair_colors[optVal].color)
+  let opt = ::get_option(::USEROPT_CROSSHAIR_COLOR)
+  let colorIdx = opt.values[opt.value]
+  return color4ToInt(::crosshair_colors[colorIdx].color)
 }
 
 let function getHueHeliCrosshair() {
-  let optVal = getOptVal(::USEROPT_HUE_HELICOPTER_CROSSHAIR)
-  let color = correctHueTarget(optVal, TARGET_HUE_HELICOPTER_CROSSHAIR)
-  return color
+  let opt = ::get_option(::USEROPT_HUE_HELICOPTER_CROSSHAIR)
+  let { sat = 0.7, val = 0.7 } = opt.items[opt.value]
+  let hue = opt.values[opt.value]
+  return getRgbIntFromHsv(hue, sat, val)
 }
 
 let function initOptions() {

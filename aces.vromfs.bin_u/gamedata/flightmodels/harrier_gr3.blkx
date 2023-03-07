@@ -18,6 +18,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -1806,7 +1807,8 @@
   },
   "Sound": {
     "Engine": "engine05_pegasus_N1",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "eventNozzleTurn": "nozzle_turning"
   },
   "cockpit": {
     "headPos": [
@@ -2884,13 +2886,7 @@
         "from": "harrier_gr3_c*"
       },
       {
-        "from": "harrier_gr3_c_dmg*"
-      },
-      {
         "from": "harrier_gr3_n*"
-      },
-      {
-        "from": "harrier_gr3_n_dmg*"
       }
     ]
   },

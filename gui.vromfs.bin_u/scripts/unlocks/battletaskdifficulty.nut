@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
+let { getUnlockProgress } = require("unlocks")
 
 ::g_battle_task_difficulty <- {
   types = []
@@ -234,7 +235,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     !this.getDifficultyTypeByTask(task).showAtPositiveProgress)
     return true
 
-  let progress = ::get_unlock_progress(task.id, -1)
+  let progress = getUnlockProgress(task.id)
   return getTblValue("curVal", progress, 0) > 0
 }
 

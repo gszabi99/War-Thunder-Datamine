@@ -986,8 +986,8 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       country_1_icon = getCustomViewCountryData(countries[1], mapName).icon
       rate_0 = 50
       rate_1 = 50
-      side_0_color = ::get_block_hsv_color(sideAHueOption.values[sideAHueOption.value])
-      side_1_color = ::get_block_hsv_color(sideBHueOption.values[sideBHueOption.value])
+      side_0_color = getRgbStrFromHsv(sideAHueOption.values[sideAHueOption.value], 1.0, 1.0)
+      side_1_color = getRgbStrFromHsv(sideBHueOption.values[sideBHueOption.value], 1.0, 1.0)
       rows = []
     }
 

@@ -840,15 +840,16 @@ def ammo_stowage_send_net_sync(eid : EntityId; v : tuple<
                                  ammo_stowages__numAmmo : IPoint3List;
                                  ammo_stowages__numAmmoFirstStage : IPoint3List
                                >) : void
+  if !is_server()
+    return
   let current_time = float(get_app().usefulTotalTime)
 
   using() <| $(var data : IntList)
     data |> reserve(4)
     for replenishment_start_end, num_ammo, num_ammo_first_stage in v.ammo_stowages__replenishmentStartEnd, v.ammo_stowages__numAmmo, v.ammo_stowages__numAmmoFirstStage
-      assert(num_ammo.x < 65536 && num_ammo_first_stage.x < 65536)
-      let packed_ammo = (uint(num_ammo.x) << 16u) | uint(num_ammo_first_stage.x)
       let packed_remaining_time = replenishment_start_end.x > 0.0f ? int((replenishment_start_end.y - current_time) * 1000.0f) : -1
-      data |> push(int(packed_ammo))
+      data |> push(num_ammo.x)
+      data |> push(num_ammo_first_stage.x)
       data |> push(packed_remaining_time)
     send_net_event(eid, [[EventAmmoStowageNetSync data=ecs_addr(data)]])
 
@@ -862,12 +863,12 @@ def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
                                ammo_stowages__numAmmoFirstStage : IPoint3List
                              >) : void
   let current_time = float(get_app().usefulTotalTime)
-  let updates_stowage_count = min(length(v.ammo_stowages__numAmmo), length(*evt.data) / 2)
+  let updates_stowage_count = min(length(v.ammo_stowages__numAmmo), length(*evt.data) / 3)
+  assume data = *evt.data;
   for stowage_id in 0..updates_stowage_count
-    let packed_ammo = uint((*evt.data)[stowage_id * 2])
-    v.ammo_stowages__numAmmo[stowage_id].x = int(packed_ammo >> 16u)
-    v.ammo_stowages__numAmmoFirstStage[stowage_id].x = int(packed_ammo & 0xffffu)
-    let packed_remaining_time = (*evt.data)[stowage_id * 2 + 1]
+    v.ammo_stowages__numAmmo[stowage_id].x = data[stowage_id * 3 + 0]
+    v.ammo_stowages__numAmmoFirstStage[stowage_id].x = data[stowage_id * 3 + 1]
+    let packed_remaining_time = data[stowage_id * 3 + 2]
     if packed_remaining_time > 0
       v.ammo_stowages__replenishmentStartEnd[stowage_id].y = current_time + float(packed_remaining_time) / 1000.0f
       if v.ammo_stowages__replenishmentStartEnd[stowage_id].x < 0.0f

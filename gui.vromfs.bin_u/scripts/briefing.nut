@@ -429,7 +429,7 @@ let function get_mission_desc_text(missionBlk) {
 
     let optionItems = ::get_briefing_options(gm, gt, this.missionBlk)
     let container = ::create_options_container("briefing_options", optionItems, true)
-    this.guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
+    this.guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     if (optionItems.len() > 0) {
       let listObj = this.showSceneBtn("optionslist", true)
       listObj.height = "" + optionItems.len() + "*@baseTrHeight" //bad solution, but freeheight doesn't work correct

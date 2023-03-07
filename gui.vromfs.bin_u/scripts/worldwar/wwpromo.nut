@@ -16,7 +16,7 @@ let function getWorldWarPromoText(isWwEnabled = null) {
 
   if ((isWwEnabled ?? ::g_world_war.canJoinWorldwarBattle())) {
     let operationText = ::g_world_war.getPlayedOperationText(false)
-    if (operationText != null)
+    if (operationText != "")
       text = operationText
   }
 

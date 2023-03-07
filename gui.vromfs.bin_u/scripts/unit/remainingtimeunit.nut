@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 from "dagor.workcycle" import clearTimer, setTimeout
 let { TIME_DAY_IN_SECONDS, buildDateStr } = require("%scripts/time.nut")
-let timeBase = require("%scripts/timeLoc.nut")
+let timeBase = require("%appGlobals/timeLoc.nut")
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 

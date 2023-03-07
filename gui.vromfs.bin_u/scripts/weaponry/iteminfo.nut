@@ -16,6 +16,7 @@ let { getLastWeapon,
         getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
   getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 
 let function getItemAmount(unit, item) {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getAmount(unit, item)
@@ -90,8 +91,8 @@ let function getItemStatusTbl(unit, item) {
     let groupDef = ("isDefaultForGroup" in item) ? item.isDefaultForGroup : -1
     if (groupDef >= 0) { //default bullets, always bought.
       res.unlocked = isOwn
-      let currBullet = ::get_last_bullets(unit.name, groupDef)
-      res.equipped = !currBullet || currBullet == "" || currBullet == item.name
+      let currBullet = getSavedBullets(unit.name, groupDef)
+      res.equipped = currBullet == "" || currBullet == item.name
       res.showPrice = false
     }
     else {
@@ -128,7 +129,7 @@ let function getItemStatusTbl(unit, item) {
         res.showMaxAmount = res.maxAmount > 1
         let id = getBulletGroupIndex(unit.name, item.name)
         if (id >= 0) {
-          let currBullet = ::get_last_bullets(unit.name, id)
+          let currBullet = getSavedBullets(unit.name, id)
           res.equipped = res.amount && (currBullet == item.name)
         }
       }
@@ -157,7 +158,7 @@ let function getBundleCurItem(unit, bundle) {
     return bundle.itemsList[0]
   }
   else if (bundle.itemsType == weaponsItem.bullets) {
-    let curName = ::get_last_bullets(unit.name, bundle?.subType ?? 0)
+    let curName = getSavedBullets(unit.name, bundle?.subType ?? 0)
     local def = null
     foreach (item in bundle.itemsList)
       if (curName == item.name)

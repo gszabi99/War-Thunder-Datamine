@@ -11,7 +11,7 @@
   "gearSinkRangeLR": 0.204,
   "gearSinkRangeC": 0.308,
   "jetEnginePowerFullScale": true,
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "radarCScope": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
@@ -21,6 +21,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -3203,13 +3204,7 @@
         "from": "jaguar_a_c*"
       },
       {
-        "from": "jaguar_a_c_dmg*"
-      },
-      {
         "from": "jaguar_a_n*"
-      },
-      {
-        "from": "jaguar_a_n_dmg*"
       }
     ]
   },

@@ -13,6 +13,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat_supersonic.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2324,16 +2325,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_100a_alum_rocaf_a*",
-        "to": "f_100a_alum_rocaf_a_tomoe*"
-      },
-      {
-        "from": "f_100a_alum_rocaf_a_dmg*",
-        "to": "f_100a_alum_rocaf_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_100a_alum_rocaf_a*",
+      "to": "f_100a_alum_rocaf_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "f_100a_china",
@@ -2342,13 +2337,7 @@
         "from": "f_100a_alum_rocaf_a*"
       },
       {
-        "from": "f_100a_alum_rocaf_a_dmg*"
-      },
-      {
         "from": "f_100a_alum_rocaf_n*"
-      },
-      {
-        "from": "f_100a_alum_rocaf_n_dmg*"
       }
     ]
   },

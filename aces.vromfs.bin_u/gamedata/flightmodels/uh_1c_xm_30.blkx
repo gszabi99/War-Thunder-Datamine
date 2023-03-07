@@ -2,7 +2,7 @@
   "fmFile": "fm/uh_1b.blk",
   "model": "uh_1c_xm_30",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -1520,6 +1520,7 @@
               "gunDm": "gun1_dm",
               "partsDP": "gun1_dm",
               "bullets": 600,
+              "mass": 66.7,
               "turret": {
                 "head": "xm30_turret_l",
                 "gun": "xm30_gun_l",
@@ -1657,6 +1658,7 @@
               "gunDm": "gun2_dm",
               "partsDP": "gun2_dm",
               "bullets": 600,
+              "mass": 66.7,
               "turret": {
                 "head": "xm30_turret_r",
                 "gun": "xm30_gun_r",
@@ -3024,16 +3026,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "uh_1c_xm_30_c*",
-        "to": "uh_1c_xm_30_c_tomoe*"
-      },
-      {
-        "from": "uh_1c_xm_30_c_dmg*",
-        "to": "uh_1c_xm_30_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "uh_1c_xm_30_c*",
+      "to": "uh_1c_xm_30_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "uh_1c_xm_30",
@@ -3042,13 +3038,7 @@
         "from": "uh_1c_xm_30_c*"
       },
       {
-        "from": "uh_1c_xm_30_c_dmg*"
-      },
-      {
         "from": "uh_1c_xm_30_n*"
-      },
-      {
-        "from": "uh_1c_xm_30_n_dmg*"
       }
     ]
   }

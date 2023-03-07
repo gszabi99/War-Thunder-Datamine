@@ -12,6 +12,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2401,11 +2402,19 @@
               "amountPerTier": 1.0,
               "tier": [
                 {
+                  "idx": 3,
+                  "iconType": "missile_air_to_air"
+                },
+                {
                   "idx": 4,
                   "iconType": "missile_air_to_air"
                 },
                 {
                   "idx": 8,
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "idx": 9,
                   "iconType": "missile_air_to_air"
                 }
               ]
@@ -2544,13 +2553,7 @@
         "from": "javelin_fmk9_c*"
       },
       {
-        "from": "javelin_fmk9_c_dmg*"
-      },
-      {
         "from": "javelin_fmk9_n*"
-      },
-      {
-        "from": "javelin_fmk9_n_dmg*"
       }
     ]
   },

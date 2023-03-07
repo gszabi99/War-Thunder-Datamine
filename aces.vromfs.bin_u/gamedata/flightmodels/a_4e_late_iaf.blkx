@@ -2,7 +2,7 @@
   "model": "a_4e_late_iaf",
   "fmFile": "fm/a_4e_late_iaf.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.318,
   "gearSinkRangeC": 0.355,
@@ -18,6 +18,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -3427,16 +3428,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "a_4e_late_iaf_c*",
-        "to": "a_4e_late_iaf_c_tomoe*"
-      },
-      {
-        "from": "a_4e_late_iaf_c_dmg*",
-        "to": "a_4e_late_iaf_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "a_4e_late_iaf_c*",
+      "to": "a_4e_late_iaf_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "a_4e_late_iaf",
@@ -3445,25 +3440,13 @@
         "from": "a_4e_late_iaf_c*"
       },
       {
-        "from": "a_4e_late_iaf_c_dmg*"
-      },
-      {
         "from": "a_4e_late_iaf_n*"
-      },
-      {
-        "from": "a_4e_late_iaf_n_dmg*"
       },
       {
         "from": "a_4e_late_iaf_1_c*"
       },
       {
-        "from": "a_4e_late_iaf_1_c_dmg*"
-      },
-      {
         "from": "a_4e_late_iaf_1_n*"
-      },
-      {
-        "from": "a_4e_late_iaf_1_n_dmg*"
       }
     ]
   },

@@ -2,7 +2,7 @@
   "model": "mi_24p",
   "fmFile": "fm/mi_24p_german.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
@@ -3766,29 +3766,17 @@
   },
   "default_skin": {
     "name": "default",
-    "replace_tex": [
-      {
-        "from": "mi_24p_c*",
-        "to": "mi_24p_gdr_c*"
-      },
-      {
-        "from": "mi_24p_c_dmg*",
-        "to": "mi_24p_gdr_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "mi_24p_c*",
+      "to": "mi_24p_gdr_c*"
+    }
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "mi_24p_gdr_c*",
-        "to": "mi_24p_gdr_c_tomoe*"
-      },
-      {
-        "from": "mi_24p_gdr_c_dmg*",
-        "to": "mi_24p_gdr_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "mi_24p_gdr_c*",
+      "to": "mi_24p_gdr_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "mi_24p_german",
@@ -3797,13 +3785,7 @@
         "from": "mi_24p_gdr_c*"
       },
       {
-        "from": "mi_24p_gdr_c_dmg*"
-      },
-      {
         "from": "mi_24p_n*"
-      },
-      {
-        "from": "mi_24p_n_dmg*"
       }
     ]
   },

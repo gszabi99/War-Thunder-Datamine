@@ -3505,16 +3505,33 @@
       }
     },
     "night_vision_system": {
+      "image": "#ui/gameuiskin#thermal_sight.png",
       "tier": 3,
       "effects": {
         "nightVision": {
+          "gunnerThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          },
+          "commanderViewIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
           "driverIr": {
             "resolution": [
               800,
               600
             ],
             "lightMult": 5.0,
-            "ghosting": 0.7,
+            "ghosting": 0.6,
             "noiseFactor": 0.2
           }
         }

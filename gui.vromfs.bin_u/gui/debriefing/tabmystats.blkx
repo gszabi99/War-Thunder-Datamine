@@ -256,15 +256,14 @@
                       },
                       {
                         "size": "pw, fh",
-                        "pos": "0.5pw-0.5w, 0",
                         "position": "relative",
                         "flow": "horizontal",
                         "tdiv": [
                           {
                             "id": "awards_list_unlocks",
-                            "pos": "pw/9, 0",
                             "size": "1@debriefingUnlockIconSize, ph",
-                            "position": "absolute",
+                            "margin-left": "pw/4 - 0.5w",
+                            "position": "relative",
                             "overflow": "visible",
                             "flow": "vertical",
                             "display": "hide",
@@ -274,9 +273,9 @@
                           },
                           {
                             "id": "awards_list_streaks",
-                            "pos": "5pw/9, 0",
                             "size": "1@debriefingUnlockIconSize, ph",
-                            "position": "absolute",
+                            "margin-left": "pw/2 - w",
+                            "position": "relative",
                             "overflow": "visible",
                             "flow": "vertical",
                             "display": "hide",
@@ -296,6 +295,9 @@
                       "margin": "0, 1@blockInterval",
                       "Button_text": {
                         "id": "btn_challenge",
+                        "pos": "pw/2 - w/2, 0",
+                        "position": "relative",
+                        "max-width": "1@buttonWidth",
                         "navButtonFont": "yes",
                         "class": "battle",
                         "css-hier-invalidate": "yes",

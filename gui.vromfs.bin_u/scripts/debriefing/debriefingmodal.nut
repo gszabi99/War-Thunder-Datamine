@@ -55,6 +55,7 @@ let { is_benchmark_game_mode, get_game_mode, get_cur_game_mode_name
 let { select_mission_full } = require("guiMission")
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { dynamicGetLayout, dynamicGetList } = require("dynamicMission")
+let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -195,7 +196,7 @@ let statTooltipColumnParamByType = {
         disableVisible = true
         checkFunc = function(userlog) { return ::g_unlocks.getUnlockById(userlog.body.unlockId)?.battlePassSeason != null }
       }
-      align = ALIGN.LEFT
+      align = ALIGN.CENTER
       listObjId = "awards_list_challenges"
       startplaceObId = "start_award_place_unlocks"
     }
@@ -357,6 +358,10 @@ let statTooltipColumnParamByType = {
 
     this.gatherAwardsLists()
 
+    let hasChallengeAward = this.challengesAwardsList.len() > 0
+    if (hasChallengeAward)
+      refreshUserstatUnlocks()
+
     //update mp table
     this.needPlayersTbl = this.isMp && !(this.gameType & GT_COOPERATIVE) && isDebriefingResultFull()
     this.setSceneTitle(::getCurMpTitle(), null, "dbf_title")
@@ -423,6 +428,16 @@ let statTooltipColumnParamByType = {
       [this.awardsListsConfig.challenges.listObjId] = this.challengesAwardsList.len() > 0,
       [this.awardsListsConfig.unlocks.listObjId] = this.unlocksAwardsList.len() > 0,
     })
+
+    if(this.unlocksAwardsList.len() == 0) {
+      let listObj = this.scene.findObject(this.awardsListsConfig.streaks.listObjId)
+      listObj["margin-left"] = "pw/2 - w/2"
+    }
+
+    if(this.streakAwardsList.len() == 0) {
+      let listObj = this.scene.findObject(this.awardsListsConfig.unlocks.listObjId)
+      listObj["margin-left"] = "pw/2 - w/2"
+    }
 
     this.awardsList.extend(this.streakAwardsList)
     this.awardsList.extend(this.challengesAwardsList)
@@ -706,11 +721,13 @@ let statTooltipColumnParamByType = {
   function handleGiftItems() {
     if (!this.giftItems || this.isAllGiftItemsKnown)
       return
-
     let obj = this.scene.findObject("inventory_gift_icon")
     let leftBlockHeight = this.scene.findObject("left_block").getSize()[1]
     let itemHeight = ::g_dagui_utils.toPixels(this.guiScene, "1@itemHeight")
-    obj.smallItems = (itemHeight * this.giftItems.len() > leftBlockHeight / 2) ? "yes" : "no"
+
+    obj.smallItems = this.challengesAwardsList.len() > 0 ? "yes"
+      : (itemHeight * this.giftItems.len() > leftBlockHeight / 2) ? "yes"
+      : "no"
 
     local giftsMarkup = ""
     let showLen = min(this.giftItems.len(), VISIBLE_GIFT_NUMBER)
@@ -988,6 +1005,7 @@ let statTooltipColumnParamByType = {
     }
     else if (this.state == debrState.showAwards) {
       this.showSceneBtn("btn_show_all", this.giftItems != null && this.giftItems.len() > VISIBLE_GIFT_NUMBER)
+
       if (!this.is_show_my_stats() || !this.is_show_awards_list())
         return this.switchState()
 
@@ -1862,12 +1880,18 @@ let statTooltipColumnParamByType = {
           this.currentAwardsListConfig = awardsItem.config
 
           if (this.challengesAwardsList.len() > 0)
-            this.scene.findObject("btn_challenge_div").display = "show"
+            this.scene.findObject("btn_challenge_div").show(true)
 
           this.currentAwardsListIdx = 0
         }
 
-        this.addAward()
+        let giftsCount = this.giftItems?.len() ?? 0
+        local awardSize = null
+        if(this.currentAwardsListConfig == this.awardsListsConfig.challenges
+          && this.currentAwardsList.len() == 1 && giftsCount == 0)
+            awardSize = "2@debriefingUnlockIconSize"
+
+        this.addAward(awardSize)
         this.statsTimer += this.awardDelay
         this.curAwardIdx++
         this.currentAwardsListIdx++
@@ -1888,41 +1912,58 @@ let statTooltipColumnParamByType = {
     let maxSize = tgtObj.getSize()
     let awardSize = size[axis] * this.currentAwardsList.len()
 
+    if(axis == 0)
+      this.awardShift = max(0, (maxSize[0] - awardSize) / 2)
+
+    //WARNING! Change the allotted height for unlock icons to the height of the workshop button if there are gifts
+    let giftsCount = this.giftItems?.len() ?? 0
+    if(axis == 1)
+      maxSize[1] = maxSize[1] - to_pixels("0.2@debriefingUnlockIconSize") - (giftsCount > 0 ? to_pixels("1@navBarBattleButtonHeight") : 0)
+
     if (awardSize > maxSize[axis] && this.currentAwardsList.len() > 1)
       this.awardOffset = ((maxSize[axis] - awardSize) / (this.currentAwardsList.len() - 1) - 1).tointeger()
     else
       tgtObj[axis ? "height" : "width"] = awardSize.tostring()
   }
 
-  function addAward() {
+  function addAward(awardSize = null) {
     let config = this.currentAwardsList[this.currentAwardsListIdx]
-    let objId = "award_" + this.curAwardIdx
+    let objId = $"award_{this.curAwardIdx}"
 
     let listObj = this.scene.findObject(this.currentAwardsListConfig.listObjId)
     let obj = this.guiScene.createElementByObject(listObj, "%gui/debriefing/awardIcon.blk", "awardPlace", this)
     obj.id = objId
 
     let tooltipObj = obj.findObject("tooltip_")
-    tooltipObj.id = "tooltip_" + this.curAwardIdx
+    tooltipObj.id = $"tooltip_{this.curAwardIdx}"
     tooltipObj.setUserData(config)
 
     if ("needFrame" in config && config.needFrame)
       obj.findObject("move_part")["class"] = "unlockFrame"
+
+    if (awardSize != null) {
+      obj.size = $"{awardSize}, {awardSize}"
+      listObj.size = $"pw, {awardSize}"
+      this.guiScene.applyPendingChanges(false)
+    }
 
     let align = this.currentAwardsListConfig.align
     let axis = (align == ALIGN.TOP || align == ALIGN.BOTTOM) ? 1 : 0
     if (this.currentAwardsListIdx == 0) //firstElem
       this.countAwardsOffset(obj, listObj, axis)
     else if (align == ALIGN.LEFT && this.awardOffset != 0)
-      obj.pos = this.awardOffset + ", 0"
+      obj.pos = $"{this.awardOffset}, 0"
     else if (align == ALIGN.TOP && this.awardOffset != 0)
-      obj.pos = "0, " + this.awardOffset
+      obj.pos = $"0, {this.awardOffset}"
+
+    if (align == ALIGN.CENTER)
+      obj.pos = $"{this.currentAwardsListIdx == 0 ? this.awardShift : this.awardOffset} , 0"
 
     if (align == ALIGN.RIGHT)
       if (this.currentAwardsListIdx == 0)
         obj.pos = "pw - w, 0"
       else
-        obj.pos = "-2w -" + this.awardOffset + " ,0"
+        obj.pos = $"-2w -{this.awardOffset} ,0"
 
     let icoObj = obj.findObject("award_img")
     ::set_unlock_icon_by_config(icoObj, config, false, to_pixels("1@debriefingUnlockIconSize"))
@@ -1933,7 +1974,7 @@ let statTooltipColumnParamByType = {
       if (show) {
         let amObj = awMultObj.findObject("amount_text")
         if (checkObj(amObj))
-          amObj.setValue("x" + config.amount)
+          amObj.setValue($"x{config.amount}")
       }
     }
 
@@ -3130,6 +3171,7 @@ let statTooltipColumnParamByType = {
   awardsData = null
 
   awardOffset = 0
+  awardShift = 0
   awardsAppearTime = 2.0 //can be lower than this, not higher
   awardDelay = 0.25
   awardFlyTime = 0.5

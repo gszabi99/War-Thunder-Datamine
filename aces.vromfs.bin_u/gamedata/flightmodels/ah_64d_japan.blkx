@@ -1,7 +1,7 @@
 {
   "model": "ah_64d_japan",
   "fmFile": "fm/ah_64d_japan.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
@@ -2687,7 +2687,7 @@
       "prevModification": "countermeasures_belt_pack",
       "tier": 3,
       "modClass": "weapon",
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -2726,16 +2726,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "ah_64d_japan_camo_c*",
-        "to": "ah_64d_japan_camo_c_tomoe*"
-      },
-      {
-        "from": "ah_64d_japan_camo_c_dmg*",
-        "to": "ah_64d_japan_camo_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "ah_64d_japan_camo_c*",
+      "to": "ah_64d_japan_camo_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "ah_64d_japan",
@@ -2744,13 +2738,7 @@
         "from": "ah_64d_japan_camo_c*"
       },
       {
-        "from": "ah_64d_japan_camo_c_dmg*"
-      },
-      {
         "from": "ah_64d_japan_camo_n*"
-      },
-      {
-        "from": "ah_64d_japan_camo_n_dmg*"
       }
     ]
   },

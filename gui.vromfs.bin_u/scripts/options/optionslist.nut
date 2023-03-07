@@ -121,7 +121,7 @@ let getMainOptions = function() {
       [::USEROPT_CROSSHAIR_COLOR, "combobox"],
       [::USEROPT_INDICATED_SPEED_TYPE, "spinner"],
       [::USEROPT_CROSSHAIR_DEFLECTION, "spinner"],
-      //[::USEROPT_GYRO_SIGHT_DEFLECTION, "spinner"],
+      [::USEROPT_GYRO_SIGHT_DEFLECTION, "spinner", hasFeature("allowShowGyroSightDeflection")],
       [::USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUNNER_FPS_CAMERA, "spinner"],
       [::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],

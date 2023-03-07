@@ -5,6 +5,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.276,
   "gearSinkRangeC": 0.179,
@@ -2914,16 +2915,10 @@
   },
   "default_skin": {
     "name": "default",
-    "replace_tex": [
-      {
-        "from": "saab_j35j_c*",
-        "to": "saab_j35xs_green_c*"
-      },
-      {
-        "from": "saab_j35j_c_dmg*",
-        "to": "saab_j35xs_green_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "saab_j35j_c*",
+      "to": "saab_j35xs_green_c*"
+    }
   },
   "parachutes": {
     "emitterRange": [

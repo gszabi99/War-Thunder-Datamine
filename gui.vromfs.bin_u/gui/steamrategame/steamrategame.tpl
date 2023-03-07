@@ -64,22 +64,22 @@ root {
       isTransparent:t='yes'
       navLeft {
         Button_text {
+          text:t='#mainmenu/btnClose'
+          on_click:t='goBack'
+          visualStyle:t='steam'
+          focusBtnName:t='A'
+          showConsoleImage:t='no'
+        }
+      }
+      
+      navRight {
+        Button_text {
           text:t='#msgbox/goToSteam'
           on_click:t='onApply'
           visualStyle:t='steam'
           focusBtnName:t='A'
           showConsoleImage:t='no'
           externalLink:t='yes'
-        }
-      }
-      
-      navRight {
-        Button_text {
-          text:t='#mainmenu/btnClose'
-          on_click:t='goBack'
-          visualStyle:t='steam'
-          focusBtnName:t='A'
-          showConsoleImage:t='no'
         }
       }
     }

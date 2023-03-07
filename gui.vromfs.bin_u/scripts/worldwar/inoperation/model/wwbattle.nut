@@ -731,8 +731,10 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
         }
 
         let sortedUnits = groupUnits.values().map(
-          @(u) { unit = u, rank = u.getBattleRating(eDiff), isInSlotbar = isInArray(u, curSlotbarUnits) })
+          @(u) { unit = u, rank = u.getBattleRating(eDiff),
+            isInSlotbar = isInArray(u, curSlotbarUnits), isSpecial = ::isUnitSpecial(u) })
         sortedUnits.sort(@(a, b) b.rank <=> a.rank
+          || b.isSpecial <=> a.isSpecial
           || b.isInSlotbar <=> a.isInSlotbar
           || a.unit.name <=> b.unit.name)
         local bestAvailableUnit = sortedUnits.findvalue(

@@ -16,6 +16,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2475,7 +2476,7 @@
             "name": "r_511",
             "reqModification": "fr_matra_r_511",
             "ShowNodes": {
-              "node": "pylon_aa20_1"
+              "node": "matra_pylon_1"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2514,7 +2515,7 @@
             "name": "r_511",
             "reqModification": "fr_matra_r_511",
             "ShowNodes": {
-              "node": "pylon_aa20_2"
+              "node": "matra_pylon_2"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2553,7 +2554,7 @@
             "name": "r_511",
             "reqModification": "fr_matra_r_511",
             "ShowNodes": {
-              "node": "pylon_aa20_3"
+              "node": "matra_pylon_3"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2592,7 +2593,7 @@
             "name": "r_511",
             "reqModification": "fr_matra_r_511",
             "ShowNodes": {
-              "node": "pylon_aa20_4"
+              "node": "matra_pylon_4"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2750,13 +2751,7 @@
         "from": "so_4050_vautour_2n_late_c*"
       },
       {
-        "from": "so_4050_vautour_2n_late_c_dmg*"
-      },
-      {
         "from": "so_4050_vautour_2n_late_n*"
-      },
-      {
-        "from": "so_4050_vautour_2n_late_n_dmg*"
       }
     ]
   },

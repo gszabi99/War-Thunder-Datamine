@@ -2,7 +2,7 @@
   "model": "q_5l",
   "fmFile": "fm/q_5l.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.166,
   "gearSinkRangeC": 0.188,
   "haveCCIPForRocket": true,
@@ -23,6 +23,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat_supersonic.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -3096,13 +3097,7 @@
         "from": "q_5l_c*"
       },
       {
-        "from": "q_5l_c_dmg*"
-      },
-      {
         "from": "q_5l_n*"
-      },
-      {
-        "from": "q_5l_n_dmg*"
       }
     ]
   },

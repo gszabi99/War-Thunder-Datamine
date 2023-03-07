@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2556,27 +2557,15 @@
         "from": "f11f_1_late_c*"
       },
       {
-        "from": "f11f_1_late_c_dmg*"
-      },
-      {
         "from": "f11f_1_late_n*"
-      },
-      {
-        "from": "f11f_1_late_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f11f_1_late_c*",
-        "to": "f11f_1_late_c_tomoe*"
-      },
-      {
-        "from": "f11f_1_late_c_dmg*",
-        "to": "f11f_1_late_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f11f_1_late_c*",
+      "to": "f11f_1_late_c_tomoe*"
+    }
   },
   "parachutes": {
     "emitterRange": [

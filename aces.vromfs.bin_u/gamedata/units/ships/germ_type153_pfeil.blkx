@@ -428,9 +428,9 @@
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
           "flexionDir": [
-            -0.5,
-            -0.5,
-            0.3
+            -0.1,
+            -0.4,
+            0.0
           ]
         },
         {
@@ -543,9 +543,9 @@
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
           "flexionDir": [
-            0.5,
-            -0.5,
-            0.3
+            0.1,
+            -0.4,
+            0.0
           ]
         },
         {
@@ -743,9 +743,9 @@
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
           "flexionDir": [
-            -0.5,
-            -0.5,
-            0.3
+            -0.1,
+            -0.4,
+            0.0
           ]
         },
         {
@@ -795,9 +795,9 @@
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
           "flexionDir": [
-            0.5,
-            -0.5,
-            0.3
+            0.1,
+            -0.4,
+            0.0
           ]
         },
         {
@@ -1904,8 +1904,8 @@
         33.0
       ],
       "CenterOfGravity": [
-        -4.4,
-        -1.1,
+        -0.4,
+        -0.8,
         0.0
       ]
     },
@@ -1913,7 +1913,7 @@
       "speedLossOnManeuver": 0.15
     },
     "engines": {
-      "maxSpeed": 25.72,
+      "maxSpeed": 25.69,
       "maxReverseSpeed": 11.0,
       "speedToTime": {
         "row": [
@@ -1926,7 +1926,7 @@
             8.3
           ],
           [
-            25.72,
+            25.69,
             15.2
           ]
         ]
@@ -2074,18 +2074,6 @@
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": [
-          50.0,
-          30.0
-        ],
-        "speedPitch": [
-          60.0,
-          25.0
-        ],
-        "bullets": [
-          500,
-          1000
-        ],
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -2102,6 +2090,9 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
+        "speedYaw": 30.0,
+        "speedPitch": 25.0,
+        "bullets": 1000,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "main_caliber_turret_01",
@@ -2184,18 +2175,6 @@
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": [
-          50.0,
-          30.0
-        ],
-        "speedPitch": [
-          60.0,
-          25.0
-        ],
-        "bullets": [
-          500,
-          1000
-        ],
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -2212,6 +2191,9 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
+        "speedYaw": 30.0,
+        "speedPitch": 25.0,
+        "bullets": 1000,
         "useGunnerTargetingQuality": false,
         "turret": {
           "head": "main_caliber_turret_02",
@@ -2233,31 +2215,43 @@
           "lim1": [
             -180.0,
             -154.0,
-            17.0,
+            13.0,
             90.0
           ],
           "lim2": [
             -154.0,
-            -121.0,
-            2.0,
-            90.0
-          ],
-          "lim3": [
-            -121.0,
-            121.0,
+            -138.0,
             -10.0,
             90.0
           ],
+          "lim3": [
+            -138.0,
+            -78.0,
+            -1.0,
+            90.0
+          ],
           "lim4": [
-            121.0,
-            154.0,
-            2.0,
+            -78.0,
+            78.0,
+            -10.0,
             90.0
           ],
           "lim5": [
+            78.0,
+            138.0,
+            -1.0,
+            90.0
+          ],
+          "lim6": [
+            138.0,
+            154.0,
+            -10.0,
+            90.0
+          ],
+          "lim7": [
             154.0,
             180.0,
-            15.0,
+            13.0,
             90.0
           ]
         },
@@ -3019,24 +3013,24 @@
     "ship_main_caliber_support": {}
   },
   "breaches": {
-    "repairSpeed": 15.0,
-    "waterMassVel": -8500.0,
-    "waterMassMult": 40.0,
+    "repairSpeed": 21.0,
+    "waterMassVel": -8200.0,
+    "waterMassMult": 300.0,
     "sizeToRepair": [
       0.01,
-      2.0,
+      3.0,
       10.0,
-      300.0
+      370.0
     ],
-    "additionalWaterDeathThreshold": 230000.0,
-    "additionalWaterShouldDiePercent": 0.45,
+    "additionalWaterDeathThreshold": 410000.0,
+    "additionalWaterShouldDiePercent": 0.35,
     "fatalBreachDrownTime": 35.0,
     "maxHeelingAngle": 35.0,
-    "maxHeelingTime": 10.0,
+    "maxHeelingTime": 9.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 2.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.35
+    "sideCenterOfMassOffsetPercent": 0.25
   },
   "shipCover": {
     "cover": [

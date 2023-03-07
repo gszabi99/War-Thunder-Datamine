@@ -11,6 +11,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2190,27 +2191,15 @@
         "from": "saab_j29f_c*"
       },
       {
-        "from": "saab_j29f_c_dmg*"
-      },
-      {
         "from": "saab_j29f_n*"
-      },
-      {
-        "from": "saab_j29f_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "saab_j29f_c*",
-        "to": "saab_j29f_c_tomoe*"
-      },
-      {
-        "from": "saab_j29f_c_dmg*",
-        "to": "saab_j29f_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "saab_j29f_c*",
+      "to": "saab_j29f_c_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

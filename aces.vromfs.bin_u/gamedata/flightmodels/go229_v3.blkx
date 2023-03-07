@@ -8,6 +8,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
@@ -4482,16 +4483,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "go229_v3_a*",
-        "to": "go229_v3_a_tomoe*"
-      },
-      {
-        "from": "go229_v3_a_dmg*",
-        "to": "go229_v3_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "go229_v3_a*",
+      "to": "go229_v3_a_tomoe*"
+    }
   },
   "user_skin": {
     "replace_tex": [
@@ -4499,13 +4494,7 @@
         "from": "go229_v3_a*"
       },
       {
-        "from": "go229_v3_a_dmg*"
-      },
-      {
         "from": "go229_v3_n*"
-      },
-      {
-        "from": "go229_v3_n_dmg*"
       }
     ]
   },

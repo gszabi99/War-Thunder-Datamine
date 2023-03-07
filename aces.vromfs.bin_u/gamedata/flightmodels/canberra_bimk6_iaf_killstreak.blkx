@@ -12,6 +12,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2369,13 +2370,7 @@
         "from": "canberra_bmk2_c*"
       },
       {
-        "from": "canberra_bmk2_c_dmg*"
-      },
-      {
         "from": "canberra_bmk2_n*"
-      },
-      {
-        "from": "canberra_bmk2_n_dmg*"
       }
     ]
   },
@@ -2468,15 +2463,9 @@
   },
   "default_skin": {
     "name": "canberra_bimk6_killstreak",
-    "replace_tex": [
-      {
-        "from": "canberra_bmk2_c*",
-        "to": "canberra_bimk6_killstreak_c*"
-      },
-      {
-        "from": "canberra_bmk2_c_dmg*",
-        "to": "canberra_bimk6_killstreak_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "canberra_bmk2_c*",
+      "to": "canberra_bimk6_killstreak_c*"
+    }
   }
 }

@@ -14,7 +14,8 @@ let { isModResearched, isModAvailableOrFree, getModificationByName,
   updateRelationModificationList, getModificationBulletsGroup
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
-let { getGuiOptionsMode, get_unit_option, set_unit_option } = require("guiOptions")
+let { getGuiOptionsMode, set_unit_option } = require("guiOptions")
+let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
@@ -94,11 +95,9 @@ let function isFakeBullet(modName) {
 
 let function setUnitLastBullets(unit, groupIndex, value) {
   let saveValue = getModificationByName(unit, value) ? value : "" //'' = default modification
-  let curBullets = ::get_last_bullets(unit.name, groupIndex)
+  let curBullets = getSavedBullets(unit.name, groupIndex)
   if (curBullets != saveValue) {
-    if (unit.unitType.canUseSeveralBulletsForGun)
-      set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, saveValue)
-
+    set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, saveValue)
     log($"Bullets Info: {unit.name}: bullet {groupIndex}: Set unit last bullets: change from '{curBullets}' to '{saveValue}'")
     ::set_last_bullets(unit.name, groupIndex, saveValue)
     ::broadcastEvent("UnitBulletsChanged", { unit = unit,
@@ -108,12 +107,12 @@ let function setUnitLastBullets(unit, groupIndex, value) {
 
 let function getBulletsItemsList(unit, bulletsList, groupIndex) {
   let itemsList = []
-  let curBulletsName = ::get_last_bullets(unit.name, groupIndex)
-  local isCurBulletsValid = false
+  let curBulletsName = getSavedBullets(unit.name, groupIndex)
+  local isCurBulletsValid = groupIndex >= unit.unitType.bulletSetsQuantity
   foreach (_i, value in bulletsList.values) {
     local bItem = getModificationByName(unit, value)
-    isCurBulletsValid = isCurBulletsValid || value == curBulletsName ||
-      (!bItem && curBulletsName == "")
+    isCurBulletsValid = isCurBulletsValid || value == curBulletsName
+      || (!bItem && curBulletsName == "")
     if (!bItem) //default
       bItem = { name = value, isDefaultForGroup = groupIndex }
     itemsList.append(bItem)
@@ -967,9 +966,7 @@ let function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedA
     isForcedAvailable = isForcedAvailable
   }) //only_bought=true
 
-  let curModif = air.unitType.canUseSeveralBulletsForGun ?
-    get_unit_option(air.name, ::USEROPT_BULLETS0 + groupIndex) :
-    ::get_last_bullets(air.name, groupIndex)
+  let curModif = getSavedBullets(air.name, groupIndex)
   local value = curModif ? ::find_in_array(res.saveValues, curModif) : -1
 
   if (value < 0 || !res.items[value].enabled) {
@@ -1012,7 +1009,7 @@ let function getFakeBulletsModByName(unit, modName) {
 let function getUnitLastBullets(unit) {
   let bulletsItemsList = []
   for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
-    bulletsItemsList.append(::get_last_bullets(unit.name, groupIndex))
+    bulletsItemsList.append(getSavedBullets(unit.name, groupIndex))
   }
   return bulletsItemsList
 }

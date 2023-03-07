@@ -2,7 +2,7 @@
   "model": "mirage_2000d_r1",
   "fmFile": "fm/mirage_2000d_r1.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.17,
   "gearSinkRangeC": 0.18,
   "jetEnginePowerFullScale": true,
@@ -18,6 +18,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2319,6 +2320,10 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_r1_default.blk"
       },
       {
+        "name": "mirage_2000d_r1_cc_630_gunpod",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_r1_cc_630_gunpod.blk"
+      },
+      {
         "name": "mirage_2000d_r1_matra_super_250_samp_type_25_default",
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_r1_matra_super_250_samp_type_25_default.blk"
       },
@@ -2382,6 +2387,7 @@
         "pylon_clb_503_001",
         "pylon_clb_503_002",
         "pylon_central",
+        "gunpod_cc_630",
         "pylon_eclair",
         "pylon_ddm_001",
         "pylon_ddm_002",
@@ -2397,6 +2403,7 @@
         "armor1_dm",
         "cannon1_dm",
         "cannon2_dm",
+        "cover2_dm",
         "tank10_dm"
       ]
     },
@@ -2911,6 +2918,46 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "cc_630_gunpod",
+            "reqModification": "fr_cc630_gun_pod",
+            "ShowNodes": {
+              "node": [
+                "pylon_central",
+                "gunpod_cc_630"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cannon2_dm",
+                "cover2_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA554.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "dm": "cannon1_dm",
+                "bullets": 300,
+                "spread": 1.1,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA554.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "dm": "cannon2_dm",
+                "bullets": 300,
+                "spread": 1.1,
+                "traceOffset": 2
+              }
+            ]
           }
         ]
       },
@@ -3322,6 +3369,16 @@
       "modClass": "armor",
       "invertEnableLogic": false
     },
+    "fr_cc630_gun_pod": {
+      "tier": 1
+    },
+    "aden_air_targets": {},
+    "aden_ground_targets": {},
+    "aden_stealth": {},
+    "aden_belt_pack": {
+      "reqModification": "fr_cc630_gun_pod",
+      "tier": 3
+    },
     "fr_250kg_type_25c": {
       "modClass": "weapon",
       "tier": 1
@@ -3369,13 +3426,7 @@
         "from": "mirage_2000d_r1_a*"
       },
       {
-        "from": "mirage_2000d_r1_a_dmg*"
-      },
-      {
         "from": "mirage_2000d_r1_n*"
-      },
-      {
-        "from": "mirage_2000d_r1_n_dmg*"
       }
     ]
   },

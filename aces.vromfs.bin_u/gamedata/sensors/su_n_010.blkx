@@ -302,10 +302,6 @@
   },
   "signals": {
     "mprfSearch": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -325,10 +321,6 @@
       }
     },
     "hprfSearch": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -348,10 +340,6 @@
       }
     },
     "mprfTrack": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -369,16 +357,12 @@
         "minValue": -900.0,
         "maxValue": 900.0,
         "signalWidthMin": 2.0,
-        "width": 0.0
+        "width": 24.0
       }
     },
     "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -396,14 +380,10 @@
         "minValue": 50.0,
         "maxValue": 1200.0,
         "signalWidthMin": 2.0,
-        "width": 0.0
+        "width": 24.0
       }
     },
     "acmTrack": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -421,7 +401,7 @@
         "minValue": -900.0,
         "maxValue": 900.0,
         "signalWidthMin": 2.0,
-        "width": 0.0
+        "width": 24.0
       }
     },
     "irstSearch": {
@@ -2420,7 +2400,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -2461,7 +2443,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {

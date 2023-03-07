@@ -2,7 +2,7 @@
   "model": "uh_1d",
   "fmFile": "fm/uh_1d.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -1735,16 +1735,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "uh_1d_germany_olive_c*",
-        "to": "uh_1d_germany_olive_c_tomoe*"
-      },
-      {
-        "from": "uh_1d_germany_olive_c_dmg*",
-        "to": "uh_1d_germany_olive_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "uh_1d_germany_olive_c*",
+      "to": "uh_1d_germany_olive_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "uh_1d",
@@ -1753,13 +1747,7 @@
         "from": "uh_1d_germany_olive_c*"
       },
       {
-        "from": "uh_1d_germany_olive_c_dmg*"
-      },
-      {
         "from": "uh_1d_germany_olive_n*"
-      },
-      {
-        "from": "uh_1d_germany_olive_n_dmg*"
       }
     ]
   }

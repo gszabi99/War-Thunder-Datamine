@@ -8,22 +8,10 @@
       "power": 2000.0,
       "band": 8,
       "rcs": 5.0,
-      "range": 110000.0,
+      "range": 90000.0,
       "rangeMax": 150000.0,
       "antenna": {
-        "angleHalfSens": 2.8,
-        "sideLobesSensitivity": -34.0
-      }
-    },
-    "pulseDopplerVelocitySearch": {
-      "sideLobesAttenuation": -20.0,
-      "power": 2000.0,
-      "band": 8,
-      "rcs": 5.0,
-      "range": 203000.0,
-      "rangeMax": 250000.0,
-      "antenna": {
-        "angleHalfSens": 2.8,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -34.0
       }
     },
@@ -32,8 +20,8 @@
       "power": 2000.0,
       "band": 8,
       "rcs": 5.0,
-      "range": 167000.0,
-      "rangeMax": 200000.0,
+      "range": 125000.0,
+      "rangeMax": 160000.0,
       "antenna": {
         "angleHalfSens": 2.8,
         "sideLobesSensitivity": -34.0
@@ -44,72 +32,72 @@
     "searchNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 0.25,
       "width": 10.0,
-      "barHeight": 1.8,
+      "barHeight": 2.0,
       "barsCount": 2,
       "rowMajor": true
     },
     "searchMedium": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 1.0,
-      "width": 40.0,
-      "barHeight": 1.6,
+      "width": 30.0,
+      "barHeight": 2.0,
       "barsCount": 4,
       "rowMajor": true
     },
     "searchWide": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
-      "period": 1.6,
-      "width": 65.0,
-      "barHeight": 1.6,
+      "period": 1.5,
+      "width": 60.0,
+      "barHeight": 2.0,
       "barsCount": 4,
       "rowMajor": true
     },
     "twsNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 0.5,
       "width": 20.0,
-      "barHeight": 1.6,
+      "barHeight": 1.8,
       "barsCount": 4,
       "rowMajor": true,
       "preciseMinor": true
@@ -117,12 +105,12 @@
     "twsMedium": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
@@ -136,67 +124,49 @@
     "verticalLockLow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "period": 0.5,
       "width": 20.0,
-      "barHeight": 1.7,
+      "barHeight": 2.0,
       "barsCount": 3,
       "rowMajor": false,
       "centerElevation": 5.0,
       "indicate": true
     },
-    "verticalLockHigh": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -65.0,
-        65.0
-      ],
-      "elevationLimits": [
-        -75.0,
-        55.0
-      ],
-      "period": 0.5,
-      "width": 20.0,
-      "barHeight": 1.7,
-      "barsCount": 3,
-      "rowMajor": false,
-      "centerElevation": 35.0,
-      "indicate": true
-    },
     "boresightLock": {
       "type": "cone",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "period": 0.5,
-      "width": 1.25,
+      "width": 1.4,
       "indicate": true
     },
     "designationLockTws": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 0.25,
-      "width": 1.8,
+      "width": 2.0,
       "barHeight": 1.8,
       "barsCount": 2,
       "rowMajor": false,
@@ -205,18 +175,18 @@
     "designationLockSearch": {
       "type": "pyramide",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
       "period": 0.5,
       "width": 3.0,
-      "barHeight": 1.8,
+      "barHeight": 2.0,
       "barsCount": 2,
       "rowMajor": false,
       "indicate": true
@@ -224,12 +194,12 @@
     "track": {
       "type": "no",
       "azimuthLimits": [
-        -65.0,
-        65.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -75.0,
-        55.0
+        -60.0,
+        60.0
       ]
     }
   },
@@ -247,26 +217,6 @@
         "minValue": 500.0,
         "maxValue": 370000.0,
         "width": 300.0
-      }
-    },
-    "pulseDopplerVelocitySearch": {
-      "rangeFinder": false,
-      "dopplerSpeedFinder": true,
-      "dynamicRange": [
-        40.0,
-        15.0
-      ],
-      "groundClutter": true,
-      "aircraftAsTarget": true,
-      "friendFoeId": false,
-      "absDopplerSpeed": false,
-      "mainBeamDopplerSpeed": false,
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": -410.0,
-        "maxValue": 2050.0,
-        "signalWidthMin": 5.0,
-        "width": 120.0
       }
     },
     "pulseDopplerSearch": {
@@ -353,8 +303,7 @@
       "scanPattern1": [
         "boresightLock",
         "verticalLockLow"
-      ],
-      "scanPattern2": "verticalLockHigh"
+      ]
     }
   },
   "scopeRangeSets": {
@@ -362,9 +311,8 @@
       "range1": 37000.0,
       "range2": 92500.0,
       "range3": 185000.0,
-      "range4": 370000.0,
-      "range5": 9520.0,
-      "range6": 18500.0
+      "range4": 9520.0,
+      "range5": 18500.0
     },
     "acm": {
       "range1": 9250.0
@@ -380,13 +328,13 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -65.0,
-              65.0
+              -60.0,
+              60.0
             ],
             "azmithWidth": 1.5,
             "elevationRange": [
               -25.0,
-              65.0
+              60.0
             ],
             "distanceRange": [
               0.0,
@@ -470,21 +418,6 @@
             "name": "standby"
           }
         },
-        "setPulseDopplerVelocityStandbyMode": {
-          "setSearchStandbyModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "search"
-          },
-          "setTransiver": {
-            "transiver": "pulseDopplerVelocitySearch"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerVelocitySearch"
-          },
-          "setModeName": {
-            "name": "PD HDN VS standby"
-          }
-        },
         "setPulseDopplerStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setScanPatternSet": {
@@ -559,18 +492,6 @@
           },
           "setModeName": {
             "name": "search"
-          }
-        },
-        "setPulseDopplerVelocitySearchMode": {
-          "setSearchModeCommon": {},
-          "setTransiver": {
-            "transiver": "pulseDopplerVelocitySearch"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerVelocitySearch"
-          },
-          "setModeName": {
-            "name": "PD HDN VS search"
           }
         },
         "setPulseDopplerSearchMode": {
@@ -650,28 +571,6 @@
           },
           "setModeName": {
             "name": "acquisition"
-          }
-        },
-        "setPulseDopplerVelocityDesignationLockMode": {
-          "setDesignationLockModeCommon": {},
-          "setRelSpeedGatePos": {
-            "source": "targetDesignation",
-            "width": 30.0
-          },
-          "setScanPattern": {
-            "scanPattern": "designationLockSearch"
-          },
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
-          "setTransiver": {
-            "transiver": "pulseDoppler"
-          },
-          "setSignal": {
-            "signal": "pulseDopplerVelocitySearch"
-          },
-          "setModeName": {
-            "name": "PD HDN VS acquisition"
           }
         },
         "setPulseDopplerDesignationLockMode": {
@@ -1261,52 +1160,8 @@
             ]
           }
         },
-        "twsToPulseDopplerVelocity": {
+        "twsToPulse": {
           "stateFrom": "tws",
-          "command": "modeSwitch",
-          "stateTo": "pulseDopplerVelocity",
-          "actions": {
-            "setCustomActionTemplate": [
-              {
-                "fsm": "main",
-                "name": "setStandbyMode",
-                "actionTemplateName": "setPulseDopplerVelocityStandbyMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setSearchMode",
-                "actionTemplateName": "setPulseDopplerVelocitySearchMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setDesignationLockMode",
-                "actionTemplateName": "setPulseDopplerVelocityDesignationLockMode"
-              },
-              {
-                "fsm": "main",
-                "name": "designateTarget",
-                "actionTemplateName": "designatedTargetSearch"
-              },
-              {
-                "fsm": "main",
-                "name": "resetSearchMode",
-                "actionTemplateName": "resetSearchMode"
-              }
-            ],
-            "setFsmActive": [
-              {
-                "fsm": "main",
-                "active": false
-              },
-              {
-                "fsm": "main",
-                "active": true
-              }
-            ]
-          }
-        },
-        "pulseDopplerVelocityToPulse": {
-          "stateFrom": "pulseDopplerVelocity",
           "command": "modeSwitch",
           "stateTo": "pulse",
           "actions": {
@@ -1330,16 +1185,6 @@
                 "fsm": "main",
                 "name": "designateTarget",
                 "actionTemplateName": "designatedTargetSearch"
-              },
-              {
-                "fsm": "main",
-                "name": "setPrimaryTrackParams",
-                "actionTemplateName": "setPulseTrackParams"
-              },
-              {
-                "fsm": "main",
-                "name": "setSecondaryTrackParams",
-                "actionTemplateName": "setPulseDopplerTrackParams"
               },
               {
                 "fsm": "main",
@@ -1604,7 +1449,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 24,
+              "limit": 20,
               "timeOut": 2.0,
               "radius": 1000.0,
               "blend": 0.5
@@ -1672,7 +1517,7 @@
           "event": "targetInSight",
           "actions": {
             "detectTarget": {
-              "rangeMult": 0.7
+              "rangeMult": 1.0
             }
           }
         }
@@ -1685,7 +1530,7 @@
           "event": "update",
           "actions": {
             "detectTarget": {
-              "rangeMult": 0.7
+              "rangeMult": 1.0
             }
           }
         },

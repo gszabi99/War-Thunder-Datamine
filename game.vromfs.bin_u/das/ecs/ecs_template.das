@@ -1,4 +1,5 @@
 options no_aot = true//currently, as of 08.10.2021 there is a bug in AOT codegen for E3DCOLOR
+options strict_smart_pointers
 module ecs_template shared private
 require ecs
 require DagorMath
@@ -38,15 +39,17 @@ def private is_undef(arg)
 def private is_undef(annotations : AnnotationArgumentList)
   return is_undef(find_arg("undef", annotations))
 
-def follow_the_yellow_brick_road(expr : ExpressionPtr) : ExpressionPtr
+def follow_the_yellow_brick_road(expr : ExpressionPtr; var res : ExpressionPtr&) : void
   if expr is ExprRef2Value
-    return (expr as ExprRef2Value).subexpr |> follow_the_yellow_brick_road
+    (expr as ExprRef2Value).subexpr |> follow_the_yellow_brick_road(res)
+    return
   elif expr is ExprVar
-    let ev = expr as ExprVar
+    var ev = expr as ExprVar
     if !ev.varFlags.local && !ev.varFlags.argument && !ev.varFlags._block
       if ev.variable != null && ev.variable._type.flags.constant && ev.variable.init != null
-        return ev.variable.init |> follow_the_yellow_brick_road
-  return expr
+        ev.variable.init |> follow_the_yellow_brick_road(res)
+        return
+  res := expr
 
 def get_eval_any(econst : ExpressionPtr; var errors : das_string; var any_errors : bool&; var output : auto(TT)&)
   if econst is ExprCall
@@ -66,16 +69,21 @@ def get_eval_any(econst : ExpressionPtr; var errors : das_string; var any_errors
   errors := "{errors}\nunsupported initializer {describe(econst)}"
   any_errors = true
 
-def get_const_expr(expr : ExpressionPtr) : ExpressionPtr
-  if expr == null
-    return [[ExpressionPtr]]
-  let econst <- expr |> follow_the_yellow_brick_road
-  return econst |> is_expr_const ? econst : [[ExpressionPtr]]
-
-def get_templ_const(expr : ExpressionPtr; var errors : das_string; var any_errors : bool&; var output : auto&)
+def get_const_expr(expr : ExpressionPtr; var res : ExpressionPtr&) : void
   if expr == null
     return
-  let econst <- expr |> follow_the_yellow_brick_road
+  var inscope econst : ExpressionPtr
+  expr |> follow_the_yellow_brick_road(econst)
+  if econst != null && econst |> is_expr_const()
+    res |> move() <| econst
+
+options no_unused_function_arguments = false
+
+def get_templ_const(var expr : ExpressionPtr; var errors : das_string; var any_errors : bool&; var output : auto&)
+  if expr == null
+    return
+  var inscope econst : ExpressionPtr
+  expr |> follow_the_yellow_brick_road(econst)
   econst |> get_eval_any(errors, any_errors, output)
 
 def def_string(v : das_string?)
@@ -93,9 +101,9 @@ class CreateTemplateAnnotation : AstStructureAnnotation
         let undefType = field._type.baseType == Type tVoid || field._type.baseType == Type autoinfer
         field._type := null
         if undefType && !(arg is tString)
-          field._type <- new [[TypeDecl() baseType = Type tInt]]
+          field._type |> move_new() <| new [[TypeDecl() baseType = Type tInt]]
         else
-          field._type <- new [[TypeDecl() baseType = Type tInt, alias := (arg ?as tString) ?? typeName]]
+          field._type |> move_new() <| new [[TypeDecl() baseType = Type tInt, alias := (arg ?as tString) ?? typeName]]
         field.init := null
     return true
 
@@ -142,7 +150,8 @@ class CreateTemplateAnnotation : AstStructureAnnotation
         if undefType
           set_undef(cmp, f, fieldName, string(field._type.alias))
         else
-          let econst <- field.init |> get_const_expr
+          var inscope econst <- [[ExpressionPtr]]
+          field.init |> get_const_expr(econst)
           if field._type.baseType == Type tBool
             set(cmp, f, fieldName, (econst ?as ExprConstBool)?.value ?? false)
           elif field._type.baseType == Type tInt

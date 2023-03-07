@@ -2128,7 +2128,19 @@
       }
     ],
     "hideDmParts": {
-      "node": "cannon2_dm"
+      "node": [
+        "cannon2_dm",
+        "cannon3_dm",
+        "cannon4_dm",
+        "cover5_dm",
+        "cover6_dm"
+      ]
+    },
+    "hideNodes": {
+      "node": [
+        "pylon_cannon_r6_l",
+        "pylon_cannon_r6_r"
+      ]
     }
   },
   "weapon_presets": {
@@ -2570,16 +2582,10 @@
     "pilot1": "pilot_it_500"
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "bf_109g_14as_salo_a*",
-        "to": "bf_109g_14as_salo_a_tomoe*"
-      },
-      {
-        "from": "bf_109g_14as_salo_a_dmg*",
-        "to": "bf_109g_14as_salo_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "bf_109g_14as_salo_a*",
+      "to": "bf_109g_14as_salo_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "bf_109g_14as",
@@ -2588,13 +2594,7 @@
         "from": "bf_109g_14as_salo_a*"
       },
       {
-        "from": "bf_109g_14as_salo_a_dmg*"
-      },
-      {
         "from": "bf_109g_14as_salo_n*"
-      },
-      {
-        "from": "bf_109g_14as_salo_n_dmg*"
       }
     ]
   },

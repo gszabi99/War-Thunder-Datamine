@@ -14,6 +14,7 @@ let { setUnitLastBullets,
 let { AMMO,
         getAmmoAmount,
         isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
+let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 
 ::BulletGroup <- class {
   unit = null
@@ -46,7 +47,7 @@ let { AMMO,
     this.selectedName = getTblValue(this.bullets.value, this.bullets.values, "")
     let saveValue = this.getBulletNameForCode(this.selectedName)
 
-    if (::get_last_bullets(this.unit.name, this.groupIndex) != saveValue)
+    if (getSavedBullets(this.unit.name, this.groupIndex) != saveValue)
       setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)
 
     let bulletOptionId = ::USEROPT_BULLET_COUNT0 + this.groupIndex

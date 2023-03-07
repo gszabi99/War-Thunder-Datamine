@@ -1478,83 +1478,147 @@
   },
   "class_tags": {},
   "commonWeapons": {
-    "Weapon": {
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_vt_1_launcher_user_cannon.blk",
-      "flash": "bone_rocket_01",
-      "useEmitter": true,
-      "emitter": "bone_rocket_01",
-      "emitterGenRange": [
-        1,
-        2
-      ],
-      "emitterGenFmt": "bone_rocket_%02d",
-      "ammoDpGenFmt": "ammo_turret_%02d_dm",
-      "recoilMultiplier": 0.1,
-      "stopForFire": true,
-      "maxSpeedForFire": 5.0,
-      "reloadAnimVar": "flarakrad_action",
-      "waitShellForPark": true,
-      "sleeveEmitter": "bone_rocket_%02d",
-      "sleeveMesh": "roland_rocket_container",
-      "sleeveEmitterRange": [
-        1,
-        2
-      ],
-      "openHatchTime": 0.0,
-      "sleevesLifeTime": 15.0,
-      "sleeveImpulse": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "linkSleeveToGun": true,
-      "needScaleSleeve": false,
-      "canChangeBulletInReload": false,
-      "createGunEffects": true,
-      "parkForReload": true,
-      "barrelDP": "gun_barrel_dm",
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "autoLoader": true,
-      "speedYaw": 85.0,
-      "speedPitch": 40.0,
-      "bullets": 10,
-      "salvoAmount": 100.0,
-      "ChainfireTime": 0.0,
-      "DelayAfterShoot": 2.0,
-      "fireConeAngle": 1.0,
-      "targetAngularRateMax": 5.0,
-      "AttackMaxDistance": 10000.0,
-      "AttackMaxRadius": 10000.0,
-      "AttackMaxHeight": 4000.0,
-      "accuracyAir": 1.5,
-      "accuracyGnd": 0.0,
-      "errMeasureVel": 0.0,
-      "errMeasureVelFast": 0.0,
-      "errMeasureVelFwdShift": 0.0,
-      "errMeasureVelDir": 0.0,
-      "errTargettingOn100kmph": 0.0,
-      "errTargetting": 3.0,
-      "errExplTime": 0.0,
-      "turret": {
-        "head": "bone_turret",
-        "gun": "bone_gun_01",
-        "gunnerDm": "gunner_dm",
-        "rotatedTurret": "bone_turret"
+    "Weapon": [
+      {
+        "dummy": true,
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_gun",
+        "aimForOperatedShell": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 0.0,
+        "speedPitch": 40.0,
+        "bullets": 1,
+        "turret": {
+          "head": "bone_camera_gunner",
+          "gun": "bone_camera_gunner",
+          "horDriveDm": "drive_turret_h_dm"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -8.0,
+            80.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                25.0,
+                0.015
+              ],
+              [
+                35.0,
+                0.02
+              ],
+              [
+                45.0,
+                0.1
+              ],
+              [
+                50.0,
+                0.3
+              ]
+            ]
+          }
+        }
       },
-      "limits": {
-        "yaw": [
-          -180.0,
-          180.0
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_vt_1_launcher_user_cannon.blk",
+        "flash": "bone_rocket_01",
+        "useEmitter": true,
+        "emitter": "bone_rocket_01",
+        "emitterGenRange": [
+          1,
+          2
         ],
-        "pitch": [
-          -10.0,
-          80.0
-        ]
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "recoilMultiplier": 0.1,
+        "stopForFire": true,
+        "maxSpeedForFire": 5.0,
+        "reloadAnimVar": "flarakrad_action",
+        "waitShellForPark": true,
+        "sleeveEmitter": "bone_rocket_%02d",
+        "sleeveMesh": "roland_rocket_container",
+        "sleeveEmitterRange": [
+          1,
+          2
+        ],
+        "openHatchTime": 0.0,
+        "sleevesLifeTime": 15.0,
+        "sleeveImpulse": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "linkSleeveToGun": true,
+        "needScaleSleeve": false,
+        "canChangeBulletInReload": false,
+        "createGunEffects": true,
+        "parkForReload": true,
+        "barrelDP": "gun_barrel_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "autoLoader": true,
+        "speedYaw": 85.0,
+        "speedPitch": 40.0,
+        "bullets": 10,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 2.0,
+        "fireConeAngle": 1.0,
+        "targetAngularRateMax": 5.0,
+        "AttackMaxDistance": 10000.0,
+        "AttackMaxRadius": 10000.0,
+        "AttackMaxHeight": 4000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun_01",
+          "gunnerDm": "gunner_dm",
+          "rotatedTurret": "bone_turret"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            80.0
+          ]
+        }
       }
-    },
+    ],
     "animatedBones": {
       "node": [
         "antenna_target_location",
@@ -2508,7 +2572,69 @@
         "commonWeapons": {
           "Weapon": [
             {
+              "dummy": true,
               "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_gun",
+              "aimForOperatedShell": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 0.0,
+              "speedPitch": 40.0,
+              "bullets": 1,
+              "turret": {
+                "head": "bone_camera_gunner",
+                "gun": "bone_camera_gunner",
+                "horDriveDm": "drive_turret_h_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -8.0,
+                  80.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "speedFromVehicleVerticalMult": -1.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      25.0,
+                      0.015
+                    ],
+                    [
+                      35.0,
+                      0.02
+                    ],
+                    [
+                      45.0,
+                      0.1
+                    ],
+                    [
+                      50.0,
+                      0.3
+                    ]
+                  ]
+                }
+              }
+            },
+            {
+              "trigger": "gunner1",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/groundModels_weapons/163mm_roland_vt_1_launcher_user_cannon.blk",
               "flash": "bone_rocket_01",
@@ -2585,7 +2711,7 @@
               }
             },
             {
-              "trigger": "gunner1",
+              "trigger": "gunner2",
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",

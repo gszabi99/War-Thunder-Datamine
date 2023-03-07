@@ -45,6 +45,8 @@
   "destroysTrees": true,
   "cruiseVelocity": 8.0,
   "type": "typeSPAA",
+  "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "ikGunner": [
     {
       "model": "german_gunner_early_char",
@@ -378,6 +380,9 @@
       },
       "body_front_hatch_dm": {
         "armorThickness": 8.0
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 8.0
       }
     },
     "turret": {
@@ -462,7 +467,6 @@
       "hp": 400.0,
       "armorThickness": 4.0,
       "armorClass": "tank_structural_steel",
-      "ex_decor_r_02_dm": {},
       "ex_decor_r_04_dm": {},
       "ex_decor_r_05_dm": {},
       "ex_decor_l_05_dm": {},
@@ -1638,10 +1642,7 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": [
-        "tank_gunner",
-        "commander"
-      ]
+      "role": "commander"
     }
   },
   "MetaParts": {
@@ -3079,7 +3080,167 @@
     "20mm_kwk_30_APCR_ammo_pack": {},
     "20mm_ger_kwk30_HE": {},
     "20mm_ger_kwk30_AP": {},
-    "20mm_ger_kwk30_APCR": {}
+    "20mm_ger_kwk30_APCR": {},
+    "tank_smoke_screen_system_mod": {
+      "tier": 3,
+      "effects": {
+        "commonWeapons": {
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/groundModels_weapons/20mm_KwK38_user_cannon.blk",
+              "emitter": "bone_gun_barrel",
+              "flash": "emtr_gun_flame",
+              "recoilOffset": 0.08,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_dm",
+              "breechDP": "cannon_breech_dm",
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "yawSpdLowBattery": 40.0,
+              "pitchSpdLowBattery": 40.0,
+              "bullets": 180,
+              "fireConeAngle": 5.0,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_turret",
+                "gun": "bone_gun",
+                "barrel": "bone_gun_barrel",
+                "linkedAnimPart": {
+                  "verNode": "bone_camera_gunner",
+                  "verLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "verOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -7.0,
+                  85.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "coaxial",
+              "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+              "emitter": "bone_mg_gun_twin",
+              "flash": "emtr_mg_flame_01",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_01_dm",
+              "useAnimFlashNode": true,
+              "speedYaw": 5.5,
+              "speedPitch": 4.0,
+              "fireConeAngle": [
+                1.0,
+                15.0
+              ],
+              "bullets": 2700,
+              "ChainfireTime": 3.0,
+              "DelayAfterShoot": 3.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_mg_gun_twin",
+                "gun": "bone_mg_gun_twin",
+                "gunnerDm": "gunner_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  -0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "smoke",
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_candle_launcher.blk",
+              "weaponType": "rockets",
+              "startFx": "",
+              "useEmitter": true,
+              "emitter": "emtr_mortar_flame_01",
+              "emitterGenRange": [
+                1,
+                6
+              ],
+              "emitterGenFmt": "emtr_mortar_flame_%02d",
+              "createGunEffects": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "allowableDelta": 360.0,
+              "salvo": 1,
+              "speedYaw": 0.0,
+              "speedPitch": 0.0,
+              "fireConeAngle": 1.0,
+              "bullets": 6,
+              "salvoAmount": 100.0,
+              "ChainfireTime": 0.0,
+              "DelayAfterShoot": 5.0,
+              "AttackMaxDistance": 1000.0,
+              "AttackMaxRadius": 1000.0,
+              "AttackMaxHeight": 1000.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 1.5,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_grenade",
+                "gun": "bone_grenade"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
   },
   "user_skin": {
     "name": "sdkfz_221_s_pz_b_41",
@@ -3113,6 +3274,15 @@
       "replace_tex": {
         "from": "ger_camo_grey*",
         "to": "ger_camo_winter_lines*"
+      }
+    },
+    {
+      "name": "green",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green",
+      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
+      "replace_tex": {
+        "from": "ger_camo_grey*",
+        "to": "ger_camo_dunkelgelb_green*"
       }
     }
   ]

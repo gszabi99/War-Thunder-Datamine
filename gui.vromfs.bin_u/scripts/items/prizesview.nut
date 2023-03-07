@@ -22,6 +22,7 @@ let { UNLOCK, ITEM, UNIT, DECORATION } = require("%scripts/utils/genericTooltipT
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getFullUnlockDescByName, getUnlockNameText,
   getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockTypeById } = require("unlocks")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -650,7 +651,7 @@ let prizeViewConfig = {
   }
   else if (prize?.unlock) {
     let unlockId = prize.unlock
-    let unlockType = ::get_unlock_type_by_id(unlockId)
+    let unlockType = getUnlockTypeById(unlockId)
     let typeValid = unlockType >= 0
 
     local unlockTypeName = isLoadingBgUnlock(unlockId)
@@ -757,7 +758,7 @@ let prizeViewConfig = {
   if (prize?.entitlement)
     return "#ui/gameuiskin#item_type_premium.svg"
   if (prize?.unlock || prize?.unlockType) {
-    local unlockType = prize?.unlockType || ::get_unlock_type_by_id(prize?.unlock)
+    local unlockType = prize?.unlockType || getUnlockTypeById(prize?.unlock)
     if (type(unlockType) == "string")
       unlockType = ::get_unlock_type(unlockType)
     return ::g_decorator_type.getTypeByUnlockedItemType(unlockType).prizeTypeIcon
@@ -1220,7 +1221,7 @@ let prizeViewConfig = {
   if (prize?.unlock) {
     if (params?.showAsTrophyContent && ::is_unlocked_scripted(-1, prize.unlock))
       commentText = colorize("badTextColor", loc("mainmenu/receiveOnlyOnce"))
-    if (::get_unlock_type_by_id(prize.unlock) == UNLOCKABLE_PILOT) {
+    if (getUnlockTypeById(prize.unlock) == UNLOCKABLE_PILOT) {
       needShowFullTitle = false
       needShowIcon = false
       previewImage = "cardAvatar { value:t='" + prize.unlock + "'}"

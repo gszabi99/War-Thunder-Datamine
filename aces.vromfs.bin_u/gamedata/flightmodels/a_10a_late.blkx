@@ -2,7 +2,7 @@
   "model": "a_10a_late",
   "fmFile": "fm/a-10a_late.blk",
   "harmonizationSuffix": "_tomoe",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.422,
   "gearSinkRangeC": 0.278,
@@ -10,6 +10,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -19,7 +20,6 @@
   "isBwOpticSight": true,
   "needTpsNightVision": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -33,6 +33,7 @@
   "fireParamsPreset": "700kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3754,27 +3755,38 @@
         "from": "a_10a_late_c*"
       },
       {
-        "from": "a_10a_late_c_dmg*"
-      },
-      {
         "from": "a_10a_late_n*"
-      },
-      {
-        "from": "a_10a_late_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "a_10a_late_c*",
-        "to": "a_10a_late_c_tomoe*"
-      },
-      {
-        "from": "a_10a_late_c_dmg*",
-        "to": "a_10a_late_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "a_10a_late_c*",
+      "to": "a_10a_late_c_tomoe*"
+    }
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

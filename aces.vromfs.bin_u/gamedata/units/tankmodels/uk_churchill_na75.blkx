@@ -46,9 +46,6 @@
   "type": "typeHeavyTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -66,8 +63,12 @@
       "body_front_dm": {
         "armorThickness": 76.2
       },
+      "turret_02_top_dm": {
+        "armorThickness": 26.0
+      },
       "superstructure_side_dm": {
-        "armorThickness": 63.5
+        "armorThickness": 63.5,
+        "variableThickness": true
       },
       "superstructure_top_dm": {
         "armorThickness": 15.87
@@ -76,7 +77,8 @@
         "armorThickness": 19.05
       },
       "superstructure_back_dm": {
-        "armorThickness": 50.8
+        "armorThickness": 50.8,
+        "variableThickness": true
       },
       "superstructure_bottom_dm": {
         "armorThickness": 15.9
@@ -85,7 +87,8 @@
         "armorThickness": 38.1
       },
       "body_side_dm": {
-        "armorThickness": 50.8
+        "armorThickness": 50.8,
+        "variableThickness": true
       },
       "body_bottom_dm": {
         "armorThickness": 19.1
@@ -94,13 +97,13 @@
         "armorThickness": 25.4
       },
       "turret_01_top_dm": {
-        "armorThickness": 12.7
+        "armorThickness": 5.0
       },
       "ex_armor_body_01_dm": {
         "armorThickness": 63.5
       },
       "turret_02_front_dm": {
-        "armorThickness": 38.1
+        "armorThickness": 63.5
       },
       "turret_02_back_dm": {
         "armorThickness": 25.4
@@ -121,7 +124,7 @@
         "armorThickness": 38.1
       },
       "turret_01_back_dm": {
-        "armorThickness": 76.2
+        "armorThickness": 90.0
       },
       "turret_02_bottom_dm": {
         "armorThickness": 166.88
@@ -161,7 +164,8 @@
         "armorThickness": 89.0
       },
       "turret_06_front_dm": {
-        "armorThickness": 76.2
+        "armorThickness": 76.2,
+        "variableThickness": true
       },
       "turret_06_back_dm": {
         "armorThickness": 76.2
@@ -173,7 +177,8 @@
         "armorThickness": 76.2
       },
       "turret_front_dm": {
-        "armorThickness": 89.0
+        "armorThickness": 89.0,
+        "variableThickness": true
       },
       "turret_top_dm": {
         "armorThickness": 19.05
@@ -209,10 +214,12 @@
       "ex_decor_l_08_dm": {},
       "ex_decor_r_08_dm": {},
       "ex_decor_r_09_dm": {
-        "armorClass": "t_90_rubber_fabric_screens"
+        "armorClass": "t_90_rubber_fabric_screens",
+        "armorThickness": 4.0
       },
       "ex_decor_l_09_dm": {
-        "armorClass": "t_90_rubber_fabric_screens"
+        "armorClass": "t_90_rubber_fabric_screens",
+        "armorThickness": 4.0
       },
       "ex_decor_r_02_dm": {},
       "ex_decor_l_02_dm": {},
@@ -1765,8 +1772,8 @@
             0.0
           ],
           "pitch": [
-            -0.0,
-            0.0
+            -5.0,
+            5.0
           ]
         }
       }
@@ -2934,8 +2941,8 @@
                   0.0
                 ],
                 "pitch": [
-                  -0.0,
-                  0.0
+                  -5.0,
+                  5.0
                 ]
               }
             },

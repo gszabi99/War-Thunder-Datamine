@@ -1,6 +1,8 @@
 module ship_events shared
 require ecs
+require dm
 require DagorDataBlock
+require WTDamageModel
 
 [cpp_event(unicast)]
 struct EventShipInitDamageParts
@@ -22,30 +24,27 @@ struct EventShipOnRemoveBreach
 struct EventShipRequestRepairBreaches
   repair : bool
 
-[cpp_event(unicast, with_scheme)]
+[cpp_event(unicast)]
 struct EventShipOnGotBreach
   breachId : int
   localPos : float3
-  offenderUnitId : int
-  offenderBulletId : int
+  offender : OffenderData
 
-[cpp_event(unicast, with_scheme)]
+[cpp_event(unicast)]
 struct EventShipAddFatalBreach
   localPos : float3
   localNormal : float3
-  packedPartId : uint
-  offenderUnitId : int
-  offenderBulletId : int
+  partId : PartId
+  offender : OffenderData
 
-[cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT)]
+[cpp_event(unicast)]
 struct EventShipAddBreach
   id : int
-  packedPartId : uint
+  partId : PartId
   localPos : float3
   localNormal : float3
   size : float
-  offenderUnitId : int
-  offenderBulletId : int
+  offender : OffenderData
 
 [cpp_event(unicast, with_scheme)]
 struct EventShipPartDrowned

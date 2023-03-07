@@ -2,7 +2,7 @@
   "fmFile": "fm/uh_1c.blk",
   "model": "uh_1c",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -1403,8 +1403,8 @@
             }
           },
           {
-            "iconType": "missile_air_to_uni_x3",
-            "name": "agm22",
+            "iconType": "atgm_type1_x3_left",
+            "name": "agm22_left",
             "reqModification": "ah_AGM_22",
             "ShowNodes": {
               "node": "us_xm22_1"
@@ -1528,8 +1528,8 @@
             }
           },
           {
-            "iconType": "missile_air_to_uni_x3",
-            "name": "agm22",
+            "iconType": "atgm_type1_x3_right",
+            "name": "agm22_right",
             "reqModification": "ah_AGM_22",
             "ShowNodes": {
               "node": "us_xm22_2"
@@ -2983,16 +2983,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "uh_1c_c*",
-        "to": "uh_1c_c_tomoe*"
-      },
-      {
-        "from": "uh_1c_c_dmg*",
-        "to": "uh_1c_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "uh_1c_c*",
+      "to": "uh_1c_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "uh_1c",
@@ -3001,13 +2995,7 @@
         "from": "uh_1c_c*"
       },
       {
-        "from": "uh_1c_c_dmg*"
-      },
-      {
         "from": "uh_1c_n*"
-      },
-      {
-        "from": "uh_1c_n_dmg*"
       }
     ]
   }

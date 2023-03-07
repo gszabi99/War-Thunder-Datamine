@@ -2,7 +2,7 @@
   "model": "hkp9a_cb3_fc",
   "fmFile": "fm/hkp9a_cb3_fc.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -1206,7 +1206,7 @@
     "heli_night_vision_system": {
       "tier": 3,
       "modClass": "weapon",
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -1256,16 +1256,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "hkp9a_cb3_fc_green_c*",
-        "to": "hkp9a_cb3_fc_green_c_tomoe*"
-      },
-      {
-        "from": "hkp9a_cb3_fc_green_c_dmg*",
-        "to": "hkp9a_cb3_fc_green_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "hkp9a_cb3_fc_green_c*",
+      "to": "hkp9a_cb3_fc_green_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "hkp9a_cb3_fc",
@@ -1274,13 +1268,7 @@
         "from": "hkp9a_cb3_fc_green_c*"
       },
       {
-        "from": "hkp9a_cb3_fc_green_c_dmg*"
-      },
-      {
         "from": "hkp9a_cb3_fc_green_n*"
-      },
-      {
-        "from": "hkp9a_cb3_fc_green_n_dmg*"
       }
     ]
   },

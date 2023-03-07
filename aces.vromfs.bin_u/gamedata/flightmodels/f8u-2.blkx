@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -3522,27 +3523,15 @@
         "from": "f8u_2_c*"
       },
       {
-        "from": "f8u_2_c_dmg*"
-      },
-      {
         "from": "f8u_2_n*"
-      },
-      {
-        "from": "f8u_2_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f8u_2_c*",
-        "to": "f8u_2_c_tomoe*"
-      },
-      {
-        "from": "f8u_2_c_dmg*",
-        "to": "f8u_2_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f8u_2_c*",
+      "to": "f8u_2_c_tomoe*"
+    }
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

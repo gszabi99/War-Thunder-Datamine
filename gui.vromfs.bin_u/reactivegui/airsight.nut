@@ -247,7 +247,7 @@ let function overheatLines(color, line_width_factor) {
   }
 }
 
-let function fixedGunsDirection() {
+let function fixedGunsDirection(colorWatch) {
   return function() {
     if (!FixedGunDirectionVisible.value)
       return { watch = FixedGunDirectionVisible }
@@ -257,11 +257,11 @@ let function fixedGunsDirection() {
     let function lines() {
       let lineWidth = hdpx(LINE_WIDTH * CanonSightLineWidthFactor.value)
       return {
-        watch = [FixedGunSightMode, HudColor, AlertColorHigh, CanonSightLineWidthFactor]
+        watch = [FixedGunSightMode, colorWatch, AlertColorHigh, CanonSightLineWidthFactor]
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth
         size = [sh(0.625), sh(0.625)]
-        color = fadeColor(HudColor.value, 255)
+        color = fadeColor(colorWatch.value, 255)
         commands = fixedGunsSight(FixedGunSightMode.value)
         children = overheatFg
       }
@@ -272,12 +272,12 @@ let function fixedGunsDirection() {
     let function shadowLines() {
       let shadowLineWidth = hdpx(LINE_WIDTH * CanonSightShadowLineWidthFactor.value)
       return styleLineForeground.__merge({
-        watch = [FixedGunSightMode, HudColor, CanonSightShadowLineWidthFactor]
+        watch = [FixedGunSightMode, colorWatch, CanonSightShadowLineWidthFactor]
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = shadowLineWidth
         size = [sh(0.625), sh(0.625)]
         fillColor = Color(0, 0, 0, 0)
-        color = isDarkColor(HudColor.value) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
+        color = isDarkColor(colorWatch.value) ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255)
         commands = fixedGunsSight(FixedGunSightMode.value)
         children = overheatBg
       })

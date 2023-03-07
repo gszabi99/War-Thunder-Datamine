@@ -16,6 +16,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -3441,16 +3442,8 @@
         "to": "f_84f_france_c*"
       },
       {
-        "from": "f_84f_c_dmg*",
-        "to": "f_84f_france_c_dmg*"
-      },
-      {
         "from": "f_84f_n*",
         "to": "f_84f_france_n*"
-      },
-      {
-        "from": "f_84f_n_dmg*",
-        "to": "f_84f_france_n_dmg*"
       }
     ]
   },
@@ -3461,26 +3454,14 @@
         "from": "f_84f_france_c*"
       },
       {
-        "from": "f_84f_france_c_dmg*"
-      },
-      {
         "from": "f_84f_france_n*"
-      },
-      {
-        "from": "f_84f_france_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_84f_c*",
-        "to": "f_84f_france_c_tomoe*"
-      },
-      {
-        "from": "f_84f_c_dmg*",
-        "to": "f_84f_france_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_84f_c*",
+      "to": "f_84f_france_c_tomoe*"
+    }
   }
 }

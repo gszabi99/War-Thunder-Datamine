@@ -1,7 +1,7 @@
 {
   "model": "lynx_ah_mk1",
   "fmFile": "fm/lynx_ah_mk1.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -2896,7 +2896,7 @@
       "prevModification": "stinger_aam",
       "modClass": "weapon",
       "tier": 3,
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -2929,16 +2929,10 @@
     }
   },
   "default_skin": {
-    "replace_tex": [
-      {
-        "from": "lynx_ah_mk1_black_green_c*",
-        "to": "lynx_ah_mk1_white_green_c*"
-      },
-      {
-        "from": "lynx_ah_mk1_black_green_c_dmg*",
-        "to": "lynx_ah_mk1_white_green_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "lynx_ah_mk1_black_green_c*",
+      "to": "lynx_ah_mk1_white_green_c*"
+    }
   },
   "user_skin": {
     "name": "lynx_ah_mk1",
@@ -2947,13 +2941,7 @@
         "from": "lynx_ah_mk1_black_green_c*"
       },
       {
-        "from": "lynx_ah_mk1_black_green_c_dmg*"
-      },
-      {
         "from": "lynx_ah_mk1_black_green_n*"
-      },
-      {
-        "from": "lynx_ah_mk1_black_green_n_dmg*"
       }
     ]
   },

@@ -6,6 +6,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gearSinkRangeLR": 0.182,
   "gearSinkRangeC": 0.187,
   "haveCCIPForRocket": true,
@@ -3451,6 +3452,22 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "brandbomb_m58",
+            "reqModification": "brandbomb_m58",
+            "ShowNodes": {
+              "node": "d_balk"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/sw_500kg_brandbomb_m58.blk",
+              "emitter": "600kg_minb_m50_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -4623,16 +4640,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "saab_a32a_green_c*",
-        "to": "saab_a32a_green_c_tomoe*"
-      },
-      {
-        "from": "saab_a32a_green_c_dmg*",
-        "to": "saab_a32a_green_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "saab_a32a_green_c*",
+      "to": "saab_a32a_green_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "saab_a32a",
@@ -4641,13 +4652,7 @@
         "from": "saab_a32a_green_c*"
       },
       {
-        "from": "saab_a32a_green_c_dmg*"
-      },
-      {
         "from": "saab_a32a_green_n*"
-      },
-      {
-        "from": "saab_a32a_green_n_dmg*"
       }
     ]
   },

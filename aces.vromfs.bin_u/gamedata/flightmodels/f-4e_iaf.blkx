@@ -1,7 +1,7 @@
 {
   "model": "f_4e_iaf",
   "fmFile": "fm/f-4e_iaf.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.42,
   "gearSinkRangeC": 0.57,
@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -4708,13 +4709,7 @@
         "from": "f_4e_iaf_c*"
       },
       {
-        "from": "f_4e_iaf_c_dmg*"
-      },
-      {
         "from": "f_4e_iaf_n*"
-      },
-      {
-        "from": "f_4e_iaf_n_dmg*"
       }
     ]
   },

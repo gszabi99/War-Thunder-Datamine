@@ -1,7 +1,7 @@
 {
   "model": "tornado_gr1",
   "fmFile": "/fm/tornado_gr1.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.1,
   "gearSinkRangeC": 0.212,
@@ -9,12 +9,14 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ilsTornado": true,
   "isBwOpticSight": true,
+  "haveCCRPForGun": true,
   "hasOpticTurret": true,
   "havePointOfInterestDesignator": true,
   "gyroscopicSightOverSensors": true,
@@ -2457,6 +2459,7 @@
       0.605,
       0.0
     ],
+    "hasAirCannonIlsMode": true,
     "mirror": true,
     "mirrorPos": [
       4.606,
@@ -4197,8 +4200,7 @@
     "countermeasures_launcher_flare_priority": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
-      "turn_it_off": false,
-      "invertEnableLogic": false,
+      "deactivationIsAllowed": false,
       "group": "countermeasures",
       "tier": 1
     },
@@ -4263,13 +4265,7 @@
         "from": "tornado_gr1_c*"
       },
       {
-        "from": "tornado_gr1_c_dmg*"
-      },
-      {
         "from": "tornado_gr1_n*"
-      },
-      {
-        "from": "tornado_gr1_n_dmg*"
       }
     ]
   },

@@ -13,6 +13,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "arcadeHP": 10000.0,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -2395,27 +2396,15 @@
         "from": "f3d_1_c*"
       },
       {
-        "from": "f3d_1_c_dmg*"
-      },
-      {
         "from": "f3d_1_n*"
-      },
-      {
-        "from": "f3d_1_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f3d_1_c*",
-        "to": "f3d_1_c_tomoe*"
-      },
-      {
-        "from": "f3d_1_c_dmg*",
-        "to": "f3d_1_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f3d_1_c*",
+      "to": "f3d_1_c_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

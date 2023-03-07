@@ -8,12 +8,13 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
   "ilsTornado": true,
+  "haveCCRPForGun": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -30,9 +31,7 @@
   "fightAiBehaviour": "fighter",
   "laserDesignator": true,
   "autopilotImpl": "FBW",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2448,6 +2447,7 @@
       0.581,
       -0.005
     ],
+    "hasAirCannonIlsMode": true,
     "mirror": true,
     "mirrorPos": [
       5.173,
@@ -2884,7 +2884,11 @@
         "flare4_ale",
         "flare2_vicon",
         "flare3_ale",
-        "flare1_vicon"
+        "flare1_vicon",
+        "bol_304_container_1",
+        "bol_304_container_2",
+        "aim_9_5",
+        "aim_9_6"
       ]
     },
     "HideDmParts": {
@@ -2916,8 +2920,8 @@
             "name": "cannon_ltc_common",
             "ShowNodes": {
               "node": [
-                "flare4_ale",
-                "flare3_ale"
+                "flare1_vicon",
+                "flare2_vicon"
               ]
             },
             "Weapon": [
@@ -2935,20 +2939,20 @@
               {
                 "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare4",
-                "bullets": 30,
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 16,
                 "external": true,
-                "separate": false
+                "separate": true
               },
               {
                 "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare3",
-                "bullets": 30,
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 16,
                 "external": true,
-                "separate": false
+                "separate": true
               }
             ]
           }
@@ -2977,6 +2981,99 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "adapter_lau2",
+                "bol_304_container_1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare5",
+              "bullets": 160,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "adapter_lau2",
+                "bol_304_container_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_5",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod_group",
+            "name": "aim_9l_x2_bol",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "adapter_lau2",
+                "adapter_lau1",
+                "lau_7_1",
+                "bol_304_container_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "emitter": "aim_9_5",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "emitter": "aim_9_1",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           },
           {
             "iconType": "missile_type_b_air_to_air_group",
@@ -3028,7 +3125,7 @@
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/uk_1500l_tornado_gr1_1.blk",
+            "blk": "gameData/Weapons/drop_tank/gr_1500l_tornado_f3_1.blk",
             "emitter": "uk_1500l_drop_tank_1",
             "bullets": 1,
             "external": true,
@@ -3162,7 +3259,7 @@
           },
           "Weapon": {
             "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/uk_1500l_tornado_gr1_2.blk",
+            "blk": "gameData/Weapons/drop_tank/gr_1500l_tornado_f3_2.blk",
             "emitter": "uk_1500l_drop_tank_2",
             "bullets": 1,
             "external": true,
@@ -3193,6 +3290,99 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "adapter_lau3",
+                "bol_304_container_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare6",
+              "bullets": 160,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "adapter_lau3",
+                "bol_304_container_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_6",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod_group",
+            "name": "aim_9l_x2_bol",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "adapter_lau3",
+                "adapter_lau4",
+                "lau_7_4",
+                "bol_304_container_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "emitter": "aim_9_6",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "emitter": "aim_9_4",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           },
           {
             "iconType": "missile_type_b_air_to_air_group",
@@ -3251,7 +3441,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/uk_ari_23284.blk"
+        "blk": "gameData/sensors/uk_ari_18241_1.blk"
       }
     ]
   },
@@ -3495,12 +3685,8 @@
         "elevatorBooster": 0.9
       }
     },
-    "cd_98": {
-      "prevModification": "hydravlic_power",
-      "tier": 3
-    },
     "hp_105_jet": {
-      "prevModification": "cd_98",
+      "prevModification": "hydravlic_power",
       "tier": 4
     },
     "f_4c_CdMin_Fuse": {
@@ -3508,11 +3694,17 @@
       "modClass": "lth"
     },
     "structure_str": {
+      "prevModification": "f_4c_CdMin_Fuse",
       "tier": 2,
       "modClass": "lth"
     },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3
+    },
     "new_cover": {
-      "tier": 3,
+      "prevModification": "cd_98",
+      "tier": 4,
       "modClass": "lth"
     },
     "countermeasures_launcher_chaff_only": {},
@@ -3556,7 +3748,12 @@
       "reqModification": "bk_27_belt_pack",
       "tier": 3
     },
+    "uk_ltc_bol": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "us_aim_9l": {
+      "reqModification": "uk_ltc_bol",
       "modClass": "weapon",
       "tier": 2
     },
@@ -3569,6 +3766,31 @@
       "reqModification": "uk_skyflash",
       "tier": 4,
       "modClass": "weapon"
+    },
+    "heli_night_vision_system": {
+      "tier": 4,
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
+          "pilotIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          }
+        }
+      }
     }
   },
   "parachutes": {
@@ -3582,6 +3804,43 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.6
+  },
+  "user_skin": {
+    "name": "tornado_f3",
+    "replace_tex": [
+      {
+        "from": "tornado_f3_c*"
+      },
+      {
+        "from": "tornado_f3_n*"
+      }
+    ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "seat": [
+      "seat_01",
+      "seat_02"
+    ],
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

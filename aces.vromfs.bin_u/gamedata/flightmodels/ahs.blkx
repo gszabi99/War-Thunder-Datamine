@@ -1,7 +1,7 @@
 {
   "model": "ahs",
   "fmFile": "fm/ahs.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
@@ -2638,7 +2638,7 @@
       "prevModification": "heli_counterMeasures",
       "tier": 3,
       "modClass": "weapon",
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -2687,27 +2687,15 @@
         "from": "ahs_c*"
       },
       {
-        "from": "ahs_c_dmg*"
-      },
-      {
         "from": "ahs_n*"
-      },
-      {
-        "from": "ahs_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "ahs_c*",
-        "to": "ahs_c_tomoe*"
-      },
-      {
-        "from": "ahs_c_dmg*",
-        "to": "ahs_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "ahs_c*",
+      "to": "ahs_c_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

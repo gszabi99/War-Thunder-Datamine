@@ -713,7 +713,10 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
   SUPPORT_PLANE_ORBITING = {
     code = EII_SUPPORT_PLANE_ORBITING
     _name = "support_plane_orbiting"
-    _icon = "#ui/gameuiskin#uav_orbiting.png"
+    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      let ownerUnit = getOwnerUnit()
+      return ownerUnit.isShipOrBoat() ? "#ui/gameuiskin#ship_support_plane_orbital.png" : "#ui/gameuiskin#uav_orbiting.png"
+    }
     _title = loc("hotkeys/ID_SUPPORT_PLANE_ORBITING")
     isForWheelMenu = @() true
     getShortcut = function(_actionItem, _hudUnitType = null) {

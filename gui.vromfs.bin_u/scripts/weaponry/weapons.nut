@@ -51,6 +51,8 @@ let { MODIFICATION_DELAYED_TIER } = require("%scripts/weaponry/weaponryTooltips.
 let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut")
 let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
+let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
+
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -226,7 +228,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       let bulletsList = getBulletsList(this.air.name, groupIndex, {
         needCheckUnitPurchase = false, needOnlyAvailable = false
       })
-      let curBulletsName = ::get_last_bullets(this.air.name, groupIndex)
+      let curBulletsName = getSavedBullets(this.air.name, groupIndex)
       if (groupIndex < this.air.unitType.bulletSetsQuantity)
         this.lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)
@@ -1342,7 +1344,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (!(groupIdx in this.lastBullets))
       return false
 
-    let curBullets = ::get_last_bullets(this.airName, groupIdx)
+    let curBullets = getSavedBullets(this.airName, groupIdx)
     let isChanged = curBullets != item.name && !("isDefaultForGroup" in item && curBullets == "")
     setUnitLastBullets(this.air, groupIdx, item.name)
     if (isChanged) {
@@ -1403,14 +1405,15 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 
   function checkSaveBulletsAndDo(func) {
-    local needSave = false;
+    local needSave = false
     for (local groupIndex = 0; groupIndex < this.air.unitType.bulletSetsQuantity; groupIndex++) {
+        let curBulletsName = getSavedBullets(this.airName, groupIndex)
         if (this.lastBullets && groupIndex in this.lastBullets &&
-            this.lastBullets[groupIndex] != ::get_last_bullets(this.airName, groupIndex)) {
-          log("force cln_update due lastBullets '" + this.lastBullets[groupIndex] + "' != '" +
-                      ::get_last_bullets(this.airName, groupIndex) + "'")
+            this.lastBullets[groupIndex] != curBulletsName) {
+          log("".concat("force cln_update due lastBullets '",
+            this.lastBullets[groupIndex], "' != '", curBulletsName, "'"))
           needSave = true;
-          this.lastBullets[groupIndex] = ::get_last_bullets(this.airName, groupIndex)
+          this.lastBullets[groupIndex] = curBulletsName
         }
     }
     if (isUnitHaveSecondaryWeapons(this.air) && this.lastWeapon != "" && this.lastWeapon != getLastWeapon(this.airName)) {

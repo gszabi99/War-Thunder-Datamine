@@ -18,6 +18,7 @@ let { getUnlockConditions, getMainProgressCondition, getProgressBarData, loadMai
   loadConditionsFromBlk, getMultipliersTable, isBitModeType,
   isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { getUnlockProgress, getUnlockTypeById } = require("unlocks")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -63,7 +64,7 @@ let showNextAwardModeTypes = { // modeTypeName = localizationId
 }
 
 let function doesUnlockExist(unlockId) {
-  return ::get_unlock_type_by_id(unlockId) != UNLOCKABLE_UNKNOWN
+  return getUnlockTypeById(unlockId) != UNLOCKABLE_UNKNOWN
 }
 
 let function checkAwardsAmountPeerSession(res, config, streak, name) {
@@ -143,7 +144,7 @@ let function setImageByUnlockType(config, unlockBlk) {
   local isUnlocked = ::is_unlocked(unlockType, id)
   if (isUnlocked) {
     if (unlockType < 0)
-      unlockType = ::get_unlock_type_by_id(id)
+      unlockType = getUnlockTypeById(id)
 
     if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
       isUnlocked = ::ps4_is_trophy_unlocked(id)
@@ -210,7 +211,7 @@ let function setImageByUnlockType(config, unlockBlk) {
     config._controller <- blk._controller
 
   local hasCurStageInProgressData = false // this param is compatibility for wop_2_19_0_X, feel free to remove after wop_2_21_0_X
-  foreach (modeIdx, mode in blk % "mode") {
+  foreach (mode in blk % "mode") {
     let modeType = mode?.type ?? ""
     config.type = modeType
 
@@ -237,7 +238,7 @@ let function setImageByUnlockType(config, unlockBlk) {
     if (modeType == "rank")
       config.curVal = ::get_player_rank_by_country(config.country)
     else if (doesUnlockExist(id)) {
-      let progress = ::get_unlock_progress(id, modeIdx)
+      let progress = getUnlockProgress(id)
       if (modeType == "char_player_exp") {
         config.maxVal = ::get_rank_by_exp(progress.maxVal)
         config.curVal = ::get_rank_by_exp(progress.curVal)
@@ -1092,7 +1093,7 @@ let function setImageByUnlockType(config, unlockBlk) {
     }
 
     let prize = item.getTopPrize()
-    if (prize?.unlock && ::get_unlock_type_by_id(prize.unlock) ==  UNLOCKABLE_PILOT) {
+    if (prize?.unlock && getUnlockTypeById(prize.unlock) ==  UNLOCKABLE_PILOT) {
       cfg.image <- $"#ui/images/avatars/{prize.unlock}.png"
       cfg.isTrophyLocked <- !unlocked
       return

@@ -12,6 +12,7 @@ let avatars = require("%scripts/user/avatars.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getNumUnlocked } = require("unlocks")
 
 ::max_player_rank <- 100
 ::max_country_rank <- 8
@@ -169,7 +170,7 @@ let function get_cur_session_country() {
   current_user_profile.gold = info.gold
   current_user_profile.pilotId = info.pilotId
   current_user_profile.icon = avatars.getIconById(info.pilotId)
-  current_user_profile.medals = ::get_num_unlocked(UNLOCKABLE_MEDAL, true)
+  current_user_profile.medals = getNumUnlocked(UNLOCKABLE_MEDAL, true)
   //dagor.debug("unlocked medals: "+current_user_profile.medals)
 
   //Show the current country in the game when you select an outcast.

@@ -25,6 +25,7 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { get_game_type } = require("mission")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -60,6 +61,8 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
   isFootballMission = false
 
+  cooldownTimers = null
+
   constructor(nestObj) {
     if (!checkObj(nestObj))
       return
@@ -68,6 +71,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     this.actionItems = []
     this.killStreaksActions = []
     this.weaponActions = []
+    this.cooldownTimers = []
 
     this.canControl = !::isPlayerDedicatedSpectator() && !is_replay_playing()
 
@@ -116,6 +120,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   }
 
   function fill() {
+    this.flushCooldownTimers()
     if (!checkObj(this.scene))
       return
 
@@ -130,6 +135,13 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
       textShortcut    = this.canControl ? loadTemplateText("%gui/hud/actionBarItemTextShortcut.tpl")    : ""
       gamepadShortcut = this.canControl ? loadTemplateText("%gui/hud/actionBarItemGamepadShortcut.tpl") : ""
     }
+
+    foreach (idx, item in view.items) {
+      let cooldownTimeout = (item?.cooldownEndTime ?? 0) - ::get_usefull_total_time()
+      if (cooldownTimeout > 0)
+        this.enableBarItemAfterCooldown(idx, cooldownTimeout)
+    }
+
     let blk = ::handyman.renderCached(("%gui/hud/actionBar.tpl"), view, partails)
     this.guiScene.replaceContentFromText(this.scene.findObject("actions_nest"), blk, blk.len(), this)
     this.scene.findObject("action_bar").setUserData(this)
@@ -273,6 +285,9 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
         return
       }
 
+      if (this.cooldownTimers?[id])
+        clearTimer(this.cooldownTimers[id])
+
       let itemObjId = $"{this.__action_id_prefix}{item.id}"
       let itemObj = this.scene.findObject(itemObjId)
       if (!(itemObj?.isValid() ?? false))
@@ -323,12 +338,40 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
         blockedCooldownEndTime = 0, blockedCooldownTime = 1, active = true, available = true } = item
       let cooldownParams = available ? this.getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime)
         : notAvailableColdownParams
+
+      let cooldownTimeout = cooldownEndTime - ::get_usefull_total_time()
+      if (cooldownTimeout > 0)
+        this.enableBarItemAfterCooldown(id, cooldownTimeout)
+
       this.updateWaitGaugeDegree(itemObj.findObject("cooldown"), cooldownParams)
       this.updateWaitGaugeDegree(itemObj.findObject("blockedCooldown"),
         this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime))
       this.updateWaitGaugeDegree(itemObj.findObject("progressCooldown"),
         this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active))
     }
+  }
+
+  function enableBarItemAfterCooldown(itemIdx, timeout) {
+    let timer = setTimeout(timeout, function() {
+      let item = this?.actionItems?[itemIdx]
+      if (!item || !this.scene?.isValid())
+        return
+
+      let itemObjId = $"{this.__action_id_prefix}{item.id}"
+      let itemObj = this.scene.findObject(itemObjId)
+      if (!itemObj?.isValid() || !getActionItemStatus(item).isReady)
+        return
+      itemObj.enable(true)
+    }.bindenv(this))
+
+    if (this.cooldownTimers.len() <= itemIdx)
+      this.cooldownTimers.resize(itemIdx + 1)
+    this.cooldownTimers[itemIdx] = timer
+  }
+
+  function flushCooldownTimers() {
+    while (this.cooldownTimers.len() > 0)
+      clearTimer(this.cooldownTimers.pop())
   }
 
   /**

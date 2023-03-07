@@ -1,7 +1,7 @@
 {
   "model": "yah_64",
   "fmFile": "fm/yah_64.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
@@ -2305,7 +2305,7 @@
     "heli_night_vision_system": {
       "modClass": "weapon",
       "tier": 3,
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -2338,16 +2338,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "yah_64_c*",
-        "to": "yah_64_c_tomoe*"
-      },
-      {
-        "from": "yah_64_c_dmg*",
-        "to": "yah_64_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "yah_64_c*",
+      "to": "yah_64_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "yah_64",
@@ -2356,13 +2350,7 @@
         "from": "yah_64_c*"
       },
       {
-        "from": "yah_64_c_dmg*"
-      },
-      {
         "from": "yah_64_n*"
-      },
-      {
-        "from": "yah_64_n_dmg*"
       }
     ]
   },

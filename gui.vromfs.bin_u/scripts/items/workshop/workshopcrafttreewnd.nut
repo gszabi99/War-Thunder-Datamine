@@ -23,7 +23,7 @@ let posFormatString = "{0}, {1}"
 
 let sizeAndPosViewConfig = {
   verticalArrow = kwarg(
-    function verticalArrow(itemSizes, bodyIdx, _arrowSizeX, arrowSizeY, arrowPosX, arrowPosY) {
+    function verticalArrow(itemSizes, bodyIdx, arrowSizeY, arrowPosX, arrowPosY) {
       let { arrowWidth, itemBlockHeight, itemBlockInterval, blockInterval,
         headerBlockInterval, itemHeight, itemsOffsetByBodies, paramsPosColumnsByBodies,
         itemInterval } = itemSizes
@@ -47,7 +47,7 @@ let sizeAndPosViewConfig = {
       }
   })
   horizontalArrow = kwarg(
-    function horizontalArrow(itemSizes, bodyIdx, arrowSizeX, _arrowSizeY, arrowPosX, arrowPosY) {
+    function horizontalArrow(itemSizes, bodyIdx, arrowSizeX, arrowPosX, arrowPosY) {
       let { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
         headerBlockInterval, itemsOffsetByBodies, itemHeight } = itemSizes
       let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
@@ -157,8 +157,8 @@ let sizeAndPosViewConfig = {
       itemInterval + columnPos,
       itemsOffsetByBodies[bodyIdx] + itemPosY * itemBlockHeight + headerBlockInterval)
   })
-  textBlock = kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX, _endPosY,
-      _sizeX, sizeY, texts, _reqItemExistsForDisplaying) {
+  textBlock = kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX,
+      sizeY, texts) {
     let { itemInterval, itemBlockHeight, itemBlockInterval,
       headerBlockInterval, itemsOffsetByBodies, textInTextBlockSize, maxBodyWidth } = itemSizes
     let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
@@ -469,7 +469,7 @@ let getAvailableRecipe = @(genId) ::ItemsManager.findItemById(genId)
 let function getTextBlocksView(textBlocks, itemSizes, workshopSet, itemsList) {
   return textBlocks
     .filter(@(block) !workshopSet.isRequireExistItemsForDisplaying(block, itemsList))
-    .map(@(block) sizeAndPosViewConfig.textBlock(block.__merge({ itemSizes })))
+    .map(@(block) sizeAndPosViewConfig.textBlock(block.__merge({ itemSizes }), KWARG_NON_STRICT))
 }
 
 let bodyButtonsConfig = {

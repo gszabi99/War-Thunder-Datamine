@@ -14,6 +14,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -1844,7 +1845,8 @@
   },
   "Sound": {
     "Engine": "engine05_R28_N1",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "eventNozzleTurn": "nozzle_turning"
   },
   "cockpit": {
     "headPos": [
@@ -3325,14 +3327,9 @@
   },
   "user_skin": {
     "name": "yak_38m",
-    "replace_tex": [
-      {
-        "from": "yak_38m_c*"
-      },
-      {
-        "from": "yak_38m_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "yak_38m_c*"
+    }
   },
   "parachutes": {
     "emitterRange": [

@@ -10,6 +10,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2248,16 +2249,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "f_86f40_japan_blue_impulse_c*",
-        "to": "f_86f40_japan_blue_impulse_c_tomoe*"
-      },
-      {
-        "from": "f_86f40_japan_blue_impulse_c_dmg*",
-        "to": "f_86f40_japan_blue_impulse_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_86f40_japan_blue_impulse_c*",
+      "to": "f_86f40_japan_blue_impulse_c_tomoe*"
+    }
   },
   "user_skin": {
     "replace_tex": [
@@ -2265,13 +2260,7 @@
         "from": "f_86f40_japan_blue_impulse_c*"
       },
       {
-        "from": "f_86f40_japan_blue_impulse_c_dmg*"
-      },
-      {
         "from": "f_86f40_japan_blue_impulse_n*"
-      },
-      {
-        "from": "f_86f40_japan_blue_impulse_n_dmg*"
       }
     ]
   },

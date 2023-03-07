@@ -17,6 +17,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode, isTimeRangeCondition,
   getRangeString, getUnlockConditions, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockTypeById } = require("unlocks")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -131,7 +132,7 @@ let function getUnlockNameText(unlockType, id) {
     return ::g_battle_tasks.getLocalizedTaskNameById(id)
 
   if (unlockType == -1)
-    unlockType = ::get_unlock_type_by_id(id)
+    unlockType = getUnlockTypeById(id)
 
   switch (unlockType) {
     case UNLOCKABLE_AIRCRAFT:

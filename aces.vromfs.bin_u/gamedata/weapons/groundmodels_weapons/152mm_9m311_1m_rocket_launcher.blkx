@@ -121,21 +121,17 @@
         0.1,
         0.1
       ],
+      "finsAoaHor": 0.12,
+      "finsAoaVer": 0.12,
+      "finsLatAccel": 22.6,
       "force": 10340.0,
       "timeFire": 2.6,
       "thrustDeviation": 0.0,
-      "operated": true,
-      "operatedDist": 10000.0,
-      "autoLeveling": true,
-      "autoAiming": true,
-      "maxAxisValues": 1.5,
-      "maxLateralAcceleration": 18.0,
-      "aimCorrectionVelMin": 600.0,
-      "wingAreaMult": 1.3,
-      "CyK": 5.0,
-      "CyMaxAoA": 2.5,
-      "loadFactorMax": 18.0,
+      "maxDistance": 10000.0,
+      "rangeMax": 10000.0,
       "timeLife": 18.5,
+      "wingAreaMult": 1.25,
+      "loadFactorMax": 18.0,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_133_160mm_metal_he",
       "groundCollisionEffect": "hit_133_160mm_dirt_he",
@@ -144,11 +140,11 @@
       "explosionPatchRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
+      "guidanceType": "saclos",
       "fireEffect": "rocket_fire_light_multiple",
       "smokeEffect": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
-      "maxDistance": 11000.0,
       "minDistance": 30.0,
       "spawnExplosionWreckage": false,
       "spawnExplosionFx": false,
@@ -200,7 +196,6 @@
       ],
       "rendinstDamageRadius": 4.0,
       "statType": "hydra",
-      "advancedMissiles": false,
       "useStartSpeed": true,
       "startSpeed": 10.0,
       "endSpeed": 910.0,
@@ -515,6 +510,23 @@
         "explosive": {
           "radius": 0.3,
           "offset": 0.8
+        }
+      },
+      "guidance": {
+        "controlConeFov": 120.0,
+        "breakLockMaxTime": 20.0,
+        "lineOfSightAutopilot": {
+          "timeOut": 0.0,
+          "crossDistToReqCrossVelMult": 2.5,
+          "reqCrossVelRationMax": 0.75,
+          "velDiffToReqAccelMult": 8.0,
+          "accelControl": {
+            "reqAccelMax": 18.0,
+            "accelControlProp": 0.009,
+            "accelControlIntg": 0.003,
+            "accelControlDiff": 0.0018,
+            "accelControlIntgLim": 0.2
+          }
         }
       },
       "DamageParts": {

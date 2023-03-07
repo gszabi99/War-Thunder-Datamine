@@ -2,7 +2,7 @@
   "model": "tiger_hap_france",
   "fmFile": "fm/tiger_hap_france.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
@@ -2618,7 +2618,7 @@
       "prevModification": "MAW_system_heli_false_thermal_targets",
       "tier": 3,
       "modClass": "weapon",
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -2657,40 +2657,22 @@
         "from": "tiger_hap_france_c*"
       },
       {
-        "from": "tiger_hap_france_c_dmg*"
-      },
-      {
         "from": "tiger_hap_france_n*"
-      },
-      {
-        "from": "tiger_hap_france_n_dmg*"
       }
     ]
   },
   "default_skin": {
-    "replace_tex": [
-      {
-        "from": "tiger_hap_france_c*",
-        "to": "tiger_hap_france_tiger_c*"
-      },
-      {
-        "from": "tiger_hap_france_c_dmg*",
-        "to": "tiger_hap_france_tiger_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "tiger_hap_france_c*",
+      "to": "tiger_hap_france_tiger_c*"
+    }
   },
   "skin": {
     "name": "tricolor",
-    "replace_tex": [
-      {
-        "from": "tiger_hap_france_c*",
-        "to": "tiger_hap_france_c*"
-      },
-      {
-        "from": "tiger_hap_france_c_dmg*",
-        "to": "tiger_hap_france_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "tiger_hap_france_c*",
+      "to": "tiger_hap_france_c*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

@@ -10,6 +10,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "arcadeHP": 100.0,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -2135,16 +2136,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "ar_234b_2_a*",
-        "to": "ar_234b_2_a_tomoe*"
-      },
-      {
-        "from": "ar_234b_2_a_dmg*",
-        "to": "ar_234b_2_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "ar_234b_2_a*",
+      "to": "ar_234b_2_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "arado_234",
@@ -2153,13 +2148,7 @@
         "from": "ar_234b_2_a*"
       },
       {
-        "from": "ar_234b_2_a_dmg*"
-      },
-      {
         "from": "ar_234b_2_n*"
-      },
-      {
-        "from": "ar_234b_2_n_dmg*"
       }
     ]
   },

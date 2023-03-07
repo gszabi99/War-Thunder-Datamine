@@ -104,7 +104,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
     let nearestAvailableMapToBattle = getNearestMapToBattle()
     if (!nearestAvailableMapToBattle)
-      return null
+      return ""
 
     let name = needMapName ? nearestAvailableMapToBattle.getNameText() : loc("mainmenu/btnWorldwar")
     if (nearestAvailableMapToBattle.isActive())

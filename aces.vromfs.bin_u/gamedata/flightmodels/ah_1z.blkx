@@ -1,7 +1,7 @@
 {
   "model": "ah_1z",
   "fmFile": "fm/ah_1z.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
@@ -4256,7 +4256,7 @@
       "prevModification": "MAW_system_heli_false_thermal_targets",
       "modClass": "weapon",
       "tier": 3,
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -4328,16 +4328,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "ah_1z_gray_c*",
-        "to": "ah_1z_gray_c_tomoe*"
-      },
-      {
-        "from": "ah_1z_gray_c_dmg*",
-        "to": "ah_1z_gray_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "ah_1z_gray_c*",
+      "to": "ah_1z_gray_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "ah_1z",
@@ -4346,13 +4340,7 @@
         "from": "ah_1z_gray_c*"
       },
       {
-        "from": "ah_1z_gray_c_dmg*"
-      },
-      {
         "from": "ah_1z_gray_n*"
-      },
-      {
-        "from": "ah_1z_gray_n_dmg*"
       }
     ]
   }

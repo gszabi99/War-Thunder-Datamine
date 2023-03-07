@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { get_game_params } = require("gameparams")
+let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 
 let AMMO = {
   PRIMARY      = 0, //bullets, modifications
@@ -109,8 +110,8 @@ let function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPON
   addAmmoData(getAmmoAmountData(unit, lastWeapon, AMMO.WEAPON))
 
   for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++) {
-    let modifName = ::get_last_bullets(unit.name, i)
-    if (modifName && modifName != "")
+    let modifName = getSavedBullets(unit.name, i)
+    if (modifName != "")
       addAmmoData(getAmmoAmountData(unit, modifName, AMMO.MODIFICATION))
   }
 

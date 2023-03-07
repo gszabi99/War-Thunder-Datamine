@@ -31,6 +31,7 @@
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -3116,28 +3117,16 @@
         "from": "j_7d_c*"
       },
       {
-        "from": "j_7d_c_dmg*"
-      },
-      {
         "from": "j_7d_n*"
-      },
-      {
-        "from": "j_7d_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
     "name": "china_tomoe",
-    "replace_tex": [
-      {
-        "from": "j_7d_c*",
-        "to": "j_7d_c*"
-      },
-      {
-        "from": "j_7d_c_dmg*",
-        "to": "j_7d_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "j_7d_c*",
+      "to": "j_7d_c*"
+    }
   },
   "parachutes": {
     "emitterRange": [

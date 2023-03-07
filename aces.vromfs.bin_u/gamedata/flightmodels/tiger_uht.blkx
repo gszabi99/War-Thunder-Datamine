@@ -1,7 +1,7 @@
 {
   "model": "tiger_uht",
   "fmFile": "fm/tiger_uht.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
@@ -2724,7 +2724,7 @@
       "prevModification": "MAW_system_heli_false_thermal_targets",
       "modClass": "weapon",
       "tier": 3,
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -2758,16 +2758,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "tiger_uht_germany_camo_c*",
-        "to": "tiger_uht_germany_camo_c_tomoe*"
-      },
-      {
-        "from": "tiger_uht_germany_camo_c_dmg*",
-        "to": "tiger_uht_germany_camo_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "tiger_uht_germany_camo_c*",
+      "to": "tiger_uht_germany_camo_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "tiger_uht",
@@ -2776,13 +2770,7 @@
         "from": "tiger_uht_germany_camo_c*"
       },
       {
-        "from": "tiger_uht_germany_camo_c_dmg*"
-      },
-      {
         "from": "tiger_uht_germany_camo_n*"
-      },
-      {
-        "from": "tiger_uht_germany_camo_n_dmg*"
       }
     ]
   },

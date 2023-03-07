@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { buildTimeStr,  buildDateStrShort, isInTimerangeByUtcStrings,
   getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { secondsToString } = require("%scripts/timeLoc.nut")
+let { secondsToString } = require("%appGlobals/timeLoc.nut")
 let { secondsToDays } = require("%sqstd/time.nut")
 
 const NEXT_DAYS = 14

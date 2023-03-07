@@ -56,7 +56,7 @@ let { debug_dump_stack } = require("dagor.debug")
 
   function reinitScreen() {
     let container = ::create_options_container("optionslist", this.optionItems, true, 0.5, false)
-    this.guiScene.replaceContentFromText("contentBody", container.tbl, container.tbl.len(), this)
+    this.guiScene.replaceContentFromText(this.scene.findObject("contentBody"), container.tbl, container.tbl.len(), this)
 
     local option = ::get_option(::USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
     this.minRankCondTypeObject = this.scene.findObject(option.id)

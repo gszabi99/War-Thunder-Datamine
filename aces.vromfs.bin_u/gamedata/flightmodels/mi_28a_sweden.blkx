@@ -1,7 +1,7 @@
 {
   "model": "mi_28a",
   "fmFile": "fm/mi_28a_sweden.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
@@ -2071,7 +2071,8 @@
         "blk": "gameData/sensors/su_spo-15.blk"
       },
       {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+        "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
+        "node": "optic1_gun"
       }
     ]
   },
@@ -3743,20 +3744,6 @@
             "slot": 0,
             "preset": "2a42_ltc_common"
           }
-        },
-        "sensors": {
-          "sensor": [
-            {
-              "blk": "gameData/sensors/ir_tracker.blk",
-              "node": "optic1_gun"
-            },
-            {
-              "blk": "gameData/sensors/su_spo-150.blk"
-            },
-            {
-              "blk": "gameData/sensors/su_l-140.blk"
-            }
-          ]
         }
       }
     },
@@ -3800,29 +3787,17 @@
   },
   "default_skin": {
     "name": "default",
-    "replace_tex": [
-      {
-        "from": "mi_28a_c*",
-        "to": "mi_28a_sweden_green_c*"
-      },
-      {
-        "from": "mi_28a_c_dmg*",
-        "to": "mi_28a_sweden_green_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "mi_28a_c*",
+      "to": "mi_28a_sweden_green_c*"
+    }
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "mi_28a_sweden_green_c*",
-        "to": "mi_28a_sweden_green_c_tomoe*"
-      },
-      {
-        "from": "mi_28a_sweden_green_c_dmg*",
-        "to": "mi_28a_sweden_green_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "mi_28a_sweden_green_c*",
+      "to": "mi_28a_sweden_green_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "mi_28a_sweden_green",
@@ -3831,13 +3806,7 @@
         "from": "mi_28a_sweden_green_c*"
       },
       {
-        "from": "mi_28a_sweden_green_c_dmg*"
-      },
-      {
         "from": "mi_28a_n*"
-      },
-      {
-        "from": "mi_28a_n_dmg*"
       }
     ]
   },

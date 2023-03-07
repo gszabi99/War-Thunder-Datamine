@@ -2202,7 +2202,19 @@
       }
     ],
     "hideDmParts": {
-      "node": "cannon2_dm"
+      "node": [
+        "cannon2_dm",
+        "cannon3_dm",
+        "cannon4_dm",
+        "cover5_dm",
+        "cover6_dm"
+      ]
+    },
+    "hideNodes": {
+      "node": [
+        "pylon_cannon_r6_l",
+        "pylon_cannon_r6_r"
+      ]
     }
   },
   "weapon_presets": {
@@ -2268,16 +2280,10 @@
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "bf_109g_10_a*",
-        "to": "bf_109g_10_a_tomoe*"
-      },
-      {
-        "from": "bf_109g_10_a_dmg*",
-        "to": "bf_109g_10_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "bf_109g_10_a*",
+      "to": "bf_109g_10_a_tomoe*"
+    }
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -2590,13 +2596,7 @@
         "from": "bf_109g_10_a*"
       },
       {
-        "from": "bf_109g_10_a_dmg*"
-      },
-      {
         "from": "bf_109g_10_n*"
-      },
-      {
-        "from": "bf_109g_10_n_dmg*"
       }
     ]
   },

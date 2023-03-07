@@ -297,13 +297,13 @@ let function getUnitResearchStatusTbl(unit, params) {
     : unitCurExp + flushExp >= unitReqExp
 
   return {
-    progressText        = isLockedSquadronVehicle ? ""
-      : isSquadronVehicle ? ::Cost().setSap(unitReqExp - unitCurExp).tostring()
+    progressText        =  isSquadronVehicle
+      ? ::Cost().setSap(unitReqExp - unitCurExp).tostring()
       : ::Cost().setRp(unitReqExp - unitCurExp).tostring()
     progressStatus      = isFull ? "researched"
       : isVehicleInResearch ? "research"
       : ""
-    isResearchPaused    = !isVehicleInResearch
+    isResearchPaused    = !isVehicleInResearch || isLockedSquadronVehicle
     researchProgressOld = (1000.0 * unitCurExp / unitReqExp).tointeger()
     researchProgressNew = (1000.0 * unitNewExp / unitReqExp).tointeger()
   }

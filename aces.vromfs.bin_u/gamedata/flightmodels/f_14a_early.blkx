@@ -2,7 +2,7 @@
   "model": "f_14a_early",
   "fmFile": "fm/f_14a_early.blk",
   "harmonizationSuffix": "_tomoe",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.62,
   "gearSinkRangeC": 0.35,
@@ -10,6 +10,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -19,7 +20,6 @@
   "havePointOfInterestDesignator": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -35,6 +35,7 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3822,27 +3823,41 @@
         "from": "f_14a_early_c*"
       },
       {
-        "from": "f_14a_early_c_dmg*"
-      },
-      {
         "from": "f_14a_early_n*"
-      },
-      {
-        "from": "f_14a_early_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_14a_early_c*",
-        "to": "f_14a_early_c_tomoe*"
-      },
-      {
-        "from": "f_14a_early_c_dmg*",
-        "to": "f_14a_early_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_14a_early_c*",
+      "to": "f_14a_early_c_tomoe*"
+    }
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "seat": [
+      "seat_01",
+      "seat_02"
+    ],
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "parachutes": {
     "emitterRange": [

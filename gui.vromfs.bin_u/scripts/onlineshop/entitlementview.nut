@@ -8,6 +8,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockTypeById } = require("unlocks")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -45,7 +46,7 @@ let getEntitlementGiftView = @(entitlement) (entitlement?.entitlementGift ?? [])
 })
 
 let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(unlockId) {
-  let unlockType = ::get_unlock_type_by_id(unlockId)
+  let unlockType = getUnlockTypeById(unlockId)
   let typeValid = unlockType >= 0
   let unlockTypeText = typeValid ? ::get_name_by_unlock_type(unlockType) : "unknown"
 

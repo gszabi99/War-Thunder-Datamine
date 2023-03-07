@@ -11,6 +11,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "arcadeHP": 10000.0,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -4695,16 +4696,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f9f_5_panther_a*",
-        "to": "f9f_5_panther_a_tomoe*"
-      },
-      {
-        "from": "f9f_5_panther_a_dmg*",
-        "to": "f9f_5_panther_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f9f_5_panther_a*",
+      "to": "f9f_5_panther_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "f9f_5",
@@ -4713,13 +4708,7 @@
         "from": "f9f_5_panther_a*"
       },
       {
-        "from": "f9f_5_panther_a_dmg*"
-      },
-      {
         "from": "f9f_5_panther_n*"
-      },
-      {
-        "from": "f9f_5_panther_n_dmg*"
       }
     ]
   },

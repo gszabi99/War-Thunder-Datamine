@@ -2616,14 +2616,6 @@
       {
         "from": "b_25j_20_usaaf_olive_n*",
         "to": "b_25j_30_vvs_ussr_n*"
-      },
-      {
-        "from": "b_25j_20_usaaf_olive_c_dmg*",
-        "to": "b_25j_30_vvs_ussr_c_dmg*"
-      },
-      {
-        "from": "b_25j_20_usaaf_olive_n_dmg*",
-        "to": "b_25j_30_vvs_ussr_n_dmg*"
       }
     ]
   },
@@ -3323,44 +3315,80 @@
       {
         "name": "b_25j_30_8xfab100",
         "blk": "gameData/FlightModels/weaponPresets/b_25j_30_8xfab100.blk",
-        "reqModification": "b-25_sbc"
+        "reqModification": "mi_4_fab_100"
       },
       {
         "name": "b_25j_30_4xfab100_6xfab50",
         "blk": "gameData/FlightModels/weaponPresets/b_25j_30_4xfab100_6xfab50.blk",
-        "reqModification": "b-25_sbc"
+        "reqModification": "mi_4_fab_100"
       },
       {
         "name": "b_25j_30_2xfab250_6xfab50",
         "blk": "gameData/FlightModels/weaponPresets/b_25j_30_2xfab250_6xfab50.blk",
-        "reqModification": "b-25_mbc"
+        "reqModification": "su_fab_250"
       },
       {
         "name": "b_25j_30_4xfab250",
         "blk": "gameData/FlightModels/weaponPresets/b_25j_30_4xfab250.blk",
-        "reqModification": "b-25_mbc"
+        "reqModification": "su_fab_250"
       },
       {
         "name": "b_25j_30_1xfab500_10xfab50",
         "blk": "gameData/FlightModels/weaponPresets/b_25j_30_1xfab500_10xfab50.blk",
-        "reqModification": "b-25_lbc"
+        "reqModification": "su_fab_500"
       },
       {
         "name": "b_25j_30_3xfab500",
         "blk": "gameData/FlightModels/weaponPresets/b_25j_30_3xfab500.blk",
-        "reqModification": "b-25_lbc"
+        "reqModification": "su_fab_500"
       }
     ]
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "50cal_universal": {},
     "50cal_ground_targets": {},
     "50cal_tracers": {},
@@ -3378,28 +3406,22 @@
     },
     "50cal_turret_ap": {},
     "50cal_turret_api": {},
-    "b-25_sbc": {
+    "mi_4_fab_100": {
       "modClass": "weapon",
       "tier": 1,
       "reqModLevel": 1.0
     },
-    "b-25_mbc": {
+    "su_fab_250": {
       "modClass": "weapon",
       "tier": 2,
       "reqModLevel": 3.0,
-      "reqModification": "b-25_sbc"
+      "reqModification": "mi_4_fab_100"
     },
-    "b-25_lbc": {
+    "su_fab_500": {
       "modClass": "weapon",
       "tier": 4,
       "reqModLevel": 11.0,
-      "reqModification": "b-25_mbc"
-    },
-    "air_extinguisher": {
-      "image": "#ui/gameuiskin#engine_extinguisher.png",
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
+      "reqModification": "su_fab_250"
     }
   }
 }

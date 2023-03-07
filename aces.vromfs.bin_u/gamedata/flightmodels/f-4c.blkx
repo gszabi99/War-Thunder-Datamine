@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -4257,27 +4258,15 @@
         "from": "f_4c_c*"
       },
       {
-        "from": "f_4c_c_dmg*"
-      },
-      {
         "from": "f_4c_n*"
-      },
-      {
-        "from": "f_4c_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f_4c_c*",
-        "to": "f_4c_c_tomoe*"
-      },
-      {
-        "from": "f_4c_c_dmg*",
-        "to": "f_4c_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f_4c_c*",
+      "to": "f_4c_c_tomoe*"
+    }
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

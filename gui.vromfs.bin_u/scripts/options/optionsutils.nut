@@ -147,7 +147,7 @@ let function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat 
     descr.value = valueIdx
 }
 
-let function fillHueOption(descr, id, defHue = null, curHue = null) {
+let function fillHueOption(descr, id, curHue = null, defHue = null, defSat = null, defBri = null) {
   let hueStep = 22.5
   if (curHue == null)
     curHue = get_gui_option(descr.type)
@@ -158,7 +158,7 @@ let function fillHueOption(descr, id, defHue = null, curHue = null) {
   descr.items = []
   descr.values = []
   if (defHue != null)
-    addHueParamsToOptionDescr(descr, defHue, loc("options/hudDefault"))
+    addHueParamsToOptionDescr(descr, defHue, loc("options/hudDefault"), defSat, defBri)
 
   //default palette
   local even = false
@@ -263,7 +263,7 @@ return {
   createDefaultOption
   fillBoolOption
   fillHueSaturationBrightnessOption
-  fillHueOption = fillHueOption
+  fillHueOption
   fillMultipleHueOption
   fillDynMapOption
   setHSVOption_ThermovisionColor

@@ -40,7 +40,6 @@
   ],
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "standardExhaustFxType": "jet_exhaust_heavy",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust_heavy",
@@ -59,6 +58,7 @@
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2262,7 +2262,8 @@
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
             "ilsColor": "Cv8KeA==",
-            "bloomForce": 0.12
+            "bloomForce": 0.115,
+            "lineWidthScale": 0.6
           }
         }
       ]
@@ -3972,13 +3973,7 @@
         "from": "mig_29_9_12a_c*"
       },
       {
-        "from": "mig_29_9_12a_c_dmg*"
-      },
-      {
         "from": "mig_29_9_12a_n*"
-      },
-      {
-        "from": "mig_29_9_12a_n_dmg*"
       }
     ]
   },
@@ -3996,8 +3991,24 @@
   },
   "bailout": {
     "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
     "wreck": "blister1",
-    "hide": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
     "fxEmitter": "blister1",
     "fxType": "catapult_expl_ejection"
   },

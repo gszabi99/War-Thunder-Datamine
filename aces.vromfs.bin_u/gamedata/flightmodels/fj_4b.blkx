@@ -12,6 +12,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1100kph",
@@ -4128,16 +4129,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "fj_4b_c*",
-        "to": "fj_4b_c_tomoe*"
-      },
-      {
-        "from": "fj_4b_c_dmg*",
-        "to": "fj_4b_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "fj_4b_c*",
+      "to": "fj_4b_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "fj_4b",
@@ -4146,13 +4141,7 @@
         "from": "fj_4b_c*"
       },
       {
-        "from": "fj_4b_c_dmg*"
-      },
-      {
         "from": "fj_4b_n*"
-      },
-      {
-        "from": "fj_4b_n_dmg*"
       }
     ]
   },

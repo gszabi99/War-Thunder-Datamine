@@ -2,6 +2,7 @@ options indenting = 2
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
 options no_aot = true
+options strict_smart_pointers
 
 module apply_in_context shared private
 
@@ -30,7 +31,7 @@ class AppendCondAnnotation : AstFunctionAnnotation
 
     for ann in func.annotations
       if ann.annotation.name=="apply_in_context"
-        if !(find_arg("patched",ann.arguments) is nothing)
+        if !(find_arg(ann.arguments,"patched") is nothing)
           return true
 
     if args.length != 1
@@ -72,14 +73,14 @@ class AppendCondAnnotation : AstFunctionAnnotation
       ctxFnBlockList |> emplace_new <| qmacro_expr(${*$i(resName) = $c(ctxCloneFnName)($a(callInCtxArguments));})
     else
       ctxFnBlockList |> emplace_new <| qmacro($c(ctxCloneFnName)($a(callInCtxArguments)))
-    var ctxFn <- qmacro_function(ctxFnName) <| $ ( $a(ctxFnArguments) ) : void
+    var inscope ctxFn <- qmacro_function(ctxFnName) <| $ ( $a(ctxFnArguments) ) : void
       unsafe
         verify(has_debug_agent_context($v(contextName)),"debug agent is not installed")
         verify(addr(get_debug_agent_context($v(contextName))) == addr(this_context()),"agent context mismatch")
         $b(ctxFnBlockList)
     compiling_module() |> add_function(ctxFn)
 
-    var fn <- clone_function(func)
+    var inscope fn <- clone_function(func)
     fn.name := ctxCloneFnName
     fn.flags |= FunctionFlags generated | FunctionFlags privateFunction | FunctionFlags exports
     func.body := null
@@ -104,6 +105,5 @@ class AppendCondAnnotation : AstFunctionAnnotation
           verify(addr(get_debug_agent_context($v(contextName))) != addr(this_context()),"agent context mismatch")
           $b(funcBlocklist)
     compiling_module() |> add_function(fn)
-
     return true
 

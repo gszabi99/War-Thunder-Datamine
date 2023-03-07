@@ -708,6 +708,29 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "contrail": {
+    "fx": "smoke_air_contrail_cmps_fx",
+    "lifeTime": 18.0,
+    "alphaHeightRange": [
+      50.0,
+      300.0
+    ],
+    "isTrail": true,
+    "sortDistanceOffset": 20.0,
+    "numInstances": 50,
+    "numReserved": 5,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects",
+    "inversionTrailVelMult": 0.03,
+    "jetAfterburnerRpmToInversionTrailVel": 300.0
+  },
+  "contrail_lq": {
+    "fx": "smoke_air_contrail_low_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 15,
+    "onePointNumber": 1,
+    "onePointRadius": 1.0
+  },
   "aerobatics_smoke_fxs": {
     "smoke_fx": [
       {
@@ -2573,11 +2596,26 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "ship_exhaust_med_lq": {
+    "fx": "smoke_exhaust_ship_med_low_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 15,
+    "onePointNumber": 1,
+    "onePointRadius": 1.0
+  },
   "ship_exhaust_small": {
     "fx": "smoke_exhaust_ship_small_cmps_fx",
     "numInstances": 50,
     "numReserved": 8,
     "onePointNumber": 6,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "ship_exhaust_med_low": {
+    "fx": "smoke_exhaust_ship_med_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "farPlane": 15000.0,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
@@ -7114,22 +7152,6 @@
     "soundEnableDistance": 5000.0,
     "farPlane": 15000.0
   },
-  "contrail": {
-    "fx": "smoke_air_contrail_cmps_fx",
-    "lifeTime": 18.0,
-    "alphaHeightRange": [
-      50.0,
-      300.0
-    ],
-    "isTrail": true,
-    "sortDistanceOffset": 20.0,
-    "numInstances": 50,
-    "numReserved": 5,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects",
-    "inversionTrailVelMult": 0.03,
-    "jetAfterburnerRpmToInversionTrailVel": 300.0
-  },
   "waypoint_ground_arrow": {
     "fx": "misc_markers_waypoint_arrow_ground_cmps_fx",
     "group": "highres",
@@ -7362,7 +7384,7 @@
     "onePointNumber": 15,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "concrete_mid",
+    "sfxEvent": "dirt_small",
     "soundEnableDistance": 50.0
   },
   "ad_dust_red_bricks": {
@@ -7680,7 +7702,7 @@
     "maxScale": 0.9,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "concrete_mid",
+    "sfxEvent": "dirt_small",
     "soundEnableDistance": 50.0
   },
   "ad_metal_snow": {
@@ -7757,7 +7779,7 @@
     "xScale": 1.2,
     "sfxPath": "tanks/object_crash",
     "sfxPathStudio": "ground/object_crash",
-    "sfxEvent": "car_wreck",
+    "sfxEvent": "car_wreck_big",
     "soundEnableDistance": 150.0
   },
   "ad_car_wreck_small": {

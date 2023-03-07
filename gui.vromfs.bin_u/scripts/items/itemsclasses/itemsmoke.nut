@@ -9,6 +9,7 @@ let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.n
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { select_training_mission } = require("guiMission")
+let { getUnlockTypeById } = require("unlocks")
 
 ::items_classes.Smoke <- class extends ::BaseItem {
   static iType = itemType.SMOKE
@@ -23,7 +24,7 @@ let { select_training_mission } = require("guiMission")
     this.id = blk.unlockId
     this.usingStyle = this.getUsingStyle(blk)
     this.canBuy = true
-    this.unlockType = ::get_unlock_type_by_id(this.id)
+    this.unlockType = getUnlockTypeById(this.id)
     this.tags = []
     let tagsBlk = blk?.tags
     if (tagsBlk)

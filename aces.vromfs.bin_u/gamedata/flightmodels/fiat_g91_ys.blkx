@@ -14,6 +14,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
@@ -2692,16 +2693,10 @@
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "fiat_g91_ys_prototype_c*",
-        "to": "fiat_g91_ys_prototype_c_tomoe*"
-      },
-      {
-        "from": "fiat_g91_ys_prototype_c_dmg*",
-        "to": "fiat_g91_ys_prototype_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "fiat_g91_ys_prototype_c*",
+      "to": "fiat_g91_ys_prototype_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "fiat_g91_ys",
@@ -2710,13 +2705,7 @@
         "from": "fiat_g91_ys_prototype_c*"
       },
       {
-        "from": "fiat_g91_ys_prototype_c_dmg*"
-      },
-      {
         "from": "fiat_g91_ys_prototype_n*"
-      },
-      {
-        "from": "fiat_g91_ys_prototype_n_dmg*"
       },
       {
         "from": "fiat_g91_ys_pylon_c*"

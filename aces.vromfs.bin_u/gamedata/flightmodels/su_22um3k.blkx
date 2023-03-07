@@ -2,7 +2,7 @@
   "model": "su_22um3k",
   "fmFile": "fm/su_22um3k.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.376,
   "gearSinkRangeC": 0.3,
   "jetEnginePowerFullScale": true,
@@ -20,6 +20,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -4040,13 +4041,7 @@
         "from": "su_22um3k_c*"
       },
       {
-        "from": "su_22um3k_c_dmg*"
-      },
-      {
         "from": "su_22um3k_n*"
-      },
-      {
-        "from": "su_22um3k_n_dmg*"
       }
     ]
   },

@@ -8,6 +8,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -3070,16 +3071,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "kfir_canard_c*",
-        "to": "kfir_canard_c*"
-      },
-      {
-        "from": "kfir_canard_c_dmg*",
-        "to": "kfir_canard_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "kfir_canard_c*",
+      "to": "kfir_canard_c*"
+    }
   },
   "user_skin": {
     "name": "kfir_canard",
@@ -3088,13 +3083,7 @@
         "from": "kfir_canard_c*"
       },
       {
-        "from": "kfir_canard_c_dmg*"
-      },
-      {
         "from": "kfir_canard_n*"
-      },
-      {
-        "from": "kfir_canard_n_dmg*"
       }
     ]
   },

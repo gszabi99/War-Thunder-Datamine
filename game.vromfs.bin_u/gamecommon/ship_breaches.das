@@ -191,7 +191,8 @@ def ship_init_mod_handle_es(evt : CmdInitComponent;
   let unit = get_unit(uid)
   assert(unit != null)
   if unit != null && unit.modBlk != null
-    ship_water_mass_vel_mut = unit.modBlk |> datablock_getReal("waterMassVelMult", 1.0f)
+    let defaultVal = unit.isHumanPlayer ? 1.0f : 0.0f
+    ship_water_mass_vel_mut = unit.modBlk |> datablock_getReal("waterMassVelMult", defaultVal)
 
 
 [es]
@@ -367,7 +368,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     return
 
   var cover_id = -1
-  let part_id = PartId(evt.packedPartId)
+  let part_id = evt.partId
   for i in iter_range(ship_cover_parts_part_id)
     if ship_cover_parts_part_id[i].id == part_id.id
       cover_id = i
@@ -407,9 +408,9 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   ship_breaches_part_id |> push(part_id)
   ship_breaches_cover_id |> push(cover_id)
   ship_breaches_leaked_amount |> push(0.0f)
-  ship_breaches_offender |> push(make_offender_data(evt.offenderUnitId, evt.offenderBulletId))
+  ship_breaches_offender |> push(evt.offender)
 
-  sendEvent(eid, [[EventShipOnGotBreach breachId=evt.id, localPos=evt.localPos, offenderUnitId=evt.offenderUnitId, offenderBulletId=evt.offenderBulletId]])
+  sendEvent(eid, [[EventShipOnGotBreach breachId=evt.id, localPos=evt.localPos, offender=evt.offender]])
   if ship_unwatering_remaining_time > 0.0f || ship_damage_control_running
     ship_unwatering_remaining_time = -1.0f
     sendEvent(eid, [[EventShipRequestRepairBreaches repair=true]])
@@ -418,6 +419,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     sendEvent(eid, [[EventShipRemoveBreach breachId=breach_id_to_remove]])
 
 
+[es]
 def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
                                eid : EntityId;
                                uid : int;
@@ -433,7 +435,7 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
   if ship == null || unit.isDelayed
     return
 
-  let part_id = PartId(evt.packedPartId)
+  let part_id = evt.partId
   let ship_props = ship.shipProps
   for i in iter_range(ship_cover_parts_part_id)
     if ship_cover_parts_part_id[i].id == part_id.id
@@ -441,12 +443,11 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
       if unit.isAuthority
         sendEvent(eid, [[EventShipAddBreach
           id=ship_breaches_next_id++,
-          packedPartId=part_id.packed,
+          partId=part_id,
           size=ship_cover_parts_water[i].y / (ship_props.fatalBreachDrownTime * 50.0f * ship_props.breachWaterMassMult),
           localPos = evt.localPos,
           localNormal = evt.localNormal,
-          offenderUnitId = evt.offenderUnitId,
-          offenderBulletId = evt.offenderBulletId
+          offender = evt.offender
         ]])
       break
 

@@ -41,12 +41,13 @@
   },
   "bullet": {
     "bulletCount": 25,
-    "mass": 40.6,
+    "mass": 40.2,
     "explosiveType": "melinite",
-    "explosiveMass": 4.1,
+    "explosiveMass": 3.1,
     "caliber": 0.1386,
     "speed": 700.0,
-    "maxDistance": 20000.0,
+    "maxDistance": 50000.0,
+    "Cx": 0.28,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
@@ -69,10 +70,6 @@
     "splashFallBySquare": true,
     "relativeVelHitShift": [
       300.0,
-      1000.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
       1000.0
     ],
     "rendinstDamageRadius": 5.0,
@@ -357,12 +354,13 @@
   "138mm_fr_40_1927_he": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 40.6,
+      "mass": 40.2,
       "explosiveType": "melinite",
-      "explosiveMass": 4.1,
+      "explosiveMass": 3.1,
       "caliber": 0.1386,
       "speed": 700.0,
-      "maxDistance": 20000.0,
+      "maxDistance": 50000.0,
+      "Cx": 0.28,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
@@ -385,10 +383,6 @@
       "splashFallBySquare": true,
       "relativeVelHitShift": [
         300.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
         1000.0
       ],
       "rendinstDamageRadius": 5.0,
@@ -676,12 +670,13 @@
       "bulletCount": 25,
       "mass": 39.9,
       "explosiveType": "melinite",
-      "explosiveMass": 2.4,
+      "explosiveMass": 2.3,
       "caliber": 0.1386,
       "speed": 700.0,
-      "maxDistance": 20000.0,
-      "normalizationPreset": "ap",
-      "ricochetPreset": "ap",
+      "maxDistance": 50000.0,
+      "Cx": 0.28,
+      "normalizationPreset": "apbc",
+      "ricochetPreset": "apbc",
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -689,8 +684,8 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "sap_tank",
-      "slopeEffectPreset": "ap",
+      "bulletType": "sapbc_tank",
+      "slopeEffectPreset": "apbc",
       "fresnel": [
         0.23,
         0.1,

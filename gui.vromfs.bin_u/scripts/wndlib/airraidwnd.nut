@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
-let { buildTimeStr } = require("%scripts/timeLoc.nut")
+let { buildTimeStr } = require("%appGlobals/timeLoc.nut")
 let { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
 point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
 let { get_time_msec } = require("dagor.time")

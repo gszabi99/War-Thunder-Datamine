@@ -2,12 +2,13 @@
   "model": "a_6e_tram",
   "fmFile": "fm/a_6e_tram.blk",
   "harmonizationSuffix": "_tomoe",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gearSinkRangeLR": 0.7,
   "gearSinkRangeC": 0.335,
   "haveCCIPForRocket": true,
@@ -4346,16 +4347,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "a_6e_tram_c*",
-        "to": "a_6e_tram_c_tomoe*"
-      },
-      {
-        "from": "a_6e_tram_c_dmg*",
-        "to": "a_6e_tram_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "a_6e_tram_c*",
+      "to": "a_6e_tram_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "a_6e_tram",
@@ -4364,13 +4359,7 @@
         "from": "a_6e_tram_c*"
       },
       {
-        "from": "a_6e_tram_c_dmg*"
-      },
-      {
         "from": "a_6e_tram_n*"
-      },
-      {
-        "from": "a_6e_tram_n_dmg*"
       }
     ]
   },

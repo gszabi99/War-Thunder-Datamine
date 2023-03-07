@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -3189,16 +3190,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "nesher_c*",
-        "to": "nesher_c_tomoe*"
-      },
-      {
-        "from": "nesher_c_dmg*",
-        "to": "nesher_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "nesher_c*",
+      "to": "nesher_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "nesher",
@@ -3207,13 +3202,7 @@
         "from": "nesher_c*"
       },
       {
-        "from": "nesher_c_dmg*"
-      },
-      {
         "from": "nesher_n*"
-      },
-      {
-        "from": "nesher_n_dmg*"
       }
     ]
   },

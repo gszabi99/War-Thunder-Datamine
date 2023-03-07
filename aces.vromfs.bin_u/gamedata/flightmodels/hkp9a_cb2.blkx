@@ -2,7 +2,7 @@
   "model": "hkp9a_cb2",
   "fmFile": "fm/hkp9a_cb2.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -1226,16 +1226,10 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "hkp9a_cb2_c*",
-        "to": "hkp9a_cb2_c_tomoe*"
-      },
-      {
-        "from": "hkp9a_cb2_c_dmg*",
-        "to": "hkp9a_cb2_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "hkp9a_cb2_c*",
+      "to": "hkp9a_cb2_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "hkp9a_cb2",
@@ -1244,13 +1238,7 @@
         "from": "hkp9a_cb2_c*"
       },
       {
-        "from": "hkp9a_cb2_c_dmg*"
-      },
-      {
         "from": "hkp9a_cb2_n*"
-      },
-      {
-        "from": "hkp9a_cb2_n_dmg*"
       }
     ]
   },

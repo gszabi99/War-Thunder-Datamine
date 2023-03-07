@@ -1424,7 +1424,7 @@ let function isInArrayRecursive(v, arr) {
     let curObj = this.getCurListboxObj()
     if (!curObj)
       return
-    this.scene.findObject("listbox-hint").setValue("" + curObj.tooltip, true)
+    this.scene.findObject("listbox-hint").setValue(curObj.tooltip)
   }
 
   function askPresetsWnd() {

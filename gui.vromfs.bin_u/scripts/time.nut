@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { format, split_by_chars } = require("string")
 let regexp2 = require("regexp2")
 let math = require("math")
-let timeBase = require("timeLoc.nut")
+let timeBase = require("%appGlobals/timeLoc.nut")
 let dagor_iso8601 = require("dagor.iso8601")
 let { get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime,
   unixtime_to_utc_timetbl, utc_timetbl_to_unixtime

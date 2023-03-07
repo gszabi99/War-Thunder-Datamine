@@ -1,7 +1,7 @@
 {
   "model": "mig_27m",
   "fmFile": "fm/mig_27m.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.274,
   "gearSinkRangeC": 0.333,
@@ -23,6 +23,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -4262,13 +4263,7 @@
         "from": "mig_27m_c*"
       },
       {
-        "from": "mig_27m_c_dmg*"
-      },
-      {
         "from": "mig_27m_n*"
-      },
-      {
-        "from": "mig_27m_n_dmg*"
       }
     ]
   },

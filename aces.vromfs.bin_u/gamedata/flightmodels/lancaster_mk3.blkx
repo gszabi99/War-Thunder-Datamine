@@ -48,6 +48,11 @@
         "hp": 35.0
       }
     },
+    "armor7": {
+      "armor8_dm": {
+        "hp": 40.0
+      }
+    },
     "armor8": {
       "armor1_dm": {
         "hp": 40.0
@@ -56,7 +61,7 @@
         "hp": 40.0
       }
     },
-    "armor9_5": {
+    "armor9": {
       "armor7_dm": {
         "hp": 40.0
       }
@@ -412,6 +417,9 @@
       },
       {
         "name": "armor7_dm"
+      },
+      {
+        "name": "armor8_dm"
       },
       {
         "name": "cover1_dm"
@@ -2952,10 +2960,7 @@
           ]
         }
       }
-    ],
-    "hideDmParts": {
-      "node": "armor7_dm"
-    }
+    ]
   },
   "weapon_presets": {
     "preset": [
@@ -3666,7 +3671,7 @@
     },
     "air_extinguisher": {
       "prevModification": "lancaster_m1_flyers_vest",
-      "image": "#ui/gameuiskin#engine_extinguisher.png",
+      "image": "#ui/gameuiskin#engine_extinguisher",
       "tier": 4,
       "modClass": "armor",
       "invertEnableLogic": false
@@ -3712,25 +3717,13 @@
         "from": "lancaster_c*"
       },
       {
-        "from": "lancaster_c_dmg*"
-      },
-      {
         "from": "lancaster_sec_c*"
-      },
-      {
-        "from": "lancaster_sec_c_dmg*"
       },
       {
         "from": "lancaster_n*"
       },
       {
-        "from": "lancaster_n_dmg*"
-      },
-      {
         "from": "lancaster_sec_n*"
-      },
-      {
-        "from": "lancaster_sec_n_dmg*"
       }
     ]
   },

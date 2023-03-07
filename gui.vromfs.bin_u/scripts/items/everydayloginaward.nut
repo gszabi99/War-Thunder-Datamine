@@ -14,6 +14,7 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { todayLoginExp, loginStreak, getExpRangeTextOfLoginStreak } = require("%scripts/battlePass/seasonState.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { register_command } = require("console")
+let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
 
 let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -152,7 +153,7 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function callItemsRoulette() {
-    return ::ItemsRoulette.init(this.getTrophyIdName(this.getAwardName()),
+    return initItemsRoulette(this.getTrophyIdName(this.getAwardName()),
                                  this.rewardsArray,
                                  this.scene.findObject("award_image"),
                                  this,
@@ -313,7 +314,7 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let obj = this.scene.findObject("rewards_list")
-    ::ItemsRoulette.skipAnimation(obj)
+    skipItemsRouletteAnimation(obj)
     this.onOpenAnimFinish()
     this.fillOpenedChest()
   }

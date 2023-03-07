@@ -1,7 +1,7 @@
 {
   "model": "ah_64a",
   "fmFile": "fm/ah_64a.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForGun": true,
@@ -2829,7 +2829,7 @@
     "heli_night_vision_system": {
       "prevModification": "heli_counterMeasures",
       "tier": 3,
-      "image": "#ui/gameuiskin#thermal_sight.png",
+      "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
           "gunnerIr": {
@@ -2863,16 +2863,10 @@
   },
   "default_skin": {
     "name": "default",
-    "replace_tex": [
-      {
-        "from": "ah_64a_c*",
-        "to": "ah_64a_greece_c*"
-      },
-      {
-        "from": "ah_64a_c_dmg*",
-        "to": "ah_64a_greece_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "ah_64a_c*",
+      "to": "ah_64a_greece_c*"
+    }
   },
   "user_skin": {
     "name": "ah_64a_greece",
@@ -2881,13 +2875,7 @@
         "from": "ah_64a_greece_c*"
       },
       {
-        "from": "ah_64a_greece_c_dmg*"
-      },
-      {
         "from": "ah_64a_n*"
-      },
-      {
-        "from": "ah_64a_n_dmg*"
       }
     ]
   },

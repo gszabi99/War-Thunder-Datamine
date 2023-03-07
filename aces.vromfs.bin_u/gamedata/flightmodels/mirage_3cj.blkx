@@ -9,6 +9,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -2455,16 +2456,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "mirage_3cj_c*",
-        "to": "mirage_3cj_c_tomoe*"
-      },
-      {
-        "from": "mirage_3cj_c_dmg*",
-        "to": "mirage_3cj_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "mirage_3cj_c*",
+      "to": "mirage_3cj_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "mirage_3cj",
@@ -2473,13 +2468,7 @@
         "from": "mirage_3cj_c*"
       },
       {
-        "from": "mirage_3cj_c_dmg*"
-      },
-      {
         "from": "mirage_3cj_n*"
-      },
-      {
-        "from": "mirage_3cj_n_dmg*"
       }
     ]
   },

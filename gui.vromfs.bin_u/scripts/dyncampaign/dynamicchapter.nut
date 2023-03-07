@@ -33,7 +33,7 @@ let { get_cur_game_mode_name } = require("mission")
   prevSelect = null
 
   function initScreen() {
-    this.guiScene.replaceContent("mission_desc", "%gui/missionDescr.blk")
+    this.guiScene.replaceContent(this.scene.findObject("mission_desc"), "%gui/missionDescr.blk", null)
     let headerTitle = this.scene.findObject("chapter_name")
     headerTitle.setValue(loc("mainmenu/btnDynamic"))
     ::showBtn("btn_back", false, this.scene.findObject("nav-help"))

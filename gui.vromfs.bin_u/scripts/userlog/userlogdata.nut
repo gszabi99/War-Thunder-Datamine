@@ -24,6 +24,7 @@ let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.n
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.nut")
 let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
+let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
 
 ::shown_userlog_notifications <- []
 
@@ -291,8 +292,8 @@ local logNameByType = {
       if (unlockType == UNLOCKABLE_TITLE && !onStartAwards)
         ::my_stats.markStatsReset()
 
-      if ((! ::is_unlock_need_popup(blk.body.unlockId)
-          && ! ::is_unlock_need_popup_in_menu(blk.body.unlockId))
+      if ((!isUnlockNeedPopup(blk.body.unlockId)
+          && !isUnlockNeedPopupInMenu(blk.body.unlockId))
         || !(popupMask & USERLOG_POPUP.UNLOCK)) {
         if (!onStartAwards
             && (!blk?.body.popupInDebriefing || !::isHandlerInScene(::gui_handlers.DebriefingModal))
@@ -311,8 +312,8 @@ local logNameByType = {
         continue
       }
 
-      if (::is_unlock_need_popup_in_menu(blk.body.unlockId)) {
-        // if new unlock passes 'is_unlock_need_popup_in_menu'
+      if (isUnlockNeedPopupInMenu(blk.body.unlockId)) {
+        // if new unlock passes 'isUnlockNeedPopupInMenu'
         // we need to check if there is Popup Dialog
         // needed to be shown by this unlock
         // (check is at verifyPopupBlk)

@@ -75,7 +75,7 @@ let function tankDmgIndicator() {
   return {
     rendObj = ROBJ_IMAGE
     watch = [ IsMlwsLwsHudVisible, isVisibleDmgIndicator, dmgIndicatorStates ]
-    pos = dmgIndicatorStates.value.pos
+    pos = dmgIndicatorStates.value?.pos ?? [0, 0]
     size = dmgIndicatorStates.value.size
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER

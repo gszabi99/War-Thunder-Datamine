@@ -16,6 +16,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -1968,7 +1969,9 @@
           ],
           "ilsOffsetForce": 0.0,
           "brightnessMult": 3.5,
-          "ilsColor": "Cv8KeA=="
+          "ilsColor": "Cv8KeA==",
+          "bloomForce": 0.115,
+          "lineWidthScale": 0.6
         }
       }
     },
@@ -3257,13 +3260,7 @@
         "from": "mig_23m_c*"
       },
       {
-        "from": "mig_23m_dmg*"
-      },
-      {
         "from": "mig_23m_n*"
-      },
-      {
-        "from": "mig_23m_n_dmg*"
       }
     ]
   },

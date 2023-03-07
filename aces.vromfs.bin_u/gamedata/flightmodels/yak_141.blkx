@@ -42,12 +42,12 @@
   "jetEnginePowerFullScale": true,
   "laserOpticSightColor": "//8A3A==",
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -59,7 +59,7 @@
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
-  "fightAiBehaviour": "assault",
+  "fightAiBehaviour": "fighter",
   "autopilotImpl": "Full",
   "fullAutopilotIndSpeedTransition": [
     210.0,
@@ -70,9 +70,7 @@
     0.3
   ],
   "canTakeoffWithoutGear": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1949,7 +1947,8 @@
   },
   "Sound": {
     "Engine": "engine05_r79b300_WEP",
-    "gun": "gun_default"
+    "gun": "gun_default",
+    "eventNozzleTurn": "nozzle_turning"
   },
   "cockpit": {
     "hasAirCannonIlsMode": true,
@@ -2132,11 +2131,11 @@
       ],
       "rpm1": [
         0.0,
-        12000.0
+        13500.0
       ],
       "rpm2": [
         0.0,
-        12000.0
+        13500.0
       ],
       "nozzle_pressure": [
         3000.0,
@@ -2183,7 +2182,8 @@
           ],
           "page": {
             "type": "radar",
-            "radarScale": 0.9
+            "radarScale": 0.9,
+            "hideRadarBackground": true
           }
         },
         {
@@ -2201,7 +2201,9 @@
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
-            "ilsColor": "Cv8KeA=="
+            "ilsColor": "Cv8KeA==",
+            "bloomForce": 0.115,
+            "lineWidthScale": 0.6
           }
         }
       ]
@@ -2382,7 +2384,7 @@
                 "emitter": "flare1",
                 "flash": "flare1",
                 "dm": "cannon1_dm",
-                "bullets": 150,
+                "bullets": 120,
                 "spread": 1.0,
                 "counterIndex": 1
               },
@@ -2432,7 +2434,7 @@
                 "emitter": "flare1",
                 "flash": "flare1",
                 "dm": "cannon1_dm",
-                "bullets": 150,
+                "bullets": 120,
                 "spread": 1.0,
                 "counterIndex": 1
               },
@@ -2526,29 +2528,6 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "r27er",
-            "reqModification": "mig_29_r_27er",
-            "ShowNodes": {
-              "node": [
-                "pylon001",
-                "apu_27_001"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_27er.blk",
-              "emitter": "r_27_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "flapsRange": [
-                0.0,
-                0.5
-              ]
             }
           },
           {
@@ -2811,11 +2790,7 @@
               "emitter": "r_27_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
-              "flapsRange": [
-                0.0,
-                0.5
-              ]
+              "separate": true
             }
           },
           {
@@ -3084,11 +3059,7 @@
               "emitter": "r_27_003",
               "bullets": 1,
               "external": true,
-              "separate": true,
-              "flapsRange": [
-                0.0,
-                0.5
-              ]
+              "separate": true
             }
           },
           {
@@ -3335,29 +3306,6 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "r27er",
-            "reqModification": "mig_29_r_27er",
-            "ShowNodes": {
-              "node": [
-                "pylon004",
-                "apu_27_004"
-              ]
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_r_27er.blk",
-              "emitter": "r_27_004",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "flapsRange": [
-                0.0,
-                0.5
-              ]
             }
           },
           {
@@ -4005,13 +3953,7 @@
         "from": "yak_141_c*"
       },
       {
-        "from": "yak_141_c_dmg*"
-      },
-      {
         "from": "yak_141_n*"
-      },
-      {
-        "from": "yak_141_n_dmg*"
       }
     ]
   },
@@ -4026,6 +3968,29 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

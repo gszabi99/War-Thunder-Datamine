@@ -221,6 +221,7 @@ let function pitchWrap(width, height) {
   }
 }
 
+let BVBMode = Computed(@() !CCIPMode.value && !AirCannonMode.value && RadarModeNameId.value >= 0 && (modeNames[RadarModeNameId.value] == "hud/PD ACM" || modeNames[RadarModeNameId.value] == "hud/IRST ACM"))
 let function basicInfo(width, height) {
   return @() {
     watch = [AirCannonMode, AirNoTargetCannonMode]
@@ -498,14 +499,14 @@ let radarReticle = @() {
 }
 
 let radar = @() {
-  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode]
+  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode]
   size = flex()
   children = IsRadarVisible.value && !CCIPMode.value && !AirNoTargetCannonMode.value ? [
-    (!Irst.value || RadarTargetValid.value ? radarDistGrid : null),
-    (!Irst.value || RadarTargetValid.value ? radarMaxDist : null),
-    (!Irst.value && !RadarTargetValid.value ? radarElevGrid : null),
-    (!Irst.value && !RadarTargetValid.value ? radarMaxElev : null),
-    {
+    ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarDistGrid : null),
+    ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarMaxDist : null),
+    (!Irst.value && !RadarTargetValid.value && !BVBMode.value ? radarElevGrid : null),
+    (!Irst.value && !RadarTargetValid.value && !BVBMode.value ? radarMaxElev : null),
+    (!BVBMode.value ? {
       size = [pw(50), ph(40)]
       pos = [pw(25), ph(30)]
       children = [
@@ -513,9 +514,20 @@ let radar = @() {
         (!Irst.value ? ASPAzimuthMark : null),
         (!Irst.value && !RadarTargetValid.value ? elevationMark : null)
       ]
-    },
+    } :
+    {
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [flex(), ph(60)]
+      pos = [0, ph(35)]
+      color = IlsColor.value
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_LINE, 40, 0, 40, 100],
+        [VECTOR_LINE, 60, 0, 60, 100]
+      ]
+    }),
     radarType,
-    radarReticle
+    radarReticle,
   ] : null
 }
 
@@ -529,6 +541,7 @@ let function getRadarMode() {
   }
   return "ДВБ"
 }
+
 
 let function getRadarSubMode() {
   if (AirCannonMode.value)

@@ -1733,16 +1733,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hintType = ::g_hud_hint_types.COMMON
     locId     = "hints/caliber_switch"
     showEvent = "hint:caliber_switch:show"
-    getLocParams = @(_) {
-      secondary = ::g_hud_hints._wrapShortsCutIdWithTags(
-        ["ID_SHIP_WEAPON_SECONDARY", "ID_SHIP_WEAPON_MACHINEGUN"])
-      primary = ::g_hud_hints._wrapShortsCutIdWithTags(["ID_SHIP_WEAPON_PRIMARY"])
-    }
     lifeTime = 10.0
     totalCount = 3
     maskId = 34
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = false
+    shortcuts = [
+      "ID_SHIP_WEAPON_SECONDARY",
+      "ID_SHIP_WEAPON_MACHINEGUN",
+      "ID_SHIP_WEAPON_PRIMARY"
+    ]
   }
 },
 function() {

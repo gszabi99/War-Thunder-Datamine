@@ -57,11 +57,11 @@ let function helicopterMainHud() {
     watch = IsMainHudVisible
     children = IsMainHudVisible.value
     ? [
-      rocketAim(sh(0.8), sh(1.8), HudColor.value)
-      aamAim(HudColor, AlertColorHigh)
-      agmAim(HudColor)
-      gunDirection(HudColor, false)
-      fixedGunsDirection()
+      rocketAim(sh(0.8), sh(1.8), hueHeliCrosshairOpt.value)
+      aamAim(hueHeliCrosshairOpt, AlertColorHigh)
+      agmAim(hueHeliCrosshairOpt)
+      gunDirection(hueHeliCrosshairOpt, false)
+      fixedGunsDirection(hueHeliCrosshairOpt)
       helicopterCCRP(HudColor)
       vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value)
       horSpeed(HudColor.value)
@@ -77,19 +77,19 @@ let function helicopterSightHud() {
     watch = IsSightHudVisible
     children = IsSightHudVisible.value ?
     [
-      vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), hueHeliCrosshairOpt.value)
-      turretAngles(hueHeliCrosshairOpt, hdpx(150), hdpx(150), sw(50), sh(90))
-      agmLaunchZone(hueHeliCrosshairOpt, sw(100), sh(100))
-      launchDistanceMax(hueHeliCrosshairOpt, hdpx(150), hdpx(150), sw(50), sh(90))
+      vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), HudColor.value)
+      turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90))
+      agmLaunchZone(HudColor, sw(100), sh(100))
+      launchDistanceMax(HudColor, hdpx(150), hdpx(150), sw(50), sh(90))
       helicopterSightParamsTable()
       lockSight(hueHeliCrosshairOpt, hdpx(150), hdpx(100), sw(50), sh(50))
       targetSize(hueHeliCrosshairOpt, sw(100), sh(100))
-      agmTrackZoneComponent(hueHeliCrosshairOpt)
-      agmTrackerStatusComponent(hueHeliCrosshairOpt, sw(50), sh(41))
-      laserDesignatorComponent(hueHeliCrosshairOpt, sw(50), sh(42))
-      laserDesignatorStatusComponent(hueHeliCrosshairOpt, sw(50), sh(38))
+      agmTrackZoneComponent(HudColor)
+      agmTrackerStatusComponent(HudColor, sw(50), sh(41))
+      laserDesignatorComponent(HudColor, sw(50), sh(42))
+      laserDesignatorStatusComponent(HudColor, sw(50), sh(38))
       sight(hueHeliCrosshairOpt, sw(50), sh(50), hdpx(500))
-      rangeFinder(hueHeliCrosshairOpt, sw(50), sh(59))
+      rangeFinder(HudColor, sw(50), sh(59))
       detectAlly(sw(51), sh(35))
       agmAim(hueHeliCrosshairOpt)
       gunDirection(hueHeliCrosshairOpt, true)
@@ -103,8 +103,8 @@ let function helicopterGunnerHud() {
     watch = IsGunnerHudVisible
     children = IsGunnerHudVisible.value
     ? [
-        gunDirection(HudColor, false)
-        fixedGunsDirection()
+        gunDirection(hueHeliCrosshairOpt, false)
+        fixedGunsDirection(hueHeliCrosshairOpt)
         helicopterCCRP(HudColor)
         vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value)
         helicopterParamsTable()

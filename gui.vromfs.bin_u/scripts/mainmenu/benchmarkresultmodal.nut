@@ -32,7 +32,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
       resultTableData += this.getStatRow("stat_total", "benchmark/total", this.benchmark_data.benchTotalFrames)
 
-      this.guiScene.replaceContentFromText("results_list", resultTableData, resultTableData.len(), this)
+      this.guiScene.replaceContentFromText(this.scene.findObject("results_list"), resultTableData, resultTableData.len(), this)
     }
 
     if (isPlatformSony)

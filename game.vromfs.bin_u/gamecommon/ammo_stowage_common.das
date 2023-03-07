@@ -338,7 +338,7 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
     if part_id.valid
       let remap_added = add_remap(v.ammo_stowage__partIdRemap, [[PartRemap partId=part_id, stowageId=stowage_id, clusterId=cluster_id, slotId=slot_id]])
       if !remap_added
-        logerr("unit {unit.props.fileName}: part {slot_blk.blockName} (id={part_id}) already used in another stowage!")
+        logerr("unit {unit.props.fileName}: part {slot_blk.blockName} is already used in another stowage!")
 
       let visual_node_name = slot_blk |> datablock_getStr("visual", "")
       if visual_node_name != ""
@@ -521,7 +521,7 @@ def public load_ammo_stowage(blk : DataBlock&; model_name : string; can_load_to_
           for trigger_remap_idx in last_len..length(v.ammo_stowage__triggerIdRemap)
             v.ammo_stowage__triggerIdRemap[trigger_remap_idx] = -1
         if v.ammo_stowage__triggerIdRemap[trigger_id] != -1
-          logwarn("unit {model_name} : duplicate trigger {trigger_name} form ammo stowages #{stowage_id} and v.ammo_stowage__triggerIdRemap[trigger_id]")
+          logwarn("unit {model_name} : duplicate trigger {trigger_name} ({trigger_id}) form ammo stowages #{stowage_id} and #{v.ammo_stowage__triggerIdRemap[trigger_id]}")
         v.ammo_stowage__triggerIdRemap[trigger_id] = stowage_id;
         num_ammo_in_storage += num_ammos[trigger_id]
         if get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState REMOVE_LOADED_AMMO)

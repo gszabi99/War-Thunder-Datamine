@@ -54,11 +54,11 @@ let function mkAircraftMainHud() {
     let children = IsMainHudVisible.value
     ? [
         isRocketSightActivated.value ? aircraftRocketSight(sh(10.0), sh(10.0)) : null
-        isAAMSightActivated.value ? aamAim(HudColor, AlertColorHigh) : null
-        agmAim(HudColor)
-        gbuAim(HudColor)
-        isTurretSightActivated.value ? aircraftTurretsComponent(HudColor) : null
-        isCanonSightActivated.value ? fixedGunsDirection() : null
+        isAAMSightActivated.value ? aamAim(crosshairColorOpt, AlertColorHigh) : null
+        agmAim(crosshairColorOpt)
+        gbuAim(crosshairColorOpt)
+        isTurretSightActivated.value ? aircraftTurretsComponent(crosshairColorOpt) : null
+        isCanonSightActivated.value ? fixedGunsDirection(crosshairColorOpt) : null
         isParamTableActivated.value ? aircraftParamsTable() : null
         isBombSightActivated.value ? bombSightComponent(sh(10.0), sh(10.0), crosshairColorOpt) : null
       ]
@@ -82,7 +82,7 @@ let aircraftSightHud = @() {
       targetingPodSight(sw(100), sh(100))
       laserDesignatorStatusComponent(HudColor, sw(50), sh(38))
       IsRangefinderEnabled.value ? rangeFinder(HudColor, sw(50), sh(59)) : null
-      lockSight(HudColor, hdpx(150), hdpx(100), sw(50), sh(50))
+      lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50))
     ]
     : null
 }
@@ -93,7 +93,7 @@ let function aircraftGunnerHud() {
     watch = [IsGunnerHudVisible, isParamTableActivated, isTurretSightActivated]
     children = IsGunnerHudVisible.value
       ? [
-        isTurretSightActivated.value ? aircraftTurretsComponent(HudColor) : null
+        isTurretSightActivated.value ? aircraftTurretsComponent(crosshairColorOpt) : null
         isParamTableActivated.value ? aircraftParamsTable() : null
       ]
       : null
@@ -115,9 +115,9 @@ let function weaponHud() {
     watch = IsWeaponHudVisible
     children = IsWeaponHudVisible.value
       ? [
-        aamAim(HudColor, AlertColorHigh)
-        agmAim(HudColor)
-        gbuAim(HudColor)
+        aamAim(crosshairColorOpt, AlertColorHigh)
+        agmAim(crosshairColorOpt)
+        gbuAim(crosshairColorOpt)
       ]
       : null
   }
@@ -169,7 +169,7 @@ let function aircraftHUDs() {
       twsElement(HudColor, twsPosWatched, twsSize)
       radarElement(HudColor, radarPosComputed, radarSize)
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
-      mkAgmAimIndicator(HudColor)
+      mkAgmAimIndicator(crosshairColorOpt)
       !IndicatorsVisible.value ? null : weaponHud()
       laserPointComponent(HudColor)
       LaserAtgmSightVisible.value ? laserAtgmSight(sw(100), sh(100)) : null

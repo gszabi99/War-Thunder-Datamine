@@ -9,7 +9,7 @@ let xrayIndicator = @() {
     ? {
         rendObj = ROBJ_XRAYDOLL
         rotateWithCamera = true
-        pos = dmgIndicatorStates.value.pos
+        pos = dmgIndicatorStates.value?.pos ?? [0, 0]
         size = dmgIndicatorStates.value.size
       }
     : null

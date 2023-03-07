@@ -8,6 +8,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2611,6 +2612,14 @@
     "maxSpeedMultiplier": 1.01,
     "wepOverspeed": 1.05
   },
+  "Aircraft": [
+    {
+      "gunnersCount": 1
+    },
+    {
+      "gunnersCount": 2
+    }
+  ],
   "wiki": {
     "general": {
       "length": 17.65,
@@ -2682,9 +2691,6 @@
         ]
       }
     }
-  },
-  "Aircraft": {
-    "gunnersCount": 2
   },
   "balanceData": {
     "accSpd": 4.03451,
@@ -2768,13 +2774,7 @@
         "from": "tu_14t_late_c*"
       },
       {
-        "from": "tu_14t_late_c_dmg*"
-      },
-      {
         "from": "tu_14t_late_n*"
-      },
-      {
-        "from": "tu_14t_late_n_dmg*"
       }
     ]
   },

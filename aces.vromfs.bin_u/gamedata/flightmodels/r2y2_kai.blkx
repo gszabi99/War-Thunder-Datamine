@@ -8,6 +8,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -4205,16 +4206,10 @@
     }
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "r2y2_keiun_kai_a*",
-        "to": "r2y2_keiun_kai_a_tomoe*"
-      },
-      {
-        "from": "r2y2_keiun_kai_a_dmg*",
-        "to": "r2y2_keiun_kai_a_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "r2y2_keiun_kai_a*",
+      "to": "r2y2_keiun_kai_a_tomoe*"
+    }
   },
   "user_skin": {
     "name": "r2y2_kai",
@@ -4223,13 +4218,7 @@
         "from": "r2y2_keiun_kai_a*"
       },
       {
-        "from": "r2y2_keiun_kai_a_dmg*"
-      },
-      {
         "from": "r2y2_keiun_kai_n*"
-      },
-      {
-        "from": "r2y2_keiun_kai_n_dmg*"
       }
     ]
   },

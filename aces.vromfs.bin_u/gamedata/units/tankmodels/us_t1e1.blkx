@@ -44,17 +44,11 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeHeavyTank",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull": {
-      "body_back_dm": {
-        "armorThickness": 41.4
-      },
       "superstructure_back_dm": {
         "armorThickness": 41.4
       },
@@ -101,9 +95,6 @@
         "armorThickness": 101.6,
         "armorClass": "CHA_tank"
       },
-      "turret_03_front_dm": {
-        "armorThickness": 25.4
-      },
       "ex_decor_r_05_dm": {
         "armorThickness": 5.0,
         "armorClass": "tank_structural_steel"
@@ -125,13 +116,19 @@
       },
       "ex_armor_body_r_01_dm": {
         "armorThickness": 25.4
-      },
-      "body_side_dm": {
-        "armorThickness": 70.0
       }
     },
     "turret": {
       "armorClass": "CHA_tank",
+      "body_back_dm": {
+        "armorThickness": 41.4
+      },
+      "body_side_dm": {
+        "armorThickness": 70.0
+      },
+      "turret_03_front_dm": {
+        "armorThickness": 25.4
+      },
       "superstructure_front_dm": {
         "armorThickness": 82.5
       },
@@ -229,7 +226,13 @@
       "armorThickness": 4.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
-      "ex_decor_04_dm": {}
+      "ex_decor_04_dm": {},
+      "ex_decor_r_01_dm": {},
+      "ex_decor_l_01_dm": {},
+      "ex_decor_r_03_dm": {},
+      "ex_decor_l_03_dm": {},
+      "ex_decor_l_04_dm": {},
+      "ex_decor_r_04_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -324,6 +327,8 @@
       "wheel_support_dm": {
         "armorThickness": 10.0
       },
+      "wheel_r_front_dm": {},
+      "wheel_l_front_dm": {},
       "submodule": {
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
@@ -347,10 +352,9 @@
     "tracks": {
       "armorClass": "tank_traks",
       "allowRicochet": true,
-      "armorThickness": 20.0,
-      "armorEffectiveThicknessMax": 20.0,
+      "armorThickness": 30.0,
       "hp": 300.0,
-      "genericEffectiveThicknessMax": 20.0,
+      "genericEffectiveThicknessMax": 30.0,
       "genericDamageMult": 1.8,
       "cumulativeDamageMult": 1.8,
       "track_r_dm": {},
@@ -1743,7 +1747,8 @@
           "head": "bone_turret",
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_01",
-          "gunnerDm": "gunner_dm"
+          "gunnerDm": "gunner_dm",
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
@@ -1752,7 +1757,7 @@
           ],
           "pitch": [
             -10.0,
-            24.0
+            30.0
           ]
         },
         "limitsTable": {
@@ -1760,19 +1765,19 @@
             -180.0,
             -150.0,
             -5.0,
-            24.0
+            30.0
           ],
           "lim2": [
             -150.0,
             150.0,
             -10.0,
-            24.0
+            30.0
           ],
           "lim3": [
             150.0,
             180.0,
             -5.0,
-            24.0
+            30.0
           ]
         },
         "gunStabilizer": {
@@ -1820,7 +1825,7 @@
         "speedYaw": 18.0,
         "speedPitch": 4.0,
         "fireConeAngle": 1.0,
-        "bullets": 200,
+        "bullets": 202,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -1959,8 +1964,8 @@
         },
         "limits": {
           "yaw": [
-            -15.0,
-            15.0
+            0.0,
+            0.0
           ],
           "pitch": [
             -10.0,
@@ -2003,8 +2008,8 @@
         },
         "limits": {
           "yaw": [
-            -15.0,
-            15.0
+            0.0,
+            0.0
           ],
           "pitch": [
             -10.0,
@@ -2052,12 +2057,11 @@
         3.0
       ],
       "trackMesh": "us_t1e1_phys_track_line",
-      "trackLen": 0.152,
-      "trackCount": 100,
+      "trackLen": 0.14,
+      "trackCount": 108,
       "trackFadeTime": 1.1,
       "trackConnector": true,
-      "trackStartOffset": 0.13,
-      "trackEmitSparks": false
+      "trackStartOffset": 0.02
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2071,8 +2075,8 @@
     "mechanics": {
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.3,
-      "mainGearRatio": 4.62,
-      "sideGearRatio": 2.74,
+      "mainGearRatio": 10.1,
+      "sideGearRatio": 1.0,
       "neutralGearRatio": 12.0,
       "gearRatios": {
         "ratio": [
@@ -2106,34 +2110,64 @@
         160000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_l_drive": 0.31,
+      "wheel_r_drive": 0.31
     }
   },
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)$",
+    "find": "^bone_suspension_(._\\d\\d)_01$",
     "points": {
-      "suspension": {
-        "name": "bone_suspension_$1"
+      "suspension_01": {
+        "name": "bone_suspension_$1_01"
       },
-      "wheel": {
-        "name": "bone_wheel_$1",
-        "limitMin": [
-          -1000.0,
-          0.0,
-          0.0
-        ],
-        "limitMax": [
-          1000.0,
-          0.0,
-          0.0
-        ]
+      "wheel_01": {
+        "searchChildren": {
+          "parent": "suspension_01",
+          "find": "bone_wheel_.*",
+          "limitMin": [
+            -1000.0,
+            0.0,
+            0.0
+          ],
+          "limitMax": [
+            1000.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "suspension_02": {
+        "name": "bone_suspension_$1_02"
+      },
+      "wheel_02": {
+        "searchChildren": {
+          "parent": "suspension_02",
+          "find": "bone_wheel_.*",
+          "limitMin": [
+            -1000.0,
+            0.0,
+            0.0
+          ],
+          "limitMax": [
+            1000.0,
+            0.0,
+            0.0
+          ]
+        }
       }
     },
     "constraints": {
-      "edge": {
-        "from": "suspension",
-        "to": "wheel"
-      }
+      "edge": [
+        {
+          "from": "suspension_01",
+          "to": "wheel_01"
+        },
+        {
+          "from": "suspension_02",
+          "to": "wheel_02"
+        }
+      ]
     }
   },
   "ammo": {

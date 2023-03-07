@@ -11,6 +11,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -2122,39 +2123,46 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a_mount.blk",
-            "amountPerTier": 2.0,
             "tier": [
               {
                 "idx": 2,
-                "iconType": "rockets_ap_large_group_x2"
+                "iconType": "rockets_ap_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 3,
-                "iconType": "rockets_ap_large_group_x2"
+                "iconType": "rockets_ap_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 4,
-                "iconType": "rockets_ap_large_group_x2"
+                "iconType": "rockets_ap_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 5,
-                "iconType": "rockets_ap_middle"
+                "iconType": "rockets_ap_middle",
+                "amountPerTier": 1.0
               },
               {
                 "idx": 7,
-                "iconType": "rockets_ap_middle"
+                "iconType": "rockets_ap_middle",
+                "amountPerTier": 1.0
               },
               {
                 "idx": 8,
-                "iconType": "rockets_ap_large_group_x2"
+                "iconType": "rockets_ap_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 9,
-                "iconType": "rockets_ap_large_group_x2"
+                "iconType": "rockets_ap_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 10,
-                "iconType": "rockets_ap_large_group_x2"
+                "iconType": "rockets_ap_large_group_x2",
+                "amountPerTier": 2.0
               }
             ]
           }
@@ -2167,39 +2175,46 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51_mount.blk",
-            "amountPerTier": 2.0,
             "tier": [
               {
                 "idx": 2,
-                "iconType": "rockets_he_large_group_x2"
+                "iconType": "rockets_he_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 3,
-                "iconType": "rockets_he_large_group_x2"
+                "iconType": "rockets_he_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 4,
-                "iconType": "rockets_he_large_group_x2"
+                "iconType": "rockets_he_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 5,
-                "iconType": "rockets_he_middle"
+                "iconType": "rockets_he_middle",
+                "amountPerTier": 1.0
               },
               {
                 "idx": 7,
-                "iconType": "rockets_he_middle"
+                "iconType": "rockets_he_middle",
+                "amountPerTier": 1.0
               },
               {
                 "idx": 8,
-                "iconType": "rockets_he_large_group_x2"
+                "iconType": "rockets_he_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 9,
-                "iconType": "rockets_he_large_group_x2"
+                "iconType": "rockets_he_large_group_x2",
+                "amountPerTier": 2.0
               },
               {
                 "idx": 10,
-                "iconType": "rockets_he_large_group_x2"
+                "iconType": "rockets_he_large_group_x2",
+                "amountPerTier": 2.0
               }
             ]
           }
@@ -2290,27 +2305,15 @@
         "from": "saab_j29b_c*"
       },
       {
-        "from": "saab_j29b_c_dmg*"
-      },
-      {
         "from": "saab_j29b_n*"
-      },
-      {
-        "from": "saab_j29b_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "saab_j29b_c*",
-        "to": "saab_j29b_c_tomoe*"
-      },
-      {
-        "from": "saab_j29b_c_dmg*",
-        "to": "saab_j29b_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "saab_j29b_c*",
+      "to": "saab_j29b_c_tomoe*"
+    }
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

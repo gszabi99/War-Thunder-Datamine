@@ -1,7 +1,7 @@
 {
   "model": "f_5e_aidc",
   "fmFile": "fm/f_5e_aidc.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.234,
@@ -16,6 +16,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -3073,13 +3074,7 @@
         "from": "f_5e_aidc_c*"
       },
       {
-        "from": "f_5e_aidc_c_dmg*"
-      },
-      {
         "from": "f_5e_aidc_n*"
-      },
-      {
-        "from": "f_5e_aidc_n_dmg*"
       }
     ]
   },
@@ -3090,16 +3085,8 @@
         "to": "f_5e_aidc_c_tomoe*"
       },
       {
-        "from": "f_5e_aidc_c_dmg*",
-        "to": "f_5e_aidc_c_tomoe_dmg*"
-      },
-      {
         "from": "f_5e_aidc_n*",
         "to": "f_5e_aidc_tomoe_n*"
-      },
-      {
-        "from": "f_5e_aidc_n_dmg*",
-        "to": "f_5e_aidc_tomoe_n_dmg*"
       }
     ]
   },

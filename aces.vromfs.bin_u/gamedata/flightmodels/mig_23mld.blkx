@@ -11,12 +11,12 @@
   "hasMissileCommandLine": false,
   "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -30,6 +30,7 @@
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor10": {
       "armor2_dm": {
@@ -1949,7 +1950,9 @@
           ],
           "ilsOffsetForce": 0.0,
           "brightnessMult": 3.5,
-          "ilsColor": "Cv8KeA=="
+          "ilsColor": "Cv8KeA==",
+          "bloomForce": 0.115,
+          "lineWidthScale": 0.6
         }
       }
     },
@@ -3342,13 +3345,7 @@
         "from": "mig_23mld_c*"
       },
       {
-        "from": "mig_23mld_dmg*"
-      },
-      {
         "from": "mig_23mld_n*"
-      },
-      {
-        "from": "mig_23mld_n_dmg*"
       }
     ]
   },
@@ -3363,6 +3360,29 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

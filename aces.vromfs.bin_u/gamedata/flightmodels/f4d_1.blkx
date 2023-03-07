@@ -5,6 +5,7 @@
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
+  "disableExhaustFxIfContrailIsActive": true,
   "gearSinkRangeLR": 0.291,
   "gearSinkRangeC": 0.256,
   "gearSinkRange2C": 0.006,
@@ -2517,27 +2518,15 @@
         "from": "f4d_1_c*"
       },
       {
-        "from": "f4d_1_c_dmg*"
-      },
-      {
         "from": "f4d_1_n*"
-      },
-      {
-        "from": "f4d_1_n_dmg*"
       }
     ]
   },
   "default_skin_tomoe": {
-    "replace_tex": [
-      {
-        "from": "f4d_1_c*",
-        "to": "f4d_1_c_tomoe*"
-      },
-      {
-        "from": "f4d_1_c_dmg*",
-        "to": "f4d_1_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "f4d_1_c*",
+      "to": "f4d_1_c_tomoe*"
+    }
   },
   "parachutes": {
     "emitterRange": [

@@ -2,7 +2,7 @@
   "model": "sa_313b",
   "fmFile": "fm/sa_313b.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
-  "viewDistKInSight": 4.0,
+  "viewDistKInSight": 6.0,
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
@@ -1112,27 +1112,16 @@
   },
   "default_skin_tomoe": {
     "name": "default_tomoe",
-    "replace_tex": [
-      {
-        "from": "sa_313b_germany_c*",
-        "to": "sa_313b_germany_c_tomoe*"
-      },
-      {
-        "from": "sa_313b_germany_c_dmg*",
-        "to": "sa_313b_germany_c_tomoe_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "sa_313b_germany_c*",
+      "to": "sa_313b_germany_c_tomoe*"
+    }
   },
   "user_skin": {
     "name": "sa_313b",
-    "replace_tex": [
-      {
-        "from": "sa_313b_germany_c*"
-      },
-      {
-        "from": "sa_313b_germany_c_dmg*"
-      }
-    ]
+    "replace_tex": {
+      "from": "sa_313b_germany_c*"
+    }
   },
   "cutting": {
     "emtr_break_wing_tail": [
