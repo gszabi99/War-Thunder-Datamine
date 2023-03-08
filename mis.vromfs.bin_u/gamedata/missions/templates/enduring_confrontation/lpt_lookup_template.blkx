@@ -119,13 +119,13 @@
         "varSetRandomInt": [
           {
             "var": "lpt_t1_delay_timer",
-            "from": 30,
-            "to_not_including": 120
+            "from": 0,
+            "to_not_including": 10
           },
           {
             "var": "lpt_t2_delay_timer",
-            "from": 30,
-            "to_not_including": 120
+            "from": 0,
+            "to_not_including": 10
           }
         ],
         "varModify": [
@@ -295,6 +295,9 @@
           },
           {
             "value": "vklyuchaem proverku otklyucheniya shablona"
+          },
+          {
+            "value": "additional checks for flyeing out of map situation"
           }
         ],
         "varSetRandomInt": [
@@ -380,6 +383,9 @@
           },
           {
             "target": "lpt_template_end"
+          },
+          {
+            "target": "lpt_t1_check_out_area"
           }
         ],
         "__unitMoveTo": {
@@ -399,6 +405,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "@lpt_t1_lookup_plane",
           "speed": 300.0
         },
@@ -433,6 +442,7 @@
           "target": "lpt_t1_defend_task",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@lpt_t1_lookup_plane"
         }
       },
@@ -466,6 +476,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "team": "A",
           "unit_or_area": "@lpt_t1_lookup_plane"
         },
@@ -511,6 +522,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "team": "B",
           "unit_or_area": "@lpt_t1_lookup_plane"
         }
@@ -662,6 +674,7 @@
           "target": "lpt_t2_kill_task",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@lpt_t1_lookup_plane"
         },
         "unitSetIndication": {
@@ -697,8 +710,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@lpt_t1_lookup_plane",
-          "object_var_value": 0
+          "object": "@lpt_t1_lookup_plane"
         }
       },
       "actions": {
@@ -734,7 +746,7 @@
               "lpt_t1_update_pos_for_t1",
               "lpt_t1_update_pos_for_t2",
               "lpt_t1_lookup_retreat",
-              "lpt_t1_lookup_despawn"
+              "lpt_t1_lookup_despawn_check"
             ]
           },
           {
@@ -754,6 +766,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -764,6 +777,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           }
         ],
@@ -818,6 +832,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -828,6 +843,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -867,6 +883,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -877,6 +894,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -957,11 +975,14 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "@lpt_t1_lookup_plane",
           "speed": 350.0
         },
         "triggerEnable": {
-          "target": "lpt_t1_lookup_despawn"
+          "target": "lpt_t1_lookup_despawn_check"
         }
       },
       "else_actions": {}
@@ -1068,16 +1089,19 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "@lpt_t1_lookup_plane",
           "speed": 350.0
         },
         "triggerEnable": {
-          "target": "lpt_t1_lookup_despawn"
+          "target": "lpt_t1_lookup_despawn_check"
         }
       },
       "else_actions": {}
     },
-    "lpt_t1_lookup_despawn": {
+    "lpt_t1_lookup_despawn_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1109,6 +1133,27 @@
         }
       },
       "actions": {
+        "triggerEnable": {
+          "target": "lpt_t1_lookup_despawn_end"
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_lookup_despawn_end": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
         "comment": [
           {
             "value": "razvedchik doletel do doma"
@@ -1125,7 +1170,8 @@
             "lpt_t1_update_pos_for_t1",
             "lpt_t1_update_pos_for_t2",
             "lpt_t1_lookup_active",
-            "lpt_t1_lookup_dead"
+            "lpt_t1_lookup_dead",
+            "lpt_t1_check_out_area"
           ]
         },
         "varSetReal": {
@@ -1141,6 +1187,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -1151,6 +1198,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           }
         ],
@@ -1221,7 +1269,8 @@
             "lpt_t1_lookup_retreat",
             "lpt_t1_lookup_active",
             "lpt_t1_lookup_timer",
-            "lpt_t1_lookup_despawn"
+            "lpt_t1_lookup_despawn_check",
+            "lpt_t1_check_out_area"
           ]
         },
         "varSetBool": {
@@ -1376,6 +1425,9 @@
           },
           {
             "value": "vklyuchaem proverku otklyucheniya shablona"
+          },
+          {
+            "value": "additional checks for flyeing out of map situation"
           }
         ],
         "varSetRandomInt": [
@@ -1461,6 +1513,9 @@
           },
           {
             "target": "lpt_template_end"
+          },
+          {
+            "target": "lpt_t1_check_out_area"
           }
         ],
         "__unitMoveTo": {
@@ -1480,6 +1535,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "@lpt_t2_lookup_plane",
           "speed": 300.0
         },
@@ -1514,6 +1572,7 @@
           "target": "lpt_t2_defend_task",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@lpt_t2_lookup_plane"
         }
       },
@@ -1547,6 +1606,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "team": "A",
           "unit_or_area": "@lpt_t2_lookup_plane"
         }
@@ -1581,6 +1641,7 @@
           "status": 1,
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "team": "B",
           "unit_or_area": "@lpt_t2_lookup_plane"
         },
@@ -1743,6 +1804,7 @@
           "target": "lpt_t1_kill_task",
           "object_var_comp_op": "equal",
           "object_var_name": "",
+          "object_marking": 0,
           "unit_or_area": "@lpt_t2_lookup_plane"
         },
         "unitSetIndication": {
@@ -1815,7 +1877,7 @@
               "lpt_t2_update_pos_for_t1",
               "lpt_t2_update_pos_for_t2",
               "lpt_t2_lookup_retreat",
-              "lpt_t2_lookup_despawn"
+              "lpt_t2_lookup_despawn_check"
             ]
           },
           {
@@ -1835,6 +1897,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -1845,6 +1908,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -1899,6 +1963,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -1909,6 +1974,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           }
         ],
@@ -1948,6 +2014,7 @@
             "status": 3,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -1958,6 +2025,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "A"
           }
         ],
@@ -2038,11 +2106,14 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "@lpt_t2_lookup_plane",
           "speed": 350.0
         },
         "triggerEnable": {
-          "target": "lpt_t2_lookup_despawn"
+          "target": "lpt_t2_lookup_despawn_check"
         }
       },
       "else_actions": {}
@@ -2149,16 +2220,19 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "@lpt_t2_lookup_plane",
           "speed": 350.0
         },
         "triggerEnable": {
-          "target": "lpt_t2_lookup_despawn"
+          "target": "lpt_t2_lookup_despawn_check"
         }
       },
       "else_actions": {}
     },
-    "lpt_t2_lookup_despawn": {
+    "lpt_t2_lookup_despawn_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -2190,6 +2264,27 @@
         }
       },
       "actions": {
+        "triggerEnable": {
+          "target": "lpt_t2_lookup_despawn_end"
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_lookup_despawn_end": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
         "comment": [
           {
             "value": "razvedchik doletel do doma"
@@ -2206,7 +2301,8 @@
             "lpt_t2_update_pos_for_t1",
             "lpt_t2_update_pos_for_t2",
             "lpt_t2_lookup_active",
-            "lpt_t2_lookup_dead"
+            "lpt_t2_lookup_dead",
+            "lpt_t2_check_out_area"
           ]
         },
         "varSetReal": {
@@ -2222,6 +2318,7 @@
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -2232,6 +2329,7 @@
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
+            "object_marking": 0,
             "team": "B"
           }
         ],
@@ -2302,7 +2400,8 @@
             "lpt_t2_lookup_retreat",
             "lpt_t2_lookup_active",
             "lpt_t2_lookup_timer",
-            "lpt_t2_lookup_despawn"
+            "lpt_t2_lookup_despawn_check",
+            "lpt_t2_check_out_area"
           ]
         },
         "varSetBool": {
@@ -2312,6 +2411,647 @@
         "triggerEnable": {
           "target": "lpt_template_end"
         }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_matching_move_1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 1,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t1_lookup_plane",
+          "speed": 300.0,
+          "altRange": [
+            1700.0,
+            2000.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_matching_move_2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 2,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t1_lookup_plane",
+          "speed": 320.0,
+          "altRange": [
+            2200.0,
+            2500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_matching_move_3": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 3,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t1_lookup_plane",
+          "speed": 340.0,
+          "altRange": [
+            2700.0,
+            3000.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_matching_move_4": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 4,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t1_lookup_plane",
+          "altRange": [
+            3200.0,
+            3500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_matching_move_5": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 5,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t1_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t1_lookup_plane",
+          "altRange": [
+            3700.0,
+            4000.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_matching_move_1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 1,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t2_lookup_plane",
+          "speed": 300.0,
+          "altRange": [
+            1700.0,
+            2000.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_matching_move_2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 2,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t2_lookup_plane",
+          "speed": 320.0,
+          "altRange": [
+            2200.0,
+            2500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_matching_move_3": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 3,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t2_lookup_plane",
+          "speed": 340.0,
+          "altRange": [
+            2700.0,
+            3000.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_matching_move_4": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 4,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t2_lookup_plane",
+          "altRange": [
+            3200.0,
+            3500.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_matching_move_5": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "lpt_matching_type",
+          "value": 5,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "@lpt_t2_target_point",
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "@lpt_t2_lookup_plane",
+          "altRange": [
+            3700.0,
+            4000.0
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_template_end": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": [
+          {
+            "var_value": "lpt_t1_active",
+            "value": false,
+            "comparasion_func": "equal"
+          },
+          {
+            "var_value": "lpt_t2_active",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        ]
+      },
+      "actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "lpt_is_template_active"
+        }
+      },
+      "else_actions": {}
+    },
+    "lpt_t1_lookup_players_detect_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isOnline",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@lpt_t1_lookup_plane",
+          "target": "t2_players_squad",
+          "var": "lpt_t2_players_detection_range",
+          "object_var_value": 0,
+          "compareCenters": false
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "lpt_t1_lookup_detect_check"
+        },
+        "comment": {
+          "value": "razvedchik obnaruzhen"
+        },
+        "triggerEnable": [
+          {
+            "target": "lpt_t1_lookup_detected"
+          },
+          {
+            "target": "t2_detection_task_completed"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "lpt_t2_lookup_players_detect_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 1500.0,
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isOnline",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@lpt_t2_lookup_plane",
+          "target": "t1_players_squad",
+          "var": "lpt_t1_players_detection_range",
+          "object_var_value": 0,
+          "compareCenters": false
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "lpt_t2_lookup_detect_check"
+        },
+        "comment": {
+          "value": "razvedchik obnaruzhen"
+        },
+        "triggerEnable": [
+          {
+            "target": "lpt_t2_lookup_detected"
+          },
+          {
+            "target": "t1_detection_task_completed"
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -2499,617 +3239,6 @@
         },
         "else_actions": {}
       }
-    },
-    "lpt_t1_matching_move_1": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 1,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t1_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t1_lookup_plane",
-          "speed": 300.0,
-          "altRange": [
-            1700.0,
-            2000.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t1_matching_move_2": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 2,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t1_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t1_lookup_plane",
-          "speed": 320.0,
-          "altRange": [
-            2200.0,
-            2500.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t1_matching_move_3": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 3,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t1_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t1_lookup_plane",
-          "speed": 340.0,
-          "altRange": [
-            2700.0,
-            3000.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t1_matching_move_4": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 4,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t1_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t1_lookup_plane",
-          "altRange": [
-            3200.0,
-            3500.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t1_matching_move_5": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 5,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t1_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t1_lookup_plane",
-          "altRange": [
-            3700.0,
-            4000.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t2_matching_move_1": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 1,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t2_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t2_lookup_plane",
-          "speed": 300.0,
-          "altRange": [
-            1700.0,
-            2000.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t2_matching_move_2": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 2,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t2_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t2_lookup_plane",
-          "speed": 320.0,
-          "altRange": [
-            2200.0,
-            2500.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t2_matching_move_3": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 3,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t2_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t2_lookup_plane",
-          "speed": 340.0,
-          "altRange": [
-            2700.0,
-            3000.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t2_matching_move_4": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 4,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t2_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t2_lookup_plane",
-          "altRange": [
-            3200.0,
-            3500.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t2_matching_move_5": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "lpt_matching_type",
-          "value": 5,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "unitMoveTo": {
-          "target": "@lpt_t2_target_point",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "object": "@lpt_t2_lookup_plane",
-          "altRange": [
-            3700.0,
-            4000.0
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_template_end": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareBool": [
-          {
-            "var_value": "lpt_t1_active",
-            "value": false,
-            "comparasion_func": "equal"
-          },
-          {
-            "var_value": "lpt_t2_active",
-            "value": false,
-            "comparasion_func": "equal"
-          }
-        ]
-      },
-      "actions": {
-        "varSetBool": {
-          "value": false,
-          "var": "lpt_is_template_active"
-        }
-      },
-      "else_actions": {}
-    },
-    "lpt_t1_lookup_players_detect_check": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitDistanceBetween": {
-          "value": 1500.0,
-          "math": "2D",
-          "object_type": "isActive",
-          "object_marking": 0,
-          "target_type": "isOnline",
-          "target_marking": 0,
-          "check_objects": "any",
-          "check_targets": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "@lpt_t1_lookup_plane",
-          "target": "t2_players_squad",
-          "var": "lpt_t2_players_detection_range",
-          "object_var_value": 0,
-          "compareCenters": false
-        }
-      },
-      "actions": {
-        "triggerDisable": {
-          "target": "lpt_t1_lookup_detect_check"
-        },
-        "comment": {
-          "value": "razvedchik obnaruzhen"
-        },
-        "triggerEnable": [
-          {
-            "target": "lpt_t1_lookup_detected"
-          },
-          {
-            "target": "t2_detection_task_completed"
-          }
-        ]
-      },
-      "else_actions": {}
-    },
-    "lpt_t2_lookup_players_detect_check": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitDistanceBetween": {
-          "value": 1500.0,
-          "math": "2D",
-          "object_type": "isActive",
-          "object_marking": 0,
-          "target_type": "isOnline",
-          "target_marking": 0,
-          "check_objects": "any",
-          "check_targets": "any",
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "@lpt_t2_lookup_plane",
-          "target": "t1_players_squad",
-          "var": "lpt_t1_players_detection_range",
-          "object_var_value": 0,
-          "compareCenters": false
-        }
-      },
-      "actions": {
-        "triggerDisable": {
-          "target": "lpt_t2_lookup_detect_check"
-        },
-        "comment": {
-          "value": "razvedchik obnaruzhen"
-        },
-        "triggerEnable": [
-          {
-            "target": "lpt_t2_lookup_detected"
-          },
-          {
-            "target": "t1_detection_task_completed"
-          }
-        ]
-      },
-      "else_actions": {}
     },
     "players_activity": {
       "isCategory": true,
@@ -3466,6 +3595,88 @@
           }
         }
       }
+    },
+    "lpt_battle_area_checks": {
+      "isCategory": true,
+      "is_enabled": true,
+      "lpt_t1_check_out_area": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 30.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "all",
+            "object": "@lpt_t1_lookup_plane",
+            "target": "flt_battle_area"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "units are n area. do nothing"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "units are left area and it's strange"
+          },
+          "triggerEnable": {
+            "target": "lpt_t1_lookup_despawn_end"
+          }
+        }
+      },
+      "lpt_t2_check_out_area": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 30.0
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "check_objects": "all",
+            "object": "@lpt_t2_lookup_plane",
+            "target": "flt_battle_area"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "units are n area. do nothing"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "units are left area and it's strange"
+          },
+          "triggerEnable": {
+            "target": "lpt_t2_lookup_despawn_end"
+          }
+        }
+      }
     }
   },
   "mission_objectives": {
@@ -3543,8 +3754,8 @@
     "lpt_detection_base_range": 3500.0,
     "lpt_t1_spawn_name": "",
     "lpt_t2_spawn_name": "",
-    "lpt_t1_delay_timer": 120,
-    "lpt_t2_delay_timer": 120,
+    "lpt_t1_delay_timer": 30,
+    "lpt_t2_delay_timer": 30,
     "lpt_t1_lookup_plane": "",
     "lpt_t2_lookup_plane": "",
     "lpt_matching_type": 0,
@@ -3555,8 +3766,8 @@
     "lpt_t2_players_detection_range": 5500.0,
     "lpt_t1_detection_range": 0.0,
     "lpt_t2_detection_range": 0.0,
-    "lpt_t1_def_time": 0,
-    "lpt_t2_def_time": 0,
+    "lpt_t1_def_time": 1,
+    "lpt_t2_def_time": 1,
     "lpt_t1_def_players_activity_time": 0,
     "lpt_t2_def_players_activity_time": 0,
     "lpt_activity_distance": 0.0,
