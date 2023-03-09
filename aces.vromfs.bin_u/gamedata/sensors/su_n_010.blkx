@@ -48,7 +48,7 @@
     }
   },
   "scanPatterns": {
-    "radarSearchAutoNarrow": {
+    "radarSearchManualNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -60,48 +60,65 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 3.5,
-      "width": 15.0,
-      "barHeight": 2.4,
-      "barsCount": 6,
-      "rowMajor": true,
-      "preciseMinor": true
-    },
-    "radarSearchAutoWide": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -85.0,
-        85.0
-      ],
-      "elevationLimits": [
-        -45.0,
-        60.0
-      ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
-      "period": 3.6,
-      "width": 20.0,
-      "barHeight": 3.0,
-      "barsCount": 6,
-      "rowMajor": true,
-      "preciseMinor": true
-    },
-    "radarSearchManual": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -85.0,
-        85.0
-      ],
-      "elevationLimits": [
-        -45.0,
-        60.0
-      ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
-      "period": 3.7,
-      "width": 25.0,
+      "period": 2.5,
+      "width": 30.0,
       "barHeight": 2.5,
       "barsCount": 4,
+      "rowMajor": true
+    },
+    "radarSearchManualWide": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 5.0,
+      "width": 60.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true
+    },
+    "radarTwsNarrow": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 2.0,
+      "width": 20.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true,
+      "preciseMinor": true
+    },
+    "radarTwsWide": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 2.0,
+      "width": 40.0,
+      "barHeight": 2.5,
+      "barsCount": 2,
       "rowMajor": true,
       "preciseMinor": true
     },
@@ -117,7 +134,7 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 0.8,
+      "period": 0.6,
       "width": 4.0,
       "barHeight": 2.5,
       "barsCount": 4,
@@ -134,7 +151,7 @@
         -45.0,
         60.0
       ],
-      "period": 1.1,
+      "period": 1.0,
       "width": 25.0,
       "barHeight": 2.5,
       "barsCount": 2,
@@ -418,12 +435,13 @@
     }
   },
   "scanPatternSets": {
-    "radarSearchAuto": {
-      "scanPattern1": "radarSearchAutoWide",
-      "scanPattern2": "radarSearchAutoNarrow"
-    },
     "radarSearchManual": {
-      "scanPattern1": "radarSearchManual"
+      "scanPattern1": "radarSearchManualNarrow",
+      "scanPattern2": "radarSearchManualWide"
+    },
+    "radarTws": {
+      "scanPattern1": "radarTwsNarrow",
+      "scanPattern2": "radarTwsWide"
     },
     "irstSearch": {
       "scanPattern1": [
@@ -625,7 +643,7 @@
             "updateActiveTargetUnderCue": true
           },
           "setScanPatternSet": {
-            "scanPatternSet": "radarSearchManual"
+            "scanPatternSet": "radarTws"
           },
           "setFsmActive": [
             {
@@ -2211,8 +2229,7 @@
                 "value": 0.0
               },
               {
-                "source": "designationCue",
-                "value": 0.334
+                "source": "designationCue"
               }
             ],
             "setCenterElevation": [
@@ -2290,17 +2307,14 @@
             "clearTargetsOfInterest": {
               "timeOut": 12.0
             },
-            "setCueToActiveTargetOfInterest": {
-              "elevation": false
-            },
+            "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
               {
                 "source": "constant",
                 "value": 0.0
               },
               {
-                "source": "designationCue",
-                "value": 0.334
+                "source": "designationCue"
               }
             ],
             "setCenterElevation": [
@@ -2338,9 +2352,7 @@
               "blend": 0.5
             },
             "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {
-              "elevation": false
-            }
+            "setCueToActiveTargetOfInterest": {}
           }
         },
         "switchSelectedTarget": {

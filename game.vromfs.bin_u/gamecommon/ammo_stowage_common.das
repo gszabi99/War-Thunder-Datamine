@@ -435,7 +435,7 @@ def public load_ammo_stowage(blk : DataBlock&; model_name : string; can_load_to_
   var unit = get_unit(uid)
   assert(unit != null)
 
-  v.ammo_stowage__fxEvAmmoFireId = *get_unit_fx(unit) |> getEventIdByName("ammo_stowage")
+  v.ammo_stowage__fxEvAmmoFireId = *get_unit_fx(unit) |> getEventIdByName("ammo_fire")
 
   blk |> datablock_get_block("ammo") <| $(ammo_blk)
     v.ammo_stowage__combustionTime = ammo_blk |> datablock_getReal("combustionTime", v.ammo_stowage__combustionTime)
