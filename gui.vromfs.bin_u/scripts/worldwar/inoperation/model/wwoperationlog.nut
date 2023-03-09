@@ -23,7 +23,6 @@ let DataBlock  = require("DataBlock")
     {
       value = WW_LOG_CATEGORIES.SYSTEM
       selected = false
-      show = true
       text = loc("worldwar/log/filter/show_system_message")
       icon = "#ui/gameuiskin#" + WW_LOG_ICONS.SYSTEM
       color = WW_LOG_COLORS.SYSTEM
@@ -32,7 +31,6 @@ let DataBlock  = require("DataBlock")
     {
       value = WW_LOG_CATEGORIES.EXISTING_BATTLES
       selected = false
-      show = true
       text = loc("worldwar/log/filter/show_existing_battles")
       icon = "#ui/gameuiskin#" + WW_LOG_ICONS.EXISTING_BATTLES
       color = WW_LOG_COLORS.EXISTING_BATTLES
@@ -41,7 +39,6 @@ let DataBlock  = require("DataBlock")
     {
       value = WW_LOG_CATEGORIES.FINISHED_BATTLES
       selected = false
-      show = true
       text = loc("worldwar/log/filter/show_finished_battles")
       icon = "#ui/gameuiskin#" + WW_LOG_ICONS.EXISTING_BATTLES
       color = WW_LOG_COLORS.FINISHED_BATTLES
@@ -50,7 +47,6 @@ let DataBlock  = require("DataBlock")
     {
       value = WW_LOG_CATEGORIES.ARMY_ACTIVITY
       selected = false
-      show = true
       text = loc("worldwar/log/filter/show_army_activity")
       icon = "#ui/gameuiskin#" + WW_LOG_ICONS.ARMY_ACTIVITY
       color = WW_LOG_COLORS.ARMY_ACTIVITY
@@ -59,7 +55,6 @@ let DataBlock  = require("DataBlock")
     {
       value = WW_LOG_CATEGORIES.ZONE_CAPTURE
       selected = false
-      show = true
       text = loc("worldwar/log/filter/show_zone_capture")
       icon = "#ui/gameuiskin#" + WW_LOG_ICONS.ZONE_CAPTURE
       color = WW_LOG_COLORS.ZONE_CAPTURE

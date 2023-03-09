@@ -878,7 +878,7 @@ local leaderboardFilterArray = [
       value = this.filterMask
       list = leaderboardFilterArray.map(@(filter) {
         text = loc(filter.locId)
-        show = true
+        enable = true
       })
     }
 

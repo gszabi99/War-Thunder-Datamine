@@ -80,7 +80,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     local mask = 0
     foreach (idx, option in this.list) {
-      option.show <- getTblValue("show", option, true)
+      option.enable <- option?.enable ?? true
       mask = stdMath.change_bit(mask, idx, getTblValue("selected", option))
     }
 

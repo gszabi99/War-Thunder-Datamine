@@ -16,6 +16,7 @@ let { APP_ID } = require("app")
 let { isCollectionPrize } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -120,7 +121,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
     }
   }
 
-  unit = ::getAircraftByName(::getReserveAircraftName({
+  unit = ::getAircraftByName(getReserveAircraftName({
     country = countryId
     unitType = allowedUnitType
     ignoreSlotbarCheck = true
@@ -128,7 +129,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
   if (isAvailableFn(unit, false))
     return unit
 
-  unit = ::getAircraftByName(::getReserveAircraftName({
+  unit = ::getAircraftByName(getReserveAircraftName({
     country = "country_usa"
     unitType = allowedUnitType
     ignoreSlotbarCheck = true

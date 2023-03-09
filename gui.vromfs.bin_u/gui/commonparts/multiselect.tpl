@@ -23,10 +23,6 @@ MultiSelect {
     <<^enable>>
     enable:t='no'
     <</enable>>
-    <<^show>>
-    enable:t='no'
-    display:t='hide'
-    <</show>>
     <<#tooltip>>
     tooltip:t='<<tooltip>>'
     <</tooltip>>

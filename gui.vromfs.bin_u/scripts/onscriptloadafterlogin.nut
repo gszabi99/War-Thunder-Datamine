@@ -170,7 +170,6 @@ foreach (fn in [
   "%scripts/missions/urlMissionsList.nut"
   "%scripts/missions/misListType.nut"
   "%scripts/missions/missionDescription.nut"
-  "%scripts/tutorials.nut"
   "%scripts/tutorialsManager.nut"
   "%scripts/missions/campaignChapter.nut"
   "%scripts/missions/remoteMissionModalHandler.nut"

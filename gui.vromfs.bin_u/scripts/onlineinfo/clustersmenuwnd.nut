@@ -42,7 +42,6 @@ let class ClustersMenuWnd extends ::gui_handlers.BaseGuiHandlerWT {
         text = item.text
         icon = item.image
         tooltip = item.tooltip
-        show = true
         enable = (item.isAuto || !isAutoItemSelected) && (item?.name ?? "") != ""
       })
     }

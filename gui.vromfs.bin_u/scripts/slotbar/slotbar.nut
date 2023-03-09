@@ -31,6 +31,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { selectAvailableCrew } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 
 /*
 if need - put commented in array above
@@ -926,7 +927,7 @@ if need - put commented in array above
       ::selected_crews[cIdx] = crewIdx
     else {
       if (!selectAvailableCrew(cIdx)) {
-        let unitId = ::getReserveAircraftName({ country = country.country })
+        let unitId = getReserveAircraftName({ country = country.country })
         if (unitId != "")
           batchTrainCrew([{
             crewId = country.crews[0].id

@@ -5,9 +5,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { Point2 } = require("dagor.math")
 let { rnd } = require("dagor.random")
-
+let { isIPoint2 } = require("%sqStdLibs/helpers/u.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -196,17 +195,17 @@ let class TrophyMultiAward {
 
     local text = loc("shop/age") + loc("ui/colon")
     ranks = ::u.map(ranks,
-                        function(val) {
-                          if (type(val) != "instance" || !(val instanceof Point2))
-                            return ""
+      function(val) {
+        if (!isIPoint2(val))
+          return ""
 
-                          let res = colorize(this.condColor, ::get_roman_numeral(val.x))
-                          if (val.x == val.y)
-                            return res
+        let res = colorize(this.condColor, ::get_roman_numeral(val.x))
+        if (val.x == val.y)
+          return res
 
-                          let div = (val.y - val.x == 1) ? ", " : "-"
-                          return res + div + colorize(this.condColor, ::get_roman_numeral(val.y))
-                        }.bindenv(this))
+        let div = (val.y - val.x == 1) ? ", " : "-"
+        return res + div + colorize(this.condColor, ::get_roman_numeral(val.y))
+      }.bindenv(this))
 
     text += ::g_string.implode(ranks, ", ")
     condList.append(text)

@@ -14,6 +14,7 @@ let { fillUserNick, getFirstChosenUnitType,
   isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
+let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -327,7 +328,7 @@ enum CChoiceState {
             unitName = trainedUnit.name
         }
         if (!unitName.len())
-          unitName = ::getReserveAircraftName({
+          unitName = getReserveAircraftName({
             country = country
             unitType = unitType.esUnitType
             ignoreUnits = usedUnits
