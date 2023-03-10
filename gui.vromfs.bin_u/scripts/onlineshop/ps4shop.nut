@@ -179,7 +179,7 @@ let getEntStoreLocId = @() shopData.canUseIngameShop() ? "#topmenu/ps4IngameShop
 
 let openIngameStoreImpl = kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown",
-    forceExternalShop = false, _unitName = "") {
+    forceExternalShop = false, unitName = "") {//-declared-never-used -unused-func-param
     if (!isChapterSuitable(chapter))
       return false
 

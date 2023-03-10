@@ -25,7 +25,7 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { get_game_type } = require("mission")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 
 local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -105,6 +105,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   function reinit() {
     this.updateParams()
     updateActionBar()
+    this.fill()
   }
 
   function updateParams() {
@@ -136,7 +137,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
       gamepadShortcut = this.canControl ? loadTemplateText("%gui/hud/actionBarItemGamepadShortcut.tpl") : ""
     }
 
-    foreach (idx, item in view.items) {
+    foreach (idx, item in this.actionItems) {
       let cooldownTimeout = (item?.cooldownEndTime ?? 0) - ::get_usefull_total_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(idx, cooldownTimeout)
@@ -356,12 +357,14 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
       let item = this?.actionItems?[itemIdx]
       if (!item || !this.scene?.isValid())
         return
-
-      let itemObjId = $"{this.__action_id_prefix}{item.id}"
-      let itemObj = this.scene.findObject(itemObjId)
-      if (!itemObj?.isValid() || !getActionItemStatus(item).isReady)
-        return
-      itemObj.enable(true)
+      // Sometimes there is an out of sync between get_usefull_total_time() and setTimeout timer.
+      defer(function() {
+        let itemObjId = $"{this.__action_id_prefix}{item.id}"
+        let itemObj = this.scene.findObject(itemObjId)
+        if (!itemObj?.isValid() || !getActionItemStatus(item).isReady)
+          return
+        itemObj.enable(true)
+      }.bindenv(this))
     }.bindenv(this))
 
     if (this.cooldownTimers.len() <= itemIdx)

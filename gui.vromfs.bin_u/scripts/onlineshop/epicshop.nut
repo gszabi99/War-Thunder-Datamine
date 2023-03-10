@@ -70,7 +70,8 @@ foreach (sh in sheetsArray) {
 }
 
 let openIngameStore = kwarg(
-  function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown", _unitName = "") {
+  function(chapter = null, curItemId = "", afterCloseFunc = null,
+    statsdMetric = "unknown", unitName = "") {//-declared-never-used -unused-func-param
     if (!isInArray(chapter, [null, "", "eagles"]))
       return false
 
