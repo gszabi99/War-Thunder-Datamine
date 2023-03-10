@@ -354,11 +354,13 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
 
   function enableBarItemAfterCooldown(itemIdx, timeout) {
     let timer = setTimeout(timeout, function() {
-      let item = this?.actionItems?[itemIdx]
-      if (!item || !this.scene?.isValid())
-        return
       // Sometimes there is an out of sync between get_usefull_total_time() and setTimeout timer.
       defer(function() {
+        if (this == null)
+          return
+        let item = this.actionItems?[itemIdx]
+        if (!item || !this.scene?.isValid())
+          return
         let itemObjId = $"{this.__action_id_prefix}{item.id}"
         let itemObj = this.scene.findObject(itemObjId)
         if (!itemObj?.isValid() || !getActionItemStatus(item).isReady)
