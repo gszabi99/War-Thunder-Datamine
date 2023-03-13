@@ -9,6 +9,8 @@ let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+let { doesLocTextExist } = require("dagor.localize")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -140,8 +142,11 @@ let function getFirstPurchaseAdditionalAmount(ent) {
 let function getEntitlementPrice(ent) {
   if (ent?.onlinePurchase ?? false) {
     let info = bundlesShopInfo.value?[ent.name]
-    if (info)
-      return loc($"priceText/{info?.shop_price_curr}", { price = info?.shop_price ?? 0 }, "")
+    if (info) {
+      let { shop_price = 0, shop_price_curr = "" } = info
+      let locId = $"priceText/{shop_price_curr}"
+      return doesLocTextExist(locId) ? loc(locId, { price = shop_price }) : $"{shop_price} {utf8ToUpper(shop_price_curr)}"
+    }
 
     let priceText = loc("price/" + ent.name, "")
     if (priceText == "")
