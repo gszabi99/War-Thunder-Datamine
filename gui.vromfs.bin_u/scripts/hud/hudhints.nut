@@ -765,6 +765,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
       : ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
     showEvent = "hint:extinguish_fire:show"
     hideEvent = "hint:extinguish_fire:hide"
+    lifeTime = 5.0
     shouldBlink = true
   }
 
@@ -1238,6 +1239,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:repair_breaches_offer::show"
     hideEvent = "hint:repair_breaches_offer::hide"
     lifeTime  = 5.0
+    shouldBlink = true
     getShortcuts = function(_data) {
       return ::g_hud_action_bar_type.REPAIR_BREACHES.getVisualShortcut()
     }
@@ -1249,6 +1251,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:underwatering_offer::show"
     hideEvent = "hint:underwatering_offer::hide"
     lifeTime  = 5.0
+    shouldBlink = true
     getShortcuts = function(_data) {
       return ::g_hud_action_bar_type.REPAIR_BREACHES.getVisualShortcut()
     }
@@ -1260,6 +1263,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:ship_offer_repair::show"
     hideEvent = "hint:ship_offer_repair::hide"
     lifeTime  = 5.0
+    shouldBlink = true
     getShortcuts = function(_data) {
       return ::g_hud_action_bar_type.TOOLKIT.getVisualShortcut()
     }
