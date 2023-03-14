@@ -19,7 +19,7 @@ let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, TARGET_HUE_SPECTATOR_
   TARGET_HUE_HELICOPTER_PARAM_HUD, TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH,
   TARGET_HUE_HELICOPTER_MFD, TARGET_HUE_ARBITER_HUD, setHsb, getAlertAircraftHues,
   setAlertAircraftHues, getAlertHelicopterHues, setAlertHelicopterHues,
-  getRgbStrFromHsv, getRgbIntFromHsv } = require("colorCorrector")
+  getRgbStrFromHsv } = require("colorCorrector")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let globalEnv = require("globalEnv")
@@ -73,7 +73,7 @@ let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
   set_option_chat_messages_filter } = require("chat")
 let { get_game_mode } = require("mission")
 let { get_meta_missions_info } = require("guiMission")
-let { crosshairColorOpt, hueHeliCrosshairOpt } = require("%scripts/options/dargOptionsSync.nut")
+let { crosshairColorOpt } = require("%scripts/options/dargOptionsSync.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
@@ -4804,7 +4804,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let { sat = 1.0, val = 1.0 } = descr.items[value]
       setHsb(TARGET_HUE_HELICOPTER_CROSSHAIR, descr.values[value], sat, val);
       ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
-      hueHeliCrosshairOpt(getRgbIntFromHsv(descr.values[value], sat, val))
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD:

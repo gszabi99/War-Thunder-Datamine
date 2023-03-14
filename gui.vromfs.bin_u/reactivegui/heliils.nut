@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, MfdColor } = require("airState.nut")
+let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, HudColor } = require("airState.nut")
 let { paramsTable, horSpeed, vertSpeed, rocketAim, taTarget } = require("airHudElems.nut")
 let compass = require("compass.nut")
 let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("style/airHudStyle.nut")
@@ -31,24 +31,24 @@ let mfdPilotParamsTable = paramsTable(IlsMask, SecondaryMask,
 let function compassComponent(style, size, pos) {
   return @() {
     pos
-    watch = MfdColor
-    children = compass(size, MfdColor.value, style)
+    watch = HudColor
+    children = compass(size, HudColor.value, style)
   }
 }
 
 let function ilsHud(elemStyle) {
   let ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
-    color = MfdColor.value
+    color = HudColor.value
   })
   return @() {
-    watch = [IsIlsEnabled, MfdColor]
+    watch = [IsIlsEnabled, HudColor]
     pos = [IlsPosSize[0], IlsPosSize[1]]
     children = IsIlsEnabled.value ?
     [
-      mfdPilotParamsTable(false, ilsStyle)
-      vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), MfdColor.value, ilsStyle)
-      horSpeed(MfdColor.value, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
+      mfdPilotParamsTable(HudColor, false, ilsStyle)
+      vertSpeed(pilotSh(5), pilotSh(40), pilotSw(50) + pilotHdpx(330), pilotSh(45), HudColor.value, ilsStyle)
+      horSpeed(HudColor.value, pilotSw(50), pilotSh(80), pilotHdpx(100), ilsStyle)
       compassComponent(ilsStyle, [pilotSw(100), pilotSh(13)], [pilotSw(50) - 0.5 * pilotSw(100), pilotSh(15)])
     ]
     : null
@@ -58,13 +58,13 @@ let function ilsHud(elemStyle) {
 let function ilsMovingMarks(style) {
   let ilsStyle = style.__merge({
     lineWidth = LINE_WIDTH * 3
-    color = MfdColor.value
+    color = HudColor.value
   })
   return @() {
-    watch = [IsIlsEnabled, MfdColor]
+    watch = [IsIlsEnabled, HudColor]
     children = IsIlsEnabled.value ?
     [
-      rocketAim(pilotSw(4), pilotSh(8), MfdColor.value, ilsStyle)
+      rocketAim(pilotSw(4), pilotSh(8), HudColor.value, ilsStyle)
       taTarget(pilotSw(25), pilotSh(25))
     ]
     : null

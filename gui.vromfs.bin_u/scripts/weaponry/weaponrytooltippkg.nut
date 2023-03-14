@@ -92,49 +92,95 @@ let function getGunAmmoPerTier(weapons) {
   return block && block.num > 0 ? block.ammo * (block?.amountPerTier ?? 1) / block.num : null
 }
 
-let function getTierDescTbl(unit, params) {
-  let { tooltipLang, amountPerTier, name,
-    blk, tType, ammo, isGun, addWeaponry, presetName, tierId } = params
-  if (tooltipLang != null)
-    return { desc = loc(tooltipLang) }
+let function buildWeaponDescHeader(params, count) {
+  let { name, tType, ammo } = params
 
-  local header = loc($"weapons/{name}")
+  local weaponName = loc($"weapons/{name}")
+  local header = ""
+
+  if (isInArray(tType, CONSUMABLE_TYPES))
+    header = count > 1
+      ? "".concat(weaponName, format(loc("weapons/counter"), count))
+      : weaponName
+  else if (ammo > 0)
+    header = "".concat(weaponName, " (", loc("shop/ammo"), loc("ui/colon"),
+      count <=1 ? ammo : count ?? "", ")")
+
+  return header.len() > 0 ? header : weaponName
+}
+
+let function getWeaponDescTbl(unit, params) {
+  let { amountPerTier,
+    blk, tType, ammo, isGun, presetName, tierId } = params
+
   let isBlock = amountPerTier > 1
   let weapArr = getUnitWeaponsByTier(unit, blk, tierId)
     ?? getUnitWeaponsByPreset(unit, blk, presetName)
   let weapons = addWeaponsFromBlk({}, weapArr, unit)
-  let desc = getWeaponInfoText(unit, {
+  let weaponInfoText = getWeaponInfoText(unit, {
     weapons
     isPrimary = false
     detail = INFO_DETAIL.EXTENDED
   })
 
-  if (isInArray(tType, CONSUMABLE_TYPES))
-    header = isBlock ?
-      "".concat(header, format(loc("weapons/counter"), amountPerTier)) : header
-  else if (ammo > 0)
-    header = "".concat(header, " (", loc("shop/ammo"), loc("ui/colon"),
-      !isBlock ? ammo : !isGun ? amountPerTier : getGunAmmoPerTier(weapons) ?? "", ")")
+  local count = 1
 
-  // Need to replace header with new one contains right weapons amount calculated per tier
-  let descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
-  descArr[0] = header
-  let res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b)) }
+  if (isInArray(tType, CONSUMABLE_TYPES))
+    count = isBlock
+      ? amountPerTier
+      : count
+  else if (ammo > 0)
+    count = !isBlock
+      ? ammo
+      : isGun ? getGunAmmoPerTier(weapons) : amountPerTier
+
+  // Remove header with incorrect weapons amount from description
+  let descArr = weaponInfoText.split(WEAPON_TEXT_PARAMS.newLine).slice(1)
+  let desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b), "")
+  let res = { weapons, count, desc }
   if (TYPES_ARMOR_PIERCING.contains(tType)) {
     let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false))
     addArmorPiercingToDesc(bulletsData, res)
   }
 
-  if (addWeaponry != null) {
-    let addDescBlock = getTierDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
-    res.desc = $"{res.desc}\n{addDescBlock.desc}"
-    if ("bulletParams" in addDescBlock) {
-      if (!("bulletParams" in res))
-        res.bulletParams <- []
-      if(!isEqual(res.bulletParams, addDescBlock.bulletParams))
-        res.bulletParams.extend(addDescBlock.bulletParams)
-    }
+  return res
+}
+
+let function getTierDescTbl(unit, params) {
+  let { tooltipLang, name, addWeaponry, presetName, tierId } = params
+
+  if (tooltipLang != null)
+    return { desc = loc(tooltipLang) }
+
+  let weaponryDesc = getWeaponDescTbl(unit, params)
+  local additionalWeaponryDesc = addWeaponry
+    ? getWeaponDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
+    : null
+
+  local res = { desc = "", bulletParams = weaponryDesc?.bulletParams }
+
+  if (!additionalWeaponryDesc) {
+    let header = buildWeaponDescHeader(params, weaponryDesc.count)
+    res.desc = $"{header}\n{weaponryDesc.desc}"
+    return res
   }
+
+  if (loc($"weapons/{name}") == loc($"weapons/{addWeaponry.name}")) {
+    let header = buildWeaponDescHeader(params, weaponryDesc.count + additionalWeaponryDesc.count)
+    res.desc = $"{header}\n{weaponryDesc.desc}"
+  } else {
+    let header = buildWeaponDescHeader(params, weaponryDesc.count)
+    let addHeader = buildWeaponDescHeader(params, additionalWeaponryDesc.count)
+    res.desc = $"{header}\n{weaponryDesc.desc}\n{addHeader}\n{additionalWeaponryDesc.desc}"
+  }
+
+  if ("bulletParams" in additionalWeaponryDesc) {
+    if (!res.bulletParams)
+      res.bulletParams = []
+    if(!isEqual(res.bulletParams, additionalWeaponryDesc.bulletParams))
+      res.bulletParams.extend(additionalWeaponryDesc.bulletParams)
+  }
+
   return res
 }
 

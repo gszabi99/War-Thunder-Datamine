@@ -65,7 +65,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
                                "aiKills", "aiGroundKills", "aiNavalKills", "aiTotalKills", "awardDamage", "assists", "captureZone", "damageZone", "deaths"]
   raceRowHeaders            = ["rowNo", "name", "unitIcon", "aircraft", "raceFinishTime", "raceLap", "raceLastCheckpoint",
                                "raceLastCheckpointTime", "deaths"]
-  footballRowHeaders        = ["name", "footballScore", "footballGoals", "footballAssists"]
+  footballRowHeaders        = ["name", "footballScore", "footballGoals", "footballSaves", "footballAssists"]
 
   statTrSize = "pw, 1@baseTrHeight"
 

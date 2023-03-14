@@ -5,6 +5,7 @@
   "viewDistKInSight": 6.0,
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "haveCCIPForRocket": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "gearSinkRangeLR": 0.32,
   "gearSinkRangeC": 0.25,
@@ -1570,6 +1571,10 @@
       {
         "name": "ka_29_upk_23_250",
         "blk": "gameData/flightModels/weaponPresets/ka_29_upk_23_250.blk"
+      },
+      {
+        "name": "ka_29_2a42",
+        "blk": "gameData/flightModels/weaponPresets/ka_29_2a42.blk"
       }
     ]
   },
@@ -1682,115 +1687,10 @@
             ]
           },
           {
-            "name": "ghsg_full_common",
-            "ShowNodes": {
-              "node": [
-                "fuse2",
-                "lipa",
-                "2a42",
-                "2a42_pylon",
-                "flare10",
-                "exhaust_shield",
-                "lipa_off"
-              ]
-            },
-            "ShowDmParts": {
-              "node": "cannon1_dm"
-            },
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "playerControllable": false
-                },
-                "limits": {
-                  "yaw": [
-                    -50.0,
-                    50.0
-                  ],
-                  "pitch": [
-                    -40.0,
-                    20.0
-                  ]
-                }
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/gunGShG.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "turret": [
-                  "turret1",
-                  {
-                    "head": "turret1",
-                    "gun": "gun1",
-                    "mainTurret": true,
-                    "ballisticTargeting": true
-                  }
-                ],
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "dm": "gun1_dm",
-                "gunDm": "gun1_dm",
-                "partsDP": "gun1_dm",
-                "bullets": 2000,
-                "spread": 1.2,
-                "recoilMultiplier": 0.5,
-                "parkInDeadzone": false,
-                "limits": {
-                  "yaw": [
-                    -15.0,
-                    15.0
-                  ],
-                  "pitch": [
-                    -31.0,
-                    0.0
-                  ]
-                }
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannon2A42.blk",
-                "emitter": "flare10",
-                "flash": "flare10",
-                "dm": "cannon1_dm",
-                "bullets": 200,
-                "spread": 1.2,
-                "recoilMultiplier": 0.5
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 128,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 128,
-                "external": true,
-                "separate": false
-              }
-            ]
-          },
-          {
             "name": "ghsg_exhaust_device_common",
+            "ShowNodes": {
+              "node": "exhaust_shield"
+            },
             "Weapon": [
               {
                 "dummy": true,
@@ -1857,6 +1757,12 @@
           },
           {
             "name": "ghsg_ltc_common",
+            "ShowNodes": {
+              "node": [
+                "exhaust_shield",
+                "fuse2"
+              ]
+            },
             "Weapon": [
               {
                 "dummy": true,
@@ -1942,7 +1848,11 @@
           {
             "name": "ghsg_lipa_ltc_common",
             "ShowNodes": {
-              "node": "lipa"
+              "node": [
+                "exhaust_shield",
+                "fuse2",
+                "lipa"
+              ]
             },
             "Weapon": [
               {
@@ -2030,7 +1940,7 @@
       },
       {
         "index": 1,
-        "tier": 8,
+        "tier": 9,
         "order": 1,
         "WeaponPreset": [
           {
@@ -2100,7 +2010,7 @@
       },
       {
         "index": 2,
-        "tier": 7,
+        "tier": 8,
         "order": 3,
         "WeaponPreset": [
           {
@@ -2147,6 +2057,36 @@
       },
       {
         "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": {
+          "iconType": "cannon_inner",
+          "name": "2a42",
+          "reqModification": "ka_29_2a42",
+          "ShowNodes": {
+            "node": [
+              "2a42",
+              "2a42_pylon",
+              "flare10"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "cannon1_dm"
+          },
+          "Weapon": {
+            "trigger": "additional gun",
+            "blk": "gameData/Weapons/cannon2A42.blk",
+            "emitter": "flare10",
+            "flash": "flare10",
+            "dm": "cannon1_dm",
+            "bullets": 200,
+            "spread": 1.2,
+            "recoilMultiplier": 0.5
+          }
+        }
+      },
+      {
+        "index": 4,
         "tier": 5,
         "order": 4,
         "WeaponPreset": [
@@ -2193,7 +2133,7 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 4,
         "order": 2,
         "WeaponPreset": [
@@ -2322,21 +2262,7 @@
       "prevModification": "ns23_belt_pack",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "tier": 3,
-      "group": "countermeasures",
-      "effects": {
-        "counterMeasures": {
-          "counterMeasure": {
-            "blk": "gameData/counterMeasures/l_166.blk"
-          }
-        },
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "ghsg_full_common"
-          }
-        }
-      }
+      "tier": 3
     },
     "2A42_ground_targets": {},
     "2A42_air_targets": {},
@@ -2378,6 +2304,7 @@
       "group": "countermeasures",
       "tier": 2,
       "effects": {
+        "enginesInfraRedBrightnessMult": 0.7,
         "commonWeapons": {
           "Weapon": {
             "slot": 0,
@@ -2393,6 +2320,7 @@
       "tier": 3,
       "group": "countermeasures",
       "effects": {
+        "enginesInfraRedBrightnessMult": 0.7,
         "counterMeasures": {
           "counterMeasure": {
             "blk": "gameData/counterMeasures/l_166.blk"

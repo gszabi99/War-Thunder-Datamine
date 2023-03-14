@@ -2,24 +2,21 @@ from "%rGui/globals/ui_library.nut" import *
 
 let mfdHud = require("mfd.nut")
 let heliIlsHud = require("heliIls.nut")
-let { bw, bh, rw, rh, safeAreaSizeHud } = require("style/screenState.nut")
+let { bw, bh, rw, rh } = require("style/screenState.nut")
 let { IsRadarHudVisible } = require("radarState.nut")
 let {
   IndicatorsVisible, MainMask, SecondaryMask, SightMask, EmptyMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsSightHudVisible, IsGunnerHudVisible,
-  HudColor, AlertColorHigh, IsMfdEnabled } = require("airState.nut")
+  HudColor, MfdColor, AlertColorHigh, IsMfdEnabled, HudParamColor } = require("airState.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
 let { paramsTable, taTarget, compassElem, rocketAim, vertSpeed, horSpeed, turretAngles, agmLaunchZone,
   launchDistanceMax, lockSight, targetSize, sight, rangeFinder, detectAlly } = require("airHudElems.nut")
-let hudLogs = require("hudLogs.nut")
-let voiceChat = require("chat/voiceChat.nut")
-let xrayIndicator = require("hud/xrayIndicator.nut")
 let {
   gunDirection, fixedGunsDirection, helicopterCCRP, agmTrackerStatusComponent, bombSightComponent,
   laserDesignatorStatusComponent, laserDesignatorComponent, agmTrackZoneComponent } = require("airSight.nut")
 let { radarElement, twsElement } = require("airHudComponents.nut")
-let { hueHeliCrosshairOpt } = require("options/options.nut")
+let leftPanel = require("airHudLeftPanel.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -57,15 +54,15 @@ let function helicopterMainHud() {
     watch = IsMainHudVisible
     children = IsMainHudVisible.value
     ? [
-      rocketAim(sh(0.8), sh(1.8), hueHeliCrosshairOpt.value)
-      aamAim(hueHeliCrosshairOpt, AlertColorHigh)
-      agmAim(hueHeliCrosshairOpt)
-      gunDirection(hueHeliCrosshairOpt, false)
-      fixedGunsDirection(hueHeliCrosshairOpt)
+      rocketAim(sh(0.8), sh(1.8), HudColor.value)
+      aamAim(HudColor, AlertColorHigh)
+      agmAim(HudColor)
+      gunDirection(HudColor, false)
+      fixedGunsDirection(HudColor)
       helicopterCCRP(HudColor)
       vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value)
       horSpeed(HudColor.value)
-      helicopterParamsTable()
+      helicopterParamsTable(HudColor)
       taTarget(sw(25), sh(25))
     ]
     : null
@@ -77,22 +74,22 @@ let function helicopterSightHud() {
     watch = IsSightHudVisible
     children = IsSightHudVisible.value ?
     [
-      vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), HudColor.value)
-      turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90))
-      agmLaunchZone(HudColor, sw(100), sh(100))
-      launchDistanceMax(HudColor, hdpx(150), hdpx(150), sw(50), sh(90))
-      helicopterSightParamsTable()
-      lockSight(hueHeliCrosshairOpt, hdpx(150), hdpx(100), sw(50), sh(50))
-      targetSize(hueHeliCrosshairOpt, sw(100), sh(100))
-      agmTrackZoneComponent(HudColor)
-      agmTrackerStatusComponent(HudColor, sw(50), sh(41))
-      laserDesignatorComponent(HudColor, sw(50), sh(42))
-      laserDesignatorStatusComponent(HudColor, sw(50), sh(38))
-      sight(hueHeliCrosshairOpt, sw(50), sh(50), hdpx(500))
-      rangeFinder(HudColor, sw(50), sh(59))
+      vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), HudParamColor.value)
+      turretAngles(HudParamColor, hdpx(150), hdpx(150), sw(50), sh(90))
+      agmLaunchZone(HudParamColor, sw(100), sh(100))
+      launchDistanceMax(HudParamColor, hdpx(150), hdpx(150), sw(50), sh(90))
+      helicopterSightParamsTable(HudParamColor)
+      lockSight(HudParamColor, hdpx(150), hdpx(100), sw(50), sh(50))
+      targetSize(HudParamColor, sw(100), sh(100))
+      agmTrackZoneComponent(HudParamColor)
+      agmTrackerStatusComponent(HudParamColor, sw(50), sh(41))
+      laserDesignatorComponent(HudParamColor, sw(50), sh(42))
+      laserDesignatorStatusComponent(HudParamColor, sw(50), sh(38))
+      sight(HudParamColor, sw(50), sh(50), hdpx(500))
+      rangeFinder(HudParamColor, sw(50), sh(59))
       detectAlly(sw(51), sh(35))
-      agmAim(hueHeliCrosshairOpt)
-      gunDirection(hueHeliCrosshairOpt, true)
+      agmAim(HudParamColor)
+      gunDirection(HudParamColor, true)
     ]
     : null
   }
@@ -103,11 +100,11 @@ let function helicopterGunnerHud() {
     watch = IsGunnerHudVisible
     children = IsGunnerHudVisible.value
     ? [
-        gunDirection(hueHeliCrosshairOpt, false)
-        fixedGunsDirection(hueHeliCrosshairOpt)
+        gunDirection(HudColor, false)
+        fixedGunsDirection(HudColor)
         helicopterCCRP(HudColor)
         vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(315), sh(42.5), HudColor.value)
-        helicopterParamsTable()
+        helicopterParamsTable(HudColor)
       ]
     : null
   }
@@ -119,7 +116,7 @@ let function pilotHud() {
     children = IsPilotHudVisible.value ?
     [
       vertSpeed(sh(4.0), sh(15), sw(50) + hdpx(325), sh(42.5), HudColor.value)
-      helicopterParamsTable()
+      helicopterParamsTable(HudColor)
     ]
     : null
   }
@@ -130,7 +127,7 @@ let function helicopterArbiterHud() {
     watch = IsArbiterHudVisible
     children = IsArbiterHudVisible.value ?
     [
-      helicopterArbiterParamsTable()
+      helicopterArbiterParamsTable(HudColor)
     ]
     : null
   }
@@ -145,11 +142,10 @@ let function mkHelicopterIndicators() {
       helicopterGunnerHud()
       helicopterArbiterHud()
       pilotHud()
-      xrayIndicator
-      !IsMfdEnabled.value ? twsElement(HudColor, twsPosComputed, twsSize) : null
-      !IsMfdEnabled.value ? radarElement(HudColor, radarPosWatched, radarSize) : null
-      !IsRadarHudVisible.value ? compassElem(HudColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
-      bombSightComponent(sh(10.0), sh(10.0), hueHeliCrosshairOpt)
+      !IsMfdEnabled.value ? twsElement(MfdColor, twsPosComputed, twsSize) : null
+      !IsMfdEnabled.value ? radarElement(MfdColor, radarPosWatched, radarSize) : null
+      !IsRadarHudVisible.value ? compassElem(MfdColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
+      bombSightComponent(sh(10.0), sh(10.0), HudColor)
     ]
   }
 }
@@ -167,26 +163,12 @@ let indicatorsCtor = @() {
   children = (IndicatorsVisible.value || IsMfdEnabled.value)
     ? helicopterIndicators
     : null
- }
-
-let chatCtor = @() {
-  watch = safeAreaSizeHud
-  size = [SIZE_TO_CONTENT, hdpx(350)]
-  margin = safeAreaSizeHud.value.borders
-  flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
-  halign = ALIGN_LEFT
-  gap = hdpx(10)
-  children = [
-    voiceChat
-    hudLogs
-  ]
 }
 
 let helicopterRoot = {
   size = [sw(100), sh(100)]
   children = [
-    chatCtor
+    leftPanel
     indicatorsCtor
   ]
 

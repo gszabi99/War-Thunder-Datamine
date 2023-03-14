@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { dmgIndicatorStates, missionProgressHeight,
-  isVisibleDmgIndicator } = require("%rGui/hudState.nut")
+  isVisibleDmgIndicator, isSpectatorMode } = require("%rGui/hudState.nut")
 let { safeAreaSizeHud } = require("style/screenState.nut")
 let activeOrder = require("activeOrder.nut")
 let voiceChat = require("chat/voiceChat.nut")
@@ -33,7 +33,7 @@ let logsComp = {
 }
 
 let panel = @() {
-  watch = [safeAreaSizeHud, missionProgressHeight]
+  watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
   size = [SIZE_TO_CONTENT, flex()]
   padding = [0, 0, missionProgressHeight.value, 0]
   margin = safeAreaSizeHud.value.borders
@@ -41,7 +41,7 @@ let panel = @() {
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
   gap = hdpx(10)
-  children = [
+  children = isSpectatorMode.value ? null : [
     voiceChat
     activeOrder
     logsComp

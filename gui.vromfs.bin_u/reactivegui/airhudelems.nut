@@ -28,7 +28,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
   RocketAimX, RocketAimY, TATargetVisible, IRCMState,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced, IsEnginesControled, ThrottleState, isEngineControled,
-  DistanceToGround, IsMfdEnabled, VerticalSpeed, HudParamColor, MfdColor,
+  DistanceToGround, IsMfdEnabled, VerticalSpeed, MfdColor,
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
 
@@ -440,7 +440,7 @@ let function getFuelAlertState(fuelState) {
          fuelState == TemperatureState.EMPTY_TANK ? HudColorState.PASSIV : HudColorState.ACTIV
 }
 
-let function createParam(param, width, height, style, needCaption = true, for_ils = false, isBomberView = false) {
+let function createParam(param, width, height, style, colorWatch, needCaption, for_ils, isBomberView) {
   let { blinkComputed = null, blinkTrigger = null, valueComputed, selectedComputed,
     additionalComputed, titleComputed, alertStateCaptionComputed, alertValueStateComputed } = param
 
@@ -465,12 +465,12 @@ let function createParam(param, width, height, style, needCaption = true, for_il
     : fontOutlineFxFactor * factor
   }
 
-  let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, HudParamColor.value, PassivColor.value,
+  let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, colorWatch.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value), 255))
 
-  let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.value, HudParamColor.value, ParamTableShadowOpacity.value))
+  let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.value, colorWatch.value, ParamTableShadowOpacity.value))
 
-  let factorFxCaption = Computed(@() selectFxFactor(alertStateCaptionComputed.value, HudParamColor.value, ParamTableShadowFactor.value))
+  let factorFxCaption = Computed(@() selectFxFactor(alertStateCaptionComputed.value, colorWatch.value, ParamTableShadowFactor.value))
 
   let captionComponent = @() style.__merge({
     watch = [titleComputed, colorAlertCaptionW, alertStateCaptionComputed, colorFxCaption, factorFxCaption]
@@ -496,12 +496,12 @@ let function createParam(param, width, height, style, needCaption = true, for_il
     opacity =  alertStateCaptionComputed.value >= HudColorState.LOW_ALERT ? 0.7 : 1.0
   })
 
-  let valueColor = Computed(@() for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, HudParamColor.value, PassivColor.value,
+  let valueColor = Computed(@() for_ils ? MfdColor.value : selectColor(alertValueStateComputed.value, colorWatch.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value))
 
-  let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.value, HudParamColor.value, ParamTableShadowOpacity.value))
+  let colorFxValue = Computed(@() selectFxColor(alertValueStateComputed.value, colorWatch.value, ParamTableShadowOpacity.value))
 
-  let factorFxValue = Computed(@() selectFxFactor(alertValueStateComputed.value, HudParamColor.value, ParamTableShadowFactor.value))
+  let factorFxValue = Computed(@() selectFxFactor(alertValueStateComputed.value, colorWatch.value, ParamTableShadowFactor.value))
 
   let valueComponent = @() style.__merge({
     watch = [valueComputed, alertValueStateComputed, valueColor, colorFxValue, factorFxValue]
@@ -516,15 +516,15 @@ let function createParam(param, width, height, style, needCaption = true, for_il
   })
 
   let additionalComponent = @() style.__merge({
-    watch = [additionalComputed, HudParamColor, ParamTableShadowFactor, ParamTableShadowOpacity]
-    color = fadeColor(HudParamColor.value, 255)
+    watch = [additionalComputed, colorWatch, ParamTableShadowFactor, ParamTableShadowOpacity]
+    color = fadeColor(colorWatch.value, 255)
     rendObj = ROBJ_TEXT
     size = [0.7 * width, height]
     text = additionalComputed.value
-    fontFxFactor = isDarkColor(HudParamColor.value) ?
+    fontFxFactor = isDarkColor(colorWatch.value) ?
       fontOutlineFxFactor * 0.15 * ParamTableShadowFactor.value
       : fontOutlineFxFactor * ParamTableShadowFactor.value
-    fontFxColor = isDarkColor(HudParamColor.value)
+    fontFxColor = isDarkColor(colorWatch.value)
       ? Color(255, 255, 255, 255 * ParamTableShadowOpacity.value)
       : Color(0, 0, 0, 255 * ParamTableShadowOpacity.value)
   })
@@ -834,12 +834,12 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 let fuelKeyId = AirParamsSecondary.FUEL
 
 let function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false) {
-  let function getChildren(style, isBomberView = false) {
+  let function getChildren(colorWatch, style, isBomberView) {
     let children = []
 
     foreach (key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
-        children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView))
       if (key == AirParamsMain.ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_TEXT
@@ -851,7 +851,7 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
     local secondaryMaskValue = secondaryMask.value
     if (is_aircraft) {
       if ((1 << fuelKeyId) & secondaryMaskValue) {
-        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, needCaption, forIls, isBomberView))
+        children.append(createParam(textParamsMapSecondary[fuelKeyId], width, height, style, colorWatch, needCaption, forIls, isBomberView))
         secondaryMaskValue = secondaryMaskValue - (1 << fuelKeyId)
       }
     }
@@ -866,20 +866,20 @@ let function generateParamsTable(mainMask, secondaryMask, width, height, posWatc
 
     foreach (key, param in textParamsMapSecondary) {
       if ((1 << key) & secondaryMaskValue)
-        children.append(createParam(param, width, height, style, needCaption, forIls, isBomberView))
+        children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView))
     }
 
     return children
   }
 
-  return function(isBomberView = false, style = styleText) {
+  return function(colorWatch, isBomberView = false, style = styleText) {
     let table = @() style.__merge({
       watch = [mainMask, secondaryMask, posWatched]
       pos = posWatched.value
       size = [width, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       gap
-      children = getChildren(style, isBomberView)
+      children = getChildren(colorWatch, style, isBomberView)
     })
 
     return {

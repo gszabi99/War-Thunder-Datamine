@@ -1,0 +1,1775 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
+    "mission": {
+      "level": "levels/avg_football_field.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear",
+      "footballSaveTraceTime": 3.0,
+      "footballSaveTraceCooldown": 1.0,
+      "useCustomOnlineUnlocksOnly": true,
+      "countryFlagTeamA": "country_invisible",
+      "countryFlagTeamB": "country_invisible",
+      "locName": "missions/tank_football_Tdm",
+      "locDesc": "missions/tank_football_Tdm/desc",
+      "gt_football": true,
+      "scoreLimit": 20,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.0,
+      "randomSpawnTeams": false,
+      "isBotsAllowed": false,
+      "useTankBots": false,
+      "footballScoreGoal": 100.0,
+      "footballScoreAssist": 50.0,
+      "footballScoreSave": 75.0,
+      "colorTeamA": "8otD/w==",
+      "colorTeamB": "F52Y/w==",
+      "restoreType": "attempts",
+      "difficulty": "arcade",
+      "optionalTakeOff": false,
+      "isPhysPredictionEnabled": true,
+      "isPreciseCollisionDetectionEnabled": true,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": false,
+        "isTanksAllowed": true,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/events/tanks/football/template_tank_football.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "t1_football_get_advantage_in_5_goals": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "team": "A"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    },
+    "t2_football_get_advantage_in_5_goals": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "team": "B"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    }
+  },
+  "variables": {
+    "points_advantage_for_t1_win": 5,
+    "points_advantage_for_t2_win": -5,
+    "points_advantage_for_t1_near_win": 4,
+    "points_advantage_for_t2_near_win": -4,
+    "hint_ally_near_win_by_advantage": "hints/football_ally_leads_by_4_goals",
+    "hint_enemy_near_win_by_advantage": "hints/football_enemy_leads_by_4_goals",
+    "objective_t1_win_by_advantage": "t1_football_get_advantage_in_5_goals",
+    "objective_t2_win_by_advantage": "t2_football_get_advantage_in_5_goals"
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
+        "name": "t2_respawn_att_1",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -219.596,
+            70.0,
+            -107.65
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_respawn01_att_a",
+            "t2_respawn02_att_a",
+            "t2_respawn03_a",
+            "t2_respawn04_a",
+            "t2_respawn05_a"
+          ]
+        }
+      },
+      {
+        "name": "t1_respawn_att_1",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -208.2,
+            70.0,
+            112.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_respawn01_att_a",
+            "t1_respawn02_att_a",
+            "t1_respawn03_a",
+            "t1_respawn04_a",
+            "t1_respawn05_a"
+          ]
+        }
+      },
+      {
+        "name": "t1_respawn_1v1",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -209.309,
+            70.0,
+            32.8069
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_respawn_1v1_a",
+            "t1_respawn_1v1_b"
+          ]
+        }
+      },
+      {
+        "name": "t2_respawn_1v1",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -222.65,
+            82.0045,
+            -61.6155
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_respawn_1v1_a",
+            "t2_respawn_1v1_b"
+          ]
+        }
+      },
+      {
+        "name": "t1_ingame_respawn",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -196.704,
+            70.0,
+            32.8069
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_ingame_respawn01",
+            "t1_ingame_respawn02",
+            "t1_ingame_respawn03",
+            "t1_ingame_respawn04"
+          ]
+        }
+      },
+      {
+        "name": "t2_ingame_respawn",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -196.704,
+            82.7539,
+            -63.6285
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_ingame_respawn01",
+            "t2_ingame_respawn02",
+            "t2_ingame_respawn03",
+            "t2_ingame_respawn04"
+          ]
+        }
+      },
+      {
+        "name": "t2_respawn_def",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -222.65,
+            69.0097,
+            -88.5411
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_respawn01_def",
+            "t2_respawn02_def_a",
+            "t2_respawn03_a",
+            "t2_respawn04_a",
+            "t2_respawn05_a"
+          ]
+        }
+      },
+      {
+        "name": "t1_respawn_def",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -208.2,
+            70.0,
+            91.6926
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_respawn01_def",
+            "t1_respawn02_def_a",
+            "t1_respawn03_a",
+            "t1_respawn04_a",
+            "t1_respawn05_a"
+          ]
+        }
+      },
+      {
+        "name": "t2_respawn_att_2",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -232.048,
+            70.0,
+            -107.65
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_respawn01_att_b",
+            "t2_respawn02_att_b",
+            "t2_respawn03_b",
+            "t2_respawn04_b",
+            "t2_respawn05_b"
+          ]
+        }
+      },
+      {
+        "name": "t1_respawn_att_2",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -225.149,
+            70.0,
+            112.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_respawn01_att_b",
+            "t1_respawn02_att_b",
+            "t1_respawn03_b",
+            "t1_respawn04_b",
+            "t1_respawn05_b"
+          ]
+        }
+      }
+    ],
+    "phys_obj": {
+      "name": "ball",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          22.5,
+          0.0
+        ]
+      ],
+      "unit_class": "ball",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "t1_respawn05_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          60.0,
+          20.0,
+          85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          340.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          340.0
+        ],
+        [
+          0.0,
+          19.9998,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "center": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-06,
+          0.0,
+          -20.0
+        ],
+        [
+          0.0,
+          20.0,
+          0.0
+        ],
+        [
+          20.0,
+          0.0,
+          1.50996E-06
+        ],
+        [
+          0.0,
+          22.5,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_goal": {
+      "type": "Box",
+      "tm": [
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10.0
+        ],
+        [
+          0.0,
+          20.0,
+          124.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_goal": {
+      "type": "Box",
+      "tm": [
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          12.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          10.0
+        ],
+        [
+          0.0,
+          20.0,
+          -124.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "field": {
+      "type": "Box",
+      "tm": [
+        [
+          182.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          238.0
+        ],
+        [
+          0.0,
+          19.9998,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn02_def_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          60.0,
+          20.0,
+          -85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn03_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          26.0,
+          20.0,
+          95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn01_att_a": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.99999,
+          0.0,
+          5.96046E-08
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -5.96046E-08,
+          0.0,
+          -1.99999
+        ],
+        [
+          7.0,
+          20.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn04_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -26.0,
+          20.0,
+          95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn02_att_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -35.0,
+          20.0,
+          40.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn04_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          26.0,
+          20.0,
+          -95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn01_att_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.99999,
+          0.0,
+          -5.96046E-08
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          5.96046E-08,
+          0.0,
+          1.99999
+        ],
+        [
+          -7.0,
+          20.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn03_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -26.0,
+          20.0,
+          -95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn05_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -60.0,
+          20.0,
+          -85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn_1v1_a": {
+      "type": "Point",
+      "tm": [
+        [
+          0.923496,
+          0.0,
+          -1.77402
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.77402,
+          0.0,
+          0.923496
+        ],
+        [
+          -30.0,
+          20.0,
+          60.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn_1v1_a": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.923496,
+          0.0,
+          1.77402
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -1.77402,
+          0.0,
+          -0.923496
+        ],
+        [
+          28.5467,
+          20.0,
+          -60.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn_keeper": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          0.0,
+          20.0,
+          110.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn_keeper": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          0.0,
+          20.0,
+          -110.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_ingame_respawn01": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          60.0,
+          20.0,
+          75.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_ingame_respawn02": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          50.0,
+          20.0,
+          85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_ingame_respawn03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          -50.0,
+          20.0,
+          85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_ingame_respawn04": {
+      "type": "Point",
+      "tm": [
+        [
+          1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          -60.0,
+          20.0,
+          75.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_ingame_respawn01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          -60.0,
+          20.0,
+          -75.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_ingame_respawn02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          -50.0,
+          20.0,
+          -85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_ingame_respawn03": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          60.0,
+          20.0,
+          -75.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_ingame_respawn04": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.41421,
+          0.0,
+          1.41421
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -1.41421,
+          0.0,
+          -1.41421
+        ],
+        [
+          50.0,
+          20.0,
+          -85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn01_def": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.64111E-06,
+          0.0,
+          -1.99999
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.99999,
+          0.0,
+          -1.64111E-06
+        ],
+        [
+          0.0,
+          20.0,
+          100.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn01_def": {
+      "type": "Point",
+      "tm": [
+        [
+          4.17233E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          4.17233E-07
+        ],
+        [
+          0.0,
+          20.0,
+          -100.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn_1v1_b": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.923496,
+          0.0,
+          -1.77402
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          1.77402,
+          0.0,
+          -0.923496
+        ],
+        [
+          30.0,
+          20.0,
+          60.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn_1v1_b": {
+      "type": "Point",
+      "tm": [
+        [
+          0.923496,
+          0.0,
+          1.77402
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -1.77402,
+          0.0,
+          0.923496
+        ],
+        [
+          -30.0,
+          20.0,
+          -60.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn01_att_b": {
+      "type": "Point",
+      "tm": [
+        [
+          -1.99999,
+          0.0,
+          -5.96046E-08
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          5.96046E-08,
+          0.0,
+          -1.99999
+        ],
+        [
+          7.0,
+          20.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn01_att_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.99999,
+          0.0,
+          5.96046E-08
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -5.96046E-08,
+          0.0,
+          1.99999
+        ],
+        [
+          -7.0,
+          20.0,
+          0.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn05_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          60.0,
+          19.9998,
+          -85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn03_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          26.0,
+          19.9998,
+          -95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn04_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -26.0,
+          19.9998,
+          -95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn02_def_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -60.0,
+          19.9998,
+          -85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn05_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -60.0,
+          19.9998,
+          85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn04_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          26.0,
+          19.9998,
+          95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn03_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -26.0,
+          19.9998,
+          95.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn02_att_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          35.0,
+          19.9998,
+          40.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn02_att_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -35.0,
+          19.9998,
+          -40.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_respawn02_att_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          35.0,
+          20.0,
+          -40.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn02_def_a": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          -60.0,
+          19.9998,
+          85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_respawn02_def_b": {
+      "type": "Point",
+      "tm": [
+        [
+          1.50996E-07,
+          0.0,
+          -2.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0,
+          1.50996E-07
+        ],
+        [
+          60.0,
+          19.9998,
+          85.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -68,9 +68,9 @@ enum LIVE_STATS_MODE {
       [LIVE_STATS_MODE.WATCH] = [ "rowNo", "name", "raceFinishTime", "raceBestLapTime", "penaltyTime", "deaths" ],
     },
     [GT_FOOTBALL] = {
-      [LIVE_STATS_MODE.SPAWN] = [ "footballGoals", "footballAssists", "footballScore" ],
-      [LIVE_STATS_MODE.FINAL] = [ "footballGoals", "footballAssists", "footballScore" ],
-      [LIVE_STATS_MODE.WATCH] = [ "name", "footballGoals", "footballAssists", "footballScore" ],
+      [LIVE_STATS_MODE.SPAWN] = [ "footballGoals", "footballAssists", "footballSaves", "footballScore" ],
+      [LIVE_STATS_MODE.FINAL] = [ "footballGoals", "footballAssists", "footballSaves", "footballScore" ],
+      [LIVE_STATS_MODE.WATCH] = [ "name", "footballGoals", "footballAssists", "footballSaves", "footballScore" ],
     },
   }
   function init(parent_obj, nest_obj_id, is_self_togglable) {

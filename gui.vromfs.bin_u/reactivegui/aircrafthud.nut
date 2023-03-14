@@ -12,7 +12,7 @@ let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSi
 let {
   IndicatorsVisible, MainMask, SecondaryMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
-  HudColor, AlertColorHigh, IsBomberViewHudVisible,
+  HudColor, AlertColorHigh, IsBomberViewHudVisible, HudParamColor,
   isBombSightActivated, isAAMSightActivated, isRocketSightActivated,
   isCanonSightActivated, isTurretSightActivated, isParamTableActivated, IsRangefinderEnabled } = require("airState.nut")
 let aamAim = require("rocketAamAim.nut")
@@ -59,12 +59,12 @@ let function mkAircraftMainHud() {
         gbuAim(crosshairColorOpt)
         isTurretSightActivated.value ? aircraftTurretsComponent(crosshairColorOpt) : null
         isCanonSightActivated.value ? fixedGunsDirection(crosshairColorOpt) : null
-        isParamTableActivated.value ? aircraftParamsTable() : null
+        isParamTableActivated.value ? aircraftParamsTable(HudParamColor) : null
         isBombSightActivated.value ? bombSightComponent(sh(10.0), sh(10.0), crosshairColorOpt) : null
       ]
         : IsBomberViewHudVisible.value
     ? [
-        aircraftParamsTable()
+        aircraftParamsTable(HudParamColor)
       ]
     : null
 
@@ -94,7 +94,7 @@ let function aircraftGunnerHud() {
     children = IsGunnerHudVisible.value
       ? [
         isTurretSightActivated.value ? aircraftTurretsComponent(crosshairColorOpt) : null
-        isParamTableActivated.value ? aircraftParamsTable() : null
+        isParamTableActivated.value ? aircraftParamsTable(HudParamColor) : null
       ]
       : null
   }
@@ -104,7 +104,7 @@ let function aircraftPilotHud() {
   return {
     watch = [IsPilotHudVisible, isParamTableActivated]
     children = IsPilotHudVisible.value && isParamTableActivated.value
-      ? aircraftParamsTable()
+      ? aircraftParamsTable(HudParamColor)
       : null
   }
 }
@@ -127,7 +127,7 @@ let function aircraftArbiterHud() {
   return {
     watch = [IsArbiterHudVisible, isParamTableActivated]
     children = IsArbiterHudVisible.value && isParamTableActivated.value
-      ? aircraftArbiterParamsTable()
+      ? aircraftArbiterParamsTable(HudParamColor)
       : null
   }
 }

@@ -118,6 +118,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
 
     this.isXinput = ::is_xinput_device()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
+    send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.switchHud(this.getHudType())

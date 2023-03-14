@@ -94,6 +94,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     ::g_lb_category.EVENT_FOOTBALL_MATCHES
     ::g_lb_category.EVENT_FOOTBALL_GOALS
     ::g_lb_category.EVENT_FOOTBALL_ASSISTS
+    ::g_lb_category.EVENT_FOOTBALL_SAVES
+    ::g_lb_category.EVENT_FOOTBALL_TOTAL_ACTIONS
     ::g_lb_category.EVENT_SCORE
   ]
 

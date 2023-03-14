@@ -13,6 +13,7 @@
   "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ilsLCOSS": true,
@@ -20,7 +21,6 @@
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "hasHelmetDesignator": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -2544,6 +2544,10 @@
       {
         "name": "f_4j_bomb_mk83",
         "blk": "gameData/flightModels/weaponPresets/f_4j_bomb_mk83.blk"
+      },
+      {
+        "name": "f_4j_bomb_mk77",
+        "blk": "gameData/flightModels/weaponPresets/f_4j_bomb_mk77.blk"
       }
     ]
   },
@@ -2724,6 +2728,23 @@
               "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83_x2_left_wing.blk",
               "emitter": "mer_001",
               "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_heavy",
+            "name": "mk_77",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_l_out"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000_lb_mk_79_mod_0.blk",
+              "emitter": "bomb_2000lb_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           }
@@ -3250,6 +3271,23 @@
               "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83.blk",
               "emitter": "mer_002",
               "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_heavy",
+            "name": "mk_77",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_centr"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000_lb_mk_79_mod_0.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -3810,6 +3848,23 @@
               "blk": "gameData/Weapons/containers/ter_us_1000lb_mk_83_x2_right_wing.blk",
               "emitter": "mer_003",
               "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_heavy",
+            "name": "mk_77",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_r_out"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000_lb_mk_79_mod_0.blk",
+              "emitter": "bomb_2000lb_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           }

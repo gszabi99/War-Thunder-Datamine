@@ -376,7 +376,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
 
   FOOTBALL_ASSISTS = {
     id = "footballAssists"
-    fontIcon = "#icon/mpstats/assists"
+    fontIcon = "#icon/mpstats/football_assists"
     tooltip = "multiplayer/football/assists"
     relWidth = 10
   }

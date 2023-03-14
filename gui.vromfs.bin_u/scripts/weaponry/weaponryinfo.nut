@@ -214,16 +214,10 @@ let function getWeaponNameByBlkPath(weaponBlkPath) {
   return weaponBlkPath.slice(idxStart, idxEnd)
 }
 
-let function getWeaponLocNameByBlkPath(weaponBlkPath) {
-  return loc($"weapons/{getWeaponNameByBlkPath(weaponBlkPath)}")
-}
-
 let skipWeaponParams = { num = true, ammo = true, tiers = true }
 let function isWeaponParamsEqual(item1, item2) {
   if (!item1?.len() || !item2?.len())
     return false
-  if (!item1?.turret  && !item2?.turret) // for not turrets we can compare weapons by localization
-    return getWeaponLocNameByBlkPath(item1.blk) == getWeaponLocNameByBlkPath(item2.blk)
   foreach (key, val in item1)
     if ((key not in skipWeaponParams) && !::u.isEqual(val, item2?[key]))
       return false
@@ -530,7 +524,6 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     if (trIdx >= 0 && (weaponName not in weapons.weaponsByTypes[currentTypeName][trIdx]?.weaponBlocks) && weaponTag != WEAPON_TAG.BULLET)
       foreach (name, existingItem in weapons.weaponsByTypes[currentTypeName][trIdx].weaponBlocks)
         if (isWeaponParamsEqual(item, existingItem)) {
-          existingItem.tiers = item.tiers.__merge(existingItem.tiers)
           weaponName = name
           break
         }

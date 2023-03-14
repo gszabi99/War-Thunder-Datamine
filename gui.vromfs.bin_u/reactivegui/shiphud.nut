@@ -6,12 +6,12 @@ let hudLogs = require("hudLogs.nut")
 let voiceChat = require("chat/voiceChat.nut")
 let { safeAreaSizeHud } = require("style/screenState.nut")
 let fireControl = require("shipFireControl.nut")
-let { missionProgressHeight } = require("%rGui/hudState.nut")
+let { missionProgressHeight, isSpectatorMode } = require("%rGui/hudState.nut")
 let { radarComponent } = require("shipHudComponents.nut")
 
 
 let shipHud = @() {
-  watch = [safeAreaSizeHud, missionProgressHeight]
+  watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
   size = [SIZE_TO_CONTENT, flex()]
   padding = [0, 0, missionProgressHeight.value, 0]
   margin = safeAreaSizeHud.value.borders
@@ -19,7 +19,7 @@ let shipHud = @() {
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
   gap = scrn_tgt(0.005)
-  children = [
+  children = isSpectatorMode.value ? null : [
     voiceChat
     activeOrder
     hudLogs

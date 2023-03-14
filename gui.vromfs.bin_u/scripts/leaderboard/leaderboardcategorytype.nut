@@ -567,7 +567,7 @@ enums.addTypesByGlobalName("g_lb_category", {
     EVENT_FOOTBALL_GOALS = {
       field = "ext1"
       visualKey = "footballGoals"
-      headerImage = "target_hits"
+      headerImage = "football_goals"
       headerTooltip = "football/goals"
       showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
     }
@@ -575,8 +575,24 @@ enums.addTypesByGlobalName("g_lb_category", {
     EVENT_FOOTBALL_ASSISTS = {
       field = "ext2"
       visualKey = "footballAssists"
-      headerImage = "total_score"
+      headerImage = "football_assists"
       headerTooltip = "football/assists"
+      showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    }
+
+    EVENT_FOOTBALL_SAVES = {
+      field = "ext3"
+      visualKey = "footballSaves"
+      headerImage = "football_saves"
+      headerTooltip = "football/saves"
+      showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    }
+
+    EVENT_FOOTBALL_TOTAL_ACTIONS = {
+      field = "ext4"
+      visualKey = "footballTotalActions"
+      headerImage = "total_score"
+      headerTooltip = "football/totalActions"
       showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
     }
 

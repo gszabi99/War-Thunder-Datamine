@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { IndicatorsVisible, IsMfdSightHudVisible, MfdSightMask, MfdColor, MfdSightPosSize, MlwsLwsForMfd, RwrForMfd,
-  IsMfdEnabled, RwrPosSize, SecondaryMask } = require("airState.nut")
+  IsMfdEnabled, RwrPosSize, SecondaryMask, HudParamColor } = require("airState.nut")
 let { paramsTable, turretAngles, launchDistanceMax, sight, rangeFinder, lockSight, targetSize } = require("airHudElems.nut")
 let tws = require("tws.nut")
 let { mkRadarForMfd } = require("radarComponent.nut")
@@ -42,13 +42,13 @@ let function mfdSightHud() {
     pos = [MfdSightPosSize[0], MfdSightPosSize[1]]
     children = IsMfdSightHudVisible.value ?
     [
-      turretAngles(MfdColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90))
-      launchDistanceMax(MfdColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90))
-      sight(MfdColor, sightSw(50), sightSh(50), sightHdpx(500))
-      rangeFinder(MfdColor, sightSw(50), sightSh(58))
-      lockSight(MfdColor, sightHdpx(150), sightHdpx(100), sightSw(50), sightSh(50))
-      targetSize(MfdColor, sightSw(100), sightSh(100))
-      mfdSightParamsTable()
+      turretAngles(HudParamColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90))
+      launchDistanceMax(HudParamColor, sightSw(15), sightHdpx(150), sightSw(50), sightSh(90))
+      sight(HudParamColor, sightSw(50), sightSh(50), sightHdpx(500))
+      rangeFinder(HudParamColor, sightSw(50), sightSh(58))
+      lockSight(HudParamColor, sightHdpx(150), sightHdpx(100), sightSw(50), sightSh(50))
+      targetSize(HudParamColor, sightSw(100), sightSh(100))
+      mfdSightParamsTable(HudParamColor)
     ]
     : null
   }
