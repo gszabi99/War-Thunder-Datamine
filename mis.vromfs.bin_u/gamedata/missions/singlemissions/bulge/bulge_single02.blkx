@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -16,11 +12,15 @@
     "mission": {
       "level": "levels/bulge.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Morning",
       "weather": "poor",
-      "gt_reload_explosives": true
+      "gt_reload_explosives": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "briefing": {
       "place_loc": "",
@@ -34,6 +34,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "ally",
@@ -76,9 +77,13 @@
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
       "excludes": {}
     }
   },
@@ -100,34 +105,52 @@
       "actions": {
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "target_vehicles"
         },
         "unitSetProperties": [
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": [
-              "bridge_115",
-              "bridge_116",
-              "bridge_117",
-              "bridge_118"
+              "bridge_24",
+              "bridge_25"
             ],
             "isImmortal": true
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "evil_fighters00",
             "effShootingRate": 0.05
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": [
               "evil_vehicles_squad",
               "light_evil_vehicles_squad"
             ],
-            "attack_type": "hold_fire",
             "stealthRadius": 0.0,
+            "attack_type": "hold_fire",
+            "effShootingRate": 0.02,
             "speed": 0.0,
-            "lockSpeed": true,
-            "effShootingRate": 0.02
+            "lockSpeed": true
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "evil_artillery_squad",
             "stealthRadius": 2000.0,
             "effShootingRate": 0.02
@@ -144,9 +167,13 @@
           "time": 3.0
         },
         "moAddMissionObjective": {
-          "target": "single_bulge_m02_secondary"
+          "target": "single_bulge_m02_secondary",
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "offline_trigger": {
       "is_enabled": true,
@@ -164,15 +191,25 @@
           "object_type": "isOffline",
           "object_marking": 0,
           "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "player"
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player_himself",
           "targetableByAi": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "still_alive_vehicles": {
       "is_enabled": true,
@@ -196,9 +233,13 @@
           "icon": "truck",
           "icon army": 1,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "target_vehicles"
         }
-      }
+      },
+      "else_actions": {}
     },
     "secondary_completed": {
       "is_enabled": true,
@@ -219,6 +260,8 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "target_vehicles",
           "target": "end_of_route"
         },
@@ -226,6 +269,11 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "target_vehicles"
         }
       },
@@ -235,9 +283,13 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_bulge_m02_secondary",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "secondary_failed": {
       "is_enabled": true,
@@ -257,6 +309,11 @@
           "object_type": "isKilled",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "target_vehicles"
         }
       },
@@ -266,9 +323,13 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_bulge_m02_secondary",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "mission_completed": {
       "is_enabled": true,
@@ -289,6 +350,8 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "target_vehicles",
           "target": "end_of_route"
         }
@@ -307,15 +370,25 @@
           "icon": "truck",
           "icon army": 1,
           "set": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "target_vehicles"
         },
         "unitSetIndication": {
           "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "target_vehicles"
         },
         "moSetObjectiveStatus": {
           "target": "single_bulge_m02_def00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 2.0
@@ -323,7 +396,8 @@
         "missionCompleted": {
           "timer": false
         }
-      }
+      },
+      "else_actions": {}
     },
     "mission_failed": {
       "is_enabled": true,
@@ -344,6 +418,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 6,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "target_vehicles"
         }
       },
@@ -362,17 +438,24 @@
           "icon": "truck",
           "icon army": 1,
           "set": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "target_vehicles"
         },
         "moSetObjectiveStatus": {
           "target": "single_bulge_m02_def00",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
         },
         "missionFailed": {}
-      }
+      },
+      "else_actions": {}
     },
     "debug_timer": {
       "is_enabled": false,
@@ -390,14 +473,15 @@
       "conditions": {},
       "actions": {
         "varModify": {
-          "var": "time",
           "operator": "add",
-          "value": 1.0
+          "value": 1.0,
+          "var": "time"
         },
         "missionSetTimeIndicator": {
           "var": "time"
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap00": {
       "is_enabled": true,
@@ -418,6 +502,8 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "target_vehicles",
           "target": "trap00"
         }
@@ -425,14 +511,22 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "target_vehicles",
             "speed": 0.0,
             "lockSpeed": true
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "trap00_evil_vehicles00",
-            "attack_type": "fire_at_will_gnd",
             "stealthRadius": 10000.0,
+            "attack_type": "fire_at_will_gnd",
             "speed": 60.0,
             "lockSpeed": true
           }
@@ -443,10 +537,18 @@
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap00_evil_vehicles00"
           }
         ],
@@ -456,7 +558,8 @@
           "target": "target_vehicles",
           "fireRandom": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap00_done": {
       "is_enabled": false,
@@ -476,29 +579,47 @@
           "object_type": "isKilled",
           "object_marking": 0,
           "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "trap00_evil_vehicles00"
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "target_vehicles",
-          "speed": 300.0,
+          "speed": 30.0,
           "lockSpeed": true
         },
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap00_evil_vehicles00"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           }
         ],
         "triggerEnable": {
           "target": "trap01"
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap01": {
       "is_enabled": false,
@@ -519,6 +640,8 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "target_vehicles",
           "target": "trap01"
         }
@@ -526,14 +649,22 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "target_vehicles",
             "speed": 0.0,
             "lockSpeed": true
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "trap01_evil_vehicles00",
-            "attack_type": "fire_at_will_gnd",
             "stealthRadius": 10000.0,
+            "attack_type": "fire_at_will_gnd",
             "speed": 60.0,
             "lockSpeed": true
           }
@@ -544,10 +675,18 @@
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap01_evil_vehicles00"
           }
         ],
@@ -557,7 +696,8 @@
           "target": "target_vehicles",
           "fireRandom": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap01_done": {
       "is_enabled": false,
@@ -577,29 +717,47 @@
           "object_type": "isKilled",
           "object_marking": 0,
           "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "trap01_evil_vehicles00"
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "target_vehicles",
-          "speed": 300.0,
+          "speed": 30.0,
           "lockSpeed": true
         },
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap01_evil_vehicles00"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           }
         ],
         "triggerEnable": {
           "target": "trap02"
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap02": {
       "is_enabled": false,
@@ -620,6 +778,8 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "target_vehicles",
           "target": "trap02"
         }
@@ -627,17 +787,25 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "target_vehicles",
             "speed": 0.0,
             "lockSpeed": true
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": [
               "trap02_evil_vehicles00",
               "trap02_evil_vehicles01"
             ],
-            "attack_type": "fire_at_will_gnd",
             "stealthRadius": 10000.0,
+            "attack_type": "fire_at_will_gnd",
             "speed": 60.0,
             "lockSpeed": true
           }
@@ -648,14 +816,26 @@
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap02_evil_vehicles00"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap02_evil_vehicles01"
           }
         ],
@@ -671,7 +851,8 @@
         "wait": {
           "time": 10.0
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap02_done": {
       "is_enabled": false,
@@ -691,18 +872,31 @@
           "object_type": "isKilled",
           "object_marking": 0,
           "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "trap02_evil_vehicles00"
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "target_vehicles",
-          "speed": 300.0,
+          "speed": 30.0,
           "lockSpeed": true
         },
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": [
               "trap02_evil_vehicles00",
               "trap02_evil_vehicles01"
@@ -710,6 +904,10 @@
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           }
         ],
@@ -721,12 +919,25 @@
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
           "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "trap02_evil_vehicles01"
         },
         "triggerEnable": {
           "target": "trap03"
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap03": {
       "is_enabled": false,
@@ -747,6 +958,8 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "target_vehicles",
           "target": "trap03"
         }
@@ -754,18 +967,26 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "target_vehicles",
             "speed": 0.0,
             "lockSpeed": true
           },
           {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": [
               "trap03_evil_vehicles00",
               "trap03_evil_vehicles01",
               "trap03_evil_vehicles02"
             ],
-            "attack_type": "fire_at_will_gnd",
             "stealthRadius": 10000.0,
+            "attack_type": "fire_at_will_gnd",
             "speed": 60.0,
             "lockSpeed": true
           }
@@ -776,10 +997,18 @@
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap03_evil_vehicles00"
           }
         ],
@@ -792,7 +1021,8 @@
           ],
           "target": "target_vehicles"
         }
-      }
+      },
+      "else_actions": {}
     },
     "trap03_done": {
       "is_enabled": false,
@@ -812,22 +1042,39 @@
           "object_type": "isKilled",
           "object_marking": 0,
           "check_objects": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "trap03_evil_vehicles00"
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "target_vehicles",
-          "speed": 300.0,
+          "speed": 30.0,
           "lockSpeed": true
         },
         "unitSetIndication": [
           {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "trap03_evil_vehicles00"
           },
           {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "target_vehicles"
           }
         ],
@@ -839,12 +1086,25 @@
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
           "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": [
             "trap03_evil_vehicles01",
             "trap03_evil_vehicles02"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "raise_evil": {
       "is_enabled": true,
@@ -869,20 +1129,27 @@
           "check_targets": "any",
           "object_marking": 0,
           "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "light_evil_vehicles_squad",
           "target": "target_vehicles"
         }
       },
       "actions": {
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "light_evil_vehicles_squad",
-          "attack_type": "fire_at_will_gnd",
+          "useForTriggerFiltered": true,
           "stealthRadius": 10000.0,
+          "attack_type": "fire_at_will_gnd",
           "speed": 60.0,
-          "lockSpeed": true,
-          "useForTriggerFiltered": true
+          "lockSpeed": true
         }
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -947,9 +1214,21 @@
             10543.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "p-51d-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "p_51d_5_rockets",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -999,9 +1278,21 @@
             5461.05
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -1047,14 +1338,26 @@
             0.461749
           ],
           [
-            5850.05,
-            284.448,
-            12088.9
+            5819.09,
+            287.782,
+            12032.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_ambulance",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 9,
@@ -1091,795 +1394,14 @@
                 1.0
               ],
               [
-                5963.9,
-                280.339,
-                12254.4
+                5849.68,
+                287.031,
+                12093.3
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6011.8,
-                277.205,
-                12315.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6081.85,
-                279.98,
-                12387.9
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6138.55,
-                282.302,
-                12435.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6200.25,
-                282.457,
-                12473.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6272.9,
-                279.297,
-                12504.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6364.6,
-                275.316,
-                12538.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_08": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6452.8,
-                271.486,
-                12571.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_09": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6890.45,
-                261.97,
-                12725.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_10": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7150.55,
-                279.194,
-                12807.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_11": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7404.8,
-                269.497,
-                12881.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_12": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7483.0,
-                263.486,
-                12894.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_13": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7669.45,
-                257.445,
-                12877.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_14": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7749.85,
-                256.308,
-                12855.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_15": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7859.3,
-                248.001,
-                12819.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_16": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8073.75,
-                219.401,
-                12738.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_17": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8368.5,
-                204.201,
-                12613.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_18": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8452.2,
-                208.217,
-                12582.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_19": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8555.3,
-                202.25,
-                12551.6
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_20": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8638.85,
-                195.067,
-                12547.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_21": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8730.2,
-                181.462,
-                12569.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_22": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8849.0,
-                152.36,
-                12608.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_23": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8959.95,
-                121.33,
-                12653.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_24": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9038.2,
-                97.1404,
-                12692.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_25": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9085.8,
-                74.4,
-                12737.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_26": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9386.3,
-                75.25,
-                13096.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_27": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9452.25,
-                115.651,
-                13190.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "target_vehicles_wp_28": {
@@ -1901,1514 +1423,14 @@
                 1.0
               ],
               [
-                9488.8,
-                133.682,
-                13217.7
+                9503.75,
+                143.433,
+                13226.1
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_29": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9531.15,
-                147.921,
-                13230.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_30": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9569.85,
-                156.902,
-                13227.9
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_31": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9615.2,
-                165.835,
-                13216.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_32": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9681.4,
-                176.918,
-                13185.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_33": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9758.6,
-                181.275,
-                13145.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_34": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9842.55,
-                188.195,
-                13097.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_35": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9911.1,
-                201.793,
-                13065.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_36": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9965.9,
-                212.362,
-                13047.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_37": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10023.3,
-                219.483,
-                13042.6
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_38": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10067.5,
-                226.665,
-                13055.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_39": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10077.5,
-                228.628,
-                13061.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_40": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10108.7,
-                236.004,
-                13091.6
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_41": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10135.2,
-                228.315,
-                13130.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_42": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10179.8,
-                208.704,
-                13280.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_43": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10202.0,
-                189.763,
-                13394.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_44": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10223.4,
-                184.402,
-                13488.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_45": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10250.8,
-                176.894,
-                13562.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_46": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10274.3,
-                170.398,
-                13603.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_47": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10311.3,
-                159.165,
-                13646.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_48": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10342.3,
-                146.61,
-                13675.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_49": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10365.4,
-                137.738,
-                13683.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_50": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10393.8,
-                127.085,
-                13681.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_51": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10430.9,
-                113.042,
-                13674.9
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_52": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10548.4,
-                69.65,
-                13666.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_53": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10946.5,
-                67.7,
-                13665.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_54": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11019.3,
-                89.38,
-                13670.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_55": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11052.0,
-                103.708,
-                13684.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_56": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11083.4,
-                120.142,
-                13711.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_57": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11098.8,
-                128.954,
-                13728.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_58": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11167.4,
-                154.203,
-                13832.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_59": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11216.0,
-                167.577,
-                13889.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_60": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11300.4,
-                189.69,
-                13957.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_61": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11334.8,
-                196.755,
-                13978.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_62": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11380.1,
-                205.904,
-                13996.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_63": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11457.7,
-                221.582,
-                14027.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_64": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11497.2,
-                227.48,
-                14044.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_65": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11529.4,
-                231.707,
-                14048.9
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_66": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11586.1,
-                239.468,
-                14049.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_67": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11669.6,
-                251.036,
-                14051.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_68": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11778.4,
-                265.246,
-                14030.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_69": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11857.8,
-                267.088,
-                14031.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_70": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11939.5,
-                269.039,
-                14057.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_71": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12017.3,
-                270.992,
-                14108.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_72": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12154.4,
-                274.437,
-                14198.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_73": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12229.2,
-                276.382,
-                14254.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_74": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12304.3,
-                276.339,
-                14301.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_75": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12396.0,
-                275.463,
-                14339.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_76": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12530.5,
-                276.923,
-                14348.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_77": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12611.9,
-                277.485,
-                14340.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_78": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12684.9,
-                274.631,
-                14332.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -3431,584 +1453,14 @@
                 1.0
               ],
               [
-                12724.7,
-                273.359,
-                14330.1
+                12760.4,
+                269.561,
+                14332.1
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_80": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12799.5,
-                271.903,
-                14336.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_81": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12856.3,
-                271.254,
-                14358.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_82": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12914.3,
-                265.953,
-                14402.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_83": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12956.6,
-                261.622,
-                14445.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_84": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12979.1,
-                258.924,
-                14474.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_85": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13017.3,
-                258.786,
-                14540.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_86": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13032.2,
-                260.733,
-                14572.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_87": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13052.5,
-                265.462,
-                14622.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_88": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13063.0,
-                267.24,
-                14652.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_89": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13101.8,
-                271.043,
-                14733.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_90": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13119.0,
-                271.512,
-                14758.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_91": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13157.4,
-                273.086,
-                14815.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_92": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13257.8,
-                278.966,
-                14937.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_93": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13294.3,
-                279.936,
-                14976.6
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_94": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13350.8,
-                282.764,
-                15036.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_95": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13443.9,
-                286.976,
-                15128.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_96": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13519.7,
-                290.74,
-                15202.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_97": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13589.7,
-                288.957,
-                15262.6
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_98": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13677.0,
-                285.542,
-                15337.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -4031,14 +1483,14 @@
                 1.0
               ],
               [
-                13757.8,
-                282.111,
-                15401.7
+                13839.9,
+                285.583,
+                15468.1
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -4061,15 +1513,14 @@
                 1.0
               ],
               [
-                13768.5,
-                282.559,
-                15426.1
+                13838.3,
+                293.926,
+                15508.9
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           },
           "target_vehicles_wp_101": {
@@ -4091,75 +1542,14 @@
                 1.0
               ],
               [
-                13757.5,
-                285.748,
-                15465.2
+                13804.7,
+                298.765,
+                15547.2
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_102": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13730.3,
-                289.347,
-                15486.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "target_vehicles_wp_103": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13684.8,
-                292.886,
-                15514.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -4188,9 +1578,21 @@
             11619.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -4228,18 +1630,17 @@
                 1.0
               ],
               [
-                6166.8,
-                283.495,
-                12458.2
+                5625.11,
+                242.299,
+                11677.6
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false
+              "speed": 35.0,
+              "moveType": "GATHER_TO"
             }
           },
-          "trap00_evil_vehicles01_wp_02": {
+          "trap00_evil_vehicles01_wp_05": {
             "type": "normal",
             "tm": [
               [
@@ -4258,15 +1659,14 @@
                 1.0
               ],
               [
-                7541.55,
-                260.353,
-                12892.5
+                5848.32,
+                285.593,
+                12088.9
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false
+              "speed": 35.0,
+              "moveType": "USE_SPLINES"
             }
           },
           "trap00_evil_vehicles01_wp_03": {
@@ -4288,15 +1688,44 @@
                 1.0
               ],
               [
-                8681.2,
-                189.11,
-                12558.3
+                8634.88,
+                198.847,
+                12547.4
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 35.0,
               "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
+            }
+          },
+          "trap00_evil_vehicles01_wp_06": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                8756.16,
+                155.58,
+                12649.4
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -4305,9 +1734,9 @@
         "name": "trap00_evil_vehicles02",
         "tm": [
           [
-            -0.21644,
+            0.945815,
             0.0,
-            0.976296
+            -0.324705
           ],
           [
             0.0,
@@ -4315,19 +1744,31 @@
             0.0
           ],
           [
-            -0.976296,
+            0.324705,
             0.0,
-            -0.21644
+            0.945815
           ],
           [
-            6796.2,
-            261.826,
-            12117.2
+            6641.8,
+            277.667,
+            12819.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -4364,15 +1805,14 @@
                 1.0
               ],
               [
-                6789.3,
-                276.743,
-                12261.0
+                6822.53,
+                266.912,
+                12737.9
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           },
           "trap00_evil_vehicles02_wp_02": {
@@ -4394,165 +1834,14 @@
                 1.0
               ],
               [
-                6996.55,
-                265.511,
-                12497.7
+                6879.5,
+                263.969,
+                12722.3
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles02_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7277.95,
-                279.147,
-                12695.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles02_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7545.15,
-                267.463,
-                12764.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles02_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7797.1,
-                258.786,
-                12772.9
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles02_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8085.3,
-                221.779,
-                12672.3
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles02_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8283.1,
-                208.298,
-                12595.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap00_evil_vehicles02_wp_08": {
@@ -4574,14 +1863,14 @@
                 1.0
               ],
               [
-                8471.95,
-                216.381,
-                12516.8
+                8481.67,
+                212.539,
+                12573.8
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -4604,15 +1893,14 @@
                 1.0
               ],
               [
-                8672.55,
-                197.277,
-                12518.3
+                8576.69,
+                220.215,
+                12475.5
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -4621,9 +1909,9 @@
         "name": "trap00_evil_vehicles03",
         "tm": [
           [
-            0.422619,
+            0.495364,
             0.0,
-            -0.906308
+            0.868686
           ],
           [
             0.0,
@@ -4631,19 +1919,31 @@
             0.0
           ],
           [
-            0.906308,
+            -0.868686,
             0.0,
-            0.422619
+            0.495364
           ],
           [
-            7815.75,
-            239.405,
-            13417.0
+            8185.42,
+            239.834,
+            12403.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -4680,15 +1980,14 @@
                 1.0
               ],
               [
-                7888.9,
+                8272.62,
                 221.673,
-                13286.7
+                12562.6
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           },
           "trap00_evil_vehicles03_wp_02": {
@@ -4710,135 +2009,14 @@
                 1.0
               ],
               [
-                8021.55,
-                212.005,
-                12948.0
+                8366.21,
+                199.722,
+                12616.0
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8206.25,
-                180.952,
-                12771.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8425.65,
-                182.072,
-                12675.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8536.5,
-                189.195,
-                12619.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                8707.8,
-                175.116,
-                12614.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap00_evil_vehicles03_wp_07": {
@@ -4860,14 +2038,14 @@
                 1.0
               ],
               [
-                8839.9,
-                146.265,
-                12638.2
+                8858.93,
+                152.392,
+                12613.6
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -4896,9 +2074,8 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -4922,14 +2099,26 @@
             -0.21644
           ],
           [
-            10241.6,
+            10199.8,
             210.67,
-            12781.8
+            12766.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -4966,15 +2155,43 @@
                 1.0
               ],
               [
-                10140.2,
+                10063.0,
                 232.508,
-                13080.0
+                12979.2
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "trap01_evil_vehicles01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10050.5,
+                222.495,
+                13051.8
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap01_evil_vehicles01_wp_05": {
@@ -4996,14 +2213,14 @@
                 1.0
               ],
               [
-                10205.1,
-                206.458,
-                13235.7
+                10285.0,
+                167.689,
+                13622.6
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -5026,15 +2243,14 @@
                 1.0
               ],
               [
-                10242.3,
-                179.624,
-                13446.1
+                10329.3,
+                149.677,
+                13722.2
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -5063,9 +2279,21 @@
             13708.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -5108,7 +2336,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5138,7 +2366,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5162,15 +2390,14 @@
                 1.0
               ],
               [
-                9803.25,
+                9748.3,
                 196.112,
-                13196.1
+                13193.8
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           },
           "trap01_evil_vehicles02_wp_04": {
@@ -5192,135 +2419,14 @@
                 1.0
               ],
               [
-                9879.1,
-                199.589,
-                13110.9
+                9782.83,
+                187.495,
+                13130.4
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap01_evil_vehicles02_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9956.0,
-                215.233,
-                13086.4
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap01_evil_vehicles02_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10044.3,
-                225.583,
-                13073.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap01_evil_vehicles02_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10095.7,
-                236.016,
-                13121.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap01_evil_vehicles02_wp_08": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10130.0,
-                225.054,
-                13194.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap01_evil_vehicles02_wp_09": {
@@ -5342,14 +2448,14 @@
                 1.0
               ],
               [
-                10153.0,
-                213.993,
-                13285.8
+                10185.9,
+                209.461,
+                13317.6
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -5378,7 +2484,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5408,7 +2514,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5438,7 +2544,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5468,7 +2574,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5498,7 +2604,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5528,7 +2634,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5559,9 +2665,21 @@
             13665.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -5598,13 +2716,13 @@
                 1.0
               ],
               [
-                11524.5,
+                11459.3,
                 236.819,
-                13830.1
+                13837.2
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5628,15 +2746,14 @@
                 1.0
               ],
               [
-                11564.2,
+                11499.0,
                 239.385,
-                13936.4
+                13943.5
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           },
           "trap02_evil_vehicles02_wp_03": {
@@ -5658,105 +2775,14 @@
                 1.0
               ],
               [
-                11644.8,
-                248.397,
-                14017.8
+                11551.0,
+                238.835,
+                14052.6
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles02_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11711.2,
-                257.482,
-                14024.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles02_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11809.3,
-                265.238,
-                14013.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles02_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11887.8,
-                267.016,
-                14012.9
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap02_evil_vehicles02_wp_07": {
@@ -5778,14 +2804,14 @@
                 1.0
               ],
               [
-                11967.3,
-                269.481,
-                14050.2
+                11940.8,
+                266.535,
+                14059.8
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -5808,15 +2834,14 @@
                 1.0
               ],
               [
-                12030.2,
+                12066.2,
                 271.03,
-                14088.4
+                14086.0
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -5845,9 +2870,21 @@
             14739.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -5890,7 +2927,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5920,7 +2957,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5950,7 +2987,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -5980,7 +3017,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6010,7 +3047,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6040,7 +3077,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6070,7 +3107,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6100,7 +3137,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6130,7 +3167,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6160,7 +3197,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6190,7 +3227,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6220,7 +3257,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6250,7 +3287,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6281,9 +3318,21 @@
             14472.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -6326,7 +3375,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6356,7 +3405,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6386,7 +3435,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -6410,75 +3459,14 @@
                 1.0
               ],
               [
-                11755.4,
-                263.071,
-                14047.2
+                11758.0,
+                261.875,
+                14036.0
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles04_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11833.0,
-                266.9,
-                14040.9
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles04_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11864.0,
-                267.523,
-                14045.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap02_evil_vehicles04_wp_07": {
@@ -6500,14 +3488,14 @@
                 1.0
               ],
               [
-                11943.5,
-                269.248,
-                14070.9
+                11938.4,
+                266.308,
+                14058.4
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -6530,15 +3518,14 @@
                 1.0
               ],
               [
-                11994.8,
+                12019.0,
                 270.612,
-                14112.0
+                14146.5
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -6562,14 +3549,26 @@
             -0.130526
           ],
           [
-            12816.2,
+            12835.4,
             262.725,
-            14086.3
+            13934.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -6606,15 +3605,14 @@
                 1.0
               ],
               [
-                12783.8,
-                266.816,
-                14263.0
+                12828.4,
+                255.16,
+                13980.4
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap03_evil_vehicles03_wp_02": {
@@ -6636,224 +3634,14 @@
                 1.0
               ],
               [
-                12801.5,
-                269.427,
-                14308.0
+                12773.1,
+                268.934,
+                14330.9
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12864.8,
-                270.203,
-                14342.2
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12935.0,
-                263.597,
-                14379.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12949.0,
-                262.357,
-                14415.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12976.5,
-                259.053,
-                14450.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13017.8,
-                256.339,
-                14501.1
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_08": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13042.7,
-                256.09,
-                14533.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_09": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13054.6,
-                258.062,
-                14571.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -6876,74 +3664,14 @@
                 1.0
               ],
               [
-                13131.4,
-                267.064,
-                14730.9
+                13157.0,
+                279.182,
+                14815.5
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_11": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13180.3,
-                262.346,
-                14729.0
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles03_wp_12": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13199.8,
-                257.657,
-                14679.7
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
               "shouldKeepFormation": false
             }
           },
@@ -6966,15 +3694,14 @@
                 1.0
               ],
               [
-                13224.6,
-                255.779,
-                14630.9
+                13317.8,
+                279.791,
+                14806.0
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -7003,9 +3730,21 @@
             14544.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_sdKfz_222",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -7048,7 +3787,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -7078,7 +3817,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -7111,9 +3850,21 @@
             11379.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7156,9 +3907,21 @@
             11501.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7201,9 +3964,21 @@
             11252.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7246,9 +4021,21 @@
             12260.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7291,9 +4078,21 @@
             12423.4
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7336,9 +4135,21 @@
             15174.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7381,9 +4192,21 @@
             15313.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7426,9 +4249,21 @@
             15636.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7471,9 +4306,21 @@
             15482.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7516,9 +4363,21 @@
             15375.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7561,9 +4420,21 @@
             15651.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7606,9 +4477,21 @@
             15438.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7651,9 +4534,21 @@
             15259.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -7696,9 +4591,21 @@
             14618.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7741,9 +4648,21 @@
             14440.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -7768,9 +4687,9 @@
         "name": "trap00_evil_vehicles00",
         "tm": [
           [
-            -0.173648,
+            -0.525203,
             0.0,
-            -0.984808
+            -0.850977
           ],
           [
             0.0,
@@ -7778,19 +4697,31 @@
             0.0
           ],
           [
-            0.984808,
+            0.850977,
             0.0,
-            -0.173648
+            -0.525203
           ],
           [
-            7481.75,
-            261.885,
-            12951.3
+            7296.76,
+            272.105,
+            12977.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_hummel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -7827,15 +4758,14 @@
                 1.0
               ],
               [
-                7410.5,
-                269.028,
-                12883.5
+                7259.21,
+                283.412,
+                12919.0
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           },
           "trap00_evil_vehicles00_wp_02": {
@@ -7857,15 +4787,14 @@
                 1.0
               ],
               [
-                7366.5,
+                6865.21,
                 272.511,
-                12872.7
+                12779.4
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -7894,9 +4823,21 @@
             13250.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_hummel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -7933,15 +4874,43 @@
                 1.0
               ],
               [
-                9383.65,
-                78.75,
-                13097.0
+                9390.86,
+                95.0184,
+                13154.1
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "trap01_evil_vehicles00_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9379.86,
+                64.9889,
+                13081.0
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap01_evil_vehicles00_wp_02": {
@@ -7963,15 +4932,43 @@
                 1.0
               ],
               [
-                9242.7,
-                74.75,
-                12929.5
+                9101.04,
+                60.7468,
+                12750.1
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
+            }
+          },
+          "trap01_evil_vehicles00_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9082.28,
+                66.1082,
+                12747.3
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -8000,9 +4997,21 @@
             13733.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_hummel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -8045,7 +5054,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8069,15 +5078,14 @@
                 1.0
               ],
               [
-                10942.7,
-                69.7,
-                13666.7
+                10986.2,
+                79.8525,
+                13659.6
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "GATHER_TO"
             }
           },
           "trap02_evil_vehicles00_wp_03": {
@@ -8099,15 +5107,43 @@
                 1.0
               ],
               [
-                10781.3,
-                72.3,
-                13666.8
+                10544.5,
+                64.9094,
+                13664.5
               ]
             ],
             "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "speed": 30.0,
+              "moveType": "USE_SPLINES"
+            }
+          },
+          "trap02_evil_vehicles00_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                10505.0,
+                81.7736,
+                13707.9
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
             }
           }
         }
@@ -8136,9 +5172,21 @@
             13913.4
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_hummel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -8181,7 +5229,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8211,7 +5259,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8241,7 +5289,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8271,7 +5319,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8302,9 +5350,21 @@
             13661.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_hummel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -8347,7 +5407,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8377,7 +5437,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8407,7 +5467,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8438,9 +5498,21 @@
             14886.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_hummel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -8483,7 +5555,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8513,7 +5585,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8543,7 +5615,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8574,9 +5646,21 @@
             14443.4
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_hummel",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -8619,7 +5703,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8649,7 +5733,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8679,7 +5763,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8709,7 +5793,7 @@
               ]
             ],
             "props": {
-              "speed": 300.0,
+              "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
@@ -8742,14 +5826,10 @@
             13319.5
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": "player",
           "object_type": "isPlayer"
-        },
-        "way": {}
+        }
       },
       {
         "name": "evil_vehicles_squad",
@@ -8775,9 +5855,6 @@
             12836.6
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "trap00_evil_vehicles00",
@@ -8788,8 +5865,7 @@
             "trap03_evil_vehicles01",
             "trap03_evil_vehicles02"
           ]
-        },
-        "way": {}
+        }
       },
       {
         "name": "light_evil_vehicles_squad",
@@ -8815,9 +5891,6 @@
             12056.0
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "trap00_evil_vehicles01",
@@ -8831,8 +5904,7 @@
             "trap03_evil_vehicles03",
             "trap03_evil_vehicles04"
           ]
-        },
-        "way": {}
+        }
       },
       {
         "name": "evil_artillery_squad",
@@ -8858,9 +5930,6 @@
             13257.7
           ]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
           "squad_members": [
             "evil_artillery00",
@@ -8878,8 +5947,7 @@
             "evil_artillery12",
             "evil_artillery13"
           ]
-        },
-        "way": {}
+        }
       }
     ],
     "structures": [
@@ -8907,9 +5975,21 @@
             12064.9
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -8952,9 +6032,21 @@
             12755.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -8997,9 +6089,21 @@
             13869.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9042,9 +6146,21 @@
             13925.5
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_37mm_pak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9087,9 +6203,21 @@
             12860.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9132,9 +6260,21 @@
             13120.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9177,9 +6317,21 @@
             13194.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -9222,9 +6374,21 @@
             13341.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -9267,9 +6431,21 @@
             13807.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9312,9 +6488,21 @@
             15249.1
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9357,9 +6545,21 @@
             14870.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_37mm_pak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9402,9 +6602,21 @@
             14560.0
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -9447,9 +6659,21 @@
             14496.6
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9492,9 +6716,21 @@
             13732.3
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -9724,5 +6960,22 @@
       ],
       "props": {}
     }
-  }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }
