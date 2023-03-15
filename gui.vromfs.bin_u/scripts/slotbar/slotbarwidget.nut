@@ -1202,7 +1202,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
           null,
           {
             emptyText = "#shop/recruitCrew",
-            crewImage = $"#ui/gameuiskin#slotbar_crew_recruit_{countryData.country.slice(8)}.png"
+            crewImage = $"#ui/gameuiskin#slotbar_crew_recruit_{countryData.country.slice(8)}"
             isCrewRecruit = true
             emptyCost = crewData.cost
             isSlotbarItem = true
@@ -1217,7 +1217,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       let isLocalState = !::g_crews_list.isCrewListOverrided && (crewData?.isLocalState ?? true)
       let airParams = {
         emptyText      = isVisualDisabled ? "" : this.emptyText,
-        crewImage      = $"#ui/gameuiskin#slotbar_crew_free_{countryData.country.slice(8)}.png"
+        crewImage      = $"#ui/gameuiskin#slotbar_crew_free_{countryData.country.slice(8)}"
         status         = getUnitItemStatusText(crewData.status),
         hasActions     = this.hasActions && !::g_crews_list.isCrewListOverrided
         toBattle       = this.toBattle

@@ -52,7 +52,7 @@ let function keyboardButton(shortcutConfig, override) {
     size = sizeParam.keyboardButtonSize
     minWidth = sizeParam.keyboardButtonMinWidth
     rendObj = ROBJ_IMAGE
-    image = Picture("!ui/gameuiskin#keyboardBtn.png")
+    image = Picture("!ui/gameuiskin#keyboardBtn")
     color = colors.white
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

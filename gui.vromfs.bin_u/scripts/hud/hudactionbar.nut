@@ -105,6 +105,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   function reinit() {
     this.updateParams()
     updateActionBar()
+    this.fill()
   }
 
   function updateParams() {
@@ -136,7 +137,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
       gamepadShortcut = this.canControl ? loadTemplateText("%gui/hud/actionBarItemGamepadShortcut.tpl") : ""
     }
 
-    foreach (idx, item in view.items) {
+    foreach (idx, item in this.actionItems) {
       let cooldownTimeout = (item?.cooldownEndTime ?? 0) - ::get_usefull_total_time()
       if (cooldownTimeout > 0)
         this.enableBarItemAfterCooldown(idx, cooldownTimeout)
@@ -352,17 +353,22 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   }
 
   function enableBarItemAfterCooldown(itemIdx, timeout) {
-    let timer = setTimeout(timeout, function() {
-      let item = this?.actionItems?[itemIdx]
+    // !!!FIX ME If some lags happens, the setTimeout timer is slightly faster than the get_usefull_total_time (used inside the getActionItemStatus fn).
+    // This hack fixes most of these cases.
+    timeout += 0.5
+
+    let cb = Callback(function() {
+      let item = this.actionItems?[itemIdx]
       if (!item || !this.scene?.isValid())
         return
-
       let itemObjId = $"{this.__action_id_prefix}{item.id}"
       let itemObj = this.scene.findObject(itemObjId)
       if (!itemObj?.isValid() || !getActionItemStatus(item).isReady)
         return
       itemObj.enable(true)
-    }.bindenv(this))
+    }, this)
+
+    let timer = setTimeout(timeout, @() cb())
 
     if (this.cooldownTimers.len() <= itemIdx)
       this.cooldownTimers.resize(itemIdx + 1)

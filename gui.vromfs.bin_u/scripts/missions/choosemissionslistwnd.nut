@@ -26,7 +26,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   missionsList = null
   selMissions = null
   onApplyListCb = null
-  choosenIcon = "#ui/gameuiskin#favorite.png"
+  choosenIcon = "#ui/gameuiskin#favorite"
 
   misListObj = null
   selMissionsMap = null  //{ missionName = (bool)isSelected }

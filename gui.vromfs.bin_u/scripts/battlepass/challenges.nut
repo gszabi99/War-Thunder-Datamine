@@ -14,6 +14,7 @@ let { getUnlockConditions, getHeaderCondition,
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 
 let battlePassChallenges = Watched([])
 let curSeasonChallenges = Computed(@() battlePassChallenges.value
@@ -72,7 +73,7 @@ addListenersWithoutEnv({
 
 let function updateChallenges(_value = null) {
   if (::g_login.isLoggedIn())
-    battlePassChallenges(::g_unlocks.getAllUnlocksWithBlkOrder()
+    battlePassChallenges(getAllUnlocksWithBlkOrder()
       .filter(@(unlock) isUnlockVisible(unlock) && unlock?.battlePassSeason != null))
 }
 

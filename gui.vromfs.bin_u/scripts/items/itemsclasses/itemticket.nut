@@ -15,7 +15,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 ::items_classes.Ticket <- class extends ::BaseItem {
   static iType = itemType.TICKET
   static defaultLocId = "ticket"
-  //static defaultIcon = "#ui/gameuiskin#items_booster_shape1.png"
+  //static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
   static typeIcon = "#ui/gameuiskin#item_type_tickets.svg"
   static linkActionLocId = "mainmenu/signUp"
 

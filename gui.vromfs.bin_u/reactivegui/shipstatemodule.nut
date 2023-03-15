@@ -31,12 +31,12 @@ let images = {
   buoyancy = Picture($"!ui/gameuiskin#buoyancy_icon.svg:{iconSize}:{iconSize}")
   fire = "!ui/gameuiskin#fire_indicator.svg:"
   steeringMark = Picture($"!ui/gameuiskin#floatage_arrow_down.svg:{iconSize}:{iconSize}")
-  sightCone = Picture("+ui/gameuiskin#map_camera.png")
+  sightCone = Picture("+ui/gameuiskin#map_camera")
   shipCrew = Picture($"!ui/gameuiskin#ship_crew.svg:{iconSize}:{iconSize}")
   gunner = Picture($"!ui/gameuiskin#ship_crew_gunner.svg:{iconSize}:{iconSize}")
   driver = Picture($"!ui/gameuiskin#ship_crew_driver.svg:{iconSize}:{iconSize}")
 
-  bg = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.png")
+  bg = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss")
 
   gunnerState = [ //according to AI_GUNNERS_ enum
     Picture($"!ui/gameuiskin#ship_gunner_state_hold_fire.svg:{iconSize}:{iconSize}")

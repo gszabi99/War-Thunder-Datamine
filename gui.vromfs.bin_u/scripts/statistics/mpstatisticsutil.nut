@@ -231,7 +231,7 @@ let function guiStartMPStatScreenFromGame() {
         local rankTxt = ""
         if (!isEmpty && ("exp" in table[i]) && ("prestige" in table[i])) {
           rankTxt = ::get_rank_by_exp(table[i].exp).tostring()
-          prestigeImg = $"#ui/gameuiskin#prestige{table[i].prestige}.png"
+          prestigeImg = $"#ui/gameuiskin#prestige{table[i].prestige}"
         }
         let rankItem = format("activeText { id:t='rank-text'; text:t='%s'; margin-right:t='%%s' } ", rankTxt)
         let prestigeItem = format("cardImg { id:t='prestige-ico'; background-image:t='%s'; margin-right:t='%%s' } ", prestigeImg)

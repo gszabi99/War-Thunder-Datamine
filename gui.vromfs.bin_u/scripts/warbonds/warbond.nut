@@ -156,7 +156,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   getLayeredIconStyle = @() ::LayersIcon.getIconData($"reward_battle_task_{this.medalIcon}")
   getMedalIcon = @() $"#ui/gameuiskin#{this.medalIcon}.svg"
   getLevelIcon = @() $"#ui/gameuiskin#{this.levelIcon}.svg"
-  getLevelIconOverlay = @() $"#ui/gameuiskin#{this.levelIcon}_overlay.png"
+  getLevelIconOverlay = @() $"#ui/gameuiskin#{this.levelIcon}_overlay"
 
   function getCurrentShopLevelTasks() {
     return this.getLevelData().Ordinary

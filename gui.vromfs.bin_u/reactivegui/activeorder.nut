@@ -10,7 +10,7 @@ let { isOrderStatusVisible } = require("hud/hudPartVisibleState.nut")
 let isOrderVisible = Computed(@() isOrderStatusVisible.value && showOrder.value)
 let isCollapsed = Watched(false)
 
-let pilotIcon = Picture("!ui/gameuiskin#player_in_queue.png")
+let pilotIcon = Picture("!ui/gameuiskin#player_in_queue")
 let rowHeight = scrn_tgt(0.0224)
 let collapseBtnSize = hdpx(45)
 let collapseIconSize = hdpx(30)

@@ -5,7 +5,7 @@ imgFrame {
   background-repeat:expand;
   background-color:@white;
   background-position:6,6;
-  background-image:#ui/gameuiskin#window_body.png;
+  background-image:#ui/gameuiskin#window_body;
   padding:@imgFramePad;
   tooltip-float:horizontal;
 }
@@ -37,20 +37,20 @@ backlight {
   input-transparent:yes;
 }
 imgFrame > backlight[UnlockedObject=yes] {
-  background-image:#ui/gameuiskin#acheivement_bg_active.png;
+  background-image:#ui/gameuiskin#acheivement_bg_active;
 }
 imgFrame > backlight[unlockedObject=no] {
-  background-image:#ui/gameuiskin#acheivement_bg_.png;
+  background-image:#ui/gameuiskin#acheivement_bg_;
 }
 imgFrame > backlight:hover, imgFrame > backlight:pushed {
-  background-image:#ui/gameuiskin#acheivement_bg_hover.png;
+  background-image:#ui/gameuiskin#acheivement_bg_hover;
 }
 
 
 
 imgButton {
   behaviour:button;
-  background-image:#ui/gameuiskin#lr_frame_bg.png;
+  background-image:#ui/gameuiskin#lr_frame_bg;
   background-color:@white;
   background-position:3, 4, 3, 3;
   background-repeat:expand;
@@ -144,10 +144,10 @@ imgFrame > LockedImg{
 }
 
 LockedImg[statusLock=achievement] {
-  background-image:#ui/gameuiskin#locked_white.png;
+  background-image:#ui/gameuiskin#locked_white;
 }
 LockedImg[statusLock=noDLC] {
-  background-image:#ui/gameuiskin#dlc_locked.png;
+  background-image:#ui/gameuiskin#dlc_locked;
 }
 LockedImg[statusLock=limit] {
   background-image:#ui/gameuiskin#locked.svg;
@@ -156,12 +156,12 @@ LockedImg[statusLock=limit] {
 LockedImg[statusLock=noPremium_1] {
   size:pw-2@dp, ph-2@dp;
   background-color:@white;
-  background-image:#ui/images/decalslot_nopremium_vertical.png;
+  background-image:#ui/images/decalslot_nopremium_vertical;
 }
 LockedImg[statusLock=noPremium_2] {
   size:pw-2@dp, ph-2@dp;
   background-color:@white;
-  background-image:#ui/images/decalslot_nopremium_horizontal.png;
+  background-image:#ui/images/decalslot_nopremium_horizontal;
 }
 LockedImg[statusLock=country] {
   size:@lIco,@lIco;

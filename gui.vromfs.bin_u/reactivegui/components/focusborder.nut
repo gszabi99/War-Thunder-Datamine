@@ -10,7 +10,7 @@ let focusBorder = @(override = {})
       ? {
         rendObj = ROBJ_9RECT
         size = flex()
-        image = Picture("!ui/gameuiskin#item_selection.png")
+        image = Picture("!ui/gameuiskin#item_selection")
         color = Color(255, 211, 75)
         screenOffs = 8
         texOffs = 8

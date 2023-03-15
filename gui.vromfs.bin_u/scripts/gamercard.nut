@@ -60,7 +60,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
           break
         case "prestige":
           if (val != null)
-            obj["background-image"] = $"#ui/gameuiskin#prestige{val}.png"
+            obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
           let titleObj = getObj($"{prefix}prestige_title")
           if (titleObj) {
             let prestigeTitle = (val > 0)

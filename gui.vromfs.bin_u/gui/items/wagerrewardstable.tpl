@@ -8,7 +8,7 @@ table {
       img {
         position:t='absolute'
         size:t='@unlockIconSize, @unlockIconSize'
-        background-image:t='#ui/gameuiskin#favorite.png'
+        background-image:t='#ui/gameuiskin#favorite'
         pos:t='0.25w,-0.3h'
       }
       <</showCheckedIcon>>

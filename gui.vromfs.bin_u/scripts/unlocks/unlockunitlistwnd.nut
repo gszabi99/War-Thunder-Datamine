@@ -13,6 +13,7 @@ let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let function getUnitsData(unlockId) {
   let data = {}
@@ -83,7 +84,7 @@ let function getCountriesView(unlockId) {
 }
 
 let function getWndTitle(unlockId) {
-  let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+  let unlockBlk = getUnlockById(unlockId)
   let unlockCfg = ::build_conditions_config(unlockBlk)
   return loc("mainmenu/showVehiclesTitle", {
     taskName = getUnlockTitle(unlockCfg)

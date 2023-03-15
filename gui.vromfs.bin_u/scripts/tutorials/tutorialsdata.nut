@@ -10,6 +10,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_meta_missions_info_by_chapters, select_mission } = require("guiMission")
 let { set_game_mode, get_game_mode } = require("mission")
+let { getUnlockRewardCostByName } = require("%scripts/unlocks/unlocksModule.nut")
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
@@ -127,7 +128,7 @@ let function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
       && !isCompleteAwardUnlock)
     return res
 
-  let cost = ::g_unlocks.getUnlockCost(oneTimeAwardUnlockId)
+  let cost = getUnlockRewardCostByName(oneTimeAwardUnlockId)
   if (cost.isZero())
     return res
 

@@ -920,7 +920,7 @@ enum decalTwoSidedMode {
     obj.show(isShow)
     if (!isShow)
       return
-    obj.findObject("icon")["background-image"] = this.isUnitOwn ? "ui/gameuiskin#favorite.png" : "ui/gameuiskin#locked.svg"
+    obj.findObject("icon")["background-image"] = this.isUnitOwn ? "ui/gameuiskin#favorite" : "ui/gameuiskin#locked.svg"
     let textObj = obj.findObject("text")
     textObj.setValue(loc(this.isUnitOwn ? "conditions/unitExists" : "weaponry/unit_not_bought"))
     textObj.overlayTextColor = this.isUnitOwn ? "good" : "bad"

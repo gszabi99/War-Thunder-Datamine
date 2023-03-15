@@ -10,6 +10,7 @@ let { loading_play_voice } = require("loading")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { is_replay_playing } = require("replays")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_FADE_OUT_TIME = 1.5
@@ -161,7 +162,7 @@ let function updateAnimTimer() {
 ::g_streaks.streakPlaySound <- function streakPlaySound(streakId) {
   if (!hasFeature("streakVoiceovers"))
     return
-  let unlockBlk = ::g_unlocks.getUnlockById(streakId)
+  let unlockBlk = getUnlockById(streakId)
   if (!unlockBlk)
     return
 

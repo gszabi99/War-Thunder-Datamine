@@ -338,7 +338,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
   function getIconImage() {
     return (this.getStatus() == "Full" || this.battle.isFinished()) ?
-      "#ui/gameuiskin#battles_closed" : "#ui/gameuiskin#battles_open.png"
+      "#ui/gameuiskin#battles_closed" : "#ui/gameuiskin#battles_open"
   }
 
   function hasControlTooltip() {

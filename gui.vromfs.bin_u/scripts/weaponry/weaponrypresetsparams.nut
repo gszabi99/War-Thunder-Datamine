@@ -96,32 +96,32 @@ let function getTierIcon(weaponry, itemsNum) {
   let isBlock = (weaponry?.amountPerTier ?? 0) > 1
 
   if (iconType != null)
-    return $"{path}{iconType}.png"
+    return $"{path}{iconType}"
 
   if (triggerType == TRIGGER_TYPE.TORPEDOES)
-    return $"{path}air_torpedo.png"
+    return $"{path}air_torpedo"
 
   if (triggerType == TRIGGER_TYPE.ATGM)
-    return $"{path}atgm_type2_x2.png"
+    return $"{path}atgm_type2_x2"
 
   if (isInArray(triggerType,
     [TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON, TRIGGER_TYPE.ADD_GUN]))
-      return isBlock || isGroup ? $"{path}multibarrel_gun.png" : $"{path}machine_gun.png"
+      return isBlock || isGroup ? $"{path}multibarrel_gun" : $"{path}machine_gun"
 
   if (triggerType == TRIGGER_TYPE.AGM)
-    return $"{path}missile_air_to_earth.png"
+    return $"{path}missile_air_to_earth"
 
   if (triggerType == TRIGGER_TYPE.AAM)
-    return isBlock || isGroup ? $"{path}missile_air_to_air_group.png" : $"{path}missile_air_to_air.png"
+    return isBlock || isGroup ? $"{path}missile_air_to_air_group" : $"{path}missile_air_to_air"
 
   if (triggerType == TRIGGER_TYPE.FLARES)
-    return $"{path}ltc.png"
+    return $"{path}ltc"
 
   let size = getWeaponrySize(weaponry.massKg)
   let wStr = isBlock && triggerType == TRIGGER_TYPE.ROCKETS ? "nar" : triggerType
   let groupStr = isBlock || isGroup ? $"{size}_group" : size
 
-  return $"{path}{wStr}_{groupStr}.png"
+  return $"{path}{wStr}_{groupStr}"
 }
 
 local function createTier(weaponry, presetName, itemsNum = 0) {

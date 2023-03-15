@@ -20,7 +20,7 @@ tdiv {
       <<#received>>
       img {
         size:t='0.03@scrn_tgt, 0.03@scrn_tgt';
-        background-image:t='#ui/gameuiskin#favorite.png';
+        background-image:t='#ui/gameuiskin#favorite';
         position:t='relative';
         pos:t='0, -0.004@scrn_tgt';
       }

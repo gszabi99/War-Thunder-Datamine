@@ -5,8 +5,8 @@ let colors = require("style/colors.nut")
 const MAX_DOST = 5
 
 let images = {
-  dotHole = Picture("!ui/gameuiskin#dot_hole.png")
-  dotFilled = Picture("!ui/gameuiskin#dot_filled.png")
+  dotHole = Picture("!ui/gameuiskin#dot_hole")
+  dotFilled = Picture("!ui/gameuiskin#dot_filled")
 }
 
 

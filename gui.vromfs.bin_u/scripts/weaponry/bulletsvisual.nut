@@ -75,7 +75,7 @@ let function getBulletImage(bulletsSet, bulletIndex, needFullPath = true) {
   let defaultImgId = isCaliberCannon(1000 * (bulletsSet?.caliber ?? 0.0))
     ? "default_shell" : "default_ball"
   let textureId = bulletIcons?[imgId] ?? bulletIcons?[defaultImgId]
-  return needFullPath ? $"#ui/gameuiskin#{textureId}.png" : textureId
+  return needFullPath ? $"#ui/gameuiskin#{textureId}" : textureId
 }
 
 let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false) {

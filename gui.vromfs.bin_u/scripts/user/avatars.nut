@@ -9,6 +9,7 @@ let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
 let { AVATARS } = require("%scripts/utils/configs.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockById, getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 
 let DEFAULT_PILOT_ICON = "cardicon_default"
 
@@ -17,14 +18,14 @@ local allowedIcons = null
 
 let function getIcons() {
   if (!icons)
-    icons = ::g_unlocks.getUnlocksByTypeInBlkOrder("pilot").map(@(u) u.id)
+    icons = getUnlocksByTypeInBlkOrder("pilot").map(@(u) u.id)
   return icons
 }
 
 let function getAllowedIcons() {
   if (!allowedIcons)
     allowedIcons = getIcons().filter(@(unlockId) ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId)
-      && isUnlockVisible(::g_unlocks.getUnlockById(unlockId)))
+      && isUnlockVisible(getUnlockById(unlockId)))
   return allowedIcons
 }
 
@@ -55,7 +56,7 @@ subscriptions.addListenersWithoutEnv({
 
 bhvAvatar.init({
   intIconToString = getIconById
-  getIconPath = @(icon) $"#ui/images/avatars/{icon}.png"
+  getIconPath = @(icon) $"#ui/images/avatars/{icon}"
   getConfig = AVATARS.get.bindenv(AVATARS)
 })
 

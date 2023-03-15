@@ -8,7 +8,7 @@ tdiv {
 
   <<#isComplete>>
   cardImg {
-    background-image:t='#ui/gameuiskin#favorite.png'
+    background-image:t='#ui/gameuiskin#favorite'
   }
   <</isComplete>>
 

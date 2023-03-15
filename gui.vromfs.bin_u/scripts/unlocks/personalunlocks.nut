@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 
 let battleTaskUnlocks = []
 let markerUnlocks = []
@@ -14,7 +15,7 @@ let function update() {
   if (!::g_login.isLoggedIn())
     return
 
-  foreach (unlockBlk in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+  foreach (unlockBlk in getAllUnlocksWithBlkOrder()) {
     if (unlockBlk?.showAsBattleTask)
       battleTaskUnlocks.append(unlockBlk)
 

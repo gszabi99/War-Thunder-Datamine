@@ -2391,7 +2391,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return difficulty.icon
 
     if (diffName.len() > 6 && diffName.slice(0, 6) == "custom")
-      return $"#ui/gameuiskin#mission_{diffName}.png"
+      return $"#ui/gameuiskin#mission_{diffName}"
 
     return ""
   }

@@ -171,7 +171,7 @@ eSItemDiv {
         size:t='2@eSItemIcoSize, 2@eSItemIcoSize'
         pos:t='0.5pw-0.5w+5@dp, 0.5ph-0.5h'
         position:t='absolute'
-        background-image:t='#ui/gameuiskin#flag_shadow.png'
+        background-image:t='#ui/gameuiskin#flag_shadow'
         background-svg-size:t='2@eSItemIcoSize, 2@eSItemIcoSize'
       }
       img {

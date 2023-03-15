@@ -7,7 +7,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
+} = require("%scripts/unlocks/unlocksCache.nut")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
@@ -44,7 +45,8 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
   getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible, openUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText
+} = require("%scripts/unlocks/unlocksModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -192,7 +194,7 @@ let selMedalIdx = {}
     local tabImage = null
     local tabText = null
 
-    foreach (cb in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+    foreach (cb in getAllUnlocksWithBlkOrder()) {
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
 
@@ -297,7 +299,7 @@ let selMedalIdx = {}
 
   function getUnlockFiltersList(uType, getCategoryFunc) {
     let categories = []
-    let unlocks = ::g_unlocks.getUnlocksByType(uType)
+    let unlocks = getUnlocksByType(uType)
     foreach (unlock in unlocks)
       if (isUnlockVisible(unlock))
         ::u.appendOnce(getCategoryFunc(unlock), categories, true)
@@ -969,7 +971,7 @@ let selMedalIdx = {}
     local chapter = ""
     local group = ""
 
-    foreach (_idx, cb in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+    foreach (_idx, cb in getAllUnlocksWithBlkOrder()) {
       let name = cb.getStr("id", "")
       let unlockType = cb?.type ?? ""
       let unlockTypeId = ::get_unlock_type(unlockType)
@@ -1186,7 +1188,7 @@ let selMedalIdx = {}
   function fillSkinDescr(name) {
     let unitName = ::g_unlocks.getPlaneBySkinId(name)
     let unitNameLoc = (unitName != "") ? ::getUnitName(unitName) : ""
-    let unlockBlk = ::g_unlocks.getUnlockById(name)
+    let unlockBlk = getUnlockById(name)
     let config = unlockBlk ? ::build_conditions_config(unlockBlk) : null
     let progressData = config?.getProgressBarData()
     let canAddFav = !!unlockBlk
@@ -1269,7 +1271,7 @@ let selMedalIdx = {}
     if (::u.isEmpty(unlockId))
       return
 
-    let cost = ::get_unlock_cost(unlockId)
+    let cost = getUnlockCost(unlockId)
     this.msgBox("question_buy_unlock",
       ::warningIfGold(
         loc("onlineShop/needMoneyQuestion",
@@ -1289,7 +1291,7 @@ let selMedalIdx = {}
   function updateUnlockBlock(unlockData) {
     local unlock = unlockData
     if (::u.isString(unlockData))
-      unlock = ::g_unlocks.getUnlockById(unlockData)
+      unlock = getUnlockById(unlockData)
 
     let unlockObj = this.scene.findObject(this.getUnlockBlockId(unlock.id))
     if (checkObj(unlockObj))
@@ -1358,7 +1360,7 @@ let selMedalIdx = {}
 
     local currentItemNum = 0
     local selIdx = 0
-    foreach (unlock in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+    foreach (unlock in getAllUnlocksWithBlkOrder()) {
       if (unlock?.id == null) {
         let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
         ::script_net_assert_once("missing id in unlock after cashed", "ProfileHandler: Missing id in unlock after cashed")
@@ -1398,7 +1400,7 @@ let selMedalIdx = {}
     let idx = obj.getValue()
     let itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
     let name = checkObj(itemObj) && itemObj?.id
-    let unlock = name && ::g_unlocks.getUnlockById(name)
+    let unlock = name && getUnlockById(name)
     if (!unlock)
       return
 
@@ -1411,7 +1413,7 @@ let selMedalIdx = {}
       selMedalIdx[this.curFilter] <- idx
 
     let config = ::build_unlock_desc(::build_conditions_config(unlock))
-    let rewardText = ::get_unlock_reward(name)
+    let rewardText = getUnlockRewardText(name)
     let progressData = config.getProgressBarData()
 
     let view = {

@@ -24,6 +24,7 @@ let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
 let { money_type } = require("%scripts/money.nut")
 let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -173,10 +174,10 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     local nameLoc = "userlog/" + logName
     if (logObj.type == EULT_EARLY_SESSION_LEAVE)
-      res.logImg = "#ui/gameuiskin#log_leave.png"
+      res.logImg = "#ui/gameuiskin#log_leave"
     else if (logObj.type == EULT_SESSION_RESULT) {
         nameLoc += logObj.win ? "/win" : "/lose"
-        res.logImg = $"#ui/gameuiskin#{logObj.win? "log_win" : "log_lose"}.png"
+        res.logImg = $"#ui/gameuiskin#{logObj.win? "log_win" : "log_lose"}"
     }
     res.name = format(loc(nameLoc), mission)
 
@@ -415,7 +416,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         + (win ? ::g_team.A.getNameInPVE() : ::g_team.B.getNameInPVE())
     }
     else {
-      res.logImg = $"#ui/gameuiskin#{win? "log_win" : "log_lose"}.png"
+      res.logImg = $"#ui/gameuiskin#{win? "log_win" : "log_lose"}"
       nameLoc += win ? "/win" : "/lose"
     }
 
@@ -436,14 +437,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_BUYING_AIRCRAFT) {
     res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
-    res.logImg = "#ui/gameuiskin#log_buy_aircraft.png"
+    res.logImg = "#ui/gameuiskin#log_buy_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   }
   else if (logObj.type == EULT_REPAIR_AIRCRAFT) {
     res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
-    res.logImg = "#ui/gameuiskin#log_repair_aircraft.png"
+    res.logImg = "#ui/gameuiskin#log_repair_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
@@ -480,13 +481,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.description <- desc
       res.tooltip = desc
     }
-    res.logImg = "#ui/gameuiskin#log_repair_aircraft.png"
+    res.logImg = "#ui/gameuiskin#log_repair_aircraft"
     if (oneCountry && ::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   }
   else if (logObj.type == EULT_BUYING_WEAPON || logObj.type == EULT_BUYING_WEAPON_FAIL) {
     res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
-    res.logImg = "".concat("#ui/gameuiskin#", logObj.type == EULT_BUYING_WEAPON ? "log_buy_weapon.png" : "log_refill_weapon_no_money.png")
+    res.logImg = "".concat("#ui/gameuiskin#", logObj.type == EULT_BUYING_WEAPON ? "log_buy_weapon" : "log_refill_weapon_no_money")
     if (("wname" in logObj) && ("aname" in logObj)) {
       res.description <- getWeaponNameText(logObj.aname, false, logObj.wname, ", ")
       if ("count" in logObj && logObj.count > 1)
@@ -562,7 +563,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
 
     res.tooltip = res.description
-    res.logImg = "#ui/gameuiskin#log_buy_weapon.png"
+    res.logImg = "#ui/gameuiskin#log_buy_weapon"
   }
   else if (logObj.type == EULT_NEW_RANK) {
     if (("country" in logObj) && logObj.country != "common" && ::checkCountry(logObj.country, "EULT_NEW_RANK")) {
@@ -570,7 +571,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.name = format(loc("userlog/" + logName + "/country"), logObj.newRank.tostring())
     }
     else {
-      res.logImg = "#ui/gameuiskin#prestige0.png"
+      res.logImg = "#ui/gameuiskin#prestige0"
       res.name = format(loc("userlog/" + logName), logObj.newRank.tostring())
     }
   }
@@ -582,7 +583,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let airName = ("aname" in logObj) ? ::getUnitName(logObj.aname) : ("aircraft" in logObj) ? ::getUnitName(logObj.aircraft) : ""
     if (::checkCountry(country, "userlog EULT_*_CREW"))
       res.logImg2 = ::get_country_icon(country)
-    res.logImg = "#ui/gameuiskin#log_crew.png"
+    res.logImg = "#ui/gameuiskin#log_crew"
 
     res.name = loc("userlog/" + logName,
                          { skillPoints = ::getCrewSpText(getTblValue("skillPoints", logObj, 0)),
@@ -623,7 +624,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       costText = " (" + costText + ")"
 
     res.name = format(loc("userlog/" + logName), getEntitlementName(ent)) + costText
-    res.logImg = "#ui/gameuiskin#log_online_shop.png"
+    res.logImg = "#ui/gameuiskin#log_online_shop"
   }
   else if (logObj.type == EULT_NEW_UNLOCK) {
     let config = ::build_log_unlock_data(logObj)
@@ -637,7 +638,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     else if ((config?.image2 ?? "") != "")
       res.logImg2 = config?.image2
 
-    let unlock = ::g_unlocks.getUnlockById(logObj?.unlockId ?? logObj?.id ?? "")
+    let unlock = getUnlockById(logObj?.unlockId ?? logObj?.id ?? "")
     local desc = ""
     if (!(unlock?.isMultiUnlock ?? false) && "desc" in config) {
       desc = config.desc
@@ -666,7 +667,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   }
   else if (logObj.type == EULT_BUYING_MODIFICATION || logObj.type == EULT_BUYING_MODIFICATION_FAIL) {
     res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
-    res.logImg = "".concat("#ui/gameuiskin#", logObj.type == EULT_BUYING_MODIFICATION ? "log_buy_mods.png" : "log_refill_weapon_no_money.png")
+    res.logImg = "".concat("#ui/gameuiskin#", logObj.type == EULT_BUYING_MODIFICATION ? "log_buy_mods" : "log_refill_weapon_no_money")
     if (("mname" in logObj) && ("aname" in logObj)) {
       res.description <- getModificationName(::getAircraftByName(logObj.aname), logObj.mname)
       if ("count" in logObj && logObj.count > 1)
@@ -690,13 +691,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
                      numSpares = count
                      unitName = colorize("userlogColoredText", ::getUnitName(logObj.aname))
                    }) + priceText
-    res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft.png"
+    res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft"
     let country = ::getShopCountry(logObj.aname)
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
   }
   else if (logObj.type == EULT_CLAN_ACTION) {
-    res.logImg = "#ui/gameuiskin#log_clan_action.png"
+    res.logImg = "#ui/gameuiskin#log_clan_action"
     let info = {
       action = getTblValue("clanActionType", logObj, -1)
       clan = ("clanName" in logObj) ? ::ps4CheckAndReplaceContentDisabledText(logObj.clanName) : ""
@@ -906,7 +907,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         desc.append(loc("items/wager/numWins", { numWins = getTblValue("numWins", logObj), maxWins = item.maxWins }))
         desc.append(loc("items/wager/numFails", { numFails = getTblValue("numFails", logObj), maxFails = item.maxFails }))
 
-        res.logImg = "#ui/gameuiskin#unlock_achievement.png"
+        res.logImg = "#ui/gameuiskin#unlock_achievement"
         res.description += (res.description == "" ? "" : "\n") + ::g_string.implode(desc, "\n")
         res.descriptionBlk <- ::get_userlog_image_item(item)
       }
@@ -975,7 +976,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.name = format(loc("userlog/" + logName), ::getUnitName(getTblValue("maname0", logObj, ""))) + priceText
     else
       res.name = format(loc("userlog/" + logName), "")
-    res.logImg = "#ui/gameuiskin#log_buy_mods.png"
+    res.logImg = "#ui/gameuiskin#log_buy_mods"
 
     res.description <- ""
     local idx = 0

@@ -139,7 +139,7 @@ massTransp[isWorldWarFrame=yes] {
   background-color:@gray;
   background-position:0, 3, 0, 4;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#expandable_item_sym.png;
+  background-image:#ui/gameuiskin#expandable_item_sym;
   padding:0.2@sf, 0.03@sf;
 }
 
@@ -175,19 +175,19 @@ objectiveBlock wwObjective taskIcon[background-image=""] {
 }
 
 imageButton[type=ww_helipad] {
-  background-image:#ui/gameuiskin#map_helipad.png;
+  background-image:#ui/gameuiskin#map_helipad;
 }
 
 imageButton[type=ww_helipad]:hover {
-  background-image:#ui/gameuiskin#map_helipad_hover.png;
+  background-image:#ui/gameuiskin#map_helipad_hover;
 }
 
 imageButton[type=ww_airfield] {
-  background-image:#ui/gameuiskin#map_airfield.png;
+  background-image:#ui/gameuiskin#map_airfield;
 }
 
 imageButton[type=ww_airfield]:hover {
-  background-image:#ui/gameuiskin#map_airfield_hover.png;
+  background-image:#ui/gameuiskin#map_airfield_hover;
 }
 
 imageButton[type=ww_helipad]:hover > textarea,
@@ -197,12 +197,12 @@ imageButton[type=ww_airfield]:hover > textarea {
 
 imageButton[type=ww_helipad][selected=yes] {
   background-color:@white;
-  background-image:#ui/gameuiskin#map_helipad_selected.png;
+  background-image:#ui/gameuiskin#map_helipad_selected;
 }
 
 imageButton[type=ww_airfield][selected=yes] {
   background-color:@white;
-  background-image:#ui/gameuiskin#map_airfield_selected.png;
+  background-image:#ui/gameuiskin#map_airfield_selected;
 }
 
 imageButton[type=ww_helipad][selected=yes] > textarea,
@@ -220,7 +220,7 @@ wwBattleIcon {
   css-hier-invalidate:yes;
   pos:50%pw-50%w, 50%ph-50%h;
   position:absolute;
-  background-image:#ui/gameuiskin#battles_open.png;
+  background-image:#ui/gameuiskin#battles_open;
   background-color:@battleColorInactive;
   background-position:0;
   background-repeat:expand;
@@ -236,7 +236,7 @@ wwBattleIcon[status=Active] {
 }
 
 wwBattleIcon[status=Fake] {
-  background-image:#ui/gameuiskin#battles_closed.png;
+  background-image:#ui/gameuiskin#battles_closed;
 }
 
 wwBattleIcon[status=OnServer] {
@@ -248,7 +248,7 @@ wwBattleIcon[status=Finished] {
 }
 
 wwBattleIcon[status=Full] {
-  background-image:#ui/gameuiskin#battles_closed.png;
+  background-image:#ui/gameuiskin#battles_closed;
 }
 
 wwBattleIcon[medalIcon] {
@@ -445,7 +445,7 @@ ww_map_item {
   re-type:9rect;
   background-position:4,5;
   background-repeat:expand;
-  background-image:#ui/gameuiskin#expandable_item_sub_transp.png;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp;
   background-color:@transparent;
   css-hier-invalidate:yes;
   interactive:yes;
@@ -458,13 +458,13 @@ ww_map_item[isReflected=yes] {
 
 ww_map_item.header {
   size:pw, @leaderboardHeaderHeight;
-  background-image:#ui/gameuiskin#expandable_item_sub_transp_selected.png;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp_selected;
   background-color:#aaaaaa;
   interactive:no;
 }
 ww_map_item:hover,
 ww_map_item[selected=yes] {
-  background-image:#ui/gameuiskin#expandable_item_sub_transp_selected.png;
+  background-image:#ui/gameuiskin#expandable_item_sub_transp_selected;
   background-color:@white;
 }
 
@@ -515,11 +515,11 @@ wwWindowListBackground {
 }
 
 wwWindowListBackground[type=left] {
-  background-image:#ui/gameuiskin#expandable_item_ww_transp_reflect.png;
+  background-image:#ui/gameuiskin#expandable_item_ww_transp_reflect;
 }
 
 wwWindowListBackground[type=right] {
-  background-image:#ui/gameuiskin#expandable_item_ww_transp.png;
+  background-image:#ui/gameuiskin#expandable_item_ww_transp;
 }
 
 operationResultText {
@@ -578,12 +578,12 @@ wwBattleBackgroundShadow {
 
 wwMainMenuBackgroundShadow[type=left],
 wwBattleBackgroundShadow[type=left] {
-  background-image:#ui/gameuiskin#shadow_left.png;
+  background-image:#ui/gameuiskin#shadow_left;
 }
 wwMainMenuBackgroundShadow[type=right],
 wwBattleBackgroundShadow[type=right] {
   background-rotation:180;
-  background-image:#ui/gameuiskin#shadow_left.png;
+  background-image:#ui/gameuiskin#shadow_left;
   left:pw-w;
 }
 

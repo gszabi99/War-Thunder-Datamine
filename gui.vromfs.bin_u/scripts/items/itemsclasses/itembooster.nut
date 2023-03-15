@@ -17,7 +17,7 @@ let { getFullUnlockCondsDesc,
 ::items_classes.Booster <- class extends ::BaseItem {
   static iType = itemType.BOOSTER
   static defaultLocId = "rateBooster"
-  static defaultIcon = "#ui/gameuiskin#items_booster_shape1.png"
+  static defaultIcon = "#ui/gameuiskin#items_booster_shape1"
   static typeIcon = "#ui/gameuiskin#item_type_boosters.svg"
   canBuy = true
   allowBigPicture = false

@@ -23,6 +23,7 @@ let { getUnlockDesc, getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockC
   getUnlockMainCondDescByCfg, getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let tooltipTypes = {
   types = []
@@ -90,7 +91,7 @@ let exportTypes = addTooltipTypes({
       if (!checkObj(obj))
         return false
 
-      let unlock = ::g_unlocks.getUnlockById(unlockId)
+      let unlock = getUnlockById(unlockId)
       if (unlock == null)
         return false
 
@@ -490,7 +491,7 @@ let exportTypes = addTooltipTypes({
       if (!checkObj(obj))
         return false
 
-      let unlockBlk = id && id != "" && ::g_unlocks.getUnlockById(id)
+      let unlockBlk = id && id != "" && getUnlockById(id)
       let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem.tpl",
         { items = [getChallengeView(unlockBlk, { isOnlyInfo = true })], isSmallText = true })
 
@@ -507,7 +508,7 @@ let exportTypes = addTooltipTypes({
       if (!checkObj(obj))
         return false
 
-      let unlockBlk = unlockId && unlockId != "" && ::g_unlocks.getUnlockById(unlockId)
+      let unlockBlk = unlockId && unlockId != "" && getUnlockById(unlockId)
       if (!unlockBlk)
         return false
 

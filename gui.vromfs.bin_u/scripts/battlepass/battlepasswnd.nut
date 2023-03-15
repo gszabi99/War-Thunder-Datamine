@@ -29,6 +29,7 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { unlockToFavorites } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 
 let watchObjInfoConfig = {
@@ -513,7 +514,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onViewBattleTaskRequirements() {
     let awardsList = []
     foreach (id in this.getCurrentConfig()?.names ?? [])
-      awardsList.append(::build_log_unlock_data(::build_conditions_config(::g_unlocks.getUnlockById(id))))
+      awardsList.append(::build_log_unlock_data(::build_conditions_config(getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }

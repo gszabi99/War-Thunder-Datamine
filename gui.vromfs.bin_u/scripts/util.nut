@@ -756,7 +756,7 @@ let function find_max_lower_value(val, list) {
     return ""
 
   multiplier = ::stringReplace(multiplier.tostring(), ".", "_")
-  return $"#ui/gameuiskin#{bType}_bonus_mult_{multiplier}.png"
+  return $"#ui/gameuiskin#{bType}_bonus_mult_{multiplier}"
 }
 
 ::save_to_json <- function save_to_json(obj) {

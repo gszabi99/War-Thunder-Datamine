@@ -16,7 +16,7 @@ div{
   <<#amount>>
   img {
     id:t='award_multiplier'
-    background-image:t='#ui/gameuiskin#window_body_shadow.png'
+    background-image:t='#ui/gameuiskin#window_body_shadow'
     pos:t='ph-w, ph-h + 0.2ph'
     position:t='absolute'
 

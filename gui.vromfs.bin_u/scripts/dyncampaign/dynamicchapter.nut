@@ -137,15 +137,15 @@ let { get_cur_game_mode_name } = require("mission")
       switch (mission.progress) {
         case 0:
           elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_arcade.png"
+          medalIcon = "#ui/gameuiskin#mission_complete_arcade"
           break
         case 1:
           elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_realistic.png"
+          medalIcon = "#ui/gameuiskin#mission_complete_realistic"
           break
         case 2:
           elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_simulator.png"
+          medalIcon = "#ui/gameuiskin#mission_complete_simulator"
           break
         case 3:
           elemCssId = "mission_item_unlocked"

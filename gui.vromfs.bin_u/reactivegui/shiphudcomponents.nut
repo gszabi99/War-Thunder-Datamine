@@ -5,7 +5,7 @@ let { CollapsedIcon } = require("twsState.nut")
 let { mkRadar } = require("radarComponent.nut")
 let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("radarState.nut")
 
-let radarPic = Picture("!ui/gameuiskin#radar_stby_icon.png")
+let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let radarCollapsedPos = Computed(@() [bw.value + 0.055 * rw.value, bh.value + 0.05 * rh.value])
 let radarPos = Computed(@() [bw.value, bh.value])
 

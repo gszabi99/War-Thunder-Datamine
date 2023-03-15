@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 
 const CHAPTER_NAME = "worldwar"
 
@@ -24,7 +25,7 @@ subscriptions.addListenersWithoutEnv({
 local function getWwUnlocksForCash() {
   local chapter = ""
   local res = []
-  foreach (unlock in ::g_unlocks.getAllUnlocksWithBlkOrder()) {
+  foreach (unlock in getAllUnlocksWithBlkOrder()) {
     local newChapter = unlock?.chapter ?? ""
     if (newChapter != "")
       chapter = newChapter

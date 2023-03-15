@@ -11,7 +11,7 @@ let DataBlock  = require("DataBlock")
 ::items_classes.ModOverdrive <- class extends BaseItemModClass {
   static iType = itemType.MOD_OVERDRIVE
   static defaultLocId = "modOverdrive"
-  static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg.png"
+  static defaultIcon = "#ui/gameuiskin#overdrive_upgrade_bg"
   static typeIcon = "#ui/gameuiskin#item_type_overdrive.svg"
 
   canBuy = true

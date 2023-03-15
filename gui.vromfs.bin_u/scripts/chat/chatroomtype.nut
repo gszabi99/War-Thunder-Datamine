@@ -135,7 +135,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
     roomNameLocId = "squad/name"
     inviteLocIdNoNick = "squad/receiveInvite/noNick"
     inviteLocIdFull = "squad/receiveInvite"
-    inviteIcon = "#ui/gameuiskin#squad_leader.png"
+    inviteIcon = "#ui/gameuiskin#squad_leader"
     canVoiceChat = true
     needCountAsImportant = true
 

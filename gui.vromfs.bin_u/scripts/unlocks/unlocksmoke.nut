@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let aeroSmokesList    = persist("aeroSmokesList", @() Watched([]))
 let buyableSmokesList = persist("buyableSmokesList", @() Watched([]))
@@ -41,7 +42,7 @@ let function updateBuyableSmokesList() {
   foreach (inst in aeroSmokesList.value) {
     if (!inst?.unlockId)
       continue
-    if ((inst.unlockId == "" || ::g_unlocks.getUnlockById(inst.unlockId))
+    if ((inst.unlockId == "" || getUnlockById(inst.unlockId))
       && ::wp_get_unlock_cost_gold(inst.unlockId) > 0)
         res.append(inst)
   }

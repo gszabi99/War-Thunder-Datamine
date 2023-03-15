@@ -11,7 +11,7 @@ let DataBlock  = require("DataBlock")
 ::items_classes.UniversalSpare <- class extends BaseItemModClass {
   static iType = itemType.UNIVERSAL_SPARE
   static defaultLocId = "universalSpare"
-  static defaultIcon = "#ui/gameuiskin#item_uni_spare.png"
+  static defaultIcon = "#ui/gameuiskin#item_uni_spare"
   static typeIcon = "#ui/gameuiskin#item_type_uni_spare.svg"
 
   canBuy = true

@@ -40,7 +40,7 @@ let function memoizeByProfile(func, hashFunc = null) {
     groupPathPrefix = ""
     removeDecoratorLocId = ""
     emptySlotLocId = ""
-    userlogPurchaseIcon = "#ui/gameuiskin#unlock_decal.png"
+    userlogPurchaseIcon = "#ui/gameuiskin#unlock_decal"
     prizeTypeIcon = "#ui/gameuiskin#item_type_unlock.svg"
     defaultStyle = ""
 
@@ -255,7 +255,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     groupPathPrefix = "attachables/group/"
     removeDecoratorLocId = "mainmenu/requestDeleteDecorator"
     emptySlotLocId = "mainmenu/attachableFreeSlot"
-    userlogPurchaseIcon = "#ui/gameuiskin#unlock_attachable.png"
+    userlogPurchaseIcon = "#ui/gameuiskin#unlock_attachable"
     prizeTypeIcon = "#ui/gameuiskin#item_type_attachable.svg"
     defaultStyle = "reward_attachable"
 
@@ -263,7 +263,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getMaxSlots = function() { return ::get_max_num_attachables_slots() }
 
     getImage = @(decorator) decorator
-        ? (decorator?.blk.image ?? $"#ui/images/attachables/{decorator.id}.png")
+        ? (decorator?.blk.image ?? $"#ui/images/attachables/{decorator.id}")
         : ""
     getImageSize = function(...) { return "128@sf/@pf, 128@sf/@pf" }
 
@@ -333,7 +333,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
   SKINS = {
     unlockedItemType = UNLOCKABLE_SKIN
     resourceType = "skin"
-    userlogPurchaseIcon = "#ui/gameuiskin#unlock_skin.png"
+    userlogPurchaseIcon = "#ui/gameuiskin#unlock_skin"
     prizeTypeIcon = "#ui/gameuiskin#item_type_skin.svg"
     defaultStyle = "reward_skin"
 
@@ -343,7 +343,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       let mask = skinLocations.getSkinLocationsMaskBySkinId(decorator.id)
       let iconType = skinLocations.getIconTypeByMask(mask)
       let suffix =  iconType == "forest" ? "" : $"_{iconType}"
-      return $"#ui/gameuiskin/item_skin{suffix}.png"
+      return $"#ui/gameuiskin/item_skin{suffix}"
     }
 
     getSmallIcon = function(decorator) {

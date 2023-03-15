@@ -21,8 +21,6 @@ let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
-let userstat = require("userstat")
-let { APP_ID } = require("app")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -480,13 +478,6 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
            && ::load_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID) == null
   }
 
-  function userstatRequestSyncSteamUnlocks() {
-    userstat.request({
-      add_token = true
-      headers = { appid = APP_ID }
-      action = "SyncUnlocksWithSteam"
-    }, @(_res) null)
-  }
 
   function proceedAuthorizationResult(result, no_dump_login) {
     this.isLoginRequestInprogress = false
@@ -523,9 +514,6 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         }
         else if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking"))
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
-
-        if (::steam_is_running())
-          this.userstatRequestSyncSteamUnlocks()
 
         this.continueLogin(no_dump_login)
         break

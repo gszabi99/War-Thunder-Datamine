@@ -269,7 +269,7 @@ let { is_chat_message_empty } = require("chat")
     }
     if (gName == EPL_FRIENDLIST && ::isInMenu()) {
       if (hasFeature("Invites"))
-        playerListView.playerButton.append(this.createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend.png", "onInviteFriend"))
+        playerListView.playerButton.append(this.createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend", "onInviteFriend"))
     }
 
     this.listNotPlayerChildsByGroup[gName] = this.listNotPlayerChildsByGroup[gName] + playerListView.playerButton.len()

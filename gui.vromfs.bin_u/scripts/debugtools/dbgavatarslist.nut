@@ -107,7 +107,7 @@ register_command(debugAvatars, "debug.avatars_by_file_path")
     foreach (name in mainList)
       this.addAvatarConfig(name, avatarPlace.IN_GAME, this.mainAvatarConfig.getIconPath(name))
 
-    let fileMask = "*.png"
+    let fileMask = "*"
     let guiPath = "../develop/gui/"
     let dirs = {
       ["menu/images/images/avatars"] = avatarPlace.IN_MAIN_FOLDER,

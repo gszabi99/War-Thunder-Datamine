@@ -20,6 +20,8 @@ let { itemsShopListVersion, inventoryListVersion } = require("%scripts/items/ite
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -122,7 +124,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       if (battlePassUnlockExchangeId != null && (hasBattlePass.value || !canExchangeItem(passExchangeItem)))
         continue
 
-      let passUnlock = ::g_unlocks.getUnlockById(battlePassUnlock)
+      let passUnlock = getUnlockById(battlePassUnlock)
       let goodsConfig = this.getGoodsConfig({
         additionalTrophyItems = getSortedAdditionalTrophyItems(additionalTrophy)
         battlePassUnlock = passUnlock
@@ -291,7 +293,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       if (hasAdditionalTrophyItem)
         isBought = isBought && !additionalTrophyItem.canBuyTrophyByLimit() //trophy of improved battle pass is already buy
       if (battlePassUnlock != null)
-        cost = cost + ::get_unlock_cost(battlePassUnlock.id)
+        cost = cost + getUnlockCost(battlePassUnlock.id)
       seenRowName = $"{passExchangeItem?.id ?? battlePassUnlock.id}_{additionalTrophyItems?[0].id ?? ""}"
     }
     if (isImprovedBattlePass)

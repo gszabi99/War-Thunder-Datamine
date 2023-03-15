@@ -13,6 +13,7 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
   get_meta_missions_info_by_chapters, get_meta_missions_info_by_campaigns,
   get_mission_local_online_progress } = require("guiMission")
 let { get_game_mode, get_cur_game_mode_name } = require("mission")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -54,7 +55,7 @@ enum mislistTabsOrder {
         continue
     if (misBlk?.hideInSingleMissionList)
       continue
-    let unlock = misBlk?.chapter ? ::g_unlocks.getUnlockById(misBlk.chapter + "/" + missionId) : null
+    let unlock = misBlk?.chapter ? getUnlockById(misBlk.chapter + "/" + missionId) : null
     if (unlock && !isUnlockVisible(unlock))
       continue
     if (misBlk?.reqFeature && !hasFeature(misBlk.reqFeature))

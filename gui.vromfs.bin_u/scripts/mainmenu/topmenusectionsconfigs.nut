@@ -106,7 +106,7 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
     hoverMenuPos = "pw-w-"
     getText = function(_totalSections = 0) { return ::is_low_width_screen() ? null : "#mainmenu/btnOnlineShop" }
     getImage = function(_totalSections = 0) { return "#ui/gameuiskin#store_icon.svg" }
-    getWinkImage = function () { return "#ui/gameuiskin#hovermenu_shop_button_glow.png" }
+    getWinkImage = function () { return "#ui/gameuiskin#hovermenu_shop_button_glow" }
     haveTmDiscount = true
     isWide = true
     forceHoverWidth = "1@mainMenuButtonWideWidth + 0.02@sf"

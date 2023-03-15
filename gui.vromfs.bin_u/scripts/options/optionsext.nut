@@ -75,6 +75,7 @@ let { get_game_mode } = require("mission")
 let { get_meta_missions_info } = require("guiMission")
 let { crosshairColorOpt } = require("%scripts/options/dargOptionsSync.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -756,7 +757,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         if ((id == TRICOLOR_INDEX) && !hasFeature("AerobaticTricolorSmoke")) //not triple color
           continue
 
-        if (unlockId != "" && !(::g_unlocks.getUnlockById(unlockId) && ::is_unlocked(-1, unlockId)))
+        if (unlockId != "" && !(getUnlockById(unlockId) && ::is_unlocked(-1, unlockId)))
           continue
 
         descr.items.append(loc(locId))
@@ -1427,7 +1428,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           imageName = "preset_ps4.svg"
         else if (name == "") {
           name = "custom"
-          imageName = "preset_custom.png"
+          imageName = "preset_custom"
           suffix = ""
         }
 
@@ -2851,7 +2852,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           local enabled = true
           local tooltip = ""
           let yearId = "country_" + ::current_campaign.countries[teamIdx] + "_" + descr.values[i]
-          let blk = ::g_unlocks.getUnlockById(yearId)
+          let blk = getUnlockById(yearId)
           if (blk) {
             enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
             tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(blk))
@@ -2920,7 +2921,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
           if (get_game_mode() == GM_DYNAMIC && ::current_campaign) {
             let countryId = ::current_campaign.id + "_" + ::current_campaign.countries[i]
-            let unlock = ::g_unlocks.getUnlockById(countryId)
+            let unlock = getUnlockById(countryId)
             if (unlock == null)
               assert(false, ("Not found unlock " + countryId))
             else {
@@ -3307,7 +3308,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       let marketplaceItemdefIds = []
       for (local nc = 0; nc < icons.len(); nc++) {
         let unlockId = icons[nc]
-        let unlockItem = ::g_unlocks.getUnlockById(unlockId)
+        let unlockItem = getUnlockById(unlockId)
         let isShown = ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId) || isUnlockVisible(unlockItem)
           || (unlockItem?.hideFeature != null && !hasFeature(unlockItem.hideFeature))
         let marketplaceItemdefId = unlockItem?.marketplaceItemdefId
@@ -3316,7 +3317,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         let item = {
           idx = nc
           unlockId
-          image = $"#ui/images/avatars/{unlockId}.png"
+          image = $"#ui/images/avatars/{unlockId}"
           show = isShown
           enabled = ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId)
           tooltipId = ::g_tooltip.getIdUnlock(unlockId, { showProgress = true })

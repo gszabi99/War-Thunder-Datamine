@@ -47,9 +47,9 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
     fighters   = "#ui/gameuiskin#objective_fighter.svg"
     bombers    = "#ui/gameuiskin#objective_bomber.svg"
     tanks      = "#ui/gameuiskin#objective_tank.svg"
-    infantry   = "#ui/gameuiskin#objective_troops.png"
+    infantry   = "#ui/gameuiskin#objective_troops"
     ships      = "#ui/gameuiskin#objective_destroyer.svg"
-    artillery  = "#ui/gameuiskin#objective_aa.png"
+    artillery  = "#ui/gameuiskin#objective_aa"
   }
 
   function initScreen() {

@@ -54,7 +54,7 @@ gameModeBlock {
   behavior:t='button'
   background-color:t='@white'
   background-repeat:t='expand'
-  background-image:t='#ui/gameuiskin#item.png'
+  background-image:t='#ui/gameuiskin#item'
   background-position:t='3, 4, 3, 5'
   re-type:t='9rect'
 

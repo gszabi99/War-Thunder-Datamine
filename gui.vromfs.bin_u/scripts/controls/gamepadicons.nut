@@ -173,13 +173,13 @@ let getMouseTexture = function(idx, preset = curPreset) {
     return preset + ps4TouchpadImagesByMouseIdx[idx] + SVG_EXT
 
   if (idx in mouseButtonTextures)
-    return $"#ui/gameuiskin#{mouseButtonTextures[idx]}.png"
+    return $"#ui/gameuiskin#{mouseButtonTextures[idx]}"
 
   return getTextureByButtonIdx(idx)
 }
 
 let getMouseAxisTexture = @(axisVal)
-  axisVal in mouseAxesImages ? $"#ui/gameuiskin#{mouseAxesImages[axisVal]}.png" : ""
+  axisVal in mouseAxesImages ? $"#ui/gameuiskin#{mouseAxesImages[axisVal]}" : ""
 
 return {
   TOTAL_BUTTON_INDEXES = btnNameByIndex.len()

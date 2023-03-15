@@ -699,7 +699,7 @@ let descByPartId = {
       case "ammunition_storage_shells":
       case "ammunition_storage_charges":
       case "ammunition_storage_aux":
-        return "#ui/gameuiskin#ship_ammo_wetting.png"
+        return "#ui/gameuiskin#ship_ammo_wetting"
     }
     return ""
   }

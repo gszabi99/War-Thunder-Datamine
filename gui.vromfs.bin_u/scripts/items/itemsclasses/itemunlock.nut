@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::items_classes.Unlock <- class extends ItemCouponBase {
   static iType = itemType.UNLOCK
@@ -42,7 +43,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     if (unlockId == null)
       return null
 
-    return ::g_unlocks.getUnlockById(unlockId)
+    return getUnlockById(unlockId)
   }
 
   getWarbondsAmount = @() this.getUnlock()?.amount_warbonds ?? 0

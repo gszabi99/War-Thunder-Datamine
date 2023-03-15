@@ -14,9 +14,9 @@ let statsd = require("statsd")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
 local authDataByTypes = {
-  mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email.png" }
-  ga = { text = "#mainmenu/2step/confirmGA", img = "#ui/images/two_step_phone_ga.png" }
-  gp = { text = "#mainmenu/2step/confirmGP", img = "#ui/images/two_step_phone_gp.png" }
+  mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email" }
+  ga = { text = "#mainmenu/2step/confirmGA", img = "#ui/images/two_step_phone_ga" }
+  gp = { text = "#mainmenu/2step/confirmGP", img = "#ui/images/two_step_phone_gp" }
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
 

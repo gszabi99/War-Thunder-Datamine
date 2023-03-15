@@ -73,7 +73,6 @@ let { is_running } = require("steam")
       case YU2_OK:
         if (is_running() && !hasFeature("AllowSteamAccountLinking"))
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
-        this.userstatRequestSyncSteamUnlocks()
           // no break!
       default:  // warning disable: -missed-break
         base.proceedAuthorizationResult(result, no_dump_login)

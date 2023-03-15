@@ -5,7 +5,7 @@ actionBarItemTextShortcut {
   re-type:t='9rect';
   background-color:t='@white';
   background-repeat:t='expand';
-  background-image:t='#ui/gameuiskin#block_bg_rounded_gray.png';
+  background-image:t='#ui/gameuiskin#block_bg_rounded_gray';
   background-position:t='4, 4, 4, 4';
   padding:t='0.002@shHud, 0.002@shHud, 0.002@shHud, 0';
   margin-bottom:t='0.004@shHud'

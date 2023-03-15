@@ -25,6 +25,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.nut")
 let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -163,7 +164,7 @@ local logNameByType = {
       continue
 
     let unlockId = blk?.body.unlockId
-    if (unlockId != null && !isUnlockVisible(::g_unlocks.getUnlockById(unlockId))) {
+    if (unlockId != null && !isUnlockVisible(getUnlockById(unlockId))) {
       ::disable_user_log_entry(i)
       continue
     }
@@ -673,7 +674,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
         || blk.body.unlockType == UNLOCKABLE_TROPHY_XBOXONE
         || (("unlocks" in filter) && !isInArray(blk.body.unlockType, filter.unlocks)))
 
-    let unlock = ::g_unlocks.getUnlockById(getTblValue("unlockId", blk.body))
+    let unlock = getUnlockById(getTblValue("unlockId", blk.body))
     let hideUnlockById = unlock != null && !isUnlockVisible(unlock)
 
     if (isUnlockTypeNotSuitable || (hideUnlockById && blk?.type != EULT_BUYING_UNLOCK))

@@ -8,7 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isXBoxPlayerName,
         canInteractCrossConsole,
         isPlatformSony,
@@ -473,7 +473,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
     let titles = []
     foreach (id in pl.titles) {
-      let titleUnlock = ::g_unlocks.getUnlockById(id)
+      let titleUnlock = getUnlockById(id)
       if (!titleUnlock || titleUnlock?.hidden)
         continue
 

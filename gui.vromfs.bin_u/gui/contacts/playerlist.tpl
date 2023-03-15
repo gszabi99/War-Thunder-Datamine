@@ -180,7 +180,7 @@ contactItem {
       showConsoleImage:t='no'
       input-transparent:t='yes';
       img {
-        background-image:t='#ui/gameuiskin#btn_facebook_friends_add.png';
+        background-image:t='#ui/gameuiskin#btn_facebook_friends_add';
       }
     }*/
   }

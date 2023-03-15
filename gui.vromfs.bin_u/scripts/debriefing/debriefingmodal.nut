@@ -56,6 +56,7 @@ let { select_mission_full } = require("guiMission")
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { dynamicGetLayout, dynamicGetList } = require("dynamicMission")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -194,7 +195,7 @@ let statTooltipColumnParamByType = {
         filters = { popupInDebriefing = [false, null] }
         currentRoomOnly = true
         disableVisible = true
-        checkFunc = function(userlog) { return ::g_unlocks.getUnlockById(userlog.body.unlockId)?.battlePassSeason != null }
+        checkFunc = function(userlog) { return getUnlockById(userlog.body.unlockId)?.battlePassSeason != null }
       }
       align = ALIGN.CENTER
       listObjId = "awards_list_challenges"
@@ -209,7 +210,7 @@ let statTooltipColumnParamByType = {
         filters = { popupInDebriefing = [false, null] }
         currentRoomOnly = true
         disableVisible = true
-        checkFunc = function(userlog) { return ::g_unlocks.getUnlockById(userlog.body.unlockId)?.battlePassSeason == null }
+        checkFunc = function(userlog) { return getUnlockById(userlog.body.unlockId)?.battlePassSeason == null }
       }
       align = ALIGN.TOP
       listObjId = "awards_list_unlocks"
@@ -700,7 +701,7 @@ let statTooltipColumnParamByType = {
     let iconObj = this.scene.findObject("active_wager_result_icon")
     if (!checkObj(iconObj))
       return
-    iconObj["background-image"] = success ? "#ui/gameuiskin#favorite.png" : "#ui/gameuiskin#icon_primary_fail.svg"
+    iconObj["background-image"] = success ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#icon_primary_fail.svg"
   }
 
   function handlePveReward() {
@@ -1087,7 +1088,7 @@ let statTooltipColumnParamByType = {
       let objTarget = objPlace.findObject("bonus_ico")
       if (checkObj(objTarget)) {
         objTarget["background-image"] = havePremium.value ?
-          "#ui/gameuiskin#medal_premium.png" : "#ui/gameuiskin#medal_bonus.png"
+          "#ui/gameuiskin#medal_premium" : "#ui/gameuiskin#medal_bonus"
         objTarget.tooltip = ::g_string.implode(textArray, "\n\n")
       }
 
@@ -2344,7 +2345,7 @@ let statTooltipColumnParamByType = {
 
     let awards = cfgNames.map(@(id) ::build_log_unlock_data(
       ::build_conditions_config(
-        ::g_unlocks.getUnlockById(id)
+        getUnlockById(id)
     )))
 
     showUnlocksGroupWnd(awards, loc("unlocks/requirements"))

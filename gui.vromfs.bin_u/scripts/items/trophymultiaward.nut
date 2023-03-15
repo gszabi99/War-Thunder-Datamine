@@ -39,9 +39,9 @@ let class TrophyMultiAward {
   static rouletteIcons = {
     decal          = ["#ui/gameuiskin#item_type_decal.svg"]
     skin           = ["#ui/gameuiskin#itemtype_skin.svg"]
-    spare          = ["#ui/gameuiskin#double.png"]
+    spare          = ["#ui/gameuiskin#double"]
     modification   = ["#ui/gameuiskin#item_type_modification_aircraft.svg", "#ui/gameuiskin#item_type_modification_tank.svg"]
-    premExpMul     = ["#ui/gameuiskin#talisman.png"]
+    premExpMul     = ["#ui/gameuiskin#talisman"]
     specialization = ["#ui/gameuiskin#item_type_crew_experts.svg", "#ui/gameuiskin#item_type_crew_aces.svg"]
   }
 
@@ -523,7 +523,7 @@ let class TrophyMultiAward {
       return "#ui/gameuiskin#item_type_talisman.svg"
     if (awardType == "specialization")
       return "#ui/gameuiskin#item_type_crew_aces.svg"
-    return "#ui/gameuiskin#log_online_shop.png"
+    return "#ui/gameuiskin#log_online_shop"
   }
 
   function getAvailRouletteIcons() {

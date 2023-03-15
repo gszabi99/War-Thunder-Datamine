@@ -14,6 +14,8 @@ let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 
 /*
   config = {
@@ -194,7 +196,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       return
     }
 
-    let cost = ::get_unlock_cost(option.unlockId)
+    let cost = getUnlockCost(option.unlockId)
     let canBuy = !cost.isZero()
     if (canBuy) {
       this.onBuy()
@@ -216,7 +218,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
       return
     }
 
-    if (getUnlockConditions(::g_unlocks.getUnlockById(option.unlockId)?.mode).len() > 0) {
+    if (getUnlockConditions(getUnlockById(option.unlockId)?.mode).len() > 0) {
       toggleUnlockFav(option.unlockId)
       this.updateButtons()
     }
@@ -238,8 +240,8 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
     if (!unlockId)
       return
 
-    let cost = ::get_unlock_cost(unlockId)
-    let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+    let cost = getUnlockCost(unlockId)
+    let unlockBlk = getUnlockById(unlockId)
     let unlockCfg = ::build_conditions_config(unlockBlk)
     let title = ::warningIfGold(loc("onlineShop/needMoneyQuestion", {
       purchase = colorize("unlockHeaderColor", getUnlockTitle(unlockCfg)),
@@ -292,7 +294,7 @@ let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 
   function updateButtons() {
     let option = getTblValue(this.getSelIconIdx(), this.options)
-    let cost = ::get_unlock_cost(option.unlockId)
+    let cost = getUnlockCost(option.unlockId)
     let canBuy = !option.enabled && !cost.isZero()
     this.showSceneBtn("btn_buy", canBuy)
 

@@ -61,7 +61,7 @@ selImg {
       height:t='1*@scrn_tgt/100.0'
       width:t='2h'
       pos:t='50%pw-50%w, ph-h'; position:t='absolute'
-      background-image:t='#ui/gameuiskin#expand_info.png'
+      background-image:t='#ui/gameuiskin#expand_info'
       background-color:t='@premiumColor'
     }
     <</hasExpandImg>>

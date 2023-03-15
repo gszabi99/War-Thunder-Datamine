@@ -40,7 +40,7 @@ let inviteActiveColor = "userlogColoredText"
 
   isValid = @() !this.isAccepted && !this.isRejected
 
-  getIcon = @() "#ui/gameuiskin#battles_open.png"
+  getIcon = @() "#ui/gameuiskin#battles_open"
 
   function updateCustomParams(p, initial = false) {
     this.mailId = p?.mail_id

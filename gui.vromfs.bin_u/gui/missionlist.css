@@ -74,7 +74,7 @@ chapter_item_unlocked:current, chapter_item_locked:current, campaign_item:curren
 {
   re-type:9rect;
   foreground-color: @gamepadFocusFrameColor;
-  foreground-image: #ui/gameuiskin#item_selection.png;
+  foreground-image: #ui/gameuiskin#item_selection;
   foreground-position: 6;
   foreground-repeat: expand;
   behavior:focusFrameTarget;
@@ -214,7 +214,7 @@ chapter_item_unlocked img[medalIcon] {
 }
 
 img[medalIcon=dlc] {
-  background-image:#ui/gameuiskin#dlc.png;
+  background-image:#ui/gameuiskin#dlc;
   background-color:@white;
 }
 
@@ -225,15 +225,15 @@ img[medalIcon=dlc] {
 }
 
 img[difficulty=0] {
-  background-image:#ui/gameuiskin#mission_complete_arcade.png;
+  background-image:#ui/gameuiskin#mission_complete_arcade;
 }
 
 img[difficulty=1] {
-  background-image:#ui/gameuiskin#mission_complete_realistic.png;
+  background-image:#ui/gameuiskin#mission_complete_realistic;
 }
 
 img[difficulty=2] {
-  background-image:#ui/gameuiskin#mission_complete_simulator.png;
+  background-image:#ui/gameuiskin#mission_complete_simulator;
 }
 
 @const unlockIconSize: 4.44*@scrn_tgt/100.0;
@@ -270,7 +270,7 @@ unlockImg {
 
 unlockCondition[unlocked=yes] > unlockImg {
   size:@unlockIconSize, @unlockIconSize;
-  background-image:#ui/gameuiskin#favorite.png;
+  background-image:#ui/gameuiskin#favorite;
 }
 
 hiddenDiv[isSmallView=yes] > unlockCondition > unlockImg {

@@ -60,7 +60,7 @@ local WwOperationRewardPopup = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     let hasManager = uLog?.managerStats == null ? false : true
     let rewardsList = [{
-      icon = "#ui/gameuiskin#medal_bonus.png"
+      icon = "#ui/gameuiskin#medal_bonus"
       name = $"{loc("worldWar/endOperation/reward")}{loc("ui/colon")}"
       earnedText = ::Cost((uLog?.wp ?? 0) - (uLog?.managerStats.wpManager ?? 0)).toStringWithParams({
         isWpAlwaysShown = true })
@@ -83,7 +83,7 @@ local WwOperationRewardPopup = class extends ::gui_handlers.BaseGuiHandlerWT {
         })
 
       rewardsList.append({
-        icon = "#ui/gameuiskin#card_medal.png"
+        icon = "#ui/gameuiskin#card_medal"
         name = $"{loc("worldWar/endOperation/manager_reward")}{loc("ui/colon")}"
         earnedText = ::Cost(uLog?.managerStats.wpManager ?? 0).toStringWithParams({
           isWpAlwaysShown = true })

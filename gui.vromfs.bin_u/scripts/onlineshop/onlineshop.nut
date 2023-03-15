@@ -240,7 +240,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
   function getItemIcon(name) {
     if ((name in this.goods) && isBoughtEntitlement(this.goods[name]))
-      return "#ui/gameuiskin#favorite.png"
+      return "#ui/gameuiskin#favorite"
     return null
   }
 

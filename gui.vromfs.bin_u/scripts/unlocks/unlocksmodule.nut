@@ -9,6 +9,8 @@ let { getTimestampFromStringUtc, daysToSeconds } = require("%scripts/time.nut")
 let { split_by_chars } = require("string")
 let DataBlock = require("DataBlock")
 let { charSendBlk } = require("chard")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { isInstance } = require("%sqStdLibs/helpers/u.nut")
 
 let function checkDependingUnlocks(unlockBlk) {
   if (!unlockBlk || !unlockBlk?.hideUntilPrevUnlocked)
@@ -23,7 +25,7 @@ let function checkDependingUnlocks(unlockBlk) {
 }
 
 let function isUnlockVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTimeLimit = true) {
-  let unlock = ::g_unlocks.getUnlockById(id)
+  let unlock = getUnlockById(id)
   if (!unlock)
     return false
 
@@ -121,9 +123,42 @@ let function openUnlockManually(unlockId, onSuccess = null) {
   ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
+let function getUnlockCost(id) {
+  return ::Cost(::wp_get_unlock_cost(id), ::wp_get_unlock_cost_gold(id))
+}
+
+let function getUnlockRewardCost(unlock) {
+  let wpReward = isInstance(unlock?.amount_warpoints)
+    ? unlock.amount_warpoints.x.tointeger()
+    : unlock.getInt("amount_warpoints", 0)
+  let goldReward = isInstance(unlock?.amount_gold)
+    ? unlock.amount_gold.x.tointeger()
+    : unlock.getInt("amount_gold", 0)
+  let xpReward = isInstance(unlock?.amount_exp)
+    ? unlock.amount_exp.x.tointeger()
+    : unlock.getInt("amount_exp", 0)
+  return ::Cost(wpReward, goldReward, xpReward)
+}
+
+let function getUnlockRewardCostByName(unlockName) {
+  let unlock = getUnlockById(unlockName)
+  return unlock != null
+    ? getUnlockRewardCost(unlock)
+    : ::Cost()
+}
+
+let function getUnlockRewardText(unlockName) {
+  let cost = getUnlockRewardCostByName(unlockName)
+  return cost.isZero() ? "" : ::buildRewardText("", cost, true, true)
+}
+
 return {
   isUnlockVisibleOnCurPlatform
   isUnlockVisible
   isUnlockVisibleByTime
   openUnlockManually
+  getUnlockCost
+  getUnlockRewardCost
+  getUnlockRewardCostByName
+  getUnlockRewardText
 }

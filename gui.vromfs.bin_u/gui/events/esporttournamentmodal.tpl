@@ -39,7 +39,7 @@ root {
           left:t='0.5pw-0.5w'
           position:t='absolute'
           background-repeat:t='repeat-x'
-          background-image:t='#ui/gameuiskin#header_grey.png'
+          background-image:t='#ui/gameuiskin#header_grey'
         }
         textareaNoTab {
           id:t='rank_txt'
@@ -87,7 +87,7 @@ root {
             size:t='24@dp, ph'
             position:t='relative'
             background-saturate:t='<<#isFinished>>0<</isFinished>><<^isFinished>>1<</isFinished>>'
-            background-image:t='#ui/gameuiskin#<<armyId>>_header_left.png'
+            background-image:t='#ui/gameuiskin#<<armyId>>_header_left'
           }
           img {
             id:t='h_center'
@@ -95,14 +95,14 @@ root {
             position:t='relative'
             background-saturate:t='<<#isFinished>>0<</isFinished>><<^isFinished>>1<</isFinished>>'
             background-repeat:t='repeat-x'
-            background-image:t='#ui/gameuiskin#<<armyId>>_header_cenral.png'
+            background-image:t='#ui/gameuiskin#<<armyId>>_header_cenral'
           }
           img {
             id:t='h_right'
             size:t='24@dp, ph'
             position:t='relative'
             background-saturate:t='<<#isFinished>>0<</isFinished>><<^isFinished>>1<</isFinished>>'
-            background-image:t='#ui/gameuiskin#<<armyId>>_header_right.png'
+            background-image:t='#ui/gameuiskin#<<armyId>>_header_right'
           }
         }
         textareaNoTab {
@@ -127,7 +127,7 @@ root {
             size:t='1.5@eSItemIcoSize, 1.5@eSItemIcoSize'
             pos:t='0.5pw-0.5w+5@dp, 0.5ph-0.5h'
             position:t='absolute'
-            background-image:t='#ui/gameuiskin#flag_shadow.png'
+            background-image:t='#ui/gameuiskin#flag_shadow'
             background-svg-size:t='1.5@eSItemIcoSize, 1.5@eSItemIcoSize'
           }
           img {

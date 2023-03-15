@@ -13,6 +13,7 @@ let { getPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_time_msec } = require("dagor.time")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 /*
 my_stats API
@@ -63,7 +64,7 @@ local summaryNameArray = [
       return titles
 
     for (local i = titles.len() - 1; i >= 0 ; i--) {
-      let titleUnlock = ::g_unlocks.getUnlockById(titles[i])
+      let titleUnlock = getUnlockById(titles[i])
       if (!titleUnlock || titleUnlock?.hidden)
         titles.remove(i)
     }

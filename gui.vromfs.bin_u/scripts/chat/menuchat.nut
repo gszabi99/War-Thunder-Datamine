@@ -656,7 +656,7 @@ let sendEventUpdateChatFeatures = @() ::broadcastEvent("UpdateChatFeatures")
           && (inMySquad || inMyClan)
           && chatStatesCanUseVoice()
           && contact.voiceStatus in ::voiceChatIcons)
-        voiceIcon = $"#ui/gameuiskin#{::voiceChatIcons[contact.voiceStatus]}.png"
+        voiceIcon = $"#ui/gameuiskin#{::voiceChatIcons[contact.voiceStatus]}"
 
       this.setIcon(obj, "statusImg", "img", img)
       this.setIcon(obj, "statusImg2", "img2", img2)

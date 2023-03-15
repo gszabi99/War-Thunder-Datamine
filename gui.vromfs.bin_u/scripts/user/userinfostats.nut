@@ -14,6 +14,7 @@ let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -274,7 +275,7 @@ let function fillProfileSummary(sObj, summary, diff) {
 let function getCountryMedals(countryId, profileData = null) {
   let res = []
   let medalsList = profileData?.unlocks?.medal ?? []
-  let unlocks = ::g_unlocks.getUnlocksByTypeInBlkOrder("medal")
+  let unlocks = getUnlocksByTypeInBlkOrder("medal")
   foreach (cb in unlocks)
     if (cb?.country == countryId)
       if ((!profileData && ::is_unlocked_scripted(UNLOCKABLE_MEDAL, cb.id)) || (medalsList?[cb.id] ?? 0) > 0)

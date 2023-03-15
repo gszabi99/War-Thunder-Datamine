@@ -7,7 +7,7 @@ tdiv {
     img {
       size:t='1@profileIconFullSize, 1@profileIconFullSize'
       background-svg-size:t='1@profileIconFullSize, 1@profileIconFullSize'
-      background-image:t='#ui/images/avatars/<<icon>>.png'
+      background-image:t='#ui/images/avatars/<<icon>>'
     }
     tdiv {
       min-width:t='pw'

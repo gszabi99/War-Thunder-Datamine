@@ -155,7 +155,7 @@ root {
           position:t='absolute'
           tdiv {
             size:t='0.5pw, ph'
-            background-image:t='#ui/gameuiskin#white_with_gradient_alpha.png'
+            background-image:t='#ui/gameuiskin#white_with_gradient_alpha'
             background-position:t='4, 4'
             rotation:t='180'
             background-repeat:t='expand'
@@ -163,7 +163,7 @@ root {
           }
           tdiv {
             size:t='0.5pw, ph'
-            background-image:t='#ui/gameuiskin#white_with_gradient_alpha.png'
+            background-image:t='#ui/gameuiskin#white_with_gradient_alpha'
             background-position:t='4, 4'
             background-repeat:t='expand'
             background-color:t='@frameDarkLineColor'

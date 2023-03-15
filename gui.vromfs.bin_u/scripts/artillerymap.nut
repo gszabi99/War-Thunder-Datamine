@@ -311,7 +311,7 @@ enum POINTING_DEVICE {
       local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", ::g_string.stripTags(name), (name.len() > 2) ? "@fontTiny" : "@fontMedium");
 
       if (shortcut.dev[k] == STD_MOUSE_DEVICE_ID) {
-        let mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s.png'; }"
+        let mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s'; }"
         if (shortcut.btn[k] == 0)
           buttonFrame = format(mouseBtnImg, "mouse_left");
         else if (shortcut.btn[k] == 1)

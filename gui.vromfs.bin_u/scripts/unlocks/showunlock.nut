@@ -8,7 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { shell_launch } = require("url")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { setPollBaseUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
@@ -144,7 +144,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     if ("ratioHeight" in this.config)
       imgObj["height"] = this.config.ratioHeight + "w"
     else if ("id" in this.config) {
-      let unlockBlk = ::g_unlocks.getUnlockById(this.config.id)
+      let unlockBlk = getUnlockById(this.config.id)
       if (unlockBlk?.aspect_ratio)
         imgObj["height"] = unlockBlk.aspect_ratio + "w"
     }

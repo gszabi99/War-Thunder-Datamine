@@ -57,7 +57,7 @@ enums.addTypesByGlobalName("g_difficulty", {
   ARCADE = {
     diffCode = DIFFICULTY_ARCADE
     name = ::get_difficulty_name(DIFFICULTY_ARCADE) // arcade
-    icon = "#ui/gameuiskin#mission_complete_arcade.png"
+    icon = "#ui/gameuiskin#mission_complete_arcade"
     locId = "mainmenu/arcadeInstantAction"
     egdCode = EGD_ARCADE
     egdLowercaseName = ::get_name_by_gamemode(EGD_ARCADE, false) // arcade
@@ -79,7 +79,7 @@ enums.addTypesByGlobalName("g_difficulty", {
   REALISTIC = {
     diffCode = DIFFICULTY_REALISTIC
     name = ::get_difficulty_name(DIFFICULTY_REALISTIC) // realistic
-    icon = "#ui/gameuiskin#mission_complete_realistic.png"
+    icon = "#ui/gameuiskin#mission_complete_realistic"
     locId = "mainmenu/instantAction"
     egdCode = EGD_HISTORICAL
     egdLowercaseName = ::get_name_by_gamemode(EGD_HISTORICAL, false) // historical
@@ -101,7 +101,7 @@ enums.addTypesByGlobalName("g_difficulty", {
   SIMULATOR = {
     diffCode = DIFFICULTY_HARDCORE
     name = ::get_difficulty_name(DIFFICULTY_HARDCORE) // hardcore
-    icon = "#ui/gameuiskin#mission_complete_simulator.png"
+    icon = "#ui/gameuiskin#mission_complete_simulator"
     locId = "mainmenu/fullRealInstantAction"
     egdCode = EGD_SIMULATION
     egdLowercaseName = ::get_name_by_gamemode(EGD_SIMULATION, false) // simulation

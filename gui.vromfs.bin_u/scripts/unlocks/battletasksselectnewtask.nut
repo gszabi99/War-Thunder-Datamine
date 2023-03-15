@@ -8,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null) {
   if (!::g_battle_tasks.isAvailableForUser() || ::u.isEmpty(battleTasksArray))
@@ -100,7 +101,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let awardsList = ::u.map(config.names,
       @(id) ::build_log_unlock_data(
         ::build_conditions_config(
-          ::g_unlocks.getUnlockById(id)
+          getUnlockById(id)
         )
       )
     )

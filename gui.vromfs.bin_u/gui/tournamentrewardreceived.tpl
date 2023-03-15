@@ -33,7 +33,7 @@ root{
 
       tdiv {
         re-type:t='9rect';
-        background-image:t='#ui/gameuiskin#block_bg_rounded_flat_black.png';
+        background-image:t='#ui/gameuiskin#block_bg_rounded_flat_black';
         background-position:t='4';
         background-repeat:t='expand';
         background-color:t='@white';
@@ -68,7 +68,7 @@ root{
             size:t="1.5ph, 1.5ph";
             pos:t="pw, -0.3h";
             position:t="absolute";
-            background-image:t="#ui/gameuiskin#favorite.png";
+            background-image:t="#ui/gameuiskin#favorite";
           }
         }
 

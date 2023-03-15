@@ -41,7 +41,7 @@ enums.addTypesByGlobalName("g_ww_top_menu_left_side_sections", [
     name = "ww_map_filter"
     forceHoverWidth = "0.55@sf"
     getText = function(_totalSections = 0) { return ::is_low_width_screen() ? null : "#worldwar/mapFilters" }
-    getImage = function(_totalSections = 0) { return "#ui/gameuiskin#render_army_rad.png" }
+    getImage = function(_totalSections = 0) { return "#ui/gameuiskin#render_army_rad" }
     buttons = [
       [
         buttonsList.WW_FILTER_RENDER_ZONES

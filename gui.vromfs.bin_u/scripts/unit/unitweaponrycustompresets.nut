@@ -121,7 +121,7 @@ let getBaseCustomPresetConfig = @(presetName, presetBlk) {
   cost = 0
   type = weaponsItem.weapon
   customNameText = presetBlk?.name ?? ""
-  image = "#ui/gameuiskin#custom_preset.png"
+  image = "#ui/gameuiskin#custom_preset"
 }
 
 let function initCustomPreset(unit) {

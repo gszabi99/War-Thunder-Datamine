@@ -133,7 +133,7 @@ tdiv {
             size:t='@unlockIconSize, @unlockIconSize'
             position:t='absolute'
             pos:t='0, -0.2h'
-            background-image:t='#ui/gameuiskin#favorite.png'
+            background-image:t='#ui/gameuiskin#favorite'
             display:t='hide'
           }
         }

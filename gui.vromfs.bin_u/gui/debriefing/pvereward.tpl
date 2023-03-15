@@ -28,7 +28,7 @@ tdiv {
         pos:t='50%pw-50%w, 50%ph-50%h'
         position:t='absolute'
         size:t='1@dp+4, ph'
-        background-image:t='#ui/gameuiskin#drop_menu_separator.png'
+        background-image:t='#ui/gameuiskin#drop_menu_separator'
         background-repeat:t='expand'
         background-position:t='2'
       }

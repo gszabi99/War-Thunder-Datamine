@@ -101,7 +101,7 @@ tdiv {
           top:t='0.5ph - 0.7h'
           position:t='relative'
           size:t='16*@scrn_tgt/720, 16*@scrn_tgt/720'
-          background-image:t='#ui/gameuiskin#player_in_queue.png'
+          background-image:t='#ui/gameuiskin#player_in_queue'
           display:t='hide'
         }
         textarea {

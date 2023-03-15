@@ -20,6 +20,7 @@ let { getMainConditionListPrefix, isNestedUnlockMode, getHeaderCondition,
 let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
   getUnlockNameText, getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::g_battle_tasks <- null
 
@@ -595,7 +596,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
   function isUnlocksList(config) {
     if (isNestedUnlockMode(config.type))
       foreach (id in config.names) {
-        let unlockBlk = ::g_unlocks.getUnlockById(id)
+        let unlockBlk = getUnlockById(id)
         if (!(unlockBlk?.isMultiUnlock ?? false) && ::get_unlock_type(unlockBlk.type) != UNLOCKABLE_STREAK)
           return true
       }
@@ -619,7 +620,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
           })
       }
       else {
-        let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+        let unlockBlk = getUnlockById(unlockId)
         if (!unlockBlk || !isUnlockVisible(unlockBlk))
           continue
 
@@ -644,7 +645,7 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
     let res = []
     for (local i = 0; i < namesLoc.len(); i++) {
       let unlockId = config.names[i]
-      let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+      let unlockBlk = getUnlockById(unlockId)
       if (!unlockBlk || !isUnlockVisible(unlockBlk))
         continue
 

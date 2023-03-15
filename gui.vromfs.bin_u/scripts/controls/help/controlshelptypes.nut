@@ -231,12 +231,12 @@ enums.addTypes(result, {
             active = true
             id = "ammo_1"
             selected = true
-            icon = "#ui/gameuiskin#apcbc_tank.png"
+            icon = "#ui/gameuiskin#apcbc_tank"
           }
           {
             type = EII_BULLET
             id = "ammo_2"
-            icon = "#ui/gameuiskin#he_frag_tank.png"
+            icon = "#ui/gameuiskin#he_frag_tank"
           }
           {
             type = EII_SCOUT

@@ -15,6 +15,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { set_option_ptt } = require("chat")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let function get_country_by_team(team_index) {
   local countries = null
@@ -488,7 +489,7 @@ let function get_country_by_team(team_index) {
       local tooltip = ""
       if (::current_campaign && country != "") {
         let yearId = $"{country}_{yearOption.values[i]}"
-        let unlockBlk = ::g_unlocks.getUnlockById(yearId)
+        let unlockBlk = getUnlockById(yearId)
         if (unlockBlk) {
           enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
           tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))

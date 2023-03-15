@@ -13,7 +13,7 @@ tdiv {
     size:t='pw, 1@fontHeightNormal+2@eSItemInterval'
     position:t='absolute'
     background-repeat:t='repeat-x'
-    background-image:t='#ui/gameuiskin#header_grey.png'
+    background-image:t='#ui/gameuiskin#header_grey'
   }
 
   tdiv {

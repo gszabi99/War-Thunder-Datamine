@@ -218,14 +218,14 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     isMyTournament
     isTourWndAvailable
     eventId = tour.id
-    headerImg = isFinished || isSoon ? "#ui/gameuiskin#tournament_finished_header.png"
-      : $"#ui/gameuiskin#tournament_{armyId}_header.png"
+    headerImg = isFinished || isSoon ? "#ui/gameuiskin#tournament_finished_header"
+      : $"#ui/gameuiskin#tournament_{armyId}_header"
     itemBgr =  $"#ui/images/tournament_{armyId}"
     tournamentName = loc($"tournament/{tour.id}")
     vehicleType = loc($"tournaments/battle_{armyId}")
     rank = $"{::g_string.utf8ToUpper(loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
     tournamentType = $" {loc("country/VS")} ".join(teamSizes)
-    divisionImg = "#ui/gameuiskin#icon_progress_bar_stage_07.png" //!!!FIX IMG PATH
+    divisionImg = "#ui/gameuiskin#icon_progress_bar_stage_07" //!!!FIX IMG PATH
     battleDate = getBattleDateStr(tour)
     battleDay = isFinished ? loc("items/craft_process/finished")
       : isTourWndAvailable ? loc("tournaments/enumerated_day", { num = day + 1 })

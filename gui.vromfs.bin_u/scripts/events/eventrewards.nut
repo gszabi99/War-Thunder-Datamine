@@ -155,7 +155,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       return (cost > ::zero_money) ? cost : null
     }
     getIconStyle = function(value, _blk) {
-      let img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles.png" : "#ui/gameuiskin#items_warpoints.png"
+      let img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles" : "#ui/gameuiskin#items_warpoints"
       return ::LayersIcon.getIconData(null, img)
     }
     getRowIcon = function(_value, _blk) {

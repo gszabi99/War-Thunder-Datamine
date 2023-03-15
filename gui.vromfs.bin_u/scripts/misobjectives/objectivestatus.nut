@@ -33,7 +33,7 @@ enums.addTypesByGlobalName("g_objective_status", {
     code = MISSION_OBJECTIVE_STATUS_COMPLETED
     name = "succeed"
     missionObjImg = "#ui/gameuiskin#icon_primary_success.svg"
-    wwMissionObjImg = "#ui/gameuiskin#favorite.png"
+    wwMissionObjImg = "#ui/gameuiskin#favorite"
   }
   FAILED = {
     code = MISSION_OBJECTIVE_STATUS_FAILED

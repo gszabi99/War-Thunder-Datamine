@@ -5,6 +5,7 @@ let { isUnlockVisibleOnCurPlatform, isUnlockVisible } = require("%scripts/unlock
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
 const FAVORITE_UNLOCKS_LIMIT = 20
@@ -35,7 +36,7 @@ let function loadFavorites() {
 
   for (local i = 0; i < ids.paramCount(); ++i) {
     let unlockId = ids.getParamName(i)
-    let unlock = ::g_unlocks.getUnlockById(unlockId)
+    let unlock = getUnlockById(unlockId)
     if (isUnlockVisible(unlock, false)) {
       if (!isUnlockVisibleOnCurPlatform(unlock))
         favoriteInvisibleUnlocks[unlockId] = true // unlock isn't avaliable on current platform
@@ -80,7 +81,7 @@ let function addUnlockToFavorites(unlockId) {
     return
 
   getFavoriteUnlocks().addBlock(unlockId)
-  getFavoriteUnlocks()[unlockId] = ::g_unlocks.getUnlockById(unlockId)
+  getFavoriteUnlocks()[unlockId] = getUnlockById(unlockId)
   saveFavorites()
   ::broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = true })
 }

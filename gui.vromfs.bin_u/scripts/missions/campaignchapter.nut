@@ -203,7 +203,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       }
 
       if (::g_mislist_type.isUrlMission(mission)) {
-        let medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite.png" : ""
+        let medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
         view.items.append({
           itemIcon = medalIcon
           id = mission.id
@@ -219,15 +219,15 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
         switch (mission.progress) {
           case 0:
             elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_arcade.png"
+            medalIcon = "#ui/gameuiskin#mission_complete_arcade"
             break
           case 1:
             elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_realistic.png"
+            medalIcon = "#ui/gameuiskin#mission_complete_realistic"
             break
           case 2:
             elemCssId = "mission_item_completed"
-            medalIcon = "#ui/gameuiskin#mission_complete_simulator.png"
+            medalIcon = "#ui/gameuiskin#mission_complete_simulator"
             break
           case 3:
             elemCssId = "mission_item_unlocked"
@@ -236,7 +236,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
         }
       else if (this.gm == GM_DOMINATION || this.gm == GM_SKIRMISH) {
         elemCssId = "mission_item_unlocked"
-        medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite.png" : ""
+        medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
       }
       else if (mission.isUnlocked) {
         elemCssId = "mission_item_unlocked"
@@ -427,7 +427,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
     let medalObj = listObj.getChild(this.curMissionIdx).findObject("medal_icon")
     if (medalObj)
-      medalObj["background-image"] = this.misListType.isMissionFavorite(this.curMission) ? "#ui/gameuiskin#favorite.png" : ""
+      medalObj["background-image"] = this.misListType.isMissionFavorite(this.curMission) ? "#ui/gameuiskin#favorite" : ""
   }
 
   function goBack() {

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { frnd, rnd } = require("dagor.random")
 let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
+let { getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -100,7 +101,7 @@ let function hud_reward_message_debug() {
 
 let function hud_debug_streak(streakId = null) {
   if (!streakId) {
-    let list = ::u.filter(::g_unlocks.getAllUnlocks(),
+    let list = ::u.filter(getAllUnlocks(),
                    function(blk) { return blk?.type == "streak" &&  !blk?.hidden })
     streakId = list[rnd() % list.len()].id
   }

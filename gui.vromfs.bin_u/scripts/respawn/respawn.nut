@@ -827,7 +827,7 @@ enum ESwitchSpectatorTarget {
 
   function updateTacticalMapHint() {
     local hint = ""
-    local hintIcon = ::show_console_buttons ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left.png"
+    local hintIcon = ::show_console_buttons ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
     local highlightSpawnMapId = -1
     if (!this.isRespawn)
       hint = colorize("activeTextColor", loc("voice_message_attention_to_point_2"))

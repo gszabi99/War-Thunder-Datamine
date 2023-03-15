@@ -10,10 +10,11 @@ let { format } = require("string")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
   getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
-  let unlockBlk = ::g_unlocks.getUnlockById(decorator?.unlockId)
+  let unlockBlk = getUnlockById(decorator?.unlockId)
   if (unlockBlk) {
     config = ::build_conditions_config(unlockBlk)
     ::build_unlock_desc(config)
@@ -145,7 +146,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     ::showBtn("progress", false, cObj)
 
   let iconName = isDefaultSkin ? ""
-    : hasDecor ? "#ui/gameuiskin#favorite.png"
+    : hasDecor ? "#ui/gameuiskin#favorite"
     : "#ui/gameuiskin#locked.svg"
   cObj.findObject("state")["background-image"] = iconName
 

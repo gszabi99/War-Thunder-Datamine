@@ -930,7 +930,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
           continue
 
         // Expected participant.image values are listed in "eventsIcons" block of hud.blk
-        let icon = $"#ui/gameuiskin#{participant.image}.png"
+        let icon = $"#ui/gameuiskin#{participant.image}"
         let color = "@" + ::get_mplayer_color(participantPlayer)
         let pStr = this.makeSmallImageStr(icon, color)
         if (playerTeam == participantPlayer.team) {

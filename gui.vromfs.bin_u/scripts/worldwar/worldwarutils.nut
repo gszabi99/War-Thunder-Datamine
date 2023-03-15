@@ -59,7 +59,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   isDebugMode = false
 
   myClanParticipateIcon = "#ui/gameuiskin#lb_victories_battles.svg"
-  lastPlayedIcon = "#ui/gameuiskin#last_played_operation_marker.png"
+  lastPlayedIcon = "#ui/gameuiskin#last_played_operation_marker"
 
   defaultDiffCode = DIFFICULTY_REALISTIC
 

@@ -16,10 +16,12 @@ let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unloc
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { isUnlockVisible, isUnlockVisibleByTime } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost
+} = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnlockReadyToOpen } = require("chard")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
-let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N.png
+let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N
 
 ::g_unlock_view <- {
   function fillUnlockManualOpenButton(cfg, obj) {
@@ -42,7 +44,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
     let subunlocks = []
     foreach (idx, title in titles) {
       let unlockId = cfg.names[idx]
-      let unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+      let unlockBlk = getUnlockById(unlockId)
       if (!isUnlockVisible(unlockBlk) && !(unlockBlk?.showInDesc ?? false))
         continue
 
@@ -170,7 +172,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
     let names = getLocForBitValues(unlockConfig.type, unlockConfig.names, unlockConfig.hasCustomUnlockableList)
     for (local i = 0; i < names.len(); i++) {
       let unlockId = unlockConfig.names[i]
-      let unlock = ::g_unlocks.getUnlockById(unlockId)
+      let unlock = getUnlockById(unlockId)
       if (unlock && !isUnlockVisible(unlock) && !(unlock?.showInDesc ?? false))
         continue
 
@@ -272,7 +274,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       let isUnlockedStage = curValStage >= stage.val
       textStages += "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
         .subst({
-          image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}.png" : $"#ui/gameuiskin#stage_locked_{i+1}.png"
+          image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}" : $"#ui/gameuiskin#stage_locked_{i+1}"
           parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
           tooltip = UNLOCK_SHORT.getMarkup(unlockConfig.id, { stage = i })
         })
@@ -322,7 +324,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
   purchButtonObj.unlockId = unlockId
   let isUnlocked = ::is_unlocked_scripted(-1, unlockId)
   let haveStages = getTblValue("stages", unlockData, []).len() > 1
-  let cost = ::get_unlock_cost(unlockId)
+  let cost = getUnlockCost(unlockId)
   let canSpendGold = cost.gold == 0 || hasFeature("SpendGold")
   let isPurchaseTime = isUnlockVisibleByTime(unlockId, false)
   let canOpenManually = unlockData.manualOpen && isUnlockReadyToOpen(unlockId)

@@ -15,6 +15,7 @@ let { copyParamsToTable, eachParam } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::Decorator <- class {
   id = ""
@@ -58,7 +59,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
     }
 
     this.unlockId = getTblValue("unlock", this.blk, "")
-    this.unlockBlk = ::g_unlocks.getUnlockById(this.unlockId)
+    this.unlockBlk = getUnlockById(this.unlockId)
     this.limit = getTblValue("limit", this.blk, this.decoratorType.defaultLimitUsage)
     this.category = getTblValue("category", this.blk, "")
     this.group = getTblValue("group", this.blk, "")

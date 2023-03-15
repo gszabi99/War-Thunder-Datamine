@@ -8,7 +8,7 @@ tdiv {
     size:t='0.6*@unlockIconSize, 0.6*@unlockIconSize'
     position:t='relative'
     <<#isUnlocked>>
-    background-image:t='#ui/gameuiskin#favorite.png'
+    background-image:t='#ui/gameuiskin#favorite'
     background-position:t='0, -2@dp, 0, 2@dp'
     <</isUnlocked>>
   }

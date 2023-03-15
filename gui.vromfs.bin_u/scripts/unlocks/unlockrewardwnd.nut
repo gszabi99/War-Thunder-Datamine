@@ -9,6 +9,7 @@ let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/co
 let { getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { register_command } = require("console")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 register_command(
   function () {
@@ -59,7 +60,7 @@ register_command(
     this.unlocks.clear()
     this.shrinkedUnlocks.clear()
     foreach (unlockId, _ in this.unlocksRewards) {
-      let config = ::g_unlocks.getUnlockById(unlockId)
+      let config = getUnlockById(unlockId)
       if (!config)
         continue
       let unlockConditions = ::build_conditions_config(config)

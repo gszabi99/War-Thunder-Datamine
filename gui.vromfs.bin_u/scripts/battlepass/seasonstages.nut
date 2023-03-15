@@ -124,7 +124,7 @@ let function getStageViewData(stageData, idxOnPage) {
         count = rewards[itemId]
       })]
     : null
-    stageIcon = overrideStageIcon ?? (isChallengeStage ? "#ui/gameuiskin#item_challenge.png" : null)
+    stageIcon = overrideStageIcon ?? (isChallengeStage ? "#ui/gameuiskin#item_challenge" : null)
     stageTooltipId = isChallengeStage ? getChallengeTooltipId(stage, stageChallenge)
       : itemId != null && overrideStageIcon != null ? ITEM.getTooltipId(itemId.tointeger())
       : null

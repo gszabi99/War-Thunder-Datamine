@@ -13,6 +13,7 @@ let { number_of_set_bits } = require("%sqstd/math.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { isIPoint3 } = require("%sqStdLibs/helpers/u.nut")
 let { Point2 } = require("dagor.math")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 let missionModesList = [
   "missionsWon",
@@ -243,7 +244,7 @@ let function getSubunlockCfg(conditions) {
   if (cond?.modeType != "char_unlocks" || cond?.values.len() != 1)
     return null
 
-  let blk = ::g_unlocks.getUnlockById(cond.values[0])
+  let blk = getUnlockById(cond.values[0])
   if (blk?.hidden ?? false)
     return null
 
@@ -317,7 +318,7 @@ let function loadMainProgressCondition(blk) {
     let isUnlockStageCount = modeType == "unlockStageCount"
     if (!res.hasCustomUnlockableList)
       foreach (unlockId in (blk % "unlock")) {
-        let unlock = ::g_unlocks.getUnlockById(unlockId)
+        let unlock = getUnlockById(unlockId)
         if (unlock == null) {
           let debugUnlockData = blk?.unlock ?? toString(blk) // warning disable: -declared-never-used
           assert(false, "ERROR: Unlock does not exist")

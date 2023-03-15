@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::trophyReward <- {
   maxRewardsShow = 5
@@ -161,7 +162,7 @@ let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
     image = this.getFullWarbondsIcon()
   else if (rewardType == "unlock") {
     local unlock = null
-    let rewardConfig = ::g_unlocks.getUnlockById(rewardValue)
+    let rewardConfig = getUnlockById(rewardValue)
     if (rewardConfig != null) {
       let unlockConditions = ::build_conditions_config(rewardConfig)
       unlock = ::build_log_unlock_data(unlockConditions)

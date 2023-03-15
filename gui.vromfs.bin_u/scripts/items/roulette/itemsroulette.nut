@@ -353,7 +353,7 @@ let function insertCurrentReward(readyItemsArray, rewardsArray) {
 
 let function getHiddenTopPrizeReward(trophyItem, showType) {
   let layerCfg = clone ::LayersIcon.findLayerCfg("item_place_single")
-  layerCfg.img <- $"#ui/gameuiskin#item_{showType}.png"
+  layerCfg.img <- $"#ui/gameuiskin#item_{showType}"
   let image = ::LayersIcon.genDataFromLayer(layerCfg)
   let layout = ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg("roulette_item_place"), image)
 

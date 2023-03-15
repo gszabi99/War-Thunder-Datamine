@@ -121,11 +121,11 @@ global enum WW_LOG_CATEGORIES {
 }
 
 global enum WW_LOG_ICONS {
-  SYSTEM = "icon_type_log_systems.png"
-  EXISTING_BATTLES = "icon_type_log_battles.png"
-  FINISHED_BATTLES = "icon_type_log_battles.png"
-  ARMY_ACTIVITY = "icon_type_log_army.png"
-  ZONE_CAPTURE = "icon_type_log_sectors.png"
+  SYSTEM = "icon_type_log_systems"
+  EXISTING_BATTLES = "icon_type_log_battles"
+  FINISHED_BATTLES = "icon_type_log_battles"
+  ARMY_ACTIVITY = "icon_type_log_army"
+  ZONE_CAPTURE = "icon_type_log_sectors"
 }
 
 global enum WW_LOG_COLORS {

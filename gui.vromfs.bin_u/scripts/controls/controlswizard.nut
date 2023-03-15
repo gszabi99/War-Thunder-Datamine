@@ -725,7 +725,7 @@ let function isInArrayRecursive(v, arr) {
 
     local image = ""
     if (("images" in this.curItem) && (imgId in this.curItem.images))
-      image = $"#ui/images/wizard/{this.curItem.images[imgId]}.png"
+      image = $"#ui/images/wizard/{this.curItem.images[imgId]}"
     this.scene.findObject("shortcut_image")["background-image"] = image
   }
 

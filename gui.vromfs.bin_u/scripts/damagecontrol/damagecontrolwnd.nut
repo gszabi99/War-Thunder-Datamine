@@ -115,15 +115,15 @@ const PRESETS_COUNT = 3
     local res = ""
     switch (action) {
       case "e":
-        res = "manual_ship_extinguisher.png"
+        res = "manual_ship_extinguisher"
         break
 
       case "u":
-        res = "unwatering.png"
+        res = "unwatering"
         break
 
       case "r":
-        res = "ship_tool_kit.png"
+        res = "ship_tool_kit"
         break
     }
     return "#ui/gameuiskin#{0}".subst(res)
