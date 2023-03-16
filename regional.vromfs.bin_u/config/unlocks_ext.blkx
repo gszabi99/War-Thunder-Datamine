@@ -18464,6 +18464,24 @@
       }
     },
     {
+      "id": "title_best_striker_2023",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_best_winger_2023",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_best_goalkeeper_2023",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
       "id": "title_tenkahubu",
       "type": "title",
       "chapter": "title",
@@ -27746,6 +27764,17 @@
       "mode": {
         "type": "char_unit_exist",
         "unit": "mi_24d"
+      }
+    },
+    {
+      "id": "sw_cv_90105_tml_decal_gift",
+      "userLogId": "sw_cv_90105_tml_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "sw_cv_90105_tml"
       }
     },
     {
@@ -84407,6 +84436,626 @@
             "beginDate": "2022-12-20 11:00:00",
             "endDate": "2022-12-22 11:30:00"
           }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_goal_hidden",
+      "type": "streak",
+      "isAfterFlight": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden": true,
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "footballGoal",
+        "num": 1005000,
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_assist_hidden",
+      "type": "streak",
+      "isAfterFlight": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden": true,
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "footballAssist",
+        "num": 1005000,
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_save_hidden",
+      "type": "streak",
+      "isAfterFlight": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden": true,
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "footballSave",
+        "num": 1005000,
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_1",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 10,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_2",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 25,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_3",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 50,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_4",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 100,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_5",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 200,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_6",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 300,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_7",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 400,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_stage_8",
+      "locId": "2023_football_event_stage/name",
+      "type": "achievement",
+      "chapter": "2022_football_event",
+      "group": "tasks",
+      "costGold": 499,
+      "hidden": false,
+      "showInDesc": true,
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2023_football_event_goal_hidden",
+          "2023_football_event_assist_hidden",
+          "2023_football_event_save_hidden"
+        ],
+        "num": 500,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-03-17 11:00:00",
+            "endDate": "2023-04-01 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_decal_trophy_gift_1",
+      "locId": "item/2023_football_event_decal_trophy_gift",
+      "locDescId": "2023_football_event_silver_decor_trophy_gift/desc",
+      "userLogId": "2023_football_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_decal_trophy_gift_2",
+      "locId": "item/2023_football_event_decal_trophy_gift",
+      "locDescId": "2023_football_event_silver_decor_trophy_gift/desc",
+      "userLogId": "2023_football_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_decor_trophy_gift",
+      "locId": "attachables/football_tank_cup",
+      "locDescId": "common_ground_vehicles_decor_trophy_gift/desc",
+      "userLogId": "2023_football_event_decor_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_loading_screen_trophy_gift",
+      "locId": "loading_bg/login_layer_football",
+      "locDescId": "common_loading_screen_trophy_gift/desc",
+      "userLogId": "2023_football_event_loading_screen_trophy",
+      "icon": "https://static-ggc.gaijin.net/loading_screen/login_layer_football_2023.jpg",
+      "lockStyle": "lock",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 4,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
+        ]
+      }
+    },
+    {
+      "id": "cardicon_football_marathon_2023_trophy_gift",
+      "locId": "cardicon_football_marathon_2023/name",
+      "locDescId": "gift_cardicon_newyear_23_trophy/desc",
+      "userLogId": "cardicon_football_marathon_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 5,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_flag_decal_trophy_gift",
+      "locId": "item/2022_football_event_flag_decal_trophy_gift",
+      "locDescId": "2022_football_event_flag_decal_trophy_gift/desc",
+      "icon": "https://static-ggc.gaijin.net/decals/football_banners.png",
+      "lockStyle": "lock",
+      "type": "inventory",
+      "userLogId": "200253",
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_skin_trophy_gift",
+      "locId": "item/2022_football_event_skin_trophy_gift",
+      "locDescId": "2022_football_event_skin_trophy_gift/desc",
+      "icon": "https://static-ggc.gaijin.net/skins/us_m551_football_skins.png",
+      "lockStyle": "lock",
+      "type": "inventory",
+      "userLogId": "200255",
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
+        ]
+      }
+    },
+    {
+      "id": "2023_football_event_golden_decor_trophy_gift",
+      "locId": "item/2022_football_event_golden_decor_trophy_gift",
+      "locDescId": "2022_football_event_golden_decor_trophy_gift/desc",
+      "icon": "!https://static-ggc.gaijin.net/attachables/football_golden_trio.png",
+      "lockStyle": "lock",
+      "type": "inventory",
+      "userLogId": "200254",
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 8,
+        "unlock": [
+          "2023_football_event_stage_1",
+          "2023_football_event_stage_2",
+          "2023_football_event_stage_3",
+          "2023_football_event_stage_4",
+          "2023_football_event_stage_5",
+          "2023_football_event_stage_6",
+          "2023_football_event_stage_7",
+          "2023_football_event_stage_8"
         ]
       }
     }
