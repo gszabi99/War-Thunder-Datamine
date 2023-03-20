@@ -42,6 +42,7 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
 let { gui_do_debug_unlock, debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
 let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
 } = require("%scripts/user/balanceFeatures.nut")
+let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
 let template = {
   id = ""
@@ -223,7 +224,7 @@ let list = {
   VIRAL_AQUISITION = {
     text = @() "#mainmenu/btnGetLink"
     onClickFunc = @(...) showViralAcquisitionWnd()
-    isHidden = @(...) !hasFeature("Invites")
+    isHidden = @(...) !hasFeature("Invites") || isGuestLogin.value
   }
   CHANGE_LOG = {
     text = @() "#mainmenu/btnChangelog"

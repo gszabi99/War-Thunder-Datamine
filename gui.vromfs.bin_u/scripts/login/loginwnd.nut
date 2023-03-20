@@ -21,6 +21,7 @@ let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
+let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -118,12 +119,6 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     let isSteamRunning = ::steam_is_running()
     let showSteamLogin = isSteamRunning
     let showWebLogin = !isSteamRunning && ::webauth_start(this, this.onSsoAuthorizationComplete)
-    local showGuestLogin = false
-    //
-
-
-    this.showSceneBtn("secondary_auth_block", showGuestLogin || showSteamLogin || showWebLogin)
-    this.showSceneBtn("guest_login_action_button", showGuestLogin)
     this.showSceneBtn("steam_login_action_button", showSteamLogin)
     this.showSceneBtn("sso_login_action_button", showWebLogin)
     this.showSceneBtn("btn_signUp_link", !showSteamLogin)
@@ -689,9 +684,17 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       label = loc("choose_nickname_req")
       maxLen = 16
       validateFunc = @(nick) validateNickRegexp.replace("", nick)
+      editboxWarningTooltip = loc("invalid_nickname")
+      checkWarningFunc = isPhrasePassing
       canCancel = true
       owner = this
-      okFunc = @(nick) this.guestProceedAuthorization(guestLoginId, nick)
+      function okFunc(nick) {
+        if (!isPhrasePassing(nick)) {
+          ::showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
+          return
+        }
+        this.guestProceedAuthorization(guestLoginId, nick)
+      }
     })
   }
 }

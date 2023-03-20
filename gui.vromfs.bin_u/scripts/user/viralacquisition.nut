@@ -10,6 +10,7 @@ let regexp2 = require("regexp2")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
 let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]
@@ -35,7 +36,7 @@ local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
 }
 
 let function showViralAcquisitionWnd() {
-  if (!hasFeature("Invites"))
+  if (!hasFeature("Invites") || isGuestLogin.value)
     return
 
   ::copy_to_clipboard(getLinkString())
