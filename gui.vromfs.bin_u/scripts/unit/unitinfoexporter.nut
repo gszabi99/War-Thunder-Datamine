@@ -12,6 +12,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX } = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
+let json = require("%sqstd/json.nut")
 
 const COUNTRY_GROUP = "country"
 const RANK_GROUP = "rank"
@@ -36,10 +37,13 @@ let class UnitInfoExporter {
   fullBlk = null
   unitsList = null
 
+  status = null
+
   constructor(genLangsList = ["English", "Russian"], genPath = "export") { //null - export all langs
     if (!this.isReadyStartExporter())
       return
 
+    this.status = {}
     this.activeUnitInfoExporters.append(this)
     this.updateActive()
 
@@ -103,21 +107,39 @@ let class UnitInfoExporter {
   /********************************EXPORT PROCESS********************************/
   /******************************************************************************/
 
+  function getTargetStatus(target) {
+    if (!(target in this.status))
+      this.status[target] <- {}
+    return this.status[target]
+  }
+
   function exportCalculationParameters() {
     this.debugLog("Exporter: start fetching calculation parameters")
-    let shopUnitsNames = ::all_units
-      .filter(@(unit) unit.isInShop)
-      .map(@(unit) unit.name)
-      .values()
-    let instance = this
-    export_calculations_parameters_for_wta(shopUnitsNames, function(parameters) {
-      instance.debugLog("Exporter: calculation parameters received")
-      parameters.saveToTextFile(instance.getCalculationParemetersFullPath())
-    })
+    try {
+      let shopUnitsNames = ::all_units
+        .filter(@(unit) unit.isInShop)
+        .map(@(unit) unit.name)
+        .values()
+      let instance = this
+      export_calculations_parameters_for_wta(shopUnitsNames, function(parameters) {
+        instance.debugLog("Exporter: calculation parameters received")
+        parameters.saveToTextFile(instance.getCalculationParemetersFullPath())
+      })
+      this.getTargetStatus("calculationParameters").success <- true
+    } catch (e) {
+      this.debugLog("Exporter: calculation parameters were failed with exception")
+      this.getTargetStatus("calculationParameters").success <- false
+    }
   }
 
   function nextLangExport() {
+    if (this.curLang != "") {
+      let targetStatus = this.getTargetStatus(this.curLang)
+      targetStatus.success <- targetStatus.len() ? false : true
+    }
+
     if (!this.langsList.len()) {
+      json.save(this.getStatusFullPath(), this.status)
       this.remove()
       this.debugLog("Exporter: DONE.")
       return
@@ -138,6 +160,11 @@ let class UnitInfoExporter {
   function getLangFullPath() {
     let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
     return format("%sunitInfo%s.blk", relPath, this.curLang)
+  }
+
+  function getStatusFullPath() {
+    let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
+    return format("%sstatus.json", relPath)
   }
 
   function startExport() {
@@ -200,8 +227,14 @@ let class UnitInfoExporter {
 
   function processUnits() {
     while (this.unitsList.len()) {
-        if (!this.exportCurUnit(this.fullBlk, this.unitsList[this.unitsList.len() - 1]))
-          return
+        let curUnit = this.unitsList[this.unitsList.len() - 1]
+        try {
+          if (!this.exportCurUnit(this.fullBlk, curUnit))
+            return
+        } catch (e) {
+          this.debugLog($"Exporter: exception was thrown while exporting unit '{curUnit.name}' on lang '{this.curLang}'")
+          this.getTargetStatus(this.curLang)[curUnit.name] <- false
+        }
         this.unitsList.pop()
     }
     this.finishExport(this.fullBlk)

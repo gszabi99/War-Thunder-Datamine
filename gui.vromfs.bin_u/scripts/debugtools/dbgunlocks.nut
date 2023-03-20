@@ -13,6 +13,7 @@ let { getFullUnlockDesc, getUnlockCostText,
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { register_command } = require("console")
 let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
+let json = require("%sqstd/json.nut")
 
 let function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!::is_dev_version)
@@ -96,19 +97,31 @@ let function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost 
   res.saveToTextFile(fullPath)
 }
 
-let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang) {
+let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curLang, status = {}) {
   let self = callee()
   let lang = langsInfo.pop()
   ::g_language.setGameLocalization(lang.id, false, false)
-  gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
+  try {
+    gen_all_unlocks_desc_to_blk_cur_lang(path, showCost, showValue)
+    status[lang.id] <- {
+      success=true
+    }
+  } catch (e) {
+    logerr($"Failed to get unlocks desc blk for '{lang}' lang")
+    status[lang.id] <- {
+      success=false
+    }
+  }
 
-  if (!langsInfo.len())
+  if (!langsInfo.len()) {
+    json.save($"{path}/status.json", status)
     return ::g_language.setGameLocalization(curLang, false, false)
+  }
 
   //delayed to easy see progress, and avoid watchdog crash.
   let guiScene = ::get_main_gui_scene()
   guiScene.performDelayed(this, function() {
-    self(path, showCost, showValue, langsInfo, curLang)
+    self(path, showCost, showValue, langsInfo, curLang, status)
   })
 }
 
