@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { get_time_msec } = require("dagor.time")
+let Popup = require("%scripts/popups/popup.nut")
 
 /*
 API:
@@ -45,16 +46,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
 
 ::g_popups.add <- function add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null, lifetime = 0) {
   this.savePopup(
-    ::Popup({
-        title = title
-        msg = msg
-        onClickPopupAction = onClickPopupAction
-        buttons = buttons
-        handler = handler
-        groupName = groupName
-        lifetime = lifetime
-      }
-    )
+    Popup({ title, msg, onClickPopupAction, buttons, handler, groupName, lifetime })
   )
 
   this.performDelayedFlushPopupsIfCan()

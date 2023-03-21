@@ -28,8 +28,8 @@
         180.0
       ],
       "elevationLimits": [
-        -10.0,
-        32.0
+        0.0,
+        12.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
@@ -48,27 +48,7 @@
         180.0
       ],
       "elevationLimits": [
-        -10.0,
-        32.0
-      ],
-      "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
-      "rollStabLimit": 10.0,
-      "period": 2.0,
-      "barHeight": 12.0,
-      "barsCount": 2,
-      "rowMajor": true,
-      "centerElevation": 12.0,
-      "preciseMinor": true
-    },
-    "searchWide": {
-      "type": "cylinder",
-      "azimuthLimits": [
-        -180.0,
-        180.0
-      ],
-      "elevationLimits": [
-        -10.0,
+        0.0,
         32.0
       ],
       "yawStabLimit": 180.0,
@@ -79,6 +59,26 @@
       "barsCount": 3,
       "rowMajor": true,
       "centerElevation": 16.0,
+      "preciseMinor": true
+    },
+    "searchWide": {
+      "type": "cylinder",
+      "azimuthLimits": [
+        -180.0,
+        180.0
+      ],
+      "elevationLimits": [
+        0.0,
+        64.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 10.0,
+      "rollStabLimit": 10.0,
+      "period": 6.0,
+      "barHeight": 10.65,
+      "barsCount": 6,
+      "rowMajor": true,
+      "centerElevation": 32.0,
       "preciseMinor": true
     }
   },
@@ -128,6 +128,10 @@
           },
           "setSignal": {
             "signal": "search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": -3.5
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"

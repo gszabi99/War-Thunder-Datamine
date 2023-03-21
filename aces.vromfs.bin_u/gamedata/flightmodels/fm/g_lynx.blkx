@@ -49,7 +49,7 @@
   "FinHeight": 2.05,
   "Crew": 2,
   "WingAngle": 10.0,
-  "StabAngle": 2.0,
+  "StabAngle": 0.0,
   "KeelAngle": 10.0,
   "AileronAngles": [
     15.0,
@@ -1390,12 +1390,12 @@
       "AirFlow4": [
         10.0,
         -5.0,
-        0.6
+        0.8
       ],
       "AirFlow5": [
         100.0,
         -10.0,
-        0.2
+        0.6
       ],
       "FlapCompensatorEfficiency": [
         250.0,
@@ -2147,11 +2147,11 @@
         ]
       },
       "VelPID": {
-        "Kp": 0.2,
-        "Ki": 0.01,
+        "Kp": 0.05,
+        "Ki": 0.02,
         "Imax": 2.0,
-        "Kd": 0.2,
-        "dTau": 0.425,
+        "Kd": 1E-05,
+        "dTau": 0.0208333,
         "Lim": [
           -0.35,
           0.35
@@ -2304,7 +2304,7 @@
     "Throttle": {
       "Limits": [
         0.0,
-        0.9
+        0.98
       ],
       "ClimbMax": [
         -12.0,
@@ -2336,7 +2336,7 @@
         "dTau": 0.025,
         "Lim": [
           0.05,
-          0.9
+          0.98
         ]
       },
       "AltPID": {

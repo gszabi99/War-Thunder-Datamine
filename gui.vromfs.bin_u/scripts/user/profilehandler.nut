@@ -45,7 +45,7 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
   getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText
+let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, buyUnlock, canDoUnlock
 } = require("%scripts/unlocks/unlocksModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
@@ -333,7 +333,7 @@ let selMedalIdx = {}
     if (canBuy && buyBtnObj?.isValid())
       placePriceTextToButton(this.scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decor.getCost())
 
-    let canFav = !decor.isUnlocked() && ::g_unlocks.canDo(decor.unlockBlk)
+    let canFav = !decor.isUnlocked() && canDoUnlock(decor.unlockBlk)
     let favBtnObj = this.showSceneBtn("btn_fav", canFav)
     if (canFav)
       favBtnObj.setValue(isUnlockFav(decor.unlockId)
@@ -1280,7 +1280,7 @@ let selMedalIdx = {}
           }),
         cost),
       [
-        ["ok", @() ::g_unlocks.buyUnlock(unlockId,
+        ["ok", @() buyUnlock(unlockId,
             Callback(@() this.updateUnlockBlock(unlockId), this),
             Callback(@() this.onUnlockGroupSelect(null), this))
         ],

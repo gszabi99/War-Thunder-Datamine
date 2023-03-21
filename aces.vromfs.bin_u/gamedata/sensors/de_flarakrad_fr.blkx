@@ -23,8 +23,8 @@
       "power": 200.0,
       "band": -1,
       "rcs": 1.0,
-      "range": 8000.0,
-      "rangeMax": 10000.0,
+      "range": 15000.0,
+      "rangeMax": 16000.0,
       "visibilityType": "infraRed",
       "antenna": {
         "angleHalfSens": 1.0,
@@ -150,7 +150,7 @@
       "distance": {
         "presents": true,
         "minValue": 30.0,
-        "maxValue": 10000.0
+        "maxValue": 15000.0
       },
       "dopplerSpeed": {
         "presents": false
@@ -303,8 +303,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
+            "pos": 7500.0,
+            "width": 15000.0
           }
         },
         "setVisualLockModeCommon": {
@@ -403,7 +403,7 @@
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "stateTo": "radarParked",
+          "stateTo": "radarStandby",
           "actions": {
             "init": {},
             "setRadarStandbyMode": {},
@@ -652,46 +652,6 @@
               "name": "track"
             },
             "setRadar": {}
-          }
-        },
-        "switchRadarOn": {
-          "stateFrom": "radarParked",
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "radarStandby"
-        },
-        "switchRadarOff": {
-          "stateFrom": [
-            "radarStandby",
-            "radarLosLock",
-            "radarVisualLock",
-            "radarTrack"
-          ],
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "radarParked",
-          "actions": {
-            "setRadarStandbyMode": {}
-          }
-        },
-        "switchIrstOn": {
-          "stateFrom": "irstParked",
-          "command": "switch",
-          "event": "enable",
-          "stateTo": "irstStandby"
-        },
-        "switchIrstOff": {
-          "stateFrom": [
-            "irstStandby",
-            "irstLosLock",
-            "irstVisualLock",
-            "irstTrack"
-          ],
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "irstParked",
-          "actions": {
-            "setIrstStandbyMode": {}
           }
         }
       }

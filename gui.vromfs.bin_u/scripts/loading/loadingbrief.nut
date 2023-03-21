@@ -21,6 +21,7 @@ let changeStartMission = require("%scripts/missions/changeStartMission.nut")
 let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
+let { getTip } = require("%scripts/loading/loadingTips.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -266,7 +267,7 @@ const MIN_SLIDE_TIME = 2.0
       if (this._tipTime < -1) {
         this._tipTime = this.tipShowTime
         this.tipShow = true
-        this.setSceneInfo(::g_tips.getTip())
+        this.setSceneInfo(getTip())
       }
     }
   }

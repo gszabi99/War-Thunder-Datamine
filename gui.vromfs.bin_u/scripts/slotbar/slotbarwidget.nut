@@ -43,6 +43,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
                                //(look like it almost duplicate of singleCountry)
   customCountry = null //country name when not isCountryChoiceAllowed mode.
   showTopPanel = true  //need to show panel with repair checkboxes. ignored in singleCountry or when not isCountryChoiceAllowed modes
+  showRepairBox = true  //need to show repair checkboxes
   hasResearchesBtn = false //offset from left border for Researches button
   hasActions = true
   missionRules = null
@@ -55,6 +56,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   unitForSpecType = null //unit to show crew specializations
   shouldSelectAvailableUnit = null //bool
   needPresetsPanel = null //bool
+  countriesToShow = null
 
   //!!FIX ME: Better to remove parameters group below, and replace them by isUnitEnabled function
   mainMenuSlotbar = false //is slotbar in mainmenu
@@ -243,7 +245,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       if (onlyForCountryIdx != null && onlyForCountryIdx != c)
         continue
 
-      let visibleCountries = getShopVisibleCountries()
+      let visibleCountries = this.countriesToShow ?? getShopVisibleCountries()
       let listCountry = crewsListFull[c].country
       if ((this.singleCountry != null && this.singleCountry != listCountry)
         || visibleCountries.indexof(listCountry) == null
@@ -417,7 +419,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let isFullSlotbar = crewsConfig.len() > 1 || this.showAlwaysFullSlotbar
     let hasCountryTopBar = isFullSlotbar && this.showTopPanel && !this.singleCountry
     if (hasCountryTopBar)
-      ::initSlotbarTopBar(this.scene, true) //show autorefill checkboxes
+      ::initSlotbarTopBar(this.scene, true, this.showRepairBox) //show autorefill checkboxes
 
     this.crewsObj.hasHeader = !hasCountryTopBar ? "yes" : "no"
     this.crewsObj.hasBackground = isFullSlotbar ? "no" : "yes"

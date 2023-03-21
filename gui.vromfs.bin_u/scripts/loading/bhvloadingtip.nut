@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { getTip } = require("%scripts/loading/loadingTips.nut")
+
 {
   let class LoadingTip {
     eventMask = EV_TIMER | EV_ON_CMD
@@ -44,7 +46,7 @@ from "%scripts/dagui_library.nut" import *
 
           let textObj = obj.findObject("tip_hint")
           if (checkObj(textObj))
-            textObj.setValue(::g_tips.getTip(this.getUnitTypeMask(obj)))
+            textObj.setValue(getTip(this.getUnitTypeMask(obj)))
         })
     }
   }

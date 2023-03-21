@@ -344,14 +344,8 @@ local ExchangeRecipes = class {
   }
 
   static function _getRequirements(recipes, componentItem, params, shouldReturnMarkup) {
-    let showOnlyCraftTime = componentItem.showAllowableRecipesOnly()
-    let craftTimeText = this.getRecipesCraftTimeText(recipes)
-    if (showOnlyCraftTime) {
-      if (shouldReturnMarkup)
-        return ::PrizesView.getPrizesListView([], { header = craftTimeText })
-      else
-        return ::PrizesView.getPrizesListText([], @(...) craftTimeText)
-    }
+    if (componentItem.showAllowableRecipesOnly())
+      return ""
 
     let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
     let isFullRecipesList = recipes.len() <= maxRecipes
@@ -386,6 +380,7 @@ local ExchangeRecipes = class {
         isMultiExtraItems  = isMultiExtraItems || (multipleExtraItems.len() > 1)
       }
 
+      let craftTimeText = this.getRecipesCraftTimeText(recipes)
       headerFirst = colorize("grayOptionColor",
         componentItem.getDescRecipeListHeader(recipesToShow.len(), recipes.len(),
                                             isMultiExtraItems, hasFakeRecipesInList,

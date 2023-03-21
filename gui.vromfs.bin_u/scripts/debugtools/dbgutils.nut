@@ -28,6 +28,7 @@ let animBg = require("%scripts/loading/animBg.nut")
 let { register_command } = require("console")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
+let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -399,7 +400,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
 
 let function debug_tips_list() {
   debugWnd("%gui/debugTools/dbgTipsList.tpl",
-    { tipsList = ::g_tips.getAllTips().map(@(value) { value = value }) })
+    { tipsList = getAllTips().map(@(value) { value = value }) })
 }
 
 let function debug_get_skyquake_path() {

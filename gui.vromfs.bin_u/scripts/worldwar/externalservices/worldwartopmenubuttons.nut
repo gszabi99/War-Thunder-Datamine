@@ -92,6 +92,13 @@ let list = {
       @(u) u?.chapter && u.chapter == "worldwar" && u?.hidden != true) == null
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
+  WW_VEHICLE_SET = {
+    text = "#worldWar/menu/createVehicleSet"
+    onClickFunc = @(_obj, handler) handler?.openVehiclesPresetModal()
+    isHidden = @(...) !hasAvailableMapToBattle()
+    elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
+    unseenIcon = @() SEEN.WW_OPERATION_AVAILABLE
+  }
   WW_SCENARIO_DESCR = {
     text = "#worldwar/scenarioDescription"
     onClickFunc = @(_obj, handler) handler?.openOperationsListModal()

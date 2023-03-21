@@ -280,6 +280,7 @@ global enum SEEN {
   EVENTS = "events"
   WW_MAPS_AVAILABLE = "wwMapsAvailable"
   WW_MAPS_OBJECTIVE = "wwMapsObjective"
+  WW_OPERATION_AVAILABLE = "wwOperationAvailable"
   INVENTORY = "inventory"
   ITEMS_SHOP = "items_shop"
   WORKSHOP = "workshop"
@@ -426,7 +427,7 @@ foreach (fn in [
 
   "%scripts/options/gamepadCursorControls.nut"
   "%scripts/unit/unitType.nut"
-  "%scripts/loading/loadingTips.nut"
+  "%scripts/loading/bhvLoadingTip.nut"
   "%scripts/options/countryFlagsPreset.nut"
 
   "%scripts/hangarLights.nut"

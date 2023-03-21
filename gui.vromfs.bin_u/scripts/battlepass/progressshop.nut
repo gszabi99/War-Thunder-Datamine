@@ -21,7 +21,7 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -201,7 +201,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     if (battlePassUnlock != null)
-      ::g_unlocks.buyUnlock(battlePassUnlock, function() {
+      buyUnlock(battlePassUnlock, function() {
         tryBuyAdditionalTrophy()
         refreshUserstatUnlocks()
         ::broadcastEvent("BattlePassPurchased")

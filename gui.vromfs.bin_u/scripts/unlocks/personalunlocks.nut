@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { isUnlockExpired } = require("%scripts/unlocks/unlocksModule.nut")
 
 let battleTaskUnlocks = []
 let markerUnlocks = []
@@ -21,7 +22,7 @@ let function update() {
 
     if (unlockBlk?.shouldMarkUnits
         && !::is_unlocked_scripted(-1, unlockBlk?.id)
-        && !::g_unlocks.isUnlockExpired(unlockBlk))
+        && !isUnlockExpired(unlockBlk))
       markerUnlocks.append(unlockBlk)
   }
 

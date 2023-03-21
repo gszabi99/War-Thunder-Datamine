@@ -19,7 +19,7 @@ let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode
   getRangeString, getUnlockConditions, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockTypeById } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -309,7 +309,7 @@ let function getUnlockStagesDesc(cfg) {
     return ""
 
   let hasStages = (cfg.stages.len() ?? 0) > 1
-  let hideDesc = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
+  let hideDesc = isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
   if (!hasStages || hideDesc)
     return ""
 
@@ -724,7 +724,7 @@ let function getUnlockMainCondDescByCfg(cfg, params = null) {
   if (!mainCond)
     return ""
 
-  let hideCurVal = ::g_unlocks.isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
+  let hideCurVal = isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
   let curVal = params?.curVal ?? (hideCurVal ? null : cfg.curVal)
   return getUnlockMainCondDesc(mainCond, curVal, cfg.maxVal, params)
 }

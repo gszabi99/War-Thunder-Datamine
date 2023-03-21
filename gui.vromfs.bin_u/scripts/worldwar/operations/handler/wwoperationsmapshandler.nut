@@ -23,6 +23,9 @@ let wwAnimBgLoad = require("%scripts/worldWar/wwAnimBg.nut")
 let { addPopupOptList } = require("%scripts/worldWar/operations/handler/wwClustersList.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
+let { isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
+let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
+let wwVehicleSetModal = require("%scripts/worldWar/operations/handler/wwVehicleSetModal.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -74,14 +77,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     this.mapsListObj = this.scene.findObject("maps_list")
     this.mapsListNestObj = this.showSceneBtn("operation_list", this.isDeveloperMode)
 
-    this.topMenuHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
-      this.scene.findObject("topmenu_menu_panel"),
-      this,
-      ::g_ww_top_menu_operation_map,
-      this.scene.findObject("left_gc_panel_free_width")
-    )
-    this.registerSubHandler(this.topMenuHandlerWeak)
-
     foreach (timerObjId in [
         "ww_status_check_timer",  // periodic ww status updates check
         "queues_wait_timer",      // frequent queues wait time text update
@@ -99,6 +94,16 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     this.updateClustersTxt()
 
     this.reinitScreen()
+    let seenEntity = this.selMap?.name
+    seenWWOperationAvailable.setListGetter(@() seenEntity ? [seenEntity] : [])
+    this.topMenuHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
+      this.scene.findObject("topmenu_menu_panel"),
+      this,
+      ::g_ww_top_menu_operation_map,
+      this.scene.findObject("left_gc_panel_free_width")
+    )
+    this.registerSubHandler(this.topMenuHandlerWeak)
+
     ::enableHangarControls(true)
 
     if (this.needToOpenBattles)
@@ -289,7 +294,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let mainCond = getMainProgressCondition(unlConf.conditions)
       let progressTxt = getUnlockMainCondDesc(
         mainCond, unlConf.curVal, unlConf.maxVal, { isProgressTextOnly = true })
-      let isComplete = ::g_unlocks.isUnlockComplete(unlConf)
+      let isComplete = isUnlockComplete(unlConf)
       res.append({
         descTooltipText = unlConf.locId != "" ? getUnlockLocName(unlConf)
           : getUnlockNameText(unlConf.unlockType, unlConf.id)
@@ -845,6 +850,13 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     }
     this.updateWindow()
     ::move_mouse_on_child_by_value(selObj)
+  }
+
+  function openVehiclesPresetModal() {
+    if (!this.selMap)
+      return
+
+    wwVehicleSetModal.open({ map = this.selMap })
   }
 
   function openOperationsListModal() {

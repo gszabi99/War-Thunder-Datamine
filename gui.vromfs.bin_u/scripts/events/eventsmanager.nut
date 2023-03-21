@@ -2053,8 +2053,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function getEventTimeText(event) {
+    let endTime = ::events.getEventEndTime(event)
     if (::events.isEventEnabled(event)) {
-      let endTime = ::events.getEventEndTime(event)
       if (endTime > 0)
         return format(loc("events/event_ends_in"), colorize("activeTextColor", time.hoursToString(time.secondsToHours(endTime))))
       else
@@ -2063,6 +2063,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let startTime = ::events.getEventStartTime(event)
     if (startTime > 0)
       return format(loc("events/event_starts_in"), colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
+    if (endTime > 0)
+      return loc("events/event_not_started_yet")
     return loc("events/event_disabled")
   }
 

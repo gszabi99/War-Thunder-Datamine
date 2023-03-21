@@ -15,7 +15,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
 /*
   config = {
@@ -248,7 +248,7 @@ let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
       cost = cost.getTextAccordingToBalance()
     }), cost)
     let onSuccess = Callback(@() this.chooseImage(idx), this)
-    let onOk = @() ::g_unlocks.buyUnlock(unlockId, onSuccess)
+    let onOk = @() buyUnlock(unlockId, onSuccess)
     this.msgBox("question_buy_unlock", title, [["ok", onOk], ["cancel"]], "cancel")
   }
 

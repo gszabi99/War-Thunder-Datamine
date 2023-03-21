@@ -3,7 +3,6 @@ from "%rGui/globals/ui_library.nut" import *
 let mfdHud = require("mfd.nut")
 let heliIlsHud = require("heliIls.nut")
 let { bw, bh, rw, rh } = require("style/screenState.nut")
-let { IsRadarHudVisible } = require("radarState.nut")
 let {
   IndicatorsVisible, MainMask, SecondaryMask, SightMask, EmptyMask, IsArbiterHudVisible,
   IsPilotHudVisible, IsMainHudVisible, IsSightHudVisible, IsGunnerHudVisible,
@@ -135,7 +134,7 @@ let function helicopterArbiterHud() {
 
 let function mkHelicopterIndicators() {
   return @() {
-    watch = [IsRadarHudVisible, IsMfdEnabled, HudColor]
+    watch = [IsMfdEnabled, HudColor]
     children = [
       helicopterMainHud()
       helicopterSightHud()
@@ -144,7 +143,7 @@ let function mkHelicopterIndicators() {
       pilotHud()
       !IsMfdEnabled.value ? twsElement(MfdColor, twsPosComputed, twsSize) : null
       !IsMfdEnabled.value ? radarElement(MfdColor, radarPosWatched, radarSize) : null
-      !IsRadarHudVisible.value ? compassElem(MfdColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)]) : null
+      compassElem(MfdColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)])
       bombSightComponent(sh(10.0), sh(10.0), HudColor)
     ]
   }

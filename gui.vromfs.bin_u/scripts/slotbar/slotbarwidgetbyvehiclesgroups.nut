@@ -33,7 +33,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget {
       if (onlyForCountryIdx != null && onlyForCountryIdx != idx)
         continue
 
-      let visibleCountries = getShopVisibleCountries()
+      let visibleCountries = this.countriesToShow ?? getShopVisibleCountries()
       let listCountry = coutryCrews.country
       if ((this.singleCountry != null && this.singleCountry != listCountry)
         || visibleCountries.indexof(listCountry) == null)

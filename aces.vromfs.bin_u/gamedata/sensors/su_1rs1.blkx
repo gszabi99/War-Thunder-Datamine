@@ -3,9 +3,9 @@
   "name": "1RS1",
   "transivers": {
     "search": {
-      "power": 15000.0,
+      "power": 1500.0,
       "band": 5,
-      "rcs": 5.0,
+      "rcs": 2.5,
       "range": 38000.0,
       "rangeMax": 50000.0,
       "antenna": {
@@ -14,7 +14,7 @@
           "sideLobesSensitivity": -30.0
         },
         "elevation": {
-          "angleHalfSens": 12.0,
+          "angleHalfSens": 15.0,
           "sideLobesSensitivity": -30.0
         }
       }
@@ -29,16 +29,16 @@
       ],
       "elevationLimits": [
         0.0,
-        60.0
+        30.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
-      "rollStabLimit": 10.0,
-      "period": 1.0,
-      "barHeight": 22.5,
-      "barsCount": 1,
+      "pitchStabLimit": 20.0,
+      "rollStabLimit": 20.0,
+      "period": 2.0,
+      "barHeight": 15.0,
+      "barsCount": 2,
       "rowMajor": true,
-      "centerElevation": 11.25,
+      "centerElevation": 15.0,
       "preciseMinor": true
     },
     "searchMedium": {
@@ -52,13 +52,13 @@
         60.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
-      "rollStabLimit": 10.0,
-      "period": 2.0,
-      "barHeight": 22.5,
-      "barsCount": 2,
+      "pitchStabLimit": 20.0,
+      "rollStabLimit": 20.0,
+      "period": 4.0,
+      "barHeight": 15.0,
+      "barsCount": 4,
       "rowMajor": true,
-      "centerElevation": 22.5,
+      "centerElevation": 30.0,
       "preciseMinor": true
     },
     "searchWide": {
@@ -69,16 +69,16 @@
       ],
       "elevationLimits": [
         0.0,
-        60.0
+        80.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
-      "rollStabLimit": 10.0,
-      "period": 3.0,
-      "barHeight": 20.0,
-      "barsCount": 3,
+      "pitchStabLimit": 20.0,
+      "rollStabLimit": 20.0,
+      "period": 8.0,
+      "barHeight": 10.0,
+      "barsCount": 8,
       "rowMajor": true,
-      "centerElevation": 30.0,
+      "centerElevation": 40.0,
       "preciseMinor": true
     }
   },
@@ -101,8 +101,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 10.0,
-        "maxValue": 1300.0,
+        "minValue": 30.0,
+        "maxValue": 1000.0,
         "signalWidthMin": 5.0,
         "width": 0.0
       }
@@ -110,7 +110,8 @@
   },
   "scopeRanges": {
     "range1": 15000.0,
-    "range2": 50000.0
+    "range2": 30000.0,
+    "range3": 50000.0
   },
   "fsms": {
     "main": {
@@ -131,7 +132,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 7.5
+            "value": -4.0
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
@@ -141,15 +142,15 @@
               -45.0,
               45.0
             ],
-            "azimuthWidth": 4.0,
+            "azimuthWidth": 1.2,
             "elevationRange": [
               0.0,
               80.0
             ],
-            "elevationWidth": 4.0,
+            "elevationWidth": 2.0,
             "distanceRange": [
               0.0,
-              30000.0
+              36000.0
             ],
             "distanceRelWidthMin": 0.05
           }

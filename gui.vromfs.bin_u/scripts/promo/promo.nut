@@ -18,6 +18,7 @@ let { validateLink } = require("%scripts/onlineShop/url.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { is_chat_message_empty } = require("chat")
+let { checkUnlockString } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::g_promo <- {
   PROMO_BUTTON_TYPE = {
@@ -410,7 +411,7 @@ let function getFirstActiveSubBlockIndex(block) {
   if (!("reqUnlock" in block))
     return true
 
-  return ::g_unlocks.checkUnlockString(block.reqUnlock)
+  return checkUnlockString(block.reqUnlock)
 }
 
 ::g_promo.isVisibleByAction <- function isVisibleByAction(block) {

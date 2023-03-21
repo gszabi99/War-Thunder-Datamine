@@ -1,0 +1,71 @@
+{
+  "root": {
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "class": "wnd",
+      "type": "dark",
+      "height": "1@maxWindowHeightNoSrh",
+      "pos": "0.5pw-0.5w, 1@minYposWindow",
+      "position": "absolute",
+      "flow": "h-flow",
+      "wwBattleBackgroundBlock": {
+        "wwBattleBackground": {
+          "id": "operation_background"
+        }
+      },
+      "tdiv": [
+        {
+          "size": "pw, ph",
+          "position": "absolute",
+          "wwBattleBackgroundShadow": [
+            {
+              "type": "left"
+            },
+            {
+              "type": "right"
+            },
+            {
+              "type": "top"
+            },
+            {
+              "type": "bottom",
+              "top": "ph-h"
+            }
+          ]
+        },
+        {
+          "height": "fh",
+          "flow": "horizontal",
+          "scrollbarShortcuts": "yes",
+          "tdiv": [
+            {
+              "id": "team_SIDE_1_unit_info",
+              "height": "ph",
+              "left": "0",
+              "position": "relative"
+            },
+            {
+              "id": "team_SIDE_2_unit_info",
+              "height": "ph",
+              "left": "1@slotbarWidth-w",
+              "position": "absolute"
+            }
+          ]
+        },
+        {
+          "id": "nav-slotbar",
+          "pos": "0.5pw-0.5w, 1@slotbarTop+1@blockInterval",
+          "position": "relative"
+        }
+      ],
+      "frame_header": {
+        "activeText": {
+          "id": "wnd_title",
+          "caption": "yes"
+        },
+        "Button_close": {}
+      }
+    }
+  }
+}

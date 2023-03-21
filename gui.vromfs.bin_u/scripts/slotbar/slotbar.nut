@@ -1015,7 +1015,7 @@ if need - put commented in array above
   return params?.customUnitsList ? unit.name in params.customUnitsList : true
 }
 
-::initSlotbarTopBar <- function initSlotbarTopBar(slotbarObj, show) {
+::initSlotbarTopBar <- function initSlotbarTopBar(slotbarObj, show, boxesShow = true) {
   if (!checkObj(slotbarObj))
     return
 
@@ -1029,13 +1029,18 @@ if need - put commented in array above
   if (!show)
     return
 
-  local obj = mainObj.findObject("slots-autorepair")
-  if (checkObj(obj))
-    obj.setValue(::get_auto_refill(0))
+  let repObj = mainObj.findObject("slots-autorepair")
+  let weapObj = mainObj.findObject("slots-autoweapon")
+  repObj.show(boxesShow)
+  weapObj.show(boxesShow)
+  if (!boxesShow)
+    return
 
-  obj = mainObj.findObject("slots-autoweapon")
-  if (checkObj(obj))
-    obj.setValue(::get_auto_refill(1))
+  if (checkObj(repObj))
+    repObj.setValue(::get_auto_refill(0))
+
+  if (checkObj(weapObj))
+    weapObj.setValue(::get_auto_refill(1))
 }
 
 ::isCountryAvailable <- function isCountryAvailable(country) {

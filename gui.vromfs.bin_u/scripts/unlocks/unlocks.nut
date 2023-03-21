@@ -6,17 +6,15 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let DataBlock = require("DataBlock")
-let { format, strip, split_by_chars } = require("string")
+let { format } = require("string")
 let regexp2 = require("regexp2")
-let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
-let { number_of_set_bits } = require("%sqstd/math.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
   getUnlockMultDescByCfg, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getUnlockMultDesc,
   getUnlockNameText, getUnlockTypeText, getUnlockCostText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getUnlockConditions, getMainProgressCondition, getProgressBarData, loadMainProgressCondition,
-  loadConditionsFromBlk, getMultipliersTable, isBitModeType,
-  isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getMainProgressCondition, getProgressBarData, loadMainProgressCondition,
+  loadConditionsFromBlk, getMultipliersTable, isBitModeType, isTimeRangeCondition
+} = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockProgress, getUnlockTypeById } = require("unlocks")
 let { getAllUnlocks, getAllUnlocksWithBlkOrder, getUnlockById
 } = require("%scripts/unlocks/unlocksCache.nut")
@@ -1007,34 +1005,6 @@ let function setImageByUnlockType(config, unlockBlk) {
     multi_kill_ground = { [2] = "double_kill_ground", [3] = "triple_kill_ground", def = "multi_kill_ground" }
   }
 
-  function getTimeCondition(unlockBlk) {
-    let conds = getUnlockConditions(unlockBlk?.mode)
-    return conds.findvalue(@(c) isTimeRangeCondition(c.type))
-  }
-
-  function canDo(unlockBlk) {
-    if (unlockBlk == null || ::is_unlocked_scripted(-1, unlockBlk?.id))
-      return false
-
-    if (unlockBlk?.mode == null)
-      return false
-
-    let timeCond = this.getTimeCondition(unlockBlk)
-    return !timeCond || isInTimerangeByUtcStrings(timeCond.beginDate, timeCond.endDate)
-  }
-
-  function isUnlockExpired(unlockBlk) {
-    let timeCond = this.getTimeCondition(unlockBlk)
-    return timeCond && !::u.isEmpty(timeCond.endDate)
-      && getTimestampFromStringUtc(timeCond.endDate) <= ::get_charserver_time_sec()
-  }
-
-  function isUnlockComplete(cfg) {
-    return isBitModeType(cfg.type)
-      ? number_of_set_bits(cfg.curVal) >= number_of_set_bits(cfg.maxVal)
-      : cfg.curVal >= cfg.maxVal
-  }
-
   function setRewardIconCfg(cfg, blk, unlocked) {
     if (!blk?.userLogId)
       return
@@ -1118,74 +1088,4 @@ let function setImageByUnlockType(config, unlockBlk) {
     return unlockId
   let config = this.multiStageLocId[unlockId]
   return getTblValue(repeatInARow, config) || getTblValue("def", config, unlockId)
-}
-
-::g_unlocks.checkUnlockString <- function checkUnlockString(string) {
-  let unlocks = split_by_chars(string, ";")
-  foreach (unlockIdSrc in unlocks) {
-    local unlockId = strip(unlockIdSrc)
-    if (!unlockId.len())
-      continue
-
-    local confirmingResult = true
-    if (unlockId.len() > 1 && unlockId.slice(0, 1) == "!") {
-      confirmingResult = false
-      unlockId = unlockId.slice(1)
-    }
-
-    if (::is_unlocked_scripted(-1, unlockId) != confirmingResult)
-      return false
-  }
-
-  return true
-}
-
-::g_unlocks.buyUnlock <- function buyUnlock(unlockData, onSuccessCb = null, onAfterCheckCb = null) {
-  local unlock = unlockData
-  if (::u.isString(unlockData))
-    unlock = getUnlockById(unlockData)
-
-  if (!::check_balance_msgBox(getUnlockCost(unlock.id), onAfterCheckCb))
-    return
-
-  let taskId = ::shop_buy_unlock(unlock.id)
-  ::g_tasker.addTask(taskId, {
-      showProgressBox = true,
-      showErrorMessageBox = false
-      progressBoxText = loc("charServer/purchase")
-    },
-    onSuccessCb,
-    @(result) ::g_popups.add(::getErrorText(result), "")
-  )
-}
-
-::g_unlocks.debugLogVisibleByTimeInfo <- function debugLogVisibleByTimeInfo(id) {
-  let unlock = getUnlockById(id)
-  if (!unlock)
-    return
-
-  if (::is_numeric(unlock?.visibleDays)
-    || ::is_numeric(unlock?.visibleDaysBefore)
-    || ::is_numeric(unlock?.visibleDaysAfter)) {
-    foreach (cond in getUnlockConditions(unlock.mode)) {
-      if (!isTimeRangeCondition(cond?.type))
-        continue
-
-      let startTime = getTimestampFromStringUtc(cond.beginDate) -
-        daysToSeconds(unlock?.visibleDaysBefore ?? unlock?.visibleDays ?? 0)
-      let endTime = getTimestampFromStringUtc(cond.endDate) +
-        daysToSeconds(unlock?.visibleDaysAfter ?? unlock?.visibleDays ?? 0)
-      let currentTime = ::get_charserver_time_sec()
-      let isVisibleUnlock = (currentTime > startTime && currentTime < endTime)
-
-      log("unlock " + id + " is visible by time ? " + isVisibleUnlock)
-      log("curTime = " + currentTime + ", visibleDiapason = " + startTime + ", " + endTime
-        + ", beginDate = " + cond.beginDate + ", endDate = " + cond.endDate
-        + ", visibleDaysBefore = " + (unlock?.visibleDaysBefore ?? "?")
-        + ", visibleDays = " + (unlock?.visibleDays ?? "?")
-        + ", visibleDaysAfter = " + (unlock?.visibleDaysAfter ?? "?")
-      )
-      return
-    }
-  }
 }

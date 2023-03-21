@@ -16,7 +16,7 @@ let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unloc
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost
+let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost, debugLogVisibleByTimeInfo
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -347,7 +347,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
     else if (isUnlocked)
       log($"{cantPurchase} already unlocked")
     else if (!isPurchaseTime) {
-      ::g_unlocks.debugLogVisibleByTimeInfo(unlockId)
+      debugLogVisibleByTimeInfo(unlockId)
       log($"{cantPurchase} not purchase time. see time before.")
     }
   }

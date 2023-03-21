@@ -14,7 +14,7 @@ let eventbus = require("eventbus")
 let http = require("dagor.http")
 let { send_counter } = require("statsd")
 let { get_time_msec } = require("dagor.time")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { parse_json } = require("json")
 
 const MSEC_BETWEEN_REQUESTS = 600000
@@ -276,20 +276,26 @@ let function openChangelog() {
 let canShowChangelog = @() ::handlersManager.findHandlerClassInScene(
   ::gui_handlers.MainMenu)?.isSceneActiveNoModals() ?? false
 
+let function openChangelogInActiveMainMenuImpl() {
+  if (!canShowChangelog())
+    return
+
+  openChangelog()
+}
+
 let function openChangelogInActiveMainMenuIfNeed() {
   if (!needShowChangelog() || !canShowChangelog())
     return
 
-  openChangelog()
+  deferOnce(openChangelogInActiveMainMenuImpl)
 }
 
 chosenPatchnoteContent.subscribe(@(value) eventbus.send("updateChosenPatchnoteContent", { value }))
 versions.subscribe(@(value) eventbus.send("updateChangelogsVersions", { value }))
 curPatchnote.subscribe(@(value) eventbus.send("updateCurPatchnote", { value }))
 chosenPatchnoteLoaded.subscribe(function (value) {
-  clearTimer(openChangelogInActiveMainMenuIfNeed)
   eventbus.send("updateChosenPatchnoteLoaded", { value })
-  setTimeout(0.1, openChangelogInActiveMainMenuIfNeed)
+  openChangelogInActiveMainMenuIfNeed()
 })
 patchnotesReceived.subscribe(function(value) {
   eventbus.send("updatePatchnotesReceived", { value })

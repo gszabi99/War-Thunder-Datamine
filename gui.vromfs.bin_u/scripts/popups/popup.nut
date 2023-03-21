@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-::Popup <- class {
+let class Popup {
   static POPUP_BLK = "%gui/popup/popup.blk"
   static POPUP_BUTTON_BLK = "%gui/popup/popupButton.blk"
 
@@ -46,6 +46,7 @@ from "%scripts/dagui_library.nut" import *
       this.selfObj.findObject("title").show(false)
 
     this.selfObj.findObject("msg").setValue(this.message)
+    this.selfObj["skip-navigation"] = (this.onClickPopupAction == null) ? "yes" : "no"
 
     let obj = this.selfObj.findObject("popup_buttons_place")
     foreach (button in this.buttons) {
@@ -108,3 +109,5 @@ from "%scripts/dagui_library.nut" import *
     this.requestDestroy(false)
   }
 }
+
+return Popup

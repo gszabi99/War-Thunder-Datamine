@@ -721,6 +721,11 @@ let function getMainProgressCondition(conditions) {
   return null
 }
 
+let function getTimeRangeCondition(unlockBlk) {
+  let conds = getUnlockConditions(unlockBlk?.mode)
+  return conds.findvalue(@(c) isTimeRangeCondition(c.type))
+}
+
 let function getMainConditionListPrefix(conditions) {
   let mainCondition = getMainProgressCondition(conditions)
   if (mainCondition == null)
@@ -757,6 +762,7 @@ return {
   getSubunlockCfg
   getMultipliersTable
   getMainProgressCondition
+  getTimeRangeCondition
   getMainConditionListPrefix
   getUnlockConditions
   getHeaderCondition

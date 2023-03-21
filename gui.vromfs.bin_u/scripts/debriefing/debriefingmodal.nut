@@ -1967,7 +1967,7 @@ let statTooltipColumnParamByType = {
         obj.pos = $"-2w -{this.awardOffset} ,0"
 
     let icoObj = obj.findObject("award_img")
-    ::set_unlock_icon_by_config(icoObj, config, false, to_pixels("1@debriefingUnlockIconSize"))
+    ::set_unlock_icon_by_config(icoObj, config, false, to_pixels(awardSize ?? "1@debriefingUnlockIconSize"))
     let awMultObj = obj.findObject("award_multiplier")
     if (checkObj(awMultObj)) {
       let show = config.amount > 1

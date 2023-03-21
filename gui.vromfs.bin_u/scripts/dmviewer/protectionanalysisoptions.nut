@@ -459,7 +459,7 @@ options.addTypes({
 
     updateParams = function(_handler, _scene) {
       this.minValue = 0
-      this.maxValue = options.UNIT.value?.isShipOrBoat() ? 15000 : 5000
+      this.maxValue = options.UNIT.value?.isShipOrBoat() ? 15000 : 2000
       this.step     = 100
       let preferredDistance = this.value >= 0 ? this.value
         : (options.UNIT.value?.isShipOrBoat() ? 2000 : 500)
