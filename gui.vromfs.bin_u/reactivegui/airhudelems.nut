@@ -11,7 +11,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   CannonsAdditionalCount, CannonsAdditionalSeconds, CannonsAdditionalMode, CannonsAdditionalSelected, IsCanAdditionalEmpty,
   AgmCount, AgmSeconds, AgmTimeToHit, AgmTimeToWarning, AgmActualCount, AgmName, AgmSelected, IsAgmEmpty,
   AamCount, AamSeconds, AamActualCount, AamName, AamSelected, IsAamEmpty,
-  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
+  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsMode, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
   FlaresCount, FlaresSeconds, FlaresMode, IsFlrEmpty,
   ChaffsCount, ChaffsSeconds, ChaffsMode, IsChaffsEmpty,
   RocketsCount, RocketsSeconds, RocketsActualCount, RocketsSalvo, RocketsMode, RocketsName, RocketsSelected, IsRktEmpty,
@@ -270,68 +270,6 @@ let function getThrottleCaption(mode, isControled, idx) {
   return "".join(texts)
 }
 
-let function getAGCaption(guidanceLockState, pointIsTarget) {
-  let texts = []
-  if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
-    texts.append(loc("HUD/TXT_AGM_SHORT"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
-    texts.append(loc("HUD/TXT_AGM_STANDBY"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
-    texts.append(loc("HUD/TXT_AGM_WARM_UP"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
-    texts.append(loc("HUD/TXT_AGM_LOCK"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(loc(!pointIsTarget ? "HUD/TXT_AGM_TRACK" : "HUD/TXT_AGM_TRACK_POINT"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    texts.append(loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH"))
-  return "".join(texts)
-}
-
-let function getAACaption(guidanceLockState) {
-  let texts = []
-  if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
-    texts.append(loc("HUD/TXT_AAM_SHORT"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
-    texts.append(loc("HUD/TXT_AAM_STANDBY"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
-    texts.append(loc("HUD/TXT_AAM_WARM_UP"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
-    texts.append(loc("HUD/TXT_AAM_LOCK"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(loc("HUD/TXT_AAM_TRACK"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    texts.append(loc("HUD/TXT_AAM_LOCK_AFTER_LAUNCH"))
-  return "".join(texts)
-}
-
-let function getGBCaption(guidanceLockState, pointIsTarget) {
-  let texts = []
-  if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_SHORT"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_STANDBY"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_WARM_UP"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
-    texts.append(loc(!pointIsTarget ? "HUD/TXT_GUIDED_BOMBS_TRACK" : "HUD/TXT_GUIDED_BOMBS_POINT_TRACK"))
-  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
-    texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK_AFTER_LAUNCH"))
-  return "".join(texts)
-}
-
-let function getCountermeasuresCaption(isFlare, mode) {
-  let texts = isFlare ? [loc("HUD/FLARES_SHORT"), " "] : [loc("HUD/CHAFFS_SHORT"), " "]
-  if (mode & CountermeasureMode.PERIODIC_COUNTERMEASURE)
-    texts.append(loc("HUD/COUNTERMEASURE_PERIODIC"))
-  if (mode == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
-    texts.append(loc("HUD/INDICATION_MODE_SEPARATION"))
-  if (mode & CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE)
-    texts.append(loc("HUD/COUNTERMEASURE_MLWS"))
-  return "".join(texts)
-}
-
 let function getModeCaption(mode) {
   let texts = []
   if (mode & (1 << WeaponMode.CCRP_MODE))
@@ -370,6 +308,70 @@ let function getBombModeCaption(mode) {
   if (mode & (1 << WeaponMode.BOMB_BAY_CLOSING))
     texts.append(loc("HUD/BAY_DOOR_IS_CLOSING_INDICATION"))
 
+  return "".join(texts)
+}
+
+let function getAGCaption(guidanceLockState, pointIsTarget) {
+  let texts = []
+  if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
+    texts.append(loc("HUD/TXT_AGM_SHORT"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
+    texts.append(loc("HUD/TXT_AGM_STANDBY"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
+    texts.append(loc("HUD/TXT_AGM_WARM_UP"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
+    texts.append(loc("HUD/TXT_AGM_LOCK"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
+    texts.append(loc(!pointIsTarget ? "HUD/TXT_AGM_TRACK" : "HUD/TXT_AGM_TRACK_POINT"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
+    texts.append(loc("HUD/TXT_AGM_LOCK_AFTER_LAUNCH"))
+  return "".join(texts)
+}
+
+let function getAACaption(guidanceLockState) {
+  let texts = []
+  if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
+    texts.append(loc("HUD/TXT_AAM_SHORT"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
+    texts.append(loc("HUD/TXT_AAM_STANDBY"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
+    texts.append(loc("HUD/TXT_AAM_WARM_UP"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
+    texts.append(loc("HUD/TXT_AAM_LOCK"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
+    texts.append(loc("HUD/TXT_AAM_TRACK"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
+    texts.append(loc("HUD/TXT_AAM_LOCK_AFTER_LAUNCH"))
+  return "".join(texts)
+}
+
+let function getGBCaption(guidanceLockState, pointIsTarget, mode) {
+  let texts = []
+  if (guidanceLockState == GuidanceLockResult.RESULT_INVALID)
+    texts.append(loc("HUD/TXT_GUIDED_BOMBS_SHORT"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_STANDBY)
+    texts.append(loc("HUD/TXT_GUIDED_BOMBS_STANDBY"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP)
+    texts.append(loc("HUD/TXT_GUIDED_BOMBS_WARM_UP"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
+    texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
+    texts.append(loc(!pointIsTarget ? "HUD/TXT_GUIDED_BOMBS_TRACK" : "HUD/TXT_GUIDED_BOMBS_POINT_TRACK"))
+  else if (guidanceLockState == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
+    texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK_AFTER_LAUNCH"))
+  texts.append(" ")
+  texts.append(getBombModeCaption(mode))
+  return "".join(texts)
+}
+
+let function getCountermeasuresCaption(isFlare, mode) {
+  let texts = isFlare ? [loc("HUD/FLARES_SHORT"), " "] : [loc("HUD/CHAFFS_SHORT"), " "]
+  if (mode & CountermeasureMode.PERIODIC_COUNTERMEASURE)
+    texts.append(loc("HUD/COUNTERMEASURE_PERIODIC"))
+  if (mode == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
+    texts.append(loc("HUD/INDICATION_MODE_SEPARATION"))
+  if (mode & CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE)
+    texts.append(loc("HUD/COUNTERMEASURE_MLWS"))
   return "".join(texts)
 }
 
@@ -672,7 +674,7 @@ let textParamsMapMain = {
   },
   [AirParamsMain.GUIDED_BOMBS] = {
     titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
-      getGBCaption(guidedBombsGuidanceLockState.value, guidedBombsGuidancePointIsTarget.value))
+      getGBCaption(guidedBombsGuidanceLockState.value, guidedBombsGuidancePointIsTarget.value, GuidedBombsMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(GuidedBombsCount.value, GuidedBombsSeconds.value, 0, GuidedBombsActualCount.value))
     selectedComputed = Computed(@() GuidedBombsSelected.value ? ">" : "")
     additionalComputed = Computed(@() loc(GuidedBombsName.value))

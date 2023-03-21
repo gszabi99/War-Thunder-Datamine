@@ -1191,16 +1191,18 @@ let descByPartId = {
       case "pilot":
       case "gunner_helicopter":
         foreach (cfg in [
-          { label = "avionics_sight_turret", ccipKey = "haveCCIPForTurret", ccrpKey = "haveCCRPForTurret"  }
-          { label = "avionics_sight_cannon", ccipKey = "haveCCIPForGun",    ccrpKey = "haveCCRPForGun"     }
-          { label = "avionics_sight_rocket", ccipKey = "haveCCIPForRocket", ccrpKey = "haveCCRPForRocket"  }
+          { label = "avionics_sight_turret", ccipKey = "haveCCIPForTurret", autoKey = "haveCCRPForTurret"  }
+          { label = "avionics_sight_cannon", ccipKey = "haveCCIPForGun",    autoKey = "haveCCRPForGun"     }
+          { label = "avionics_sight_rocket", ccipKey = "haveCCIPForRocket", autoKey = "haveCCRPForRocket"  }
           { label = "avionics_sight_bomb",   ccipKey = "haveCCIPForBombs",  ccrpKey = "haveCCRPForBombs"   }
         ]) {
           let haveCcip = this.unitBlk?[cfg.ccipKey] ?? false
-          let haveCcrp = this.unitBlk?[cfg.ccrpKey] ?? false
-          if (haveCcip || haveCcrp)
+          let haveAuto = this.unitBlk?[cfg?.autoKey] ?? false
+          let haveCcrp = this.unitBlk?[cfg?.ccrpKey] ?? false
+          if (haveCcip || haveAuto || haveCcrp)
             desc.append("".concat(loc(cfg.label), loc("ui/colon"),
-              loc("ui/comma").join([ haveCcip ? loc("CCIP") : "", haveCcrp ? loc("CCRP") : "" ], true)))
+              loc("ui/comma").join([ haveCcip ? loc("CCIP") : "",
+               haveAuto ? loc("sight_AUTO") : "" , haveCcrp ? loc("CCRP") : "" ], true)))
         }
 
         let nightVisionBlk = this.findAnyModEffectValue("nightVision")

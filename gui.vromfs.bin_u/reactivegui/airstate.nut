@@ -356,6 +356,7 @@ let helicopterState = {
 
   GuidedBombsCount = Computed(@() GuidedBombsState.value.count),
   GuidedBombsSeconds = Computed(@() GuidedBombsState.value.seconds),
+  GuidedBombsMode = Computed(@() GuidedBombsState.value.mode),
   GuidedBombsActualCount = Computed(@() GuidedBombsState.value.actualCount),
   GuidedBombsName = Computed(@() GuidedBombsState.value.name),
   GuidedBombsSelected = Computed(@() GuidedBombsState.value.selected),
