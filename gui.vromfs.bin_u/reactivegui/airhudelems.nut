@@ -334,12 +334,27 @@ let function getCountermeasuresCaption(isFlare, mode) {
 
 let function getModeCaption(mode) {
   let texts = []
-  if ((mode & (1 << WeaponMode.CCIP_MODE)) && (mode & (1 << WeaponMode.CCRP_MODE)))
-    texts.append(loc("HUD/WEAPON_MODE_CCIP_CCRP"))
-  else if (mode & (1 << WeaponMode.CCIP_MODE))
+  if (mode & (1 << WeaponMode.CCRP_MODE))
+    texts.append(loc("HUD/WEAPON_MODE_AUTO"))
+  else if (mode & (1 << WeaponMode.GYRO_MODE))
+    texts.append(loc("HUD/WEAPON_MODE_GYRO"))
+  if (mode & (1 << WeaponMode.CCIP_MODE)) {
+    if (texts.len() > 0)
+      texts.append("/")
     texts.append(loc("HUD/WEAPON_MODE_CCIP"))
-  else if (mode & (1 << WeaponMode.CCRP_MODE))
+  }
+  return "".join(texts)
+}
+
+let function getBombModeCaption(mode) {
+  let texts = []
+  if (mode & (1 << WeaponMode.CCRP_MODE))
     texts.append(loc("HUD/WEAPON_MODE_CCRP"))
+  if (mode & (1 << WeaponMode.CCIP_MODE)) {
+    if (texts.len() > 0)
+      texts.append("/")
+    texts.append(loc("HUD/WEAPON_MODE_CCIP"))
+  }
 
   //check both ccip/rp and bombBay
   let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
@@ -378,7 +393,7 @@ let function getRocketCaption(mode) {
 
 let function getBombCaption(mode) {
   let texts = [loc("HUD/BOMBS_SHORT"), " "]
-  texts.append(getModeCaption(mode))
+  texts.append(getBombModeCaption(mode))
   return "".join(texts)
 }
 
@@ -476,8 +491,8 @@ let function createParam(param, width, height, style, colorWatch, needCaption, f
     watch = [titleComputed, colorAlertCaptionW, alertStateCaptionComputed, colorFxCaption, factorFxCaption]
     rendObj = ROBJ_TEXT
     size = [SIZE_TO_CONTENT, height]
-    margin = [0, 0.06 * width, 0, 0]
-    minWidth = 0.2 * width
+    margin = [0, 0.0, 0, 0]
+    minWidth = 0.26 * width
     text = titleComputed.value
     color = colorAlertCaptionW.value
     fontFxColor = colorFxCaption.value

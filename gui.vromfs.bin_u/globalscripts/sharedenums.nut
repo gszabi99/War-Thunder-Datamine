@@ -165,7 +165,8 @@ global enum WeaponMode {
   BOMB_BAY_OPEN = 3,
   BOMB_BAY_CLOSED = 4,
   BOMB_BAY_OPENING = 5,
-  BOMB_BAY_CLOSING = 6
+  BOMB_BAY_CLOSING = 6,
+  GYRO_MODE = 7
 };
 
 global enum IRCMMode {
