@@ -806,7 +806,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
           let req = reqMods - countMods
 
           let tooltipText = loc("weaponry/unlockTier/tooltip",
-                                    { amount = req.tostring(), tier = ::get_roman_numeral(i + 1) })
+            { amount = req, tier = ::get_roman_numeral(i + 1) })
           jObj.tooltip = tooltipText
           modsCountObj.tooltip = loc("weaponry/unlockTier/countsBlock/startText") + "\n" + tooltipText
         }
