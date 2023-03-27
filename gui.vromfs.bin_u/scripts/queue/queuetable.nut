@@ -87,7 +87,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
   function updateTip() {
     let tipObj = this.scene.findObject("queue_tip")
-    if (tipObj?.isValid() ?? false)
+    if (!tipObj?.isValid())
       return
 
     tipObj.setValue(getCurEsUnitTypesMask())

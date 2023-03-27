@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
-let { hangar_get_current_unit_name, hangar_get_loaded_unit_name } = require("hangar")
+let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_decorators = @() null } = require("hangar")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -603,6 +603,7 @@ let isEventUnit = @(unit) unit.event != null
       if (!(mod?.requiresModelReload ?? false))
         continue
       ::hangar_force_reload_model()
+      force_retrace_decorators()
       break
     }
   }

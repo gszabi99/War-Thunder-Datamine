@@ -41,10 +41,18 @@ shopItem {
   hoverHighlight {}
 
   shopStat:t='<<shopStatus>>'
-
+  unitRarity:t='<<unitRarity>>'
   shopAirImg {
     foreground-image:t='<<shopAirImg>>'
   }
+
+  <<#isElite>>
+  eliteIcon {}
+  <</isElite>>
+
+  <<#hasTalismanIcon>>
+  talismanIcon {}
+  <</hasTalismanIcon>>
 
   topline {
     shopItemText {

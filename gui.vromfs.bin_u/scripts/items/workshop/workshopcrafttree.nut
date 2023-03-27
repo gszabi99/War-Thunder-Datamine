@@ -145,8 +145,8 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
 
     let posX = itemConfig.posXY.x.tointeger()
     let posY = itemConfig.posXY.y.tointeger()
-    minPosX = min(minPosX ?? posX, posX)
-    maxPosX = max(maxPosX ?? posX, posX)
+    minPosX = branchBlk?.startX ?? min(minPosX ?? posX, posX)
+    maxPosX = branchBlk?.endX ?? max(maxPosX ?? posX, posX)
     if (itemConfig.showResources && resourcesInColumn?[posX - 1] == null)
       resourcesInColumn[posX - 1] <- 1
 
@@ -221,19 +221,20 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
   if (buttonConfig?.generatorId != null)
     itemsIdList[buttonConfig.generatorId] <- true
   return {
-    treeRows = treeRows
+    treeRows
     branch = DEFAULT_BRANCH_CONFIG.__merge({
       locId = branchBlk?.locId
-      headerItems = headerItems
-      minPosX = minPosX
+      headerItems
+      minPosX
+      maxPosX
       itemsCountX = maxPosX - minPosX + 1
-      branchItems = branchItems
-      resourcesInColumn = resourcesInColumn
+      branchItems
+      resourcesInColumn
       columnWithResourcesCount = resourcesInColumn.reduce(@(res, value) res + value, 0)
-      bodyIdx = bodyIdx
-      textBlocks = textBlocks
+      bodyIdx
+      textBlocks
       buttonConfig
-      itemsIdList = itemsIdList
+      itemsIdList
     })
   }
 }
@@ -315,7 +316,7 @@ let function generateTreeConfig(blk) {
      curBodyConfig.columnWithResourcesCount += branch.columnWithResourcesCount
      curBodyConfig.bodyTitlesCount += !hasBranchesTitlesInBody && hasBranchTitle ? 1 : 0
      curBodyConfig.hasBranchesTitles = hasBranchesTitlesInBody || hasBranchTitle
-     curBodyConfig.treeColumnsCount += branch.itemsCountX
+     curBodyConfig.treeColumnsCount = max(branch.maxPosX, curBodyConfig.treeColumnsCount)
      curBodyConfig.textBlocks.extend(branch.textBlocks)
      curBodyConfig.availableBranchByColumns[branch.minPosX - 1] <- true
      curBodyConfig.resourcesInColumn.__update(branch.resourcesInColumn)

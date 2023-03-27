@@ -455,12 +455,7 @@ local ExchangeRecipes = class {
       : "badTextColor"
 
   static function tryUse(recipes, componentItem, params = {}) {
-    local recipe = null
-    foreach (r in recipes)
-      if (r.isUsable) {
-        recipe = r
-        break
-      }
+    let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
 
     if (componentItem.hasReachedMaxAmount() && !(recipe?.isDisassemble ?? false)) {
       ::scene_msg_box("reached_max_amount", null,
@@ -469,7 +464,7 @@ local ExchangeRecipes = class {
       return false
     }
 
-    if (recipe == null) {
+    if (!recipe?.isUsable) {
       this.showUseErrorMsg(recipes, componentItem)
       return false
     }

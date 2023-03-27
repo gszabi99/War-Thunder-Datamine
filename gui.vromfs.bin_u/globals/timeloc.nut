@@ -17,15 +17,15 @@ These functions also has very poor API:
 */
 
 let timeBase = require("%sqstd/time.nut")
-let stdStr = require("string")
-let math = require("math")
+let { format } = require("string")
+let { fabs, floor } = require("math")
 
 let { TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS } = timeBase
 
 local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = loc) {
   let res = []
   let sign = time >= 0 ? "" : i18n("ui/minus")
-  time = math.fabs(time.tofloat())
+  time = fabs(time.tofloat())
 
   let dd = (time / 24).tointeger()
   let hh = (time % 24).tointeger()
@@ -44,7 +44,7 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
     if (res.len() > 0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/hours", { n = hh }) :
-      stdStr.format((time >= 24) ? "%02d%s" : "%d%s", hh, i18n("measureUnits/hours")))
+      format((time >= 24) ? "%02d%s" : "%d%s", hh, i18n("measureUnits/hours")))
     if (dontShowZeroParam && mm == 0) {
       return "".join([sign].extend(res))
     }
@@ -54,14 +54,14 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
     if (res.len() > 0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/minutes", { n = mm }) :
-      stdStr.format((time >= 1) ? "%02d%s" : "%d%s", mm, i18n("measureUnits/minutes")))
+      format((time >= 1) ? "%02d%s" : "%d%s", mm, i18n("measureUnits/minutes")))
   }
 
   if ((((ss > 0 || !dontShowZeroParam) && useSeconds) || res.len() == 0) && (time < 1.0 / 6)) { // < 10min
     if (res.len() > 0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/seconds", { n = ss }) :
-      stdStr.format("%02d%s", ss, i18n("measureUnits/seconds")))
+      format("%02d%s", ss, i18n("measureUnits/seconds")))
   }
 
   if (res.len() == 0)
@@ -72,7 +72,7 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
 
 local function secondsToString(value, useAbbreviations = true, dontShowZeroParam = false, secondsFraction = 0, i18n = loc) {
   value = value != null ? value.tofloat() : 0.0
-  let s = (math.fabs(value) + 0.5).tointeger()
+  let s = (fabs(value) + 0.5).tointeger()
   let res = []
   let separator = useAbbreviations ? " " : ":"
   let sign = value >= 0 ? "" : i18n("ui/minus")
@@ -82,7 +82,7 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
   let secondsNum = (secondsFraction > 0 ? value : s) % TIME_MINUTE_IN_SECONDS
 
   if (hoursNum != 0) {
-    res.append(stdStr.format("%d%s", hoursNum, useAbbreviations ? i18n("measureUnits/hours") : ""))
+    res.append(format("%d%s", hoursNum, useAbbreviations ? i18n("measureUnits/hours") : ""))
   }
 
   if (!dontShowZeroParam || minutesNum != 0) {
@@ -90,7 +90,7 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
     if (res.len() > 0)
       res.append(separator)
     res.append(
-      stdStr.format(fStr, minutesNum, useAbbreviations ? i18n("measureUnits/minutes") : "")
+      format(fStr, minutesNum, useAbbreviations ? i18n("measureUnits/minutes") : "")
     )
   }
 
@@ -102,7 +102,7 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
     if (res.len() > 0)
       res.append(separator)
     res.append(
-      stdStr.format(fStr, secondsNum, useAbbreviations ? i18n("measureUnits/seconds") : "")
+      format(fStr, secondsNum, useAbbreviations ? i18n("measureUnits/seconds") : "")
     )
   }
 
@@ -126,13 +126,30 @@ let function buildDateStr(timeTable) {
 let function buildTimeStr(timeTable, showZeroSeconds = false, showSeconds = true) {
   let sec = timeTable?.sec ?? -1
   if (showSeconds && (sec > 0 || (showZeroSeconds && sec == 0)))
-    return stdStr.format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
+    return format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
   else
-    return stdStr.format("%d:%02d", timeTable.hour, timeTable.min)
+    return format("%d:%02d", timeTable.hour, timeTable.min)
 }
 
 let buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") //warning disable: -forgot-subst
   formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds) })
+
+let function buidPartialTimeStr(timeSec) {
+  local tmp = timeSec
+  let secs = tmp - floor(tmp / 60) * 60
+  tmp = floor(tmp / 60)
+  let mins = tmp - floor(tmp / 60) * 60
+  tmp = floor(tmp / 60)
+  let hours = tmp - floor(tmp / 24) * 24
+  let days = floor(tmp / 24)
+
+  if(days > 0)
+    return format("%d%s %02d%s", days, loc("measureUnits/days"), hours, loc("measureUnits/hours"))
+  else if(hours > 0)
+    return format("%02d%s %02d%s", hours, loc("measureUnits/hours"), mins, loc("measureUnits/minutes"))
+  else
+    return format("%02d%s %02d%s", mins, loc("measureUnits/minutes"), secs, loc("measureUnits/seconds"))
+}
 
 return timeBase.__merge({
   secondsToString
@@ -140,4 +157,5 @@ return timeBase.__merge({
   buildDateStr
   buildTimeStr
   buildDateTimeStr
+  buidPartialTimeStr
 })

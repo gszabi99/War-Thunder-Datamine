@@ -10,7 +10,18 @@ let { parse } = require("json")
 let { charSendBlk } = require("chard")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { hoursToString, secondsToHours } = require("%scripts/time.nut")
+let { format }  = require("string")
+let { getUnitRoleIcon, getFullUnitRoleText } = require("%scripts/unit/unitInfoTexts.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
+
+let offerTypes = {
+  unit = "shop/section/premium"
+  unlock = "trophy/unlockables_names/achievement"
+  gold = "charServer/chapter/eagles"
+  premium_in_hours = "charServer/entitlement/PremiumAccount"
+  item = "item"
+}
 
 let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -18,40 +29,152 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   offerName = ""
   timeExpired = -1
-  costOffer = null
+  costGold = null
+  fullCostGold = null
+  discountValue = null
   offerContent = null
+  groups = null
 
   function initScreen() {
-    this.updateButtons()
-    this.updateRewards()
     if (this.timeExpired > 0) {
       this.updateTimeLeftText()
       this.scene.findObject("update_timer").setUserData(this)
     }
+    this.updateDiscount()
+    this.updateImages()
+    this.updateButtons()
+    this.prepareRewardsData()
+    this.updateRewards()
+  }
+
+  function updateDiscount() {
+    this.scene.findObject("exclusive_price_value_text").setValue(this.fullCostGold.getUncoloredText())
+    this.scene.findObject("discount_value_text").setValue($"{this.discountValue.tostring()}%")
+  }
+
+  function updateImages() {
+    let maxTextWidthNoResize = to_pixels("290@sf/@pf")
+    this.guiScene.applyPendingChanges(false)
+    let personalTextSize = this.scene.findObject("personal_text").getSize()
+    this.scene.findObject("header_image_center")["width"] = max(0, personalTextSize[0] - maxTextWidthNoResize)
+
+    let exclusivePriceSize = this.scene.findObject("exclusive_price").getSize()
+    let timeDiscountExpiredTextSize = this.scene.findObject("time_discount_expired_text").getSize()
+
+    let maxSize = max(timeDiscountExpiredTextSize[0] - to_pixels("13@sf/@pf"), exclusivePriceSize[0])
+    this.scene.findObject("discount_image_center")["width"] = max(0, maxSize - maxTextWidthNoResize)
+  }
+
+  getGroupTitle = @(offerType) loc(offerTypes?[offerType] ?? $"trophy/unlockables_names/{offerType}", "")
+
+  function prepareRewardsData() {
+    this.offerContent.apply(@(config) DataBlock(config))
+
+    this.groups = []
+
+    foreach(config in this.offerContent) {
+      local firstInBlock = false
+
+      let localConfig = DataBlock()
+      localConfig.setFrom(config)
+      let button = ::PrizesView.getPrizeActionButtonsView(localConfig, { shopDesc = true })
+      local offerType = ::trophyReward.getType(localConfig)
+      offerType = offerType != "resourceType" ? offerType : localConfig.resourceType
+      local group = this.groups.findvalue(@(value) value?.type == offerType)
+      if(group == null) {
+        group = {
+          type = offerType
+          title = this.getGroupTitle(offerType)
+          items = []
+          units = []
+          needSeparator =  this.groups.len() > 0
+        }
+        this.groups.append(group)
+        firstInBlock = true
+      }
+
+      let count = localConfig?.count ?? 1
+      localConfig.count = 0
+      let itemData =  {
+        description = ::trophyReward.getRewardText(localConfig, false, "#FFFFFF")
+        count = count > 1 ? $"x{count}" : ""
+        firstInBlock
+      }
+
+      if(offerType != "unit") {
+        itemData.image <- ::trophyReward.getImageByConfig(localConfig, false, "", true)
+        itemData.canPreview <- false
+        if(button.len() > 0) {
+          itemData.btnTooltip <- button[0].tooltip
+          itemData.funcName <- button[0].funcName
+          itemData.actionParamsMarkup <- button[0].actionParamsMarkup
+          itemData.canPreview = true
+        }
+        group.items.append(itemData)
+      }
+      else {
+        let unit = ::getAircraftByName(localConfig.unit)
+
+        let fakeUnit = {
+          isFakeUnit = true
+          name = ""
+          nameLoc = ""
+          image = ::image_for_air(unit)
+        }
+
+        let unitPlate = ::build_aircraft_item(localConfig.unit, fakeUnit, {
+            hasActions = false
+            isLocalState = true
+            showAsTrophyContent = true
+            isReceivedPrizes = true
+            status = "canBuy"
+            unitRarity = "premium"
+            isElite = true
+            hasTalismanIcon = true
+            tooltipId = ::g_tooltip.getIdUnit(localConfig.unit)
+          })
+        itemData.unitFullName <- ::getUnitName(unit, false)
+        itemData.image <- unitPlate
+        itemData.countryIco <- ::get_unit_country_icon(unit, false)
+        let fonticon = getUnitRoleIcon(unit)
+        let typeText = getFullUnitRoleText(unit)
+        itemData.unitType <- colorize(::getUnitClassColor(unit), $"{typeText} {fonticon}")
+        itemData.br <- format("%.1f", unit.getBattleRating(::get_current_ediff()))
+        itemData.unitRank <- "".concat(loc("shop/age"), loc("ui/colon"), ::get_roman_numeral(unit.rank))
+        itemData.btnTooltip <- button[0].tooltip
+        itemData.funcName <- button[0].funcName
+        itemData.actionParamsMarkup <- button[0].actionParamsMarkup
+        group.units.append(itemData)
+      }
+    }
   }
 
   function updateRewards() {
-    let data = ::trophyReward.getRewardsListViewData(this.offerContent,
-      { multiAwardHeader = true
-        widthByParentParent = true
-        header = loc("mainmenu/you_will_receive")
-      })
-    this.guiScene.replaceContentFromText(this.scene.findObject("offer_markup"), data, data.len(), this)
+    let data = ::handyman.renderCached("%gui/profile/offerItem.tpl", { offers = this.groups })
+    let nest = this.scene.findObject("offer_markup")
+    this.guiScene.replaceContentFromText(nest, data, data.len(), this)
   }
 
   function updateButtons() {
-    placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnBuy"), this.costOffer)
+    placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnBuy"), this.costGold)
   }
 
   function updateTimeLeftText() {
     let timeLeftSec = this.timeExpired - ::get_charserver_time_sec()
-    let timerObj = this.showSceneBtn("time_expired_text", timeLeftSec > 0)
+    let timeDiscountExpiredObj = this.showSceneBtn("time_discount_expired_text", timeLeftSec > 0)
+    let timeExpiredObj = this.showSceneBtn("time_expired_value", timeLeftSec > 0)
+    this.showSceneBtn("time_expired_text", timeLeftSec > 0)
     if (timeLeftSec <= 0)
       return
 
-    timerObj.setValue(loc("specialOffer/TimeSec", {
-      time = colorize("userlogColoredText", hoursToString(secondsToHours(timeLeftSec)))
+    let timeString = buidPartialTimeStr(timeLeftSec)
+    timeDiscountExpiredObj.setValue(loc("specialOffer/TimeSec", {
+      time = colorize("userlogColoredText", timeString)
     }))
+
+    if(getStringWidthPx(timeString, "fontMedium", this.guiScene) > to_pixels("110@sf/@pf"))
+      timeExpiredObj["mediumFont"] = "no"
+    timeExpiredObj.setValue(timeString)
   }
 
   function onBuyImpl() {
@@ -66,13 +189,13 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let msgText = ::warningIfGold(
       loc("onlineShop/needMoneyQuestion", {
           purchase = loc("specialOffer"),
-          cost = this.costOffer.getTextAccordingToBalance()
+          cost = this.costGold.getTextAccordingToBalance()
         }),
-        this.costOffer)
+        this.costGold)
     this.msgBox("purchase_ask", msgText,
       [
         ["yes", function() {
-          if (::check_balance_msgBox(this.costOffer))
+          if (::check_balance_msgBox(this.costGold))
             this.onBuyImpl()
         }],
         ["no", @() null ]
@@ -83,15 +206,64 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
   function onTimer(_obj, _dt) {
     this.updateTimeLeftText()
   }
+
+  function getHandlerRestoreData() {
+    let data = {
+      openData = {
+        offerName = this.offerName
+        timeExpired = this.timeExpired
+        costGold = this.costGold
+        fullCostGold = this.fullCostGold
+        discountValue = this.discountValue
+        offerContent = this.offerContent
+      }
+      stateData = {
+      }
+    }
+    return data
+  }
+
+  function onEventBeforeStartShowroom(_p) {
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+  }
 }
 
 ::gui_handlers.PersonalOfferHandler <- PersonalOfferHandler
+
+let function haveOfferContent(offerContent) {
+  let unitsInOffer = offerContent.filter(@(v) ::trophyReward.getType(v) == "unit")
+  foreach(unit in unitsInOffer)
+    if(::shop_is_aircraft_purchased(unit.unit))
+      return true
+
+  let resourcesInOffer = offerContent.filter(@(v) ::trophyReward.getType(v) == "resourceType")
+  foreach(resource in resourcesInOffer) {
+    let decor = ::g_decorator.getDecoratorById(resource.resource)
+    if(decor.decoratorType.isPlayerHaveDecorator(decor.id))
+      return true
+  }
+
+  return false
+}
+
+let function loadTimeExpiration(params) {
+  let { offerName, durationInSeconds, timeExpired } = params
+  local finishTime = ::load_local_account_settings($"personalOffer/{offerName}", 0)
+  if(finishTime == 0) {
+    finishTime = durationInSeconds == 0
+      ? timeExpired
+      : min(::get_charserver_time_sec() + durationInSeconds, timeExpired)
+    ::save_local_account_settings($"personalOffer/{offerName}", finishTime)
+  }
+  return finishTime
+}
 
 let function checkShowPersonalOffers() {
   let count = personalOffers.count()
   for (local i = 0; i < count; ++i) {
     let personalOffer = personalOffers.get(i)
-    let data  = parse(personalOffer.text)
+    let data = parse(personalOffer.text)
+
     let { offer = "" } = data
     if (offer == "")
       continue
@@ -102,12 +274,26 @@ let function checkShowPersonalOffers() {
     if ((offerBlk?.costGold ?? 0) == 0)
       continue
 
-    ::handlersManager.loadHandler(PersonalOfferHandler, {
+    if(haveOfferContent(offerBlk % "i"))
+      return
+
+    let params = {
       offerName = personalOffer.key
       timeExpired = (personalOffer?.timeExpired ?? 0).tointeger()
-      costOffer = ::Cost(0, offerBlk.costGold)
+      durationInSeconds = offerBlk?.duration_in_seconds ?? 0
+    }
+
+    let timeExpired = loadTimeExpiration(params)
+    if(timeExpired < ::get_charserver_time_sec())
+      return
+
+    ::handlersManager.loadHandler(PersonalOfferHandler, params.__update({
+      timeExpired = timeExpired
+      costGold = ::Cost(0, offerBlk.costGold)
+      fullCostGold = ::Cost(0, offerBlk?.fullCostGold)
+      discountValue = offerBlk?.discountValue ?? 0
       offerContent = offerBlk % "i"
-    })
+    }))
     return
   }
 }

@@ -494,6 +494,9 @@ if need - put commented in array above
       tooltipId           = params?.tooltipId ?? ""
       isTooltipByHold     = ::show_console_buttons
       bottomLineText      = params?.bottomLineText
+      isElite             = params?.isElite
+      hasTalismanIcon     = params?.hasTalismanIcon
+      unitRarity          = params?.unitRarity
     })
     res = ::handyman.renderCached("%gui/slotbar/slotbarSlotFake.tpl", fakeSlotView)
   }

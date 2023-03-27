@@ -980,17 +980,19 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
 let function openItemsWndFromPromo(_owner, params = []) {
   local tab = getconsttable()?.itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
+  local itemId = params?[3]
 
-  local curSheet = null
   let sheetSearchId = params?[0]
   let initSubsetId = params?[2]
-  if (sheetSearchId)
-    curSheet = { searchId = sheetSearchId }
+  let curSheet = sheetSearchId ? { searchId = sheetSearchId } : null
 
   if (tab >= itemsTab.TOTAL)
     tab = itemsTab.INVENTORY
 
-  ::gui_start_items_list(tab, { curSheet = curSheet, initSubsetId = initSubsetId })
+  itemId = ::to_integer_safe(itemId, itemId, false)
+  let curItem = ::ItemsManager.findItemById(itemId)
+
+  ::gui_start_items_list(tab, { curSheet, initSubsetId, curItem, shouldSetPageByItem = curItem != null })
 }
 
 addPromoAction("items", @(handler, params, _obj) openItemsWndFromPromo(handler, params))
