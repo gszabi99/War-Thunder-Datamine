@@ -1594,30 +1594,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
   }
 
-  ALLOW_SUPPORT_PLANE = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/allow_support_plane"
-    noKeyLocId = "hints/allow_support_plane_nokey"
-    showEvent = "hint:allow_support_plane:show"
-    shouldBlink = true
-    lifeTime = 10.0
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = true
-    getShortcuts = @(_data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
-  }
-
-  ALLOW_SWITCH_SUPPORT_PLANE = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/allow_switch_support_plane"
-    noKeyLocId = "hints/allow_switch_support_plane_nokey"
-    showEvent = "hint:allow_switch_support_plane:show"
-    lifeTime = 10.0
-    shouldBlink = true
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = false
-    getShortcuts = @(_data) ::g_hud_action_bar_type.SUPPORT_PLANE.getVisualShortcut()
-  }
-
   UAV_LAUNCH_BLOCKED = {
     hintType = ::g_hud_hint_types.COMMON
     locId     = "hints/uav_launch_blocked"
@@ -1681,18 +1657,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     shortcuts = "ID_COMMANDER_AIM_MODE"
   }
 
-  ENABLE_COMBINED_PRI_SEC_TRIGGERS = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/enable_combined_pri_sec_triggers"
-    showEvent = "hint:enable_combined_pri_sec_triggers:show"
-    lifeTime = 10.0
-    totalCount = 5
-    maskId = 31
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = true
-    shortcuts = "ID_SHIP_WEAPON_ALL"
-  }
-
   CANT_SPAWN_UGV = {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/cant_spawn_ugv"
@@ -1707,46 +1671,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:cant_spawn_unlim_ctrl:show"
     lifeTime = 3.0
     isHideOnDeath = true
-  }
-
-  FOLLOW_CAMERA = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/follow_camera"
-    showEvent = "hint:follow_camera:show"
-    lifeTime = 10.0
-    totalCount = 3
-    maskId = 32
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = false
-    shortcuts = "ID_FIRE_GM"
-  }
-
-  CONTROL_HELP = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/control_help"
-    showEvent = "hint:control_help:show"
-    lifeTime = 10.0
-    totalCount = 3
-    maskId = 33
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = false
-    shortcuts = "ID_HELP"
-  }
-
-  CALIBER_SWITCH = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId     = "hints/caliber_switch"
-    showEvent = "hint:caliber_switch:show"
-    lifeTime = 10.0
-    totalCount = 3
-    maskId = 34
-    isHideOnDeath = true
-    isHideOnWatchedHeroChanged = false
-    shortcuts = [
-      "ID_SHIP_WEAPON_SECONDARY",
-      "ID_SHIP_WEAPON_MACHINEGUN",
-      "ID_SHIP_WEAPON_PRIMARY"
-    ]
   }
 },
 function() {
