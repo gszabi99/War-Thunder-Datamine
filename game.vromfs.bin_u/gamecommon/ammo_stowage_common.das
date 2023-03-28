@@ -585,7 +585,7 @@ def public load_ammo_stowage(blk : DataBlock&; model_name : string; can_load_to_
 
       v.ammo_stowages__clustersRange[stowage_id].y = v.ammo_clusters__type |> length()
 
-    setup_ammo_stowage(unit, can_load_to_breech, true, true) <| v;
+    setup_ammo_stowage(unit, can_load_to_breech, true) <| v;
     load_successful = true
 
   if load_successful
@@ -656,7 +656,7 @@ def public load_ammo_stowage(blk : DataBlock&; model_name : string; can_load_to_
           logerr("unit {model_name} : not enough free slots to distribute residue charges, {num_charges} remaining")
       v.ammo_stowages__clustersRange[params.stowageId].y = v.ammo_clusters__type |> length()
 
-    setup_ammo_stowage(unit, can_load_to_breech, true, true) <| v;
+    setup_ammo_stowage(unit, can_load_to_breech, true) <| v;
     load_successful = true
 
   if load_successful
@@ -703,7 +703,7 @@ def public load_ammo_stowage(blk : DataBlock&; model_name : string; can_load_to_
         if v.ammo_slots__numAmmo[slot_id].y == 0
           v.ammo_slots__numAmmo[slot_id].y = slot_id < residue_ammo ? num_ammo_per_slot + 1 : num_ammo_per_slot
 
-    setup_ammo_stowage(unit, can_load_to_breech, true, true) <| v;
+    setup_ammo_stowage(unit, can_load_to_breech, true) <| v;
     load_successful = true
 
 
@@ -752,29 +752,7 @@ def setup_cluster(var unit : Unit?; cluster_id : int; var num_ammos : int&; num_
 
 
 [with_bundle(v)]
-def iter_clusters_in_order(stowage_id : int;
-                           v : tuple<
-                             ammo_stowages__clustersRange : IPoint2List;
-                             ammo_stowages__numAmmoFirstStage : IPoint3List;
-                             ammo_clusters__state : UInt32List
-                           >; b : block<(cluster_id : int; is_first_stage : bool) : void>) : void
-  let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
-  if v.ammo_stowages__numAmmoFirstStage[stowage_id].z > 0
-    var i = clusters_range.y - 1
-    for _ in clusters_range.x..clusters_range.y
-      let cluster_id = i--
-      if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) || get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
-        b |> invoke(cluster_id, true)
-    for cluster_id in clusters_range.x..clusters_range.y
-      if !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) && !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
-        b |> invoke(cluster_id, false)
-  else
-    for cluster_id in clusters_range.x..clusters_range.y
-      b |> invoke(cluster_id, false)
-
-
-[with_bundle(v)]
-def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_num : bool; is_refill : bool;
+def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_num : bool;
                               v : tuple<
                                 ammo_stowage__ammoLost : int-const;
 
@@ -796,7 +774,7 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
   let weapon_controller = unit.weap
   var is_dm_changed = false
   var is_sync_required = false
-  for stowage_id, state, stowage_num_ammo, stowage_num_ammo_first_stage, triggers_range in iter_range(v.ammo_stowages__state), v.ammo_stowages__state, v.ammo_stowages__numAmmo, v.ammo_stowages__numAmmoFirstStage, v.ammo_stowages__weaponTriggersRange
+  for state, stowage_num_ammo, stowage_num_ammo_first_stage, clusters_range, triggers_range in v.ammo_stowages__state, v.ammo_stowages__numAmmo, v.ammo_stowages__numAmmoFirstStage, v.ammo_stowages__clustersRange, v.ammo_stowages__weaponTriggersRange
     var num_ammo = 0
     for i in triggers_range.x..triggers_range.y
       for weapon in weapon_controller.Weapons |> get_weapons_by_trigger(v.ammo_stowage__weaponTriggers[i])
@@ -819,8 +797,8 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
           if count > 0
             num_ammo += get_flag(state, AmmoStowageState REMOVE_LOADED_AMMO) ? count - 1 : count
 
-    if is_refill || num_ammo > stowage_num_ammo.x
-      iter_clusters_in_order(stowage_id, v) <| $ [unused_argument(is_fs)] (cluster_id : int; is_fs : bool)
+    if num_ammo > stowage_num_ammo.x
+      for cluster_id in clusters_range.x..clusters_range.y
         let slots_range = v.ammo_clusters__slotsRange[cluster_id]
         for slot_id in slots_range.x..slots_range.y
           if !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
@@ -829,10 +807,7 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
             *unit.visual |> dm_set_rel_hp(int(v.ammo_slots__partId[slot_id].globalId), 1.0f, false)
 
       if stowage_num_ammo_first_stage.z > 0
-        if is_refill
-          stowage_num_ammo_first_stage.x = min(num_ammo, stowage_num_ammo_first_stage.z)
-        else
-          stowage_num_ammo_first_stage.x = min(stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x,  stowage_num_ammo_first_stage.z)
+        stowage_num_ammo_first_stage.x = min(stowage_num_ammo_first_stage.x + num_ammo - stowage_num_ammo.x,  stowage_num_ammo_first_stage.z)
         is_sync_required = true
 
     if stowage_num_ammo_first_stage.z > 0 && num_ammo < stowage_num_ammo.x
@@ -844,9 +819,6 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
     if init_num
       stowage_num_ammo.y = num_ammo
       stowage_num_ammo_first_stage.y = stowage_num_ammo_first_stage.x
-    elif is_refill
-      stowage_num_ammo.y = max(stowage_num_ammo.x, stowage_num_ammo.y)
-      stowage_num_ammo_first_stage.y = max(stowage_num_ammo_first_stage.x, stowage_num_ammo_first_stage.y)
 
     // das does not allow use this as array size directly, because this is not technically a constant, so we hardcode it and guard with assert
     assert(int(AmmoClusterType NUM_TYPES) == 2)
@@ -858,16 +830,28 @@ def public setup_ammo_stowage(var unit : Unit?; can_load_to_breech : bool; init_
       num_ammos[i] = num_ammo - stowage_num_ammo_first_stage.x
       base_index[i] = 0
 
-    iter_clusters_in_order(stowage_id, v) <| $(cluster_id : int; is_first_stage : bool)
-      let cluster_type = v.ammo_clusters__type[cluster_id]
-      is_dm_changed = setup_cluster(unit, cluster_id,
-                                    is_first_stage ?
-                                      num_ammos_first_stage[cluster_type] :
-                                      num_ammos[cluster_type],
-                                    is_first_stage ?
-                                      stowage_num_ammo_first_stage.y - num_ammos_first_stage[cluster_type] :
-                                      stowage_num_ammo.y - num_ammos[cluster_type],
-                                    base_index[cluster_type], v) || is_dm_changed
+    if stowage_num_ammo_first_stage.z > 0
+      var i = clusters_range.y - 1
+      for _ in clusters_range.x..clusters_range.y
+        let cluster_id = i--
+        if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) || get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
+          let cluster_type = v.ammo_clusters__type[cluster_id]
+          is_dm_changed = setup_cluster(unit, cluster_id, num_ammos_first_stage[cluster_type],
+                                        stowage_num_ammo_first_stage.y - num_ammos_first_stage[cluster_type],
+                                        base_index[cluster_type], v) || is_dm_changed
+      for cluster_id in clusters_range.x..clusters_range.y
+        if !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) && !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
+          let cluster_type = v.ammo_clusters__type[cluster_id]
+          is_dm_changed = setup_cluster(unit, cluster_id, num_ammos[cluster_type],
+                                        stowage_num_ammo.y - num_ammos[cluster_type],
+                                        base_index[cluster_type], v) || is_dm_changed
+    else
+      for cluster_id in clusters_range.x..clusters_range.y
+        if !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState FIRST_STAGE) && !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState AUTO_LOAD)
+          let cluster_type = v.ammo_clusters__type[cluster_id]
+          is_dm_changed = setup_cluster(unit, cluster_id, num_ammos[cluster_type],
+                                        stowage_num_ammo.y - num_ammos[cluster_type],
+                                        base_index[cluster_type], v) || is_dm_changed
 
   if is_dm_changed
     sendEvent(eid, [[EventAmmoStowageInvalidateRenderer]])
