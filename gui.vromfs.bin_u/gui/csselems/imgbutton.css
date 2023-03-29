@@ -130,9 +130,7 @@ LockedImg{
   background-svg-size:pw, ph;
   input-transparent:yes;
 }
-LockedImg[statusLock=achievement],
-LockedImg[statusLock=noDLC],
-LockedImg[statusLock=limit] {
+LockedImg[statusLock=noDLC] {
   pos:pw-w, ph-h;
   size:@mIco,@mIco;
   background-color:@white;
@@ -143,14 +141,15 @@ imgFrame > LockedImg{
   size:@cIco, @cIco;
 }
 
-LockedImg[statusLock=achievement] {
-  background-image:#ui/gameuiskin#locked_white;
+LockedImg[statusLock=achievement],
+LockedImg[statusLock=limit] {
+  pos:pw-w-2@sf/@pf, ph-h-4@sf/@pf;
+  size=@cIco,@cIco";
+  background-color:@white;
+  background-image:#ui/gameuiskin#locked.svg;
 }
 LockedImg[statusLock=noDLC] {
   background-image:#ui/gameuiskin#dlc_locked;
-}
-LockedImg[statusLock=limit] {
-  background-image:#ui/gameuiskin#locked.svg;
 }
 
 LockedImg[statusLock=noPremium_1] {

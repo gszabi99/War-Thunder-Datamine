@@ -29,6 +29,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -102,6 +103,8 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   hoveredIdx  = -1
   selectedIdx = -1
   isMouseMode = true
+
+  updateButtonsTimer = null
 
   function initScreen() {
     this.mainOptionsMode = getGuiOptionsMode()
@@ -488,6 +491,19 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       slotbar.shade(this.isInEventQueue())
   }
 
+  function scheduleUpdateButtonsIfNeeded(event) {
+    clearTimer(this.updateButtonsTimer)
+
+    local time = ::events.getEventStartTime(event)
+    if (time <= 0)
+      time = ::events.getEventEndTime(event)
+    if (time <= 0)
+      return
+
+    let cb = Callback(@() this.updateButtons(), this)
+    this.updateButtonsTimer = setTimeout(time, @() cb())
+  }
+
   function updateButtons() {
     let event = ::events.getEvent(this.curEventId)
     let isEvent = event != null
@@ -500,6 +516,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     let isReady = ::g_squad_manager.isMeReady()
     let isSquadMember = ::g_squad_manager.isSquadMember()
 
+    this.scheduleUpdateButtonsIfNeeded(event)
     this.showSceneBtn("btn_select_console", !isCurItemInFocus && (isEvent || isHeader))
 
     let showJoinBtn = isCurItemInFocus && (isEvent && (!isInQueue || (isSquadMember && !isReady)))

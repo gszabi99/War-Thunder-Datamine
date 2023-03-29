@@ -74,8 +74,14 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
 
     this.contentRaw = []
     foreach (datablock in blksArray) {
-      let content = datablock % "i"
-      content.extend(datablock % "d")
+      let addContent = (datablock % "d").map(function(item) {
+        let prize = DataBlock()
+        prize.setFrom(item)
+        prize.availableIfAllPrizesRecieved = true
+        return prize
+      })
+
+      let content = (datablock % "i").extend(addContent)
       foreach (p in content) {
         let prize = DataBlock()
         prize.setFrom(p)
@@ -337,7 +343,17 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
     params.receivedPrizes <- false
     params.needShowDropChance <- this.needShowDropChance()
 
-    return ::PrizesView.getPrizesStacksView(this.getContent(), this._getDescHeader, params)
+    let prizesList = this.getContent()
+    let mainPrizes = prizesList.filter(@(prize) !prize?.availableIfAllPrizesRecieved)
+    let additionalPrizes = prizesList.filter(@(prize) !!prize?.availableIfAllPrizesRecieved)
+    local additionalPrizesMarkup = ""
+    if (additionalPrizes.len() > 0) {
+      let getHeader = @(...) colorize("grayOptionColor", loc("items/ifYouHaveAllItemsAbove"))
+      additionalPrizesMarkup = ::PrizesView.getPrizesStacksView(additionalPrizes, getHeader)
+    }
+    let mainPrizesMarkup = ::PrizesView.getPrizesStacksView(mainPrizes, this._getDescHeader, params)
+
+    return  $"{mainPrizesMarkup}{additionalPrizesMarkup}"
   }
 
   function getShortDescription(colored = true) {

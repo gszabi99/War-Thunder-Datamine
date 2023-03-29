@@ -123,9 +123,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     handler.doWhenActiveOnce("checkUpgradeCrewTutorial")
     handler.doWhenActiveOnce("checkNewUnitTypeToBattleTutor")
     handler.doWhenActive(steamCheckNewItems)
-
-    if (isAfterLogin)
-      checkShowPersonalOffers()
+    handler.doWhenActive(checkShowPersonalOffers)
   }
 
   if (!isAfterLogin && isAllowPopups) {

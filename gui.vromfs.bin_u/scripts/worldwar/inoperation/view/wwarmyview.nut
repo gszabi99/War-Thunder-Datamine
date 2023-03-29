@@ -196,7 +196,7 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
 
   function getAirFuelLastTime() {
     if (::g_ww_unit_type.isAir(this.formation.getUnitType()))
-      return this.getSuppliesFinishTime()
+      return this.getSuppliesFinishTime() ?? ""
     return ""
   }
 
@@ -311,12 +311,12 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
         inactive = inactiveUnitsCountText
       })
 
-    return null
+    return ""
   }
 
   function getArmyInfoText() {
     if (!this.hasArtilleryAbility())
-      return null
+      return ""
 
     if (this.formation.isMove())
       return loc("worldwar/artillery/is_move")

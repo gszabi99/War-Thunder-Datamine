@@ -1993,6 +1993,22 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
   return option.values[option.value]
 }
 
+let needRequireEngineControl = @() !CONTROLS_ALLOW_ENGINE_AUTOSTART
+  && (::get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode) // warning disable: -const-in-bool-expr
+
+let tutorialControlAliases = {
+  ["ANY"]                = null,
+  ["ID_CONTINUE"]        = null,
+  ["ID_SKIP_CUTSCENE"]   = null,
+  ["ID_FIRE"]            = "ID_FIRE_MGUNS",
+  ["ID_TRANS_GEAR_UP"]   = "gm_throttle",
+  ["ID_TRANS_GEAR_DOWN"] = "gm_throttle",
+}
+
+let tutorialSkipControl = {
+  ["ID_TOGGLE_ENGINE"] = @() !needRequireEngineControl()
+}
+
 ::getUnmappedControlsForTutorial <- function getUnmappedControlsForTutorial(missionId, helpersMode) {
   local res = []
 
@@ -2010,15 +2026,6 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
   if (!missionBlk?.triggers)
     return res
 
-  let tutorialControlAliases = {
-    ["ANY"]                = null,
-    ["ID_CONTINUE"]        = null,
-    ["ID_SKIP_CUTSCENE"]   = null,
-    ["ID_FIRE"]            = "ID_FIRE_MGUNS",
-    ["ID_TRANS_GEAR_UP"]   = "gm_throttle",
-    ["ID_TRANS_GEAR_DOWN"] = "gm_throttle",
-  }
-
   let isXinput = ::is_xinput_device()
   let isAllowedCondition = @(condition) condition?.gamepadControls == null || condition.gamepadControls == isXinput
 
@@ -2034,6 +2041,8 @@ let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
       foreach (playerShortcutPressed in trigger.conditions % "playerShortcutPressed")
         if (playerShortcutPressed?.control && isAllowedCondition(playerShortcutPressed)) {
           let id = playerShortcutPressed.control
+          if (tutorialSkipControl?[id]() ?? false)
+            continue
           let alias = (id in tutorialControlAliases) ? tutorialControlAliases[id] : id
           if (alias && !isInArray(alias, shortcuts))
             shortcuts.append(alias)
@@ -2199,7 +2208,7 @@ let function getWeaponFeatures(weaponsList) {
 
     controls = [ "throttle" ]
 
-    if (::get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode && !CONTROLS_ALLOW_ENGINE_AUTOSTART) // warning disable: -const-in-bool-expr
+    if (needRequireEngineControl())
       controls.append("ID_TOGGLE_ENGINE")
 
     if (isMouseAimMode)

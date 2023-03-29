@@ -1,0 +1,53 @@
+{
+  "blur": {},
+  "blur_foreground": {},
+  "uncollapsedContainer": {
+    "size": "1@arrowButtonWidth, 270/560w+1@arrowButtonHeight",
+    "fillBlock": {
+      "id": "perform_action_personal_offer_mainmenu_button",
+      "behaviour": "bhvUpdateByWatched",
+      "on_click": "performAction",
+      "headerBg": {},
+      "imageFade": {
+        "size": "1@arrowButtonWidth, 270/560w",
+        "img": {
+          "background-image": "!ui/images/offer/personal_offer_promo"
+        },
+        "textareaNoTab": {
+          "id": "time_expired_value",
+          "pos": "160/560pw - w/2, 215/270ph - h/2",
+          "position": "absolute",
+          "smallFont": "yes",
+          "overlayTextColor": "gray",
+          "css-hier-invalidate": "yes"
+        }
+      },
+      "textareaFade": {
+        "position": "relative",
+        "pos": "0, 0.5@arrowButtonHeight-0.5h",
+        "tdiv": {
+          "width": "fw",
+          "position": "relative",
+          "top": "0.5ph-0.5h",
+          "overflow": "hidden",
+          "css-hier-invalidate": "yes",
+          "textareaNoTab": {
+            "position": "relative",
+            "left": "pw-w",
+            "text": "#specialOffer"
+          }
+        }
+      }
+    }
+  },
+  "tdiv": {
+    "size": "1@arrowButtonHeight, 1@arrowButtonHeight",
+    "position": "relative",
+    "margin-left": "1@blockInterval"
+  },
+  "timer": {
+    "id": "update_timer",
+    "timer_handler_func": "onTimer",
+    "timer_interval_msec": "1000"
+  }
+}

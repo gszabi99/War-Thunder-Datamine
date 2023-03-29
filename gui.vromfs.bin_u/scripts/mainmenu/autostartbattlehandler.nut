@@ -55,7 +55,7 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateTip() {
     let tipObj = this.scene.findObject("queue_tip")
-    if (tipObj?.isValid() ?? false)
+    if (!tipObj?.isValid())
       return
 
     tipObj.setValue(getCurEsUnitTypesMask())

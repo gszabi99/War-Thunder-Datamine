@@ -1296,12 +1296,12 @@ let prizeViewConfig = {
   return ::handyman.renderCached(template, view)
 }
 
-::PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = null) {
+::PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = {}) {
   let { stackLevel = prizesStack.DETAILED } = params
   if (stackLevel == prizesStack.NOT_STACKED && !fixedAmountHeaderFunc)
     return this.getPrizesListView(content, params)
 
-  let view = params ? clone params : {}
+  let view = clone params
   let fixedAmount = fixedAmountHeaderFunc ? this._getContentFixedAmount(content) : 1
   if (fixedAmountHeaderFunc)
     view.header <- fixedAmountHeaderFunc(fixedAmount)

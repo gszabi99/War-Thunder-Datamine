@@ -728,7 +728,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   }
 
   function isEventEnabled(event) {
-    return event ? (event?.disabled ?? false) == false : false
+    return !!event
+      && !event?.disabled
+      && (!this.hasEventEndTime(event) || this.getEventEndTime(event) > 0)
   }
 
   function isEventMatchesType(event, typeMask) {
@@ -1936,6 +1938,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       local startTime = ::events.getEventStartTime(event)
       if (startTime > 0)
         data.reasonText = loc("events/event_not_started_yet")
+      else if (::events.getEventEndTime(event) > 0)
+        data.reasonText = loc("events/event_will_begin_soon")
       else
         data.reasonText = loc("events/event_disabled")
       data.actionFunc = function (reasonData) {
@@ -2064,7 +2068,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if (startTime > 0)
       return format(loc("events/event_starts_in"), colorize("activeTextColor", time.hoursToString(time.secondsToHours(startTime))))
     if (endTime > 0)
-      return loc("events/event_not_started_yet")
+      return loc("events/event_will_begin_soon")
     return loc("events/event_disabled")
   }
 

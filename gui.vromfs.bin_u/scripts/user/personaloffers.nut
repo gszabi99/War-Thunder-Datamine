@@ -4,9 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let personalOffers = require("personalOffers")
 let DataBlock = require("DataBlock")
-let { parse } = require("json")
 let { charSendBlk } = require("chard")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -14,6 +12,12 @@ let { format }  = require("string")
 let { getUnitRoleIcon, getFullUnitRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
+let { curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer,
+  isSeenOffer, clearOfferCache
+} = require("%scripts/user/personalOffersStates.nut")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -29,10 +33,8 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   offerName = ""
   timeExpired = -1
+  offerBlk = null
   costGold = null
-  fullCostGold = null
-  discountValue = null
-  offerContent = null
   groups = null
 
   function initScreen() {
@@ -40,6 +42,7 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
       this.updateTimeLeftText()
       this.scene.findObject("update_timer").setUserData(this)
     }
+    this.costGold = ::Cost(0, this.offerBlk.costGold)
     this.updateDiscount()
     this.updateImages()
     this.updateButtons()
@@ -48,8 +51,12 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateDiscount() {
-    this.scene.findObject("exclusive_price_value_text").setValue(this.fullCostGold.getUncoloredText())
-    this.scene.findObject("discount_value_text").setValue($"{this.discountValue.tostring()}%")
+    let { discountValue = 0, fullCostGold = 0 } = this.offerBlk
+    if (fullCostGold > 0)
+      this.scene.findObject("exclusive_price_value_text").setValue(
+        ::Cost(0, fullCostGold).getUncoloredText())
+    if (discountValue > 0)
+      this.scene.findObject("discount_value_text").setValue($"{discountValue.tostring()}%")
   }
 
   function updateImages() {
@@ -68,11 +75,8 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
   getGroupTitle = @(offerType) loc(offerTypes?[offerType] ?? $"trophy/unlockables_names/{offerType}", "")
 
   function prepareRewardsData() {
-    this.offerContent.apply(@(config) DataBlock(config))
-
     this.groups = []
-
-    foreach(config in this.offerContent) {
+    foreach(config in (this.offerBlk % "i")) {
       local firstInBlock = false
 
       let localConfig = DataBlock()
@@ -181,7 +185,10 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let blk = DataBlock()
     blk.addStr("offer", this.offerName)
     let taskId = charSendBlk("cln_buy_personal_offer", blk)
-    let cb = Callback(@() this.goBack(), this)
+    let cb = Callback(function() {
+      clearOfferCache()
+      this.goBack()
+    }, this)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, cb)
   }
 
@@ -212,10 +219,7 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
       openData = {
         offerName = this.offerName
         timeExpired = this.timeExpired
-        costGold = this.costGold
-        fullCostGold = this.fullCostGold
-        discountValue = this.discountValue
-        offerContent = this.offerContent
+        offerBlk = this.offerBlk
       }
       stateData = {
       }
@@ -224,79 +228,84 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventBeforeStartShowroom(_p) {
+    markSeenPersonalOffer(this.offerName)
     ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
+
+  function goBack() {
+    markSeenPersonalOffer(this.offerName)
+    base.goBack()
+  }
+}
+
+let PersonalOfferPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
+  wndType = handlerType.CUSTOM
+  sceneBlkName = "%gui/promo/promoPersonalOffer.blk"
+
+  timeExpired = 0
+
+  function initScreen() {
+    this.scene.findObject("perform_action_personal_offer_mainmenu_button").setValue(
+      stashBhvValueConfig({
+        watch = curPersonalOffer
+        updateFunc = Callback(@(_obj, offer) this.updateHandler(offer), this)
+      }))
+  }
+
+  function updateTimeLeftText() {
+    let timeLeftSec = this.timeExpired - ::get_charserver_time_sec()
+    let timeExpiredObj = this.showSceneBtn("time_expired_value", timeLeftSec > 0)
+    this.showSceneBtn("time_expired_text", timeLeftSec > 0)
+    if (timeLeftSec <= 0)
+      return
+
+    let timeString = buidPartialTimeStr(timeLeftSec)
+    timeExpiredObj.setValue(timeString)
+  }
+
+  function onTimer(_obj, _dt) {
+    this.updateTimeLeftText()
+  }
+
+  function updateHandler(offer) {
+    let isVisible = offer != null
+    ::show_obj(this.scene, isVisible)
+    this.scene.findObject("update_timer").setUserData(isVisible ? this : null)
+    if (!isVisible)
+      return
+
+    this.timeExpired = offer.timeExpired
+    this.updateTimeLeftText()
+  }
+
+  function performAction(obj) { ::g_promo.performAction(this, obj) }
+}
+
+let openCurPersonalOfferWnd = @()
+  ::handlersManager.loadHandler(PersonalOfferHandler, curPersonalOffer.value)
+
+let function checkShowPersonalOffers() {
+  cachePersonalOfferIfNeed()
+  if (curPersonalOffer.value != null && !isSeenOffer(curPersonalOffer.value.offerName))
+    openCurPersonalOfferWnd()
 }
 
 ::gui_handlers.PersonalOfferHandler <- PersonalOfferHandler
+::gui_handlers.PersonalOfferPromoHandler <- PersonalOfferPromoHandler
 
-let function haveOfferContent(offerContent) {
-  let unitsInOffer = offerContent.filter(@(v) ::trophyReward.getType(v) == "unit")
-  foreach(unit in unitsInOffer)
-    if(::shop_is_aircraft_purchased(unit.unit))
-      return true
+addPromoAction("personal_offer", @(_handler, _params, _obj) openCurPersonalOfferWnd())
 
-  let resourcesInOffer = offerContent.filter(@(v) ::trophyReward.getType(v) == "resourceType")
-  foreach(resource in resourcesInOffer) {
-    let decor = ::g_decorator.getDecoratorById(resource.resource)
-    if(decor.decoratorType.isPlayerHaveDecorator(decor.id))
-      return true
+let promoButtonId = "personal_offer_mainmenu_button"
+
+addPromoButtonConfig({
+  promoButtonId = promoButtonId
+  buttonType = "imageButton"
+  function updateFunctionInHandler() {
+    let handlerWeak = ::handlersManager.loadHandler(PersonalOfferPromoHandler,
+      { scene = this.scene.findObject(promoButtonId) })
+    this.owner.registerSubHandler(handlerWeak)
   }
-
-  return false
-}
-
-let function loadTimeExpiration(params) {
-  let { offerName, durationInSeconds, timeExpired } = params
-  local finishTime = ::load_local_account_settings($"personalOffer/{offerName}", 0)
-  if(finishTime == 0) {
-    finishTime = durationInSeconds == 0
-      ? timeExpired
-      : min(::get_charserver_time_sec() + durationInSeconds, timeExpired)
-    ::save_local_account_settings($"personalOffer/{offerName}", finishTime)
-  }
-  return finishTime
-}
-
-let function checkShowPersonalOffers() {
-  let count = personalOffers.count()
-  for (local i = 0; i < count; ++i) {
-    let personalOffer = personalOffers.get(i)
-    let data = parse(personalOffer.text)
-
-    let { offer = "" } = data
-    if (offer == "")
-      continue
-    let offerBlk = DataBlock()
-    if (!offerBlk.loadFromText(offer, offer.len()))
-      continue
-
-    if ((offerBlk?.costGold ?? 0) == 0)
-      continue
-
-    if(haveOfferContent(offerBlk % "i"))
-      return
-
-    let params = {
-      offerName = personalOffer.key
-      timeExpired = (personalOffer?.timeExpired ?? 0).tointeger()
-      durationInSeconds = offerBlk?.duration_in_seconds ?? 0
-    }
-
-    let timeExpired = loadTimeExpiration(params)
-    if(timeExpired < ::get_charserver_time_sec())
-      return
-
-    ::handlersManager.loadHandler(PersonalOfferHandler, params.__update({
-      timeExpired = timeExpired
-      costGold = ::Cost(0, offerBlk.costGold)
-      fullCostGold = ::Cost(0, offerBlk?.fullCostGold)
-      discountValue = offerBlk?.discountValue ?? 0
-      offerContent = offerBlk % "i"
-    }))
-    return
-  }
-}
+})
 
 return {
   checkShowPersonalOffers

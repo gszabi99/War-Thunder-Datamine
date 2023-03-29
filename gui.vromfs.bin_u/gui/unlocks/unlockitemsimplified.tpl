@@ -93,9 +93,10 @@ expandable {
     img {
       id:t="lock_icon"
       display:t="hide"
-      position:t="absolute"
-      background-image:t="#ui/gameuiskin#locked_white"
-      size:t="@mIco,@mIco"
+      pos:t="10@sf/@pf, 10@sf/@pf"; position:t="absolute"
+      background-image:t="#ui/gameuiskin#locked.svg"
+      size:t="@cIco,@cIco"
+      background-svg-size:t="@cIco,@cIco"
       background-color:t="@white"
     }
   }
