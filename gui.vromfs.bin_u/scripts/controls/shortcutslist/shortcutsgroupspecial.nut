@@ -52,7 +52,7 @@ return [
     needShowInHelp = true
   }
   {
-    id = "ID_FIRE_HUMAN_SECONDARY_GUN"
+    id = "ID_FIRE_HUMAN_MACHINE_GUN"
     checkAssign = false
   }
   {

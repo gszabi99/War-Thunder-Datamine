@@ -131,10 +131,13 @@ let BhvUnseen = class {
 
 ::replace_script_gui_behaviour("bhvUnseen", BhvUnseen)
 
+let makeConfig = @(listId, entity = null) { listId, entity }
+let makeConfigStr = @(listId, entity = null)
+  entity ? ::save_to_json(makeConfig(listId, entity)) : listId
+let makeConfigStrByList = @(unseenList) ::save_to_json(unseenList)
+
 return {
-  configToString = @(config) ::save_to_json(config)
-  makeConfig = @(listId, entity = null) { listId = listId, entity = entity }
-  makeConfigStr = @(listId, entity = null)
-    entity ? this.configToString(this.makeConfig(listId, entity)) : listId
-  makeConfigStrByList = @(unseenList) this.configToString(unseenList)
+  makeConfig
+  makeConfigStr
+  makeConfigStrByList
 }

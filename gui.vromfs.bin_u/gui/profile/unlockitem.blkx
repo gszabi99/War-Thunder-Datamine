@@ -191,15 +191,24 @@
       "padding": "8*@scrn_tgt/100.0, 0, 1*@scrn_tgt/100.0, 0",
       "flow": "h-flow"
     },
-    "img": {
-      "id": "lock_icon",
-      "display": "hide",
+    "tdiv": {
       "pos": "10@sf/@pf, 10@sf/@pf",
       "position": "absolute",
-      "background-image": "#ui/gameuiskin#locked.svg",
-      "size": "@cIco,@cIco",
-      "background-svg-size": "@cIco,@cIco",
-      "background-color": "@white"
+      "height": "@newWidgetIconHeight",
+      "unseenIcon": {
+        "id": "unseen_icon",
+        "noMargin": "yes"
+      },
+      "img": {
+        "id": "lock_icon",
+        "display": "hide",
+        "pos": "0, 50%(ph-h)",
+        "position": "relative",
+        "background-image": "#ui/gameuiskin#locked.svg",
+        "size": "@cIco,@cIco",
+        "background-svg-size": "@cIco,@cIco",
+        "background-color": "@white"
+      }
     }
   }
 }

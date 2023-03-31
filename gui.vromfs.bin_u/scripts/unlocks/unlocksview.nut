@@ -20,6 +20,7 @@ let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost, debugLogVisibleByTi
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
 
 let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N
 
@@ -123,6 +124,13 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       null /*defStyle*/ ,
       imgConfig.params
     )
+  }
+
+  function updateUnseenIcon(cfg, obj) {
+    let unseenCfg = cfg.manualOpen && isUnlockReadyToOpen(cfg.id)
+      ? makeConfigStr(SEEN.MANUAL_UNLOCKS, cfg.id)
+      : ""
+    obj.findObject("unseen_icon").setValue(unseenCfg)
   }
 
   function updateLockStatus(cfg, obj) {

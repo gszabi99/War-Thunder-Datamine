@@ -211,25 +211,27 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   let hasPremiumAccount = ::entitlement_expires_in(premAccName) > 0
 
   let buttonsShowTable = {
-                             gc_clanTag = showClanTag
-                             gc_profile = hasFeature("Profile")
-                             gc_contacts = canHaveFriends
-                             gc_chat_btn = hasMenuChat.value
-                             gc_shop = is_in_menu && canSpendGold
-                             gc_eagles = canSpendGold
-                             gc_warpoints = hasFeature("WarpointsInMenu")
-                             gc_PremiumAccount = hasFeature("showPremiumAccount") && ((canSpendGold && featureEnablePremiumPurchase) || hasPremiumAccount)
-                             gc_BattlePassProgress = hasFeature("BattlePass")
-                             gc_dropdown_premium_button = featureEnablePremiumPurchase
-                             gc_dropdown_shop_eagles_button = canSpendGold
-                             gc_free_exp = hasFeature("SpendGold") && hasFeature("SpendFreeRP")
-                             gc_items_shop_button = ::ItemsManager.isEnabled() && ::isInMenu()
-                               && hasFeature("ItemsShop")
-                             gc_online_shop_button = hasFeature("OnlineShopPacks")
-                             gc_clanAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
-                             gc_invites_btn = !is_platform_xbox || hasFeature("XboxCrossConsoleInteraction")
-                             gc_userlog_btn = hasFeature("UserLog")
-                           }
+    gc_clanTag = showClanTag
+    gc_profile = hasFeature("Profile")
+    gc_contacts = canHaveFriends
+    gc_chat_btn = hasMenuChat.value
+    gc_shop = is_in_menu && canSpendGold
+    gc_eagles = canSpendGold
+    gc_warpoints = hasFeature("WarpointsInMenu")
+    gc_PremiumAccount = hasFeature("showPremiumAccount")
+      && ((canSpendGold && featureEnablePremiumPurchase) || hasPremiumAccount)
+    gc_BattlePassProgress = hasFeature("BattlePass")
+    gc_dropdown_premium_button = featureEnablePremiumPurchase
+    gc_dropdown_shop_eagles_button = canSpendGold
+    gc_free_exp = hasFeature("SpendGold") && hasFeature("SpendFreeRP")
+    gc_items_shop_button = ::ItemsManager.isEnabled() && ::isInMenu()
+      && hasFeature("ItemsShop")
+    gc_online_shop_button = hasFeature("OnlineShopPacks")
+    gc_clanAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
+    gc_invites_btn = !is_platform_xbox || hasFeature("XboxCrossConsoleInteraction")
+    gc_userlog_btn = hasFeature("UserLog")
+    gc_manual_unlocks_unseen = is_in_menu
+  }
 
   foreach (id, status in buttonsShowTable) {
     let bObj = getObj(id)

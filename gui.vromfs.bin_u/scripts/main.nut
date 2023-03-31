@@ -290,6 +290,7 @@ global enum SEEN {
   EXT_EPIC_SHOP = "ext_epic_shop"
   BATTLE_PASS_SHOP = "battle_pass_shop"
   UNLOCK_MARKERS = "unlock_markers"
+  MANUAL_UNLOCKS = "manual_unlocks"
 
   //sublists
   S_EVENTS_WINDOW = "##events_window##"

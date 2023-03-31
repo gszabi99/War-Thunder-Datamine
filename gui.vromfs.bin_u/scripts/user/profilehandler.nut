@@ -30,10 +30,10 @@ let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction,
   getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
-let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
+let seenList = require("%scripts/seen/seenList.nut")
 let { havePlayerTag, isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
@@ -50,6 +50,7 @@ let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, b
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -61,6 +62,8 @@ enum OwnUnitsType {
 }
 
 let selMedalIdx = {}
+let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
+let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
 ::gui_start_profile <- function gui_start_profile(params = {}) {
   if (!hasFeature("Profile"))
@@ -265,7 +268,9 @@ let selMedalIdx = {}
         id = sheet
         tabImage = tabImage
         tabName = tabText
-        unseenIcon = sheet == "UnlockAchievement" ? seenList.id : null
+        unseenIcon = sheet == "UnlockAchievement"
+          ? makeConfigStrByList([seenUnlockMarkers.id, seenManualUnlocks.id])
+          : null
         navImagesText = ::get_navigation_images_text(idx, this.sheetsList.len())
         hidden = !this.isSheetVisible(sheet)
       })
@@ -882,22 +887,27 @@ let selMedalIdx = {}
 
     let ediff = getShopDiffCode()
 
+    let markerUnlockIds = getUnlockIds(ediff)
+    let manualUnlockIds = getManualUnlocks().map(@(u) u.id)
     let view = { items = [] }
     foreach (chapterName, chapterItem in this.unlocksTree) {
       if (isAchievementPage && chapterName == this.curAchievementGroupName)
         curIndex = view.items.len()
 
-      let chapterSeenIds = getUnlockIds(ediff).filter(@(u) chapterItem.rootItems.contains(u)
-        || chapterItem.groups.findindex(@(g) g.contains(u)) != null)
+      local markerSeenIds = markerUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
+        || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
+      local manualSeenIds = manualUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
+        || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
 
       view.items.append({
         itemTag = "campaign_item"
         id = chapterName
         itemText = "#unlocks/chapter/" + chapterName
         isCollapsable = chapterItem.groups.len() > 0
-        unseenIcon = chapterSeenIds.len() > 0
-          ? bhvUnseen.makeConfigStr(seenList.id, chapterSeenIds)
-          : null
+        unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
+          makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
+          makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
+        ])
       })
 
       if (chapterItem.groups.len() > 0)
@@ -906,14 +916,16 @@ let selMedalIdx = {}
           if (isAchievementPage && id == this.curAchievementGroupName)
             curIndex = view.items.len()
 
-          let groupSeenIds = getUnlockIds(ediff).filter(@(u) groupItem.contains(u))
+          markerSeenIds = markerSeenIds.filter(@(u) groupItem.contains(u))
+          manualSeenIds = manualUnlockIds.filter(@(u) groupItem.contains(u))
 
           view.items.append({
             id = id
             itemText = chapterItem.rootItems.indexof(groupName) != null ? $"#{groupName}/name" : $"#unlocks/group/{groupName}"
-            unseenIcon = groupSeenIds.len() > 0
-              ? bhvUnseen.makeConfigStr(seenList.id, groupSeenIds)
-              : null
+            unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
+              makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
+              makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
+            ])
           })
         }
     }
@@ -1336,6 +1348,7 @@ let selMedalIdx = {}
     ::g_unlock_view.fillUnlockPurchaseButton(itemData, unlockObj)
     ::g_unlock_view.fillUnlockManualOpenButton(itemData, unlockObj)
     ::g_unlock_view.updateLockStatus(itemData, unlockObj)
+    ::g_unlock_view.updateUnseenIcon(itemData, unlockObj)
   }
 
   function printUnlocksList(unlocksList) {
@@ -1386,7 +1399,7 @@ let selMedalIdx = {}
     if (unlocksListObj.childrenCount() > 0)
       unlocksListObj.setValue(selIdx)
 
-    seenList.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
+    seenUnlockMarkers.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
   }
 
   function getUnlockBlockId(unlockId) {

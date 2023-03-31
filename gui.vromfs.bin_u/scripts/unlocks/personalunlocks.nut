@@ -7,13 +7,16 @@ from "%scripts/dagui_library.nut" import *
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockExpired } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockReadyToOpen } = require("chard")
+let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
 
-let battleTaskUnlocks = []
-let markerUnlocks = []
-local isCacheValid = false
+let battleTaskUnlocks = persist("battleTaskUnlocksCache", @() [])
+let markerUnlocks = persist("markerUnlocksCache", @() [])
+let manualUnlocks = persist("manualUnlocksCache", @() [])
+local isCacheValid = persist("isPersonalUnlocksCacheValid", @() { value = false })
 
-let function update() {
-  if (!::g_login.isLoggedIn())
+let function cache() {
+  if (isCacheValid.value || !::g_login.isLoggedIn())
     return
 
   foreach (unlockBlk in getAllUnlocksWithBlkOrder()) {
@@ -21,36 +24,46 @@ let function update() {
       battleTaskUnlocks.append(unlockBlk)
 
     if (unlockBlk?.shouldMarkUnits
-        && !::is_unlocked_scripted(-1, unlockBlk?.id)
+        && !::is_unlocked_scripted(-1, unlockBlk.id)
         && !isUnlockExpired(unlockBlk))
       markerUnlocks.append(unlockBlk)
+
+    if (unlockBlk?.manualOpen && !unlockBlk?.hidden
+        && isUnlockReadyToOpen(unlockBlk.id))
+      manualUnlocks.append(unlockBlk)
   }
 
-  isCacheValid = true
+  isCacheValid.value = true
 }
 
 let function getBattleTaskUnlocks() {
-  if (!isCacheValid)
-    update()
-
+  cache()
   return battleTaskUnlocks
 }
 
 let function getMarkerUnlocks() {
-  if (!isCacheValid)
-    update()
-
+  cache()
   return markerUnlocks
 }
 
+let function getManualUnlocks() {
+  cache()
+  return manualUnlocks
+}
+
 let function invalidateCache() {
-  if (!isCacheValid)
+  if (!isCacheValid.value)
     return
 
   battleTaskUnlocks.clear()
   markerUnlocks.clear()
-  isCacheValid = false
+  manualUnlocks.clear()
+  isCacheValid.value = false
+
+  manualUnlocksSeenList.onListChanged()
 }
+
+manualUnlocksSeenList.setListGetter(@() getManualUnlocks())
 
 addListenersWithoutEnv({
   SignOut = @(_p) invalidateCache()
@@ -61,4 +74,5 @@ addListenersWithoutEnv({
 return {
   getBattleTaskUnlocks
   getMarkerUnlocks
+  getManualUnlocks
 }

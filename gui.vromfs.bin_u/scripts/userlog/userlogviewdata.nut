@@ -1246,7 +1246,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.logImg = res.logImg || item.getSmallIconName()
 
       amount += quantity
-      itemsListText += "\n " + loc("event_dash") + " " + item.getNameWithCount(true, quantity)
+      itemsListText += $"\n {loc("ui/bullet")}{item.getNameWithCount(true, quantity)}"
       if (itemsNumber == 0)
         firstItemName = item.getName()
 
