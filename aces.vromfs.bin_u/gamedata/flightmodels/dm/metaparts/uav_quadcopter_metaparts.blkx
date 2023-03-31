@@ -1,0 +1,35 @@
+{
+  "fuse_structure": {
+    "hpRel": 0.1,
+    "part": "fuse_dm",
+    "effect": [
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 1.0,
+        "kill": true,
+        "cutPart": [
+          "gear_r_dm",
+          "gear_l_dm"
+        ]
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 1.0,
+        "kill": true,
+        "cutPart": [
+          "spar_r_dm",
+          "gear_l_dm"
+        ]
+      },
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 1.0,
+        "kill": true,
+        "cutPart": [
+          "spar_r_dm",
+          "gear_l_dm"
+        ]
+      }
+    ]
+  }
+}

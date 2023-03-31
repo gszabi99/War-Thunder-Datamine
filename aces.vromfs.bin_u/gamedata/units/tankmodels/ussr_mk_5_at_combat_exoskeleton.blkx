@@ -1,0 +1,615 @@
+{
+  "model": "exs_mech",
+  "expClass": "exp_tank",
+  "type": "typeLightTank",
+  "subclass": "human",
+  "animChar": "exs_mech_char",
+  "sprintStaminaDrain": 0.0,
+  "restStaminaRestore": 5.0,
+  "jumpStaminaDrain": 0.0,
+  "rotateSpeed": 3.0,
+  "walkSpeed": 3.0,
+  "sprintJumpVertSpeed": 16.0,
+  "sprintSpeed": 8.0,
+  "runSpeed": 3.0,
+  "jumpVertSpeed": 12.0,
+  "cameraNode": "Bip01 Head",
+  "canSwim": false,
+  "invertSprintControl": true,
+  "simpleUnitSubsystems": false,
+  "jumpProgressAnimVar": "jump_progress",
+  "updateAnimIfDead": true,
+  "moveType": "vehicle",
+  "maxFwdSpeed": 60.0,
+  "maxRevSpeed": 10.0,
+  "maxAngSpeed": 30.0,
+  "maxAccel": 4.0,
+  "maxDecel": 8.0,
+  "maxAngAccel0": 20.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 40.0,
+  "groundNormSmoothViscosity": 0.1,
+  "minDistBetween": 10.0,
+  "collisionRadius": 0.85,
+  "autoSightDistanceCorrection": [
+    true,
+    true,
+    true
+  ],
+  "bodyTemperature": 76.6,
+  "jumpEffect": "jetpack_ejection_start",
+  "jumpSteeringEffect": "jetpack_ejection",
+  "jumpEffectWorkTime": 0.5,
+  "steeringJetAngle": 15.0,
+  "rearmTimeOnField": 30.0,
+  "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
+  "drowningCheckHeightMultiplier": 0.925,
+  "customClassIco": "!#ui/gameuiskin#ussr_mk_5_assault_combat_exoskeleton_ico.svg",
+  "customImage": "!#ui/unitskin#ussr_mk_5_assault_combat_exoskeleton",
+  "customTooltipImage": "ui/tanks/ussr_mk_5_assault_combat_exoskeleton",
+  "spawn_count": {
+    "numSpawnsPerBattleHistorical": 2
+  },
+  "weapons": {
+    "primary": {
+      "blk": "gameData/weapons/gun_PPSH.blk",
+      "numSpareMagazines": 4,
+      "reloadTime": 4.0,
+      "name": "PPSH",
+      "shootNode": "rifle_Body",
+      "selWeaponVar": 1,
+      "increaseDevWithEachShot": 1.5,
+      "standingPosition": [
+        0.0,
+        1.6,
+        -0.15
+      ],
+      "standingAimingPosition": [
+        0.0,
+        1.6,
+        -0.05
+      ],
+      "crouchPosition": [
+        0.0,
+        1.2,
+        -0.15
+      ],
+      "crouchAimingPosition": [
+        0.0,
+        1.2,
+        -0.05
+      ],
+      "crawlPosition": [
+        0.7,
+        0.4,
+        -0.15
+      ],
+      "crawlAimingPosition": [
+        0.7,
+        0.45,
+        -0.05
+      ],
+      "walkMoveMagnitude": 0.0,
+      "predictTime": 0.1,
+      "targetSpdVisc": 0.4,
+      "gunSpdVisc": 0.25,
+      "gunSpdDeltaMult": 1.0,
+      "maxGunSpd": 4.5,
+      "moveToSpd": 1.5,
+      "vertOffsetRestoreVisc": 0.4,
+      "vertOffsetMoveDownVisc": 0.5
+    }
+  },
+  "cockpit": {
+    "zoomOutFov": 27.54,
+    "zoomInFov": 6.14,
+    "sightFov": 13.5,
+    "sightName": "1g_46",
+    "headPos": [
+      0.0,
+      3.0,
+      -2.5
+    ],
+    "headPosOnShooting": [
+      0.0,
+      2.2,
+      -0.5
+    ],
+    "detectionHeight": 2.6
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "armorClass": "tank_structural_steel",
+    "hp": 10000.0,
+    "createSecondaryShatters": false,
+    "armorThickness": 2.0,
+    "frame": {
+      "frame_01_dm": {
+        "armorThickness": 10.0
+      },
+      "frame_02_dm": {},
+      "frame_03_dm": {},
+      "frame_04_dm": {},
+      "frame_05_dm": {},
+      "frame_06_dm": {},
+      "frame_07_dm": {},
+      "frame_08_dm": {},
+      "frame_09_dm": {},
+      "frame_10_dm": {}
+    },
+    "stell_elements": {
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 5.0,
+      "hp": 15.0,
+      "armorEffectiveThicknessMax": 12.0,
+      "ex_armor_01": {},
+      "ex_armor_02": {},
+      "ex_armor_03": {},
+      "ex_armor_04": {},
+      "ex_armor_05": {},
+      "ex_armor_body_l_01": {},
+      "ex_armor_body_l_02": {},
+      "ex_armor_body_l_03": {},
+      "ex_armor_body_l_04": {},
+      "ex_armor_body_l_05": {},
+      "ex_armor_body_r_01": {},
+      "ex_armor_body_r_02": {},
+      "ex_armor_body_r_03": {},
+      "ex_armor_body_r_04": {},
+      "ex_armor_body_r_05": {},
+      "engine_l_dm": {},
+      "engine_r_dm": {},
+      "optic_gun_dm": {},
+      "fuel_tank_dm": {}
+    },
+    "body_armor": {
+      "armorClass": "RHA_tank_modern",
+      "genericEffectiveThicknessMax": 70.0,
+      "hp": 20.0,
+      "armorThickness": 30.0,
+      "stopChanceOnDeadPart": 0.0,
+      "restrainDamage": 0.85,
+      "body_armor_01_dm": {},
+      "body_armor_02_dm": {},
+      "body_armor_03_dm": {},
+      "body_armor_04_dm": {},
+      "body_armor_05_dm": {},
+      "body_armor_06_dm": {},
+      "body_armor_07_dm": {},
+      "body_armor_08_dm": {},
+      "body_armor_09_dm": {},
+      "body_armor_10_dm": {},
+      "body_armor_11_dm": {},
+      "body_armor_12_dm": {},
+      "helmet_dm": {
+        "hp": 8.0
+      }
+    },
+    "soft_armor": {
+      "armorClass": "armour_aramide_fabric",
+      "armorThickness": 10.0,
+      "body_shield_01_dm": {},
+      "body_armor_13_dm": {
+        "armorThickness": 40.0
+      }
+    },
+    "pilot_body": {
+      "armorClass": "steel_tankman",
+      "hp": 25.0,
+      "genericDamageMult": 1.0,
+      "pressureDamageMult": 1.0,
+      "napalmDamageMult": 0.0,
+      "ignoreSolidDimension": true,
+      "armorEffectiveThicknessMax": 3.0,
+      "head_dm": {
+        "hp": 8.0
+      },
+      "chest_dm": {
+        "hp": 8.0
+      },
+      "leg_r_dm": {},
+      "leg_l_dm": {},
+      "arm_r_dm": {},
+      "arm_l_dm": {}
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 0.0
+      }
+    }
+  },
+  "sound": {
+    "stepSfx": "footsteps",
+    "stepSfxAi": "footsteps_ai",
+    "landingSfx": "landing",
+    "landingSfxAi": "landing_ai",
+    "stepIrq": {
+      "irq": [
+        "left_sprint",
+        "right_sprint"
+      ]
+    },
+    "landIrq": {
+      "irq": [
+        "left_landing",
+        "right_landing"
+      ]
+    }
+  },
+  "jumpJetEmitters": {
+    "node": [
+      "emtr_jump_rocket_01",
+      "emtr_jump_rocket_02"
+    ]
+  },
+  "gunConvergence": {
+    "defaultDistance": 800.0,
+    "vertical": true,
+    "horizontal": true
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/groundModels_weapons/8_6mm_exo_MG338_user_machinegun.blk",
+        "emitter": "mg_8mm_bone_turret_l",
+        "flash": "mg_8mm_emtr_gun_flame_01",
+        "useEmitter": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 80.0,
+        "speedPitch": 80.0,
+        "bullets": 1250,
+        "fireConeAngle": 15.0,
+        "ChainfireTime": 3.0,
+        "DelayAfterShoot": 3.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "mg_8mm_bone_turret_l",
+          "gun": "mg_8mm_bone_turret_l"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -90.0,
+            90.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "special",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_exo_9M133_launcher_user_cannon.blk",
+        "flash": "emtr_gun_flame_02",
+        "changeBulletTypeForSet": true,
+        "useEmitter": true,
+        "emitter": "atrl_heavy_east_bone_gun_barrel_01",
+        "emitterGenRange": [
+          1,
+          2
+        ],
+        "emitterGenFmt": "atrl_heavy_east_bone_gun_barrel_%02d",
+        "createGunEffects": true,
+        "speedYaw": 80.0,
+        "speedPitch": 80.0,
+        "bullets": 2,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "atrl_heavy_east_bone_turret_l",
+          "gun": "atrl_heavy_east_bone_turret_l"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            -90.0,
+            90.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/groundModels_weapons/43mm_exo_GM_93_user_cannon.blk",
+        "emitter": "mg_8mm_bone_turret_l",
+        "flash": "mg_8mm_emtr_gun_flame_02",
+        "circleAim": false,
+        "forceShowInActionBar": true,
+        "speedYaw": 80.0,
+        "speedPitch": 80.0,
+        "bullets": 15,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "mg_8mm_bone_turret_l",
+          "gun": "mg_8mm_bone_turret_l",
+          "barrel": "mg_8mm_bone_gun_barrel_02"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            -90.0,
+            90.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "smoke",
+        "blk": "gameData/Weapons/groundModels_weapons/21mm_exo_smoke_launcher.blk",
+        "weaponType": "rockets",
+        "startFx": "",
+        "useEmitter": true,
+        "emitter": "emtr_mortar_flame_01",
+        "emitterGenRange": [
+          1,
+          4
+        ],
+        "emitterGenFmt": "emtr_mortar_flame_%02d",
+        "ignoreLoaderPenalty": true,
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 360.0,
+        "salvo": 1,
+        "salvoDelay": 0.5,
+        "speedYaw": 24.0,
+        "speedPitch": 15.0,
+        "fireConeAngle": [
+          1.0,
+          5.0
+        ],
+        "bullets": 4,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_grenade",
+          "gun": "bone_grenade"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    ],
+    "hideNodes": {
+      "node": [
+        "sr_west_turret",
+        "sr_west",
+        "sr_east_turret",
+        "sr_east_mg",
+        "sr_east_ammo",
+        "mg_12_7mm_west_turret",
+        "mg_12_7mm_west_mg",
+        "mg_12_7mm_west_ammo",
+        "mg_12_7mm_east_turret",
+        "mg_12_7mm_east_mg",
+        "mg_12_7mm_east_ammo",
+        "mg_8mm_turret_r",
+        "mg_8mm_gun_r",
+        "mg_8mm_gun_barrel_r",
+        "mg_8mm_ammo_r",
+        "gl_west_turret",
+        "gl_west_engine_02",
+        "gl_west_engine_01",
+        "gl_west_cap_02",
+        "gl_west_cap_01",
+        "gl_west",
+        "gl_east_turret",
+        "gl_east_cap_02",
+        "gl_east_cap_01",
+        "gl_east",
+        "aarl_east_cap_04",
+        "aarl_east_cap_03",
+        "aarl_east_cap_02",
+        "aarl_east_cap_01",
+        "aarl_east",
+        "aarl_west_turret",
+        "aarl_west_gun_barrel_04",
+        "aarl_west_gun_barrel_03",
+        "aarl_west_gun_barrel_02",
+        "aarl_west_gun_barrel_01",
+        "aarl_west_cap_04",
+        "aarl_west_cap_03",
+        "aarl_west_cap_02",
+        "aarl_west_cap_01",
+        "aarl_west_gun",
+        "atrl_heavy_east_cap_02",
+        "atrl_heavy_east_cap_01",
+        "atrl_heavy_west",
+        "atrl_heavy_west_cap",
+        "atrl_heavy_west_turret",
+        "atrl_light_west_turret",
+        "atrl_light_west_gun_barrel_02",
+        "atrl_light_west_gun_barrel_01",
+        "atrl_light_west_gun",
+        "atrl_light_west_cap_02",
+        "atrl_light_west_cap_01",
+        "atrl_light_east_turret",
+        "atrl_light_east_gun_barrel_02",
+        "atrl_light_east_gun_barrel_01",
+        "atrl_light_east_cap_02",
+        "atrl_light_east_cap_01",
+        "atrl_light_east_gun"
+      ]
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "ussr_mk_5_at_combat_exoskeleton_default",
+      "blk": "gameData/units/tankModels/weaponPresets/ussr_mk_5_at_combat_exoskeleton_default.blk"
+    }
+  },
+  "modifications": {
+    "12mm_usa_M2HB_common": {},
+    "152mm_9M133_ATGM": {},
+    "152mm_9M133FM_3_ATGM": {},
+    "152mm_9M133FM_3_ATGM_ammo_pack": {
+      "tier": 2
+    },
+    "new_tank_vertical_aiming": {},
+    "tank_new_gun": {},
+    "tank_camouflage": {},
+    "tank_additional_armor": {},
+    "manual_extinguisher": {},
+    "tank_tool_kit": {},
+    "modern_tank_laser_rangefinder": {
+      "tier": 2,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            }
+          ]
+        }
+      }
+    },
+    "night_vision_system": {
+      "modClass": "protection",
+      "turn_it_off": false,
+      "tier": 3,
+      "effects": {
+        "nightVision": {
+          "gunnerThermal": {
+            "resolution": [
+              1200,
+              800
+            ],
+            "noiseFactor": 0.04
+          },
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
+    "art_support": {
+      "image": "#ui/gameuiskin#artillery_fire_on_target",
+      "effects": {
+        "rcostAddParam": 0.9595,
+        "supportUnitClass": "structures/155mm_high_precision_shells",
+        "supportUnitTag": "artillery"
+      }
+    }
+  }
+}

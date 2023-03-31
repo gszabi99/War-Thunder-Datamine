@@ -589,6 +589,57 @@ let cfg = {
     ]
   },
 
+  ["root_human"] = {
+    title = "hotkeys/ID_SHOW_MULTIFUNC_WHEEL_MENU"
+    items = [
+      { section = "radar_human" }
+      null
+      null
+      { section = "targeting_human" }
+      null
+      null
+      null
+      voiceMessagesMenuFunc
+    ]
+  },
+
+  ["targeting_human"] = {
+    title = "hotkeys/ID_FIRE_CONTROL_SYSTEM_HEADER"
+    items = [
+      { shortcut = [ "ID_HUMAN_TOGGLE_RANGEFINDER" ], enable = canUseRangefinder }
+      { shortcut = [ "ID_HUMAN_NIGHT_VISION" ], enable = hasNightVision }
+      null
+      null
+      { shortcut = [ "ID_HUMAN_THERMAL_WHITE_IS_HOT" ], enable = hasNightVision }
+      null
+      null
+      null
+    ]
+  },
+
+  ["radar_human"] = {
+    title = "hotkeys/ID_SENSORS_HEADER"
+    enable = memoize(function(unitId) {
+      let unitBlk = ::get_full_unit_blk(unitId)
+      if (unitBlk?.sensors)
+        foreach (sensor in (unitBlk.sensors % "sensor")) {
+          let sensorBlk = blkOptFromPath(sensor?.blk)
+          if (sensorBlk?.type == "radar" && (sensorBlk?.showOnHud ?? true))
+            return true
+        }
+      return false
+    })
+    items = [
+      { shortcut = [ "ID_SENSOR_SWITCH_HUMAN" ] }
+      { shortcut = [ "ID_SENSOR_TARGET_SWITCH_HUMAN" ] }
+      { shortcut = [ "ID_SENSOR_TARGET_LOCK_HUMAN" ] }
+      null
+      null
+      null
+      null
+      null
+    ]
+  },
 }
 
 return cfg

@@ -198,7 +198,8 @@
           "target": "storm_warning_to_battle_point",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionMarkAsWaypoint": {
           "visible": false,
@@ -236,6 +237,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "b29"
         },
         "unitSetIndication": {
@@ -303,6 +307,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "b29"
         },
         "wait": [
@@ -317,7 +324,8 @@
           "target": "storm_warning_main_b29",
           "status": 3,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionFailed": {}
       },
@@ -390,7 +398,8 @@
           "target": "storm_warning_main_b29",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 3.0
@@ -483,6 +492,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "f86_squad"
         },
         "wait": [
@@ -497,7 +509,8 @@
           "target": "storm_warning_main_f86",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionCompleted": {
           "timer": false
@@ -870,7 +883,17 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "modification": [
+          "CdMin_Fuse",
+          "new_cover",
+          "structure_str",
+          "hp_105_jet",
+          "g_suit",
+          "hydravlic_power",
+          "new_compressor_jet"
+        ],
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -913,12 +936,12 @@
             -0.953717
           ],
           [
-            -8185.3,
-            4000.0,
-            -23512.6
+            -7004.16,
+            3700.0,
+            -26781.5
           ]
         ],
-        "unit_class": "f-86a-5",
+        "unit_class": "f-84g",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -932,6 +955,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -993,6 +1017,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1055,6 +1080,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1117,6 +1143,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1179,6 +1206,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1229,13 +1257,13 @@
         ]
       ],
       "props": {
-        "object_marking": 0,
         "squad_members": [
           "f86_01",
           "f86_02",
           "f86_03",
           "f86_04"
-        ]
+        ],
+        "object_marking": 0
       }
     },
     "air_defence": [
@@ -1277,6 +1305,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1333,6 +1362,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1389,6 +1419,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1445,6 +1476,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1641,9 +1673,9 @@
           1400.0
         ],
         [
-          -3259.4,
-          4326.0,
-          -9884.35
+          321.107,
+          3700.0,
+          -7067.96
         ]
       ],
       "props": {}
@@ -1668,7 +1700,7 @@
         ],
         [
           -16750.3,
-          3255.95,
+          3700.0,
           60743.3
         ]
       ],

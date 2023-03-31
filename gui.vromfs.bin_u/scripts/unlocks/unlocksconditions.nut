@@ -472,8 +472,15 @@ let function loadCondition(blk, unlockMode) {
   let t = blk?.type
   let res = createCondition(t)
 
-  if (t == "weaponType")
-    res.values = (blk % "weapon")
+  if (t == "weaponType") {
+    let weaponArray = (blk % "weapon")
+    if (weaponArray.contains("unguided_bomb") && weaponArray.contains("guided_bomb")) {
+      weaponArray.remove(weaponArray.indexof("unguided_bomb"))
+      weaponArray.remove(weaponArray.indexof("guided_bomb"))
+      weaponArray.append("bomb")
+    }
+    res.values = weaponArray
+  }
   else if (t == "location")
     res.values = (blk % "location")
   else if (t == "operationMap")

@@ -7,7 +7,8 @@ require AmmoStowage
 
 [cpp_event(unicast, with_scheme)]
 struct EventBulletsAmountChanged
-{}
+  // when set to true, will prioritize loading ammo into first stage, even if shell count is decreased
+  isRefill : bool
 
 [cpp_event(unicast)]
 struct EventAmmoStowageSetSlotEnabled

@@ -49,7 +49,7 @@ if (isPlatformXboxOne)
           isHeaderPassed = sc?.unitClassTypes == null || isInArray(classType, sc.unitClassTypes)
 
         if (isHeaderPassed)
-          isHeaderPassed = (unitTags.len() == 0 && sc?.unitTag == null) || isInArray(sc?.unitTag ?? "", unitTags)
+          isHeaderPassed = unitTags.len() == 0 || sc?.unitTag == null || isInArray(sc.unitTag, unitTags)
       }
       else if (sc.type == CONTROL_TYPE.SECTION)
         isSectionPassed = isHeaderPassed

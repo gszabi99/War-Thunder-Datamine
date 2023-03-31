@@ -2771,9 +2771,15 @@
             0.5,
             0.5
           ],
-          "page": {
-            "type": "map"
-          }
+          "page": [
+            {
+              "type": "radar",
+              "hideRadarBackground": true
+            },
+            {
+              "type": "map"
+            }
+          ]
         },
         {
           "textureArea": [
@@ -3430,13 +3436,6 @@
   },
   "sensors": {
     "sensor": [
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-      },
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
       {
         "blk": "gameData/sensors/uk_marconi_ai_mk24w.blk",
         "dmPart": "radar_dm"

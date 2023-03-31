@@ -93,17 +93,17 @@ def ammo_stowage_respawn_handle(evt : EventUnitRespawn; eid : EntityId;
                                 >) : void
   for state in v.ammo_slots__state
     set_flag(state, AmmoSlotState ENABLED, true)
-  sendEvent(eid, [[EventBulletsAmountChanged]])
+  sendEvent(eid, [[EventBulletsAmountChanged isRefill=true]])
 
 
 [es, with_bundle(v)]
-def ammo_stowage_respair_handle(evt : EventUnitRepair; eid : EntityId;
-                                var v : tuple<
-                                  ammo_slots__state : UInt32List
-                                >) : void
+def ammo_stowage_repair_handle(evt : EventUnitRepair; eid : EntityId;
+                               var v : tuple<
+                                 ammo_slots__state : UInt32List
+                               >) : void
   for state in v.ammo_slots__state
     set_flag(state, AmmoSlotState ENABLED, true)
-  sendEvent(eid, [[EventBulletsAmountChanged]])
+  sendEvent(eid, [[EventBulletsAmountChanged isRefill=false]])
 
 
 [es, with_bundle(v)]
@@ -128,7 +128,7 @@ def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; acti
     return
   var unit = get_unit(uid)
   if unit != null && !unit.isDelayed
-    let sync_required = setup_ammo_stowage(unit, !get_app().isInHangar, false) <| v
+    let sync_required = setup_ammo_stowage(unit, !get_app().isInHangar, false, evt.isRefill) <| v
     if sync_required
       ammo_stowage_send_net_sync(eid) <| v
 
@@ -155,7 +155,7 @@ def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; active : bool; ei
     return
   var unit = get_unit(uid)
   if unit != null && !unit.isDelayed
-    let sync_required = setup_ammo_stowage(unit, true, false) <| v
+    let sync_required = setup_ammo_stowage(unit, true, false, false) <| v
     if sync_required
       ammo_stowage_send_net_sync(eid) <| v
 
@@ -217,13 +217,13 @@ def ammo_stowage_replenishment_updater_es(info : ParallelUpdateFrameDelayed;
       continue
 
     if replenishment_start_end.x >= current_time && replenishment_start_end.y < 0.0f
-      replenishment_start_end.y = replenishment_start_end.x + /* time */ replenishment_time.y * unit.loaderPenalty
+      replenishment_start_end.y = replenishment_start_end.x + /* time */ replenishment_time.x * unit.loaderPenalty
 
     if current_time > replenishment_start_end.y
       num_ammo_first_stage.x++
       if num_ammo_first_stage.x < num_ammo_first_stage.y && num_ammo_first_stage.x < num_ammo.x
         replenishment_start_end.x = replenishment_start_end.y
-        replenishment_start_end.y += /* time */ replenishment_time.y * unit.loaderPenalty
+        replenishment_start_end.y += /* time */ replenishment_time.x * unit.loaderPenalty
       sendEvent(eid, [[EventAmmoStowageSetup]])
 
 
@@ -364,7 +364,7 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE, false)
-  setup_ammo_stowage(unit, true, false) <| v
+  setup_ammo_stowage(unit, true, false, false) <| v
   if hit_slot_id == -1
     return
 
@@ -423,7 +423,7 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE, false)
-  setup_ammo_stowage(unit, true, false) <| v
+  setup_ammo_stowage(unit, true, false, false) <| v
   if hit_slot_id == -1
     return
   let hit_slot_part_id = v.ammo_slots__partId[hit_slot_id]
@@ -681,7 +681,7 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
     ammo_stowage_do_fire(eid, partId, evt.offender) <| v
   elif should_be_hp <= 0.0f
     set_slot_enabled_by_part_id(unit, partId, AmmoSlotEnabledState DISABLED_SIMPLE) <| v
-    setup_ammo_stowage(unit, true, false) <| v
+    setup_ammo_stowage(unit, true, false, false) <| v
 
 
 [es, with_bundle(v)]
@@ -812,7 +812,7 @@ def ammo_stowage_set_slot_enabled_by_part_es(evt : EventAmmoStowageSetSlotEnable
     for state in each_enum(AmmoSlotEnabledState ENABLED)
       if int(state) == evt.state
         set_slot_enabled_by_part_id(unit, evt.partId, state) <| v
-        setup_ammo_stowage(unit, true, false) <| v
+        setup_ammo_stowage(unit, true, false, false) <| v
         break
 
 
@@ -875,4 +875,4 @@ def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
         v.ammo_stowages__replenishmentStartEnd[stowage_id].x = current_time
     else
       v.ammo_stowages__replenishmentStartEnd[stowage_id] = float2(-1.0f)
-  sendEvent(eid, [[EventBulletsAmountChanged]])
+  sendEvent(eid, [[EventBulletsAmountChanged isRefill=false]])

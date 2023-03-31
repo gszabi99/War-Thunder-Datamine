@@ -65,6 +65,18 @@ let cfgMenuTankArachisCombatTrack = [
     [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
 ]
 
+let cfgMenuHuman = [
+  // Page #1
+    EII_SMOKE_GRENADE,
+    EII_LOCK,
+    EII_ARTILLERY_TARGET,
+    EII_NIGHT_VISION,
+    { type = EII_SPECIAL_UNIT, killStreakTag = "fighter" },
+    { type = EII_SPECIAL_UNIT, killStreakTag = "attacker" },
+    { type = EII_SPECIAL_UNIT, killStreakTag = "bomber" },
+    EII_SUPPORT_PLANE,
+]
+
 let cfgMenuShip = [
   // Page #1
     EII_SMOKE_GRENADE,
@@ -127,6 +139,7 @@ let function getCfgByUnit(unitId, hudUnitType) {
        : hudUnitType == HUD_UNIT_TYPE.SHIP_EX    ? cfgMenuSubmarine
        : hudUnitType == HUD_UNIT_TYPE.SHIP       ? cfgMenuShip
        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT   ? cfgMenuAircraft
+       : hudUnitType == HUD_UNIT_TYPE.HUMAN      ? cfgMenuHuman
        : []
 }
 

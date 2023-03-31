@@ -11,9 +11,7 @@ require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")([
   require("%scripts/controls/shortcutsList/shortcutsGroupTank.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupShip.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupSubmarine.nut")
-  //
-
-
+  require("%scripts/controls/shortcutsList/shortcutsGroupSpecial.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupGamepad.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupIngame.nut")
   require("%scripts/controls/shortcutsList/shortcutsGroupArtillery.nut")

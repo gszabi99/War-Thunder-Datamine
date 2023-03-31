@@ -190,6 +190,7 @@
     "login_layer_sturmmorser_sturmtiger": 8.0,
     "login_layer_football": 8.0,
     "login_layer_wt2077": 8.0,
+    "login_layer_mobile_infantry": 8.0,
     "login_layer_dyn_1_81_ussr": 2.0,
     "login_layer_mig19pt": 2.0,
     "login_layer_a179": 2.0,
@@ -301,7 +302,8 @@
       "login_layer_sturmmorser_sturmtiger": "loading_screen_sturmmorser_sturmtiger",
       "login_layer_amx_50_1950": "loading_screen_amx_50_1950",
       "login_layer_football": "loading_screen_football_2023",
-      "login_layer_wt2077": "loading_screen_wt2077"
+      "login_layer_wt2077": "loading_screen_wt2077",
+      "login_layer_mobile_infantry": "loading_screen_mobile_infantry"
     },
     "beforeLogin": {
       "default_chance": 0.0,
@@ -529,12 +531,12 @@
     "ball": "bullet_gun_brown",
     "t_ball": "bullet_gun_green",
     "i_ball": "bullet_gun_blue",
-    "ap_ball": "bullet_gun_silver",
-    "ap_t_ball": "bullet_gun_silver_green",
-    "ap_i_ball": "bullet_gun_red",
-    "ap_i_t_ball": "bullet_gun_red_green",
-    "apcr_i_ball": "bullet_gun_red",
-    "apcr_i_ball_bs41": "bullet_gun_red",
+    "ap_ball": "bullet_gun_red",
+    "ap_t_ball": "bullet_gun_red_green",
+    "ap_i_ball": "bullet_gun_red_blue",
+    "ap_i_t_ball": "bullet_gun_red_blue_green",
+    "apcr_i_ball": "bullet_gun_black",
+    "apcr_i_ball_bs41": "bullet_gun_black",
     "he_ball": "bullet_gun_yellow",
     "he_i_ball": "bullet_gun_yellow",
     "he_i_fuse_ball": "bullet_gun_yellow",
@@ -542,11 +544,11 @@
     "i_t_ball": "bullet_gun_blue_green",
     "i_ball_M1": "bullet_gun_blue",
     "t_ball_M1": "bullet_gun_green",
-    "ap_ball_M2": "bullet_gun_silver",
+    "ap_ball_M2": "bullet_gun_red",
     "ball_M2": "bullet_gun_brown",
-    "ap_i_t_ball_M20": "bullet_gun_red_green",
+    "ap_i_t_ball_M20": "bullet_gun_red_blue_green",
     "i_ball_M23": "bullet_gun_blue",
-    "ap_i_ball_M8": "bullet_gun_red",
+    "ap_i_ball_M8": "bullet_gun_red_blue",
     "ball_shell": "bullet_cannon_brown",
     "ball_t_shell": "bullet_cannon_green",
     "t_shell": "bullet_cannon_green",
@@ -566,18 +568,20 @@
     "he_frag_t": "bullet_cannon_yellow_green",
     "he_frag_i_t": "bullet_cannon_blue_yellow_green",
     "he_frag_i": "bullet_cannon_blue_yellow",
-    "sapi": "bullet_cannon_red",
-    "ap": "bullet_cannon_silver",
-    "aphe": "bullet_cannon_red",
-    "aphe_t": "bullet_cannon_red_green",
-    "ap_t": "bullet_cannon_silver_green",
-    "apc_t": "bullet_cannon_silver_green",
-    "ap_i": "bullet_cannon_red",
-    "ap_i_t": "bullet_cannon_red_green",
-    "apcr": "bullet_cannon_silver",
-    "apcr_t": "bullet_cannon_silver_green",
+    "sapi": "bullet_cannon_red_blue",
+    "ap": "bullet_cannon_red",
+    "aphe": "bullet_cannon_red_blue",
+    "aphe_t": "bullet_cannon_red_blue_green",
+    "ap_t": "bullet_cannon_red_green",
+    "apc_t": "bullet_cannon_red_green",
+    "ap_i": "bullet_cannon_red_blue",
+    "ap_i_t": "bullet_cannon_red_blue_green",
+    "apcr": "bullet_cannon_black",
+    "apcr_t": "bullet_cannon_black",
     "he_vt": "bullet_proxi_fuze_cannon_yellow",
     "he_tf": "bullet_dist_fuze_cannon_yellow",
+    "slap": "bullet_cannon_black",
+    "slap_t": "bullet_cannon_black",
     "s_d": "bullet_cannon_brown",
     "flr": "bullet_flare",
     "chff": "bullet_chaff",
@@ -615,7 +619,7 @@
     "he_grenade_tank": "he_grenade_tank",
     "he_frag_tank": "he_frag_tank",
     "sap_hei_tank": "he_frag_tank",
-    "sap_hei": "bullet_cannon_red",
+    "sap_hei": "bullet_gun_red_blue",
     "he_frag_fs_tank": "he_frag_tank",
     "shrapnel_tank": "shrapnel_tank",
     "ahead_tank": "bullet_cannon_blue",
@@ -957,699 +961,699 @@
       "bronze_plane": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_plane.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_plane"
       },
       "bronze_rightwing": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_rightwing.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_rightwing"
       },
       "bronze_leftwing": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_leftwing.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_leftwing"
       },
       "bronze_tail": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_tail.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_bronze_tail"
       },
       "gold_plane": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_plane.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_plane"
       },
       "gold_rightwing": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_rightwing.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_rightwing"
       },
       "gold_leftwing": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_leftwing.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_leftwing"
       },
       "gold_tail": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_tail.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_gold_tail"
       },
       "silver_plane": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_plane.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_plane"
       },
       "silver_rightwing": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_rightwing.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_rightwing"
       },
       "silver_leftwing": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_leftwing.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_leftwing"
       },
       "silver_tail": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_tail.png"
+        "img": "#ui/gameuiskin#item_aerobatic_smoke_silver_tail"
       },
       "default_unlocked": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#default_unlocked.png"
+        "img": "#ui/gameuiskin#default_unlocked"
       },
       "default_locked": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#default_locked.png"
+        "img": "#ui/gameuiskin#default_locked"
       },
       "streaks_event_bg": {
         "w": 0.9,
         "h": 0.82,
-        "img": "#ui/gameuiskin#streaks_event_bg.png"
+        "img": "#ui/gameuiskin#streaks_event_bg"
       },
       "streaks_heroic_bg": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#streaks_heroic_bg.png"
+        "img": "#ui/gameuiskin#streaks_heroic_bg"
       },
       "streaks_marks_bg": {
         "w": 0.78,
         "h": 0.78,
-        "img": "#ui/gameuiskin#streaks_marks_bg.png"
+        "img": "#ui/gameuiskin#streaks_marks_bg"
       },
       "streaks_defender_bg": {
         "w": 0.9,
         "h": 0.9,
-        "img": "#ui/gameuiskin#streaks_defender_bg.png"
+        "img": "#ui/gameuiskin#streaks_defender_bg"
       },
       "streaks_multi_kill_bg": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#streaks_multi_kill_bg.png"
+        "img": "#ui/gameuiskin#streaks_multi_kill_bg"
       },
       "streaks_row_bg": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#streaks_row_bg.png"
+        "img": "#ui/gameuiskin#streaks_row_bg"
       },
       "streaks_trophy_near_bg": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#streaks_trophy_near_bg.png"
+        "img": "#ui/gameuiskin#streaks_trophy_near_bg"
       },
       "streaks_tank_bg": {
         "w": 0.9,
         "h": 0.9,
-        "img": "#ui/gameuiskin#streaks_tank_bg.png"
+        "img": "#ui/gameuiskin#streaks_tank_bg"
       },
       "streaks_global_bg": {
         "w": 0.88,
         "h": 0.88,
-        "img": "#ui/gameuiskin#streaks_global_bg.png"
+        "img": "#ui/gameuiskin#streaks_global_bg"
       },
       "streaks_survivance_bg": {
         "w": 0.88,
         "h": 0.88,
-        "img": "#ui/gameuiskin#streaks_survivance_bg.png"
+        "img": "#ui/gameuiskin#streaks_survivance_bg"
       },
       "default_stage_unlock_1": {
         "w": 0.03,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_1.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_1"
       },
       "default_stage_unlock_2": {
         "w": 0.1,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_2.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_2"
       },
       "default_stage_unlock_3": {
         "w": 0.16,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_3.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_3"
       },
       "default_stage_unlock_4": {
         "w": 0.26,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_4.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_4"
       },
       "default_stage_unlock_5": {
         "w": 0.16,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_5.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_5"
       },
       "default_stage_unlock_6": {
         "w": 0.22,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_6.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_6"
       },
       "default_stage_unlock_7": {
         "w": 0.26,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_7.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_7"
       },
       "default_stage_unlock_8": {
         "w": 0.3,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_8.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_8"
       },
       "default_stage_unlock_9": {
         "w": 0.22,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_9.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_9"
       },
       "default_stage_unlock_10": {
         "w": 0.14,
         "h": 0.22,
-        "img": "#ui/gameuiskin#default_stage_unlock_10.png"
+        "img": "#ui/gameuiskin#default_stage_unlock_10"
       },
       "streaks_rank_2": {
         "w": 0.25,
         "h": 0.2,
         "x": 0.37,
         "y": 0.62,
-        "img": "#ui/gameuiskin#streaks_rank_2.png"
+        "img": "#ui/gameuiskin#streaks_rank_2"
       },
       "streaks_rank_3": {
         "w": 0.25,
         "h": 0.2,
         "x": 0.37,
         "y": 0.62,
-        "img": "#ui/gameuiskin#streaks_rank_3.png"
+        "img": "#ui/gameuiskin#streaks_rank_3"
       },
       "streaks_multi_kill_rank_4": {
         "w": 0.25,
         "h": 0.2,
         "x": 0.37,
         "y": 0.62,
-        "img": "#ui/gameuiskin#streaks_multi_kill_rank_4.png"
+        "img": "#ui/gameuiskin#streaks_multi_kill_rank_4"
       },
       "streaks_multi_kill_rank_x": {
         "w": 0.32,
         "h": 0.2,
         "x": 0.36,
         "y": 0.62,
-        "img": "#ui/gameuiskin#streaks_multi_kill_rank_x.png"
+        "img": "#ui/gameuiskin#streaks_multi_kill_rank_x"
       },
       "wp_coin": {
         "w": 0.66,
         "h": 0.73,
         "x": "0.05pw",
         "y": "0.1ph",
-        "img": "#ui/gameuiskin#wp_coin.png"
+        "img": "#ui/gameuiskin#wp_coin"
       },
       "wp_1k": {
         "w": 0.59,
         "h": 0.33,
         "x": "0.25pw",
         "y": "0.47ph",
-        "img": "#ui/gameuiskin#wp_1k.png"
+        "img": "#ui/gameuiskin#wp_1k"
       },
       "wp_5k": {
         "w": 0.8,
         "h": 0.52,
         "x": "0.95pw-w",
         "y": "0.8ph-h",
-        "img": "#ui/gameuiskin#wp_5k.png"
+        "img": "#ui/gameuiskin#wp_5k"
       },
       "wp_10k": {
         "w": 0.79,
         "h": 0.64,
         "x": "0.95pw-w",
         "y": "0.85ph-h",
-        "img": "#ui/gameuiskin#wp_10k.png"
+        "img": "#ui/gameuiskin#wp_10k"
       },
       "wp_50k": {
         "w": 0.75,
         "h": 0.49,
         "x": "0.95pw-w",
         "y": "0.8ph-h",
-        "img": "#ui/gameuiskin#wp_50k.png"
+        "img": "#ui/gameuiskin#wp_50k"
       },
       "wp_bar_100k": {
         "w": 0.5,
         "h": 0.68,
         "x": "0.05pw",
         "y": "0.1ph",
-        "img": "#ui/gameuiskin#wp_bar_100k.png"
+        "img": "#ui/gameuiskin#wp_bar_100k"
       },
       "wp_100k": {
         "w": 0.75,
         "h": 0.525,
         "x": "0.95pw-w",
         "y": "0.8ph-h",
-        "img": "#ui/gameuiskin#wp_100k.png"
+        "img": "#ui/gameuiskin#wp_100k"
       },
       "wp_bar_1kk": {
         "w": 0.355,
         "h": 0.635,
         "x": "0.05pw",
         "y": "0.1ph",
-        "img": "#ui/gameuiskin#wp_bar_1kk.png"
+        "img": "#ui/gameuiskin#wp_bar_1kk"
       },
       "wp_1kk": {
         "w": 0.77,
         "h": 0.55,
         "x": "0.95pw-w",
         "y": "0.8ph-h",
-        "img": "#ui/gameuiskin#wp_1kk.png"
+        "img": "#ui/gameuiskin#wp_1kk"
       },
       "streaks_first_blood": {
         "w": 0.58,
         "h": 0.58,
-        "img": "#ui/gameuiskin#streaks_first_blood.png"
+        "img": "#ui/gameuiskin#streaks_first_blood"
       },
       "streaks_final_blow": {
         "w": 0.48,
         "h": 0.48,
-        "img": "#ui/gameuiskin#streaks_final_blow.png"
+        "img": "#ui/gameuiskin#streaks_final_blow"
       },
       "streaks_last_man_standing": {
         "w": 0.66,
         "h": 0.68,
-        "img": "#ui/gameuiskin#streaks_last_man_standing.png"
+        "img": "#ui/gameuiskin#streaks_last_man_standing"
       },
       "streaks_heroic_target": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_heroic_target.png"
+        "img": "#ui/gameuiskin#streaks_heroic_target"
       },
       "streaks_heroic_fighter": {
         "w": 0.44,
         "h": 0.44,
-        "img": "#ui/gameuiskin#streaks_heroic_fighter.png"
+        "img": "#ui/gameuiskin#streaks_heroic_fighter"
       },
       "streaks_heroic_bomber": {
         "w": 0.52,
         "h": 0.52,
-        "img": "#ui/gameuiskin#streaks_heroic_bomber.png"
+        "img": "#ui/gameuiskin#streaks_heroic_bomber"
       },
       "streaks_heroic_ship": {
         "w": 0.42,
         "h": 0.42,
-        "img": "#ui/gameuiskin#streaks_heroic_ship.png"
+        "img": "#ui/gameuiskin#streaks_heroic_ship"
       },
       "streaks_heroic_juggernaut": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_heroic_juggernaut.png"
+        "img": "#ui/gameuiskin#streaks_heroic_juggernaut"
       },
       "streaks_heroic_survivor": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_heroic_survivor.png"
+        "img": "#ui/gameuiskin#streaks_heroic_survivor"
       },
       "streaks_heroic_mission_maker": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_heroic_mission_maker.png"
+        "img": "#ui/gameuiskin#streaks_heroic_mission_maker"
       },
       "streaks_heroic_defender": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_heroic_defender.png"
+        "img": "#ui/gameuiskin#streaks_heroic_defender"
       },
       "streaks_heroic_punisher": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_heroic_punisher.png"
+        "img": "#ui/gameuiskin#streaks_heroic_punisher"
       },
       "streaks_heroic_wingman": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_heroic_wingman.png"
+        "img": "#ui/gameuiskin#streaks_heroic_wingman"
       },
       "streaks_heroic_sniper": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_heroic_sniper.png"
+        "img": "#ui/gameuiskin#streaks_heroic_sniper"
       },
       "streaks_marks_5_bombers": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_marks_5_bombers.png"
+        "img": "#ui/gameuiskin#streaks_marks_5_bombers"
       },
       "streaks_marks_10_bombers": {
         "w": 0.54,
         "h": 0.54,
-        "img": "#ui/gameuiskin#streaks_marks_10_bombers.png"
+        "img": "#ui/gameuiskin#streaks_marks_10_bombers"
       },
       "streaks_marks_5_fighters": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_5_fighters.png"
+        "img": "#ui/gameuiskin#streaks_marks_5_fighters"
       },
       "streaks_marks_10_fighters": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_marks_10_fighters.png"
+        "img": "#ui/gameuiskin#streaks_marks_10_fighters"
       },
       "streaks_marks_5_light_tanks": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_5_light_tanks.png"
+        "img": "#ui/gameuiskin#streaks_marks_5_light_tanks"
       },
       "streaks_marks_10_light_tanks": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_10_light_tanks.png"
+        "img": "#ui/gameuiskin#streaks_marks_10_light_tanks"
       },
       "streaks_marks_5_heavy_tanks": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_5_heavy_tanks.png"
+        "img": "#ui/gameuiskin#streaks_marks_5_heavy_tanks"
       },
       "streaks_marks_10_heavy_tanks": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_10_heavy_tanks.png"
+        "img": "#ui/gameuiskin#streaks_marks_10_heavy_tanks"
       },
       "streaks_marks_5_tank_destroyers": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_5_tank_destroyers.png"
+        "img": "#ui/gameuiskin#streaks_marks_5_tank_destroyers"
       },
       "streaks_marks_10_tank_destroyers": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_10_tank_destroyers.png"
+        "img": "#ui/gameuiskin#streaks_marks_10_tank_destroyers"
       },
       "streaks_marks_3_times_killed_by_ram": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_3_times_killed_by_ram.png"
+        "img": "#ui/gameuiskin#streaks_marks_3_times_killed_by_ram"
       },
       "streaks_marks_5_times_killed_by_ram": {
         "w": 0.66,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_marks_5_times_killed_by_ram.png"
+        "img": "#ui/gameuiskin#streaks_marks_5_times_killed_by_ram"
       },
       "streaks_marks_rocket_kill": {
         "w": 0.48,
         "h": 0.48,
-        "img": "#ui/gameuiskin#streaks_marks_rocket_kill.png"
+        "img": "#ui/gameuiskin#streaks_marks_rocket_kill"
       },
       "streaks_marks_bomb_kill": {
         "w": 0.5,
         "h": 0.66,
-        "img": "#ui/gameuiskin#streaks_marks_bomb_kill.png"
+        "img": "#ui/gameuiskin#streaks_marks_bomb_kill"
       },
       "streaks_marks_landing_after_critical_hit": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_marks_landing_after_critical_hit.png"
+        "img": "#ui/gameuiskin#streaks_marks_landing_after_critical_hit"
       },
       "streaks_marks_landing_with_stuck_engine": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_marks_landing_with_stuck_engine.png"
+        "img": "#ui/gameuiskin#streaks_marks_landing_with_stuck_engine"
       },
       "streaks_marks_crash_landing_after_critical_hit": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_marks_crash_landing_after_critical_hit.png"
+        "img": "#ui/gameuiskin#streaks_marks_crash_landing_after_critical_hit"
       },
       "streaks_marks_4_bailouts": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_marks_4_bailouts.png"
+        "img": "#ui/gameuiskin#streaks_marks_4_bailouts"
       },
       "streaks_marks_killed_plane_10_ranks_higher": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_marks_killed_plane_10_ranks_higher.png"
+        "img": "#ui/gameuiskin#streaks_marks_killed_plane_10_ranks_higher"
       },
       "streaks_marks_killed_plane_15_ranks_higher": {
         "w": 0.66,
         "h": 0.66,
-        "img": "#ui/gameuiskin#streaks_marks_killed_plane_15_ranks_higher.png"
+        "img": "#ui/gameuiskin#streaks_marks_killed_plane_15_ranks_higher"
       },
       "streaks_marks_killed_plane_20_ranks_higher": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_marks_killed_plane_20_ranks_higher.png"
+        "img": "#ui/gameuiskin#streaks_marks_killed_plane_20_ranks_higher"
       },
       "streaks_marks_break_streak": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_marks_break_streak.png"
+        "img": "#ui/gameuiskin#streaks_marks_break_streak"
       },
       "streaks_defender_fighter": {
         "w": 0.52,
         "h": 0.52,
-        "img": "#ui/gameuiskin#streaks_defender_fighter.png"
+        "img": "#ui/gameuiskin#streaks_defender_fighter"
       },
       "streaks_defender_bomber": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_defender_bomber.png"
+        "img": "#ui/gameuiskin#streaks_defender_bomber"
       },
       "streaks_defender_water": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_defender_water.png"
+        "img": "#ui/gameuiskin#streaks_defender_water"
       },
       "streaks_defender_ground": {
         "w": 0.52,
         "h": 0.52,
         "x": 0.24,
         "y": 0.16,
-        "img": "#ui/gameuiskin#streaks_heroic_bomber.png"
+        "img": "#ui/gameuiskin#streaks_heroic_bomber"
       },
       "streaks_multi_kill_air": {
         "w": 0.44,
         "h": 0.44,
         "x": 0.28,
         "y": 0.2,
-        "img": "#ui/gameuiskin#streaks_heroic_fighter.png"
+        "img": "#ui/gameuiskin#streaks_heroic_fighter"
       },
       "streaks_multi_kill_air_alt": {
         "w": 0.3,
         "h": 0.3,
         "x": 0.33,
         "y": 0.12,
-        "img": "#ui/gameuiskin#streaks_multi_kill_air_2_3_4_x.png"
+        "img": "#ui/gameuiskin#streaks_multi_kill_air_2_3_4_x"
       },
       "streaks_multi_kill_ship": {
         "w": 0.42,
         "h": 0.42,
         "x": 0.29,
         "y": 0.16,
-        "img": "#ui/gameuiskin#streaks_heroic_ship.png"
+        "img": "#ui/gameuiskin#streaks_heroic_ship"
       },
       "streaks_multi_kill_ship_alt": {
         "w": 0.34,
         "h": 0.32,
         "x": 0.49,
         "y": 0.32,
-        "img": "#ui/gameuiskin#streaks_multi_kill_ship_2_3_4_x.png"
+        "img": "#ui/gameuiskin#streaks_multi_kill_ship_2_3_4_x"
       },
       "streaks_multi_kill_ground": {
         "w": 0.52,
         "h": 0.52,
         "x": 0.24,
         "y": 0.13,
-        "img": "#ui/gameuiskin#streaks_heroic_bomber.png"
+        "img": "#ui/gameuiskin#streaks_heroic_bomber"
       },
       "streaks_multi_kill_ground_alt": {
         "w": 0.34,
         "h": 0.32,
         "x": 0.22,
         "y": 0.31,
-        "img": "#ui/gameuiskin#streaks_multi_kill_ground_2_3_4_x.png"
+        "img": "#ui/gameuiskin#streaks_multi_kill_ground_2_3_4_x"
       },
       "streaks_row_air_kill": {
         "w": 0.5,
         "h": 0.5,
         "x": 0.41,
         "y": 0.17,
-        "img": "#ui/gameuiskin#streaks_row_air_kill.png"
+        "img": "#ui/gameuiskin#streaks_row_air_kill"
       },
       "streaks_row_air_assist": {
         "w": 0.5,
         "h": 0.5,
         "x": 0.41,
         "y": 0.17,
-        "img": "#ui/gameuiskin#streaks_row_air_assist.png"
+        "img": "#ui/gameuiskin#streaks_row_air_assist"
       },
       "streaks_row_ground_kill": {
         "w": 0.5,
         "h": 0.5,
         "x": 0.41,
         "y": 0.17,
-        "img": "#ui/gameuiskin#streaks_row_ground_kill.png"
+        "img": "#ui/gameuiskin#streaks_row_ground_kill"
       },
       "streaks_row_water_kill": {
         "w": 0.5,
         "h": 0.5,
         "x": 0.41,
         "y": 0.17,
-        "img": "#ui/gameuiskin#streaks_row_water_kill.png"
+        "img": "#ui/gameuiskin#streaks_row_water_kill"
       },
       "streaks_trophy_near_survivor": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_trophy_near_survivor.png"
+        "img": "#ui/gameuiskin#streaks_trophy_near_survivor"
       },
       "streaks_trophy_near_defender": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_trophy_near_defender.png"
+        "img": "#ui/gameuiskin#streaks_trophy_near_defender"
       },
       "streaks_tank_careless_but_dodgy": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_tank_careless_but_dodgy.png"
+        "img": "#ui/gameuiskin#streaks_tank_careless_but_dodgy"
       },
       "streaks_tank_die_hard": {
         "w": 0.56,
         "h": 0.58,
-        "img": "#ui/gameuiskin#streaks_tank_die_hard.png"
+        "img": "#ui/gameuiskin#streaks_tank_die_hard"
       },
       "streaks_tank_fortune": {
         "w": 0.54,
         "h": 0.54,
-        "img": "#ui/gameuiskin#streaks_tank_fortune.png"
+        "img": "#ui/gameuiskin#streaks_tank_fortune"
       },
       "streaks_tank_pillbox_style": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_tank_pillbox_style.png"
+        "img": "#ui/gameuiskin#streaks_tank_pillbox_style"
       },
       "streaks_tank_rebound_kill": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_tank_rebound_kill.png"
+        "img": "#ui/gameuiskin#streaks_tank_rebound_kill"
       },
       "streaks_tank_shoot_without_fail": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_tank_shoot_without_fail.png"
+        "img": "#ui/gameuiskin#streaks_tank_shoot_without_fail"
       },
       "streaks_tank_kill_without_fail": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_tank_kill_without_fail.png"
+        "img": "#ui/gameuiskin#streaks_tank_kill_without_fail"
       },
       "streaks_tank_kill_by_ram_and_stay_alive": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_tank_kill_by_ram_and_stay_alive.png"
+        "img": "#ui/gameuiskin#streaks_tank_kill_by_ram_and_stay_alive"
       },
       "streaks_tank_two_kills_at_one_blow": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_tank_two_kills_at_one_blow.png"
+        "img": "#ui/gameuiskin#streaks_tank_two_kills_at_one_blow"
       },
       "streaks_tank_artillery_support": {
         "w": 0.6,
         "h": 0.6,
-        "img": "#ui/gameuiskin#streaks_tank_artillery_support_3_5_7.png"
+        "img": "#ui/gameuiskin#streaks_tank_artillery_support_3_5_7"
       },
       "streaks_tank_impromptu_shooting": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_tank_impromptu_shooting_2_3_5.png"
+        "img": "#ui/gameuiskin#streaks_tank_impromptu_shooting_2_3_5"
       },
       "streaks_tank_marked_enemy_destroyed_by_ally": {
         "w": 0.58,
         "h": 0.58,
-        "img": "#ui/gameuiskin#streaks_tank_marked_enemy_destroyed_by_ally_3_5_7.png"
+        "img": "#ui/gameuiskin#streaks_tank_marked_enemy_destroyed_by_ally_3_5_7"
       },
       "streaks_ship_two_kills_at_one_blow": {
         "w": 0.64,
         "h": 0.64,
-        "img": "#ui/gameuiskin#streaks_ship_two_kills_at_one_blow.png"
+        "img": "#ui/gameuiskin#streaks_ship_two_kills_at_one_blow"
       },
       "streaks_global_avenge_self": {
         "w": 0.58,
         "h": 0.58,
-        "img": "#ui/gameuiskin#streaks_global_avenge_self.png"
+        "img": "#ui/gameuiskin#streaks_global_avenge_self"
       },
       "streaks_global_avenge_friendly": {
         "w": 0.62,
         "h": 0.62,
-        "img": "#ui/gameuiskin#streaks_global_avenge_friendly.png"
+        "img": "#ui/gameuiskin#streaks_global_avenge_friendly"
       },
       "streaks_global_base_capturer": {
         "w": 0.54,
         "h": 0.54,
-        "img": "#ui/gameuiskin#streaks_global_base_capturer_3_5_7.png"
+        "img": "#ui/gameuiskin#streaks_global_base_capturer_3_5_7"
       },
       "streaks_global_base_defender": {
         "w": 0.56,
         "h": 0.56,
-        "img": "#ui/gameuiskin#streaks_global_base_defender_1_3_5.png"
+        "img": "#ui/gameuiskin#streaks_global_base_defender_1_3_5"
       },
       "streaks_global_shadow_assassin": {
         "w": 0.58,
         "h": 0.58,
         "x": 0.21,
         "y": 0.16,
-        "img": "#ui/gameuiskin#streaks_global_shadow_assassin_3_5_7.png"
+        "img": "#ui/gameuiskin#streaks_global_shadow_assassin_3_5_7"
       },
       "streaks_global_shadow_assassin_alt": {
         "w": 0.58,
         "h": 0.58,
         "x": 0.21,
         "y": 0.1,
-        "img": "#ui/gameuiskin#streaks_global_shadow_assassin_3_5_7.png"
+        "img": "#ui/gameuiskin#streaks_global_shadow_assassin_3_5_7"
       },
       "streaks_global_destroy_enemy_marked_by_ally": {
         "w": 0.54,
         "h": 0.54,
-        "img": "#ui/gameuiskin#streaks_global_destroy_enemy_marked_by_ally_3_5_7.png"
+        "img": "#ui/gameuiskin#streaks_global_destroy_enemy_marked_by_ally_3_5_7"
       },
       "streaks_survivance_fighter": {
         "w": 0.44,
         "h": 0.44,
-        "img": "#ui/gameuiskin#streaks_survivance_fighter.png"
+        "img": "#ui/gameuiskin#streaks_survivance_fighter"
       },
       "streaks_survivance_attacker": {
         "w": 0.44,
         "h": 0.44,
-        "img": "#ui/gameuiskin#streaks_survivance_attacker.png"
+        "img": "#ui/gameuiskin#streaks_survivance_attacker"
       },
       "streaks_survivance_bomber": {
         "w": 0.44,
         "h": 0.44,
-        "img": "#ui/gameuiskin#streaks_survivance_bomber.png"
+        "img": "#ui/gameuiskin#streaks_survivance_bomber"
       },
       "streaks_survivance_helicopter": {
         "w": 0.44,
         "h": 0.44,
-        "img": "#ui/gameuiskin#streaks_survivance_helicopter.png"
+        "img": "#ui/gameuiskin#streaks_survivance_helicopter"
       },
       "streaks_bomber_nuclear_success": {
         "w": 0.46,
         "h": 0.46,
-        "img": "#ui/gameuiskin#streaks_bomber_nuclear.png"
+        "img": "#ui/gameuiskin#streaks_bomber_nuclear"
       },
       "streaks_battle_royale_first_place_lost": {
         "w": 0.66,
         "h": 0.68,
-        "img": "#ui/gameuiskin#streaks_last_man_standing.png"
+        "img": "#ui/gameuiskin#streaks_last_man_standing"
       },
       "streaks_battle_royale_second_place": {
         "w": 0.66,
         "h": 0.68,
-        "img": "#ui/gameuiskin#streaks_last_man_standing.png"
+        "img": "#ui/gameuiskin#streaks_last_man_standing"
       },
       "streaks_battle_royale_third_place": {
         "w": 0.66,
         "h": 0.68,
-        "img": "#ui/gameuiskin#streaks_last_man_standing.png"
+        "img": "#ui/gameuiskin#streaks_last_man_standing"
       },
       "streaks_tank_help_with_repairing": {
         "w": 0.52,
         "h": 0.52,
-        "img": "#ui/gameuiskin#streaks_tank_help_with_repairing.png"
+        "img": "#ui/gameuiskin#streaks_tank_help_with_repairing"
       },
       "streaks_tank_help_with_extinguishing": {
         "w": 0.58,
         "h": 0.58,
-        "img": "#ui/gameuiskin#streaks_tank_help_with_extinguishing.png"
+        "img": "#ui/gameuiskin#streaks_tank_help_with_extinguishing"
       },
       "space_streak_double_kill": {
         "img": "#ui/gameuiskin#space_streak_double_kill.svg"
@@ -1669,516 +1673,516 @@
       "chest_placeholder": {
         "x": 0.08,
         "h": 0.548,
-        "img": "#ui/images/chests/items_box_placeholder.png"
+        "img": "#ui/images/chests/items_box_placeholder"
       },
       "small_wooden_box_big": {
         "x": 0.14,
         "w": 0.866,
         "h": 0.548,
-        "img": "#ui/images/chests/items_box1.png"
+        "img": "#ui/images/chests/items_box1"
       },
       "small_wooden_box": {
         "x": 0.14,
         "w": 0.87,
         "h": 0.548,
-        "img": "#ui/images/chests/items_box1.png"
+        "img": "#ui/images/chests/items_box1"
       },
       "small_wooden_box_opened_big": {
         "x": 0.14,
         "w": 0.866,
         "h": 0.548,
-        "img": "#ui/images/chests/items_box1_open.png"
+        "img": "#ui/images/chests/items_box1_open"
       },
       "small_wooden_box_opened": {
         "x": 0.14,
         "w": 0.87,
         "h": 0.548,
-        "img": "#ui/images/chests/items_box1_open.png"
+        "img": "#ui/images/chests/items_box1_open"
       },
       "small_chest_big": {
         "x": 0.14,
         "w": 0.895,
         "h": 0.615,
-        "img": "#ui/images/chests/items_box2.png"
+        "img": "#ui/images/chests/items_box2"
       },
       "small_chest": {
         "x": 0.06,
         "w": 1.065,
         "h": 0.72,
-        "img": "#ui/images/chests/items_box2.png"
+        "img": "#ui/images/chests/items_box2"
       },
       "small_chest_opened_big": {
         "x": 0.14,
         "w": 0.895,
         "h": 0.615,
-        "img": "#ui/images/chests/items_box2_open.png"
+        "img": "#ui/images/chests/items_box2_open"
       },
       "small_chest_opened": {
         "x": 0.06,
         "w": 1.065,
         "h": 0.72,
-        "img": "#ui/images/chests/items_box2_open.png"
+        "img": "#ui/images/chests/items_box2_open"
       },
       "big_chest_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box3.png"
+        "img": "#ui/images/chests/items_box3"
       },
       "big_chest": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box3.png"
+        "img": "#ui/images/chests/items_box3"
       },
       "big_chest_opened_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box3_open.png"
+        "img": "#ui/images/chests/items_box3_open"
       },
       "big_chest_opened": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box3_open.png"
+        "img": "#ui/images/chests/items_box3_open"
       },
       "ammo_box_big": {
         "x": 0.14,
         "y": 0.04,
         "w": 0.786,
         "h": 0.716,
-        "img": "#ui/images/chests/items_box4.png"
+        "img": "#ui/images/chests/items_box4"
       },
       "ammo_box": {
         "x": 0.035,
         "y": 0.002,
         "w": 0.966,
         "h": 0.92,
-        "img": "#ui/images/chests/items_box4.png"
+        "img": "#ui/images/chests/items_box4"
       },
       "ammo_box_opened_big": {
         "x": 0.14,
         "y": 0.04,
         "w": 0.786,
         "h": 0.716,
-        "img": "#ui/images/chests/items_box4_open.png"
+        "img": "#ui/images/chests/items_box4_open"
       },
       "ammo_box_opened": {
         "x": 0.075,
         "y": 0.002,
         "w": 0.966,
         "h": 0.92,
-        "img": "#ui/images/chests/items_box4_open.png"
+        "img": "#ui/images/chests/items_box4_open"
       },
       "big_wooden_box_big": {
         "x": 0.1,
         "w": 0.925,
         "h": 0.484,
-        "img": "#ui/images/chests/items_box5.png"
+        "img": "#ui/images/chests/items_box5"
       },
       "big_wooden_box": {
         "x": 0.02,
         "w": 1.066,
         "h": 0.554,
-        "img": "#ui/images/chests/items_box5.png"
+        "img": "#ui/images/chests/items_box5"
       },
       "big_wooden_box_opened_big": {
         "x": 0.1,
         "w": 0.925,
         "h": 0.484,
-        "img": "#ui/images/chests/items_box5_open.png"
+        "img": "#ui/images/chests/items_box5_open"
       },
       "big_wooden_box_opened": {
         "x": 0.02,
         "w": 1.066,
         "h": 0.554,
-        "img": "#ui/images/chests/items_box5_open.png"
+        "img": "#ui/images/chests/items_box5_open"
       },
       "iron_box_big": {
         "x": 0.1,
         "w": 0.924,
         "h": 0.686,
-        "img": "#ui/images/chests/items_box6.png"
+        "img": "#ui/images/chests/items_box6"
       },
       "iron_box": {
         "x": 0.03,
         "w": 1.128,
         "h": 0.848,
-        "img": "#ui/images/chests/items_box6.png"
+        "img": "#ui/images/chests/items_box6"
       },
       "iron_box_opened_big": {
         "x": 0.1,
         "w": 0.924,
         "h": 0.686,
-        "img": "#ui/images/chests/items_box6_open.png"
+        "img": "#ui/images/chests/items_box6_open"
       },
       "iron_box_opened": {
         "x": 0.03,
         "w": 1.128,
         "h": 0.848,
-        "img": "#ui/images/chests/items_box6_open.png"
+        "img": "#ui/images/chests/items_box6_open"
       },
       "gold_iron_box_big": {
         "x": 0.1,
         "w": 0.924,
         "h": 0.686,
-        "img": "#ui/images/chests/items_box7.png"
+        "img": "#ui/images/chests/items_box7"
       },
       "gold_iron_box": {
         "x": 0.03,
         "w": 1.128,
         "h": 0.848,
-        "img": "#ui/images/chests/items_box7.png"
+        "img": "#ui/images/chests/items_box7"
       },
       "gold_iron_box_opened_big": {
         "x": 0.1,
         "w": 0.924,
         "h": 0.686,
-        "img": "#ui/images/chests/items_box7_open.png"
+        "img": "#ui/images/chests/items_box7_open"
       },
       "gold_iron_box_opened": {
         "x": 0.03,
         "w": 1.128,
         "h": 0.848,
-        "img": "#ui/images/chests/items_box7_open.png"
+        "img": "#ui/images/chests/items_box7_open"
       },
       "silver_iron_chest_big": {
         "x": 0.1,
         "w": 0.924,
         "h": 0.686,
-        "img": "#ui/images/chests/items_box17.png"
+        "img": "#ui/images/chests/items_box17"
       },
       "silver_iron_chest": {
         "x": 0.03,
         "w": 1.128,
         "h": 0.848,
-        "img": "#ui/images/chests/items_box17.png"
+        "img": "#ui/images/chests/items_box17"
       },
       "silver_iron_chest_opened_big": {
         "x": 0.1,
         "w": 0.924,
         "h": 0.686,
-        "img": "#ui/images/chests/items_box17_open.png"
+        "img": "#ui/images/chests/items_box17_open"
       },
       "silver_iron_chest_opened": {
         "x": 0.03,
         "w": 1.128,
         "h": 0.848,
-        "img": "#ui/images/chests/items_box17_open.png"
+        "img": "#ui/images/chests/items_box17_open"
       },
       "small_gold_chest_big": {
         "x": 0.14,
         "w": 0.895,
         "h": 0.615,
-        "img": "#ui/images/chests/items_box8.png"
+        "img": "#ui/images/chests/items_box8"
       },
       "small_gold_chest": {
         "x": 0.06,
         "w": 1.065,
         "h": 0.72,
-        "img": "#ui/images/chests/items_box8.png"
+        "img": "#ui/images/chests/items_box8"
       },
       "small_gold_chest_opened_big": {
         "x": 0.14,
         "w": 0.895,
         "h": 0.615,
-        "img": "#ui/images/chests/items_box8_open.png"
+        "img": "#ui/images/chests/items_box8_open"
       },
       "small_gold_chest_opened": {
         "x": 0.06,
         "w": 1.065,
         "h": 0.72,
-        "img": "#ui/images/chests/items_box8_open.png"
+        "img": "#ui/images/chests/items_box8_open"
       },
       "big_gold_chest_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box9.png"
+        "img": "#ui/images/chests/items_box9"
       },
       "big_gold_chest": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box9.png"
+        "img": "#ui/images/chests/items_box9"
       },
       "big_gold_chest_opened_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box9_open.png"
+        "img": "#ui/images/chests/items_box9_open"
       },
       "big_gold_chest_opened": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box9_open.png"
+        "img": "#ui/images/chests/items_box9_open"
       },
       "big_green_chest_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box18.png"
+        "img": "#ui/images/chests/items_box18"
       },
       "big_green_chest": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box18.png"
+        "img": "#ui/images/chests/items_box18"
       },
       "big_green_chest_opened_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box18_open.png"
+        "img": "#ui/images/chests/items_box18_open"
       },
       "big_green_chest_opened": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box18_open.png"
+        "img": "#ui/images/chests/items_box18_open"
       },
       "group_big_gold_chest_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/combobox_09.png"
+        "img": "#ui/images/chests/combobox_09"
       },
       "group_big_gold_chest": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/combobox_09.png"
+        "img": "#ui/images/chests/combobox_09"
       },
       "group_big_gold_chest_opened_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/combobox_09_open.png"
+        "img": "#ui/images/chests/combobox_09_open"
       },
       "group_big_gold_chest_opened": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/combobox_09_open.png"
+        "img": "#ui/images/chests/combobox_09_open"
       },
       "small_green_chest_big": {
         "x": 0.12,
         "w": 0.874,
         "h": 0.614,
-        "img": "#ui/images/chests/items_box10.png"
+        "img": "#ui/images/chests/items_box10"
       },
       "small_green_chest": {
         "x": 0.08,
         "w": 1.065,
         "h": 0.72,
-        "img": "#ui/images/chests/items_box10.png"
+        "img": "#ui/images/chests/items_box10"
       },
       "small_green_chest_opened_big": {
         "x": 0.05,
         "h": 0.637,
-        "img": "#ui/images/chests/items_box10_open.png"
+        "img": "#ui/images/chests/items_box10_open"
       },
       "small_green_chest_opened": {
         "x": 0.08,
         "w": 1.065,
         "h": 0.72,
-        "img": "#ui/images/chests/items_box10_open.png"
+        "img": "#ui/images/chests/items_box10_open"
       },
       "ammo_box_silver_big": {
         "x": 0.14,
         "y": 0.04,
         "w": 0.736,
         "h": 0.724,
-        "img": "#ui/images/chests/items_box11.png"
+        "img": "#ui/images/chests/items_box11"
       },
       "ammo_box_silver": {
         "x": 0.076,
         "y": 0.006,
         "w": 0.944,
         "h": 0.908,
-        "img": "#ui/images/chests/items_box11.png"
+        "img": "#ui/images/chests/items_box11"
       },
       "ammo_box_silver_opened_big": {
         "x": 0.14,
         "y": 0.04,
         "w": 0.736,
         "h": 0.724,
-        "img": "#ui/images/chests/items_box11_open.png"
+        "img": "#ui/images/chests/items_box11_open"
       },
       "ammo_box_silver_opened": {
         "x": 0.076,
         "y": 0.006,
         "w": 0.944,
         "h": 0.908,
-        "img": "#ui/images/chests/items_box11_open.png"
+        "img": "#ui/images/chests/items_box11_open"
       },
       "ammo_box_black_big": {
         "x": 0.14,
         "y": 0.04,
         "w": 0.736,
         "h": 0.724,
-        "img": "#ui/images/chests/items_box12.png"
+        "img": "#ui/images/chests/items_box12"
       },
       "ammo_box_black": {
         "x": 0.076,
         "y": 0.006,
         "w": 0.944,
         "h": 0.908,
-        "img": "#ui/images/chests/items_box12.png"
+        "img": "#ui/images/chests/items_box12"
       },
       "ammo_box_black_opened_big": {
         "x": 0.14,
         "y": 0.04,
         "w": 0.736,
         "h": 0.724,
-        "img": "#ui/images/chests/items_box12_open.png"
+        "img": "#ui/images/chests/items_box12_open"
       },
       "ammo_box_black_opened": {
         "x": 0.076,
         "y": 0.006,
         "w": 0.944,
         "h": 0.908,
-        "img": "#ui/images/chests/items_box12_open.png"
+        "img": "#ui/images/chests/items_box12_open"
       },
       "huge_wooden_box_big": {
         "x": 0.1,
         "w": 0.84,
         "h": 0.59,
-        "img": "#ui/images/chests/items_box13.png"
+        "img": "#ui/images/chests/items_box13"
       },
       "huge_wooden_box": {
         "x": 0.02,
         "w": 1.066,
         "h": 0.734,
-        "img": "#ui/images/chests/items_box13.png"
+        "img": "#ui/images/chests/items_box13"
       },
       "huge_wooden_box_opened_big": {
         "x": 0.05,
         "h": 0.637,
-        "img": "#ui/images/chests/items_box13_open.png"
+        "img": "#ui/images/chests/items_box13_open"
       },
       "huge_wooden_box_opened": {
         "x": 0.05,
         "h": 0.648,
-        "img": "#ui/images/chests/items_box13_open.png"
+        "img": "#ui/images/chests/items_box13_open"
       },
       "silver_iron_box_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.534,
-        "img": "#ui/images/chests/items_box14.png"
+        "img": "#ui/images/chests/items_box14"
       },
       "silver_iron_box": {
         "x": 0.02,
         "w": 1.07,
         "h": 0.62,
-        "img": "#ui/images/chests/items_box14.png"
+        "img": "#ui/images/chests/items_box14"
       },
       "silver_iron_box_opened_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.534,
-        "img": "#ui/images/chests/items_box14_open.png"
+        "img": "#ui/images/chests/items_box14_open"
       },
       "silver_iron_box_opened": {
         "x": 0.02,
         "w": 1.07,
         "h": 0.62,
-        "img": "#ui/images/chests/items_box14_open.png"
+        "img": "#ui/images/chests/items_box14_open"
       },
       "green_iron_box_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.534,
-        "img": "#ui/images/chests/items_box15.png"
+        "img": "#ui/images/chests/items_box15"
       },
       "green_iron_box": {
         "x": 0.02,
         "w": 1.07,
         "h": 0.62,
-        "img": "#ui/images/chests/items_box15.png"
+        "img": "#ui/images/chests/items_box15"
       },
       "green_iron_box_opened_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.534,
-        "img": "#ui/images/chests/items_box15_open.png"
+        "img": "#ui/images/chests/items_box15_open"
       },
       "green_iron_box_opened": {
         "x": 0.02,
         "w": 1.07,
         "h": 0.62,
-        "img": "#ui/images/chests/items_box15_open.png"
+        "img": "#ui/images/chests/items_box15_open"
       },
       "strike_witches_blue_box_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/july_event_box1.png"
+        "img": "#ui/images/chests/july_event_box1"
       },
       "strike_witches_blue_box": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/july_event_box1.png"
+        "img": "#ui/images/chests/july_event_box1"
       },
       "strike_witches_blue_box_opened_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/july_event_box1_open.png"
+        "img": "#ui/images/chests/july_event_box1_open"
       },
       "strike_witches_blue_box_opened": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/july_event_box1_open.png"
+        "img": "#ui/images/chests/july_event_box1_open"
       },
       "strike_witches_yellow_box_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/july_event_box2.png"
+        "img": "#ui/images/chests/july_event_box2"
       },
       "strike_witches_yellow_box": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/july_event_box2.png"
+        "img": "#ui/images/chests/july_event_box2"
       },
       "strike_witches_yellow_box_opened_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/july_event_box2_open.png"
+        "img": "#ui/images/chests/july_event_box2_open"
       },
       "strike_witches_yellow_box_opened": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/july_event_box2_open.png"
+        "img": "#ui/images/chests/july_event_box2_open"
       },
       "universal_spare_trophy_big": {
         "x": 0.0,
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/images/chests/uni_spare_trophy.png"
+        "img": "#ui/images/chests/uni_spare_trophy"
       },
       "universal_spare_trophy": {
         "x": 0.12,
         "w": 0.75,
         "h": 0.75,
-        "img": "#ui/images/chests/uni_spare_trophy.png"
+        "img": "#ui/images/chests/uni_spare_trophy"
       },
       "universal_spare_trophy_opened_big": {
         "x": 0.1,
@@ -2196,165 +2200,165 @@
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box_gift.png"
+        "img": "#ui/images/chests/items_box_gift"
       },
       "gift_chest": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box_gift.png"
+        "img": "#ui/images/chests/items_box_gift"
       },
       "gift_chest_opened_big": {
         "x": 0.1,
         "w": 0.934,
         "h": 0.664,
-        "img": "#ui/images/chests/items_box_gift_open.png"
+        "img": "#ui/images/chests/items_box_gift_open"
       },
       "gift_chest_opened": {
         "x": 0.02,
         "y": 0.08,
         "w": 1.088,
         "h": 0.768,
-        "img": "#ui/images/chests/items_box_gift_open.png"
+        "img": "#ui/images/chests/items_box_gift_open"
       },
       "area88_box_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/items_box_a88.png"
+        "img": "#ui/images/chests/items_box_a88"
       },
       "area88_box": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/items_box_a88.png"
+        "img": "#ui/images/chests/items_box_a88"
       },
       "area88_box_opened_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/items_box_a88_open.png"
+        "img": "#ui/images/chests/items_box_a88_open"
       },
       "area88_box_opened": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/items_box_a88_open.png"
+        "img": "#ui/images/chests/items_box_a88_open"
       },
       "wt_10_box_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/wt_10_box.png"
+        "img": "#ui/images/chests/wt_10_box"
       },
       "wt_10_box": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/wt_10_box.png"
+        "img": "#ui/images/chests/wt_10_box"
       },
       "wt_10_box_opened_big": {
         "x": 0.1,
         "w": 1.121,
         "h": 0.641,
-        "img": "#ui/images/chests/wt_10_box_open.png"
+        "img": "#ui/images/chests/wt_10_box_open"
       },
       "wt_10_box_opened": {
         "x": 0.02,
         "w": 1.284,
         "h": 0.744,
-        "img": "#ui/images/chests/wt_10_box_open.png"
+        "img": "#ui/images/chests/wt_10_box_open"
       },
       "item_warpoints": {
         "w": "0.334@chestRewardWidth",
         "h": "0.34@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#items_warpoints.png"
+        "img": "#ui/gameuiskin#items_warpoints"
       },
       "item_warbonds": {
         "w": "0.334@chestRewardWidth",
         "h": "0.34@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#item_warbonds.png"
+        "img": "#ui/gameuiskin#item_warbonds"
       },
       "item_eagles": {
         "w": "0.313@chestRewardWidth",
         "h": "0.317@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#items_eagles.png"
+        "img": "#ui/gameuiskin#items_eagles"
       },
       "item_entitlement": {
         "w": "0.308@chestRewardWidth",
         "h": "0.335@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#items_premium.png"
+        "img": "#ui/gameuiskin#items_premium"
       },
       "item_free_experience": {
         "w": "0.28@chestRewardWidth",
         "h": "0.308@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#items_Free_RP.png"
+        "img": "#ui/gameuiskin#items_Free_RP"
       },
       "item_blueprint_aircraft": {
         "w": "0.458@chestRewardWidth",
         "h": "0.440@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#blueprint_items_aircraft.png"
+        "img": "#ui/gameuiskin#blueprint_items_aircraft"
       },
       "item_blueprint_helicopter": {
         "w": "0.458@chestRewardWidth",
         "h": "0.440@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#blueprint_items_helicopter.png"
+        "img": "#ui/gameuiskin#blueprint_items_helicopter"
       },
       "item_blueprint_tank": {
         "w": "0.458@chestRewardWidth",
         "h": "0.440@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#blueprint_items_tank.png"
+        "img": "#ui/gameuiskin#blueprint_items_tank"
       },
       "item_blueprint_ship": {
         "w": "0.458@chestRewardWidth",
         "h": "0.440@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#blueprint_items_ship.png"
+        "img": "#ui/gameuiskin#blueprint_items_ship"
       },
       "item_blueprint_boat": {
         "w": "0.458@chestRewardWidth",
         "h": "0.440@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#blueprint_items_ship.png"
+        "img": "#ui/gameuiskin#blueprint_items_ship"
       },
       "item_rent": {
         "w": "0.440@chestRewardWidth",
         "h": "0.440@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#item_rent.png"
+        "img": "#ui/gameuiskin#item_rent"
       },
       "item_unlock": {
         "w": "0.4@chestRewardWidth",
         "h": "0.4@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#default_unlocked.png"
+        "img": "#ui/gameuiskin#default_unlocked"
       },
       "item_decal": {
         "w": "0.4@chestRewardWidth",
         "h": "0.4@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#item_decal.png"
+        "img": "#ui/gameuiskin#item_decal"
       },
       "item_skin": {
         "w": "0.4@chestRewardWidth",
         "h": "0.4@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#item_skin.png"
+        "img": "#ui/gameuiskin#item_skin"
       },
       "item_attachable": {
         "w": "0.4@chestRewardWidth",
         "h": "0.4@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#item_attachable.png"
+        "img": "#ui/gameuiskin#item_attachable"
       },
       "item_hard_task_1": {
         "w": "0.5@chestRewardWidth",
@@ -2378,7 +2382,7 @@
         "w": "0.45@chestRewardWidth",
         "h": "0.45@chestRewardHeight",
         "position": "relative",
-        "img": "#ui/gameuiskin#item_cheerful_task_medal1.png"
+        "img": "#ui/gameuiskin#item_cheerful_task_medal1"
       },
       "item_place_single": {
         "w": "1@itemWidth",
@@ -2434,7 +2438,7 @@
       "1a_event_unknown_item": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#craft_unknown_item.png"
+        "img": "#ui/gameuiskin#craft_unknown_item"
       },
       "sale_premium_shop": {
         "img": "#ui/gameuiskin#sale_premium.svg"
@@ -2506,93 +2510,93 @@
       "booster_personal": {
         "w": 0.82,
         "h": 0.82,
-        "img": "#ui/gameuiskin#items_booster_shape1.png"
+        "img": "#ui/gameuiskin#items_booster_shape1"
       },
       "booster_common": {
         "w": 0.82,
         "h": 0.82,
-        "img": "#ui/gameuiskin#items_booster_shape2.png"
+        "img": "#ui/gameuiskin#items_booster_shape2"
       },
       "booster_wp_rate": {
         "w": 0.42,
         "h": 0.42,
         "x": "91%pw-w",
         "y": "92%ph-h",
-        "img": "#ui/gameuiskin#items_booster_WP.png"
+        "img": "#ui/gameuiskin#items_booster_wp"
       },
       "booster_exp_rate": {
         "w": 0.42,
         "h": 0.42,
         "x": "91%pw-w",
         "y": "92%ph-h",
-        "img": "#ui/gameuiskin#items_booster_RP.png"
+        "img": "#ui/gameuiskin#items_booster_rp"
       },
       "booster_wp_exp_rate": {
         "w": 0.566,
         "h": 0.42,
         "x": "91%pw-w",
         "y": "91%ph-h",
-        "img": "#ui/gameuiskin#items_booster_WP_RP.png"
+        "img": "#ui/gameuiskin#items_booster_wp_rp"
       },
       "item_num_1": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_1.png"
+        "img": "#ui/gameuiskin#item_num_1"
       },
       "item_num_2": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_2.png"
+        "img": "#ui/gameuiskin#item_num_2"
       },
       "item_num_3": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_3.png"
+        "img": "#ui/gameuiskin#item_num_3"
       },
       "item_num_4": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_4.png"
+        "img": "#ui/gameuiskin#item_num_4"
       },
       "item_num_5": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_5.png"
+        "img": "#ui/gameuiskin#item_num_5"
       },
       "item_num_6": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_6.png"
+        "img": "#ui/gameuiskin#item_num_6"
       },
       "item_num_7": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_7.png"
+        "img": "#ui/gameuiskin#item_num_7"
       },
       "item_num_8": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_8.png"
+        "img": "#ui/gameuiskin#item_num_8"
       },
       "item_num_9": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_9.png"
+        "img": "#ui/gameuiskin#item_num_9"
       },
       "item_num_0": {
         "w": "0.13p.p.w",
         "h": "0.20p.p.h",
-        "img": "#ui/gameuiskin#item_num_0.png"
+        "img": "#ui/gameuiskin#item_num_0"
       },
       "item_plus": {
         "w": "0.13p.p.w",
         "h": "0.13p.p.w",
-        "img": "#ui/gameuiskin#item_plus.png"
+        "img": "#ui/gameuiskin#item_plus"
       },
       "item_percent": {
         "w": "0.18p.p.w",
         "h": "0.18p.p.w",
-        "img": "#ui/gameuiskin#item_percent.png"
+        "img": "#ui/gameuiskin#item_percent"
       },
       "item_rest_rewards_text": {
         "type": "text",
@@ -2605,52 +2609,52 @@
       "silver_background": {
         "w": 1.0,
         "h": 1.0,
-        "img": "#ui/gameuiskin#items_silver_bg.png"
+        "img": "#ui/gameuiskin#items_silver_bg"
       },
       "gold_background": {
-        "img": "#ui/gameuiskin#items_gold_bg.png"
+        "img": "#ui/gameuiskin#items_gold_bg"
       },
       "universal_spare_base": {
         "w": 1.0,
         "h": 1.0,
         "x": 0.0,
         "y": 0.0,
-        "img": "#ui/gameuiskin#item_uni_spare.png"
+        "img": "#ui/gameuiskin#item_uni_spare"
       },
       "universal_spare_all": {
         "w": 0.36,
         "h": 0.39,
         "x": 0.28,
         "y": 0.18,
-        "img": "#ui/gameuiskin#uni_spare_star.png"
+        "img": "#ui/gameuiskin#uni_spare_star"
       },
       "universal_spare_aircraft": {
         "w": 0.44,
         "h": 0.44,
         "x": 0.24,
         "y": 0.15,
-        "img": "#ui/gameuiskin#streaks_heroic_fighter.png"
+        "img": "#ui/gameuiskin#streaks_heroic_fighter"
       },
       "universal_spare_tank": {
         "w": 0.52,
         "h": 0.52,
         "x": 0.15,
         "y": 0.12,
-        "img": "#ui/gameuiskin#streaks_heroic_bomber.png"
+        "img": "#ui/gameuiskin#streaks_heroic_bomber"
       },
       "universal_spare_ship": {
         "w": 0.42,
         "h": 0.42,
         "x": 0.22,
         "y": 0.15,
-        "img": "#ui/gameuiskin#streaks_heroic_ship.png"
+        "img": "#ui/gameuiskin#streaks_heroic_ship"
       },
       "universal_spare_boat": {
         "w": 0.42,
         "h": 0.42,
         "x": 0.22,
         "y": 0.15,
-        "img": "#ui/gameuiskin#streaks_heroic_boat.png"
+        "img": "#ui/gameuiskin#streaks_heroic_boat"
       },
       "universal_spare_rank_text": {
         "type": "text",
@@ -2678,897 +2682,897 @@
       "silver_gray": {
         "w": 1.0,
         "h": 0.540625,
-        "img": "#ui/images/tickets/ticket1_shape.png"
+        "img": "#ui/images/tickets/ticket1_shape"
       },
       "silver_blue": {
         "w": 1.0,
         "h": 0.540625,
-        "img": "#ui/images/tickets/ticket2_shape.png"
+        "img": "#ui/images/tickets/ticket2_shape"
       },
       "silver_red": {
         "w": 1.0,
         "h": 0.540625,
-        "img": "#ui/images/tickets/ticket3_shape.png"
+        "img": "#ui/images/tickets/ticket3_shape"
       },
       "gold_red": {
         "w": 1.0,
         "h": 0.540625,
-        "img": "#ui/images/tickets/ticket4_shape.png"
+        "img": "#ui/images/tickets/ticket4_shape"
       },
       "gold_brown": {
         "w": 1.0,
         "h": 0.540625,
-        "img": "#ui/images/tickets/ticket5_shape.png"
+        "img": "#ui/images/tickets/ticket5_shape"
       },
       "silver_gray_shop": {
         "w": 1.0,
         "h": 0.52,
-        "img": "#ui/images/tickets/ticket1_shape_small.png"
+        "img": "#ui/images/tickets/ticket1_shape_small"
       },
       "silver_blue_shop": {
         "w": 1.0,
         "h": 0.52,
-        "img": "#ui/images/tickets/ticket2_shape_small.png"
+        "img": "#ui/images/tickets/ticket2_shape_small"
       },
       "silver_red_shop": {
         "w": 1.0,
         "h": 0.52,
-        "img": "#ui/images/tickets/ticket3_shape_small.png"
+        "img": "#ui/images/tickets/ticket3_shape_small"
       },
       "gold_red_shop": {
         "w": 1.0,
         "h": 0.52,
-        "img": "#ui/images/tickets/ticket4_shape_small.png"
+        "img": "#ui/images/tickets/ticket4_shape_small"
       },
       "gold_brown_shop": {
         "w": 1.0,
         "h": 0.52,
-        "img": "#ui/images/tickets/ticket5_shape_small.png"
+        "img": "#ui/images/tickets/ticket5_shape_small"
       },
       "silver_gray_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2tanks.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks"
       },
       "silver_gray_aircraft": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2aircraft.png"
+        "img": "#ui/gameuiskin#ticket1_2aircraft"
       },
       "silver_gray_aircraft_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft"
       },
       "silver_gray_shop_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2tanks_small.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_small"
       },
       "silver_gray_shop_aircraft": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket1_2aircraft_small"
       },
       "silver_gray_shop_aircraft_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft_small"
       },
       "silver_blue_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2tanks.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks"
       },
       "silver_blue_aircraft": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2aircraft.png"
+        "img": "#ui/gameuiskin#ticket1_2aircraft"
       },
       "silver_blue_aircraft_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft"
       },
       "silver_blue_shop_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2tanks_small.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_small"
       },
       "silver_blue_shop_aircraft": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket1_2aircraft_small"
       },
       "silver_blue_shop_aircraft_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft_small"
       },
       "silver_red_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2tanks.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks"
       },
       "silver_red_aircraft": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2aircraft.png"
+        "img": "#ui/gameuiskin#ticket1_2aircraft"
       },
       "silver_red_aircraft_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft"
       },
       "silver_red_shop_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2tanks_small.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_small"
       },
       "silver_red_shop_aircraft": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket1_2aircraft_small"
       },
       "silver_red_shop_aircraft_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket1_2tanks_and_aircraft_small"
       },
       "gold_red_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_2tanks.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks"
       },
       "gold_red_aircraft": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_2aircraft.png"
+        "img": "#ui/gameuiskin#ticket4_2aircraft"
       },
       "gold_red_aircraft_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft"
       },
       "gold_red_shop_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_2tanks_small.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks_small"
       },
       "gold_red_shop_aircraft": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_2aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket4_2aircraft_small"
       },
       "gold_red_shop_aircraft_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft_small"
       },
       "gold_brown_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_2tanks.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks"
       },
       "gold_brown_aircraft": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_2aircraft.png"
+        "img": "#ui/gameuiskin#ticket4_2aircraft"
       },
       "gold_brown_aircraft_tank": {
         "w": 0.2375,
         "h": 0.352,
         "x": 0.115625,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft"
       },
       "gold_brown_shop_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_2tanks_small.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks_small"
       },
       "gold_brown_shop_aircraft": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_2aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket4_2aircraft_small"
       },
       "gold_brown_shop_aircraft_tank": {
         "w": 0.27,
         "h": 0.423,
         "x": 0.1,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft_small.png"
+        "img": "#ui/gameuiskin#ticket4_2tanks_and_aircraft_small"
       },
       "silver_gray_diff0": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket1_4AB.png"
+        "img": "#ui/gameuiskin#ticket1_4AB"
       },
       "silver_gray_diff1": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket1_4RB.png"
+        "img": "#ui/gameuiskin#ticket1_4RB"
       },
       "silver_gray_diff2": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket1_4SB.png"
+        "img": "#ui/gameuiskin#ticket1_4SB"
       },
       "silver_gray_shop_diff0": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket1_4AB_small.png"
+        "img": "#ui/gameuiskin#ticket1_4AB_small"
       },
       "silver_gray_shop_diff1": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket1_4RB_small.png"
+        "img": "#ui/gameuiskin#ticket1_4RB_small"
       },
       "silver_gray_shop_diff2": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket1_4SB_small.png"
+        "img": "#ui/gameuiskin#ticket1_4SB_small"
       },
       "silver_blue_diff0": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket2_4AB.png"
+        "img": "#ui/gameuiskin#ticket2_4AB"
       },
       "silver_blue_diff1": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket2_4RB.png"
+        "img": "#ui/gameuiskin#ticket2_4RB"
       },
       "silver_blue_diff2": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket2_4SB.png"
+        "img": "#ui/gameuiskin#ticket2_4SB"
       },
       "silver_blue_shop_diff0": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket2_4AB_small.png"
+        "img": "#ui/gameuiskin#ticket2_4AB_small"
       },
       "silver_blue_shop_diff1": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket2_4RB_small.png"
+        "img": "#ui/gameuiskin#ticket2_4RB_small"
       },
       "silver_blue_shop_diff2": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket2_4SB_small.png"
+        "img": "#ui/gameuiskin#ticket2_4SB_small"
       },
       "silver_red_diff0": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket3_4AB.png"
+        "img": "#ui/gameuiskin#ticket3_4AB"
       },
       "silver_red_diff1": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket3_4RB.png"
+        "img": "#ui/gameuiskin#ticket3_4RB"
       },
       "silver_red_diff2": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket3_4SB.png"
+        "img": "#ui/gameuiskin#ticket3_4SB"
       },
       "silver_red_shop_diff0": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket3_4AB_small.png"
+        "img": "#ui/gameuiskin#ticket3_4AB_small"
       },
       "silver_red_shop_diff1": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket3_4RB_small.png"
+        "img": "#ui/gameuiskin#ticket3_4RB_small"
       },
       "silver_red_shop_diff2": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket3_4SB_small.png"
+        "img": "#ui/gameuiskin#ticket3_4SB_small"
       },
       "gold_red_diff0": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket4_4AB.png"
+        "img": "#ui/gameuiskin#ticket4_4AB"
       },
       "gold_red_diff1": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket4_4RB.png"
+        "img": "#ui/gameuiskin#ticket4_4RB"
       },
       "gold_red_diff2": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket4_4SB.png"
+        "img": "#ui/gameuiskin#ticket4_4SB"
       },
       "gold_red_shop_diff0": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket4_4AB_small.png"
+        "img": "#ui/gameuiskin#ticket4_4AB_small"
       },
       "gold_red_shop_diff1": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket4_4RB_small.png"
+        "img": "#ui/gameuiskin#ticket4_4RB_small"
       },
       "gold_red_shop_diff2": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket4_4SB_small.png"
+        "img": "#ui/gameuiskin#ticket4_4SB_small"
       },
       "gold_brown_diff0": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket5_4AB.png"
+        "img": "#ui/gameuiskin#ticket5_4AB"
       },
       "gold_brown_diff1": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket5_4RB.png"
+        "img": "#ui/gameuiskin#ticket5_4RB"
       },
       "gold_brown_diff2": {
         "w": 0.26875,
         "h": 0.185,
         "x": 0.365625,
         "y": 0.526,
-        "img": "#ui/gameuiskin#ticket5_4SB.png"
+        "img": "#ui/gameuiskin#ticket5_4SB"
       },
       "gold_brown_shop_diff0": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket5_4AB_small.png"
+        "img": "#ui/gameuiskin#ticket5_4AB_small"
       },
       "gold_brown_shop_diff1": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket5_4RB_small.png"
+        "img": "#ui/gameuiskin#ticket5_4RB_small"
       },
       "gold_brown_shop_diff2": {
         "w": 0.26,
         "h": 0.211,
         "x": 0.37,
         "y": 0.519,
-        "img": "#ui/gameuiskin#ticket5_4SB_small.png"
+        "img": "#ui/gameuiskin#ticket5_4SB_small"
       },
       "silver_gray_gm_pvp": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1pvp.png"
+        "img": "#ui/gameuiskin#ticket1_1pvp"
       },
       "silver_blue_gm_pvp": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1pvp.png"
+        "img": "#ui/gameuiskin#ticket1_1pvp"
       },
       "silver_red_gm_pvp": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1pvp.png"
+        "img": "#ui/gameuiskin#ticket1_1pvp"
       },
       "gold_red_gm_pvp": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1pvp.png"
+        "img": "#ui/gameuiskin#ticket4_1pvp"
       },
       "gold_brown_gm_pvp": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1pvp.png"
+        "img": "#ui/gameuiskin#ticket4_1pvp"
       },
       "silver_gray_shop_gm_pvp": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1pvp_small.png"
+        "img": "#ui/gameuiskin#ticket1_1pvp_small"
       },
       "silver_blue_shop_gm_pvp": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1pvp_small.png"
+        "img": "#ui/gameuiskin#ticket1_1pvp_small"
       },
       "silver_red_shop_gm_pvp": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1pvp_small.png"
+        "img": "#ui/gameuiskin#ticket1_1pvp_small"
       },
       "gold_red_shop_gm_pvp": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1pvp_small.png"
+        "img": "#ui/gameuiskin#ticket4_1pvp_small"
       },
       "gold_brown_shop_gm_pvp": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1pvp_small.png"
+        "img": "#ui/gameuiskin#ticket4_1pvp_small"
       },
       "silver_gray_gm_team": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1team.png"
+        "img": "#ui/gameuiskin#ticket1_1team"
       },
       "silver_blue_gm_team": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1team.png"
+        "img": "#ui/gameuiskin#ticket1_1team"
       },
       "silver_red_gm_team": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1team.png"
+        "img": "#ui/gameuiskin#ticket1_1team"
       },
       "gold_red_gm_team": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1team.png"
+        "img": "#ui/gameuiskin#ticket4_1team"
       },
       "gold_brown_gm_team": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1team.png"
+        "img": "#ui/gameuiskin#ticket4_1team"
       },
       "silver_gray_shop_gm_team": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1team_small.png"
+        "img": "#ui/gameuiskin#ticket1_1team_small"
       },
       "silver_blue_shop_gm_team": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1team_small.png"
+        "img": "#ui/gameuiskin#ticket1_1team_small"
       },
       "silver_red_shop_gm_team": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1team_small.png"
+        "img": "#ui/gameuiskin#ticket1_1team_small"
       },
       "gold_red_shop_gm_team": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1team_small.png"
+        "img": "#ui/gameuiskin#ticket4_1team_small"
       },
       "gold_brown_shop_gm_team": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1team_small.png"
+        "img": "#ui/gameuiskin#ticket4_1team_small"
       },
       "silver_gray_gm_clan": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1clan.png"
+        "img": "#ui/gameuiskin#ticket1_1clan"
       },
       "silver_blue_gm_clan": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1clan.png"
+        "img": "#ui/gameuiskin#ticket1_1clan"
       },
       "silver_red_gm_clan": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1clan.png"
+        "img": "#ui/gameuiskin#ticket1_1clan"
       },
       "gold_red_gm_clan": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1clan.png"
+        "img": "#ui/gameuiskin#ticket4_1clan"
       },
       "gold_brown_gm_clan": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1clan.png"
+        "img": "#ui/gameuiskin#ticket4_1clan"
       },
       "silver_gray_shop_gm_clan": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1clan_small.png"
+        "img": "#ui/gameuiskin#ticket1_1clan_small"
       },
       "silver_blue_shop_gm_clan": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1clan_small.png"
+        "img": "#ui/gameuiskin#ticket1_1clan_small"
       },
       "silver_red_shop_gm_clan": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1clan_small.png"
+        "img": "#ui/gameuiskin#ticket1_1clan_small"
       },
       "gold_red_shop_gm_clan": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1clan_small.png"
+        "img": "#ui/gameuiskin#ticket4_1clan_small"
       },
       "gold_brown_shop_gm_clan": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1clan_small.png"
+        "img": "#ui/gameuiskin#ticket4_1clan_small"
       },
       "silver_gray_gm_squad": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1squad.png"
+        "img": "#ui/gameuiskin#ticket1_1squad"
       },
       "silver_blue_gm_squad": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1squad.png"
+        "img": "#ui/gameuiskin#ticket1_1squad"
       },
       "silver_red_gm_squad": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket1_1squad.png"
+        "img": "#ui/gameuiskin#ticket1_1squad"
       },
       "gold_red_gm_squad": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1squad.png"
+        "img": "#ui/gameuiskin#ticket4_1squad"
       },
       "gold_brown_gm_squad": {
         "w": 0.190625,
         "h": 0.352,
         "x": 0.6875,
         "y": 0.208,
-        "img": "#ui/gameuiskin#ticket4_1squad.png"
+        "img": "#ui/gameuiskin#ticket4_1squad"
       },
       "silver_gray_shop_gm_squad": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1squad_small.png"
+        "img": "#ui/gameuiskin#ticket1_1squad_small"
       },
       "silver_blue_shop_gm_squad": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1squad_small.png"
+        "img": "#ui/gameuiskin#ticket1_1squad_small"
       },
       "silver_red_shop_gm_squad": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket1_1squad_small.png"
+        "img": "#ui/gameuiskin#ticket1_1squad_small"
       },
       "gold_red_shop_gm_squad": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1squad_small.png"
+        "img": "#ui/gameuiskin#ticket4_1squad_small"
       },
       "gold_brown_shop_gm_squad": {
         "w": 0.22,
         "h": 0.423,
         "x": 0.67,
         "y": 0.211,
-        "img": "#ui/gameuiskin#ticket4_1squad_small.png"
+        "img": "#ui/gameuiskin#ticket4_1squad_small"
       },
       "silver_gray_gt_deathmatch": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket1_3deathmatch.png"
+        "img": "#ui/gameuiskin#ticket1_3deathmatch"
       },
       "silver_blue_gt_deathmatch": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket2_3deathmatch.png"
+        "img": "#ui/gameuiskin#ticket2_3deathmatch"
       },
       "silver_red_gt_deathmatch": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket3_3deathmatch.png"
+        "img": "#ui/gameuiskin#ticket3_3deathmatch"
       },
       "gold_red_gt_deathmatch": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket4_3deathmatch.png"
+        "img": "#ui/gameuiskin#ticket4_3deathmatch"
       },
       "gold_brown_gt_deathmatch": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket5_3deathmatch.png"
+        "img": "#ui/gameuiskin#ticket5_3deathmatch"
       },
       "silver_gray_shop_gt_deathmatch": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket1_3deathmatch_small.png"
+        "img": "#ui/gameuiskin#ticket1_3deathmatch_small"
       },
       "silver_blue_shop_gt_deathmatch": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket2_3deathmatch_small.png"
+        "img": "#ui/gameuiskin#ticket2_3deathmatch_small"
       },
       "silver_red_shop_gt_deathmatch": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket3_3deathmatch_small.png"
+        "img": "#ui/gameuiskin#ticket3_3deathmatch_small"
       },
       "gold_red_shop_gt_deathmatch": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket4_3deathmatch_small.png"
+        "img": "#ui/gameuiskin#ticket4_3deathmatch_small"
       },
       "gold_brown_shop_gt_deathmatch": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket5_3deathmatch_small.png"
+        "img": "#ui/gameuiskin#ticket5_3deathmatch_small"
       },
       "silver_gray_gt_race": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket1_3racing.png"
+        "img": "#ui/gameuiskin#ticket1_3racing"
       },
       "silver_blue_gt_race": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket2_3racing.png"
+        "img": "#ui/gameuiskin#ticket2_3racing"
       },
       "silver_red_gt_race": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket3_3racing.png"
+        "img": "#ui/gameuiskin#ticket3_3racing"
       },
       "gold_red_gt_race": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket4_3racing.png"
+        "img": "#ui/gameuiskin#ticket4_3racing"
       },
       "gold_brown_gt_race": {
         "w": 0.26875,
         "h": 0.526,
         "x": 0.365625,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket5_3racing.png"
+        "img": "#ui/gameuiskin#ticket5_3racing"
       },
       "silver_gray_shop_gt_race": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket1_3racing_small.png"
+        "img": "#ui/gameuiskin#ticket1_3racing_small"
       },
       "silver_blue_shop_gt_race": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket2_3racing_small.png"
+        "img": "#ui/gameuiskin#ticket2_3racing_small"
       },
       "silver_red_shop_gt_race": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket3_3racing_small.png"
+        "img": "#ui/gameuiskin#ticket3_3racing_small"
       },
       "gold_red_shop_gt_race": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket4_3racing_small.png"
+        "img": "#ui/gameuiskin#ticket4_3racing_small"
       },
       "gold_brown_shop_gt_race": {
         "w": 0.26,
         "h": 0.519,
         "x": 0.37,
         "y": 0.0,
-        "img": "#ui/gameuiskin#ticket5_3racing_small.png"
+        "img": "#ui/gameuiskin#ticket5_3racing_small"
       },
       "wager": {
         "w": 0.73,
         "h": 0.89,
-        "img": "#ui/gameuiskin#wager_background.png"
+        "img": "#ui/gameuiskin#wager_background"
       },
       "wager_goldrewardparams": {
         "w": 0.431,
@@ -3673,166 +3677,166 @@
         "w": 1.0,
         "h": 0.63,
         "y": "ph/2-0.57h",
-        "img": "#ui/gameuiskin#sale_warpoints.png"
+        "img": "#ui/gameuiskin#sale_warpoints"
       },
       "order": {
         "w": 0.8,
         "h": 0.8,
-        "img": "#ui/gameuiskin#items_orders_bg.png"
+        "img": "#ui/gameuiskin#items_orders_bg"
       },
       "order_score": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_score.png"
+        "img": "#ui/gameuiskin#items_orders_score"
       },
       "order_universalkiller": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_universal.png"
+        "img": "#ui/gameuiskin#items_orders_universal"
       },
       "order_streak": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_streaks_master.png"
+        "img": "#ui/gameuiskin#items_orders_streaks_master"
       },
       "order_rocketman": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_rocketman.png"
+        "img": "#ui/gameuiskin#items_orders_rocketman"
       },
       "order_randomhunt": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_rus_roulette.png"
+        "img": "#ui/gameuiskin#items_orders_rus_roulette"
       },
       "order_revengehunt": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_revenge.png"
+        "img": "#ui/gameuiskin#items_orders_revenge"
       },
       "order_eventmul": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_ace.png"
+        "img": "#ui/gameuiskin#items_orders_ace"
       },
       "order_eventmul_ground": {
         "w": 0.385,
         "h": 0.446,
-        "img": "#ui/gameuiskin#items_orders_bomberman.png"
+        "img": "#ui/gameuiskin#items_orders_bomberman"
       },
       "cyber_cafe_bonus": {
         "w": 0.85,
         "h": 0.85,
-        "img": "#ui/images/cybercafe.png"
+        "img": "#ui/images/cybercafe"
       },
       "mod_upgrade_bg": {
         "w": 1.0,
         "h": 1.0,
         "x": 0.0,
         "y": 0.0,
-        "img": "#ui/gameuiskin#overdrive_upgrade_bg.png"
+        "img": "#ui/gameuiskin#overdrive_upgrade_bg"
       },
       "mod_upgrade": {
         "w": 0.52,
         "h": 0.58,
         "x": 0.24,
         "y": 0.21,
-        "img": "#ui/gameuiskin#item_upgrade.png"
+        "img": "#ui/gameuiskin#item_upgrade"
       },
       "mod_overdrive": {
         "w": 0.52,
         "h": 0.58,
         "x": 0.24,
         "y": 0.21,
-        "img": "#ui/gameuiskin#item_overdrive.png"
+        "img": "#ui/gameuiskin#item_overdrive"
       },
       "mod_upgrade_rank": {
         "w": 0.24,
         "h": 0.26,
         "x": "0.89pw-w",
         "y": "0.89ph-h",
-        "img": "#ui/gameuiskin#item_rank_1.png"
+        "img": "#ui/gameuiskin#item_rank_1"
       },
       "clan_medal_bg_diff0": {
-        "img": "!#ui/gameuiskin#ca_bg_diff0.png"
+        "img": "!#ui/gameuiskin#ca_bg_diff0"
       },
       "clan_medal_bg_diff1": {
-        "img": "!#ui/gameuiskin#ca_bg_diff1.png"
+        "img": "!#ui/gameuiskin#ca_bg_diff1"
       },
       "clan_medal_cup_g": {
-        "img": "!#ui/gameuiskin#ca_cup1.png"
+        "img": "!#ui/gameuiskin#ca_cup1"
       },
       "clan_medal_cup_s": {
-        "img": "!#ui/gameuiskin#ca_cup2.png"
+        "img": "!#ui/gameuiskin#ca_cup2"
       },
       "clan_medal_cup_c": {
-        "img": "!#ui/gameuiskin#ca_cup3.png"
+        "img": "!#ui/gameuiskin#ca_cup3"
       },
       "clan_medal_rating": {
-        "img": "!#ui/gameuiskin#ca_rating1.png"
+        "img": "!#ui/gameuiskin#ca_rating1"
       },
       "clan_medal_top001": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top001.png"
+        "img": "!#ui/gameuiskin#ca_top001"
       },
       "clan_medal_top002": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top002.png"
+        "img": "!#ui/gameuiskin#ca_top002"
       },
       "clan_medal_top003": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top003.png"
+        "img": "!#ui/gameuiskin#ca_top003"
       },
       "clan_medal_top005": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top005.png"
+        "img": "!#ui/gameuiskin#ca_top005"
       },
       "clan_medal_top010": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top010.png"
+        "img": "!#ui/gameuiskin#ca_top010"
       },
       "clan_medal_top020": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top020.png"
+        "img": "!#ui/gameuiskin#ca_top020"
       },
       "clan_medal_top050": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top050.png"
+        "img": "!#ui/gameuiskin#ca_top050"
       },
       "clan_medal_top100": {
         "w": 0.25,
         "h": 0.21,
         "x": 0.37,
         "y": 0.31,
-        "img": "!#ui/gameuiskin#ca_top100.png"
+        "img": "!#ui/gameuiskin#ca_top100"
       },
       "clan_medal_1000": {
         "w": 0.37,
         "h": 0.18,
         "x": 0.31,
         "y": 0.49,
-        "img": "!#ui/gameuiskin#ca_top1000.png"
+        "img": "!#ui/gameuiskin#ca_top1000"
       },
       "clan_medal_g_diff0_txt": {
         "type": "text",
@@ -3925,95 +3929,95 @@
         "shadeStyle": "textOnIcon"
       },
       "clan_medal_ww_bg": {
-        "img": "!#ui/gameuiskin#ww_bg_recon_fire.png"
+        "img": "!#ui/gameuiskin#ww_bg_recon_fire"
       },
       "clan_medal_ww_place1": {
         "w": 0.42,
         "h": 0.17,
         "x": 0.28,
         "y": 0.68,
-        "img": "!#ui/gameuiskin#ww_top001.png"
+        "img": "!#ui/gameuiskin#ww_top001"
       },
       "clan_medal_ww_place2": {
         "w": 0.42,
         "h": 0.17,
         "x": 0.28,
         "y": 0.68,
-        "img": "!#ui/gameuiskin#ww_top002.png"
+        "img": "!#ui/gameuiskin#ww_top002"
       },
       "clan_medal_ww_place3": {
         "w": 0.42,
         "h": 0.17,
         "x": 0.28,
         "y": 0.68,
-        "img": "!#ui/gameuiskin#ww_top003.png"
+        "img": "!#ui/gameuiskin#ww_top003"
       },
       "clan_medal_ww_top10": {
         "w": 0.42,
         "h": 0.17,
         "x": 0.28,
         "y": 0.68,
-        "img": "!#ui/gameuiskin#ww_top010.png"
+        "img": "!#ui/gameuiskin#ww_top010"
       },
       "clan_medal_ww_top50": {
         "w": 0.42,
         "h": 0.17,
         "x": 0.28,
         "y": 0.68,
-        "img": "!#ui/gameuiskin#ww_top050.png"
+        "img": "!#ui/gameuiskin#ww_top050"
       },
       "clan_medal_ww_recon_fire_bin_place1": {
-        "img": "!#ui/gameuiskin#ww_recon_fire1.png"
+        "img": "!#ui/gameuiskin#ww_recon_fire1"
       },
       "clan_medal_ww_recon_fire_bin_place2": {
-        "img": "!#ui/gameuiskin#ww_recon_fire2.png"
+        "img": "!#ui/gameuiskin#ww_recon_fire2"
       },
       "clan_medal_ww_recon_fire_bin_place3": {
-        "img": "!#ui/gameuiskin#ww_recon_fire3.png"
+        "img": "!#ui/gameuiskin#ww_recon_fire3"
       },
       "clan_medal_ww_recon_fire_bin_rating": {
-        "img": "!#ui/gameuiskin#ww_recon_fire_rating1.png"
+        "img": "!#ui/gameuiskin#ww_recon_fire_rating1"
       },
       "clan_medal_ww_attack_from_the_sea_bin_place1": {
-        "img": "!#ui/gameuiskin#ww_attack_from_the_sea1.png"
+        "img": "!#ui/gameuiskin#ww_attack_from_the_sea1"
       },
       "clan_medal_ww_attack_from_the_sea_bin_place2": {
-        "img": "!#ui/gameuiskin#ww_attack_from_the_sea2.png"
+        "img": "!#ui/gameuiskin#ww_attack_from_the_sea2"
       },
       "clan_medal_ww_attack_from_the_sea_bin_place3": {
-        "img": "!#ui/gameuiskin#ww_attack_from_the_sea3.png"
+        "img": "!#ui/gameuiskin#ww_attack_from_the_sea3"
       },
       "clan_medal_ww_attack_from_the_sea_bin_rating": {
-        "img": "!#ui/gameuiskin#ww_attack_from_the_sea_rating.png"
+        "img": "!#ui/gameuiskin#ww_attack_from_the_sea_rating"
       },
       "clan_medal_ww_road_to_the_west_bin_place1": {
-        "img": "!#ui/gameuiskin#ww_road_to_the_west1.png"
+        "img": "!#ui/gameuiskin#ww_road_to_the_west1"
       },
       "clan_medal_ww_road_to_the_west_bin_place2": {
-        "img": "!#ui/gameuiskin#ww_road_to_the_west2.png"
+        "img": "!#ui/gameuiskin#ww_road_to_the_west2"
       },
       "clan_medal_ww_road_to_the_west_bin_place3": {
-        "img": "!#ui/gameuiskin#ww_road_to_the_west3.png"
+        "img": "!#ui/gameuiskin#ww_road_to_the_west3"
       },
       "clan_medal_ww_road_to_the_west_bin_rating": {
-        "img": "!#ui/gameuiskin#ww_road_to_the_west_rating1.png"
+        "img": "!#ui/gameuiskin#ww_road_to_the_west_rating1"
       }
     }
   },
   "bullets_features_icons": {
     "armor": [
-      "#ui/gameuiskin#armor_vsmall.png",
-      "#ui/gameuiskin#armor_small.png",
-      "#ui/gameuiskin#armor_middle.png",
-      "#ui/gameuiskin#armor_big.png",
+      "#ui/gameuiskin#armor_vsmall",
+      "#ui/gameuiskin#armor_small",
+      "#ui/gameuiskin#armor_middle",
+      "#ui/gameuiskin#armor_big",
       ""
     ],
     "damage": [
-      "#ui/gameuiskin#damage_small.png",
-      "#ui/gameuiskin#damage.png",
-      "#ui/gameuiskin#explosion_small.png",
-      "#ui/gameuiskin#explosion_middle.png",
-      "#ui/gameuiskin#explosion_big.png",
+      "#ui/gameuiskin#damage_small",
+      "#ui/gameuiskin#damage",
+      "#ui/gameuiskin#explosion_small",
+      "#ui/gameuiskin#explosion_middle",
+      "#ui/gameuiskin#explosion_big",
       ""
     ]
   },
@@ -4021,48 +4025,48 @@
     "default": {
       "country_0": "#ui/gameuiskin#country_0.svg",
       "country_0_locked": "#ui/gameuiskin#country_0.svg",
-      "country_0_big": "#ui/gameuiskin#country_0_big.png",
-      "country_0_big_locked": "#ui/gameuiskin#country_0_big_locked.png",
+      "country_0_big": "#ui/gameuiskin#country_0_big",
+      "country_0_big_locked": "#ui/gameuiskin#country_0_big_locked",
       "country_usa": "#ui/gameuiskin#country_usa.svg",
       "country_usa_locked": "#ui/gameuiskin#country_usa_locked.svg",
-      "country_usa_big": "#ui/gameuiskin#country_usa_big.png",
-      "country_usa_big_locked": "#ui/gameuiskin#country_usa_big_locked.png",
+      "country_usa_big": "#ui/gameuiskin#country_usa_big",
+      "country_usa_big_locked": "#ui/gameuiskin#country_usa_big_locked",
       "country_germany": "#ui/gameuiskin#country_germany.svg",
       "country_germany_locked": "#ui/gameuiskin#country_germany_locked.svg",
-      "country_germany_big": "#ui/gameuiskin#country_germany_big.png",
-      "country_germany_big_locked": "#ui/gameuiskin#country_germany_big_locked.png",
+      "country_germany_big": "#ui/gameuiskin#country_germany_big",
+      "country_germany_big_locked": "#ui/gameuiskin#country_germany_big_locked",
       "country_ussr": "#ui/gameuiskin#country_ussr.svg",
       "country_ussr_locked": "#ui/gameuiskin#country_ussr_locked.svg",
-      "country_ussr_big": "#ui/gameuiskin#country_ussr_big.png",
-      "country_ussr_big_locked": "#ui/gameuiskin#country_ussr_big_locked.png",
+      "country_ussr_big": "#ui/gameuiskin#country_ussr_big",
+      "country_ussr_big_locked": "#ui/gameuiskin#country_ussr_big_locked",
       "country_britain": "#ui/gameuiskin#country_britain.svg",
       "country_britain_locked": "#ui/gameuiskin#country_britain_locked.svg",
-      "country_britain_big": "#ui/gameuiskin#country_britain_big.png",
-      "country_britain_big_locked": "#ui/gameuiskin#country_britain_big_locked.png",
+      "country_britain_big": "#ui/gameuiskin#country_britain_big",
+      "country_britain_big_locked": "#ui/gameuiskin#country_britain_big_locked",
       "country_japan": "#ui/gameuiskin#country_japan.svg",
       "country_japan_locked": "#ui/gameuiskin#country_japan_locked.svg",
-      "country_japan_big": "#ui/gameuiskin#country_japan_big.png",
-      "country_japan_big_locked": "#ui/gameuiskin#country_japan_big_locked.png",
+      "country_japan_big": "#ui/gameuiskin#country_japan_big",
+      "country_japan_big_locked": "#ui/gameuiskin#country_japan_big_locked",
       "country_italy": "#ui/gameuiskin#country_italy.svg",
       "country_italy_locked": "#ui/gameuiskin#country_italy_locked.svg",
-      "country_italy_big": "#ui/gameuiskin#country_italy_big.png",
-      "country_italy_big_locked": "#ui/gameuiskin#country_italy_big_locked.png",
+      "country_italy_big": "#ui/gameuiskin#country_italy_big",
+      "country_italy_big_locked": "#ui/gameuiskin#country_italy_big_locked",
       "country_france": "#ui/gameuiskin#country_france.svg",
       "country_france_locked": "#ui/gameuiskin#country_france_locked.svg",
-      "country_france_big": "#ui/gameuiskin#country_france_big.png",
-      "country_france_big_locked": "#ui/gameuiskin#/country_france_big_locked.png",
+      "country_france_big": "#ui/gameuiskin#country_france_big",
+      "country_france_big_locked": "#ui/gameuiskin#/country_france_big_locked",
       "country_china": "#ui/gameuiskin#country_china.svg",
       "country_china_locked": "#ui/gameuiskin#country_china_locked.svg",
-      "country_china_big": "#ui/gameuiskin#country_china_big.png",
-      "country_china_big_locked": "#ui/gameuiskin#country_china_big_locked.png",
+      "country_china_big": "#ui/gameuiskin#country_china_big",
+      "country_china_big_locked": "#ui/gameuiskin#country_china_big_locked",
       "country_sweden": "#ui/gameuiskin#country_sweden.svg",
       "country_sweden_locked": "#ui/gameuiskin#country_sweden_locked.svg",
-      "country_sweden_big": "#ui/gameuiskin#country_sweden_big.png",
-      "country_sweden_big_locked": "#ui/gameuiskin#country_sweden_big_locked.png",
+      "country_sweden_big": "#ui/gameuiskin#country_sweden_big",
+      "country_sweden_big_locked": "#ui/gameuiskin#country_sweden_big_locked",
       "country_israel": "#ui/gameuiskin#country_israel.svg",
       "country_israel_locked": "#ui/gameuiskin#country_israel_locked.svg",
-      "country_israel_big": "#ui/gameuiskin#country_israel_big.png",
-      "country_israel_big_locked": "#ui/gameuiskin#country_israel_big_locked.png",
+      "country_israel_big": "#ui/gameuiskin#country_israel_big",
+      "country_israel_big_locked": "#ui/gameuiskin#country_israel_big_locked",
       "country_usa_round": "#ui/gameuiskin#country_usa_round.svg",
       "country_germany_round": "#ui/gameuiskin#country_germany_round.svg",
       "country_ussr_round": "#ui/gameuiskin#country_ussr_round.svg",
@@ -4119,41 +4123,41 @@
       "country_norway": "#ui/gameuiskin#country_norway.svg",
       "country_jordan": "#ui/gameuiskin#country_jordan.svg",
       "country_switzerland": "#ui/gameuiskin#country_switzerland.svg",
-      "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation.png",
-      "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation.png",
-      "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation.png",
-      "first_choice_country_britain_aviation": "#ui/first_choice/britain_aviation.png",
-      "first_choice_country_japan_aviation": "#ui/first_choice/japan_aviation.png",
-      "first_choice_country_italy_aviation": "#ui/first_choice/italy_aviation.png",
-      "first_choice_country_france_aviation": "#ui/first_choice/france_aviation.png",
-      "first_choice_country_china_aviation": "#ui/first_choice/china_aviation.png",
-      "first_choice_country_sweden_aviation": "#ui/first_choice/sweden_aviation.png",
-      "first_choice_country_israel_aviation": "#ui/first_choice/sweden_aviation.png",
-      "first_choice_country_usa_army": "#ui/first_choice/usa_army.png",
-      "first_choice_country_germany_army": "#ui/first_choice/germany_army.png",
-      "first_choice_country_ussr_army": "#ui/first_choice/ussr_army.png",
-      "first_choice_country_britain_army": "#ui/first_choice/britain_army.png",
-      "first_choice_country_japan_army": "#ui/first_choice/japan_army.png",
-      "first_choice_country_italy_army": "#ui/first_choice/italy_army.png",
-      "first_choice_country_france_army": "#ui/first_choice/france_army.png",
-      "first_choice_country_china_army": "#ui/first_choice/china_army.png",
-      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army.png",
-      "first_choice_country_usa_ships": "#ui/first_choice/usa_fleet.png",
-      "first_choice_country_germany_ships": "#ui/first_choice/germany_fleet.png",
-      "first_choice_country_ussr_ships": "#ui/first_choice/ussr_fleet.png",
-      "first_choice_country_britain_ships": "#ui/first_choice/britain_fleet.png",
-      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet.png",
-      "first_choice_country_italy_ships": "#ui/first_choice/italy_fleet.png",
-      "first_choice_country_france_ships": "#ui/first_choice/france_aviation.png",
-      "first_choice_country_china_ships": "#ui/first_choice/china_aviation.png",
-      "first_choice_country_usa_boats": "#ui/first_choice/usa_boat.png",
-      "first_choice_country_germany_boats": "#ui/first_choice/germany_boat.png",
-      "first_choice_country_ussr_boats": "#ui/first_choice/ussr_boat.png",
-      "first_choice_country_britain_boats": "#ui/first_choice/britain_boat.png",
-      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat.png",
-      "first_choice_country_italy_boats": "#ui/first_choice/italy_boat.png",
-      "first_choice_country_france_boats": "#ui/first_choice/france_aviation.png",
-      "first_choice_country_china_boats": "#ui/first_choice/china_aviation.png",
+      "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation",
+      "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation",
+      "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation",
+      "first_choice_country_britain_aviation": "#ui/first_choice/britain_aviation",
+      "first_choice_country_japan_aviation": "#ui/first_choice/japan_aviation",
+      "first_choice_country_italy_aviation": "#ui/first_choice/italy_aviation",
+      "first_choice_country_france_aviation": "#ui/first_choice/france_aviation",
+      "first_choice_country_china_aviation": "#ui/first_choice/china_aviation",
+      "first_choice_country_sweden_aviation": "#ui/first_choice/sweden_aviation",
+      "first_choice_country_israel_aviation": "#ui/first_choice/sweden_aviation",
+      "first_choice_country_usa_army": "#ui/first_choice/usa_army",
+      "first_choice_country_germany_army": "#ui/first_choice/germany_army",
+      "first_choice_country_ussr_army": "#ui/first_choice/ussr_army",
+      "first_choice_country_britain_army": "#ui/first_choice/britain_army",
+      "first_choice_country_japan_army": "#ui/first_choice/japan_army",
+      "first_choice_country_italy_army": "#ui/first_choice/italy_army",
+      "first_choice_country_france_army": "#ui/first_choice/france_army",
+      "first_choice_country_china_army": "#ui/first_choice/china_army",
+      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army",
+      "first_choice_country_usa_ships": "#ui/first_choice/usa_fleet",
+      "first_choice_country_germany_ships": "#ui/first_choice/germany_fleet",
+      "first_choice_country_ussr_ships": "#ui/first_choice/ussr_fleet",
+      "first_choice_country_britain_ships": "#ui/first_choice/britain_fleet",
+      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet",
+      "first_choice_country_italy_ships": "#ui/first_choice/italy_fleet",
+      "first_choice_country_france_ships": "#ui/first_choice/france_aviation",
+      "first_choice_country_china_ships": "#ui/first_choice/china_aviation",
+      "first_choice_country_usa_boats": "#ui/first_choice/usa_boat",
+      "first_choice_country_germany_boats": "#ui/first_choice/germany_boat",
+      "first_choice_country_ussr_boats": "#ui/first_choice/ussr_boat",
+      "first_choice_country_britain_boats": "#ui/first_choice/britain_boat",
+      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat",
+      "first_choice_country_italy_boats": "#ui/first_choice/italy_boat",
+      "first_choice_country_france_boats": "#ui/first_choice/france_aviation",
+      "first_choice_country_china_boats": "#ui/first_choice/china_aviation",
       "bgflag_country_usa": "#ui/images/flag_usa.ddsx",
       "bgflag_country_germany": "#ui/images/flag_germany.ddsx",
       "bgflag_country_ussr": "#ui/images/flag_ussr.ddsx",
@@ -4162,16 +4166,16 @@
       "bgflag_country_italy": "#ui/images/flag_italy.ddsx",
       "bgflag_country_france": "#ui/images/flag_france.ddsx",
       "bgflag_country_china": "#ui/images/flag_china.ddsx",
-      "decal_locked_country_usa": "#ui/gameuiskin#decal_country_usa_locked.png",
-      "decal_locked_country_germany": "#ui/gameuiskin#decal_country_germany_locked.png",
-      "decal_locked_country_ussr": "#ui/gameuiskin#decal_country_ussr_locked.png",
-      "decal_locked_country_britain": "#ui/gameuiskin#decal_country_britain_locked.png",
-      "decal_locked_country_japan": "#ui/gameuiskin#decal_country_japan_locked.png",
-      "decal_locked_country_italy": "#ui/gameuiskin#decal_country_italy_locked.png",
-      "decal_locked_country_china": "#ui/gameuiskin#decal_country_china_locked.png",
-      "decal_locked_country_france": "#ui/gameuiskin#decal_country_france_locked.png",
-      "decal_locked_country_sweden": "#ui/gameuiskin#decal_country_sweden_locked.png",
-      "decal_locked_country_israel": "#ui/gameuiskin#decal_country_israel_locked.png",
+      "decal_locked_country_usa": "#ui/gameuiskin#decal_country_usa_locked",
+      "decal_locked_country_germany": "#ui/gameuiskin#decal_country_germany_locked",
+      "decal_locked_country_ussr": "#ui/gameuiskin#decal_country_ussr_locked",
+      "decal_locked_country_britain": "#ui/gameuiskin#decal_country_britain_locked",
+      "decal_locked_country_japan": "#ui/gameuiskin#decal_country_japan_locked",
+      "decal_locked_country_italy": "#ui/gameuiskin#decal_country_italy_locked",
+      "decal_locked_country_china": "#ui/gameuiskin#decal_country_china_locked",
+      "decal_locked_country_france": "#ui/gameuiskin#decal_country_france_locked",
+      "decal_locked_country_sweden": "#ui/gameuiskin#decal_country_sweden_locked",
+      "decal_locked_country_israel": "#ui/gameuiskin#decal_country_israel_locked",
       "country_germany_aircraft_unit": "#ui/images/researches/ger_finishedresearch?P1",
       "country_germany_tank_unit": "#ui/images/researches/ger_ground_finishedresearch?P1",
       "country_germany_ship_unit": "#ui/images/researches/ger_ship_finishedresearch?P1",
@@ -4279,44 +4283,44 @@
     "tencent": {
       "country_usa": "#ui/gameuiskin#country_usa_alt.svg",
       "country_usa_locked": "#ui/gameuiskin#country_usa_alt_locked.svg",
-      "country_usa_big": "#ui/gameuiskin#country_usa_alt_big.png",
-      "country_usa_big_locked": "#ui/gameuiskin#country_usa_alt_big_locked.png",
+      "country_usa_big": "#ui/gameuiskin#country_usa_alt_big",
+      "country_usa_big_locked": "#ui/gameuiskin#country_usa_alt_big_locked",
       "country_germany": "#ui/gameuiskin#country_germany_alt.svg",
       "country_germany_locked": "#ui/gameuiskin#country_germany_alt_locked.svg",
-      "country_germany_big": "#ui/gameuiskin#country_germany_alt_big.png",
-      "country_germany_big_locked": "#ui/gameuiskin#country_germany_alt_big_locked.png",
+      "country_germany_big": "#ui/gameuiskin#country_germany_alt_big",
+      "country_germany_big_locked": "#ui/gameuiskin#country_germany_alt_big_locked",
       "country_ussr": "#ui/gameuiskin#country_ussr_alt.svg",
       "country_ussr_locked": "#ui/gameuiskin#country_ussr_alt_locked.svg",
-      "country_ussr_big": "#ui/gameuiskin#country_ussr_alt_big.png",
-      "country_ussr_big_locked": "#ui/gameuiskin#country_ussr_alt_big_locked.png",
+      "country_ussr_big": "#ui/gameuiskin#country_ussr_alt_big",
+      "country_ussr_big_locked": "#ui/gameuiskin#country_ussr_alt_big_locked",
       "country_britain": "#ui/gameuiskin#country_britain_alt.svg",
       "country_britain_locked": "#ui/gameuiskin#country_britain_alt_locked.svg",
-      "country_britain_big": "#ui/gameuiskin#country_britain_alt_big.png",
-      "country_britain_big_locked": "#ui/gameuiskin#country_britain_alt_big_locked.png",
+      "country_britain_big": "#ui/gameuiskin#country_britain_alt_big",
+      "country_britain_big_locked": "#ui/gameuiskin#country_britain_alt_big_locked",
       "country_japan": "#ui/gameuiskin#country_japan_alt.svg",
       "country_japan_locked": "#ui/gameuiskin#country_japan_alt_locked.svg",
-      "country_japan_big": "#ui/gameuiskin#country_japan_alt_big.png",
-      "country_japan_big_locked": "#ui/gameuiskin#country_japan_alt_big_locked.png",
+      "country_japan_big": "#ui/gameuiskin#country_japan_alt_big",
+      "country_japan_big_locked": "#ui/gameuiskin#country_japan_alt_big_locked",
       "country_italy": "#ui/gameuiskin#country_italy_alt.svg",
       "country_italy_locked": "#ui/gameuiskin#country_italy_alt_locked.svg",
-      "country_italy_big": "#ui/gameuiskin#country_italy_alt_big.png",
-      "country_italy_big_locked": "#ui/gameuiskin#country_italy_alt_big_locked.png",
+      "country_italy_big": "#ui/gameuiskin#country_italy_alt_big",
+      "country_italy_big_locked": "#ui/gameuiskin#country_italy_alt_big_locked",
       "country_france": "#ui/gameuiskin#country_france_alt.svg",
       "country_france_locked": "#ui/gameuiskin#country_france_alt_locked.svg",
-      "country_france_big": "#ui/gameuiskin#/country_france_alt_big.png",
-      "country_france_big_locked": "#ui/gameuiskin#/country_france_alt_big_locked.png",
+      "country_france_big": "#ui/gameuiskin#/country_france_alt_big",
+      "country_france_big_locked": "#ui/gameuiskin#/country_france_alt_big_locked",
       "country_china": "#ui/gameuiskin#country_china_alt.svg",
       "country_china_locked": "#ui/gameuiskin#country_china_alt_locked.svg",
-      "country_china_big": "#ui/gameuiskin#country_china_alt_big.png",
-      "country_china_big_locked": "#ui/gameuiskin#country_china_alt_big_locked.png",
+      "country_china_big": "#ui/gameuiskin#country_china_alt_big",
+      "country_china_big_locked": "#ui/gameuiskin#country_china_alt_big_locked",
       "country_sweden": "#ui/gameuiskin#country_sweden_alt.svg",
       "country_sweden_locked": "#ui/gameuiskin#country_sweden_alt_locked.svg",
-      "country_sweden_big": "#ui/gameuiskin#country_sweden_alt_big.png",
-      "country_sweden_big_locked": "#ui/gameuiskin#country_sweden_alt_big_locked.png",
+      "country_sweden_big": "#ui/gameuiskin#country_sweden_alt_big",
+      "country_sweden_big_locked": "#ui/gameuiskin#country_sweden_alt_big_locked",
       "country_israel": "#ui/gameuiskin#country_israel_alt.svg",
       "country_israel_locked": "#ui/gameuiskin#country_israel_alt_locked.svg",
-      "country_israel_big": "#ui/gameuiskin#country_israel_alt_big.png",
-      "country_israel_big_locked": "#ui/gameuiskin#country_israel_alt_big_locked.png",
+      "country_israel_big": "#ui/gameuiskin#country_israel_alt_big",
+      "country_israel_big_locked": "#ui/gameuiskin#country_israel_alt_big_locked",
       "country_canada": "",
       "country_canada_modern": "",
       "country_gdr": "#ui/gameuiskin#country_germany_alt.svg",
@@ -4357,41 +4361,41 @@
       "country_slovakia": "",
       "country_saudi_arabia": "",
       "country_switzerland": "",
-      "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation_alt.png",
-      "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation_alt.png",
-      "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation_alt.png",
-      "first_choice_country_britain_aviation": "#ui/first_choice/britain_aviation_alt.png",
-      "first_choice_country_japan_aviation": "#ui/first_choice/japan_aviation_alt.png",
-      "first_choice_country_italy_aviation": "#ui/first_choice/italy_aviation_alt.png",
-      "first_choice_country_france_aviation": "#ui/first_choice/france_aviation_alt.png",
-      "first_choice_country_china_aviation": "#ui/first_choice/china_aviation_alt.png",
-      "first_choice_country_sweden_aviation": "#ui/first_choice/sweden_aviation_alt.png",
-      "first_choice_country_israel_aviation": "#ui/first_choice/sweden_aviation_alt.png",
-      "first_choice_country_usa_army": "#ui/first_choice/usa_army_alt.png",
-      "first_choice_country_germany_army": "#ui/first_choice/germany_army_alt.png",
-      "first_choice_country_ussr_army": "#ui/first_choice/ussr_army_alt.png",
-      "first_choice_country_britain_army": "#ui/first_choice/britain_army_alt.png",
-      "first_choice_country_japan_army": "#ui/first_choice/japan_army_alt.png",
-      "first_choice_country_italy_army": "#ui/first_choice/italy_army_alt.png",
-      "first_choice_country_france_army": "#ui/first_choice/france_army_alt.png",
-      "first_choice_country_china_army": "#ui/first_choice/china_army_alt.png",
-      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army_alt.png",
-      "first_choice_country_usa_ships": "#ui/first_choice/usa_fleet_alt.png",
-      "first_choice_country_germany_ships": "#ui/first_choice/germany_fleet_alt.png",
-      "first_choice_country_ussr_ships": "#ui/first_choice/ussr_fleet_alt.png",
-      "first_choice_country_britain_ships": "#ui/first_choice/britain_fleet_alt.png",
-      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet_alt.png",
-      "first_choice_country_italy_ships": "#ui/first_choice/italy_fleet_alt.png",
-      "first_choice_country_france_ships": "#ui/first_choice/france_aviation_alt.png",
-      "first_choice_country_china_ships": "#ui/first_choice/china_aviation_alt.png",
-      "first_choice_country_usa_boats": "#ui/first_choice/usa_boat_alt.png",
-      "first_choice_country_germany_boats": "#ui/first_choice/germany_boat_alt.png",
-      "first_choice_country_ussr_boats": "#ui/first_choice/ussr_boat_alt.png",
-      "first_choice_country_britain_boats": "#ui/first_choice/britain_boat_alt.png",
-      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat_alt.png",
-      "first_choice_country_italy_boats": "#ui/first_choice/italy_boat_alt.png",
-      "first_choice_country_france_boats": "#ui/first_choice/france_aviation_alt.png",
-      "first_choice_country_china_boats": "#ui/first_choice/china_aviation_alt.png",
+      "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation_alt",
+      "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation_alt",
+      "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation_alt",
+      "first_choice_country_britain_aviation": "#ui/first_choice/britain_aviation_alt",
+      "first_choice_country_japan_aviation": "#ui/first_choice/japan_aviation_alt",
+      "first_choice_country_italy_aviation": "#ui/first_choice/italy_aviation_alt",
+      "first_choice_country_france_aviation": "#ui/first_choice/france_aviation_alt",
+      "first_choice_country_china_aviation": "#ui/first_choice/china_aviation_alt",
+      "first_choice_country_sweden_aviation": "#ui/first_choice/sweden_aviation_alt",
+      "first_choice_country_israel_aviation": "#ui/first_choice/sweden_aviation_alt",
+      "first_choice_country_usa_army": "#ui/first_choice/usa_army_alt",
+      "first_choice_country_germany_army": "#ui/first_choice/germany_army_alt",
+      "first_choice_country_ussr_army": "#ui/first_choice/ussr_army_alt",
+      "first_choice_country_britain_army": "#ui/first_choice/britain_army_alt",
+      "first_choice_country_japan_army": "#ui/first_choice/japan_army_alt",
+      "first_choice_country_italy_army": "#ui/first_choice/italy_army_alt",
+      "first_choice_country_france_army": "#ui/first_choice/france_army_alt",
+      "first_choice_country_china_army": "#ui/first_choice/china_army_alt",
+      "first_choice_country_sweden_army": "#ui/first_choice/sweden_army_alt",
+      "first_choice_country_usa_ships": "#ui/first_choice/usa_fleet_alt",
+      "first_choice_country_germany_ships": "#ui/first_choice/germany_fleet_alt",
+      "first_choice_country_ussr_ships": "#ui/first_choice/ussr_fleet_alt",
+      "first_choice_country_britain_ships": "#ui/first_choice/britain_fleet_alt",
+      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet_alt",
+      "first_choice_country_italy_ships": "#ui/first_choice/italy_fleet_alt",
+      "first_choice_country_france_ships": "#ui/first_choice/france_aviation_alt",
+      "first_choice_country_china_ships": "#ui/first_choice/china_aviation_alt",
+      "first_choice_country_usa_boats": "#ui/first_choice/usa_boat_alt",
+      "first_choice_country_germany_boats": "#ui/first_choice/germany_boat_alt",
+      "first_choice_country_ussr_boats": "#ui/first_choice/ussr_boat_alt",
+      "first_choice_country_britain_boats": "#ui/first_choice/britain_boat_alt",
+      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat_alt",
+      "first_choice_country_italy_boats": "#ui/first_choice/italy_boat_alt",
+      "first_choice_country_france_boats": "#ui/first_choice/france_aviation_alt",
+      "first_choice_country_china_boats": "#ui/first_choice/china_aviation_alt",
       "bgflag_country_usa": "#ui/images/flag_usa_alt.ddsx",
       "bgflag_country_germany": "#ui/images/flag_germany_alt.ddsx",
       "bgflag_country_ussr": "#ui/images/flag_ussr_alt.ddsx",
@@ -4400,16 +4404,16 @@
       "bgflag_country_italy": "#ui/images/flag_italy_alt.ddsx",
       "bgflag_country_france": "#ui/images/flag_france_alt.ddsx",
       "bgflag_country_china": "#ui/images/flag_china_alt.ddsx",
-      "decal_locked_country_usa": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_germany": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_ussr": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_britain": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_japan": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_italy": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_china": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_france": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_sweden": "#ui/gameuiskin#decal_locked_country.png",
-      "decal_locked_country_israel": "#ui/gameuiskin#decal_locked_country.png",
+      "decal_locked_country_usa": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_germany": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_ussr": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_britain": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_japan": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_italy": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_china": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_france": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_sweden": "#ui/gameuiskin#decal_locked_country",
+      "decal_locked_country_israel": "#ui/gameuiskin#decal_locked_country",
       "country_germany_aircraft_unit": "#ui/images/researches/ger_finishedresearch_alt?P1",
       "country_germany_tank_unit": "#ui/images/researches/ger_ground_finishedresearch_alt?P1",
       "country_japan_aircraft_unit": "#ui/images/researches/japan_finishedresearch_alt?P1",
@@ -4424,14 +4428,14 @@
     "chinese": {
       "country_japan": "#ui/gameuiskin#country_japan_modern.svg",
       "country_japan_locked": "#ui/gameuiskin#country_japan_modern_locked.svg",
-      "country_japan_big": "#ui/gameuiskin#country_japan_modern_big.png",
-      "country_japan_big_locked": "#ui/gameuiskin#country_japan_modern_big_locked.png",
-      "first_choice_country_japan_aviation": "#ui/first_choice/japan_aviation_modern.png",
-      "first_choice_country_japan_army": "#ui/first_choice/japan_army_modern.png",
-      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet_modern.png",
-      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat_modern.png",
+      "country_japan_big": "#ui/gameuiskin#country_japan_modern_big",
+      "country_japan_big_locked": "#ui/gameuiskin#country_japan_modern_big_locked",
+      "first_choice_country_japan_aviation": "#ui/first_choice/japan_aviation_modern",
+      "first_choice_country_japan_army": "#ui/first_choice/japan_army_modern",
+      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet_modern",
+      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat_modern",
       "bgflag_country_japan": "#ui/images/flag_japan_modern.ddsx",
-      "decal_locked_country_japan": "#ui/gameuiskin#decal_country_japan_modern_locked.png"
+      "decal_locked_country_japan": "#ui/gameuiskin#decal_country_japan_modern_locked"
     }
   },
   "units_presets": {
@@ -4539,7 +4543,7 @@
     "mainPart": "https://wt-console-static.cdn.gaijin.net/feed/",
     "logoEnd": "_logo",
     "bigLogoEnd": "_big_logo",
-    "fileExtension": ".png",
+    "fileExtension": "",
     "country_germany": {
       "Aircraft": {
         "name": [
@@ -4922,425 +4926,251 @@
       }
     }
   },
-  "xbox_products_remap": {
-    "9NV8MD3KG6KZ": "38564e39-444d-3033-c04b-47364b5a4600",
-    "9PM7B5FB833F": "374d5039-3542-3046-c042-38333346f000",
-    "BQZK6KG2HVG8": "404e58fd-69aa-41d9-bab1-fcef78647c0c",
-    "9NGH0LG7P534": "48474e39-4c30-3047-c037-50353334fc00",
-    "9NCVZW84MJVP": "56434e39-575a-3038-c034-4d4a56507a00",
-    "9NZ59GL0PXNG": "355a4e39-4739-304c-c030-50584e474f00",
-    "9NS0M540WNS8": "30534e39-354d-3034-c030-574e53382000",
-    "BXNTJDJGSK54": "36ee6c54-3f52-47d6-9885-cd001267cbac",
-    "9NXJZDXN8VL8": "4a584e39-445a-3058-c04e-38564c387f00",
-    "9MTCLDHKT2BJ": "43544d39-444c-3048-c04b-5432424a5200",
-    "9P512WFDNVC9": "31355039-5732-3046-c044-4e5643392200",
-    "BVRRHD4NCQBZ": "19d6cce7-4cc7-421c-aa0f-6b8852a4b8db",
-    "BS4CXVXSWW9Z": "51b661ca-5a36-4d33-a30f-20a4218fbe06",
-    "9MV385SDVNS5": "33564d39-3538-3053-c044-564e53353f00",
-    "9N1V055NX1B8": "56314e39-3530-3035-c04e-58314238f900",
-    "9N9P3JRWVLDT": "8408b399-6e58-4237-a168-a42672bb81e4",
-    "9N2VZLFTNPTJ": "35d6a40b-7894-4017-9c23-09adf1a8a0bd",
-    "9N64MVZ7H6NF": "f51eb8ee-e28b-47bf-961e-859bd3c12594",
-    "BW8428W6KX74": "2f5b3ada-e6de-4824-bd03-a7e7a1d7ca11",
-    "BRM4V1LV086P": "8bd59d7b-859e-424c-92e3-5336cfa9e42b",
-    "9P3HBXJQ5558": "f8e47418-65ec-41b1-a0d6-871c351d12a8",
-    "BZ93X4Z0X7SM": "d672c485-77c8-44cc-a837-04f0606fdef5",
-    "C2F2R14PTL7X": "4bf1e5fb-079e-4e05-aa08-9e1faaaeac8e",
-    "BTN0MHG13FSN": "f768c6c9-27b5-488d-a92c-e98fe82b2121",
-    "9NW7KZJQ783R": "023da1aa-4333-4a1f-8a86-a7bfe4d33942",
-    "C1N6L4VNFNDL": "1960a4d6-4157-4975-a1d3-e24579b33cdd",
-    "BR1BV6DTWF63": "d648b472-d911-4f24-97fe-eb00167b7836",
-    "BWTRTVDMK5CN": "c50772a5-dc8b-4358-a15b-11d248627f47",
-    "9NM49XFNF859": "66015df6-c1ab-4a24-8f63-821f8efffa81",
-    "9P7VN7703VBJ": "747163ff-fe31-4ee4-9414-41ae6684abf4",
-    "9N98HW15N0N5": "40845830-bc22-4afb-9f41-59d51f1829c5",
-    "9P6GZ09TLPWB": "47365039-305a-3039-c054-4c5057425200",
-    "9NL12D265TVF": "a01df8ca-8dab-4e9f-8365-ad2fbe2b0d2c",
-    "9N09Q1N0W7HK": "39304e39-3151-304e-c030-5737484b1100",
-    "C2VHXS35Q6DP": "82a47c07-4074-4c10-8067-afde4c5ebe0e",
-    "9N08B8JLF13D": "4a09aa13-8fb6-4aef-961b-b7609991d08c",
-    "BSL70XK15LNR": "5d88f065-3263-4a31-94c8-23e4ec083ad6",
-    "9MTSL13ML7GF": "238fda08-df7e-4ae8-9441-3ae3c59d3e9a",
-    "BPP057VJNHKB": "fa1504c4-94a2-4a2c-86ca-453906934a21",
-    "9NNNSP0BRMK0": "62a86230-5830-4f6f-95fa-c39c93901feb",
-    "C3TRVBRHCJ6Q": "a8ad6de0-285b-4c56-b5f1-206fd585390b",
-    "9N1RS1SJ19WF": "8b8bc9d5-5d0d-4dc0-82de-814e88eae8df",
-    "9PBJX41CCXJK": "4a425039-3458-3031-c043-43584a4b4500",
-    "BQFXK80XWX6H": "0925e4d9-9fd1-4b6c-b334-f6cfd028936d",
-    "9NC0VS4LK84Z": "30434e39-5356-3034-c04c-4b38345a3400",
-    "C4CWC2S0FT7C": "c23498d4-58a6-43e8-a396-f5b5855c9ca5",
-    "BWGZC3C11JXM": "92864065-4f4c-4fe8-acf7-c9ed558f176f",
-    "BX5TBNFSFJ1V": "bf62563b-13e6-4146-a970-5938aea22f7a",
-    "9N51D010J1DB": "b0f4174d-0adf-4b1b-882a-8170fff04b4b",
-    "BQR5DRKX8GGM": "06acc75d-5cbf-44ac-b5df-f9e87c0d4289",
-    "C52BC5TB7NHT": "d25d4409-6af9-4b5e-9eec-757a7e5ea0ca",
-    "BXNT3H281LPT": "7a37cc52-8935-471c-916f-78d0abf233e7",
-    "9MW6X3KW0C5D": "d6747d08-6a73-4e89-aa17-b8daa04ee6c1",
-    "9ND4RXF2F5H1": "19add167-5270-418c-a144-7059e5e5ec43",
-    "9NS9HRB6XTJ6": "39534e39-5248-3042-c036-58544a365100",
-    "9PBH2H9N2TJB": "48425039-4832-3039-c04e-32544a422600",
-    "C0PHZ895R9JT": "998b5671-ba52-4aa2-80ee-d8b9e8bb3b64",
-    "BRC1Z7G40DBR": "9534aefb-da46-4dfe-9a5c-b2e80724ba94",
-    "BP85VMCBLL5W": "ca05ab7e-40d9-4ae2-81b7-f61e11363b32",
-    "BNM26FQLV4QZ": "4993260f-5481-4499-a46e-b71b9ee4c2ca",
-    "9P60VCJRL6R5": "9e2defb8-e2ce-4fe3-96de-8dc7618656a4",
-    "C057017RDV9R": "c2319451-c37b-4441-8dad-bc0f49af6deb",
-    "9P9J1LLCV4ML": "560c1eda-f650-46b6-8e9b-ad91140122a5",
-    "C5D648LPTP9N": "34005c75-637c-4953-a45b-4b0cfff6fa18",
-    "C13LC0CZW316": "14d46592-8226-4145-abc8-35c6ed21c5db",
-    "9NNZC34G1FNX": "7a4d6c21-cb74-4322-a189-e5c4ae902c91",
-    "9NT2G0T75ZQK": "a8daf361-a9b4-4ddf-872d-236d73e50b11",
-    "C3GVP1HN8RB5": "b7c7c421-3e8b-4791-aaeb-f01f725dc992",
-    "BQF2VXZ9S52M": "02c92c37-d096-4133-846f-daef7f6458aa",
-    "BWSLNXPF8V46": "1bfe87f0-54f1-47c1-84ec-ddd59a05ba3f",
-    "9P9LB75KGHQS": "47b70737-441f-4942-9ee4-53889c3a882b",
-    "BV85RZD4538L": "a610a3fa-b08c-437f-8091-f02dec8c56d0",
-    "BSQ2P1VM21WH": "b8874968-0858-41c6-b8cc-2f77a40e7fc7",
-    "BSQP92J0RLZM": "a9d09174-a335-4709-b36b-2ebd91473e26",
-    "C2MD7GLNHG94": "212a8b66-f721-4a57-9732-58e46549326b",
-    "C05XFC45P31N": "98c792c8-0ed8-4279-845a-b1a3f79ebf95",
-    "BVKQQCCCNJBS": "f7281776-427e-469d-9dd1-1ad0046a2702",
-    "BZX726R9H9B3": "1caee62d-f785-40ab-b0b0-832fc609fd01",
-    "C24WM3Q2FTH5": "4cd6db5a-3239-46a0-a6e3-bd4690ebeeb6",
-    "BW33W77K64ND": "01d9eb81-20eb-44cb-aac1-d431762c55d6",
-    "BQ7QNDS9X5ST": "ec68781a-4600-4885-a987-67c19e65c794",
-    "BWPNB5N1M9K0": "03e8bb94-9de2-4845-b305-6444872bec93",
-    "BV7PL86L3DLR": "39ecb3f8-0e5f-44e6-879d-add9ba0c5e94",
-    "9NP8M3SQCPK3": "c884f83c-d2c8-4a46-9f1b-e63bd13ef8ea",
-    "BP47KNWRC059": "2e4d6683-9688-4c24-87fd-77e89e345d91",
-    "9PB48QS0HCQD": "0e84c614-7430-493b-962e-7253b108e6bc",
-    "9P638D9NB60F": "3a699081-dd45-4a44-a128-60289ecfcca1",
-    "9P9B905SG3D9": "c307f71e-a14f-44a0-a6e9-60999bb55b3f",
-    "9NXNSMV0VFL3": "e8cddc77-768b-482e-95fb-20a4061b78fd",
-    "9P2CBQG0X021": "92d3a8c7-4782-4a8d-a409-154585dec75e",
-    "BPL0MCVNJ6F5": "7e19697f-6f66-46cb-8457-271f9137617b",
-    "BTF8232JX1D5": "f99caaea-6446-4632-be31-ed1b580fbeb8",
-    "BWZNBLDFH31Z": "737faebb-55b4-4095-a177-0c876c59b46f",
-    "C2G32XBV0LP8": "d1f5d774-c1de-4388-b04e-23a906bae773",
-    "C59XLVCNQTKC": "46d69eab-16f3-4b57-878a-0bfbd8fd4a2b",
-    "9NNB84VMTPCC": "35890417-beac-4031-9e68-a5fc085e8c29",
-    "9NQ9JGQJBRQG": "f4779bed-8838-4124-b1c8-fdd3ea909363",
-    "9NQPT5745DT9": "d6e43a16-1d4c-4332-979d-94465022ac3a",
-    "BP865CZW9F95": "c79e421d-1b42-424d-8363-ed4b2af7221b",
-    "C09GPRX7SX9K": "06256eac-a5eb-4403-8d48-33e90af89ee5",
-    "BTXMQ57KKCW3": "78a5dc24-8e7c-4ea9-b9d9-ce1017e2d32d",
-    "C0SR2S9XJV12": "f9aba560-759b-4611-b993-3c8d1c0f41d7",
-    "9PC5NBXN62RC": "fc5e5dba-c0b5-44f2-8834-1b7c7335c172",
-    "C0GC2RHFCDXM": "4827bd33-cdd5-42bc-810c-a7656c82c276",
-    "C01ZHBW11GB5": "4d3d7515-eb99-47dd-8df3-8d196e170def",
-    "9P4M00PKKWVD": "7dfc2cae-42f5-40c0-b6ec-d6bc5721871a",
-    "9P16R6R526PJ": "b9b41ec0-a0a8-4cf3-833d-927aa35a0454",
-    "C22RZ61XVXRD": "5519ee15-d2a9-4771-8991-424ad6e02abd",
-    "BWRPD6X327MJ": "6d0705b6-2c4a-44a4-9f91-6146c9b126e7",
-    "BNQJQDSPVB9T": "3b928d51-69f7-4b53-a023-0b4ac0b2e451",
-    "C3H5JPPM6N3W": "0542da9d-7b40-48c8-b78c-01aa4d3ddfb2",
-    "C09LB7CS93P5": "15b175f6-a01a-414f-b670-6e3ef14acd4b",
-    "BXGS7NSVB212": "d2cacb08-2b0c-40fa-b8af-7662b1a1d291",
-    "BXHH8KNX9CDF": "4aed4de6-0af7-4e26-bd75-75fde95c2e08",
-    "C240LGF36MVD": "37deab3a-b5bb-4d7d-b578-25d2f0279289",
-    "BNNG683HJN13": "473e1c81-2bfe-405e-8fe0-837da0b1f7b9",
-    "9PKLRDM2PT6M": "4c4b5039-4452-304d-c032-5054364d5c00",
-    "9N1CZ2212XWV": "43314e39-325a-3032-c031-325857562100",
-    "9P09QKLH1BHF": "39305039-4b51-304c-c048-314248462300",
-    "9NJ9GDGCG9CL": "394a4e39-4447-3047-c043-4739434c2e00",
-    "9P2JX52RXPSK": "4a325039-3558-3032-c052-5850534b5c00",
-    "9NPZLGC9Q277": "5a504e39-474c-3043-c039-513237373100",
-    "9PDTR1HLHSQZ": "54445039-3152-3048-c04c-4853515a7e00",
-    "9MTBCF4KMJ1F": "42544d39-4643-3034-c04b-4d4a31463200",
-    "9MVJ67M065R4": "4a564d39-3736-304d-c030-363552340100",
-    "9NRJL0J2GFKN": "4a524e39-304c-304a-c032-47464b4e4100",
-    "9MVZ3FFMR4X6": "5a564d39-4633-3046-c04d-523458365600",
-    "9NPZHH4XGDMP": "5a504e39-4848-3034-c058-47444d507500",
-    "9P95LMSFL321": "35395039-4d4c-3053-c046-4c3332310b00",
-    "9PKBT9N4XMWR": "424b5039-3954-304e-c034-584d57527300",
-    "9MTNSB1CF30T": "4e544d39-4253-3031-c043-463330542e00",
-    "9P877L3TP7PF": "37385039-4c37-3033-c054-503750461f00",
-    "9P9THJ51Z178": "54395039-4a48-3035-c031-5a3137380800",
-    "9NFQ59N5DWZR": "51464e39-3935-304e-c035-44575a525600",
-    "9P0CP2XHD29X": "43305039-3250-3058-c048-443239582500",
-    "9PHSKHQWG67H": "53485039-484b-3051-c057-473637485b00",
-    "9MW8HWB644JR": "38574d39-5748-3042-c036-34344a523000",
-    "9NVST94C04SJ": "53564e39-3954-3034-c043-3034534a3500",
-    "9PCQXCM51CGX": "51435039-4358-304d-c035-314347584d00",
-    "9NR5MV2RS79L": "35524e39-564d-3032-c052-5337394c4400",
-    "9PKDR1JSNM7F": "444b5039-3152-304a-c053-4e4d37465000",
-    "9N97J352PFP3": "37394e39-334a-3035-c032-50465033f400",
-    "9MZSPNR8RWCH": "535a4d39-4e50-3052-c038-525743488f00",
-    "9N9KTSD0ZQ1Z": "4b394e39-5354-3044-c030-5a51315a5c00",
-    "9NQ9CXTM267C": "39514e39-5843-3054-c04d-323637432f00",
-    "9PN7GPVFLP9S": "374e5039-5047-3056-c046-4c5039536900",
-    "9NDCQL7JQKZG": "43444e39-4c51-3037-c04a-514b5a476900",
-    "9P05VLRXHCPB": "35305039-4c56-3052-c058-484350425700",
-    "9PMBKNWXB2JB": "424d5039-4e4b-3057-c058-42324a426000",
-    "9P0C5VVDRB7K": "43305039-5635-3056-c044-5242374b3700",
-    "9N44Q6PJL1L0": "34344e39-3651-3050-c04a-4c314c300900",
-    "9N6SXQ028ZG8": "53364e39-5158-3030-c032-385a47382c00",
-    "9NW1PKRMZ7GW": "31574e39-4b50-3052-c04d-5a3747577800",
-    "9NQZ85KPMPBG": "5a514e39-3538-304b-c050-4d5042476000",
-    "9NS1HPW74VBM": "31534e39-5048-3057-c037-3456424d4a00",
-    "9P5R6NX08C0W": "52355039-4e36-3058-c030-384330571e00",
-    "9NMVH0T5FGQP": "564d4e39-3048-3054-c035-464751505900",
-    "9PKQ02SWRWQJ": "514b5039-3230-3053-c057-5257514a7500",
-    "9NGZ66DXWP23": "5a474e39-3636-3044-c058-575032333c00",
-    "9NV4RJ7QS3CL": "34564e39-4a52-3037-c051-5333434c4a00",
-    "9N5TBRKK5DGG": "54354e39-5242-304b-c04b-354447474100",
-    "9NDM0MQ7P2JF": "4d444e39-4d30-3051-c037-50324a462f00",
-    "9MVVKXK6BDZC": "56564d39-584b-304b-c036-42445a437900",
-    "9P52KBJXMF7Z": "32355039-424b-304a-c058-4d46375a4300",
-    "9NDZSVCF20BZ": "5a444e39-5653-3043-c046-3230425a5500",
-    "9P86PPZM9P7G": "36385039-5050-305a-c04d-395037474500",
-    "9NTZV4QR3STG": "5a544e39-3456-3051-c052-335354478300",
-    "9MWC5KV7RCZB": "43574d39-4b35-3056-c037-52435a425e00",
-    "9N0SNJSDHBFT": "53304e39-4a4e-3053-c044-484246545d00",
-    "9N8005VQ4WG7": "30384e39-3530-3056-c051-345747370400",
-    "9N6QDT3PF8N1": "51364e39-5444-3033-c050-46384e312600",
-    "9NB655QXTJSG": "36424e39-3535-3051-c058-544a53474a00"
-  },
   "xbox_ingame_shop": {
     "mainPart": "https://wt-console-static.cdn.gaijin.net/xbox_icons_png/",
     "fileExtension": ".png",
     "items": {
-      "01d9eb81-20eb-44cb-aac1-d431762c55d6": {},
-      "1bfe87f0-54f1-47c1-84ec-ddd59a05ba3f": {},
-      "02c92c37-d096-4133-846f-daef7f6458aa": {},
-      "2e4d6683-9688-4c24-87fd-77e89e345d91": {},
-      "7a37cc52-8935-471c-916f-78d0abf233e7": [
+      "BW33W77K64ND": {},
+      "BWSLNXPF8V46": {},
+      "BQF2VXZ9S52M": {},
+      "BP47KNWRC059": {},
+      "BXNT3H281LPT": [
         {},
         {}
       ],
-      "8bd59d7b-859e-424c-92e3-5336cfa9e42b": {},
-      "14d46592-8226-4145-abc8-35c6ed21c5db": {},
-      "19d6cce7-4cc7-421c-aa0f-6b8852a4b8db": {},
-      "36ee6c54-3f52-47d6-9885-cd001267cbac": {},
-      "98c792c8-0ed8-4279-845a-b1a3f79ebf95": {},
-      "404e58fd-69aa-41d9-bab1-fcef78647c0c": {},
-      "0542da9d-7b40-48c8-b78c-01aa4d3ddfb2": {},
-      "737faebb-55b4-4095-a177-0c876c59b46f": {},
-      "0925e4d9-9fd1-4b6c-b334-f6cfd028936d": {},
-      "998b5671-ba52-4aa2-80ee-d8b9e8bb3b64": {},
-      "1960a4d6-4157-4975-a1d3-e24579b33cdd": {},
-      "4827bd33-cdd5-42bc-810c-a7656c82c276": {},
-      "06256eac-a5eb-4403-8d48-33e90af89ee5": {},
-      "9534aefb-da46-4dfe-9a5c-b2e80724ba94": {},
-      "34005c75-637c-4953-a45b-4b0cfff6fa18": {},
-      "4993260f-5481-4499-a46e-b71b9ee4c2ca": {},
-      "92864065-4f4c-4fe8-acf7-c9ed558f176f": {},
-      "a8ad6de0-285b-4c56-b5f1-206fd585390b": {},
-      "a9d09174-a335-4709-b36b-2ebd91473e26": {},
-      "b8874968-0858-41c6-b8cc-2f77a40e7fc7": {},
-      "bf62563b-13e6-4146-a970-5938aea22f7a": {},
-      "c79e421d-1b42-424d-8363-ed4b2af7221b": {},
-      "c23498d4-58a6-43e8-a396-f5b5855c9ca5": {},
-      "c50772a5-dc8b-4358-a15b-11d248627f47": {},
-      "ca05ab7e-40d9-4ae2-81b7-f61e11363b32": {},
-      "d1f5d774-c1de-4388-b04e-23a906bae773": {},
-      "d672c485-77c8-44cc-a837-04f0606fdef5": {},
-      "f9aba560-759b-4611-b993-3c8d1c0f41d7": {},
-      "f768c6c9-27b5-488d-a92c-e98fe82b2121": {},
-      "f7281776-427e-469d-9dd1-1ad0046a2702": {},
-      "fa1504c4-94a2-4a2c-86ca-453906934a21": {},
-      "39ecb3f8-0e5f-44e6-879d-add9ba0c5e94": {},
-      "37deab3a-b5bb-4d7d-b578-25d2f0279289": {},
-      "f99caaea-6446-4632-be31-ed1b580fbeb8": {},
-      "78a5dc24-8e7c-4ea9-b9d9-ce1017e2d32d": {},
-      "a610a3fa-b08c-437f-8091-f02dec8c56d0": {},
-      "c2319451-c37b-4441-8dad-bc0f49af6deb": [
+      "BRM4V1LV086P": {},
+      "C13LC0CZW316": {},
+      "BVRRHD4NCQBZ": {},
+      "BXNTJDJGSK54": {},
+      "C05XFC45P31N": {},
+      "BQZK6KG2HVG8": {},
+      "C3H5JPPM6N3W": {},
+      "BWZNBLDFH31Z": {},
+      "BQFXK80XWX6H": {},
+      "C0PHZ895R9JT": {},
+      "C1N6L4VNFNDL": {},
+      "C0GC2RHFCDXM": {},
+      "C09GPRX7SX9K": {},
+      "BRC1Z7G40DBR": {},
+      "C5D648LPTP9N": {},
+      "BNM26FQLV4QZ": {},
+      "BWGZC3C11JXM": {},
+      "C3TRVBRHCJ6Q": {},
+      "BSQP92J0RLZM": {},
+      "BSQ2P1VM21WH": {},
+      "BX5TBNFSFJ1V": {},
+      "BP865CZW9F95": {},
+      "C4CWC2S0FT7C": {},
+      "BWTRTVDMK5CN": {},
+      "BP85VMCBLL5W": {},
+      "C2G32XBV0LP8": {},
+      "BZ93X4Z0X7SM": {},
+      "C0SR2S9XJV12": {},
+      "BTN0MHG13FSN": {},
+      "BVKQQCCCNJBS": {},
+      "BPP057VJNHKB": {},
+      "BV7PL86L3DLR": {},
+      "C240LGF36MVD": {},
+      "BTF8232JX1D5": {},
+      "BTXMQ57KKCW3": {},
+      "BV85RZD4538L": {},
+      "C057017RDV9R": [
         {},
         {}
       ],
-      "51b661ca-5a36-4d33-a30f-20a4218fbe06": [
+      "BS4CXVXSWW9Z": [
         {},
         {}
       ],
-      "212a8b66-f721-4a57-9732-58e46549326b": {},
-      "46d69eab-16f3-4b57-878a-0bfbd8fd4a2b": {},
-      "1caee62d-f785-40ab-b0b0-832fc609fd01": {},
-      "2f5b3ada-e6de-4824-bd03-a7e7a1d7ca11": {},
-      "4bf1e5fb-079e-4e05-aa08-9e1faaaeac8e": {},
-      "4cd6db5a-3239-46a0-a6e3-bd4690ebeeb6": {},
-      "4d3d7515-eb99-47dd-8df3-8d196e170def": {},
-      "7e19697f-6f66-46cb-8457-271f9137617b": {},
-      "b7c7c421-3e8b-4791-aaeb-f01f725dc992": {},
-      "ec68781a-4600-4885-a987-67c19e65c794": {},
-      "473e1c81-2bfe-405e-8fe0-837da0b1f7b9": {},
-      "d2cacb08-2b0c-40fa-b8af-7662b1a1d291": {},
-      "03e8bb94-9de2-4845-b305-6444872bec93": {},
-      "06acc75d-5cbf-44ac-b5df-f9e87c0d4289": {},
-      "5d88f065-3263-4a31-94c8-23e4ec083ad6": {},
-      "d25d4409-6af9-4b5e-9eec-757a7e5ea0ca": {},
-      "82a47c07-4074-4c10-8067-afde4c5ebe0e": {},
-      "d648b472-d911-4f24-97fe-eb00167b7836": {},
-      "023da1aa-4333-4a1f-8a86-a7bfe4d33942": {},
-      "747163ff-fe31-4ee4-9414-41ae6684abf4": {},
-      "f8e47418-65ec-41b1-a0d6-871c351d12a8": {},
-      "40845830-bc22-4afb-9f41-59d51f1829c5": {},
-      "8408b399-6e58-4237-a168-a42672bb81e4": {},
-      "92d3a8c7-4782-4a8d-a409-154585dec75e": {},
-      "7a4d6c21-cb74-4322-a189-e5c4ae902c91": {},
-      "8b8bc9d5-5d0d-4dc0-82de-814e88eae8df": {},
-      "66015df6-c1ab-4a24-8f63-821f8efffa81": {},
-      "a01df8ca-8dab-4e9f-8365-ad2fbe2b0d2c": {},
-      "a8daf361-a9b4-4ddf-872d-236d73e50b11": {},
-      "b0f4174d-0adf-4b1b-882a-8170fff04b4b": {},
-      "d6747d08-6a73-4e89-aa17-b8daa04ee6c1": {},
-      "0e84c614-7430-493b-962e-7253b108e6bc": {},
-      "3a699081-dd45-4a44-a128-60289ecfcca1": {},
-      "c307f71e-a14f-44a0-a6e9-60999bb55b3f": {},
-      "e8cddc77-768b-482e-95fb-20a4061b78fd": {},
-      "19add167-5270-418c-a144-7059e5e5ec43": {},
-      "238fda08-df7e-4ae8-9441-3ae3c59d3e9a": {},
-      "9e2defb8-e2ce-4fe3-96de-8dc7618656a4": {},
-      "f51eb8ee-e28b-47bf-961e-859bd3c12594": {},
-      "35d6a40b-7894-4017-9c23-09adf1a8a0bd": {},
-      "30434e39-5356-3034-c04c-4b38345a3400": [
+      "C2MD7GLNHG94": {},
+      "C59XLVCNQTKC": {},
+      "BZX726R9H9B3": {},
+      "BW8428W6KX74": {},
+      "C2F2R14PTL7X": {},
+      "C24WM3Q2FTH5": {},
+      "C01ZHBW11GB5": {},
+      "BPL0MCVNJ6F5": {},
+      "C3GVP1HN8RB5": {},
+      "BQ7QNDS9X5ST": {},
+      "BNNG683HJN13": {},
+      "BXGS7NSVB212": {},
+      "BWPNB5N1M9K0": {},
+      "BQR5DRKX8GGM": {},
+      "BSL70XK15LNR": {},
+      "C52BC5TB7NHT": {},
+      "C2VHXS35Q6DP": {},
+      "BR1BV6DTWF63": {},
+      "9NW7KZJQ783R": {},
+      "9P7VN7703VBJ": {},
+      "9P3HBXJQ5558": {},
+      "9N98HW15N0N5": {},
+      "9N9P3JRWVLDT": {},
+      "9P2CBQG0X021": {},
+      "9NNZC34G1FNX": {},
+      "9N1RS1SJ19WF": {},
+      "9NM49XFNF859": {},
+      "9NL12D265TVF": {},
+      "9NT2G0T75ZQK": {},
+      "9N51D010J1DB": {},
+      "9MW6X3KW0C5D": {},
+      "9PB48QS0HCQD": {},
+      "9P638D9NB60F": {},
+      "9P9B905SG3D9": {},
+      "9NXNSMV0VFL3": {},
+      "9ND4RXF2F5H1": {},
+      "9MTSL13ML7GF": {},
+      "9P60VCJRL6R5": {},
+      "9N64MVZ7H6NF": {},
+      "9N2VZLFTNPTJ": {},
+      "9NC0VS4LK84Z": [
         {},
         {}
       ],
-      "560c1eda-f650-46b6-8e9b-ad91140122a5": {},
-      "4a09aa13-8fb6-4aef-961b-b7609991d08c": {},
-      "62a86230-5830-4f6f-95fa-c39c93901feb": {},
-      "48425039-4832-3039-c04e-32544a422600": {},
-      "47365039-305a-3039-c054-4c5057425200": {},
-      "56314e39-3530-3035-c04e-58314238f900": {},
-      "33564d39-3538-3053-c044-564e53353f00": {},
-      "43544d39-444c-3048-c04b-5432424a5200": [
+      "9P9J1LLCV4ML": {},
+      "9N08B8JLF13D": {},
+      "9NNNSP0BRMK0": {},
+      "9PBH2H9N2TJB": {},
+      "9P6GZ09TLPWB": {},
+      "9N1V055NX1B8": {},
+      "9MV385SDVNS5": {},
+      "9MTCLDHKT2BJ": [
         {},
         {}
       ],
-      "4a584e39-445a-3058-c04e-38564c387f00": {},
-      "39534e39-5248-3042-c036-58544a365100": {},
-      "4a425039-3458-3031-c043-43584a4b4500": {},
-      "39304e39-3151-304e-c030-5737484b1100": {},
-      "31355039-5732-3046-c044-4e5643392200": {},
-      "30534e39-354d-3034-c030-574e53382000": {},
-      "355a4e39-4739-304c-c030-50584e474f00": {},
-      "48474e39-4c30-3047-c037-50353334fc00": {},
-      "56434e39-575a-3038-c034-4d4a56507a00": [
+      "9NXJZDXN8VL8": {},
+      "9NS9HRB6XTJ6": {},
+      "9PBJX41CCXJK": {},
+      "9N09Q1N0W7HK": {},
+      "9P512WFDNVC9": {},
+      "9NS0M540WNS8": {},
+      "9NZ59GL0PXNG": {},
+      "9NGH0LG7P534": {},
+      "9NCVZW84MJVP": [
         {},
         {}
       ],
-      "374d5039-3542-3046-c042-38333346f000": {},
-      "38564e39-444d-3033-c04b-47364b5a4600": {},
-      "56564d39-584b-304b-c036-42445a437900": {},
-      "32355039-424b-304a-c058-4d46375a4300": {},
-      "4c4b5039-4452-304d-c032-5054364d5c00": {},
-      "43314e39-325a-3032-c031-325857562100": {},
-      "39305039-4b51-304c-c048-314248462300": {},
-      "394a4e39-4447-3047-c043-4739434c2e00": {},
-      "4a325039-3558-3032-c052-5850534b5c00": {},
-      "5a504e39-474c-3043-c039-513237373100": {},
-      "54445039-3152-3048-c04c-4853515a7e00": {},
-      "42544d39-4643-3034-c04b-4d4a31463200": {},
-      "4a564d39-3736-304d-c030-363552340100": {},
-      "4a524e39-304c-304a-c032-47464b4e4100": {},
-      "5a564d39-4633-3046-c04d-523458365600": {},
-      "5a504e39-4848-3034-c058-47444d507500": {},
-      "5a444e39-5653-3043-c046-3230425a5500": [
+      "9PM7B5FB833F": {},
+      "9NV8MD3KG6KZ": {},
+      "9MVVKXK6BDZC": {},
+      "9P52KBJXMF7Z": {},
+      "9PKLRDM2PT6M": {},
+      "9N1CZ2212XWV": {},
+      "9P09QKLH1BHF": {},
+      "9NJ9GDGCG9CL": {},
+      "9P2JX52RXPSK": {},
+      "9NPZLGC9Q277": {},
+      "9PDTR1HLHSQZ": {},
+      "9MTBCF4KMJ1F": {},
+      "9MVJ67M065R4": {},
+      "9NRJL0J2GFKN": {},
+      "9MVZ3FFMR4X6": {},
+      "9NPZHH4XGDMP": {},
+      "9NDZSVCF20BZ": [
         {},
         {}
       ],
-      "4d444e39-4d30-3051-c037-50324a462f00": [
+      "9NDM0MQ7P2JF": [
         {},
         {}
       ],
-      "36385039-5050-305a-c04d-395037474500": [
+      "9P86PPZM9P7G": [
         {},
         {}
       ],
-      "35395039-4d4c-3053-c046-4c3332310b00": {},
-      "424b5039-3954-304e-c034-584d57527300": {},
-      "4e544d39-4253-3031-c043-463330542e00": {},
-      "37385039-4c37-3033-c054-503750461f00": {},
-      "54395039-4a48-3035-c031-5a3137380800": {},
-      "51464e39-3935-304e-c035-44575a525600": {},
-      "43305039-3250-3058-c048-443239582500": {},
-      "53485039-484b-3051-c057-473637485b00": {},
-      "38574d39-5748-3042-c036-34344a523000": {},
-      "53564e39-3954-3034-c043-3034534a3500": {},
-      "51435039-4358-304d-c035-314347584d00": {},
-      "35524e39-564d-3032-c052-5337394c4400": {},
-      "444b5039-3152-304a-c053-4e4d37465000": {},
-      "574e4e39-4231-3044-c035-345850534700": {},
-      "39345039-5242-3044-c039-584432562b00": {},
-      "4b394e39-5354-3044-c030-5a51315a5c00": {},
-      "37394e39-334a-3035-c032-50465033f400": {},
-      "39514e39-5843-3054-c04d-323637432f00": {},
-      "535a4d39-4e50-3052-c038-525743488f00": {},
-      "374e5039-5047-3056-c046-4c5039536900": {},
-      "43444e39-4c51-3037-c04a-514b5a476900": {},
-      "35305039-4c56-3052-c058-484350425700": {},
-      "424d5039-4e4b-3057-c058-42324a426000": {},
-      "43305039-5635-3056-c044-5242374b3700": {},
-      "34344e39-3651-3050-c04a-4c314c300900": {},
-      "53364e39-5158-3030-c032-385a47382c00": {},
-      "31574e39-4b50-3052-c04d-5a3747577800": {},
-      "5a514e39-3538-304b-c050-4d5042476000": {},
-      "31534e39-5048-3057-c037-3456424d4a00": {},
-      "52355039-4e36-3058-c030-384330571e00": {},
-      "564d4e39-3048-3054-c035-464751505900": {},
-      "514b5039-3230-3053-c057-5257514a7500": {},
-      "5a474e39-3636-3044-c058-575032333c00": {},
-      "34564e39-4a52-3037-c051-5333434c4a00": {},
-      "54354e39-5242-304b-c04b-354447474100": {},
-      "5a544e39-3456-3051-c052-335354478300": {},
-      "43574d39-4b35-3056-c037-52435a425e00": {},
-      "53304e39-4a4e-3053-c044-484246545d00": {},
-      "30384e39-3530-3056-c051-345747370400": {},
-      "51364e39-5444-3033-c050-46384e312600": {},
-      "36424e39-3535-3051-c058-544a53474a00": {}
+      "9P95LMSFL321": {},
+      "9PKBT9N4XMWR": {},
+      "9MTNSB1CF30T": {},
+      "9P877L3TP7PF": {},
+      "9P9THJ51Z178": {},
+      "9NFQ59N5DWZR": {},
+      "9P0CP2XHD29X": {},
+      "9PHSKHQWG67H": {},
+      "9MW8HWB644JR": {},
+      "9NVST94C04SJ": {},
+      "9PCQXCM51CGX": {},
+      "9NR5MV2RS79L": {},
+      "9PKDR1JSNM7F": {},
+      "9NNW1BD54XPS": {},
+      "9P49BRD9XD2V": {},
+      "9N9KTSD0ZQ1Z": {},
+      "9N97J352PFP3": {},
+      "9NQ9CXTM267C": {},
+      "9MZSPNR8RWCH": {},
+      "9PN7GPVFLP9S": {},
+      "9NDCQL7JQKZG": {},
+      "9P05VLRXHCPB": {},
+      "9PMBKNWXB2JB": {},
+      "9P0C5VVDRB7K": {},
+      "9N44Q6PJL1L0": {},
+      "9N6SXQ028ZG8": {},
+      "9NW1PKRMZ7GW": {},
+      "9NQZ85KPMPBG": {},
+      "9NS1HPW74VBM": {},
+      "9P5R6NX08C0W": {},
+      "9NMVH0T5FGQP": {},
+      "9PKQ02SWRWQJ": {},
+      "9NGZ66DXWP23": {},
+      "9NV4RJ7QS3CL": {},
+      "9N5TBRKK5DGG": {},
+      "9NTZV4QR3STG": {},
+      "9MWC5KV7RCZB": {},
+      "9N0SNJSDHBFT": {},
+      "9N8005VQ4WG7": {},
+      "9N6QDT3PF8N1": {},
+      "9NB655QXTJSG": {}
     },
     "itemsHide": {
-      "4aed4de6-0af7-4e26-bd75-75fde95c2e08": {},
-      "15b175f6-a01a-414f-b670-6e3ef14acd4b": {},
-      "6d0705b6-2c4a-44a4-9f91-6146c9b126e7": {},
-      "3b928d51-69f7-4b53-a023-0b4ac0b2e451": {},
-      "d6e43a16-1d4c-4332-979d-94465022ac3a": {},
-      "fc5e5dba-c0b5-44f2-8834-1b7c7335c172": {},
-      "f4779bed-8838-4124-b1c8-fdd3ea909363": {},
-      "35890417-beac-4031-9e68-a5fc085e8c29": {},
-      "c884f83c-d2c8-4a46-9f1b-e63bd13ef8ea": {},
-      "35335039-384c-3050-c031-3342324ce900": {},
-      "314e4e39-314d-3048-c054-344c395a3300": {},
-      "48584e39-5a4a-3044-c043-4b5336436900": {},
-      "4a314e39-465a-3052-c058-525643487f00": {},
-      "44534e39-5254-3053-c038-435143537900": {},
-      "33564d39-3538-3053-c044-564e53353f00": {},
-      "32364e39-304e-304b-c056-475033391100": {},
-      "3a699081-dd45-4a44-a128-60289ecfcca1": {},
-      "51435039-4358-304d-c035-314347584d00": {},
-      "4a334e39-574b-3034-c030-4b4e54423900": {},
-      "473e1c81-2bfe-405e-8fe0-837da0b1f7b9": {},
-      "56314e39-3530-3035-c04e-58314238f900": {},
-      "d2cacb08-2b0c-40fa-b8af-7662b1a1d291": {},
-      "31524e39-4c52-3037-c051-475852365700": {},
-      "78a5dc24-8e7c-4ea9-b9d9-ce1017e2d32d": [
+      "BXHH8KNX9CDF": {},
+      "C09LB7CS93P5": {},
+      "BWRPD6X327MJ": {},
+      "BNQJQDSPVB9T": {},
+      "9NQPT5745DT9": {},
+      "9PC5NBXN62RC": {},
+      "9NQ9JGQJBRQG": {},
+      "9NNB84VMTPCC": {},
+      "9NP8M3SQCPK3": {},
+      "9P35L8P13B2L": {},
+      "9NN1M1HT4L9Z": {},
+      "9NXHJZDCKS6C": {},
+      "9N1JZFRXRVCH": {},
+      "9NSDTRS8CQCS": {},
+      "9MV385SDVNS5": {},
+      "9N62N0KVGP39": {},
+      "9P638D9NB60F": {},
+      "9PCQXCM51CGX": {},
+      "9N3JKW40KNTB": {},
+      "BNNG683HJN13": {},
+      "9N1V055NX1B8": {},
+      "BXGS7NSVB212": {},
+      "9NR1RL7QGXR6": {},
+      "BTXMQ57KKCW3": [
         {},
         {}
       ],
-      "51304e39-3951-304c-c033-3456324e1b00": {},
-      "32424e39-5230-3032-c039-53324b44fc00": {},
+      "9N0QQ9L34V2N": {},
+      "9NB20R29S2KD": {},
       "46464e39-4c47-3030-c048-574c38373000": {},
-      "38514e39-5142-304b-c04a-4e4a54486c00": {},
-      "44514e39-3147-3052-c030-434a4c443300": {},
-      "37504e39-5039-3035-c051-434850332b00": {},
-      "52574d39-575a-3050-c048-43564e58b700": {},
-      "51324e39-5834-3036-c034-484344320100": {},
-      "c307f71e-a14f-44a0-a6e9-60999bb55b3f": {},
-      "0e84c614-7430-493b-962e-7253b108e6bc": {},
-      "58475039-3842-3053-c04a-513952344f00": {},
-      "404e58fd-69aa-41d9-bab1-fcef78647c0c": {}
+      "9NQ8BQKJNJTH": {},
+      "9NQDG1R0CJLD": {},
+      "9NP79P5QCHP3": {},
+      "9MWRZWPHCVNX": {},
+      "9N2Q4X64HCD2": {},
+      "9P9B905SG3D9": {},
+      "9PB48QS0HCQD": {},
+      "9PGXB8SJQ9R4": {},
+      "BQZK6KG2HVG8": {}
     },
     "specialOffers": {
-      "c23498d4-58a6-43e8-a396-f5b5855c9ca5": {},
-      "4bf1e5fb-079e-4e05-aa08-9e1faaaeac8e": {},
-      "7e19697f-6f66-46cb-8457-271f9137617b": {},
-      "212a8b66-f721-4a57-9732-58e46549326b": {},
-      "b8874968-0858-41c6-b8cc-2f77a40e7fc7": {}
+      "C4CWC2S0FT7C": {},
+      "C2F2R14PTL7X": {},
+      "BPL0MCVNJ6F5": {},
+      "C2MD7GLNHG94": {},
+      "BSQ2P1VM21WH": {}
     }
   },
   "ps4_ingame_shop": {
     "mainPart": "https://wt-console-static.cdn.gaijin.net/ps4_icons_png/",
-    "fileExtension": ".png",
+    "fileExtension": "",
     "items": {
       "EE00010000000000": {},
       "EE00020000000000": {},
@@ -5687,7 +5517,7 @@
   },
   "epic_ingame_shop": {
     "mainPart": "https://wt-console-static.cdn.gaijin.net/epic_icons_png/",
-    "fileExtension": ".png",
+    "fileExtension": "",
     "items": {},
     "itemsHide": {}
   },
@@ -5705,14 +5535,14 @@
     },
     "progressBar": {
       "0": "",
-      "1": "#ui/gameuiskin#icon_progress_bar_stage_01.png",
-      "2": "#ui/gameuiskin#icon_progress_bar_stage_02.png",
-      "3": "#ui/gameuiskin#icon_progress_bar_stage_03.png",
-      "4": "#ui/gameuiskin#icon_progress_bar_stage_04.png",
-      "5": "#ui/gameuiskin#icon_progress_bar_stage_05.png",
-      "6": "#ui/gameuiskin#icon_progress_bar_stage_06.png",
-      "7": "#ui/gameuiskin#icon_progress_bar_stage_07.png",
-      "8": "#ui/gameuiskin#icon_progress_bar_stage_08.png"
+      "1": "#ui/gameuiskin#icon_progress_bar_stage_01",
+      "2": "#ui/gameuiskin#icon_progress_bar_stage_02",
+      "3": "#ui/gameuiskin#icon_progress_bar_stage_03",
+      "4": "#ui/gameuiskin#icon_progress_bar_stage_04",
+      "5": "#ui/gameuiskin#icon_progress_bar_stage_05",
+      "6": "#ui/gameuiskin#icon_progress_bar_stage_06",
+      "7": "#ui/gameuiskin#icon_progress_bar_stage_07",
+      "8": "#ui/gameuiskin#icon_progress_bar_stage_08"
     },
     "image": {
       "0": "#ui/images/login_award?P1",
@@ -5730,27 +5560,27 @@
     },
     "periodic_award": {
       "default": {
-        "progress": "#ui/gameuiskin#100_days_reward_mark.png"
+        "progress": "#ui/gameuiskin#100_days_reward_mark"
       },
       "100": {
-        "trophy": "#ui/gameuiskin#100_days_reward_icon.png",
-        "progress": "#ui/gameuiskin#100_days_reward_mark.png"
+        "trophy": "#ui/gameuiskin#100_days_reward_icon",
+        "progress": "#ui/gameuiskin#100_days_reward_mark"
       },
       "365": {
-        "trophy": "#ui/gameuiskin#365_days_reward_icon.png",
-        "progress": "#ui/gameuiskin#100_days_reward_mark.png"
+        "trophy": "#ui/gameuiskin#365_days_reward_icon",
+        "progress": "#ui/gameuiskin#100_days_reward_mark"
       },
       "730": {
-        "trophy": "#ui/gameuiskin#730_days_reward_icon.png",
-        "progress": "#ui/gameuiskin#730_days_reward_mark.png"
+        "trophy": "#ui/gameuiskin#730_days_reward_icon",
+        "progress": "#ui/gameuiskin#730_days_reward_mark"
       },
       "1095": {
-        "trophy": "#ui/gameuiskin#1095_days_reward_icon.png",
-        "progress": "#ui/gameuiskin#730_days_reward_mark.png"
+        "trophy": "#ui/gameuiskin#1095_days_reward_icon",
+        "progress": "#ui/gameuiskin#730_days_reward_mark"
       },
       "1825": {
-        "trophy": "#ui/gameuiskin#1825_days_reward_icon.png",
-        "progress": "#ui/gameuiskin#730_days_reward_mark.png"
+        "trophy": "#ui/gameuiskin#1825_days_reward_icon",
+        "progress": "#ui/gameuiskin#730_days_reward_mark"
       }
     }
   },
@@ -7143,6 +6973,7 @@
     "battlepass_season8": "battlepass_season8_purchased_main/name",
     "battlepass_season9": "battlepass_season9_purchased_main/name",
     "battlepass_season10": "battlepass_season10_purchased_main/name",
+    "battlepass_season11": "battlepass_season11_purchased_main/name",
     "craft_2018_spring": "workshop/1Animcraft_main_header",
     "craft_2019_spring": "workshop/craft_event_2019_spring_header",
     "craft_2019_autumn": "unlocks/chapter/craft_2019_autumn",
@@ -7151,6 +6982,7 @@
     "craft_2021_spring": "unlocks/chapter/craft_2021_spring",
     "craft_2021_autumn": "unlocks/chapter/craft_2021_autumn",
     "craft_2022_spring": "unlocks/chapter/craft_2022_spring",
-    "craft_2022_autumn": "unlocks/chapter/craft_2022_autumn"
+    "craft_2022_autumn": "unlocks/chapter/craft_2022_autumn",
+    "craft_2023_spring": "unlocks/chapter/craft_2023_spring"
   }
 }

@@ -265,8 +265,8 @@ local Unit = class {
   isShipOrBoat          = @() this.esUnitType == ES_UNIT_TYPE_SHIP || this.esUnitType == ES_UNIT_TYPE_BOAT
   isSubmarine           = @() this.esUnitType == ES_UNIT_TYPE_SHIP && this.tags.indexof("submarine") != null
   isHelicopter          = @() this.esUnitType == ES_UNIT_TYPE_HELICOPTER
+  isHuman               = @() this.esUnitType == ES_UNIT_TYPE_TANK && this.tags.indexof("type_exoskeleton") != null
   //
-
 
 
 

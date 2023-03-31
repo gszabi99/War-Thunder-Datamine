@@ -33,6 +33,8 @@ let widgetsMap = {
       return shipHud
     else if (hudUnitType.isSubmarine() && !isPlayingReplay.value)
       return shipExHud
+    else if (hudUnitType.isHuman())
+      return tankHud
     //
 
 
