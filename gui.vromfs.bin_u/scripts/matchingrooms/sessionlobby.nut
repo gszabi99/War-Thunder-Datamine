@@ -9,7 +9,7 @@ let ecs = require("%sqstd/ecs.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { abs, floor } = require("math")
 let { EventOnConnectedToServer } = require("net")
-let { MatchingRoomExtraParams } = require("dasevents")
+let { MatchingRoomExtraParams = null } = require_optional("dasevents")
 let { format } = require("string")
 let { get_mp_session_id_str } = require("multiplayer")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -2516,6 +2516,8 @@ foreach (notificationName, callback in
 
 ecs.register_es("on_connected_to_server_es", {
   [EventOnConnectedToServer] = function() {
+    if (MatchingRoomExtraParams == null)
+      return
     let routeEvaluationChance = ::SessionLobby.getRoomEvent()?.routeEvaluationChance ?? 0.0
     let ddosSimulationChance = ::SessionLobby.getRoomEvent()?.ddosSimulationChance ?? 0.0
     let ddosSimulationAddRtt = ::SessionLobby.getRoomEvent()?.ddosSimulationAddRtt ?? 0
