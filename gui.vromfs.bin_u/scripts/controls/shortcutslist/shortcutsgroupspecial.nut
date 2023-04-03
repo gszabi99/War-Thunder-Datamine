@@ -91,6 +91,10 @@ return [
     id = "ID_HUMAN_THERMAL_WHITE_IS_HOT"
     checkAssign = false
   }
+  {
+    id = "ID_HUMAN_TOGGLE_RANGEFINDER"
+    checkAssign = false
+  }
 //-------------------------------------------------------
   {
     id = "ID_HUMAN_VIEW_HEADER"
