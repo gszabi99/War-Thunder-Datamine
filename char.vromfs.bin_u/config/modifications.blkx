@@ -11540,6 +11540,14 @@
         "additiveBulletMod": "120mm_9m37m_aam"
       }
     },
+    "70mm_QN201_ATGM": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "70mm_AP",
+      "effects": {
+        "additiveBulletMod": "70mm_QN201_ATGM"
+      }
+    },
     "70mm_stinger_block1_aam": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -20733,6 +20741,39 @@
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
+    },
+    "countermeasures_belt_pack_unchecked": {
+      "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "countermeasures_launcher_chaff_priority_unchecked": {
+      "reqModification": "countermeasures_belt_pack_unchecked",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_chaff_priority"
+      }
+    },
+    "countermeasures_launcher_flare_priority_unchecked": {
+      "reqModification": "countermeasures_belt_pack_unchecked",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_flare_priority"
+      }
+    },
+    "countermeasures_launcher_flare_only_unchecked": {
+      "reqModification": "countermeasures_belt_pack_unchecked",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_flare_only"
+      }
+    },
+    "countermeasures_launcher_chaff_only_unchecked": {
+      "reqModification": "countermeasures_belt_pack_unchecked",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_chaff_only"
+      }
     },
     "swd_ltc_bol": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
