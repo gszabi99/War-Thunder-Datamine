@@ -48,6 +48,9 @@ let getEmptyConditionsConfig = @() {
   needToFillStages = true
   needToAddCurStageToName = true
   useLastStageAsUnlockOpening = false
+  additionalStagesDescAsItemCountLocId = ""
+  additionalStagesDescAsItemCountId = 0
+  additionalStagesDescAsItemCountMax = 0
   names = [] //bit progress names. better to rename it.
 
   showProgress = true
@@ -175,6 +178,9 @@ let function setImageByUnlockType(config, unlockBlk) {
   config.needToFillStages = blk?.needToFillStages ?? true
   config.needToAddCurStageToName = blk?.needToAddCurStageToName ?? true
   config.useLastStageAsUnlockOpening = blk?.useLastStageAsUnlockOpening ?? false
+  config.additionalStagesDescAsItemCountLocId = blk?.additionalStagesDescAsItemCountLocId ?? ""
+  config.additionalStagesDescAsItemCountId = blk?.additionalStagesDescAsItemCountId ?? 0
+  config.additionalStagesDescAsItemCountMax = blk?.additionalStagesDescAsItemCountMax ?? 0
   config.manualOpen = blk?.manualOpen ?? false
 
   config.iconStyle <- blk?.iconStyle ?? config?.iconStyle
@@ -202,7 +208,6 @@ let function setImageByUnlockType(config, unlockBlk) {
   if (blk?._controller)
     config._controller <- blk._controller
 
-  local hasCurStageInProgressData = false // this param is compatibility for wop_2_19_0_X, feel free to remove after wop_2_21_0_X
   foreach (mode in blk % "mode") {
     let modeType = mode?.type ?? ""
     config.type = modeType
@@ -243,10 +248,7 @@ let function setImageByUnlockType(config, unlockBlk) {
             config.multiplier <- getMultipliersTable(mode)
           }
           else {
-            if (mode?.chardType != null && mode?.num != null)
-              config.maxVal = (modeType == "totalMissionScore") ? (mode.num / 1000) /*PSEUDO_FLOAT_VALUE_MUL*/ : mode.num
-            else
-              config.maxVal = progress.maxVal
+            config.maxVal = progress.maxVal
           }
         }
         else if (blk?.__numToControl) {
@@ -257,7 +259,6 @@ let function setImageByUnlockType(config, unlockBlk) {
 
         config.curVal = progress.curVal
         config.curStage = (progress?.curStage ?? -1) + 1
-        hasCurStageInProgressData = (progress?.curStage != null)
       }
     }
 
@@ -295,25 +296,19 @@ let function setImageByUnlockType(config, unlockBlk) {
   else if (config.useLastStageAsUnlockOpening) {
     config.maxVal = config.stages.top().val
     config.curVal = min(config.curVal, config.maxVal)
-    if (!hasCurStageInProgressData) { // getting curStage from stages is compatibility for wop_2_19_0_X, feel free to remove after wop_2_21_0_X
-      config.curStage = 0
-      for (local i = config.stages.len() - 1; i >= 0; --i) {
-        let stage = config.stages[i]
-        if (stage.val <= config.curVal) {
-          config.curStage = i + 1
-          break
-        }
-      }
-    }
   }
   else {
-    foreach (idx, stage in config.stages)
+    foreach (stage in config.stages)
       if ((stage.val <= config.maxVal && stage.val > config.curVal)
           || (config.curStage < 0 && stage.val == config.maxVal && stage.val == config.curVal)) {
-        if (!hasCurStageInProgressData) // getting curStage from stages is compatibility for wop_2_19_0_X, feel free to remove after wop_2_21_0_X
-          config.curStage = idx
         config.maxVal = stage.val
       }
+  }
+
+  if (!::g_battle_tasks.isBattleTask(id) && config.unlockType != UNLOCKABLE_STREAK
+    && blk?.mode.chardType != null && blk?.mode.num != null) {
+    config.maxVal = ((blk?.mode.type ?? "") == "totalMissionScore")
+      ? (blk.mode.num / 1000) /*PSEUDO_FLOAT_VALUE_MUL*/ : blk.mode.num
   }
 
   if (haveBasicRewards) {

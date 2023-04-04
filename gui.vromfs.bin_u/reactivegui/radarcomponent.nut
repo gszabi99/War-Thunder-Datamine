@@ -1704,6 +1704,23 @@ let function B_ScopeHalfBackground(size, color) {
   }
 }
 
+let B_ScopeHalfCircleTopMarkers = @(size, color) function() {
+  let isVisible = IsRadarVisible.value || IsRadar2Visible.value
+  return {
+    watch = [IsRadarVisible, IsRadar2Visible]
+    size = [SIZE_TO_CONTENT, hdpx(25)]
+    children = !isVisible ? null : [
+      makeRadarModeText({ pos = [size[0] * (0.5 - 0.15), hdpx(5)] }, color)
+      makeRadar2ModeText({ pos = [size[0] * (0.5 + 0.05), hdpx(5)] }, color)
+      noiseSignal(
+        [size[0] * 0.06, size[1] * 0.06],
+        [size[0] * (0.5 - 0.30), 0],
+        [size[0] * (0.5 + 0.20), 0],
+        color)
+    ]
+  }
+}
+
 let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
 
   let res = { watch = [IsRadarVisible, IsRadar2Visible, HasDistanceScale,
@@ -1791,17 +1808,6 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
         ]
         text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), deg)
       })
-      makeRadarModeText({
-          pos = [size[0] * (0.5 - 0.15), -hdpx(20)]
-        }, color)
-      makeRadar2ModeText({
-          pos = [size[0] * (0.5 + 0.05), -hdpx(20)]
-        }, color)
-      noiseSignal(
-        [size[0] * 0.06, size[1] * 0.06],
-        [size[0] * (0.5 - 0.30), -hdpx(25)],
-        [size[0] * (0.5 + 0.20), -hdpx(25)],
-        color)
     ]
   })
 }
@@ -1859,6 +1865,7 @@ let function B_ScopeHalf(size, color, fontScale) {
   }
 
   let sizeBScopeHalf = [size[0] + hdpx(2), 0.5 * size[1]]
+  let topMarkers = B_ScopeHalfCircleTopMarkers(size, color)
   let markers = B_ScopeHalfCircleMarkers(size, color, fontScale)
   let cue = B_ScopeHalfCue(size, color)
   let az1 = B_ScopeAzimuthComponent(size, Azimuth, Distance, AzimuthHalfWidth, color)
@@ -1885,16 +1892,21 @@ let function B_ScopeHalf(size, color, fontScale) {
     children.append(tgts)
     return {
       watch = [IsRadarVisible, IsRadarEmitting, IsRadar2Visible, IsRadar2Emitting, HasDistanceScale, IsAamLaunchZoneVisible]
+      flow = FLOW_VERTICAL
       children = [
+        topMarkers,
         {
-          size = sizeBScopeHalf
-          pos = [0, 0]
-          halign = ALIGN_CENTER
-          clipChildren = true
-          children
-        },
-        markers,
-        cue
+          children = [
+            {
+              size = sizeBScopeHalf
+              halign = ALIGN_CENTER
+              clipChildren = true
+              children
+            },
+            markers,
+            cue
+          ]
+        }
       ]
     }
   }

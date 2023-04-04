@@ -13,7 +13,7 @@
   "aimMinDist": 0.1,
   "aimMaxDist": 500.0,
   "maxDeltaAngle": 0.08,
-  "shotFreq": 0.75,
+  "shotFreq": 1.0,
   "traceFreq": 3,
   "bEnablePause": false,
   "bullets": -1,
@@ -38,7 +38,7 @@
     "bulletCount": 30,
     "mass": 0.22,
     "explosiveType": "a_ix_2",
-    "explosiveMass": 0.03,
+    "explosiveMass": 0.09,
     "caliber": 0.043,
     "speed": 85.0,
     "Cx": 0.21,
@@ -65,6 +65,7 @@
       1000.0
     ],
     "bulletName": "43mm_VK_94",
+    "hasProximityFuse": true,
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "explosionEffect": "hit_39_58mm_metal_he",
     "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -105,6 +106,13 @@
         7000.0
       ]
     },
+    "proximityFuse": {
+      "radius": 1.0,
+      "armDistance": 15.0,
+      "detectAirUnits": true,
+      "detectGroundUnits": true,
+      "detectGround": false
+    },
     "cumulativeDamage": {
       "armorPower": 120.0,
       "distance": 2.5,
@@ -114,7 +122,7 @@
     "damage": {
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.3,
+        "countPortion": 1.0,
         "segment": [
           {
             "radiusScale": 1.065,
@@ -319,7 +327,7 @@
       "bulletCount": 30,
       "mass": 0.22,
       "explosiveType": "a_ix_2",
-      "explosiveMass": 0.03,
+      "explosiveMass": 0.09,
       "caliber": 0.043,
       "speed": 85.0,
       "Cx": 0.21,
@@ -346,6 +354,7 @@
         1000.0
       ],
       "bulletName": "43mm_VK_94",
+      "hasProximityFuse": true,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_39_58mm_metal_he",
       "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -386,6 +395,13 @@
           7000.0
         ]
       },
+      "proximityFuse": {
+        "radius": 1.0,
+        "armDistance": 15.0,
+        "detectAirUnits": true,
+        "detectGroundUnits": true,
+        "detectGround": false
+      },
       "cumulativeDamage": {
         "armorPower": 120.0,
         "distance": 2.5,
@@ -395,7 +411,7 @@
       "damage": {
         "shatter": {
           "useRealShatters": true,
-          "countPortion": 0.3,
+          "countPortion": 1.0,
           "segment": [
             {
               "radiusScale": 1.065,

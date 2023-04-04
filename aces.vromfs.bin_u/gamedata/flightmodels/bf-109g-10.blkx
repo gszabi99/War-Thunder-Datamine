@@ -4,6 +4,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "german",
   "isCapableOfAttackTurn": false,
@@ -2200,7 +2201,11 @@
         "spread": 1.0,
         "counterIndex": 2
       }
-    ]
+    ],
+    "hideDmParts": {
+      "node": "cannon2_dm"
+    },
+    "hideNodes": {}
   },
   "weapon_presets": {
     "preset": [
@@ -2547,6 +2552,9 @@
           ],
           "hideDmParts": {
             "node": "cannon1_dm"
+          },
+          "ShowDmParts": {
+            "node": "cannon2_dm"
           }
         }
       }

@@ -112,6 +112,8 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
         bodyIdx = bodyIdx
         texts = iBlk % "text"
         reqItemExistsForDisplaying = reqItems.itemsIdArray
+        valign = iBlk?.valign
+        halign = iBlk?.halign
       })
       continue
     }

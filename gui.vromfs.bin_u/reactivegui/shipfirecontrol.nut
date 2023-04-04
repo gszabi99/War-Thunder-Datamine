@@ -185,10 +185,9 @@ let roundIndicator = @() {
 
 let progressBar = @() {
   watch = [fcsState.OpticsWidth, fcsState.StaticFov]
-  pos = [sw(50) + fcsState.OpticsWidth.value, fcsState.StaticFov.value > 6. ? sh(54.5) : sh(53)]
+  pos = [sw(52) + fcsState.OpticsWidth.value, fcsState.StaticFov.value > 6. ? sh(56.5) : sh(55)]
   children = {
     halign = ALIGN_RIGHT
-    size = flex()
     children = {
       children = [
         @() {
@@ -204,7 +203,7 @@ let progressBar = @() {
           watch = fcsState.IsTargetDataAvailable
           isHidden = !fcsState.IsTargetDataAvailable.value
           size = [SIZE_TO_CONTENT, sh(2)]
-          padding = [0, 5]
+          padding = [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           rendObj = ROBJ_INSCRIPTION
@@ -214,7 +213,8 @@ let progressBar = @() {
         @() {
           watch = fcsState.IsTargetDataAvailable
           isHidden = fcsState.IsTargetDataAvailable.value
-          size = [flex(), sh(2)]
+          size = [SIZE_TO_CONTENT, sh(2)]
+          padding = [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           halign = ALIGN_RIGHT

@@ -103,6 +103,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       this.scene.findObject("left_gc_panel_free_width")
     )
     this.registerSubHandler(this.topMenuHandlerWeak)
+    this.updateWwarUrlButton()
 
     ::enableHangarControls(true)
 

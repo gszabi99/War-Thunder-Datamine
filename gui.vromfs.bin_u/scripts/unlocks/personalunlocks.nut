@@ -6,14 +6,13 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockExpired } = require("%scripts/unlocks/unlocksModule.nut")
-let { isUnlockReadyToOpen } = require("chard")
+let { isUnlockExpired, canOpenUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
 let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
 
 let battleTaskUnlocks = persist("battleTaskUnlocksCache", @() [])
 let markerUnlocks = persist("markerUnlocksCache", @() [])
 let manualUnlocks = persist("manualUnlocksCache", @() [])
-local isCacheValid = persist("isPersonalUnlocksCacheValid", @() { value = false })
+let isCacheValid = persist("isPersonalUnlocksCacheValid", @() { value = false })
 
 let function cache() {
   if (isCacheValid.value || !::g_login.isLoggedIn())
@@ -28,8 +27,7 @@ let function cache() {
         && !isUnlockExpired(unlockBlk))
       markerUnlocks.append(unlockBlk)
 
-    if (unlockBlk?.manualOpen && !unlockBlk?.hidden
-        && isUnlockReadyToOpen(unlockBlk.id))
+    if (canOpenUnlockManually(unlockBlk))
       manualUnlocks.append(unlockBlk)
   }
 

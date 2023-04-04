@@ -51,13 +51,19 @@ crafBodyBackground {
   }
 <</conectionsInRow>>
 <<#textBlocks>>
-  textareaNoTab {
-    size:t='<<textBlockSize>>'
+  tdiv {
     position:t='absolute'
+    size:t='<<textBlockSize>>'
     pos:t='<<textBlockPos>>'
-    text:t='<<textInBlock>>'
-    <<@textSize>>
-    enable:t='no'
+
+    textareaNoTab {
+      width:t='pw'
+      text:t='<<textInBlock>>'
+      <<@textSize>>
+      enable:t='no'
+      text-align:t='<<textBlockHalign>>'
+      valign:t='<<textBlockValign>>'
+    }
   }
 <</textBlocks>>
 <<#separators>>

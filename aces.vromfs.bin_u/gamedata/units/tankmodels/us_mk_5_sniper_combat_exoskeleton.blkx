@@ -142,14 +142,32 @@
       "ex_armor_body_r_05": {},
       "engine_l_dm": {},
       "engine_r_dm": {},
-      "optic_gun_dm": {},
-      "fuel_tank_dm": {}
+      "optic_gun_dm": {}
+    },
+    "pilot_body": {
+      "armorClass": "steel_tankman",
+      "hp": 25.0,
+      "genericDamageMult": 1.0,
+      "pressureDamageMult": 1.0,
+      "napalmDamageMult": 0.0,
+      "ignoreSolidDimension": true,
+      "armorEffectiveThicknessMax": 3.0,
+      "head_dm": {
+        "hp": 8.0
+      },
+      "chest_dm": {
+        "hp": 8.0
+      },
+      "leg_r_dm": {},
+      "leg_l_dm": {},
+      "arm_r_dm": {},
+      "arm_l_dm": {}
     },
     "body_armor": {
       "armorClass": "RHA_tank_modern",
-      "genericEffectiveThicknessMax": 70.0,
-      "hp": 20.0,
-      "armorThickness": 30.0,
+      "genericEffectiveThicknessMax": 45.0,
+      "hp": 8.0,
+      "armorThickness": 15.0,
       "stopChanceOnDeadPart": 0.0,
       "restrainDamage": 0.85,
       "body_armor_01_dm": {},
@@ -170,30 +188,11 @@
     },
     "soft_armor": {
       "armorClass": "armour_aramide_fabric",
-      "armorThickness": 10.0,
+      "armorThickness": 4.0,
       "body_shield_01_dm": {},
       "body_armor_13_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 20.0
       }
-    },
-    "pilot_body": {
-      "armorClass": "steel_tankman",
-      "hp": 25.0,
-      "genericDamageMult": 1.0,
-      "pressureDamageMult": 1.0,
-      "napalmDamageMult": 0.0,
-      "ignoreSolidDimension": true,
-      "armorEffectiveThicknessMax": 3.0,
-      "head_dm": {
-        "hp": 8.0
-      },
-      "chest_dm": {
-        "hp": 8.0
-      },
-      "leg_r_dm": {},
-      "leg_l_dm": {},
-      "arm_r_dm": {},
-      "arm_l_dm": {}
     }
   },
   "DamageEffects": {
@@ -245,8 +244,8 @@
         "emitter": "sr_west_bone_turret_l",
         "flash": "sr_west_emtr_mg_flame_01",
         "useEmitter": true,
-        "speedYaw": 80.0,
-        "speedPitch": 80.0,
+        "speedYaw": 60.0,
+        "speedPitch": 60.0,
         "bullets": 150,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
@@ -293,8 +292,8 @@
         ],
         "emitterGenFmt": "gl_west_bone_gun_barrel_%02d",
         "createGunEffects": true,
-        "speedYaw": 80.0,
-        "speedPitch": 80.0,
+        "speedYaw": 60.0,
+        "speedPitch": 60.0,
         "bullets": 2,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,

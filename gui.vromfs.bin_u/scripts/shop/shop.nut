@@ -240,7 +240,7 @@ shopData = [
     let unitName = obj.holderId
     ::gui_start_profile({
       initialSheet = "UnlockAchievement"
-      curUnlockId = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
+      initialUnlockId = getUnlockIdByUnitName(unitName, this.getCurrentEdiff())
     })
   }
 

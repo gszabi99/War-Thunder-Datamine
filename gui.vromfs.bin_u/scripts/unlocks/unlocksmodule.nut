@@ -11,7 +11,7 @@ let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings
 } = require("%scripts/time.nut")
 let { strip, split_by_chars } = require("string")
 let DataBlock = require("DataBlock")
-let { charSendBlk } = require("chard")
+let { charSendBlk, isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isInstance, isString, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 
@@ -33,6 +33,12 @@ let function canDoUnlock(unlockBlk) {
 
   let timeCond = getTimeRangeCondition(unlockBlk)
   return !timeCond || isInTimerangeByUtcStrings(timeCond.beginDate, timeCond.endDate)
+}
+
+let function canOpenUnlockManually(unlockBlk) {
+  return (unlockBlk?.manualOpen ?? false)
+    && !unlockBlk?.hidden
+    && isUnlockReadyToOpen(unlockBlk.id)
 }
 
 let function checkDependingUnlocks(unlockBlk) {
@@ -243,6 +249,7 @@ let function checkUnlockString(string) {
 
 return {
   canDoUnlock
+  canOpenUnlockManually
   isUnlockComplete
   isUnlockExpired
   isUnlockVisibleOnCurPlatform

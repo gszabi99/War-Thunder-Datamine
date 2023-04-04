@@ -67,6 +67,7 @@ local ExchangeRecipes = class {
   isMultipleItems = false
   isFake = false
   hasChestInComponents = false
+  shouldSkipMsgBox = false
 
   craftTime = 0
   initedComponents = null
@@ -91,6 +92,7 @@ local ExchangeRecipes = class {
     this.effectOnStartCraftPresetName = params?.effectOnStartCraftPresetName ?? ""
     this.allowableComponents = params?.allowableComponents
     this.showRecipeAsProduct = params?.showRecipeAsProduct
+    this.shouldSkipMsgBox = !!params?.shouldSkipMsgBox
 
     let parsedRecipe = params.parsedRecipe
     this.initedComponents = parsedRecipe.components
@@ -469,7 +471,7 @@ local ExchangeRecipes = class {
       return false
     }
 
-    if (params?.shouldSkipMsgBox) {
+    if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
       recipe.doExchange(componentItem, 1, params)
       return true
     }

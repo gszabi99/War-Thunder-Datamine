@@ -133,7 +133,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       isObjective = true
       actionFunc = @() ::gui_start_profile({
         initialSheet = "UnlockAchievement"
-        curUnlockId = getUnlockIdByUnitName(unit.name, curEdiff)
+        initialUnlockId = getUnlockIdByUnitName(unit.name, curEdiff)
       })
     }
     else if (action == "weapons") {

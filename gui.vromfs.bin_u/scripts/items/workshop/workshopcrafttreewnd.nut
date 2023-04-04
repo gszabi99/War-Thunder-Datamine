@@ -158,7 +158,7 @@ let sizeAndPosViewConfig = {
       itemsOffsetByBodies[bodyIdx] + itemPosY * itemBlockHeight + headerBlockInterval)
   })
   textBlock = kwarg(function textBlock(itemSizes, bodyIdx, posX, posY, endPosX,
-      sizeY, texts) {
+      sizeY, texts, valign, halign) {
     let { itemInterval, itemBlockHeight, itemBlockInterval,
       headerBlockInterval, itemsOffsetByBodies, textInTextBlockSize, maxBodyWidth } = itemSizes
     let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
@@ -172,6 +172,8 @@ let sizeAndPosViewConfig = {
       )
       textInBlock = "\n".join(texts.map(@(text) loc(text)))
       textSize = textInTextBlockSize
+      textBlockHalign = halign
+      textBlockValign = valign
     }
   })
 }

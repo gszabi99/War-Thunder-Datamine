@@ -325,8 +325,26 @@ let function getUnlockStagesDesc(cfg) {
   })
 }
 
+let function getAdditionalStagesDesc(cfg) {
+  if (cfg == null)
+    return ""
+
+  let itemId = cfg.additionalStagesDescAsItemCountId
+  if (itemId <= 0)
+    return ""
+
+  let textId = cfg.additionalStagesDescAsItemCountLocId
+  let curCount = ::ItemsManager.getRawInventoryItemAmount(itemId)
+  let maxCount = cfg.additionalStagesDescAsItemCountMax
+
+  return "".concat(
+    loc(textId),
+    loc("ui/colon"),
+    colorize("unlockActiveColor", loc($"{curCount}/{maxCount}")))
+}
+
 let function getUnlockDesc(cfg) {
-  let desc = [getUnlockStagesDesc(cfg)]
+  let desc = [getUnlockStagesDesc(cfg), getAdditionalStagesDesc(cfg)]
 
   let hasDescInConds = cfg?.conditions.findindex(@(c) "typeLocIDWithoutValue" in c) != null
   if (!hasDescInConds)

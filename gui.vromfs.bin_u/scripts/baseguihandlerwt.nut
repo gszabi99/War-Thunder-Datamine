@@ -18,6 +18,7 @@ let { get_time_msec } = require("dagor.time")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { set_game_mode, get_game_mode } = require("mission")
+let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -380,7 +381,12 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onProfile(_obj) {
-    ::gui_start_profile()
+    let canShowReward = ::isInMenu() && getManualUnlocks().len() >= 1
+    let params = canShowReward ? {
+      initialSheet = "UnlockAchievement"
+      initialUnlockId = getManualUnlocks()[0].id
+    } : {}
+    ::gui_start_profile(params)
   }
 
   function onMyClanOpen() {

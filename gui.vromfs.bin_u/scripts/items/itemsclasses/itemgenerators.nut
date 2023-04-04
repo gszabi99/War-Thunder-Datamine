@@ -71,6 +71,7 @@ local ItemGenerator = class {
       let effectOnStartCraftPresetName = this.tags?.effectOnStartCraft
       let allowableComponents = this.getAllowableRecipeComponents()
       let showRecipeAsProduct = this.tags?.showRecipeAsProduct
+      let shouldSkipMsgBox = !!this.tags?.shouldSkipMsgBox
       this._exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
          parsedRecipe
          generatorId
@@ -80,6 +81,7 @@ local ItemGenerator = class {
          effectOnStartCraftPresetName
          allowableComponents
          showRecipeAsProduct
+         shouldSkipMsgBox
       }))
 
       // Adding additional recipes
@@ -100,6 +102,7 @@ local ItemGenerator = class {
               effectOnStartCraftPresetName = gen?.tags?.effectOnStartCraft
               allowableComponents = gen?.getAllowableRecipeComponents() ?? allowableComponents
               showRecipeAsProduct = gen?.tags?.showRecipeAsProduct
+              shouldSkipMsgBox = !!gen?.tags?.shouldSkipMsgBox
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0
           }

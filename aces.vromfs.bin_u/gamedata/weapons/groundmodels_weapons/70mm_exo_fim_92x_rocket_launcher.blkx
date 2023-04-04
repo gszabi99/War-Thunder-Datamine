@@ -606,13 +606,13 @@
         "caliber": 0.07,
         "mass": 10.1,
         "explosiveType": "hta",
-        "explosiveMass": 0.45,
+        "explosiveMass": 0.85,
         "massEnd": 7.35,
         "massEnd1": 6.0,
         "maxDeltaAngle": 2.0,
         "dragCx": 0.018,
         "length": 1.52,
-        "wingAreaMult": 1.05,
+        "wingAreaMult": 1.1,
         "distFromCmToStab": 0.02,
         "CxK": 2.1,
         "WdK": [
@@ -620,13 +620,13 @@
           0.1,
           0.1
         ],
-        "finsAoaHor": 0.05,
-        "finsAoaVer": 0.05,
+        "finsAoaHor": 0.1,
+        "finsAoaVer": 0.1,
         "fireDelay": 0.2,
-        "force": 3400.0,
-        "timeFire": 2.0,
-        "force1": 700.0,
-        "timeFire1": 6.0,
+        "force": 8160.0,
+        "timeFire": 0.5,
+        "force1": 666.4,
+        "timeFire1": 12.5,
         "spawnExplosionFx": false,
         "spawnExplosionWreckage": false,
         "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -653,14 +653,15 @@
         "statType": "hydra",
         "advancedMissiles": false,
         "useStartSpeed": true,
-        "startSpeed": 25.0,
+        "startSpeed": 50.0,
         "endSpeed": 680.0,
-        "timeLife": 15.0,
+        "timeLife": 20.0,
         "machMax": 2.2,
         "loadFactorMax": 10.0,
         "rangeMax": 5000.0,
         "price": 3000.0,
         "mesh": "e_stinger_rocket_deployed",
+        "cumulativeSecondaryShattersPreset": "atgm",
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -990,13 +991,13 @@
           "guidanceSfx": "alarm_con_scan",
           "breakLockMaxTime": 3.0,
           "irSeeker": {
-            "rangeBand0": 11000.0,
-            "rangeBand1": 6000.0,
-            "rangeBand2": 11000.0,
+            "rangeBand0": 18000.0,
+            "rangeBand1": 18000.0,
+            "rangeBand2": 18000.0,
             "rangeBand3": 0.0,
-            "rangeBand6": 1000.0,
+            "rangeBand6": 500.0,
             "rangeBand7": 6000.0,
-            "rangeMax": 11000.0,
+            "rangeMax": 20000.0,
             "fov": 0.75,
             "arretAngles": [
               0.0,
@@ -1014,17 +1015,17 @@
           "guidanceAutopilot": {
             "timeOut": 0.0,
             "propNavMult": 4.0,
-            "reqAccelMax": 10.0,
+            "reqAccelMax": 8.0,
             "baseIndSpeed": 1800.0,
-            "accelControlProp": 0.004,
-            "accelControlIntg": 0.0906,
+            "accelControlProp": 0.007,
+            "accelControlIntg": 0.0371,
             "accelControlIntgLim": 1.0,
-            "accelControlDiff": 0.0003,
+            "accelControlDiff": 0.0006,
             "loftEnabled": true,
-            "loftElevation": 2.0,
-            "loftTargetElevation": -1.25,
+            "loftElevation": 5.0,
+            "loftTargetElevation": -0.75,
             "loftAngleToAccelMult": 5.0,
-            "loftTargetOmegaMax": 0.35
+            "loftTargetOmegaMax": 0.15
           }
         },
         "armorpower": {
@@ -1057,8 +1058,8 @@
         },
         "cumulativeDamage": {
           "armorPower": 400.0,
-          "distance": 2.5,
-          "damage": 400.0,
+          "distance": 3.5,
+          "damage": 600.0,
           "onHitChanceMultFire": 25.0
         }
       }

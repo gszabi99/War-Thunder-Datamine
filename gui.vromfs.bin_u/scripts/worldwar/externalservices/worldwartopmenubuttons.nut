@@ -9,6 +9,7 @@ let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtonsConfigs.nut")
 let { getOperationById, hasAvailableMapToBattle, getMapByName
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getUnlocksByType } = require("%scripts/unlocks/unlocksCache.nut")
+let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 
 let template = {
   category = -1
@@ -112,7 +113,7 @@ let list = {
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_WIKI = {
-    onClickFunc = @(obj, _handler) ::open_url_by_obj(obj)
+    onClickFunc = @(obj, _handler) openUrlByObj(obj)
     isDelayed = false
     link = ""
     isLink = @() true

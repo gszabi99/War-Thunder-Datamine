@@ -29,7 +29,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { canStartPreviewScene, useDecorator, showDecoratorAccessRestriction,
   getDecoratorDataToUse } = require("%scripts/customization/contentPreview.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
@@ -45,8 +45,8 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
   getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, buyUnlock, canDoUnlock
-} = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, openUnlockManually, getUnlockCost, getUnlockRewardText, buyUnlock, canDoUnlock,
+  canOpenUnlockManually } = require("%scripts/unlocks/unlocksModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -127,7 +127,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   skinsCache = null
   uncollapsedChapterName = null
   curAchievementGroupName = ""
-  curUnlockId = ""
+  initialUnlockId = ""
   filterCountryName = null
   filterUnitTag = ""
   initSkinId = ""
@@ -881,9 +881,9 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
     let isAchievementPage = pageTypeId == UNLOCKABLE_ACHIEVEMENT
     if (isAchievementPage && this.curAchievementGroupName == "")
-      this.curAchievementGroupName = this.curUnlockId == ""
+      this.curAchievementGroupName = this.initialUnlockId == ""
         ? this.findGroupName(@(g) g.len() > 0)
-        : this.findGroupName((@(g) g.contains(this.curUnlockId)).bindenv(this))
+        : this.findGroupName((@(g) g.contains(this.initialUnlockId)).bindenv(this))
 
     let ediff = getShopDiffCode()
 
@@ -1372,7 +1372,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     }
 
     local currentItemNum = 0
-    local selIdx = 0
+    local selIdx = null
     foreach (unlock in getAllUnlocksWithBlkOrder()) {
       if (unlock?.id == null) {
         let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
@@ -1388,7 +1388,8 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       unlockObj.holderId = unlock.id
       this.fillUnlockInfo(unlock, unlockObj)
 
-      if (this.curUnlockId == unlock.id)
+      if (selIdx == null
+          && (this.initialUnlockId == unlock.id || (this.initialUnlockId == "" && canOpenUnlockManually(unlock))))
         selIdx = currentItemNum
 
       currentItemNum++
@@ -1397,7 +1398,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     this.guiScene.setUpdatesEnabled(true, true)
 
     if (unlocksListObj.childrenCount() > 0)
-      unlocksListObj.setValue(selIdx)
+      unlocksListObj.setValue(selIdx ?? 0)
 
     seenUnlockMarkers.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
   }
@@ -1449,7 +1450,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function onUnlockSelect(obj) {
     if (obj?.isValid())
-      this.curUnlockId = getSelectedChild(obj)?.holderId ?? ""
+      this.initialUnlockId = ""
   }
 
   function onUnlockGroupSelect(_obj) {

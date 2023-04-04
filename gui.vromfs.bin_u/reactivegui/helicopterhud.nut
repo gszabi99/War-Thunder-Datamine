@@ -27,7 +27,7 @@ let positionParamsTable = Computed(@() [max(bw.value, sw(50) - hdpx(660)), sh(50
 let positionParamsSightTable = Watched([sw(50) - hdpx(250) - hdpx(200), hdpx(480)])
 
 let radarSize = sh(28)
-let radarPosWatched = Computed(@() [bw.value + 0.05 * rw.value, bh.value + 0.05 * rh.value])
+let radarPosWatched = Computed(@() [bw.value, bh.value])
 let twsSize = sh(20)
 let twsPosComputed = Computed(@() [bw.value + 0.965 * rw.value - twsSize, bh.value + 0.5 * rh.value])
 

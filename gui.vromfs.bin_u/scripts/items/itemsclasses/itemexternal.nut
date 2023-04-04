@@ -434,6 +434,7 @@ local ItemExternal = class extends ::BaseItem {
     if (this.hasMainActionDisassemble() && this.canDisassemble() && this.amount > 0)
       return {
         btnName = this.getDisassembleText()
+        isDisassemble = true
       }
     if (this.canAssemble())
       return {
@@ -779,7 +780,8 @@ local ItemExternal = class extends ::BaseItem {
   }
 
   function needShowActionButtonAlways(params) {
-    if (this.getMainActionData(true, params)?.isInactive ?? false)
+    let mainActionData = this.getMainActionData(true, params)
+    if (mainActionData?.isInactive ?? false)
       return false
 
     if (this.canRunCustomMission())
@@ -788,12 +790,11 @@ local ItemExternal = class extends ::BaseItem {
     if (this.hasCraftResult())
       return true
 
-    if (!this.canAssemble())
-      return false
+    if (this.canAssemble())
+      return this.getVisibleRecipes()?.findvalue(@(r) r.isUsable) ?? false
 
-    foreach (recipes in this.getVisibleRecipes())
-      if (recipes.isUsable)
-        return true
+    if (mainActionData?.isDisassemble ?? false)
+      return this.getDisassembleRecipe()?.isUsable ?? false
 
     return false
   }
@@ -1039,14 +1040,15 @@ local ItemExternal = class extends ::BaseItem {
     if (!markPresetName)
       return res
 
-    let data = getMarkingPresetsById(markPresetName)
-    if (!data)
+    let preset = getMarkingPresetsById(markPresetName)
+    if (!preset)
       return res
 
     res.needMarkIcon <- true
-    res.markIcon <- loc(data.markIconLocId)
-    res.markIconColor <- data.color
-
+    res.markIcon <- loc(preset.markIconLocId)
+    res.markIconColor <- preset.color
+    if (preset?.showBorder ?? false)
+      res.rarityColor <- preset.color
     return res
   }
 
