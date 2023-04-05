@@ -157,6 +157,7 @@ let function getChallengeView(config, paramsCfg = {}) {
     isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
     isFavorite = isUnlockFav(id) ? "yes" : "no"
     hoverAction = paramsCfg?.hoverAction
+    rewardOnTop = true
   }
 }
 

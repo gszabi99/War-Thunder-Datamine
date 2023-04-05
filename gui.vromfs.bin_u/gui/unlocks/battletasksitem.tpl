@@ -128,23 +128,33 @@ expandable {
       <</taskImage>>
       <</isOnlyInfo>>
 
+      <<#rewardOnTop>>
+      <<#reward>>
+      rewardBlock {
+        margin-bottom:t='1@blockInterval'
+        textareaNoTab {
+          text:t='<<rewardText>>'
+        }
+        <<@itemMarkUp>>
+      }
+      <</reward>>
+      <</rewardOnTop>>
+
       <<@description>>
 
+      <<^rewardOnTop>>
       <<#reward>>
-      tdiv {
+      rewardBlock {
         left:t='pw-w'
         position:t='relative'
-        flow:t='vertical'
         textareaNoTab {
-          max-width:t='fw'
-          removeParagraphIndent:t='yes';
           text:t='<<rewardText>>'
-          overlayTextColor:t='active'
           text-align:t='right'
         }
         <<@itemMarkUp>>
       }
       <</reward>>
+      <</rewardOnTop>>
 
       <<^isOnlyInfo>>
       tdiv {

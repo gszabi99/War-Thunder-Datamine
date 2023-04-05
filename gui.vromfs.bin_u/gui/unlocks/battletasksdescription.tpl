@@ -67,17 +67,43 @@ tdiv {
   padding-left:t='0.02@scrn_tgt'
 
   <<#taskUnlocks>>
-    unlockCondition {
-      unlocked:t='<<#isUnlocked>>yes<</isUnlocked>><<^isUnlocked>>no<</isUnlocked>>'
-      textarea {
-        text:t='<<text>>'
-        overlayTextColor:t='<<overlayTextColor>>'
+    tdiv {
+      width:t='pw'
+      <<#isEven>>
+        background-color:t='@evenTrColor'
+      <</isEven>>
+      unlockCondition {
+        valign:t='center'
+        style:t='width:pw'
+        unlocked:t='<<#isUnlocked>>yes<</isUnlocked>><<^isUnlocked>>no<</isUnlocked>>'
+        textareaNoTab {
+          text:t='<<text>> <<unlockProgressDesc>>'
+          overlayTextColor:t='commonTextColor'
+        }
+        <<#isProgressBarVisible>>
+        battleTaskProgress {
+          value:t='<<progressBarValue>>'
+        }
+        <</isProgressBarVisible>>
+        <<#isUnlocked>>
+          unlockImg{}
+        <</isUnlocked>>
+        <<@tooltipMarkup>>
       }
-      <<#isUnlocked>>
-        unlockImg{}
-      <</isUnlocked>>
-      <<@tooltipMarkup>>
-    }
+      <<#isAddToFavVisible>>
+      CheckBox {
+        position:t='absolute'
+        pos:t='pw-w-@unlockHeaderIconSize, 50%ph-50%h'
+        unlockId:t='<<unlockId>>'
+        value:t='<<toFavoritesCheckboxVal>>'
+        text:t='#mainmenu/UnlockAchievementsToFavorite'
+        on_change_value:t='unlockToFavorites'
+
+        CheckBoxImg{}
+        ButtonImg{}
+      }
+      <</isAddToFavVisible>>
+  }
   <</taskUnlocks>>
 
   <<#taskStreaks>>

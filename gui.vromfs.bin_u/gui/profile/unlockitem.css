@@ -1,3 +1,5 @@
+@const subUnlockProgressBarWidth: 350@sf/@pf;
+
 substrateImg{
   background-image: "#ui/gameuiskin#stage_substrate";
   position: absolute;
@@ -33,6 +35,10 @@ locked.odd, unlocked.odd{
 
 hiddenDiv unlockCondition {
   width:pw/2-1;   margin-left:0;
+}
+
+unlockCondition battleTaskProgress {
+  width: @subUnlockProgressBarWidth;
 }
 
 layeredIconContainer{
