@@ -193,7 +193,7 @@
         "hidableInViewer": true
       },
       "superstructure_back_dm": {
-        "armorThickness": 6.35,
+        "armorThickness": 45.0,
         "hidableInViewer": true
       },
       "turret_05_back_dm": {
@@ -1721,6 +1721,14 @@
           "pressure": true
         }
       ]
+    }
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": "optic_gun_dm"
     }
   },
   "gunConvergence": {
@@ -3569,7 +3577,68 @@
       }
     },
     "laser_rangefinder_lws": {
-      "tier": 4
+      "tier": 4,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+              "turretIndex": 0,
+              "designationTurretIndex": 0,
+              "dmPart": "optic_gun_dm"
+            },
+            {
+              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/it_ralm-101.blk"
+            }
+          ]
+        }
+      }
     },
     "tank_support_ucav": {
       "tier": 2,
