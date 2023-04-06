@@ -61,6 +61,7 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
+  "drowningCheckHeightMultiplier": 0.5,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -70,10 +71,16 @@
         "armorThickness": 25.4
       },
       "superstructure_side_dm": {
-        "armorThickness": 25.4
+        "armorThickness": 80.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 80.0
+      },
+      "turret_05_side_dm": {
+        "armorThickness": 80.0
       },
       "body_back_dm": {
-        "armorThickness": 25.4
+        "armorThickness": 30.0
       },
       "body_bottom_dm": {
         "armorThickness": 25.4
@@ -110,10 +117,6 @@
         "armorThickness": 30.0
       },
       "turret_05_front_dm": {
-        "armorThickness": 25.4,
-        "armorClass": "CHA_tank"
-      },
-      "turret_05_side_dm": {
         "armorThickness": 25.4,
         "armorClass": "CHA_tank"
       },
@@ -193,8 +196,7 @@
         "hidableInViewer": true
       },
       "superstructure_back_dm": {
-        "armorThickness": 45.0,
-        "hidableInViewer": true
+        "armorThickness": 45.0
       },
       "turret_05_back_dm": {
         "armorThickness": 25.4
@@ -205,6 +207,9 @@
       },
       "turret_08_front_dm": {
         "armorThickness": 20.0
+      },
+      "turret_02_bottom_dm": {
+        "armorThickness": 30.0
       }
     },
     "optics": {
@@ -318,11 +323,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "turret_02_bottom_dm": {
-        "armorThickness": 5.3
-      },
-      "turret_04_bottom_dm": {},
-      "turret_03_side_dm": {}
+      "turret_04_bottom_dm": {}
     },
     "era_hull": {
       "armorClass": "cn_era_type_59d_hull",
@@ -812,13 +813,13 @@
     "superstructure_bottom_dm": true
   },
   "sound": {
-    "EngineName": "engine_m3_bradley",
+    "EngineName": "engine_su100",
     "TrackSoundPath": "tanks/engines_tanks",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks_lt_modern",
-    "TrackSoundNameCockpit": "tracks_lt_modern_interior",
-    "EngineNameAi": "engine_tank_ai_light",
-    "TrackSoundNameAi": "tracks_ai_lt_modern"
+    "TrackSoundName": "tracks_su100",
+    "TrackSoundNameCockpit": "tracks_su100_interior",
+    "EngineNameAi": "engine_tank_ai_middle",
+    "TrackSoundNameAi": "tracks_ai_middle"
   },
   "DamageEffects": {
     "part": [
