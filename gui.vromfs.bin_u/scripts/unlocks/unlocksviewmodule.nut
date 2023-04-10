@@ -230,6 +230,9 @@ let function getUnlockNameText(unlockType, id) {
         : loc(locId)
 
     case UNLOCKABLE_TROPHY:
+      let unlockBlk = getUnlockById(id)
+      if (unlockBlk?.locId)
+        return getUnlockLocName(unlockBlk)
       let item = ::ItemsManager.findItemById(id, itemType.TROPHY)
       return item ? item.getName(false) : loc($"item/{id}")
 
