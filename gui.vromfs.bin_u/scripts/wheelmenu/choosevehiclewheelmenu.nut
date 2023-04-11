@@ -66,7 +66,7 @@ let function makeMenuView(cfg) {
     return {
       shortcutId
       name = colorize(color, loc(name))
-      shortcutText = shortcutText != "" ? shortcutText : null
+      shortcutText
       wheelmenuEnabled = isEnabled
     }
   })

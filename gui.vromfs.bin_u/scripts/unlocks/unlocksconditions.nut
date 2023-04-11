@@ -270,8 +270,13 @@ let function getMultipliersTable(blk) {
   let mulTable = {}
   if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
     let NUM_MISSION_TYPES = 9
-    for (local i = 0; i < NUM_MISSION_TYPES; i++)
-      mulTable[i] <- blk?[$"mulMode{i}"] ?? 1.0
+    let forceShowMulModes = blk % "forceShowMulMode"
+    for (local i = 0; i < NUM_MISSION_TYPES; i++) {
+      let mulMode = blk?[$"mulMode{i}"] ?? 1.0
+      if (mulMode != 1.0 || forceShowMulModes.contains(i)) {
+        mulTable[i] <- mulMode
+      }
+    }
   }
   else
     foreach (paramName, diff in diffTable)

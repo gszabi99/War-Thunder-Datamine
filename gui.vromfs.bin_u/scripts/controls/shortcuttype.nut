@@ -8,7 +8,8 @@ let regexp2 = require("regexp2")
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let globalEnv = require("globalEnv")
-let { getShortcutById, isAxisBoundToMouse, getComplexAxesId
+let { getShortcutById, isAxisBoundToMouse, getComplexAxesId,
+  isComponentsAssignedToSingleInputItem
 } = require("%scripts/controls/shortcutsUtils.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 
@@ -429,23 +430,10 @@ enums.addTypesByGlobalName("g_shortcut_type", {
       return true
     }
 
-
-    /**
-     * Checks wether all components assigned to one stick or mouse move.
-     * @shortcutComponents - array of components, contains shortcutIds
-     * @return - bool
-     */
-    isComponentsAssignedToSingleInputItem = function (shortcutComponents) {
-      let axesId = getComplexAxesId(shortcutComponents)
-      return axesId == GAMEPAD_AXIS.RIGHT_STICK ||
-             axesId == GAMEPAD_AXIS.LEFT_STICK  ||
-             axesId == MOUSE_AXIS.MOUSE_MOVE
-    }
-
     expand = function (shortcutId, showKeyBoardShortcutsForMouseAim) {
       let axes = splitCompositAxis(shortcutId)
 
-      if (this.isComponentsAssignedToSingleInputItem(axes)
+      if (isComponentsAssignedToSingleInputItem(getComplexAxesId(axes))
         || this.hasDirection(shortcutId))
         return [shortcutId]
 

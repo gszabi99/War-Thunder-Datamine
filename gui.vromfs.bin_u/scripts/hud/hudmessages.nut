@@ -14,6 +14,8 @@ let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { get_game_mode, get_game_type } = require("mission")
+let { getHudUnitType } = require("hudState")
+let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
 local heightPID = ::dagui_propid.add_name_id("height")
 
@@ -215,6 +217,8 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (messageData.type != HUD_MSG_DAMAGE && messageData.type != HUD_MSG_EVENT)
         return
       if (!checkObj(this.nest))
+        return
+      if(![HUD_UNIT_TYPE.AIRCRAFT, HUD_UNIT_TYPE.HELICOPTER].contains(getHudUnitType()))
         return
 
       let checkField = (messageData.id != -1) ? "id" : "text"

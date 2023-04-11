@@ -536,14 +536,24 @@
             "flow": "vertical"
           }
         ],
-        "hudMessages": {
-          "id": "hud_message_zone_capture_notification",
-          "width": "pw",
-          "height": "0.065@shHud",
-          "pos": "0.5pw-0.5w, -@tankGunsAmmoBlockHeight",
-          "message_style": "zone_capture_notification",
-          "input-transparent": "yes"
-        },
+        "hudMessages": [
+          {
+            "id": "hud_message_zone_capture_notification",
+            "width": "pw",
+            "height": "0.065@shHud",
+            "pos": "0.5pw-0.5w, -@tankGunsAmmoBlockHeight",
+            "message_style": "zone_capture_notification",
+            "input-transparent": "yes"
+          },
+          {
+            "id": "hud_message_player_damage_notification",
+            "message_style": "player_damage_notification",
+            "left": "0.5pw-0.5w",
+            "position": "relative",
+            "flow": "vertical",
+            "width": "pw"
+          }
+        ],
         "textAreaCentered": {
           "id": "low-quality-model-warning",
           "width": "pw",

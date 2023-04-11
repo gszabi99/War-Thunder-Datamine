@@ -12,7 +12,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getHudUnitType } = require("hudState")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getComplexAxesId } = require("%scripts/controls/shortcutsUtils.nut")
+let { getComplexAxesId, isComponentsAssignedToSingleInputItem
+} = require("%scripts/controls/shortcutsUtils.nut")
 let { PI } = require("math")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 
@@ -25,7 +26,7 @@ const ITEMS_PER_PAGE = 8
     owner = null
     mouseEnabled    = false
     axisEnabled     = true
-    contentTemplate = "%gui/wheelMenu/textContent.tpl"
+    contentTemplate = null
   }
 
   ::inherit_table(params, defaultParams)
@@ -103,7 +104,7 @@ const ITEMS_PER_PAGE = 8
   mouseEnabled = false
   axisEnabled = true
   shouldShadeBackground = true
-  contentTemplate = "%gui/wheelMenu/textContent.tpl"
+  contentTemplate = null
   pageIdx = 0
   pagesTotal = 1
   itemsTotal = 0
@@ -191,17 +192,30 @@ const ITEMS_PER_PAGE = 8
         if (buttonType != "")
           bObj.type = buttonType
 
-        if (isShow) {
-          let content = bObj.findObject("content")
-          let blk = ::handyman.renderCached(this.contentTemplate, item)
-          this.guiScene.replaceContentFromText(content, blk, blk.len(), this)
-        }
+        if (isShow)
+          this.updateContentForItem(bObj.findObject("content"), item)
 
         bObj.index = index
         bObj.enable(enabled)
         bObj.selected = "no"
       }
     }
+  }
+
+  function updateContentForItem(contentObj, item) {
+    if (this.contentTemplate != null) { //!!!FIX ME need remove replace content for killStreakWheelMenu
+      let blk = ::handyman.renderCached(this.contentTemplate, item)
+      this.guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
+      return
+    }
+
+    let { shortcutText = "", name = "", additionalText = "", chatMode = "" } = item
+    contentObj.findObject("shortcutText").setValue(shortcutText)
+    ::showBtn("shortcutTextSeparator", shortcutText!= "", contentObj)
+    let nameObj = contentObj.findObject("name")
+    nameObj.chatMode = chatMode
+    nameObj.setValue(name)
+    contentObj.findObject("additionalText").setValue(additionalText)
   }
 
   function updatePageInfo() {
@@ -225,10 +239,10 @@ const ITEMS_PER_PAGE = 8
     local isShow = ::show_console_buttons && this.axisEnabled
     if (isShow) {
       let shortcuts = this.watchAxis?[0]
-      let shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
-      isShow = shortcutType.isComponentsAssignedToSingleInputItem(shortcuts)
       let axesId = getComplexAxesId(shortcuts)
-      obj["background-image"] = getGamepadAxisTexture(axesId)
+      isShow = isComponentsAssignedToSingleInputItem(axesId)
+      if (isShow)
+        obj["background-image"] = getGamepadAxisTexture(axesId)
     }
     obj.show(isShow)
   }

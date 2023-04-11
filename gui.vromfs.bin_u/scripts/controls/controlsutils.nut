@@ -30,43 +30,6 @@ if (isPlatformXboxOne)
   [PERSISTENT_DATA_PARAMS] = ["eventHandler"]
   eventHandler = null
 
-  getControlsList = kwarg(function getControlsList(unitType = null, classType = null, unitTags = []) {
-    local isHeaderPassed = true
-    local isSectionPassed = true
-    let controlsList = ::shortcutsList.filter(function(sc) {
-      if (sc.type != CONTROL_TYPE.HEADER && sc.type != CONTROL_TYPE.SECTION) {
-        if (isHeaderPassed && isSectionPassed && "showFunc" in sc)
-          return sc.showFunc()
-
-        return isHeaderPassed && isSectionPassed
-      }
-
-      if (sc.type == CONTROL_TYPE.HEADER) { //unitType and other params below exist only in header
-        isHeaderPassed = sc?.unitTypes.contains(unitType) ?? true
-        isSectionPassed = true // reset previous sectino setting
-
-        if (isHeaderPassed && classType != null)
-          isHeaderPassed = sc?.unitClassTypes == null || isInArray(classType, sc.unitClassTypes)
-
-        if (isHeaderPassed)
-          isHeaderPassed = unitTags.len() == 0 || sc?.unitTag == null || isInArray(sc.unitTag, unitTags)
-      }
-      else if (sc.type == CONTROL_TYPE.SECTION)
-        isSectionPassed = isHeaderPassed
-
-      if ("showFunc" in sc) {
-        if (sc.type == CONTROL_TYPE.HEADER && isHeaderPassed)
-          isHeaderPassed = sc.showFunc()
-        else if (sc.type == CONTROL_TYPE.SECTION && isSectionPassed)
-          isSectionPassed = sc.showFunc()
-      }
-
-      return isHeaderPassed && isSectionPassed
-    })
-
-    return controlsList
-  })
-
   function getMouseUsageMask() {
     let usage = ::g_aircraft_helpers.getOptionValue(
       ::USEROPT_MOUSE_USAGE)
@@ -123,6 +86,40 @@ if (isPlatformXboxOne)
               return true
     return false
   }
+}
+
+let function getControlsList(unitType, unitTags = []) {
+  local isHeaderPassed = true
+  local isSectionPassed = true
+  let controlsList = ::shortcutsList.filter(function(sc) {
+    if (sc.type != CONTROL_TYPE.HEADER && sc.type != CONTROL_TYPE.SECTION) {
+      if (isHeaderPassed && isSectionPassed && "showFunc" in sc)
+        return sc.showFunc()
+
+      return isHeaderPassed && isSectionPassed
+    }
+
+    if (sc.type == CONTROL_TYPE.HEADER) { //unitType and other params below exist only in header
+      isHeaderPassed = sc?.unitTypes.contains(unitType) ?? true
+      isSectionPassed = true // reset previous sectino setting
+
+      if (isHeaderPassed)
+        isHeaderPassed = unitTags.len() == 0 || sc?.unitTag == null || isInArray(sc.unitTag, unitTags)
+    }
+    else if (sc.type == CONTROL_TYPE.SECTION)
+      isSectionPassed = isHeaderPassed
+
+    if ("showFunc" in sc) {
+      if (sc.type == CONTROL_TYPE.HEADER && isHeaderPassed)
+        isHeaderPassed = sc.showFunc()
+      else if (sc.type == CONTROL_TYPE.SECTION && isSectionPassed)
+        isSectionPassed = sc.showFunc()
+    }
+
+    return isHeaderPassed && isSectionPassed
+  })
+
+  return controlsList
 }
 
 ::g_script_reloader.registerPersistentDataFromRoot("g_controls_utils")
@@ -248,3 +245,7 @@ register_for_devices_change(function(device_type, count) {
       ], "ok")
   }
 })
+
+return {
+  getControlsList
+}

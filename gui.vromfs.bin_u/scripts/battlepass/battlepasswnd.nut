@@ -207,9 +207,14 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     && curStage?.rewardId == newStage.rewardId
 
   function onReceiveRewards(obj) {
-    let { holderId = null, stage = null, prizeStatus = "" } = obj
+    let { holderId = null, stage = null, prizeStatus = "", stageStatus = "" } = obj
     if (holderId == null || stage == null)
       return
+
+    if (stageStatus == "future") {
+      this.msgBox("futureStage", loc("battlePass/msgbox/bpLevelInsufficient"), [["ok"]], "ok")
+      return
+    }
 
     if (prizeStatus == "received") {
       this.msgBox("alreadyReceived", loc("battlePass/msgbox/alreadyReceived"), [["ok"]], "ok")
@@ -219,9 +224,9 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let { lastRewardedStage = null } = unlockProgress.value?[holderId]
 
     if (lastRewardedStage == null
-      || (lastRewardedStage + 1) != stage.tointeger()) {
-        this.showLockedsMessage(obj?.isFree == "yes")
-        return
+        || (lastRewardedStage + 1) != stage.tointeger()) {
+      this.showLockedsMessage(obj?.isFree == "yes")
+      return
     }
 
     receiveRewards(holderId)

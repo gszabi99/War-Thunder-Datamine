@@ -19,6 +19,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { EII_BULLET } = require("hudActionBarConst")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
+let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
@@ -269,10 +270,8 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let tipTexts = {} //btnName = { text, isMain }
     this.modifierSymbols = {}
 
-    let shortcutsList = ::g_controls_utils.getControlsList({
-      unitType = this.pageUnitType,
-      unitTags = this.pageUnitTag ? [this.pageUnitTag] : []
-    }).filter(@(item) item.needShowInHelp)
+    let shortcutsList = getControlsList(this.pageUnitType, this.pageUnitTag ? [this.pageUnitTag] : [])
+      .filter(@(item) item.needShowInHelp)
 
     for (local i = 0; i < shortcutsList.len(); i++) {
       let item = shortcutsList[i]
@@ -437,10 +436,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let joystickButtons = array(gamepadIcons.TOTAL_BUTTON_INDEXES, null)
     let joystickAxis = array(axisIds.len() * 2, null)
 
-    let scList = ::g_controls_utils.getControlsList({
-      unitType = this.pageUnitType,
-      unitTags = this.pageUnitTag ? [this.pageUnitTag] : []
-    })
+    let scList = getControlsList(this.pageUnitType, this.pageUnitTag ? [this.pageUnitTag] : [])
 
     let shortcutNames = scList.filter(function(sc) {
       if (sc.type == CONTROL_TYPE.SHORTCUT || sc.type == CONTROL_TYPE.AXIS_SHORTCUT)

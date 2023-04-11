@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getHudUnitType } = require("hudState")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
+let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 
 let getMfmHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
@@ -46,7 +47,7 @@ let function handleWheelMenuApply(idx) {
 
 
 let function makeMfmSection(cfg, id, unitId, hudUnitType) {
-  let allowedShortcutIds = ::g_controls_utils.getControlsList({ unitType = unitTypeByHudUnitType?[hudUnitType] }).map(@(s) s.id)
+  let allowedShortcutIds = getControlsList(unitTypeByHudUnitType?[hudUnitType]).map(@(s) s.id)
   let sectionConfig = cfg[id]
 
   let menu = []
@@ -106,7 +107,7 @@ let function makeMfmSection(cfg, id, unitId, hudUnitType) {
       shortcutId
       action
       name = colorize(color, label)
-      shortcutText = shortcutText != "" ? shortcutText : null
+      shortcutText
       wheelmenuEnabled = isEnabled
     })
   }

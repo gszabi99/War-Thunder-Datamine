@@ -55,6 +55,7 @@ crafBodyBackground {
     position:t='absolute'
     size:t='<<textBlockSize>>'
     pos:t='<<textBlockPos>>'
+    enable:t='no'
 
     textareaNoTab {
       width:t='pw'

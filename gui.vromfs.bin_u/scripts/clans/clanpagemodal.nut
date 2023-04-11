@@ -115,12 +115,11 @@ foreach (idx, item in clan_member_list) {
     this.curWwCategory = ::g_lb_category.EVENTS_PERSONAL_ELO
     this.initLbTable()
     this.curMode = this.getCurDMode()
+    this.setDefaultSort()
     this.reinitClanWindow()
   }
 
-  function setDefaultSort() {
-    this.statsSortBy = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
-  }
+  setDefaultSort = @() this.statsSortBy = $"{::ranked_column_prefix}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
 
   function reinitClanWindow() {
     if (::is_in_clan() &&
@@ -132,8 +131,6 @@ foreach (idx, item in clan_member_list) {
         return
 
       this.clanData = ::my_clan_info
-
-      this.setDefaultSort()
       this.fillClanPage()
       return
     }
@@ -147,8 +144,6 @@ foreach (idx, item in clan_member_list) {
         this.clanData = ::get_clan_info_table()
         if (!this.clanData)
           return this.goBack()
-
-        this.setDefaultSort()
         this.fillClanPage()
         ::broadcastEvent("ClanInfoAvailable", { clanId = this.clanData.id })
       }
@@ -449,7 +444,7 @@ foreach (idx, item in clan_member_list) {
     let tabObj = obj.getChild(obj.getValue())
 
     this.isWorldWarMode = tabObj?.isWorldWarMode == "yes"
-    this.showSceneBtn("clan_members_list", !this.isWorldWarMode)
+    this.showSceneBtn("clan_members_list_nest", !this.isWorldWarMode)
     this.showSceneBtn("lb_table_nest", this.isWorldWarMode)
     this.showSceneBtn("season_over_notice", this.isWorldWarMode && !::g_world_war.isWWSeasonActive())
 
@@ -475,8 +470,8 @@ foreach (idx, item in clan_member_list) {
 
   function updateSortingField() {
     if (this.statsSortBy.len() >= ::ranked_column_prefix.len() &&
-        this.statsSortBy.slice(0, ::ranked_column_prefix.len()) == ::ranked_column_prefix)
-      this.statsSortBy = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
+        this.statsSortBy.indexof(::ranked_column_prefix) == 0)
+      this.setDefaultSort()
   }
 
   function updateAdminModeSwitch() {
