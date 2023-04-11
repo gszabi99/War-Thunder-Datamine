@@ -82,7 +82,7 @@
     }
   },
   "signals": {
-    "search": {
+    "surfaceSearch": {
       "dynamicRange": [
         40.0,
         15.0
@@ -100,16 +100,35 @@
         "width": 300.0
       }
     },
-    "track": {
+    "surfaceTrack": {
       "dynamicRange": [
         40.0,
         13.0
       ],
       "groundClutter": false,
       "targetRadiusMin": 10.0,
-      "aircraftAsTarget": true,
+      "aircraftAsTarget": false,
       "groundVehiclesAsTarget": true,
       "shipsAsTarget": true,
+      "angularAccuracy": 0.06,
+      "distanceAccuracy": 15.0,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 30000.0,
+        "width": 300.0
+      }
+    },
+    "track": {
+      "dynamicRange": [
+        40.0,
+        13.0
+      ],
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "groundVehiclesAsTarget": false,
+      "shipsAsTarget": false,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 15.0,
       "track": true,
@@ -152,7 +171,7 @@
             "transiver": "common"
           },
           "setSignal": {
-            "signal": "search"
+            "signal": "surfaceSearch"
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
@@ -187,7 +206,7 @@
           "clearTargets": {},
           "clearTargetsOfInterest": {},
           "setSignal": {
-            "signal": "search"
+            "signal": "surfaceSearch"
           },
           "setScanPatternSet": {
             "scanPatternSet": "common"
@@ -221,7 +240,7 @@
             "value": true
           },
           "setSignal": {
-            "signal": "search"
+            "signal": "surfaceSearch"
           },
           "setScanPatternSet": {
             "scanPatternSet": "common"
@@ -271,7 +290,7 @@
             "active": true
           },
           "setSignal": {
-            "signal": "track"
+            "signal": "surfaceTrack"
           },
           "clearTargets": {}
         },
@@ -347,10 +366,19 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
+          }
+        },
+        "setDesignationTrackMode": {
+          "setSignal": {
+            "signal": "surfaceTrack"
           },
+          "setTrackMode": {}
+        },
+        "setBoresightTrackMode": {
           "setSignal": {
             "signal": "track"
-          }
+          },
+          "setTrackMode": {}
         }
       },
       "transitions": {
@@ -431,7 +459,7 @@
               "fsm": "lock",
               "active": false
             },
-            "setTrackMode": {}
+            "setDesignationTrackMode": {}
           }
         },
         "failedDesignationLock": {
@@ -486,7 +514,7 @@
               "fsm": "lock",
               "active": false
             },
-            "setTrackMode": {}
+            "setBoresightTrackMode": {}
           }
         },
         "failedBoresightLock": {
