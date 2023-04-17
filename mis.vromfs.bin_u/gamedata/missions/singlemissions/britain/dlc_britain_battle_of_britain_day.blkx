@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 758.0,
-      "temperature": 9.0
-    },
     "player": {
       "army": 1,
       "wing": "player_wing"
@@ -16,10 +12,13 @@
     "mission": {
       "level": "levels/britain.bin",
       "type": "singleMission",
-      "restoreType": "tactical control",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
+      "gt_cooperative": true,
+      "country_axis": "germany",
+      "country_allies": "britain",
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
       "windSpeed": [
         4.0,
         6.0
@@ -28,15 +27,15 @@
         175.0,
         195.0
       ],
-      "gt_cooperative": true,
-      "country_axis": "germany",
-      "country_allies": "britain",
       "stars": {
         "year": 1940,
         "month": 9,
-        "day": 15,
-        "time": 12
+        "day": 15
       }
+    },
+    "atmosphere": {
+      "pressure": 758.0,
+      "temperature": 9.0
     },
     "briefing": {
       "place_loc": "",
@@ -50,6 +49,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "enemy",
@@ -146,9 +146,14 @@
               "air_defence_03",
               "air_defence_04",
               "air_defence_05",
-              "air_defence_06"
+              "air_defence_06",
+              "air_defence_07",
+              "air_defence_08",
+              "air_defence_09",
+              "air_defence_10"
             ],
-            "effShootingRate": 0.1
+            "airAccuracy": 0.3,
+            "effShootingRate": 0.3
           },
           {
             "object": "ally_spitfire_01",
@@ -185,13 +190,35 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "bf_109_01",
           "speed": 600.0
         },
         "triggerEnable": {
           "target": "update_timer_indicator"
+        },
+        "unitSetIndication": {
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "set": true,
+          "target": "bf_109_01"
         }
-      }
+      },
+      "else_actions": {}
     },
     "update_timer_indicator": {
       "is_enabled": false,
@@ -209,14 +236,15 @@
       "conditions": {},
       "actions": {
         "varModify": {
-          "var": "timer",
           "operator": "add",
-          "value": -1.0
+          "value": -1.0,
+          "var": "timer"
         },
         "missionSetTimeIndicator": {
           "var": "timer"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_indicator": {
       "is_enabled": true,
@@ -240,13 +268,17 @@
           "icon": "air",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": [
             "bf_109_01",
             "bf_109_02",
             "bf_109_03"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_01_near_player": {
       "is_enabled": true,
@@ -275,6 +307,10 @@
       "actions": {
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_01"
         },
         "unitAttackTarget": {
@@ -296,7 +332,8 @@
           "target": "bf_109_01",
           "useForTriggerFiltered": false
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_01_fly_away": {
       "is_enabled": false,
@@ -322,6 +359,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_01"
         }
       },
@@ -333,12 +372,25 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "bf_109_01",
           "speed": 600.0
         },
         "varSetInt": {
-          "var": "loose_timer",
-          "value": 0
+          "value": 0,
+          "var": "loose_timer"
         },
         "triggerEnable": {
           "target": "bf_109_02_wake_up"
@@ -348,9 +400,14 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_01"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_far_away": {
       "is_enabled": true,
@@ -385,7 +442,8 @@
           ],
           "useForTriggerFiltered": true
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_02_wake_up": {
       "is_enabled": false,
@@ -418,16 +476,53 @@
             "ally_spitfire_01"
           ]
         },
-        "unitMoveTo": {
-          "target": "point_of_battle",
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "object": "bf_109_02",
-          "speed": 600.0
-        },
+        "unitMoveTo": [
+          {
+            "target": "point_of_battle",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "horizontalDirectionForTeleport": true,
+            "object": "bf_109_02",
+            "speed": 600.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "point_of_battle",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": true,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "ally_spitfire_01"
+          }
+        ],
         "triggerEnable": {
           "target": "bf_109_02_near_player"
         },
@@ -437,8 +532,17 @@
           "target": "bf_109_02",
           "fireRandom": true,
           "fightInArea": "battle_zone"
+        },
+        "unitSetIndication": {
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "set": true,
+          "target": "bf_109_02"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_02_near_player": {
       "is_enabled": false,
@@ -462,6 +566,9 @@
           "check_objects": "any",
           "check_targets": "any",
           "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "target_marking": 0,
           "object": "bf_109_02",
           "target": [
             "ally_spitfire_01",
@@ -487,6 +594,10 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_02"
         },
         "playHint": [
@@ -494,13 +605,27 @@
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "hide",
-            "shouldFadeOut": true
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           },
           {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "hide",
-            "shouldFadeOut": true
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           }
         ],
         "wait": {
@@ -509,7 +634,8 @@
         "triggerEnable": {
           "target": "bf_109_02_fly_away"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_02_fly_away": {
       "is_enabled": false,
@@ -535,6 +661,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_02"
         }
       },
@@ -546,12 +674,25 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "bf_109_02",
           "speed": 600.0
         },
         "varSetInt": {
-          "var": "loose_timer",
-          "value": 0
+          "value": 0,
+          "var": "loose_timer"
         },
         "triggerEnable": {
           "target": "bf_109_03_wake_up"
@@ -561,9 +702,14 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_02"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_03_wake_up": {
       "is_enabled": false,
@@ -600,13 +746,35 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "bf_109_03",
           "speed": 600.0
         },
         "triggerEnable": {
           "target": "bf_109_03_near_player"
+        },
+        "unitSetIndication": {
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "set": true,
+          "target": "bf_109_03"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_03_near_player": {
       "is_enabled": false,
@@ -635,6 +803,10 @@
       "actions": {
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_03"
         },
         "unitAttackTarget": [
@@ -667,13 +839,27 @@
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "show",
-            "shouldFadeOut": true
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           },
           {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_hint",
             "action": "hide",
-            "shouldFadeOut": true
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           }
         ],
         "wait": {
@@ -685,7 +871,8 @@
             "bf_109_03_start_add"
           ]
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_03_fly_away": {
       "is_enabled": false,
@@ -711,6 +898,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_03"
         }
       },
@@ -725,21 +914,39 @@
           "useUnitHeightForTele": true,
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "horizontalDirectionForTeleport": true,
           "object": "bf_109_03",
           "speed": 600.0
         },
         "varSetInt": {
-          "var": "loose_timer",
-          "value": 0
+          "value": 0,
+          "var": "loose_timer"
         },
         "wait": {
           "time": 20.0
         },
         "unitSetIndication": {
           "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_03"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_03_start_add": {
       "is_enabled": false,
@@ -760,6 +967,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_03"
         }
       },
@@ -770,7 +979,8 @@
         "triggerEnable": {
           "target": "bf_109_03_complete_add"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_03_complete_add": {
       "is_enabled": false,
@@ -791,6 +1001,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_03"
         }
       },
@@ -800,9 +1012,13 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_britain_battle_of_britain_day_add",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_03_fail_add": {
       "is_enabled": false,
@@ -823,6 +1039,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_03"
         }
       },
@@ -832,9 +1050,13 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_britain_battle_of_britain_day_add",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": {}
     },
     "mission_failed": {
       "is_enabled": true,
@@ -862,13 +1084,17 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_britain_battle_of_britain_day_main",
-          "status": 3
+          "status": 3,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
         },
         "missionFailed": {}
-      }
+      },
+      "else_actions": {}
     },
     "mission_success": {
       "is_enabled": true,
@@ -894,13 +1120,18 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_03"
         }
       },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "dlc_britain_battle_of_britain_day_main",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": [
           {
@@ -914,7 +1145,8 @@
           "timer": false
         },
         "missionDebriefing": {}
-      }
+      },
+      "else_actions": {}
     },
     "player_out_of_zone": {
       "is_enabled": true,
@@ -934,6 +1166,12 @@
           "math": "notNear2D",
           "players": "isAlive",
           "check_players": "all",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "battle_zone_for_player"
         },
         "gameWhenHintIsNotActive": {}
@@ -944,24 +1182,39 @@
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_area_hint",
             "action": "show",
-            "shouldFadeOut": true
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           },
           {
             "hintType": "custom",
             "name": "hints/dlc_britain_battle_of_britain_day_area_hint",
             "action": "hide",
-            "shouldFadeOut": true
+            "shouldFadeOut": true,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           }
         ],
         "wait": {
           "time": 5.0
         },
         "varModify": {
-          "var": "loose_timer",
           "operator": "add",
-          "value": 15.0
+          "value": 15.0,
+          "var": "loose_timer"
         }
-      }
+      },
+      "else_actions": {}
     },
     "erase_loose_timer": {
       "is_enabled": true,
@@ -981,15 +1234,22 @@
           "math": "2D",
           "players": "isAlive",
           "check_players": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "target": "battle_zone"
         }
       },
       "actions": {
         "varSetInt": {
-          "var": "loose_timer",
-          "value": 0
+          "value": 0,
+          "var": "loose_timer"
         }
-      }
+      },
+      "else_actions": {}
     },
     "bf_109_died": {
       "is_enabled": true,
@@ -1009,6 +1269,11 @@
           "object_type": "isKilled",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": [
             "bf_109_01",
             "bf_109_02",
@@ -1026,7 +1291,8 @@
           ],
           "useForTriggerFiltered": true
         }
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1092,9 +1358,21 @@
             -5314.85
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "spitfiremkii",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "SpitfireMkII_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -1137,14 +1415,26 @@
             -0.5373
           ],
           [
-            14385.6,
+            14651.4,
             599.0,
-            -10495.2
+            -11154.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "bf-109e-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Bf-109E-3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1187,14 +1477,26 @@
             -0.0436194
           ],
           [
-            10192.0,
+            9035.34,
             1399.0,
-            -11308.6
+            -13288.2
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "bf-109e-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Bf-109E-3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 12,
@@ -1237,14 +1539,26 @@
             -0.996195
           ],
           [
-            16560.5,
+            19447.5,
             2399.0,
-            -6176.05
+            -5986.96
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "bf-109e-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Bf-109E-3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 8,
@@ -1287,14 +1601,26 @@
             0.573576
           ],
           [
-            9637.55,
-            1458.1,
-            -1857.45
+            7543.44,
+            2500.0,
+            -489.178
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "spitfire_mk1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "spitfire_mk1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 8,
@@ -1304,7 +1630,7 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
-          "numInWing": 3,
+          "numInWing": 2,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -1344,9 +1670,21 @@
             -5453.8
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1389,9 +1727,21 @@
             -5170.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1434,9 +1784,21 @@
             -5292.15
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1479,9 +1841,21 @@
             -6084.05
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1524,9 +1898,21 @@
             -4984.05
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1569,9 +1955,249 @@
             -5828.15
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "air_defence_07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            9474.06,
+            60.2998,
+            -4898.48
+          ]
+        ],
+        "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "air_defence_08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8200.3,
+            60.2996,
+            -5214.3
+          ]
+        ],
+        "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "air_defence_09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            7496.75,
+            60.3,
+            -4480.91
+          ]
+        ],
+        "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "air_defence_10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8589.67,
+            60.3,
+            -4089.74
+          ]
+        ],
+        "unit_class": "uk_40mm_bofors_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1590,7 +2216,38 @@
         },
         "way": {}
       }
-    ]
+    ],
+    "objectGroups": {
+      "name": "airfield",
+      "tm": [
+        [
+          0.712317,
+          0.0,
+          -0.701858
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.701858,
+          0.0,
+          0.712317
+        ],
+        [
+          8393.34,
+          96.2847,
+          -4634.23
+        ]
+      ],
+      "unit_class": "dynaf_universal_1line_a",
+      "objLayer": 2,
+      "props": {
+        "army": 1,
+        "active": true
+      }
+    }
   },
   "areas": {
     "battle_zone": {
@@ -1697,5 +2354,22 @@
       ],
       "props": {}
     }
-  }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }

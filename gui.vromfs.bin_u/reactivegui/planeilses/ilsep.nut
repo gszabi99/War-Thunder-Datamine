@@ -9,7 +9,7 @@ let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let { compassWrap, generateCompassMarkEP, generateCompassMarkEP08 } = require("ilsCompasses.nut")
 let { IlsTrackerVisible, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { flyDirection } = require("commonElements.nut")
-let { ShellCnt }  = require("%rGui/planeState/planeWeaponState.nut");
+let { ShellCnt, BulletImpactPoints, BulletImpactLineEnable }  = require("%rGui/planeState/planeWeaponState.nut");
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 
@@ -252,14 +252,43 @@ let function navigationInfo(width, height, isEP08) {
   }
 }
 
+let function getBulletImpactLineCommand() {
+  let commands = []
+  for (local i = 0; i < BulletImpactPoints.value.len() - 2; ++i) {
+    let point1 = BulletImpactPoints.value[i]
+    let point2 = BulletImpactPoints.value[i + 1]
+    if (point1.x == -1 && point1.y == -1)
+      continue
+    if (point2.x == -1 && point2.y == -1)
+      continue
+    commands.append([VECTOR_LINE, point1.x, point1.y, point2.x, point2.y])
+  }
+  return commands
+}
+
+let bulletsImpactLine = @() {
+  watch = [CCIPMode, BulletImpactLineEnable]
+  size = flex()
+  children = BulletImpactLineEnable.value && !CCIPMode.value ? [
+    @() {
+      watch = BulletImpactPoints
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = flex()
+      color = IlsColor.value
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = getBulletImpactLineCommand()
+    }
+  ] : null
+}
+
 let haveShell = Computed(@() ShellCnt.value > 0)
-let function EPAimMark(width, height) {
+let function EPAimMark(width, height, is_need_gun_ret) {
   return @() {
-    watch = [TargetPosValid, CCIPMode, BombingMode, haveShell]
+    watch = [CCIPMode, BombingMode]
     size = flex()
     children = CCIPMode.value || BombingMode.value ?
       @() {
-        watch = IlsColor
+        watch = [IlsColor, TargetPosValid, haveShell]
         size = [pw(20), ph(10)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -283,7 +312,32 @@ let function EPAimMark(width, height) {
             translate = TargetPosValid.value && CCIPMode.value ? TargetPos.value : [width * 0.5, height * 0.5]
           }
         }
-      } : null
+      } :
+      ( is_need_gun_ret ? @() {
+        watch = [IlsColor, TargetPosValid]
+        size = [pw(7), ph(7)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.value
+        fillColor = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value * 2.0
+        commands = [
+          [VECTOR_LINE, 0, 0, 0, 0],
+          [VECTOR_LINE, 0, 100, 0, 100],
+          [VECTOR_LINE, 0, -100, 0, -100],
+          [VECTOR_LINE, 100, 0, 100, 0],
+          [VECTOR_LINE, -100, 0, -100, 0],
+          [VECTOR_LINE, -70.7, 70.7, -70.7, 70.7],
+          [VECTOR_LINE, -70.7, -70.7, -70.7, -70.7],
+          [VECTOR_LINE, 70.7, 70.7, 70.7, 70.7],
+          [VECTOR_LINE, 70.7, -70.7, 70.7, -70.7]
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = @() {
+          transform = {
+            translate = TargetPosValid.value ? TargetPos.value : [width * 0.5, height * 0.5]
+          }
+        }
+      } : null)
   }
 }
 
@@ -359,9 +413,10 @@ let function swedishEPIls(width, height, is_ep08) {
     children = [
       (!CCIPMode.value && !BombingMode.value && !IlsTrackerVisible.value ? flyDirection(width, height, true) : null),
       (!CCIPMode.value && !BombingMode.value ? navigationInfo(width, height, is_ep08) : null),
-      EPAimMark(width, height),
+      EPAimMark(width, height, !is_ep08),
       EP08AAMMarker,
-      (is_ep08 ? EPCCRPTargetMark(width, height) : null)
+      (is_ep08 ? EPCCRPTargetMark(width, height) : null),
+      (!is_ep08 ? bulletsImpactLine : null)
     ]
   }
 }
