@@ -18,7 +18,6 @@ let { curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer,
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let prizesRewardWnd = require("%scripts/items/prizesRewardWnd.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -189,7 +188,6 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let cb = Callback(function() {
       clearOfferCache()
       this.goBack()
-      prizesRewardWnd({ configsArray = (this.offerBlk % "i").map(@(v) ::buildTableFromBlk(v)) })
     }, this)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, cb)
   }

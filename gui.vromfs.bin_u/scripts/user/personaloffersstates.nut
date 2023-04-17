@@ -41,24 +41,21 @@ let function gerRecievedOfferContent(offerContent) {
   return res
 }
 
-let hasSendToBq= @(offerName)
-  ::load_local_account_settings($"personalOffer/{offerName}/hasSendToBq") ?? false
-
-let function sendDataToBqOnce(data) {
-  if (hasSendToBq(data.offerName))
-    return
-  ::add_big_query_record("personal_offer_restriction", ::save_to_json(data))
-  ::save_local_account_settings($"personalOffer/{data.offerName}/hasSendToBq", true)
-}
-
 let function markSeenPersonalOffer(offerName) {
   let seenCountId = $"personalOffer/{offerName}/visibleOfferCount"
   ::save_local_account_settings(seenCountId, (::load_local_account_settings(seenCountId) ?? 0) + 1)
-  sendDataToBqOnce({ offerName, serverTime = ::get_charserver_time_sec(), reason = "personal_offer_window_is_show" })
 }
 
 let isSeenOffer= @(offerName)
   (::load_local_account_settings($"personalOffer/{offerName}/visibleOfferCount") ?? 0) > 0
+
+let hasSendToBq= @(offerName)
+  ::load_local_account_settings($"personalOffer/{offerName}/hasSendToBq") ?? false
+
+let function sendDataToBq(config) {
+  ::add_big_query_record("personal_offer_restriction", ::save_to_json(config))
+  ::save_local_account_settings($"personalOffer/{config.offerName}/hasSendToBq", true)
+}
 
 let function cachePersonalOfferIfNeed() {
   if (curPersonalOffer.value != null)
@@ -73,61 +70,46 @@ let function cachePersonalOfferIfNeed() {
       continue
 
     checked[offerName] <- true
-    local data = null
-    try {
-      data = parse(personalOffer.text)
-    }
-    catch(e) {
-    }
-    let serverTime = ::get_charserver_time_sec()
-    if (data == null) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "can_not_parse_json", desc = personalOffer.text })
-      continue
-    }
+    let data = parse(personalOffer.text)
+
     let { offer = "" } = data
-    if (offer == "") {
-      sendDataToBqOnce({ offerName, serverTime, reason = "offer_is_empty_string" })
+    if (offer == "")
       continue
-    }
     let offerBlk = DataBlock()
-    try {
-      offerBlk.loadFromText(offer, offer.len())
-    }
-    catch(e) {
-    }
-    if (offerBlk.paramCount() == 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "can_not_load_offer_to_blk", desc = offer })
+    if (!offerBlk.loadFromText(offer, offer.len()))
       continue
-    }
 
     let { costGold = 0, duration_in_seconds = 0 } = offerBlk
-    if (costGold <= 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "wrong_cost_gold", desc = offer })
+    if (costGold <= 0 || duration_in_seconds <= 0)
       continue
-    }
 
-    if (duration_in_seconds <= 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "wrong_duration_in_seconds", desc = offer })
-      continue
-    }
-
+    let curTime = ::get_charserver_time_sec()
     let recievedOfferContent = gerRecievedOfferContent(offerBlk % "i")
     if(recievedOfferContent.len() > 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "has_content", desc = ";".join(recievedOfferContent) })
+      if (!hasSendToBq(offerName))
+        sendDataToBq({
+          offerName
+          serverTime = curTime
+          reason = "has_content"
+          desc = ";".join(recievedOfferContent)
+        })
       continue
     }
 
     let finishTime = ::load_local_account_settings($"personalOffer/{offerName}/finishTime") ?? 0
     if (finishTime == 0
-        && ((serverTime + duration_in_seconds) > (personalOffer?.timeExpired ?? 0).tointeger())) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "expired_time_less_duration_time" })
+        && ((curTime + duration_in_seconds) > (personalOffer?.timeExpired ?? 0).tointeger())) {
+      if (!hasSendToBq(offerName))
+        sendDataToBq({
+          offerName
+          serverTime = curTime
+          reason = "expired_time_less_duration_time"
+        })
       continue
     }
-    let timeExpired = finishTime !=0 ? finishTime : serverTime + duration_in_seconds
-    if(timeExpired <= serverTime) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "offer_is_expired", desc = $"timeExpired:{timeExpired}" })
+    let timeExpired = finishTime !=0 ? finishTime : curTime + duration_in_seconds
+    if(timeExpired <= curTime)
       continue
-    }
 
     curPersonalOffer({
       offerName
@@ -135,7 +117,7 @@ let function cachePersonalOfferIfNeed() {
       offerBlk
     })
     ::save_local_account_settings($"personalOffer/{offerName}/finishTime", timeExpired)
-    setTimeout(timeExpired - serverTime, clearOfferCache)
+    setTimeout(timeExpired - curTime, clearOfferCache)
     break
   }
   checkedOffers(checked)
