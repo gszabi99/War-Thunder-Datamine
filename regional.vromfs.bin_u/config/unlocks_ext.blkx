@@ -28475,11 +28475,23 @@
       "userLogId": "lp_wt_bonus_2022_trophy_6",
       "type": "trophy",
       "amount_trophies": 1,
+      "hidden": true
+    },
+    {
+      "id": "lp_wt_bonus_2022_store_trophy_7_gift",
+      "userLogId": "lp_wt_bonus_2022_trophy_7",
+      "type": "trophy",
+      "amount_trophies": 1,
       "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 1,
-        "unlock": "lp_wt_bonus_2022_store"
+        "unlock": "lp_wt_bonus_2022_store",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "lp_wt_bonus_2022_store_trophy_6_gift"
+        }
       }
     },
     {
@@ -28543,11 +28555,23 @@
       "userLogId": "russian_badger_bonus_2023_trophy_5",
       "type": "trophy",
       "amount_trophies": 1,
+      "hidden": true
+    },
+    {
+      "id": "russian_badger_bonus_2023_store_6_gift",
+      "userLogId": "russian_badger_bonus_2023_trophy_6",
+      "type": "trophy",
+      "amount_trophies": 1,
       "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 1,
-        "unlock": "russian_badger_bonus_2023_store"
+        "unlock": "russian_badger_bonus_2023_store",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "russian_badger_bonus_2023_store_5_gift"
+        }
       }
     },
     {
@@ -32706,6 +32730,7 @@
       "chapter": "holidays",
       "group": "cosmonautics_day",
       "costGold": 199,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
