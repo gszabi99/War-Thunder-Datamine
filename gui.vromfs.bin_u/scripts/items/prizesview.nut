@@ -99,6 +99,7 @@ let unlockAddProgressView = {
       return config.maxVal <= (prize?.count ?? 1) ? getUnlockRewardsText(config)
         : ""
     }
+    getDescription = @(_prize) loc("warbond/desc")
   }
 }
 
@@ -162,6 +163,10 @@ let prizeViewConfig = {
       let decorator = ::g_decorator.getDecorator(prize.resource, decoratorType)
       return { tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType) }
     }
+  },
+  [PRIZE_TYPE.UNLOCK_PROGRESS] = {
+    getDescription = @(prize) getUnlockAddProgressViewConfig(prize.unlockAddProgress)?.getDescription(prize) ?? ""
+    getTooltipConfig = @(prize) { tooltip = this.getDescription(prize) }
   }
 }
 

@@ -146,6 +146,7 @@ let function openEditPresetName(name, okFunc) {
       buttonsList = buttons
       parentObj = parentObj
       onClickCb  = Callback(@(obj) this.onWeaponChoose(obj), this)
+      clickPropagation = true
     }
   }
 

@@ -38,6 +38,8 @@ let function updateAeroSmokeList() {
 }
 
 let function updateBuyableSmokesList() {
+  if (!::g_login.isLoggedIn())
+    return
   let res = []
   foreach (inst in aeroSmokesList.value) {
     if (!inst?.unlockId)

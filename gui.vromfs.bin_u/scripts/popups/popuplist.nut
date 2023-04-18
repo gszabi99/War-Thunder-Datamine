@@ -14,6 +14,7 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneTplName         = "%gui/popup/popupList.tpl"
   btnWidth             = null
   align                = ALIGN.BOTTOM
+  clickPropagation     = false // when enabled clicking outside the popup will trigger click on the underlying element
 
   //init params
   parentObj            = null
@@ -28,6 +29,7 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
       underPopupDblClick = "hidePopupList"
       btnWidth = this.btnWidth
       visualStyle = this.visualStyle
+      clickPropagation = this.clickPropagation
     }
   }
 
@@ -43,6 +45,11 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function hidePopupList(_obj) {
     this.goBack()
+    if (!this.clickPropagation)
+      return
+
+    let [mouseX, mouseY] = ::get_dagui_mouse_cursor_pos()
+    this.guiScene.simulateMouseClick(mouseX, mouseY, 1)
   }
 }
 

@@ -23,7 +23,7 @@ let paramsTableWidthHeli = hdpx(450)
 let paramsTableHeightHeli = hdpx(28)
 let paramsSightTableWidth = hdpx(270)
 let arbiterParamsTableWidthHelicopter = hdpx(200)
-let positionParamsTable = Computed(@() [max(bw.value, sw(50) - hdpx(660)), sh(50) - hdpx(100)])
+let positionParamsTable = Computed(@() [max(bw.value, sw(50) - hdpx(660)), sh(50) - hdpx(80)])
 let positionParamsSightTable = Watched([sw(50) - hdpx(250) - hdpx(200), hdpx(480)])
 
 let radarSize = sh(28)

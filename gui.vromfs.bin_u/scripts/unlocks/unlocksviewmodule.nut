@@ -774,7 +774,7 @@ let function getUnlockMultDesc(condition) {
     let mulLocParam = isMultipliersByDiff
       ? loc($"clan/short{param}")
       : loc($"missions/{getDiffNameByInt(param)}_short")
-    mulText = $"{mulText}{mulLocParam} (x{num})"
+    mulText = $"{mulText}{mulLocParam}{::nbsp}(x{num})"
   }
 
   let mulRanks = []
@@ -790,7 +790,7 @@ let function getUnlockMultDesc(condition) {
         ? ::get_roman_numeral(rank)
         : getRangeString(::get_roman_numeral(lastAddedRank + 1), ::get_roman_numeral(rank))
 
-      mulRanks.append($"{rankText} (x{curRankMul})")
+      mulRanks.append($"{rankText}{::nbsp}(x{curRankMul})")
       lastAddedRank = rank
     }
   }

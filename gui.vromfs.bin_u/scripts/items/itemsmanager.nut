@@ -791,13 +791,15 @@ local lastInventoryUpdateDelayedCall = 0
 }
 
 ::ItemsManager.collectUserlogItemdefs <- function collectUserlogItemdefs() {
+  let res = []
   for (local i = 0; i < ::get_user_logs_count(); i++) {
     let blk = DataBlock()
     ::get_user_log_blk_body(i, blk)
-    let itemDefId = blk?.body?.itemDefId
+    let itemDefId = blk?.body.itemDefId
     if (itemDefId)
-      ::ItemsManager.findItemById(itemDefId) // Requests itemdef, if it is not found.
+      res.append(itemDefId)
   }
+  this.requestItemsByItemdefIds(res)
 }
 
 ::ItemsManager.isEnabled <- function isEnabled() {

@@ -108,7 +108,6 @@ local leaderboardFilterArray = [
     let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.tabsObj = this.scene.findObject("clans_sheet_list")
     this.guiScene.replaceContentFromText(this.tabsObj, data, data.len(), this)
-
     this.curPage = this.pages[pageIdx]
     this.tabsObj.setValue(pageIdx)
   }
@@ -222,7 +221,7 @@ local leaderboardFilterArray = [
     this.requestClansLbData(true)
   }
 
-  function showMyClanPage(forceReinit = null) {
+  function showMyClanPage(forceReinit = false) {
     if (!this.myClanInited || forceReinit)
       this.initMyClanPage()
 
@@ -244,7 +243,7 @@ local leaderboardFilterArray = [
     }
     else {
       this.clanData = ::my_clan_info
-      this.fillModeListBox(this.curPageObj, this.getCurDMode(),
+      this.onceFillModeList(this.curPageObj, this.getCurDMode(),
         ::get_show_in_squadron_statistics, this.getAdditionalTabsArray())
     }
   }

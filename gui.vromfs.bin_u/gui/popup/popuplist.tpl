@@ -8,6 +8,14 @@ popup_menu {
   rootUnderPopupMenu {
     on_click:t='<<underPopupClick>>'
     on_r_click:t='<<underPopupDblClick>>'
+    <<#clickPropagation>>
+    access-key:t='no'
+    <</clickPropagation>>
+
+    DummyButton {
+      btnName:t='B';
+      on_click:t = 'goBack'
+    }
   }
 
   include "%gui/commonParts/buttonsList.tpl"

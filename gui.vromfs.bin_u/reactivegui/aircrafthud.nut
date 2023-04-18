@@ -24,6 +24,7 @@ let {
   laserPointComponent, bombSightComponent, laserDesignatorStatusComponent } = require("airSight.nut")
 let { radarElement, twsElement } = require("airHudComponents.nut")
 let { crosshairColorOpt } = require("options/options.nut")
+let { maxLabelWidth, maxLabelHeight } = require("radarComponent.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -142,12 +143,11 @@ let function mkAgmAimIndicator(watchedColor) {
   }
 }
 
-
 let function aircraftHUDs() {
   let radarSize = sh(28)
   let radarPosComputed = Computed(@() [
-    bw.value + 0.99 * rw.value - radarSize,
-    bh.value + 0.45 * rh.value
+    bw.value + rw.value - radarSize - 2 * maxLabelWidth,
+    bh.value + 0.45 * rh.value - maxLabelHeight
   ])
 
   let twsSize = sh(20)

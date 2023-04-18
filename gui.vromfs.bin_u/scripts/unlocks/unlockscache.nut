@@ -36,7 +36,8 @@ let function cache() {
   cacheArray.clear()
   cacheByType.clear()
   convertBlkToCache(::get_unlocks_blk())
-  convertBlkToCache(::get_personal_unlocks_blk())
+  if (::g_login.isLoggedIn())
+    convertBlkToCache(::get_personal_unlocks_blk())
 }
 
 let function invalidateCache() {
@@ -54,17 +55,7 @@ let function getAllUnlocksWithBlkOrder() {
   return cacheArray
 }
 
-let function getUnlockById(unlockId) {
-  if (::g_login.isLoggedIn())
-    return getTblValue(unlockId, getAllUnlocks())
-
-  // For before login actions.
-  let blk = ::get_unlocks_blk()
-  foreach (cb in (blk % "unlockable"))
-    if (cb?.id == unlockId)
-      return cb
-  return null
-}
+let getUnlockById = @(unlockId) getAllUnlocks()?[unlockId]
 
 let function getUnlocksByType(typeName) {
   cache()

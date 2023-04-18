@@ -1028,7 +1028,6 @@ let function B_ScopeSquare(size, color, hide_back) {
   return mkRadarPartPlaceComp({
     flow = FLOW_HORIZONTAL
     valign = ALIGN_BOTTOM
-    pos = [-maxLabelWidth - hdpx(4), -maxLabelHeight * 2]
     children = [leftContainer, middlePlace]
   })
 }
@@ -2915,8 +2914,11 @@ let mkRadarBase = @(posWatch, size, _isAir, color, mode, fontScale = 1.0, hide_b
 
   local cScope = null
   if (IsCScopeVisible.value && !isPlayingReplay.value && azimuthRange <= PI) {
+    let pos = [maxLabelWidth + hdpx(4), isSquare
+      ? (need_shift ? (size[0] * 0.5 +  hdpx(180) + 2 * maxLabelHeight) : size[0] * 0.25 + 2 * maxLabelHeight)
+      : (need_shift ? (size[1] * 0.5 + hdpx(30) + 2 * maxLabelHeight) : size[1] * 0.25 + 2 * maxLabelHeight)]
     cScope = {
-      pos = [0, isSquare ? (need_shift ? (size[0] * 0.5 +  hdpx(180)) : size[0] * 0.25) : (need_shift ? (size[1] * 0.5 + hdpx(30)) : size[1] * 0.25)]
+      pos
       children = C_Scope(sizeCScope, color)
     }
   }
@@ -3028,4 +3030,6 @@ return {
   mkRadar
   mkRadarForMfd
   mode = getRadarModeText
+  maxLabelWidth
+  maxLabelHeight
 }

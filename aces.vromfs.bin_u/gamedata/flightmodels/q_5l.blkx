@@ -7,6 +7,7 @@
   "gearSinkRangeC": 0.188,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "isBwOpticSight": true,
@@ -2199,10 +2200,6 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic1_gun"
-      },
-      {
         "blk": "gameData/sensors/cn_rw_30.blk"
       },
       {
@@ -2545,6 +2542,12 @@
               "blk": "gameData/Weapons/equipment/cn_k_pzs_01_targeting_pod.blk",
               "emitter": "bomb250_4",
               "bullets": 1
+            },
+            "sensors": {
+              "sensor": {
+                "blk": "gameData/sensors/ir_tracker_tgp.blk",
+                "node": "optic1_gun"
+              }
             }
           },
           {

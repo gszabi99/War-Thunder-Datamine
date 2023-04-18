@@ -1,5 +1,6 @@
 tdiv {
   flow:t='horizontal'
+  height:t='327@sf/@pf'
   <<#offers>>
   <<#needSeparator>>
   separator {

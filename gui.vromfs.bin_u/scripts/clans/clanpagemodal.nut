@@ -103,6 +103,7 @@ foreach (idx, item in clan_member_list) {
   playerByRowLb    = null
   curPlayer        = null
   lastHoveredDataIdx = -1
+  needFillModeListBox = true
 
   function initScreen() {
     this.playerByRow   = []
@@ -258,13 +259,18 @@ foreach (idx, item in clan_member_list) {
       { text = format(loc("clan/updateStatsTime"), updStatsText) })
     this.scene.findObject("update_stats_info_text").setValue(
       "<b>{0}</b> {1}".subst(colorize("commonTextColor", loc("clan/stats")), updStatsText))
-
-    this.fillModeListBox(this.scene.findObject("clan_container"), this.getCurDMode(),
+     this.onceFillModeList(this.scene.findObject("clan_container"), this.getCurDMode(),
       ::get_show_in_squadron_statistics, this.getAdditionalTabsArray())
     this.fillClanManagment()
 
     this.showSceneBtn("clan_main_stats", true)
     this.fillClanStats(this.clanData.astat)
+  }
+
+  function onceFillModeList(scene, mode, statistics, additionalTabsArray) {
+    if(this.needFillModeListBox)
+      this.fillModeListBox(scene, mode, statistics, additionalTabsArray)
+    this.needFillModeListBox = false
   }
 
   function fillCreatorData() {
@@ -442,7 +448,6 @@ foreach (idx, item in clan_member_list) {
 
   function cp_onStatsModeChange(obj) {
     let tabObj = obj.getChild(obj.getValue())
-
     this.isWorldWarMode = tabObj?.isWorldWarMode == "yes"
     this.showSceneBtn("clan_members_list_nest", !this.isWorldWarMode)
     this.showSceneBtn("lb_table_nest", this.isWorldWarMode)
