@@ -19,7 +19,6 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
-let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 
@@ -517,7 +516,7 @@ let function openOnlineShopFromPromo(handler, params) {
           curItemId = bundleId,
           statsdMetric = "promo",
           forceExternalShop = params?[2] == "forceExternalBrowser"
-        }, KWARG_NON_STRICT)
+        })
       else
         ::OnlineShopModel.doBrowserPurchaseByGuid(bundleId, params?[1])
       return
