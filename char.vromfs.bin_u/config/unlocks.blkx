@@ -3624,6 +3624,16 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "cardicon_hussar",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "cardicon_meliton_kantaria",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
       "id": "hardcoded_initial_warpoints",
       "type": "award",
       "amount_warpoints": 10000,
@@ -9414,6 +9424,72 @@
         "premium": true,
         "country": "country_ussr",
         "unitClass": "aircraft_only"
+      }
+    },
+    {
+      "id": "uk_centurion_mk_2/uk_camo_earth_yellow",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_britain",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 230,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "uk_centurion_mk_2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "uk_centurion_mk_2/uk_camo_winter_olive",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_britain",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 330,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "uk_centurion_mk_2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "uk_centurion_mk_2/uk_camo_light_stone_light_grey_slate_grey",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_britain",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 420,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "uk_centurion_mk_2"
+          }
+        ]
       }
     },
     {
@@ -140156,12 +140232,12 @@
         "condition": [
           {
             "type": "battlepassSeason",
-            "season": 8
+            "season": 10
           },
           {
             "type": "char_time_range",
-            "beginDate": "2023-01-25 12:00:00",
-            "endDate": "2023-04-26 11:59:00"
+            "beginDate": "2023-04-26 12:00:00",
+            "endDate": "2023-07-26 11:59:00"
           }
         ]
       }
@@ -140891,6 +140967,67 @@
             "type": "char_time_range",
             "beginDate": "2023-02-22 12:00:00",
             "endDate": "2023-04-26 12:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season11_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    },
+    {
+      "id": "battlepass_season11_purchased_entitlement",
+      "userLogId": "battlepass_season11_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season11_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season11_purchased_item",
+      "type": "inventory",
+      "userLogId": "730009",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season11_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season11_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season11_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_always_progress",
+        "condition": [
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season11_allow_skip_all_stages",
+            "invertResult": true
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassSeason11Purchased"
+          },
+          {
+            "type": "char_time_range",
+            "beginDate": "2023-05-24 12:00:00",
+            "endDate": "2023-07-26 12:00:00"
           }
         ]
       }
