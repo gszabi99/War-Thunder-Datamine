@@ -5,7 +5,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { setChardToken } = require("chard")
 let { getPlayerToken } = require("auth_wt")
-let contacts = require("contacts")
+let contacts = require_optional("contacts")
+if (contacts == null) //compatibility with 2.25.1.X
+  return
+
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout } = require("dagor.workcycle")
 let logC = log_with_prefix("[CONTACTS] ")
