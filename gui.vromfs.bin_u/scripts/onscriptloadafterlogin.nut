@@ -399,6 +399,7 @@ require("%scripts/dlcontent/dlContent.nut")
 require("%scripts/dynamic/mainMissionGenerator.nut")
 require("%scripts/mainmenu/hideMainMenuUi.nut")
 require("%scripts/wheelmenu/chooseVehicleWheelMenu.nut")
+require("%scripts/login/loginContacts.nut")
 require("%scripts/mainmenu/onMainMenuReturn.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
