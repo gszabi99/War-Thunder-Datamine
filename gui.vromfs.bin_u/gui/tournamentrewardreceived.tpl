@@ -148,26 +148,6 @@ root{
     }
 
     navBar{
-      navLeft{
-        Button_text {
-          id:t='btn_upload_facebook_scrn';
-          display:t='hide';
-          pressAction:t='share';
-          on_click:t='onFacebookLoginAndPostScrnshot';
-          tooltip:t='';
-          cardImg{
-            background-image:t='#ui/gameuiskin#facebook_logo.svg'
-            input-transparent:t='yes';
-          }
-          text{
-            id:t='text_facebook_action';
-            pos:t='0,50%ph-50%h';
-            position:t='relative';
-            text:t='#mainmenu/btnUploadFacebookScreenshot';
-            input-transparent:t='yes';
-          }
-        }
-      }
       navRight {
         Button_text {
           id:t = 'btn_close';
