@@ -30,6 +30,7 @@ let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil, floor } = require("math")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { encode_uri_component } = require("url")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -1052,7 +1053,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
   function onOpenAchievementsUrl() {
     openUrl(loc("url/achievements",
-        { appId = APP_ID, name = this.player.name }),
+        { appId = APP_ID, name = encode_uri_component(this.player.name) }),
       false, false, "profile_page")
   }
 }

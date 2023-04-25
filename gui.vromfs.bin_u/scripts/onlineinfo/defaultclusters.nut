@@ -20,7 +20,6 @@ let countryToCluster = {
   SI = "RU" // Slovenia
   SE = "RU" // Sweden
   TM = "RU" // Turkmenistan
-  UA = "RU" // Ukraine
   UZ = "RU" // Uzbekistan
   AF = "RU" // Afghanistan
   BH = "RU" // Bahrain
@@ -82,6 +81,7 @@ let countryToCluster = {
   SM = "EU" // San Marino
   ES = "EU" // Spain
   CH = "EU" // Switzerland
+  UA = "EU" // Ukraine
   GB = "EU" // United Kingdom
   VA = "EU" // Vatican city
 

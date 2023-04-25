@@ -66,6 +66,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!this.currSeason)
       return
 
+    this.ratingByTournaments = {}
     this.scene.findObject("update_timer").setUserData(this)
     setBreadcrumbGoBackParams(this)
     this.eventListObj = this.scene.findObject("events_list")
@@ -100,11 +101,19 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateRatingByTournaments() {
-    this.ratingByTournaments = {}
     foreach (tour in this.tournamentList) {
       let curTourParams = getTourParams(tour)
       let id = tour.id
-      fetchLbData(getEventByDay(tour.id, curTourParams.dayNum, false), function(lbData) {
+      if (id in this.ratingByTournaments)
+        continue
+
+      let { beginDate = "" } = tour
+      if (beginDate != "" && getTimestampFromStringUtc(beginDate) > ::get_charserver_time_sec())
+        continue
+      let event = getEventByDay(tour.id, curTourParams.dayNum, false)
+      if (event == null)
+        continue
+      fetchLbData(event, function(lbData) {
         this.ratingByTournaments[id] <- stdMath.round(lbData.rows.findvalue(
           @(row) row._id == ::my_user_id_str)?.rating ?? 0)
       }, this)
@@ -295,6 +304,8 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   onTimer = @(_obj, _dt) (this.scene.getModalCounter() != 0) ? null : this.updateAllEventsByFilters()
+
+  onEventGameModesUpdated = @(_) this.updateRatingByTournaments()
 }
 
 ::gui_handlers.ESportList <- ESportList

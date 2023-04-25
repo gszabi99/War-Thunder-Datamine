@@ -10,6 +10,8 @@ let { get_time_msec } = require("dagor.time")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -39,14 +41,13 @@ enum HintShowState {
 
   function init(v_nest) {
     this.subscribe()
-
     if (!checkObj(v_nest))
       return
     this.nest = v_nest
-
     if (!this.findSceneObjects())
       return
     this.restoreAllHints()
+    this.updatePosHudHintBlock()
   }
 
 
@@ -54,6 +55,7 @@ enum HintShowState {
     if (!this.findSceneObjects())
       return
     this.restoreAllHints()
+    this.updatePosHudHintBlock()
   }
 
 
@@ -96,12 +98,25 @@ enum HintShowState {
     return true
   }
 
-
   function restoreAllHints() {
     foreach (hintData in this.activeHints)
       this.updateHint(hintData)
   }
 
+
+  function updatePosHudHintBlock() {
+    if (!(this.nest?.isValid() ?? false))
+      return
+    let hintBlockObj = this.nest.findObject("hintBlock")
+    if (!(hintBlockObj?.isValid() ?? false))
+      return
+    hintBlockObj.setValue(stashBhvValueConfig([{
+      watch = actionBarItems
+      updateFunc = @(obj, value) obj.pos = value.len() > 0
+        ? "0.5pw - 0.5w, ph - h - @hudActionBarItemHeight"
+        : "0.5pw - 0.5w, ph - h"
+    }]))
+  }
 
   function subscribe() {
     ::g_hud_event_manager.subscribe("LocalPlayerDead", function (_eventData) {

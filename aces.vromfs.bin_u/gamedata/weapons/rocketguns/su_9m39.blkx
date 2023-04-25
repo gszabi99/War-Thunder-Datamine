@@ -38,6 +38,7 @@
     "finsAoaHor": 0.0465,
     "finsAoaVer": 0.0465,
     "finsLatAccel": 14.16,
+    "orientationTorque": 500.0,
     "effectOffset": [
       -2.0,
       0.0,
@@ -47,7 +48,7 @@
     "timeFire": 1.9,
     "force1": 705.0,
     "timeFire1": 6.6,
-    "fireDelay": 0.2,
+    "fireDelay": 0.4,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "explosionEffect": "explosion_midair_medium",
@@ -70,19 +71,8 @@
     "guidanceSfx": "alarm_con_scan",
     "guidanceType": "ir",
     "hasProximityFuse": true,
-    "explodeHitPower": 550.0,
-    "explodeArmorPower": 75.0,
-    "explodeRadius": [
-      1.0,
-      3.5
-    ],
     "rendinstDamageRadius": 9.0,
     "statType": "hydra",
-    "shutterDamage": true,
-    "shutterDamageRadius": 17.0,
-    "shutterAmount": 2000,
-    "shutterArmorPower": 12.0,
-    "shutterHit": 10.0,
     "advancedMissiles": false,
     "useStartSpeed": true,
     "startSpeed": 30.0,
@@ -361,7 +351,7 @@
         "fov": 2.0,
         "arretAngles": [
           0.0,
-          -8.0
+          -10.0
         ],
         "gateWidth": 1.0,
         "bandMaskToReject": 4,
@@ -380,6 +370,22 @@
         "accelControlIntg": 0.1646,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0012
+      },
+      "orientationAutopilot": {
+        "timeOut": 0.3,
+        "controlTime": 0.4,
+        "elevationAdd": 0.0,
+        "elevationToHeadingMult": [
+          2.75,
+          0.05,
+          3.75,
+          0.15
+        ],
+        "angleToAngularRate": 9.5,
+        "accelControlProp": 0.08,
+        "accelControlIntg": 0.0,
+        "accelControlIntgLim": 0.0,
+        "accelControlDiff": 0.00026
       }
     },
     "proximityFuse": {

@@ -27,8 +27,8 @@
     "length": 1.9,
     "explosiveType": "comp_b",
     "explosiveMass": 0.91,
-    "distFromCmToStab": 0.01,
-    "wingAreaMult": 1.035,
+    "distFromCmToStab": 0.0075,
+    "wingAreaMult": 1.05,
     "distanceFuse": false,
     "operatedDist": 10000.0,
     "guaranteedRange": 8000.0,
@@ -152,14 +152,13 @@
       },
       "guidanceAutopilot": {
         "timeOut": 0.75,
-        "baseIndSpeed": 1200.0,
-        "elevationAdd": 3.5,
+        "baseIndSpeed": 1800.0,
         "omegaToAccelMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.5,
-        "accelControlIntg": 0.15,
-        "accelControlIntgLim": 0.3,
-        "accelControlDiff": 0.25
+        "reqAccelMax": 2.0,
+        "accelControlProp": 0.0191,
+        "accelControlIntg": 0.0746,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.0004
       }
     },
     "cumulativeDamage": {

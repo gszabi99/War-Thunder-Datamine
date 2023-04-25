@@ -154,25 +154,25 @@ weaponry_item[status=research] > weaponBody > itemWinkBlock {
   background-color:@shopItemResearchFocus;
 }
 
-weaponry_item[status=locked] > weaponBody > modIcon                       img { color-factor:200; background-color:@shopWeaponLocked; }
-weaponry_item[status=locked] > weaponBody > modIcon[hoverStyle=yes]       img { color-factor:255; background-color:@shopWeaponLocked; }
+weaponry_item[status=locked] > weaponBody > modIcon                       img { background-color:#771515; }
+weaponry_item[status=locked] > weaponBody > modIcon[hoverStyle=yes]       img { background-color:@shopWeaponLocked; }
 weaponry_item[status=canBuyForWP] > weaponBody > modIcon                  img,
-weaponry_item[status=unlocked] > weaponBody > modIcon                     img{ color-factor:160; background-color:@shopAircraft; }
+weaponry_item[status=unlocked] > weaponBody > modIcon                     img{ background-color:#505050; }
 weaponry_item[status=canBuyForWP] > weaponBody > modIcon[hoverStyle=yes]  img,
-weaponry_item[status=unlocked] > weaponBody > modIcon[hoverStyle=yes]     img{ color-factor:255; background-color:@shopAircraft; }
+weaponry_item[status=unlocked] > weaponBody > modIcon[hoverStyle=yes]     img{ background-color:@shopAircraft; }
 weaponry_item[status=researchable] > weaponBody > modIcon                 img{ background-color:#969696; }
 weaponry_item[status=researchable] > weaponBody > modIcon[hoverStyle=yes] img{ background-color:#eeeeee; }
-weaponry_item[status=owned] > weaponBody > modIcon                        img{ color-factor:200; background-color:@shopAircraftOwned; }
-weaponry_item[status=owned] > weaponBody > modIcon[hoverStyle=yes]        img{ color-factor:255; background-color:@shopAircraftOwned; }
-weaponry_item[equipped=yes] > weaponBody > modIcon                        img{ color-factor:255; background-color:@shopAircraftOwned; }
-weaponry_item[status=disabled] > weaponBody > modIcon                     img{ color-factor:150; background-color:@shopAircraftDark; }
+weaponry_item[status=owned] > weaponBody > modIcon                        img{ background-color:#eeeeee; }
+weaponry_item[status=owned] > weaponBody > modIcon[hoverStyle=yes]        img{ background-color:@shopAircraftOwned; }
+weaponry_item[equipped=yes] > weaponBody > modIcon                        img{ background-color:@shopAircraftOwned; }
+weaponry_item[status=disabled] > weaponBody > modIcon                     img{ background-color:#323232; }
 weaponry_item[status=disabled] > weaponBody > modIcon                     iconLayer{ color-factor:150; background-color:@shopAircraftDark; }
-weaponry_item[status=research] > weaponBody > modIcon                     img{ color-factor:200; background-color:@white; }
-weaponry_item[status=research] > weaponBody > modIcon[hoverStyle=yes]     img{ color-factor:255; background-color:@white; }
+weaponry_item[status=research] > weaponBody > modIcon                     img{ background-color:#eeeeee; }
+weaponry_item[status=research] > weaponBody > modIcon[hoverStyle=yes]     img{ background-color:@white; }
 weaponry_item[status=waiting] > weaponBody > modIcon                      img{ background-color:@shopItemWaiting; }
 weaponry_item[status=waiting] > weaponBody > modIcon[hoverStyle=yes]      img,
 [show_console_buttons=yes] [selected=yes] > modIcon[status=waiting]       img{ background-color:@shopItemWaitingFocus; }
-modIcon[ignoreStatus=yes]                                                 img{ color-factor:255; background-color:@shopAircraftOwned; }
+modIcon[ignoreStatus=yes]                                                 img{ background-color:@shopAircraftOwned; }
 
 weaponry_item[status=locked] > weaponBody > wallpaper > pattern { type:bright_texture; }
 weaponry_item[status=locked] > weaponBody { background-color:@slotLockedBgColor; border-color:@slotLockedBorderColor; }

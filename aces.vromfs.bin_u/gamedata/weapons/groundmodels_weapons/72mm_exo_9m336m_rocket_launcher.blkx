@@ -633,6 +633,7 @@
         "finsAoaHor": 0.1,
         "finsAoaVer": 0.1,
         "finsLatAccel": 14.16,
+        "orientationTorque": 500.0,
         "effectOffset": [
           -2.0,
           0.0,
@@ -665,19 +666,8 @@
         "guidanceSfx": "alarm_con_scan",
         "guidanceType": "ir",
         "hasProximityFuse": true,
-        "explodeHitPower": 550.0,
-        "explodeArmorPower": 75.0,
-        "explodeRadius": [
-          1.0,
-          3.5
-        ],
         "rendinstDamageRadius": 9.0,
         "statType": "hydra",
-        "shutterDamage": true,
-        "shutterDamageRadius": 17.0,
-        "shutterAmount": 2000,
-        "shutterArmorPower": 12.0,
-        "shutterHit": 10.0,
         "advancedMissiles": false,
         "useStartSpeed": true,
         "startSpeed": 50.0,
@@ -968,6 +958,22 @@
             "rateMax": 12.0,
             "prolongationTimeMax": 3.0,
             "groundVehiclesAsTarget": true
+          },
+          "orientationAutopilot": {
+            "timeOut": 0.3,
+            "controlTime": 0.4,
+            "elevationAdd": 0.0,
+            "elevationToHeadingMult": [
+              2.75,
+              0.05,
+              3.75,
+              0.15
+            ],
+            "angleToAngularRate": 9.5,
+            "accelControlProp": 0.08,
+            "accelControlIntg": 0.0,
+            "accelControlIntgLim": 0.0,
+            "accelControlDiff": 0.00026
           },
           "guidanceAutopilot": {
             "timeOut": 0.0,

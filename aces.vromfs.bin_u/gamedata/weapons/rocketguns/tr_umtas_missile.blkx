@@ -45,7 +45,7 @@
     "explosionPatchRadius": 3.4,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "rocket_fire_light",
+    "fireEffect": "rocket_fire_short",
     "smokeEffect": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
@@ -411,20 +411,18 @@
         "surfaceAsTarget": true
       },
       "guidanceAutopilot": {
-        "elevationAdd": 2.0,
-        "angleToAccelMult": 0.0,
         "loftEnabled": true,
-        "loftElevation": 8.0,
-        "loftTargetElevation": -10.0,
-        "loftAngleToAccelMult": 10.0,
-        "loftTargetOmegaMax": 2.0,
-        "baseIndSpeed": 1200.0,
-        "omegaToAccelMult": 6.0,
-        "reqAccelMax": 6.0,
-        "accelControlProp": 5.0,
-        "accelControlIntg": 0.5,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.5
+        "loftElevation": 10.0,
+        "loftTargetElevation": -15.0,
+        "loftAngleToAccelMult": 8.0,
+        "loftTargetOmegaMax": 0.75,
+        "baseIndSpeed": 1800.0,
+        "omegaToAccelMult": 4.0,
+        "reqAccelMax": 2.5,
+        "accelControlProp": 0.0296,
+        "accelControlIntg": 0.0046,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.0017
       }
     }
   }

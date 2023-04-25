@@ -1460,8 +1460,8 @@ shopData = [
   }
 
   function onSceneActivate(show) {
-    base.onSceneActivate(show)
     this.scene.enable(show)
+    base.onSceneActivate(show)
     if (!show)
       this.destroyGroupChoose()
   }
@@ -1723,8 +1723,7 @@ shopData = [
       let unit = getTblValue(param, params)
       if (!unit)
         continue
-
-      this.checkUnitItemAndUpdate(unit)
+      this.doWhenActive(@() this.checkUnitItemAndUpdate(unit))
     }
 
     this.destroyGroupChoose()
@@ -1926,17 +1925,15 @@ shopData = [
   }
 
   function onShopShow(show) {
-    this.onSceneActivate(show)
     if (!show && checkObj(this.groupChooseObj))
       this.destroyGroupChoose()
-    if (show)
-      this.popDelayedActions()
   }
 
   function onEventShopWndAnimation(p) {
     if (!(p?.isVisible ?? false))
       return
     this.shouldBlurSceneBg = p?.isShow ?? false
+    this.onSceneActivate(p?.isShow ?? false)
     ::handlersManager.updateSceneBgBlur()
   }
 
