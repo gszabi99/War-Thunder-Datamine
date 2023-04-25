@@ -2673,19 +2673,19 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 1.0,
       "napalmDamageMult": 1.0,
-      "pressureDamageMult": 2.5,
-      "auxiliary_caliber_turret_01_dm": {
-        "hp": 80.0
-      },
-      "auxiliary_caliber_turret_02_dm": {
-        "hp": 80.0
-      }
+      "pressureDamageMult": 2.5
     },
     "turrets_aa_caliber": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 1.0,
       "napalmDamageMult": 1.0,
-      "pressureDamageMult": 1.0
+      "pressureDamageMult": 1.0,
+      "aa_turret_01_dm": {
+        "hp": 40.0
+      },
+      "aa_turret_02_dm": {
+        "hp": 40.0
+      }
     },
     "gun_main_caliber": {
       "armorClass": "tank_barrel",
@@ -2702,17 +2702,17 @@
     },
     "gun_aux_caliber": {
       "armorClass": "tank_barrel",
-      "armorThickness": 4.0,
-      "auxiliary_caliber_gun_01_dm": {
-        "hp": 100.0
-      },
-      "auxiliary_caliber_gun_02_dm": {
-        "hp": 100.0
-      }
+      "armorThickness": 4.0
     },
     "gun_aa_caliber": {
       "armorClass": "tank_barrel",
-      "armorThickness": 4.0
+      "armorThickness": 4.0,
+      "aa_gun_01_dm": {
+        "hp": 40.0
+      },
+      "aa_gun_02_dm": {
+        "hp": 40.0
+      }
     },
     "gun_barrels": {
       "armorClass": "tank_barrel",
@@ -3321,8 +3321,8 @@
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_01_dm",
-        "breechDP": "auxiliary_caliber_gun_01_dm",
+        "barrelDP": "aa_gun_01_dm",
+        "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
@@ -3347,9 +3347,9 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
-          "head": "auxiliary_caliber_turret_01",
-          "gun": "auxiliary_caliber_gun_01",
-          "gunnerDm": "auxiliary_caliber_turret_01_dm"
+          "head": "aa_turret_01",
+          "gun": "aa_gun_01",
+          "gunnerDm": "aa_turret_01_dm"
         },
         "limits": {
           "yaw": [
@@ -3390,8 +3390,8 @@
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_gun_02_dm",
-        "breechDP": "auxiliary_caliber_gun_02_dm",
+        "barrelDP": "aa_gun_02_dm",
+        "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
@@ -3416,9 +3416,9 @@
         "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
-          "head": "auxiliary_caliber_turret_02",
-          "gun": "auxiliary_caliber_gun_02",
-          "gunnerDm": "auxiliary_caliber_turret_02_dm"
+          "head": "aa_turret_02",
+          "gun": "aa_gun_02",
+          "gunnerDm": "aa_turret_02_dm"
         },
         "limits": {
           "yaw": [
