@@ -11,6 +11,7 @@ let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule
 let { get_meta_missions_info_by_chapters, select_mission } = require("guiMission")
 let { set_game_mode, get_game_mode } = require("mission")
 let { getUnlockRewardCostByName } = require("%scripts/unlocks/unlocksModule.nut")
+let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 
 let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
@@ -162,7 +163,7 @@ let function saveTutorialToCheckReward(mission) {
   let misDataBlk = dataBlk?[missionName]
   let resource = misDataBlk?.decal
   let resourceType = "decal"
-  let isResourceUnlocked = ::g_decorator.getDecoratorByResource(resource, resourceType)?.isUnlocked() ?? false
+  let isResourceUnlocked = getDecoratorByResource(resource, resourceType)?.isUnlocked() ?? false
 
   tutorialRewardData({
     missionName

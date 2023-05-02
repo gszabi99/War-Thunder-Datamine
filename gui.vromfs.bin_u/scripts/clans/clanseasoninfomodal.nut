@@ -9,6 +9,7 @@ let { format } = require("string")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 ::show_clan_season_info <- function show_clan_season_info(difficulty) {
   ::gui_start_modal_wnd(
@@ -111,7 +112,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         else if (prizeType == "decal") {
           let decorType = ::g_decorator_type.DECALS
           foreach (decalId in prize.list) {
-            let decal = ::g_decorator.getDecorator(decalId, decorType)
+            let decal = getDecorator(decalId, decorType)
             collection.append({
               id = decalId
               image = decorType.getImage(decal)

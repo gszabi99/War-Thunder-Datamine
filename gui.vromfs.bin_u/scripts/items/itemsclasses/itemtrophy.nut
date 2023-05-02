@@ -9,6 +9,7 @@ let DataBlock  = require("DataBlock")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears,
   TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
+let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 
 ::items_classes.Trophy <- class extends ::BaseItem {
   static iType = itemType.TROPHY
@@ -303,7 +304,7 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrect
         : loc(awardType)
     }
 
-    local name = this.locId ? "".join(::g_localization.getLocIdsArray(this.locId).map(@(id) loc(id))) : loc(("item/" + this.id), "")
+    local name = this.locId ? "".join(getLocIdsArray(this.locId).map(@(id) loc(id))) : loc(("item/" + this.id), "")
     let hasCustomName = name != ""
     if (!hasCustomName)
       name = loc("item/" + this.defaultLocId)

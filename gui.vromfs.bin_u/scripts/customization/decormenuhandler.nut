@@ -10,6 +10,8 @@ let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getCachedDataByType, getDecorator, getCachedOrderByType
+} = require("%scripts/customization/decorCache.nut")
 
 let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -125,7 +127,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       return null
 
     let decorId = ::getObjIdByPrefix(obj, "decal_") ?? ""
-    return ::g_decorator.getDecorator(decorId, decoratorType)
+    return getDecorator(decorId, decoratorType)
   }
 
   function getSavedPath() {
@@ -141,8 +143,8 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   // private
 
-  getCategories = @() ::g_decorator.getCachedOrderByType(this.curDecorType, this.curUnit.unitType.tag)
-  getDecorCache = @() ::g_decorator.getCachedDataByType(this.curDecorType, this.curUnit.unitType.tag)
+  getCategories = @() getCachedOrderByType(this.curDecorType, this.curUnit.unitType.tag)
+  getDecorCache = @() getCachedDataByType(this.curDecorType, this.curUnit.unitType.tag)
   getContentObj = @(obj) obj != null ? obj.findObject($"content_{obj.id}") : null
   hasGroupsList = @(obj) obj.type == "groupsList"
 
@@ -196,7 +198,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     if (!isGroupList) {
       let decorId = this.preSelectDecorId ?? this.curSlotDecorId
-      let decor = ::g_decorator.getDecorator(decorId, this.curDecorType)
+      let decor = getDecorator(decorId, this.curDecorType)
       let index = (decor && decor.category == categoryId) ? decor.catIndex : 0
       contentListObj.setValue(index)
     }

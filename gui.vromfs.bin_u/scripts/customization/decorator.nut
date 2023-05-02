@@ -16,6 +16,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
 
 ::Decorator <- class {
   id = ""
@@ -144,7 +145,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
   function isLockedByUnit(unit) {
     if (this.decoratorType == ::g_decorator_type.SKINS)
-      return unit?.name != ::g_unlocks.getPlaneBySkinId(this.id)
+      return unit?.name != getPlaneBySkinId(this.id)
 
     if (::u.isEmpty(this.units))
       return false

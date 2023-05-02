@@ -11,7 +11,7 @@ let { get_time_msec } = require("dagor.time")
 let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
-let { addContact, addContactGroup } = require("%scripts/contacts/contactsManager.nut")
+let { addContact, addContactGroup, EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
 
 let isContactsUpdated = persist("isContactsUpdated", @() Watched(false))
 
@@ -71,7 +71,7 @@ let function psnUpdateContactsList(usersTable) {
     })
 
   let contactsBlk = DataBlock()
-  contactsBlk[::EPLX_PS4_FRIENDS] <- DataBlock()
+  contactsBlk[EPLX_PS4_FRIENDS] <- DataBlock()
   contactsBlk[EPL_BLOCKLIST]  <- DataBlock()
   contactsBlk[EPL_FRIENDLIST] <- DataBlock()
 
@@ -83,8 +83,8 @@ let function psnUpdateContactsList(usersTable) {
       if (!contact)
         continue
 
-      if (!contact.isInPSNFriends() && groupName == ::EPLX_PS4_FRIENDS) {
-        contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = true
+      if (!contact.isInPSNFriends() && groupName == EPLX_PS4_FRIENDS) {
+        contactsBlk[EPLX_PS4_FRIENDS][contact.uid] = true
         if (contact.isInBlockGroup())
           contactsBlk[EPL_BLOCKLIST][contact.uid] = false
       }
@@ -92,7 +92,7 @@ let function psnUpdateContactsList(usersTable) {
       if (!contact.isInBlockGroup() && groupName == EPL_BLOCKLIST) {
         contactsBlk[EPL_BLOCKLIST][contact.uid] = true
         if (contact.isInPSNFriends())
-          contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = false
+          contactsBlk[EPLX_PS4_FRIENDS][contact.uid] = false
 
         if (contact.isInFriendGroup())
           contactsBlk[EPL_FRIENDLIST][contact.uid] = false
@@ -100,10 +100,10 @@ let function psnUpdateContactsList(usersTable) {
 
       //Check both lists, as there can be mistakes
       if (contact.isInPSNFriends() && contact.isInBlockGroup()) {
-        if (groupName == ::EPLX_PS4_FRIENDS)
+        if (groupName == EPLX_PS4_FRIENDS)
           contactsBlk[EPL_BLOCKLIST][contact.uid] = false
         else
-          contactsBlk[::EPLX_PS4_FRIENDS][contact.uid] = false
+          contactsBlk[EPLX_PS4_FRIENDS][contact.uid] = false
       }
 
       //Validate in-game contacts list
@@ -176,11 +176,11 @@ let function onReceviedUsersList(groupName, responseInfoName, response, err) {
 }
 
 let function fetchFriendlist() {
-  checkGroups.append(::EPLX_PS4_FRIENDS)
-  addContactGroup(::EPLX_PS4_FRIENDS)
+  checkGroups.append(EPLX_PS4_FRIENDS)
+  addContactGroup(EPLX_PS4_FRIENDS)
   psn.fetch(
     psn.profile.listFriends(),
-    @(response, err) onReceviedUsersList(::EPLX_PS4_FRIENDS, PSN_RESPONSE_FIELDS.friends, response, err),
+    @(response, err) onReceviedUsersList(EPLX_PS4_FRIENDS, PSN_RESPONSE_FIELDS.friends, response, err),
     LIMIT_FOR_ONE_TASK_GET_USERS
   )
 }

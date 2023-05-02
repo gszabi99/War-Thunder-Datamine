@@ -15,6 +15,7 @@ let { is_replay_turned_on, is_replay_saved, get_replays_dir,
   get_new_replay_filename, on_save_replay, on_view_replay, get_replays_list,
   on_del_replay, on_open_replays_folder, get_replay_info } = require("replays")
 let { is_benchmark_game_mode } = require("mission")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGHT = 16
 
@@ -47,7 +48,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
     ::SessionLobby.resetPlayersInfo()
     backFunc()
   }
-  ::req_unlock_by_client("view_replay", false)
+  reqUnlockByClient("view_replay")
   ::current_replay = ::get_replay_url_by_session_id(sessionId)
   ::current_replay_author = null
   on_view_replay(::current_replay)
@@ -549,7 +550,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
         ::SessionLobby.resetPlayersInfo()
         ::gui_start_menuReplays()
       }
-      ::req_unlock_by_client("view_replay", false)
+      reqUnlockByClient("view_replay")
       ::current_replay = this.replays[index].path
       let replayInfo = get_replay_info(::current_replay)
       let comments = getTblValue("comments", replayInfo)

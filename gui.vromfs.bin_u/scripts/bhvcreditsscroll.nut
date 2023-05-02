@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 const timeToShowAll = 500.0
 
@@ -50,6 +51,6 @@ const timeToShowAll = 500.0
 
 ::on_credits_finish <- function on_credits_finish(canceled = false) {
   if (!canceled)
-    ::req_unlock_by_client("view_credits", false)
+    reqUnlockByClient("view_credits")
   topMenuHandler.value?.topMenuGoBack.call(topMenuHandler.value)
 }

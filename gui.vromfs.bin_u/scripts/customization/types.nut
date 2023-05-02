@@ -15,6 +15,8 @@ let skinLocations = require("%scripts/customization/skinLocations.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { updateDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
+let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin
+} = require("%scripts/customization/decorCache.nut")
 
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
@@ -359,17 +361,17 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
       local name = ""
 
-      let unitName = ::g_unlocks.getPlaneBySkinId(decoratorName)
+      let unitName = getPlaneBySkinId(decoratorName)
       let unit = ::getAircraftByName(unitName)
       if (unit) {
-        let skinNameId = ::g_unlocks.getSkinNameBySkinId(decoratorName)
+        let skinNameId = getSkinNameBySkinId(decoratorName)
         let skinBlock = unit.getSkinBlockById(skinNameId)
         if (skinBlock && (skinBlock?.nameLocId ?? "") != "")
           name = loc(skinBlock.nameLocId)
       }
 
       if (name == "") {
-        if (::g_unlocks.isDefaultSkin(decoratorName))
+        if (isDefaultSkin(decoratorName))
           decoratorName = loc(unitName + "/default", loc("default_skin_loc"))
 
         name = loc(decoratorName)
@@ -382,10 +384,10 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     getLocDesc = function(decoratorName) {
-      let unitName = ::g_unlocks.getPlaneBySkinId(decoratorName)
+      let unitName = getPlaneBySkinId(decoratorName)
       let unit = ::getAircraftByName(unitName)
       if (unit) {
-        let skinNameId = ::g_unlocks.getSkinNameBySkinId(decoratorName)
+        let skinNameId = getSkinNameBySkinId(decoratorName)
         let skinBlock = unit.getSkinBlockById(skinNameId)
         if (skinBlock && (skinBlock?.descLocId ?? "") != "")
           return loc(skinBlock.descLocId)
@@ -396,13 +398,13 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     hasLocations = function(decoratorName) {
-      let unitName = ::g_unlocks.getPlaneBySkinId(decoratorName)
+      let unitName = getPlaneBySkinId(decoratorName)
       let unit = ::getAircraftByName(unitName)
       return unit?.isTank() ?? false
     }
 
     function getTypeDesc(decorator) {
-      let unit = ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id))
+      let unit = ::getAircraftByName(getPlaneBySkinId(decorator.id))
       if (!unit)
         return loc("trophy/unlockables_names/skin")
       return loc("reward/skin_for") + " " +
@@ -410,7 +412,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     getCost = function(decoratorName) {
-      let unitName = ::g_unlocks.getPlaneBySkinId(decoratorName)
+      let unitName = getPlaneBySkinId(decoratorName)
       return ::Cost(max(0, ::get_skin_cost_wp(unitName, decoratorName)),
                     max(0, ::get_skin_cost_gold(unitName, decoratorName)))
     }
@@ -420,11 +422,11 @@ enums.addTypesByGlobalName("g_decorator_type", {
     isPlayerHaveDecorator = memoizeByProfile(function isPlayerHaveDecorator(decoratorName) {
       if (decoratorName == "")
         return false
-      if (::g_unlocks.isDefaultSkin(decoratorName))
+      if (isDefaultSkin(decoratorName))
         return true
 
-      return ::player_have_skin(::g_unlocks.getPlaneBySkinId(decoratorName),
-                                ::g_unlocks.getSkinNameBySkinId(decoratorName))
+      return ::player_have_skin(getPlaneBySkinId(decoratorName),
+                                getSkinNameBySkinId(decoratorName))
     })
 
     getBlk = function() { return ::get_skins_blk() }
@@ -443,7 +445,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     getSpecialDecorator = function(id) {
-      if (::g_unlocks.getSkinNameBySkinId(id) == "default")
+      if (getSkinNameBySkinId(id) == "default")
         return ::Decorator(id, this)
       return null
     }
@@ -452,7 +454,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       if (id in cache)
         return cache[id]
 
-      let isLiveDownloaded = guidParser.isGuid(::g_unlocks.getSkinNameBySkinId(id))
+      let isLiveDownloaded = guidParser.isGuid(getSkinNameBySkinId(id))
       let isLiveItemContent = !isLiveDownloaded && guidParser.isGuid(id)
       if (!isLiveDownloaded && !isLiveItemContent)
         return null
@@ -464,7 +466,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
     canPreviewLiveDecorator = @() hasFeature("EnableLiveSkins")
 
     updateDownloadableDecoratorsInfo = function(decorator) {
-      let unitName = ::g_unlocks.getPlaneBySkinId(decorator.id)
+      let unitName = getPlaneBySkinId(decorator.id)
       let unit = ::getAircraftByName(unitName)
       if (!unit)
         return

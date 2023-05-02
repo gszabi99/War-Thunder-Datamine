@@ -16,6 +16,7 @@ let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
 let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
 } = require("%scripts/userstat/userstat.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -410,7 +411,7 @@ let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
   tableWeak = null
 
   function initScreen() {
-    ::req_unlock_by_client("view_leaderboards", false)
+    reqUnlockByClient("view_leaderboards")
     if (!this.lbModel) {
       this.lbModel = ::leaderboardModel
       this.lbModel.reset()

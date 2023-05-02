@@ -15,8 +15,11 @@ let { openPopupList } = require("%scripts/popups/popupList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { addCustomPreset, isPresetChanged } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { round_by_value } = require("%sqstd/math.nut")
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
+
+const MASS_KG_PRESIZE = 0.1
 
 let function openEditPresetName(name, okFunc) {
   ::gui_modal_editbox_wnd({
@@ -41,11 +44,13 @@ let function openEditPresetName(name, okFunc) {
   unitBlk              = null
 
   getSceneTplView = @() { presets = this.getPresetMarkup() }
+  getKgUnitsText = @(val, addMeasureUnits = true) ::g_measure_type.getTypeByName("kg", addMeasureUnits).getMeasureUnitsText(round_by_value(val, MASS_KG_PRESIZE))
 
   function initScreen() {
     this.scene.findObject("edit_wnd").width = "{0}@tierIconSize + 1@modPresetTextMaxWidth + 2@blockInterval".subst(this.originalPreset.weaponsSlotCount)
     this.unitBlk = ::get_full_unit_blk(this.unit.name)
     this.checkWeightRestrictions()
+    this.updateWeightCapacityText()
     this.presetNest = this.scene.findObject("presetNest")
     ::move_mouse_on_obj(this.presetNest.findObject("presetHeader_"))
   }
@@ -79,10 +84,21 @@ let function openEditPresetName(name, okFunc) {
     return res
   }
 
-  getPopupItemName = @(ammo, nameText) ammo > 0
-    ? "".concat(nameText, loc("ui/parentheses/space",
-      { text = $"{loc("shop/ammo")}{loc("ui/colon")}{ammo}" }))
-    : nameText
+  function getPopupItemName(weapon) {
+    let { massKg, additionalMassKg, ammo } = weapon
+    let nameText = loc($"weapons/{weapon.id}")
+
+    let countStr = $"{loc("shop/ammo")}{loc("ui/colon")}{ammo}"
+    let weightStr = $"{loc("shop/tank_mass")} {this.getKgUnitsText(additionalMassKg + massKg * (ammo || 1))}" // for containers ammo == 0 but we should count the mass
+    let detailsStr = !ammo
+      ? weightStr
+      : $"{countStr}{loc("ui/comma")}{weightStr}"
+
+    return "".concat(
+      nameText,
+      loc("ui/parentheses/space", { text = detailsStr })
+    )
+  }
 
   function getWeaponsPopupParams(weapons, tierId) {
     let res = []
@@ -90,18 +106,17 @@ let function openEditPresetName(name, okFunc) {
       let tierWeaponConfig = weapon.__merge({
         iconType = weapon.tiers?[tierId].iconType ?? weapon.iconType
       })
-      let nameText = loc($"weapons/{weapon.id}")
       let dubIdx = res.findindex(@(v) v.presetId == weapon.presetId)
       if (dubIdx != null) {
         res[dubIdx].name = "".concat(res[dubIdx].name, loc("ui/comma"),
-          this.getPopupItemName(weapon.ammo, nameText))
+          this.getPopupItemName(weapon))
         continue
       }
 
       res.append({
         id = weapon.tiers?[tierId].presetId ?? weapon.id
         presetId = weapon.presetId // To find duplicates
-        name = this.getPopupItemName(weapon.ammo, nameText)
+        name = this.getPopupItemName(weapon)
         img = getTierIcon(tierWeaponConfig, weapon.ammo)
       })
     }
@@ -197,6 +212,7 @@ let function openEditPresetName(name, okFunc) {
       this.preset = getCustomWeaponryPresetView(this.unit, this.preset, this.favoriteArr, this.availableWeapons)
       this.updatePreset()
       this.checkWeightRestrictions()
+      this.updateWeightCapacityText()
       ::move_mouse_on_obj(this.presetNest.findObject($"tier_{tierId}"))
     }, this)
     editSlotInPreset(this.preset, tierId, presetId, this.availableWeapons, this.unit, this.favoriteArr, cb)
@@ -257,6 +273,29 @@ let function openEditPresetName(name, okFunc) {
     let restrictionsText = getPresetWeightRestrictionText(this.preset, this.unitBlk)
     this.scene.findObject("weightDisbalance").setValue(restrictionsText)
     this.scene.findObject("savePreset").inactiveColor = restrictionsText != "" ? "yes" : "no"
+  }
+
+  function updateWeightCapacityText() {
+    this.scene.findObject("weightCapacity").setValue(this.getWeightCapacityText())
+  }
+
+  function getWeightCapacityText() {
+    let maxWeight = this.unitBlk?.WeaponSlots?.maxloadMass
+    if (maxWeight == null)
+      return ""
+    let totalWeightStr = this.getKgUnitsText(this.getTotalWeight(), false)
+    let maxWeightStr = this.getKgUnitsText(maxWeight)
+
+    return $"{loc("shop/tank_mass")} {totalWeightStr}{loc("ui/slash")}{maxWeightStr}"
+  }
+
+  function getTotalWeight() {
+    return this.preset.tiersView.reduce(function(tatoalWeight, tier, idx) {
+      let { additionalMassKg = 0.0 } = tier?.weaponry.tiers[idx]
+      let { amountPerTier = 1.0 } = tier?.weaponry.tiers[idx]
+      let { massKg = 0.0 } = tier?.weaponry
+      return tatoalWeight + additionalMassKg + amountPerTier * massKg
+    }, 0)
   }
 }
 

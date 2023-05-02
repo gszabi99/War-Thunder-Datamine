@@ -18,6 +18,7 @@ let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let psnSocial = require("sony.social")
+let { EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
 
 let contactsByName = {}
 
@@ -306,6 +307,6 @@ subscribe("playerProfileDialogClosed", function(r) {
   }
 
   isInFriendGroup = @() this.isInGroup(EPL_FRIENDLIST)
-  isInPSNFriends = @() this.isInGroup(::EPLX_PS4_FRIENDS)
+  isInPSNFriends = @() this.isInGroup(EPLX_PS4_FRIENDS)
   isInBlockGroup = @() this.isInGroup(EPL_BLOCKLIST)
 }

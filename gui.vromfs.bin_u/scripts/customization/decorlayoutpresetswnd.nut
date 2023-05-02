@@ -8,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 
 const PRESET_MIN_USAGE = 2
 
@@ -95,7 +96,7 @@ const PRESET_MIN_USAGE = 2
       return
     this.masterSkinId = this.skinList.values?[obj.getValue()] ?? ""
 
-    ::g_decorator.setLastSkin(this.unit.name, this.masterSkinId, false)
+    setLastSkin(this.unit.name, this.masterSkinId, false)
     ::hangar_apply_skin(this.masterSkinId)
     ::save_online_single_job(3210)
     ::save_profile(false)
@@ -186,7 +187,7 @@ return {
   open = function (unit, skinId) {
     if (!hasFeature("CustomizationLayoutPresets"))
       return
-    let skinList = ::g_decorator.getSkinsOption(unit?.name, false, false)
+    let skinList = getSkinsOption(unit?.name, false, false)
     if (!isInArray(skinId, skinList.values))
       return
     ::handlersManager.loadHandler(::gui_handlers.DecorLayoutPresets, {

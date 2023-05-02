@@ -24,6 +24,7 @@ let { getFullUnlockDescByName, getUnlockNameText,
   getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockTypeById } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -88,8 +89,10 @@ let unlockAddProgressView = {
       return v_typeName ? loc(typeName)
         : loc("progress/amount", { amount = value.tointeger() * (prize?.count ?? 1) })
     }
+    showCount = false
   }
   battlepass_add_warbonds = {
+    image = "#ui/gameuiskin#item_warbonds.avif"
     function getText(prize, _v_typeName) {
       let unlock = getUnlockById(prize.unlockAddProgress)
       if (unlock == null)
@@ -156,11 +159,11 @@ let prizeViewConfig = {
   [PRIZE_TYPE.RESOURCE] = {
     function getDescription(config) {
       let decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
-      return ::g_decorator.getDecorator(config.resource, decoratorType).getTypeDesc()
+      return getDecorator(config.resource, decoratorType).getTypeDesc()
     }
     function getTooltipConfig(prize) {
       let decoratorType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
-      let decorator = ::g_decorator.getDecorator(prize.resource, decoratorType)
+      let decorator = getDecorator(prize.resource, decoratorType)
       return { tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType) }
     }
   },
@@ -684,7 +687,7 @@ let prizeViewConfig = {
       let decoratorType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
       let locName = decoratorType.getLocName(prize.resource, true)
       let valid = decoratorType != ::g_decorator_type.UNKNOWN
-      let decorator = ::g_decorator.getDecorator(prize.resource, decoratorType)
+      let decorator = getDecorator(prize.resource, decoratorType)
       name = locName
 
       if (colored) {
@@ -710,9 +713,9 @@ let prizeViewConfig = {
     showCount = false
   }
   else if (prize?.unlockAddProgress) {
-    let viewProgreesConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
-    name = viewProgreesConfig?.getText(prize, v_typeName) ?? ""
-    showCount = false
+    let viewProgressConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
+    name = viewProgressConfig?.getText(prize, v_typeName) ?? ""
+    showCount = viewProgressConfig?.showCount ?? true
   }
   else {
     name = loc("item/unknown")
@@ -1364,7 +1367,7 @@ let prizeViewConfig = {
   if (resource && resourceType) {
     let gcb = globalCallbacks.DECORATOR_PREVIEW
     let decType = ::g_decorator_type.getTypeByResourceType(resourceType)
-    let decorator = ::g_decorator.getDecorator(resource, decType)
+    let decorator = getDecorator(resource, decType)
     if (decorator?.canPreview())
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"

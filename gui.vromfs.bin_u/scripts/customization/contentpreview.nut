@@ -17,6 +17,8 @@ let { isCollectionPrize } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
+let { getDecorator, getDecoratorByResource, getPlaneBySkinId, getSkinNameBySkinId
+} = require("%scripts/customization/decorCache.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -154,7 +156,7 @@ let function showUnitDecorator(unitId, resource, resourceType) {
   if (decoratorType == ::g_decorator_type.UNKNOWN)
     return false
 
-  let decorator = ::g_decorator.getDecorator(resource, decoratorType)
+  let decorator = getDecorator(resource, decoratorType)
   if (!decorator)
     return false
 
@@ -205,8 +207,8 @@ let function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
   }
   else {
     if (resourceType == "skin") {
-      let unitId = ::g_unlocks.getPlaneBySkinId(resource)
-      let skinId  = ::g_unlocks.getSkinNameBySkinId(resource)
+      let unitId = getPlaneBySkinId(resource)
+      let skinId  = getSkinNameBySkinId(resource)
       showUnitSkin(unitId, skinId)
     }
     else if (resourceType == "decal" || resourceType == "attachable") {
@@ -291,13 +293,13 @@ let function getDecoratorDataToUse(resource, resourceType) {
     decoratorUnit = null
     decoratorSlot = null
   }
-  let decorator = ::g_decorator.getDecoratorByResource(resource, resourceType)
+  let decorator = getDecoratorByResource(resource, resourceType)
   if (decorator == null)
     return res
 
   let decoratorType = decorator.decoratorType
   let decoratorUnit = decoratorType == ::g_decorator_type.SKINS
-    ? ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id))
+    ? ::getAircraftByName(getPlaneBySkinId(decorator.id))
     : getPlayerCurUnit()
 
   if (decoratorUnit == null || !decoratorType.isAvailable(decoratorUnit) || !decorator.canUse(decoratorUnit))
@@ -405,7 +407,7 @@ globalCallbacks.addTypes({
   }
   DECORATOR_PREVIEW = {
     onCb = function(_obj, params) {
-      let decorator = ::g_decorator.getDecoratorByResource(params?.resource, params?.resourceType)
+      let decorator = getDecoratorByResource(params?.resource, params?.resourceType)
       if (decorator && decorator.canPreview() && canStartPreviewScene(true, true))
         doDelayed(@() decorator.doPreview())
     }

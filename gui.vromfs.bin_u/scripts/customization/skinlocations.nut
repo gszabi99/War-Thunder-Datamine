@@ -9,6 +9,7 @@ let DataBlock = require("DataBlock")
 let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let stdMath = require("%sqstd/math.nut")
+let { getDecorator, getSkinNameBySkinId } = require("%scripts/customization/decorCache.nut")
 
 const MAX_LOCATION_TYPES = 64
 
@@ -83,7 +84,7 @@ let function loadSkinMasksOnce() {
 
 let function getSkinLocationsMaskByDecoratorTags(id) {
   local res = 0
-  let decorator = ::g_decorator.getDecorator(id, ::g_decorator_type.SKINS)
+  let decorator = getDecorator(id, ::g_decorator_type.SKINS)
   if (!decorator || !decorator.tags)
     return res
   foreach (t in camoTypesVisibleList)
@@ -105,7 +106,7 @@ let function getSkinLocationsMask(skinId, unitId, canBeEmpty = true) {
 
 let function getSkinLocationsMaskBySkinId(id, canBeEmpty = true) {
   loadSkinMasksOnce()
-  return getSkinLocationsMaskByFullIdAndSkinId(id, ::g_unlocks.getSkinNameBySkinId(id), canBeEmpty)
+  return getSkinLocationsMaskByFullIdAndSkinId(id, getSkinNameBySkinId(id), canBeEmpty)
 }
 
 let function getMaskByLevel(level) {

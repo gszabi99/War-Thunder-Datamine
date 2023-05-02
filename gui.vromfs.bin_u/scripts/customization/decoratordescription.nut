@@ -11,6 +11,7 @@ let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
   getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { isDefaultSkin } = require("%scripts/customization/decorCache.nut")
 
 let function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
@@ -72,7 +73,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   }
   obj.findObject("description").setValue(descText)
 
-  let isDefaultSkin = ::g_unlocks.isDefaultSkin(searchId)
+  let isDefSkin = isDefaultSkin(searchId)
   let isTrophyContent  = params?.showAsTrophyContent ?? false
   let isReceivedPrizes = params?.receivedPrizes      ?? false
 
@@ -113,7 +114,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local obtainInfo = ""
   let hasNoConds = mainCond == "" && conds == ""
-  if (!isDefaultSkin && hasNoConds) {
+  if (!isDefSkin && hasNoConds) {
     if (hasDecor) {
       obtainInfo = loc("mainmenu/itemReceived")
       if (isTrophyContent && !isReceivedPrizes)
@@ -145,7 +146,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   else
     ::showBtn("progress", false, cObj)
 
-  let iconName = isDefaultSkin ? ""
+  let iconName = isDefSkin ? ""
     : hasDecor ? "#ui/gameuiskin#favorite"
     : "#ui/gameuiskin#locked.svg"
   cObj.findObject("state")["background-image"] = iconName

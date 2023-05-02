@@ -9,6 +9,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
+let { getSkinsOption } = require("%scripts/customization/skins.nut")
 
 let options = {
   types = []
@@ -109,7 +110,7 @@ options.addTypes({
     isShowForRandomUnit = false
     isShowForUnit = @(_p) true
     getUseropt = function(p) {
-      let skinsOpt = ::g_decorator.getSkinsOption(p.unit?.name ?? "")
+      let skinsOpt = getSkinsOption(p.unit?.name ?? "")
       skinsOpt.items = skinsOpt.items.map(@(v, idx) v.__merge({
         tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[idx].id, UNLOCKABLE_SKIN) }
       }))

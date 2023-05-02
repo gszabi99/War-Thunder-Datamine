@@ -214,7 +214,7 @@ let function getWeaponNameByBlkPath(weaponBlkPath) {
   return weaponBlkPath.slice(idxStart, idxEnd)
 }
 
-let skipWeaponParams = { num = true, ammo = true, tiers = true }
+let skipWeaponParams = { num = true, ammo = true, tiers = true, additionalMassKg = true }
 let function isWeaponParamsEqual(item1, item2) {
   if (!item1?.len() || !item2?.len())
     return false
@@ -239,7 +239,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     if (!weapon?.blk)
       continue
 
-    let { weaponBlk, weaponBlkPath, bulletsCount } = getWeaponBlkParams(weapon.blk, weaponBlkCache)
+    let { weaponBlk, weaponBlkPath, bulletsCount, containerMassKg } = getWeaponBlkParams(weapon.blk, weaponBlkCache)
 
     if (weaponsFilterFunc?(weaponBlkPath, weaponBlk) == false)
       continue
@@ -301,8 +301,11 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       ammo = 0
       num = 0
       caliber = 0
+      // masses of ammo
       massKg = 0
       massLbs = 0
+      // mass of a weapon itself (container, gun, etc)
+      additionalMassKg = 0
       explosiveType = null
       explosiveMass = 0
       hasAdditionalExplosiveInfo = true
@@ -335,6 +338,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     let bulletCount = weapon?.bullets ?? bulletsCount
     let hasWeaponSlots = "slot" in weapon
+    let additionalMassKg = (weaponBlk?.mass ?? 0) + containerMassKg
     if (hasWeaponSlots) {
       item.presetId = weapon.presetId
       item.tiers[weapon.tier] <- {
@@ -343,6 +347,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
         iconType = weapon?.iconType
         amountPerTier = bulletCount
         reqModification = weapon?.reqModification
+        additionalMassKg
       }
       foreach (dependentWeapon in (weapon % "dependentWeaponPreset")) {
         let dependentWeapons = item.dependentWeaponPreset?[dependentWeapon.preset] ?? []
@@ -363,6 +368,12 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
     }
     let needBulletParams = !isInArray(currentTypeName,
       [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES])
+
+    // targeting pods
+    if (weaponBlk?.payload) {
+      item.massKg = weaponBlk.payload?.mass ?? item.massKg
+      item.massLbs = weaponBlk.payload?.mass_lbs ?? item.massLbs
+    }
 
     if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag]) {
       let itemBlk = weaponBlk[weaponTag]
@@ -564,7 +575,10 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
       }
     }
 
-    currentType.weaponBlocks[weaponName].ammo += currentTypeName == WEAPON_TYPE.CONTAINER_ITEM ? 0 : bulletCount
+    if (currentTypeName != WEAPON_TYPE.CONTAINER_ITEM) {
+      currentType.weaponBlocks[weaponName].additionalMassKg += additionalMassKg
+      currentType.weaponBlocks[weaponName].ammo += bulletCount
+    }
     currentType.weaponBlocks[weaponName].num += 1
   }
 

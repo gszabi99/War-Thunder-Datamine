@@ -18,6 +18,7 @@ let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
 let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
+let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 
 register_command(
   function () {
@@ -44,6 +45,13 @@ register_command(
     })
   },
   "ui.debug_trophy_reward_with_image")
+
+let function afterCloseTrophyWnd(configsTable) {
+  if(configsTable.len()>0)
+    ::gui_start_open_trophy(configsTable)
+  else
+    ::broadcastEvent("TrophyWndClose", {})
+}
 
 ::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {}) {
   if (configsTable.len() == 0)
@@ -101,8 +109,7 @@ register_command(
 
   params.trophyItem <- trophyItem
   params.configsArray <- configsArray
-  params.afterFunc <- @() ::gui_start_open_trophy(localConfigsTable)
-
+  params.afterFunc <- @() afterCloseTrophyWnd(localConfigsTable)
   ::gui_start_modal_wnd(::gui_handlers.trophyRewardWnd, params)
 }
 
@@ -369,7 +376,7 @@ register_command(
   function updateResourceData(resource, resourceType) {
     let decorData = getDecoratorDataToUse(resource, resourceType)
     if (decorData.decorator == null) {
-      this.decorator = ::g_decorator.getDecoratorByResource(resource, resourceType)
+      this.decorator = getDecoratorByResource(resource, resourceType)
       return
     }
 

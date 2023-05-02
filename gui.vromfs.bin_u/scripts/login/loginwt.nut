@@ -25,7 +25,6 @@ let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { isNeedFirstCountryChoice,
   isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
-let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 let { get_meta_missions_info } = require("guiMission")
 
@@ -64,7 +63,6 @@ let { get_meta_missions_info } = require("guiMission")
     return
 
   ::resetChat()
-  clear_contacts()
   ::SessionLobby.leaveRoom()
   if (::g_battle_tasks)
     ::g_battle_tasks.reset()

@@ -57,6 +57,7 @@ let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { dynamicGetLayout, dynamicGetList } = require("dynamicMission")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -2559,7 +2560,7 @@ let statTooltipColumnParamByType = {
       return
 
     ::set_presence_to_player("replay")
-    ::req_unlock_by_client("view_replay", false)
+    reqUnlockByClient("view_replay")
     ::autosave_replay()
     on_view_replay("")
     this.isInProgress = true

@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
 ::items_classes.Skin <- class extends ItemCouponBase {
@@ -22,7 +23,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
     this.addResources({ unitId = this.unitId })
   }
 
-  getDecorator = @() ::g_decorator.getDecoratorByResource(this.metaBlk?.resource, this.metaBlk?.resourceType)
+  getDecorator = @() getDecoratorByResource(this.metaBlk?.resource, this.metaBlk?.resourceType)
 
   getTagsLoc = @() this.getDecorator() ? this.getDecorator().getTagsLoc() : []
   canConsume = @() this.isInventoryItem ? (this.getDecorator() && !this.getDecorator().isUnlocked()) : false

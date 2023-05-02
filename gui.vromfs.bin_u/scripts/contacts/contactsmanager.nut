@@ -4,9 +4,16 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { isPlatformSony, isPs4XboxOneInteractionAvailable } = require("%scripts/clientState/platform.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
-let editContactsList = require("%scripts/contacts/editContacts.nut")
+let contactsWndSizes = Watched(null)
+
+const EPLX_SEARCH = "search"
+const EPLX_CLAN = "clan"
+const EPLX_PS4_FRIENDS = "ps4_friends"
+
+let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]
 
 local isDisableContactsBroadcastEvents = false
 
@@ -46,7 +53,7 @@ let function addContact(v_contact, groupName, params = {}) {
 
 let function clear_contacts() {
   ::contacts_groups = []
-  foreach (_num, group in ::contacts_groups_default)
+  foreach (_num, group in contactsGroupsDefault)
     ::contacts_groups.append(group)
   ::contacts = {}
   foreach (list in ::contacts_groups)
@@ -61,13 +68,12 @@ let function updateContactsGroups(params) {
 
   clear_contacts()
 
-  let friendsToRemove = []
   foreach (listName, list in params.groups) {
     if (list == null
         || (
-            ::contacts_groups_default.findvalue(@(gr) gr == listName) == null
+            contactsGroupsDefault.findvalue(@(gr) gr == listName) == null
             && (
-                (listName == ::EPLX_PS4_FRIENDS && !isPlatformSony)
+                (listName == EPLX_PS4_FRIENDS && !isPlatformSony)
                 || list.len() == 0
               )
           )
@@ -91,21 +97,23 @@ let function updateContactsGroups(params) {
         ::script_net_assert_once("not found contact for group", errText)
         continue
       }
-
-      if (listName == EPL_FRIENDLIST && !isPs4XboxOneInteractionAvailable(playerName)) {
-        friendsToRemove.append(player)
-        continue
-      }
     }
   }
-
-  if (friendsToRemove.len())
-    editContactsList({ [false] = friendsToRemove }, EPL_FRIENDLIST)
 
   isDisableContactsBroadcastEvents = false
 }
 
+addListenersWithoutEnv({
+  SignOut = @(_) clear_contacts()
+})
+
 return {
+  contactsWndSizes
+  EPLX_SEARCH
+  EPLX_CLAN
+  EPLX_PS4_FRIENDS
+  contactsGroupsDefault
+
   verifyContact
   addContact
   addContactGroup

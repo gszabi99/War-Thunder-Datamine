@@ -24,6 +24,7 @@ let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeap
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -410,7 +411,7 @@ local Unit = class {
     if (!this.previewSkinId) {
       this.previewSkinId = ""
       foreach (skin in this.getSkins())
-        if (::g_decorator.getDecorator(this.name + "/" + skin.name, ::g_decorator_type.SKINS)?.blk?.useByDefault)
+        if (getDecorator(this.name + "/" + skin.name, ::g_decorator_type.SKINS)?.blk?.useByDefault)
           this.previewSkinId = skin.name
     }
     return this.previewSkinId

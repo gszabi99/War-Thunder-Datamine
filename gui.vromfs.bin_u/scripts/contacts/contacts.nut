@@ -11,16 +11,10 @@ let { format } = require("string")
 let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { clear_contacts } = require("%scripts/contacts/contactsManager.nut")
+let { clear_contacts, EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
 let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
 
 ::contacts_handler <- null
-::contacts_sizes <- null
-::EPLX_SEARCH <- "search"
-::EPLX_CLAN <- "clan"
-::EPLX_PS4_FRIENDS <- "ps4_friends"
-
-::contacts_groups_default <- [::EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, /*EPL_PLAYERSMET,*/ EPL_BLOCKLIST]
 ::contacts_groups <- []
 ::contacts_players <- {}
 /*
@@ -102,7 +96,7 @@ foreach (fn in [
 ::cross_call_api.getPlayerFullName <- ::g_contacts.getPlayerFullName
 
 ::g_contacts.isFriendsGroupName <- function isFriendsGroupName(group) {
-  return group == ::EPLX_PS4_FRIENDS || group == EPL_FRIENDLIST
+  return group == EPLX_PS4_FRIENDS || group == EPL_FRIENDLIST
 }
 
 ::missed_contacts_data <- {}
@@ -385,7 +379,7 @@ foreach (fn in [
 ::getFriendsOnlineNum <- function getFriendsOnlineNum() {
   local online = 0
   if (::contacts) {
-    foreach (groupName in [EPL_FRIENDLIST, ::EPLX_PS4_FRIENDS]) {
+    foreach (groupName in [EPL_FRIENDLIST, EPLX_PS4_FRIENDS]) {
       if (!(groupName in ::contacts))
         continue
 
@@ -494,9 +488,9 @@ foreach (fn in [
 
   local isFriend = false
   if (searchByUid)
-    isFriend = ::isPlayerInContacts(uid, EPL_FRIENDLIST) || ::isPlayerInContacts(uid, ::EPLX_PS4_FRIENDS)
+    isFriend = ::isPlayerInContacts(uid, EPL_FRIENDLIST) || ::isPlayerInContacts(uid, EPLX_PS4_FRIENDS)
   else if (playerNick != "")
-    isFriend = ::isPlayerNickInContacts(playerNick, EPL_FRIENDLIST) || ::isPlayerNickInContacts(playerNick, ::EPLX_PS4_FRIENDS)
+    isFriend = ::isPlayerNickInContacts(playerNick, EPL_FRIENDLIST) || ::isPlayerNickInContacts(playerNick, EPLX_PS4_FRIENDS)
 
   return isFriend
 }

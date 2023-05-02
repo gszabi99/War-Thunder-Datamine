@@ -15,6 +15,7 @@ let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
+let { getBestSkinsList } = require("%scripts/customization/skins.nut")
 
 local skyquakePath = debug_get_skyquake_path()
 
@@ -449,7 +450,7 @@ let function debug_cur_level_auto_skins() {
     if (unit.unitType.isSkinAutoSelectAvailable()) {
       total++
       fullDebugtext += "\n" + unit.name + " -> "
-        + ::g_string.implode(::g_decorator.getBestSkinsList(unit.name, true), ", ")
+        + ::g_string.implode(getBestSkinsList(unit.name, true), ", ")
     }
 
   log(fullDebugtext)

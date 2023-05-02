@@ -9,6 +9,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockTypeById } = require("unlocks")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -84,7 +85,7 @@ let function getDecoratorActionButtonsView(decorator, decoratorType) {
 
 let getDecoratorGiftView = @(giftArray, decoratorType, params) (giftArray ?? []).map(function(giftId) {
   let locName = decoratorType.getLocName(giftId, true)
-  let decorator = ::g_decorator.getDecorator(giftId, decoratorType)
+  let decorator = getDecorator(giftId, decoratorType)
   let nameColor = decorator ? decorator.getRarityColor() : "activeTextColor"
   let isHave = params?.ignoreAvailability ? false : decoratorType.isPlayerHaveDecorator(giftId)
   let buttons = getDecoratorActionButtonsView(decorator, decoratorType)
@@ -178,7 +179,7 @@ let generateLayers = function(layersArray) {
 }
 
 let getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(function(giftId) {
-  let decorator = ::g_decorator.getDecorator(giftId, decoratorType)
+  let decorator = getDecorator(giftId, decoratorType)
   let cfg = clone ::LayersIcon.findLayerCfg("item_decal")
   cfg.img <- decoratorType.getImage(decorator)
 

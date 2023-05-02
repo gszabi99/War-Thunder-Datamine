@@ -14,8 +14,7 @@ let { disableSeenUserlogs, saveOnlineJob } = require("%scripts/userLog/userlogUt
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
 let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
-  userstatRewardTitleLocId, userstatItemsListLocId
-} = require("%scripts/userstat/userstatItemsRewards.nut")
+  userstatRewardTitleLocId, userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
@@ -26,6 +25,7 @@ let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.n
 let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -374,6 +374,9 @@ local logNameByType = {
       if (onStartAwards || !(popupMask & USERLOG_POPUP.OPEN_TROPHY))
         continue
 
+      if(::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd) != null)
+        continue
+
       let itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
       let item = ::ItemsManager.findItemById(itemId)
       let userstatItemRewardData = getUserstatItemRewardData(itemId)
@@ -599,6 +602,10 @@ local logNameByType = {
     ::gui_start_mod_tier_researched(table)
   }
 }
+
+addListenersWithoutEnv({
+  TrophyWndClose = @(_p) ::checkNewNotificationUserlogs()
+})
 
 ::checkCountry <- function checkCountry(country, _assertText, country_0_available = false) {
   if (!country || country == "")

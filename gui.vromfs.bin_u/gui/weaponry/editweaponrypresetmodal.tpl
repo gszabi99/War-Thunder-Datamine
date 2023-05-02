@@ -14,6 +14,13 @@ root {
       }
       Button_close { id:t = 'btn_back' }
     }
+    textareaNoTab {
+      id:t='weightCapacity'
+      width:t='pw'
+      margin-left:t='1@modPresetTextMaxWidth'
+      text-align:t='center'
+      smallFont:t='yes'
+    }
     tdiv {
       id:t='presetNest'
       include "%gui/weaponry/weaponryPreset.tpl"

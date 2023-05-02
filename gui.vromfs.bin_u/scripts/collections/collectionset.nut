@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
 let { ceil } = require("math")
+let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 
 local CollectionsSet = class {
   id = "" //name of config blk. not unique
@@ -24,13 +25,13 @@ local CollectionsSet = class {
 
     let prizeBlk = blk?.prize
     if ((prizeBlk?.paramCount() ?? 0) > 0)
-      this.prize = ::g_decorator.getDecoratorByResource(prizeBlk.getParamValue(0), prizeBlk.getParamName(0))
+      this.prize = getDecoratorByResource(prizeBlk.getParamValue(0), prizeBlk.getParamName(0))
 
     this.collectionItems = []
 
     let collectionItemsBlk = blk?.collectionItems
     for (local i = 0; i < (collectionItemsBlk?.paramCount() ?? 0); i++) {
-      let resource = ::g_decorator.getDecoratorByResource(
+      let resource = getDecoratorByResource(
         collectionItemsBlk.getParamValue(i), collectionItemsBlk.getParamName(i))
       if (resource != null)
         this.collectionItems.append(resource)

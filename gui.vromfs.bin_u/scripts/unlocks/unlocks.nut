@@ -7,7 +7,6 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let regexp2 = require("regexp2")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
   getUnlockMultDescByCfg, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getUnlockMultDesc,
@@ -18,7 +17,10 @@ let { getMainProgressCondition, getProgressBarData, loadMainProgressCondition,
 let { getUnlockProgress, getUnlockTypeById } = require("unlocks")
 let { getAllUnlocks, getAllUnlocksWithBlkOrder, getUnlockById
 } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, getUnlockRewardCost } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, getUnlockRewardCost, hasSpecialMultiStageLocId, hasMultiStageLocId,
+  getMultiStageLocId, hasSpecialMultiStageLocIdByStage
+} = require("%scripts/unlocks/unlocksModule.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -127,9 +129,53 @@ let function setImageByUnlockType(config, unlockBlk) {
 
   let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
   if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen()) {
-    let decorator = ::g_decorator.getDecorator(unlockBlk.id, decoratorType)
+    let decorator = getDecorator(unlockBlk.id, decoratorType)
     config.image <- decoratorType.getImage(decorator)
     config.imgRatio <- decoratorType.getRatio(decorator)
+  }
+}
+
+let function setUnlockIconCfg(cfg, blk) {
+  let icon = ::get_icon_from_unlock_blk(blk)
+  if (icon)
+    cfg.image = icon
+  else
+    setImageByUnlockType(cfg, blk)
+}
+
+let function setRewardIconCfg(cfg, blk, unlocked) {
+  if (!blk?.userLogId)
+    return
+
+  let item = ::ItemsManager.findItemById(blk.userLogId)
+  if (item?.iType != itemType.TROPHY)
+    return
+
+  let content = item.getContent()
+  if (content.len() > 1) {
+    cfg.iconData <- item.getIcon()
+    cfg.isTrophyLocked <- !unlocked
+    if (!unlocked)
+      cfg.trophyId <- item.id
+    return
+  }
+
+  let prize = item.getTopPrize()
+  if (prize?.unlock && getUnlockTypeById(prize.unlock) ==  UNLOCKABLE_PILOT) {
+    cfg.image <- $"#ui/images/avatars/{prize.unlock}"
+    cfg.isTrophyLocked <- !unlocked
+    return
+  }
+
+  if (prize?.resourceType && prize?.resource) {
+    let decType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+    let decorator = getDecorator(prize.resource, decType)
+    let image = decType.getImage(decorator)
+    if (image == "")
+      return
+
+    cfg.image <- image
+    cfg.isTrophyLocked <- !unlocked
   }
 }
 
@@ -190,9 +236,9 @@ let function setImageByUnlockType(config, unlockBlk) {
 
   let unlocked = ::is_unlocked_scripted(config.unlockType, id)
   if (config.image == "")
-    ::g_unlocks.setRewardIconCfg(config, blk, unlocked)
+    setRewardIconCfg(config, blk, unlocked)
   if (config.image == "" && !config?.iconData)
-    ::g_unlocks.setUnlockIconCfg(config, blk)
+    setUnlockIconCfg(config, blk)
 
   setDescriptionByUnlockType(config, blk)
 
@@ -334,7 +380,7 @@ let function setImageByUnlockType(config, unlockBlk) {
   let unlockType = ::get_unlock_type(unlockBlk.type)
   let decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
   if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen()) {
-    let decorator = ::g_decorator.getDecorator(unlockBlk.id, decoratorType)
+    let decorator = getDecorator(unlockBlk.id, decoratorType)
     return decoratorType.getImage(decorator)
   }
 
@@ -372,7 +418,7 @@ let function setImageByUnlockType(config, unlockBlk) {
   if ("similarAwardNamesList" in config) {
     let maxStreak = getTblValue("maxStreak", config.similarAwardNamesList, 1)
     local repeatText = loc("streaks/rewarded_count", { count = colorize("activeTextColor", amount) })
-    if (!::g_unlocks.hasSpecialMultiStageLocId(config.id, maxStreak))
+    if (!hasSpecialMultiStageLocId(config.id, maxStreak))
       repeatText = format(loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
     obj.findObject("mult_awards_text").setValue(repeatText)
   }
@@ -550,7 +596,7 @@ let function setImageByUnlockType(config, unlockBlk) {
       res.image = decoratorType.userlogPurchaseIcon
       res.name = decoratorType.getLocName(id)
 
-      let decorator = ::g_decorator.getDecorator(id, decoratorType)
+      let decorator = getDecorator(id, decoratorType)
       if (decorator && !::is_in_loading_screen()) {
         res.image = decoratorType.getImage(decorator)
         res.descrImage <- res.image
@@ -621,8 +667,8 @@ let function setImageByUnlockType(config, unlockBlk) {
           name = loc("streaks/" + id + "/multiple", name)
           desc = loc("streaks/" + id + "/multiple/desc", desc)
         }
-        else if (::g_unlocks.isUnlockMultiStageLocId(id)) {
-          let stageId = ::g_unlocks.getMultiStageId(id, maxStreak)
+        else if (hasMultiStageLocId(id)) {
+          let stageId = getMultiStageLocId(id, maxStreak)
           name = loc("streaks/" + stageId)
           iconStyle = "streak_" + stageId
         }
@@ -936,16 +982,16 @@ let function setImageByUnlockType(config, unlockBlk) {
     local found = false
     if ("unlockType" in award && award.unlockType == UNLOCKABLE_STREAK) {
       let unlockId = award.unlockId
-      let isMultiStageLoc = ::g_unlocks.isUnlockMultiStageLocId(unlockId)
+      let isMultiStageLoc = hasMultiStageLocId(unlockId)
       let stage = getTblValue("stage", award, 0)
-      let hasSpecialMultiStageLoc = ::g_unlocks.hasSpecialMultiStageLocIdByStage(unlockId, stage)
+      let hasSpecialMultiStageLoc = hasSpecialMultiStageLocIdByStage(unlockId, stage)
       foreach (approvedAward in res) {
         if (unlockId != approvedAward.unlockId)
           continue
         if (isMultiStageLoc) {
           let approvedStage = getTblValue("stage", approvedAward, 0)
           if (stage != approvedStage
-            && (hasSpecialMultiStageLoc || ::g_unlocks.hasSpecialMultiStageLocIdByStage(unlockId, approvedStage)))
+            && (hasSpecialMultiStageLoc || hasSpecialMultiStageLocIdByStage(unlockId, approvedStage)))
            continue
         }
         approvedAward.amount++
@@ -978,109 +1024,4 @@ let function setImageByUnlockType(config, unlockBlk) {
       break
     }
   return false
-}
-
-::req_unlock_by_client <- function req_unlock_by_client(id, disableLog) {
-  let unlock = getUnlockById(id)
-  let featureName =  getTblValue("check_client_feature", unlock, null)
-  if (featureName == null || hasFeature(featureName))
-      return ::req_unlock(id, disableLog)
-
-  return -1
-}
-
-::g_unlocks <- {
-  unitNameReg = regexp2(@"[.*/].+")
-  skinNameReg = regexp2(@"^[^/]*/")
-
-  multiStageLocId =
-  {
-    multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }
-    multi_kill_ship =   { [2] = "double_kill_ship",   [3] = "triple_kill_ship",   def = "multi_kill_ship" }
-    multi_kill_ground = { [2] = "double_kill_ground", [3] = "triple_kill_ground", def = "multi_kill_ground" }
-  }
-
-  function setRewardIconCfg(cfg, blk, unlocked) {
-    if (!blk?.userLogId)
-      return
-
-    let item = ::ItemsManager.findItemById(blk.userLogId)
-    if (item?.iType != itemType.TROPHY)
-      return
-
-    let content = item.getContent()
-    if (content.len() > 1) {
-      cfg.iconData <- item.getIcon()
-      cfg.isTrophyLocked <- !unlocked
-      if (!unlocked)
-        cfg.trophyId <- item.id
-      return
-    }
-
-    let prize = item.getTopPrize()
-    if (prize?.unlock && getUnlockTypeById(prize.unlock) ==  UNLOCKABLE_PILOT) {
-      cfg.image <- $"#ui/images/avatars/{prize.unlock}"
-      cfg.isTrophyLocked <- !unlocked
-      return
-    }
-
-    if (prize?.resourceType && prize?.resource) {
-      let decType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
-      let decorator = ::g_decorator.getDecorator(prize.resource, decType)
-      let image = decType.getImage(decorator)
-      if (image == "")
-        return
-
-      cfg.image <- image
-      cfg.isTrophyLocked <- !unlocked
-    }
-  }
-
-  function setUnlockIconCfg(cfg, blk) {
-    let icon = ::get_icon_from_unlock_blk(blk)
-    if (icon)
-      cfg.image = icon
-    else
-      setImageByUnlockType(cfg, blk)
-  }
-}
-
-::g_unlocks.getPlaneBySkinId <- function getPlaneBySkinId(id) {
-  return this.unitNameReg.replace("", id)
-}
-
-::g_unlocks.getSkinNameBySkinId <- function getSkinNameBySkinId(id) {
-  return this.skinNameReg.replace("", id)
-}
-
-::g_unlocks.getSkinId <- function getSkinId(unitName, skinName) {
-  return unitName + "/" + skinName
-}
-
-::g_unlocks.isDefaultSkin <- function isDefaultSkin(id) {
-  return this.getSkinNameBySkinId(id) == "default"
-}
-
-::g_unlocks.isUnlockMultiStageLocId <- function isUnlockMultiStageLocId(unlockId) {
-  return unlockId in this.multiStageLocId
-}
-
-::g_unlocks.getUnlockRepeatInARow <- function getUnlockRepeatInARow(unlockId, stage) {
-  return stage + (getUnlockById(unlockId)?.stage.param ?? 0)
-}
-
-//has not default multistage id. Used to combine similar unlocks.
-::g_unlocks.hasSpecialMultiStageLocId <- function hasSpecialMultiStageLocId(unlockId, repeatInARow) {
-  return this.isUnlockMultiStageLocId(unlockId) && repeatInARow in this.multiStageLocId[unlockId]
-}
-
-::g_unlocks.hasSpecialMultiStageLocIdByStage <- function hasSpecialMultiStageLocIdByStage(unlockId, stage) {
-  return this.hasSpecialMultiStageLocId(unlockId, this.getUnlockRepeatInARow(unlockId, stage))
-}
-
-::g_unlocks.getMultiStageId <- function getMultiStageId(unlockId, repeatInARow) {
-  if (!this.isUnlockMultiStageLocId(unlockId))
-    return unlockId
-  let config = this.multiStageLocId[unlockId]
-  return getTblValue(repeatInARow, config) || getTblValue("def", config, unlockId)
 }

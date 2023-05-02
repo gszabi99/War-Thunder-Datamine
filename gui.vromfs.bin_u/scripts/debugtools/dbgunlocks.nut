@@ -13,6 +13,7 @@ let { getFullUnlockDesc, getUnlockCostText,
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { register_command } = require("console")
 let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
+let { multiStageLocIdConfig, hasMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
 let json = require("%sqstd/json.nut")
 
 let function debug_show_test_unlocks(chapter = "test", group = null) {
@@ -38,14 +39,14 @@ let function debug_show_all_streaks() {
       continue
     total++
 
-    if (!::g_unlocks.isUnlockMultiStageLocId(unlock.id)) {
+    if (!hasMultiStageLocId(unlock.id)) {
       let data = ::build_log_unlock_data({ id = unlock.id })
       data.title = unlock.id
       awardsList.append(data)
     }
     else {
       let paramShift = unlock?.stage.param ?? 0
-      foreach (key, _stageId in ::g_unlocks.multiStageLocId[unlock.id]) {
+      foreach (key, _stageId in multiStageLocIdConfig[unlock.id]) {
         let stage = ::is_numeric(key) ? key : 99
         let data = ::build_log_unlock_data({ id = unlock.id, stage = stage - paramShift })
         data.title = unlock.id + " / " + stage

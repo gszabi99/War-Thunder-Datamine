@@ -22,6 +22,7 @@ let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues,
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
 
 ::g_battle_tasks <- null
 
@@ -633,7 +634,7 @@ let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
     foreach (idx, unlockId in config.names) {
       let isEven = idx % 2 == 0
       if (config.type == "char_resources") {
-        let decorator = ::g_decorator.getDecoratorById(unlockId)
+        let decorator = getDecoratorById(unlockId)
         if (decorator && decorator.isVisible())
           res.append({
             isEven

@@ -49,6 +49,9 @@ let { onSpectatorMode, switchSpectatorTarget,
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { quit_to_debriefing } = require("guiMission")
+let { setCurSkinToHangar, getRealSkin, getSkinsOption
+} = require("%scripts/customization/skins.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -1026,7 +1029,7 @@ enum ESwitchSpectatorTarget {
     let obj = this.scene.findObject("skin")
     if (unit == null || !checkObj(obj))
       return null
-    return ::g_decorator.getSkinsOption(unit.name).values?[obj.getValue()]
+    return getSkinsOption(unit.name).values?[obj.getValue()]
   }
 
   function doSelectAircraftSkipAmmo() {
@@ -1047,7 +1050,7 @@ enum ESwitchSpectatorTarget {
 
     this.requestAircraftAndWeapon(requestData)
     if (this.scene.findObject("skin").getValue() > 0)
-      ::req_unlock_by_client("non_standard_skin", false)
+      reqUnlockByClient("non_standard_skin")
 
     actionBarInfo.cacheActionDescs(requestData.name)
 
@@ -1073,8 +1076,8 @@ enum ESwitchSpectatorTarget {
 
     let crew = this.getCurCrew()
     let weapon = getLastWeapon(air.name)
-    let skin = ::g_decorator.getRealSkin(air.name)
-    ::g_decorator.setCurSkinToHangar(air.name)
+    let skin = getRealSkin(air.name)
+    setCurSkinToHangar(air.name)
     if (!weapon || !skin) {
       log("no weapon or skin selected?")
       return null

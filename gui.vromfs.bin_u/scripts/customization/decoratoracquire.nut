@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/decorCache.nut")
 
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
@@ -15,8 +16,8 @@ let function askPurchaseDecorator(decorator, onSuccessCb) {
   local unitName = ""
   local decoratorId = decorator.id
   if (decoratorType == ::g_decorator_type.SKINS) {
-    unitName = ::g_unlocks.getPlaneBySkinId(decoratorId)
-    decoratorId = ::g_unlocks.getSkinNameBySkinId(decoratorId)
+    unitName = getPlaneBySkinId(decoratorId)
+    decoratorId = getSkinNameBySkinId(decoratorId)
   }
   let msgText = ::warningIfGold(loc("shop/needMoneyQuestion_purchaseDecal",
     { purchase = decorator.getName(),

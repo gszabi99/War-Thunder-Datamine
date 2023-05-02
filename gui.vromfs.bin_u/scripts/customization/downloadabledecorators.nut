@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let guidParser = require("%scripts/guidParser.nut")
 let DataBlock = require("DataBlock")
+let { getDecorator, getSkinId } = require("%scripts/customization/decorCache.nut")
 
 let downloadableSkins = {} // { unitName = { skinIds = [], suggestedSkinIds = {} } }
 
@@ -44,8 +45,8 @@ let function updateDownloadableSkins(unitName) {
       if (isLive)
         item.addResourcesByUnitId(unitName)
 
-      let skinId = isLive ? ::g_unlocks.getSkinId(unitName, resource) : resource
-      ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)?.setCouponItemdefId(itemdefId)
+      let skinId = isLive ? getSkinId(unitName, resource) : resource
+      getDecorator(skinId, ::g_decorator_type.SKINS)?.setCouponItemdefId(itemdefId)
 
       res.skinIds.append(itemdefId)
       if (blk?.needShowPreviewSuggestion)

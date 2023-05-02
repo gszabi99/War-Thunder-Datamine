@@ -14,13 +14,15 @@ let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlo
   getUnlockNameText, getLocForBitValues, getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
+let { isBitModeType, getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost, debugLogVisibleByTimeInfo
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
+let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 
 let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N
 
@@ -63,22 +65,24 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       return
 
     let unlockConfig = ::build_conditions_config(unlockBlk)
-    ::build_unlock_desc(unlockConfig)
+    let subunlockCfg = getSubunlockCfg(unlockConfig.conditions)
+    ::build_unlock_desc(subunlockCfg ?? unlockConfig)
+    unlockObj.id = unlockConfig.id
 
     this.fillUnlockTitle(unlockConfig, unlockObj)
     this.fillUnlockImage(unlockConfig, unlockObj)
-    this.fillUnlockProgressBar(unlockConfig, unlockObj)
     this.fillReward(unlockConfig, unlockObj)
-    this.fillUnlockConditions(unlockConfig, unlockObj, context)
     this.updateLockStatus(unlockConfig, unlockObj)
+    this.updateProgress(subunlockCfg ?? unlockConfig, unlockObj)
+    this.fillUnlockConditions(subunlockCfg ?? unlockConfig, unlockObj, context)
 
-    let closeBtn = unlockObj.findObject("removeFromFavoritesBtn")
-    if (checkObj(closeBtn))
-      closeBtn.unlockId = unlockBlk.id
+    unlockObj.findObject("removeFromFavoritesBtn").unlockId = unlockBlk.id
+    unlockObj.findObject("snapshotBtn").unlockId = unlockBlk.id
 
     let tooltipObj = unlockObj.findObject("unlock_tooltip")
     tooltipObj.tooltipId = UNLOCK_SHORT.getTooltipId(unlockConfig.id, {
       showChapter = true
+      showSnapshot = true
     })
   }
 
@@ -131,6 +135,27 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
       ? makeConfigStr(SEEN.MANUAL_UNLOCKS, cfg.id)
       : ""
     obj.findObject("unseen_icon").setValue(unseenCfg)
+  }
+
+  function updateProgress(unlockCfg, unlockObj) {
+    let progressData = unlockCfg.getProgressBarData()
+    let hasProgress = progressData.show && !::is_unlocked_scripted(-1, unlockCfg.id)
+
+    let snapshot = getUnlockProgressSnapshot(unlockCfg.id)
+    let hasSnapshot = (snapshot != null) && hasProgress
+    let snapshotObj = unlockObj.findObject("progress_snapshot")
+    snapshotObj.show(hasSnapshot)
+    if (hasSnapshot)
+      snapshotObj.setValue(min(snapshot.progress, progressData.value))
+
+    let progressObj = unlockObj.findObject("progress_bar")
+    progressObj.show(hasProgress)
+    if (hasProgress) {
+      progressObj.hasSnapshot = hasSnapshot ? "yes" : "no"
+      progressObj.setValue(progressData.value)
+    }
+
+    unlockObj.findObject("snapshotBtn").show(hasProgress)
   }
 
   function updateLockStatus(cfg, obj) {
@@ -191,7 +216,7 @@ let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage
                                 ("image" in unlockConfig && unlockConfig.image != "" ? "" : "unlockImg{}"))
       hiddenContent += format("unlocked:t='%s'; ", (isUnlocked ? "yes" : "no"))
       if (unlockConfig.type == "char_resources") {
-        let decorator = ::g_decorator.getDecoratorById(unlockConfig.names[i])
+        let decorator = getDecoratorById(unlockConfig.names[i])
         if (decorator)
           hiddenContent += DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
       }

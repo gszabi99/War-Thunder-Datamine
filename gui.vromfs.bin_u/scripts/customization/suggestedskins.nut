@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let DataBlock = require("DataBlock")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"
@@ -14,7 +15,7 @@ const SKIN_DELAY_TIME_SEC = 7776000     //90 days
 
 let getSaveId = @(unitName) $"{SUGGESTED_SKIN_SAVE_ID}{unitName}"
 
-let getSkin = @(skinId) ::g_decorator.getDecorator(skinId, ::g_decorator_type.SKINS)
+let getSkin = @(skinId) getDecorator(skinId, ::g_decorator_type.SKINS)
 
 let function getSeenSuggestedSkins(unitName) {
   let seenSkinsList = ::load_local_account_settings(getSaveId(unitName))

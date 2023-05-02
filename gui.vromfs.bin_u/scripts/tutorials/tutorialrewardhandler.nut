@@ -9,7 +9,7 @@ let DataBlock = require("DataBlock")
 let { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialRewardData
 } = require("%scripts/tutorials/tutorialsData.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { getMoneyFromDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
@@ -153,7 +153,7 @@ let function tryOpenTutorialRewardHandler() {
   if (tutorialRewardData.value.presetFilename != "")
     ::apply_joy_preset_xchange(tutorialRewardData.value.presetFilename)
 
-  let decorator = ::g_decorator.getDecoratorByResource(
+  let decorator = getDecoratorByResource(
     tutorialRewardData.value.resource,
     tutorialRewardData.value.resourceType)
   let hasDecoratorUnlocked = !tutorialRewardData.value.isResourceUnlocked && (decorator?.isUnlocked() ?? false)

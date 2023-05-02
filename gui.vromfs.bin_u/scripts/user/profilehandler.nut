@@ -51,6 +51,8 @@ let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites,
   toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
+let { getCachedDataByType, getDecorator, getDecoratorById, getCachedDecoratorsListByType, getPlaneBySkinId
+} = require("%scripts/customization/decorCache.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -445,7 +447,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     else if (sheet == "UnlockDecal") {
       this.showSheetDiv("decals", true)
 
-      let decorCache = ::g_decorator.getCachedDataByType(::g_decorator_type.DECALS)
+      let decorCache = getCachedDataByType(::g_decorator_type.DECALS)
       let view = { items = [] }
       foreach (categoryId in decorCache.categories) {
         let groups = decorCache.catToGroupNames[categoryId]
@@ -699,7 +701,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       return null
 
     let decalId = listObj.getChild(idx).id
-    return ::g_decorator.getDecorator(decalId, ::g_decorator_type.DECALS)
+    return getDecorator(decalId, ::g_decorator_type.DECALS)
   }
 
   function onPageChange(_obj) {
@@ -794,8 +796,8 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function recacheSkins() {
     this.skinsCache = {}
-    foreach (skinName, decorator in ::g_decorator.getCachedDecoratorsListByType(::g_decorator_type.SKINS)) {
-      let unit = ::getAircraftByName(::g_unlocks.getPlaneBySkinId(skinName))
+    foreach (skinName, decorator in getCachedDecoratorsListByType(::g_decorator_type.SKINS)) {
+      let unit = ::getAircraftByName(getPlaneBySkinId(skinName))
       if (!unit)
         continue
 
@@ -952,7 +954,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     let itemsView = []
     let comma = loc("ui/comma")
     foreach (decorator in this.getSkinsCache(this.curFilter, this.curSubFilter, this.getCurrentOwnType())) {
-      let unitId = ::g_unlocks.getPlaneBySkinId(decorator.id)
+      let unitId = getPlaneBySkinId(decorator.id)
 
       itemsView.append({
         id = decorator.id
@@ -1050,11 +1052,11 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function getUnitBySkin(skinName) {
-    return ::getAircraftByName(::g_unlocks.getPlaneBySkinId(skinName))
+    return ::getAircraftByName(getPlaneBySkinId(skinName))
   }
 
   function getDecalsMarkup(categoryId, groupId) {
-    let decorCache = ::g_decorator.getCachedDataByType(::g_decorator_type.DECALS)
+    let decorCache = getCachedDataByType(::g_decorator_type.DECALS)
     let decorators = decorCache.catToGroups?[categoryId][groupId]
     if (!decorators || decorators.len() == 0)
       return ""
@@ -1198,13 +1200,13 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function fillSkinDescr(name) {
-    let unitName = ::g_unlocks.getPlaneBySkinId(name)
+    let unitName = getPlaneBySkinId(name)
     let unitNameLoc = (unitName != "") ? ::getUnitName(unitName) : ""
     let unlockBlk = getUnlockById(name)
     let config = unlockBlk ? ::build_conditions_config(unlockBlk) : null
     let progressData = config?.getProgressBarData()
     let canAddFav = !!unlockBlk
-    let decorator = ::g_decorator.getDecoratorById(name)
+    let decorator = getDecoratorById(name)
 
     let skinView = {
       unitName = unitNameLoc
@@ -1491,7 +1493,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       return
 
     let skinId = list.getChild(index).id
-    let decorator = ::g_decorator.getDecoratorById(skinId)
+    let decorator = getDecoratorById(skinId)
     this.initSkinId = skinId
     if (decorator && canStartPreviewScene(true, true))
       this.guiScene.performDelayed(this, @() decorator.doPreview())

@@ -6,8 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
-// local base64 = require("base64")
-
+let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 
@@ -38,7 +37,7 @@ let pendingSessions = persist("pendingSessions", @() Watched({}))
 let postponedInvitations = persist("postponedInvitations", @() Watched([]))
 
 let getLocalizedTextInfo = function(locIdsArray) {
-  let textsData = ::g_localization.getFilledFeedTextByLang(locIdsArray)
+  let textsData = getFilledFeedTextByLang(locIdsArray)
   let res = {}
   foreach (block in textsData)
     res[block.abbreviation] <- block.text

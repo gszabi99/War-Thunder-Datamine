@@ -22,6 +22,8 @@ let { getMarkingPresetsById, getCustomLocalizationPresets,
   getEffectOnOpenChestPresetById } = require("%scripts/items/workshop/workshop.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { select_training_mission } = require("guiMission")
+let { getDecorator, buildLiveDecoratorFromResource
+} = require("%scripts/customization/decorCache.nut")
 
 let emptyBlk = DataBlock()
 
@@ -366,7 +368,7 @@ local ItemExternal = class extends ::BaseItem {
     if (!this.metaBlk || !this.metaBlk?.resource || !this.metaBlk?.resourceType)
       return ""
     let decoratorType = ::g_decorator_type.getTypeByResourceType(this.metaBlk.resourceType)
-    let decorator = ::g_decorator.getDecorator(this.metaBlk.resource, decoratorType)
+    let decorator = getDecorator(this.metaBlk.resource, decoratorType)
     if (!decorator)
       return ""
     return "\n".join([
@@ -704,7 +706,7 @@ local ItemExternal = class extends ::BaseItem {
     if (!guidParser.isGuid(resource))
       return
 
-    ::g_decorator.buildLiveDecoratorFromResource(this.metaBlk.resource, this.metaBlk.resourceType, this.itemDef, params)
+    buildLiveDecoratorFromResource(this.metaBlk.resource, this.metaBlk.resourceType, this.itemDef, params)
   }
 
   function getRelatedRecipes() {

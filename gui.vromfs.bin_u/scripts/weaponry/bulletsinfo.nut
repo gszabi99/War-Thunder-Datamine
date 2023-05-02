@@ -23,10 +23,12 @@ let { eachParam } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 
 let BULLET_TYPE = {
-  ROCKET_AIR     = "rocket_aircraft"
-  AAM            = "aam"
-  TORPEDO        = "torpedo"
-  ATGM_TANK      = "atgm_tank"
+  ROCKET_AIR          = "rocket_aircraft"
+  AAM                 = "aam"
+  TORPEDO             = "torpedo"
+  ATGM_TANK           = "atgm_tank"
+  AP_TANK             = "ap_tank"
+  ATGM_TANDEM_TANK    = "atgm_tandem_tank"
 }
 
 let DEFAULT_PRIMARY_BULLETS_INFO = {

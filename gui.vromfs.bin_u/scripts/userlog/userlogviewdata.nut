@@ -25,6 +25,7 @@ let { money_type } = require("%scripts/money.nut")
 let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -65,7 +66,7 @@ let function getDecoratorUnlock(resourceId, resourceType) {
     unlock.desc = decoratorType.getLocDesc(unlock.id)
     unlock.image = decoratorType.userlogPurchaseIcon
 
-    let decorator = ::g_decorator.getDecorator(unlock.id, decoratorType)
+    let decorator = getDecorator(unlock.id, decoratorType)
     if (decorator && !::is_in_loading_screen()) {
       unlock.descrImage <- decoratorType.getImage(decorator)
       unlock.descrImageRatio <- decoratorType.getRatio(decorator)

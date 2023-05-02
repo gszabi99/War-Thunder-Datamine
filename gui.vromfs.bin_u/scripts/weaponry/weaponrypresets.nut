@@ -136,17 +136,30 @@ let function getSlotsWeaponsForEditPreset(unitBlk) {
   return res
 }
 
-let function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, bullets = null) {
+let function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, params = {}) {
   let self = callee()
+  let { containersCount = 1, containerMassKg = 0 } = params
+  local { bulletsCount = 1 } = params
+
   let weaponBlk = weaponBlkCache?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
-  bullets = (bullets ?? 1) * (weaponBlk?.bullets ?? 1)
   weaponBlkCache[weaponBlkPath] <- weaponBlk
-  if ((weaponBlk?.container ?? false) && ("blk" in weaponBlk))
-    return self(weaponBlk.blk, weaponBlkCache, bullets)
+
+  bulletsCount = bulletsCount * (weaponBlk?.bullets ?? 1)
+  if (weaponBlk?.container && ("blk" in weaponBlk)) {
+    let containerParams = {
+      bulletsCount,
+      containersCount = weaponBlk?.bullets ?? 1
+      containerMassKg = containerMassKg + (weaponBlk?.mass ?? 0) * containersCount
+    }
+
+    return self(weaponBlk.blk, weaponBlkCache, containerParams)
+  }
+
   return {
     weaponBlk
     weaponBlkPath
-    bulletsCount = bullets
+    bulletsCount
+    containerMassKg
   }
 }
 

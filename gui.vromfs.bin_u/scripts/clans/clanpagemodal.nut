@@ -22,6 +22,7 @@ let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -33,7 +34,7 @@ let clan_member_list = [
     lbDataType = lbDataType.NUM
     field = @() hasFeature("ClanVehicles") ? "totalPeriodActivity" : "totalActivity"
     showByFeature = "ClanActivity"
-    getCellTooltipText = function(_data) { return loc("clan/personal/" + this.id + "/cell/desc") }
+    getCellTooltipText = function(_data) { return loc($"clan/personal/{this.id}/cell/desc") }
     getTooltipText  = @(depth) loc("clan/personal/activity/desc",
       { historyDepth = depth })
   }
@@ -42,7 +43,7 @@ let clan_member_list = [
     lbDataType = lbDataType.ROLE,
     sortId = "roleRank"
     sortPrepare = function(member) { member[this.sortId] <- ::clan_get_role_rank(member.role) }
-    getCellTooltipText = function(data) { return this.lbDataType.getPrimaryTooltipText(getTblValue(this.id, data)) }
+    getCellTooltipText = function(data) { return this.lbDataType.getPrimaryTooltipText(data?[this.id]) }
   }
   { id = "date", lbDataType = lbDataType.DATE }
 ]
@@ -65,7 +66,7 @@ foreach (idx, item in clan_member_list) {
       clan_member_list[idx][param] <- value
 
   if (!("tooltip" in item))
-    item.tooltip <- "#clan/personal/" + item.id + "/desc"
+    item.tooltip <- $"#clan/personal/{item.id}/desc"
 }
 
 ::showClanPage <- function showClanPage(id, name, tag) {
@@ -213,29 +214,26 @@ foreach (idx, item in clan_member_list) {
     this.scene.findObject("clan_loading").show(false)
 
     this.showSceneBtn("clan-icon", true)
-
     this.fillClanInfoRow("clan-region",
-      this.clanData.region != "" ? loc("clan/clan_region") + loc("ui/colon") + this.clanData.region : "",
+      this.clanData.region != "" ? $"{loc("clan/clan_region")}{loc("ui/colon")}{this.clanData.region}" : "",
       "ClanRegions")
     this.fillClanInfoRow("clan-about",
       this.clanData.desc != "" || this.clanData.announcement != ""
-        ? ::g_string.implode(
-            [this.clanData.desc, hasFeature("ClanAnnouncements") ? this.clanData.announcement : ""],
-            "\n")
+        ? "\n".join([this.clanData.desc, hasFeature("ClanAnnouncements") ? this.clanData.announcement : ""], true)
         : "")
     this.fillClanInfoRow("clan-motto",
-      this.clanData.slogan != "" ? loc("clan/clan_slogan") + loc("ui/colon") + this.clanData.slogan : "")
+      this.clanData.slogan != "" ? $"{loc("clan/clan_slogan")}{loc("ui/colon")}{this.clanData.slogan}" : "")
 
     this.fillCreatorData()
 
     this.scene.findObject("nest_lock_clan_req").clan_locked = !clanMembershipAcceptance.getValue(this.clanData) ? "yes" : "no"
 
         // Showing clan name in special header object if possible.
-    let clanName = this.clanData.tag + " " + this.clanData.name
+    let clanName = $"{this.clanData.tag} {this.clanData.name}"
     let headerTextObj = this.scene.findObject("clan_page_header_text")
     let clanTitleObj = this.scene.findObject("clan-title")
     if (checkObj(headerTextObj)) {
-      let locId = "clan/clanInfo/" + this.clanData.clanType.getTypeName()
+      let locId = $"clan/clanInfo/{this.clanData.clanType.getTypeName()}"
       let text = colorize(this.clanData.clanType.color, loc(locId, { clanName = clanName }))
       headerTextObj.setValue(text)
       clanTitleObj.setValue("")
@@ -244,12 +242,12 @@ foreach (idx, item in clan_member_list) {
       clanTitleObj.setValue(colorize(this.clanData.clanType.color, clanName))
 
     let clanDate = this.clanData.getCreationDateText()
-    let dateText = loc("clan/creationDate") + " " + colorize("activeTextColor", clanDate)
+    let dateText = $"{loc("clan/creationDate")} {colorize("activeTextColor", clanDate)}"
 
     let membersCountText = ::g_clans.getClanMembersCountText(this.clanData)
-    let countText = loc("clan/memberListTitle")
-      + loc("ui/parentheses/space", { text = colorize("activeTextColor", membersCountText) })
-    this.scene.findObject("clan-memberCount-date").setValue(::g_string.implode([countText, dateText], " "))
+    let countText = "".concat(loc("clan/memberListTitle"),
+      loc("ui/parentheses/space", { text = colorize("activeTextColor", membersCountText) }))
+    this.scene.findObject("clan-memberCount-date").setValue(" ".join([countText, dateText], true))
 
     this.fillClanRequirements()
 
@@ -285,15 +283,15 @@ foreach (idx, item in clan_member_list) {
 
     local text = ""
     if (isVisible) {
-      text += loc("clan/lastChanges") + loc("ui/colon")
       let color = ::my_user_id_str == this.clanData.changedByUid ? "mainPlayerColor" : "activeTextColor"
-      text += ::g_string.implode(
+      text = "".concat(loc("clan/lastChanges"), loc("ui/colon"),
+      loc("ui/comma").join(
         [
           colorize(color, getPlayerName(this.clanData.changedByNick))
           this.clanData.getInfoChangeDateText()
-        ]
-        loc("ui/comma")
-      )
+        ],
+        true
+      ))
     }
     obj.setValue(text)
   }
@@ -357,9 +355,8 @@ foreach (idx, item in clan_member_list) {
 
     let showRequestsBtn = this.scene.findObject("btn_showRequests")
     if (checkObj(showRequestsBtn)) {
-      let isShow = getTblValue("btn_showRequests", buttonsList, false)
-      showRequestsBtn.setValue(loc("clan/btnShowRequests") + " (" + this.clanData.candidates.len() + ")")
-      showRequestsBtn.wink = isShow ? "yes" : "no"
+      showRequestsBtn.setValue($"{loc("clan/btnShowRequests")} ({this.clanData.candidates.len()})")
+      showRequestsBtn.wink = buttonsList.btn_showRequests ? "yes" : "no"
     }
 
     if (showClanSeasonRewards) {
@@ -376,11 +373,11 @@ foreach (idx, item in clan_member_list) {
           foreach (m in medals)
             if (clanRewardsModal.isRewardVisible(m, clanData))
               if (rest-- > 0)
-                markup += "layeredIconContainer { size:t='@clanMedalSizeMin,"
-                  + "@clanMedalSizeMin'; overflow:t='hidden' "
-                  + ::LayersIcon.getIconData(m.iconStyle, null, null, null, m.iconParams, m.iconConfig)
-                  + "}"
-
+                markup = "".concat(markup,
+                  "layeredIconContainer { size:t='@clanMedalSizeMin,",
+                  "@clanMedalSizeMin'; overflow:t='hidden' ",
+                  ::LayersIcon.getIconData(m.iconStyle, null, null, null, m.iconParams, m.iconConfig),
+                  "}")
           this.guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
         })(containerObj, this.clanData))
     }
@@ -408,7 +405,7 @@ foreach (idx, item in clan_member_list) {
 
     let eloTextObj = this.scene.findObject("clan_elo_value")
     if (checkObj(eloTextObj)) {
-      let clanElo = this.clanData.astat?[::ranked_column_prefix + difficulty.clanDataEnding] ?? 0
+      let clanElo = this.clanData.astat?[$"{::ranked_column_prefix}{difficulty.clanDataEnding}"] ?? 0
       eloTextObj.setValue(clanElo.tostring())
     }
   }
@@ -576,15 +573,15 @@ foreach (idx, item in clan_member_list) {
     /*header*/
     foreach (item in clan_data_list) {
       rowHeader.append({
-                       image = "#ui/gameuiskin#lb_" + item.id + ".svg"
+                       image = $"#ui/gameuiskin#lb_{item.id}.svg"
                        imageRawParams = "input-transparent:t='yes';"
-                       tooltip = "#multiplayer/" + item.id
+                       tooltip = $"#multiplayer/{item.id}"
                        tdalign = "center"
                        active = false
                     })
     }
-    rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowHeader, null,
-      "class:t='smallIconsStyle'; background-color:t='@separatorBlockColor'")
+    rowBlock = "".concat(rowBlock, ::buildTableRowNoPad($"row_{rowIdx}", rowHeader, null,
+      "class:t='smallIconsStyle'; background-color:t='@separatorBlockColor'"))
     rowIdx++
 
     /*body*/
@@ -600,7 +597,7 @@ foreach (idx, item in clan_member_list) {
                       })
 
       foreach (item in clan_data_list) {
-        let dataId = item.field + diff.clanDataEnding
+        let dataId = $"{item.field}{diff.clanDataEnding}"
         let value = dataId in data ? data[dataId] : "0"
         let textCell = item.lbDataType.getShortTextByValue(value)
 
@@ -610,7 +607,7 @@ foreach (idx, item in clan_member_list) {
                           tdalign = "center"
                         })
       }
-      rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowParams, null, "")
+      rowBlock = "".concat(rowBlock, ::buildTableRowNoPad($"row_{rowIdx}", rowParams, null, ""))
       rowIdx++
     }
     this.guiScene.replaceContentFromText(clanTableObj, rowBlock, rowBlock.len(), this)
@@ -654,8 +651,8 @@ foreach (idx, item in clan_member_list) {
 
       let rowData = {
         id       = column.id,
-        text     = getTblValue("needHeader", column, true) ? "#clan/" + getTblValue("loc", column, column.id) : "",
-        tdalign  = getTblValue("align", column, "center"),
+        text     = (column?.needHeader ?? true) ? $"#clan/{column?.loc ?? column.id}" : "",
+        tdalign  = column?.align ?? "center",
         callback = "onStatsCategory",
         active   = this.isSortByColumn(column.id)
         tooltip  = column?.getTooltipText(this.clanData?.historyDepth.tostring()) ?? column.tooltip
@@ -663,7 +660,7 @@ foreach (idx, item in clan_member_list) {
       // It is important to set width to
       // all rows if column has fixed width.
       // Next two lines fix table layout issue.
-      if (getTblValue("iconStyle", column, false))
+      if (column?.iconStyle ?? false)
         rowData.width <- "0.01@sf"
       headerRow.append(rowData)
     }
@@ -729,7 +726,7 @@ foreach (idx, item in clan_member_list) {
   function getFieldNameByColumn(columnId) {
     local fieldName = columnId
     if (columnId == ::ranked_column_prefix)
-      fieldName = ::ranked_column_prefix + ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
+      fieldName = $"{::ranked_column_prefix}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
     else {
       let category = ::u.search(clan_member_list, (@(columnId) function(category) { return category.id == columnId })(columnId))
       let field = category?.field ?? columnId
@@ -746,14 +743,14 @@ foreach (idx, item in clan_member_list) {
     let id = this.getFieldId(column)
     let res = {
       text = column.lbDataType.getShortTextByValue(member[id])
-      tdalign = getTblValue("align", column, "center")
+      tdalign = column?.align ?? "center"
     }
 
     if ("getCellTooltipText" in column)
       res.tooltip <- column.getCellTooltipText(member)
 
-    if (getTblValue("iconStyle", column, false)) {
-      res.id       <- "icon_" + member.nick
+    if (column?.iconStyle ?? false) {
+      res.id       <- $"icon_{member.nick}"
       res.needText <- false
       res.imageType <- "contactStatusImg"
       res.image    <- ""
@@ -772,7 +769,7 @@ foreach (idx, item in clan_member_list) {
     let field = column?.field ?? column.id
     local fieldId = ::u.isFunction(field) ? field() : field
     if (column.byDifficulty)
-      fieldId += ::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding
+      fieldId = $"{fieldId}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
     return fieldId
   }
 
@@ -781,7 +778,7 @@ foreach (idx, item in clan_member_list) {
       return
 
     let columnData = this.getColumnDataById(this.statsSortBy)
-    let sortId = getTblValue("sortId", columnData, this.statsSortBy)
+    let sortId = columnData?.sortId ?? this.statsSortBy
     if ("sortPrepare" in columnData)
       foreach (m in members)
         columnData.sortPrepare(m)
@@ -811,8 +808,8 @@ foreach (idx, item in clan_member_list) {
     if (!this.isMyClan)
       return
 
-    let presence = getTblValue("presence", params, ::g_contact_presence.UNKNOWN)
-    let nick = getTblValue("nick", params, "")
+    let presence = params?.presence ?? ::g_contact_presence.UNKNOWN
+    let nick = params?.nick ?? ""
 
     if (nick == "") {
       this.updateMembersStatus()
@@ -851,7 +848,7 @@ foreach (idx, item in clan_member_list) {
 
   function drawIcon(nick, presence) {
     let gObj = this.scene.findObject("clan_members_list")
-    let imgObj = gObj.findObject("img_icon_" + nick)
+    let imgObj = gObj.findObject($"img_icon_{nick}")
     if (!checkObj(imgObj))
       return
 
@@ -875,7 +872,7 @@ foreach (idx, item in clan_member_list) {
     else {
       this.statsSortBy = sortBy
       local columnData = this.getColumnDataById(value)
-      this.statsSortReverse = getTblValue("inverse", columnData, false)
+      this.statsSortReverse = columnData?.inverse ?? false
     }
     this.guiScene.performDelayed(this, function() { this.fillClanMemberList(this.clanData.members) })
   }
@@ -898,7 +895,7 @@ foreach (idx, item in clan_member_list) {
       return
 
     let isHover = obj.isHovered()
-    let dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
+    let dataIdx = ::to_integer_safe(cutPrefix(obj.id, "row_", ""), -1, false)
     if (isHover == (dataIdx == this.lastHoveredDataIdx))
      return
 

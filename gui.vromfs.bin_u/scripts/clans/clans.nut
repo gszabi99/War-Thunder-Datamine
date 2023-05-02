@@ -16,6 +16,7 @@ let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { getPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { EPLX_CLAN } = require("%scripts/contacts/contactsManager.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -39,7 +40,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
   squadronExp = 0
 
   function updateClanContacts() {
-    ::contacts[::EPLX_CLAN] <- []
+    ::contacts[EPLX_CLAN] <- []
     if (!::is_in_clan())
       return
 
@@ -52,7 +53,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
       if (::my_user_id_str != block.uid)
-        ::contacts[::EPLX_CLAN].append(contact)
+        ::contacts[EPLX_CLAN].append(contact)
     }
   }
 }
@@ -740,7 +741,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 
 ::handle_new_my_clan_data <- function handle_new_my_clan_data() {
   ::g_clans.parseSeenCandidates()
-  ::contacts[::EPLX_CLAN] <- []
+  ::contacts[EPLX_CLAN] <- []
   if ("members" in ::my_clan_info) {
     foreach (_mem, block in ::my_clan_info.members) {
       if (!(block.uid in ::contacts_players))
@@ -751,7 +752,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
       if (::my_user_id_str != block.uid)
-        ::contacts[::EPLX_CLAN].append(contact)
+        ::contacts[EPLX_CLAN].append(contact)
 
       ::clanUserTable[block.nick] <- ::my_clan_info.tag
     }

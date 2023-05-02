@@ -15,6 +15,32 @@ let { charSendBlk, isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isInstance, isString, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 
+let multiStageLocIdConfig = {
+  multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }
+  multi_kill_ship =   { [2] = "double_kill_ship",   [3] = "triple_kill_ship",   def = "multi_kill_ship" }
+  multi_kill_ground = { [2] = "double_kill_ground", [3] = "triple_kill_ground", def = "multi_kill_ground" }
+}
+
+let hasMultiStageLocId = @(unlockId) unlockId in multiStageLocIdConfig
+
+// Has not default multistage id. Used to combine similar unlocks
+let function hasSpecialMultiStageLocId(unlockId, repeatInARow) {
+  return hasMultiStageLocId(unlockId) && (repeatInARow in multiStageLocIdConfig[unlockId])
+}
+
+let function hasSpecialMultiStageLocIdByStage(unlockId, stage) {
+  let repeatInARow = stage + (getUnlockById(unlockId)?.stage.param ?? 0)
+  return hasSpecialMultiStageLocId(unlockId, repeatInARow)
+}
+
+let function getMultiStageLocId(unlockId, repeatInARow) {
+  if (!hasMultiStageLocId(unlockId))
+    return unlockId
+
+  let config = multiStageLocIdConfig[unlockId]
+  return getTblValue(repeatInARow, config) || getTblValue("def", config, unlockId)
+}
+
 let function isUnlockComplete(cfg) {
   return isBitModeType(cfg.type)
     ? number_of_set_bits(cfg.curVal) >= number_of_set_bits(cfg.maxVal)
@@ -247,6 +273,13 @@ let function checkUnlockString(string) {
   return true
 }
 
+let function reqUnlockByClient(id, disableLog = false) {
+  let unlock = getUnlockById(id)
+  let featureName = getTblValue("check_client_feature", unlock, null)
+  if (featureName == null || hasFeature(featureName))
+    ::req_unlock(id, disableLog)
+}
+
 return {
   canDoUnlock
   canOpenUnlockManually
@@ -263,4 +296,10 @@ return {
   getUnlockRewardText
   checkUnlockString
   debugLogVisibleByTimeInfo
+  multiStageLocIdConfig
+  hasMultiStageLocId
+  hasSpecialMultiStageLocId
+  hasSpecialMultiStageLocIdByStage
+  getMultiStageLocId
+  reqUnlockByClient
 }

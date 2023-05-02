@@ -76,6 +76,8 @@ let { get_meta_missions_info } = require("guiMission")
 let { crosshairColorOpt } = require("%scripts/options/dargOptionsSync.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { setLastSkin, getAutoSkin, getSkinsOption
+} = require("%scripts/customization/skins.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -2275,7 +2277,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "skin"
       descr.trParams <- "optionWidthInc:t='double';"
       if (type(::aircraft_for_weapons) == "string") {
-        let skins = ::g_decorator.getSkinsOption(::aircraft_for_weapons)
+        let skins = getSkinsOption(::aircraft_for_weapons)
         descr.items = skins.items
         descr.values = skins.values
         descr.value = skins.value
@@ -4702,8 +4704,8 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       if (type(descr.values) == "array") {
         let air = ::aircraft_for_weapons
         if (value >= 0 && value < descr.values.len()) {
-          set_gui_option(optionId, descr.values[value] || ::g_decorator.getAutoSkin(air))
-          ::g_decorator.setLastSkin(air, descr.values[value])
+          set_gui_option(optionId, descr.values[value] || getAutoSkin(air))
+          setLastSkin(air, descr.values[value])
         }
         else
           print("[ERROR] value '" + value + "' is out of range")

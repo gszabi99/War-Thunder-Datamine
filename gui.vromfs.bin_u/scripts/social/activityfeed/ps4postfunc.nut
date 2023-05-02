@@ -10,6 +10,7 @@ let psn = require("%sonyLib/webApi.nut")
 let statsd = require("statsd")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
+let { getLocalizedTextWithAbbreviation } = require("%scripts/langUtils/localization.nut")
 
 let requestsTable = {
   player = "$USER_NAME_OR_ID",
@@ -109,13 +110,13 @@ return function(config, customFeedParams) {
   let localizedKeyWords = {}
   if ("requireLocalization" in customFeedParams)
     foreach (name in customFeedParams.requireLocalization)
-      localizedKeyWords[name] <- ::g_localization.getLocalizedTextWithAbbreviation(customFeedParams[name])
+      localizedKeyWords[name] <- getLocalizedTextWithAbbreviation(customFeedParams[name])
 
   let activityFeed_config = customFeedParams.__merge(requestsTable)
 
   let getFilledFeedTextByLang = function(key) {
     let captions = {}
-    let localizedTable = ::g_localization.getLocalizedTextWithAbbreviation(key)
+    let localizedTable = getLocalizedTextWithAbbreviation(key)
 
     foreach (lang, string in localizedTable) {
       let localizationTable = {}

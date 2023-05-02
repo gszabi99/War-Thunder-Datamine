@@ -8,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let persistent = { encyclopediaData = [] }
 
 ::g_script_reloader.registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
@@ -78,7 +79,7 @@ let open = function() {
   curChapter = null
 
   function initScreen() {
-    ::req_unlock_by_client("view_encyclopedia", false)
+    reqUnlockByClient("view_encyclopedia")
 
     let blockObj = this.scene.findObject("chapter_include_block")
     if (checkObj(blockObj))

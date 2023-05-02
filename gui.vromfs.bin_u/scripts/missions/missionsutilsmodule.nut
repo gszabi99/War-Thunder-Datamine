@@ -7,6 +7,8 @@ from "%scripts/dagui_library.nut" import *
 let { get_game_mode } = require("mission")
 let { setGuiOptionsMode } = require("guiOptions")
 let { restart_mission } = require("guiMission")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
@@ -37,9 +39,9 @@ let getMissionLocIdsArray = function(missionInfo) {
   let misInfoName = missionInfo?.name ?? ""
 
   if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
-    res = ::g_localization.getLocIdsArray(missionInfo.locNameTeamA)
+    res = getLocIdsArray(missionInfo.locNameTeamA)
   else if ((missionInfo?.locName.len() ?? 0) > 0)
-    res = ::g_localization.getLocIdsArray(missionInfo.locName)
+    res = getLocIdsArray(missionInfo.locName)
   else
     res.append($"missions/{misInfoName}")
 
@@ -100,7 +102,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
     if (isBaseReward && misDataBlk?.decal != null) {
       let id = misDataBlk.decal
       let decoratorType = ::g_decorator_type.getTypeByResourceType("decal")
-      let decorator = ::g_decorator.getDecorator(id, decoratorType)
+      let decorator = getDecorator(id, decoratorType)
       if (decorator != null) {
         resourceImage = decoratorType.getImage(decorator)
         resourceImageSize = decoratorType.getImageSize(decorator)
@@ -121,7 +123,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
   return ::handyman.renderCached("%gui/missions/missionReward.tpl", { rewards = rewards })
 }
 
-let getMissionLocName = @(config, key = "locId") "".join(::g_localization.getLocIdsArray(config?[key])
+let getMissionLocName = @(config, key = "locId") "".join(getLocIdsArray(config?[key])
   .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
 
 let function restartCurrentMission() {

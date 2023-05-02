@@ -32,6 +32,7 @@ let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut
 let { selectAvailableCrew } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 /*
 if need - put commented in array above
@@ -1055,7 +1056,7 @@ if need - put commented in array above
 
 ::unlockCountry <- function unlockCountry(country, hideInUserlog = false, reqUnlock = true) {
   if (reqUnlock)
-    ::req_unlock_by_client(country, hideInUserlog)
+    reqUnlockByClient(country, hideInUserlog)
 
   if (!isInArray(country, ::unlocked_countries))
     ::unlocked_countries.append(country)

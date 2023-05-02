@@ -29,7 +29,7 @@ const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 local PURPOSE_TYPE = {
   AIR_TO_AIR = [BULLET_TYPE.AAM, BULLET_TYPE.ROCKET_AIR]
   AIR_TO_SEA = [BULLET_TYPE.TORPEDO]
-  ARMORED    = [BULLET_TYPE.ATGM_TANK]
+  ARMORED    = [BULLET_TYPE.ATGM_TANK, BULLET_TYPE.AP_TANK, BULLET_TYPE.ATGM_TANDEM_TANK]
 }
 
 let GROUP_ORDER = [
@@ -672,8 +672,9 @@ let function getPresetWeightRestrictionText(preset, unitBlk) {
 
   foreach (idx, tier in preset.tiersView) {
     let { tierId = -1, massKg = 0.0 } = tier?.weaponry
+    let { additionalMassKg = 0.0 } = tier?.weaponry.tiers[idx]
     let amount = tier?.weaponry.tiers[tierId].amountPerTier ?? 1.0
-    let tierMass = massKg * amount
+    let tierMass = massKg * amount + additionalMassKg
     if (notUseforDisbalance?[idx] ?? false)
       centerMass += tierMass
     else if (idx < centerIdx)

@@ -72,10 +72,6 @@ let function on_presences_update(params) {
   })
 }
 
-::set_presence <- function set_presence(presence) {
-  ::matching_api_func("mpresence.set_presence", function(...) {}, presence)
-}
-
 foreach (notificationName, callback in
           {
             ["mpresence.notify_presence_update"] = on_presences_update,

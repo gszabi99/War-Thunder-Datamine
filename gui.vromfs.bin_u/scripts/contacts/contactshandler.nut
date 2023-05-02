@@ -22,6 +22,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { is_chat_message_empty } = require("chat")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
+let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManager.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -45,7 +46,6 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
   curPlayer = null
   curHoverObjId = null
 
-  searchGroup = ::EPLX_SEARCH
   maxSearchPlayers = 20
   searchInProgress = false
   searchShowNotFound = false
@@ -168,45 +168,40 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
   function loadSizes() {
     if (this.isContactsWindowActive()) {
-      ::contacts_sizes = {}
       let obj = this.scene.findObject("contacts_wnd")
-      ::contacts_sizes.pos <- obj.getPosRC()
-      ::contacts_sizes.size <- obj.getSize()
-
-      ::saveLocalByScreenSize("contacts_sizes", ::save_to_json(::contacts_sizes))
+      contactsWndSizes({ pos = obj.getPosRC(), size = obj.getSize() })
+      ::saveLocalByScreenSize("contacts_sizes", ::save_to_json(contactsWndSizes.value))
     }
   }
 
   function setSavedSizes() {
-    if (!::contacts_sizes) {
+    if (contactsWndSizes.value == null) {
       let data = ::loadLocalByScreenSize("contacts_sizes")
       if (data) {
-        ::contacts_sizes = parse_json(data)
-        if (!("pos" in ::contacts_sizes) || !("size" in ::contacts_sizes))
-          ::contacts_sizes = null
-        else {
-          ::contacts_sizes.pos[0] = ::contacts_sizes.pos[0].tointeger()
-          ::contacts_sizes.pos[1] = ::contacts_sizes.pos[1].tointeger()
-          ::contacts_sizes.size[0] = ::contacts_sizes.size[0].tointeger()
-          ::contacts_sizes.size[1] = ::contacts_sizes.size[1].tointeger()
-        }
+        let sizeData = parse_json(data)
+        if (("pos" in sizeData) && ("size" in sizeData))
+          contactsWndSizes({
+            pos = [sizeData.pos[0].tointeger(), sizeData.pos[1].tointeger()]
+            size = [sizeData.size[0].tointeger(), sizeData.size[1].tointeger()]
+          })
       }
     }
 
-    if (this.isContactsWindowActive() && ::contacts_sizes) {
+    let sizeData = contactsWndSizes.value
+    if (this.isContactsWindowActive() && sizeData != null) {
       let obj = this.scene.findObject("contacts_wnd")
       if (!obj)
         return
 
       let rootSize = this.guiScene.getRoot().getSize()
       for (local i = 0; i <= 1; i++) //pos chat in screen
-        if (::contacts_sizes.pos[i] < topMenuBorders[i][0] * rootSize[i])
-          ::contacts_sizes.pos[i] = (topMenuBorders[i][0] * rootSize[i]).tointeger()
-        else if (::contacts_sizes.pos[i] + ::contacts_sizes.size[i] > topMenuBorders[i][1] * rootSize[i])
-            ::contacts_sizes.pos[i] = (topMenuBorders[i][1] * rootSize[i] - ::contacts_sizes.size[i]).tointeger()
+        if (sizeData.pos[i] < topMenuBorders[i][0] * rootSize[i])
+          contactsWndSizes.mutate(@(v) v.pos[i] = (topMenuBorders[i][0] * rootSize[i]).tointeger())
+        else if (sizeData.pos[i] + sizeData.size[i] > topMenuBorders[i][1] * rootSize[i])
+          contactsWndSizes.mutate(@(v) v.pos[i] = (topMenuBorders[i][1] * rootSize[i] - sizeData.size[i]).tointeger())
 
-      obj.pos = ::contacts_sizes.pos[0] + ", " + ::contacts_sizes.pos[1]
-      obj.size = ::contacts_sizes.size[0] + ", " + ::contacts_sizes.size[1]
+      obj.pos = $"{contactsWndSizes.value.pos[0]}, {contactsWndSizes.value.pos[1]}"
+      obj.size = $"{contactsWndSizes.value.size[0]}, {contactsWndSizes.value.size[1]}"
     }
   }
 
@@ -237,7 +232,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
   }
 
   function needRebuildPlayersList(gName, listObj) {
-    if (gName == ::EPLX_SEARCH)
+    if (gName == EPLX_SEARCH)
       return true //this group often refilled by other objects
     let count = ::contacts[gName].len() + getTblValue(gName, this.listNotPlayerChildsByGroup, -100000)
     return listObj.childrenCount() != count
@@ -253,7 +248,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
       hasMenuChatPrivate = hasMenuChatPrivate.value
     }
     this.listNotPlayerChildsByGroup[gName] <- 0
-    if (gName != this.searchGroup) {
+    if (gName != EPLX_SEARCH) {
       playerListView.searchAdviceID <- $"group_{gName}_search_advice"
       playerListView.totalContacts <- loc("contacts/total", {
         contactsCount = ::contacts[gName].len(),
@@ -453,7 +448,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
   }
 
   function setSearchGroupVisibility(value) {
-    local groupObject = this.getGroupByName(this.searchGroup)
+    local groupObject = this.getGroupByName(EPLX_SEARCH)
     groupObject.show(value)
     groupObject.enable(value)
     this.searchGroupLastShowState = value
@@ -476,7 +471,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
     let contactsGroups = this.scene.findObject("contacts_groups")
     if (checkObj(contactsGroups)) {
-      let searchGroupIndex = this.getIndexOfGroup(this.searchGroup)
+      let searchGroupIndex = this.getIndexOfGroup(EPLX_SEARCH)
       if (searchGroupIndex != -1) {
         this.setSearchGroupVisibility(true)
         contactsGroups.setValue(searchGroupIndex)
@@ -486,7 +481,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
   }
 
   function onSearchEditBoxCancelEdit(obj) {
-    if (this.curGroup == this.searchGroup) {
+    if (this.curGroup == EPLX_SEARCH) {
       this.closeSearchGroup()
       return
     }
@@ -529,7 +524,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
   function applyContactFilter() {
     if (this.curGroup == ""
-        || this.curGroup == this.searchGroup
+        || this.curGroup == EPLX_SEARCH
         || !(this.curGroup in ::contacts))
       return
 
@@ -565,13 +560,13 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
         activateEvent = "onPlayerMenu"
       let gData = this.buildPlayersList(gName)
       data += format(this.groupFormat, "#contacts/" + gName,
-        gName == this.searchGroup ? this.searchGroupActiveTextInclude : "",
+        gName == EPLX_SEARCH ? this.searchGroupActiveTextInclude : "",
         "group_" + gName, gData, activateEvent)
     }
     this.guiScene.replaceContentFromText(gObj, data, data.len(), this)
     foreach (gName in groups_array) {
       this.updateContactButtonsForGroup(gName)
-      if (gName == this.searchGroup)
+      if (gName == EPLX_SEARCH)
         this.setSearchGroupVisibility(this.searchGroupLastShowState)
     }
 
@@ -579,7 +574,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
     let selected = [-1, -1]
     foreach (gIdx, gName in groups_array) {
-      if (gName == this.searchGroup && !this.searchGroupLastShowState)
+      if (gName == EPLX_SEARCH && !this.searchGroupLastShowState)
         continue
 
       if (selected[0] < 0)
@@ -823,7 +818,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
     let contactsGroups = this.scene.findObject("contacts_groups")
     if (checkObj(contactsGroups)) {
       this.setSearchGroupVisibility(false)
-      let searchGroupIndex = this.getIndexOfGroup(this.searchGroup)
+      let searchGroupIndex = this.getIndexOfGroup(EPLX_SEARCH)
       if (contactsGroups.getValue() == searchGroupIndex) {
         this.setSearchText("")
         let friendsGroupIndex = this.getIndexOfGroup(EPL_FRIENDLIST)
@@ -1009,13 +1004,13 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
     value = clearBorderSymbols(value)
 
     let searchGroupActiveTextObject = this.scene.findObject("search_group_active_text")
-    let searchGroupText = loc($"contacts/{this.searchGroup}")
+    let searchGroupText = loc($"contacts/{EPLX_SEARCH}")
     searchGroupActiveTextObject.setValue($"{searchGroupText}: {value}")
 
     let taskId = ::find_nicks_by_prefix(value, this.maxSearchPlayers, true)
     if (taskId >= 0) {
       this.searchInProgress = true
-      ::contacts[this.searchGroup] <- []
+      ::contacts[EPLX_SEARCH] <- []
       this.updateSearchList()
     }
     ::g_tasker.addTask(taskId, null, Callback(this.onSearchCb, this))
@@ -1026,14 +1021,14 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 
     local searchRes = DataBlock()
     searchRes = ::get_nicks_find_result_blk()
-    ::contacts[this.searchGroup] <- []
+    ::contacts[EPLX_SEARCH] <- []
 
     local brokenData = false
     for (local i = 0; i < searchRes.paramCount(); i++) {
       let contact = ::getContact(searchRes.getParamName(i), searchRes.getParamValue(i))
       if (contact) {
         if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name))
-          ::contacts[this.searchGroup].append(contact)
+          ::contacts[EPLX_SEARCH].append(contact)
       }
       else
         brokenData = true
@@ -1045,8 +1040,8 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
     }
 
     this.updateSearchList()
-    if (::show_console_buttons && this.curGroup == this.searchGroup && !::is_mouse_last_time_used() && this.checkScene())
-      ::move_mouse_on_child_by_value(this.scene.findObject("group_" + this.searchGroup))
+    if (::show_console_buttons && this.curGroup == EPLX_SEARCH && !::is_mouse_last_time_used() && this.checkScene())
+      ::move_mouse_on_child_by_value(this.scene.findObject("group_" + EPLX_SEARCH))
   }
 
   function updateSearchList() {
@@ -1054,14 +1049,14 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
       return
 
     let gObj = this.scene.findObject("contacts_groups")
-    let listObj = gObj.findObject("group_" + this.searchGroup)
+    let listObj = gObj.findObject("group_" + EPLX_SEARCH)
     if (!listObj)
       return
 
     this.guiScene.setUpdatesEnabled(false, false)
     local sel = -1
-    if (::contacts[this.searchGroup].len() > 0)
-      sel = this.fillPlayersList(this.searchGroup)
+    if (::contacts[EPLX_SEARCH].len() > 0)
+      sel = this.fillPlayersList(EPLX_SEARCH)
     else {
       local data = ""
       if (this.searchInProgress)
@@ -1070,7 +1065,7 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
         data = "textAreaCentered { text:t='#contacts/searchNotFound'; enable:t='no' }"
       else {
         this.fillDefaultSearchList()
-        sel = this.fillPlayersList(this.searchGroup)
+        sel = this.fillPlayersList(EPLX_SEARCH)
         data = null
       }
 
@@ -1081,15 +1076,15 @@ let { isGuestLogin } = require("%scripts/user/userUtils.nut")
     }
     this.guiScene.setUpdatesEnabled(true, true)
 
-    if (this.curGroup == this.searchGroup) {
-      if (::contacts[this.searchGroup].len() > 0)
+    if (this.curGroup == EPLX_SEARCH) {
+      if (::contacts[EPLX_SEARCH].len() > 0)
         listObj.setValue(sel > 0 ? sel : 0)
       this.onPlayerSelect(listObj)
     }
   }
 
   function fillDefaultSearchList() {
-    ::contacts[this.searchGroup] <- []
+    ::contacts[EPLX_SEARCH] <- []
   }
 
   function onInviteFriend() {

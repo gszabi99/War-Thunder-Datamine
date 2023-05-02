@@ -81,7 +81,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   // Copy new values to current presence object.
   foreach (key, value in presence)
     this.currentPresence[key] <- value
-  ::set_presence(presence)
+  ::matching_api_func("mpresence.set_presence", @(_) null, presence)
   ::broadcastEvent("MyPresenceChanged", presence)
 }
 

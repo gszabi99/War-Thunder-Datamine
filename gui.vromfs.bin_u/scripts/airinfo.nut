@@ -41,6 +41,8 @@ let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsStore.nut")
 let { getUnitFileName } = require("vehicleModel")
 let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
+let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skins.nut")
+let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -499,7 +501,7 @@ let isEventUnit = @(unit) unit.event != null
       || ::isUnitGift(unit)
       || ::isUnitResearched(unit)
       || ::isUnitSpecial(unit)
-      || ::g_decorator.approversUnitToPreviewLiveResource == unit
+      || approversUnitToPreviewLiveResource.value == unit
       || unit?.isSquadronVehicle?())
     return true
 
@@ -1537,7 +1539,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (air.event) {
     let eventLangBlk = GUI.get()?.eventLang
     let eventLang = eventLangBlk?[air.event]
-      ? "".join(::g_localization.getLocIdsArray(eventLangBlk?[air.event]).map(@(id) loc(id)))
+      ? "".join(getLocIdsArray(eventLangBlk?[air.event]).map(@(id) loc(id)))
       : loc($"event/{air.event}")
     addInfoTextsList.append(colorize("chapterUnlockedColor",
       loc($"mainmenu/eventVehicle", { event = eventLang })))

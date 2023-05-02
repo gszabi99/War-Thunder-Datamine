@@ -20,7 +20,6 @@ tdiv {
   <<#hasProgress>>
   challengeDescriptionProgress {
     value:t='<<unlockProgress>>'
-    thin:t='yes'
   }
   <</hasProgress>>
 

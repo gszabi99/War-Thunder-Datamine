@@ -11,6 +11,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
 let { is_replay_playing } = require("replays")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_FADE_OUT_TIME = 1.5
@@ -212,7 +213,7 @@ let function updateAnimTimer() {
 }
 
 ::get_loc_for_streak <- function get_loc_for_streak(StreakNameType, name, stageparam, playerNick = "", colorId = 0) {
-  let stageId = ::g_unlocks.getMultiStageId(name, stageparam)
+  let stageId = getMultiStageLocId(name, stageparam)
   let isMyStreak = StreakNameType == SNT_MY_STREAK_HEADER
   local text = ""
   if (isMyStreak)

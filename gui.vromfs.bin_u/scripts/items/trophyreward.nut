@@ -8,6 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 ::trophyReward <- {
   maxRewardsShow = 5
@@ -197,7 +198,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
   let decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
   if (decoratorType) {
-    let decorator = ::g_decorator.getDecorator(config?.resource, decoratorType)
+    let decorator = getDecorator(config?.resource, decoratorType)
     let cfg = clone ::LayersIcon.findLayerCfg("item_decal")
     cfg.img <- decoratorType.getImage(decorator)
     if (cfg.img != "")

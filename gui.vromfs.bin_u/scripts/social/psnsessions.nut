@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { split_by_chars } = require("string")
 let { get_game_mode } = require("mission")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
 let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
@@ -26,7 +26,7 @@ let invitations = persist("invitations", @() Watched([]))
 let pendingSessions = persist("pendingSessions", @() Watched({}))
 
 let function formatSessionInfo(data, isCreateRequest = true) {
-  let names = ::g_localization.getFilledFeedTextByLang(data.locIdsArray)
+  let names = getFilledFeedTextByLang(data.locIdsArray)
   let info = {
     sessionPrivacy = data.isPrivate ? "private" : "public"
     sessionMaxUser = data.maxUsers

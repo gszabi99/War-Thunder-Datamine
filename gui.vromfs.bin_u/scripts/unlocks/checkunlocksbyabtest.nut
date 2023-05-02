@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 let function giveUnlocksAbTestOnce(abTestBlk) {
   let unlocksList = abTestBlk.unlocks
@@ -14,7 +15,7 @@ let function giveUnlocksAbTestOnce(abTestBlk) {
     if (::is_unlocked_scripted(UNLOCKABLE_ACHIEVEMENT, unlocksList.getParamValue(i)))
       return
 
-  ::req_unlock_by_client(unlockId, false)
+  reqUnlockByClient(unlockId)
 }
 
 let function checkUnlocksByAbTestList() {

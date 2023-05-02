@@ -9,15 +9,14 @@ let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
-
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText,
-        getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { cutPostfix } = require("%sqstd/string.nut")
 let { dynamicGetUnits, dynamicSetUnits } = require("dynamicMission")
 let { select_mission_full } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
+let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner() {
   ::gui_start_modal_wnd(::gui_handlers.MissionBuilderTuner)
@@ -96,7 +95,7 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
   }
 
   function buildSkinOption(id, unitId, selSkin, isFull = true) {
-    let skins = ::g_decorator.getSkinsOption(unitId)
+    let skins = getSkinsOption(unitId)
     let value = skins.values.indexof(selSkin) ?? 0
     return {
       markup = ::create_option_combobox(id, skins.items, value, null, isFull)
@@ -177,7 +176,7 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
         this.playerIdx = i
         this.listA.append([this.playerUnitId])
         this.listW.append([getLastWeapon(this.playerUnitId)])
-        this.listS.append([::g_decorator.getLastSkin(this.playerUnitId)])
+        this.listS.append([getLastSkin(this.playerUnitId)])
         this.listC.append([this.commonSquadSize])
         this.wtags.append([])
         this.defaultW[this.playerUnitId] <- this.listW[i]
@@ -204,7 +203,7 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
       // Overriding ally unit params by player's squad unit params, when class is the same.
       if (aircraft == this.playerUnitId) {
         weapon = getLastWeapon(this.playerUnitId)
-        skin = ::g_decorator.getLastSkin(this.playerUnitId)
+        skin = getLastSkin(this.playerUnitId)
       }
 
       let adesc = armada.description

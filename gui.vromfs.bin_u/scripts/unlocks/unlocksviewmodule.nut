@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { format, split_by_chars } = require("string")
 let { ceil } = require("math")
 let { number_of_set_bits, round_by_value } = require("%sqstd/math.nut")
-let { buildDateStrShort } = require("%scripts/time.nut")
+let { buildDateStrShort, buildDateTimeStr } = require("%scripts/time.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { isLoadingBgUnlock, getLoadingBgName,
@@ -19,6 +19,10 @@ let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode
 let { getUnlockTypeById } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
+let { getDecoratorById, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
+let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
+let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -87,7 +91,7 @@ let function getUnlockLocName(config, key = "locId") {
   numRealistic = ceil(num.tofloat() / numRealistic)
   numHardcore = ceil(num.tofloat() / numHardcore)
 
-  return "".join(::g_localization.getLocIdsArray(config?[key]).map(@(locId) locId.len() == 1 ? locId :
+  return "".join(getLocIdsArray(config?[key]).map(@(locId) locId.len() == 1 ? locId :
     loc(locId, { num, numRealistic, numHardcore, beginDate = getUnlockBeginDateText(config) })))
 }
 
@@ -140,8 +144,8 @@ let function getUnlockNameText(unlockType, id) {
       return ::getUnitName(id)
 
     case UNLOCKABLE_SKIN:
-      let unitName = ::g_unlocks.getPlaneBySkinId(id)
-      let res = ::g_decorator.getDecoratorById(id)?.getDesc() ?? ""
+      let unitName = getPlaneBySkinId(id)
+      let res = getDecoratorById(id)?.getDesc() ?? ""
       return unitName != ""
         ? "".concat(res, loc("ui/parentheses/space", { text = ::getUnitName(unitName) }))
         : res
@@ -290,7 +294,7 @@ let function getLocForBitValues(modeType, values, hasCustomUnlockableList = fals
       valuesLoc.append(::getUnitName(name))
   else if (modeType == "char_resources")
     foreach (id in values) {
-      let decorator = ::g_decorator.getDecoratorById(id)
+      let decorator = getDecoratorById(id)
       valuesLoc.append(decorator?.getName?() ?? id)
     }
   else {
@@ -407,7 +411,7 @@ let function getUsualCondValueText(condType, v, condition) {
     case "unitClass":
     case "usedInSessionClass":
     case "lastInSessionClass":
-      return getRoleText(::g_string.cutPrefix(v, "exp_", v))
+      return getRoleText(cutPrefix(v, "exp_", v))
     case "playerTag":
     case "offenderTag":
     case "crewsTag":
@@ -589,6 +593,17 @@ let function getUnlockCondsDescByCfg(cfg) {
     return ""
 
   return getUnlockCondsDesc(cfg.conditions, cfg.isExpired)
+}
+
+let function getUnlockSnapshotText(unlockCfg) {
+  let snapshot = getUnlockProgressSnapshot(unlockCfg.id)
+  if (!snapshot)
+    return ""
+
+  let curProgress = unlockCfg.getProgressBarData().value
+  let delta = max(curProgress - snapshot.progress, 0)
+  let date = buildDateTimeStr(snapshot.timeSec)
+  return colorize("darkGreen", loc("unlock/progress_snapshot", { delta, date }))
 }
 
 let function getUnlockCostText(cfg) {
@@ -892,6 +907,7 @@ return {
   getUnlockCondsDescByCfg
   getUnlockMultDesc
   getUnlockMultDescByCfg
+  getUnlockSnapshotText
   getUnlockCostText
   getUnitRequireUnlockText
   getUnitRequireUnlockShortText

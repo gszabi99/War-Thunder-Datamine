@@ -14,6 +14,8 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS, contactsWndSizes
+} = require("%scripts/contacts/contactsManager.nut")
 
 ::gui_start_search_squadPlayer <- function gui_start_search_squadPlayer() {
   if (!::g_squad_manager.canInviteMember()) {
@@ -30,8 +32,6 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   sceneBlkName = "%gui/contacts/contacts.blk"
 
   curGroup = EPL_FRIENDLIST
-  searchGroup = ::EPLX_SEARCH
-  clanGroup = ::EPLX_CLAN
   searchShowDefaultOnReset = true
 
   sg_groups = null
@@ -44,8 +44,8 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     let fObj = this.scene.findObject("contacts_wnd")
     fObj.pos = "0.5(sw-w), 0.4(sh-h)"
     fObj["class"] = "wnd"
-    if (::contacts_sizes)
-      fObj.size = ::contacts_sizes.size[0] + ", " + ::contacts_sizes.size[1]
+    if (contactsWndSizes.value != null)
+      fObj.size = $"{contactsWndSizes.value.size[0]}, {contactsWndSizes.value.size[1]}"
     this.scene.findObject("contacts_backShade").show(true)
     this.scene.findObject("title").setValue(loc("mainmenu/btnInvite"))
     this.updateSearchContactsGroups()
@@ -117,15 +117,15 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   }
 
   function updateSearchContactsGroups() {
-    this.sg_groups = [::EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD]
+    this.sg_groups = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD]
     if (::is_in_clan()) {
-      this.sg_groups.append(this.clanGroup)
+      this.sg_groups.append(EPLX_CLAN)
       ::g_clans.updateClanContacts()
     }
     if (isPlatformSony) {
-      this.sg_groups.insert(2, ::EPLX_PS4_FRIENDS)
-      if (!(::EPLX_PS4_FRIENDS in ::contacts))
-        ::contacts[::EPLX_PS4_FRIENDS] <- []
+      this.sg_groups.insert(2, EPLX_PS4_FRIENDS)
+      if (!(EPLX_PS4_FRIENDS in ::contacts))
+        ::contacts[EPLX_PS4_FRIENDS] <- []
     }
     this.fillContactsList()
   }

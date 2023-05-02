@@ -16,6 +16,8 @@ let { getCdBaseDifficulty, set_unit_option, set_gui_option, get_gui_option } = r
 let { getActionBarUnitName } = require("hudActionBar")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { select_training_mission } = require("guiMission")
+let { isPreviewingLiveSkin, setCurSkinToHangar
+} = require("%scripts/customization/skins.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -60,7 +62,7 @@ let { select_training_mission } = require("guiMission")
       btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     this.showSceneBtn("btn_select", true)
 
-    this.needSlotbar = this.needSlotbar && !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(this.unit)
+    this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && ::isUnitInSlotbar(this.unit)
     if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
       frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
@@ -344,7 +346,7 @@ let { select_training_mission } = require("guiMission")
     ::current_campaign_mission <- misName
 
     this.saveAircraftOptions()
-    ::g_decorator.setCurSkinToHangar(this.unit.name)
+    setCurSkinToHangar(this.unit.name)
 
     ::mergeToBlk({
         _gameMode = GM_TEST_FLIGHT
