@@ -177,32 +177,20 @@ country_exp_div[flow=horizontal] > exp_div {
   height:ph;
 }
 
-challengeDescriptionProgress, favoriteUnlockProgress, favoriteUnlockSnapshot {
+challengeDescriptionProgress {
   behaviour:progress;
   re-type:progress;
-  height:0.5@progressHeight;
+  height:1@progressHeight;
+  width:300@sf/@pf;
+  margin-top:0.01@sf;
+  background-color:@cardProgressBGColor;
+  foreground-color:@cardProgressFGColor;
   min:0;
   max:1000;
 }
 
-challengeDescriptionProgress {
-  background-color:@cardProgressBGColor;
-  foreground-color:@cardProgressFGColor;
-  width:300@sf/@pf;
-  margin-top:0.01@sf;
-}
-
-favoriteUnlockProgress {
-  background-color:@cardProgressBGColor;
-  foreground-color:@cardProgressFGColor;
-}
-
-favoriteUnlockProgress[hasSnapshot=yes] {
-  foreground-color:@darkGreen;
-}
-
-favoriteUnlockSnapshot {
-  foreground-color:@cardProgressFGColor;
+challengeDescriptionProgress[thin=yes] {
+  height:0.5@progressHeight;
 }
 
 battleTaskProgress {

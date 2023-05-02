@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { format, split_by_chars } = require("string")
 let { ceil } = require("math")
 let { number_of_set_bits, round_by_value } = require("%sqstd/math.nut")
-let { buildDateStrShort, buildDateTimeStr } = require("%scripts/time.nut")
+let { buildDateStrShort } = require("%scripts/time.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { isLoadingBgUnlock, getLoadingBgName,
@@ -22,7 +22,6 @@ let { getUnlockCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModul
 let { getDecoratorById, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -595,17 +594,6 @@ let function getUnlockCondsDescByCfg(cfg) {
   return getUnlockCondsDesc(cfg.conditions, cfg.isExpired)
 }
 
-let function getUnlockSnapshotText(unlockCfg) {
-  let snapshot = getUnlockProgressSnapshot(unlockCfg.id)
-  if (!snapshot)
-    return ""
-
-  let curProgress = unlockCfg.getProgressBarData().value
-  let delta = max(curProgress - snapshot.progress, 0)
-  let date = buildDateTimeStr(snapshot.timeSec)
-  return colorize("darkGreen", loc("unlock/progress_snapshot", { delta, date }))
-}
-
 let function getUnlockCostText(cfg) {
   if (!cfg)
     return ""
@@ -907,7 +895,6 @@ return {
   getUnlockCondsDescByCfg
   getUnlockMultDesc
   getUnlockMultDescByCfg
-  getUnlockSnapshotText
   getUnlockCostText
   getUnitRequireUnlockText
   getUnitRequireUnlockShortText

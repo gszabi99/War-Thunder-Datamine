@@ -20,8 +20,7 @@ let { fillItemDescr, fillDescTextAboutDiv,
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { getUnlockDesc, getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockChapterAndGroupText,
-  getUnlockMainCondDescByCfg, getUnlockTitle, getUnlockSnapshotText
-} = require("%scripts/unlocks/unlocksViewModule.nut")
+  getUnlockMainCondDescByCfg, getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -110,22 +109,17 @@ let exportTypes = addTooltipTypes({
         obj.findObject("chapter").setValue(getUnlockChapterAndGroupText(unlock))
 
       let mainCond = getUnlockMainCondDescByCfg(subunlockCfg ?? config)
-      let hasMainCond = mainCond != ""
-      let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
-      let isUnlocked = ::is_unlocked_scripted(-1, unlockId)
-      let hasProgressBar = hasMainCond && progressData.show && !isUnlocked
-      let snapshot = hasProgressBar && (params?.showSnapshot ?? false)
-        ? getUnlockSnapshotText(subunlockCfg ?? config)
-        : ""
       let conds = getUnlockCondsDescByCfg(subunlockCfg ?? config)
       obj.findObject("desc_text").setValue(getUnlockDesc(subunlockCfg ?? config))
-      obj.findObject("mainCond").setValue(" ".join([mainCond, snapshot], true))
+      obj.findObject("mainCond").setValue(mainCond)
       obj.findObject("multDesc").setValue(getUnlockMultDescByCfg(subunlockCfg ?? config))
       obj.findObject("conds").setValue(conds)
 
+      let hasMainCond = mainCond != ""
       let hasAnyCond = hasMainCond || conds != ""
-      if (hasMainCond && !isUnlocked) {
+      if (hasMainCond && !::is_unlocked_scripted(-1, unlockId)) {
         let pObj = obj.findObject("progress")
+        let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
         pObj.setValue(progressData.value)
         pObj.show(progressData.show)
       }

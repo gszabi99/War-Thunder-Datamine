@@ -1,6 +1,5 @@
 <<#unlocks>>
 expandable {
-  id:t=''
   class:t='unlock';
 
   selImg {
@@ -29,7 +28,7 @@ expandable {
         activeText{
           id:t='achivment_title';
           text:t='';
-          max-width:t='pw-1.5@smallButtonCloseHeight'
+          max-width:t='pw';
           pare-text:t='yes';
           overlayTextColor:t='unlockHeader'
         }
@@ -44,24 +43,11 @@ expandable {
           text:t='';
         }
 
-        tdiv {
-          size:t='pw-@blockInterval, @progressHeight'
-          margin-top:t='0.01@sf'
-
-          favoriteUnlockProgress {
-            id:t='progress_bar'
-            position:t='absolute'
-            value:t=''
-            display:t='hide'
-            width:t='pw'
-          }
-          favoriteUnlockSnapshot {
-            id:t='progress_snapshot'
-            position:t='absolute'
-            value:t=''
-            display:t='hide'
-            width:t='pw'
-          }
+        challengeDescriptionProgress{
+          id:t='progress_bar';
+          value:t='';
+          display:t='hide';
+          style:t='width:pw;';
         }
 
         textarea{
@@ -75,28 +61,15 @@ expandable {
         }
       }
 
-      Button_text {
-        id:t='snapshotBtn'
-        position:t='absolute'
-        right:t='@smallButtonCloseHeight'
-        class:t='image'
-        imgSize:t='small'
-        visualStyle:t='noFrame'
-        tooltip:t='#unlock/save_snapshot'
-        unlockId:t=''
-        on_click:t='onStoreSnapshot'
-        img {
-          background-image:t='#ui/gameuiskin#calendar_date.svg'
-        }
-      }
-
+      <<#hasCloseButton>>
       Button_close {
         id:t='removeFromFavoritesBtn'
         smallIcon:t='yes'
         on_click:t='onRemoveUnlockFromFavorites'
         tooltip:t='#mainmenu/UnlockAchievementsRemoveFromFavorite/hint'
         unlockId:t='null'
-      }
+        }
+      <</hasCloseButton>>
     }
 
     expandImg {

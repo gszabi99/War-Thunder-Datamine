@@ -1,14 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { storeUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 
 ::gui_handlers.FavoriteUnlocksListView <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -36,8 +35,8 @@ let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
     let unlocksObjCount = this.listContainer.childrenCount()
     let total = max(unlocksObjCount, this.curFavoriteUnlocksBlk.blockCount())
     if (unlocksObjCount == 0 && total > 0) {
-      let view = { unlocks = array(total) }
-      let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified.tpl"), view)
+      let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified.tpl"),
+        { unlocks = array(total, { hasCloseButton = true, hasHiddenContent = true }) })
       this.guiScene.appendWithBlk(this.listContainer, blk, this)
     }
 
@@ -58,15 +57,6 @@ let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 
   function onEventProfileUpdated(_params) {
     this.doWhenActiveOnce("updateList")
-  }
-
-  function onStoreSnapshot(obj) {
-    let unlockCfg = ::build_conditions_config(getUnlockById(obj.unlockId))
-    let subunlockCfg = getSubunlockCfg(unlockCfg.conditions)
-    storeUnlockProgressSnapshot(subunlockCfg ?? unlockCfg)
-
-    let unlockObj = this.listContainer.findObject(unlockCfg.id)
-    ::g_unlock_view.updateProgress(subunlockCfg ?? unlockCfg, unlockObj)
   }
 
   function onRemoveUnlockFromFavorites(obj) {
