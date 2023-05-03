@@ -177,4 +177,44 @@ return [
     dontCheckDupes = true
     showFunc = isExperimentalCameraTrack
   }
+  {
+    id = "ID_REPLAY_TOGGLE_DETACHED_MOVE_DIR"
+    checkAssign = false
+    dontCheckDupes = true
+  }
+  {
+    id = "free_camera_zoom_speed"
+    type = CONTROL_TYPE.SLIDER
+    optionType = ::USEROPT_FREE_CAMERA_ZOOM_SPEED
+  }
+  {
+    id = "ID_REPLAY_CAMERA_TWO_PLANES"
+    checkAssign = false
+    dontCheckDupes = true
+  }
+  {
+    id = "ID_REPLAY_CAMERA_NEXT_PLANE"
+    checkAssign = false
+    dontCheckDupes = true
+  }
+  {
+    id = "ID_REPLAY_CAMERA_HORIZONTAL_LOCK"
+    checkAssign = false
+    dontCheckDupes = true
+  }
+  {
+    id = "ID_REPLAY_CAMERA_LOCK_SPEED"
+    checkAssign = false
+    dontCheckDupes = true
+  }
+  {
+    id = "ID_REPLAY_CAMERA_LOCK_SPEED_TO_PLANE"
+    checkAssign = false
+    dontCheckDupes = true
+  }
+  {
+    id = "ID_REPLAY_CAMERA_WIGGLE"
+    checkAssign = false
+    dontCheckDupes = true
+  }
 ]

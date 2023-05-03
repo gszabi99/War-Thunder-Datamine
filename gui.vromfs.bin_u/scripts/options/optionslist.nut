@@ -252,6 +252,7 @@ let getMainOptions = function() {
       [::USEROPT_HIDE_MOUSE_SPECTATOR, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
       [::USEROPT_REPLAY_SNAPSHOT_ENABLED, "spinner", hasFeature("ClientReplay") && hasFeature("replayRewind")],
       [::USEROPT_RECORD_SNAPSHOT_PERIOD, "spinner", hasFeature("ClientReplay") && hasFeature("replayRewind")],
+      [::USEROPT_REPLAY_FOV, "slider", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
 
       ["options/header/userGeneratedContent"],
       [::USEROPT_CONTENT_ALLOWED_PRESET_ARCADE,    "combobox", contentPreset.getContentPresets().len()],
