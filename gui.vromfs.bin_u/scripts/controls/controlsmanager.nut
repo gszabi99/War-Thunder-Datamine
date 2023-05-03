@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let DataBlock  = require("DataBlock")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 ::g_script_reloader.loadOnce("%scripts/controls/controlsPreset.nut")
 ::g_script_reloader.loadOnce("%scripts/controls/controlsGlobals.nut")
 ::g_script_reloader.loadOnce("%scripts/controls/controlsCompatibility.nut")
@@ -13,12 +12,17 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
+let { getCurrentPreset = @(_blk) null } = require("controls")
+
+let function getLoadedPresetBlk() {
+  let presetBlk = DataBlock()
+  getCurrentPreset(presetBlk)
+  return presetBlk
+}
 
 ::g_controls_manager <- {
-  [PERSISTENT_DATA_PARAMS] = ["curPreset"]
-
   // PRIVATE VARIABLES
-  curPreset = ::ControlsPreset()
+  curPreset = ::ControlsPreset(getLoadedPresetBlk())
   previewPreset = null
   isControlsCommitPerformed = false
 
@@ -229,5 +233,3 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 }
 
 ::subscribe_handler(::g_controls_manager)
-
-::g_script_reloader.registerPersistentDataFromRoot("g_controls_manager")
