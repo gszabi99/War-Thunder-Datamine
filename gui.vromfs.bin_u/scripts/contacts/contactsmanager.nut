@@ -6,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
 
 let contactsWndSizes = Watched(null)
 
@@ -16,6 +18,8 @@ const EPLX_PS4_FRIENDS = "ps4_friends"
 let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]
 
 local isDisableContactsBroadcastEvents = false
+
+let recentGroup = mkHardWatched("recentGroup", null)
 
 let function verifyContact(params) {
   let name = params?.playerName
@@ -51,6 +55,86 @@ let function addContact(v_contact, groupName, params = {}) {
   return contact
 }
 
+let function updateRecentGroup(recentGroupV) {
+  if (recentGroupV == null)
+    return
+  ::contacts[EPL_RECENT_SQUAD] <- []
+  foreach(uid, _ in recentGroupV) {
+    addContact(::getContact(uid), EPL_RECENT_SQUAD)
+  }
+  ::broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_RECENT_SQUAD })
+}
+
+recentGroup.subscribe(updateRecentGroup)
+
+let function loadRecentGroupOnce() {
+  if (recentGroup.value != null)
+    return
+  local group = ::load_local_account_settings($"contacts/{EPL_RECENT_SQUAD}")
+  group = group != null ? ::buildTableFromBlk(group) : {}
+  recentGroup(group)
+  if (group.len() == 0)
+    return
+
+  let uidsForNickRequest = []
+  foreach (uid, _ in group) {
+    let contact = ::getContact(uid)
+    if (contact == null)
+      uidsForNickRequest.append(uid.tointeger())
+  }
+
+  if (uidsForNickRequest.len() == 0)
+    return
+
+  request_nick_by_uid_batch(uidsForNickRequest, function(resp) { //TO DO: Need to replace this with a contact request from a contact service
+    let nicksByUids = resp?.result
+    if (nicksByUids == null)
+      return
+
+    foreach (uid, nick in nicksByUids)
+      ::getContact(uid, nick)  //create contact
+
+    updateRecentGroup(recentGroup.value)
+  })
+}
+
+let function addRecentContacts(contacts) {
+  if (!::g_login.isLoggedIn())
+    return
+
+  loadRecentGroupOnce()
+  let serverTime = ::get_charserver_time_sec()
+  local uidsToSave = {}
+  foreach (contact in contacts) {
+    let uid = contact?.userId ?? contact?.uid
+    if (uid != null)
+      uidsToSave[uid] <- serverTime
+  }
+  uidsToSave = uidsToSave.__update(recentGroup.value)
+  if (uidsToSave.len() > EPL_MAX_PLAYERS_IN_LIST) {
+    let resArray = uidsToSave.keys().map(@(v) { uid = v, serverTime = uidsToSave[v] })
+    resArray.sort(@(a, b) b.serverTime <=> a.serverTime)
+    for (local i = EPL_MAX_PLAYERS_IN_LIST; i < resArray.len(); i++)
+      uidsToSave.rawdelete(resArray[i].uid)
+  }
+
+  ::save_local_account_settings($"contacts/{EPL_RECENT_SQUAD}", uidsToSave)
+  recentGroup(uidsToSave)
+}
+
+let function exportRecentSquadContacts(contacts) {
+  if (!::g_login.isLoggedIn() || contacts.len() == 0)
+    return
+  loadRecentGroupOnce()
+  if (recentGroup.value.len() != 0)
+    return
+
+  foreach(contact in contacts)
+    ::getContact(contact?.userId ?? contact?.uid, contact?.nick, contact?.clanTag) //create contact
+
+  addRecentContacts(contacts)
+}
+
 let function clear_contacts() {
   ::contacts_groups = []
   foreach (_num, group in contactsGroupsDefault)
@@ -80,6 +164,10 @@ let function updateContactsGroups(params) {
        )
       continue
 
+    if (listName == EPL_RECENT_SQUAD) { // Need to save contacts on the client before switching to a contact service
+      exportRecentSquadContacts(list)
+      continue
+    }
     foreach (p in list) {
       let playerUid = p?.userId
       let playerName = p?.nick
@@ -100,11 +188,17 @@ let function updateContactsGroups(params) {
     }
   }
 
+  updateRecentGroup(recentGroup.value)
+
   isDisableContactsBroadcastEvents = false
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_) clear_contacts()
+  function SignOut(_) {
+    recentGroup(null)
+    clear_contacts()
+  }
+  LoginComplete = @(_) loadRecentGroupOnce()
 })
 
 return {
@@ -119,4 +213,6 @@ return {
   addContactGroup
   updateContactsGroups
   clear_contacts
+
+  addRecentContacts
 }

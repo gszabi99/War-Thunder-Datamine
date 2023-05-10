@@ -504,13 +504,6 @@ foreach (fn in [
   return ::u.filter(::contacts[groupName], @(contact) filterFunc(contact.name))
 }
 
-::add_squad_to_contacts <- function add_squad_to_contacts() {
-  if (!::g_squad_manager.isInSquad())
-    return
-
-  editContactsList({ [true] = ::g_squad_manager.getSquadMembersDataForContact() }, EPL_RECENT_SQUAD)
-}
-
 if (!::contacts)
   clear_contacts()
 

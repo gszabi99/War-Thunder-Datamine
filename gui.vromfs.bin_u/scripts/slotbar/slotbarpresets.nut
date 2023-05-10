@@ -15,9 +15,14 @@ let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
+let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
+let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
+
+local isAlreadySendMissingPresetError = false
 
 const PRESETS_VERSION = 1
 const PRESETS_VERSION_SAVE_ID = "presetsVersion"
@@ -44,11 +49,12 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   presetsVersion = 0
 
   function init() {
+    isAlreadySendMissingPresetError = false
     this.presetsVersion = ::loadLocalByAccount($"slotbar_presets/{PRESETS_VERSION_SAVE_ID}", 0)
     foreach (country in shopCountriesList)
       if (::isCountryAvailable(country))
         this.initCountry(country)
-
+    logP("init")
     this.saveAllCountries() // maintenance
   }
 
@@ -620,8 +626,14 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
           break
       }
     }
-    if (!res.len())
+    if (!res.len()) {
       res.append(this.createPresetFromSlotbar(countryId))
+      if (!isAlreadySendMissingPresetError && !isNeedFirstCountryChoice()
+          && hasDefaultUnitsInCountry(countryId)) {
+        isAlreadySendMissingPresetError = true
+        logerr("[SLOTBAR PRESETS]: presets is missing")
+      }
+    }
     return res
   }
 

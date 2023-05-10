@@ -1130,8 +1130,8 @@ let function startCreateWndByGamemode(_handler, _obj) {
 }
 
 ::checkRemnantPremiumAccount <- function checkRemnantPremiumAccount() {
-  if (!hasFeature("EnablePremiumPurchase") ||
-      !hasFeature("SpendGold"))
+  if (!::g_login.isProfileReceived() || !hasFeature("EnablePremiumPurchase")
+      || !hasFeature("SpendGold"))
     return
 
   let currDays = time.getUtcDays()

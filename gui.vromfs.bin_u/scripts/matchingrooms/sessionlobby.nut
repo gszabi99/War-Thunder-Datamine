@@ -39,6 +39,7 @@ let { get_meta_mission_info_by_name, leave_mp_session, quit_to_debriefing,
 } = require("guiMission")
 let { set_game_mode, get_game_mode, get_game_type
 } = require("mission")
+let { addRecentContacts } = require("%scripts/contacts/contactsManager.nut")
 
 /*
 SessionLobby API
@@ -918,7 +919,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
       ::destroy_session_scripted()
   }
   if (this.status == lobbyStates.JOINING_SESSION)
-    ::add_squad_to_contacts()
+    addRecentContacts(::g_squad_manager.getSquadMembersDataForContact())
 
   if (this.status == lobbyStates.JOINING_SESSION ||
     this.status == lobbyStates.IN_SESSION)
