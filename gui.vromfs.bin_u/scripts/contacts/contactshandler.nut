@@ -754,11 +754,7 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
     if (!obj)
       return
 
-    let value = obj.getValue()
-    if ((this.curGroup in ::contacts) && (value in ::contacts[this.curGroup]))
-      this.curPlayer = ::contacts[this.curGroup][value]
-    else
-      this.curPlayer = null
+    this.curPlayer = ::contacts?[this.curGroup][obj.getValue()]
   }
 
   function onPlayerMenu(obj) {

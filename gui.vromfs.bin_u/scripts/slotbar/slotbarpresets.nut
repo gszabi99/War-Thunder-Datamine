@@ -17,7 +17,9 @@ let { deep_clone } = require("%sqstd/underscore.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
+let { debug_dump_stack } = require("dagor.debug")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -26,6 +28,8 @@ local isAlreadySendMissingPresetError = false
 
 const PRESETS_VERSION = 1
 const PRESETS_VERSION_SAVE_ID = "presetsVersion"
+
+let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p2.units)
 
 ::slotbarPresets <- {
   [PERSISTENT_DATA_PARAMS] = ["presets", "selected", "presetsVersion"]
@@ -114,19 +118,19 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
   function initCountry(countryId) {
     this.presets[countryId] <- this.getPresetsList(countryId)
     local selPresetId = ::loadLocalByAccount("slotbar_presets/" + countryId + "/selected", null)
-
-    if (selPresetId != null && (selPresetId in this.presets[countryId]))
-      this.updatePresetFromSlotbar(this.presets[countryId][selPresetId], countryId)
-    else {
-      selPresetId = 0
-      let slotbarPreset = this.createPresetFromSlotbar(countryId)
-      foreach (idx, preset in this.presets[countryId])
-        if (::u.isEqual(preset.crews, slotbarPreset.crews) && ::u.isEqual(preset.units, slotbarPreset.units)) {
-          selPresetId = idx
-          break
-        }
+    let slotbarPreset = this.createPresetFromSlotbar(countryId)
+    if (selPresetId != null && (selPresetId in this.presets[countryId])
+        && isEqualPreset(this.presets[countryId][selPresetId], slotbarPreset)) {
+      this.selected[countryId] <- selPresetId
+      return
     }
 
+    selPresetId = 0
+    foreach (idx, preset in this.presets[countryId])
+      if (isEqualPreset(preset, slotbarPreset)) {
+        selPresetId = idx
+        break
+      }
     this.selected[countryId] <- selPresetId
   }
 
@@ -631,6 +635,9 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
       if (!isAlreadySendMissingPresetError && !isNeedFirstCountryChoice()
           && hasDefaultUnitsInCountry(countryId)) {
         isAlreadySendMissingPresetError = true
+        let blkString = toString(blk, 2)                      // warning disable: -declared-never-used
+        let isProfileReceived = ::g_login.isProfileReceived() // warning disable: -declared-never-used
+        debug_dump_stack()
         logerr("[SLOTBAR PRESETS]: presets is missing")
       }
     }
