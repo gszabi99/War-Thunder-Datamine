@@ -125,7 +125,9 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
       return
     }
 
-    selPresetId = 0
+    selPresetId = selPresetId != null && (selPresetId in this.presets[countryId])
+      ? selPresetId
+      : 0
     foreach (idx, preset in this.presets[countryId])
       if (isEqualPreset(preset, slotbarPreset)) {
         selPresetId = idx

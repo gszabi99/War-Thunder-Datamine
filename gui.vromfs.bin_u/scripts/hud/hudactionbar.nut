@@ -16,7 +16,7 @@ let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificatio
   getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_WEAPON_LEAD
 } = require("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
@@ -332,7 +332,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
         ::broadcastEvent("ArtilleryTarget", { active = this.artillery_target_mode })
       }
 
-      if (actionType != prevActionItems[id].type)
+      if (actionType != prevActionItems[id].type || actionType == EII_WEAPON_LEAD)
         this.scene.findObject($"tooltip_{itemObjId}").tooltip = actionBarType.getTooltipText(item)
 
       let { cooldownEndTime = 0, cooldownTime = 1, inProgressTime = 1, inProgressEndTime = 0,

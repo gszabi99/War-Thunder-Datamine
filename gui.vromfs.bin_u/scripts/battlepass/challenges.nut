@@ -71,10 +71,10 @@ addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(_p) invalidateUnlocksCache()
 })
 
-let function updateChallenges(_value = null) {
+let function updateChallenges() {
   if (::g_login.isLoggedIn())
     battlePassChallenges(getAllUnlocksWithBlkOrder()
-      .filter(@(unlock) isUnlockVisible(unlock) && unlock?.battlePassSeason != null))
+      .filter(@(unlock) (unlock?.battlePassSeason != null) && isUnlockVisible(unlock)))
 }
 
 let function getChallengeStatus(userstatUnlock, unlockConfig) {
@@ -138,6 +138,7 @@ let function getChallengeView(config, paramsCfg = {}) {
     ? (unlockConfig.curVal.tofloat() / (unlockConfig?.maxVal ?? 1) * 1000)
     : 0
   let challengeStatus = getChallengeStatus(userstatUnlock, unlockConfig)
+  let isInteractive = paramsCfg?.isInteractive ?? true
 
   return {
     id = id
@@ -147,7 +148,7 @@ let function getChallengeView(config, paramsCfg = {}) {
     taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
     description = ::g_battle_tasks.getTaskDescription(unlockConfig, paramsCfg)
     reward = getUnlockRewardMarkUp(userstatUnlock)
-    canGetReward = userstatUnlock?.hasReward ?? false
+    canGetReward = isInteractive && (userstatUnlock?.hasReward ?? false)
     needShowProgressValue = challengeStatus == null && config?.curVal != null
       && config.curVal >= 0 && config?.maxVal != null && config.maxVal >= 0
     progressValue = config?.curVal
@@ -155,7 +156,7 @@ let function getChallengeView(config, paramsCfg = {}) {
     needShowProgressBar = progressData?.show
     progressBarValue = progressBarValue.tointeger()
     isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
-    isFavorite = isUnlockFav(id) ? "yes" : "no"
+    isFavorite = isInteractive ? (isUnlockFav(id) ? "yes" : "no") : null
     hoverAction = paramsCfg?.hoverAction
     rewardOnTop = true
   }

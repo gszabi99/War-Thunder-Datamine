@@ -24,6 +24,12 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
 
+let difficultyTypes = [
+  ::g_battle_task_difficulty.EASY,
+  ::g_battle_task_difficulty.MEDIUM,
+  ::g_battle_task_difficulty.HARD
+]
+
 ::g_battle_tasks <- null
 
 ::BattleTasks <- class {
@@ -546,7 +552,10 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
         taskUnlocksListPrefix = getMainConditionListPrefix(config.conditions)
 
         if (this.isUnlocksList(config))
-          taskUnlocksList = this.getUnlocksListView(config.__merge({isOnlyInfo = !!paramsCfg?.isOnlyInfo }))
+          taskUnlocksList = this.getUnlocksListView(config.__merge({
+            isOnlyInfo = !!paramsCfg?.isOnlyInfo
+            isInteractive = paramsCfg?.isInteractive
+          }))
         else
           taskStreaksList = this.getStreaksListView(config)
       }
@@ -630,6 +639,8 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
 
     let namesLoc = getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
     let isBitMode = isBitModeType(config.type)
+    let isInteractive = config?.isInteractive ?? true
+    let isAddToFavVisible = isInteractive && !config.isOnlyInfo
 
     foreach (idx, unlockId in config.names) {
       let isEven = idx % 2 == 0
@@ -641,7 +652,7 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
             text = decorator.getName()
             isUnlocked = decorator.isUnlocked()
             tooltipMarkup = DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
-            isAddToFavVisible = !config.isOnlyInfo // will be updated to false if no unlock in the decorator
+            isAddToFavVisible // will be updated to false if no unlock in the decorator
           }.__update(this.getUnlockAdditionalView(decorator.unlockId)))
       }
       else {
@@ -657,7 +668,7 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
           isUnlocked
           text = unlockName
           tooltipMarkup = this.getTooltipMarkupByModeType(unlockConfig)
-          isAddToFavVisible = !config.isOnlyInfo
+          isAddToFavVisible
         }.__update(this.getUnlockAdditionalView(unlockId)))
       }
     }
@@ -804,7 +815,7 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
   function generateItemView(config, paramsCfg = {}) {
     let isPromo = paramsCfg?.isPromo ?? false
     let isShortDescription = paramsCfg?.isShortDescription ?? false
-
+    let isInteractive = paramsCfg?.isInteractive ?? true
     let task = this.getTaskById(config) || getTblValue("originTask", config)
     let isTaskBattleTask = this.isBattleTask(task)
     let isCanGetReward = this.canGetReward(task)
@@ -833,9 +844,11 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
       taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
       description = isTaskBattleTask || isUnlock ? this.getTaskDescription(config, paramsCfg) : null
       reward = isPromo ? null : this.getRewardMarkUpConfig(task, config)
-      newIconWidget = isTaskBattleTask ? (this.isTaskActive(task) ? null : ::NewIconWidget.createLayout()) : null
-      canGetReward = isTaskBattleTask && isCanGetReward
-      canReroll = isTaskBattleTask && !isCanGetReward
+      newIconWidget = (isInteractive && isTaskBattleTask)
+        ? (this.isTaskActive(task) ? null : ::NewIconWidget.createLayout())
+        : null
+      canGetReward = isInteractive && isTaskBattleTask && isCanGetReward
+      canReroll = isInteractive && isTaskBattleTask && !isCanGetReward
       otherTasksNum = task && isPromo ? this.getTotalActiveTasksNum() : null
       isLowWidthScreen = isPromo ? ::is_low_width_screen() : null
       isPromo = isPromo
@@ -870,15 +883,33 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
     return difficulty.image
   }
 
-  function getTasksArrayByIncreasingDifficulty() {
-    let typesArray = [
-      ::g_battle_task_difficulty.EASY,
-      ::g_battle_task_difficulty.MEDIUM,
-      ::g_battle_task_difficulty.HARD
-    ]
+  function getAllTasks() {
+    let res = []
+    foreach (task in this.proposedTasksArray)
+      if (this.isTaskActual(task))
+        res.append(task)
+    foreach (task in this.activeTasksArray)
+      if (this.isTaskActual(task))
+        res.append(task)
+    return res
+  }
 
+  function getFullTasksArrayByIncreasingDifficulty() {
+    let tasks = this.getAllTasks()
     let result = []
-    foreach (t in typesArray) {
+    foreach (t in difficultyTypes) {
+      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, tasks)
+      if (arr.len() == 0)
+        continue
+
+      result.extend(arr)
+    }
+    return result
+  }
+
+  function getTasksArrayByIncreasingDifficulty() {
+    let result = []
+    foreach (t in difficultyTypes) {
       let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
       if (arr.len() == 0)
         continue
@@ -886,7 +917,6 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
       if (::g_battle_task_difficulty.canPlayerInteractWithDifficulty(t, arr))
         result.extend(arr)
     }
-
     return result
   }
 

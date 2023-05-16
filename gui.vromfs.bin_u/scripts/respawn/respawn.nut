@@ -52,6 +52,7 @@ let { quit_to_debriefing } = require("guiMission")
 let { setCurSkinToHangar, getRealSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -1677,6 +1678,7 @@ enum ESwitchSpectatorTarget {
       btn_QuitMission =     this.showButtons && this.isRespawn && this.isNoRespawns && ::g_mis_loading_state.isReadyToShowRespawn()
       btn_back =            this.showButtons && useTouchscreen && !this.isRespawn
       btn_activateorder =   this.showButtons && this.isRespawn && ::g_orders.showActivateOrderButton() && (!this.isSpectate || !::show_console_buttons)
+      btn_personal_tasks =  this.showButtons && this.isRespawn
     }
     foreach (id, value in buttons)
       this.showSceneBtn(id, value)
@@ -1984,6 +1986,8 @@ enum ESwitchSpectatorTarget {
   function onQuitMission(_obj) {
     ::quit_mission()
   }
+
+  onPersonalTasksOpen = @() openPersonalTasks()
 
   function goBack() {
     if (!this.isRespawn)

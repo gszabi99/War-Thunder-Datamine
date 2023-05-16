@@ -397,9 +397,9 @@ let function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons
     weaponsSlotCount  = ::get_full_unit_blk(unit.name)?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
   }
 
-  foreach (weaponType, triggers in (weaponry?.weaponsByTypes ?? {}))
+  foreach (triggers in (weaponry?.weaponsByTypes ?? {}))
     foreach (t in triggers) {
-      let tType = weaponType == TRIGGER_TYPE.TURRETS ? weaponType : t.trigger
+      let tType = t.trigger
       presetView.weaponsByTypes[tType] <- presetView?.weaponsByTypes[tType] ?? {}
       presetView.weaponsByTypes[tType].weaponBlocks <- presetView.weaponsByTypes[tType]?.weaponBlocks ?? {}
       let w = presetView.weaponsByTypes[tType].weaponBlocks

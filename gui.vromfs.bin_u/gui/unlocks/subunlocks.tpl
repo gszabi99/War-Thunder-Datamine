@@ -1,6 +1,6 @@
 <<#subunlocks>>
 tdiv {
-  width:t='pw/2-1'
+  width:t='pw/<<numColumns>>-1'
   padding-top:t='@blockInterval'
   padding-right:t='@blockInterval'
 
@@ -24,5 +24,7 @@ tdiv {
     pos:t='0, 50%(ph-h)'
     margin-left:t='@blockInterval'
   }
+
+  <<@tooltipMarkup>>
 }
 <</subunlocks>>

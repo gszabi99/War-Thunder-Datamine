@@ -833,6 +833,13 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
         return "#ui/gameuiskin#hover_mode_lead"
       return "#ui/gameuiskin#hover_mode_auto"
     }
+    function getTooltipText(actionItem = null) {
+      let guidanceLeadMode = actionItem?.userHandle ?? -1
+      let mode = guidanceLeadMode == GUIDANCE_LEAD_MODE_OFF ? loc("guidance_method/los")
+        : guidanceLeadMode == GUIDANCE_LEAD_MODE_ON ? loc("guidance_method/lead")
+        : loc("guidance_method/auto")
+      return loc($"actionBarItem/{this._name}", { mode })
+    }
   }
 
   TANK_TERRAFORM = {

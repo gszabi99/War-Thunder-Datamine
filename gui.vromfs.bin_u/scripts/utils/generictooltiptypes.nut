@@ -20,7 +20,8 @@ let { fillItemDescr, fillDescTextAboutDiv,
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { getUnlockDesc, getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockChapterAndGroupText,
-  getUnlockMainCondDescByCfg, getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
+  getUnlockMainCondDescByCfg, getUnlockTitle, getUnlockSnapshotText
+} = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -109,17 +110,22 @@ let exportTypes = addTooltipTypes({
         obj.findObject("chapter").setValue(getUnlockChapterAndGroupText(unlock))
 
       let mainCond = getUnlockMainCondDescByCfg(subunlockCfg ?? config)
+      let hasMainCond = mainCond != ""
+      let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
+      let isUnlocked = ::is_unlocked_scripted(-1, unlockId)
+      let hasProgressBar = hasMainCond && progressData.show && !isUnlocked
+      let snapshot = hasProgressBar && (params?.showSnapshot ?? false)
+        ? getUnlockSnapshotText(subunlockCfg ?? config)
+        : ""
       let conds = getUnlockCondsDescByCfg(subunlockCfg ?? config)
       obj.findObject("desc_text").setValue(getUnlockDesc(subunlockCfg ?? config))
-      obj.findObject("mainCond").setValue(mainCond)
+      obj.findObject("mainCond").setValue(" ".join([mainCond, snapshot], true))
       obj.findObject("multDesc").setValue(getUnlockMultDescByCfg(subunlockCfg ?? config))
       obj.findObject("conds").setValue(conds)
 
-      let hasMainCond = mainCond != ""
       let hasAnyCond = hasMainCond || conds != ""
-      if (hasMainCond && !::is_unlocked_scripted(-1, unlockId)) {
+      if (hasMainCond && !isUnlocked) {
         let pObj = obj.findObject("progress")
-        let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
         pObj.setValue(progressData.value)
         pObj.show(progressData.show)
       }
@@ -493,8 +499,11 @@ let exportTypes = addTooltipTypes({
         return false
 
       let unlockBlk = id && id != "" && getUnlockById(id)
-      let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem.tpl",
-        { items = [getChallengeView(unlockBlk, { isOnlyInfo = true })], isSmallText = true })
+      let view = {
+        items = [getChallengeView(unlockBlk, { isOnlyInfo = true, isInteractive = false })]
+        isSmallText = true
+      }
+      let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", view)
 
       let guiScene = obj.getScene()
       obj.width = "1@unlockBlockWidth"
