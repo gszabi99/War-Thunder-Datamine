@@ -56,17 +56,18 @@ def call_macro_label_name(mod,value)
 
 def function_label_name(value:FunctionPtr)
     var mn = get_mangled_name(value)
-    // TODO: add replace_characters
-    mn = replace(mn," ","_")
-    mn = replace(mn,"$","_builtin_")
-    mn = replace(mn,"#","_hh_")
-    mn = replace(mn,":","_c_")
-    mn = replace(mn,"@","_at_")
-    mn = replace(mn,"<","_ls_")
-    mn = replace(mn,">","_gr_")
-    mn = replace(mn,"`","_rq_")
-    mn = replace(mn,"!","_ex_")
-    mn = replace(mn,"=","_eq_")
+    mn = mn |> replace_multiple([{auto
+        " " => "_";
+        "$" => "_builtin_";
+        "#" => "_hh_";
+        ":" => "_c_";
+        "@" => "_at_";
+        "<" => "_ls_";
+        ">" => "_gr_";
+        "`" => "_rq_";
+        "!" => "_ex_";
+        "=" => "_eq_"
+    }])
     return "function-{mn}"
 
 def describe_type_short(td:TypeDecl?)
@@ -99,7 +100,24 @@ def describe_type(td:TypeDeclPtr)
             if !empty(td.alias)
                 write(writer,"({td.alias})")
         elif baseType==Type tHandle
-            write(writer,make_ref(handle_label_name(td.annotation),"{module_name(td.annotation._module)}::{td.annotation.name}"))
+            let hname = string(td.annotation.name)
+            if hname |> starts_with("dasvector`smart_ptr`") // 20 characters
+                write(writer,"vector<smart_ptr<")
+                write(writer,hname |> slice(20))
+                write(writer,">>")
+            elif hname |> starts_with("dasvector`") // 10 characters
+                write(writer,"vector<")
+                write(writer,hname |> slice(10))
+                write(writer,">")
+            elif hname |> starts_with("pair`") // 5 characters
+                write(writer,"pair<")
+                var parts <- split(hname,"`")
+                write(writer,parts[1])
+                write(writer,",")
+                write(writer,parts[2])
+                write(writer,">")
+            else
+                write(writer,make_ref(handle_label_name(td.annotation),"{module_name(td.annotation._module)}::{td.annotation.name}"))
         elif baseType==Type tStructure
             write(writer,make_ref(struct_label_name(td.structType),"{module_name(td.structType._module)}::{td.structType.name}"))
         elif baseType==Type tEnumeration || baseType==Type tEnumeration8 || baseType==Type tEnumeration16
@@ -135,9 +153,9 @@ def describe_type(td:TypeDeclPtr)
         elif baseType==Type tBlock || baseType==Type tFunction || baseType==Type tLambda
             write(writer,das_to_string(baseType))
             write(writer,"<")
-            if td.argTypes.length!=0
+            if td.argTypes |> length!=0
                 write(writer,"(")
-                if td.argNames.length!=0
+                if td.argNames |> length!=0
                     var first = true
                     for at,an in td.argTypes,td.argNames
                         if first
@@ -163,8 +181,8 @@ def describe_type(td:TypeDeclPtr)
         elif baseType==Type tTuple || baseType==Type tVariant
             write(writer,das_to_string(baseType))
             write(writer,"<")
-            if td.argTypes.length!=0
-                if td.argNames.length!=0
+            if td.argTypes |> length!=0
+                if td.argNames |> length!=0
                     var first = true
                     for at,an in td.argTypes,td.argNames
                         if first
@@ -218,9 +236,11 @@ def make_label(name:string)
     return ".. _{name}:\n\n"
 
 def make_ref(name,text:string)
-    var t = replace(text,"<","\\<")
-    t = replace(t,">","\\>")
-    t = replace(t,"!","\\!")
+    let t = text |> replace_multiple([{auto
+        "<" => "\\<";
+        ">" => "\\>";
+        "!" => "\\!"
+    }])
     return " :ref:`{t} <{name}>` "
 
 def make_group(name:string; plus:string="+")
@@ -492,9 +512,7 @@ def document_structure_annotation(doc_file:file;mod:Module?;value)
     fwrite(doc_file,"{value.name}\n\n")
     var any_fields = false
     var any_props = false
-    var ann : BasicStructureAnnotation?
-    unsafe
-        ann = reinterpret<BasicStructureAnnotation?> value
+    var ann = unsafe(reinterpret<BasicStructureAnnotation?> value)
     for_each_field(*ann) <| $ ( name,cppName,xtype,offset)
         if offset != -1u
             any_fields = true
@@ -520,6 +538,26 @@ def document_structure_annotation(doc_file:file;mod:Module?;value)
                 emplace(tab,line)
         fwrite(doc_file,"{value.name} properties are\n\n")
         fwrite(doc_file,make_table(tab))
+    var props : array<array<string>>
+    var inscope annT <- new [[TypeDecl() baseType=Type tHandle,
+        annotation=unsafe(reinterpret<TypeAnnotation?> value)]]
+    for_each_function(mod, "") <| $(func)
+        if !func.moreFlags.propertyFunction
+            return
+        if func.arguments|>length != 1
+            return
+        let fna = string(func.name)
+        if !fna|>starts_with(".`") || length(fna)<=2
+            return
+        if !is_same_type(func.arguments[0]._type,annT,RefMatters no,ConstMatters no,TemporaryMatters no)
+            return
+        var line : array<string>
+        push(line,slice(fna,2))
+        push(line,describe_type(func.result))
+        emplace(props,line)
+    if !empty(props)
+        fwrite(doc_file,"{value.name} property operators are\n\n")
+        fwrite(doc_file,make_table(props))
     document_topic(doc_file,topic("structure_annotation",mod,string(value.name)))
 
 def document_structure_annotations(doc_file:file;mod:Module?)
@@ -670,6 +708,8 @@ def function_needs_documenting(func:FunctionPtr)
     if func.flags.privateFunction
         return false
     if func.fromGeneric != null
+        return false
+    if func.moreFlags.propertyFunction
         return false
     var isBuiltin = false
     peek(func._module.name) <| $(name)

@@ -1,14 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let regexp2 = require("regexp2")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { clearBorderSymbols, split } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
@@ -17,7 +19,7 @@ let { deep_clone } = require("%sqstd/underscore.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { isEqual } = u
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 let { debug_dump_stack } = require("dagor.debug")
 
@@ -184,8 +186,8 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   function getPresetsReseveTypesText(country = null) {
     country = country ?? profileCountrySq.value
     let types = this.getUnitTypesWithNotActivePresetBonus(country)
-    local typeNames = ::u.map(types, function(u) { return u.getArmyLocName() })
-    return ::g_string.implode(typeNames, ", ")
+    local typeNames = u.map(types, function(unit) { return unit.getArmyLocName() })
+    return ", ".join(typeNames, true)
   }
 
   function havePresetsReserve(country = null) {
@@ -259,7 +261,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     let countryId = profileCountrySq.value
     this.presets[countryId].append(this.createEmptyPreset(countryId, this.presets[countryId].len()))
     this.save(countryId)
-    ::broadcastEvent("SlotbarPresetsChanged", { showPreset = this.presets[countryId].len() - 1 })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = this.presets[countryId].len() - 1 })
     return true
   }
 
@@ -270,7 +272,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     let newPreset = deep_clone(fromPreset).__update({ title = $"{fromPreset.title} *" })
     this.presets[countryId].append(newPreset)
     this.save(countryId)
-    ::broadcastEvent("SlotbarPresetsChanged", { showPreset = this.presets[countryId].len() - 1 })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = this.presets[countryId].len() - 1 })
     return true
   }
 
@@ -289,7 +291,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     if (this.selected[countryId] != null && this.selected[countryId] > idx)
       this.selected[countryId]--
     this.save(countryId)
-    ::broadcastEvent("SlotbarPresetsChanged", { showPreset = min(idx, this.presets[countryId].len() - 1) })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = min(idx, this.presets[countryId].len() - 1) })
     return true
   }
 
@@ -308,7 +310,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
         this.selected[countryId] += (offset > 0 ? -1 : 1)
     }
     this.save(countryId)
-    ::broadcastEvent("SlotbarPresetsChanged", { showPreset = newIdx })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = newIdx })
     return true
   }
 
@@ -346,7 +348,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
 
     this.presets[countryId][idx].title <- newName
     this.save(countryId)
-    ::broadcastEvent("SlotbarPresetsChanged", { showPreset = idx })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = idx })
   }
 
   function saveAllCountries() {
@@ -380,12 +382,13 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
       foreach (_idx, p in this.presets[countryId]) {
         if (p.units.len() == 0)
           continue
-        presetsList.append(::g_string.join([p.selected,
-                               ::g_string.join(p.crews, ","),
-                               ::g_string.join(p.units, ","),
-                               p.title,
-                               getTblValue("gameModeId", p, "")],
-                              "|"))
+        presetsList.append("|".join([
+                                      p.selected,
+                                      ",".join(p.crews),
+                                      ",".join(p.units),
+                                      p.title,
+                                      getTblValue("gameModeId", p, "")
+                                    ]))
       }
       if (presetsList.len() == 0)
         return false
@@ -400,7 +403,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
       return false
     }
 
-    if (::u.isEqual(blk, cfgBlk))
+    if (u.isEqual(blk, cfgBlk))
       return false
 
     ::saveLocalByAccount("slotbar_presets/" + countryId, blk, shouldSaveProfile ? forceSaveProfile : @() null)
@@ -428,7 +431,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
       return true
 
     foreach (unitName in preset.units) {
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (unit && ::SessionLobby.isUnitAllowed(unit))
         return true
     }
@@ -472,7 +475,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
       foreach (i, unitId in preset.units) {
         let crewId = preset.crews[i]
         if (crewId == crew.id) {
-          let unit = ::getAircraftByName(unitId)
+          let unit = getAircraftByName(unitId)
           if (unit && unit.isInShop && ::isUnitUsable(unit)
               && (!unit.trainCost || isInArray(unitId, crewTrainedUnits))
               && !(unitId in unitsList)) {
@@ -541,7 +544,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     this.isLoading = false
     this.save(countryId)
 
-    ::broadcastEvent("SlotbarPresetLoaded", { crewsChanged = true })
+    broadcastEvent("SlotbarPresetLoaded", { crewsChanged = true })
   }
 
   function setCurrentGameModeByPreset(country, preset = null) {
@@ -594,7 +597,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     if (blk) {
       let presetsBlk = blk % "preset"
       foreach (idx, strPreset in presetsBlk) {
-        let data = ::g_string.split(strPreset, "|")
+        let data = split(strPreset, "|")
         if (data.len() < 3)
           continue
         let preset = this._createPresetTemplate(idx)
@@ -604,8 +607,8 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
           preset.title = title
         preset.gameModeId = getTblValue(4, data, "")
 
-        let unitNames = ::g_string.split(data[2], ",")
-        let crewIds = ::g_string.split(data[1], ",")
+        let unitNames = split(data[2], ",")
+        let crewIds = split(data[1], ",")
         if (!unitNames.len() || unitNames.len() != crewIds.len())
           continue
 
@@ -616,7 +619,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
           if (crewId == "" && this.presetsVersion == 0)
             continue
           crewId = ::to_integer_safe(crewIds[i], -1)
-          if (!::getAircraftByName(unitName) || crewId < 0)
+          if (!getAircraftByName(unitName) || crewId < 0)
             continue
 
           preset.units.append(unitName)
@@ -662,7 +665,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   function _updateInfo(preset) {
     local unitTypesMask = 0
     foreach (unitId in preset.units) {
-      let unit = ::getAircraftByName(unitId)
+      let unit = getAircraftByName(unitId)
       let unitType = unit ? ::get_es_unit_type(unit) : ES_UNIT_TYPE_INVALID
       if (unitType != ES_UNIT_TYPE_INVALID)
         unitTypesMask = unitTypesMask | (1 << unitType)
@@ -687,7 +690,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
         foreach (crew in tbl.crews)
           if (("aircraft" in crew)) {
             let unitName = crew.aircraft
-            if (!::getAircraftByName(unitName))
+            if (!getAircraftByName(unitName))
               continue
 
             units.append(crew.aircraft)
@@ -717,7 +720,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     local crewToSet = null
     foreach (crew in crews) {
       foreach (unitName in crew.trained) {
-        let unit = ::getAircraftByName(unitName)
+        let unit = getAircraftByName(unitName)
         if (!unit || !unit.isBought() || !unit.canAssignToCrew(countryId))
           continue
         if (unitToSet && unitToSet.rank > unit.rank)
@@ -758,5 +761,5 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   }
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("slotbarPresets")
-::subscribe_handler(::slotbarPresets)
+g_script_reloader.registerPersistentDataFromRoot("slotbarPresets")
+subscribe_handler(::slotbarPresets)

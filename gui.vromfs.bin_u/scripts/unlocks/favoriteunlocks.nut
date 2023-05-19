@@ -1,8 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 let { isUnlockVisibleOnCurPlatform, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -83,7 +84,7 @@ let function addUnlockToFavorites(unlockId) {
   getFavoriteUnlocks().addBlock(unlockId)
   getFavoriteUnlocks()[unlockId] = getUnlockById(unlockId)
   saveFavorites()
-  ::broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = true })
+  broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = true })
 }
 
 let function removeUnlockFromFavorites(unlockId) {
@@ -92,7 +93,7 @@ let function removeUnlockFromFavorites(unlockId) {
 
   getFavoriteUnlocks().removeBlock(unlockId)
   saveFavorites()
-  ::broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = false })
+  broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = false })
 }
 
 let function toggleUnlockFav(unlockId) {
@@ -118,7 +119,7 @@ let function toggleUnlockFav(unlockId) {
 // TODO replace with toggleUnlockFav, do not pass visual object and callback here
 let function unlockToFavorites(obj, updateCb = null) {
   let unlockId = obj?.unlockId
-  if (::u.isEmpty(unlockId))
+  if (u.isEmpty(unlockId))
     return
 
   if (!canAddFavorite()

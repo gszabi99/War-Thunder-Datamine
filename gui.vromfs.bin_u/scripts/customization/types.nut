@@ -1,6 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -8,6 +11,11 @@ from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
 let { floor } = require("math")
 let { format } = require("string")
+let { get_last_skin, get_decal_in_slot, set_current_decal_slot, set_decal_in_slot,
+  enter_decal_mode, add_attachable, remove_attachable, select_attachable_slot,
+  exit_attachables_mode, get_attachable_name, get_attachable_group, focus_on_current_decal,
+  get_num_decal_slots, get_max_num_decal_slots, exit_decal_mode
+} = require("unitCustomization")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let time = require("%scripts/time.nut")
@@ -17,6 +25,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { updateDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin
 } = require("%scripts/customization/decorCache.nut")
+let { get_decals_blk } = require("blkGetters")
 
 let function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.
@@ -69,13 +78,13 @@ let function memoizeByProfile(func, hashFunc = null) {
       return text
     }
 
-    getCost = function(_decoratorName) { return ::Cost() }
+    getCost = function(_decoratorName) { return Cost() }
     getDecoratorNameInSlot = function(_slotIdx, _unitName, _skinId, _checkPremium = false) { return "" }
     getDecoratorGroupInSlot = function(_slotIdx, _unitName, _skinId, _checkPremium = false) { return "" }
 
     hasFreeSlots = @(unit, skinId = null, checkPremium = false) this.getFreeSlotIdx(unit, skinId, checkPremium) != -1
     getFreeSlotIdx = function(unit, skinId = null, checkPremium = false) {
-      skinId = skinId || ::hangar_get_last_skin(unit.name)
+      skinId = skinId || get_last_skin(unit.name)
       let slotsCount = checkPremium ? this.getMaxSlots() : this.getAvailableSlots(unit)
       for (local i = 0; i < slotsCount; i++)
         if (this.getDecoratorNameInSlot(i, unit.name, skinId, checkPremium) == "")
@@ -158,8 +167,8 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     jobCallbacksStack = {}
 
-    getAvailableSlots = function(unit) { return ::get_num_decal_slots(unit.name) }
-    getMaxSlots = function() { return ::get_max_num_decal_slots() }
+    getAvailableSlots = function(unit) { return get_num_decal_slots(unit.name) }
+    getMaxSlots = function() { return get_max_num_decal_slots() }
 
     getImage = function(decorator) {
       return decorator
@@ -174,11 +183,11 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getLocDesc = function(decoratorName) { return loc("decals/" + decoratorName + "/desc", "") }
 
     getCost = function(decoratorName) {
-      return ::Cost(max(0, ::get_decal_cost_wp(decoratorName)),
+      return Cost(max(0, ::get_decal_cost_wp(decoratorName)),
                     max(0, ::get_decal_cost_gold(decoratorName)))
     }
     getDecoratorNameInSlot = function(slotIdx, unitName, skinId, checkPremium = false) {
-      return ::hangar_get_decal_in_slot(unitName, skinId, slotIdx, checkPremium) //slow function
+      return get_decal_in_slot(unitName, skinId, slotIdx, checkPremium) //slow function
     }
 
     isAllowed = function(decoratorName) { return ::is_decal_allowed(decoratorName, "") }
@@ -186,14 +195,18 @@ enums.addTypesByGlobalName("g_decorator_type", {
       && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(::player_have_decal)
 
-    getBlk = function() { return ::get_decals_blk() }
+    getBlk = function() {
+      let decalsBlk = DataBlock()
+      get_decals_blk(decalsBlk)
+      return decalsBlk
+    }
 
     specifyEditableSlot = function(slotIdx, needFocus = true) {
-      ::hangar_set_current_decal_slot(slotIdx)
+      set_current_decal_slot(slotIdx)
       if (needFocus)
-        ::hangar_focus_on_current_decal()
+        focus_on_current_decal()
     }
-    addDecorator = function(decoratorName) { return ::hangar_set_decal_in_slot(decoratorName) }
+    addDecorator = function(decoratorName) { return set_decal_in_slot(decoratorName) }
     removeDecorator = function(slotIdx, save) {
       this.specifyEditableSlot(slotIdx, false)
       this.enterEditMode("")
@@ -204,9 +217,9 @@ enums.addTypesByGlobalName("g_decorator_type", {
       this.specifyEditableSlot(slotIdx)
       this.addDecorator(decoratorName)
     }
-    enterEditMode = function(decoratorName) { return ::hangar_enter_decal_mode(decoratorName) }
+    enterEditMode = function(decoratorName) { return enter_decal_mode(decoratorName) }
     exitEditMode = function(apply, save = false, callback = function () {}) {
-      let res = ::hangar_exit_decal_mode(apply, save)
+      let res = exit_decal_mode(apply, save)
       if (res.success) {
         if (res.taskId != -1)
           this.jobCallbacksStack[res.taskId] <- callback
@@ -281,11 +294,11 @@ enums.addTypesByGlobalName("g_decorator_type", {
     }
 
     getCost = function(decoratorName) {
-      return ::Cost(max(0, ::get_attachable_cost_wp(decoratorName)),
+      return Cost(max(0, ::get_attachable_cost_wp(decoratorName)),
                     max(0, ::get_attachable_cost_gold(decoratorName)))
     }
-    getDecoratorNameInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_name(slotIdx) }
-    getDecoratorGroupInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_group(slotIdx) }
+    getDecoratorNameInSlot = function(slotIdx, ...) { return get_attachable_name(slotIdx) }
+    getDecoratorGroupInSlot = function(slotIdx, ...) { return get_attachable_group(slotIdx) }
 
     isAvailable = @(unit, checkUnitUsable = true) !!unit && hasFeature("AttachablesUse")
       && (unit.isTank() || unit.isShipOrBoat())
@@ -295,14 +308,14 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getBlk = function() { return ::get_attachable_blk() }
 
     removeDecorator = function(slotIdx, save) {
-      ::hangar_remove_attachable(slotIdx)
+      remove_attachable(slotIdx)
       this.exitEditMode(true, save)
     }
 
-    specifyEditableSlot = @(slotIdx, _needFocus = true) ::hangar_select_attachable_slot(slotIdx)
-    enterEditMode = function(decoratorName) { return ::hangar_add_attachable(decoratorName) }
+    specifyEditableSlot = @(slotIdx, _needFocus = true) select_attachable_slot(slotIdx)
+    enterEditMode = function(decoratorName) { return add_attachable(decoratorName) }
     exitEditMode = function(apply, save, callback = function () {}) {
-      let res = ::hangar_exit_attachables_mode(apply, save)
+      let res = exit_attachables_mode(apply, save)
       if (res)
         callback()
       return res
@@ -362,7 +375,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       local name = ""
 
       let unitName = getPlaneBySkinId(decoratorName)
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (unit) {
         let skinNameId = getSkinNameBySkinId(decoratorName)
         let skinBlock = unit.getSkinBlockById(skinNameId)
@@ -377,7 +390,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
         name = loc(decoratorName)
       }
 
-      if (addUnitName && !::u.isEmpty(unitName))
+      if (addUnitName && !u.isEmpty(unitName))
         name += loc("ui/parentheses/space", { text = ::getUnitName(unit) })
 
       return name
@@ -385,7 +398,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     getLocDesc = function(decoratorName) {
       let unitName = getPlaneBySkinId(decoratorName)
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (unit) {
         let skinNameId = getSkinNameBySkinId(decoratorName)
         let skinBlock = unit.getSkinBlockById(skinNameId)
@@ -399,12 +412,12 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     hasLocations = function(decoratorName) {
       let unitName = getPlaneBySkinId(decoratorName)
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       return unit?.isTank() ?? false
     }
 
     function getTypeDesc(decorator) {
-      let unit = ::getAircraftByName(getPlaneBySkinId(decorator.id))
+      let unit = getAircraftByName(getPlaneBySkinId(decorator.id))
       if (!unit)
         return loc("trophy/unlockables_names/skin")
       return loc("reward/skin_for") + " " +
@@ -413,7 +426,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     getCost = function(decoratorName) {
       let unitName = getPlaneBySkinId(decoratorName)
-      return ::Cost(max(0, ::get_skin_cost_wp(unitName, decoratorName)),
+      return Cost(max(0, ::get_skin_cost_wp(unitName, decoratorName)),
                     max(0, ::get_skin_cost_gold(unitName, decoratorName)))
     }
 
@@ -467,7 +480,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
 
     updateDownloadableDecoratorsInfo = function(decorator) {
       let unitName = getPlaneBySkinId(decorator.id)
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         return
 

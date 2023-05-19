@@ -86,27 +86,27 @@
         ],
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "bdt_t1_targets_squad",
               "bdt_t2_targets_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetableByAi": false,
             "isImmortal": true,
             "stealthRadius": 0.0
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "bdt_t1_aaa_squad",
               "bdt_t2_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.75,
             "airAccuracy": 0.75,
             "maxDeviationAngle": 10.0,
@@ -386,9 +386,19 @@
           ],
           "varAddString": [
             {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_t1_cur_spawn_zone_name"
+            },
+            {
               "digits": 2,
               "value": "@bdt_t1_cur_spawn_random_idx",
               "var": "bdt_t1_cur_spawn_zone_name"
+            },
+            {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_spawn_t1_bombing_zone_object_name"
             },
             {
               "digits": 2,
@@ -533,6 +543,11 @@
           ],
           "varAddString": [
             {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_t1_cur_spawn_zone_name"
+            },
+            {
               "digits": 2,
               "value": "@bdt_t1_cur_spawn_random_idx",
               "var": "bdt_t1_cur_spawn_zone_name"
@@ -546,6 +561,11 @@
               "digits": 0,
               "value": "_aaa_point_",
               "var": "bdt_t1_cur_spawn_aaa_name"
+            },
+            {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_spawn_t1_bombing_zone_object_name"
             },
             {
               "digits": 2,
@@ -742,7 +762,7 @@
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "bdt_t1_spawn_zone_show"
+            "target": "bdt_t1_spawn_distance_check"
           }
         }
       },
@@ -1156,9 +1176,19 @@
           ],
           "varAddString": [
             {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_t2_cur_spawn_zone_name"
+            },
+            {
               "digits": 2,
               "value": "@bdt_t2_cur_spawn_random_idx",
               "var": "bdt_t2_cur_spawn_zone_name"
+            },
+            {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_spawn_t2_bombing_zone_object_name"
             },
             {
               "digits": 2,
@@ -1303,6 +1333,11 @@
           ],
           "varAddString": [
             {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_t2_cur_spawn_zone_name"
+            },
+            {
               "digits": 2,
               "value": "@bdt_t2_cur_spawn_random_idx",
               "var": "bdt_t2_cur_spawn_zone_name"
@@ -1316,6 +1351,11 @@
               "digits": 0,
               "value": "_aaa_point_",
               "var": "bdt_t2_cur_spawn_aaa_name"
+            },
+            {
+              "digits": 0,
+              "value": "@bdt_base_name_suffix",
+              "var": "bdt_spawn_t2_bombing_zone_object_name"
             },
             {
               "digits": 2,
@@ -1512,7 +1552,7 @@
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "bdt_t2_spawn_zone_show"
+            "target": "bdt_t2_spawn_distance_check"
           }
         }
       },
@@ -2009,7 +2049,13 @@
             "time": 10.0
           }
         },
-        "conditions": {},
+        "conditions": {
+          "varCompareString": {
+            "var_value": "bdt_game_mode",
+            "value": "jip",
+            "comparasion_func": "equal"
+          }
+        },
         "actions": {
           "comment": [
             {
@@ -2033,7 +2079,11 @@
             "target": "bdt_capture_t1_rotator"
           }
         },
-        "else_actions": {}
+        "else_actions": {
+          "triggerDisable": {
+            "target": "bdt_capture_t1_start"
+          }
+        }
       },
       "bdt_capture_t1_rotator": {
         "is_enabled": false,
@@ -2337,7 +2387,13 @@
             "time": 10.0
           }
         },
-        "conditions": {},
+        "conditions": {
+          "varCompareString": {
+            "var_value": "bdt_game_mode",
+            "value": "jip",
+            "comparasion_func": "equal"
+          }
+        },
         "actions": {
           "comment": [
             {
@@ -2361,7 +2417,11 @@
             "target": "bdt_capture_t2_rotator"
           }
         },
-        "else_actions": {}
+        "else_actions": {
+          "triggerDisable": {
+            "target": "bdt_capture_t2_start"
+          }
+        }
       },
       "bdt_capture_t2_rotator": {
         "is_enabled": false,
@@ -4176,10 +4236,10 @@
         "actions": {
           "moAddMissionObjective": {
             "target": "@bdt_t2_spawn_objective_name",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "unit_or_area": "@bdt_t1_cur_spawn_zone_name",
             "object_marking": 0,
-            "unit_or_area": "@bdt_t1_cur_spawn_zone_name"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -4210,10 +4270,10 @@
         "actions": {
           "moAddMissionObjective": {
             "target": "@bdt_t1_spawn_objective_name",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "unit_or_area": "@bdt_t2_cur_spawn_zone_name",
             "object_marking": 0,
-            "unit_or_area": "@bdt_t2_cur_spawn_zone_name"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -4801,7 +4861,8 @@
     "bdt_capture_t1_object_name": "",
     "bdt_capture_t2_object_name": "",
     "bdt_t1_min_zone_distance": 10000.0,
-    "bdt_t2_min_zone_distance": 10000.0
+    "bdt_t2_min_zone_distance": 10000.0,
+    "bdt_base_name_suffix": ""
   },
   "dialogs": {},
   "airfields": {},

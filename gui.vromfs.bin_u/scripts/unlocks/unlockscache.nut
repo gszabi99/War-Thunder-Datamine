@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let cacheById = persist("unlocksCacheById", @() {})
 let cacheArray = persist("unlocksCacheArray", @() [])
@@ -42,7 +42,7 @@ let function cache() {
 
 let function invalidateCache() {
   isCacheValid.value = false
-  ::broadcastEvent("UnlocksCacheInvalidate")
+  broadcastEvent("UnlocksCacheInvalidate")
 }
 
 let function getAllUnlocks() {

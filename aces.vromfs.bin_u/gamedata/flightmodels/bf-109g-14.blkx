@@ -37,6 +37,12 @@
       "cannon4_dm": {
         "hp": 15.0
       },
+      "cannon5_dm": {
+        "hp": 15.0
+      },
+      "cannon6_dm": {
+        "hp": 15.0
+      },
       "mgun1_dm": {
         "hp": 15.0
       },
@@ -173,6 +179,12 @@
         "hp": 19.5
       },
       "cover6_dm": {
+        "hp": 19.5
+      },
+      "cover7_dm": {
+        "hp": 19.5
+      },
+      "cover8_dm": {
         "hp": 19.5
       }
     },
@@ -373,6 +385,12 @@
         "name": "cannon4_dm"
       },
       {
+        "name": "cannon5_dm"
+      },
+      {
+        "name": "cannon6_dm"
+      },
+      {
         "name": "cover1_dm"
       },
       {
@@ -389,6 +407,12 @@
       },
       {
         "name": "cover6_dm"
+      },
+      {
+        "name": "cover7_dm"
+      },
+      {
+        "name": "cover8_dm"
       },
       {
         "name": "elevator0_dm",
@@ -804,6 +828,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -841,6 +871,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -862,6 +898,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -903,6 +945,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2209,7 +2257,13 @@
       }
     ],
     "hideDmParts": {
-      "node": "cannon2_dm"
+      "node": [
+        "cannon2_dm",
+        "cannon5_dm",
+        "cannon6_dm",
+        "cover7_dm",
+        "cover8_dm"
+      ]
     }
   },
   "weapon_presets": {
@@ -2559,7 +2613,13 @@
             }
           ],
           "hideDmParts": {
-            "node": "cannon1_dm"
+            "node": [
+              "cannon1_dm",
+              "cannon5_dm",
+              "cannon6_dm",
+              "cover7_dm",
+              "cover8_dm"
+            ]
           }
         }
       }

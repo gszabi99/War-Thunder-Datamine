@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -8,7 +9,7 @@ from "%scripts/dagui_library.nut" import *
 let DataBlock  = require("DataBlock")
 let { round } = require("math")
 let { set_rnd_seed } = require("dagor.random")
-let { get_time_msec } = require("dagor.time")
+let { get_time_msec, get_local_unixtime } = require("dagor.time")
 let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
@@ -44,7 +45,7 @@ local ItemGenerator = class {
     this.timestamp = itemDefDesc?.Timestamp ?? ""
     this.rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
     let lifetimeModifierText = itemDefDesc?.lifetime_modifier
-    if (!::u.isEmpty(lifetimeModifierText))
+    if (!u.isEmpty(lifetimeModifierText))
       this.lifetimeModifier = ItemLifetimeModifier(lifetimeModifierText)
   }
 
@@ -72,7 +73,7 @@ local ItemGenerator = class {
       let allowableComponents = this.getAllowableRecipeComponents()
       let showRecipeAsProduct = this.tags?.showRecipeAsProduct
       let shouldSkipMsgBox = !!this.tags?.shouldSkipMsgBox
-      this._exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
+      this._exchangeRecipes = u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
          parsedRecipe
          generatorId
          craftTime = generatorCraftTime
@@ -92,7 +93,7 @@ local ItemGenerator = class {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
             let gen = collection?[itemdefId]
             let additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
-            this._exchangeRecipes.extend(::u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
+            this._exchangeRecipes.extend(u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
               parsedRecipe = pr
               generatorId = gen.id
               craftTime = gen.getCraftTime()
@@ -111,15 +112,15 @@ local ItemGenerator = class {
       if (hasAdditionalRecipes) {
         local minIdx = this._exchangeRecipes[0].idx
         set_rnd_seed(::my_user_id_int64 + this.id)
-        this._exchangeRecipes = ::u.shuffle(this._exchangeRecipes)
+        this._exchangeRecipes = u.shuffle(this._exchangeRecipes)
         foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++
-        ::randomize()
+        set_rnd_seed(get_local_unixtime())
       }
 
       this._exchangeRecipesUpdateTime = get_time_msec()
     }
-    return ::u.filter(this._exchangeRecipes, @(ec) ec.isEnabled())
+    return u.filter(this._exchangeRecipes, @(ec) ec.isEnabled())
   }
 
   function getUsableRecipes() {
@@ -148,7 +149,7 @@ local ItemGenerator = class {
   }
 
   function getRecipesWithComponent(componentItemdefId) {
-    return ::u.filter(this.getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
+    return u.filter(this.getRecipes(), @(ec) ec.hasComponent(componentItemdefId))
   }
 
   function _unpackContent(contentRank = null, fromGenId = null) {
@@ -207,7 +208,7 @@ local ItemGenerator = class {
   }
 
   function getRecipeByUid(uid) {
-    return ::u.search(this.getRecipes(), @(r) r.uid == uid)
+    return u.search(this.getRecipes(), @(r) r.uid == uid)
   }
 
   function markAllRecipes() {
@@ -250,7 +251,7 @@ let add = function(itemDefDesc) {
 }
 
 let findGenByReceptUid = @(recipeUid)
-  ::u.search(collection, @(gen) ::u.search(gen.getRecipes(false),
+  u.search(collection, @(gen) u.search(gen.getRecipes(false),
     @(recipe) recipe.uid == recipeUid
      && (recipe.isDisassemble || !gen.isDelayedxchange())) != null) //!!!FIX ME There should be no two recipes with the same uid.
 

@@ -1,9 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { ceil } = require("math")
 let { format } = require("string")
@@ -122,7 +126,7 @@ enum windowState {
 
   function getCountryResearchUnit(countryName, unitType) {
     let unitName = ::shop_get_researchable_unit_name(countryName, unitType)
-    return ::getAircraftByName(unitName)
+    return getAircraftByName(unitName)
   }
 
   //----VIEW----//
@@ -144,7 +148,7 @@ enum windowState {
         curValue = idx
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
     let countriesObj = this.scene.findObject("countries_list")
     this.guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
@@ -219,7 +223,7 @@ enum windowState {
         tooltip = unitType.canSpendGold() ? null : loc("msgbox/unitTypeRestrictFromSpendGold")
       })
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
@@ -337,10 +341,10 @@ enum windowState {
 
   function updateSliderText() {
     let sliderTextObj = this.scene.findObject("convert_slider_text")
-    let strGrantedExp = ::Cost().setRp(this.unitExpGranted).tostring()
+    let strGrantedExp = Cost().setRp(this.unitExpGranted).tostring()
     let expToBuy = this.getCurExpValue()
     let strWantToBuyExp = expToBuy > 0
-                            ? format("<color=@activeTextColor> +%s</color>", ::Cost().setFrp(expToBuy).tostring())
+                            ? format("<color=@activeTextColor> +%s</color>", Cost().setFrp(expToBuy).tostring())
                             : ""
     let strRequiredExp = decimalFormat(::getUnitReqExp(this.unit))
     let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, loc("ui/slash"), strRequiredExp)
@@ -510,7 +514,7 @@ enum windowState {
 
   function onApply() {
     if (::get_gui_balance().gold <= 0)
-      return ::check_balance_msgBox(::Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
+      return ::check_balance_msgBox(Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
 
     let curGold = this.curGoldValue - this.minGoldValue
     if (curGold == 0)
@@ -520,16 +524,16 @@ enum windowState {
       return ::showInfoMsgBox(loc("msgbox/no_rp"), "no_rp_msgbox")
 
     let curExp = this.getCurExpValue()
-    let cost = ::Cost(0, curGold)
+    let cost = Cost(0, curGold)
     let msgText = ::warningIfGold(loc("exp/convert/needMoneyQuestion",
-        { exp = ::Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance() }),
+        { exp = Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance() }),
       cost)
     this.msgBox("need_money", msgText,
       [
-        ["yes", (@(cost, curExp) function() {
+        ["yes", function() {
             if (::check_balance_msgBox(cost))
               this.buyExp(curExp)
-          })(cost, curExp) ],
+          }],
         ["no", function() {} ]
       ], "yes", { cancel_fn = function() {} })
   }
@@ -541,7 +545,7 @@ enum windowState {
       this.showTaskProgressBox()
       this.afterSlotOp = function() {
         ::update_gamercards()
-        ::broadcastEvent("ExpConvert", { unit = this.unit })
+        broadcastEvent("ExpConvert", { unit = this.unit })
       }
     }
   }
@@ -557,7 +561,7 @@ enum windowState {
   }
 
   function onEventUnitResearch(p) {
-    let newUnit = ::getAircraftByName(p?.unitName)
+    let newUnit = getAircraftByName(p?.unitName)
     if (newUnit == this.unit)
       return
     if (!newUnit || newUnit.shopCountry != this.country || ::get_es_unit_type(newUnit) != this.listType)
@@ -578,10 +582,10 @@ enum windowState {
       unitObj = this.scene.findObject("unit_nest").findObject(unitName)
       cellClass = "slotbarClone"
       isNewUnit = true
-      afterCloseFunc = (@(handler, unit) function() {
+      afterCloseFunc = (@(unit) function() {
           if (::handlersManager.isHandlerValid(handler))
             handler.updateUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
-        })(handler, this.unit)
+        })(this.unit)
     }
 
     ::gui_start_selecting_crew(config)

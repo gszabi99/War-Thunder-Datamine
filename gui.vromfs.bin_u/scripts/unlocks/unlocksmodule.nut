@@ -1,6 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 let { isPlatformSony, isPlatformXboxOne, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
@@ -209,7 +211,7 @@ let function openUnlockManually(unlockId, onSuccess = null) {
 }
 
 let function getUnlockCost(id) {
-  return ::Cost(::wp_get_unlock_cost(id), ::wp_get_unlock_cost_gold(id))
+  return Cost(::wp_get_unlock_cost(id), ::wp_get_unlock_cost_gold(id))
 }
 
 let function getUnlockRewardCost(unlock) {
@@ -222,14 +224,14 @@ let function getUnlockRewardCost(unlock) {
   let xpReward = isInstance(unlock?.amount_exp)
     ? unlock.amount_exp.x.tointeger()
     : unlock.getInt("amount_exp", 0)
-  return ::Cost(wpReward, goldReward, xpReward)
+  return Cost(wpReward, goldReward, xpReward)
 }
 
 let function getUnlockRewardCostByName(unlockName) {
   let unlock = getUnlockById(unlockName)
   return unlock != null
     ? getUnlockRewardCost(unlock)
-    : ::Cost()
+    : Cost()
 }
 
 let function getUnlockRewardText(unlockName) {

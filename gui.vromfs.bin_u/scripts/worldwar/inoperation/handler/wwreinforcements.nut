@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -191,7 +193,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       isArmyReady = isReady
     }
 
-    let data = ::handyman.renderCached(this.reinforcementBlockTplName, view)
+    let data = handyman.renderCached(this.reinforcementBlockTplName, view)
     this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
@@ -208,10 +210,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function updateSelectedArmy(select, destroy) {
-    if (::u.isEmpty(this.currentReinforcementName))
+    if (u.isEmpty(this.currentReinforcementName))
       return
 
-    local selectedArmy = ::u.search(this.armiesBlocks, (@(currentReinforcementName) function(reinf) {
+    local selectedArmy = u.search(this.armiesBlocks, (@(currentReinforcementName) function(reinf) {
         return reinf.name == currentReinforcementName
       })(this.currentReinforcementName))
 

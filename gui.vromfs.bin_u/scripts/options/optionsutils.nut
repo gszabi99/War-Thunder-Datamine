@@ -3,12 +3,14 @@
 #no-root-fallback
 #explicit-this
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 let { get_option_bool } = require("gameOptions")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
+let { startsWith } = require("%sqstd/string.nut")
 
 let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
 
@@ -58,8 +60,8 @@ let createDefaultOption = function() {
 
         case optionControlType.LIST:
           let result = getTblValue(this.values.indexof(val), this.items)
-          local locKey = (::u.isString(result)) ? result : getTblValue("text", result, "")
-          if (::g_string.startsWith(locKey, "#"))
+          local locKey = (u.isString(result)) ? result : getTblValue("text", result, "")
+          if (startsWith(locKey, "#"))
             locKey = locKey.slice(1)
           return loc(locKey)
 
@@ -180,7 +182,7 @@ let function fillMultipleHueOption(descr, id, currentHueIndex) {
   descr.items = []
   descr.values = []
   let alertHueBlock = GUI.get()?.alertHue
-  if (!::u.isDataBlock(alertHueBlock))
+  if (!u.isDataBlock(alertHueBlock))
     return
   for (local i = 0; i < alertHueBlock.blockCount(); ++i) {
     let hueValues = []

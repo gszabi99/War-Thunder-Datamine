@@ -40,6 +40,7 @@
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
   "hideNodesInDmg": {
@@ -1319,10 +1320,10 @@
         "hp": 1700.0
       },
       "compartment_02_dm": {
-        "hp": 1898.0
+        "hp": 1829.0
       },
       "compartment_03_dm": {
-        "hp": 2029.0
+        "hp": 1955.0
       },
       "compartment_04_dm": {
         "hp": 2100.0
@@ -1337,7 +1338,7 @@
       "napalmDamageMult": 1.0,
       "bridge_dm": {
         "fireParamsPreset": "ship_bridge",
-        "hp": 382.0
+        "hp": 400.0
       },
       "radio_station_dm": {
         "hp": 400.0
@@ -1602,31 +1603,31 @@
       "pressureDamageMult": 2.0,
       "napalmDamageMult": 1.0,
       "aa_turret_01_dm": {
-        "hp": 73.0
+        "hp": 79.0
       },
       "aa_turret_02_dm": {
-        "hp": 73.0
+        "hp": 79.0
       },
       "aa_turret_03_dm": {
-        "hp": 73.0
+        "hp": 79.0
       },
       "aa_turret_04_dm": {
-        "hp": 73.0
+        "hp": 79.0
       },
       "aa_turret_05_dm": {
-        "hp": 73.0
+        "hp": 79.0
       },
       "aa_turret_06_dm": {
-        "hp": 73.0
+        "hp": 79.0
       },
       "aa_turret_07_dm": {
-        "hp": 73.0
+        "hp": 79.0
       },
       "aa_turret_08_dm": {
-        "hp": 70.0
+        "hp": 71.0
       },
       "aa_turret_09_dm": {
-        "hp": 73.0
+        "hp": 79.0
       }
     },
     "gun_main_caliber": {
@@ -2048,7 +2049,7 @@
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 33
+      "crew": 35
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -2058,12 +2059,12 @@
     "sailor8": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 3
+      "crew": 2
     },
     "sailor9": {
       "dmPart": "auxiliary_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 3
+      "crew": 2
     },
     "sailor12": {
       "dmPart": "engine_room_01_dm",
@@ -6810,5 +6811,64 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "usa_camo_navy_blue",
+      "nameLocId": "skin/usa_camo_navy_blue",
+      "descLocId": "skin/usa_camo_navy_blue/desc",
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_navy_blue*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_navy_blue*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_blue_spots",
+      "nameLocId": "skin/usa_camo_blue_spots",
+      "descLocId": "skin/usa_camo_blue_spots/desc",
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_blue_spots*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_blue_spots*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_blue_spots*"
+        }
+      ]
+    },
+    {
+      "name": "usa_camo_blackgray_spots",
+      "nameLocId": "skin/usa_camo_blackgray_spots",
+      "descLocId": "skin/usa_camo_blackgray_spots/desc",
+      "replace_tex": [
+        {
+          "from": "camo_navygrey_5*",
+          "to": "usa_camo_blackgray_spots*"
+        },
+        {
+          "from": "camo_hazegray_line*",
+          "to": "usa_camo_blackgray_spots*"
+        },
+        {
+          "from": "camo_hazegray*",
+          "to": "usa_camo_blackgray_spots*"
+        }
+      ]
+    }
+  ]
 }

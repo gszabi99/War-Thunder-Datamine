@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -124,7 +125,7 @@ let function tryControlsOverride() {
       if (sc.len() == 1 && sc[0]?.deviceId == JOYSTICK_DEVICE_0_ID && sc[0]?.buttonId == destinationBtnId)
         needWipe = true
 
-    if (needWipe) { // For our uncustomized presets wipes 3 shortcuts: ID_ROCKETS, ID_ATGM, submarine_depth.
+    if (needWipe) { // For our uncustomized presets wipes 2 shortcuts: ID_ROCKETS, submarine_depth.
       original[hotkeyId] <- clone hc
       modified[hotkeyId] <- removeSingleGamepadBtnId(hc, destinationBtnId)
     }
@@ -188,7 +189,7 @@ let function tryControlsRestore() {
     foreach (hotkeyId, hc in original) {
       let curHc = preset.getHotkey(hotkeyId)
       let expectedHc = modified?[hotkeyId] ?? []
-      if (::u.isEqual(curHc, expectedHc) || (isHotkeyEmpty(curHc) && isHotkeyEmpty(expectedHc))) {
+      if (u.isEqual(curHc, expectedHc) || (isHotkeyEmpty(curHc) && isHotkeyEmpty(expectedHc))) {
         preset.setHotkey(hotkeyId, hc)
         log($"  OK   {hotkeyId}")
       }

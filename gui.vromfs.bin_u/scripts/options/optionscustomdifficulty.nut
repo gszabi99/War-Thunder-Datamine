@@ -9,6 +9,7 @@ let { isGameModeCoop, isGameModeVersus } = require("%scripts/matchingRooms/match
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty } = require("guiOptions")
 let { get_game_mode } = require("mission")
+let { reload_cd } = require("guiMission")
 
 ::gui_handlers.OptionsCustomDifficultyModal <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
@@ -94,7 +95,7 @@ let { get_game_mode } = require("mission")
   }
 
   function applyFunc() {
-    ::reload_cd()
+    reload_cd()
     if (this.afterApplyFunc)
       this.afterApplyFunc()
   }
@@ -136,9 +137,7 @@ let { get_game_mode } = require("mission")
         text        = option.items[i]
         icon        = difficulty.icon
         selected    = i == this.curBaseDifficulty
-        action      = (@(cdPresetValue) function () {
-          this.applyCdPreset(cdPresetValue)
-        })(cdPresetValue)
+        action      = @() this.applyCdPreset(cdPresetValue)
       })
     }
     ::gui_handlers.ActionsList.open(obj, menu)

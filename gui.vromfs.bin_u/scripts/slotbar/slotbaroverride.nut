@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() Watched("")) //recalc slotbar only on mission change
 let overrideSlotbar = persist("overrideSlotbar", @() Watched(null)) //null or []
@@ -12,7 +13,7 @@ let userSlotbarCountry = persist("userSlotbarCountry", @() Watched("")) //for re
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
-overrideSlotbar.subscribe(@(_) ::broadcastEvent("OverrideSlotbarChanged"))
+overrideSlotbar.subscribe(@(_) broadcastEvent("OverrideSlotbarChanged"))
 
 let makeCrewsCountryData = @(country) { country = country, crews = [] }
 

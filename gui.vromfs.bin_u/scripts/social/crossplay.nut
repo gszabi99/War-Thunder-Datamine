@@ -5,13 +5,14 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = subscriptions
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 
 let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
 let crossNetworkPlayStatus = persist("crossNetworkPlayStatus", @() Watched(null))
-crossNetworkPlayStatus.subscribe(@(v) v == null ? null : ::broadcastEvent("CrossPlayOptionChanged"))
+crossNetworkPlayStatus.subscribe(@(v) v == null ? null : broadcastEvent("CrossPlayOptionChanged"))
 
 let crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))
 

@@ -6,7 +6,8 @@ from "%scripts/dagui_library.nut" import *
 let { getCountryCode } = require("auth_wt")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let sonyUser = require("sony.user")
-let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_region } = require("%xboxLib/impl/app.nut")
 
 let getProfileCountry = @() ::get_profile_country() ?? "country_0"
 
@@ -15,7 +16,7 @@ let profileCountrySq = Watched(::g_login.isProfileReceived()
   : "country_0")
 
 let function xboxGetCountryCode() {
-  let xbox_code = ::xbox_get_region()
+  let xbox_code = get_region()
   if (xbox_code != "")
     return xbox_code.toupper()
   return getCountryCode()
@@ -50,7 +51,7 @@ let function switchProfileCountry(country) {
   ::set_profile_country(country)
   profileCountrySq(country)
   ::g_squad_utils.updateMyCountryData()
-  ::broadcastEvent("CountryChanged")
+  broadcastEvent("CountryChanged")
 }
 
 addListenersWithoutEnv({

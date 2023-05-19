@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -21,7 +22,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       headerText = loc("lobby/vehicles")
       showOkButton = true
     }
-    let data = ::handyman.renderCached("%gui/vehiclesWindow.tpl", view)
+    let data = handyman.renderCached("%gui/vehiclesWindow.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
     foreach (team in ::events.getSidesList()) {

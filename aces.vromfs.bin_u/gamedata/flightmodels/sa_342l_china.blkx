@@ -5,21 +5,15 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
-  "tpsCameraTargetOffsetAtZoom": [
-    [
-      -80.0,
-      60.0,
-      0.0
-    ],
-    [
-      2.0,
-      -2.5,
-      0.0
-    ]
-  ],
+  "gyroSight": true,
   "tpsCameraOffset": [
     1.5,
     -0.75,
+    0.0
+  ],
+  "tpsCameraTargetOffsetAtZoom": [
+    2.0,
+    -2.5,
     0.0
   ],
   "type": "typeFighter",
@@ -577,6 +571,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -588,6 +594,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -863,6 +881,10 @@
       "aviahorizon_roll1": [
         -180.0,
         180.0
+      ],
+      "bank": [
+        -8.0,
+        8.0
       ],
       "altitude_hour": [
         0.0,

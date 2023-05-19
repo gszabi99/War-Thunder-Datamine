@@ -4,6 +4,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ilsLCOSS": true,
@@ -15,7 +16,6 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -434,6 +434,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -445,6 +457,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -463,6 +487,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -474,6 +510,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -860,6 +908,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -897,6 +951,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -916,6 +976,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -953,6 +1019,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -974,6 +1046,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -1015,6 +1093,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2702,6 +2786,10 @@
         "blk": "gameData/flightModels/weaponPresets/f_4m_fgr2_1000lb.blk"
       },
       {
+        "name": "f_4m_fgr2_1000lb_n117",
+        "blk": "gameData/flightModels/weaponPresets/f_4m_fgr2_1000lb_n117.blk"
+      },
+      {
         "name": "f_4m_fgr2_540lb",
         "blk": "gameData/flightModels/weaponPresets/f_4m_fgr2_540lb.blk"
       }
@@ -2754,11 +2842,8 @@
     "HideDmParts": {
       "node": [
         "cannon1_dm",
-        "cover1_dm",
         "cannon2_dm",
-        "cover2_dm",
-        "cannon3_dm",
-        "cover3_dm"
+        "cannon3_dm"
       ]
     },
     "WeaponSlot": [
@@ -2830,11 +2915,11 @@
               "blk": "gameData/Weapons/containers/ter_uk_540lbs_x2_left_wing.blk",
               "emitter": "mer_001",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           },
           {
-            "iconType": "bombs_heavy_middle_group",
+            "iconType": "bombs_large_group_x2",
             "name": "ter_1000lbs_x2_left_wing",
             "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
@@ -2845,7 +2930,22 @@
               "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2_left_wing.blk",
               "emitter": "mer_001",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "ter_1000lbs_x2_left_wing_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": "pylon_l_out"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2_left_wing_n117.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "machLimit": 1.1
             }
           },
           {
@@ -2860,7 +2960,7 @@
               "blk": "gameData/Weapons/containers/ter_fr_matra_sneb_type23_x2_left_wing.blk",
               "emitter": "mer_001",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           }
         ]
@@ -2885,7 +2985,7 @@
               "blk": "gameData/Weapons/containers/ter_fr_matra_sneb_type23_x3.blk",
               "emitter": "ter_002",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           },
           {
@@ -2903,11 +3003,11 @@
               "blk": "gameData/Weapons/containers/ter_uk_540lbs.blk",
               "emitter": "ter_002",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           },
           {
-            "iconType": "bombs_heavy_middle_group",
+            "iconType": "bombs_large_group_x2",
             "name": "ter_1000lbs_x2",
             "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
@@ -2921,7 +3021,25 @@
               "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2.blk",
               "emitter": "ter_002",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "ter_1000lbs_x2_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_in",
+                "pylon_l_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2_n117.blk",
+              "emitter": "ter_002",
+              "external": true,
+              "machLimit": 1.1
             }
           }
         ]
@@ -3063,7 +3181,7 @@
               "blk": "gameData/Weapons/containers/ter_fr_matra_sneb_type23_x3.blk",
               "emitter": "mer_002",
               "external": true,
-              "machLimit": 1.01,
+              "machLimit": 1.1,
               "gearLimit": [
                 0.0,
                 0.1
@@ -3083,11 +3201,11 @@
               "blk": "gameData/Weapons/containers/ter_uk_540lbs.blk",
               "emitter": "mer_002",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           },
           {
-            "iconType": "bombs_special_group_x3",
+            "iconType": "bombs_large_group",
             "name": "ter_1000lbs",
             "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
@@ -3098,7 +3216,22 @@
               "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x3.blk",
               "emitter": "mer_002",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group",
+            "name": "ter_1000lbs_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": "pylon_gunpod"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x3_n117.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "machLimit": 1.1
             }
           },
           {
@@ -3113,10 +3246,7 @@
               ]
             },
             "ShowDmParts": {
-              "node": [
-                "cannon2_dm",
-                "cover2_dm"
-              ]
+              "node": "cannon2_dm"
             },
             "Weapon": {
               "trigger": "additional gun",
@@ -3279,7 +3409,7 @@
               "blk": "gameData/Weapons/containers/ter_fr_matra_sneb_type23_x3.blk",
               "emitter": "ter_003",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           },
           {
@@ -3297,11 +3427,11 @@
               "blk": "gameData/Weapons/containers/ter_uk_540lbs.blk",
               "emitter": "ter_003",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           },
           {
-            "iconType": "bombs_heavy_middle_group",
+            "iconType": "bombs_large_group_x2",
             "name": "ter_1000lbs_x2",
             "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
@@ -3315,7 +3445,25 @@
               "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2.blk",
               "emitter": "ter_003",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "ter_1000lbs_x2_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_in",
+                "pylon_r_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2_n117.blk",
+              "emitter": "ter_003",
+              "external": true,
+              "machLimit": 1.1
             }
           }
         ]
@@ -3337,11 +3485,11 @@
               "blk": "gameData/Weapons/containers/ter_uk_540lbs_x2_right_wing.blk",
               "emitter": "mer_003",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           },
           {
-            "iconType": "bombs_heavy_middle_group",
+            "iconType": "bombs_large_group_x2",
             "name": "ter_1000lbs_x2_right_wing",
             "reqModification": "sea_hawk_2x1000lb",
             "ShowNodes": {
@@ -3352,7 +3500,22 @@
               "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2_right_wing.blk",
               "emitter": "mer_003",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "ter_1000lbs_x2_right_wing_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": "pylon_r_out"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/ter_uk_1000lbs_gp_x2_right_wing_n117.blk",
+              "emitter": "mer_003",
+              "external": true,
+              "machLimit": 1.1
             }
           },
           {
@@ -3367,7 +3530,7 @@
               "blk": "gameData/Weapons/containers/ter_fr_matra_sneb_type23_x2_right_wing.blk",
               "emitter": "mer_003",
               "external": true,
-              "machLimit": 1.01
+              "machLimit": 1.1
             }
           }
         ]

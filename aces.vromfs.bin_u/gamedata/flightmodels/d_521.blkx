@@ -3,6 +3,7 @@
   "fmFile": "fm/d_521.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "ally",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -579,6 +580,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -616,6 +623,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -637,6 +650,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -678,6 +697,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2407,14 +2432,50 @@
     "turnTime": 23.4653
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "7_5mm_universal": {},
     "7_5mm_all_tracers": {},
     "7_5mm_stealth": {},

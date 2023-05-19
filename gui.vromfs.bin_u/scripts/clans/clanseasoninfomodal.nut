@@ -1,9 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { DECORATION } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -42,14 +47,14 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
   function fillRewardsList() {
     let view = this.getRewardsView(this.difficulty)
-    let markup = ::handyman.renderCached("%gui/clans/clanSeasonInfoListItem.tpl", view)
+    let markup = handyman.renderCached("%gui/clans/clanSeasonInfoListItem.tpl", view)
     this.guiScene.appendWithBlk(this.rewardsListObj, markup, this)
   }
 
   function getRewardsView(diff) {
     let view = { rewardsList = [] }
     let rewards = ::g_clan_seasons.getSeasonRewardsList(diff)
-    if (::u.isEmpty(rewards))
+    if (u.isEmpty(rewards))
       return view
 
     let seasonName = ::g_clan_seasons.getSeasonName()
@@ -70,7 +75,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
           medal = reward.rating + "rating"
           break
       }
-      let medalIconMarkup = ::LayersIcon.getIconData(format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
+      let medalIconMarkup = LayersIcon.getIconData(format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
         null, null, null, { season_title = { text = seasonName } })
 
       local condition = ""
@@ -84,8 +89,8 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
       local gold = ""
       if (reward.gold) {
         let value = reward.goldMin ?
-          (::Cost(0, reward.goldMin).tostring() + loc("ui/mdash") + ::Cost(0, reward.goldMax).tostring()) :
-          ::Cost(0, reward.gold).tostring()
+          (Cost(0, reward.goldMin).tostring() + loc("ui/mdash") + Cost(0, reward.goldMax).tostring()) :
+          Cost(0, reward.gold).tostring()
         gold = loc("charServer/chapter/eagles") + loc("ui/colon") + value
       }
 
@@ -98,7 +103,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
         if (prizeType == "clanTag") {
           let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(::clan_get_my_clan_tag())
-          let tagTxt = ::u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
+          let tagTxt = u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
           let tooltipBase = loc("clan/clan_tag_decoration") + loc("ui/colon")
           let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
           foreach (decorator in tagDecorators)

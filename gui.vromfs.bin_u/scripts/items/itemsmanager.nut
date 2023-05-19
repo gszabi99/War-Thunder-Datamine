@@ -1,10 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
@@ -19,7 +22,7 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
 let { floor } = require("math")
-let { resetTimeout } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 
 // Independent Modules
 require("%scripts/items/roulette/bhvRoulette.nut")
@@ -43,7 +46,7 @@ let OUT_OF_DATE_DAYS_INVENTORY = 0
 
 //events from native code:
 let onItemsLoaded = @() ::ItemsManager.onItemsLoaded()
-::on_items_loaded <- @() resetTimeout(0.01, onItemsLoaded)
+::on_items_loaded <- @() deferOnce(onItemsLoaded)
 
 let itemsShopListVersion = Watched(0)
 let inventoryListVersion = Watched(0)
@@ -57,7 +60,7 @@ foreach (fn in [
                  "listPopupWnd/modUpgradeApplyWnd.nut"
                  "roulette/itemsRoulette.nut"
                ])
-  ::g_script_reloader.loadOnce("%scripts/items/" + fn)
+  g_script_reloader.loadOnce($"%scripts/items/{fn}")
 
 foreach (fn in [
                  "itemsBase.nut"
@@ -92,7 +95,7 @@ foreach (fn in [
                  "itemUnitCouponMod.nut"
                  "itemProfileIcon.nut"
                ])
-  ::g_script_reloader.loadOnce("%scripts/items/itemsClasses/" + fn)
+  g_script_reloader.loadOnce($"%scripts/items/itemsClasses/{fn}")
 
 
 ::ItemsManager <- {
@@ -269,7 +272,7 @@ foreach (fn in [
       this.shopItemById[item.id] <- item
 
   if (duplicatesId.len())
-    assert(false, "Items shop: found duplicate items id = \n" + ::g_string.implode(duplicatesId, ", "))
+    assert(false, "Items shop: found duplicate items id = \n" + ", ".join(duplicatesId, true))
 }
 
 ::ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate() {
@@ -335,7 +338,7 @@ foreach (fn in [
       let defType = itemDefDesc?.type
 
       if (isInArray(defType, [ "playtimegenerator", "generator", "bundle", "delayedexchange" ])
-        || !::u.isEmpty(itemDefDesc?.exchange) || itemDefDesc?.tags?.hasAdditionalRecipes)
+        || !u.isEmpty(itemDefDesc?.exchange) || itemDefDesc?.tags?.hasAdditionalRecipes)
           ItemGenerators.add(itemDefDesc)
 
       if (!isInArray(defType, [ "item", "delayedexchange" ]))
@@ -445,7 +448,7 @@ foreach (fn in [
   this.shopVisibleSeenIds = null
   seenItems.setDaysToUnseen(OUT_OF_DATE_DAYS_ITEMS_SHOP)
   seenItems.onListChanged()
-  ::broadcastEvent("ItemsShopUpdate")
+  broadcastEvent("ItemsShopUpdate")
   itemsShopListVersion(itemsShopListVersion.value + 1)
 }
 
@@ -455,7 +458,7 @@ foreach (fn in [
   this._reqUpdateItemDefsList = true
   this.shopVisibleSeenIds = null
   seenItems.onListChanged()
-  ::broadcastEvent("ItemsShopUpdate")
+  broadcastEvent("ItemsShopUpdate")
   itemsShopListVersion(itemsShopListVersion.value + 1)
 }
 
@@ -464,7 +467,7 @@ local lastItemDefsUpdatedelayedCall = 0
   if (this._reqUpdateItemDefsList)
     return
   if (lastItemDefsUpdatedelayedCall
-      && lastItemDefsUpdatedelayedCall < get_time_msec() + LOST_DELAYED_ACTION_MSEC)
+      && lastItemDefsUpdatedelayedCall + LOST_DELAYED_ACTION_MSEC > get_time_msec())
     return
 
   lastItemDefsUpdatedelayedCall = get_time_msec()
@@ -475,7 +478,7 @@ local lastItemDefsUpdatedelayedCall = 0
 }
 
 ::ItemsManager.onEventItemDefChanged <- function onEventItemDefChanged(_p) {
-  this.markItemsDefsListUpdateDelayed()
+  this.markItemsDefsListUpdate()
 }
 
 ::ItemsManager.onEventExtPricesChanged <- @(_p) this.markItemsDefsListUpdateDelayed()
@@ -647,7 +650,7 @@ local lastItemDefsUpdatedelayedCall = 0
   return this.inventoryVisibleSeenIds
 }
 
-::ItemsManager.getInventoryItemByCraftedFrom <- @(uid) ::u.search(this.getInventoryList(),
+::ItemsManager.getInventoryItemByCraftedFrom <- @(uid) u.search(this.getInventoryList(),
   @(item) item.isCraftResult() && item.craftedFrom == uid)
 
 ::ItemsManager.markInventoryUpdate <- function markInventoryUpdate() {
@@ -661,7 +664,7 @@ local lastItemDefsUpdatedelayedCall = 0
     seenInventory.setDaysToUnseen(OUT_OF_DATE_DAYS_INVENTORY)
   }
   seenInventory.onListChanged()
-  ::broadcastEvent("InventoryUpdate")
+  broadcastEvent("InventoryUpdate")
   inventoryListVersion(inventoryListVersion.value + 1)
 }
 
@@ -786,7 +789,7 @@ local lastInventoryUpdateDelayedCall = 0
 
 ::ItemsManager.findItemByUid <- function findItemByUid(uid, filterType = itemType.ALL) {
   let itemsArray = ::ItemsManager.getInventoryList(filterType)
-  let res = ::u.search(itemsArray, @(item) isInArray(uid, item.uids))
+  let res = u.search(itemsArray, @(item) isInArray(uid, item.uids))
   return res
 }
 
@@ -828,7 +831,7 @@ local lastInventoryUpdateDelayedCall = 0
   return this.rawInventoryItemAmountsByItemdefId?[itemdefid] ?? 0
 }
 
-::subscribe_handler(::ItemsManager, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::ItemsManager, ::g_listener_priority.DEFAULT_HANDLER)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -868,7 +871,7 @@ seenInventory.setListGetter(@() ::ItemsManager.getInventoryVisibleSeenIds())
 let makeSeenCompatibility = @(savePath) function() {
     let res = {}
     let blk = ::loadLocalByAccount(savePath)
-    if (!::u.isDataBlock(blk))
+    if (!u.isDataBlock(blk))
       return res
 
     for (local i = 0; i < blk.paramCount(); i++)

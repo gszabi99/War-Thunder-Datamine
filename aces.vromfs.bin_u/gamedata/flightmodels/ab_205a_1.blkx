@@ -6,6 +6,7 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -727,6 +728,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -738,6 +751,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -1284,11 +1309,11 @@
             "node": "gun1_dm"
           },
           "Weapon": {
-            "trigger": "gunner1",
+            "trigger": "gunner0",
             "blk": "gameData/Weapons/gunM134_Minigun_default.blk",
             "breechInCockpit": true,
-            "emitter": "flare7",
-            "flash": "flare7",
+            "emitter": "flare1",
+            "flash": "flare1",
             "dm": "gunner1_dm",
             "gunnerDm": "gunner1_dm",
             "gunDm": "gun1_dm",
@@ -1307,12 +1332,12 @@
             },
             "limits": {
               "yaw": [
-                -85.0,
-                10.0
-              ],
-              "pitch": [
                 -12.0,
                 70.0
+              ],
+              "pitch": [
+                -85.0,
+                10.0
               ]
             }
           }
@@ -1385,11 +1410,11 @@
             "node": "gun2_dm"
           },
           "Weapon": {
-            "trigger": "gunner2",
+            "trigger": "gunner0",
             "blk": "gameData/Weapons/gunM134_Minigun_default.blk",
             "breechInCockpit": true,
-            "emitter": "flare8",
-            "flash": "flare8",
+            "emitter": "flare2",
+            "flash": "flare2",
             "dm": "gunner1_dm",
             "gunnerDm": "gunner1_dm",
             "gunDm": "gun2_dm",
@@ -1408,12 +1433,12 @@
             },
             "limits": {
               "yaw": [
-                -90.0,
-                15.0
-              ],
-              "pitch": [
                 -70.0,
                 12.0
+              ],
+              "pitch": [
+                -85.0,
+                10.0
               ]
             }
           }

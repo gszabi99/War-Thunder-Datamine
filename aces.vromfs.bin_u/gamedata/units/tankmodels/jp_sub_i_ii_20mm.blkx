@@ -1572,6 +1572,26 @@
             "nameTemplate": "bone_roll_10_02"
           }
         ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
       }
     ]
   },
@@ -1624,17 +1644,17 @@
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -1.0,
           -5.0
         ],
-        "linkSleeveToGun": true,
-        "sleevesImpulseOffset": 0.1,
+        "linkShellCasingToGun": true,
+        "shellCasingImpulseOffset": 0.1,
         "aimingFromBoneGun": true,
         "recoilOffset": 0.02,
         "recoilMultiplier": 0.3,
@@ -1927,13 +1947,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2693,17 +2713,17 @@
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_01",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_01",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -1.0,
                 -5.0
               ],
-              "linkSleeveToGun": true,
-              "sleevesImpulseOffset": 0.1,
+              "linkShellCasingToGun": true,
+              "shellCasingImpulseOffset": 0.1,
               "aimingFromBoneGun": true,
               "recoilOffset": 0.02,
               "recoilMultiplier": 0.3,

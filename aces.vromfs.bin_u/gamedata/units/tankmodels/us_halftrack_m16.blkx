@@ -844,6 +844,274 @@
       }
     }
   },
+  "PhysSys": {
+    "find": "^bone_suspension_(\\w)_(\\d+)_02",
+    "points": {
+      "lever": {
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_02"
+      },
+      "suspension_02_01": {
+        "limitMin": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "limitMax": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_01"
+      },
+      "suspension_02_02": {
+        "limitMin": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "limitMax": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_02"
+      },
+      "suspension_02_03": {
+        "limitMin": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "limitMax": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_03"
+      },
+      "suspension_02_04": {
+        "limitMin": [
+          -0.5,
+          -0.5,
+          0.0
+        ],
+        "limitMax": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_04"
+      },
+      "wheel_01": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "parent": "suspension_02_02",
+          "find": "bone_wheel_"
+        }
+      },
+      "wheel_02": {
+        "searchChildren": {
+          "occurence": 2,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "parent": "suspension_02_02",
+          "find": "bone_wheel_"
+        }
+      },
+      "wheel_03": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "parent": "suspension_02_04",
+          "find": "bone_wheel_"
+        }
+      },
+      "wheel_04": {
+        "searchChildren": {
+          "occurence": 2,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "parent": "suspension_02_04",
+          "find": "bone_wheel_"
+        }
+      }
+    },
+    "constraints": {
+      "projection": [
+        {
+          "moveEdge": true,
+          "point": "lever",
+          "to": "suspension_02_01",
+          "from": "suspension_02_03",
+          "movePoint": false,
+          "moveEdgeNodes": false
+        },
+        {
+          "point": "suspension_02_02",
+          "from": "wheel_01",
+          "to": "wheel_02",
+          "moveEdge": true
+        },
+        {
+          "point": "suspension_02_04",
+          "from": "wheel_03",
+          "to": "wheel_04",
+          "moveEdge": true
+        },
+        {
+          "moveEdge": true,
+          "point": "lever",
+          "from": "suspension_02_01",
+          "to": "suspension_02_02"
+        },
+        {
+          "moveEdge": true,
+          "point": "lever",
+          "from": "suspension_02_03",
+          "to": "suspension_02_04"
+        },
+        {
+          "moveEdge": true,
+          "point": "lever",
+          "from": "suspension_02_01",
+          "to": "suspension_02_03"
+        },
+        {
+          "movePoint": false,
+          "moveEdge": true,
+          "moveEdgeNodes": false,
+          "point": "lever",
+          "from": "suspension_02_01",
+          "to": "suspension_02_03"
+        }
+      ],
+      "direction": [
+        {
+          "moveNodes": true,
+          "rotateSecond": false,
+          "moveSecond": true,
+          "moveOnly": false,
+          "point": "suspension_02_02",
+          "to": "wheel_02",
+          "from": "wheel_01"
+        },
+        {
+          "moveNodes": true,
+          "movePoint": true,
+          "moveEdge": false,
+          "moveEdgeNodes": true,
+          "point": "suspension_02_04",
+          "from": "wheel_03",
+          "to": "wheel_04"
+        },
+        {
+          "moveNodes": true,
+          "rotateSecond": false,
+          "moveSecond": true,
+          "moveOnly": false,
+          "point": "lever",
+          "from": "suspension_02_01",
+          "to": "suspension_02_02"
+        },
+        {
+          "moveNodes": true,
+          "rotateSecond": false,
+          "moveSecond": true,
+          "moveOnly": false,
+          "point": "lever",
+          "from": "suspension_02_03",
+          "to": "suspension_02_04"
+        }
+      ],
+      "edge": [
+        {
+          "to": "suspension_02_02",
+          "from": "wheel_01"
+        },
+        {
+          "to": "suspension_02_02",
+          "from": "wheel_02"
+        },
+        {
+          "to": "suspension_02_04",
+          "from": "wheel_03"
+        },
+        {
+          "to": "suspension_02_04",
+          "from": "wheel_04"
+        },
+        {
+          "to": "suspension_02_02",
+          "from": "suspension_02_01"
+        },
+        {
+          "to": "suspension_02_04",
+          "from": "suspension_02_03"
+        },
+        {
+          "from": "suspension_02_02",
+          "to": "wheel_01"
+        },
+        {
+          "from": "suspension_02_02",
+          "to": "wheel_02"
+        },
+        {
+          "from": "suspension_02_04",
+          "to": "wheel_03"
+        },
+        {
+          "from": "suspension_02_04",
+          "to": "wheel_04"
+        }
+      ]
+    }
+  },
   "DamageEffects": {
     "part": [
       {
@@ -1753,6 +2021,16 @@
         "ammo_body_58_dm",
         "ammo_body_59_dm",
         "ammo_body_60_dm",
+        "ammo_body_61_dm",
+        "ammo_body_62_dm",
+        "ammo_body_63_dm",
+        "ammo_body_64_dm",
+        "ammo_body_65_dm",
+        "ammo_body_66_dm",
+        "ammo_body_67_dm",
+        "ammo_body_68_dm",
+        "ammo_body_69_dm",
+        "ammo_body_70_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",

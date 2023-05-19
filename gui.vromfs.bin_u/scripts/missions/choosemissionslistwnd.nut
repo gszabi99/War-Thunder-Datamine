@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 /*
  API:
@@ -36,7 +38,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   static function open(config) {
     let misList = getTblValue("missionsList", config)
-    if (!::u.isArray(misList) || !misList.len()) {
+    if (!u.isArray(misList) || !misList.len()) {
       ::script_net_assert_once(" bad_missions_list",
         "Bad missions list to choose: " + toString(misList))
       return
@@ -100,7 +102,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         isChosen = this.isMissionSelected(mission) ? "yes" : "no"
       })
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     this.guiScene.replaceContentFromText(this.misListObj, data, data.len(), this)
     this.misListObj.setValue(0)
   }
@@ -171,7 +173,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function afterModalDestroy() {
-    if (this.onApplyListCb && !::u.isEqual(this.selMissionsMap, this.initialSelMissionsMap))
+    if (this.onApplyListCb && !u.isEqual(this.selMissionsMap, this.initialSelMissionsMap))
       this.onApplyListCb(this.mapToSelectedMissions(this.missionsList, this.selMissionsMap))
   }
 }

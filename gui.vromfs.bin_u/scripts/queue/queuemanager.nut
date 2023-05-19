@@ -1,10 +1,12 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
@@ -12,6 +14,7 @@ let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_time_msec } = require("dagor.time")
 let { rnd } = require("dagor.random")
+let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 
 global enum queueStates {
   ERROR,
@@ -43,9 +46,9 @@ foreach (fn in [
                  "queueInfo/qiViewUtils.nut"
                  "queueTable.nut"
                ])
-  ::g_script_reloader.loadOnce("%scripts/queue/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
+  g_script_reloader.loadOnce($"%scripts/queue/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
 
-::matching_rpc_subscribe("mkeeper.notify_service_started", function(params) {
+matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   if (params?.service != "match" || ::queues.lastQueueReqParams == null)
     return
 
@@ -72,8 +75,8 @@ foreach (fn in [
 
   constructor() {
     this.init()
-    ::g_script_reloader.registerPersistentData("QueueManager", this, ["queuesList", "lastId", "state"])
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    g_script_reloader.registerPersistentData("QueueManager", this, ["queuesList", "lastId", "state"])
+    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
   function init() {
@@ -90,7 +93,7 @@ foreach (fn in [
     local queue = this.findQueue(params)
     if (queue) {
       if (queue.addQueueByParams(params))
-        ::broadcastEvent("QueueClustersChanged", queue)
+        broadcastEvent("QueueClustersChanged", queue)
       return queue
     }
 
@@ -159,7 +162,7 @@ foreach (fn in [
     let res = []
     foreach (queue in this.queuesList)
       if (this.isQueueActive(queue))
-         ::u.appendOnce(queue.queueType, res)
+         u.appendOnce(queue.queueType, res)
 
     return res
   }
@@ -214,7 +217,7 @@ foreach (fn in [
 
     queue.state = queueState
     queue.activateTime = this.isQueueActive(queue) ? get_time_msec() : -1
-    ::broadcastEvent("QueueChangeState", { queue = queue })
+    broadcastEvent("QueueChangeState", { queue = queue })
 
     if (wasAnyActive != this.isAnyQueuesActive)
       ::update_gamercards()
@@ -225,20 +228,20 @@ foreach (fn in [
   }
 
   function cantSquadQueueMsgBox(params = null, reasonText = "") {
-    log("Error: cant join queue with squad. " + reasonText)
+    log($"Error: cant join queue with squad. {reasonText}")
     if (params)
       debugTableData(params)
 
     local msg = loc("squad/cant_join_queue")
     if (reasonText)
-      msg += "\n" + reasonText
+      msg = $"{msg}\n{reasonText}"
     ::showInfoMsgBox(msg, "cant_join_queue")
   }
 
   function showProgressBox(show, text = "charServer/purchase0") {
     if (checkObj(this.progressBox)) {
       this.progressBox.getScene().destroyElement(this.progressBox)
-      ::broadcastEvent("ModalWndDestroy")
+      broadcastEvent("ModalWndDestroy")
       this.progressBox = null
     }
     if (show)
@@ -286,7 +289,7 @@ foreach (fn in [
 
     this.isLeaveDelayed = false
     this.lastQueueReqParams = clone params
-    ::broadcastEvent("BeforeJoinQueue")
+    broadcastEvent("BeforeJoinQueue")
     let queue = this.createQueue(params, true)
     if (queue.hasActualQueueData()) {
       this.joinQueueImpl(queue)
@@ -421,7 +424,7 @@ foreach (fn in [
         if (!q.isActive())
           this.removeQueue(q)
         else
-          ::broadcastEvent("QueueChanged", q)
+          broadcastEvent("QueueChanged", q)
       }
   }
 
@@ -517,7 +520,7 @@ foreach (fn in [
     local text = loc("inQueueList/header")
     foreach (queue in this.queuesList)
       if (this.isQueueActive(queue))
-        text += "\n" + queue.getDescription()
+        text = $"{text}\n{queue.getDescription()}"
 
     return text
   }
@@ -572,9 +575,9 @@ foreach (fn in [
     local haveChanges = false
     let queueInfo = getTblValue("queue_info", params)
 
-    if (::u.isTable(queueInfo))
+    if (u.isTable(queueInfo))
       haveChanges = this.applyQueueInfo(queueInfo, ::queue_stats_versions.StatsVer2)
-    else if (::u.isArray(queueInfo)) //queueInfo ver1
+    else if (u.isArray(queueInfo)) //queueInfo ver1
       foreach (qi in queueInfo)
         if (this.applyQueueInfo(qi, ::queue_stats_versions.StatsVer1))
           haveChanges = true
@@ -595,7 +598,7 @@ foreach (fn in [
     guiScene.performDelayed(this, function() {
        this.delayedInfoUpdateEventtTime = -1
        if (this.isAnyQueuesActive())
-        ::broadcastEvent("QueueInfoUpdated")
+        broadcastEvent("QueueInfoUpdated")
      })
   }
 

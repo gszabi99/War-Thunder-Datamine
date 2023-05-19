@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -183,7 +185,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     this.navigationHandlerWeak.onCollapse(collapseBtnObj)
     if (collapseBtnObj.getParent().collapsed == "no")
       this.getSheetsListObj().setValue( //set selection on chapter item if not found item with subsetId just in case to avoid crash
-        ::u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
+        u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
   function getTabName(tabIdx) {
@@ -231,7 +233,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
       this.curTab = this.visibleTabs[selIdx]
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let tabsObj = this.getTabsListObj()
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(selIdx)
@@ -423,7 +425,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
     let listObj = this.getItemsListObj()
     let prevValue = listObj.getValue()
-    let data = ::handyman.renderCached(("%gui/items/item.tpl"), view)
+    let data = handyman.renderCached(("%gui/items/item.tpl"), view)
     if (checkObj(listObj)) {
       listObj.show(data != "")
       listObj.enable(data != "")

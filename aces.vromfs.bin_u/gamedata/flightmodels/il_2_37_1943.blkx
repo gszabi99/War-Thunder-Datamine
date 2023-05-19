@@ -3,6 +3,7 @@
   "fmFile": "fm/il_2_37_1943.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gyroSight": false,
   "type": "typeStormovik",
   "paratrooper": "ally",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -2527,24 +2528,53 @@
     "turnTime": 28.4364
   },
   "modifications": {
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "ussr_fuel_b-95": {
-      "reqModLevel": 4.0,
       "tier": 4,
       "modClass": "lth",
-      "prevModification": "cd_98",
+      "prevModification": "new_engine_injection",
       "dontDecreaseAirRCost": true,
       "effects": {
         "addHorsePowers": 50.0
       }
     },
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
     "ns37_air_target": {},
     "ns37_armor_target": {},
     "ns37_belt_pack": {},

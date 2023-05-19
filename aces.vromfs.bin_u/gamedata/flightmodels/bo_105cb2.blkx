@@ -11,6 +11,7 @@
     0.0,
     0.0
   ],
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -30,6 +31,20 @@
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "helicopter",
   "DamageParts": {
+    "armor10": {
+      "mgun1_dm": {
+        "hp": 15.0
+      },
+      "mgun2_dm": {
+        "hp": 15.0
+      },
+      "mgun3_dm": {
+        "hp": 15.0
+      },
+      "mgun4_dm": {
+        "hp": 15.0
+      }
+    },
     "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
@@ -68,6 +83,18 @@
     },
     "dural": {
       "cover1_dm": {
+        "hp": 19.5
+      },
+      "cover2_dm": {
+        "hp": 19.5
+      },
+      "cover3_dm": {
+        "hp": 19.5
+      },
+      "cover4_dm": {
+        "hp": 19.5
+      },
+      "cover5_dm": {
         "hp": 19.5
       }
     },
@@ -131,6 +158,18 @@
         "name": "cover1_dm"
       },
       {
+        "name": "cover2_dm"
+      },
+      {
+        "name": "cover3_dm"
+      },
+      {
+        "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
+      },
+      {
         "name": "engine1_dm",
         "onHit": [
           {
@@ -141,6 +180,18 @@
           {
             "damage": 30.0,
             "fire": 0.005,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
             "leak_oil": 0.95,
             "cut": 0.0
           }
@@ -154,6 +205,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -172,6 +235,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -183,6 +258,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -358,6 +445,18 @@
       },
       {
         "name": "gunner1_dm"
+      },
+      {
+        "name": "mgun1_dm"
+      },
+      {
+        "name": "mgun2_dm"
+      },
+      {
+        "name": "mgun3_dm"
+      },
+      {
+        "name": "mgun4_dm"
       },
       {
         "name": "oil1_dm",
@@ -639,6 +738,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -650,6 +761,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -869,6 +992,7 @@
     "sightInFov": 6.14,
     "sightOutFov": 24.74,
     "sightFov": 5.5,
+    "noEffectsDist": 1.3,
     "devices": {
       "stick_elevator": [
         -1.0,
@@ -887,6 +1011,14 @@
         1.0
       ],
       "throttle_1": [
+        0.0,
+        1.0
+      ],
+      "throttle_2": [
+        0.0,
+        1.0
+      ],
+      "throttle_3": [
         0.0,
         1.0
       ],
@@ -914,25 +1046,45 @@
         -180.0,
         180.0
       ],
+      "aviahorizon_pitch1": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
+      ],
       "bank": [
         -8.0,
         8.0
       ],
+      "bank1": [
+        -8.0,
+        8.0
+      ],
       "fuel": [
-        2.5,
-        350.0
+        0.0,
+        360.0
       ],
       "fuel1": [
         0.0,
-        75.0
+        80.0
+      ],
+      "fuel_pressure": [
+        0.0,
+        12.0
+      ],
+      "fuel_pressure1": [
+        0.0,
+        12.0
       ],
       "speed": [
         0.0,
         82.311
       ],
       "vario": [
-        -30.48,
-        30.48
+        -20.32,
+        20.32
       ],
       "clock_hour": [
         0.0,
@@ -948,19 +1100,19 @@
       ],
       "water_temperature": [
         0.0,
-        1100.0
+        1000.0
       ],
       "water_temperature1": [
         0.0,
-        1100.0
+        1000.0
       ],
       "oil_temperature": [
-        -70.0,
-        150.0
+        30.0,
+        140.0
       ],
       "oil_temperature1": [
-        -70.0,
-        150.0
+        30.0,
+        140.0
       ],
       "oil_pressure": [
         0.0,
@@ -1014,20 +1166,11 @@
         0.0,
         1000.0
       ],
+      "radio_altitude": [
+        0.0,
+        1000.0
+      ],
       "altitude_koef": 3.28
-    },
-    "multifunctionDisplays": {
-      "display": {
-        "textureArea": [
-          0.0,
-          0.5,
-          0.5,
-          1.0
-        ],
-        "page": {
-          "type": "rwr"
-        }
-      }
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -1063,33 +1206,8 @@
   },
   "commonWeapons": {
     "Weapon": {
-      "dummy": true,
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/dummy_weapon.blk",
-      "emitter": "optic1_gun",
-      "parkInDeadzone": false,
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "speedYaw": 25.0,
-      "speedPitch": 25.0,
-      "aimForOperatedShell": true,
-      "turret": {
-        "head": "optic1_turret",
-        "gun": "optic1_gun",
-        "playerControllable": false,
-        "mainTurret": true
-      },
-      "limits": {
-        "yaw": [
-          -115.0,
-          90.0
-        ],
-        "pitch": [
-          -25.0,
-          25.0
-        ]
-      }
+      "slot": 0,
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
@@ -1099,165 +1217,575 @@
         "blk": "gameData/flightModels/weaponPresets/bo_105cb2_default.blk"
       },
       {
+        "name": "bo_105_tow_x8",
+        "blk": "gameData/flightModels/weaponPresets/bo_105_tow_x8.blk"
+      },
+      {
         "name": "bo_105_gunpods",
-        "blk": "gameData/flightModels/weaponPresets/bo_105_gunpods.blk",
-        "reqModification": "fn_hmp400_lcc",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/gunFN_M3P.blk",
-              "tier": [
-                {
-                  "idx": 7,
-                  "amountPerTier": 1.0,
-                  "iconType": "machine_gun"
-                },
-                {
-                  "idx": 5,
-                  "amountPerTier": 1.0,
-                  "iconType": "machine_gun"
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "tier": [
-                {
-                  "idx": 8,
-                  "amountPerTier": 30.0,
-                  "iconType": "ltc"
-                },
-                {
-                  "idx": 4,
-                  "amountPerTier": 30.0,
-                  "iconType": "ltc"
-                }
-              ]
-            }
-          ]
-        }
+        "blk": "gameData/flightModels/weaponPresets/bo_105_gunpods.blk"
       },
       {
         "name": "bo_105_gr_pods",
-        "blk": "gameData/flightModels/weaponPresets/bo_105_gr_pods.blk",
-        "reqModification": "fn_rmp_lc",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "tier": [
-                {
-                  "idx": 7,
-                  "iconType": "machine_gun_rockets"
-                },
-                {
-                  "idx": 5,
-                  "iconType": "machine_gun_rockets"
-                }
+        "blk": "gameData/flightModels/weaponPresets/bo_105_gr_pods.blk"
+      },
+      {
+        "name": "bo_105_ltc",
+        "blk": "gameData/flightModels/weaponPresets/bo_105_ltc.blk"
+      },
+      {
+        "name": "bo_105cb2_gun_pod_ltc",
+        "blk": "gameData/flightModels/weaponPresets/bo_105cb2_gun_pod_ltc.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 950.0,
+    "maxloadMassLeftConsoles": 425.0,
+    "maxloadMassRightConsoles": 425.0,
+    "maxDisbalance": 400.0,
+    "HideNodes": {
+      "node": [
+        "pylon_common_l",
+        "pylon1",
+        "pylon_ltc_l",
+        "fn_hmp400_pod_l",
+        "fn_rmp_pod_l",
+        "tow_tube_001",
+        "pylon3",
+        "pylon_common_r",
+        "pylon2",
+        "pylon_ltc_r",
+        "fn_hmp400_pod_r",
+        "fn_rmp_pod_r",
+        "tow_tube_002",
+        "pylon4",
+        "flare_launcher_l",
+        "flare_launcher_r"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cover1_dm",
+        "mgun1_dm",
+        "cover2_dm",
+        "mgun2_dm",
+        "cover3_dm",
+        "mgun3_dm",
+        "cover4_dm",
+        "mgun4_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": {
+            "dummy": true,
+            "trigger": "gunner0",
+            "triggerGroup": "primary",
+            "blk": "gameData/Weapons/dummy_weapon.blk",
+            "emitter": "optic1_gun",
+            "parkInDeadzone": false,
+            "defaultYaw": 0.0,
+            "defaultPitch": 0.0,
+            "speedYaw": 25.0,
+            "speedPitch": 25.0,
+            "aimForOperatedShell": true,
+            "turret": {
+              "head": "optic1_turret",
+              "gun": "optic1_gun",
+              "playerControllable": false,
+              "mainTurret": true
+            },
+            "limits": {
+              "yaw": [
+                -115.0,
+                90.0
+              ],
+              "pitch": [
+                -25.0,
+                25.0
+              ]
+            }
+          }
+        }
+      },
+      {
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "atgm_type2_x2",
+            "name": "tow_x2",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_l",
+                "pylon3"
               ]
             },
-            {
-              "blk": "gameData/Weapons/gunFN_M3P.blk",
-              "amountPerTier": 1.0,
-              "tier": [
-                {
-                  "idx": 7,
-                  "iconType": "machine_gun_rockets"
-                },
-                {
-                  "idx": 5,
-                  "iconType": "machine_gun_rockets"
-                }
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/tow_tube_x2.blk",
+              "emitter": "tow_tube_001"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "ltc"
+              },
+              {
+                "slot": 3,
+                "preset": "fn_m3p"
+              },
+              {
+                "slot": 3,
+                "preset": "fn_m3p_hvar_slot3"
+              }
+            ]
+          },
+          {
+            "iconType": "atgm_type1_x4",
+            "name": "tow_x4",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_l",
+                "pylon3"
               ]
             },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/tow_tube_x4.blk",
+              "emitter": "tow_tube_001"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "ltc"
+              },
+              {
+                "slot": 3,
+                "preset": "fn_m3p"
+              },
+              {
+                "slot": 3,
+                "preset": "fn_m3p_hvar_slot3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "ltc",
+          "reqModification": "fn_hmp400_lcc",
+          "ShowNodes": {
+            "node": [
+              "flare_launcher_l",
+              "pylon_common_l"
+            ]
+          },
+          "Weapon": {
+            "trigger": "countermeasures",
+            "startFx": "",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+            "emitter": "emtr_flare1",
+            "bullets": 30,
+            "external": true,
+            "separate": false
+          },
+          "BannedWeaponPreset": [
             {
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "tier": [
-                {
-                  "idx": 8,
-                  "amountPerTier": 30.0,
-                  "iconType": "ltc"
-                },
-                {
-                  "idx": 4,
-                  "amountPerTier": 30.0,
-                  "iconType": "ltc"
-                }
-              ]
+              "slot": 1,
+              "preset": "tow_x2"
+            },
+            {
+              "slot": 1,
+              "preset": "tow_x4"
             }
           ]
         }
       },
       {
-        "name": "bo_105_gunpods_tow",
-        "blk": "gameData/flightModels/weaponPresets/bo_105_gunpods_tow.blk",
-        "reqModification": "fn_hmp400_lcc",
-        "weaponConfig": {
-          "Weapon": [
-            {
+        "index": 3,
+        "tier": 7,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "machine_gun",
+            "name": "fn_m3p",
+            "reqModification": "fn_hmp400_lcc",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_l",
+                "pylon_ltc_l",
+                "fn_hmp400_pod_l"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover1_dm",
+                "mgun1_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "machine gun",
               "blk": "gameData/Weapons/gunFN_M3P.blk",
-              "tier": {
-                "idx": 7,
-                "amountPerTier": 1.0,
-                "iconType": "machine_gun"
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun1_dm",
+              "bullets": 400,
+              "spread": 1.0,
+              "traceOffset": 1,
+              "counterIndex": 2,
+              "mass": 89.4
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "tow_x2"
+              },
+              {
+                "slot": 1,
+                "preset": "tow_x4"
               }
+            ]
+          },
+          {
+            "iconType": "machine_gun_rockets",
+            "name": "fn_m3p_hvar_slot3",
+            "reqModification": "fn_rmp_lc",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_l",
+                "pylon_ltc_l",
+                "fn_rmp_pod_l"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover3_dm",
+                "mgun3_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunFN_M3P_cwp.blk",
+                "emitter": "flare4",
+                "flash": "flare4",
+                "dm": "mgun3_dm",
+                "bullets": 250,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 96.25
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "jettisonable": false,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "emitter": "ffar_1",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.06
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "jettisonable": false,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "emitter": "ffar_2",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.06
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "jettisonable": false,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "emitter": "ffar_3",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.06
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "tow_x2"
+              },
+              {
+                "slot": 1,
+                "preset": "tow_x4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "machine_gun",
+            "name": "fn_m3p",
+            "reqModification": "fn_hmp400_lcc",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_r",
+                "pylon_ltc_r",
+                "fn_hmp400_pod_r"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover2_dm",
+                "mgun2_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunFN_M3P.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun2_dm",
+              "bullets": 400,
+              "spread": 1.0,
+              "traceOffset": 1,
+              "counterIndex": 2,
+              "mass": 89.4
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 6,
+                "preset": "tow_x2"
+              },
+              {
+                "slot": 6,
+                "preset": "tow_x4"
+              }
+            ]
+          },
+          {
+            "iconType": "machine_gun_rockets",
+            "name": "fn_m3p_hvar_slot4",
+            "reqModification": "fn_rmp_lc",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_r",
+                "pylon_ltc_r",
+                "fn_rmp_pod_r"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover4_dm",
+                "mgun4_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "machine gun",
+                "blk": "gameData/Weapons/gunFN_M3P_cwp.blk",
+                "emitter": "flare3",
+                "flash": "flare3",
+                "dm": "mgun4_dm",
+                "bullets": 250,
+                "spread": 1.0,
+                "traceOffset": 1,
+                "counterIndex": 2,
+                "mass": 96.25
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "jettisonable": false,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "emitter": "ffar_6",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.06
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "jettisonable": false,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "emitter": "ffar_5",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.06
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "jettisonable": false,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+                "emitter": "ffar_4",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "dragCx": 0.06
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 6,
+                "preset": "tow_x2"
+              },
+              {
+                "slot": 6,
+                "preset": "tow_x4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "ltc",
+          "reqModification": "fn_hmp400_lcc",
+          "ShowNodes": {
+            "node": [
+              "flare_launcher_r",
+              "pylon_common_r"
+            ]
+          },
+          "Weapon": {
+            "trigger": "countermeasures",
+            "startFx": "",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+            "emitter": "emtr_flare2",
+            "bullets": 30,
+            "external": true,
+            "separate": false
+          },
+          "BannedWeaponPreset": [
+            {
+              "slot": 6,
+              "preset": "tow_x2"
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "tier": {
-                "idx": 8,
-                "amountPerTier": 30.0,
-                "iconType": "ltc"
-              }
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
-              "tier": {
-                "idx": 5
-              }
+              "slot": 6,
+              "preset": "tow_x4"
             }
           ]
         }
       },
       {
-        "name": "bo_105_gr_pods_tow",
-        "blk": "gameData/flightModels/weaponPresets/bo_105_gr_pods_tow.blk",
-        "reqModification": "fn_rmp_lc",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 3.0,
-              "tier": {
-                "idx": 7,
-                "iconType": "machine_gun_rockets"
-              }
+        "index": 6,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "atgm_type2_x2",
+            "name": "tow_x2",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_r",
+                "pylon4"
+              ]
             },
-            {
-              "blk": "gameData/Weapons/gunFN_M3P.blk",
-              "amountPerTier": 1.0,
-              "tier": {
-                "idx": 7,
-                "iconType": "machine_gun_rockets"
-              }
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/tow_tube_x2.blk",
+              "emitter": "tow_tube_002"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "tier": {
-                "idx": 8,
-                "amountPerTier": 30.0,
-                "iconType": "ltc"
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "ltc"
+              },
+              {
+                "slot": 4,
+                "preset": "fn_m3p"
+              },
+              {
+                "slot": 4,
+                "preset": "fn_m3p_hvar_slot4"
               }
+            ]
+          },
+          {
+            "iconType": "atgm_type1_x4",
+            "name": "tow_x4",
+            "ShowNodes": {
+              "node": [
+                "pylon_common_r",
+                "pylon4"
+              ]
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_127mm_TOW.blk",
-              "tier": {
-                "idx": 5
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/tow_tube_x4.blk",
+              "emitter": "tow_tube_002"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "ltc"
+              },
+              {
+                "slot": 4,
+                "preset": "fn_m3p"
+              },
+              {
+                "slot": 4,
+                "preset": "fn_m3p_hvar_slot4"
               }
-            }
-          ]
-        }
+            ]
+          }
+        ]
       }
     ]
   },

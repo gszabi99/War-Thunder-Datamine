@@ -7,6 +7,7 @@
   "jetEnginePowerFullScale": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": [
@@ -19,7 +20,6 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
@@ -439,6 +439,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -450,6 +462,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -508,6 +532,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -545,6 +575,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -566,6 +602,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -607,6 +649,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1911,6 +1959,30 @@
       0.0
     ],
     "lightRadius2": 0.25,
+    "digitalDevices": {
+      "n": {
+        "pos": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          1.0,
+          1.0
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 140,
+        "value": "fuel_cons_per_m",
+        "format": "%d",
+        "padding": [
+          0.0,
+          10.0
+        ]
+      }
+    },
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2144,6 +2216,17 @@
         },
         {
           "textureArea": [
+            0.5,
+            0.0,
+            0.75,
+            0.125
+          ],
+          "page": {
+            "type": "digital_devices"
+          }
+        },
+        {
+          "textureArea": [
             0.0,
             0.0,
             1.0,
@@ -2220,6 +2303,10 @@
       {
         "name": "mirage_2000c_s5_matra_super_250_samp_type_25",
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000c_s5_matra_super_250_samp_type_25.blk"
+      },
+      {
+        "name": "mirage_2000c_s5_matra_super_250_samp_type_25_200",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000c_s5_matra_super_250_samp_type_25_200.blk"
       }
     ]
   },
@@ -2466,6 +2553,22 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "bomb7",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "nar_ap_small",
             "name": "lr_f4",
             "reqModification": "fr_jl_100r",
@@ -2486,110 +2589,200 @@
         "tier": 8,
         "order": 5,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "bomb_250",
-          "reqModification": "fr_250kg_type_25c",
-          "ShowNodes": {
-            "node": "pylon_clb_513_001"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "bomb_250",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_513_001"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb4",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-            "emitter": "bomb4",
-            "bullets": 1
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_513_001"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "bomb4",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 4,
         "tier": 7,
         "order": 7,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "bomb_250",
-          "reqModification": "fr_250kg_type_25c",
-          "ShowNodes": {
-            "node": "pylon_clb_503_001"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "bomb_250",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_503_001"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb1",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-            "emitter": "bomb1",
-            "bullets": 1
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_503_001"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "bomb1",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 5,
         "tier": 6,
         "order": 9,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "bomb_250",
-          "reqModification": "fr_250kg_type_25c",
-          "ShowNodes": {
-            "node": "pylon_central"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "bomb_250",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_central"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb3",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-            "emitter": "bomb3",
-            "bullets": 1
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_central"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "bomb3",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 6,
         "tier": 5,
         "order": 8,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "bomb_250",
-          "reqModification": "fr_250kg_type_25c",
-          "ShowNodes": {
-            "node": "pylon_clb_503_002"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "bomb_250",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_503_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb2",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-            "emitter": "bomb2",
-            "bullets": 1
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_503_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "bomb2",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 7,
         "tier": 4,
         "order": 6,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "bomb_250",
-          "reqModification": "fr_250kg_type_25c",
-          "ShowNodes": {
-            "node": "pylon_clb_513_002"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "bomb_250",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_513_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb5",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-            "emitter": "bomb5",
-            "bullets": 1
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_513_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "bomb5",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 8,
@@ -2640,6 +2833,22 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+              "emitter": "bomb8",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_003"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb8",
               "bullets": 1
             }

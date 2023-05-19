@@ -17,7 +17,7 @@ class IsAnyType : AstFunctionAnnotation
     def override appendToMangledName ( func:FunctionPtr; decl:AnnotationDeclaration; var mangledName:das_string ) : void
         mangledName := "{class_info(self).name}:{describe(decl)}"
     def override apply ( var func:FunctionPtr; var group:ModuleGroup; args:AnnotationArgumentList; var errors : das_string ) : bool
-        if args.length != 1
+        if args |> length != 1
             errors := "expecting at least one argument"
             return false
         for argv in args                    // note: N^2
@@ -112,7 +112,7 @@ class IsAnyNumericMacro : IsAnyType
 [contract(name="expect_any_workhorse")]
 class IsAnyWorkhorse : IsAnyType
     //! [expect_any_workhorse(argname)] contract, which only accepts workhorse types (int, float, etc)
-    //! Workhorse types are: bool,int*,uint*,float*,double,range and urange,string,enumeration,and non-smart pointers
+    //! Workhorse types are: bool,int*,uint*,float*,double,range and urange, range64 and urange64, string,enumeration,and non-smart pointers
     def override isCompatible ( var func:FunctionPtr; var types:VectorTypeDeclPtr; decl:AnnotationDeclaration; var errors:das_string ) : bool
         for fna,typ in func.arguments,types // note: N^2
             for argv in decl.arguments

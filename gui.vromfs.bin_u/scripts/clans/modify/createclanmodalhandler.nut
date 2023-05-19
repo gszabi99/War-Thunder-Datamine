@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+
 ::gui_handlers.CreateClanModalHandler <- class extends ::gui_handlers.ModifyClanModalHandler {
   function createView() {
     let clanTypeItems = []

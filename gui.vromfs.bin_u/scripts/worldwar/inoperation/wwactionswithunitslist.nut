@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -35,7 +36,7 @@ let function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
 }
 
 let function loadUnitsFromNameCountTbl(tbl) {
-  if (::u.isEmpty(tbl))
+  if (u.isEmpty(tbl))
     return []
 
   let units = []
@@ -53,7 +54,7 @@ let function loadUnitsFromNameCountTbl(tbl) {
 }
 
 let function loadWWUnitsFromUnitsArray(unitsArray) {
-  if (::u.isEmpty(unitsArray))
+  if (u.isEmpty(unitsArray))
     return []
 
   let units = []

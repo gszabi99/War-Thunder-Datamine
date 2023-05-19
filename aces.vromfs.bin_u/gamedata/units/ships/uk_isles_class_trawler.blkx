@@ -41,6 +41,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -923,7 +924,7 @@
       "explosionDamageMult": 1.2,
       "armorThrough": 150.0,
       "transmission_01_dm": {
-        "hp": 2491.0
+        "hp": 2500.0
       }
     },
     "funnels": {
@@ -1303,7 +1304,7 @@
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 2
+      "crew": 3
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
@@ -1328,7 +1329,7 @@
     "sailor8": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor9": {
       "dmPart": "radio_station_dm",
@@ -3882,5 +3883,34 @@
       "from": "camo_flatgullgrey*",
       "to": "camo_flatdarkgrey*"
     }
-  }
+  },
+  "skin": [
+    {
+      "name": "uk_camo_navy_lightblue",
+      "nameLocId": "skin/uk_camo_navy_lightblue",
+      "descLocId": "skin/uk_camo_navy_lightblue/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_navy_lightblue*"
+      }
+    },
+    {
+      "name": "uk_camo_nordgeometry",
+      "nameLocId": "skin/uk_camo_nordgeometry",
+      "descLocId": "skin/uk_camo_nordgeometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_nordgeometry*"
+      }
+    },
+    {
+      "name": "uk_camo_lightbeige_blots",
+      "nameLocId": "skin/uk_camo_lightbeige_blots",
+      "descLocId": "skin/uk_camo_lightbeige_blots/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_lightbeige_blots*"
+      }
+    }
+  ]
 }

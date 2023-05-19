@@ -5,13 +5,14 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let activeConfig = Watched(null)
 let toBattleLocId = Computed(@() activeConfig.value?.toBattleLocId ?? "mainmenu/toBattle")
 let toBattleLocIdShort = Computed(@() activeConfig.value?.toBattleLocIdShort ?? "mainmenu/toBattle/short")
 
-toBattleLocId.subscribe(@(_) ::broadcastEvent("ToBattleLocChanged"))
-toBattleLocIdShort.subscribe(@(_) ::broadcastEvent("ToBattleLocShortChanged"))
+toBattleLocId.subscribe(@(_) broadcastEvent("ToBattleLocChanged"))
+toBattleLocIdShort.subscribe(@(_) broadcastEvent("ToBattleLocShortChanged"))
 
 local updateCustomizationConfigTask = -1
 

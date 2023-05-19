@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
 let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
@@ -54,7 +56,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       }
     })
 
-    let data = ::handyman.renderCached(this.categoryTpl, { categories })
+    let data = handyman.renderCached(this.categoryTpl, { categories })
     let listObj = this.scene.findObject("categories_list")
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
@@ -159,7 +161,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       hasGroups = false
       isGroup = true
     })
-    return ::handyman.renderCached(this.categoryTpl, { categories })
+    return handyman.renderCached(this.categoryTpl, { categories })
   }
 
   function getSelectedObj(listObj) {
@@ -234,7 +236,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
           : null
       }))
     }
-    return ::handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+    return handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
   }
 
   function scrollDecalsCategory() {
@@ -304,7 +306,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (listObj.getValue() != decorator.catIndex)
       listObj.setValue(decorator.catIndex)
 
-    ::broadcastEvent("DecorMenuItemClick", { decorator })
+    broadcastEvent("DecorMenuItemClick", { decorator })
   }
 
   function onDecorItemDoubleClick(obj) {
@@ -312,16 +314,16 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (!decorator)
       return
 
-    ::broadcastEvent("DecorMenuItemDblClick", { decorator })
+    broadcastEvent("DecorMenuItemDblClick", { decorator })
   }
 
   function onCollectionIconClick(obj) {
     let decoratorId = obj.holderId
-    ::broadcastEvent("DecorMenuCollectionIconClick", { decoratorId })
+    broadcastEvent("DecorMenuCollectionIconClick", { decoratorId })
   }
 
   function onDecorItemSelect() {
-    ::broadcastEvent("DecorMenuItemSelect")
+    broadcastEvent("DecorMenuItemSelect")
   }
 
   function onDecorItemActivate(listObj) {
@@ -329,7 +331,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onDecorListHoverChange() {
-    ::broadcastEvent("DecorMenuListHoverChange")
+    broadcastEvent("DecorMenuListHoverChange")
   }
 
   function onDecorItemHeader(listObj) {

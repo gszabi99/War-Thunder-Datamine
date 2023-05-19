@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -54,7 +55,7 @@ enums.addTypesByGlobalName("g_queue_type",
     EVENT = {
       bit = QUEUE_TYPE_BIT.EVENT
       checkOrder = qTypeCheckOrder.ANY_EVENT
-      isParamsCorresponds = @(params) !::u.isEmpty(getTblValue("mode", params))
+      isParamsCorresponds = @(params) !u.isEmpty(getTblValue("mode", params))
     }
 
     NEWBIE = {

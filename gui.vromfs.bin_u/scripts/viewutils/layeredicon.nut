@@ -7,7 +7,8 @@ from "%scripts/dagui_library.nut" import *
 let { round } = require("math")
 let { format, split_by_chars } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { stripTags } = require("%sqstd/string.nut")
 
 /* LayersIcon API:
   getIconData(iconStyle, image = null, ratio = null, defStyle = null, iconParams = null)
@@ -53,7 +54,7 @@ let iconLayer = @"iconLayer {
   {id} size:t='{size}'; pos:t='{posX},{posY}'; position:t='{pos}'
   background-image:t='{image}'; background-svg-size:t='{texSize}'; {props} }"
 
-::LayersIcon <- {
+let LayersIcon = {
   [PERSISTENT_DATA_PARAMS] = ["config"]
 
   config = null
@@ -67,7 +68,7 @@ let iconLayer = @"iconLayer {
   }
 }
 
-::LayersIcon.initConfigOnce <- function initConfigOnce(blk = null) {
+LayersIcon.initConfigOnce <- function initConfigOnce(blk = null) {
   if (this.config)
     return
 
@@ -81,12 +82,12 @@ let iconLayer = @"iconLayer {
   this.config = config
 }
 
-::LayersIcon.refreshConfig <- function refreshConfig() {
-  ::LayersIcon.config = null
-  ::LayersIcon.initConfigOnce(null)
+LayersIcon.refreshConfig <- function refreshConfig() {
+  LayersIcon.config = null
+  LayersIcon.initConfigOnce(null)
 }
 
-::LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = null,
+LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = null,
   defStyle = null, iconParams = null, iconConfig = null, containerSizePx = 0) {
   this.initConfigOnce()
 
@@ -113,9 +114,9 @@ let iconLayer = @"iconLayer {
       }
 
       if (getTblValue("type", layerCfg, "image") == "text")
-        data += ::LayersIcon.getTextDataFromLayer(layerCfg)
+        data += LayersIcon.getTextDataFromLayer(layerCfg)
       else
-        data += ::LayersIcon.genDataFromLayer(layerCfg, "", containerSizePx)
+        data += LayersIcon.genDataFromLayer(layerCfg, "", containerSizePx)
     }
   }
   else if (image && image != "") {
@@ -138,17 +139,17 @@ let iconLayer = @"iconLayer {
   return data
 }
 
-::LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size) {
+LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size) {
   return iconLayer.subst({ id = "id:t='iconLayer0'", size, texSize = size,
     posX = "(pw-w)/2", posY = "(ph-h)/2",
     pos = "absolute", image, props = "" })
 }
 
-::LayersIcon.findLayerCfg <- function findLayerCfg(id) {
+LayersIcon.findLayerCfg <- function findLayerCfg(id) {
   return "layers" in this.config ? getTblValue(id.tolower(), this.config.layers) : null
 }
 
-::LayersIcon.findStyleCfg <- function findStyleCfg(id) {
+LayersIcon.findStyleCfg <- function findStyleCfg(id) {
   return "styles" in this.config ? getTblValue(id.tolower(), this.config?.styles) : null
 }
 
@@ -177,7 +178,7 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
   return res
 }
 
-::LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0) {  //need to move it to handyman,
+LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0) {  //need to move it to handyman,
                                      //but before need to correct cashe it or it will decrease performance
   let baseParams = calcLayerBaseParams(layerCfg, containerSizePx)
 
@@ -202,20 +203,20 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 }
 
 // For icon customization it is much easier to use replaceIcon() with iconParams, or getIconData() with iconParams.
-::LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLayerCfg, insertLayersArrayCfg) {
+LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLayerCfg, insertLayersArrayCfg) {
   local insertLayers = ""
   foreach (layerCfg in insertLayersArrayCfg)
     if (layerCfg) {
       if (getTblValue("type", layerCfg, "image") == "text")
-        insertLayers += ::LayersIcon.getTextDataFromLayer(layerCfg)
+        insertLayers += LayersIcon.getTextDataFromLayer(layerCfg)
       else
-        insertLayers += ::LayersIcon.genDataFromLayer(layerCfg)
+        insertLayers += LayersIcon.genDataFromLayer(layerCfg)
     }
 
-  return ::LayersIcon.genDataFromLayer(mainLayerCfg, insertLayers)
+  return LayersIcon.genDataFromLayer(mainLayerCfg, insertLayers)
 }
 
-::LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image = null, ratio = null,
+LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image = null, ratio = null,
   defStyle = null, iconParams = null, iconConfig = null, containerSizePx = 0) {
   if (!checkObj(iconObj))
     return
@@ -225,14 +226,14 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
   guiScene.replaceContentFromText(iconObj, data, data.len(), null)
 }
 
-::LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg) {
+LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg) {
   local props = format("color:t='%s';", getTblValue("color", layerCfg, "@commonTextColor"))
   props += format("font:t='%s';", getTblValue("font", layerCfg, "@fontNormal"))
   foreach (id in ["font-ht", "max-width", "text-align", "shadeStyle"])
     if (id in layerCfg)
       props += format("%s:t='%s';", id, layerCfg[id])
 
-  let idTag = ("id" in layerCfg) ? format("id:t='%s';", ::g_string.stripTags(layerCfg.id)) : ""
+  let idTag = ("id" in layerCfg) ? format("id:t='%s';", stripTags(layerCfg.id)) : ""
 
   let posX = ("x" in layerCfg) ? layerCfg.x.tostring() : "(pw-w)/2"
   let posY = ("y" in layerCfg) ? layerCfg.y.tostring() : "(ph-h)/2"
@@ -240,12 +241,13 @@ let function calcLayerBaseParams(layerCfg, containerSizePx) {
 
   return format("blankTextArea {%s text:t='%s'; pos:t='%s, %s'; position:t='%s'; %s}",
                       idTag,
-                      ::g_string.stripTags(getTblValue("text", layerCfg, "")),
+                      stripTags(getTblValue("text", layerCfg, "")),
                       posX, posY,
                       position,
                       props)
 }
 
-::LayersIcon.getOffset <- @(itemsLen, minOffset, maxOffset) itemsLen <= 1 ? 0 : max(minOffset, maxOffset / (itemsLen - 1))
+LayersIcon.getOffset <- @(itemsLen, minOffset, maxOffset) itemsLen <= 1 ? 0 : max(minOffset, maxOffset / (itemsLen - 1))
 
-::g_script_reloader.registerPersistentDataFromRoot("LayersIcon")
+g_script_reloader.registerPersistentData("LayersIcon", LayersIcon, LayersIcon[PERSISTENT_DATA_PARAMS])
+return {LayersIcon}

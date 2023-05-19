@@ -41,6 +41,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "haveAnchor": true,
   "anchorPos": [
     28.09,
@@ -684,13 +685,13 @@
         "hp": 2100.0
       },
       "compartment_02_dm": {
-        "hp": 1979.0
+        "hp": 1908.0
       },
       "compartment_03_dm": {
         "hp": 2100.0
       },
       "compartment_04_dm": {
-        "hp": 1933.0
+        "hp": 1864.0
       }
     },
     "control_compartments": {
@@ -792,10 +793,10 @@
         "hp": 2000.0
       },
       "engine_02_dm": {
-        "hp": 2500.0
+        "hp": 2490.0
       },
       "engine_03_dm": {
-        "hp": 2500.0
+        "hp": 2490.0
       }
     },
     "engine_rooms": {
@@ -1971,17 +1972,17 @@
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           5.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
@@ -3580,5 +3581,34 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "uk_camo_navy_brown",
+      "nameLocId": "skin/uk_camo_navy_brown",
+      "descLocId": "skin/uk_camo_navy_brown/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_navy_brown*"
+      }
+    },
+    {
+      "name": "uk_camo_desert_geometry",
+      "nameLocId": "skin/uk_camo_desert_geometry",
+      "descLocId": "skin/uk_camo_desert_geometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_desert_geometry*"
+      }
+    },
+    {
+      "name": "uk_camo_gray_geometry",
+      "nameLocId": "skin/uk_camo_gray_geometry",
+      "descLocId": "skin/uk_camo_gray_geometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_gray_geometry*"
+      }
+    }
+  ]
 }

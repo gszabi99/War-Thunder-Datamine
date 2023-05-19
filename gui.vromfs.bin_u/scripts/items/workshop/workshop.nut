@@ -29,6 +29,12 @@ local customLocalizationPresets = {}
 local effectOnStartCraftPresets = {}
 local effectOnOpenChestPresets = {}
 
+let function checkBlkDuplicates(cfg, cfgName) {
+  foreach(key, val in cfg) {
+    assert(type(val) != "array", $"config/workshop.blk: Duplicate block in {cfgName}: {key}")
+  }
+}
+
 let function initOnce() {
   if (isInited || !::g_login.isProfileReceived())
     return
@@ -69,6 +75,8 @@ let function initOnce() {
   customLocalizationPresets = ::buildTableFromBlk(wBlk?.customLocalizationPresets)
   effectOnStartCraftPresets = ::buildTableFromBlk(wBlk?.effectOnStartCraftPresets)
   effectOnOpenChestPresets = ::buildTableFromBlk(wBlk?.effectOnOpenChestPresets)
+
+  checkBlkDuplicates(customLocalizationPresets, "customLocalizationPresets")
 }
 
 let function invalidateCache() {

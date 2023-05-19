@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -82,7 +84,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     if (getTblValue("type", this.config, -1) == UNLOCKABLE_AIRCRAFT || "unitName" in this.config) {
       let id = getTblValue("id", this.config)
       let unitName = getTblValue("unitName", this.config, id)
-      this.unit = ::getAircraftByName(unitName)
+      this.unit = getAircraftByName(unitName)
       this.updateUnitItem()
     }
 
@@ -202,7 +204,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     let buyObj = this.showSceneBtn("btn_buy_unit", canBuy)
     if (canBuy && checkObj(buyObj)) {
       let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(this.unit.name) })
-      let unitCost = canBuyOnline ? ::Cost() : ::getUnitCost(this.unit)
+      let unitCost = canBuyOnline ? Cost() : ::getUnitCost(this.unit)
       placePriceTextToButton(this.scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(this.unit))
     }
 

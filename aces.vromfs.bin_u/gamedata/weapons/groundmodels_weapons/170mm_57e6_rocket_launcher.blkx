@@ -45,6 +45,7 @@
   "animChar": "57e6_rocket_char",
   "reloadAnimParam": "cap_hide",
   "bullet": {
+    "mass": 72.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
@@ -62,7 +63,6 @@
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/sam.ivf",
     "bulletName": "170mm_zur_95ya6",
-    "mass": 72.5,
     "caliber": 0.17,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm",
@@ -88,6 +88,38 @@
       "damageType": "pressure"
     },
     "rocket": {
+      "statType": "hydra",
+      "caliber": 0.09,
+      "length": 1.85,
+      "WdK": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "CxK": 1.1665,
+      "wingAreaMult": 1.25,
+      "finsAoaHor": 0.09,
+      "finsAoaVer": 0.09,
+      "finsLatAccel": 48.6,
+      "distFromCmToStab": 0.03,
+      "mass": 72.5,
+      "massEnd": 28.0,
+      "timeFire": 2.4,
+      "force": 25935.0,
+      "timeLife": 30.0,
+      "thrustDeviation": 0.0,
+      "useStartSpeed": true,
+      "startSpeed": 10.0,
+      "endSpeed": 1300.0,
+      "maxDistance": 20000.0,
+      "minDistance": 30.0,
+      "guaranteedRange": 18000.0,
+      "rangeMax": 20000.0,
+      "loadFactorMax": 32.0,
+      "guidanceType": "saclos",
+      "maxDeltaAngle": 0.03,
+      "explosiveType": "a_ix_2",
+      "explosiveMass": 5.5,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
@@ -104,32 +136,8 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
-      "hasProximityFuse": true,
-      "caliber": 0.09,
-      "mass": 72.5,
-      "explosiveType": "a_ix_2",
-      "explosiveMass": 5.5,
-      "massEnd": 28.0,
-      "maxDeltaAngle": 0.03,
       "dragCx": 0.01,
-      "length": 1.85,
-      "distFromCmToStab": 0.03,
-      "CxK": 1.1665,
-      "WdK": [
-        0.1,
-        0.1,
-        0.1
-      ],
-      "finsAoaHor": 0.09,
-      "finsAoaVer": 0.09,
-      "finsLatAccel": 48.6,
-      "force": 25935.0,
-      "timeFire": 2.4,
-      "thrustDeviation": 0.0,
-      "timeLife": 30.0,
-      "wingAreaMult": 1.25,
-      "guaranteedRange": 18000.0,
-      "loadFactorMax": 32.0,
+      "hasProximityFuse": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_133_160mm_metal_he",
       "groundCollisionEffect": "hit_133_160mm_dirt_he",
@@ -138,67 +146,23 @@
       "explosionPatchRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "guidanceType": "saclos",
-      "fireEffect": "rocket_fire_light_multiple",
-      "smokeEffect": "",
+      "fireEffect": "fires_exhaust_jet_early_big",
+      "smokeEffect": "smoke_rocket_tail_light_huge",
+      "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
-      "maxDistance": 20000.0,
-      "rangeMax": 20000.0,
-      "minDistance": 30.0,
+      "effectOffset": [
+        -1.9,
+        0.0,
+        0.0
+      ],
+      "rendinstDamageRadius": 5.0,
       "spawnExplosionWreckage": false,
       "spawnExplosionFx": false,
-      "explosionOffset": 0.05,
-      "hitPowerMult": 1.0,
-      "nearHitPower": [
-        1.0,
-        50.0
-      ],
-      "midHitPower": [
-        0.9,
-        400.0
-      ],
-      "farHitPower": [
-        0.1,
-        1000.0
-      ],
-      "endHitPower": [
-        0.01,
-        1500.0
-      ],
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "nearArmorPower": [
-        10.0,
-        50.0
-      ],
-      "midArmorPower": [
-        7.0,
-        400.0
-      ],
-      "farArmorPower": [
-        0.2,
-        700.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
+      "hitPowerMult": 400.0,
       "distanceFuse": false,
-      "explodeTreshold": 0.1,
-      "explodeHitPower": 600.0,
-      "explodeArmorPower": 30.0,
-      "explodeRadius": [
-        0.6,
-        2.07
-      ],
-      "rendinstDamageRadius": 4.0,
-      "statType": "hydra",
-      "useStartSpeed": true,
-      "startSpeed": 10.0,
-      "endSpeed": 1300.0,
+      "fuseDelayDist": 1.0,
+      "explodeTreshold": 0.3,
       "price": 3000.0,
       "mesh": "57e6_rocket_deployed",
       "hasTracerTrail": true,
@@ -207,6 +171,29 @@
         0.0,
         0.0
       ],
+      "guidance": {
+        "controlRangeMax": 20000.0,
+        "beaconBand": 5,
+        "controlConeFov": 90.0,
+        "leading": true,
+        "leadMult": 0.5,
+        "leadMinimalElevation": 3.0,
+        "breakLockMaxTime": 20.0,
+        "lineOfSightAutopilot": {
+          "timeOut": 0.0,
+          "crossDistToReqCrossVelMult": 3.0,
+          "reqCrossVelRationMax": 0.75,
+          "velDiffToReqAccelMult": 6.0,
+          "accelControl": {
+            "reqAccelMax": 32.0,
+            "baseIndSpeed": 1800.0,
+            "accelControlProp": 0.006,
+            "accelControlIntg": 0.000275,
+            "accelControlDiff": 0.00075,
+            "accelControlIntgLim": 0.2
+          }
+        }
+      },
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -223,6 +210,24 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "expl": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "proximityFuse": {
         "radius": 9.0,
@@ -399,6 +404,34 @@
           "fx": "hit_12_18mm_snow_ap"
         }
       },
+      "armorpower": {
+        "ArmorPower0m": [
+          28.0,
+          10.0
+        ],
+        "ArmorPower100m": [
+          25.0,
+          100.0
+        ],
+        "ArmorPower7000m": [
+          23.0,
+          7000.0
+        ],
+        "ArmorPower10000m": [
+          0.0,
+          10000.0
+        ]
+      },
+      "hitpower": {
+        "HitPower0m": [
+          400.0,
+          500.0
+        ],
+        "HitPower10000m": [
+          400.0,
+          10000.0
+        ]
+      },
       "damage": {
         "shatter": {
           "useRealShatters": true,
@@ -511,77 +544,6 @@
           "radius": 0.3,
           "offset": 0.8
         }
-      },
-      "guidance": {
-        "controlConeFov": 90.0,
-        "leading": true,
-        "leadMult": 0.5,
-        "leadMinimalElevation": 3.0,
-        "breakLockMaxTime": 20.0,
-        "lineOfSightAutopilot": {
-          "timeOut": 0.0,
-          "crossDistToReqCrossVelMult": 3.0,
-          "reqCrossVelRationMax": 0.75,
-          "velDiffToReqAccelMult": 6.0,
-          "accelControl": {
-            "reqAccelMax": 32.0,
-            "baseIndSpeed": 1800.0,
-            "accelControlProp": 0.006,
-            "accelControlIntg": 0.000275,
-            "accelControlDiff": 0.00075,
-            "accelControlIntgLim": 0.2
-          }
-        }
-      },
-      "DamageParts": {
-        "body": {
-          "hp": 5.0,
-          "armorClass": "tank_structural_steel",
-          "armorThickness": 1.0
-        }
-      },
-      "DamageEffects": {
-        "part": {
-          "name": "body",
-          "onHit": {
-            "expl": 1.0
-          },
-          "onKill": {
-            "destruction": 1.0
-          }
-        }
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          2.0,
-          10.0
-        ],
-        "ArmorPower7000m": [
-          1.0,
-          7000.0
-        ]
-      },
-      "hitpower": {
-        "HitPower0m": [
-          1.0,
-          500.0
-        ],
-        "HitPower1000m": [
-          0.9,
-          1000.0
-        ],
-        "HitPower1500m": [
-          0.65,
-          1500.0
-        ],
-        "HitPower2500m": [
-          0.5,
-          2500.0
-        ],
-        "HitPower7000m": [
-          0.0,
-          7000.0
-        ]
       },
       "tracerTrail": {
         "smokeEffect": "",

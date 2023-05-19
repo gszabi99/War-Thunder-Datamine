@@ -124,7 +124,7 @@ local unitTypes = {
   }
 
   function getByUnitName(unitId) {
-    let unit = ::getAircraftByName(unitId)
+    let unit = getAircraftByName(unitId)
     return unit ? unit.unitType : this.INVALID
   }
 

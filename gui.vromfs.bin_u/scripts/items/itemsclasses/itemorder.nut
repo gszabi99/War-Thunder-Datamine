@@ -1,5 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -14,7 +18,7 @@ let time = require("%scripts/time.nut")
   static defaultLocId = "order"
   static defaultIconStyle = "default_order_debug"
   static typeIcon = "#ui/gameuiskin#item_type_orders.svg"
-  helperCost = ::Cost()
+  helperCost = Cost()
   static colorScheme = {
     typeDescriptionColor = "commonTextColor"
     parameterValueColor = "activeTextColor"
@@ -108,7 +112,7 @@ let time = require("%scripts/time.nut")
   }
 
   function getIcon(_addItemName = true) {
-    return ::LayersIcon.getIconData(this.iconStyle, this.defaultIcon, 1.0, this.defaultIconStyle)
+    return LayersIcon.getIconData(this.iconStyle, this.defaultIcon, 1.0, this.defaultIconStyle)
   }
 
   function initMissionOrderParams(blk) {
@@ -149,9 +153,9 @@ let time = require("%scripts/time.nut")
     let missionRestriction = getTblValue("missionRestriction", this.typeParams, null)
     if (missionRestriction == null)
       return true // No restrictions at all.
-    if (::u.isTable(missionRestriction))
+    if (u.isTable(missionRestriction))
       return this.checkMissionRestriction(missionRestriction, missionName)
-    if (!::u.isArray(missionRestriction)) {
+    if (!u.isArray(missionRestriction)) {
       assert(format("Invalid mission restriction config in item: %s", this.id))
       return true
     }
@@ -236,7 +240,7 @@ let time = require("%scripts/time.nut")
 
     // e.g "Arcade Battles, Simulator Battles, Events"
     // Part "Events" is hardcoded.
-    let disabledItems = ::u.map(this.disabledDifficulties, function (diff) {
+    let disabledItems = u.map(this.disabledDifficulties, function (diff) {
       return loc("options/" + diff.name)
     })
     disabledItems.append(loc("mainmenu/events"))

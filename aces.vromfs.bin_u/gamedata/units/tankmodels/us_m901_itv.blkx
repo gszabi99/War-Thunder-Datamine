@@ -1476,6 +1476,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1498,6 +1499,7 @@
         "battlePositionSpeed": 20.0,
         "lagStopForFireTime": 1.0,
         "reloadAnimVar": "m901_reload_var",
+        "staticElevation": 1.725,
         "createGunEffects": true,
         "parkForReload": true,
         "waitShellForPark": true,
@@ -1743,13 +1745,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2500,6 +2502,7 @@
       "tier": 4,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2522,6 +2525,7 @@
               "battlePositionSpeed": 20.0,
               "lagStopForFireTime": 1.0,
               "reloadAnimVar": "m901_reload_var",
+              "staticElevation": 1.725,
               "createGunEffects": true,
               "parkForReload": true,
               "waitShellForPark": true,

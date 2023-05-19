@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let json = require("json")
+let { parse_json } = require("json")
 let http = require("dagor.http")
 let { getPlayerToken } = require("auth_wt")
 
@@ -24,7 +24,7 @@ let function requestMultipleItems(guids, onSuccess, onFailure = null) {
       url = ONLINE_STORE_API_URL
       data = createGuidsRequestParams(guids)
       callback = function(response) {
-        if (response.status != http.SUCCESS || !response?.body) {
+        if (response.status != http.HTTP_SUCCESS || !response?.body) {
           onFailure?()
           return
         }
@@ -40,7 +40,7 @@ let function requestMultipleItems(guids, onSuccess, onFailure = null) {
             return
           }
 
-          let data = json.parse(body)
+          let data = parse_json(body)
           if (data?.status == "OK")
             onSuccess(data)
           else

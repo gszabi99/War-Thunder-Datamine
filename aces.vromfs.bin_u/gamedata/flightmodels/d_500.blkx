@@ -11,6 +11,7 @@
     0.055,
     0.022
   ],
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "ally",
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -2081,13 +2082,45 @@
     "turnTime": 18.5
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "7_5mm_universal": {},
     "7_5mm_all_tracers": {},
     "7_5mm_stealth": {},

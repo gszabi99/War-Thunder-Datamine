@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -50,7 +51,7 @@ let sessionParams = {
       let defaultLoc = ["missions/" + ::SessionLobby.getMissionName(true)]
       return {
         index = 0
-        locIdsArray = ::u.isEmpty(missionLoc) ? defaultLoc : missionLoc
+        locIdsArray = u.isEmpty(missionLoc) ? defaultLoc : missionLoc
         maxUsers = ::SessionLobby.getMaxMembersCount()
         isPrivate = ::SessionLobby.getPublicParam("friendOnly", false)
                  || !::SessionLobby.getPublicParam("allowJip", true)
@@ -129,7 +130,7 @@ let function join(session, invitation = null, cb = psn.noOpCb) {
 
 let function update(session, info) {
   let psnSession = sessions.value?[session]
-  let shouldUpdate = !::u.isEqual((psnSession && psnSession?.info) || {}, info)
+  let shouldUpdate = !u.isEqual((psnSession && psnSession?.info) || {}, info)
   log("[PSSI] update " + session + " (" + psnSession + "): " + shouldUpdate)
 
   if (shouldUpdate)
@@ -168,7 +169,7 @@ subscriptions.addListenersWithoutEnv({
 
     let session = ::SessionLobby.getExternalId()
     log("[PSSI] onEventRoomJoined: " + session)
-    if (::u.isEmpty(session) && ::SessionLobby.isRoomOwner)
+    if (u.isEmpty(session) && ::SessionLobby.isRoomOwner)
       create(PSN_SESSION_TYPE.SKIRMISH, @(r, _e) ::SessionLobby.setExternalId(r?.sessionId))
     else if (session && !(session in sessions.value))
       join(session, { key = PSN_SESSION_TYPE.SKIRMISH })
@@ -183,7 +184,7 @@ subscriptions.addListenersWithoutEnv({
   }
   LobbySettingsChange = function(_p) {
     let session = ::SessionLobby.getExternalId()
-    if (!isPlatformSony || ::u.isEmpty(session))
+    if (!isPlatformSony || u.isEmpty(session))
       return
 
     log("[PSSI] onEventLobbySettingsChange for " + session)
@@ -217,9 +218,9 @@ subscriptions.addListenersWithoutEnv({
           join(session, { key = PSN_SESSION_TYPE.SQUAD })
         if (!isLeader && sessions.value[session]?.info) // Leadership transfer
           sessions.update(@(v) delete v[session].info)
-        else if (isLeader && ::u.isEmpty(session)) // Squad implicitly created
+        else if (isLeader && u.isEmpty(session)) // Squad implicitly created
           create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
-        else if (isLeader && ::u.isEmpty(sessions.value)) // Autotransfer on login
+        else if (isLeader && u.isEmpty(sessions.value)) // Autotransfer on login
           create(PSN_SESSION_TYPE.SQUAD, bindSquadSession)
         else if (isLeader && sessions.value?[session] && !sessions.value[session]?.info) { // Leadership transfer
           update(session, sessionParams[PSN_SESSION_TYPE.SQUAD].info())
@@ -243,7 +244,7 @@ let function onPsnInvitation(invitation) {
   }
   let isInPsnSession = invitation.sessionId in sessions.value
 
-  if (::u.isEmpty(invitation.sessionId) || isInPsnSession)
+  if (u.isEmpty(invitation.sessionId) || isInPsnSession)
     return // Most-likely we are joining from PS4 Blue Screen
 
   if (!::g_login.isLoggedIn() || ::is_in_loading_screen()) {
@@ -270,7 +271,7 @@ let function onPsnInvitation(invitation) {
   let acceptInvitation = function(response, err) {
     log("[PSSI] ready to accept PSN invite, error " + err)
     if (!err) {
-      let fullInfo = ::u.extend(response, invitation)
+      let fullInfo = u.extend(response, invitation)
       switch (response.key) {
         case PSN_SESSION_TYPE.SKIRMISH:
           ::g_invites.addSessionRoomInvite(fullInfo.roomId, fullInfo.inviterUid, fullInfo.inviterName, fullInfo.password).accept()

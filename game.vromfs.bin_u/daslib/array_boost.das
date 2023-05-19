@@ -46,3 +46,30 @@ def public temp_array ( arr : auto implicit ==const)
 def empty(v:auto(VecT))
     //! returns true if 'v' has 0 elements. this also implies that `length(v)` is defined.
     return _::length(v)==0
+
+[unsafe_operation, template (a), unused_argument(a)]
+def public temp_array ( var data : auto? ==const; lenA : int; a : auto(TT) ) : array<TT -const-#>
+    var res : array<TT -const-#>
+    if lenA>=1
+        unsafe
+            _builtin_make_temp_array(res, data, lenA)
+    return <- res
+
+[unsafe_operation, template (a), unused_argument(a)]
+def public temp_array ( data : auto? ==const; lenA : int; a : auto(TT) ) : array<TT -const-#> const
+    var res : array<TT -const-#>
+    if lenA>=1
+        unsafe
+            _builtin_make_temp_array(res, data, lenA)
+    return <- res
+
+def array_view ( bytes:array<auto(TT)>; offset,length:int; blk:block<(view:array<TT>#):void> )
+    //! creates a view of the array, which is a temporary array that is valid only within the block
+    unsafe
+        if offset<0 || (offset+length)>length(bytes)
+            panic("array_view: out of range")
+        __builtin_array_lock(bytes)
+        var res : array<TT>#
+        _builtin_make_temp_array(res, addr(bytes[offset]), length)
+        invoke(blk, res)
+        __builtin_array_unlock(bytes)

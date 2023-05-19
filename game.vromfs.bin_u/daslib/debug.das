@@ -1,3 +1,4 @@
+options rtti
 options no_aot
 options indenting = 4
 options no_global_variables = false
@@ -24,6 +25,7 @@ require daslib/jobque_boost
 require daslib/strings_boost
 require daslib/dap
 require daslib/algorithm
+require daslib/debug_eval
 
 
 let private
@@ -133,6 +135,9 @@ def private bytes_hr(value : uint64)
 
 
 class DAWalker: DapiDataWalker
+
+    maxChildrenCount: uint = 500u
+
     varsStack: array<DAVariable?>
     [[do_not_delete]] frame: DAStackFrame?
     visited: array<tuple<ps: void?; hash: uint64>>
@@ -189,8 +194,8 @@ class DAWalker: DapiDataWalker
             var v & = unsafe(varsStack[n - 1])
             if v.children == null
                 var ti = type_info(vi)
-                v.value = sprint_data(pv, ti, print_flags_debug)
-            elif empty(v.value)
+                v.value = sprint_data_fast(pv, ti, print_flags_debug)
+            if empty(v.value)
                 v.value = v._type
         self->popStack()
 
@@ -216,6 +221,13 @@ class DAWalker: DapiDataWalker
             if empty(v.value)
                 v.value = v._type
 
+    def override canVisitArray(ps: void?; ti: TypeInfo): bool
+        let arr = unsafe(reinterpret<DapiArray?> ps)
+        return maxChildrenCount < 0u || arr.size <= maxChildrenCount
+
+    def override canVisitArrayData(ti: TypeInfo; count:uint): bool
+        return maxChildrenCount < 0u || count <= maxChildrenCount
+
     def override beforeArrayData(ps: void?; stride: uint; count: uint; ti:TypeInfo): void
         let n = length(varsStack)
         if n > 0
@@ -237,8 +249,8 @@ class DAWalker: DapiDataWalker
             var v & = unsafe(varsStack[n - 1])
             if v.children == null
                 unsafe
-                    v.value = sprint_data(pe, addr(ti), print_flags_debug)
-            elif empty(v.value)
+                    v.value = sprint_data_fast(pe, addr(ti), print_flags_debug)
+            if empty(v.value)
                 v.value = v._type
         self->popStack()
 
@@ -246,6 +258,10 @@ class DAWalker: DapiDataWalker
         let n = length(varsStack)
         if n > 0
             var v & = unsafe(varsStack[n - 1])
+            if count > 500u
+                print("IN VARIABLE {v.name} TOO MANY ELEMENTS {int64(count)}\n")
+                assert(false)
+
             if v.children != null
                 let preview = join(*v.children, inlinePreviewLimit - 5)
                 if !empty(preview)
@@ -258,6 +274,10 @@ class DAWalker: DapiDataWalker
         if n > 0
             var v & = unsafe(varsStack[n - 1])
             v.indexedVariables = pa.size
+
+    def override canVisitTable (ps: void?; ti: TypeInfo): bool
+        let pa = unsafe(reinterpret<DapiTable?> ps)
+        return maxChildrenCount < 0u || pa.size <= maxChildrenCount
 
     def override beforeTableKey(pa: DapiTable; ti: TypeInfo; pk: void?; ki: TypeInfo; index: uint; last: bool): void
         self->startCont()
@@ -280,8 +300,8 @@ class DAWalker: DapiDataWalker
             var v & = unsafe(varsStack[n - 1])
             if v.children == null
                 unsafe
-                    v.value = sprint_data(pv, addr(kv), print_flags_debug)
-            elif empty(v.value)
+                    v.value = sprint_data_fast(pv, addr(kv), print_flags_debug)
+            if empty(v.value)
                 v.value = v._type
         self->popStack()
 
@@ -316,8 +336,8 @@ class DAWalker: DapiDataWalker
             var v & = unsafe(varsStack[n - 1])
             if v.children == null
                 unsafe
-                    v.value = sprint_data(pv, addr(vi), print_flags_debug)
-            elif empty(v.value)
+                    v.value = sprint_data_fast(pv, addr(vi), print_flags_debug)
+            if empty(v.value)
                 v.value = v._type
         self->popStack()
 
@@ -336,6 +356,8 @@ struct private DAVariable
     name: string
     value: string
     _type: string
+    typeInfo : TypeInfo const?
+    rawValue : float4
     indexedVariables: uint
     address: uint64
     size: uint
@@ -408,6 +430,7 @@ def find_child_var(val: DAVariable; cb: block<(res:DAVariable): bool>)
 struct private DAStackFrame
     name: string
     path: string
+    func: FuncInfo?
     isBlock: bool = false
     spAddr: uint64 = 0ul
     line: uint = 1u
@@ -451,9 +474,25 @@ def find_child_var(stack: DAStackFrame; cb: block<(res:DAVariable; idx: uint64):
                 return true
     return false
 
+
+def iter_top_child_var(stack: DAStackFrame; cb: block<(res:DAVariable): void>)
+    for c in stack.variables
+        cb |> invoke(c)
+    for c in stack.arguments
+        cb |> invoke(c)
+    for c in stack.globals
+        cb |> invoke(c)
+    // for c in stack.state
+    //     cb |> invoke(c)
+
+
 class private DAStackWalker: DapiStackWalker
     dataWalkerAdapter: smart_ptr<DataWalker>
     dataWalker: DAWalker?
+
+    collectAllGlobals : bool = false
+
+    wasGlobalsCollected : bool = false
 
     [[do_not_delete]] ctx: DAContext?
     [[do_not_delete]] workingPaths: array<string>?
@@ -470,38 +509,58 @@ class private DAStackWalker: DapiStackWalker
             delete dataWalkerAdapter
             delete dataWalker
 
+    def collectGlobalAt(vinfo:VarInfo; var frame : DAStackFrame&)
+
+        var value: void?
+        unsafe
+            value = get_context_global_variable(ctx.ctx, vinfo.name)
+        let ti = type_info(vinfo)
+
+        var global = [[DAVariable uid=frame.varId++, name=vinfo.name, _type=describe(ti), address=intptr(value), size=ti.size, typeInfo=ti]]
+
+        if ti != null
+            dataWalker->startWalk(frame, global) <| $
+                dataWalkerAdapter |> walk_data(value, *ti)
+
+        if global.children == null
+            global.value = sprint_data_fast(value, ti, print_flags_debug)
+        if empty(global.value)
+            global.value = global._type
+
+        frame.globals |> emplace(global)
+
     def collectGlobals()
+        if wasGlobalsCollected
+            return
+        wasGlobalsCollected = true
         let stackLen = length(ctx.stack)
         if stackLen == 0
             return
-        for i in range(get_total_variables(*ctx.ctx))
-            let vinfo & = unsafe(get_variable_info(ctx.ctx, i))
-            if vinfo.name |> starts_with("g```") || vinfo.name == "__rtti_require"
-                continue
-            var value: void?
-            unsafe
-                value = get_context_global_variable(ctx.ctx, vinfo.name)
-            let ti = type_info(vinfo)
 
-            var frame & = unsafe(ctx.stack[stackLen - 1])
-            var global = [[DAVariable uid=frame.varId++, name=vinfo.name, _type=describe(ti), address=intptr(value), size=ti.size]]
+        var frame & = unsafe(ctx.stack[stackLen-1])
 
-            if ti != null
-                dataWalker->startWalk(frame, global) <| $
-                    dataWalkerAdapter |> walk_data(value, *ti)
+        if collectAllGlobals
+            for i in range(get_total_variables(*ctx.ctx))
+                let vinfo & = unsafe(get_variable_info(ctx.ctx, i))
+                if vinfo.name |> starts_with("g```") || vinfo.name == "__rtti_require"
+                    continue
+                collectGlobalAt(vinfo, frame)
+            return
 
-            if global.children == null
-                global.value = sprint_data(value, ti, print_flags_debug)
-            elif empty(global.value)
-                global.value = global._type
+        if frame.func != null
+            for i in range(frame.func.globalCount)
+                let vinfo = unsafe(frame.func.globals[i])
+                if vinfo.name |> starts_with("g```") || vinfo.name == "__rtti_require"
+                    continue
+                // if vinfo.scope == frame.func
+                collectGlobalAt(*vinfo, frame)
 
-            frame.globals |> emplace(global)
 
     def override onCallAOT(pp:Prologue; fileName:string#): void
         // print("AOT {fileName}\n")
         let n = length(ctx.stack)
         if n > 0
-            ctx.stack[n - 1].name = "def {pp.info.name} [AOT]"
+            ctx.stack[n - 1].name = pp.info != null ? "def {pp.info.name} [AOT]" : "def [AOT]"
             ctx.stack[n - 1].path = "{fileName}"
 
             self->collectGlobals()
@@ -525,7 +584,8 @@ class private DAStackWalker: DapiStackWalker
     def override onBeforeCall(pp: Prologue; sp: void?): void
         let iblock = intptr(pp._block)
         let isBlock = (iblock & 1ul) != 0ul
-        ctx.stack |> emplace([[DAStackFrame() isBlock=isBlock, spAddr=intptr(sp) ]])
+        let funcInfo = isBlock ? null : pp.info
+        ctx.stack |> emplace([[DAStackFrame() func=funcInfo, isBlock=isBlock, spAddr=intptr(sp) ]])
 
     def override onVariable(inf: FuncInfo; vinfo: LocalVariableInfo; arg: void?; inScope: bool): void
         if !inScope
@@ -534,13 +594,13 @@ class private DAStackWalker: DapiStackWalker
         if stackLen > 0
             var frame & = unsafe(ctx.stack[stackLen - 1])
             var ti = type_info(vinfo)
-            var variable = [[DAVariable uid=frame.varId++, name=vinfo.name, _type=describe(ti), address=intptr(arg), size=ti.size]]
+            var variable = [[DAVariable uid=frame.varId++, name=vinfo.name, _type=describe(ti), address=intptr(arg), size=ti.size, typeInfo=ti]]
             if ti != null
                 dataWalker->startWalk(frame, variable) <| $
                     dataWalkerAdapter |> walk_data(arg, *ti)
 
             if variable.children == null
-                let value = !inScope ? "<uninitialized>" : arg != null ? sprint_data(arg, ti, print_flags_debug): "<optimized>"
+                let value = !inScope ? "<uninitialized>" : arg != null ? sprint_data_fast(arg, ti, print_flags_debug): "<optimized>"
                 variable.value = value
             elif empty(variable.value)
                 variable.value = variable._type
@@ -552,14 +612,14 @@ class private DAStackWalker: DapiStackWalker
         if  stackLen > 0
             var frame & = unsafe(ctx.stack[stackLen-1])
             let ti = type_info(vinfo)
-            var variable = [[DAVariable uid=frame.varId++, name=vinfo.name, _type=describe(ti), address=ti.isRef ? intptr(unsafe(reinterpret<void?>arg)) : 0ul, size=ti.size]]
+            var variable = [[DAVariable uid=frame.varId++, name=vinfo.name, _type=describe(ti), address=ti.isRef ? intptr(unsafe(reinterpret<void?>arg)) : 0ul, size=ti.size, typeInfo=ti, rawValue=arg]]
             if ti != null
                 dataWalker->startWalk(frame, variable) <| $
                     dataWalkerAdapter |> walk_data(arg, *ti)
 
             if variable.children == null
-                variable.value = sprint_data(arg, ti, print_flags_debug)
-            elif empty(variable.value)
+                variable.value = sprint_data_fast(arg, ti, print_flags_debug)
+            if empty(variable.value)
                 variable.value = variable._type
 
             frame.arguments |> emplace(variable)
@@ -569,16 +629,19 @@ enum DABreakpointState
     Initialized
     Instrumented
 
+typedef
+    DAContextAt = uint64
+
 struct private DABreakpoint
     id: uint64
     line: uint
 
     prevState: DABreakpointState
     state: DABreakpointState
+    ctxAt : DAContextAt
 
 typedef
     DABreakpoints = table<string; array<DABreakpoint>>
-    DAContextAt = uint64
 
 struct private DAContext
     id: uint64
@@ -908,6 +971,7 @@ class private DAgent: DapiDebugAgent
 
     def nextStep(var ctx: Context; var ctxData:DAContext; path: string; at:LineInfo)
         delete ctxData.stack
+        walker.wasGlobalsCollected = false
         unsafe
             walker.ctx = addr(ctxData)
         walkerAdapter |> walk_stack(ctx, at)
@@ -935,7 +999,7 @@ class private DAgent: DapiDebugAgent
                     walker.dataWalkerAdapter |> walk_data(data, info)
                 if variable.children == null
                     unsafe
-                        variable.value = sprint_data(data, addr(info), print_flags_debug)
+                        variable.value = sprint_data_fast(data, addr(info), print_flags_debug)
                 if empty(variable.value)
                     variable.value = variable._type
 
@@ -994,7 +1058,7 @@ class private DAgent: DapiDebugAgent
             for br in brs
                 br.prevState = br.state
 
-        self->getContextDataFor(ctx) <| $(var ctxData: DAContext) // TODO: speedup getContextDataFor
+        let found = self->getContextDataFor(ctx) <| $(var ctxData: DAContext) // TODO: speedup getContextDataFor
             *ctxData.ctx |> clear_instruments()
             *ctxData.ctx |> instrument_node(true) <| $(ati)
                 if ati.fileInfo == null
@@ -1003,6 +1067,7 @@ class private DAgent: DapiDebugAgent
                 for fileBr, brs in keys(breakpoints), values(breakpoints)
                     if compare_path(fileBr, file)
                         for br in brs
+                            br.ctxAt = ctxData.at
                             if br.state == DABreakpointState Uninitialized
                                 br.state = DABreakpointState Initialized
                         for br in brs
@@ -1013,7 +1078,17 @@ class private DAgent: DapiDebugAgent
                         break
                 return false
 
+        if !found
+            // removed context, uninitialize related breakpoints
+            let ctxAt = ctx_at(ctx)
+            for brs in values(breakpoints)
+                for br in brs
+                    if br.ctxAt == ctxAt
+                        br.state = DABreakpointState Uninitialized
+                        br.ctxAt = 0ul
+
         for fileBr, brs in keys(breakpoints), values(breakpoints)
+            let baseName = fileBr |> base_name()
             for br in brs
                 let wasVerified = br.prevState == DABreakpointState Instrumented
                 let isVerified = br.state == DABreakpointState Instrumented
@@ -1023,7 +1098,7 @@ class private DAgent: DapiDebugAgent
                         breakpoint=[[Breakpoint
                             id=double(br.id),
                             verified=br.state == DABreakpointState Instrumented,
-                            source=[[ Source path=fileBr, name=fileBr |> base_name()]],
+                            source=[[ Source path=fileBr, name=baseName]],
                             line=double(br.line),
                             message=br.state == DABreakpointState Uninitialized ? "{fileBr}: instrumentation wasn't initined" : br.state == DABreakpointState Initialized ? "{fileBr}: instumentation is inited, but this line is without instructions" : ""
                         ]]
@@ -1039,6 +1114,7 @@ class private DAgent: DapiDebugAgent
         // unsafe
         //     print("dap: context destroyed {intptr(addr(ctx))} {ctx.category} `{ctx.name}`\n")
         self->removeContext(ctx)
+        invalidateBreakpoints(ctx)
 
     def getContextDataFor(var ctx: Context; cb: block<(var ctx: DAContext): void>): bool
         let at = ctx_at(ctx)
@@ -1075,17 +1151,25 @@ class private DAgent: DapiDebugAgent
             let aid = uint(a.ctx.category)
             let bid = uint(b.ctx.category)
             return aid > bid
-        // TODO: send `threads` event
+
+        if server != null && server.threadsDone
+            server->sendEvent("thread", JV([[ThreadEvent
+                reason="started",
+                threadId=double(contextId)
+            ]]))
+
         return true
 
     def removeContext(var ctx: Context): void
         let idx = self->getContextIdx(ctx)
         if idx >= 0
-            self->removeContextIdx(idx)
-
-    def removeContextIdx(idx: int)
-        delete contexts[idx]
-        contexts |> erase(idx)
+            if server != null && server.threadsDone
+                server->sendEvent("thread", JV([[ThreadEvent
+                    reason="exited",
+                    threadId=double(contexts[idx].id)
+                ]]))
+            delete contexts[idx]
+            contexts |> erase(idx)
 
 class private DAServer: Server
     port: int
@@ -1253,18 +1337,24 @@ class private DAServer: Server
                         pathAliases[k] = v as _string
         agent->setPaths(resPaths, pathAliases)
 
-    def setInlinePreviewLimit(data: JsonValue?)
+    def setDebuggerSettings(data: JsonValue?)
         let limit = data |> jon("inlinePreviewLimit", double(agent.walker.dataWalker.inlinePreviewLimit))
         agent.walker.dataWalker.inlinePreviewLimit = int(limit)
 
+        let maxChildrenCount = data |> jon("maxChildrenCount", double(agent.walker.dataWalker.maxChildrenCount))
+        agent.walker.dataWalker.maxChildrenCount = uint(maxChildrenCount)
+
+        let collectAllGlobals = data |> job("collectAllGlobals", agent.walker.collectAllGlobals)
+        agent.walker.collectAllGlobals = collectAllGlobals
+
     def reqLaunch(seq: double; command: string; data: JsonValue?)
         self->setPaths(data)
-        self->setInlinePreviewLimit(data)
+        self->setDebuggerSettings(data)
         self->sendSuccessResponse(seq, command, null)
 
     def reqAttach(seq: double; command: string; data: JsonValue?)
         self->setPaths(data)
-        self->setInlinePreviewLimit(data)
+        self->setDebuggerSettings(data)
         self->sendSuccessResponse(seq, command, null)
 
     def reqDisconnect(seq: double; command: string; data: JsonValue?)
@@ -1366,7 +1456,7 @@ class private DAServer: Server
         threadsDone = true
         for ctx in agent.contexts
             res.threads |> emplace([[Thread id=double(ctx.id), name=ctx |> to_string() ]])
-        self->sendSuccessResponse(seq, command, JV(res))
+        self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
 
     def reqStackTrace(seq: double; command: string; data: JsonValue?)
         var inscope ini <- StackTraceArguments(data)
@@ -1381,7 +1471,7 @@ class private DAServer: Server
                     source=[[Source name=line.path, path=line.path]]
                 ]])
             res.totalFrames = double(length(ctxData.stack))
-        self->sendSuccessResponse(seq, command, JV(res))
+        self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
 
     def reqScopes(seq: double; command: string; data: JsonValue?)
         var inscope ini <- ScopesArguments(data)
@@ -1421,7 +1511,7 @@ class private DAServer: Server
                         name="Globals",
                         variablesReference=double(uint64(ini.frameId) * MAX_VARIABLES + GLOBAL_VARS)
                     ]])
-        self->sendSuccessResponse(seq, command, JV(res))
+        self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
 
     def reqVariables(seq: double; command: string; data: JsonValue?)
         var inscope ini <- VariablesArguments(data)
@@ -1487,7 +1577,7 @@ class private DAServer: Server
                                         indexedVariables=double(v.indexedVariables),
                                         variablesReference=double(ref)
                                     ]])
-        self->sendSuccessResponse(seq, command, JV(res))
+        self->sendSuccessResponseStr(seq, command, sprint_json(res, false)) // TODO: , false
 
     def reqContinue(seq: double; command: string; data: JsonValue?)
         var inscope ini <- ContinueArguments(data)
@@ -1527,36 +1617,71 @@ class private DAServer: Server
 
     def reqEvaluate(seq: double; command: string; data: JsonValue?)
         var inscope ini <- EvaluateArguments(data)
-        var inscope res: EvaluateResponse
+
         var found = false
-        agent.evalFrame |> find_child_var() <| $(child, idx)
-            if child.name == ini.expression
-                found = true
-                res._type = child._type
-                res.result = child.value
-                res.indexedVariables = double(child.indexedVariables)
-                if child.children != null
-                    res.variablesReference = double(child.uid)
-                return true
-            return false
+        let ctxId = uint64(ini.frameId / double(MAX_STACK))
+        agent->getContextData(ctxId) <| $(var ctxData: DAContext)
+            let frameId = int(ini.frameId % double(MAX_STACK))
+            if frameId >= 0 && frameId < length(ctxData.stack)
+                let spAddr = ctxData.stack[frameId].spAddr
+                var idx = frameId
+                var first = true
+                while !found && idx < length(ctxData.stack)
+                    let line & = unsafe(ctxData.stack[idx])
+                    if first || line.spAddr == spAddr
+                        found = line |> find_child_var() <| $[unused_argument(varIdx)](child, varIdx)
+                            if child.name == ini.expression
+                                var inscope res = [[EvaluateResponse
+                                    result=child.value,
+                                    _type=child._type,
+                                    indexedVariables=double(child.indexedVariables),
+                                    variablesReference=child.children != null ? double((ctxId * MAX_STACK + uint64(idx)) * MAX_VARIABLES + child.uid) : 0lf]]
+                                self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
+                                return true
+                            return false
+                        first = false
+                    idx ++
+                if !found
+                    for i in range(get_total_variables(*ctxData.ctx))
+                        let vinfo & = unsafe(get_variable_info(ctxData.ctx, i))
+                        if vinfo.name == ini.expression
+                            unsafe
+                                agent.walker.ctx = addr(ctxData)
+                            agent.walker->collectGlobalAt(vinfo, ctxData.stack[frameId])
+                            found = ctxData.stack[frameId] |> find_child_var() <| $[unused_argument(varIdx)](child, varIdx)
+                                if child.name == ini.expression
+                                    var inscope res = [[EvaluateResponse
+                                        result=child.value,
+                                        _type=child._type,
+                                        indexedVariables=double(child.indexedVariables),
+                                        variablesReference=child.children != null ? double((ctxId * MAX_STACK + uint64(frameId)) * MAX_VARIABLES + child.uid) : 0lf]]
+                                    self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
+                                    return true
+                                return false
+                            break
+                if !found
+                    var inscope vars : table<string; Result>
+                    ctxData.stack[frameId] |> iter_top_child_var() <| $(child)
+                        if child.typeInfo != null
+                            let tInfo & = unsafe(*child.typeInfo)
+                            vars[child.name] <- [[Result tinfo=tInfo, value=child.rawValue, data=unsafe(reinterpret<void?>child.address)]]
+
+                    var result = debug_eval(vars, ini.expression)
+                    var resStr = ""
+                    if !empty(result.error)
+                        resStr = result.error
+                    elif result.data != null
+                        resStr = sprint_data(result.data, unsafe(addr(result.tinfo)), print_flags_debug)
+                    else
+                        resStr = sprint_data(result.value, unsafe(addr(result.tinfo)), print_flags_debug)
+                    var inscope res = [[EvaluateResponse
+                        result=resStr,
+                        _type=!empty(result.error) ? describe(result.tinfo) : "",
+                        indexedVariables=0lf,
+                        variablesReference=0lf]]
+                    self->sendSuccessResponseStr(seq, command, sprint_json(res, false))
         if !found
-            var ctx = self.agent.pauseCtx
-            let at = self.agent.pauseAt
-            if ctx != null && at != null
-                let evalRes = eval(ini.expression, *ctx, *at)
-                if evalRes.ok && length(agent.evalFrame.variables) > 0
-                    var evalValue & = unsafe(agent.evalFrame.variables[length(agent.evalFrame.variables) - 1])
-                    evalValue.name = clone_string(ini.expression)
-                    res._type = evalValue._type
-                    res.result = evalValue.value
-                    res.indexedVariables = double(evalValue.indexedVariables)
-                    if evalValue.children != null
-                        res.variablesReference = double(evalValue.uid)
-                else
-                    res.result = evalRes.result
-            else
-                res.result = "<n/a>"
-        self->sendSuccessResponse(seq, command, JV(res))
+            self->sendSuccessResponse(seq, command, null)
 
     def log(msg: string)
         // print("{msg}\n")
@@ -1574,6 +1699,11 @@ class private DAServer: Server
         self->sendRawData(JV({{"request_seq"=>JV(id); "type"=>JV("response");
                                 "body"=>body; "command"=>JV(command); "success"=>JV(true)}}), /*log*/true)
 
+    def sendSuccessResponseStr(id: double; command: string; body: string)
+        // self->sendRawData(JV({{"request_seq"=>JV(id); "type"=>JV("response");
+        //                         "body"=>body; "command"=>JV(command); "success"=>JV(true)}}), /*log*/true)
+        self->sendRawDataStr("\{\"request_seq\":{id}, \"type\":\"response\", \"body\":{body}, \"command\":\"{command}\", \"success\":true\}", /*log*/true)
+
     // https://microsoft.github.io/language-server-protocol/specifications/specification-current/#responseMessage
     def sendRawData(var data : JsonValue?; logData: bool)
         let msg = write_json(data)
@@ -1585,6 +1715,15 @@ class private DAServer: Server
         unsafe
             self->send(reinterpret<uint8?> packStr, length(packStr))
             delete data
+
+    def sendRawDataStr(msg : string; logData: bool)
+        var packStr = "Content-Length: {length(msg)}\r\n\r\n{msg}"
+        if logData
+            self->log("<------\n{packStr}")
+        // else
+        //     print("<------\n{packStr}\n")
+        unsafe
+            self->send(reinterpret<uint8?> packStr, length(packStr))
 
     def sendStopped(ctx: DAContext; reason, text: string; brId: uint64)
         self->sendEvent("stopped", JV({{
@@ -1633,140 +1772,6 @@ class private EvalWalker : DapiStackWalker
                     *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = * reinterpret<{describe(type_info(vinfo))}?> {arg}ul\n")
                 else
                     *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} & = * reinterpret<{describe(type_info(vinfo))}?> {arg}ul\n")
-
-
-def private getStackVariableDefinitions(var ctx:Context; at: LineInfo)
-    let text = build_string <| $ ( st )
-        var walker = new EvalWalker(st)
-        var inscope walker_adapter <- make_stack_walker(walker)
-        walk_stack(walker_adapter,ctx,at)
-        unsafe
-            delete walker
-    var lines <- split(text,"\n")
-    lines |> pop
-    lines |> reverse()
-    let res = join(lines,"\n")
-    delete lines
-    return res
-
-
-def private getGlobalVariableDefinitions(var ctx: Context)
-    let text = build_string <| $(st)
-        let tot = get_total_variables(ctx)
-        for vi in range(tot)
-            let vinfo = unsafe(addr(get_variable_info(ctx, vi)))
-            if vinfo.name |> starts_with("__") || vinfo.name |> starts_with("g```")
-                continue
-            var arg = unsafe(get_context_global_variable(ctx, vinfo.name))
-            if arg != null
-                if vinfo.flags.ref
-                    unsafe
-                        let pref = unsafe(reinterpret<void??> arg)
-                        var cvinfo = *vinfo
-                        cvinfo.flags &= ~TypeInfoFlags ref
-                        st |> write("\t\tlet {vinfo.name} : {describe(type_info(*vinfo))} = * reinterpret<{describe(type_info(cvinfo))}?> {*pref}ul // already ref\n")
-                elif vinfo.dimSize > 0u
-                    st |> write("\t\tlet {vinfo.name} : {describe(type_info(*vinfo))} = * reinterpret<{describe(type_info(*vinfo))}?> {arg}ul\n")
-                else
-                    st |> write("\t\tlet {vinfo.name} : {describe(type_info(*vinfo))} & = * reinterpret<{describe(type_info(*vinfo))}?> {arg}ul\n")
-    return text
-
-
-def getRequire ( var ctx:Context; var self_text:string& )
-    let prr = unsafe(get_context_global_variable(ctx,"__rtti_require"))
-    if prr != null
-        let arq = * unsafe(reinterpret<string?> prr)
-        var mrq <- split(arq," ")
-        self_text := mrq[length(mrq)-1]
-        mrq |> pop
-        let text = build_string <| $ ( st )
-            for q in mrq
-                st |> write("require {q}\n")
-        return text
-    else
-        return "// __rtti_require is missing. module needs to be compiled with `options debugger`\n"
-
-
-def compileAndRun ( text, self_text:string ) : tuple<ok:bool;result:string>
-    var failed = true
-    var result = ""
-    var inscope access <- make_file_access("")
-    access |> set_file_source("__project", text)
-    fopen(self_text, "rb") <| $(fr)
-        if fr != null
-            fmap(fr) <| $(data)
-                access |> set_file_source("__current.das", string(data))
-        else
-            to_log(LOG_ERROR, "failed to open `{self_text}`\n")
-    using <| $(var mg:ModuleGroup)
-        using <| $(var cop:CodeOfPolicies)
-            cop.allow_local_variable_shadowing = true
-            cop.export_all = true
-            compile_file("__project",access,unsafe(addr(mg)),cop) <| $(ok,program,errors)
-                if ok
-                    simulate(program) <| $ ( sok; context; serrors )
-                        if sok
-                            failed = false
-                            try
-                                unsafe
-                                    context |> invoke_in_context("eval``call_eval", this_context())
-                            recover
-                                result = "{context.last_exception}\n{describe(context.exceptionAt)}\nexception during eval\n\n{text}"
-                                failed = true
-                        else
-                            result = "{serrors}\nfailed to simulate\n\n{text}"
-                else
-                    if program != null && length(program.errors) > 0
-                        let err & = unsafe(program.errors[0])
-                        result = "{err.what}\n{errors}\nfailed to compile\n\n{text}"
-                    else
-                        result = "{errors}\nfailed to compile\n\n{text}"
-    return [[auto !failed, result]]
-
-
-def sanitize_var(var val: DAVariable)
-    val.name = clone_string(val.name)
-    val.value = clone_string(val.value)
-    val._type = clone_string(val._type)
-    if val.children != null
-        for c in *val.children
-            sanitize_var(c)
-
-[export]
-def accept_eval_results ( value:void?; info:TypeInfo? )
-    var evalValue <- [[DAVariable uid=g```dAgent.evalFrame.varId++, name="eval", _type=describe(info), size=info.size]]
-    g```dAgent.walker.dataWalker->startWalk(g```dAgent.evalFrame, evalValue) <| $
-        g```dAgent.walker.dataWalkerAdapter |> walk_data(value, *info)
-    if evalValue.children == null
-        unsafe
-            evalValue.value = sprint_data(value, info, print_flags_debug)
-    if empty(evalValue.value)
-        evalValue.value = evalValue._type
-
-    evalValue |> sanitize_var()
-    g```dAgent.evalFrame.variables |> emplace <| evalValue
-
-
-def private eval(expr:string; var ctx: Context; at: LineInfo): tuple<ok:bool; result:string>
-    let vars = getStackVariableDefinitions(ctx, at)
-    let gvars = getGlobalVariableDefinitions(ctx)
-    var self_text : string
-    let greq = getRequire(this_context(), self_text)
-    let text = build_string <| $ ( st )
-        st |> write("require debugapi\nrequire rtti\nrequire strings\nrequire __current\n")
-        st |> write(greq)
-        st |> write("[export] def eval``call_eval(var DEBUG_CONTEXT:Context)\n")
-        st |> write("\tunsafe\n")
-        st |> write("// globals:\n")
-        st |> write(gvars)
-        st |> write("// locals:\n")
-        st |> write(vars)
-        st |> write("// EVAL:\n")
-        st |> write("\t\tlet EVAL = {expr}\n")
-        st |> write("\t\tlet tinfo = typeinfo(rtti_typeinfo EVAL)\n")
-        st |> write("\t\tlet peval = addr(EVAL)\n")
-        st |> write("\t\tDEBUG_CONTEXT |> invoke_in_context(\"accept_eval_results\",peval,tinfo)\n")
-    return compileAndRun(text, self_text)
 
 
 def private tick_debugger()
@@ -1832,3 +1837,8 @@ def private loads_itself(): bool
         if args[i] |> ends_with("daslib\\debug.das") || args[i] |> ends_with("daslib/debug.das")
             return true
     return false
+
+def private sprint_data_fast(data:void?|float4; info:TypeInfo const?; flags:print_flags): string
+    if info.basicType==Type tArray || info.basicType==Type tTable
+        return ""
+    return sprint_data(data, info, flags)

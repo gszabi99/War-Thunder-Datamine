@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -12,6 +13,7 @@ let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
 let { getSeparateLeaderboardPlatformName,
         getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
+let { stripTags } = require("%sqstd/string.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -115,7 +117,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
         continue
 
       this.lbModesList.append(modeData)
-      let optionText = ::g_string.stripTags(
+      let optionText = stripTags(
         loc($"worldwar/leaderboard/{modeData.mode}"))
       data += "option {text:t='{0}'}".subst(optionText)
     }
@@ -139,7 +141,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     local data = ""
     foreach (day in this.lbDaysList) {
-      let optionText = ::g_string.stripTags(
+      let optionText = stripTags(
         day ? loc("enumerated_day", { number = day }) : loc("worldwar/allSeason"))
       data += format("option {text:t='%s'}", optionText)
     }
@@ -155,7 +157,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     local data = ""
     foreach (wwMap in this.lbMapsList) {
-      let optionText = ::g_string.stripTags(
+      let optionText = stripTags(
         wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : loc("worldwar/allMaps"))
       data += format("option {text:t='%s'}", optionText)
     }
@@ -177,7 +179,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
     local data = ""
     foreach (country in this.lbCountriesList) {
-      let optionText = ::g_string.stripTags(
+      let optionText = stripTags(
         country ? loc(country) : loc("worldwar/allCountries"))
       data += format("option {text:t='%s'}", optionText)
     }
@@ -199,7 +201,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     if (!newRequestData)
       return
 
-    let isRequestDifferent = !::u.isEqual(this.requestData, newRequestData)
+    let isRequestDifferent = !u.isEqual(this.requestData, newRequestData)
     if (!isRequestDifferent && !isForce)
       return
 
@@ -289,7 +291,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
 
   function checkLbCategory() {
     if (!this.curLbCategory || !this.lbModel.checkLbRowVisibility(this.curLbCategory, this))
-      this.curLbCategory = ::u.search(this.lb_presets, (@(row) this.lbModel.checkLbRowVisibility(row, this)).bindenv(this))
+      this.curLbCategory = u.search(this.lb_presets, (@(row) this.lbModel.checkLbRowVisibility(row, this)).bindenv(this))
   }
 
   function onDaySelect(obj) {
@@ -437,7 +439,7 @@ let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboard
     let mode = this.lbMode
     let maps = []
     foreach (map in this.wwMapsList)
-      if (::u.search(modes, @(m) m.split(mode)?[1] && m.split(map.name)?[1]) != null)
+      if (u.search(modes, @(m) m.split(mode)?[1] && m.split(map.name)?[1]) != null)
         maps.append(map)
 
     return maps

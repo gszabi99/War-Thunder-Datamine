@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -11,8 +12,17 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
+let { ProductKind, show_details, get_total_quantity, retrieve_product_info } = require("%xboxLib/impl/store.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
+
+let function product_kind_to_media_item_type(product_kind) {
+  switch (product_kind) {
+    case ProductKind.Consumable: return xboxMediaItemType.GameConsumable
+    case ProductKind.Durable: return xboxMediaItemType.GameContent
+  }
+  return 0;
+}
 
 local XboxShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
@@ -35,18 +45,17 @@ local XboxShopPurchasableItem = class {
   isBundle = false
   isPartOfAnyBundle = false
   consumableQuantity = 0
-  signedOffer = "" //for direct purchase
 
   amount = ""
 
   isMultiConsumable = false
   needHeader = true
 
-  constructor(blk) {
-    this.id = blk.getBlockName()
+  constructor(data) {
+    this.id = data.store_id
     this.entitlementId = getEntitlementId(this.id)
 
-    let xbItemType = blk?.MediaItemType
+    let xbItemType = product_kind_to_media_item_type(data.product_kind)
     this.isMultiConsumable = xbItemType == xboxMediaItemType.GameConsumable
     if (this.isMultiConsumable)
       this.defaultIconStyle = "reward_gold"
@@ -54,35 +63,26 @@ local XboxShopPurchasableItem = class {
     this.categoriesList = [xbItemType]
     let entConfig = getEntitlementConfig(this.entitlementId)
     if ("aircraftGift" in entConfig)
-      this.categoriesList = entConfig.aircraftGift.map(@(unitId) ::getAircraftByName(unitId)?.unitType.typeName)
+      this.categoriesList = entConfig.aircraftGift.map(@(unitId) getAircraftByName(unitId)?.unitType.typeName)
     else if (!this.isMultiConsumable)
       log($"[XBOX SHOP ITEM] not found aircraftGift in entitlementConfig, {this.entitlementId}, {this.id}")
 
-    this.name = blk?.Name ?? ""
-    //HACK: On GDK no param ReducedName, c++ code copy to this key original name
-    //Because of difficulties in searching packs by game title on xbox store
-    //We don't want to change packs names
-    //So have to try cut prefix if ReducedName is equal as Name
-    //On XDK they are different and correct
-    this.shortName = blk?.ReducedName == this.name ? cutPrefix(this.name, XBOX_SHORT_NAME_PREFIX_CUT, "") : (blk?.ReducedName ?? "")
-    this.description = blk?.Description ?? ""
+    this.name = data.title
+    this.shortName = cutPrefix(this.name, XBOX_SHORT_NAME_PREFIX_CUT, "")
+    this.description = data.description
+    this.releaseDate = 0 // For now we can't retreive ReleaseDate from live. Reported to MS, acknowledged, no ETA :(
+    this.price = data.price.price
+    this.priceText = this.price == 0.0 ? loc("shop/free") : $"{this.price} {this.currencyCode}"
+    this.listPrice = data.price.base_price
+    this.listPriceText = $"{this.listPrice} {this.currencyCode}"
+    this.currencyCode = data.price.currency_code
 
-    this.releaseDate = blk?.ReleaseDate ?? 0
+    this.isPurchasable = true
+    this.isBundle = false
+    this.isPartOfAnyBundle = false
+    this.isBought = data.is_in_user_collection
 
-    this.price = blk?.Price ?? 0.0
-    this.priceText = this.price == 0.0 ? loc("shop/free") : (blk?.DisplayPrice ?? "")
-    this.listPrice = blk?.ListPrice ?? 0.0
-    this.listPriceText = blk?.DisplayListPrice ?? ""
-    this.currencyCode = blk?.CurrencyCode ?? ""
-
-    this.isPurchasable = blk?.IsPurchasable ?? false
-    this.isBundle = blk?.IsBundle ?? false
-    this.isPartOfAnyBundle = blk?.IsPartOfAnyBundle ?? false
-    this.isBought = !!blk?.isBought
-
-    this.consumableQuantity = blk?.ConsumableQuantity ?? 0
-    this.signedOffer = blk?.SignedOffer ?? ""
-
+    this.consumableQuantity = get_total_quantity(data)
     this.needHeader = this.isPurchasable
 
     if (this.isPurchasable)
@@ -104,7 +104,20 @@ local XboxShopPurchasableItem = class {
     )
   }
 
-  updateIsBoughtStatus = @() this.isBought = this.isMultiConsumable ? false : ::xbox_is_item_bought(this.id)
+  updateIsBoughtStatus = function(callback) {
+    if (this.isMultiConsumable) {
+      this.isBought = false
+      callback?(true)
+    } else {
+      retrieve_product_info(this.id, Callback(function(success, product) {
+        log($"[XBOX SHOP ITEM] get product info succeeded: {success}")
+        let quantity = get_total_quantity(product)
+        this.isBought = success && (product.is_in_user_collection || quantity > 0)
+        callback?(success)
+      }, this))
+    }
+  }
+
   haveDiscount = @() this.price != null && this.listPrice != null && !this.isBought && this.listPrice > 0.0 && this.price != this.listPrice
   getDiscountPercent = function() {
     if (this.price == null || this.listPrice == null)
@@ -132,8 +145,8 @@ local XboxShopPurchasableItem = class {
   isCanBuy = @() this.isPurchasable && !this.isBought
   isInactive = @() !this.isPurchasable || this.isBought
 
-  getIcon = @(...) this.imagePath ? ::LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
-                             : ::LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
+  getIcon = @(...) this.imagePath ? LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
+                             : LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
 
   getSeenId = @() this.id.tostring()
   canBeUnseen = @() this.isBought
@@ -144,7 +157,7 @@ local XboxShopPurchasableItem = class {
         itemId = this.id
       })
     )
-    ::xbox_show_details(this.id)
+    show_details(this.id, null)
   }
   showDescription = @() null
 }

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { getBattleTaskUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
@@ -11,6 +12,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "personal_unlocks_collapsed_chapters"
 
@@ -109,7 +111,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
         })
       }
     }
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     this.guiScene.replaceContentFromText(this.chaptersObj, data, data.len(), this)
 
     eachParam(this.getCollapsedChapters(), @(_, chapterId) this.collapseChapter(chapterId), this)
@@ -148,7 +150,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     let view = { items = unlocks.map(
       @(config) ::g_battle_tasks.generateItemView(config))
     }
-    let data = ::handyman.renderCached(this.unlocksItemTpl, view)
+    let data = handyman.renderCached(this.unlocksItemTpl, view)
     this.guiScene.replaceContentFromText(this.unlocksObj, data, data.len(), this)
 
     let unlockId = this.curUnlockId
@@ -195,7 +197,7 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
   function onCollapse(obj) {
     if (obj?.id == null)
       return
-    this.collapseChapter(::g_string.cutPrefix(obj.id, "btn_", obj.id))
+    this.collapseChapter(cutPrefix(obj.id, "btn_", obj.id))
     this.updateButtons()
   }
 

@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 
@@ -28,7 +30,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 
     this.updateDescription()
 
-    if (::u.isEmpty(this.map))
+    if (u.isEmpty(this.map))
       return
 
     this.fillOperationBackground()
@@ -155,12 +157,12 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
       let isInvert = side == SIDE_2
 
       let unitListObjPlace = this.scene.findObject("team_" + sideName + "_unit_info")
-      let unitListBlk = ::handyman.renderCached(this.sceneTplTeamStrenght, this.getUnitsListViewBySide(side, isInvert))
+      let unitListBlk = handyman.renderCached(this.sceneTplTeamStrenght, this.getUnitsListViewBySide(side, isInvert))
       this.guiScene.replaceContentFromText(unitListObjPlace, unitListBlk, unitListBlk.len(), this)
 
       let armyGroupObjPlace = this.scene.findObject("team_" + sideName + "_army_group_info")
       let armyGroupViewData = this.getClanListViewDataBySide(side, isInvert, armyGroupObjPlace)
-      let armyGroupsBlk = ::handyman.renderCached(this.sceneTplTeamArmyGroups, armyGroupViewData)
+      let armyGroupsBlk = handyman.renderCached(this.sceneTplTeamArmyGroups, armyGroupViewData)
       this.guiScene.replaceContentFromText(armyGroupObjPlace, armyGroupsBlk, armyGroupsBlk.len(), this)
 
       let clanBlockTextObj = armyGroupObjPlace.findObject("clan_block_text")

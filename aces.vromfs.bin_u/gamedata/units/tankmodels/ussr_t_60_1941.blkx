@@ -1546,16 +1546,16 @@
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           0.0
         ],
-        "sleevesImpulseOffset": 0.1,
-        "linkSleeveToGun": true,
+        "shellCasingImpulseOffset": 0.1,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.01,
         "recoilMultiplier": 0.001,
         "defaultYaw": 0.0,
@@ -1747,13 +1747,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }

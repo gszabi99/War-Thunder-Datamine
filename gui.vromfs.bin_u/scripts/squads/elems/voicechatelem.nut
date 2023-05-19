@@ -5,6 +5,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
@@ -15,7 +17,7 @@ const MAX_VOICE_ELEMS_IN_GC = 2
 elemModelType.addTypes({
   VOICE_CHAT = {
 
-    init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    init = @() subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
 
     onEventVoiceChatStatusUpdated = @(_p) this.notify([])
     onEventSquadStatusChanged = @(_p) this.notify([])
@@ -113,7 +115,7 @@ elemViewType.addTypes({
     }
 
     fillContainer = function(obj, childRequired) {
-      let data = ::handyman.renderCached("%gui/chat/voiceChatElement.tpl",
+      let data = handyman.renderCached("%gui/chat/voiceChatElement.tpl",
         { voiceChatElement = array(childRequired, {}) })
       obj.getScene().replaceContentFromText(obj, data, data.len(), this)
 

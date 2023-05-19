@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 
 const REQUEST_TIME_OUT_MSEC  = 20000    //20sec
@@ -57,7 +58,7 @@ let function updateClansInfoList(data) {
 
 let function requestListCb(data) {
   let clansInfoList = updateClansInfoList(data)
-  ::broadcastEvent("UpdateClansInfoList", { clansInfoList = clansInfoList })
+  broadcastEvent("UpdateClansInfoList", { clansInfoList = clansInfoList })
 }
 
 let function requestError(requestBlk) {

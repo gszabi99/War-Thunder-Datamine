@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -80,7 +82,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     this.selectedSquad = null
     this.onlineUsersTable = {}
     let view = { squad = array(this.minListItems, { buttonsList = this.createSquadButtons() }) }
-    local blk = ::handyman.renderCached(("%gui/clans/clanSquadsList.tpl"), view)
+    local blk = handyman.renderCached(("%gui/clans/clanSquadsList.tpl"), view)
     this.guiScene.appendWithBlk(this.squadsListObj, blk, this)
 
     blk = this.createDummyButtons()
@@ -96,14 +98,14 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   function createSquadButtons() {
     local markUp = ""
     foreach (buttonView in this.squadButtonsList)
-      markUp += ::handyman.renderCached("%gui/commonParts/button.tpl", buttonView)
+      markUp += handyman.renderCached("%gui/commonParts/button.tpl", buttonView)
     return markUp
   }
 
   function createDummyButtons() {
     local markUp = ""
     foreach (buttonView in this.squadButtonsList)
-      markUp += ::handyman.renderCached("%gui/commonParts/dummyButton.tpl", buttonView)
+      markUp += handyman.renderCached("%gui/commonParts/dummyButton.tpl", buttonView)
     return markUp
   }
 
@@ -117,7 +119,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
     local isSelected = false
     for (local i = 0; i < total; i++) {
       this.updateSquadInfo(i, this.curList?[i], newList?[i])
-      if (!isSelected && ::u.isEqual(this.selectedSquad, newList?[i]) && (this.selectedIndex != -1)) {
+      if (!isSelected && u.isEqual(this.selectedSquad, newList?[i]) && (this.selectedIndex != -1)) {
           if (this.selectedIndex != i) {
             this.squadsListObj.setValue(i)
             this.selectedIndex = i
@@ -142,7 +144,7 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
   }
 
   function updateSquadInfo(idx, curSquad, newSquad) {
-    if (curSquad == newSquad || (::u.isEqual(curSquad, newSquad)))
+    if (curSquad == newSquad || (u.isEqual(curSquad, newSquad)))
       return
 
     let obj = this.getSquadObj(idx)

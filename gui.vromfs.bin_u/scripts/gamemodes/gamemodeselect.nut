@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
@@ -91,7 +92,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
     if (!checkObj(placeObj))
       return
 
-    let data = ::handyman.renderCached("%gui/gameModeSelect/gameModeBlock.tpl", { block = this.filledGameModes })
+    let data = handyman.renderCached("%gui/gameModeSelect/gameModeBlock.tpl", { block = this.filledGameModes })
     this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
 
     this.setGameModesTimer()
@@ -161,7 +162,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
           break
         if (!isWide)
           ++numNonWideGameModes
-        let index = ::find_in_array(gameModesArray, gameMode)
+        let index = u.find_in_array(gameModesArray, gameMode)
         gameModesArray.remove(index)
         view.append(this.createGameModeView(gameMode))
       }
@@ -340,7 +341,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
   }
 
   function getTrophyMarkUpData(trophyName) {
-    if (::u.isEmpty(trophyName))
+    if (u.isEmpty(trophyName))
       return null
 
     let trophyItem = ::ItemsManager.findItemById(trophyName, itemType.TROPHY)
@@ -379,7 +380,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
       return null
 
     let gameModes = partition.gameModes
-    let needEmptyGameModeBlocks = !!::u.search(gameModes, @(gm) !gm.displayWide)
+    let needEmptyGameModeBlocks = !!u.search(gameModes, @(gm) !gm.displayWide)
     let view = []
     foreach (_idx, esUnitType in this.basePanelConfig) {
       let gameMode = this.chooseGameModeEsUnitType(gameModes, esUnitType, this.basePanelConfig)
@@ -403,7 +404,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
   }
 
   function getGameModeByCondition(gameModes, conditionFunc) {
-    return ::u.search(gameModes, conditionFunc)
+    return u.search(gameModes, conditionFunc)
   }
 
   function onGameModeSelect(obj) {

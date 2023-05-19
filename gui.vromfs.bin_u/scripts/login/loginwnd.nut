@@ -1,6 +1,7 @@
 //-file:plus-string
 
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #explicit-this
 #no-root-fallback
@@ -22,6 +23,7 @@ let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
+let { validateEmail } = require("%sqstd/string.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -139,7 +141,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     if ("dgs_get_argv" in getroottable()) {
       let s = ::dgs_get_argv("stoken")
-      if (!::u.isEmpty(s))
+      if (!u.isEmpty(s))
         lp.stoken <- s
     }
     else if ("dgs_argc" in getroottable())
@@ -623,7 +625,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
   function onChangeLogin(obj) {
     //Don't save value to local, so it doens't appear in logs.
-    let res = !::g_string.validateEmail(obj.getValue()) && (this.stoken == "")
+    let res = !validateEmail(obj.getValue()) && (this.stoken == "")
     obj.warning = res ? "yes" : "no"
     obj.warningText = res ? "yes" : "no"
     obj.tooltip = res ? loc("tooltip/invalidEmail/possibly") : ""

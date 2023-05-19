@@ -40,6 +40,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
   "haveAnchor": true,
@@ -578,7 +579,7 @@
         "hp": 300.0
       },
       "radio_station_dm": {
-        "hp": 327.0
+        "hp": 345.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -687,10 +688,10 @@
       "genericDamageMult": 1.5,
       "armorThrough": 150.0,
       "engine_01_dm": {
-        "hp": 2257.0
+        "hp": 2231.0
       },
       "engine_02_dm": {
-        "hp": 2263.0
+        "hp": 2237.0
       }
     },
     "engine_rooms": {
@@ -811,10 +812,10 @@
       "pressureDamageMult": 7.0,
       "napalmDamageMult": 1.0,
       "main_caliber_turret_01_dm": {
-        "hp": 289.0
+        "hp": 262.0
       },
       "main_caliber_turret_02_dm": {
-        "hp": 289.0
+        "hp": 262.0
       }
     },
     "turrets_aux_caliber": {
@@ -1234,7 +1235,7 @@
     "sailor7": {
       "dmPart": "engine_01_dm",
       "role": "sailor",
-      "crew": 19
+      "crew": 21
     },
     "sailor8": {
       "dmPart": "engine_02_dm",
@@ -1249,12 +1250,12 @@
     "sailor10": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor11": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor12": {
       "dmPart": "fire_control_room_01_dm",
@@ -3683,5 +3684,34 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "it_camo_navy_turquoise",
+      "nameLocId": "skin/it_camo_navy_turquoise",
+      "descLocId": "skin/it_camo_navy_turquoise/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_navy_turquoise*"
+      }
+    },
+    {
+      "name": "it_camo_modern_geometry",
+      "nameLocId": "skin/it_camo_modern_geometry",
+      "descLocId": "skin/it_camo_modern_geometry/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_modern_geometry*"
+      }
+    },
+    {
+      "name": "it_camo_modern_spots",
+      "nameLocId": "skin/it_camo_modern_spots",
+      "descLocId": "skin/it_camo_modern_spots/desc",
+      "replace_tex": {
+        "from": "camo_light_ghostgrey*",
+        "to": "it_camo_modern_spots*"
+      }
+    }
+  ]
 }

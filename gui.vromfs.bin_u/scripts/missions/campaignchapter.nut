@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -22,10 +24,12 @@ let { get_gui_option } = require("guiOptions")
 let { dynamicGetVisual } = require("dynamicMission")
 let { select_mission, select_mission_full } = require("guiMission")
 let { get_game_mode, get_game_type } = require("mission")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { split, utf8ToLower } = require("%sqstd/string.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
-::g_script_reloader.registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
+g_script_reloader.registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
 ::gui_handlers.CampaignChapter <- class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -92,11 +96,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
   function loadCollapsedChapters() {
     let collapsedList = ::load_local_account_settings(this.getCollapseListSaveId(), "")
-    this.collapsedCamp = ::g_string.split(collapsedList, ";")
+    this.collapsedCamp = split(collapsedList, ";")
   }
 
   function saveCollapsedChapters() {
-    ::save_local_account_settings(this.getCollapseListSaveId(), ::g_string.implode(this.collapsedCamp, ";"))
+    ::save_local_account_settings(this.getCollapseListSaveId(), ";".join(this.collapsedCamp, true))
   }
 
   function getCollapseListSaveId() {
@@ -252,7 +256,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
       })
     }
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
     for (local i = 0; i < listObj.childrenCount(); i++)
       listObj.getChild(i).setIntProp(this.listIdxPID, i)
@@ -278,7 +282,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.filterDataArray = []
     foreach (idx, mission in this.missions) {
       let locText = this.misListType.getMissionNameText(mission)
-      let locString = ::g_string.utf8ToLower(locText)
+      let locString = utf8ToLower(locText)
       this.filterDataArray.append({
         locString = ::stringReplace(locString, "\t", "") //for japan and china localizations
         misObject = listObj.getChild(idx)
@@ -739,7 +743,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
     let gt = get_game_type()
     let optionItems = ::get_briefing_options(this.gm, gt, this.missionBlk)
-    let diffOption = ::u.search(optionItems, function(item) { return getTblValue(0, item) == ::USEROPT_DIFFICULTY })
+    let diffOption = u.search(optionItems, function(item) { return getTblValue(0, item) == ::USEROPT_DIFFICULTY })
     this.needCheckDiffAfterOptions = diffOption != null
 
     let cb = Callback(this.afterMissionOptionsApply, this)
@@ -846,7 +850,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
         navImagesText = ::get_navigation_images_text(idx, typesList.len())
       })
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
   }
 
@@ -890,7 +894,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     if (!checkObj(filterEditBox))
       return
 
-    this.filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
+    this.filterText = utf8ToLower(filterEditBox.getValue())
 
     local showChapter = false
     local showCampaign = false

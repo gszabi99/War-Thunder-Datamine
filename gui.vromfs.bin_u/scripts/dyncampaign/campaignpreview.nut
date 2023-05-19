@@ -12,6 +12,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { isDynamicWonByPlayer } = require("dynamicMission")
 let { get_game_mode, get_game_type } = require("mission")
+let { add_won_mission } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary() {
@@ -240,7 +241,7 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
           }
 
         if (wonCampaign != "")
-          ::add_won_mission("dynamic", wonCampaign)
+          add_won_mission("dynamic", wonCampaign)
       }
 
       if (::SessionLobby.isInRoom())
@@ -264,7 +265,7 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
         ["yes", function() {
           let gt = get_game_type()
           if (gt & GT_COOPERATIVE)
-            ::destroy_session_scripted()
+            ::destroy_session_scripted("after question quit mission from campaign preview")
           this.goForward(::gui_start_mainmenu)
         }],
         ["no", function() {}]

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -295,7 +296,7 @@ shopSheets.getSheetDataByItem <- function(item) {
       foreach (sh in this.types)
         if ((sh.typeMask & iType)
             && sh.isAllowedForTab(tab)
-            && ::u.search(sh.getItemsList(tab), @(it) item.isEqual(it)) != null)
+            && u.search(sh.getItemsList(tab), @(it) item.isEqual(it)) != null)
           return {
             tab = tab
             sheet = sh

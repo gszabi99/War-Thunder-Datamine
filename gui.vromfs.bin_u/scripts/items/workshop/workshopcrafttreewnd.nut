@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -434,7 +435,7 @@ let function getHeaderView (headerItems, localItemsList, baseEff) {
     totalEfficiency = colorize(totalEff == 100
       ? "activeTextColor" : totalEff < 100
       ? "badTextColor" : "goodTextColor",  totalEff + loc("measureUnits/percent"))
-    itemsEfficiency = loc("ui/parentheses/space", { text = ::g_string.implode (itemsEff, "+") })
+    itemsEfficiency = loc("ui/parentheses/space", { text = "+".join(itemsEff, true) })
   }
 }
 
@@ -1007,19 +1008,19 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.craftTree = this.workshopSet.getCraftTree() ?? this.craftTree
     this.branches = this.craftTree.branches
     this.itemsList = this.workshopSet.getItemsListForCraftTree(this.craftTree)
-    this.getItemSizes()
+    this.itemSizes = this.getItemSizes()
     this.scene.findObject("wnd_title").setValue(loc(this.craftTree.headerlocId))
 
     local view = {
       itemsSize = this.itemSizes.name
       headersView = this.getHeadersView()
     }
-    local data = ::handyman.renderCached("%gui/items/craftTreeHeader.tpl", view)
+    local data = handyman.renderCached("%gui/items/craftTreeHeader.tpl", view)
     this.guiScene.replaceContentFromText(this.scene.findObject("craft_header"), data, data.len(), this)
 
     view = this.getBodyView()
     this.itemsListObj.size = posFormatString.subst(view.bodyWidth, view.bodyHeight)
-    data = ::handyman.renderCached("%gui/items/craftTreeBody.tpl", view)
+    data = handyman.renderCached("%gui/items/craftTreeBody.tpl", view)
     this.guiScene.replaceContentFromText(this.itemsListObj, data, data.len(), this)
     if (this.tutorialItem?.isCrafting() && this.tutorialItem.getCraftTimeLeft() > 0) {
       this.accentCraftTime()

@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
 
 let function error_code_tostring(error_code) {
   switch (error_code) {
@@ -80,8 +81,8 @@ let function get_error_data(header, error_code) {
     error_code = error_code & 0xFFFFFFFF // Temporary fix for 1.67.2.X
 
     res.errCode = error_code_tostring(error_code)
-    if (::is_matching_error(error_code))
-      res.text = matching_err_msg(header, ::matching_error_string(error_code))
+    if (isMatchingError(error_code))
+      res.text = matching_err_msg(header, matchingErrorString(error_code))
     else
       res.text = psn_err_msg(header, res.errCode);
   }

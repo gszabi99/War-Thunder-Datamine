@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -122,7 +123,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
  * maxSize @array|@integer - max size in pixels. Array ([w, h]) or integer (used for both sides) (0 = unlimited).
  **/
 ::gui_start_image_wnd <- function gui_start_image_wnd(image = null, ratio = 1, maxSize = 0) {
-  if (::u.isEmpty(image))
+  if (u.isEmpty(image))
     return
 
   let params = { image, ratio, maxSize }
@@ -158,7 +159,7 @@ const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
     if (!this.maxSize)
       this.maxSize = [ ::g_dagui_utils.toPixels(this.guiScene, "@rw"), ::g_dagui_utils.toPixels(this.guiScene, "@rh") ]
-    else if (::u.isInteger(this.maxSize))
+    else if (u.isInteger(this.maxSize))
       this.maxSize = [ this.maxSize, this.maxSize ]
 
     let height = ::screen_height() / 1.5

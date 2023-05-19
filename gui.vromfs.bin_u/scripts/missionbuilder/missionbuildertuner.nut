@@ -1,9 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -14,7 +17,7 @@ let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weapon
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { cutPostfix } = require("%sqstd/string.nut")
 let { dynamicGetUnits, dynamicSetUnits } = require("dynamicMission")
-let { select_mission_full } = require("guiMission")
+let { select_mission_full, get_mission_difficulty } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 
@@ -212,7 +215,7 @@ let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut"
 
       let aircrafts = this.getSuitableUnits(excludeTag, fmTags, weapTags)
       // make sure that aircraft exists in aircrafts array
-      ::u.appendOnce(aircraft, aircrafts)
+      u.appendOnce(aircraft, aircrafts)
 
       aircrafts.sort()
 
@@ -250,7 +253,7 @@ let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut"
       this.listC.append(option.values)
     }
 
-    return ::handyman.renderCached("%gui/options/optionsContainer.tpl", {
+    return handyman.renderCached("%gui/options/optionsContainer.tpl", {
       id = "tuner_options"
       topPos = "(ph-h)/2"
       position = "absolute"
@@ -303,10 +306,10 @@ let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut"
     select_mission_full(::mission_settings.mission,
        ::mission_settings.missionFull)
 
-    ::set_context_to_player("difficulty", ::get_mission_difficulty())
+    ::set_context_to_player("difficulty", get_mission_difficulty())
 
     let appFunc = function() {
-      ::broadcastEvent("BeforeStartMissionBuilder")
+      broadcastEvent("BeforeStartMissionBuilder")
       if (::SessionLobby.isInRoom())
         this.goForward(::gui_start_mp_lobby);
       else if (::mission_settings.coop) {
@@ -339,7 +342,7 @@ let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut"
       values = []
     }
 
-    let unit = ::getAircraftByName(aircraft)
+    let unit = getAircraftByName(aircraft)
     if (!unit)
       return descr
 

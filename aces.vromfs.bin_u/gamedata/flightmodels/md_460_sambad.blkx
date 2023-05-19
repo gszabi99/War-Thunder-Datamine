@@ -4,6 +4,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.2,
   "gearSinkRangeC": 0.14,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "france_late_para",
   "advancedInstructor": true,
@@ -24,7 +25,6 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1800kph",
   "fightAiBehaviour": "fighter",
-  "gyroscopicSightOverSensors": true,
   "weaponRetractVar": "p_open_launcher",
   "DamageParts": {
     "armor10": {
@@ -407,6 +407,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -418,6 +430,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -558,6 +582,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -595,6 +625,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -616,6 +652,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -657,6 +699,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2120,29 +2168,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA552.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 150,
-        "spread": 1.2,
-        "traceOffset": 1,
-        "counterIndex": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA552.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 150,
-        "spread": 1.2,
-        "traceOffset": 2
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2152,125 +2181,423 @@
       },
       {
         "name": "md_460_sambad_shafrir",
-        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_shafrir.blk",
-        "reqModification": "fr_aam_shafrir"
-      },
-      {
-        "name": "md_460_sambad_8x100kg_bombs",
-        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_8x100kg_bombs.blk",
-        "reqModification": "is_100_50_gp",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
-            "amountPerTier": 2.0,
-            "iconType": "bombs_small_group_x2",
-            "tier": [
-              {
-                "idx": 4
-              },
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              },
-              {
-                "idx": 8
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "md_460_sambad_2x500lbs_bombs",
-        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_2x500lbs_bombs.blk",
-        "reqModification": "is_250_50_gp",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
-            "amountPerTier": 1.0,
-            "iconType": "bombs_middle",
-            "tier": [
-              {
-                "idx": 5
-              },
-              {
-                "idx": 7
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "md_460_sambad_2x1000lbs_bombs",
-        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_2x1000lbs_bombs.blk",
-        "reqModification": "is_500_50_gp"
-      },
-      {
-        "name": "md_460_sambad_2x_380l_fire_bombs",
-        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_2x_380l_fire_bombs.blk",
-        "reqModification": "il_m380l_mk2"
+        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_shafrir.blk"
       },
       {
         "name": "md_460_sambad_matra_61",
-        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_matra_61.blk",
-        "reqModification": "fr_matra_type61",
-        "weaponConfig": {
+        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_matra_61.blk"
+      },
+      {
+        "name": "md_460_sambad_matra_116",
+        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_matra_116.blk"
+      },
+      {
+        "name": "md_460_sambad_8x100kg_bombs",
+        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_8x100kg_bombs.blk"
+      },
+      {
+        "name": "md_460_sambad_2x500lbs_bombs",
+        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_2x500lbs_bombs.blk"
+      },
+      {
+        "name": "md_460_sambad_2x1000lbs_bombs",
+        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_2x1000lbs_bombs.blk"
+      },
+      {
+        "name": "md_460_sambad_2x_380l_fire_bombs",
+        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_2x_380l_fire_bombs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1100.0,
+    "maxloadMassLeftConsoles": 550.0,
+    "maxloadMassRightConsoles": 550.0,
+    "maxDisbalance": 450.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket1_aim9",
+        "pylon_rocket1_matra_116",
+        "pylon_bomb1",
+        "pylon_rocket1_aa20",
+        "pylon_rocket1_matra_61",
+        "pylon_rocket1_1_aim9",
+        "pylon_rocket2_aim9",
+        "pylon_rocket2_matra_116",
+        "pylon_bomb2",
+        "pylon_rocket2_aa20",
+        "pylon_rocket2_matra_61",
+        "pylon_rocket2_1_aim9",
+        "pylon_rocket2_matra_105"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
           "Weapon": [
             {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
-              "amountPerTier": 2.0,
-              "iconType": "rockets_ap_large_group_x2",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                }
-              ]
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "spread": 1.2,
+              "traceOffset": 1,
+              "counterIndex": 1
             },
             {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
-              "amountPerTier": 2.0,
-              "iconType": "rockets_ap_large_group_x2",
-              "tier": [
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                }
-              ]
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "spread": 1.2,
+              "traceOffset": 2
             }
           ]
         }
       },
       {
-        "name": "md_460_sambad_matra_116",
-        "blk": "gameData/flightModels/weaponPresets/md_460_sambad_matra_116.blk",
-        "reqModification": "fr_matra_type116",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/fr_sneb_type23.blk",
-            "amountPerTier": 19.0,
-            "iconType": "nar_ap_large",
-            "tier": [
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "shafrir",
+            "reqModification": "fr_aam_shafrir",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket1_aim9",
+                "pylon_rocket1_1_aim9"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/il_shafrir_1.blk",
+              "emitter": "rocket1_aim9",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x6",
+            "name": "matra61",
+            "reqModification": "fr_matra_type61",
+            "ShowNodes": {
+              "node": "pylon_rocket1_matra_61"
+            },
+            "Weapon": [
               {
-                "idx": 5
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket_t10_1",
+                "bullets": 1,
+                "blockingGroupId": 0
               },
               {
-                "idx": 7
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket_t10_3",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket_t10_5",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket_t10_7",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket_t10_9",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket_t10_11",
+                "bullets": 1,
+                "blockedByGroupId": 0
               }
             ]
+          },
+          {
+            "iconType": "nar_ap_middle",
+            "name": "matra116",
+            "reqModification": "fr_matra_type116",
+            "ShowNodes": {
+              "node": "pylon_rocket1_matra_116"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/matra_116.blk",
+              "emitter": "matra_116_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x4",
+            "name": "100_50kg_lmbr",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/lbmr_il_100_50_kg.blk",
+              "emitter": "lbmr_b001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250kg",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500kg",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "380l",
+            "reqModification": "il_m380l_mk2",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_380l_mk2_fire_bomb.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
           }
-        }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "shafrir",
+            "reqModification": "fr_aam_shafrir",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket2_aim9",
+                "pylon_rocket2_1_aim9"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/il_shafrir_1.blk",
+              "emitter": "rocket2_aim9",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "rockets_ap_large_group_x6",
+            "name": "matra61",
+            "reqModification": "fr_matra_type61",
+            "ShowNodes": {
+              "node": "pylon_rocket2_matra_61"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket_t10_2",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket_t10_4",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket_t10_6",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket_t10_8",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket_t10_10",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket_t10_12",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "nar_ap_middle",
+            "name": "matra116",
+            "reqModification": "fr_matra_type116",
+            "ShowNodes": {
+              "node": "pylon_rocket2_matra_116"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/matra_116.blk",
+              "emitter": "matra_116_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x4",
+            "name": "100_50kg_lmbr",
+            "reqModification": "is_100_50_gp",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/lbmr_il_100_50_kg.blk",
+              "emitter": "lbmr_b002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250kg",
+            "reqModification": "is_250_50_gp",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_250_50_kg_gp.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500kg",
+            "reqModification": "is_500_50_gp",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_500_50_kg_gp.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "380l",
+            "reqModification": "il_m380l_mk2",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_380l_mk2_fire_bomb.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
       }
     ]
   },

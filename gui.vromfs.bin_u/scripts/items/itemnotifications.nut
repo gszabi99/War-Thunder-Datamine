@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let DataBlock  = require("DataBlock")
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 
@@ -85,7 +86,7 @@ let checkOfferToBuyAtExpiration = function() {
   }
 }
 
-::add_event_listener("InventoryUpdate", function(_p) {
+add_event_listener("InventoryUpdate", function(_p) {
   checkOfferToBuyAtExpiration()
   addItemsInOfferBuyList()
 })

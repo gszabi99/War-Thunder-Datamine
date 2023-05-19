@@ -2306,6 +2306,65 @@
       "collisionNode": "cls_turret_01"
     }
   },
+  "skin": [
+    {
+      "name": "ger_camo_navy_gray",
+      "nameLocId": "skin/ger_camo_navy_gray",
+      "descLocId": "skin/ger_camo_navy_gray/desc",
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "ger_camo_navy_gray*"
+        },
+        {
+          "from": "camo_dunkelgrau_51*",
+          "to": "ger_camo_navy_gray*"
+        },
+        {
+          "from": "camo_simplegrey_decks*",
+          "to": "ger_camo_navy_gray*"
+        }
+      ]
+    },
+    {
+      "name": "ger_camo_blackgray_deforming",
+      "nameLocId": "skin/ger_camo_blackgray_deforming",
+      "descLocId": "skin/ger_camo_blackgray_deforming/desc",
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "ger_camo_blackgray_deforming*"
+        },
+        {
+          "from": "camo_dunkelgrau_51*",
+          "to": "ger_camo_blackgray_deforming*"
+        },
+        {
+          "from": "camo_simplegrey_decks*",
+          "to": "ger_camo_blackgray_deforming*"
+        }
+      ]
+    },
+    {
+      "name": "ger_camo_multicolor",
+      "nameLocId": "skin/ger_camo_multicolor",
+      "descLocId": "skin/ger_camo_multicolor/desc",
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "ger_camo_multicolor*"
+        },
+        {
+          "from": "camo_dunkelgrau_51*",
+          "to": "ger_camo_multicolor*"
+        },
+        {
+          "from": "camo_simplegrey_decks*",
+          "to": "ger_camo_multicolor*"
+        }
+      ]
+    }
+  ],
   "commonWeapons": {
     "Weapon": {
       "trigger": "gunner0",
@@ -2468,5 +2527,13 @@
         "param": "camo_skin_tex"
       }
     ]
+  },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "camo_hellgrau_50*",
+      "to": "camo_schlickgrau58*",
+      "param": "camo_skin_tex"
+    }
   }
 }

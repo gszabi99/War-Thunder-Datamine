@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -204,7 +205,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onEventClanCandidatesListChanged(p) {
     let uid = p?.userId
-    let candidate = ::u.search(this.candidatesList, @(candidate) candidate.uid == uid)
+    let candidate = u.search(this.candidatesList, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
 }

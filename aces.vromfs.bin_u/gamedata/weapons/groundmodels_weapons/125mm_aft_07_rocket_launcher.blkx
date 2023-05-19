@@ -12,8 +12,8 @@
   "reload_sound": "reload_rocket",
   "reload_sound_keyoff_timer": 2.0,
   "isBulletBelt": false,
-  "helicopterGroup": 2,
   "reloadTime": 10.0,
+  "helicopterGroup": 2,
   "allowHumanReload": true,
   "mesh": "aft07c_rocket_deployed",
   "animChar": "aft07c_rocket_char",
@@ -23,19 +23,46 @@
     "antiShipRocket": true
   },
   "rocket": {
-    "operated": true,
+    "bulletName": "120_aft_07",
+    "statType": "hydra",
+    "caliber": 0.125,
+    "length": 1.04,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.65,
+    "CyK": 6.0,
+    "CyMaxAoA": 1.75,
+    "wingAreaMult": 1.5,
+    "distFromCmToStab": 0.01,
+    "mass": 12.5,
+    "massEnd": 11.6,
+    "massEnd1": 9.6,
+    "timeFire": 0.9,
+    "timeFire1": 27.0,
+    "force": 1600.0,
+    "force1": 50.0,
+    "timeLife": 28.0,
+    "thrustDeviation": 0.0,
+    "useStartSpeed": true,
+    "startSpeed": 10.0,
+    "endSpeed": 130.0,
+    "maxDistance": 3200.0,
+    "minDistance": 30.0,
     "operatedDist": 3200.0,
-    "autoAiming": true,
+    "visRotationFreqX": 8.5,
+    "operated": true,
+    "maxLateralAcceleration": 3.0,
     "autoLeveling": true,
+    "autoAiming": true,
+    "aimCorrectionVelMin": 125.0,
     "aimSensitivity": 8.0,
-    "selfDestructionFx": "explosion_air_selfexplosion_big",
-    "explosionEffect": "hit_106_132mm_metal_he",
-    "groundCollisionEffect": "hit_106_132mm_dirt_he",
-    "ricochetEffect": "hit_106_132mm_metal_ap",
-    "waterCollisionEffect": "hit_106_132mm_water_he",
-    "explosionPatchRadius": 3.5,
-    "visualShattersWaterOffset": 1.2,
-    "visualShattersGroundOffset": 1.2,
+    "maxAxisValues": 0.25,
+    "maxDeltaAngle": 0.03,
+    "explosiveType": "comp_b",
+    "explosiveMass": 1.4,
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
@@ -52,99 +79,83 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
-    "bulletName": "120_aft_07",
-    "caliber": 0.125,
-    "explosiveType": "comp_b",
-    "explosiveMass": 1.4,
-    "maxDeltaAngle": 0.03,
     "dragCx": 0.01,
-    "length": 0.68,
-    "distFromCmToStab": 0.01,
-    "CxK": 1.65,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "maxAxisValues": 0.25,
-    "maxLateralAcceleration": 3.0,
-    "aimCorrectionVelMin": 125.0,
-    "wingAreaMult": 1.5,
-    "CyK": 6.0,
-    "CyMaxAoA": 1.75,
-    "mass": 12.5,
-    "massEnd": 11.6,
-    "massEnd1": 9.6,
-    "force": 1600.0,
-    "timeFire": 0.9,
-    "force1": 50.0,
-    "timeFire1": 27.0,
-    "timeLife": 28.0,
-    "rotationRocket": 8.5,
-    "thrustDeviation": 0.0,
-    "fireEffect": "rocket_fire_short",
-    "smokeEffect": "",
+    "selfDestructionFx": "explosion_air_selfexplosion_big",
+    "explosionEffect": "hit_106_132mm_metal_he",
+    "groundCollisionEffect": "hit_106_132mm_dirt_he",
+    "ricochetEffect": "hit_106_132mm_metal_ap",
+    "waterCollisionEffect": "hit_106_132mm_water_he",
+    "explosionPatchRadius": 3.5,
+    "visualShattersWaterOffset": 1.2,
+    "visualShattersGroundOffset": 1.2,
+    "fireEffect": "fires_exhaust_jet_short_doubleside",
+    "smokeEffect": "smoke_rocket_tail_doubleside",
+    "smokeEffect2": "rocket_wire",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDistance": 3500.0,
-    "minDistance": 30.0,
+    "effectOffset": [
+      -0.01,
+      0.0,
+      0.0
+    ],
+    "rendinstDamageRadius": 1.0,
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
-    "explosionOffset": 0.05,
-    "hitPower": 260.0,
-    "fuseDelayDist": 0.4,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
+    "hitPowerMult": 100.0,
+    "distanceFuse": false,
     "relativeVelHitShift": [
       300.0,
       1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
     ],
     "relativeVelArmorShift": [
       200.0,
       1000.0
     ],
-    "distanceFuse": false,
-    "explodeTreshold": 0.1,
-    "explodeHitPower": 400.0,
-    "explodeArmorPower": 19.0,
-    "explodeRadius": [
-      0.4,
-      1.07
-    ],
-    "rendinstDamageRadius": 4.0,
-    "statType": "hydra",
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 10.0,
-    "endSpeed": 130.0,
+    "hitPower": 260.0,
+    "fuseDelayDist": 0.4,
+    "explodeTreshold": 0.01,
     "price": 3000.0,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [
+      0.5,
+      0.0,
+      0.0
+    ],
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": {
+          "expl": 1.0
+        },
+        "onKill": {
+          "destruction": 1.0
+        }
+      }
+    },
     "collisions": {
       "default": {
         "fx": "hit_106_132mm_dirt_he"
@@ -307,43 +318,27 @@
         "fx": "hit_12_18mm_snow_ap"
       }
     },
-    "DamageParts": {
-      "body": {
-        "hp": 5.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 1.0
-      }
-    },
-    "DamageEffects": {
-      "part": {
-        "name": "body",
-        "onHit": {
-          "expl": 1.0
-        },
-        "onKill": {
-          "destruction": 1.0
-        }
-      }
-    },
-    "stabilityRicochetModifier": {
-      "mod1": [
+    "hitpower": {
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower1000m": [
+        0.9,
+        1000.0
+      ],
+      "HitPower1500m": [
+        0.65,
+        1500.0
+      ],
+      "HitPower2500m": [
+        0.5,
+        2500.0
+      ],
+      "HitPower7000m": [
         0.0,
-        0.5
-      ],
-      "mod2": [
-        15.0,
-        0.7
-      ],
-      "mod3": [
-        30.0,
-        0.99
+        7000.0
       ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
-    },
-    "kineticDamage": {
-      "damageType": "tandemPrecharge"
     },
     "damage": {
       "explosive": {
@@ -458,6 +453,9 @@
     "shatterDamage": {
       "breachConeAngle": 45.0
     },
+    "kineticDamage": {
+      "damageType": "tandemPrecharge"
+    },
     "armorpower": {
       "ArmorPower0m": [
         50.0,
@@ -473,6 +471,14 @@
       "distance": 5.5,
       "damage": 600.0,
       "onHitChanceMultFire": 25.0
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "100mmRed",
+        "trail": "noTrail"
+      }
     }
   }
 }

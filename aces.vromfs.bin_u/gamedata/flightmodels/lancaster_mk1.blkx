@@ -3,6 +3,9 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "noEffectsDist": 8.0,
+  "gyroSight": false,
+  "gearSinkRangeLR": 0.12,
+  "gearSinkRangeC": 0.184,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -2515,6 +2518,14 @@
     "Engine": "engine17",
     "gun": "gun_default"
   },
+  "Aircraft": [
+    {
+      "gunnersCount": 3
+    },
+    {
+      "gunnersCount": 5
+    }
+  ],
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
@@ -3243,13 +3254,13 @@
       {
         "name": "lancaster_mk3_1x_8000_6x_500",
         "blk": "gameData/FlightModels/weaponPresets/lancaster_mk3_1x_8000_6x_500.blk",
-        "reqModification": "lancaster_mk3_avro_mark_1",
+        "reqModification": "uk_12000lb_hc_mkI_n52_bomb",
         "weaponConfig": {
           "Weapon": [
             {
               "blk": "gameData/Weapons/BombGuns/uk_8000lb_hc_mkI_n33_bomb.blk",
               "amountPerTier": 1.0,
-              "iconType": "bombs_heavy"
+              "iconType": "bombs_heavy_middle_black"
             },
             {
               "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
@@ -3270,9 +3281,6 @@
         "reqModification": "uk_12000lb_hc_mkI_n52_bomb"
       }
     ]
-  },
-  "Aircraft": {
-    "gunnersCount": 5
   },
   "turbulence": {
     "segmentlength": 100.0,

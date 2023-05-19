@@ -5,6 +5,7 @@
   "numJetFlamesToEngine": 2,
   "gearSinkRangeLR": 0.209,
   "gearSinkRangeC": 0.136,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -407,6 +408,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -418,6 +431,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -640,6 +665,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -677,6 +708,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -696,6 +733,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -733,6 +776,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -754,6 +803,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -795,6 +850,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2509,22 +2570,52 @@
     "turnTime": 23.0
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_compressor_jet": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "hydravlic_power": {
+      "tier": 2,
+      "modClass": "lth",
+      "prevModification": "new_compressor_jet",
+      "effects": {
+        "aileronBooster": 0.9,
+        "elevatorBooster": 0.9
+      }
+    },
+    "hp_105_jet": {
+      "tier": 4,
+      "modClass": "lth",
+      "prevModification": "hydravlic_power"
+    },
+    "g_suit": {
+      "tier": 3,
+      "modClass": "armor"
+    },
     "air_extinguisher": {
       "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
-    },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {},
-    "g_suit": {},
-    "new_compressor_jet": {},
-    "hydravlic_power": {
-      "effects": {
-        "aileronBooster": 0.9
-      }
+      "modClass": "armor",
+      "invertEnableLogic": false,
+      "prevModification": "g_suit"
     },
     "hispano_universal": {},
     "hispano_ground_targets": {},

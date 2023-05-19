@@ -4,11 +4,12 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { appendOnce, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock = require("DataBlock")
+let { isMyUserId } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 
 let UPDATE_DELAY_MSEC = isPlatformSony ? 60000 : 1800000 //60 sec for psn, 30 minutes for others
 let lastUpdate = persist("lastUpdate", @() Watched(0))
@@ -63,7 +64,7 @@ let updateBlocklist = function() {
         contact.updateMuteStatus()
       }
 
-      ::broadcastEvent("ContactsBlockStatusUpdated")
+      broadcastEvent("ContactsBlockStatusUpdated")
       callCbOnce()
     }, this),
     Callback(function(err) {
@@ -79,7 +80,7 @@ let updateBlocklist = function() {
 
 let updateContactsStatusByUids = function(uids) {
   foreach (uid in uids) {
-    if (uid && (cachedUids.value?[uid.tostring()] == null) && !::is_my_userid(uid))
+    if (uid && (cachedUids.value?[uid.tostring()] == null) && !isMyUserId(uid))
       appendOnce(uid, pendingUids.value)
   }
 
@@ -100,7 +101,7 @@ let updateContactsStatusByContacts = function(arr, cb = @() null) {
 let checkInRoomMembers = function() {
   let playersList = ::SessionLobby.getMembersInfoList()
   let list = playersList.filter(
-    @(p) !p.isBot && !::is_my_userid(p.userId)
+    @(p) !p.isBot && !isMyUserId(p.userId)
   ).map(
     @(p) ::getContact(p.userId, p.name, p.clanTag) //Need to create contact, so it will be updated later
   )
@@ -115,7 +116,7 @@ addListenersWithoutEnv({
   ChatLatestThreadsUpdate = function(_p) {
     let arr = []
     foreach (thread in ::g_chat_latest_threads.getList()) {
-      if (::is_my_userid(thread.ownerUid))
+      if (isMyUserId(thread.ownerUid))
         continue
 
       arr.append(::getContact(thread.ownerUid, thread.ownerNick, thread.ownerClanTag))

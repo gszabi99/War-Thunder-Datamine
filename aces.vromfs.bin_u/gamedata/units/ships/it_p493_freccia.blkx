@@ -2260,14 +2260,6 @@
     ]
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": [
-        "torpedo_01",
-        "torpedo_02",
-        "tt_01",
-        "tt_02"
-      ]
-    },
     "animatedBones": {
       "node": [
         "antenna_target_location_01",
@@ -2572,10 +2564,17 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "it_p493_freccia_default",
-      "blk": "gameData/units/ships/weaponPresets/it_p493_freccia_default.blk"
-    }
+    "preset": [
+      {
+        "name": "torpedoes",
+        "blk": "gameData/units/ships/weaponPresets/it_p493_freccia_torpedoes.blk",
+        "reqModification": "ship_torpedoes"
+      },
+      {
+        "name": "it_p493_freccia_default",
+        "blk": "gameData/units/ships/weaponPresets/it_p493_freccia_default.blk"
+      }
+    ]
   },
   "modifications": {
     "new_ship_hull": {},
@@ -3733,5 +3732,64 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "it_camo_navy_turquoise",
+      "nameLocId": "skin/it_camo_navy_turquoise",
+      "descLocId": "skin/it_camo_navy_turquoise/desc",
+      "replace_tex": [
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "it_camo_navy_turquoise*"
+        },
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "it_camo_navy_turquoise*"
+        },
+        {
+          "from": "camo_flat_darkgrey*",
+          "to": "it_camo_navy_turquoise*"
+        }
+      ]
+    },
+    {
+      "name": "it_camo_modern_geometry",
+      "nameLocId": "skin/it_camo_modern_geometry",
+      "descLocId": "skin/it_camo_modern_geometry/desc",
+      "replace_tex": [
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "it_camo_modern_geometry*"
+        },
+        {
+          "from": "camo_flat_darkgrey*",
+          "to": "it_camo_modern_geometry*"
+        },
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "it_camo_modern_geometry*"
+        }
+      ]
+    },
+    {
+      "name": "it_camo_modern_spots",
+      "nameLocId": "skin/it_camo_modern_spots",
+      "descLocId": "skin/it_camo_modern_spots/desc",
+      "replace_tex": [
+        {
+          "from": "camo_light_ghostgrey*",
+          "to": "it_camo_modern_spots*"
+        },
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "it_camo_modern_spots*"
+        },
+        {
+          "from": "camo_flat_darkgrey*",
+          "to": "it_camo_modern_spots*"
+        }
+      ]
+    }
+  ]
 }

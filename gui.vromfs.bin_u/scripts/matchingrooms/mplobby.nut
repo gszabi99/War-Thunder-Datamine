@@ -285,7 +285,7 @@ let { set_game_mode, get_game_mode } = require("mission")
 
     if (showAirItem) {
       let airName = getTblValue(player.country, player.selAirs, "")
-      let air = ::getAircraftByName(airName)
+      let air = getAircraftByName(airName)
       if (!air) {
         airObj.show(false)
         return

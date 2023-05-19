@@ -482,6 +482,8 @@ global enum AIR_MOUSE_USAGE {
 ::USEROPT_FREE_CAMERA_ZOOM_SPEED <- 408
 ::USEROPT_REPLAY_FOV <- 409
 
+::USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS <- 409
+
 ::user_option_name_by_idx <- {}
 
 let sortedoptmodes = []

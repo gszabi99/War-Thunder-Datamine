@@ -5,7 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.135,
   "gearSinkRangeC": 0.088,
-  "gyroscopicSightOverSensors": true,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
@@ -444,6 +444,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -455,6 +467,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -473,6 +497,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -484,6 +520,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -624,6 +672,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -661,6 +715,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -682,6 +742,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -723,6 +789,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1895,41 +1967,10 @@
     ]
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonNR30.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 70,
-        "spread": 1.0,
-        "counterIndex": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonNR30.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon2_dm",
-        "bullets": 70,
-        "spread": 1.0,
-        "counterIndex": 3
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonNR30.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection3",
-        "dm": "cannon3_dm",
-        "bullets": 70,
-        "spread": 1.0,
-        "counterIndex": 2
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -1939,37 +1980,234 @@
       },
       {
         "name": "mig_19s_ofab100_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/mig_19s_ofab100_bombs.blk",
-        "reqModification": "mig_15_ish_fab_100"
+        "blk": "gameData/FlightModels/weaponPresets/mig_19s_ofab100_bombs.blk"
       },
       {
         "name": "mig_19s_ofab250_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/mig_19s_ofab250_bombs.blk",
-        "reqModification": "mig_15_ish_fab_250"
+        "blk": "gameData/FlightModels/weaponPresets/mig_19s_ofab250_bombs.blk"
       },
       {
         "name": "mig_19s_s5k_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/mig_19s_s5k_rockets.blk",
-        "reqModification": "C5",
-        "weaponConfig": {
+        "blk": "gameData/FlightModels/weaponPresets/mig_19s_s5k_rockets.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1600.0,
+    "maxloadMassLeftConsoles": 800.0,
+    "maxloadMassRightConsoles": 800.0,
+    "maxDisbalance": 650.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket_l",
+        "pylon_rocket_r",
+        "pylon_rocket1",
+        "pylon_rocket2",
+        "pylon_rocket3",
+        "pylon_rocket4",
+        "bomb_pylon1",
+        "bomb_pylon2",
+        "apu_28_l",
+        "apu_28_r"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonNR30.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 70,
+              "spread": 1.0,
+              "counterIndex": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonNR30.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon2_dm",
+              "bullets": 70,
+              "spread": 1.0,
+              "counterIndex": 3
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonNR30.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection3",
+              "dm": "cannon3_dm",
+              "bullets": 70,
+              "spread": 1.0,
+              "counterIndex": 2
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_small",
+            "name": "oro57",
+            "reqModification": "C5",
+            "ShowNodes": {
+              "node": "pylon_rocket3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+              "emitter": "oro_57k_pod_003",
+              "external": true,
+              "machLimit": 1.01,
+              "jettisonable": true
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "fab100",
+            "reqModification": "mig_15_ish_fab_100",
+            "ShowNodes": {
+              "node": "bomb_pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk",
+              "emitter": "ofab100_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fab250",
+            "reqModification": "mig_15_ish_fab_250",
+            "ShowNodes": {
+              "node": "bomb_pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
+              "emitter": "ofab250_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": {
+          "iconType": "nar_ap_small",
+          "name": "oro57",
+          "reqModification": "C5",
+          "ShowNodes": {
+            "node": "pylon_rocket1"
+          },
           "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
-            "amountPerTier": 8.0,
-            "iconType": "nar_ap_middle"
+            "trigger": "rockets",
+            "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+            "emitter": "oro_57k_pod_001",
+            "external": true,
+            "machLimit": 1.01,
+            "jettisonable": true
           }
         }
       },
       {
-        "name": "mig_19s_4xs5k_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/mig_19s_4xs5k_rockets.blk",
-        "reqModification": "C5",
-        "weaponConfig": {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "nar_ap_small",
+          "name": "oro57",
+          "reqModification": "C5",
+          "ShowNodes": {
+            "node": "pylon_rocket2"
+          },
           "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
-            "amountPerTier": 8.0,
-            "iconType": "nar_ap_middle"
+            "trigger": "rockets",
+            "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+            "emitter": "oro_57k_pod_002",
+            "external": true,
+            "machLimit": 1.01,
+            "jettisonable": true
           }
         }
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_small",
+            "name": "oro57",
+            "reqModification": "C5",
+            "ShowNodes": {
+              "node": "pylon_rocket4"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/oro_57k_su_s5k.blk",
+              "emitter": "oro_57k_pod_004",
+              "external": true,
+              "machLimit": 1.01,
+              "jettisonable": true
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "fab100",
+            "reqModification": "mig_15_ish_fab_100",
+            "ShowNodes": {
+              "node": "bomb_pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab100_120.blk",
+              "emitter": "ofab100_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fab250",
+            "reqModification": "mig_15_ish_fab_250",
+            "ShowNodes": {
+              "node": "bomb_pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250.blk",
+              "emitter": "ofab250_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
       }
     ]
   },
@@ -2190,23 +2428,51 @@
     ]
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {
-      "tier": 4
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
     },
-    "g_suit": {
-      "prevModification": "cd_98"
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_compressor_jet": {
+      "tier": 1,
+      "modClass": "lth"
     },
     "hydravlic_power": {
+      "tier": 2,
+      "modClass": "lth",
+      "prevModification": "new_compressor_jet",
       "effects": {
         "aileronBooster": 0.9
       }
     },
-    "new_compressor_jet": {
-      "tier": 1
+    "hp_105_jet": {
+      "tier": 4,
+      "modClass": "lth",
+      "prevModification": "hydravlic_power"
+    },
+    "g_suit": {
+      "tier": 3,
+      "modClass": "armor"
+    },
+    "air_extinguisher": {
+      "prevModification": "g_suit",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
     },
     "NR_30_armor_targets": {},
     "NR_30_air_targets": {},
@@ -2216,12 +2482,6 @@
     "NR_30_new_gun": {
       "reqModification": "NR_30_belt_pack",
       "tier": 3
-    },
-    "air_extinguisher": {
-      "prevModification": "NR_30_new_gun",
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
     },
     "mig_15_ish_fab_100": {
       "modClass": "weapon",

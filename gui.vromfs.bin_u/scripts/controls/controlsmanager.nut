@@ -4,15 +4,18 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
-::g_script_reloader.loadOnce("%scripts/controls/controlsPreset.nut")
-::g_script_reloader.loadOnce("%scripts/controls/controlsGlobals.nut")
-::g_script_reloader.loadOnce("%scripts/controls/controlsCompatibility.nut")
+g_script_reloader.loadOnce("%scripts/controls/controlsPreset.nut")
+g_script_reloader.loadOnce("%scripts/controls/controlsGlobals.nut")
+g_script_reloader.loadOnce("%scripts/controls/controlsCompatibility.nut")
 
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { getCurrentPreset = @(_blk) null } = require("controls")
+let { getCurrentPreset } = require("controls")
+let { startsWith } = require("%sqstd/string.nut")
 
 let function getLoadedPresetBlk() {
   let presetBlk = DataBlock()
@@ -96,7 +99,7 @@ let function getLoadedPresetBlk() {
     log("ControlsManager: curPreset updated")
     this.curPreset = otherPreset
     this.fixDeviceMapping()
-    ::broadcastEvent("ControlsReloaded")
+    broadcastEvent("ControlsReloaded")
     this.commitControls()
   }
 
@@ -110,10 +113,6 @@ let function getLoadedPresetBlk() {
 
   function clearPreviewPreset() {
     this.previewPreset = null
-  }
-
-  function notifyPresetModified() {
-    this.commitControls()
   }
 
   function fixDeviceMapping() {
@@ -134,7 +133,7 @@ let function getLoadedPresetBlk() {
       }))
 
     if (this.getCurPreset().updateDeviceMapping(realMapping))
-      ::broadcastEvent("ControlsPresetChanged")
+      broadcastEvent("ControlsPresetChanged")
   }
 
 
@@ -148,7 +147,7 @@ let function getLoadedPresetBlk() {
     this.commitGuiOptions()
 
     // Check helpers options and fix if nessesary
-    ::broadcastEvent("BeforeControlsCommit")
+    broadcastEvent("BeforeControlsCommit")
 
     // Send controls to C++ client
     ::set_current_controls(this.curPreset)
@@ -204,7 +203,7 @@ let function getLoadedPresetBlk() {
     let prefix = "USEROPT_"
     let userOptTypes = []
     foreach (oType, _value in this.curPreset.params)
-      if (::g_string.startsWith(oType, prefix))
+      if (startsWith(oType, prefix))
         userOptTypes.append(oType)
     foreach (oType in userOptTypes)
       delete this.curPreset.params[oType]
@@ -218,7 +217,7 @@ let function getLoadedPresetBlk() {
     setGuiOptionsMode(::OPTIONS_MODE_GAMEPLAY)
     let prefix = "USEROPT_"
     foreach (oType, value in this.curPreset.params)
-      if (::g_string.startsWith(oType, prefix))
+      if (startsWith(oType, prefix))
         if (oType in getroottable())
           ::set_option(getroottable()[oType], value)
     setGuiOptionsMode(mainOptionsMode)
@@ -232,4 +231,4 @@ let function getLoadedPresetBlk() {
   }
 }
 
-::subscribe_handler(::g_controls_manager)
+subscribe_handler(::g_controls_manager)

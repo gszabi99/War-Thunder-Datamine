@@ -5,6 +5,7 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.19,
   "gearSinkRangeC": 0.17,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "france_late_para",
   "advancedInstructor": true,
@@ -432,6 +433,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -443,6 +456,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -583,6 +608,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -620,6 +651,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -641,6 +678,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -682,6 +725,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2140,199 +2189,918 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonM50.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 125,
-        "spread": 1.2,
-        "traceOffset": 1,
-        "counterIndex": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonM50.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon2_dm",
-        "bullets": 125,
-        "spread": 1.2,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonM50.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon3_dm",
-        "bullets": 125,
-        "spread": 1.2,
-        "traceOffset": 3
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonM50.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon4_dm",
-        "bullets": 125,
-        "spread": 1.2,
-        "traceOffset": 0,
-        "counterIndex": 2
-      }
-    ],
-    "hideNodes": {
-      "part": [
-        "drop_fueltank",
-        "drop_fueltank1"
-      ]
-    },
-    "hideDmParts": {
-      "part": [
-        "tank7_dm",
-        "tank6_dm"
-      ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
     "preset": [
       {
-        "name": "md_450_default",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_default.blk"
+        "name": "md_450b_ouragan",
+        "blk": "gameData/flightModels/weaponPresets/md_450b_ouragan_default.blk"
       },
       {
-        "name": "md_450_500lbs",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_500lbs_bombs.blk",
-        "reqModification": "fmbc_mk1"
+        "name": "md_450b_ouragan_t10_140",
+        "blk": "gameData/flightModels/weaponPresets/md_450b_ouragan_t10_140.blk"
       },
       {
-        "name": "md_450_1000lbs",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_1000lbs_bombs.blk",
-        "reqModification": "b-25_lbc"
+        "name": "md_450b_ouragan_t10_151",
+        "blk": "gameData/flightModels/weaponPresets/md_450b_ouragan_t10_151.blk"
       },
       {
-        "name": "md_450_rockets",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_rockets.blk",
-        "reqModification": "fr_matra_t_10"
+        "name": "md_450b_ouragan_500lbs",
+        "blk": "gameData/flightModels/weaponPresets/md_450b_ouragan_500lbs.blk"
       },
       {
-        "name": "md_450_rockets_151",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_rockets_151.blk",
-        "reqModification": "fr_matra_t_10_150"
-      },
-      {
-        "name": "md_450_500lbs_rockets",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_500lbs_bombs_rockets.blk",
-        "reqModification": [
-          "fmbc_mk1",
-          "fr_matra_t_10"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
-              "amountPerTier": 2.0,
-              "iconType": "rockets_ap_large_group_x2",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
-              "amountPerTier": 2.0,
-              "iconType": "rockets_ap_large_group_x2",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
-      },
-      {
-        "name": "md_450b_500lbs_bombs_rockets_151",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_500lbs_bombs_rockets_151.blk",
-        "reqModification": [
-          "fmbc_mk1",
-          "fr_matra_t_10_150"
-        ],
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
-              "amountPerTier": 1.0,
-              "iconType": "bombs_middle",
-              "tier": [
-                {
-                  "idx": 4
-                },
-                {
-                  "idx": 8
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
-              "amountPerTier": 4.0,
-              "iconType": "rockets_ap_large_group_x2",
-              "tier": [
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                }
-              ]
-            },
-            {
-              "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
-              "amountPerTier": 4.0,
-              "iconType": "rockets_ap_large_group_x2",
-              "tier": [
-                {
-                  "idx": 3
-                },
-                {
-                  "idx": 9
-                }
-              ]
-            }
-          ]
-        }
+        "name": "md_450b_ouragan_1000lbs",
+        "blk": "gameData/flightModels/weaponPresets/md_450b_ouragan_1000lbs.blk"
       },
       {
         "name": "md_450b_380l_fire_bombs",
-        "blk": "gameData/flightModels/weaponPresets/md_450b_380l_fire_bombs.blk",
-        "reqModification": "il_m380l_mk2"
+        "blk": "gameData/flightModels/weaponPresets/md_450b_380l_fire_bombs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1100.0,
+    "maxloadMassLeftConsoles": 550.0,
+    "maxloadMassRightConsoles": 550.0,
+    "maxDisbalance": 460.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket1",
+        "pylon_rocket2",
+        "pylon_rocket3",
+        "pylon_rocket4",
+        "pylon_rocket5",
+        "pylon_rocket6",
+        "pylon_rocket7",
+        "pylon_rocket8",
+        "pylon_rocket9",
+        "pylon_rocket10",
+        "pylon_bomb1",
+        "pylon_bomb2"
+      ],
+      "part": [
+        "drop_fueltank",
+        "drop_fueltank1"
+      ]
+    },
+    "HideDmParts": {
+      "part": [
+        "tank7_dm",
+        "tank6_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonM50.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 125,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonM50.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon2_dm",
+              "bullets": 125,
+              "spread": 1.2,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonM50.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon3_dm",
+              "bullets": 125,
+              "spread": 1.2,
+              "traceOffset": 3
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonM50.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon4_dm",
+              "bullets": 125,
+              "spread": 1.2,
+              "traceOffset": 0
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 11,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot1",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket1",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket9",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot1",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket1",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket9",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 10,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot2",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket3",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket11",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "380l_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "500lbs_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "1000lbs_slot3"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot2",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket3",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket11",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "380l_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "500lbs_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "1000lbs_slot3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 9,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "napalm_small",
+            "name": "380l_slot3",
+            "reqModification": "il_m380l_mk2",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_380l_mk2_fire_bomb.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "t140_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "t151_slot2"
+              },
+              {
+                "slot": 4,
+                "preset": "t140_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "t151_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_slot3",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "t140_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "t151_slot2"
+              },
+              {
+                "slot": 4,
+                "preset": "t140_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "t151_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_slot3",
+            "reqModification": "b-25_lbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "t140_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "t151_slot2"
+              },
+              {
+                "slot": 4,
+                "preset": "t140_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "t151_slot4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 8,
+        "order": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot4",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket5",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket13",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "380l_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "500lbs_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "1000lbs_slot3"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot4",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket3"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket5",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket13",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "380l_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "500lbs_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "1000lbs_slot3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 7,
+        "order": 9,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot5",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket4"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket7",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket15",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot5",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket4"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket7",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket15",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 5,
+        "order": 10,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot6",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket5"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket8",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket16",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot6",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket5"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket8",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket16",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 4,
+        "order": 8,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot7",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket6"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket6",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket14",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "380l_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_slot8"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot7",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket6"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket6",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket14",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "380l_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_slot8"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "tier": 3,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "napalm_small",
+            "name": "380l_slot8",
+            "reqModification": "il_m380l_mk2",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/il_380l_mk2_fire_bomb.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "t140_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "t151_slot7"
+              },
+              {
+                "slot": 9,
+                "preset": "t140_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "t151_slot9"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs_slot8",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "t140_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "t151_slot7"
+              },
+              {
+                "slot": 9,
+                "preset": "t140_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "t151_slot9"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_slot8",
+            "reqModification": "b-25_lbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "t140_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "t151_slot7"
+              },
+              {
+                "slot": 9,
+                "preset": "t140_slot9"
+              },
+              {
+                "slot": 9,
+                "preset": "t151_slot9"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "tier": 2,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot9",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket7"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket12",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "380l_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_slot8"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot9",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket7"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket12",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "380l_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "500lbs_slot8"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_slot8"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "tier": 1,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "t140_slot10",
+            "reqModification": "fr_matra_t_10",
+            "ShowNodes": {
+              "node": "pylon_rocket8"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140b.blk",
+                "emitter": "rocket2",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_140a.blk",
+                "emitter": "rocket10",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "t151_slot10",
+            "reqModification": "fr_matra_t_10_150",
+            "ShowNodes": {
+              "node": "pylon_rocket8"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151b.blk",
+                "emitter": "rocket2",
+                "bullets": 1,
+                "blockingGroupId": 0
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/fr_matra_t_10_151a.blk",
+                "emitter": "rocket10",
+                "bullets": 1,
+                "blockedByGroupId": 0
+              }
+            ]
+          }
+        ]
       }
     ]
   },

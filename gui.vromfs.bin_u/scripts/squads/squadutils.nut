@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -143,7 +144,7 @@ systemMsg.registerLocTags(locTags)
   let membersNamesArray = members.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
   ::showInfoMsgBox(
     loc(locId,
-      { names = ::g_string.implode(membersNamesArray, ",") }
+      { names = ",".join(membersNamesArray, true) }
     ), "members_not_all_crossplay_condition")
   return false
 }
@@ -383,11 +384,10 @@ systemMsg.registerLocTags(locTags)
     return
 
   local text = loc("squad/has_offline_members") + loc("ui/colon")
-  text += ::g_string.implode(::u.map(offlineMembers,
-                            @(memberData) colorize("warningTextColor", getPlayerName(memberData.name))
-                           ),
-                    loc("ui/comma")
-                   )
+  text += loc("ui/comma").join(
+                            u.map(offlineMembers, @(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
+                            true
+                          )
 
   ::g_popups.add("", text)
 }
@@ -449,7 +449,7 @@ systemMsg.registerLocTags(locTags)
       continue
 
     let memberCountry = member.getWwOperationCountryById(operationId)
-    if (!::u.isEmpty(memberCountry))
+    if (!u.isEmpty(memberCountry))
       if (controlCountry == "")
         controlCountry = memberCountry
       else if (controlCountry != memberCountry)
@@ -472,9 +472,9 @@ systemMsg.registerLocTags(locTags)
   if (res || isSilent)
     return res
 
-  let mText = ::g_string.implode(
-    ::u.map(notAvailableMemberNames, @(name) colorize("userlogColoredText", getPlayerName(name)))
-    ", "
+  let mText = ", ".join(
+    u.map(notAvailableMemberNames, @(name) colorize("userlogColoredText", getPlayerName(name)))
+    true
   )
   let msg = loc("msg/members_no_access_to_mode", {  members = mText  })
   ::showInfoMsgBox(msg, "members_req_new_content")

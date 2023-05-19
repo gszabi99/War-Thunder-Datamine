@@ -1,0 +1,422 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/tank_templates/air_spawn_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/iberian_castle/spawnareas/template_iberian_castle_heli_spawns.blk",
+        "rankRange": [
+          20,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/iberian_castle/airfields/template_iberian_castle_airfields_low_ranks.blk",
+        "rankRange": [
+          0,
+          5
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/iberian_castle/airfields/template_iberian_castle_airfields_mid_ranks.blk",
+        "rankRange": [
+          6,
+          19
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/iberian_castle/airfields/template_iberian_castle_airfields_high_ranks.blk",
+        "rankRange": [
+          20,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "fighters_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          12782.3,
+          0.0,
+          -2369.12
+        ],
+        [
+          0.0,
+          13000.0,
+          0.0
+        ],
+        [
+          2369.12,
+          0.0,
+          12782.3
+        ],
+        [
+          1897.86,
+          999.986,
+          1924.09
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -294.978,
+          0.0,
+          54.6702
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -54.6702,
+          0.0,
+          -294.978
+        ],
+        [
+          8295.12,
+          999.986,
+          742.203
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          294.978,
+          0.0,
+          -54.6702
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          54.6702,
+          0.0,
+          294.978
+        ],
+        [
+          -4491.51,
+          999.986,
+          3108.81
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bombers_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          14748.9,
+          0.0,
+          -2733.6
+        ],
+        [
+          0.0,
+          15000.0,
+          0.0
+        ],
+        [
+          2733.6,
+          0.0,
+          14748.9
+        ],
+        [
+          1897.86,
+          1499.99,
+          1924.09
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -294.978,
+          0.0,
+          54.6702
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -54.6702,
+          0.0,
+          -294.978
+        ],
+        [
+          9280.48,
+          1499.99,
+          559.479
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          294.978,
+          0.0,
+          -54.6702
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          54.6702,
+          0.0,
+          294.978
+        ],
+        [
+          -5470.51,
+          1499.99,
+          3290.36
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "airfields_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          29497.8,
+          0.0,
+          -5467.02
+        ],
+        [
+          0.0,
+          30000.0,
+          0.0
+        ],
+        [
+          5467.02,
+          0.0,
+          29497.8
+        ],
+        [
+          1897.86,
+          1999.99,
+          1924.09
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -105.062,
+          0.0,
+          -281.003
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          281.003,
+          0.0,
+          -105.062
+        ],
+        [
+          5256.88,
+          2000.0,
+          14070.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [
+          105.062,
+          0.0,
+          281.003
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -281.003,
+          0.0,
+          105.062
+        ],
+        [
+          -5253.49,
+          2000.0,
+          -14048.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -350.21,
+          0.0,
+          -936.672
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          936.672,
+          0.0,
+          -350.21
+        ],
+        [
+          -5787.62,
+          0.0,
+          -2945.92
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -350.21,
+          0.0,
+          -936.672
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          936.672,
+          0.0,
+          -350.21
+        ],
+        [
+          6101.38,
+          0.0,
+          2151.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {},
+  "wayPoints": {}
+}

@@ -3,6 +3,7 @@
   "fmFile": "fm/ro_44.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "german",
   "arcadeHP": 100.0,
@@ -1858,16 +1859,16 @@
     ],
     "openedCockpit": true,
     "lightPos": [
-      -1.282679,
-      0.486075,
-      -0.230338
+      -1.25,
+      0.2,
+      0.0
     ],
     "lightColor": [
       0.62,
       0.3,
-      0.21
+      0.1
     ],
-    "lightAttenuation": 20.0,
+    "lightRadius": 0.3,
     "telescope": true,
     "teleScreenCapture": 0.038,
     "teleSightFov": 8.0,
@@ -4038,6 +4039,12 @@
   },
   "modifications": {
     "cd_98_r": {},
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "CdMin_Fuse_r": {},
     "new_cover": {},
     "structure_str": {},

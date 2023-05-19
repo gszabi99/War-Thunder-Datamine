@@ -4,7 +4,10 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
+let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { subscribe } = require("eventbus")
 let { round } = require("math")
 let { format } = require("string")
@@ -17,6 +20,8 @@ let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getActionBarItems } = require("hudActionBar")
 let { getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
+let { stripTags } = require("%sqstd/string.nut")
+let { get_mission_difficulty_int } = require("guiMission")
 
 enum POINTING_DEVICE {
   MOUSE
@@ -240,7 +245,7 @@ enum POINTING_DEVICE {
         title = "hotkeys/ID_CHANGE_ARTILLERY_TARGETING_MODE"
         shortcuts = ["ID_CHANGE_ARTILLERY_TARGETING_MODE"]
         buttonCb = "onChangeTargetingMode"
-        show = ::get_mission_difficulty_int() != DIFFICULTY_HARDCORE && !this.isSuperArtillery
+        show = get_mission_difficulty_int() != DIFFICULTY_HARDCORE && !this.isSuperArtillery
       },
       {
         title = "mainmenu/btnCancel"
@@ -264,7 +269,7 @@ enum POINTING_DEVICE {
           info.primaryShortcutName <- info.shortcuts[i]
           foreach (shortcut in actionShortcuts) {
             any = any || shortcut
-            if (::find_in_array(shortcut.dev, reqDevice) >= 0) {
+            if (find_in_array(shortcut.dev, reqDevice) >= 0) {
               pref = shortcut
               break
             }
@@ -284,7 +289,7 @@ enum POINTING_DEVICE {
           data.append(this.getShortcutFrameForHelp(info.primaryShortcut) +
             format("controlsHelpHint { text:t='#%s' }", info.title))
         else
-          data.append(::handyman.renderCached("%gui/commonParts/button.tpl", {
+          data.append(handyman.renderCached("%gui/commonParts/button.tpl", {
             id = info?.buttonId ?? ""
             text = "#" + info.title
             funcName = info.buttonCb
@@ -292,7 +297,7 @@ enum POINTING_DEVICE {
           }))
       }
 
-    data = ::g_string.implode(data, "controlsHelpHint { text:t='    ' }")
+    data = "controlsHelpHint { text:t='    ' }".join(data, true)
     this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
@@ -308,7 +313,7 @@ enum POINTING_DEVICE {
     let curPreset = ::g_controls_manager.getCurPreset()
     for (local k = 0; k < shortcut.dev.len(); k++) {
       let name = ::getLocalizedControlName(curPreset, shortcut.dev[k], shortcut.btn[k]);
-      local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", ::g_string.stripTags(name), (name.len() > 2) ? "@fontTiny" : "@fontMedium");
+      local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", stripTags(name), (name.len() > 2) ? "@fontTiny" : "@fontMedium");
 
       if (shortcut.dev[k] == STD_MOUSE_DEVICE_ID) {
         let mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s'; }"
@@ -424,7 +429,7 @@ enum POINTING_DEVICE {
 }
 
 subscribe("artilleryMapOpen", @(p) ::is_in_flight() ? ::gui_start_artillery_map(p) : null)
-subscribe("artilleryMapClose", @(_) ::broadcastEvent("CloseArtilleryRequest"))
+subscribe("artilleryMapClose", @(_) broadcastEvent("CloseArtilleryRequest"))
 subscribe("artilleryCallByShortcut", function(_) {
   let handler = ::handlersManager.getActiveBaseHandler()
   if (handler && (handler instanceof ::gui_handlers.ArtilleryMap))

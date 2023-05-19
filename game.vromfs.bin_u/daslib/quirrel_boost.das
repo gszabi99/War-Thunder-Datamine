@@ -241,10 +241,10 @@ class QuirrelCallAnnotation : AstFunctionAnnotation
             return
         for ann in func.annotations
             if ann.annotation.name == "quirrel_wrapper"
-                let nameArg = find_arg("name", ann.arguments)
-                let moduleArg = find_arg("module_name", ann.arguments)
-                let paramsCheckArg = find_arg("params_check", ann.arguments)
-                let paramsArg = find_arg("params", ann.arguments)
+                let nameArg = ann.arguments |> find_arg("name")
+                let moduleArg = ann.arguments |> find_arg("module_name")
+                let paramsCheckArg = ann.arguments |> find_arg("params_check")
+                let paramsArg = ann.arguments |> find_arg("params")
                 let mn = get_mangled_name(func)
                 let mnh = hash(mn)
                 sqdas_bind_func(*get_ptr(ctx), mnh, "{nameArg}", "{moduleArg}", paramsArg as tInt, "{paramsCheckArg}")
@@ -260,23 +260,23 @@ class QuirrelBindAnnotation : AstFunctionAnnotation
         return true
 
     def override patch ( var fn:FunctionPtr; var group:ModuleGroup; args,progArgs:AnnotationArgumentList; var errors : das_string; var astChanged:bool& ) : bool
-        let bindedArg = find_arg("binded", args)
+        let bindedArg = args |> find_arg("binded")
         if bindedArg is tBool // function was already binded
             return true
 
-        let nameArg = find_arg("name", args)
+        let nameArg = args |> find_arg("name")
         if !(nameArg is nothing) && !(nameArg is tString)
             errors := "annotation argument 'name' expecting string [quirrel_bind(name=<bind name>)]"
             return false
 
-        let moduleArg = find_arg("module_name", args)
+        let moduleArg = args |> find_arg("module_name")
         if !(moduleArg is nothing) && !(moduleArg is tString)
             errors := "annotation argument 'module_name' expecting string [quirrel_bind(module_name=<mod name>)]"
             return false
 
         let voidResult = fn.result.baseType == Type tVoid
 
-        let rawReturnArg = find_arg("raw_return", args)
+        let rawReturnArg = args |> find_arg("raw_return")
         if !(rawReturnArg is nothing) && !(rawReturnArg is tBool)
             errors := "annotation argument 'raw_return' expecting bool [quirrel_bind(raw_return)] or [quirrel_bind(raw_return=true)]"
             return false

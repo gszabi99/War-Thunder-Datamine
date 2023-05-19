@@ -73,7 +73,7 @@ let { format } = require("string")
     if (!complaintsCount)
       return
 
-    let textReasons = ::g_string.implode(reasonsList, "\n")
+    let textReasons = "\n".join(reasonsList, true)
     local text = loc("charServer/complaintToYou"
       + (complaintsCount >= this.maxComplaintCount ? "MoreThen" : ""))
 

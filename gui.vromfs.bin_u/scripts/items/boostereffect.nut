@@ -1,5 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -18,7 +20,7 @@ let boosterEffectType = {
     getText = function(value, colored = false, showEmpty = true) {
       if (value == 0 && !showEmpty)
         return ""
-      return ::Cost().setRp(value).toStringWithParams({ isColored = colored })
+      return Cost().setRp(value).toStringWithParams({ isColored = colored })
     }
   }
   WP = {
@@ -34,7 +36,7 @@ let boosterEffectType = {
     getText = function(value, colored = false, showEmpty = true) {
       if (value == 0 && !showEmpty)
         return ""
-      return ::Cost(value).toStringWithParams({ isWpAlwaysShown = true, isColored = colored })
+      return Cost(value).toStringWithParams({ isWpAlwaysShown = true, isColored = colored })
     }
   }
 }

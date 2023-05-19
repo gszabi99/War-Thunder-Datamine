@@ -2,6 +2,7 @@
   "model": "blenheim_mk4",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gyroSight": false,
   "type": "typeBomber",
   "paratrooper": "raf_para",
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -2056,6 +2057,204 @@
     "Engine": "engine22",
     "gun": "gun_blenheim"
   },
+  "cockpit": {
+    "textToShowInCockpit": "msg/textToShowInCockpit",
+    "headPos": [
+      1.279,
+      0.596,
+      0.224
+    ],
+    "headPosOnShooting": [
+      1.279,
+      0.596,
+      0.224
+    ],
+    "lightPos": [
+      1.9854,
+      0.229352,
+      0.0817
+    ],
+    "lightColor": [
+      0.32,
+      0.1,
+      0.01
+    ],
+    "lightAttenuation": 5.0,
+    "devices": {
+      "speed": [
+        0.0,
+        250.34
+      ],
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "vario": [
+        -20.32,
+        20.32
+      ],
+      "altitude_10k": [
+        0.0,
+        100000.0
+      ],
+      "altitude_hour": [
+        0.0,
+        10000.0
+      ],
+      "altitude_min": [
+        0.0,
+        1000.0
+      ],
+      "altitude_koef": 3.28,
+      "aviahorizon_pitch": [
+        -45.0,
+        45.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
+      ],
+      "bank": [
+        -8.0,
+        8.0
+      ],
+      "turn": [
+        -0.23562,
+        0.23562
+      ],
+      "fuel1": [
+        0.0,
+        443.0
+      ],
+      "gears_lamp": [
+        0.0,
+        0.0
+      ],
+      "manifold_pressure": [
+        0.5237,
+        2.701
+      ],
+      "manifold_pressure1": [
+        0.5237,
+        2.701
+      ],
+      "manifold_pressure2": [
+        0.5237,
+        2.701
+      ],
+      "manifold_pressure3": [
+        0.5237,
+        2.701
+      ],
+      "rpm_hour": [
+        0.0,
+        10000.0
+      ],
+      "rpm1_hour": [
+        0.0,
+        10000.0
+      ],
+      "rpm2_hour": [
+        0.0,
+        10000.0
+      ],
+      "rpm3_hour": [
+        0.0,
+        10000.0
+      ],
+      "rpm_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm1_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm2_min": [
+        0.0,
+        1000.0
+      ],
+      "rpm3_min": [
+        0.0,
+        1000.0
+      ],
+      "head_temperature": [
+        0.0,
+        350.0
+      ],
+      "head_temperature1": [
+        0.0,
+        350.0
+      ],
+      "head_temperature2": [
+        0.0,
+        350.0
+      ],
+      "head_temperature3": [
+        0.0,
+        350.0
+      ],
+      "water_temperature": [
+        30.0,
+        140.0
+      ],
+      "water_temperature1": [
+        30.0,
+        140.0
+      ],
+      "water_temperature2": [
+        30.0,
+        140.0
+      ],
+      "water_temperature3": [
+        30.0,
+        140.0
+      ],
+      "oil_temperature": [
+        0.0,
+        120.0
+      ],
+      "oil_temperature1": [
+        0.0,
+        120.0
+      ],
+      "oil_temperature2": [
+        0.0,
+        120.0
+      ],
+      "oil_temperature3": [
+        0.0,
+        120.0
+      ],
+      "oil_pressure": [
+        0.0,
+        100.0
+      ],
+      "oil_pressure1": [
+        0.0,
+        100.0
+      ],
+      "oil_pressure2": [
+        0.0,
+        100.0
+      ],
+      "oil_pressure3": [
+        0.0,
+        100.0
+      ]
+    },
+    "parts_holes_dmg": {
+      "part": "fuse"
+    },
+    "parts_oil_dmg": {
+      "part": [
+        "engine1",
+        "engine2",
+        "engine3",
+        "engine4"
+      ]
+    }
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -2267,204 +2466,6 @@
         }
       }
     ]
-  },
-  "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
-    "headPos": [
-      1.279,
-      0.596,
-      0.224
-    ],
-    "headPosOnShooting": [
-      1.279,
-      0.596,
-      0.224
-    ],
-    "lightPos": [
-      1.9854,
-      0.229352,
-      0.0817
-    ],
-    "lightColor": [
-      0.32,
-      0.1,
-      0.01
-    ],
-    "lightAttenuation": 5.0,
-    "devices": {
-      "speed": [
-        0.0,
-        250.34
-      ],
-      "compass": [
-        0.0,
-        360.0
-      ],
-      "vario": [
-        -20.32,
-        20.32
-      ],
-      "altitude_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude_hour": [
-        0.0,
-        10000.0
-      ],
-      "altitude_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude_koef": 3.28,
-      "aviahorizon_pitch": [
-        -45.0,
-        45.0
-      ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "bank": [
-        -8.0,
-        8.0
-      ],
-      "turn": [
-        -0.23562,
-        0.23562
-      ],
-      "fuel1": [
-        0.0,
-        443.0
-      ],
-      "gears_lamp": [
-        0.0,
-        0.0
-      ],
-      "manifold_pressure": [
-        0.5237,
-        2.701
-      ],
-      "manifold_pressure1": [
-        0.5237,
-        2.701
-      ],
-      "manifold_pressure2": [
-        0.5237,
-        2.701
-      ],
-      "manifold_pressure3": [
-        0.5237,
-        2.701
-      ],
-      "rpm_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm1_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm2_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm3_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm_min": [
-        0.0,
-        1000.0
-      ],
-      "rpm1_min": [
-        0.0,
-        1000.0
-      ],
-      "rpm2_min": [
-        0.0,
-        1000.0
-      ],
-      "rpm3_min": [
-        0.0,
-        1000.0
-      ],
-      "head_temperature": [
-        0.0,
-        350.0
-      ],
-      "head_temperature1": [
-        0.0,
-        350.0
-      ],
-      "head_temperature2": [
-        0.0,
-        350.0
-      ],
-      "head_temperature3": [
-        0.0,
-        350.0
-      ],
-      "water_temperature": [
-        30.0,
-        140.0
-      ],
-      "water_temperature1": [
-        30.0,
-        140.0
-      ],
-      "water_temperature2": [
-        30.0,
-        140.0
-      ],
-      "water_temperature3": [
-        30.0,
-        140.0
-      ],
-      "oil_temperature": [
-        0.0,
-        120.0
-      ],
-      "oil_temperature1": [
-        0.0,
-        120.0
-      ],
-      "oil_temperature2": [
-        0.0,
-        120.0
-      ],
-      "oil_temperature3": [
-        0.0,
-        120.0
-      ],
-      "oil_pressure": [
-        0.0,
-        100.0
-      ],
-      "oil_pressure1": [
-        0.0,
-        100.0
-      ],
-      "oil_pressure2": [
-        0.0,
-        100.0
-      ],
-      "oil_pressure3": [
-        0.0,
-        100.0
-      ]
-    },
-    "parts_holes_dmg": {
-      "part": "fuse"
-    },
-    "parts_oil_dmg": {
-      "part": [
-        "engine1",
-        "engine2",
-        "engine3",
-        "engine4"
-      ]
-    }
   },
   "weapon_presets": {
     "preset": [

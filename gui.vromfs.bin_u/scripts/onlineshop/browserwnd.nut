@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -7,15 +8,17 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let statsd = require("statsd")
 let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { startsWith, stripTags } = require("%sqstd/string.nut")
 
 ::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
   is_main_frame) {
-  ::broadcastEvent(
+  broadcastEvent(
     "EmbeddedBrowser",
     { eventType = event_type, url = url, errorDesc = error_desc,
     errorCode = error_code, isMainFrame = is_main_frame, title = "" }
@@ -23,7 +26,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 }
 
 ::notify_browser_window <- function notify_browser_window(params) {
-  ::broadcastEvent("EmbeddedBrowser", params)
+  broadcastEvent("EmbeddedBrowser", params)
 }
 
 ::is_builtin_browser_active <- function is_builtin_browser_active() {
@@ -94,18 +97,18 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
     local taggedUrl = this.isLoadingPage
       ? this.lastLoadedUrl
       : ::browser_get_current_url()
-    if (!::u.isEmpty(this.urlTags) && taggedUrl != "") {
+    if (!u.isEmpty(this.urlTags) && taggedUrl != "") {
       let tagsStr = " ".join(this.urlTags)
-      if (!::g_string.startsWith(taggedUrl, tagsStr))
+      if (!startsWith(taggedUrl, tagsStr))
         taggedUrl = " ".concat(tagsStr, taggedUrl)
     }
 
-    let newUrl = ::u.isEmpty(this.externalUrl) ? taggedUrl : this.externalUrl
-    openUrl(::u.isEmpty(newUrl) ? this.baseUrl : newUrl, true, false, "internal_browser")
+    let newUrl = u.isEmpty(this.externalUrl) ? taggedUrl : this.externalUrl
+    openUrl(u.isEmpty(newUrl) ? this.baseUrl : newUrl, true, false, "internal_browser")
   }
 
   function setTitle(title) {
-    if (::u.isEmpty(title))
+    if (u.isEmpty(title))
       return
 
     let titleObj = this.scene.findObject("wnd_title")
@@ -168,8 +171,8 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
   function onEventWebPollAuthResult(_param) {
     // WebPollAuthResult event may come before browser opens the page
-    let currentUrl = ::u.isEmpty(::browser_get_current_url()) ? this.url : ::browser_get_current_url()
-    if (::u.isEmpty(currentUrl))
+    let currentUrl = u.isEmpty(::browser_get_current_url()) ? this.url : ::browser_get_current_url()
+    if (u.isEmpty(currentUrl))
       return
     // we have to update externalUrl for any pollId
     // so we don't care about pollId from param
@@ -188,7 +191,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
   }
 
   function onDestroy() {
-    ::broadcastEvent("DestroyEmbeddedBrowser")
+    broadcastEvent("DestroyEmbeddedBrowser")
   }
 
   function wordWrapText(str, width) {
@@ -219,6 +222,6 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
       urlStr = this.wordWrapText(urlStr, splitByChars)
     }
     return format("textareaNoTab { %s:t='yes'; overlayTextColor:t='faded'; text:t='%s'; }",
-      fontSizePropName, ::g_string.stripTags(urlStr))
+      fontSizePropName, stripTags(urlStr))
   }
 }

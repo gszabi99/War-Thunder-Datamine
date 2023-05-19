@@ -1,10 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
 ::SlotbarPresetsList <- class {
@@ -30,11 +33,11 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       presets = array(this.maxPresets, null)
       isSmallFont = ::is_low_width_screen()
     }
-    let blk = ::handyman.renderCached(("%gui/slotbar/slotbarPresets.tpl"), view)
+    let blk = handyman.renderCached(("%gui/slotbar/slotbarPresets.tpl"), view)
     this.scene.getScene().replaceContentFromText(this.scene, blk, blk.len(), this)
     this.update()
 
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT)
+    subscribe_handler(this, ::g_listener_priority.DEFAULT)
   }
 
   function destroy() {
@@ -54,7 +57,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
   function getPresetsData() {
     let curPresetIdx = this.getCurPresetIdx()
-    let res = ::u.mapAdvanced(::slotbarPresets.list(this.getCurCountry()),
+    let res = u.mapAdvanced(::slotbarPresets.list(this.getCurCountry()),
       @(l, idx, ...) {
         title = l.title
         isEnabled = l.enabled || idx == curPresetIdx //enable current preset for list
@@ -89,7 +92,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   }
 
   function updatePresetObj(obj, wasData, newData) {
-    if (::u.isEqual(wasData, newData))
+    if (u.isEqual(wasData, newData))
       return false
 
     let isEnabled = newData.isEnabled

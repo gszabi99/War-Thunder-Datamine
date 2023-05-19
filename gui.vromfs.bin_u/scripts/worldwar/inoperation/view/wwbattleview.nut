@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
@@ -68,7 +70,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   }
 
   function getFullBattleName() {
-    return ::g_string.implode([this.getBattleName(), this.battle.getLocName(this.playerSide)], loc("ui/comma"))
+    return loc("ui/comma").join([this.getBattleName(), this.battle.getLocName(this.playerSide)], true)
   }
 
   function defineTeamBlock(sides) {
@@ -154,7 +156,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
         isInvert = canAlignRight && sideIdx != 0
       }
 
-      armies.armyViews = ::handyman.renderCached(this.sceneTplArmyViewsName, view)
+      armies.armyViews = handyman.renderCached(this.sceneTplArmyViewsName, view)
       let invert = sideIdx != 0
 
       let avaliableUnits = []
@@ -209,7 +211,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
       isShowTotalCount = true
       hasSpaceBetweenUnits = hasLineSpacing
     }] }
-    return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList.tpl", view)
+    return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList.tpl", view)
   }
 
   function isStarted() {
@@ -299,13 +301,13 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
         canJoinLocKey = cantJoinReasonData.reasonText
     }
 
-    return ::u.isEmpty(canJoinLocKey) ? "" : loc(canJoinLocKey)
+    return u.isEmpty(canJoinLocKey) ? "" : loc(canJoinLocKey)
   }
 
   function getBattleStatusWithTimeText() {
     local text = this.getBattleStatusText()
     let durationText = this.getBattleDurationTime()
-    if (!::u.isEmpty(durationText))
+    if (!u.isEmpty(durationText))
       text += loc("ui/colon") + durationText
 
     return text
@@ -317,7 +319,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
     local text = this.getBattleStatusText()
     let canJoinText = this.getCanJoinText()
-    if (!::u.isEmpty(canJoinText))
+    if (!u.isEmpty(canJoinText))
       text += loc("ui/dot") + " " + canJoinText
 
     return text

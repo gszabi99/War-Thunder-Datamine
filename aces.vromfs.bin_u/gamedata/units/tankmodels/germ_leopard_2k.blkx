@@ -87,6 +87,12 @@
       "superstructure_back_dm": {
         "armorThickness": 12.0
       },
+      "turret_06_back_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_08_bottom_dm": {
+        "armorThickness": 20.0
+      },
       "turret_06_bottom_dm": {
         "armorThickness": 14.0
       },
@@ -1721,15 +1727,15 @@
         "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           2.5,
           0.0,
           0.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.02,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2019,13 +2025,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -3051,15 +3057,15 @@
               "blk": "gameData/Weapons/groundModels_weapons/20mm_Rh_202_user_cannon.blk",
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "auto_cannon_cartridge_case",
-              "sleevesLifeTime": 4.0,
-              "sleeveImpulse": [
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "shellCasingLifeTime": 4.0,
+              "shellCasingImpulse": [
                 2.5,
                 0.0,
                 0.0
               ],
-              "linkSleeveToGun": true,
+              "linkShellCasingToGun": true,
               "recoilOffset": 0.02,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,

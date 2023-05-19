@@ -58,6 +58,11 @@ let function findAnyNotResearchedMod(unit) {
   return null
 }
 
+let function isModMounted(unitName, modName) {
+  let status = ::shop_get_module_research_status(unitName, modName)
+  return (status & ES_ITEM_STATUS_MOUNTED) != 0
+}
+
 let function isModAvailableOrFree(unitName, modName) {
   return (::shop_is_modification_available(unitName, modName, true)
           || (!::wp_get_modification_cost(unitName, modName) && !::wp_get_modification_cost_gold(unitName, modName)))
@@ -131,10 +136,11 @@ let function updateRelationModificationList(unit, modifName) {
 }
 
 ::cross_call_api.getModificationByName <- @(unitName, modName)
-  getModificationByName(::getAircraftByName(unitName), modName)
+  getModificationByName(getAircraftByName(unitName), modName)
 
 return {
   canBuyMod
+  isModMounted
   isModResearched
   isModClassPremium
   isModClassExpendable

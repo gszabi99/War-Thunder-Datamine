@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -33,10 +34,10 @@ local setTextToObj = function(obj, coloredText, value) {
   if (!checkObj(obj))
     return
 
-  if (::u.isBool(value))
+  if (u.isBool(value))
     value = loc("options/{0}".subst(value ? "yes" : "no"))
 
-  obj.setValue((!::u.isEmpty(value))
+  obj.setValue((!u.isEmpty(value))
     ? "{0}{1}".subst(coloredText, colorize("activeTextColor", value.tostring()))
     : "")
 }
@@ -67,7 +68,7 @@ return function(scene, sessionInfo) {
   setTextToObj(nameObj, loc("multiplayer/game_host") + loc("ui/colon"), creatorName)
 
   let teams = ::SessionLobby.getTeamsCountries(sessionInfo)
-  let isEqual = teams.len() == 1 || ::u.isEqual(teams[0], teams[1])
+  let isEqual = teams.len() == 1 || u.isEqual(teams[0], teams[1])
   let cObj1 = scene.findObject("countries1")
   let cObj2 = scene.findObject("countries2")
   if (checkObj(cObj1)) {
@@ -114,7 +115,7 @@ return function(scene, sessionInfo) {
     envTexts.append(loc("options/weather" + missionInfo.weather))
   if ("environment" in missionInfo)
     envTexts.append(::get_mission_time_text(missionInfo.environment))
-  setTextToObj(envObj, loc("sm_conditions") + loc("ui/colon"), ::g_string.implode(envTexts, ", "))
+  setTextToObj(envObj, loc("sm_conditions") + loc("ui/colon"), ", ".join(envTexts, true))
 
   let difObj = scene.findObject("session_difficulty")
   if (checkObj(difObj)) {

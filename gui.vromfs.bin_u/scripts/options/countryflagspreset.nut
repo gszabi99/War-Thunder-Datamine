@@ -4,7 +4,10 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-::g_script_reloader.loadOnce("%scripts/options/bhvHarmonizedImage.nut")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+g_script_reloader.loadOnce("%scripts/options/bhvHarmonizedImage.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")
@@ -59,7 +62,7 @@ let DataBlock = require("DataBlock")
   }
 }
 
-::add_event_listener("GameLocalizationChanged", function(_params) {
+add_event_listener("GameLocalizationChanged", function(_params) {
     ::init_country_flags_preset()
   }, null, ::g_listener_priority.CONFIG_VALIDATION)
 

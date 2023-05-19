@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -12,7 +14,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_clan_type._getCreateCost <- function _getCreateCost() {
   let blk = ::get_warpoints_blk()
-  let cost = ::Cost()
+  let cost = Cost()
   cost.gold = blk?[::clan_get_gold_cost_param_name(this.code)] ?? 0
   cost.wp = blk?[::clan_get_wp_cost_param_name(this.code)] ?? 0
   return cost
@@ -20,7 +22,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_clan_type._getPrimaryInfoChangeCost <- function _getPrimaryInfoChangeCost() {
   let blk = ::get_warpoints_blk()
-  let cost = ::Cost()
+  let cost = Cost()
   if (!::clan_get_admin_editor_mode()) {
     cost.gold = blk?[::clan_get_primary_info_gold_cost_param_name(this.code)] ?? 0
     cost.wp = blk?[::clan_get_primary_info_wp_cost_param_name(this.code)] ?? 0
@@ -30,7 +32,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_clan_type._getSecondaryInfoChangeCost <- function _getSecondaryInfoChangeCost() {
   let blk = ::get_warpoints_blk()
-  let cost = ::Cost()
+  let cost = Cost()
   if (!::clan_get_admin_editor_mode()) {
     cost.gold = blk?[::clan_get_secondary_info_gold_cost_param_name(this.code)] ?? 0
     cost.wp = blk?[::clan_get_secondary_info_wp_cost_param_name(this.code)] ?? 0
@@ -84,7 +86,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_clan_type._getMembersUpgradeCost <- function _getMembersUpgradeCost(current_limit) {
-  return ::Cost(0, max(0, ::clan_get_members_upgrade_cost(this.code, current_limit)))
+  return Cost(0, max(0, ::clan_get_members_upgrade_cost(this.code, current_limit)))
 }
 
 ::g_clan_type._getMembersUpgradeStep <- function _getMembersUpgradeStep() {
@@ -197,7 +199,7 @@ enums.addTypesByGlobalName("g_clan_type", {
 
 ::g_clan_type.getUpgradeCost <- function getUpgradeCost(oldType, newType) {
   let blk = ::get_warpoints_blk()
-  let cost = ::Cost()
+  let cost = Cost()
   if (!::clan_get_admin_editor_mode()) {
     cost.gold = blk?[::clan_get_upgrade_gold_cost_param_name(oldType.code, newType.code)] ?? 0
     cost.wp = blk?[::clan_get_upgrade_wp_cost_param_name(oldType.code, newType.code)] ?? 0

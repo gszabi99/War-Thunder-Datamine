@@ -704,6 +704,7 @@ textareaNoTab[shadeStyle=LiveStats] {
 }
 
 [hintStyle=hudHintCommon] hintRow textareaNoTab,
+[hintStyle=hudHintAction] hintRow textareaNoTab,
 [hintStyle=hudMinor] hintRow textareaNoTab,
 [hintStyle=hudHintBig] hintRow textareaNoTab {
   color: @white;
@@ -716,6 +717,35 @@ textareaNoTab[shadeStyle=LiveStats] {
 [hintStyle=hudHintCommon] hintRow > img {
   size:0.06sh, 0.06sh;
   background-svg-size:0.06sh, 0.06sh;
+}
+
+[hintStyle=hudHintAction] {
+  pos:0, 0;
+}
+
+[hintStyle=hudHintAction] hintRow {
+  height:2/3@shortcutImageHeight;
+}
+
+[hintStyle=hudHintAction] hintRow > img {
+  size:0.04sh, 0.04sh;
+  background-svg-size:0.04sh, 0.04sh;
+}
+
+[hintStyle=hudHintAction] hintRow > keyboardButton {
+  size:2/3@shortcutImageHeight, 2/3@shortcutImageHeight;
+  background-svg-size:2/3@shortcutImageHeight, 2/3@shortcutImageHeight;
+  min-width:2/3@shortcutImageHeight;
+}
+
+[hintStyle=hudHintAction] hintRow > timeBar textareaNoTab,
+[hintStyle=hudHintAction] hintRow > textareaNoTab,
+[hintStyle=hudHintAction] keyboardButtonText {
+  font:@fontHudSmall;
+}
+
+[hintStyle=hudHintAction] hintRow > textareaNoTab {
+  margin-top:ph/2 + @hintRowCenterOffsetY/2 - h/2;
 }
 
 [hintStyle=hudMinor] hintRow > img {

@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -8,11 +10,12 @@ from "%scripts/dagui_library.nut" import *
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 let function isRewardBest(medal, clanData) {
   if ((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
     foreach (reward in clanData.clanBestRewards)
-      if (::u.isEqual(reward, medal.bestRewardsConfig))
+      if (u.isEqual(reward, medal.bestRewardsConfig))
         return true
 
   return false
@@ -23,7 +26,7 @@ let function isRewardVisible (medal, clanData) {
     return true
 
   foreach (reward in clanData.clanBestRewards)
-    if (::u.isEqual(reward, medal.bestRewardsConfig))
+    if (u.isEqual(reward, medal.bestRewardsConfig))
       return true
 
   return false
@@ -49,7 +52,7 @@ let function isRewardVisible (medal, clanData) {
       isEditable = this.canEditBestRewards
 
       rewards = this.rewards.map(@(reward, idx) {
-        rewardImage = ::LayersIcon.getIconData(reward.iconStyle, null, null, null,
+        rewardImage = LayersIcon.getIconData(reward.iconStyle, null, null, null,
           reward.iconParams, reward.iconConfig)
         rewardId = "reward_" + idx
         award_title_text = reward.name
@@ -74,7 +77,7 @@ let function isRewardVisible (medal, clanData) {
   }
 
   function updateBestRewardsIds(id, isChecked) {
-    let rIdx = ::g_string.cutPrefix(id, "reward_").tointeger()
+    let rIdx = cutPrefix(id, "reward_").tointeger()
     let bridx = this.bestIds.findindex(@(i) i == rIdx)
     if (bridx == null && isChecked)
       this.bestIds.append(rIdx)
@@ -109,7 +112,7 @@ let function isRewardVisible (medal, clanData) {
 
   function goBack() {
     base.goBack()
-    if (! this.canEditBestRewards || ::u.isEqual(this.bestIds, this.checkupIds))
+    if (! this.canEditBestRewards || u.isEqual(this.bestIds, this.checkupIds))
       return
 
     let taskId = ::char_send_custom_action("cln_set_clan_best_rewards",

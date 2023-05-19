@@ -172,9 +172,6 @@
       "turret_05_front_dm": {
         "armorThickness": 15.0
       },
-      "turret_02_side_dm": {
-        "armorThickness": 8.9
-      },
       "turret_01_side_dm": {
         "armorThickness": 8.0
       },
@@ -207,7 +204,10 @@
       "ex_decor_r_01_dm": {},
       "ex_decor_l_01_dm": {},
       "ex_decor_r_03_dm": {},
-      "ex_decor_l_03_dm": {}
+      "ex_decor_l_03_dm": {},
+      "turret_02_side_dm": {
+        "hidableInViewer": false
+      }
     },
     "sensor": {
       "armorClass": "tank_structural_steel",
@@ -1560,17 +1560,17 @@
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -5.0,
           -2.0
         ],
-        "sleevesImpulseOffset": 0.1,
-        "linkSleeveToGun": true,
+        "shellCasingImpulseOffset": 0.1,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -1678,17 +1678,17 @@
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -5.0,
           -2.0
         ],
-        "sleevesImpulseOffset": 0.1,
-        "linkSleeveToGun": true,
+        "shellCasingImpulseOffset": 0.1,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -1774,17 +1774,17 @@
         "emitter": "bone_gun_barrel_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_03",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_03",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -5.0,
           -2.0
         ],
-        "sleevesImpulseOffset": 0.1,
-        "linkSleeveToGun": true,
+        "shellCasingImpulseOffset": 0.1,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -1870,17 +1870,17 @@
         "emitter": "bone_gun_barrel_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_04",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_04",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -5.0,
           -2.0
         ],
-        "sleevesImpulseOffset": 0.1,
-        "linkSleeveToGun": true,
+        "shellCasingImpulseOffset": 0.1,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -2148,13 +2148,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2978,17 +2978,17 @@
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_01",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_01",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -5.0,
                 -2.0
               ],
-              "sleevesImpulseOffset": 0.1,
-              "linkSleeveToGun": true,
+              "shellCasingImpulseOffset": 0.1,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "jammedReloadTime": 12.0,
               "defaultYaw": 0.0,
@@ -3096,17 +3096,17 @@
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_02",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_02",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -5.0,
                 -2.0
               ],
-              "sleevesImpulseOffset": 0.1,
-              "linkSleeveToGun": true,
+              "shellCasingImpulseOffset": 0.1,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "jammedReloadTime": 12.0,
               "defaultYaw": 0.0,
@@ -3192,17 +3192,17 @@
               "emitter": "bone_gun_barrel_03",
               "flash": "emtr_gun_flame_03",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_03",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_03",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -5.0,
                 -2.0
               ],
-              "sleevesImpulseOffset": 0.1,
-              "linkSleeveToGun": true,
+              "shellCasingImpulseOffset": 0.1,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "jammedReloadTime": 12.0,
               "defaultYaw": 0.0,
@@ -3288,17 +3288,17 @@
               "emitter": "bone_gun_barrel_04",
               "flash": "emtr_gun_flame_04",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_04",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_04",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -5.0,
                 -2.0
               ],
-              "sleevesImpulseOffset": 0.1,
-              "linkSleeveToGun": true,
+              "shellCasingImpulseOffset": 0.1,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "jammedReloadTime": 12.0,
               "defaultYaw": 0.0,
@@ -3593,6 +3593,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

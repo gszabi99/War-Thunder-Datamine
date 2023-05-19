@@ -8,7 +8,8 @@ from "%scripts/dagui_library.nut" import *
 let statsd = require("statsd")
 let { get_time_msec } = require("dagor.time")
 let { get_current_mission_name, get_game_mode } = require("mission")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::MissionStats <- {
   [PERSISTENT_DATA_PARAMS] = ["sendDelaySec", "_spawnTime"]
@@ -19,7 +20,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 }
 
 ::MissionStats.init <- function init() {
-  ::subscribe_handler(this)
+  subscribe_handler(this)
   this.reset()
 }
 
@@ -48,4 +49,4 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 
 //!!must be atthe end of the file
 ::MissionStats.init()
-::g_script_reloader.registerPersistentDataFromRoot("MissionStats")
+g_script_reloader.registerPersistentDataFromRoot("MissionStats")

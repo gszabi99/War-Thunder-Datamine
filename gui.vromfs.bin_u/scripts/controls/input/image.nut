@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 ::Input.InputImage <- class extends ::Input.InputBase {
   image = ""
@@ -13,7 +14,7 @@ from "%scripts/dagui_library.nut" import *
 
   function getMarkup() {
     let data = this.getMarkupData()
-    return ::handyman.renderCached(data.template, data.view)
+    return handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData() {

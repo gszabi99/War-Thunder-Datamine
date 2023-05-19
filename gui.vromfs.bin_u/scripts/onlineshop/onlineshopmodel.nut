@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { ceil } = require("math")
@@ -183,11 +185,11 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
   }
 
   let customPurchaseLink = this.getCustomPurchaseLink(goodsName)
-  if (!::u.isEmpty(customPurchaseLink))
+  if (!u.isEmpty(customPurchaseLink))
     return this.createPurchaseData(goodsName, null, customPurchaseLink)
 
   let guid = getBundleId(goodsName)
-  if (!::u.isEmpty(guid))
+  if (!u.isEmpty(guid))
     return this.createPurchaseData(goodsName, guid)
 
   this._purchaseDataRecursion++
@@ -293,7 +295,7 @@ let function getEntitlementsByFeature(name) {
     return true
   }
   let customPurchaseUrl = this.getCustomPurchaseUrl(this.getGoodsChapter(purchaseData.sourceEntitlement))
-  if (! ::u.isEmpty(customPurchaseUrl)) {
+  if (! u.isEmpty(customPurchaseUrl)) {
     this.openShopUrl(customPurchaseUrl)
     return true
   }
@@ -503,7 +505,7 @@ let function getEntitlementsByFeature(name) {
   ::gui_start_modal_wnd(hClass, { owner = owner, afterCloseFunc = afterCloseFunc, chapter = chapter })
 }
 
-::subscribe_handler(::OnlineShopModel, ::g_listener_priority.CONFIG_VALIDATION)
+subscribe_handler(::OnlineShopModel, ::g_listener_priority.CONFIG_VALIDATION)
 
 let function openOnlineShopFromPromo(handler, params) {
   let shopType = params?[0]

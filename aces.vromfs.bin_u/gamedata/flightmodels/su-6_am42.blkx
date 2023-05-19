@@ -4,6 +4,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.142,
   "gearSinkRangeC": 0.005,
+  "gyroSight": false,
   "type": "typeStormovik",
   "paratrooper": "ally",
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -2080,7 +2081,7 @@
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
-      "preset": "ns37_common"
+      "preset": "deafult_common"
     }
   },
   "gunnerFps": {
@@ -2094,40 +2095,44 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "su_6_m71_default",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_default.blk"
+        "name": "su_6_am42_default",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_default.blk"
       },
       {
-        "name": "su_6_m71_ro82",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_ro82.blk"
+        "name": "su_6_am42_vya23",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_vya23.blk"
       },
       {
-        "name": "su_6_m71_rbs82",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_rbs82.blk"
+        "name": "su_6_am42_ro82",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_ro82.blk"
       },
       {
-        "name": "su_6_m71_rs132",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_rs132.blk"
+        "name": "su_6_am42_rbs82",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_rbs82.blk"
       },
       {
-        "name": "su_6_m71_rbs132",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_rbs132.blk"
+        "name": "su_6_am42_rs132",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_rs132.blk"
       },
       {
-        "name": "su_6_m71_16x25m1",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_16x25m1.blk"
+        "name": "su_6_am42_rbs132",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_rbs132.blk"
       },
       {
-        "name": "su_6_m71_fab50",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_fab50.blk"
+        "name": "su_6_am42_16x25m1",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_16x25m1.blk"
       },
       {
-        "name": "su_6_m71_fab100",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_fab100.blk"
+        "name": "su_6_am42_fab50",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_fab50.blk"
       },
       {
-        "name": "su_6_m71_fab250",
-        "blk": "gameData/FlightModels/weaponPresets/su_6_m71_fab250.blk"
+        "name": "su_6_am42_fab100",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_fab100.blk"
+      },
+      {
+        "name": "su_6_am42_fab250",
+        "blk": "gameData/FlightModels/weaponPresets/su_6_am42_fab250.blk"
       }
     ]
   },
@@ -2166,220 +2171,96 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "ns37_common",
-            "HideNodes": {
-              "node": [
-                "cannon_23_l",
-                "cannon_23_r",
-                "flare6",
-                "flare7"
-              ]
-            },
-            "HideDmParts": {
-              "node": [
-                "cannon3_dm",
-                "cannon4_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/gunShKAS.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "mgun1_dm",
-                "isWingLPositioned": false,
-                "isWingRPositioned": false,
-                "bullets": 750,
-                "spread": 1.2
-              },
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/gunShKAS.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "mgun2_dm",
-                "isWingLPositioned": false,
-                "isWingRPositioned": false,
-                "bullets": 750,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonNS37_su_6.blk",
-                "emitter": "flare3",
-                "flash": "flare3",
-                "shell": "emtr_shellrejection3",
-                "dm": "cannon1_dm",
-                "isWingLPositioned": false,
-                "isWingRPositioned": false,
-                "bullets": 45,
-                "spread": 1.35,
-                "traceOffset": 2
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonNS37_su_6.blk",
-                "emitter": "flare4",
-                "flash": "flare4",
-                "shell": "emtr_shellrejection4",
-                "dm": "cannon2_dm",
-                "bullets": 45,
-                "spread": 1.35,
-                "traceOffset": 3
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/gunUB_turret.blk",
-                "breechInCockpit": true,
-                "emitter": "gun1",
-                "flash": "flare5",
-                "dm": "gunner1_dm",
-                "gunnerDm": "gunner1_dm",
-                "gunDm": "gun1_dm",
-                "partsDP": "gun1_dm",
-                "bullets": 196,
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1"
-                },
-                "limits": {
-                  "yaw": [
-                    -30.0,
-                    30.0
-                  ],
-                  "pitch": [
-                    -1.0,
-                    45.0
-                  ]
-                },
-                "limitsDeadzone": {
-                  "yaw": [
-                    -1.0,
-                    1.0
-                  ],
-                  "pitch": [
-                    -8.0,
-                    25.0
-                  ]
-                }
-              }
+        "WeaponPreset": {
+          "name": "deafult_common",
+          "HideNodes": {
+            "node": [
+              "cannon_23_l",
+              "cannon_23_r",
+              "flare6",
+              "flare7",
+              "cannon_37_l",
+              "cannon_37_r",
+              "flare3",
+              "flare4"
             ]
           },
-          {
-            "name": "vya_common",
-            "HideNodes": {
-              "node": [
-                "cannon_37_l",
-                "cannon_37_r",
-                "flare3",
-                "flare4"
-              ]
-            },
-            "HideDmParts": {
-              "node": [
-                "cannon1_dm",
-                "cannon2_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/gunShKAS.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "mgun1_dm",
-                "isWingLPositioned": false,
-                "isWingRPositioned": false,
-                "bullets": 750,
-                "spread": 1.2
-              },
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/gunShKAS.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "mgun2_dm",
-                "isWingLPositioned": false,
-                "isWingRPositioned": false,
-                "bullets": 750,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonVYa.blk",
-                "emitter": "flare6",
-                "flash": "flare6",
-                "shell": "emtr_shellrejection3",
-                "dm": "cannon3_dm",
-                "isWingLPositioned": false,
-                "isWingRPositioned": false,
-                "bullets": 120,
-                "spread": 1.35,
-                "traceOffset": 2
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonVYa.blk",
-                "emitter": "flare7",
-                "flash": "flare7",
-                "shell": "emtr_shellrejection4",
-                "dm": "cannon4_dm",
-                "bullets": 120,
-                "spread": 1.35,
-                "traceOffset": 3
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/gunUB_turret.blk",
-                "breechInCockpit": true,
-                "emitter": "gun1",
-                "flash": "flare5",
-                "dm": "gunner1_dm",
-                "gunnerDm": "gunner1_dm",
-                "gunDm": "gun1_dm",
-                "partsDP": "gun1_dm",
-                "bullets": 196,
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1"
-                },
-                "limits": {
-                  "yaw": [
-                    -30.0,
-                    30.0
-                  ],
-                  "pitch": [
-                    -1.0,
-                    45.0
-                  ]
-                },
-                "limitsDeadzone": {
-                  "yaw": [
-                    -1.0,
-                    1.0
-                  ],
-                  "pitch": [
-                    0.0,
-                    25.0
-                  ]
-                }
-              }
+          "HideDmParts": {
+            "node": [
+              "cannon3_dm",
+              "cannon4_dm",
+              "cannon1_dm",
+              "cannon2_dm"
             ]
-          }
-        ]
+          },
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunShKAS.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 750,
+              "spread": 1.2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunShKAS.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun2_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 750,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunUB_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare5",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 196,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1"
+              },
+              "limits": {
+                "yaw": [
+                  -30.0,
+                  30.0
+                ],
+                "pitch": [
+                  -1.0,
+                  45.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -1.0,
+                  1.0
+                ],
+                "pitch": [
+                  -8.0,
+                  25.0
+                ]
+              }
+            }
+          ]
+        }
       },
       {
         "index": 1,
-        "tier": 8,
+        "tier": 9,
         "order": 1,
         "WeaponPreset": [
           {
@@ -2610,7 +2491,7 @@
       },
       {
         "index": 2,
-        "tier": 7,
+        "tier": 8,
         "order": 3,
         "WeaponPreset": [
           {
@@ -2642,6 +2523,10 @@
               "bullets": 1,
               "separate": true,
               "external": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ns37_left"
             }
           },
           {
@@ -2658,14 +2543,102 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ns37_left"
             }
           }
         ]
       },
       {
         "index": 3,
-        "tier": 6,
+        "tier": 7,
         "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "cannon_inner",
+            "name": "ns37_left",
+            "ShowNodes": {
+              "node": "cannon_37_l"
+            },
+            "ShowDmParts": {
+              "node": "cannon1_dm"
+            },
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonNS37_su_6.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection3",
+              "dm": "cannon1_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 45,
+              "spread": 1.35,
+              "traceOffset": 2
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "ns37_right"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "fab_100"
+              },
+              {
+                "slot": 2,
+                "preset": "fab_250"
+              },
+              {
+                "slot": 6,
+                "preset": "fab_100"
+              },
+              {
+                "slot": 6,
+                "preset": "fab_250"
+              },
+              {
+                "slot": 4,
+                "preset": "fab_100_x4_central"
+              }
+            ]
+          },
+          {
+            "iconType": "cannon_inner",
+            "name": "vya23_left",
+            "reqModification": "su_2_am42_vya23",
+            "ShowNodes": {
+              "node": "cannon_23_l"
+            },
+            "ShowDmParts": {
+              "node": "cannon3_dm"
+            },
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonVYa.blk",
+              "emitter": "flare6",
+              "flash": "flare6",
+              "shell": "emtr_shellrejection3",
+              "dm": "cannon3_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 120,
+              "spread": 1.35,
+              "traceOffset": 2
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "vya23_right"
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 6,
+        "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -2837,13 +2810,93 @@
                 "bullets": 1,
                 "separate": true
               }
-            ]
+            ],
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ns37_left"
+            }
           }
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 5,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "cannon_inner",
+            "name": "ns37_right",
+            "ShowNodes": {
+              "node": "cannon_37_r"
+            },
+            "ShowDmParts": {
+              "node": "cannon2_dm"
+            },
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonNS37_su_6.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection4",
+              "dm": "cannon2_dm",
+              "bullets": 45,
+              "spread": 1.35,
+              "traceOffset": 3
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ns37_left"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 6,
+                "preset": "fab_100"
+              },
+              {
+                "slot": 6,
+                "preset": "fab_250"
+              },
+              {
+                "slot": 2,
+                "preset": "fab_100"
+              },
+              {
+                "slot": 2,
+                "preset": "fab_250"
+              }
+            ]
+          },
+          {
+            "iconType": "cannon_inner",
+            "name": "vya23_right",
+            "reqModification": "su_2_am42_vya23",
+            "ShowNodes": {
+              "node": "cannon_23_r"
+            },
+            "ShowDmParts": {
+              "node": "cannon4_dm"
+            },
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonVYa.blk",
+              "emitter": "flare7",
+              "flash": "flare7",
+              "shell": "emtr_shellrejection4",
+              "dm": "cannon4_dm",
+              "bullets": 120,
+              "spread": 1.35,
+              "traceOffset": 3
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "vya23_left"
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 4,
         "order": 4,
         "WeaponPreset": [
           {
@@ -2875,6 +2928,10 @@
               "bullets": 1,
               "separate": true,
               "external": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 5,
+              "preset": "ns37_right"
             }
           },
           {
@@ -2891,13 +2948,17 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 5,
+              "preset": "ns37_right"
             }
           }
         ]
       },
       {
-        "index": 5,
-        "tier": 4,
+        "index": 7,
+        "tier": 3,
         "order": 2,
         "WeaponPreset": [
           {
@@ -3366,14 +3427,44 @@
     "turnTime": 34.5848
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "ns37_air_target": {},
     "ns37_armor_target": {},
     "ns37_belt_pack": {
@@ -3418,16 +3509,7 @@
       "tier": 3,
       "group": "mg151",
       "modClass": "weapon",
-      "invertEnableLogic": false,
-      "prevModification": "ub_turret_new_gun",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "vya_common"
-          }
-        }
-      }
+      "prevModification": "ub_turret_new_gun"
     },
     "pe-3_dz-40": {
       "modClass": "weapon",

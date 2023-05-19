@@ -1,9 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,7 +23,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
-bundlesShopInfo.subscribe(@(_val) ::broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
+bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -148,7 +152,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
               id = curChapter
               itemText = "#charServer/chapter/" + curChapter
             }
-            data += ::handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
+            data += handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
           }
           if (this.goods[name]?.chapterImage)
             this.chImages[this.goods[name].chapter] <- this.goods[name].chapterImage
@@ -161,7 +165,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
           isSelected = first
           discountText = discount > 0 ? ("-" + discount + "%") : null
         }
-        data += ::handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
+        data += handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
       }
       first = false
       idx++
@@ -181,7 +185,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       let contentObj = this.scene.findObject("wnd_content")
       contentObj.flow = "vertical"
 
-      data = ::handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow.tpl"), {
+      data = handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow.tpl"), {
         chImages = (this.chapter in this.chImages) ? $"#ui/onlineShop/{this.chImages[this.chapter]}.ddsx" : null
         rows = rowsView
       })
@@ -292,7 +296,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
         if (!checkObj(this.scene))
           return
 
-        ::broadcastEvent("EntitlementsUpdatedFromOnlineShop")
+        broadcastEvent("EntitlementsUpdatedFromOnlineShop")
         this.reinitScreen()
         this.goForward(null)
       }
@@ -318,7 +322,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       return this.onOnlinePurchase(this.task)
 
     let costGold = "goldCost" in product ? ::get_entitlement_cost_gold(product.name) : 0
-    let price = ::Cost(0, costGold)
+    let price = Cost(0, costGold)
     let msgText = ::warningIfGold(
       loc("onlineShop/needMoneyQuestion",
         { purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance() }),
@@ -447,7 +451,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
       this.updateItemIcon(this.task)
       ::update_gamercards()
     }
-    ::broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = this.goods?[this.task] ?? {} })
+    broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = this.goods?[this.task] ?? {} })
   }
 
   function onEventModalWndDestroy(_params) {
@@ -491,10 +495,10 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
     else {
       amount = amount.tointeger()
 
-      let originAmount = isGold ? ::Cost(0, amount) : ::Cost(amount, 0)
+      let originAmount = isGold ? Cost(0, amount) : Cost(amount, 0)
       local addString = ""
       if (additionalAmount > 0) {
-        let addAmount = isGold ? ::Cost(0, additionalAmount) : ::Cost(additionalAmount, 0)
+        let addAmount = isGold ? Cost(0, additionalAmount) : Cost(additionalAmount, 0)
         addString = loc("ui/parentheses/space", { text = "+" + addAmount.tostring() })
       }
 

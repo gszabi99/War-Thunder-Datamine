@@ -1,6 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -30,8 +33,8 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
     getAmount = function(_unit, _item) { return 0 }
     getMaxAmount = function(_unit, _item) { return 0 }
 
-    getUnlockCost = function(_unit, _item) { return ::Cost() }
-    getCost = function(_unit, _item) { return ::Cost() }
+    getUnlockCost = function(_unit, _item) { return Cost() }
+    getCost = function(_unit, _item) { return Cost() }
     getScoreCostText = function(_unit, _item) { return "" }
 
     purchase = function() {}
@@ -41,14 +44,14 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 
 ::g_weaponry_types._getUnlockCost <- function _getUnlockCost(unit, item) {
   if (item.name == "")
-    return ::Cost()
-  return ::Cost(0, ::wp_get_modification_open_cost_gold(unit.name, item.name))
+    return Cost()
+  return Cost(0, ::wp_get_modification_open_cost_gold(unit.name, item.name))
 }
 
 ::g_weaponry_types._getCost <- function _getCost(unit, item) {
   if (item.name == "")
-    return ::Cost()
-  return ::Cost(
+    return Cost()
+  return Cost(
     ::wp_get_modification_cost(unit.name, item.name),
     ::wp_get_modification_cost_gold(unit.name, item.name)
   )
@@ -70,7 +73,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getHeader = @(unit) (unit.isAir() || unit.isHelicopter()) ? loc("options/secondary_weapons")
        : loc("options/additional_weapons")
     getCost = function(unit, item) {
-      return ::Cost(
+      return Cost(
         ::wp_get_cost2(unit.name, item.name),
         ::wp_get_cost_gold2(unit.name, item.name)
       )
@@ -150,7 +153,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
   SPARE = {
     type = weaponsItem.spare
     getLocName = function(_unit, item, ...) { return loc("spare/" + item.name) }
-    getCost = function(unit, ...) { return ::Cost(
+    getCost = function(unit, ...) { return Cost(
       ::wp_get_spare_cost(unit.name),
       ::wp_get_spare_cost_gold(unit.name)
     ) }
@@ -166,7 +169,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     type = weaponsItem.primaryWeapon
     getLocName = function(unit, item, _limitedName = false) { return getWeaponNameText(unit, true, item.name, " ") }
     getCost = ::g_weaponry_types._getCost
-    getAmount = function(unit, item) { return ::u.isEmpty(item.name) ? 1 : ::shop_is_modification_purchased(unit.name, item.name) }
+    getAmount = function(unit, item) { return u.isEmpty(item.name) ? 1 : ::shop_is_modification_purchased(unit.name, item.name) }
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
     canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
   }

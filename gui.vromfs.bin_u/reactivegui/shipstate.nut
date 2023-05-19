@@ -41,6 +41,8 @@ let shipState = {
   brokenTransmissionCount = Watched(0)
   transmissionsInCooldown = Watched(false)
 
+  blockMoveControl = Watched(false)
+
   aiGunnersState = Watched(0)
   hasAiGunners = Watched(false)
 

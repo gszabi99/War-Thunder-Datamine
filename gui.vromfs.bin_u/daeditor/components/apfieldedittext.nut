@@ -1,5 +1,5 @@
 from "%darg/ui_imports.nut" import *
-from "ecs" import *
+from "%sqstd/ecs.nut" import *
 
 let {colors, gridHeight, gridMargin} = require("style.nut")
 let {compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj, isCompReadOnly} = require("attrUtil.nut")

@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -32,10 +33,8 @@ from "%scripts/dagui_library.nut" import *
 }
 
 
-::set_shortcuts <- function set_shortcuts(shortcutList, nameList, preset = null) {
-  if (preset == null)
-    preset = ::g_controls_manager.getCurPreset()
-
+::set_shortcuts <- function set_shortcuts(shortcutList, nameList) {
+  let preset = ::g_controls_manager.getCurPreset()
   foreach (i, name in nameList) {
     let hotkey = []
     foreach (shortcut in shortcutList[i]) {
@@ -52,9 +51,7 @@ from "%scripts/dagui_library.nut" import *
     }
     preset.setHotkey(name, hotkey)
   }
-
-  if (preset == ::g_controls_manager.getCurPreset())
-    ::g_controls_manager.commitControls()
+  ::g_controls_manager.commitControls()
 }
 
 
@@ -101,10 +98,6 @@ let joystick_params_template = {
     ::g_controls_manager.commitControls()
   }
 
-  applyParams = function(_joy) {
-    ::g_controls_manager.commitControls()
-  }
-
   bindAxis = function(idx, realAxisIdx) {
     let name = ::get_axis_name(idx)
     let axis = ::g_controls_manager.getCurPreset().getAxis(name)
@@ -113,49 +106,32 @@ let joystick_params_template = {
   }
 
   setFrom = function(params) {
-    ::u.extend(this, params)
+    u.extend(this, params)
   }
 }
-::u.extend(joystick_params_template, ::ControlsPreset.getDefaultParams())
+u.extend(joystick_params_template, ::ControlsPreset.getDefaultParams())
 
 
 ::JoystickParams <- function JoystickParams() {
-  return ::u.copy(joystick_params_template)
+  return u.copy(joystick_params_template)
 }
 
 
 ::joystick_get_cur_settings <- function joystick_get_cur_settings() {
   let result = ::JoystickParams()
-  ::u.extend(result, ::g_controls_manager.getCurPreset().params)
+  u.extend(result, ::g_controls_manager.getCurPreset().params)
   return result
 }
 
 
 ::joystick_set_cur_settings <- function joystick_set_cur_settings(other) {
   let params = ::g_controls_manager.getCurPreset().params
+  local isChanged = false
   foreach (name, value in other)
-    if (!::u.isFunction(value))
+    if (!u.isFunction(value) && params?[name] != value) {
       params[name] <- value
-  ::g_controls_manager.commitControls()
-}
-
-
-::set_controls_preset <- function set_controls_preset(presetPath) {
-  if (presetPath != "")
-    ::g_controls_manager.setCurPreset(::ControlsPreset(presetPath))
-  else
-    ::g_controls_manager.notifyPresetModified()
-}
-
-::get_controls_preset <- function get_controls_preset() {
-  return ""
-}
-
-::restore_default_controls <- function restore_default_controls(_preset) {
-  // Dummy. Preset loading performed by set_controls_preset later
-}
-
-::joystick_set_cur_values <- function joystick_set_cur_values(_settings) {
-  // Settings already changed by JoystickParams
-  ::g_controls_manager.commitControls()
+      isChanged = true
+    }
+  if (isChanged)
+    ::g_controls_manager.commitControls()
 }

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 /**
  * Informs when in-game mouse pointer visibility toggles. In the battle, mouse
  * pointer is usually hidden in HUD, it shows either when some GUI scene is opened
@@ -17,7 +18,7 @@ let forceHideCursor = Watched(false)
 ::on_changed_cursor_visibility <- @(_oldValue) isMouseCursorVisible(::is_cursor_visible_in_gui())
 
 isMouseCursorVisible.subscribe(function(isVisible) {
-  ::broadcastEvent("ChangedCursorVisibility", { isVisible = isVisible })
+  broadcastEvent("ChangedCursorVisibility", { isVisible = isVisible })
 })
 
 return {

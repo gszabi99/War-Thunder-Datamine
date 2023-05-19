@@ -133,6 +133,14 @@
         "armorThickness": 10.0
       }
     },
+    "body_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 300.0,
+      "armorThickness": 4.0,
+      "hidableInViewer": true,
+      "ex_decor_l_02_dm": {},
+      "ex_decor_r_02_dm": {}
+    },
     "turret_shields": {
       "armorClass": "tank_structural_steel",
       "hp": 400.0,
@@ -150,9 +158,7 @@
       "ex_armor_body_l_01_dm": {},
       "ex_armor_body_r_01_dm": {},
       "ex_armor_body_r_02_dm": {},
-      "ex_armor_body_l_02_dm": {},
-      "ex_decor_l_02_dm": {},
-      "ex_decor_r_02_dm": {}
+      "ex_armor_body_l_02_dm": {}
     },
     "turret": {
       "armorClass": "CHA_tank",
@@ -2190,13 +2196,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }

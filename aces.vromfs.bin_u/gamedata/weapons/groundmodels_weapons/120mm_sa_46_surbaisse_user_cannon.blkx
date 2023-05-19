@@ -397,7 +397,7 @@
       "bulletName": "120mm_obus_explosif",
       "hitPowerMult": 40.0,
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.3,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -465,9 +465,9 @@
           "countPortion": 0.2,
           "segment": [
             {
-              "radiusScale": 0.15,
-              "penetrationScale": 3.5,
-              "damageScale": 1.0,
+              "radiusScale": 0.3,
+              "penetrationScale": 6.0,
+              "damageScale": 2.0,
               "angles": [
                 0.0,
                 29.0
@@ -477,7 +477,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [
                 30.0,
@@ -487,7 +487,7 @@
             },
             {
               "radiusScale": 0.35,
-              "penetrationScale": 1.75,
+              "penetrationScale": 2.75,
               "damageScale": 1.5,
               "angles": [
                 70.0,
@@ -498,7 +498,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [
                 111.0,
@@ -508,7 +508,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [
                 181.0,
@@ -518,7 +518,7 @@
             },
             {
               "radiusScale": 0.35,
-              "penetrationScale": 1.75,
+              "penetrationScale": 2.75,
               "damageScale": 1.5,
               "angles": [
                 250.0,
@@ -529,7 +529,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.0,
               "damageScale": 1.0,
               "angles": [
                 291.0,
@@ -539,7 +539,7 @@
             },
             {
               "radiusScale": 0.15,
-              "penetrationScale": 3.5,
+              "penetrationScale": 4.5,
               "damageScale": 1.0,
               "angles": [
                 330.0,
@@ -553,6 +553,20 @@
       },
       "shatterDamage": {
         "breachConeAngle": 45.0
+      },
+      "armorpower": {
+        "ArmorPower0m": [
+          20.0,
+          100.0
+        ],
+        "ArmorPower4000m": [
+          16.0,
+          4000.0
+        ],
+        "ArmorPower10000m": [
+          0.0,
+          10000.0
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [

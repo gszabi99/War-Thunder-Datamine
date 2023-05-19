@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -37,7 +38,7 @@ let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
     let total = max(unlocksObjCount, this.curFavoriteUnlocksBlk.blockCount())
     if (unlocksObjCount == 0 && total > 0) {
       let view = { unlocks = array(total) }
-      let blk = ::handyman.renderCached(("%gui/unlocks/unlockItemSimplified.tpl"), view)
+      let blk = handyman.renderCached(("%gui/unlocks/unlockItemSimplified.tpl"), view)
       this.guiScene.appendWithBlk(this.listContainer, blk, this)
     }
 

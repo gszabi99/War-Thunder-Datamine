@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -32,7 +33,7 @@ let function immitateVoiceChat() {
   if (members.len() <= 1)
     return
 
-  imitateUserSpeaking(::u.chooseRandom(members).uid, ::u.chooseRandom([true, false]))
+  imitateUserSpeaking(u.chooseRandom(members).uid, u.chooseRandom([true, false]))
 }
 
 let function stop() {

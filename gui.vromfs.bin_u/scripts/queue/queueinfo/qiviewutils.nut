@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -56,7 +58,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   local canMeetCountries = {}
   foreach (cSet in countriesSets)
     if (myCountry in cSet.allCountries)
-      canMeetCountries = ::u.tablesCombine(canMeetCountries, cSet.allCountries, function(_a, _b) { return true })
+      canMeetCountries = u.tablesCombine(canMeetCountries, cSet.allCountries, function(_a, _b) { return true })
 
   if (needRankInfo) {
     headerColumns.insert(0, { text = "#sm_era" })
@@ -80,7 +82,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     }
   }
 
-  let markup = ::handyman.renderCached("%gui/queue/queueTableByCountries.tpl", view)
+  let markup = handyman.renderCached("%gui/queue/queueTableByCountries.tpl", view)
   nestObj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
 }
 

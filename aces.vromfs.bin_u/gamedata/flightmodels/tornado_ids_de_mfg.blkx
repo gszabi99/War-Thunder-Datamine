@@ -11,6 +11,7 @@
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": [
     true,
@@ -19,7 +20,6 @@
   "ilsTornado": true,
   "haveCCRPForGun": true,
   "havePointOfInterestDesignator": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "simplifiedJoyAileronMult": 1.0,
@@ -539,6 +539,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -550,6 +562,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -568,6 +592,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -579,6 +615,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -965,6 +1013,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -1002,6 +1056,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1023,6 +1083,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -1064,6 +1130,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2636,8 +2708,8 @@
         180.0
       ],
       "aoa": [
-        0.0,
-        32.0
+        -1.0,
+        23.0
       ],
       "compass": [
         0.0,
@@ -2859,6 +2931,14 @@
         "blk": "gameData/FlightModels/weaponPresets/tornado_ids_de_mfg_fr_mk13_tsc.blk"
       },
       {
+        "name": "tornado_ids_de_mfg_fr_mk13_air",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_ids_de_mfg_fr_mk13_air.blk"
+      },
+      {
+        "name": "tornado_ids_de_mfg_fr_mk13_air_tsc",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_ids_de_mfg_fr_mk13_air_tsc.blk"
+      },
+      {
         "name": "tornado_ids_de_mfg_as_34",
         "blk": "gameData/FlightModels/weaponPresets/tornado_ids_de_mfg_as_34.blk"
       },
@@ -2950,7 +3030,7 @@
         "WeaponPreset": {
           "iconType": "ltc",
           "name": "boz",
-          "reqModification": "countermeasures_belt_pack",
+          "reqModification": "countermeasures_belt_pack_unchecked",
           "ShowNodes": {
             "node": [
               "pylon_bomb1",
@@ -3032,6 +3112,40 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_mk83_air",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "pylon_bomb2_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+              "emitter": "bomb1_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
+              "emitter": "pylon_tsc_1"
+            }
+          },
+          {
             "iconType": "missile_air_to_earth",
             "name": "as_34",
             "reqModification": "gr_as_34",
@@ -3068,6 +3182,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 9,
+              "preset": "ptb_2"
             }
           }
         ]
@@ -3131,6 +3249,40 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_mk83_air",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb3",
+                "pylon_bomb3_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+              "emitter": "bomb3_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
+              "emitter": "pylon_tsc_3"
+            }
+          },
+          {
             "iconType": "missile_air_to_earth",
             "name": "as_34_fuse",
             "reqModification": "gr_as_34",
@@ -3164,6 +3316,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_default"
               },
               {
                 "slot": 7,
@@ -3234,6 +3390,40 @@
               "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_x2.blk",
               "emitter": "pylon_tsc_5"
             }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_mk83_air",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb3",
+                "pylon_bomb3_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+              "emitter": "bomb9_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
+              "emitter": "pylon_tsc_5"
+            }
           }
         ]
       },
@@ -3242,51 +3432,122 @@
         "tier": 6,
         "order": 11,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_large",
-          "name": "1000lbs_mk83_fuse_centr",
-          "reqModification": "us_1000lb_mk83",
-          "ShowNodes": {
-            "node": [
-              "pylon_bomb4",
-              "pylon_bomb4_lap"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_mk83_fuse_centr",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb4",
+                "pylon_bomb4_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "bomb11_ld",
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "as_34_fuse"
+              },
+              {
+                "slot": 8,
+                "preset": "as_34_fuse"
+              }
             ]
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-            "emitter": "bomb11_ld",
-            "bullets": 1
-          },
-          "BannedWeaponPreset": [
-            {
-              "slot": 4,
-              "preset": "1000lbs_mk83_x2"
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_mk83_air_fuse_centr",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb4",
+                "pylon_bomb4_lap"
+              ]
             },
-            {
-              "slot": 5,
-              "preset": "1000lbs_mk83_x2"
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+              "emitter": "bomb11_ld",
+              "bullets": 1
             },
-            {
-              "slot": 7,
-              "preset": "1000lbs_mk83_x2"
-            },
-            {
-              "slot": 8,
-              "preset": "1000lbs_mk83_x2"
-            },
-            {
-              "slot": 4,
-              "preset": "as_34_fuse"
-            },
-            {
-              "slot": 8,
-              "preset": "as_34_fuse"
-            }
-          ]
-        }
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "1000lbs_mk83_air_x2"
+              }
+            ]
+          }
+        ]
       },
       {
         "index": 7,
@@ -3343,6 +3604,40 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_x2.blk",
+              "emitter": "pylon_tsc_6"
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_mk83_air",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb5",
+                "pylon_bomb5_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+              "emitter": "bomb10_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
               "emitter": "pylon_tsc_6"
             }
           }
@@ -3407,6 +3702,40 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_mk83_air",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb5",
+                "pylon_bomb5_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+              "emitter": "bomb4_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
+              "emitter": "pylon_tsc_4"
+            }
+          },
+          {
             "iconType": "missile_air_to_earth",
             "name": "as_34_fuse",
             "reqModification": "gr_as_34",
@@ -3448,6 +3777,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_default"
               }
             ]
           }
@@ -3489,6 +3822,40 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_x2.blk",
+              "emitter": "pylon_tsc_2"
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_mk83_air",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "pylon_bomb6_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+              "emitter": "bomb2_ld",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "pylon_bomb6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
               "emitter": "pylon_tsc_2"
             }
           },
@@ -3564,7 +3931,7 @@
         "WeaponPreset": {
           "iconType": "ltc",
           "name": "boz",
-          "reqModification": "countermeasures_belt_pack",
+          "reqModification": "countermeasures_belt_pack_unchecked",
           "ShowNodes": {
             "node": [
               "pylon_bomb7",
@@ -3862,11 +4229,11 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
-    "countermeasures_belt_pack": {
+    "countermeasures_launcher_chaff_only_unchecked": {},
+    "countermeasures_launcher_flare_only_unchecked": {},
+    "countermeasures_launcher_chaff_priority_unchecked": {},
+    "countermeasures_launcher_flare_priority_unchecked": {},
+    "countermeasures_belt_pack_unchecked": {
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
@@ -3874,7 +4241,7 @@
       "tier": 1
     },
     "f_4c_g_suit": {
-      "prevModification": "countermeasures_belt_pack",
+      "prevModification": "countermeasures_belt_pack_unchecked",
       "tier": 2,
       "modClass": "armor"
     },

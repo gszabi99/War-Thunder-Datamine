@@ -11,6 +11,7 @@ let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { ActionGroup } = require("controls")
+let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 
 return [
   {
@@ -96,7 +97,7 @@ return [
   {
     id = "ID_TRANS_GEAR_NEUTRAL"
     checkAssign = false
-    showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_AUTOMATIC_TRANSMISSION_TANK, false)
+    showFunc = @() checkOptionValue(::USEROPT_AUTOMATIC_TRANSMISSION_TANK, false)
   }
   {
     id = "ID_ENABLE_GM_DIRECTION_DRIVING"

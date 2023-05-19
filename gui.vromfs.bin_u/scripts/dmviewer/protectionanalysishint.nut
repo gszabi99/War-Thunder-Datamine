@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -68,14 +69,14 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
         colorize("activeTextColor", round(val * 100) + loc("measureUnits/percent"))
     }
     parts = function(val) {
-      if (::u.isEmpty(val))
+      if (u.isEmpty(val))
         return ""
       let prefix = loc("ui/bullet") + " "
       let partNames = [ loc("protection_analysis/hint/parts/list") + loc("ui/colon") ]
       foreach (partId, isShow in val)
         if (isShow)
           partNames.append(prefix + loc("dmg_msg_short/" + partId))
-      return ::g_string.implode(partNames, "\n")
+      return "\n".join(partNames, true)
     }
     angle = function(val) {
       return loc("bullet_properties/hitAngle") + loc("ui/colon") +
@@ -109,14 +110,14 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     let isCursorActive = this.getCursorIsActive()
     set_protection_analysis_editing(!isCursorActive)
 
-    if (::u.isEqual(params, this.lastHintParams))
+    if (u.isEqual(params, this.lastHintParams))
       return
     this.lastHintParams = params
 
     if (!checkObj(this.cursorObj) || !checkObj(this.hintObj))
       return
 
-    let isShow = isCursorActive && !::u.isEmpty(params)
+    let isShow = isCursorActive && !u.isEmpty(params)
     this.hintObj.show(isShow)
 
     let resultCfg = results.getResultTypeByParams(params)
@@ -130,13 +131,13 @@ let { set_protection_analysis_editing } = require("hangarEventCommand")
     let getValue = this.getValueByResultCfg
     let printValue = this.printValueByParam
     let title = colorize(resultCfg.color, loc(resultCfg.loc))
-    local desc = ::u.map(resultCfg.params, function(id) {
+    local desc = u.map(resultCfg.params, function(id) {
       let gFunc = getValue?[id]
       let val = gFunc ? gFunc(params, id, resultCfg) : 0
       let pFunc = printValue?[id]
       return pFunc ? pFunc(val) : ""
     })
-    desc = ::g_string.implode(desc, "\n")
+    desc = "\n".join(desc, true)
 
     this.hintObj.findObject("dmviewer_title").setValue(title)
     this.hintObj.findObject("dmviewer_desc").setValue(desc)

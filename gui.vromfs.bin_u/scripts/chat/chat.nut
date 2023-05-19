@@ -1,20 +1,22 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
-let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
+let { clearBorderSymbolsMultiline, endsWith, cutPrefix  } = require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 global enum chatUpdateState {
   OUTDATED
@@ -163,7 +165,7 @@ global enum chatErrorName {
 }
 
 ::g_chat.getRoomById <- function getRoomById(id) {
-  return ::u.search(this.rooms, (@(id) function (room) { return room.id == id })(id))
+  return u.search(this.rooms, (@(id) function (room) { return room.id == id })(id))
 }
 
 ::g_chat.isRoomJoined <- function isRoomJoined(roomId) {
@@ -190,7 +192,7 @@ global enum chatErrorName {
 }
 
 ::g_chat.isSystemUserName <- function isSystemUserName(name) {
-  return ::g_string.endsWith(name, this.SYSTEM_MESSAGES_USER_ENDING)
+  return endsWith(name, this.SYSTEM_MESSAGES_USER_ENDING)
 }
 
 ::g_chat.isSystemChatRoom <- function isSystemChatRoom(roomId) {
@@ -208,11 +210,11 @@ global enum chatErrorName {
 
 ::g_chat.joinSquadRoom <- function joinSquadRoom(callback) {
   let name = this.getMySquadRoomId()
-  if (::u.isEmpty(name))
+  if (u.isEmpty(name))
     return
 
   let password = ::g_squad_manager.getSquadRoomPassword()
-  if (::u.isEmpty(password))
+  if (u.isEmpty(password))
     return
 
   if (::menu_chat_handler)
@@ -241,7 +243,7 @@ global enum chatErrorName {
     return null
 
   let squadRoomName = ::g_squad_manager.getSquadRoomName()
-  if (::u.isEmpty(squadRoomName))
+  if (u.isEmpty(squadRoomName))
     return null
 
   return ::g_chat_room_type.SQUAD.getRoomId(squadRoomName)
@@ -315,7 +317,7 @@ global enum chatErrorName {
     ::g_chat_latest_threads.onNewThreadInfoToList(this.threadsInfo[roomId])
 
   ::update_gamercards_chat_info()
-  ::broadcastEvent("ChatThreadInfoChanged", { roomId = roomId })
+  broadcastEvent("ChatThreadInfoChanged", { roomId = roomId })
 }
 
 ::g_chat.haveProgressCaps <- function haveProgressCaps(name) {
@@ -335,7 +337,7 @@ global enum chatErrorName {
 
   log("ChatProgressCapsChanged: " + this.userCapsGen)
   debugTableData(this.userCaps);
-  ::broadcastEvent("ChatProgressCapsChanged")
+  broadcastEvent("ChatProgressCapsChanged")
 }
 
 ::g_chat.createThread <- function createThread(title, categoryName, langTags = null) {
@@ -345,9 +347,9 @@ global enum chatErrorName {
   if (!langTags)
     langTags = ::g_chat_thread_tag.LANG.prefix + ::g_language.getCurLangInfo().chatId
   let categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
-  let tagsList = ::g_string.implode([langTags, categoryTag], ",")
+  let tagsList = ",".join([langTags, categoryTag], true)
   ::gchat_raw_command("xtjoin " + tagsList + " :" + this.prepareThreadTitleToSend(title))
-  ::broadcastEvent("ChatThreadCreateRequested")
+  broadcastEvent("ChatThreadCreateRequested")
 }
 
 ::g_chat.joinThread <- function joinThread(roomId) {
@@ -464,8 +466,8 @@ global enum chatErrorName {
   }
 
   if (isChanged) {
-    ::broadcastEvent("ChatThreadInfoChanged", { roomId = threadInfo.roomId })
-    ::broadcastEvent("ChatThreadInfoModifiedByPlayer", { threadInfo = threadInfo })
+    broadcastEvent("ChatThreadInfoChanged", { roomId = threadInfo.roomId })
+    broadcastEvent("ChatThreadInfoModifiedByPlayer", { threadInfo = threadInfo })
   }
 
   return true
@@ -541,7 +543,7 @@ global enum chatErrorName {
 
 ::g_chat.onEventInitConfigs <- function onEventInitConfigs(_p) {
   let blk = ::get_game_settings_blk()
-  if (!::u.isDataBlock(blk?.chat))
+  if (!u.isDataBlock(blk?.chat))
     return
 
   this.threadTitleLenMin = blk.chat?.threadTitleLenMin ?? this.threadTitleLenMin
@@ -567,7 +569,7 @@ global enum chatErrorName {
   let messageLen = message.len() //to be visible in assert callstack
   if (messageLen > this.MAX_MSG_LEN) {
     local res = false
-    if (isSeparationAllowed && ::u.isArray(langConfig) && langConfig.len() > 1) {
+    if (isSeparationAllowed && u.isArray(langConfig) && langConfig.len() > 1) {
       needAssert = false
       //do not allow to separate more than on 2 messages because of chat server restrictions.
       let sliceIdx = (langConfig.len() + 1) / 2
@@ -576,7 +578,7 @@ global enum chatErrorName {
     }
 
     if (!res && needAssert) {
-      let partsAmount = ::u.isArray(langConfig) ? langConfig.len() : 1
+      let partsAmount = u.isArray(langConfig) ? langConfig.len() : 1
       ::script_net_assert_once("too long json message", "Too long json message to chat. partsAmount = " + partsAmount)
     }
     return res
@@ -587,7 +589,7 @@ global enum chatErrorName {
 }
 
 ::g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message) {
-  let jsonString = ::g_string.cutPrefix(message, this.LOCALIZED_MESSAGE_PREFIX)
+  let jsonString = cutPrefix(message, this.LOCALIZED_MESSAGE_PREFIX)
   if (!jsonString)
     return message
 
@@ -599,7 +601,7 @@ global enum chatErrorName {
 
 ::g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRoom(langConfig) {
   let squadRoomId = this.getMySquadRoomId()
-  if (!::u.isEmpty(squadRoomId))
+  if (!u.isEmpty(squadRoomId))
     this.sendLocalizedMessage(squadRoomId, langConfig)
 }
 
@@ -612,8 +614,8 @@ global enum chatErrorName {
     return this.color.senderSquad[isHighlighted]
   if (::isPlayerNickInContacts(senderName, EPL_FRIENDLIST))
     return this.color.senderFriend[isHighlighted]
-  return ::u.isTable(defaultColor) ? defaultColor[isHighlighted] : defaultColor
+  return u.isTable(defaultColor) ? defaultColor[isHighlighted] : defaultColor
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_chat")
-::subscribe_handler(::g_chat, ::g_listener_priority.DEFAULT_HANDLER)
+g_script_reloader.registerPersistentDataFromRoot("g_chat")
+subscribe_handler(::g_chat, ::g_listener_priority.DEFAULT_HANDLER)

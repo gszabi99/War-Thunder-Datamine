@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let Popup = require("%scripts/popups/popup.nut")
 
@@ -87,7 +89,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
       for (local i = this.suspendedPopupsList.len() - 1; i >= 0; i--) {
         let popup = this.suspendedPopupsList[i]
         if (this.canShowPopup()) {
-          ::u.removeFrom(this.suspendedPopupsList, popup)
+          u.removeFrom(this.suspendedPopupsList, popup)
           this.show(popup)
           if (this.getPopupCount() > this.MAX_POPUPS_ON_SCREEN)
             this.popupsList.remove(0).destroy(true)
@@ -130,7 +132,7 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   if (!sourcePopup.groupName)
     return null
 
-  return ::u.search(
+  return u.search(
     this.popupsList,
     @(popup) popup.groupName == sourcePopup.groupName
   )
@@ -167,4 +169,4 @@ removeByHandler(handler) - Remove all popups associated with the handler, which 
   this.performDelayedFlushPopupsIfCan()
 }
 
-::subscribe_handler(::g_popups, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_popups, ::g_listener_priority.DEFAULT_HANDLER)

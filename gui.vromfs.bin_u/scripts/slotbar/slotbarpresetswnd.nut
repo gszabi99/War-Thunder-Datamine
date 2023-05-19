@@ -4,12 +4,14 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { markupTooltipHoldChild } = require("%scripts/utils/delayedTooltip.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil } = require("math")
+let { stripTags } = require("%sqstd/string.nut")
 
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null) {
   return ::handlersManager.loadHandler(::gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
@@ -61,7 +63,7 @@ let { ceil } = require("math")
       })
     }
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     this.guiScene.replaceContentFromText(objPresets, data, data.len(), this)
     for (local i = 0; i < objPresets.childrenCount(); i++)
       objPresets.getChild(i).setIntProp(this.listIdxPID, i)
@@ -85,7 +87,7 @@ let { ceil } = require("math")
         local battleRatingMin = 0
         local battleRatingMax = 0
         foreach (unitId in preset.units) {
-          let unit = ::getAircraftByName(unitId)
+          let unit = getAircraftByName(unitId)
           let br = unit ? unit.getBattleRating(ediff) : 0.0
           battleRatingMin = !battleRatingMin ? br : min(battleRatingMin, br)
           battleRatingMax = !battleRatingMax ? br : max(battleRatingMax, br)
@@ -99,8 +101,8 @@ let { ceil } = require("math")
       let presetGameMode = gameMode != null ? loc("options/mp_mode") +
                                                 loc("ui/colon") + gameMode.text + "\n" : ""
 
-      let header = "".concat(::g_string.stripTags(presetBattleRatingText),
-        ::g_string.stripTags(presetGameMode),
+      let header = "".concat(stripTags(presetBattleRatingText),
+        stripTags(presetGameMode),
         loc("shop/slotbarPresets/contents"),
         loc("ui/colon"))
       let markupList = ["textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } ".subst(header)]
@@ -108,7 +110,7 @@ let { ceil } = require("math")
       let unitsMarkupList = []
       let filteredUnits = preset.units.filter(@(u) u != "")
       foreach (idx, unitId in filteredUnits) {
-        let unit = ::getAircraftByName(unitId)
+        let unit = getAircraftByName(unitId)
         if (!unit)
           continue
         let params = {
@@ -130,7 +132,7 @@ let { ceil } = require("math")
 
       if (!preset.enabled)
         markupList.append("textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } "
-          .subst(colorize("badTextColor", ::g_string.stripTags(loc("shop/slotbarPresets/forbidden/unitTypes")))))
+          .subst(colorize("badTextColor", stripTags(loc("shop/slotbarPresets/forbidden/unitTypes")))))
 
       let markup = "\n".join(markupList)
       this.guiScene.replaceContentFromText(objDesc, markup, markup.len(), this)
@@ -138,7 +140,7 @@ let { ceil } = require("math")
         ::fill_unit_item_timers(objDesc.findObject(unitItem.id), unitItem.unit, unitItem.params)
     }
     else {
-      let data = format("textarea{ text:t='%s' width:t='pw' } ", ::g_string.stripTags(loc("shop/slotbarPresets/presetUnknown")))
+      let data = format("textarea{ text:t='%s' width:t='pw' } ", stripTags(loc("shop/slotbarPresets/presetUnknown")))
       this.guiScene.replaceContentFromText(objDesc, data, data.len(), this)
     }
 
@@ -235,8 +237,8 @@ let { ceil } = require("math")
     let unitNames = []
     foreach (unitId in preset.units)
       unitNames.append(loc(unitId + "_shop"))
-    local comment = "(" + loc("shop/slotbarPresets/contents") + loc("ui/colon") + ::g_string.implode(unitNames, loc("ui/comma")) + ")"
-    comment = format("textarea{overlayTextColor:t='bad'; text:t='%s'}", ::g_string.stripTags(comment))
+    local comment = "(" + loc("shop/slotbarPresets/contents") + loc("ui/colon") + loc("ui/comma").join(unitNames, true) + ")"
+    comment = format("textarea{overlayTextColor:t='bad'; text:t='%s'}", stripTags(comment))
 
     this.msgBox("question_delete_preset", msgText,
     [

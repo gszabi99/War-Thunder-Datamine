@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { read_text_from_file } = require("dagor.fs")
@@ -34,7 +36,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
   function reinitScreen(params) {
     let _blkName = getTblValue("blkName", params, this.blkName)
     let _tplParams = getTblValue("tplParams", params, this.tplParams)
-    if (_blkName == this.blkName && ::u.isEqual(_tplParams, this.tplParams))
+    if (_blkName == this.blkName && u.isEqual(_tplParams, this.tplParams))
       return
 
     this.blkName = _blkName
@@ -62,7 +64,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
     }
 
     if (this.tplName) {
-      let data = ::handyman.render(loadTemplateText(this.tplName), this.tplParams)
+      let data = handyman.render(loadTemplateText(this.tplName), this.tplParams)
       this.guiScene.replaceContentFromText(obj, data, data.len(), this.callbacksContext)
     }
     else

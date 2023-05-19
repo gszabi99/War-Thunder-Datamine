@@ -202,28 +202,28 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "ships_01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "ships_01",
             "effShootingRate": 0.5
           },
           {
+            "object": "target_ship",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "target_ship",
             "accuracy": 0.5,
             "effShootingRate": 0.45
           },
           {
+            "object": "flyboats",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "flyboats",
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
@@ -236,11 +236,11 @@
             }
           },
           {
+            "object": "player01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player01",
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
@@ -309,6 +309,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "attack_gr01"
         },
         "showSmartCutscene": [
@@ -656,6 +659,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player01",
           "move_type": "teleport",
           "distributionRadius": 40.0,
@@ -711,6 +717,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player01",
           "move_type": "teleport",
           "distributionRadius": 40.0,
@@ -928,6 +937,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player01",
           "move_type": "teleport",
           "distributionRadius": 40.0,
@@ -1097,7 +1109,8 @@
           "target": "corS_mission00_fly01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionMarkAsWaypoint": {
           "visible": false,
@@ -1464,6 +1477,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player01",
           "move_type": "teleport",
           "lookat": "flyboats",
@@ -1520,7 +1536,7 @@
           "object_type": "isAlive",
           "object_marking": 0,
           "func": "less",
-          "value": 1,
+          "value": 2,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "flyboats"
@@ -1534,7 +1550,8 @@
           "target": "corS_mission00_att00",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": [
           {
@@ -1584,6 +1601,9 @@
           "target_marking": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player01",
           "move_type": "teleport",
           "distributionRadius": 40.0,
@@ -1624,19 +1644,19 @@
         },
         "unitSetProperties": [
           {
+            "object": "f4f_ship_cut",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "f4f_ship_cut",
             "effShootingRate": 0.0
           },
           {
+            "object": "zero_ship_cut",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "zero_ship_cut",
             "engineFire": true
           }
         ],
@@ -2079,7 +2099,8 @@
           "target": "corS_mission00_att01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "triggerEnable": {
           "target": "ship_done"
@@ -2101,36 +2122,15 @@
         }
       },
       "conditions": {
-        "unitWhenPartHp": [
-          {
-            "func": "less",
-            "check_objects": "all",
-            "value": 0.8,
-            "check_parts": "any",
-            "object": "target_ship",
-            "partNo": 2,
-            "planePart": "",
-            "tankPart": ""
-          },
-          {
-            "func": "less",
-            "check_objects": "all",
-            "value": 0.01,
-            "check_parts": "any",
-            "object": "target_ship",
-            "partNo": [
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11
-            ]
-          }
-        ]
+        "unitWhenPartHp": {
+          "func": "less",
+          "check_objects": "all",
+          "value": 0.01,
+          "check_parts": "any",
+          "object": "target_ship",
+          "planePart": "",
+          "tankPart": ""
+        }
       },
       "actions": {
         "triggerDisable": {
@@ -2171,7 +2171,8 @@
           "target": "corS_mission00_att01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "triggerEnable": {
           "target": "ship_done"
@@ -2219,7 +2220,8 @@
           "target": "corS_mission00_att01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "triggerEnable": {
           "target": "ship_done"
@@ -2278,7 +2280,8 @@
           "target": "corS_mission00_att01",
           "status": 3,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "triggerEnable": {
           "target": "ship_done"
@@ -2302,11 +2305,11 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
+          "object": "target_ship",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship",
           "isImmortal": true
         },
         "unitSetIndication": {
@@ -2382,7 +2385,8 @@
           "target": "corS_mission00_fly02",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionCompleted": {
           "timer": false,
@@ -2542,6 +2546,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "attack_gr02",
             "move_type": "teleport",
             "lookat": "ships_01",
@@ -2564,6 +2571,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "f4f_for_cut",
             "move_type": "teleport",
             "lookat": "waypoint00",
@@ -2586,6 +2596,9 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "f4f_for_cut",
             "lookat": "waypoint00",
             "velocity": 250.0
@@ -2618,24 +2631,24 @@
         ],
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "attack_gr01",
               "ships_01",
               "ships_02",
               "ships_03"
             ],
-            "effShootingRate": 0.0
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "effShootingRate": 0.0
+          },
+          {
             "object": "attack_gr02",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "isImmortal": true
           }
         ],
@@ -2907,19 +2920,19 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "player01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player01",
             "targetableByAi": false
           },
           {
+            "object": "player_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player_sq",
             "targetableByAi": true
           }
         ]
@@ -3234,7 +3247,9 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "modification": "50cal_ground_targets",
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -3296,6 +3311,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -3357,6 +3373,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -3365,8 +3382,8 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
-          "count": 4,
-          "numInWing": 3,
+          "count": 5,
+          "numInWing": 5,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -3406,9 +3423,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3451,6 +3468,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -3500,9 +3518,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3545,6 +3563,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3594,9 +3613,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -3620,9 +3639,9 @@
             0.382683
           ],
           [
-            23779.7,
-            520.0,
-            6518.85
+            23751.9,
+            541.577,
+            6472.37
           ]
         ],
         "unit_class": "f4f-3",
@@ -3639,6 +3658,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3700,6 +3720,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -3762,6 +3783,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -3832,6 +3854,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -3882,9 +3905,9 @@
             8811.25
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
+        "isShipSpline": true,
         "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
@@ -3896,6 +3919,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3909,8 +3933,8 @@
             0.2,
             0.5
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {
           "ships_01_wp_01": {
@@ -3934,15 +3958,14 @@
               [
                 3548.95,
                 0.0,
-                9599.85
+                9564.34
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_01_wp_02": {
@@ -3966,15 +3989,14 @@
               [
                 5100.6,
                 0.0,
-                10059.8
+                10026.4
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_01_wp_03": {
@@ -3998,15 +4020,14 @@
               [
                 8015.05,
                 0.0,
-                10659.0
+                10631.3
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_01_wp_04": {
@@ -4030,15 +4051,14 @@
               [
                 9786.1,
                 0.0,
-                10497.7
+                10465.6
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_01_wp_05": {
@@ -4068,9 +4088,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_01_wp_06": {
@@ -4100,9 +4120,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_01_wp_07": {
@@ -4132,9 +4152,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_01_wp_08": {
@@ -4164,9 +4184,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -4195,9 +4215,9 @@
             9475.3
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu_light",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
-        "isShipSpline": false,
+        "isShipSpline": true,
         "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
@@ -4209,6 +4229,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4222,8 +4243,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {
           "target_ship_wp_01": {
@@ -4253,9 +4274,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "target_ship_wp_02": {
@@ -4285,9 +4306,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "target_ship_wp_03": {
@@ -4317,9 +4338,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "target_ship_wp_04": {
@@ -4349,9 +4370,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "target_ship_wp_05": {
@@ -4381,9 +4402,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "target_ship_wp_06": {
@@ -4413,9 +4434,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -4444,7 +4465,7 @@
             -1232.2
           ]
         ],
-        "unit_class": "uss_cv_enterprise",
+        "unit_class": "us_aircraftcarrier_enterprise",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4458,6 +4479,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4471,8 +4493,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": "unic_yorktown"
+          "uniqueName": "unic_yorktown",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4500,7 +4522,7 @@
             -1879.5
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4514,6 +4536,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4527,8 +4550,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4556,7 +4579,7 @@
             -1170.7
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4570,6 +4593,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4583,8 +4607,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4612,7 +4636,7 @@
             -428.302
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4626,6 +4650,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4639,8 +4664,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4668,7 +4693,7 @@
             -2398.0
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4682,6 +4707,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4695,8 +4721,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4724,7 +4750,7 @@
             -498.001
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4738,6 +4764,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4751,8 +4778,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4780,9 +4807,9 @@
             8743.56
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
+        "isShipSpline": true,
         "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
@@ -4794,6 +4821,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4807,8 +4835,8 @@
             0.2,
             0.5
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {
           "ships_02_wp_01": {
@@ -4838,9 +4866,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_02_wp_02": {
@@ -4870,9 +4898,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_02_wp_03": {
@@ -4902,9 +4930,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_02_wp_04": {
@@ -4934,9 +4962,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_02_wp_05": {
@@ -4960,15 +4988,14 @@
               [
                 11434.2,
                 0.0,
-                9928.1
+                9962.9
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_02_wp_06": {
@@ -4998,9 +5025,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_02_wp_07": {
@@ -5030,9 +5057,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_02_wp_08": {
@@ -5062,9 +5089,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -5093,9 +5120,9 @@
             8554.8
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_myoko",
         "closed_waypoints": false,
-        "isShipSpline": false,
+        "isShipSpline": true,
         "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
@@ -5107,6 +5134,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5120,8 +5148,8 @@
             0.2,
             0.5
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {
           "ships_03_wp_01": {
@@ -5145,15 +5173,14 @@
               [
                 3549.2,
                 0.0,
-                9578.2
+                9511.66
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_03_wp_02": {
@@ -5177,15 +5204,14 @@
               [
                 5100.85,
                 0.0,
-                10038.1
+                9981.79
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_03_wp_03": {
@@ -5209,15 +5235,14 @@
               [
                 8015.3,
                 0.0,
-                10637.3
+                10588.6
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ships_03_wp_04": {
@@ -5241,15 +5266,15 @@
               [
                 9786.35,
                 0.0,
-                10476.0
+                10443.9
               ]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_03_wp_05": {
@@ -5279,9 +5304,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_03_wp_06": {
@@ -5311,9 +5336,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_03_wp_07": {
@@ -5343,9 +5368,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "ships_03_wp_08": {
@@ -5375,9 +5400,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -5409,7 +5434,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "us_carrier_yorktown",
             "us_destroyer01",
@@ -5417,7 +5441,8 @@
             "us_destroyer03",
             "us_cruiser01",
             "us_cruiser02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -5445,9 +5470,9 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "player01",
-          "object_type": "isPlayer"
+          "object_type": "isPlayer",
+          "object_marking": 0
         }
       }
     ]

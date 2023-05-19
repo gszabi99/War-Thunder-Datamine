@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -161,18 +162,18 @@ local transportTypeByTextCode = {
           { time = time.hoursToString(time.secondsToHours(entrenchTime), true, true) }))
     }
 
-    return ::g_string.implode(desc, "\n")
+    return "\n".join(desc, true)
   }
 
   function getFullDescription() {
     local desc = this.getFullName()
     desc += "\n"
-    desc += ::g_string.implode(this.getUnitsFullNamesList(), "\n")
+    desc += "\n".join(this.getUnitsFullNamesList(), true)
     return desc
   }
 
   function getUnitsFullNamesList() {
-    return ::u.map(this.getUnits(), function(unit) { return unit.getFullName() })
+    return u.map(this.getUnits(), function(unit) { return unit.getFullName() })
   }
 
   function getSuppliesFinishTime() {

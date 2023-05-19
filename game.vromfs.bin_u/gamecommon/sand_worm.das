@@ -1,13 +1,13 @@
 require ecs
 require Unit
 require DagorSystem
-require %game.events
 require DagorRandom
 require Mission
-require %game.utils_common
 require soundEvent
 require HeroManager
 require Weapon
+require %game.utils.utils_common
+require %game.events
 
 [es(tag=server, no_order)]
 def unit_noise_update_es(act : UpdateStageInfoAct;
@@ -146,7 +146,7 @@ def sand_worm_delayed_track(evt : Event;
     oneshot(sand_worm__appearSound)
     query() <| $ [es(REQUIRE=controlledHero)] (uid : int)
       let unit = get_unit(uid)
-      if unit != null && !unit.isHelicopter
+      if unit != null && !unit.isFlightModelWrap
         let unitPos = unit.pos
         set_camera_shake(sand_worm__cameraShake.x, unitPos, sand_worm__cameraShake.y)
         sand_worm__cameraShakeTimer = sand_worm__cameraShake.z

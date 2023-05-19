@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -12,6 +14,7 @@ let time = require("%scripts/time.nut")
 let stdpath = require("%sqstd/path.nut")
 let { abs } = require("math")
 let { find_files } = require("dagor.fs")
+let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/string.nut")
 
 ::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT {
   static wndType = handlerType.MODAL
@@ -207,11 +210,11 @@ let { find_files } = require("dagor.fs")
           return "."
 
         let filename = file?.name ?? ""
-        let fileExtIdx = ::g_string.lastIndexOf(filename, ".")
-        if (fileExtIdx == ::g_string.INVALID_INDEX)
+        let fileExtIdx = lastIndexOf(filename, ".")
+        if (fileExtIdx == INVALID_INDEX)
           return null
 
-        return ::g_string.utf8ToUpper(filename.slice(fileExtIdx))
+        return utf8ToUpper(filename.slice(fileExtIdx))
       }
       comparator = function(lhs, rhs) {
         return ::gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
@@ -654,14 +657,14 @@ let { find_files } = require("dagor.fs")
       let source = this[columnSourceInfo.sourceName]
       foreach (idx, columnInfoSrc in source) {
         local columnInfo
-        if (::u.isString(columnInfoSrc)) {
+        if (u.isString(columnInfoSrc)) {
           columnInfo = { column = columnInfoSrc }
           source[idx] = columnInfo
         }
         else
           columnInfo = columnInfoSrc
 
-        if (::u.isString(columnInfo.column)) {
+        if (u.isString(columnInfo.column)) {
           let columnName = columnInfo.column
           this.columns[columnName] <- getTblValue(columnName, this.columns, {})
           columnInfo.column = this.columns[columnName]
@@ -847,7 +850,7 @@ let { find_files } = require("dagor.fs")
           ::showInfoMsgBox(loc("filesystem/folderDeleted", { path = folderPath }))
         else {
           if (!this.isExists(file) && this.extension
-            && !::g_string.endsWith(this.finallySelectedPath, "." + this.extension))
+            && !endsWith(this.finallySelectedPath, "." + this.extension))
             this.finallySelectedPath += "." + this.extension
           this.executeSelectCallback()
         }
@@ -957,7 +960,7 @@ let { find_files } = require("dagor.fs")
         })
       }
 
-      let data = ::handyman.renderCached(this.dirPathPartTemplate, view)
+      let data = handyman.renderCached(this.dirPathPartTemplate, view)
       this.guiScene.replaceContentFromText(dirPathObj, data, data.len(), this)
     }
   }
@@ -997,7 +1000,7 @@ let { find_files } = require("dagor.fs")
         fileData[columnName] <- column.getValue(file, this)
       let filename = this.getFileName(file)
       if (!this.isDirectory(file) && this.currentFilter != this.allFilesFilter &&
-        !::g_string.endsWith(filename, this.currentFilter))
+        !endsWith(filename, this.currentFilter))
         continue
       fileData[fileNameMetaAttr] <- filename
       this.cachedFileFullPathByFileName[filename] <- this.getFileFullPath(file)
@@ -1051,7 +1054,7 @@ let { find_files } = require("dagor.fs")
       isEven = !isEven
     }
 
-    let data = ::handyman.renderCached(this.fileTableTemplate, view)
+    let data = handyman.renderCached(this.fileTableTemplate, view)
     this.guiScene.replaceContentFromText(fileTableObj, data, data.len(), this)
     this.guiScene.performDelayed(this, this.restoreLastSelectedFile)
   }
@@ -1137,7 +1140,7 @@ let { find_files } = require("dagor.fs")
       })
     }
 
-    let data = ::handyman.renderCached(this.navItemListTemplate, view)
+    let data = handyman.renderCached(this.navItemListTemplate, view)
     this.guiScene.replaceContentFromText(navListObj, data, data.len(), this)
   }
 
@@ -1164,7 +1167,7 @@ let { find_files } = require("dagor.fs")
         selectedIdx = idx
     }
 
-    let data = ::handyman.renderCached(this.filterSelectTemplate, view)
+    let data = handyman.renderCached(this.filterSelectTemplate, view)
     this.guiScene.replaceContentFromText(fileFilterObj, data, data.len(), this)
     fileFilterObj.setValue(selectedIdx)
   }

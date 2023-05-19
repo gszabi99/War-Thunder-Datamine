@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -24,7 +25,7 @@ let { doesLocTextExist } = require("dagor.localize")
     }
 
     function setValue(obj, newValue) {
-      if (!::u.isString(newValue) || obj?.value == newValue)
+      if (!u.isString(newValue) || obj?.value == newValue)
         return
       obj.value = newValue
       this.updateView(obj)

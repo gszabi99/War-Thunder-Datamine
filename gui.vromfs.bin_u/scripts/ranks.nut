@@ -5,7 +5,10 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
-::g_script_reloader.loadOnce("%appGlobals/ranks_common_shared.nut")
+let { Balance } = require("%scripts/money.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+g_script_reloader.loadOnce("%appGlobals/ranks_common_shared.nut")
 
 let { get_time_msec } = require("dagor.time")
 let avatars = require("%scripts/user/avatars.nut")
@@ -45,7 +48,7 @@ let current_user_profile = {
 ::exp_per_rank <- []
 ::prestige_by_rank <- []
 
-::g_script_reloader.registerPersistentData("RanksGlobals", getroottable(),
+g_script_reloader.registerPersistentData("RanksGlobals", getroottable(),
   [
     "discounts", "event_muls",
     "exp_per_rank", "max_player_rank", "prestige_by_rank"
@@ -204,7 +207,7 @@ let function get_cur_session_country() {
 
 ::get_gui_balance <- function get_gui_balance() {
   let info = ::get_cur_rank_info()
-  return ::Balance(info.wp, info.gold, ::shop_get_free_exp())
+  return Balance(info.wp, info.gold, ::shop_get_free_exp())
 }
 
 ::on_mission_started_mp <- function on_mission_started_mp() {
@@ -213,7 +216,7 @@ let function get_cur_session_country() {
   ::before_first_flight_in_session = true;
   ::clear_spawn_score();
   ::cur_mission_mode <- -1
-  ::broadcastEvent("MissionStarted")
+  broadcastEvent("MissionStarted")
 }
 
 let airTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
@@ -268,7 +271,8 @@ let function haveCountryRankAir(country, rank) {
       errorsTextArray.extend(errors)
 
     if (maxCallTimeMsec && get_time_msec() - startTime >= maxCallTimeMsec) {
-      assert(errorsTextArray.len() == 0, ::g_string.implode(errorsTextArray, "\n"))
+      if (errorsTextArray.len() > 0)
+        logerr("\n".join(errorsTextArray))
       return PT_STEP_STATUS.SUSPEND
     }
   }
@@ -289,7 +293,8 @@ let function haveCountryRankAir(country, rank) {
     exp = ws?.exp_to_show_premium_reward ?? 0
   })
 
-  assert(errorsTextArray.len() == 0, ::g_string.implode(errorsTextArray, "\n"))
+  if (errorsTextArray.len() > 0)
+    logerr("\n".join(errorsTextArray))
   return PT_STEP_STATUS.NEXT_STEP
 }
 
@@ -346,21 +351,21 @@ let function haveCountryRankAir(country, rank) {
       local handler = this
       if (!handler || handler == getroottable())
         handler = ::get_cur_base_gui_handler()
-      let askFunc = (@(guiScene, handler) function(locText, entitlement) {
+      let askFunc = function(locText, _entitlement) {
         if (hasFeature("EnablePremiumPurchase")) {
           let text = loc("charServer/noEntitlement/" + locText)
           handler.msgBox("no_entitlement", text,
           [
-            ["yes", (@(guiScene, handler, entitlement) function() { guiScene.performDelayed(handler, (@(_entitlement) function() {
+            ["yes", function() { guiScene.performDelayed(handler, function() {
                 this.onOnlineShopPremium();
-              })(entitlement)) })(guiScene, handler, entitlement) ],
+              }) }],
             ["no", function() {} ]
           ], "yes")
         }
         else
           ::scene_msg_box("premium_not_available", null, loc("charServer/notAvailableYet"),
             [["cancel"]], "cancel")
-      })(guiScene, handler)
+      }
 
       askFunc("loc" in tbl ? tbl.loc : tbl.entitlement, tbl.entitlement);
     }

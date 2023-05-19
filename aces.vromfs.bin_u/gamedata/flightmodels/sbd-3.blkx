@@ -3,6 +3,7 @@
   "fmFile": "fm/sbd-3.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gyroSight": false,
   "type": [
     "typeBomber",
     "typeDiveBomber"
@@ -1856,23 +1857,6 @@
     "headNode": "Bip01 Head",
     "pelvisNode": "Bip01 Pelvis",
     "pelvisTargetNode": "Bip01 Pelvis02",
-    "chestNodes": {
-      "leftShoulderNode": "Bip01 L UpperArm",
-      "rightShoulderNode": "Bip01 R UpperArm",
-      "neckNode": "Bip01 Neck",
-      "node": [
-        "Bip01 R Clavicle",
-        "Bip01 L Clavicle",
-        "Bip01 Spine 1",
-        "Bip01 Head",
-        "Bip01 HeadNub",
-        "Bip01 L UpperArm",
-        "Bip01 R UpperArm",
-        "Bip01 Neck"
-      ],
-      "leftHandTarget": "throttle_lhand_2",
-      "rightHandTarget": "stick_rhand_2"
-    },
     "ikNode": [
       {
         "downNode": "Bip01 L Hand",
@@ -1881,8 +1865,19 @@
         "targetNode": "throttle_lhand_2",
         "flexionDir": [
           0.0,
-          -0.9,
-          0.3
+          -1.0,
+          0.2
+        ],
+        "type": "leftHand",
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          -90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
         ]
       },
       {
@@ -1892,8 +1887,19 @@
         "targetNode": "stick_rhand_2",
         "flexionDir": [
           0.0,
-          -0.9,
-          -0.3
+          -1.0,
+          -0.5
+        ],
+        "type": "rightHand",
+        "detachedNodeYpr": [
+          0.0,
+          -15.0,
+          90.0
+        ],
+        "detachedNodeScale": [
+          1.0,
+          -1.0,
+          1.0
         ]
       },
       {
@@ -1902,9 +1908,9 @@
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_2",
         "flexionDir": [
-          0.0,
+          -0.7,
           1.0,
-          -0.2
+          -0.001
         ]
       },
       {
@@ -1913,9 +1919,9 @@
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_2",
         "flexionDir": [
-          0.0,
+          -0.4,
           1.0,
-          0.2
+          0.001
         ]
       }
     ]
@@ -2271,6 +2277,14 @@
             }
           }
         }
+      },
+      {
+        "name": "sbd_3_1x_500lbs_2x_100lbs",
+        "blk": "gameData/FlightModels/weaponPresets/sbd_3_1x_500lbs_2x_100lbs.blk"
+      },
+      {
+        "name": "sbd_3_1x_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/sbd_3_1x_500lbs.blk"
       }
     ]
   },
@@ -2508,14 +2522,50 @@
     "turnTime": 31.9001
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "50cal_universal": {},
     "50cal_ground_targets": {},
     "50cal_tracers": {},

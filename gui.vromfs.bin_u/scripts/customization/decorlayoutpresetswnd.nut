@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let regexp2 = require("regexp2")
+let { apply_skin } = require("unitCustomization")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
@@ -52,7 +54,7 @@ const PRESET_MIN_USAGE = 2
   function updateMasterPreset(needResetLinkedSkins = true) {
     this.masterPresetId = ::hangar_customization_preset_get_name(this.masterSkinId)
     this.isPreset = this.masterPresetId != ""
-    this.presetBySkinIdx = ::u.map(this.skinList.values, @(id) ::hangar_customization_preset_get_name(id))
+    this.presetBySkinIdx = u.map(this.skinList.values, @(id) ::hangar_customization_preset_get_name(id))
 
     if (needResetLinkedSkins) {
       this.linkedSkinsInitial = 0
@@ -97,7 +99,7 @@ const PRESET_MIN_USAGE = 2
     this.masterSkinId = this.skinList.values?[obj.getValue()] ?? ""
 
     setLastSkin(this.unit.name, this.masterSkinId, false)
-    ::hangar_apply_skin(this.masterSkinId)
+    apply_skin(this.masterSkinId)
     ::save_online_single_job(3210)
     ::save_profile(false)
 
@@ -160,7 +162,7 @@ const PRESET_MIN_USAGE = 2
         presetId = loc("customization/decorLayout/defaultName", { number = i + 1 })
         if (::hangar_customization_preset_calc_usage(presetId) == 0) {
           ::hangar_customization_preset_create(presetId)
-          ::u.removeFrom(listAttach, this.masterSkinId)
+          u.removeFrom(listAttach, this.masterSkinId)
           break
         }
       }

@@ -1,10 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let DataBlock  = require("DataBlock")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   let blk = DataBlock()
   blk["name"] = unit.name
@@ -15,7 +18,7 @@ let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
 
   let progBox = { showProgressBox = true }
   let onTaskSuccess = function() {
-    ::broadcastEvent("UnitRepaired", { unit = unit })
+    broadcastEvent("UnitRepaired", { unit = unit })
     if (onSuccessCb)
       onSuccessCb()
   }
@@ -57,7 +60,7 @@ let function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {
   ::scene_msg_box("ask_flush_squadron_exp",
     null,
     loc("squadronExp/invest/needMoneyQuestion",
-      { exp = ::Cost().setSap(min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring() }),
+      { exp = Cost().setSap(min(::clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring() }),
     [
       ["yes", onDoneCb],
       ["no", onCancelCb]
@@ -74,7 +77,7 @@ let function flushSquadronExp(unit, params = {}) {
     null,
     function() {
       afterDoneFunc()
-      ::broadcastEvent("FlushSquadronExp", { unit = unit })
+      broadcastEvent("FlushSquadronExp", { unit = unit })
     })
   showFlushSquadronExpMsgBox(unit, onDoneCb, afterDoneFunc)
 }
@@ -130,7 +133,7 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
     ::destroyMsgBox(progressBox)
     if (afterDoneFunc)
       afterDoneFunc()
-    ::broadcastEvent("UnitResearch", { unitName = unitName, prevUnitName = prevUnitName })
+    broadcastEvent("UnitResearch", { unitName = unitName, prevUnitName = prevUnitName })
   })
 }
 
@@ -144,7 +147,7 @@ let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() n
   let taskId = ::char_send_blk("cln_set_research_clan_unit", blk)
   let taskCallback = function() {
     afterDoneFunc()
-    ::broadcastEvent("UnitResearch", { unitName, prevUnitName, unit })
+    broadcastEvent("UnitResearch", { unitName, prevUnitName, unit })
   }
   ::g_tasker.addTask(taskId, { showProgressBox = true }, taskCallback, taskCallback)
 }

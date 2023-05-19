@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -11,7 +12,7 @@ let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
-let { isIPoint3 } = require("%sqStdLibs/helpers/u.nut")
+let { isIPoint3 } = u
 let { Point2 } = require("dagor.math")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
@@ -430,7 +431,7 @@ let function mergeConditionToList(newCond, list) {
 
   // merge specific by type
   if (cType == "modes") {
-    let idx = ::find_in_array(cond.values, "online") // remove mode online if there is ther modes (clan, event, etc)
+    let idx = u.find_in_array(cond.values, "online") // remove mode online if there is ther modes (clan, event, etc)
     if (idx >= 0 && cond.values.len() > 1)
       cond.values.remove(idx)
   }
@@ -534,7 +535,7 @@ let function loadCondition(blk, unlockMode) {
     let range = Point2(blk?.minRank ?? 0, blk?.maxRank ?? 0)
     let rangeForEvent = Point2(blk?.minRankForEvent ?? range.x, blk?.maxRankForEvent ?? range.y)
     local v = getRankRangeText(range)
-    if (!::u.isEqual(range, rangeForEvent)) {
+    if (!u.isEqual(range, rangeForEvent)) {
       let valForEvent = getRankRangeText(rangeForEvent)
       v = "".concat(v, loc("ui/parentheses/space", {
         text = loc("conditions/forEventUnit", { condition = valForEvent })
@@ -546,7 +547,7 @@ let function loadCondition(blk, unlockMode) {
   else if (t == "playerUnitMRank" || t == "offenderUnitMRank") {
     local range = Point2(blk?.minMRank ?? 0, blk?.maxMRank ?? 0)
     local rangeForEvent = Point2(blk?.minMRankForEvent ?? range.x, blk?.maxMRankForEvent ?? range.y)
-    let hasForEventCond = !::u.isEqual(range, rangeForEvent)
+    let hasForEventCond = !u.isEqual(range, rangeForEvent)
     range = Point2(::calc_battle_rating_from_rank(range.x),
       range.y.tointeger() > 0 ? ::calc_battle_rating_from_rank(range.y) : 0)
     local v = getMRankRangeText(range)
@@ -594,7 +595,7 @@ let function loadCondition(blk, unlockMode) {
     res.values = []
     let values = blk % "postfix"
     foreach (val in values)
-      ::u.appendOnce(regExpNumericEnding.replace("", val), res.values)
+      u.appendOnce(regExpNumericEnding.replace("", val), res.values)
     res.locGroup <- getTblValue("allowed", blk, true) ? "missionPostfixAllowed" : "missionPostfixProhibited"
     if (blk?.locValuePrefix)
       res.locValuePrefix <- blk.locValuePrefix

@@ -1,11 +1,12 @@
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
+options no_global_variables = false
 options indenting = 4
 options strict_smart_pointers = true
 
 module json shared public
 
-require strings
+require daslib/strings_boost
 
 variant JsValue
     //! Single JSON element.
@@ -90,6 +91,8 @@ def private _lexer ( var stext : string implicit )
                                 ahead = '\r'
                             elif ahead=='t'
                                 ahead = '\t'
+                            elif ahead=='u'
+                                ahead = int(0x5c)
                             push(str,uint8(ahead))
                         else
                             yield [[Token _error = "string escape sequence exceeds text"]]
@@ -104,12 +107,15 @@ def private _lexer ( var stext : string implicit )
                 next(tin, ahead)
             elif ahead=='+' || ahead=='-' || is_number(ahead)
                 push(str,uint8(ahead))
+                var anyNumbers = is_number(ahead)
                 while next(tin,ahead) && is_number(ahead)
                     push(str,uint8(ahead))
+                    anyNumbers = true
                 if !empty(tin) && ahead=='.'
                     push(str,uint8(ahead))
                     while next(tin,ahead) && is_number(ahead)
                         push(str,uint8(ahead))
+                        anyNumbers = true
                 if !empty(tin) && (ahead=='e' || ahead=='E')
                     push(str,uint8(ahead))
                     next(tin,ahead)
@@ -117,7 +123,11 @@ def private _lexer ( var stext : string implicit )
                         push(str,uint8(ahead))
                     while next(tin,ahead) && is_number(ahead)
                         push(str,uint8(ahead))
+                        anyNumbers = true
                 var num = string(str)
+                if !anyNumbers
+                    yield [[Token _error = "invalid number {num}"]]
+                    return false
                 yield [[Token _number = double(num)]]
                 clear(str)
                 unsafe
@@ -215,7 +225,7 @@ def private parse_value ( var itv : iterator<Token>; var error : string & ) : Js
                 let value = parse_value(itv, error)
                 if value == null
                     return null
-                if key_exists(tab,key)
+                if !allow_duplicate_keys && key_exists(tab,key)
                     error = "duplicate key {key}"
                     return null
                 tab[key] = value
@@ -249,16 +259,42 @@ def private parse_value ( var itv : iterator<Token>; var error : string & ) : Js
 def read_json ( text : string implicit; var error : string& ) : JsonValue?
     //! reads JSON from the `text` string.
     //! if `error` is not empty, it contains the parsing error message.
+    error = ""
     var lex <- lexer(text)
     let res = parse_value(lex,error)
     delete lex
     return res
 
 def read_json ( text : array<uint8>; var error : string& ) : JsonValue?
+    error = ""
     var lex <- lexer(text)
     let res = parse_value(lex,error)
     delete lex
     return res
+
+var private no_trailing_zeros = false
+
+def set_no_trailing_zeros ( value : bool )
+    //! if `value` is true, then numbers are written without trailing zeros.
+    let old_ntz = no_trailing_zeros
+    no_trailing_zeros = value
+    return old_ntz
+
+var private no_empty_arrays = false
+
+def set_no_empty_arrays ( value : bool )
+    //! if `value` is true, then empty arrays are not written at all
+    let old_nea = no_empty_arrays
+    no_empty_arrays = value
+    return old_nea
+
+var private allow_duplicate_keys = false
+
+def set_allow_duplicate_keys ( value : bool )
+    //! if `value` is true, then duplicate keys are allowed in objects. the later key overwrites the earlier one.
+    let old_adc = allow_duplicate_keys
+    allow_duplicate_keys = value
+    return old_adc
 
 // note - we use StringBuilderWriter for performance reasons here
 def private write_value ( var writer : StringBuilderWriter; jsv : JsonValue?; depth : int )
@@ -269,7 +305,10 @@ def private write_value ( var writer : StringBuilderWriter; jsv : JsonValue?; de
         write_escape_string(writer, jsv.value as _string)
         write(writer, "\"")
     elif jsv.value is _number
-        write(writer, jsv.value as _number)
+        if no_trailing_zeros
+            write(writer, format("%.17f",jsv.value as _number) |> rtrim("0") |> rtrim("."))
+        else
+            write(writer, jsv.value as _number)
     elif jsv.value is _array
         if length(jsv.value as _array)==0
             write(writer, "[]")
@@ -293,6 +332,10 @@ def private write_value ( var writer : StringBuilderWriter; jsv : JsonValue?; de
             write(writer, "\{\n")
             var first = true
             for elemK, elemV in keys(jsv.value as _object), values(jsv.value as _object)
+                if no_empty_arrays
+                    if elemV.value is _array
+                        if length(elemV.value as _array)==0
+                            continue
                 if first
                     first = false
                 else
@@ -320,3 +363,89 @@ def write_json ( val : JsonValue? ) : string
     let st = build_string() <| $ (var writer)
         write_value(writer, val, 0)
     return st
+
+def try_fixing_broken_json ( var bad:string )
+    //! fixes broken json. so far supported
+    //! 1. "string" + "string" string concatination
+    //! 2. "text "nested text" text" nested quotes
+    //! 3. extra , at the end of object or array
+    //! 4. /uXXXXXX sequences in the middle of white space
+	return build_string <| $ ( writer )
+		peek_data(bad) <| $ ( str )
+			var i = 0
+			let lstr = length(str)
+			while i < lstr
+				// write until begining of string or end
+				while i < lstr && str[i]!='"'u8
+                    if str[i]==','u8
+                        var j = i + 1
+                        while j < lstr && is_white_space(int(str[j]))
+                            j ++
+                        if j < lstr && (str[j]=='}'u8 || str[j]==']'u8)
+                            i = j
+                            continue
+                    if str[i]=='\\'u8 && str[i+1]=='u'u8
+                        i +=2
+                        while i < lstr && is_hex(int(str[i]))
+                            i ++
+                        continue
+					writer |> write_char(int(str[i]))
+					i ++
+				if i >= lstr	// if eof we done
+					break
+				// write the first quote
+				writer |> write_char('"')
+				i ++
+				// write until end of string or end of file
+				label 0:
+				while i < lstr && str[i]!='"'u8
+					writer |> write_char(int(str[i]))
+					i ++
+				if i >= lstr	// if eof we done, we fix close quote and we are done
+					writer |> write_char('"')
+					break
+				// skipping whitespace
+				let nested = i
+				var j = i + 1
+                let any_white_space = j < lstr && is_white_space(int(str[j]))
+				while j < lstr && is_white_space(int(str[j]))
+					j ++
+				if j >= lstr	// if eof we done, we fix close quote and we are done
+					writer |> write_char('"')
+					break
+				// valid JSON things after string are :, }, ], or , if its one of those, we close the string and we are done
+				let strj = int(str[j])
+				if strj==':' || strj=='}' || strj==']' || strj==','
+					writer |> write_char('"')
+					i ++
+					continue
+				// now, if its a + - it could be a string concatenation
+				if strj=='+'
+					j ++
+					while j < lstr && is_white_space(int(str[j]))
+						j ++
+					if j < lstr && str[j]=='"'u8	// if it is indeed new string, we go back to string writing, and add a separator
+						writer |> write_char(' ')
+						i = j + 1
+						goto label 0
+				// ok, its not a string concatination, or a valid character
+                // if it was a whitespace after the quote, we assume its missing ','
+                if any_white_space
+                    writer |> write_char('"')
+                    writer |> write_char(',')
+                    i = nested + 1
+                    continue
+                // . we assume its nested quotes and we replace with \"
+				writer |> write("`")
+				i = nested + 1
+				while i < lstr && str[i]!='"'u8
+					writer |> write_char(int(str[i]))
+					i ++
+				if i >= lstr	// if eof we done, we fix nested quote and and closing quote and we are done
+					writer |> write("`")
+					writer |> write_char('"')
+					break
+				// write the second replaced quote
+				writer |> write("`")
+				i ++
+				goto label 0

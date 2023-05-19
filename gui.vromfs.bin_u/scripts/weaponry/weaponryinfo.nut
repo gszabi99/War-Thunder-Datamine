@@ -1,12 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { Point2 } = require("dagor.math")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { get_current_mission_name } = require("mission")
+let { set_last_weapon } = require("unitCustomization")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -22,6 +25,7 @@ let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
 let { getTntEquivalentText, getDestructionInfoTexts } = require("%scripts/weaponry/dmgModel.nut")
 let { set_unit_option } = require("guiOptions")
 let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
+let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -160,14 +164,14 @@ let function getLastWeapon(unitName) {
     return res
 
   //validate last_weapon value
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return res
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon)
         && isWeaponEnabled(unit, weapon)) {
       set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
-      ::set_last_weapon(unitName, weapon.name)
+      set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
   return res
@@ -180,7 +184,7 @@ let function validateLastWeapon(unitName) {
   if (weaponName == "")
     return ""
 
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return ""
 
@@ -191,7 +195,7 @@ let function validateLastWeapon(unitName) {
   foreach (weapon in unit.getWeapons())
     if (isWeaponVisible(unit, weapon) && isWeaponEnabled(unit, weapon)) {
       set_unit_option(unitName, ::USEROPT_WEAPONS, weapon.name)
-      ::set_last_weapon(unitName, weapon.name)
+      set_last_weapon(unitName, weapon.name)
       return weapon.name
     }
 
@@ -203,14 +207,14 @@ let function setLastWeapon(unitName, weaponName) {
     return
 
   set_unit_option(unitName, ::USEROPT_WEAPONS, weaponName)
-  ::set_last_weapon(unitName, weaponName)
-  ::broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
+  set_last_weapon(unitName, weaponName)
+  broadcastEvent("UnitWeaponChanged", { unitName = unitName, weaponName = weaponName })
 }
 
 let function getWeaponNameByBlkPath(weaponBlkPath) {
-  let idxLastSlash = ::g_string.lastIndexOf(weaponBlkPath, "/")
-  let idxStart = idxLastSlash != ::g_string.INVALID_INDEX ? (idxLastSlash + 1) : 0
-  let idxEnd = ::g_string.endsWith(weaponBlkPath, ".blk") ? -4 : weaponBlkPath.len()
+  let idxLastSlash = lastIndexOf(weaponBlkPath, "/")
+  let idxStart = idxLastSlash != INVALID_INDEX ? (idxLastSlash + 1) : 0
+  let idxEnd = endsWith(weaponBlkPath, ".blk") ? -4 : weaponBlkPath.len()
   return weaponBlkPath.slice(idxStart, idxEnd)
 }
 
@@ -219,7 +223,7 @@ let function isWeaponParamsEqual(item1, item2) {
   if (!item1?.len() || !item2?.len())
     return false
   foreach (key, val in item1)
-    if ((key not in skipWeaponParams) && !::u.isEqual(val, item2?[key]))
+    if ((key not in skipWeaponParams) && !u.isEqual(val, item2?[key]))
       return false
   return true
 }
@@ -515,7 +519,7 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
 
     if (isTurret && (weapon?.turret != null)) {
       let turretInfo = weapon.turret
-      item.turret = ::u.isDataBlock(turretInfo) ? turretInfo.head : turretInfo
+      item.turret = u.isDataBlock(turretInfo) ? turretInfo.head : turretInfo
     }
 
     weapons.weaponsByTypes <- weapons?.weaponsByTypes ?? {}

@@ -1,5 +1,5 @@
 from "%darg/ui_imports.nut" import *
-from "ecs" import *
+from "%sqstd/ecs.nut" import *
 
 let {ControlBg, ReadOnly, Interactive, Hover} = require("style.nut").colors
 let {setValToObj, getValFromObj, isCompReadOnly} = require("attrUtil.nut")

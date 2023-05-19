@@ -155,10 +155,6 @@
       "turret_01_side_dm": {
         "armorThickness": 8.0
       },
-      "turret_01_bottom_dm": {},
-      "turret_02_bottom_dm": {
-        "armorThickness": 5.0
-      },
       "turret_03_bottom_dm": {},
       "turret_04_bottom_dm": {
         "armorThickness": 5.0
@@ -192,6 +188,16 @@
       },
       "ex_armor_r_01_dm": {
         "armorThickness": 10.0
+      }
+    },
+    "inner_armor": {
+      "armorClass": "RHA_tank_modern",
+      "hidableInXrayViewer": true,
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 8.0
       }
     },
     "sensor": {
@@ -1446,6 +1452,28 @@
       ]
     }
   },
+  "xray_viewer_data": {
+    "armorArrayHullFront": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      }
+    ]
+  },
   "chainIK": {
     "points": {
       "point": [
@@ -1697,13 +1725,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }

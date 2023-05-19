@@ -39,6 +39,7 @@
   ],
   "smokeScreenFx": "smokescreen_no_therm_big",
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1759,7 +1760,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
+        "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/30mm_54_ak630_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
@@ -1769,6 +1770,7 @@
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "isBulletBelt": true,
         "speedYaw": 70.0,
         "speedPitch": 50.0,
         "bullets": 2000,
@@ -1869,6 +1871,105 @@
             ]
           }
         }
+      },
+      {
+        "trigger": "gunner8",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/navalModels_weapons/rocket_9k34_strela3_naval_rocket_launcher.blk",
+        "flash": "emtr_gun_flame_03",
+        "useEmitter": true,
+        "emitter": "bone_rocket_01",
+        "emitterGenRange": [
+          1,
+          4
+        ],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "barrelDP": "aa_gun_01_dm",
+        "breechDP": "aa_gun_01_dm",
+        "brokenBarrelAllowShoot": false,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "isBulletBelt": true,
+        "speedYaw": 40.0,
+        "speedPitch": 30.0,
+        "bullets": 12,
+        "useGunnerTargetingQuality": false,
+        "fireConeAngle": 1.0,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "aa_turret_01",
+          "gun": "aa_gun_01",
+          "gunnerDm": "aa_turret_01_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            64.0
+          ]
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -160.0
+            ],
+            "pitch": [
+              -8.0,
+              45.0
+            ]
+          },
+          {
+            "yaw": [
+              160.0,
+              180.0
+            ],
+            "pitch": [
+              -8.0,
+              45.0
+            ]
+          }
+        ],
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 80.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 80.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.01
+              ],
+              [
+                70.0,
+                0.05
+              ]
+            ]
+          }
+        }
       }
     ]
   },
@@ -1931,7 +2032,7 @@
     "76mm_ussr_ak726_navy_HE": {},
     "76mm_ussr_ak726_navy_HE_radio_fuse": {},
     "76mm_ussr_ak726_navy_HE_radio_fuse_ammo_pack": {},
-    "30mm_ussr_ak630_universal": {},
+    "72mm_9k34_strela_3_aam": {},
     "ship_torpedoes": {},
     "ship_rangefinder": {
       "prevModification": "76mm_ussr_ak726_navy_HE_radio_fuse_ammo_pack"
@@ -3318,5 +3419,63 @@
   },
   "battleHideNodes": {
     "n": "ex_decor_15"
-  }
+  },
+  "skin": [
+    {
+      "name": "ussr_camo_navy_purple",
+      "nameLocId": "skin/ussr_camo_navy_purple",
+      "descLocId": "skin/ussr_camo_navy_purple/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_navy_purple*"
+      },
+      "set_tex": {
+        "from": "mpk_pr12412_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "ussr_camo_blackgreen_geometry",
+      "nameLocId": "skin/ussr_camo_blackgreen_geometry",
+      "descLocId": "skin/ussr_camo_blackgreen_geometry/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_blackgreen_geometry*"
+      },
+      "set_tex": {
+        "from": "mpk_pr12412_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "ussr_camo_modern_spots",
+      "nameLocId": "skin/ussr_camo_modern_spots",
+      "descLocId": "skin/ussr_camo_modern_spots/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_modern_spots*"
+      },
+      "set_tex": {
+        "from": "mpk_pr12412_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "ussr_camo_multicolor_geometry",
+      "nameLocId": "skin/ussr_camo_multicolor_geometry",
+      "descLocId": "skin/ussr_camo_multicolor_geometry/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_multicolor_geometry*"
+      },
+      "set_tex": {
+        "from": "mpk_pr12412_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    }
+  ]
 }

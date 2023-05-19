@@ -615,6 +615,15 @@
       }
     }
   },
+  "attachables": {
+    "ex_decor_l_06_dm": true,
+    "ex_decor_l_07_dm": true,
+    "ex_decor_l_08_dm": true,
+    "ex_decor_r_06_dm": true,
+    "ex_decor_r_07_dm": true,
+    "ex_decor_r_08_dm": true,
+    "ex_decor_r_09_dm": true
+  },
   "sound": {
     "EngineName": "engine_stuart_m5a",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -1638,17 +1647,17 @@
         "useEmitter": true,
         "aimingFromBoneGun": true,
         "reloadTime": 4.0,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
         "openHatchTime": 0.07,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           0.0,
           4.0,
           3.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.045,
         "jammedReloadTime": 15.0,
         "barrelDP": "gun_barrel_01_dm",
@@ -1746,17 +1755,17 @@
         "useEmitter": true,
         "aimingFromBoneGun": true,
         "reloadTime": 4.0,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "hatch_toggle_01",
         "openHatchTime": 0.07,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           0.0,
           -4.0,
           -8.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.045,
         "jammedReloadTime": 15.0,
         "barrelDP": "gun_barrel_02_dm",
@@ -1990,13 +1999,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }

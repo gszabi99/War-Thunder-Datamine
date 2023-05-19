@@ -1,14 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")
 
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
 ::g_chat_categories <- {
@@ -36,7 +39,7 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
   let guiBlk = GUI.get()
   let listBlk = guiBlk?.chat_categories
-  if (!::u.isDataBlock(listBlk))
+  if (!u.isDataBlock(listBlk))
     return
 
   let total = listBlk.blockCount()
@@ -57,13 +60,13 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
 ::g_chat_categories.loadSearchCategories <- function loadSearchCategories() {
   let blk = ::load_local_account_settings(SEARCH_CATEGORIES_SAVE_ID)
-  if (::u.isDataBlock(blk)) {
+  if (u.isDataBlock(blk)) {
     foreach (cat in this.listSorted)
       if (blk?[cat.id])
         this.searchCategories.append(cat.id)
   }
   if (!this.searchCategories.len())
-    this.searchCategories = ::u.map(this.listSorted, function(c) { return c.id })
+    this.searchCategories = u.map(this.listSorted, function(c) { return c.id })
 }
 
 ::g_chat_categories.saveSearchCategories <- function saveSearchCategories() {
@@ -108,7 +111,7 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
     })
   }
 
-  let data = ::handyman.renderCached(("%gui/options/spinnerOptions.tpl"), view)
+  let data = handyman.renderCached(("%gui/options/spinnerOptions.tpl"), view)
   listObj.getScene().replaceContentFromText(listObj, data, data.len(), handler)
 
   if (selIdx >= 0)
@@ -149,8 +152,8 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 ::g_chat_categories._setSearchCategories <- function _setSearchCategories(newValues) {
   this.searchCategories = newValues
   this.saveSearchCategories()
-  ::broadcastEvent("ChatSearchCategoriesChanged")
+  broadcastEvent("ChatSearchCategoriesChanged")
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_chat_categories")
-::subscribe_handler(::g_chat_categories, ::g_listener_priority.DEFAULT_HANDLER)
+g_script_reloader.registerPersistentDataFromRoot("g_chat_categories")
+subscribe_handler(::g_chat_categories, ::g_listener_priority.DEFAULT_HANDLER)

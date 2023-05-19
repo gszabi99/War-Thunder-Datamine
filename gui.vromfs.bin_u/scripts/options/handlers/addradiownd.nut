@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_chat_message_empty } = require("chat")
 
@@ -84,7 +85,7 @@ let { is_chat_message_empty } = require("chat")
       ::add_internet_radio_station(name, url);
     }
     this.goBack()
-    ::broadcastEvent("UpdateListRadio", {})
+    broadcastEvent("UpdateListRadio", {})
   }
 }
 

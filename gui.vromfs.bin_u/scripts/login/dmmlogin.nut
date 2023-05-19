@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -23,7 +24,7 @@ let exitGame = require("%scripts/utils/exitGame.nut")
       return
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/button.tpl", {
+    let data = handyman.renderCached("%gui/commonParts/button.tpl", {
       id = "authorization_button"
       text = "#HUD_PRESS_A_CNT"
       shortcut = "A"

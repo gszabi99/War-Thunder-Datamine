@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -53,7 +54,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   foreach (_idx, column in itemsArray) {
     result.append([])
     foreach (item in column) {
-      if (::u.isTable(item)) {
+      if (u.isTable(item)) {
         result[result.len() - 1].append(item)
         continue
       }
@@ -73,9 +74,9 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 
 ::g_top_menu_sections.clearEmptyColumns <- function clearEmptyColumns(itemsArray) {
   for (local i = itemsArray.len() - 1; i >= 0; i--) {
-    if (::u.isEmpty(itemsArray[i]))
+    if (u.isEmpty(itemsArray[i]))
       itemsArray.remove(i)
-    else if (::u.isArray(itemsArray[i]))
+    else if (u.isArray(itemsArray[i]))
       this.clearEmptyColumns(itemsArray[i])
   }
 }

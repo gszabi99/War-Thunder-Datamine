@@ -5,6 +5,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { toUpper, cutPrefix } = require("%sqstd/string.nut")
+
 enum VISUAL_SORT_ORDER {
   INVALID
   TANK
@@ -46,7 +48,7 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
       return hasFeature(countryShort + "AircraftsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = false
@@ -76,14 +78,14 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
       return hasFeature(countryShort + "TanksInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["mobility", "protection", "firepower"]
     isSkinAutoSelectAvailable = @() hasFeature("SkinAutoSelect")
     canShowProtectionAnalysis = @() true
-    canShowVisualEffectInProtectionAnalysis = @() false
+    canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     wheelmenuAxis = [ "gm_wheelmenu_x", "gm_wheelmenu_y" ]
   }
 
@@ -107,13 +109,13 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
       return hasFeature(countryShort + "ShipsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["seakeeping", "unsinkability", "firepower"]
     canShowProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisShip")
-    canShowVisualEffectInProtectionAnalysis = @() false
+    canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     bulletSetsQuantity = BULLETS_SETS_QUANTITY
     wheelmenuAxis = [ "ship_wheelmenu_x", "ship_wheelmenu_y" ]
   }
@@ -165,13 +167,13 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = ::g_string.toUpper(::g_string.cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
       return hasFeature(countryShort + "BoatsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["seakeeping", "unsinkability", "firepower"]
     canShowProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisShip")
-    canShowVisualEffectInProtectionAnalysis = @() false
+    canShowVisualEffectInProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisVisualEffect")
     bulletSetsQuantity = BULLETS_SETS_QUANTITY
     wheelmenuAxis = [ "ship_wheelmenu_x", "ship_wheelmenu_y" ]
   }

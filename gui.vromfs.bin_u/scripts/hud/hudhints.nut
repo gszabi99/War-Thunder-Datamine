@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -13,6 +14,9 @@ let { is_stereo_mode } = require("vr")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
+let { startsWith } = require("%sqstd/string.nut")
+let { get_mplayer_by_id } = require("mission")
+let { get_mission_difficulty } = require("guiMission")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
@@ -53,7 +57,7 @@ global enum HINT_INTERVAL {
 let getRawShortcutsArray = function(shortcuts) {
   if (!shortcuts)
     return []
-  local rawShortcutsArray = ::u.isArray(shortcuts) ? shortcuts : [shortcuts]
+  local rawShortcutsArray = u.isArray(shortcuts) ? shortcuts : [shortcuts]
   let shouldPickOne = ::g_hud_hints.shouldPickFirstValid(rawShortcutsArray)
   if (shouldPickOne) {
     let rawShortcut = ::g_hud_hints.pickFirstValidShortcut(rawShortcutsArray)
@@ -99,7 +103,7 @@ let getRawShortcutsArray = function(shortcuts) {
  */
 ::g_hud_hints.shouldPickFirstValid <- function shouldPickFirstValid(shortcutArray) {
   foreach (shortcutId in shortcutArray)
-    if (::g_string.startsWith(shortcutId, "@"))
+    if (startsWith(shortcutId, "@"))
       return true
   return false
 }
@@ -107,7 +111,7 @@ let getRawShortcutsArray = function(shortcuts) {
 ::g_hud_hints.pickFirstValidShortcut <- function pickFirstValidShortcut(shortcutArray) {
   foreach (shortcutId in shortcutArray) {
     local localShortcutId = shortcutId //to avoid changes in original array
-    if (::g_string.startsWith(localShortcutId, "@"))
+    if (startsWith(localShortcutId, "@"))
       localShortcutId = localShortcutId.slice(1)
     let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(localShortcutId)
     if (shortcutType.isAssigned(localShortcutId))
@@ -213,7 +217,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
     if (varValue != null) {
       let varStyle = getTblValue("variable_style", hintData)
       if (varStyle == "playerId") {
-        let player = ::get_mplayer_by_id(varValue)
+        let player = get_mplayer_by_id(varValue)
         varValue = ::build_mplayer_name(player)
       }
       res = loc(res, { var = varValue })
@@ -296,7 +300,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   buildText             = ::g_hud_hints._buildText
   getHintMarkupParams   = ::g_hud_hints._getHintMarkupParams
   getLifeTime           = ::g_hud_hints._getLifeTime
-  isEnabledByDifficulty = @() !this.isAllowedByDiff || (this.isAllowedByDiff?[::get_mission_difficulty()] ?? true)
+  isEnabledByDifficulty = @() !this.isAllowedByDiff || (this.isAllowedByDiff?[get_mission_difficulty()] ?? true)
 
   selfRemove = false //will be true if lifeTime > 0
   lifeTime = 0.0
@@ -756,7 +760,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   EXTINGUISH_FIRE_HINT = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/extinguish_fire"
     noKeyLocId = "hints/extinguish_fire_nokey"
     getShortcuts = @(_data)
@@ -787,7 +791,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   CRITICAL_HEALING_HINT = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/critical_heeling"
     noKeyLocId = "hints/critical_heeling_nokey"
     shortcuts = "ID_REPAIR_BREACHES"
@@ -902,7 +906,13 @@ enums.addTypesByGlobalName("g_hud_hints", {
     buildText = function(eventData) {
       local res = ::g_hud_hints._buildText.call(this, eventData)
       let rawShortcutsArray = getRawShortcutsArray(this.getShortcuts(eventData))
-      let player = "playerId" in eventData ? ::get_mplayer_by_id(eventData.playerId) : null
+
+      let player = "player" in eventData
+          ? eventData.player
+        : "playerId" in eventData
+          ? get_mplayer_by_id(eventData.playerId)
+        : null
+
       local locId = eventData?.locId ?? ""
       if (!rawShortcutsArray.len())
         locId = eventData?.noKeyLocId ?? locId
@@ -921,11 +931,15 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
       local participantList = []
       if (eventData?.participant)
-        participantList = ::u.isArray(eventData.participant) ? eventData.participant : [eventData.participant]
+        participantList = u.isArray(eventData.participant) ? eventData.participant : [eventData.participant]
 
       let playerTeam = ::get_local_team_for_mpstats()
       foreach (participant in participantList) {
-        let  participantPlayer = (participant?.participantId ?? -1) >= 0 ? ::get_mplayer_by_id(participant.participantId) : null
+        let  participantPlayer = "player" in participant
+            ? participant.player
+          : (participant?.participantId ?? -1) >= 0
+            ? get_mplayer_by_id(participant.participantId)
+          : null
         if (!(participant?.image && participantPlayer))
           continue
 
@@ -1022,12 +1036,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   TORPEDO_DEADZONE_HINT = {
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/torpedo_deadzone"
     showEvent = "hint:torpedo_deadzone:show"
     hideEvent = "hint:torpedo_deadzone:hide"
   }
 
   TORPEDO_BROKEN_HINT = {
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/torpedo_broken"
     showEvent = "hint:torpedo_broken:show"
     hideEvent = "hint:torpedo_broken:hide"
@@ -1088,13 +1104,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
   MUST_SEE_SCOUTING_TARGET = {
     locId = "HUD/TXT_MUST_SEE_SCOUTING_TARGET"
     showEvent = "hint:must_see_scouting_target"
-    lifeTime = 3.0
-  }
-
-
-  FUNNEL_DAMAGED = {
-    locId = "HUD/TXT_FUNNEL_DAMAGED"
-    showEvent = "hint:funnel_damaged"
     lifeTime = 3.0
   }
 
@@ -1234,7 +1243,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   REPAIR_BREACHES_OFFER = {
-    hintType  = ::g_hud_hint_types.REPAIR
+    hintType  = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId     = "hints/repair_breaches_offer"
     showEvent = "hint:repair_breaches_offer::show"
     hideEvent = "hint:repair_breaches_offer::hide"
@@ -1246,7 +1255,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   UNDERWATERING_OFFER = {
-    hintType  = ::g_hud_hint_types.REPAIR
+    hintType  = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId     = "hints/underwatering_offer"
     showEvent = "hint:underwatering_offer::show"
     hideEvent = "hint:underwatering_offer::hide"
@@ -1258,7 +1267,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   SHIP_OFFER_REPAIR = {
-    hintType  = ::g_hud_hint_types.REPAIR
+    hintType  = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId     = "hints/ship_offer_repair"
     showEvent = "hint:ship_offer_repair::show"
     hideEvent = "hint:ship_offer_repair::hide"
@@ -1267,6 +1276,50 @@ enums.addTypesByGlobalName("g_hud_hints", {
     getShortcuts = function(_data) {
       return ::g_hud_action_bar_type.TOOLKIT.getVisualShortcut()
     }
+  }
+
+  SHIP_OFFER_SHOW_HERO_MODULES = {
+    hintType  = ::g_hud_hint_types.COMMON
+    locId     = "hints/ship_offer_show_hero_modules"
+    showEvent = "hint:ship_offer_show_hero_modules::show"
+    hideEvent = "hint:ship_offer_show_hero_modules::hide"
+    lifeTime  = 5.0
+    totalCount = 3
+  }
+
+  SHIP_OFFER_SMOKE_SCREEN = {
+    hintType  = ::g_hud_hint_types.COMMON
+    locId     = "hints/ship_offer_smoke_screen"
+    showEvent = "hint:ship_offer_smoke_screen::show"
+    hideEvent = "hint:ship_offer_smoke_screen::hide"
+    lifeTime  = 5.0
+    totalCount = 3
+  }
+
+  SHIP_BRIDGE_DESTROYED = {
+    hintType  = ::g_hud_hint_types.COMMON
+    locId     = "hints/ship_bridge_destroyed"
+    showEvent = "hint:ship_bridge_destroyed"
+    lifeTime  = 5.0
+    totalCount = 3
+  }
+
+  SHIP_TRIGGER_GROUP_IN_DEAD_ZONE = {
+    hintType  = ::g_hud_hint_types.COMMON
+    locId     = "hints/ship_trigger_group_in_dead_zone"
+    showEvent = "hint:ship_trigger_group_in_dead_zone::show"
+    hideEvent = "hint:ship_trigger_group_in_dead_zone::hide"
+    lifeTime  = 5.0
+    totalCount = 3
+  }
+
+  SHIP_SOME_WEAPONS_IN_DEAD_ZONE = {
+    hintType  = ::g_hud_hint_types.COMMON
+    locId     = "hints/ship_some_weapons_in_dead_zone"
+    showEvent = "hint:ship_some_weapons_in_dead_zone::show"
+    hideEvent = "hint:ship_some_weapons_in_dead_zone::hide"
+    lifeTime  = 5.0
+    totalCount = 3
   }
 
   OFFER_REPAIR = {
@@ -1286,6 +1339,10 @@ enums.addTypesByGlobalName("g_hud_hints", {
       else if (getTblValue("cancelRequest", data, false)) {
         return "hints/repair_cancel_request_assist_hold"
       }
+      //
+
+
+
       return (hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
         ? "hints/repair_ship" : "hints/repair_tank_hold"
     }
@@ -1298,6 +1355,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
         //
 
 
+
         : "ID_REPAIR_TANK"
     }
     showEvent = "tankRepair:offerRepair"
@@ -1305,7 +1363,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   AMMO_DESTROYED = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/ammo_destroyed"
     showEvent = "hint:ammoDestroyed:show"
     priority = CATASTROPHIC_HINT_PRIORITY
@@ -1313,13 +1371,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   WEAPON_TYPE_UNAVAILABLE = {
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/weapon_type_unavailable"
     showEvent = "hint:weaponTypeUnavailable:show"
     lifeTime = 3.0
   }
 
   NO_BULLETS = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/have_not_bullets"
     showEvent = "hint:no_bullets"
     lifeTime = 5.0
@@ -1431,10 +1490,20 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   VERY_FEW_CREW = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId = "hints/is_very_few_crew"
     showEvent = "hint:very_few_crew:show"
     lifeTime = 5.0
+    isHideOnDeath = true
+  }
+
+  SUPPORT_PLANE_OFFER = {
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
+    locId = "hints/support_plane_offer"
+    showEvent = "hint:support_plane_offer:show"
+    hideEvent = "hint:support_plane_offer:hide"
+    lifeTime = 5.0
+    totalCount = 3
     isHideOnDeath = true
   }
 
@@ -1537,7 +1606,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   SUPPORT_PLANE_IN_DEAD_ZONE = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId     = "hints/support_plane_in_dead_zone"
     showEvent = "hint:support_plane_in_dead_zone"
     lifeTime = 3.0
@@ -1581,14 +1650,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   CATAPULT_BROKEN = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId     = "my_dmg_msg/catapult"
     showEvent = "hint:catapult_is_broken:show"
     lifeTime = 5.0
   }
 
   SUPPORT_PLANE_BROKEN = {
-    hintType = ::g_hud_hint_types.COMMON
+    hintType = ::g_hud_hint_types.MISSION_ACTION_HINTS
     locId     = "my_dmg_msg/aircraft"
     showEvent = "hint:support_plane_is_broken:show"
     lifeTime = 5.0
@@ -1672,6 +1741,39 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 3.0
     isHideOnDeath = true
   }
+  //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()

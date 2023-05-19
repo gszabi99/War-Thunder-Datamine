@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { Point2 } = require("dagor.math")
 let DataBlock  = require("DataBlock")
@@ -288,7 +290,7 @@ let { LEADER_OPERATION_STATES,
 
     local markUp = ""
     foreach (buttonView in ::g_ww_map_controls_buttons.types)
-      markUp += ::handyman.renderCached("%gui/commonParts/button.tpl", buttonView)
+      markUp += handyman.renderCached("%gui/commonParts/button.tpl", buttonView)
 
     this.guiScene.replaceContentFromText(obj, markUp, markUp.len(), this)
   }
@@ -330,6 +332,7 @@ let { LEADER_OPERATION_STATES,
 
       showAny = showAny || showButton
     }
+    nestObj.show(showAny)
     btnBlockObj.show(showAny)
 
     let warningTextObj = this.scene.findObject("ww_no_army_to_controls")
@@ -348,7 +351,7 @@ let { LEADER_OPERATION_STATES,
     let toBattleNest = this.showSceneBtn("gamercard_tobattle", true)
     if (toBattleNest) {
       this.scene.findObject("top_gamercard_bg").needRedShadow = "no"
-      let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
+      let toBattleBlk = handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
         enableEnterKey = !::is_platform_shield_tv()
       })
       this.guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
@@ -397,7 +400,7 @@ let { LEADER_OPERATION_STATES,
   }
 
   function hasBattlesToPlay() {
-    return ::u.search(::g_world_war.getBattles(),
+    return u.search(::g_world_war.getBattles(),
       ::g_world_war.isBattleAvailableToPlay)
   }
 
@@ -543,8 +546,8 @@ let { LEADER_OPERATION_STATES,
     if (!objectivesBlk)
       return
 
-    let staticBlk = ::u.copy(objectivesBlk?.data) || DataBlock()
-    let dynamicBlk = ::u.copy(objectivesBlk?.status) || DataBlock()
+    let staticBlk = u.copy(objectivesBlk?.data) || DataBlock()
+    let dynamicBlk = u.copy(objectivesBlk?.status) || DataBlock()
 
     for (local i = 0; i < staticBlk.blockCount(); i++) {
       let statBlk = staticBlk.getBlock(i)
@@ -567,7 +570,7 @@ let { LEADER_OPERATION_STATES,
 
       for (local j = WW_MAP_HIGHLIGHT.LAYER_0; j <= WW_MAP_HIGHLIGHT.LAYER_2; j++) {
         let filteredZones = zones.filter(@(zone) zone.mapLayer == j)
-        let zonesArray = ::u.map(filteredZones, @(zone) zone.id)
+        let zonesArray = u.map(filteredZones, @(zone) zone.id)
         ::ww_highlight_zones_by_name(zonesArray, j)
       }
     }
@@ -635,7 +638,7 @@ let { LEADER_OPERATION_STATES,
     view.side1TotalVehicle = totalVehicle[side1Name]
     view.side2TotalVehicle = totalVehicle[side2Name]
 
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapSidesStrenght.tpl", view)
+    let data = handyman.renderCached("%gui/worldWar/worldWarMapSidesStrenght.tpl", view)
     this.guiScene.replaceContentFromText(blockObj, data, data.len(), this)
 
     this.needUpdateSidesStrenghtView = false
@@ -653,7 +656,7 @@ let { LEADER_OPERATION_STATES,
       return
     }
 
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", selectedArmy.getView())
+    let data = handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", selectedArmy.getView())
     this.guiScene.replaceContentFromText(blockObj, data, data.len(), this)
 
     if (this.timerDescriptionHandler) {
@@ -674,7 +677,7 @@ let { LEADER_OPERATION_STATES,
     if (!checkObj(blockObj) || !("wwArmy" in params))
       return
 
-    local data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", params.wwArmy.getView())
+    local data = handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", params.wwArmy.getView())
     this.guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
@@ -700,7 +703,7 @@ let { LEADER_OPERATION_STATES,
       return
 
     let reinfView = reinforcement.getView()
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", reinfView)
+    let data = handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", reinfView)
     this.guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
@@ -730,7 +733,7 @@ let { LEADER_OPERATION_STATES,
     }
 
     let blockObj = this.scene.findObject("content_block_3")
-    let data = ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", formation.getView())
+    let data = handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", formation.getView())
     this.guiScene.replaceContentFromText(blockObj, data, data.len(), this)
   }
 
@@ -1093,7 +1096,7 @@ let { LEADER_OPERATION_STATES,
       return
 
     let name = getTblValue("name", params, "")
-    if (::u.isEmpty(name))
+    if (u.isEmpty(name))
       return
 
     ::ww_gui_bhv.worldWarMapControls.selectedReinforcement.call(::ww_gui_bhv.worldWarMapControls, mapObj, name)
@@ -1180,7 +1183,7 @@ let { LEADER_OPERATION_STATES,
     local highlightedZones = []
     if (::g_ww_unit_type.isAir(reinforcementType)) {
       let filterType = ::g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
-      highlightedZones = ::u.map(::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType),
+      highlightedZones = u.map(::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType),
         function(airfield) {
           return ::ww_get_zone_name(::ww_get_zone_idx_world(airfield.getPos()))
         })

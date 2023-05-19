@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -18,6 +19,7 @@ let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fet
   setSchedulerTimeColor, hasAnyTickets, getTourDay } = require("%scripts/events/eSport.nut")
 let stdMath = require("%sqstd/math.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
@@ -52,7 +54,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
       return {}
 
     return {
-      seasonHeader = "\n".join([::g_string.utf8ToUpper(loc("mainmenu/btnTournament")),
+      seasonHeader = "\n".join([utf8ToUpper(loc("mainmenu/btnTournament")),
         $"{loc("tournaments/season")} {this.currSeason.competitiveSeason}"])
       seasonDate = "".concat(
         buildDateTimeStr(getTimestampFromStringUtc(this.currSeason.beginDate), false, false),
@@ -274,7 +276,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
         continue
 
       if (value)
-        ::u.appendOnce(idx, selectedArr)
+        u.appendOnce(idx, selectedArr)
       else
         removeItemFromList(idx, selectedArr)
     }

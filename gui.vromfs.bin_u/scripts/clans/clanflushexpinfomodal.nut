@@ -1,6 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -23,7 +25,7 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal {
     this.canQuitByGoBack = !this.needChoseResearch
     let flushExpText = "".concat(loc("userlog/clanUnits/flush/desc", {
         unit = ::getUnitName(this.userlog.body.unit)
-        rp = ::Cost().setSap(this.userlog.body.rp).tostring()
+        rp = Cost().setSap(this.userlog.body.rp).tostring()
       }),
       this.needChoseResearch ? $"\n{loc("mainmenu/nextResearchSquadronVehicle")}" : ""
     )
@@ -34,7 +36,7 @@ let handlerClass = class extends ::gui_handlers.clanVehiclesModal {
   }
 
   function getFlushExpUnitView() {
-    let unit = ::getAircraftByName(this.userlog.body.unit)
+    let unit = getAircraftByName(this.userlog.body.unit)
     if (unit == null)
       return ""
     return format("unitItemContainer{id:t='cont_%s' %s}", unit.name,

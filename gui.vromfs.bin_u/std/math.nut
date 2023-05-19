@@ -131,6 +131,29 @@ local function getRomanNumeral(num) {
   return "".join(thousands.extend(roman).filter(@(v) v!=null))
 }
 
+/**
+ * Calculates average value from array.
+ * @param {array} list - Array of integers or floats.
+ * @return {float|null} - Average value, or null for empty array.
+ */
+let function average(list) {
+  let n = list.len()
+  return n == 0 ? null
+    : list.reduce(@(sum, v) sum + v, 0.0) / n
+}
+
+/**
+ * Calculates median value from array.
+ * @param {array} sortedList - Array of integers or floats. MUST be sorted!
+ * @return {float|null} - Median value, or null for empty array.
+ */
+let function median(sortedList) {
+  let n = sortedList.len()
+  return n == 0 ? null
+    : (n % 2 == 1) ? (sortedList[(n - 1) / 2] * 1.0)
+    : (sortedList[(n / 2) - 1] + sortedList[n / 2]) / 2.0
+}
+
 //EXPORT content for require
 let export = math.__merge({
   GOLDEN_RATIO
@@ -149,6 +172,8 @@ let export = math.__merge({
   color2uint
   getRomanNumeral
   calcPercent = @(value) (100.0 * value + 0.5).tointeger()
+  average
+  median
 })
 
 return export

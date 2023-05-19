@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -11,6 +12,7 @@ let { floor } = require("math")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { cutPrefix, toUpper } = require("%sqstd/string.nut")
 
 ::gui_handlers.VehicleRequireFeatureWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -30,7 +32,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       showOkButton = !this.getPurchaseAvailable()
       showEntitlementsTable = this.getPurchaseAvailable()
     }
-    let data = ::handyman.renderCached("%gui/vehicleRequireFeatureWindow.tpl", view)
+    let data = handyman.renderCached("%gui/vehicleRequireFeatureWindow.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
     let timerObj = this.getObj("vehicle_require_feature_timer")
@@ -74,7 +76,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function getWndImage() {
     local res = "#ui/images/usa_tanks_locked?P1"
-    let clearedCountry = ::g_string.cutPrefix(::getUnitCountry(this.unit), "country_")
+    let clearedCountry = cutPrefix(::getUnitCountry(this.unit), "country_")
     if (clearedCountry)
       res = "#ui/images/" + clearedCountry + "_" + this.unit.unitType.tag + "_locked?P1"
     return res
@@ -85,7 +87,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       return ""
 
     let country = ::getUnitCountry(this.unit)
-    let locTag = ::g_string.toUpper(::g_string.cutPrefix(country, "country_", ""), 1)
+    let locTag = toUpper(cutPrefix(country, "country_", ""), 1)
                    + this.unit.unitType.name
     return format("#shop/featureLock/%s/header", locTag)
   }

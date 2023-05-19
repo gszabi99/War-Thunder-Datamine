@@ -8,6 +8,8 @@ let psn = require("%sonyLib/webApi.nut")
 let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let { getActivityByGameMode } = require("%scripts/gameModes/psnActivities.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
+let { isMyUserId } = require("%scripts/matching/serviceNotifications/mrooms.nut")
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let match = {
   id = null
@@ -28,7 +30,7 @@ let function processMemberList(members) {
   let players = {}
   local minMemberId = null
   foreach (m in members) {
-    let isMe = ::is_my_userid(m.userId)
+    let isMe = isMyUserId(m.userId)
     if (isPS4PlayerName(m.name)) {
       let pinfo = ::SessionLobby.getMemberPlayerInfo(m.userId)
       if (pinfo?.team != null) { // skip those, whose side is not yet known - can't send'em to PSN
@@ -157,13 +159,13 @@ let function onBattleEnded(p) {
 
 let function enableMatchesReporting() {
   log("[PSMT] enabling matches reporting")
-  ::add_event_listener("RoomJoined", tryCreateMatch)
-  ::add_event_listener("LobbyMembersChanged", @(_p) updateMatchData())
-  ::add_event_listener("LobbyMemberInfoChanged", @(_p) updateMatchData())
-  ::add_event_listener("LobbyStatusChange", updateMatchStatus)
-  ::add_event_listener("PlayerQuitMission", @(_p) leaveMatch(psn.matches.LeaveReason.QUIT))
-  ::add_event_listener("UpdateExternalsIDs", onReceivedExternalIds)
-  ::add_event_listener("BattleEnded", onBattleEnded)
+  add_event_listener("RoomJoined", tryCreateMatch)
+  add_event_listener("LobbyMembersChanged", @(_p) updateMatchData())
+  add_event_listener("LobbyMemberInfoChanged", @(_p) updateMatchData())
+  add_event_listener("LobbyStatusChange", updateMatchStatus)
+  add_event_listener("PlayerQuitMission", @(_p) leaveMatch(psn.matches.LeaveReason.QUIT))
+  add_event_listener("UpdateExternalsIDs", onReceivedExternalIds)
+  add_event_listener("BattleEnded", onBattleEnded)
 }
 
 return {

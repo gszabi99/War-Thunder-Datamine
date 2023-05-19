@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -130,7 +131,7 @@ let function getRewardLayout(block, shouldOnlyImage = false) {
     return ::trophyReward.getImageByConfig(config, shouldOnlyImage, "roulette_item_place")
 
   let image = ::trophyReward.getImageByConfig(config, shouldOnlyImage, "item_place_single")
-  return ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg("roulette_item_place"), image)
+  return LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg("roulette_item_place"), image)
 }
 
 let function generateItemsArray(trophyName) {
@@ -352,10 +353,10 @@ let function insertCurrentReward(readyItemsArray, rewardsArray) {
 }
 
 let function getHiddenTopPrizeReward(trophyItem, showType) {
-  let layerCfg = clone ::LayersIcon.findLayerCfg("item_place_single")
+  let layerCfg = clone LayersIcon.findLayerCfg("item_place_single")
   layerCfg.img <- $"#ui/gameuiskin#item_{showType}"
-  let image = ::LayersIcon.genDataFromLayer(layerCfg)
-  let layout = ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg("roulette_item_place"), image)
+  let image = LayersIcon.genDataFromLayer(layerCfg)
+  let layout = LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg("roulette_item_place"), image)
 
   return {
     id = trophyItem.id
@@ -419,22 +420,22 @@ let function createItemsMarkup(completeArray) {
   local result = ""
   foreach (idx, slot in completeArray) {
     let slotRes = []
-    let offset = ::LayersIcon.getOffset(slot.len(), MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET)
+    let offset = LayersIcon.getOffset(slot.len(), MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET)
 
     foreach (slotIdx, item in slot)
       slotRes.insert(0,
-        ::LayersIcon.genDataFromLayer(
+        LayersIcon.genDataFromLayer(
           { x = (offset * slotIdx) + "@itemWidth", w = "1@itemWidth" },
           item?.reward?.layout ?? item?.layout))
 
-    let layerCfg = ::LayersIcon.findLayerCfg("roulette_slot")
+    let layerCfg = LayersIcon.findLayerCfg("roulette_slot")
     local width = 1
     if (slot.len() > 1)
       width += offset * (slot.len() - 1)
     layerCfg.w <- width + "@itemWidth"
     layerCfg.id <- "roulette_slot_" + idx
 
-    result += ::LayersIcon.genDataFromLayer(layerCfg, ::g_string.implode(slotRes))
+    result += LayersIcon.genDataFromLayer(layerCfg, "".join(slotRes, true))
   }
 
   return result

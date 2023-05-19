@@ -6,9 +6,11 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 
 /**[DEPRECATED] this notification callbacks call by mathing forced**/
-let function on_online_info_updated(params) {
+let function onOnlineInfoUpdated(params) {
   if ("utc_time" in params) {
     ::online_info_server_time_param = params.utc_time.tointeger()
     ::online_info_server_time_recieved = get_time_msec() / 1000
@@ -26,16 +28,8 @@ let function on_online_info_updated(params) {
     update_avail = true
   }
 
-  ::broadcastEvent("CheckClientUpdate", { update_avail = update_avail })
-  ::broadcastEvent("OnlineInfoUpdate")
-
-  if (::current_base_gui_handler && ("onOnlineInfo" in ::current_base_gui_handler))
-    ::current_base_gui_handler.onOnlineInfo.call(::current_base_gui_handler)
+  broadcastEvent("CheckClientUpdate", { update_avail })
+  broadcastEvent("OnlineInfoUpdate")
 }
 
-foreach (notificationName, callback in
-          {
-            ["mlogin.update_online_info"] = on_online_info_updated
-          }
-        )
-  ::matching_rpc_subscribe(notificationName, callback)
+matchingRpcSubscribe("mlogin.update_online_info", onOnlineInfoUpdated)

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -8,6 +9,7 @@ let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
 let { round } = require("math")
 let { requestLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
+let { isStringInteger } = require("%sqstd/string.nut")
 
 let modes = [
   {
@@ -54,7 +56,7 @@ let modes = [
   }]
 
 let function getModeByName(mName) {
-  return ::u.search(modes, @(m) m.mode == mName
+  return u.search(modes, @(m) m.mode == mName
     && (!m?.needFeature || hasFeature(m.needFeature)))
 }
 
@@ -103,7 +105,7 @@ let function getSeasonDay(days) {
   foreach (dayId in days)
     if (dayId.slice(0, 3) == "day") {
       let dayNumberText = dayId.slice(3)
-      if (::g_string.isStringInteger(dayNumberText))
+      if (isStringInteger(dayNumberText))
         seasonDay = max(seasonDay, dayNumberText.tointeger())
     }
 

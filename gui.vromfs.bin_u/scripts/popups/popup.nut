@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -40,7 +41,7 @@ let class Popup {
     let popupGuiScene = ::get_cur_gui_scene()
     this.selfObj = popupGuiScene.createElementByObject(popupNestObj, this.POPUP_BLK, "popup", this)
 
-    if (!::u.isEmpty(this.title))
+    if (!u.isEmpty(this.title))
       this.selfObj.findObject("title").setValue(this.title)
     else
       this.selfObj.findObject("title").show(false)

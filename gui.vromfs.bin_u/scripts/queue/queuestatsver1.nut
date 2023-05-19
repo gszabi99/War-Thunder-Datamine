@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -82,7 +83,7 @@ let { ceil } = require("math")
 
 
     foreach (_clanTag, clanData in clansList)
-      this.clansQueueTable = ::u.tablesCombine(
+      this.clansQueueTable = u.tablesCombine(
         this.clansQueueTable,
         clanData,
         @(sumClans, clanPlayers) sumClans + (clanPlayers ? 1 : 0),

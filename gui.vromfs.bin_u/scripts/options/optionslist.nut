@@ -19,6 +19,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -33,11 +34,12 @@ let privacyOptionsList = Computed(function() {
   let havePrem = havePremium.value
   let hasFeat = hasFeature("PrivacySettings")
   return [
-    ["options/header/privacy", null, hasFeat && havePrem],
+    ["options/header/privacy", null, hasFeat],
     [::USEROPT_DISPLAY_MY_REAL_NICK, "spinner", hasFeat && havePrem],
     [::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, "spinner", hasFeat && havePrem],
     [::USEROPT_ALLOW_ADDED_TO_CONTACTS, "spinner", hasFeat && havePrem],
-    [::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeat && havePrem]
+    [::USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasFeat && havePrem],
+    [::USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasFeat && is_platform_pc]
   ]
 })
 
@@ -174,7 +176,7 @@ let getMainOptions = function() {
       [::USEROPT_BULLET_FALL_SOUND_SHIP, "spinner"],
       [::USEROPT_AUTO_TARGET_CHANGE_SHIP, "spinner"],
       [::USEROPT_REALISTIC_AIMING_SHIP, "spinner",
-        (!::is_in_flight() || ::get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName)],
+        (!::is_in_flight() || get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName)],
       // TODO: separate from tank [::USEROPT_TACTICAL_MAP_SIZE, "slider"],
       // TODO: separate from tank [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner"],
       [::USEROPT_FOLLOW_BULLET_CAMERA, "spinner", hasFeature("enableFollowBulletCamera")],
@@ -287,7 +289,7 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
     [::USEROPT_VOLUME_TINNITUS, "slider"],
     [::USEROPT_HANGAR_SOUND, "spinner"],
     [::USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", is_platform_pc],
-    [::USEROPT_ENABLE_SOUND_SPEED, "spinner", (! ::is_in_flight()) || (::get_mission_difficulty_int() != DIFFICULTY_HARDCORE) ],
+    [::USEROPT_ENABLE_SOUND_SPEED, "spinner", (! ::is_in_flight()) || (get_mission_difficulty_int() != DIFFICULTY_HARDCORE) ],
     [::USEROPT_SOUND_RESET_VOLUMES, "button"]
   ]
 }

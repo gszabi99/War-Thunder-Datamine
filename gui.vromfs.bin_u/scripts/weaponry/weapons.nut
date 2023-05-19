@@ -1,9 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -75,7 +80,7 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   let db = DataBlock()
   db[unitName] <- DataBlock()
 
-  let air = ::getAircraftByName(unitName)
+  let air = getAircraftByName(unitName)
   foreach (mod in air.modifications)
     db[unitName][mod.name] <- ::shop_is_modification_enabled(unitName, mod.name)
 
@@ -158,7 +163,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
         ::getRpPriceText(loc("mainmenu/spendExcessExp") + " ", true))
 
     this.airName = ::aircraft_for_weapons
-    this.air = ::getAircraftByName(this.airName)
+    this.air = getAircraftByName(this.airName)
     this.initMainParams()
 
     this.initSlotbar()
@@ -368,7 +373,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     ]
 
     let finItem = this.items[finIdx]
-    let balance = ::Cost()
+    let balance = Cost()
     balance.setFromTbl(::get_balance())
     if (getItemAmount(this.air, finItem) < 1 && getItemCost(this.air, finItem) <= balance) {
       let finModName = getModificationName(this.air, this.items[finIdx].name, true)
@@ -721,7 +726,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       view.rows.append(row)
     }
 
-    let data = ::handyman.renderCached("%gui/weaponry/weaponryBg.tpl", view)
+    let data = handyman.renderCached("%gui/weaponry/weaponryBg.tpl", view)
     if (data != "")
       this.guiScene.appendWithBlk(obj, data, this)
   }
@@ -866,7 +871,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (!("modifications" in unit))
       return []
 
-    return ::u.filter(unit.modifications, isModClassExpendable)
+    return u.filter(unit.modifications, isModClassExpendable)
   }
 
   function fillWeaponsAndBullets() {
@@ -1388,7 +1393,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   function doSwitchMod(item, equipped) {
     let taskSuccessCallback = (@(air, item) function() {
       ::updateAirAfterSwitchMod(air, item.name)
-      ::broadcastEvent("ModificationChanged")
+      broadcastEvent("ModificationChanged")
     }) (this.air, item)
 
     let taskId = ::enable_modifications(this.airName, [item.name], !equipped)
@@ -1425,7 +1430,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     if (needSave) {
       this.taskId = ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
       if (this.taskId >= 0 && func) {
-        let cb = ::u.isFunction(func) ? Callback(func, this) : func
+        let cb = u.isFunction(func) ? Callback(func, this) : func
         ::g_tasker.addTask(this.taskId, { showProgressBox = true }, cb)
       }
     }

@@ -5,6 +5,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.156,
   "gearSinkRangeC": 0.11,
+  "gyroSight": false,
   "type": [
     "typeFighter",
     "typeStormovik"
@@ -673,6 +674,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -710,6 +717,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -731,6 +744,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -772,6 +791,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2107,12 +2132,20 @@
         "blk": "gameData/FlightModels/weaponPresets/douglas_a_1h_30x250lb.blk"
       },
       {
+        "name": "douglas_a_1h_30x250lb_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/douglas_a_1h_30x250lb_snakeye.blk"
+      },
+      {
         "name": "douglas_a_1h_11x500lb_anm64",
         "blk": "gameData/FlightModels/weaponPresets/douglas_a_1h_11x500lb_anm64.blk"
       },
       {
         "name": "douglas_a_1h_18x500lb",
         "blk": "gameData/FlightModels/weaponPresets/douglas_a_1h_18x500lb.blk"
+      },
+      {
+        "name": "douglas_a_1h_18x500lb_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/douglas_a_1h_18x500lb_snakeye.blk"
       },
       {
         "name": "douglas_a_1h_3x750lb",
@@ -2393,6 +2426,23 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "us_250_anm57a1",
             "reqModification": "us_250lb_mk81",
@@ -2511,15 +2561,32 @@
             }
           },
           {
-            "iconType": "bombs_middle",
-            "name": "us_500lb",
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon2"
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_002",
               "bullets": 1,
               "external": true,
@@ -2712,6 +2779,40 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "us_500lb_anm64a1",
             "reqModification": "us_500lb_mk82",
@@ -2864,6 +2965,40 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "us_500lb_anm64a1",
             "reqModification": "us_500lb_mk82",
@@ -2976,6 +3111,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "emitter": "500lb_mk_82_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_005",
               "bullets": 1,
               "external": true,
@@ -3111,6 +3263,40 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon6"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_006",
               "bullets": 1,
               "external": true,
@@ -3285,6 +3471,38 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag_group_x6",
+            "name": "mer_mk81_x6_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6_snakeye.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "mer_mk82_x6_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_snakeye.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "us_250lb",
             "reqModification": "us_250lb_mk81",
@@ -3328,6 +3546,40 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_007",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_007",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_007",
               "bullets": 1,
               "external": true,
@@ -3526,6 +3778,38 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag_group_x6",
+            "name": "mer_mk81_x6_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6_snakeye.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "mer_mk82_x6_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_snakeye.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "us_250lb",
             "reqModification": "us_250lb_mk81",
@@ -3569,6 +3853,40 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_008",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_008",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_008",
               "bullets": 1,
               "external": true,
@@ -3762,6 +4080,38 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag_group_x6",
+            "name": "mer_mk81_x6_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon9"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6_snakeye.blk",
+              "emitter": "mer_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "mer_mk82_x6_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon9"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_snakeye.blk",
+              "emitter": "mer_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small",
             "name": "us_250lb",
             "reqModification": "us_250lb_mk81",
@@ -3805,6 +4155,40 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_009",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon9"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_009",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon9"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_009",
               "bullets": 1,
               "external": true,
@@ -4065,6 +4449,40 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon10"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_010",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon10"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_010",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "us_500lb_anm64a1",
             "reqModification": "us_500lb_mk82",
@@ -4177,6 +4595,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "emitter": "500lb_mk_82_011",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon11"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_011",
               "bullets": 1,
               "external": true,
@@ -4312,6 +4747,40 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_012",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon12"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_012",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon12"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_012",
               "bullets": 1,
               "external": true,
@@ -4504,6 +4973,40 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon13"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_013",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon13"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_013",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "us_500lb_anm64a1",
             "reqModification": "us_500lb_mk82",
@@ -4656,6 +5159,40 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon14"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_014",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon14"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_014",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "us_500lb_anm64a1",
             "reqModification": "us_500lb_mk82",
@@ -4783,6 +5320,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp.blk",
+              "emitter": "500lb_mk_82_015",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "us_250lb_snakeye",
+            "reqModification": "us_250lb_mk81",
+            "ShowNodes": {
+              "node": "pylon15"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_mk_81_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_015",
               "bullets": 1,
               "external": true,

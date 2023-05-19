@@ -1,13 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { Cost } = require("%scripts/money.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
-let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_decorators = @() null } = require("hangar")
+let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_decorators,
+  hangar_force_reload_model, hangar_is_high_quality } = require("hangar")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -54,7 +59,7 @@ global enum CheckFeatureLockAction {
 let function afterUpdateAirModificators(unit, callback) {
   if (unit.secondaryWeaponMods)
     unit.secondaryWeaponMods = null //invalidate secondary weapons cache
-  ::broadcastEvent("UnitModsRecount", { unit = unit })
+  broadcastEvent("UnitModsRecount", { unit = unit })
   if (callback != null)
     callback()
 }
@@ -211,8 +216,8 @@ let isEventUnit = @(unit) unit.event != null
 }
 
 ::getUnitName <- function getUnitName(unit, shopName = true) {
-  let unitId = ::u.isUnit(unit) ? unit.name
-    : ::u.isString(unit) ? unit
+  let unitId = u.isUnit(unit) ? unit.name
+    : u.isString(unit) ? unit
     : ""
   let localized = loc(unitId + (shopName ? "_shop" : "_0"), unitId)
   return shopName ? ::stringReplace(localized, " ", ::nbsp) : localized
@@ -228,11 +233,11 @@ let isEventUnit = @(unit) unit.event != null
 }
 
 ::getUnitRealCost <- function getUnitRealCost(unit) {
-  return ::Cost(unit.cost, unit.costGold)
+  return Cost(unit.cost, unit.costGold)
 }
 
 ::getUnitCost <- function getUnitCost(unit) {
-  return ::Cost(::wp_get_cost(unit.name),
+  return Cost(::wp_get_cost(unit.name),
                 ::wp_get_cost_gold(unit.name))
 }
 
@@ -331,7 +336,7 @@ let isEventUnit = @(unit) unit.event != null
   let progressBox = ::scene_msg_box("char_connecting", null, loc("charServer/purchase"), null, null)
   ::add_bg_task_cb(taskId, function() {
     ::destroyMsgBox(progressBox)
-    ::broadcastEvent("UnitBought", { unitName = unit.name })
+    broadcastEvent("UnitBought", { unitName = unit.name })
   })
   return true
 }
@@ -347,7 +352,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::show_cant_buy_or_research_unit_msgbox <- function show_cant_buy_or_research_unit_msgbox(unit) {
   let reason = ::getCantBuyUnitReason(unit)
-  if (::u.isEmpty(reason))
+  if (u.isEmpty(reason))
     return true
 
   ::scene_msg_box("need_buy_prev", null, reason, [["ok", function () {}]], "ok")
@@ -404,7 +409,7 @@ let isEventUnit = @(unit) unit.event != null
       }
       button.append(["cancel", function() {}])
 
-      ::scene_msg_box("cant_research_squadron_vehicle", null, ::g_string.implode(msg, "\n"),
+      ::scene_msg_box("cant_research_squadron_vehicle", null, "\n".join(msg, true),
         button, defButton)
 
       return false
@@ -433,8 +438,8 @@ let isEventUnit = @(unit) unit.event != null
 
     for (local prevRank = rank - 1; prevRank > 0; prevRank--) {
       local unitsCount = 0
-      foreach (u in ::all_units)
-        if (::isUnitBought(u) && (u?.rank ?? -1) == prevRank && ::getUnitCountry(u) == countryId && ::get_es_unit_type(u) == unitType)
+      foreach (un in ::all_units)
+        if (::isUnitBought(un) && (un?.rank ?? -1) == prevRank && ::getUnitCountry(un) == countryId && ::get_es_unit_type(un) == unitType)
           unitsCount++
       let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
       let unitsLeft = max(0, unitsNeed - unitsCount)
@@ -604,7 +609,7 @@ let isEventUnit = @(unit) unit.event != null
     foreach (mod in modsList) {
       if (!(mod?.requiresModelReload ?? false))
         continue
-      ::hangar_force_reload_model()
+      hangar_force_reload_model()
       force_retrace_decorators()
       break
     }
@@ -642,7 +647,7 @@ let isEventUnit = @(unit) unit.event != null
           return
 
         secondaryMods.effect <- effect || {}
-        ::broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
+        broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
         if (secondaryMods.callback != null) {
           secondaryMods.callback()
           secondaryMods.callback = null
@@ -661,7 +666,7 @@ let isEventUnit = @(unit) unit.event != null
         mod.effects <- effect
         if (callback)
           callback()
-        ::broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
+        broadcastEvent("SecondWeaponModsUpdated", { unit = unit })
       })
       return false
 
@@ -699,7 +704,7 @@ let isEventUnit = @(unit) unit.event != null
 }
 
 ::getPrevUnit <- function getPrevUnit(unit) {
-  return "reqAir" in unit ? ::getAircraftByName(unit.reqAir) : null
+  return "reqAir" in unit ? getAircraftByName(unit.reqAir) : null
 }
 
 ::isUnitLocked <- function isUnitLocked(unit) {
@@ -984,21 +989,21 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       if (checkObj(labelObj)) {
         let statusText = isResearching ? loc("shop/in_research") + loc("ui/colon") : ""
         let expCurText = isSquadronVehicle
-          ? ::Cost().setSap(expCur).toStringWithParams({ isSapAlwaysShown = true })
-          : ::Cost().setRp(expCur).toStringWithParams({ isRpAlwaysShown = true })
+          ? Cost().setSap(expCur).toStringWithParams({ isSapAlwaysShown = true })
+          : Cost().setRp(expCur).toStringWithParams({ isRpAlwaysShown = true })
         local expText = format("%s%s%s%s",
           statusText,
           expCurText,
           loc("ui/slash"),
-          isSquadronVehicle ? ::Cost().setSap(expTotal).tostring() : ::Cost().setRp(expTotal).tostring())
+          isSquadronVehicle ? Cost().setSap(expTotal).tostring() : Cost().setRp(expTotal).tostring())
         expText = colorize(isResearching ? "cardProgressTextColor" : "commonTextColor", expText)
         if (isResearching && expInvest > 0)
           expText += colorize(isSquadronVehicle
             ? "cardProgressChangeSquadronColor"
             : "cardProgressTextBonusColor", loc("ui/parentheses/space",
             { text = "+ " + (isSquadronVehicle
-              ? ::Cost().setSap(expInvest).tostring()
-              : ::Cost().setRp(expInvest).tostring()) }))
+              ? Cost().setSap(expInvest).tostring()
+              : Cost().setRp(expInvest).tostring()) }))
         labelObj.setValue(expText)
       }
     }
@@ -1080,7 +1085,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     let showRpReq = showLocalState && !isOwn && !special && !gift && !isResearched && !canResearch
     rpObj.show(showRpReq)
     if (showRpReq)
-      rpObj.findObject("aircraft-require_rp").setValue(::Cost().setRp(air.reqExp).tostring())
+      rpObj.findObject("aircraft-require_rp").setValue(Cost().setRp(air.reqExp).tostring())
   }
 
   if (showPrice) {
@@ -1228,13 +1233,13 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       local countOutputValue = min(armorPiercing.len(), 3)
       for (local i = 0; i < countOutputValue; i++)
         textParts.append(stdMath.round(armorPiercing[i]).tointeger())
-      holderObj.findObject("aircraft-armorPiercing").setValue(format("%s %s", ::g_string.implode(textParts, " / "), loc("measureUnits/mm")))
+      holderObj.findObject("aircraft-armorPiercing").setValue(format("%s %s", " / ".join(textParts, true), loc("measureUnits/mm")))
       let armorPiercingDist = currentParams.armorPiercingDist;
       textParts.clear()
       countOutputValue = min(armorPiercingDist.len(), 3)
       for (local i = 0; i < countOutputValue; i++)
         textParts.append(armorPiercingDist[i].tointeger())
-      holderObj.findObject("aircraft-armorPiercingDist").setValue(format("%s %s", ::g_string.implode(textParts, " / "), loc("measureUnits/meters_alt")))
+      holderObj.findObject("aircraft-armorPiercingDist").setValue(format("%s %s", " / ".join(textParts, true), loc("measureUnits/meters_alt")))
     }
     else {
       holderObj.findObject("aircraft-armorPiercing-tr").show(false)
@@ -1447,7 +1452,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       if (f.boosterBonus  > 0)
         sources.append(BOOSTER.__merge({ text = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(f.boosterBonus) }))
       sources[sources.len() - 1].isLastBlock <- true
-      let formula = ::handyman.renderCached("%gui/debriefing/rewardSources.tpl", {
+      let formula = handyman.renderCached("%gui/debriefing/rewardSources.tpl", {
         multiplier = f.multText
         sources
       })
@@ -1636,7 +1641,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
   let infoObj = ::showBtn("aircraft-addInfo", !showShortestUnitInfo, holderObj)
   if (checkObj(infoObj))
-    infoObj.setValue(::g_string.implode(addInfoTextsList, "\n"))
+    infoObj.setValue("\n".join(addInfoTextsList, true))
 
   if (needCrewInfo && crew) {
     let crewUnitType = air.getCrewUnitType()
@@ -1679,7 +1684,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (needShopInfo && !isRented) {
     let reason = ::getCantBuyUnitReason(air, true)
     let addTextObj = ::showBtn("aircraft-cant_buy_info", !showShortestUnitInfo, holderObj)
-    if (checkObj(addTextObj) && !::u.isEmpty(reason)) {
+    if (checkObj(addTextObj) && !u.isEmpty(reason)) {
       addTextObj.setValue(colorize("redMenuButtonColor", reason))
 
       let unitNest = ::showBtn("prev_unit_nest", !showShortestUnitInfo, holderObj)
@@ -1766,7 +1771,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     let battleType = ::get_battle_type_by_ediff(ediff)
     let fonticon = !::CAN_USE_EDIFF ? "" :
       loc(battleType == BATTLE_TYPES.AIR ? "icon/unittype/aircraft" : "icon/unittype/tank")
-    let diffName = ::g_string.implode([ fonticon, difficulty.getLocName() ], ::nbsp)
+    let diffName = ::nbsp.join([ fonticon, difficulty.getLocName() ], true)
 
     let unitStateId = !showLocalState ? "reference"
       : crew ? "current_crew"
@@ -1813,7 +1818,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 ::is_loaded_model_high_quality <- function is_loaded_model_high_quality(def = true) {
   if (hangar_get_loaded_unit_name() == "")
     return def
-  return ::hangar_is_high_quality()
+  return hangar_is_high_quality()
 }
 
 ::get_units_list <- function get_units_list(filterFunc) {
@@ -1866,7 +1871,7 @@ let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = t
   let nodes = split_by_chars(unitPath, "/")
   if (nodes.len())
     nodes.pop()
-  let unitDir = ::g_string.implode(nodes, "/")
+  let unitDir = "/".join(nodes, true)
   let fmPath = unitDir + "/" + (unitBlkData?.fmFile ?? ("fm/" + unitId))
   return blkFromPath(fmPath)
 }

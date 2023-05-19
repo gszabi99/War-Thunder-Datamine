@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { startsWith, slice } = require("%sqstd/string.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 ::g_chat_thread_tag <- {
@@ -29,7 +31,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   isReadOnly = false //do not send this tag on modify tags
 
   checkTag = function(tag) {
-    return ::g_string.startsWith(tag, this.prefix)
+    return startsWith(tag, this.prefix)
   }
   setThreadInfoProperty = function(threadInfo, valueString) {
     if (this.threadInfoParamName)
@@ -38,7 +40,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   updateThreadByTag = function(threadInfo, tag) {
     if (!this.isRegular || !this.checkTag(tag))
       return false
-    this.setThreadInfoProperty(threadInfo, ::g_string.slice(tag, this.prefix.len()))
+    this.setThreadInfoProperty(threadInfo, slice(tag, this.prefix.len()))
     return true
   }
   updateThreadWhenNoTag = function(_threadInfo) {}
@@ -128,8 +130,8 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
     }
     getTagString = function(threadInfo) {
       threadInfo.sortLangList()
-      let tags = ::u.map(threadInfo[this.threadInfoParamName], (@(prefix) function(val) { return prefix + val })(this.prefix))
-      return ::g_string.implode(tags, ",")
+      let tags = u.map(threadInfo[this.threadInfoParamName], (@(prefix) function(val) { return prefix + val })(this.prefix))
+      return ",".join(tags, true)
     }
   }
 

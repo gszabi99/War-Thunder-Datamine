@@ -1,16 +1,29 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let time = require("%scripts/time.nut")
 let { acos, PI } = require("math")
 let penalty = require("penalty")
-let { hangar_is_model_loaded, hangar_get_loaded_unit_name } = require("hangar")
+let { hangar_is_model_loaded, hangar_get_loaded_unit_name,
+  hangar_force_reload_model, hangar_focus_model, hangar_set_dm_viewer_mode
+} = require("hangar")
+let { get_last_skin, mirror_current_decal, get_mirror_current_decal,
+  apply_skin, apply_skin_preview, notify_decal_menu_visibility,
+  save_current_attachables, hangar_toggle_abs, get_hangar_abs,
+  set_hangar_opposite_mirrored, get_hangar_opposite_mirrored, set_tank_camo_scale,
+  get_tank_camo_scale_result_value, set_tank_skin_condition, set_tank_camo_rotation,
+  show_model_damaged, get_loaded_model_damage_state, can_save_current_skin_template,
+  save_current_skin_template, MDS_UNDAMAGED, MDS_DAMAGED, MDS_ORIGINAL
+} = require("unitCustomization")
 let decorLayoutPresets = require("%scripts/customization/decorLayoutPresetsWnd.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { showResource, canStartPreviewScene,
@@ -64,14 +77,14 @@ enum decalTwoSidedMode {
     delete ::g_decorator_type.DECALS.jobCallbacksStack[taskId]
   }
 
-  ::broadcastEvent("DecalJobComplete", { taskId = taskId })
+  broadcastEvent("DecalJobComplete", { taskId = taskId })
 }
 
 ::gui_start_decals <- function gui_start_decals(params = null) {
   if (params?.unit)
     showedUnit(params.unit)
   else if (params?.unitId)
-    showedUnit(::getAircraftByName(params?.unitId))
+    showedUnit(getAircraftByName(params?.unitId))
 
   if (!showedUnit.value
       ||
@@ -180,13 +193,13 @@ enum decalTwoSidedMode {
     this.access_SkinsUnrestrictedPreview = hasFeature("SkinsPreviewOnUnboughtUnits")
     this.access_SkinsUnrestrictedExport  = this.access_UserSkins && this.access_SkinsUnrestrictedExport
 
-    this.initialAppliedSkinId   = ::hangar_get_last_skin(this.unit.name)
+    this.initialAppliedSkinId   = get_last_skin(this.unit.name)
     this.initialUserSkinId      = ::get_user_skins_profile_blk()?[this.unit.name] ?? ""
 
     ::enableHangarControls(true)
     this.scene.findObject("timer_update").setUserData(this)
 
-    ::hangar_focus_model(true)
+    hangar_focus_model(true)
 
     let unitInfoPanel = ::create_slot_info_panel(this.scene, false, "showroom")
     this.registerSubHandler(unitInfoPanel)
@@ -251,7 +264,7 @@ enum decalTwoSidedMode {
 
     this.updateTitle()
 
-    this.setDmgSkinMode(::hangar_get_loaded_model_damage_state(this.unit.name) == MDS_DAMAGED)
+    this.setDmgSkinMode(get_loaded_model_damage_state(this.unit.name) == MDS_DAMAGED)
 
     let bObj = this.scene.findObject("btn_testflight")
     if (checkObj(bObj)) {
@@ -322,22 +335,22 @@ enum decalTwoSidedMode {
   }
 
   function getSelectedBuiltinSkinId() {
-    let res = this.previewSkinId || ::hangar_get_last_skin(this.unit.name)
-    return res == "" ? "default" : res // hangar_get_last_skin() can return empty string.
+    let res = this.previewSkinId || get_last_skin(this.unit.name)
+    return res == "" ? "default" : res // get_last_skin() can return empty string.
   }
 
   function exportSampleUserSkin(_obj) {
     if (!hangar_is_model_loaded())
       return
 
-    if (!::can_save_current_skin_template()) {
+    if (!can_save_current_skin_template()) {
       let message = format(loc("decals/noUserSkinForCurUnit"), ::getUnitName(this.unit.name))
       this.msgBox("skin_template_export", message, [["ok", function() {}]], "ok")
       return
     }
 
     let allowCurrentSkin = this.access_SkinsUnrestrictedExport // true - current skin, false - default skin.
-    let success = ::save_current_skin_template(allowCurrentSkin)
+    let success = save_current_skin_template(allowCurrentSkin)
 
     let templateName = "template_" + this.unit.name
     let message = success ? format(loc("decals/successfulLoadedSkinSample"), templateName) : loc("decals/failedLoadedSkinSample")
@@ -352,11 +365,11 @@ enum decalTwoSidedMode {
 
     this.updateUserSkinList()
     if (::get_option(::USEROPT_USER_SKIN).value > 0)
-      ::hangar_force_reload_model()
+      hangar_force_reload_model()
   }
 
   function switchUnit(unitName) {
-    this.unit = ::getAircraftByName(unitName)
+    this.unit = getAircraftByName(unitName)
     if (this.unit == null) {
       ::script_net_assert_once("not found loaded model unit", "customization: not found unit after model loaded")
       return this.goBack()
@@ -420,7 +433,7 @@ enum decalTwoSidedMode {
 
     this.skinList = getSkinsOption(this.unit.name, true, false, true)
     let curSkinId = this.getSelectedBuiltinSkinId()
-    let curSkinIndex = ::find_in_array(this.skinList.values, curSkinId, 0)
+    let curSkinIndex = u.find_in_array(this.skinList.values, curSkinId, 0)
     let tooltipParams = this.previewMode ? { showAsTrophyContent = true } : null
 
     let skinItems = []
@@ -503,7 +516,7 @@ enum decalTwoSidedMode {
         option = ::create_option_slider(option.id, option.value, option.cb, true, "slider", option)
       })
     }
-    let data = ::handyman.renderCached(("%gui/options/verticalOptions.tpl"), view)
+    let data = handyman.renderCached(("%gui/options/verticalOptions.tpl"), view)
     let slObj = this.scene.findObject("tank_skin_settings")
     if (checkObj(slObj))
       this.guiScene.replaceContentFromText(slObj, data, data.len(), this)
@@ -591,7 +604,7 @@ enum decalTwoSidedMode {
       return
 
     textObj.setValue(((value + 100) / 2).tostring() + "%")
-    ::hangar_set_tank_skin_condition(value)
+    set_tank_skin_condition(value)
   }
 
   function onChangeTankCamoScale(obj) {
@@ -601,8 +614,8 @@ enum decalTwoSidedMode {
     let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
     if (checkObj(textObj)) {
       let value = obj.getValue()
-      ::hangar_set_tank_camo_scale(value / TANK_CAMO_SCALE_SLIDER_FACTOR)
-      textObj.setValue((::hangar_get_tank_camo_scale_result_value() * 100 + 0.5).tointeger().tostring() + "%")
+      set_tank_camo_scale(value / TANK_CAMO_SCALE_SLIDER_FACTOR)
+      textObj.setValue((get_tank_camo_scale_result_value() * 100 + 0.5).tointeger().tostring() + "%")
     }
   }
 
@@ -615,7 +628,7 @@ enum decalTwoSidedMode {
       let value = obj.getValue()
       let visualValue = value * 180 / 100
       textObj.setValue((visualValue > 0 ? "+" : "") + visualValue.tostring())
-      ::hangar_set_tank_camo_rotation(value)
+      set_tank_camo_rotation(value)
     }
   }
 
@@ -642,7 +655,7 @@ enum decalTwoSidedMode {
       return
 
     dObj.show(true)
-    let data = ::handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
 
     this.guiScene.replaceContentFromText(attachListObj, data, data.len(), this)
     attachListObj.setValue(this.curAttachSlot)
@@ -661,7 +674,7 @@ enum decalTwoSidedMode {
 
     let dObj = this.scene.findObject("slots_list")
     if (checkObj(dObj)) {
-      let data = ::handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+      let data = handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
       this.guiScene.replaceContentFromText(dObj, data, data.len(), this)
     }
 
@@ -756,7 +769,7 @@ enum decalTwoSidedMode {
     }
 
     let can_testflight = ::isTestFlightAvailable(this.unit) && !this.decoratorPreview
-    let can_createUserSkin = ::can_save_current_skin_template()
+    let can_createUserSkin = can_save_current_skin_template()
 
     bObj = this.scene.findObject("btn_load_userskin_sample")
     if (checkObj(bObj))
@@ -774,7 +787,7 @@ enum decalTwoSidedMode {
     bObj = this.scene.findObject("btn_toggle_damaged")
     let isDmgSkinPreviewMode = checkObj(bObj) && bObj.getValue()
 
-    let usableSkinsCount = ::u.filter(this.skinList?.access ?? [], @(a) a.isOwn).len()
+    let usableSkinsCount = u.filter(this.skinList?.access ?? [], @(a) a.isOwn).len()
 
     ::showBtnTable(this.scene, {
           btn_go_to_collection = ::show_console_buttons && !isInEditMode && this.decorMenu?.isOpened
@@ -896,7 +909,7 @@ enum decalTwoSidedMode {
     // Flip
     obj = this.scene.findObject("btn_toggle_mirror")
     if (checkObj(obj)) {
-      let enabled = ::get_hangar_mirror_current_decal()
+      let enabled = get_mirror_current_decal()
       let icon = "#ui/gameuiskin#btn_flip_decal" + (enabled ? "_active" : "") + ".svg"
       let iconObj = obj.findObject("btn_toggle_mirror_img")
       iconObj["background-image"] = icon
@@ -966,7 +979,7 @@ enum decalTwoSidedMode {
         buttons = [ getDecorButtonView(this.decoratorPreview, this.unit, params) ]
       }
       let slotsObj = obj.findObject("decorator_preview_div")
-      let markup = ::handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+      let markup = handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
       this.guiScene.replaceContentFromText(slotsObj, markup, markup.len(), this)
     }
   }
@@ -1080,10 +1093,10 @@ enum decalTwoSidedMode {
   }
 
   function checkCurrentSkin() {
-    if (::u.isEmpty(this.previewSkinId) || !this.skinList)
+    if (u.isEmpty(this.previewSkinId) || !this.skinList)
       return true
 
-    let skinIndex = ::find_in_array(this.skinList.values, this.previewSkinId, 0)
+    let skinIndex = u.find_in_array(this.skinList.values, this.previewSkinId, 0)
     let skinDecorator = this.skinList.decorators[skinIndex]
 
     if (skinDecorator.canBuyUnlock(this.unit)) {
@@ -1160,7 +1173,7 @@ enum decalTwoSidedMode {
   }
 
   function generateDecorationsList(slot, decoratorType) {
-    if (::u.isEmpty(slot)
+    if (u.isEmpty(slot)
         || decoratorType == ::g_decorator_type.UNKNOWN
         || (this.currentState & decoratorEditState.NONE))
       return
@@ -1250,7 +1263,7 @@ enum decalTwoSidedMode {
     this.isDecoratorItemUsed = true
 
     if (!this.decoratorPreview && isDecal) {
-      //getSlotInfo is too slow for decals (~150ms)(because of code func hangar_get_decal_in_slot),
+      //getSlotInfo is too slow for decals (~150ms)(because of code func get_decal_in_slot),
       // so it better to use as last check, so not to worry with lags
       let slotInfo = this.getSlotInfo(curSlotIdx, false, this.currentType)
       if (!slotInfo.isEmpty && decorator.id != slotInfo.decalId) {
@@ -1304,7 +1317,7 @@ enum decalTwoSidedMode {
     this.editableDecoratorId = null
     if (this.currentType == ::g_decorator_type.ATTACHABLES
         && (this.currentState & (decoratorEditState.REPLACE | decoratorEditState.EDITING | decoratorEditState.PURCHASE)))
-      ::hangar_force_reload_model()
+      hangar_force_reload_model()
     this.stopDecalEdition()
   }
 
@@ -1390,7 +1403,7 @@ enum decalTwoSidedMode {
     if (!this.currentType.exitEditMode(true, false,
               Callback((@(decorator) function() {
                           this.askBuyDecorator(decorator, function() {
-                              ::hangar_save_current_attachables()
+                              save_current_attachables()
                             })
                         })(decorator), this)))
       this.showFailedInstallPopup(decorator)
@@ -1450,7 +1463,7 @@ enum decalTwoSidedMode {
   function forceResetInstalledDecorators() {
     this.currentType.removeDecorator(this.getCurrentDecoratorSlot(this.currentType), true)
     if (this.currentType == ::g_decorator_type.ATTACHABLES) {
-      ::hangar_force_reload_model()
+      hangar_force_reload_model()
     }
     this.afterStopDecalEdition()
   }
@@ -1533,7 +1546,7 @@ enum decalTwoSidedMode {
     let access = this.skinList.access[skinNum]
 
     if (this.isUnitOwn && access.isOwn && !this.previewMode) {
-      let curSkinId = ::hangar_get_last_skin(this.unit.name)
+      let curSkinId = get_last_skin(this.unit.name)
       if (!this.previewSkinId && (skinId == curSkinId || (skinId == "" && curSkinId == "default")))
         return
 
@@ -1571,7 +1584,7 @@ enum decalTwoSidedMode {
       return
 
     ::set_option(::USEROPT_USER_SKIN, value)
-    ::hangar_force_reload_model()
+    hangar_force_reload_model()
   }
 
   function resetUserSkin(needReloadModel = true) {
@@ -1582,17 +1595,17 @@ enum decalTwoSidedMode {
     ::set_option(::USEROPT_USER_SKIN, 0)
 
     if (needReloadModel)
-      ::hangar_force_reload_model()
+      hangar_force_reload_model()
     else
       this.updateUserSkinList()
   }
 
   function applySkin(skinId, previewSkin = false) {
     if (previewSkin)
-      ::hangar_apply_skin_preview(skinId)
+      apply_skin_preview(skinId)
     else {
       setLastSkin(this.unit.name, skinId, false)
-      ::hangar_apply_skin(skinId)
+      apply_skin(skinId)
     }
 
     this.previewSkinId = previewSkin ? skinId : null
@@ -1610,22 +1623,22 @@ enum decalTwoSidedMode {
   }
 
   function onToggleDmgSkinState(obj) {
-    ::hangar_show_model_damaged(obj.getValue() ? 1 : 0)
+    show_model_damaged(obj.getValue() ? 1 : 0)
   }
 
   function onToggleDamaged(obj) {
     if (this.unit.isAir() || this.unit.isHelicopter()) {
-      ::hangar_set_dm_viewer_mode(obj.getValue() ? DM_VIEWER_EXTERIOR : DM_VIEWER_NONE)
+      hangar_set_dm_viewer_mode(obj.getValue() ? DM_VIEWER_EXTERIOR : DM_VIEWER_NONE)
       if (obj.getValue()) {
         let bObj = this.scene.findObject("dmg_skin_state")
         if (checkObj(bObj))
-          bObj.setValue(::hangar_get_loaded_model_damage_state(this.unit.name))
+          bObj.setValue(get_loaded_model_damage_state(this.unit.name))
       }
       else
-        ::hangar_show_model_damaged(MDS_ORIGINAL)
+        show_model_damaged(MDS_ORIGINAL)
     }
     else
-      ::hangar_show_model_damaged(obj.getValue() ? MDS_DAMAGED : MDS_UNDAMAGED)
+      show_model_damaged(obj.getValue() ? MDS_DAMAGED : MDS_UNDAMAGED)
 
     this.updateButtons()
   }
@@ -1731,7 +1744,7 @@ enum decalTwoSidedMode {
 
       if (unit.name != newUnitName) {
         ::cur_aircraft_name = newUnitName
-        owner.unit = ::getAircraftByName(newUnitName)
+        owner.unit = getAircraftByName(newUnitName)
         owner.previewSkinId = null
         if (owner && ("initMainParams" in owner) && owner.initMainParams)
           owner.initMainParams.call(owner)
@@ -1833,26 +1846,26 @@ enum decalTwoSidedMode {
   }
 
   function getTwoSidedState() {
-    let isTwoSided = ::get_hangar_abs()
-    let isOppositeMirrored = ::get_hangar_opposite_mirrored()
+    let isTwoSided = get_hangar_abs()
+    let isOppositeMirrored = get_hangar_opposite_mirrored()
     return !isTwoSided ? decalTwoSidedMode.OFF
          : !isOppositeMirrored ? decalTwoSidedMode.ON
          : decalTwoSidedMode.ON_MIRRORED
   }
 
   function setTwoSidedState(idx) {
-    let isTwoSided = ::get_hangar_abs()
-    let isOppositeMirrored = ::get_hangar_opposite_mirrored()
+    let isTwoSided = get_hangar_abs()
+    let isOppositeMirrored = get_hangar_opposite_mirrored()
     let needTwoSided  = idx != decalTwoSidedMode.OFF
     let needOppositeMirrored = idx == decalTwoSidedMode.ON_MIRRORED
     if (needTwoSided != isTwoSided)
-      ::hangar_toggle_abs()
+      hangar_toggle_abs()
     if (needOppositeMirrored != isOppositeMirrored)
-      ::set_hangar_opposite_mirrored(needOppositeMirrored)
+      set_hangar_opposite_mirrored(needOppositeMirrored)
   }
 
   function onMirror() { // Flip
-    ::hangar_mirror_current_decal()
+    mirror_current_decal()
     this.updateDecoratorActionBtnStates()
   }
 
@@ -1899,7 +1912,7 @@ enum decalTwoSidedMode {
       }
     }
 
-    ::hangar_notify_decal_menu_visibility(show)
+    notify_decal_menu_visibility(show)
     this.decorMenu?.show(show)
   }
 
@@ -1934,13 +1947,13 @@ enum decalTwoSidedMode {
     // clear only when closed by player to can go through test fly with previewed skin
     clearLivePreviewParams()
     this.guiScene.performDelayed(this, base.goBack)
-    ::hangar_focus_model(false)
+    hangar_focus_model(false)
   }
 
   function onDestroy() {
     if (this.isValid())
       this.setDmgSkinMode(false)
-    ::hangar_show_model_damaged(MDS_ORIGINAL)
+    show_model_damaged(MDS_ORIGINAL)
     ::hangar_prem_vehicle_view_close()
 
     if (this.unit) {
@@ -1951,14 +1964,14 @@ enum decalTwoSidedMode {
 
       if (this.previewSkinId) {
         saveSeenSuggestedSkin(this.unit.name, this.previewSkinId)
-        this.applySkin(::hangar_get_last_skin(this.unit.name), true)
+        this.applySkin(get_last_skin(this.unit.name), true)
         this.previewSkinId = null
         if (this.initialUserSkinId != "")
           ::get_user_skins_profile_blk()[this.unit.name] = this.initialUserSkinId
       }
 
       if (this.previewMode) {
-        ::hangar_force_reload_model()
+        hangar_force_reload_model()
       }
       else {
         this.saveDecorators(false)

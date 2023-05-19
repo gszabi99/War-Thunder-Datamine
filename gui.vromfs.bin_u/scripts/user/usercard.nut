@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -30,7 +32,10 @@ let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { ceil, floor } = require("math")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
+let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { encode_uri_component } = require("url")
+let { get_local_mplayer } = require("mission")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -109,7 +114,7 @@ let { encode_uri_component } = require("url")
     }
     else if ("id" in this.player) {
       this.taskId = ::req_player_public_statinfo_by_player_id(this.player.id)
-      let selfPlayerId = getTblValue("uid", ::get_local_mplayer())
+      let selfPlayerId = getTblValue("uid", get_local_mplayer())
       if (selfPlayerId != null && selfPlayerId == this.player.id)
         isMyPage = true
       else
@@ -146,7 +151,7 @@ let { encode_uri_component } = require("url")
       })
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let sheetsListObj = this.scene.findObject("profile_sheet_list")
     this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(0)
@@ -337,7 +342,7 @@ let { encode_uri_component } = require("url")
       eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
     })
 
-    let blk = ::handyman.renderCached(("%gui/profile/country_stats_table.tpl"), {
+    let blk = handyman.renderCached(("%gui/profile/country_stats_table.tpl"), {
       columns = columns,
       tableName = loc("lobby/vehicles")
     })
@@ -414,7 +419,7 @@ let { encode_uri_component } = require("url")
         curValue = idx
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
     let countriesObj = this.scene.findObject("medals_country_tabs")
     this.guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
     countriesObj.setValue(curValue)
@@ -437,7 +442,7 @@ let { encode_uri_component } = require("url")
       medals = this.getMedalsView(medalsList.filter(@(id) !hasMedalRibbonImg(id)))
     }
 
-    let markup = ::handyman.renderCached("%gui/profile/profileRibbons.tpl", view)
+    let markup = handyman.renderCached("%gui/profile/profileRibbons.tpl", view)
     this.guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
   }
 
@@ -482,7 +487,7 @@ let { encode_uri_component } = require("url")
       titles.append({
         name = id
         text = locText
-        lowerText = ::g_string.utf8ToLower(locText)
+        lowerText = utf8ToLower(locText)
         tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = this.isOwnStats, needTitle = false })
       })
     }
@@ -578,7 +583,7 @@ let { encode_uri_component } = require("url")
     }
     this.statsMode = selDiff.egdLowercaseName
 
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
     this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
     modesObj.setValue(selIdx)
 
@@ -663,7 +668,7 @@ let { encode_uri_component } = require("url")
         continue
 
       if (value)
-        ::u.appendOnce(idx, selectedArr)
+        u.appendOnce(idx, selectedArr)
       else
         this.removeItemFromList(idx, selectedArr)
     }
@@ -687,7 +692,7 @@ let { encode_uri_component } = require("url")
     if ((modeName in airStats) && (typeName in airStats[modeName]))
       checkList = airStats[modeName][typeName]
     foreach (item in checkList) {
-      let air = ::getAircraftByName(item.name)
+      let air = getAircraftByName(item.name)
       let unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
       if (!isInArray(unitTypeShopId, filterUnits))
           continue
@@ -995,19 +1000,19 @@ let { encode_uri_component } = require("url")
   }
 
   function onFriendAdd() {
-    ::editContactMsgBox(this.player, EPL_FRIENDLIST, true)
+    addContact(this.player, EPL_FRIENDLIST)
   }
 
   function onFriendRemove() {
-    ::editContactMsgBox(this.player, EPL_FRIENDLIST, false)
+    removeContact(this.player, EPL_FRIENDLIST)
   }
 
   function onBlacklistAdd() {
-    ::editContactMsgBox(this.player, EPL_BLOCKLIST, true)
+    addContact(this.player, EPL_BLOCKLIST)
   }
 
   function onBlacklistRemove() {
-    ::editContactMsgBox(this.player, EPL_BLOCKLIST, false)
+    removeContact(this.player, EPL_BLOCKLIST)
   }
 
   function onComplain() {

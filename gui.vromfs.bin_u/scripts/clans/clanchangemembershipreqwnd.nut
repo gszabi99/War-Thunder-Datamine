@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
@@ -172,7 +174,7 @@ let { debug_dump_stack } = require("dagor.debug")
     if (newRequirements.blockCount() != 0)
       newRequirements.setStr("type", "and")
 
-    if (::u.isEqual(this.clanData.membershipRequirements, newRequirements)) {
+    if (u.isEqual(this.clanData.membershipRequirements, newRequirements)) {
       let autoAccept = this.autoAcceptMembershipObject.getValue()
       if (this.clanData.autoAcceptMembership == autoAccept)
         return false;
@@ -243,7 +245,7 @@ let { debug_dump_stack } = require("dagor.debug")
       if (::clan_get_admin_editor_mode() && this.owner && "reinitClanWindow" in this.owner)
         this.owner.reinitClanWindow()
 
-      ::broadcastEvent("ClanRquirementsChanged")
+      broadcastEvent("ClanRquirementsChanged")
       this.goBack()
     })(newRequirements, autoAccept), this)
 

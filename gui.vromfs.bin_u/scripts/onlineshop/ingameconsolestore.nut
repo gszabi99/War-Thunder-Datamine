@@ -1,8 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -164,7 +166,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.navigationHandlerWeak.onCollapse(collapseBtnObj)
     if (collapseBtnObj.getParent().collapsed == "no")
       this.getSheetsListObj().setValue( //set selection on chapter item if not found item with subsetId just in case to avoid crash
-        ::u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
+        u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
   function recalcCurPage() {
@@ -206,7 +208,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let listObj = this.getItemsListObj()
     let prevValue = listObj.getValue()
-    let data = ::handyman.renderCached(("%gui/items/item.tpl"), view)
+    let data = handyman.renderCached(("%gui/items/item.tpl"), view)
     let isEmptyList = data.len() == 0 || this.isLoadingInProgress
 
     this.showSceneBtn("sorting_block", !isEmptyList)
@@ -348,7 +350,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       }) ?? []
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/comboBox.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/comboBox.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     this.getSortListObj().setValue(curVal)
   }
@@ -427,7 +429,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (item?.isBought)
       return ""
     //Generate price string as PSN requires and return blk format to replace it.
-    return ::handyman.renderCached("%gui/commonParts/discount.tpl", item)
+    return handyman.renderCached("%gui/commonParts/discount.tpl", item)
   }
 
   function updateButtonsBar() {

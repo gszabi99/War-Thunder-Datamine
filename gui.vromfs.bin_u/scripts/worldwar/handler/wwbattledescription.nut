@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -101,7 +103,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
 
   function initScreen() {
     this.battlesListObj = this.scene.findObject("items_list")
-    let battleListData = ::handyman.renderCached(this.sceneTplBattleList,
+    let battleListData = handyman.renderCached(this.sceneTplBattleList,
       { items = array(this.minCountBattlesInList, DEFAULT_BATTLE_ITEM_CONFIG) })
     this.guiScene.appendWithBlk(this.battlesListObj, battleListData, this)
     this.curBattleListMap = []
@@ -262,7 +264,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
   }
 
   function getBattleListView() {
-    let wwBattlesView = ::u.map(this.curBattleListMap,
+    let wwBattlesView = u.map(this.curBattleListMap,
       function(battle) {
         return this.createBattleListItemView(battle)
       }.bindenv(this))
@@ -353,7 +355,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     let battleView = battleData.getView()
     let battleName = colorize("newTextColor", battleView.getShortBattleName())
     let sectorName = battleData.getSectorName()
-    return battleName + (!::u.isEmpty(sectorName) ? " " + sectorName : "")
+    return battleName + (!u.isEmpty(sectorName) ? " " + sectorName : "")
   }
 
   function updateSlotbar() {
@@ -438,7 +440,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     let isOperationBattleLoaded = this.curBattleInList.id == this.operationBattle.id
     let battle = isOperationBattleLoaded ? this.operationBattle : this.curBattleInList
     let battleView = battle.getView(this.getPlayerSide())
-    let blk = ::handyman.renderCached(this.sceneTplDescriptionName, battleView)
+    let blk = handyman.renderCached(this.sceneTplDescriptionName, battleView)
 
     this.guiScene.replaceContentFromText(descrObj, blk, blk.len(), this)
 
@@ -461,13 +463,13 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     foreach (idx, teamData in teamsData) {
       let teamObjHeaderInfo = this.scene.findObject($"team_header_info_{idx}")
       if (checkObj(teamObjHeaderInfo)) {
-        let teamHeaderInfoBlk = ::handyman.renderCached(this.sceneTplTeamHeaderInfo, teamData)
+        let teamHeaderInfoBlk = handyman.renderCached(this.sceneTplTeamHeaderInfo, teamData)
         this.guiScene.replaceContentFromText(teamObjHeaderInfo, teamHeaderInfoBlk, teamHeaderInfoBlk.len(), this)
       }
 
       let teamObjPlace = this.scene.findObject($"team_unit_info_{idx}")
       if (checkObj(teamObjPlace)) {
-        let teamBlk = ::handyman.renderCached(this.sceneTplTeamRight, teamData)
+        let teamBlk = handyman.renderCached(this.sceneTplTeamRight, teamData)
         this.guiScene.replaceContentFromText(teamObjPlace, teamBlk, teamBlk.len(), this)
       }
     }
@@ -646,10 +648,10 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
     let leaveButtonObj = this.showSceneBtn("btn_leave_battle", isLeaveBattleVisible)
     leaveButtonObj.enable(isLeaveBattleActive)
 
-    let warningTextObj = this.showSceneBtn("cant_join_reason_txt", !::u.isEmpty(warningText))
+    let warningTextObj = this.showSceneBtn("cant_join_reason_txt", !u.isEmpty(warningText))
     warningTextObj.setValue(warningText)
 
-    let warningIconObj = this.showSceneBtn("warning_icon", !::u.isEmpty(fullWarningText))
+    let warningIconObj = this.showSceneBtn("warning_icon", !u.isEmpty(fullWarningText))
     warningIconObj.tooltip = fullWarningText
 
     let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
@@ -743,7 +745,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
         ? battleView.getTotalQueuePlayersInfoText()
         : ""
 
-    let hasInfo = !::u.isEmpty(playersInfoText)
+    let hasInfo = !u.isEmpty(playersInfoText)
     this.showSceneBtn("teams_info", hasInfo)
     if (hasInfo) {
       let playersTextObj = this.scene.findObject("number_of_players")
@@ -888,7 +890,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
         {
           parentHandler = this
-          message = ::u.isEmpty(warningData.fullWarningText)
+          message = u.isEmpty(warningData.fullWarningText)
             ? warningData.warningText
             : warningData.fullWarningText
           ableToStartAndSkip = true
@@ -978,7 +980,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       return
 
     let squadCountry = ::g_squad_manager.getWwOperationCountry()
-    if (!::u.isEmpty(squadCountry) && profileCountrySq.value != squadCountry)
+    if (!u.isEmpty(squadCountry) && profileCountrySq.value != squadCountry)
       switchProfileCountry(squadCountry)
   }
 
@@ -998,7 +1000,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       if (isBattleDifferent)
         this.curBattleInList = this.getBattleById(wwBattleName)
 
-      if (!::u.isEmpty(squadCountry) && profileCountrySq.value != squadCountry)
+      if (!u.isEmpty(squadCountry) && profileCountrySq.value != squadCountry)
         this.guiScene.performDelayed(this, function() {
           if (this.isValid())
             this.syncSquadCountry()
@@ -1201,7 +1203,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
   }
 
   function updateBattleInList(idx, curBattle, newBattle) {
-    if (curBattle == newBattle || (::u.isEqual(curBattle, newBattle)))
+    if (curBattle == newBattle || (u.isEqual(curBattle, newBattle)))
       return
 
     let obj = this.getBattleObj(idx)

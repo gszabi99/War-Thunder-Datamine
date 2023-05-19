@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -45,7 +46,7 @@ let { floor } = require("math")
     }
 
     let view = { rows = rows }
-    let data = ::handyman.renderCached(this.sceneTplName, view)
+    let data = handyman.renderCached(this.sceneTplName, view)
     this.guiScene.replaceContentFromText(this.scene.findObject("wnd_content"), data, data.len(), this)
 
     this.updateRows()

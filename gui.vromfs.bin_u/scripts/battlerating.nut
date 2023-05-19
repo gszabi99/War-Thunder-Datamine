@@ -1,10 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { isNeedFirstCountryChoice } = require("%scripts/firstChoice/firstChoice.nut")
 let { get_time_msec } = require("dagor.time")
@@ -20,7 +21,7 @@ let recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() Watched(n
 let recentBR = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
 let recentBRData = Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].brData)
 
-recentBR.subscribe(@(_) ::broadcastEvent("BattleRatingChanged"))
+recentBR.subscribe(@(_) broadcastEvent("BattleRatingChanged"))
 
 let function calcSquadMrank(brData) {
   if (!brData)
@@ -70,7 +71,7 @@ let function getCrafts(data, country = null) {
 
   let brokenAirs = data?.brokenAirs ?? []
   foreach (name in craftData) {
-     let craft = ::getAircraftByName(name)
+     let craft = getAircraftByName(name)
      if (craft == null || isInArray(name, brokenAirs))
        continue
 
@@ -88,7 +89,7 @@ let function getCrafts(data, country = null) {
 let function isBRKnown(recentUserData) {
   let id = recentUserData?.gameModeId
   return id in brInfoByGamemodeId.value
-    && ::u.isEqual(recentUserData.players, brInfoByGamemodeId.value[id].players)
+    && u.isEqual(recentUserData.players, brInfoByGamemodeId.value[id].players)
 }
 
 let function setBattleRating(recentUserData, brData) {
@@ -185,7 +186,7 @@ updateBattleRating = function(gameMode = null, brData = null) { //!!FIX ME: why 
     return
   }
 
-  if (::u.isEqual(userData, recentUserData) && brData) {
+  if (u.isEqual(userData, recentUserData) && brData) {
     setBattleRating(recentUserData, brData)
     return
   }

@@ -41,6 +41,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
@@ -1778,13 +1779,13 @@
         "hp": 2600.0
       },
       "compartment_02_dm": {
-        "hp": 3293.0
+        "hp": 3066.0
       },
       "compartment_03_dm": {
         "hp": 2600.0
       },
       "compartment_04_dm": {
-        "hp": 3177.0
+        "hp": 2958.0
       },
       "compartment_05_dm": {
         "hp": 2600.0
@@ -2357,15 +2358,15 @@
       "armorThickness": 30.0,
       "stopChanceOnDeadPart": 0.0,
       "ignoreDeadWithSplash": true,
-      "explosionArmorQuality": 11.5,
-      "explosionDamageMult": 1.3,
+      "explosionArmorQuality": 8.53,
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
+      "pressureDamageMult": 150.0,
       "at_bulge_01_dm": {
-        "hp": 7500.0
+        "hp": 2000.0
       },
       "at_bulge_02_dm": {
-        "hp": 7500.0
+        "hp": 2000.0
       }
     },
     "turrets_main_caliber": {
@@ -2570,7 +2571,7 @@
         "hp": 1800.0
       },
       "ammunition_storage_shells_06_dm": {
-        "hp": 2243.0
+        "hp": 2187.0
       },
       "ammunition_storage_shells_07_dm": {
         "hp": 1800.0
@@ -2584,7 +2585,7 @@
       "fireProtectionHp": 15.0,
       "armorThrough": 100.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 2500.0
+        "hp": 2408.0
       },
       "ammunition_storage_charges_02_dm": {
         "hp": 2100.0
@@ -2616,7 +2617,7 @@
         "hp": 1000.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 1048.0
+        "hp": 1000.0
       }
     },
     "ammo_first_stage": {
@@ -2827,7 +2828,7 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 53
+      "crew": 57
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
@@ -2837,7 +2838,7 @@
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 53
+      "crew": 57
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
@@ -2847,42 +2848,42 @@
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 53
+      "crew": 55
     },
     "sailor11": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 8
     },
     "sailor12": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 8
     },
     "sailor13": {
       "dmPart": "main_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 8
     },
     "sailor14": {
       "dmPart": "main_caliber_turret_04_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 8
     },
     "sailor15": {
       "dmPart": "main_caliber_turret_05_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 8
     },
     "sailor16": {
       "dmPart": "main_caliber_turret_06_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 8
     },
     "sailor17": {
       "dmPart": "main_caliber_turret_07_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 8
     },
     "sailor18": {
       "dmPart": "tt_01_dm",
@@ -2982,22 +2983,22 @@
     "sailor37": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
-      "crew": 38
+      "crew": 39
     },
     "sailor38": {
       "dmPart": "transmission_02_dm",
       "role": "sailor",
-      "crew": 38
+      "crew": 39
     },
     "sailor39": {
       "dmPart": "transmission_03_dm",
       "role": "sailor",
-      "crew": 38
+      "crew": 39
     },
     "sailor40": {
       "dmPart": "transmission_04_dm",
       "role": "sailor",
-      "crew": 38
+      "crew": 39
     },
     "sailor41": {
       "dmPart": "fire_director_01_dm",
@@ -3640,7 +3641,9 @@
         "rangefinder_07_dm",
         "rangefinder_08_dm",
         "rangefinder_09_dm",
-        "rangefinder_10_dm"
+        "rangefinder_10_dm",
+        "at_bulge_01_dm",
+        "at_bulge_02_dm"
       ],
       "effect": {
         "pressureOpen": true

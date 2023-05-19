@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -59,7 +60,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
 
   local tags = decorator.getTagsLoc()
   if (tags.len()) {
-    tags = ::u.map(tags, @(txt) colorize("activeTextColor", txt))
+    tags = u.map(tags, @(txt) colorize("activeTextColor", txt))
     desc.append($"\n{loc("ugm/tags")}{colonLoc}{commaLoc.join(tags, true)}")
   }
 

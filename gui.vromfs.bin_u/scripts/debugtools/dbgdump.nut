@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
 /**
@@ -88,7 +90,7 @@ let persistent = {
   backup = null
 }
 
-::g_script_reloader.registerPersistentData("dbgDump", persistent, [ "backup" ])
+g_script_reloader.registerPersistentData("dbgDump", persistent, [ "backup" ])
 
 let function isLoaded() {
   return persistent.backup != null
@@ -140,16 +142,16 @@ let function save(filename, list) {
   let rootTable = getroottable()
   let blk = DataBlock()
   foreach (itemSrc in list) {
-    let item = ::u.isString(itemSrc) ? { id = itemSrc } : itemSrc
+    let item = u.isString(itemSrc) ? { id = itemSrc } : itemSrc
     let id = item.id
     let hasValue = ("value" in item)
     let subject = pathGet(rootTable, id, null)
-    let isFunction = ::u.isFunction(subject)
+    let isFunction = u.isFunction(subject)
     let args = item?.args ?? []
     local value = (isFunction && !hasValue) ? getFuncResult(subject, args) :
       hasValue ? item.value :
       subject
-    if (::u.isFunction(value))
+    if (u.isFunction(value))
       value = value()
     if (isFunction) {
       let caseBlk = datablockConverter.dataToBlk({ result = value })
@@ -201,14 +203,14 @@ let function load(filename, needUnloadPrev = true) {
           args = datablockConverter.blkToData(c?.args ?? []),
           result = datablockConverter.blkToData(c.result)
         })
-      let origFunc = ::u.isFunction(persistent.backup[id]) ? persistent.backup[id] : null
+      let origFunc = u.isFunction(persistent.backup[id]) ? persistent.backup[id] : null
 
       pathSet(rootTable, id, function(...) {
         let args = []
         for (local i = 0; i < vargv.len(); i++)
           args.append(vargv[i])
         foreach (c in cases)
-          if (::u.isEqual(args, c.args))
+          if (u.isEqual(args, c.args))
             return c.result
         return origFunc ? getFuncResult(origFunc, args) : null
       })

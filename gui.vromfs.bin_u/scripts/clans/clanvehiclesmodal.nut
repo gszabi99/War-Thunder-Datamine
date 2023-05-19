@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { Cost, Balance } = require("%scripts/money.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
@@ -20,7 +21,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
   hasSpendExpProcess = false
 
   function initScreen() {
-    this.lastSelectedUnit = ::getAircraftByName(::clan_get_researching_unit())
+    this.lastSelectedUnit = getAircraftByName(::clan_get_researching_unit())
     base.initScreen()
   }
 
@@ -31,7 +32,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
       locId = "mainmenu/nextResearchSquadronVehicle"
 
     local expText = flushExp ? loc("ui/parentheses/space",
-        { text = ::Balance(0, 0, 0, 0, flushExp).getTextAccordingToBalance() }) : ""
+        { text = Balance(0, 0, 0, 0, flushExp).getTextAccordingToBalance() }) : ""
     expText = loc(locId) + expText
 
     return expText
@@ -86,7 +87,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
       return
 
     let locText = loc("shop/btnOrderUnit", { unit = ::getUnitName(this.lastSelectedUnit.name) })
-    let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(this.lastSelectedUnit) : ::Cost()
+    let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(this.lastSelectedUnit) : Cost()
     placePriceTextToButton(this.scene.findObject("nav-help"),      "btn_buy_unit", locText, unitCost)
   }
 
@@ -108,7 +109,7 @@ local handlerClass = class extends vehiclesModal.handlerClass {
         : "shop/investToUnit",
       { unit = ::getUnitName(this.lastSelectedUnit.name) })
     let textValue = flushExp > 0 ? loc("ui/parentheses/space",
-      { text = ::Cost().setSap(flushExp).tostring() }) : ""
+      { text = Cost().setSap(flushExp).tostring() }) : ""
     let coloredText = textWord + textValue
 
     setColoredDoubleTextToButton(this.scene, "btn_spend_exp", coloredText)

@@ -6,11 +6,14 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
-  const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
-  const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
-  const CLAN_SQUADS_LIST_TIME_OUT = 180000
-  const MAX_SQUADS_LIST_LEN = 100
+let { matchingApiFunc } = require("%scripts/matching/api.nut")
+
+const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
+const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
+const CLAN_SQUADS_LIST_TIME_OUT = 180000
+const MAX_SQUADS_LIST_LEN = 100
 
 local ClanSquadsList = class {
 
@@ -66,7 +69,7 @@ local ClanSquadsList = class {
     let requestClanId = ::clan_get_my_clan_id()
     let cb = Callback(@(resp) this.requestListCb(resp, requestClanId), this)
 
-    ::matching_api_func("msquad.get_squads", cb, { players = this.getClanUidsList() })
+    matchingApiFunc("msquad.get_squads", cb, { players = this.getClanUidsList() })
     return true
   }
 
@@ -94,7 +97,7 @@ local ClanSquadsList = class {
 
     this.lastUpdateTimeMsec = get_time_msec()
     this.updateClanSquadsList(squads)
-    ::broadcastEvent("ClanSquadsListChanged", { clanSquadsList = this.clanSquadsList })
+    broadcastEvent("ClanSquadsListChanged", { clanSquadsList = this.clanSquadsList })
   }
 
   function updateClanSquadsList(squads) { //can be called each update

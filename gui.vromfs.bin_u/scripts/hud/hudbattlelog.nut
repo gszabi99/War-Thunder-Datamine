@@ -7,13 +7,15 @@ from "hudMessages" import *
 #explicit-this
 
 let { format, split_by_chars } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { send } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
+let { get_mplayer_by_id, get_local_mplayer } = require("mission")
 
 enum BATTLE_LOG_FILTER {
   HERO      = 0x0001
@@ -221,8 +223,8 @@ enum BATTLE_LOG_FILTER {
 
     local filters = 0
     if (msg.type == HUD_MSG_MULTIPLAYER_DMG) {
-      let p1 = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
-      let p2 = ::get_mplayer_by_id(msg?.victimPlayerId ?? ::my_user_id_int64)
+      let p1 = get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
+      let p2 = get_mplayer_by_id(msg?.victimPlayerId ?? ::my_user_id_int64)
       let t1Friendly = ::is_team_friendly(msg?.team ?? Team.A)
       let t2Friendly = ::is_team_friendly(msg?.victimTeam ?? Team.B)
 
@@ -238,8 +240,8 @@ enum BATTLE_LOG_FILTER {
         filters = filters | BATTLE_LOG_FILTER.OTHER
     }
     else {
-      let player = ::get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
-      let localPlayer = ::get_local_mplayer()
+      let player = get_mplayer_by_id(msg?.playerId ?? ::my_user_id_int64)
+      let localPlayer = get_local_mplayer()
       if (msg.text.indexof("\x1B011") != null || player?.isLocal)
         filters = filters | BATTLE_LOG_FILTER.HERO
       if (msg.text.indexof("\x1B010") != null || player?.isInHeroSquad)
@@ -279,7 +281,7 @@ enum BATTLE_LOG_FILTER {
       this.battleLog.remove(0)
     this.battleLog.append(logEntry)
     send("pushBattleLogEntry", logEntry)
-    ::broadcastEvent("BattleLogMessage", logEntry)
+    broadcastEvent("BattleLogMessage", logEntry)
   }
 
   function getFilters() {
@@ -303,11 +305,11 @@ enum BATTLE_LOG_FILTER {
         if (limit && lines.len() == limit)
           break
       }
-    return ::g_string.implode(lines, "\n")
+    return "\n".join(lines, true)
   }
 
   function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0) {
-    let player = ::get_mplayer_by_id(playerId)
+    let player = get_mplayer_by_id(playerId)
     if (player && is_replay_playing()) {
       player.isLocal = spectatorWatchedHero.id == player.id
       player.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
@@ -321,7 +323,7 @@ enum BATTLE_LOG_FILTER {
 
     local res = getTblValue(uType, this.utToEsUnitType, ES_UNIT_TYPE_INVALID)
     if (res == ES_UNIT_TYPE_INVALID) { //we do not receive unitType for player killer unit, but can easy get it by unitName
-      let unit = ::getAircraftByName(msg[isVictim ? "victimUnitName" : "unitName"])
+      let unit = getAircraftByName(msg[isVictim ? "victimUnitName" : "unitName"])
       if (unit)
         res = unit.esUnitType
     }
@@ -371,12 +373,12 @@ enum BATTLE_LOG_FILTER {
     let msgAction = msg?.action ?? "kill"
     let isCrash = msgAction == "crash" || msgAction == "exit"
     let sequence = isCrash ? [whom, what] : [who, what, whom]
-    return ::g_string.implode(sequence, " ")
+    return " ".join(sequence, true)
   }
 
   function msgStreakToText(msg, forceThirdPerson = false) {
     let playerId = msg?.playerId ?? -1
-    let localPlayerId = is_replay_playing() ? spectatorWatchedHero.id : ::get_local_mplayer().id
+    let localPlayerId = is_replay_playing() ? spectatorWatchedHero.id : get_local_mplayer().id
     let isLocal = !forceThirdPerson && playerId == localPlayerId
     let streakNameType = isLocal ? SNT_MY_STREAK_HEADER : SNT_OTHER_STREAK_TEXT
     let what = ::get_loc_for_streak(streakNameType, msg?.unlockId ?? "", msg?.stage ?? 0)
@@ -398,4 +400,4 @@ enum BATTLE_LOG_FILTER {
   }
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("HudBattleLog")
+g_script_reloader.registerPersistentDataFromRoot("HudBattleLog")

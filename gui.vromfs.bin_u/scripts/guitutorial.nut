@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -75,7 +77,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
   foreach (box in darkBoxes)
     view.darkBlocks.append(this.blockToView({ box = box, onClick = defOnClick }))
 
-  let data = ::handyman.renderCached(("%gui/tutorials/tutorDarkScreen.tpl"), view)
+  let data = handyman.renderCached(("%gui/tutorials/tutorDarkScreen.tpl"), view)
   guiScene.replaceContentFromText(scene, data, data.len(), handler)
 
   return scene.findObject(view.id)
@@ -205,7 +207,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
     let shortcut = getTblValue("shortcut", stepData, needAccessKey ? ::GAMEPAD_ENTER_SHORTCUT : null)
     let blocksList = []
     local objList = stepData?.obj ?? []
-    if (!::u.isArray(objList))
+    if (!u.isArray(objList))
       objList = [objList]
 
     foreach (obj in objList) {
@@ -245,7 +247,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
         })
       }
 
-      let blk = ::handyman.renderCached("%gui/tutorials/tutorArrow.tpl", view)
+      let blk = handyman.renderCached("%gui/tutorials/tutorArrow.tpl", view)
       this.guiScene.replaceContentFromText(this.scene.findObject("arrows_container"), blk, blk.len(), this)
     }
 
@@ -330,7 +332,7 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
     if (!cb)
       return
 
-    if (::u.isCallback(cb) || getTblValue("keepEnv", stepData, false))
+    if (u.isCallback(cb) || getTblValue("keepEnv", stepData, false))
       cb()
     else
       ::call_for_handler(this.ownerWeak, cb)

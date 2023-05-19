@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 // TEST: ::gui_start_wheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? ::close_cur_wheelmenu() })
 
@@ -204,7 +205,7 @@ const ITEMS_PER_PAGE = 8
 
   function updateContentForItem(contentObj, item) {
     if (this.contentTemplate != null) { //!!!FIX ME need remove replace content for killStreakWheelMenu
-      let blk = ::handyman.renderCached(this.contentTemplate, item)
+      let blk = handyman.renderCached(this.contentTemplate, item)
       this.guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
       return
     }

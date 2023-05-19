@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { split_by_chars } = require("string")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 
 ::g_chat_latest_threads <- {
@@ -29,16 +31,16 @@ let { get_time_msec } = require("dagor.time")
 
 //refresh for usual players
 ::g_chat_latest_threads.refresh <- function refresh() {
-  let langTags = ::u.map(this.getSearchLangsList(),
+  let langTags = u.map(this.getSearchLangsList(),
                            function(l) { return ::g_chat_thread_tag.LANG.prefix + l.chatId })
 
   local categoryTagsText = ""
   if (!::g_chat_categories.isSearchAnyCategory()) {
-    local categoryTags = ::u.map(::g_chat_categories.getSearchCategoriesLList(),
+    local categoryTags = u.map(::g_chat_categories.getSearchCategoriesLList(),
                                 function(cName) { return ::g_chat_thread_tag.CATEGORY.prefix + cName })
-    categoryTagsText = ::g_string.implode(categoryTags, ",")
+    categoryTagsText = ",".join(categoryTags, true)
   }
-  this.refreshAdvanced("hidden", ::g_string.implode(langTags, ","), categoryTagsText)
+  this.refreshAdvanced("hidden", ",".join(langTags, true), categoryTagsText)
 }
 
 //refresh latest threads. options full work only for moderators.
@@ -56,11 +58,11 @@ let { get_time_msec } = require("dagor.time")
 
   this._requestedList.clear()
   this.lastRequestTime = get_time_msec()
-  ::gchat_raw_command(::g_string.implode(cmdArr, " "))
+  ::gchat_raw_command(" ".join(cmdArr, true))
 }
 
 ::g_chat_latest_threads.onNewThreadInfoToList <- function onNewThreadInfoToList(threadInfo) {
-  ::u.appendOnce(threadInfo, this._requestedList)
+  u.appendOnce(threadInfo, this._requestedList)
 }
 
 ::g_chat_latest_threads.onThreadsListEnd <- function onThreadsListEnd() {
@@ -69,7 +71,7 @@ let { get_time_msec } = require("dagor.time")
   this._requestedList.clear()
   this.curListUid++
   this.lastUpdatetTime = get_time_msec()
-  ::broadcastEvent("ChatLatestThreadsUpdate")
+  broadcastEvent("ChatLatestThreadsUpdate")
 }
 
 ::g_chat_latest_threads.checkAutoRefresh <- function checkAutoRefresh() {
@@ -135,15 +137,15 @@ let { get_time_msec } = require("dagor.time")
 ::g_chat_latest_threads.saveCurLangs <- function saveCurLangs() {
   if (!this.langsInited || !this.isCustomLangsList)
     return
-  let chatIds = ::u.map(this.langsList, function (l) { return l.chatId })
-  ::saveLocalByAccount("chat/latestThreadsLangs", ::g_string.implode(chatIds, ","))
+  let chatIds = u.map(this.langsList, function (l) { return l.chatId })
+  ::saveLocalByAccount("chat/latestThreadsLangs", ",".join(chatIds, true))
 }
 
 ::g_chat_latest_threads._setSearchLangs <- function _setSearchLangs(values) {
   this.langsList = values
   this.saveCurLangs()
   this.isCustomLangsList = this.langsList.len() > 0
-  ::broadcastEvent("ChatThreadSearchLangChanged")
+  broadcastEvent("ChatThreadSearchLangChanged")
 }
 
 ::g_chat_latest_threads.getSearchLangsList <- function getSearchLangsList() {
@@ -189,7 +191,7 @@ let { get_time_msec } = require("dagor.time")
   this.langsInited = false
 
   let blk = ::get_game_settings_blk()
-  if (::u.isDataBlock(blk?.chat)) {
+  if (u.isDataBlock(blk?.chat)) {
     this.autoUpdatePeriodMsec = blk.chat?.threadsListAutoUpdatePeriodMsec ?? this.autoUpdatePeriodMsec
     this.playerUpdateTimeoutMsec = blk.chat?.threadsListPlayerUpdateTimeoutMsec ?? this.playerUpdateTimeoutMsec
   }
@@ -221,4 +223,4 @@ let { get_time_msec } = require("dagor.time")
     ::g_chat_latest_threads.forceAutoRefreshInSecond()
 }
 
-::subscribe_handler(::g_chat_latest_threads, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_chat_latest_threads, ::g_listener_priority.DEFAULT_HANDLER)

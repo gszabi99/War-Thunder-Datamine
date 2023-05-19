@@ -1585,15 +1585,15 @@
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           0.0,
           0.0,
           -2.5
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilOffset": 0.045,
         "recoilMultiplier": 0.1,
@@ -1713,15 +1713,15 @@
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           0.0,
           0.0,
           -2.5
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilOffset": 0.045,
         "recoilMultiplier": 0.1,
@@ -1819,15 +1819,15 @@
         "emitter": "bone_gun_barrel_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_03",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell_03",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           0.0,
           0.0,
           2.5
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilOffset": 0.045,
         "recoilMultiplier": 0.1,
@@ -1923,15 +1923,15 @@
         "emitter": "bone_gun_barrel_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_04",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell_04",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           0.0,
           0.0,
           2.5
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilOffset": 0.045,
         "recoilMultiplier": 0.1,
@@ -2110,13 +2110,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }

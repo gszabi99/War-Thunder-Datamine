@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
@@ -25,6 +27,7 @@ let { hasUnitAtRank } = require("%scripts/airInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 local options = {
   types = []
@@ -181,7 +184,7 @@ options.addTypes({
       let esUnitTypes = getThreatEsUnitTypes()
       let types = esUnitTypes.map(@(e) unitTypes.getByEsUnitType(e))
       this.values = esUnitTypes
-      this.items  = ::u.map(types, @(t) { text = "{0} {1}".subst(t.fontIcon, t.getArmyLocName()) })
+      this.items  = u.map(types, @(t) { text = "{0} {1}".subst(t.fontIcon, t.getArmyLocName()) })
       let preferredEsUnitType = this.value ?? options.targetUnit.esUnitType
       this.value = this.values.indexof(preferredEsUnitType) != null ? preferredEsUnitType
         : (this.values?[0] ?? ES_UNIT_TYPE_INVALID)
@@ -194,8 +197,8 @@ options.addTypes({
 
     updateParams = function(_handler, _scene) {
       let unitType = options.UNITTYPE.value
-      this.values = ::u.filter(shopCountriesList, @(c) isCountryHaveUnitType(c, unitType))
-      this.items  = ::u.map(this.values, @(c) { text = loc(c), image = ::get_country_icon(c) })
+      this.values = u.filter(shopCountriesList, @(c) isCountryHaveUnitType(c, unitType))
+      this.items  = u.map(this.values, @(c) { text = loc(c), image = ::get_country_icon(c) })
       let preferredCountry = this.value ?? options.targetUnit.shopCountry
       this.value = this.values.indexof(preferredCountry) != null ? preferredCountry
         : (this.values?[0] ?? "")
@@ -211,7 +214,7 @@ options.addTypes({
       for (local rank = 1; rank <= ::max_country_rank; rank++)
         if (hasUnitAtRank(rank, unitType, country, true, false))
           this.values.append(rank)
-      this.items = ::u.map(this.values, @(r) {
+      this.items = u.map(this.values, @(r) {
         text = format(loc("conditions/unitRank/format"), ::get_roman_numeral(r))
       })
       let preferredRank = this.value ?? options.targetUnit.rank
@@ -228,10 +231,10 @@ options.addTypes({
       let ediff = ::get_current_ediff()
       local list = ::get_units_list(@(u) u.esUnitType == unitType
         && u.shopCountry == country && u.rank == rank && u.isVisibleInShop())
-      list = ::u.map(list, @(u) { unit = u, id = u.name, br = u.getBattleRating(ediff) })
+      list = u.map(list, @(u) { unit = u, id = u.name, br = u.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)
-      this.values = ::u.map(list, @(v) v.unit)
-      this.items = ::u.map(list, @(v) {
+      this.values = u.map(list, @(v) v.unit)
+      this.items = u.map(list, @(v) {
         text  = format("[%.1f] %s", v.br, ::getUnitName(v.id))
         image = ::image_for_air(v.unit)
         addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
@@ -367,7 +370,7 @@ options.addTypes({
         foreach (t in specialBulletTypes)
           bulletBlk = bulletBlk ?? weaponBlk?[t]
 
-        let locName = ::g_string.utf8ToUpper(
+        let locName = utf8ToUpper(
           loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
         if (!bulletBlk || isInArray(locName, bulletNamesSet))
           continue
@@ -413,7 +416,7 @@ options.addTypes({
     valueWidth = "@dmInfoTextWidth"
 
     getControlMarkup = function() {
-      return ::handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
+      return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
         containerId = "container_" + this.id
         id = this.id
         min = 0
@@ -479,6 +482,65 @@ options.addTypes({
       parentObj.display = isBulletAvailable() ? "show" : "hide"
     }
   }
+  OFFSET = {
+    sortId = sortIdCount++
+    labelLocId = "offset"
+    value = -1
+    defValue = -1
+    minValue = -1
+    maxValue = -1
+    step = 0
+    valueWidth = "@dmInfoTextWidth"
+
+    getControlMarkup = function() {
+      return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
+        containerId = "container_" + this.id
+        id = this.id
+        min = 0
+        max = 0
+        value = 0
+        step = 0
+        width = "fw"
+        btnOnDec = "onButtonDec"
+        btnOnInc = "onButtonInc"
+        onChangeSliderValue = "onChangeOption"
+      })
+    }
+
+    getValFromObj = @(obj) checkObj(obj) ? obj.getValue() : 0
+
+    afterChangeFunc = function(obj) {
+      let parentObj = obj.getParent().getParent()
+      parentObj.findObject("value_" + this.id).setValue(this.value + loc("measureUnits/mm"))
+      ::enableBtnTable(parentObj, {
+        buttonInc = this.value < this.maxValue
+        buttonDec = this.value > this.minValue
+      })
+      updateDistanceNativeUnitsText(options.nestObj)
+      updateArmorPiercingText(options.nestObj)
+    }
+
+    updateParams = function(_handler, _scene) {
+      this.minValue = options.UNIT.value?.isShipOrBoat() ? -10000 : 0
+      this.maxValue = options.UNIT.value?.isShipOrBoat() ? 50000 : 5000
+      this.step     = options.UNIT.value?.isShipOrBoat() ? 1000 : 100
+      let preferredDistance = this.value
+      this.value = clamp(preferredDistance, this.minValue, this.maxValue)
+    }
+
+    updateView = function(_handler, scene) {
+      let obj = scene.findObject(this.id)
+      if (!obj?.isValid())
+        return
+      let parentObj = obj.getParent().getParent()
+      if (isBulletAvailable()) {
+        obj.max = this.maxValue
+        obj.optionAlign = this.step
+        obj.setValue(this.value)
+      }
+      parentObj.display = isBulletAvailable() ? "show" : "hide"
+    }
+  }
 })
 
 options.init <- function(handler, scene) {
@@ -496,7 +558,8 @@ options.init <- function(handler, scene) {
 options.setAnalysisParams <- function() {
   let bullet   = options.BULLET.value
   let distance = options.DISTANCE.value
-  ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance)
+  let offset = options.OFFSET.value
+  ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, offset)
 }
 
 options.get <- @(id) this?[id] ?? this.UNKNOWN

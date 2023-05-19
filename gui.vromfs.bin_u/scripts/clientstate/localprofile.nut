@@ -1,26 +1,32 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { subscribe } = require("eventbus")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { set_blk_value_by_path, get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
 
-::onUpdateProfile <- function onUpdateProfile(taskId, action, transactionType = ::EATT_UNKNOWN) { //code callback on profile update
+let function onUpdateProfileImpl(msg) {
+  let { taskId = -1, action = "", transactionType = ::EATT_UNKNOWN } = msg
   if (!::g_login.isProfileReceived())
     ::g_login.onProfileReceived()
 
-  ::broadcastEvent("ProfileUpdated", { taskId = taskId, action = action, transactionType = transactionType })
+  broadcastEvent("ProfileUpdated", { taskId, action, transactionType })
 
   if (!::g_login.isLoggedIn())
     return
   ::update_gamercards()
   penalties.showBannedStatusMsgBox(true)
 }
+
+subscribe("onUpdateProfile", onUpdateProfileImpl)
+::onUpdateProfile <- @(taskId, action, transactionType) onUpdateProfileImpl({ taskId, action, transactionType }) //compatibility with native code 25.04.2023
 
 //save/load settings by account. work only after local profile received from host.
 ::save_local_account_settings <- function save_local_account_settings(path, value) {
@@ -104,7 +110,7 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
       continue
 
     hasChanges = true
-    if (::u.isDataBlock(blk?[name]))
+    if (u.isDataBlock(blk?[name]))
       blk.removeBlock(name)
     else
       blk.removeParam(name)

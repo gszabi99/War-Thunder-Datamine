@@ -28,7 +28,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_med",
+  "exhaustFx": "ship_exhaust_big",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "smokeScreenActivateTime": 5.0,
@@ -43,6 +43,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
   "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
@@ -5637,10 +5638,10 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 25000000.0,
+      "Empty": 28000000.0,
       "momentOfInertia": [
         180.0,
-        5500.0,
+        15000.0,
         2700.0
       ],
       "CenterOfGravity": [
@@ -13071,6 +13072,13 @@
         }
       },
       {
+        "name": "ammo_aux_fire_5",
+        "fx": {
+          "name": "explosion_ship_small_ammo_second",
+          "emitter": "emtr_fire_ammo_05"
+        }
+      },
+      {
         "name": "ammo_aux_explosion_1",
         "fx": {
           "name": "explosion_ship_big_ammo_second",
@@ -13096,6 +13104,13 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_04"
+        }
+      },
+      {
+        "name": "ammo_aux_explosion_5",
+        "fx": {
+          "name": "explosion_ship_big_ammo_second",
+          "emitter": "emtr_fire_ammo_05"
         }
       },
       {

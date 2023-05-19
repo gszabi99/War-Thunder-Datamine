@@ -40,6 +40,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
@@ -1602,7 +1603,7 @@
         "hp": 400.0
       },
       "radio_station_dm": {
-        "hp": 496.0
+        "hp": 434.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -2073,7 +2074,7 @@
         "hp": 1200.0
       },
       "ammunition_storage_shells_04_dm": {
-        "hp": 1351.0
+        "hp": 1500.0
       }
     },
     "ammo_storages_charges": {
@@ -2244,52 +2245,52 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 25
+      "crew": 27
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 25
+      "crew": 27
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 21
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 20
+      "crew": 21
     },
     "sailor6": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor8": {
       "dmPart": "main_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor9": {
       "dmPart": "main_caliber_turret_04_dm",
       "role": "sailor",
-      "crew": 4
+      "crew": 3
     },
     "sailor10": {
       "dmPart": "auxiliary_caliber_turret_04_dm",
       "role": "sailor",
-      "crew": 3
+      "crew": 2
     },
     "sailor11": {
       "dmPart": "auxiliary_caliber_turret_05_dm",
       "role": "sailor",
-      "crew": 3
+      "crew": 2
     },
     "sailor12": {
       "dmPart": "tt_01_dm",
@@ -3462,12 +3463,44 @@
         },
         "limits": {
           "yaw": [
-            -153.0,
-            153.0
+            -150.0,
+            150.0
           ],
           "pitch": [
             -5.0,
             45.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -150.0,
+            -140.0,
+            0.0,
+            10.0
+          ],
+          "lim2": [
+            -140.0,
+            -125.0,
+            0.0,
+            20.0
+          ],
+          "lim3": [
+            -125.0,
+            125.0,
+            -5.0,
+            45.0
+          ],
+          "lim4": [
+            125.0,
+            140.0,
+            0.0,
+            20.0
+          ],
+          "lim5": [
+            140.0,
+            150.0,
+            0.0,
+            10.0
           ]
         },
         "gunStabilizer": {

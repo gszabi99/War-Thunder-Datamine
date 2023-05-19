@@ -1,0 +1,230 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/stalingrad.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "mid_airfields_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetString": [
+          {
+            "value": "mid_capture_area_01",
+            "var": "capture_zone_01_name"
+          },
+          {
+            "value": "mid_capture_area_02",
+            "var": "capture_zone_02_name"
+          },
+          {
+            "value": "mid_capture_area_03",
+            "var": "capture_zone_03_name"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "mid_airfield_01",
+        "tm": [
+          [
+            -7.45058E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -7.45058E-08
+          ],
+          [
+            -9958.46,
+            178.6,
+            -15192.2
+          ]
+        ],
+        "unit_class": "dynaf_universal_1line_a",
+        "objLayer": 4,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "mid_airfield_02",
+        "tm": [
+          [
+            -7.45058E-08,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            -7.45058E-08
+          ],
+          [
+            2026.81,
+            145.158,
+            -15192.2
+          ]
+        ],
+        "unit_class": "dynaf_universal_1line_a",
+        "objLayer": 4,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    ]
+  },
+  "areas": {
+    "mid_capture_area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          550.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          350.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1750.0
+        ],
+        [
+          -9962.1,
+          180.538,
+          -15190.5
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "mid_capture_area_02": {
+      "type": "Box",
+      "tm": [
+        [
+          550.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          350.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1750.0
+        ],
+        [
+          2039.06,
+          140.088,
+          -15190.5
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "mid_capture_area_03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          4.069E-05
+        ],
+        [
+          0.0,
+          3500.0,
+          0.0
+        ],
+        [
+          -4.069E-05,
+          0.0,
+          2000.0
+        ],
+        [
+          -3963.9,
+          500.2,
+          -15194.7
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

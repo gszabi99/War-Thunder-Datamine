@@ -7,7 +7,17 @@
   "jumpStaminaDrain": 10.0,
   "sprintSpeed": 5.0,
   "runSpeed": 2.0,
-  "cameraNode": "Bip01 Head",
+  "moveType": "human",
+  "maxFwdSpeed": 10.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 30.0,
+  "maxAccel": 4.0,
+  "maxDecel": 8.0,
+  "maxAngAccel0": 20.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 40.0,
+  "groundNormSmoothViscosity": 0.1,
+  "minDistBetween": 10.0,
   "weapons": {
     "primary": {
       "blk": "gameData/weapons/gun_PPSH.blk",
@@ -208,5 +218,18 @@
         "expl": 0.0
       }
     }
+  },
+  "cockpit": {
+    "headPos": [
+      0.0,
+      2.5,
+      -3.0
+    ],
+    "headPosOnShooting": [
+      0.0,
+      1.6,
+      -0.3
+    ],
+    "detectionHeight": 2.0
   }
 }

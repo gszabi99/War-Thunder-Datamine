@@ -5,6 +5,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.089,
   "gearSinkRangeC": 0.0,
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -198,28 +199,6 @@
         "engine4"
       ]
     }
-  },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "P_51B_default",
-        "blk": "gameData/FlightModels/weaponPresets/P-51B_default.blk"
-      },
-      {
-        "name": "p_51b_100lbs",
-        "blk": "gameData/FlightModels/weaponPresets/p-51b_100lbs.blk",
-        "tags": {
-          "aux": true
-        }
-      },
-      {
-        "name": "p_51b_500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/p-51b_500lbs.blk",
-        "tags": {
-          "aux": true
-        }
-      }
-    ]
   },
   "jetwash": {
     "radius": 10.0,
@@ -1136,6 +1115,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -1173,6 +1158,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1194,6 +1185,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -1235,6 +1232,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2369,15 +2372,129 @@
       }
     ]
   },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "p-51a_tl_default",
+        "blk": "gameData/FlightModels/weaponPresets/p-51a_tl_default.blk"
+      },
+      {
+        "name": "p-51a_tl_100lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p-51a_tl_100lbs.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/bombGuns/us_100lb_anm30.blk",
+            "iconType": "bombs_small",
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "p-51a_tl_250lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p-51a_tl_250lbs.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/bombGuns/us_250lb_anm57.blk",
+            "iconType": "bombs_middle",
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "p-51a_tl_300lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p-51a_tl_300lbs.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/bombGuns/us_300lb_m_31.blk",
+            "iconType": "bombs_large",
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "p-51a_tl_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/p-51a_tl_500lbs.blk",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/bombGuns/us_500lb_anm64a1.blk",
+            "iconType": "bombs_heavy_middle",
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "50cal_universal": {},
     "50cal_ground_targets": {},
     "50cal_tracers": {},

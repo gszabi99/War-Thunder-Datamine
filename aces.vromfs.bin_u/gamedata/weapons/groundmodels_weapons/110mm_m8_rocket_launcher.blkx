@@ -21,6 +21,28 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "bulletName": "114mm_m8",
+    "statType": "hydra",
+    "caliber": 0.114,
+    "length": 0.79,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.1,
+    "distFromCmToStab": 0.005,
+    "mass": 17.28,
+    "massEnd": 15.17,
+    "timeFire": 0.2,
+    "force": 23000.0,
+    "thrustDeviation": 0.01,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 260.0,
+    "maxDistance": 4500.0,
+    "minDistance": 30.0,
+    "maxDeltaAngle": 0.3,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
@@ -38,25 +60,9 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/rocket_he.ivf",
-    "bulletName": "114mm_m8",
-    "caliber": 0.114,
-    "mass": 17.28,
-    "massEnd": 15.17,
     "explosiveType": "tnt",
     "explosiveMass": 1.95,
-    "maxDeltaAngle": 0.3,
     "dragCx": 0.027,
-    "length": 0.79,
-    "distFromCmToStab": 0.005,
-    "CxK": 1.1,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "force": 23000.0,
-    "timeFire": 0.2,
-    "thrustDeviation": 0.01,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_106_132mm_metal_he",
     "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -65,12 +71,16 @@
     "explosionPatchRadius": 3.5,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "rocket_fire_light_multiple",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_early_small",
+    "smokeEffect": "smoke_rocket_tail_light_multiple",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDistance": 4500.0,
-    "minDistance": 30.0,
+    "effectOffset": [
+      -0.55,
+      0.0,
+      0.0
+    ],
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
     "hitPowerMult": 40.0,
@@ -79,11 +89,6 @@
     "explodeTreshold": 0.1,
     "fuseDelayDist": 0.0,
     "rendinstDamageRadius": 5.0,
-    "statType": "hydra",
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 260.0,
     "price": 3000.0,
     "stabilityRicochetModifier": {
       "mod1": [
@@ -306,9 +311,9 @@
         "countPortion": 0.2,
         "segment": [
           {
-            "radiusScale": 0.15,
-            "penetrationScale": 3.5,
-            "damageScale": 1.0,
+            "radiusScale": 0.3,
+            "penetrationScale": 6.0,
+            "damageScale": 2.0,
             "angles": [
               0.0,
               29.0
@@ -318,7 +323,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               30.0,
@@ -328,7 +333,7 @@
           },
           {
             "radiusScale": 0.35,
-            "penetrationScale": 1.75,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               70.0,
@@ -339,7 +344,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               111.0,
@@ -349,7 +354,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               181.0,
@@ -359,7 +364,7 @@
           },
           {
             "radiusScale": 0.35,
-            "penetrationScale": 1.75,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               250.0,
@@ -370,7 +375,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.0,
             "damageScale": 1.0,
             "angles": [
               291.0,
@@ -380,7 +385,7 @@
           },
           {
             "radiusScale": 0.15,
-            "penetrationScale": 3.5,
+            "penetrationScale": 4.5,
             "damageScale": 1.0,
             "angles": [
               330.0,

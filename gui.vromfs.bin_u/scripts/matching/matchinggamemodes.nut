@@ -1,13 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { format } = require("string")
+let { fetchGameModesDigest, fetchGameModesInfo
+} = require("%scripts/matching/serviceNotifications/match.nut")
 
 // -------------------------------------------------------
 // Matching game modes managment
@@ -41,7 +45,7 @@ local requestedGameModes = []
     this.__gameModes.clear()
     this.__fetching = true
     this.__fetch_counter++
-    ::fetch_game_modes_digest({ timeout = 60 },
+    fetchGameModesDigest({ timeout = 60 },
       function (result) {
         if (!this)
           return
@@ -49,7 +53,7 @@ local requestedGameModes = []
         this.__fetching = false
 
         let canRetry = this.__fetch_counter < MAX_FETCH_RETRIES
-        if (::checkMatchingError(result, !canRetry)) {
+        if (::checkMatchingError(result, false)) {
           this.__loadGameModesFromList(result?.modes ?? [])
           this.__fetch_counter = 0
           return
@@ -163,9 +167,9 @@ local requestedGameModes = []
   }
 
   function __loadGameModesFromList(gm_list) {
-    ::fetch_game_modes_info({ byId = gm_list, timeout = 60 },
+    fetchGameModesInfo({ byId = gm_list, timeout = 60 },
       function (result) {
-        if (!::checkMatchingError(result) || ("modes" not in result))
+        if (!::checkMatchingError(result, false) || ("modes" not in result))
           return
         ::g_matching_game_modes.__onGameModesUpdated(result.modes)
       })
@@ -187,7 +191,7 @@ local requestedGameModes = []
   }
 
   function getGameModesByEconomicName(economicName) {
-    return ::u.filter(this.__gameModes,
+    return u.filter(this.__gameModes,
       (@(economicName) function(g) { return ::events.getEventEconomicName(g) == economicName })(economicName))
   }
 
@@ -212,4 +216,4 @@ local requestedGameModes = []
   }
 }
 
-::subscribe_handler(::g_matching_game_modes)
+subscribe_handler(::g_matching_game_modes)

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -108,7 +109,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   function onSlotbarPresetSelect() {
     if (this.checkCurrentTutorialCanceled())
       return
-    ::add_event_listener("SlotbarPresetLoaded", this.onEventSlotbarPresetLoaded, this)
+    subscriptions.add_event_listener("SlotbarPresetLoaded", this.onEventSlotbarPresetLoaded, this)
     let listObj = this.presetsList.getListObj()
     if (listObj != null)
       listObj.setValue(this.validPresetIndex)
@@ -118,7 +119,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (this.checkCurrentTutorialCanceled())
       return
     this.chooseSlotbarPresetHandler = ::gui_choose_slotbar_preset(this.currentHandler)
-    this.chooseSlotbarPresetIndex = ::find_in_array(::slotbarPresets.presets[this.currentCountry], this.preset)
+    this.chooseSlotbarPresetIndex = u.find_in_array(::slotbarPresets.presets[this.currentCountry], this.preset)
     if (this.chooseSlotbarPresetIndex == -1)
       return
     let itemsListObj = this.chooseSlotbarPresetHandler.scene.findObject("items_list")
@@ -158,7 +159,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   function onChooseSlotbarPresetWnd_Apply() {
     if (this.checkCurrentTutorialCanceled())
       return
-    ::add_event_listener("SlotbarPresetLoaded", this.onEventSlotbarPresetLoaded, this)
+    subscriptions.add_event_listener("SlotbarPresetLoaded", this.onEventSlotbarPresetLoaded, this)
     this.chooseSlotbarPresetHandler.onBtnPresetLoad(null)
   }
 
@@ -193,7 +194,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function createMessageWhithUnitType(partLocId = "selectPreset") {
     let types = ::game_mode_manager.getRequiredUnitTypes(this.tutorialGameMode)
-    let unitType = unitTypes.getByEsUnitType(::u.max(types))
+    let unitType = unitTypes.getByEsUnitType(u.max(types))
     let unitTypeLocId = "options/chooseUnitsType/" + unitType.lowerName
     return loc("slotbarPresetsTutorial/" + partLocId, { unitType = loc(unitTypeLocId) })
   }
@@ -205,7 +206,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function getPresetIndex(prst) {
     let presets = getTblValue(this.currentCountry, ::slotbarPresets.presets, null)
-    return ::find_in_array(presets, prst, -1)
+    return u.find_in_array(presets, prst, -1)
   }
 
   /**
@@ -261,7 +262,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if (units == null)
       return -1
     for (local i = 0; i < units.len(); ++i) {
-      let unit = ::getAircraftByName(units[i])
+      let unit = getAircraftByName(units[i])
       if (::game_mode_manager.isUnitAllowedForGameMode(unit))
         return i
     }
@@ -314,7 +315,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     let gameModeChangeButtonObj = this.currentHandler?.gameModeChangeButtonObj
     if (!checkObj(gameModeChangeButtonObj))
       return
-    ::add_event_listener("GamercardDrawerOpened", this.onEventGamercardDrawerOpened, this)
+    subscriptions.add_event_listener("GamercardDrawerOpened", this.onEventGamercardDrawerOpened, this)
     this.currentHandler.openGameModeSelect()
   }
 
@@ -352,7 +353,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   function onSelectGameMode() {
     if (this.checkCurrentTutorialCanceled())
       return
-    ::add_event_listener("CurrentGameModeIdChanged", this.onEventCurrentGameModeIdChanged, this)
+    subscriptions.add_event_listener("CurrentGameModeIdChanged", this.onEventCurrentGameModeIdChanged, this)
     let gameModeSelectHandler = this.currentHandler?.gameModeSelectHandler
     if (!gameModeSelectHandler)
       return

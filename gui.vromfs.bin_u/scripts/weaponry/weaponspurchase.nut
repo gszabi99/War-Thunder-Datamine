@@ -1,11 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let unitActions = require("%scripts/unit/unitActions.nut")
@@ -82,7 +86,7 @@ local class WeaponsPurchaseProcess {
     this.onCompleteCb = additionalParams?.onFinishCb
 
     this.modItem = getTblValue("modItem", additionalParams)
-    if (!::u.isEmpty(this.modItem)) {
+    if (!u.isEmpty(this.modItem)) {
       this.modName = this.modItem.name
       this.modType = this.modItem.type
     }
@@ -92,7 +96,7 @@ local class WeaponsPurchaseProcess {
 
   function checkMultiPurchase() {
     local canBuyAmount = 1
-    if (!::u.isEmpty(this.modItem) && this.modType != weaponsItem.primaryWeapon) {
+    if (!u.isEmpty(this.modItem) && this.modType != weaponsItem.primaryWeapon) {
       let statusTbl = getItemStatusTbl(this.unit, this.modItem)
       if (!statusTbl.canBuyMore) {
         if (statusTbl.showPrice)
@@ -133,7 +137,7 @@ local class WeaponsPurchaseProcess {
       return
     }
 
-    let repairCost = this.checkRepair ? this.unit.getRepairCost() : ::Cost()
+    let repairCost = this.checkRepair ? this.unit.getRepairCost() : Cost()
     let price = this.cost + repairCost
     this.msgLocParams.cost <- price.getTextAccordingToBalance()
 
@@ -177,7 +181,7 @@ local class WeaponsPurchaseProcess {
   function fillModItemSpecificParams(amount = 1) {
     this.cost = this.getPrice()
 
-    if (::u.isEmpty(this.modItem))
+    if (u.isEmpty(this.modItem))
       return this.fillAllModsParams()
 
     this.cost.multiply(amount)
@@ -192,7 +196,7 @@ local class WeaponsPurchaseProcess {
   }
 
   function getPrice() {
-    if (::u.isEmpty(this.modItem))
+    if (u.isEmpty(this.modItem))
       return this.getAllModificationsPrice()
 
     if (::g_weaponry_types.getUpgradeTypeByItem(this.modItem).canBuy(this.unit, this.modItem))
@@ -203,7 +207,7 @@ local class WeaponsPurchaseProcess {
 
   function getAllModificationsPrice() {
     let modsCost = getAllModsCost(this.unit, this.open)
-    return ::Cost(modsCost.wp, this.open ? modsCost.gold : 0)
+    return Cost(modsCost.wp, this.open ? modsCost.gold : 0)
   }
 
   //-------------- <BUY ALL MODS> --------------------------------------
@@ -229,7 +233,7 @@ local class WeaponsPurchaseProcess {
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
-      ::broadcastEvent("ModificationPurchased", { unit = unit })
+      broadcastEvent("ModificationPurchased", { unit = unit })
       ::updateAirAfterSwitchMod(unit, "")
 
       afterSuccessfullPurchaseCb?()
@@ -262,7 +266,7 @@ local class WeaponsPurchaseProcess {
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
-      ::broadcastEvent("SparePurchased", { unit = unit })
+      broadcastEvent("SparePurchased", { unit = unit })
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.afterSuccessfullPurchaseCb)
 
@@ -297,7 +301,7 @@ local class WeaponsPurchaseProcess {
     let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() {
       ::update_gamercards()
       ::updateAirAfterSwitchMod(unit)
-      ::broadcastEvent("WeaponPurchased", { unit = unit, weaponName = modName })
+      broadcastEvent("WeaponPurchased", { unit = unit, weaponName = modName })
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.modName, this.afterSuccessfullPurchaseCb)
 
@@ -336,10 +340,10 @@ local class WeaponsPurchaseProcess {
       ::updateAirAfterSwitchMod(unit, modName)
 
       let newResearch = ::shop_get_researchable_module_name(unit.name)
-      if (::u.isEmpty(newResearch) && !::u.isEmpty(hadUnitModResearch))
-        ::broadcastEvent("AllModificationsPurchased", { unit = unit })
+      if (u.isEmpty(newResearch) && !u.isEmpty(hadUnitModResearch))
+        broadcastEvent("AllModificationsPurchased", { unit = unit })
 
-      ::broadcastEvent("ModificationPurchased", { unit = unit, modName = modName })
+      broadcastEvent("ModificationPurchased", { unit = unit, modName = modName })
 
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.modName, hadUnitModResearch, this.afterSuccessfullPurchaseCb)
@@ -358,10 +362,10 @@ local class WeaponsPurchaseProcess {
 }
 
 local function weaponsPurchase(unit, additionalParams = {}) {
-  if (::u.isString(unit))
-    unit = ::getAircraftByName(unit)
+  if (u.isString(unit))
+    unit = getAircraftByName(unit)
 
-  if (::u.isEmpty(unit))
+  if (u.isEmpty(unit))
     return
 
   if (activePurchaseProcess?.isCompleted == false)

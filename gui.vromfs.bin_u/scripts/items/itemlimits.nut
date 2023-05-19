@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { format } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 ::g_item_limits <- {
@@ -66,13 +68,13 @@ let { get_time_msec } = require("dagor.time")
         let resultBlk = ::get_items_count_for_limits_result()
         ::g_item_limits.onRequestComplete(resultBlk)
       }
-      ::broadcastEvent("ItemLimitsUpdated")
+      broadcastEvent("ItemLimitsUpdated")
     }
   return ::g_tasker.addTask(taskId, taskOptions, taskCallback, taskCallback)
 }
 
 ::g_item_limits.enqueueItem <- function enqueueItem(itemName) {
-  ::u.appendOnce(itemName, this.itemNamesQueue)
+  u.appendOnce(itemName, this.itemNamesQueue)
 }
 
 ::g_item_limits.requestLimitsForItem <- function requestLimitsForItem(itemId, forceRefresh = false) {

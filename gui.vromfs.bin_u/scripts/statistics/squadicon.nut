@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -13,7 +14,7 @@ let { getRealName } = require("%scripts/user/nameMapping.nut")
 let getPlayersInfo = @() playersInfo.value
 let function updateIconPlayersInfo() {
   let sessionPlayersInfo = ::SessionLobby.getPlayersInfo()
-  if (sessionPlayersInfo.len() > 0 && !::u.isEqual(playersInfo.value, sessionPlayersInfo))
+  if (sessionPlayersInfo.len() > 0 && !u.isEqual(playersInfo.value, sessionPlayersInfo))
     playersInfo(clone sessionPlayersInfo)
 }
 

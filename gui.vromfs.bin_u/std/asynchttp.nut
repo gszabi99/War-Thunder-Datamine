@@ -9,9 +9,9 @@ let http = require("dagor.http")
 */
 
 let statusText = {
-  [http.SUCCESS] = "SUCCESS",
-  [http.FAILED] = "FAILED",
-  [http.ABORTED] = "ABORTED",
+  [http.HTTP_SUCCESS] = "SUCCESS",
+  [http.HTTP_FAILED] = "FAILED",
+  [http.HTTP_ABORTED] = "ABORTED",
 }
 
 let function httpGet(url, callback){
@@ -32,7 +32,7 @@ let function TaskHttpGet(url) {
           let status = response.status
           let sttxt = statusText?[status]
           println($"http status for '{url}' = {sttxt}")
-          if (status != http.SUCCESS) {
+          if (status != http.HTTP_SUCCESS) {
             throw($"http error status = {sttxt}")
           }
           resolveFn(response.body)
@@ -79,7 +79,7 @@ let function TaskHttpMultiGet(urls, rejectOne=@(x) x, resolveOne=@(x) x) {
             let status = response.status
             let sttxt = statusText?[status]
             println($"http status for '{url}' = {sttxt}")
-            if (status != http.SUCCESS) {
+            if (status != http.HTTP_SUCCESS) {
               throw($"http error status = {sttxt}")
             }
             res[id] = resolveOne(response.body)

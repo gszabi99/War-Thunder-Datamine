@@ -5,10 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { setChardToken } = require("chard")
 let { getPlayerToken } = require("auth_wt")
-let contacts = require_optional("contacts")
-if (contacts == null) //compatibility with 2.25.1.X
-  return
-
+let contacts = require("contacts")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout } = require("dagor.workcycle")
 let logC = log_with_prefix("[CONTACTS] ")
@@ -31,6 +28,10 @@ registerHandler("cln_cs_login", function(result) {
     logC("Ignore login cb because of not auth")
     return
   }
+
+  // On success, it is in "result", on error it is in "result.result"
+  if ("result" in result)
+    result = result.result
 
   let isSuccess = !result?.error
   isLoggedIntoContacts(isSuccess)

@@ -1,15 +1,20 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { clearBorderSymbols, cutPrefix } = require("%sqstd/string.nut")
 let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("%scripts/clans/clanTablesConfig.nut")
 let time = require("%scripts/time.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
@@ -105,7 +110,7 @@ local leaderboardFilterArray = [
         pageIdx = idx
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.tabsObj = this.scene.findObject("clans_sheet_list")
     this.guiScene.replaceContentFromText(this.tabsObj, data, data.len(), this)
     this.curPage = this.pages[pageIdx]
@@ -251,7 +256,7 @@ local leaderboardFilterArray = [
   function getClansLbFieldName(lbCategory = null, mode = null) {
     let actualCategory = lbCategory || this.clansLbSortByPage[this.curPage]
     let field = actualCategory?.field ?? actualCategory.id
-    local fieldName = ::u.isFunction(field) ? field() : field
+    local fieldName = u.isFunction(field) ? field() : field
     if (actualCategory.byDifficulty)
       fieldName += ::g_difficulty.getDifficultyByDiffCode(mode ?? this.curMode).clanDataEnding
     return fieldName
@@ -605,7 +610,7 @@ local leaderboardFilterArray = [
       return
 
     let isHover = obj.isHovered()
-    let dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
+    let dataIdx = ::to_integer_safe(cutPrefix(obj.id, "row_", ""), -1, false)
     if (isHover == (dataIdx == this.lastHoveredDataIdx))
      return
 
@@ -732,7 +737,7 @@ local leaderboardFilterArray = [
       objTopMedal.show(true)
       let iconStyle = "clan_season_logo_" + diff.egdLowercaseName
       let iconParams = { season_title = { text = seasonName } }
-      ::LayersIcon.replaceIcon(objTopMedal, iconStyle, null, null, null, iconParams)
+      LayersIcon.replaceIcon(objTopMedal, iconStyle, null, null, null, iconParams)
     }
 
     //Fill current seasons end date
@@ -762,7 +767,7 @@ local leaderboardFilterArray = [
           tdalign = "right"
         })
 
-        let rewardText = ::Cost(0, reward.gold).tostring()
+        let rewardText = Cost(0, reward.gold).tostring()
         rowData.append({
           needText = false,
           rawParam = @"text {
@@ -834,7 +839,7 @@ local leaderboardFilterArray = [
       rowData.append({
         needText = false,
         rawParam = "text { text-align:t='right'; text:t='" +
-          ::Cost(0, getTblValue("place" + i + "Gold", rewards, 0)).tostring() +
+          Cost(0, getTblValue("place" + i + "Gold", rewards, 0)).tostring() +
           "'; size:t='pw,ph'; style:t='re-type:textarea; behaviour:textarea;'; }",
         active = false
       })
@@ -881,7 +886,7 @@ local leaderboardFilterArray = [
       })
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/multiSelect.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/multiSelect.tpl", view)
     let placeObj = this.scene.findObject("leaderboard_filter_place")
     this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }

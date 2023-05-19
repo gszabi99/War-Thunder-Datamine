@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -76,7 +78,7 @@ let { ceil } = require("math")
     let playersList = configPlayersList.playersList()
     let listObj = this.scene.findObject(configPlayersList.listObjId)
     let viewData = this.getMembersViewData(playersList)
-    let viewBlk = ::handyman.renderCached(this.inviteListTplName, viewData)
+    let viewBlk = handyman.renderCached(this.inviteListTplName, viewData)
     let isFocused = listObj.isFocused()
     local selectedIdx = listObj.getValue()
     local selectedObjId = null
@@ -89,7 +91,7 @@ let { ceil } = require("math")
       let inviteObjId = "squad_invite_" + memberData.uid
       let inviteObj = listObj.findObject(inviteObjId)
       if (checkObj(inviteObj)) {
-        if (::u.isEqual(selectedObjId, inviteObjId) && isFocused)
+        if (u.isEqual(selectedObjId, inviteObjId) && isFocused)
           selectedIdx = i
         inviteObj.setUserData(memberData)
       }
@@ -123,7 +125,7 @@ let { ceil } = require("math")
     if (!isAvailable)
       return
 
-    let sizes = ::u.map(::g_squad_manager.squadSizesList,
+    let sizes = u.map(::g_squad_manager.squadSizesList,
       @(s) s.value + loc("ui/comma") + loc("squadSize/" + s.name))
     let curValue = ::g_squad_manager.getMaxSquadSize()
     let curIdx = ::g_squad_manager.squadSizesList.findindex(@(s) s.value == curValue) ?? 0

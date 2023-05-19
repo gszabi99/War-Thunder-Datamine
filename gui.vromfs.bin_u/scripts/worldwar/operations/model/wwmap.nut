@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -16,7 +17,7 @@ let { getQueueByMapName, getOperationGroupByMapId
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
-::WwMap <- class {
+let WwMap = class {
   name = ""
   data = null
 
@@ -68,7 +69,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getImage() {
     let mapImageName = this.data?.info.image
-    if (::u.isEmpty(mapImageName))
+    if (u.isEmpty(mapImageName))
       return ""
 
     return "@" + mapImageName + "*"
@@ -83,7 +84,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     if (this.getOpGroup().isMyClanParticipate())
       txtList.append(colorize("userlogColoredText", loc("worldwar/yourClanInOperationHere")))
     txtList.append(baseDesc)
-    return ::g_string.implode(txtList, "\n")
+    return "\n".join(txtList, true)
   }
 
   function getGeoCoordsText() {
@@ -107,7 +108,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       let s = (t - m) * 60
       coords.append(format("%d%s%02d%s%02d%s%s", d, ud, m, um, s, us, c.hem))
     }
-    return ::g_string.implode(coords, loc("ui/comma"))
+    return loc("ui/comma").join(coords, true)
   }
 
   function isActive() {
@@ -183,10 +184,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
     let unitsGroupsByCountry = this.getUnitsGroupsByCountry()
     local unitsList = this.getUnitInfoBySide(side)
     local wwUnitsList = []
-    if (::u.isEmpty(unitsList))
+    if (u.isEmpty(unitsList))
       return wwUnitsList
 
-    unitsList = ::u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(unitsList),
+    unitsList = u.filter(wwActionsWithUnitsList.loadUnitsFromNameCountTbl(unitsList),
       @(unit) !unit.isControlledByAI())
     unitsList.sort(::g_world_war.sortUnitsBySortCodeAndCount)
     if (unitsGroupsByCountry != null) {
@@ -210,7 +211,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
       }
     }
     else
-      wwUnitsList = ::u.map(unitsList, @(wwUnit)
+      wwUnitsList = u.map(unitsList, @(wwUnit)
         wwUnit.getShortStringView({ addPreset = false, needShopInfo = true }))
 
     return wwUnitsList
@@ -261,7 +262,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
   function getCountriesViewBySide(side, hasBigCountryIcon = true) {
     let countries = this.getCountryToSideTbl()
-    let countryNames = ::u.keys(countries)
+    let countryNames = u.keys(countries)
     let mapName = this.name
     let iconType = hasBigCountryIcon ? "small_country" : "country_battle"
     return "".join(countryNames
@@ -317,10 +318,10 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
         let groupId = groupBlk.getBlockName()
         let units = {}
         foreach (unitName in groupBlk.unitList % "unit") {
-          units[unitName] <- ::getAircraftByName(unitName)
+          units[unitName] <- getAircraftByName(unitName)
           groupIdByUnitName[unitName] <- groupId
         }
-        let defaultUnit = ::getAircraftByName(groupBlk.defaultUnit)
+        let defaultUnit = getAircraftByName(groupBlk.defaultUnit)
         defaultUnitsList[groupId] <- defaultUnit
         countryGroups[groupId] <- {
           id = groupId
@@ -348,3 +349,5 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
            (reasonData.canJoin || reasonData.hasRestrictClanRegister)
   }
 }
+
+return { WwMap }

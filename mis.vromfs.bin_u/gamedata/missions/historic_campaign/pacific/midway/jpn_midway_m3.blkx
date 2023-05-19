@@ -273,37 +273,44 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "ijn_fleet_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "ijn_fleet_sq",
             "army": 1,
             "plane": {}
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "TF16_fleet_sq",
               "TF17_fleet_sq"
             ],
-            "army": 2,
-            "effShootingRate": 0.3,
-            "plane": {}
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "army": 2,
+            "airAccuracy": 0.1,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 0.1,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "ChainfireTime": 2.0,
+            "DelayAfterShoot": 2.0,
+            "plane": {}
+          },
+          {
             "object": [
               "jpn_zero01",
               "jpn_zero02",
               "jpn_b5n2"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "effShootingRate": 0.25,
             "plane": {
               "targetDeviation": [
@@ -343,14 +350,14 @@
             }
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "us_f4f01",
               "us_f4f02"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
@@ -1222,11 +1229,11 @@
           "target": "lider_fly_done"
         },
         "unitSetProperties": {
+          "object": "jpn_b5n2",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "jpn_b5n2",
           "effShootingRate": 0.0
         }
       },
@@ -2324,11 +2331,11 @@
           "object": "b5n_end_tomanoga_cut"
         },
         "unitSetProperties": {
+          "object": "b5n_end_tomanoga_cut",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "b5n_end_tomanoga_cut",
           "isImmortal": true,
           "engineFire": true,
           "aiEnabled": false
@@ -2698,30 +2705,30 @@
         },
         "unitSetProperties": [
           {
+            "object": "tomanoga_cut_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "tomanoga_cut_sq",
             "isImmortal": true
           },
           {
+            "object": "f4f_cut",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "f4f_cut",
             "effShootingRate": 0.3
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "zero_cut",
               "b5n_cut"
-            ]
+            ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           }
         ],
         "unitMoveTo": [
@@ -3265,19 +3272,19 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "armada_01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "armada_01",
             "targetableByAi": false
           },
           {
+            "object": "player_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player_sq",
             "targetableByAi": true
           }
         ]
@@ -3665,7 +3672,7 @@
             -7525.3
           ]
         ],
-        "unit_class": "uss_cv_enterprise",
+        "unit_class": "us_aircraftcarrier_enterprise",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -3722,7 +3729,7 @@
             -8179.15
           ]
         ],
-        "unit_class": "uss_cv_enterprise",
+        "unit_class": "us_aircraftcarrier_enterprise",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -3779,7 +3786,7 @@
             -7690.45
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -3836,7 +3843,7 @@
             -8305.8
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -3893,7 +3900,7 @@
             -8505.6
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -3950,7 +3957,7 @@
             -7895.2
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4007,7 +4014,7 @@
             -7098.1
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4064,7 +4071,7 @@
             -7079.15
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4121,7 +4128,7 @@
             -7740.95
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4178,7 +4185,7 @@
             -6729.65
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4235,7 +4242,7 @@
             -7442.7
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4292,7 +4299,7 @@
             -8051.3
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4349,7 +4356,7 @@
             -7784.5
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4406,7 +4413,7 @@
             -7078.55
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4463,7 +4470,7 @@
             -8210.0
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4520,7 +4527,7 @@
             -8610.05
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4577,7 +4584,7 @@
             3046.86
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4634,7 +4641,7 @@
             3355.35
           ]
         ],
-        "unit_class": "uss_cv_enterprise_story",
+        "unit_class": "us_aircraftcarrier_enterprise",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4691,7 +4698,7 @@
             3753.15
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4748,7 +4755,7 @@
             2663.0
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4805,7 +4812,7 @@
             3483.5
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4862,7 +4869,7 @@
             2987.9
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4919,7 +4926,7 @@
             2726.35
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4976,7 +4983,7 @@
             3440.05
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5033,7 +5040,7 @@
             3642.75
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5090,7 +5097,7 @@
             -315.202
           ]
         ],
-        "unit_class": "ijn_cv_soryu",
+        "unit_class": "jp_aircraftcarrier_shokaku",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5147,7 +5154,7 @@
             -1036.06
           ]
         ],
-        "unit_class": "ijn_bb_nagato",
+        "unit_class": "jp_battleship_fuso",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5204,7 +5211,7 @@
             849.1
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_myoko",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5261,7 +5268,7 @@
             79.05
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5318,7 +5325,7 @@
             285.647
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5375,7 +5382,7 @@
             -1168.65
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5432,7 +5439,7 @@
             -666.002
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5489,7 +5496,7 @@
             -823.4
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5546,7 +5553,7 @@
             95.6935
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5603,7 +5610,7 @@
             -320.502
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,

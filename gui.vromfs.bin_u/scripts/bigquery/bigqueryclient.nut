@@ -6,7 +6,7 @@ let ww_leaderboard = require("ww_leaderboard")
 let { get_local_unixtime   } = require("dagor.time")
 let { rnd                  } = require("dagor.random")
 let { format               } = require("string")
-let { to_string            } = require("json")
+let { json_to_string       } = require("json")
 let { getDistr             } = require("auth_wt")
 let { get_user_system_info } = require("sysinfo")
 
@@ -77,7 +77,7 @@ let function add_user_info(table) {
 
 let function bq_client_noa(event, uniqueId, table) {
   add_user_info(table)
-  let params  = to_string(table)
+  let params  = json_to_string(table)
   let request =
   {
     action = "noa_bigquery_client_noauth"
@@ -134,7 +134,7 @@ let function bqSendLoginState(table) {
     table.auto <- true
 
   add_user_info(table)
-  let params = to_string(table)
+  let params = json_to_string(table)
 
   ::add_big_query_record("login_state", params)
   log($"BQ CLIENT login_state {params}")

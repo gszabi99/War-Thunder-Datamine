@@ -50,14 +50,14 @@
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
-  ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
+  "smokeScreenOffset": [
+    -1.0,
+    0.0,
+    -4.0
+  ],
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -329,7 +329,7 @@
         "armorThickness": 10.0,
         "createSecondaryShatters": false
       },
-      "turret_08_bottom_dm": {
+      "ex_armor_body_40_dm": {
         "armorThickness": 30.0,
         "createSecondaryShatters": false
       }
@@ -2576,13 +2576,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -4225,7 +4225,7 @@
       },
       "disableModEffects": {
         "hideNodes": {
-          "node": "turret_08_bottom"
+          "node": "ex_armor_body_40"
         }
       }
     },
@@ -4300,6 +4300,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

@@ -48,8 +48,8 @@
 @const smallItemHeight: (0.5@itemHeight) \ 1;
 
 @const craftTreeBlockInterval: (60@sf/@pf) \ 1;
-@const compactCraftTreeBlockInterval: (1@craftTreeBlockInterval + 0.25@itemHeight) \ 1;
-@const smallCraftTreeBlockInterval: (1@craftTreeBlockInterval + 0.5@itemHeight) \ 1;
+@const compactCraftTreeBlockInterval: 0.75@craftTreeBlockInterval \ 1;
+@const smallCraftTreeBlockInterval: 0.75@craftTreeBlockInterval \ 1;
 @const headerAndCraftTreeBlockInterval: (0.5@craftTreeBlockInterval) \ 1;
 
 @const craftTreeItemInterval: (50@sf/@pf) \ 1;
@@ -687,6 +687,25 @@ prizeNest > iconsPlace > classIconPlace,
 prizeNest > iconsPlace > countryIconPlace {
   size:1@dIco, 1@dIco;
   background-svg-size:1@dIco, 1@dIco;
+}
+
+[itemsSize=compact] prizeNest > img,
+[itemsSize=compact] prizeNest > iconsPlace > classIconPlace,
+[itemsSize=compact] prizeNest > iconsPlace > countryIconPlace {
+  size:1@cIco, 1@cIco;
+  background-svg-size:1@cIco, 1@cIco;
+}
+
+[itemsSize=small] prizeNest > img,
+[itemsSize=small] prizeNest > iconsPlace > classIconPlace,
+[itemsSize=small] prizeNest > iconsPlace > countryIconPlace {
+  size:1@sIco, 1@sIco;
+  background-svg-size:1@sIco, 1@sIco;
+}
+
+[itemsSize=compact] prizeNest > textareaNoTab,
+[itemsSize=small] prizeNest > textareaNoTab {
+  smallFont:yes;
 }
 
 prizeNest > iconsPlace > classIconPlace > img,

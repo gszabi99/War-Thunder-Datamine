@@ -1,9 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -23,7 +27,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   if (upgradeToSpecCode < 0)
     upgradeToSpecCode = this.code + 1
 
-  let cost = ::Cost()
+  let cost = Cost()
   for (local specCode = this.code; specCode < upgradeToSpecCode; specCode++) {
     cost.wp += ::wp_get_specialization_cost(specCode, unit.name, crew.id, -1)
     cost.gold += ::wp_get_specialization_cost_gold(specCode, unit.name, crew.id, -1)
@@ -32,7 +36,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_crew_spec_type._getUpgradeCostByUnitAndExp <- function _getUpgradeCostByUnitAndExp(unit, exp) {
-  return ::Cost(::wp_get_specialization_cost(this.code, unit.name, 0, exp),
+  return Cost(::wp_get_specialization_cost(this.code, unit.name, 0, exp),
                 ::wp_get_specialization_cost_gold(this.code, unit.name, 0, exp))
 }
 
@@ -49,7 +53,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_crew_spec_type._getDiscountTooltipByValue <- function _getDiscountTooltipByValue(discountValue) {
-  if (!::u.isString(discountValue))
+  if (!u.isString(discountValue))
     discountValue = discountValue.tostring()
   let locId = format("discount/%s/tooltip", this.specName)
   return format(loc(locId), discountValue)
@@ -106,10 +110,10 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     if (!textsArray.len())
       continue
 
-    rowsArray.append(colorize("activeTextColor", loc("crew/" + page.id))
-                     + loc("ui/colon") + ::g_string.implode(textsArray, ", ") + loc("ui/dot"))
+    rowsArray.append("".concat(colorize("activeTextColor", loc("crew/" + page.id)),
+                          loc("ui/colon"), ", ".join(textsArray, true), loc("ui/dot")))
   }
-  return ::g_string.implode(rowsArray, "\n")
+  return "\n".join(rowsArray, true)
 }
 
 ::g_crew_spec_type._getReqCrewLevelByCode <- function _getReqCrewLevelByCode(unit, upgradeFromCode) {
@@ -213,7 +217,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     else {
       let specDescriptionPart = isShowExpUpgrade ?
         loc("crew/qualification/specDescriptionPart", {
-          expAmount = ::Cost().setRp(this.getTotalExpByUnit(unit)).tostring()
+          expAmount = Cost().setRp(this.getTotalExpByUnit(unit)).tostring()
         })
         : ""
       let specDescription = loc(
@@ -229,8 +233,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     tooltipText += format(
       "\n%s: %s / %s",
       loc("crew/qualification/expUpgradeLabel"),
-      ::Cost().setRp(this.getExpLeftByCrewAndUnit(crew, unit)).toStringWithParams({ isRpAlwaysShown = true }),
-      ::Cost().setRp(this.getTotalExpByUnit(unit)).tostring())
+      Cost().setRp(this.getExpLeftByCrewAndUnit(crew, unit)).toStringWithParams({ isRpAlwaysShown = true }),
+      Cost().setRp(this.getTotalExpByUnit(unit)).tostring())
   }
   return tooltipText
 }
@@ -263,7 +267,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     let locParams = {
       romanNumeral = romanNumeral
       trainCost = trainCost.tostring()
-      expAmount = ::Cost().setRp(expAmount).toStringWithParams({ isRpAlwaysShown = true })
+      expAmount = Cost().setRp(expAmount).toStringWithParams({ isRpAlwaysShown = true })
     }
     expUpgradeText += loc("crew/qualification/expUpgradeMarkerCaption", locParams)
   }
@@ -279,13 +283,13 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   let locParams = {
     romanNumeral = romanNumeral
     specName = colorize("activeTextColor", this.getNextType().getName())
-    expAmount = ::Cost().setRp(this.getTotalExpByUnit(unit)).toStringWithParams({ isRpAlwaysShown = true })
+    expAmount = Cost().setRp(this.getTotalExpByUnit(unit)).toStringWithParams({ isRpAlwaysShown = true })
   }
   expUpgradeText += loc("crew/qualification/expUpgradeFullUpgrade", locParams)
 
   view.expUpgradeText <- expUpgradeText
 
-  return ::handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
+  return handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
 }
 
 ::g_crew_spec_type._getBtnBuyTooltipId <- function _getBtnBuyTooltipId(crew, unit) {
@@ -323,7 +327,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
   view.tooltipText += "\n\n" + loc("crew/qualification/tooltip")
 
-  return ::handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
+  return handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
 }
 
 ::g_crew_spec_type.template <- {

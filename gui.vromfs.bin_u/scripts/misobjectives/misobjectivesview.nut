@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::gui_load_mission_objectives <- function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
   return ::handlersManager.loadHandler(::gui_handlers.misObjectivesView,
@@ -61,7 +63,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     local lastObj = null
     for (local i = 0; i < total; i++) {
       let newObjective = getTblValue(i, newList)
-      if (::u.isEqual(getTblValue(i, this.curList), newObjective))
+      if (u.isEqual(getTblValue(i, this.curList), newObjective))
         continue
 
       let obj = this.updateObjective(i, newObjective)
@@ -86,11 +88,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     obj.findObject("obj_img")["background-image"] = status.missionObjImg
 
     local text = loc(objective.text)
-    if (!::u.isEmpty(objective.mapSquare))
+    if (!u.isEmpty(objective.mapSquare))
       text += "  " + objective.mapSquare
     obj.findObject("obj_text").setValue(text)
 
-    ::broadcastEvent("MissionObjectiveUpdated")
+    broadcastEvent("MissionObjectiveUpdated")
 
     return obj
   }

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { trainCrewUnitWithoutSwitchCurrUnit } = require("%scripts/crew/crewActions.nut")
@@ -43,7 +44,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     foreach (i, _unit in this.units)
       rows.append(this.getSpecRowConfig(i))
 
-    local data = ::handyman.renderCached("%gui/crew/crewAirRow.tpl", { rows = rows })
+    local data = handyman.renderCached("%gui/crew/crewAirRow.tpl", { rows = rows })
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 

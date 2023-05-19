@@ -5,12 +5,12 @@ require Unit
 require DagorDataBlock
 require WTHangar
 require HeroManager
-require %game.utils_common
-require %game.events
 require Music
 require app
 require %dasGameLibs.math.base
 require MPlayer
+require %game.utils.utils_common
+require %game.events
 
 
 enum GameState
@@ -61,10 +61,12 @@ def music_init_es(evt : Event;
                   var music__battleRadiusGroundSq : float&;
                   var music__battleEnemiesThreshold : int&;
                   var music__cooldownBattle : float&;
+                  var music__useHangarMusicForUnitType : bool&;
                   var music__cooldownCalm : float&)
   music__forced = false
   music__lockedHangar = false
   music__curBattleState = int(BattleState CALM)
+  init_delayed_forced_track();
   using() <| $(var blk : DataBlock)
     if datablock_load(blk, "config/sound_studio.blk")
       let musicBlk = blk |> datablock_get_block_by_name("music")
@@ -73,6 +75,7 @@ def music_init_es(evt : Event;
       music__battleEnemiesThreshold = musicBlk |> datablock_getInt("battleEnemiesThreshold", 3)
       music__cooldownCalm = musicBlk |> datablock_getReal("cooldown_calm", 300.)
       music__cooldownBattle = musicBlk |> datablock_getReal("cooldown_battle", 180.)
+      music__useHangarMusicForUnitType = musicBlk |> datablock_getBool("use_hangar_music_for_type", false)
 
 
 def get_game_state(forced : bool) : GameState
@@ -85,7 +88,7 @@ def get_game_state(forced : bool) : GameState
         let localPlayer = getLocalPlayer()
         if forced
           return GameState FORCED
-        elif !localPlayer.isInFlight || *app |> checkInFlightMenu(false)
+        elif localPlayer != null && (!localPlayer.isInFlight || *app |> checkInFlightMenu(false))
           return GameState MISSION_MENU
         else
           return GameState MISSION
@@ -202,6 +205,11 @@ def make_hangar_event_name(id : int) : string
     return ""
   return country_names[id] + "_main_theme"
 
+def get_hangar_event_name_by_hero_type(hero_type : int) : string
+  if hero_type == int(UnitType UT_Ship) || hero_type == int(UnitType UT_Submarine)
+    return "menu"
+  else
+    return "menu_ground"
 
 def make_win_loose_event_name(id : int;
                               win : bool) : string
@@ -225,14 +233,20 @@ def music_es(info : ParallelUpdateFrameDelayed;
              var music__curHangarCountry_id : int&;
              var music__curForcedEvtName : das_string&;
              var music__lockedHangar : bool&;
+             music__useHangarMusicForUnitType : bool;
              var music__curUnitType : int&)
   let curMusicState = get_music_state()
   let gameState = get_game_state(music__forced)
   var musicState = GameMusicState MUSIC_STATE_CALM
   var hangarCountryId = -1
+  var hangarTypeChanged = false
   if gameState == GameState HANGAR
     hangarCountryId = update_hangar()
     musicState = GameMusicState MUSIC_STATE_HANGAR
+    ecs::query() <| $ [es(REQUIRE=controlledHero)] (unitType : int)
+      if music__curUnitType != unitType
+        hangarTypeChanged = true
+        music__curUnitType = unitType
   elif gameState == GameState MISSION
     var heroRank = -1
     var heroUnitType = -1
@@ -266,8 +280,13 @@ def music_es(info : ParallelUpdateFrameDelayed;
   let hangarTrackEnded = curMusicState == int(GameMusicState MUSIC_STATE_HANGAR) && !is_track_playing()
 
   if musicState == GameMusicState MUSIC_STATE_HANGAR
-    if !lockedHangar && hangarCountryChanged && !winOrLoosePlaying
-      overwrite_and_set_music_state(int(musicState), make_hangar_event_name(hangarCountryId))
+    if !lockedHangar && !winOrLoosePlaying
+      if music__useHangarMusicForUnitType
+        if hangarTypeChanged
+          let trackName = get_hangar_event_name_by_hero_type(music__curUnitType)
+          overwrite_and_set_music_state(int(musicState), trackName)
+      elif hangarCountryChanged
+        overwrite_and_set_music_state(int(musicState), make_hangar_event_name(hangarCountryId))
       music__curHangarCountry_id = hangarCountryId
       music__lockedHangar = false
     elif hangarTrackEnded
@@ -289,14 +308,14 @@ def music_es(info : ParallelUpdateFrameDelayed;
       music__lockedHangar = false
 
 
-[es]
+[es(tag=sound)]
 def music_set_forced(evt : CmdForceMusic;
                      var music__forced : bool&;
                      var music__forcedEvtName : das_string&)
   music__forced = true
   music__forcedEvtName := evt.name
 
-[es(on_event = CmdLockHangarMusic)]
+[es(tag=sound, on_event = CmdLockHangarMusic)]
 def music_lock_hangar_es(evt : Event;
                          var music__lockedHangar : bool&)
   music__lockedHangar = true

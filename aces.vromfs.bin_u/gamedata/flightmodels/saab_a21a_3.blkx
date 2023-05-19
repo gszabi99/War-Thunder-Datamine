@@ -8,6 +8,7 @@
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.18,
   "gearSinkRangeC": 0.23,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "german",
   "advancedInstructor": true,
@@ -649,6 +650,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -686,6 +693,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -707,6 +720,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -748,6 +767,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2065,68 +2090,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonAkan_m45.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 140,
-        "spread": 1.35,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunAkan_m39a.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun1_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 350,
-        "spread": 1.1,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunAkan_m39a.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "mgun2_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 350,
-        "spread": 1.1,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunAkan_m39a.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "mgun3_dm",
-        "isWingLPositioned": true,
-        "isWingRPositioned": false,
-        "bullets": 325,
-        "spread": 1.1,
-        "traceOffset": 4
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunAkan_m39a.blk",
-        "emitter": "flare5",
-        "flash": "flare5",
-        "dm": "mgun4_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": true,
-        "bullets": 325,
-        "spread": 1.1,
-        "traceOffset": 4
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2135,66 +2102,809 @@
         "blk": "gameData/flightModels/weaponPresets/empty.blk"
       },
       {
+        "name": "saab_a21a_3_8x145mm_psrak",
+        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_8x145mm_psrak.blk"
+      },
+      {
+        "name": "saab_a21a_3_8x150mm_srak_m51",
+        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_8x150mm_srak_m51.blk"
+      },
+      {
+        "name": "saab_a21a_3_2x180mm_hpsrak",
+        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_2x180mm_hpsrak.blk"
+      },
+      {
         "name": "saab_a21a_3_4x50kg_sb_m47",
         "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_4x50kg_sb_m47.blk"
       },
       {
         "name": "saab_a21a_3_250kg_minb_m40",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_250kg_minb_m40.blk",
-        "reqModification": "swe_minb_m40"
-      },
-      {
-        "name": "saab_a21a_3_250kg_minb_m40_4x50kg_m47",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_250kg_minb_m40_4x50kg_m47.blk",
-        "reqModification": "swe_minb_m40"
+        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_250kg_minb_m40.blk"
       },
       {
         "name": "saab_a21a_3_500kg_minb_m41",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_500kg_minb_m41.blk",
-        "reqModification": "swe_minb_m41"
+        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_500kg_minb_m41.blk"
       },
       {
         "name": "saab_a21a_3_600kg_minb_m50",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_600kg_minb_m50.blk",
-        "reqModification": "swe_minb_m50"
+        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_600kg_minb_m50.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 750.0,
+    "maxloadMassLeftConsoles": 325.0,
+    "maxloadMassRightConsoles": 325.0,
+    "maxDisbalance": 260.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket1",
+        "pylon_rocket2",
+        "pylon_bomb1"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAkan_m45.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 140,
+              "spread": 1.35,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunAkan_m39a.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun1_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 350,
+              "spread": 1.1,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunAkan_m39a.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "mgun2_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 350,
+              "spread": 1.1,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunAkan_m39a.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "mgun3_dm",
+              "isWingLPositioned": true,
+              "isWingRPositioned": false,
+              "bullets": 325,
+              "spread": 1.1,
+              "traceOffset": 4
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunAkan_m39a.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "mgun4_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": true,
+              "bullets": 325,
+              "spread": 1.1,
+              "traceOffset": 4
+            }
+          ]
+        }
       },
       {
-        "name": "saab_a21a_3_8x145mm_psrak",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_8x145mm_psrak.blk",
-        "reqModification": "swd_j29_145mm_m49a"
-      },
-      {
-        "name": "saab_a21a_3_8x150mm_srak_m51",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_8x150mm_srak_m51.blk",
-        "reqModification": "swd_j29_150mm_m51"
-      },
-      {
-        "name": "saab_a21a_3_2x180mm_hpsrak",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_2x180mm_hpsrak.blk",
-        "reqModification": "swd_j29_180mm_m49"
-      },
-      {
-        "name": "saab_a21a_3_250kg_minb_m40_8x145mm_psrak",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_250kg_minb_m40_8x145mm_psrak.blk",
-        "reqModification": [
-          "swe_minb_m40",
-          "swd_j29_145mm_m49a"
+        "index": 1,
+        "tier": 8,
+        "order": 8,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "m49_psrak",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket8",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket7",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket6",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket5",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "m47_slot2"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m40"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m41"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m50"
+              },
+              {
+                "slot": 4,
+                "preset": "m47_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle_group_x4",
+            "name": "m51_srak",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket1"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket8",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket7",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket6",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket5",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "m47_slot2"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m40"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m41"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m50"
+              },
+              {
+                "slot": 4,
+                "preset": "m47_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "m49_hpsrak",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": "pylon_rocket1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "rocket10",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "m47_slot2"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m40"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m41"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m50"
+              },
+              {
+                "slot": 4,
+                "preset": "m47_slot4"
+              }
+            ]
+          }
         ]
       },
       {
-        "name": "saab_a21a_3_250kg_minb_m40_8x150mm_srak_m51",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_250kg_minb_m40_8x150mm_srak_m51.blk",
-        "reqModification": [
-          "swe_minb_m40",
-          "swd_j29_150mm_m51"
+        "index": 2,
+        "tier": 7,
+        "order": 7,
+        "WeaponPreset": {
+          "iconType": "bombs_small_group_x2",
+          "name": "m47_slot2",
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m47.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m47.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 2
+            }
+          ],
+          "BannedWeaponPreset": [
+            {
+              "slot": 1,
+              "preset": "m49_psrak"
+            },
+            {
+              "slot": 1,
+              "preset": "m51_srak"
+            },
+            {
+              "slot": 1,
+              "preset": "m49_hpsrak"
+            },
+            {
+              "slot": 5,
+              "preset": "m49_psrak"
+            },
+            {
+              "slot": 5,
+              "preset": "m51_srak"
+            },
+            {
+              "slot": 5,
+              "preset": "m49_hpsrak"
+            }
+          ]
+        }
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "minb_m40",
+            "reqModification": "swe_minb_m40",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_250kg_minb_m40.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "m49_psrak"
+              },
+              {
+                "slot": 1,
+                "preset": "m51_srak"
+              },
+              {
+                "slot": 1,
+                "preset": "m49_hpsrak"
+              },
+              {
+                "slot": 5,
+                "preset": "m49_psrak"
+              },
+              {
+                "slot": 5,
+                "preset": "m51_srak"
+              },
+              {
+                "slot": 5,
+                "preset": "m49_hpsrak"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "minb_m41",
+            "reqModification": "swe_minb_m41",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_500kg_minb_m41.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "m49_psrak"
+              },
+              {
+                "slot": 1,
+                "preset": "m51_srak"
+              },
+              {
+                "slot": 1,
+                "preset": "m49_hpsrak"
+              },
+              {
+                "slot": 5,
+                "preset": "m49_psrak"
+              },
+              {
+                "slot": 5,
+                "preset": "m51_srak"
+              },
+              {
+                "slot": 5,
+                "preset": "m49_hpsrak"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "minb_m50",
+            "reqModification": "swe_minb_m50",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_600kg_minb_m50.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "m49_psrak"
+              },
+              {
+                "slot": 1,
+                "preset": "m51_srak"
+              },
+              {
+                "slot": 1,
+                "preset": "m49_hpsrak"
+              },
+              {
+                "slot": 5,
+                "preset": "m49_psrak"
+              },
+              {
+                "slot": 5,
+                "preset": "m51_srak"
+              },
+              {
+                "slot": 5,
+                "preset": "m49_hpsrak"
+              }
+            ]
+          }
         ]
       },
       {
-        "name": "saab_a21a_3_250kg_minb_m40_2x180mm_hpsrak",
-        "blk": "gameData/flightModels/weaponPresets/saab_a21a_3_250kg_minb_m40_2x180mm_hpsrak.blk",
-        "reqModification": [
-          "swe_minb_m40",
-          "swd_j29_180mm_m49"
+        "index": 4,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "bombs_small_group_x2",
+          "name": "m47_slot4",
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m47.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 3
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/swd_50kg_sb_m47.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 4
+            }
+          ],
+          "BannedWeaponPreset": [
+            {
+              "slot": 1,
+              "preset": "m49_psrak"
+            },
+            {
+              "slot": 1,
+              "preset": "m51_srak"
+            },
+            {
+              "slot": 1,
+              "preset": "m49_hpsrak"
+            },
+            {
+              "slot": 5,
+              "preset": "m49_psrak"
+            },
+            {
+              "slot": 5,
+              "preset": "m51_srak"
+            },
+            {
+              "slot": 5,
+              "preset": "m49_hpsrak"
+            }
+          ]
+        }
+      },
+      {
+        "index": 5,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_ap_small_group",
+            "name": "m49_psrak",
+            "reqModification": "swd_j29_145mm_m49a",
+            "ShowNodes": {
+              "node": "pylon_rocket2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket1",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket2",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket3",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_145mm_psrak_m49a.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "m47_slot2"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m40"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m41"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m50"
+              },
+              {
+                "slot": 4,
+                "preset": "m47_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_middle_group_x4",
+            "name": "m51_srak",
+            "reqModification": "swd_j29_150mm_m51",
+            "ShowNodes": {
+              "node": "pylon_rocket2"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket1",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket2",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket3",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "blk": "gameData/Weapons/rocketGuns/swd_150mm_srak_m51.blk",
+                "emitter": "rocket4",
+                "bullets": 1,
+                "minSize": [
+                  1.5,
+                  1.0,
+                  1.0
+                ],
+                "mass": 0.01,
+                "dragCx": 0.003
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "m47_slot2"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m40"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m41"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m50"
+              },
+              {
+                "slot": 4,
+                "preset": "m47_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_large",
+            "name": "m49_hpsrak",
+            "reqModification": "swd_j29_180mm_m49",
+            "ShowNodes": {
+              "node": "pylon_rocket2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_180mm_hpsrak_m49.blk",
+              "emitter": "rocket9",
+              "bullets": 1,
+              "minSize": [
+                1.5,
+                1.0,
+                1.0
+              ],
+              "mass": 0.01,
+              "dragCx": 0.003
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "m47_slot2"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m40"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m41"
+              },
+              {
+                "slot": 3,
+                "preset": "minb_m50"
+              },
+              {
+                "slot": 4,
+                "preset": "m47_slot4"
+              }
+            ]
+          }
         ]
       }
     ]
@@ -2439,20 +3149,50 @@
     "turnTime": 22.0
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "air_extinguisher": {
       "image": "#ui/gameuiskin#engine_extinguisher",
       "tier": 4,
-      "modClass": "weapon",
+      "modClass": "armor",
       "invertEnableLogic": false
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
     "akan_m47_ground_targets": {},
     "akan_m47_air_targets": {},
     "akan_m47_belt_pack": {

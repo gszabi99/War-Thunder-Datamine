@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
@@ -57,6 +58,6 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
   }
 }
 
-::subscribe_handler(::g_gamepad_cursor_controls, ::g_listener_priority.CONFIG_VALIDATION)
+subscribe_handler(::g_gamepad_cursor_controls, ::g_listener_priority.CONFIG_VALIDATION)
 
 ::g_gamepad_cursor_controls.init()

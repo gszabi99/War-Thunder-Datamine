@@ -6,7 +6,8 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 let SquadApplicationsList = class {
   [PERSISTENT_DATA_PARAMS] = ["applicationsList"]
@@ -14,8 +15,8 @@ let SquadApplicationsList = class {
   applicationsList = {}
 
   constructor() {
-    ::g_script_reloader.registerPersistentData("SquadApplicationsList", this, this.PERSISTENT_DATA_PARAMS)
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    g_script_reloader.registerPersistentData("SquadApplicationsList", this, this.PERSISTENT_DATA_PARAMS)
+    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
 /*************************************************************************************************/
@@ -134,7 +135,7 @@ let SquadApplicationsList = class {
   }
 
   function sendChangedEvent(leadersArr) {
-    ::broadcastEvent("PlayerApplicationsChanged", { leadersArr = leadersArr })
+    broadcastEvent("PlayerApplicationsChanged", { leadersArr = leadersArr })
   }
 
   function onEventSquadStatusChanged(_params) {

@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { crossNetworkPlayStatus } = require("%scripts/social/crossplay.nut")
 
 let isMultiplayerPrivilegeAvailable = persist("isMultiplayerPrivilegeAvailable", @() Watched(true))
@@ -33,7 +34,7 @@ let function checkMultiplayerPrivilege(showWarning = false, cb = null) {
   if (!::g_login.isLoggedIn())
     return
 
-  ::broadcastEvent("XboxMultiplayerPrivilegeUpdated")
+  broadcastEvent("XboxMultiplayerPrivilegeUpdated")
 }
 
 let function checkAndShowCrossplayWarning(cb = null, showWarning = true) {

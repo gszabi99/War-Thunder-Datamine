@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -117,7 +118,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
           let resp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
           res.append(unitType.fontIcon + resp)
         }
-        return colorize("@activeTextColor", ::g_string.implode(res, loc("ui/comma")))
+        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
 
       case "class":
         let res = []
@@ -128,7 +129,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
           let resp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
           res.append(classType.getFontIcon() + resp)
         }
-        return colorize("@activeTextColor", ::g_string.implode(res, loc("ui/comma")))
+        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
 
       case "type_and_class":
         let res = []
@@ -141,7 +142,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
             continue
 
           local classesText = []
-          let classTypes = ::u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
+          let classTypes = u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
           foreach (classType in classTypes) {
             if (unit && unit.expClass != classType)
               continue
@@ -149,18 +150,18 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
             let classResp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
             classesText.append(classType.getFontIcon() + classResp)
           }
-          classesText = ::g_string.implode(classesText, loc("ui/comma"))
+          classesText = loc("ui/comma").join(classesText, true)
 
           local typeText = unitType.fontIcon + typeResp
           if (classesText != "") {
             if (unit)
-              typeText = ::g_string.implode([ typeText, classesText ], loc("ui/comma"))
+              typeText = loc("ui/comma").join([ typeText, classesText ], true)
             else
               typeText += loc("ui/parentheses/space", { text = classesText })
           }
           res.append(typeText)
         }
-        return colorize("@activeTextColor", ::g_string.implode(res, loc("ui/comma")))
+        return colorize("@activeTextColor", loc("ui/comma").join(res, true))
     }
     return ""
   }
@@ -190,7 +191,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     let res = base.calcFullUnitLimitsData()
 
     local stateData = this.getMyStateBlk()
-    if (::u.isEmpty(stateData))
+    if (u.isEmpty(stateData))
       stateData = this.getCustomRulesBlk()?.ruleSet
 
     let needUnitTypes   = this.getAllowedUnitTypes().len()   != 0
@@ -203,7 +204,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       }
 
       if (needUnitClasses) {
-        let classTypes = ::u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
+        let classTypes = u.filter(this.getAllowedUnitClasses(), @(c) c.unitTypeCode == unitType.esUnitType)
         foreach (classType in classTypes) {
           let expClassName = classType.getExpClass()
           local respLeft  = this.getUnitClassLeftRespawns(expClassName, stateData)
@@ -267,15 +268,15 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       if (needUnitTypes)
         if (this.getUnitTypeLeftRespawns(unitType.esUnitType, baseRules) > 0) {
           this.allowedUnitTypesList.append(unitType)
-          ::u.appendOnce(unitType, this.knownUnitTypesList)
+          u.appendOnce(unitType, this.knownUnitTypesList)
         }
 
       if (needUnitClasses) {
-        let unitTypeClassTypes = ::u.filter(unitClassType.types, @(c) c.unitTypeCode == unitType.esUnitType)
+        let unitTypeClassTypes = u.filter(unitClassType.types, @(c) c.unitTypeCode == unitType.esUnitType)
         foreach (classType in unitTypeClassTypes)
           if (this.getUnitClassLeftRespawns(classType.getExpClass(), baseRules) > 0) {
-            ::u.appendOnce(classType, this.allowedUnitClassesList)
-            ::u.appendOnce(unitType, this.knownUnitTypesList)
+            u.appendOnce(classType, this.allowedUnitClassesList)
+            u.appendOnce(unitType, this.knownUnitTypesList)
           }
       }
     }

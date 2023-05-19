@@ -88,24 +88,6 @@ frame {
     flow:t='vertical'
     margin-bottom:t='0.01@scrn_tgt'
 
-    textareaNoTab {
-      id:t='progress_text'
-      text:t=''
-      hideEmptyText:t='yes'
-      pos:t='50%pw-50%w, 0'
-      position:t='relative'
-      margin-bottom:t='0.01@scrn_tgt'
-    }
-
-    progressBoxPlace {
-      id:t='progress_box_place'
-      position:t='relative'
-      pos:t='50%pw-50%w, 0'
-      width:t='pw - 3@warbondShopLevelItemHeight'
-      height:t='1@warbondShopLevelProgressHeight'
-      display:t='hide'
-    }
-
     tdiv {
       id:t='medal_icon'
       pos:t='50%pw-50%w, 0'
@@ -172,26 +154,6 @@ frame {
           margin-left:t='1@blockInterval'
           text:t='#mainmenu/btnWarbondsShop'
         }
-      }
-
-      Button_text {
-        id:t = 'btn_activate'
-        text:t = '#item/activate'
-        _on_click:t = 'onActivate'
-        btnName:t='X'
-        ButtonImg {}
-        display:t = 'hide'
-        enable:t='no'
-      }
-
-      Button_text {
-        id:t = 'btn_cancel'
-        text:t = '#mainmenu/btnCancel'
-        _on_click:t = 'onCancel'
-        btnName:t='X'
-        ButtonImg {}
-        display:t = 'hide'
-        enable:t='no'
       }
     }
   }

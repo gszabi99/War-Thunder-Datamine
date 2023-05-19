@@ -1,0 +1,41 @@
+{
+  "bombGun": true,
+  "preset_cost": 10,
+  "reloadTime": 90.0,
+  "shotFreq": 0.2,
+  "sound": "weapon.bombgun",
+  "createGunEffects": true,
+  "mesh": "mine_breguet_b4",
+  "bomb": {
+    "mass": 1150.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 220.0,
+    "bombType": "he_bomb",
+    "bombName": "fr_mine_b4m",
+    "sound": "weapon.bomb_std",
+    "explosionFx": "water_under_explosion_big",
+    "drownFx": "bomb_reflection",
+    "dynamicKv": true,
+    "isMine": true,
+    "lifeTime": 900.0,
+    "armTime": 4.0,
+    "explDist": 2.0,
+    "damage": {
+      "explosive": {
+        "radius": 0.0,
+        "offset": 0.0
+      },
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    }
+  }
+}

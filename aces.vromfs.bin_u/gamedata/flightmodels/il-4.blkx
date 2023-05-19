@@ -4,6 +4,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.201,
   "gearSinkRangeC": 0.1,
+  "gyroSight": false,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -2561,7 +2562,7 @@
         "gunnerDm": "gunner2_dm",
         "gunDm": "gun2_dm",
         "partsDP": "gun2_dm",
-        "bullets": 1000,
+        "bullets": 550,
         "turret": {
           "head": "turret2",
           "gun": "gun2"
@@ -3007,22 +3008,52 @@
     "turnTime": 42.3217
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "air_extinguisher": {
       "image": "#ui/gameuiskin#engine_extinguisher",
       "tier": 4,
-      "modClass": "weapon",
+      "modClass": "armor",
       "invertEnableLogic": false
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
     "ub_turret_ap": {},
     "ub_turret_api": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
     "ub_turret_belt_pack": {
       "tier": 3
     },

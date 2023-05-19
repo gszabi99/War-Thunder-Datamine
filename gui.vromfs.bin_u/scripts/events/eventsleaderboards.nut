@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
   requestCustomEventLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
@@ -312,7 +314,7 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
     if (economicName in this.__cache.selfRow)
       this.__cache.selfRow.rawdelete(economicName)
 
-    ::broadcastEvent("EventlbDataRenewed", { eventId = event.name })
+    broadcastEvent("EventlbDataRenewed", { eventId = event.name })
   }
 
   function getLbDataFromBlk(blk, requestData) {
@@ -367,7 +369,7 @@ let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
     //old only "<name>"
     //but even with old leaderboards we need something to write in tag for short lb
     let name = getTblValue("name", lbRow)
-    if (!::u.isString(name) || !name.len())
+    if (!u.isString(name) || !name.len())
       return
 
     local searchIdx = -1

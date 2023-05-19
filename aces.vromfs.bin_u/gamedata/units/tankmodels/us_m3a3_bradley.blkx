@@ -1678,6 +1678,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1685,15 +1686,15 @@
         "blk": "gameData/Weapons/groundModels_weapons/25mm_M242_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           2.5,
           0.0,
           0.5
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.01,
         "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
@@ -1876,6 +1877,7 @@
         "battlePositionSpeed": 16.0,
         "lagStopForFireTime": 1.0,
         "skipAxisEmitterCheck": true,
+        "staticElevation": 1.725,
         "changeBulletTypeForSet": true,
         "barrelDP": "gun_barrel_02_dm",
         "brokenBarrelAllowShoot": false,
@@ -2195,6 +2197,26 @@
             "nameTemplate": "bone_roll_10_02"
           }
         ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
       }
     ]
   },
@@ -2207,13 +2229,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2932,7 +2954,6 @@
     "zoomInFov": 6.14,
     "sightFov": 9.0,
     "sightName": "isu",
-    "openedCockpit": true,
     "headPos": [
       0.0,
       3.5,
@@ -3032,6 +3053,7 @@
       "tier": 3,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -3039,15 +3061,15 @@
               "blk": "gameData/Weapons/groundModels_weapons/25mm_M242_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "auto_cannon_cartridge_case",
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 2.5,
                 0.0,
                 0.5
               ],
-              "linkSleeveToGun": true,
+              "linkShellCasingToGun": true,
               "recoilOffset": 0.01,
               "maxAdditionalPitch": 0.0,
               "defaultYaw": 0.0,
@@ -3230,6 +3252,7 @@
               "battlePositionSpeed": 16.0,
               "lagStopForFireTime": 1.0,
               "skipAxisEmitterCheck": true,
+              "staticElevation": 1.725,
               "changeBulletTypeForSet": true,
               "barrelDP": "gun_barrel_02_dm",
               "brokenBarrelAllowShoot": false,
@@ -3680,6 +3703,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

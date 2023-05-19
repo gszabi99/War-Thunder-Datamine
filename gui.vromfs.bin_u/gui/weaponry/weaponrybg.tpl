@@ -40,6 +40,7 @@ modBlockHeaderRow {
     <</needDivLine>>
     <<#name>>
     modBlockHeader {
+      id:t='header_<<id>>'
       width:t='<<width>>@modCellWidth'
       <<#needDivLine>>
       pos:t='-1@dp, 0'

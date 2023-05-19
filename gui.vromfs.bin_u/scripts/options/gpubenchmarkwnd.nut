@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
@@ -96,7 +97,7 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     this.showSceneBtn("presetSelection", true)
 
     let view = { presets = this.getPresetsView() }
-    let blk = ::handyman.renderCached("%gui/options/gpuBenchmarkPreset.tpl", view)
+    let blk = handyman.renderCached("%gui/options/gpuBenchmarkPreset.tpl", view)
     this.guiScene.replaceContentFromText(
       this.scene.findObject("resultsList"), blk, blk.len(), this)
   }

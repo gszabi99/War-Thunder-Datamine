@@ -5,9 +5,10 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 from "dagor.workcycle" import clearTimer, setTimeout
+let u = require("%sqStdLibs/helpers/u.nut")
 let { TIME_DAY_IN_SECONDS, buildDateStr } = require("%scripts/time.nut")
 let timeBase = require("%appGlobals/timeLoc.nut")
-let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 
 let promoteUnits = persist("promoteUnits", @() Watched({}))
@@ -43,7 +44,7 @@ let function updatePromoteUnits() {
   if (nextChangeTime != null && nextChangeTime > currentTime)
     setTimeout(nextChangeTime - currentTime, updatePromoteUnits)
 
-  if (!::u.isEqual(activPromUnits, promoteUnits.value))
+  if (!u.isEqual(activPromUnits, promoteUnits.value))
     promoteUnits(activPromUnits)
 }
 
@@ -78,7 +79,7 @@ let function fillPromUnitInfo(holderObj, unit) {
 }
 
 promoteUnits.subscribe(function(_) {
-  ::broadcastEvent("PromoteUnitsChanged")
+  broadcastEvent("PromoteUnitsChanged")
 })
 
 addListenersWithoutEnv({

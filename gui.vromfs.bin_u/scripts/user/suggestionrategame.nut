@@ -12,10 +12,11 @@ let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { register_command } = require("console")
 let { is_running } = require("steam")
+let { request_review } = require("%xboxLib/impl/store.nut")
 
 local openReviewWnd = @(...) null
 if (isPlatformXboxOne)
-  openReviewWnd = @(...) ::xbox_show_rate_and_review()
+  openReviewWnd = @(...) request_review(null)
 else if (is_running())
   openReviewWnd = require("steamRateGameWnd.nut").open
 
@@ -174,7 +175,7 @@ let function checkShowRateWnd() {
 
 addListenersWithoutEnv({
   UnitBought = function(p) {
-    let unit = ::getAircraftByName(p?.unitName)
+    let unit = getAircraftByName(p?.unitName)
     if (unit && ::isUnitSpecial(unit))
       havePurchasedSpecUnit(true)
   }
@@ -189,6 +190,7 @@ addListenersWithoutEnv({
 })
 
 register_command(@() tryOpenSteamRateReview(true), "debug.show_steam_rate_wnd")
+register_command(@() tryOpenXboxRateReviewWnd(), "debug.show_xbox_rate_wnd")
 
 return {
   setNeedShowRate

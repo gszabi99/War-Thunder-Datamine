@@ -1,9 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -175,7 +178,7 @@ let { select_mission } = require("guiMission")
     let toBattleNest = ::showBtn("gamercard_tobattle", true, this.rootHandlerWeak.scene)
     if (toBattleNest) {
       this.rootHandlerWeak.scene.findObject("top_gamercard_bg").needRedShadow = "no"
-      let toBattleBlk = ::handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
+      let toBattleBlk = handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {
         enableEnterKey = !::is_platform_shield_tv()
       })
       this.guiScene.replaceContentFromText(toBattleNest, toBattleBlk, toBattleBlk.len(), this)
@@ -445,8 +448,15 @@ let { select_mission } = require("guiMission")
     }
 
     if (::g_squad_manager.isSquadMember()) {
-      if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT)
+      if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT) {
+        //No need to check broken units when set unready
+        if (!::g_squad_manager.isMeReady()) {
+          let leaderEvent = ::events.getEvent(::g_squad_manager.getLeaderGameModeId())
+          let repairInfo = ::events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
+          ::checkBrokenAirsAndDo(repairInfo, this, @() null, false)
+        }
         ::g_squad_manager.setReadyFlag()
+      }
       else if (::is_worldwar_enabled())
         this.guiScene.performDelayed(this, @() ::g_world_war.joinOperationById(
           ::g_squad_manager.getWwOperationId(), ::g_squad_manager.getWwOperationCountry()))
@@ -499,10 +509,10 @@ let { select_mission } = require("guiMission")
 
     if (!::is_online_available()) {
       let handler = this
-      this.goForwardIfOnline((@(handler) function() {
+      this.goForwardIfOnline(function() {
           if (handler && checkObj(handler.scene))
             handler.onStartAction.call(handler)
-        })(handler), false, true)
+        }, false, true)
       return
     }
 
@@ -841,7 +851,7 @@ let { select_mission } = require("guiMission")
       foreach (crew in countryCrews.crews) {
         if (!("aircraft" in crew))
           continue
-        let unit = ::getAircraftByName(crew.aircraft)
+        let unit = getAircraftByName(crew.aircraft)
         if (::game_mode_manager.isUnitAllowedForGameMode(unit))
           return true
       }
@@ -887,7 +897,7 @@ let { select_mission } = require("guiMission")
       return
 
     let crewId = ::getCrewByAir(unit).id
-    let cost = ::Cost()
+    let cost = Cost()
     if (isGold)
       cost.gold = ::shop_get_unlock_crew_cost_gold(crewId)
     else
@@ -895,7 +905,7 @@ let { select_mission } = require("guiMission")
 
     let msg = format("%s %s?", loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
     this.msgBox("unlock_crew", msg, [
-        ["yes", (@(crewId, isGold) function() {
+        ["yes", function() {
           this.taskId = ::unlockCrew(crewId, isGold, cost)
           ::sync_handler_simulate_signal("profile_reload")
           if (this.taskId >= 0) {
@@ -903,7 +913,7 @@ let { select_mission } = require("guiMission")
             this.showTaskProgressBox()
             this.afterSlotOp = null
           }
-        })(crewId, isGold)],
+        }],
         ["no", function() { return false }]
       ], "no")
   }

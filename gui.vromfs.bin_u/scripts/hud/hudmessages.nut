@@ -2,9 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
   MISSION_TEAM_LEAD_ZONE
@@ -52,7 +56,7 @@ local heightPID = ::dagui_propid.add_name_id("height")
   }
 
   findMessageById = function(id) {
-    return ::u.search(this.stack, (@(id) function(m) { return getTblValue("id", m.messageData, -1) == id })(id))
+    return u.search(this.stack, (@(id) function(m) { return getTblValue("id", m.messageData, -1) == id })(id))
   }
 
   subscribeHudEvents = function() {
@@ -129,7 +133,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         id = this.getMsgObjId(messageData)
         text = messageData.text
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/mainCenterMessage.tpl", view)
+      let blk = handyman.renderCached("%gui/hud/messageStack/mainCenterMessage.tpl", view)
       this.guiScene.prependWithBlk(this.nest, blk, this)
       mainMessage.obj = this.nest.getChild(0)
 
@@ -222,7 +226,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         return
 
       let checkField = (messageData.id != -1) ? "id" : "text"
-      let oldMessage = ::u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
+      let oldMessage = u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
       if (oldMessage)
         this.refreshMessage(messageData, oldMessage)
       else
@@ -240,7 +244,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       let view = {
         text = messageData.text
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
+      let blk = handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
@@ -344,7 +348,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       if (!checkObj(this.nest))
         return
 
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
+      let blk = handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
@@ -416,7 +420,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     }
 
     function createSceneObjectForMessage(view, message) {
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/zoneCaptureNotification.tpl", view)
+      let blk = handyman.renderCached("%gui/hud/messageStack/zoneCaptureNotification.tpl", view)
       this.guiScene.prependWithBlk(this.nest, blk, this)
       message.obj = this.nest.getChild(0)
     }
@@ -493,7 +497,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     roundRewardValue = @(val) val > 10 ? (val.tointeger() / 10 * 10) : val.tointeger()
 
     updateRewardValue = function (isSeries) {
-      let reward = ::Cost(this.roundRewardValue(this.rewardWp), 0, this.roundRewardValue(this.rewardXp))
+      let reward = Cost(this.roundRewardValue(this.rewardWp), 0, this.roundRewardValue(this.rewardXp))
       this.nest.findObject("reward_message").setFloatProp(this._animTimerPid, 0.0)
       this.nest.findObject("reward_total").setValue(reward.getUncoloredText())
 
@@ -622,7 +626,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       let view = {
         text = loc(deltaTime > 0 ? "hints/penalty_time" : "hints/bonus_time", { timeSec = deltaTime })
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
+      let blk = handyman.renderCached("%gui/hud/messageStack/playerDamageMessage.tpl", view)
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 
@@ -690,7 +694,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
         useMoveOut = resultIdx == GO_WIN || resultIdx == GO_FAIL
       }
 
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/missionResultMessage.tpl", this.stack)
+      let blk = handyman.renderCached("%gui/hud/messageStack/missionResultMessage.tpl", this.stack)
       this.guiScene.replaceContentFromText(this.nest, blk, blk.len(), this)
 
       let objTarget = this.nest.findObject("mission_result_box")
@@ -773,7 +777,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
       let view = {
         text = messageData.text
       }
-      let blk = ::handyman.renderCached("%gui/hud/messageStack/deathReasonMessage.tpl", view)
+      let blk = handyman.renderCached("%gui/hud/messageStack/deathReasonMessage.tpl", view)
       this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
       message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
 

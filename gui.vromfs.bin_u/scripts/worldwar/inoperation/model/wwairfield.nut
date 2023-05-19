@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -151,11 +152,11 @@ let { Point2 } = require("dagor.math")
   }
 
   function getCooldownsWithManageAccess() {
-    return ::u.filter(this.cooldownFormations, function(formation) { return formation.hasManageAccess() })
+    return u.filter(this.cooldownFormations, function(formation) { return formation.hasManageAccess() })
   }
 
   function getCooldownArmiesByGroupIdx(groupIdx) {
-    return ::u.filter(this.cooldownFormations,
+    return u.filter(this.cooldownFormations,
       @(formation) formation.getArmyGroupIdx() == groupIdx)
   }
 
@@ -219,8 +220,8 @@ let { Point2 } = require("dagor.math")
   }
 
   getAvailableFormations = @() this.isValid()
-    ? ::u.filter(this.formations, @(formation) formation.hasManageAccess()) : []
+    ? u.filter(this.formations, @(formation) formation.hasManageAccess()) : []
 
   getFormationByGroupIdx = @(groupIdx)
-    ::u.search(this.formations, @(group) group.owner.armyGroupIdx == groupIdx)
+    u.search(this.formations, @(group) group.owner.armyGroupIdx == groupIdx)
 }

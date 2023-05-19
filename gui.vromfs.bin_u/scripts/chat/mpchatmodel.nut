@@ -1,14 +1,18 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
 let { send } = require("eventbus")
 let { CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
+let { cutPrefix } = require("%sqstd/string.nut")
+let { get_mplayers_list } = require("mission")
 
 let mpChatState = {
   log = [],
@@ -45,11 +49,11 @@ local mpChatModel = {
   function getLogForBanhammer() {
     let logObj = mpChatState.log.map(@(message) {
       from = message.sender
-      userColor = message.userColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(message.userColor, "@")) : ""
+      userColor = message.userColor != "" ? ::get_main_gui_scene().getConstantValue(cutPrefix(message.userColor, "@")) : ""
       fromUid = message.uid
       clanTag = message.clanTag
       msgs = [message.text]
-      msgColor = message.msgColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(message.msgColor, "@")) : ""
+      msgColor = message.msgColor != "" ? ::get_main_gui_scene().getConstantValue(cutPrefix(message.msgColor, "@")) : ""
       mode = message.mode
       sTime = message.sTime
     })
@@ -69,7 +73,7 @@ local mpChatModel = {
       return false
     }
 
-    let player = ::u.search(::get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == sender)
+    let player = u.search(get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == sender)
 
     let message = {
       userColor = ""
@@ -93,7 +97,7 @@ local mpChatModel = {
     }
     mpChatState.log.append(message)
 
-    ::broadcastEvent("MpChatLogUpdated")
+    broadcastEvent("MpChatLogUpdated")
     send("mpChatPushMessage", message)
     return true
   }
@@ -101,7 +105,7 @@ local mpChatModel = {
 
   function clearLog() {
     this.onChatClear()
-    ::broadcastEvent("MpChatLogUpdated")
+    broadcastEvent("MpChatLogUpdated")
   }
 
 
@@ -121,13 +125,13 @@ local mpChatModel = {
 
     mpChatState.currentModeId = modeId
     send("hudChatModeIdUpdate", { modeId })
-    ::broadcastEvent("MpChatModeChanged", { modeId = mpChatState.currentModeId })
+    broadcastEvent("MpChatModeChanged", { modeId = mpChatState.currentModeId })
   }
 
 
   function onInputChanged(str) {
     send("mpChatInputChanged", { str })
-    ::broadcastEvent("MpChatInputChanged", { str = str })
+    broadcastEvent("MpChatInputChanged", { str = str })
   }
 
 
@@ -156,7 +160,7 @@ local mpChatModel = {
 }
 
 
-::g_script_reloader.registerPersistentData(
+g_script_reloader.registerPersistentData(
   "mpChatState",
   mpChatState,
   ["log", "currentModeId"]

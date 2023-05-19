@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -48,14 +49,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
       this.name, getTblValue("weaponPresetId", this.presetInfo)
     )
 
-    if (!::u.isEmpty(weaponPresetIconsText))
+    if (!u.isEmpty(weaponPresetIconsText))
       res += loc("ui/parentheses/space", {
         text = weaponPresetIconsText + getTblValue("teamUnitPresetAmount", this.presetInfo, 0)
       })
 
     if (this.distributed != null && this.distributed != ::RESPAWNS_UNLIMITED) {
       local text = this.distributed > 0 ? colorize("userlogColoredText", this.distributed) : this.distributed
-      if (!::u.isEmpty(weaponPresetIconsText))
+      if (!u.isEmpty(weaponPresetIconsText))
         text += loc("ui/parentheses/space", {
           text = weaponPresetIconsText + getTblValue("userUnitPresetAmount", this.presetInfo, 0)
         })

@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 
 let class ConfigBase {
@@ -86,7 +87,7 @@ let class ConfigBase {
     this.invalidateCache()
     this.onConfigUpdate?()
 
-    ::broadcastEvent(this.cbName)
+    broadcastEvent(this.cbName)
 
     foreach (cb in this.cbList)
       cb()

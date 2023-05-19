@@ -17,7 +17,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
       return false
 
     let unitId = this.getRentedUnitId()
-    let unit = ::getAircraftByName(unitId)
+    let unit = getAircraftByName(unitId)
     return unit != null && !unit.isBought()
       && (unit.isVisibleInShop() || unit.showOnlyWhenBought)
   }

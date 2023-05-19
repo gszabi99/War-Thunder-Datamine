@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
@@ -18,6 +19,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { select_training_mission } = require("guiMission")
 let { isPreviewingLiveSkin, setCurSkinToHangar
 } = require("%scripts/customization/skins.nut")
+let { stripTags } = require("%sqstd/string.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -120,7 +122,7 @@ let { isPreviewingLiveSkin, setCurSkinToHangar
   function checkBulletsRows() {
     if (type(::aircraft_for_weapons) != "string")
       return
-    let air = ::getAircraftByName(::aircraft_for_weapons)
+    let air = getAircraftByName(::aircraft_for_weapons)
     if (!air)
       return
 
@@ -297,7 +299,7 @@ let { isPreviewingLiveSkin, setCurSkinToHangar
     if (!bulletsManager || !bulletsManager.checkChosenBulletsCount())
       return
 
-    ::broadcastEvent("BeforeStartTestFlight")
+    broadcastEvent("BeforeStartTestFlight")
 
     if (::g_squad_manager.isNotAloneOnline())
       return this.onMissionBuilder()
@@ -517,7 +519,7 @@ let { isPreviewingLiveSkin, setCurSkinToHangar
     if ("hints" in option)
       obj.tooltip = option.hints[ obj.getValue() ]
     else if ("hint" in option)
-      obj.tooltip = ::g_string.stripTags(loc(option.hint, ""))
+      obj.tooltip = stripTags(loc(option.hint, ""))
     this.checkBulletsRows()
     this.updateWeaponOptions()
   }

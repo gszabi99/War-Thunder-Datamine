@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -23,7 +24,7 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
 
 let function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc = isEqualWeapon) {
   foreach (weapon in (preset % "Weapon")) {
-    let slotWeapon = ::u.copy(weapon)
+    let slotWeapon = u.copy(weapon)
     slotWeapon.presetId = preset.name
     slotWeapon.slot = slotBlk.index
     slotWeapon.tier = slotBlk?.tier ?? (tiersCount - 1 - slotBlk.index)
@@ -73,7 +74,7 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
   // !!!FIX ME: Processing old format of weapons data should be removed over time when all units presets get ability to be customized.
   else // PLAIN data type
     foreach (weapon in (weaponsBlk % "Weapon"))
-      ::u.appendOnce((::u.copy(weapon)), res)
+      u.appendOnce((u.copy(weapon)), res)
 
   return res
 }
@@ -90,6 +91,12 @@ let getPresetWeaponsByName = @(unitBlk, name)
 let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
   : "weaponsBlk" in weapon ? getWeaponsByTypes(unitBlk, weapon.weaponsBlk)
   : getPresetWeaponsByName(unitBlk, weapon.name)
+
+let function getPresetWeaponsUniqueIdsByName(unitBlk, name) {
+  let blk = blkOptFromPath(getUnitPresets(unitBlk).findvalue(@(p) p.name == name)?.blk)
+  return (blk % "Weapon").map(@(v) v.preset)
+    .reduce(@(acc, v) acc.contains(v) ? acc : acc.append(v), []) //warning disable: -unwanted-modification
+}
 
 let function getSlotWeapons(slotBlk, tiersCount = MIN_TIERS_COUNT) {
   let res = []
@@ -110,9 +117,9 @@ let function getUnitWeapons(unitBlk) { // Pesets weapon only
   else
     foreach (preset in getUnitPresets(unitBlk))
       foreach (weapon in getPresetWeaponsByPath(unitBlk, preset.blk)) {
-          let w = ::u.copy(weapon)
+          let w = u.copy(weapon)
           w.presetId <- preset.name
-          ::u.appendOnce(w, res)
+          u.appendOnce(w, res)
       }
 
   return res
@@ -218,6 +225,7 @@ return {
   getUnitPresets
   getWeaponsByTypes
   getPresetWeapons
+  getPresetWeaponsUniqueIdsByName
   getDefaultPresetId
   getUnitWeaponSlots
   getDefaultCustomPresetParams

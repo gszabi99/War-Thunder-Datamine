@@ -6,6 +6,7 @@
   "gearSinkRangeLR": 0.1,
   "gearSinkRangeC": 0.064,
   "noEffectsDist": 8.0,
+  "gyroSight": false,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -2889,25 +2890,54 @@
     "turnTime": 39.187
   },
   "modifications": {
-    "cd_98": {},
-    "air_extinguisher": {
-      "image": "#ui/gameuiskin#engine_extinguisher",
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
     "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth",
       "effects": {
         "cutProbabilityMult": 1.1,
         "mulMass": 1.05
       }
     },
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "breda_turret_ap": {},
     "breda_turret_api": {},
     "breda_turret_belt_pack": {

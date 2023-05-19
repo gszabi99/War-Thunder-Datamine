@@ -31,7 +31,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
     foreach (ticket in this._tickets)
       ::g_item_limits.enqueueItem(ticket.id)
     if (::g_item_limits.requestLimits(true))
-      ::add_event_listener("ItemLimitsUpdated", this.onEventItemLimitsUpdated, this)
+      subscriptions.add_event_listener("ItemLimitsUpdated", this.onEventItemLimitsUpdated, this)
     else
       this.handleTickets()
   }
@@ -59,7 +59,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
           timeleft = time.secondsToString(tournamentData.timeToWait)
         }))
       }
-      ::scene_msg_box("cant_join", null,  ::g_string.implode(msgArr, "\n"), [["ok"]], "ok")
+      ::scene_msg_box("cant_join", null,  "\n".join(msgArr, true), [["ok"]], "ok")
     }
     else {
       let windowParams = {

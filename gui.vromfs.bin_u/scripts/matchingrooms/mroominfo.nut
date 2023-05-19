@@ -6,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { matchingApiFunc } = require("%scripts/matching/api.nut")
 
 const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
@@ -48,7 +50,7 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
 
     this.lastRequestTime = get_time_msec()
     let cb = Callback(this.onRefreshCb, this)
-    ::matching_api_func("mrooms.get_room",
+    matchingApiFunc("mrooms.get_room",
       function(p) { cb(p) },
       { roomId = this.roomId }
     )
@@ -61,7 +63,7 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
       this.lastUpdateTime = this.lastAnswerTime
       this.isRoomDestroyed = true
       this.roomData = null
-      ::broadcastEvent("MRoomInfoUpdated", { roomId = this.roomId })
+      broadcastEvent("MRoomInfoUpdated", { roomId = this.roomId })
       return
     }
 
@@ -71,7 +73,7 @@ const MROOM_INFO_OUTDATE_TIME    = 600000
     this.lastUpdateTime = this.lastAnswerTime
     this.roomData = params
     this.roomData.roomId <- this.roomId
-    ::broadcastEvent("MRoomInfoUpdated", { roomId = this.roomId })
+    broadcastEvent("MRoomInfoUpdated", { roomId = this.roomId })
   }
 
   function getFullRoomData() {

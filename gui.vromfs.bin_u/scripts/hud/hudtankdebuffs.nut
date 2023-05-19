@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
 
@@ -35,7 +36,7 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
       return
 
     this.guiScene = this.scene.getScene()
-    let blk = ::handyman.renderCached("%gui/hud/hudTankDebuffs.tpl",
+    let blk = handyman.renderCached("%gui/hud/hudTankDebuffs.tpl",
         {
           stabilizerValue = getConfigValueById("stabilizer"),
           lwsValue = getConfigValueById("lws"),

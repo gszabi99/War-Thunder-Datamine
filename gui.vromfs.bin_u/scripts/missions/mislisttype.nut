@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -14,6 +15,7 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
   get_mission_local_online_progress } = require("guiMission")
 let { get_game_mode, get_cur_game_mode_name } = require("mission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { toUpper } = require("%sqstd/string.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -152,7 +154,7 @@ enum mislistTabsOrder {
       let isChapterSpecial = isInArray(chapterName, [ "hidden", "test" ])
       local canShowChapter = true
       if (!::is_debug_mode_enabled && isChapterSpecial) {
-        let featureName = "MissionsChapter" + ::g_string.toUpper(chapterName, 1)
+        let featureName = "MissionsChapter" + toUpper(chapterName, 1)
         canShowChapter = ::is_dev_version || hasFeature(featureName)
       }
       if (!canShowChapter)
@@ -277,9 +279,9 @@ enum mislistTabsOrder {
   }
 
   sortMissionsByName = function(missions) {
-    let sortData = ::u.map(missions, (@(m) { locName = this.getMissionNameText(m), mission = m }).bindenv(this))
+    let sortData = u.map(missions, (@(m) { locName = this.getMissionNameText(m), mission = m }).bindenv(this))
     sortData.sort(@(a, b) a.locName <=> b.locName)
-    return ::u.map(sortData, @(d) d.mission)
+    return u.map(sortData, @(d) d.mission)
   }
 }
 
@@ -413,7 +415,7 @@ enums.addTypesByGlobalName("g_mislist_type", {
 
 ::g_mislist_type.getTypeByName <- function getTypeByName(typeName) {
   let res = getTblValue(typeName, ::g_mislist_type)
-  return ::u.isTable(res) ? res : this.BASE
+  return u.isTable(res) ? res : this.BASE
 }
 
 ::g_mislist_type.isUrlMission <- function isUrlMission(mission) {

@@ -8,6 +8,42 @@
   "mesh": "us_aim_7e",
   "tags": {},
   "rocket": {
+    "bulletName": "us_aim7c_sparrow",
+    "statType": "hydra",
+    "caliber": 0.2,
+    "length": 3.66,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 2.3,
+    "wingAreaMult": 1.4,
+    "finsAoaHor": 0.17,
+    "finsAoaVer": 0.17,
+    "finsLatAccel": 14.0,
+    "distFromCmToStab": 0.12,
+    "mass": 172.0,
+    "massEnd": 144.0,
+    "timeFire": 2.04,
+    "force": 32200.0,
+    "fireDelay": 0.25,
+    "timeLife": 20.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "machMax": 3.0,
+    "endSpeed": 1500.0,
+    "maxDistance": 26000.0,
+    "minDistance": 30.0,
+    "rangeMax": 25000.0,
+    "loadFactorMax": 15.0,
+    "guidanceType": "radar",
+    "guidanceSfx": "alarm_spin_scan",
+    "effectOffset": [
+      -1.95,
+      0.0,
+      0.0
+    ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
@@ -16,29 +52,10 @@
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
-    "bulletName": "us_aim9b_sidewinder",
-    "caliber": 0.2,
-    "mass": 172.0,
     "explosiveType": "pbxn_4",
     "explosiveMass": 9.0,
-    "massEnd": 144.0,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.018,
-    "length": 3.66,
-    "distFromCmToStab": 0.12,
-    "wingAreaMult": 1.4,
-    "CxK": 2.3,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "finsAoaHor": 0.17,
-    "finsAoaVer": 0.17,
-    "finsLatAccel": 14.0,
-    "force": 32200.0,
-    "timeFire": 2.04,
-    "fireDelay": 0.25,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -49,12 +66,11 @@
     "explosionPatchRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_rocket_tail_modern_air",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_mach_discs_med",
+    "smokeEffect": "smoke_rocket_tail_modern_air",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.5,
-    "maxDistance": 26000.0,
-    "minDistance": 30.0,
+    "endSmokeViscosity": 0.05,
     "distanceFuse": false,
     "hitPowerMult": 400.0,
     "fuseDelayDist": 1.0,
@@ -62,13 +78,6 @@
       0.1,
       0.01
     ],
-    "guidanceSfx": "alarm_spin_scan",
-    "effectOffset": [
-      -2.0,
-      0.0,
-      0.0
-    ],
-    "guidanceType": "radar",
     "hasProximityFuse": true,
     "explodeHitPower": 550.0,
     "explodeArmorPower": 75.0,
@@ -77,22 +86,94 @@
       3.5
     ],
     "rendinstDamageRadius": 9.0,
-    "statType": "hydra",
     "shutterDamage": true,
     "shutterDamageRadius": 17.0,
     "shutterAmount": 2000,
     "shutterArmorPower": 12.0,
     "shutterHit": 10.0,
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 1500.0,
-    "timeLife": 20.0,
-    "machMax": 3.0,
-    "loadFactorMax": 15.0,
-    "rangeMax": 25000.0,
     "price": 3000.0,
     "iconType": "missile_air_to_air_midrange",
+    "arcadeProp": {
+      "finsAoaHor": 0.19,
+      "finsAoaVer": 0.19
+    },
+    "guidance": {
+      "warmUpTime": 1.0,
+      "workTime": 60.0,
+      "uncageBeforeLaunch": true,
+      "lockAfterLaunch": true,
+      "lockTimeOut": 0.85,
+      "afterLaunchSpeedUp": 175.0,
+      "breakLockMaxTime": 5.0,
+      "radarSeeker": {
+        "band": 8,
+        "sideLobesAttenuation": -18.0,
+        "lockAngleMax": 15.0,
+        "angleMax": 25.0,
+        "rateMax": 12.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 2,
+        "transmitter": {
+          "power": 200.0,
+          "antenna": {
+            "angleHalfSens": 10.0,
+            "sideLobesSensitivity": -26.0
+          }
+        },
+        "receiver": {
+          "rcs": 2.0,
+          "range": 12000.0,
+          "rangeMax": 15000.0,
+          "timeGainControl": false,
+          "antenna": {
+            "angleHalfSens": 13.0,
+            "sideLobesSensitivity": -16.0
+          }
+        },
+        "dopplerSpeed": {
+          "presents": true,
+          "minValue": -2000.0,
+          "maxValue": 2000.0,
+          "width": 30.0,
+          "refWidth": 150.0,
+          "signalWidthMin": 7.0
+        },
+        "dopplerSpeedGate": {
+          "filterAlpha": 0.15,
+          "filterBetta": 0.02,
+          "dopplerSpeedGateSearchRange": 200.0
+        }
+      },
+      "guidanceAutopilot": {
+        "timeToGain0": [
+          0.0,
+          0.0
+        ],
+        "timeToGain1": [
+          2.0,
+          0.0
+        ],
+        "timeToGain2": [
+          2.5,
+          0.4
+        ],
+        "timeToGain3": [
+          4.5,
+          1.0
+        ],
+        "timeToGain4": [
+          20.0,
+          1.0
+        ],
+        "propNavMult": 4.0,
+        "reqAccelMax": 15.0,
+        "accelControlProp": 0.003,
+        "accelControlIntg": 0.0436,
+        "accelControlDiff": 0.0011,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -408,87 +489,6 @@
         "radius": 0.15,
         "offset": 0.9
       }
-    },
-    "guidance": {
-      "warmUpTime": 1.0,
-      "workTime": 60.0,
-      "uncageBeforeLaunch": true,
-      "lockAfterLaunch": true,
-      "lockTimeOut": 0.85,
-      "afterLaunchSpeedUp": 175.0,
-      "breakLockMaxTime": 5.0,
-      "radarSeeker": {
-        "band": 8,
-        "sideLobesAttenuation": -18.0,
-        "lockAngleMax": 15.0,
-        "angleMax": 25.0,
-        "rateMax": 12.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 2,
-        "transmitter": {
-          "power": 200.0,
-          "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -26.0
-          }
-        },
-        "receiver": {
-          "rcs": 2.0,
-          "range": 12000.0,
-          "rangeMax": 15000.0,
-          "timeGainControl": false,
-          "antenna": {
-            "angleHalfSens": 13.0,
-            "sideLobesSensitivity": -16.0
-          }
-        },
-        "dopplerSpeed": {
-          "presents": true,
-          "minValue": -2000.0,
-          "maxValue": 2000.0,
-          "width": 30.0,
-          "refWidth": 150.0,
-          "signalWidthMin": 7.0
-        },
-        "dopplerSpeedGate": {
-          "filterAlpha": 0.15,
-          "filterBetta": 0.02,
-          "dopplerSpeedGateSearchRange": 200.0
-        }
-      },
-      "guidanceAutopilot": {
-        "timeToGain0": [
-          0.0,
-          0.0
-        ],
-        "timeToGain1": [
-          2.0,
-          0.0
-        ],
-        "timeToGain2": [
-          2.5,
-          0.4
-        ],
-        "timeToGain3": [
-          4.5,
-          1.0
-        ],
-        "timeToGain4": [
-          20.0,
-          1.0
-        ],
-        "propNavMult": 4.0,
-        "reqAccelMax": 15.0,
-        "accelControlProp": 0.003,
-        "accelControlIntg": 0.0436,
-        "accelControlDiff": 0.0011,
-        "baseIndSpeed": 1800.0,
-        "accelControlIntgLim": 1.0
-      }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.19,
-      "finsAoaVer": 0.19
     },
     "proximityFuse": {
       "timeOut": 2.0,

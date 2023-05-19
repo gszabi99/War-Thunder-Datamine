@@ -5,6 +5,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+
 ::EventChapter <- class {
   name = ""
   eventIds = []
@@ -78,7 +80,7 @@ from "%scripts/dagui_library.nut" import *
     this.chapters = []
     this.chapterIndexByName = {}
 
-    ::add_event_listener("GameLocalizationChanged", this.onEventGameLocalizationChanged, this)
+    add_event_listener("GameLocalizationChanged", this.onEventGameLocalizationChanged, this)
   }
 
   /**

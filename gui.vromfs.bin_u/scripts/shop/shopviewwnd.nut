@@ -58,7 +58,7 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
 
 let function openShopViewWndFromPromo(params) {
   let unitName = params?[0] ?? ""
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return
 

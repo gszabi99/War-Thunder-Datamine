@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
@@ -12,6 +13,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::g_invites_classes.SessionRoom <- class extends ::BaseInvite {
   //custom class params, not exist in base invite
@@ -35,7 +37,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
 
     if (initial) {
-      ::add_event_listener("RoomJoined",
+      add_event_listener("RoomJoined",
         function (_p) {
           if (::SessionLobby.isInRoom() && ::SessionLobby.roomId == this.roomId) {
             this.remove()
@@ -43,7 +45,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
           }
         },
         this)
-      ::add_event_listener("MRoomInfoUpdated",
+      add_event_listener("MRoomInfoUpdated",
         function (p) {
           if (p.roomId != this.roomId)
             return
@@ -57,7 +59,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     }
 
     //do not set delayed when scipt reload to not receive invite popup on each script reload
-    this.setDelayed(!::g_script_reloader.isInReloading && !::g_mroom_info.get(this.roomId).getFullRoomData())
+    this.setDelayed(!g_script_reloader.isInReloading && !::g_mroom_info.get(this.roomId).getFullRoomData())
   }
 
   function isValid() {

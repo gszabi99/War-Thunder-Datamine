@@ -1,6 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -21,7 +24,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 }
 
 ::g_order_award_mode._getAwardTextByDifficultyCost <- function _getAwardTextByDifficultyCost(difficulty, orderItem) {
-  let cost = ::Cost()
+  let cost = Cost()
   cost.wp = orderItem.awardWpByDifficulty[difficulty]
   cost.gold = orderItem.awardGoldByDifficulty[difficulty]
   cost.frp = orderItem.awardXpByDifficulty[difficulty]
@@ -66,7 +69,7 @@ enums.addTypesByGlobalName("g_order_award_mode", {
 
 ::g_order_award_mode.getAwardModeByOrderParams <- function getAwardModeByOrderParams(orderParams) {
   foreach (awardMode in ::g_order_award_mode.types)
-    if (::u.isTable(awardMode) && getTblValue(awardMode.name, orderParams, false))
+    if (u.isTable(awardMode) && getTblValue(awardMode.name, orderParams, false))
       return awardMode
   return this.UNKNOWN
 }

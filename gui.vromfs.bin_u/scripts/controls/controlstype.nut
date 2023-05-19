@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let globalEnv = require("globalEnv")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let avatars = require("%scripts/user/avatars.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
@@ -69,7 +70,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (this.startControlsWizard)
       ::gui_modal_controlsWizard()
     ::preset_changed = true
-    ::broadcastEvent("ControlsPresetChanged")
+    broadcastEvent("ControlsPresetChanged")
   }
 
   function onControlTypeApply() {

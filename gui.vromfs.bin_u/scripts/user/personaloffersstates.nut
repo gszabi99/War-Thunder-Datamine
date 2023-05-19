@@ -6,19 +6,43 @@ from "%scripts/dagui_library.nut" import *
 
 let personalOffers = require("personalOffers")
 let DataBlock = require("DataBlock")
-let { parse } = require("json")
+let { parse_json } = require("json")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
 let checkedOffers = mkWatched(persist, "checkedOffers", {})
+
+let isInProgressOfferValidation = Watched(false)
 
 let function clearOfferCache() {
   clearTimer(clearOfferCache)
   curPersonalOffer(null)
 }
 
-let function gerRecievedOfferContent(offerContent) {
+let hasSendToBq = @(offerName)
+  ::load_local_account_settings($"personalOffer/{offerName}/hasSendToBq") ?? false
+
+let function sendDataToBqOnce(data) {
+  if (hasSendToBq(data.offerName))
+    return
+  ::add_big_query_record("personal_offer_restriction", ::save_to_json(data))
+  ::save_local_account_settings($"personalOffer/{data.offerName}/hasSendToBq", true)
+}
+
+let function markSeenPersonalOffer(offerName) {
+  let seenCountId = $"personalOffer/{offerName}/visibleOfferCount"
+  ::save_local_account_settings(seenCountId, (::load_local_account_settings(seenCountId) ?? 0) + 1)
+  sendDataToBqOnce({ offerName, serverTime = ::get_charserver_time_sec(), reason = "personal_offer_window_is_show" })
+}
+
+let isSeenOffer = @(offerName)
+  (::load_local_account_settings($"personalOffer/{offerName}/visibleOfferCount") ?? 0) > 0
+
+let function getRecievedOfferContent(offerContent) {
   let res = []
   foreach(offer in offerContent) {
     let contentType = ::trophyReward.getType(offer)
@@ -41,105 +65,203 @@ let function gerRecievedOfferContent(offerContent) {
   return res
 }
 
-let hasSendToBq= @(offerName)
-  ::load_local_account_settings($"personalOffer/{offerName}/hasSendToBq") ?? false
-
-let function sendDataToBqOnce(data) {
-  if (hasSendToBq(data.offerName))
-    return
-  ::add_big_query_record("personal_offer_restriction", ::save_to_json(data))
-  ::save_local_account_settings($"personalOffer/{data.offerName}/hasSendToBq", true)
+let function checkCompletedSuccessfully(currentOfferData) {
+  curPersonalOffer(currentOfferData)
+  ::save_local_account_settings($"personalOffer/{currentOfferData.offerName}/finishTime", currentOfferData.timeExpired)
+  setTimeout(currentOfferData.timeExpired - ::get_charserver_time_sec(), clearOfferCache)
 }
 
-let function markSeenPersonalOffer(offerName) {
-  let seenCountId = $"personalOffer/{offerName}/visibleOfferCount"
-  ::save_local_account_settings(seenCountId, (::load_local_account_settings(seenCountId) ?? 0) + 1)
-  sendDataToBqOnce({ offerName, serverTime = ::get_charserver_time_sec(), reason = "personal_offer_window_is_show" })
+let function validatePersonalOffer(personalOffer, currentOfferData) {
+  currentOfferData.clear()
+  let offerName = personalOffer.key
+  currentOfferData.offerName <- offerName
+
+  local data = null
+  try {
+    data = parse_json(personalOffer.text)
+  }
+  catch(e) {
+  }
+
+  let serverTime = ::get_charserver_time_sec()
+  if (data == null) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "can_not_parse_json", desc = personalOffer.text })
+    return false
+  }
+  let { offer = "" } = data
+  if (offer == "") {
+    sendDataToBqOnce({ offerName, serverTime, reason = "offer_is_empty_string" })
+    return false
+  }
+
+  let offerBlk = DataBlock()
+  try {
+    offerBlk.loadFromText(offer, offer.len())
+  }
+  catch(e) {
+  }
+  currentOfferData.offerBlk <- offerBlk
+  if (offerBlk.paramCount() == 0) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "can_not_load_offer_to_blk", desc = offer })
+    return false
+  }
+
+  let { costGold = 0, duration_in_seconds = 0 } = offerBlk
+  if (costGold <= 0) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "wrong_cost_gold", desc = offer })
+    return false
+  }
+
+  if (duration_in_seconds <= 0) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "wrong_duration_in_seconds", desc = offer })
+    return false
+  }
+
+  let recievedOfferContent = getRecievedOfferContent(offerBlk % "i")
+  if(recievedOfferContent.len() > 0) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "has_content", desc = ";".join(recievedOfferContent) })
+    return false
+  }
+
+  let finishTime = ::load_local_account_settings($"personalOffer/{offerName}/finishTime") ?? 0
+  if (finishTime == 0
+      && ((serverTime + duration_in_seconds) > (personalOffer?.timeExpired ?? 0).tointeger())) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "expired_time_less_duration_time" })
+    return false
+  }
+
+  let timeExpired = finishTime != 0 ? finishTime : serverTime + duration_in_seconds
+  currentOfferData.timeExpired <- timeExpired
+  if(timeExpired <= serverTime) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "offer_is_expired", desc = $"timeExpired:{timeExpired}" })
+    return false
+  }
+
+  return true
 }
 
-let isSeenOffer= @(offerName)
-  (::load_local_account_settings($"personalOffer/{offerName}/visibleOfferCount") ?? 0) > 0
+let function checkExternalItemsComplete(notExistedItems, currentOfferData) {
+  checkedOffers.mutate(@(v) v[currentOfferData.offerName] <- true)
+  if(notExistedItems.len() > 0)
+    sendDataToBqOnce({
+      offerName = currentOfferData.offerName
+      serverTime = ::get_charserver_time_sec()
+      reason = "content_not_exists"
+      desc = ";".join(notExistedItems)
+    })
+  else
+    checkCompletedSuccessfully(currentOfferData)
+  isInProgressOfferValidation(false)
+}
+
+let function onGetExternalItems(notExistedItems, externalItems, currentOfferData) {
+  notExistedItems.extend(externalItems
+    .filter(@(itemId) ::ItemsManager.findItemById(itemId) == null)
+    .apply(@(itemId) $"item:{itemId}"))
+  checkExternalItemsComplete(notExistedItems, currentOfferData)
+}
+
+let function getNotExistedAndExternalOfferItems(currentOfferData) {
+  let offerContent = currentOfferData.offerBlk % "i"
+  let notExistedItems = []
+  let externalItems = []
+  foreach(offer in offerContent) {
+    let contentType = ::trophyReward.getType(offer)
+
+    if(contentType == "unit") {
+      let { unit } = offer
+      if (getAircraftByName(unit) == null)
+        notExistedItems.append($"{contentType}:{unit}")
+      continue
+    }
+
+    if(contentType == "resourceType" || contentType == "resource") {
+      let { resourceType, resource } = offer
+      let decoratorType = ::g_decorator_type.getTypeByResourceType(resourceType)
+      if (decoratorType == ::g_decorator_type.UNKNOWN)
+        notExistedItems.append($"resource:{resource}")
+      let decorator = getDecorator(resource, decoratorType)
+      if (decorator == null)
+        notExistedItems.append($"resource:{resource}")
+      continue
+    }
+
+    if(contentType == "unlock") {
+      let { unlock } = offer
+      if(getUnlockById(unlock) == null)
+        notExistedItems.append($"unlock:{unlock}")
+      continue
+    }
+
+    if(contentType == "item") {
+      let { item } = offer
+      if(type(item) == "string") {
+        if(!::ItemsManager.findItemById(item))
+          notExistedItems.append($"item:{item}")
+      }
+      else {
+        externalItems.append(item)
+      }
+      continue
+    }
+  }
+
+  return {
+    notExistedItems
+    externalItems
+  }
+}
 
 let function cachePersonalOfferIfNeed() {
+  if (isInProgressOfferValidation.value)
+    return
+
   if (curPersonalOffer.value != null)
     return
 
-  let checked = clone checkedOffers.value
   let count = personalOffers.count()
+  if(count == 0)
+    return
+
   for (local i = 0; i < count; ++i) {
     let personalOffer = personalOffers.get(i)
     let offerName = personalOffer.key
-    if (offerName in checked)
+    if (offerName in checkedOffers.value)
       continue
-
-    checked[offerName] <- true
-    local data = null
-    try {
-      data = parse(personalOffer.text)
-    }
-    catch(e) {
-    }
-    let serverTime = ::get_charserver_time_sec()
-    if (data == null) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "can_not_parse_json", desc = personalOffer.text })
-      continue
-    }
-    let { offer = "" } = data
-    if (offer == "") {
-      sendDataToBqOnce({ offerName, serverTime, reason = "offer_is_empty_string" })
-      continue
-    }
-    let offerBlk = DataBlock()
-    try {
-      offerBlk.loadFromText(offer, offer.len())
-    }
-    catch(e) {
-    }
-    if (offerBlk.paramCount() == 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "can_not_load_offer_to_blk", desc = offer })
+    let currentOfferData = {}
+    let isValidOffer = validatePersonalOffer(personalOffer, currentOfferData)
+    if(!isValidOffer) {
+      checkedOffers.mutate(@(v) v[offerName] <- true)
       continue
     }
 
-    let { costGold = 0, duration_in_seconds = 0 } = offerBlk
-    if (costGold <= 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "wrong_cost_gold", desc = offer })
+    let { notExistedItems, externalItems } = getNotExistedAndExternalOfferItems(currentOfferData)
+
+    if(notExistedItems.len() > 0) {
+      sendDataToBqOnce({
+        offerName = currentOfferData.offerName
+        serverTime = ::get_charserver_time_sec()
+        reason = "content_not_exists"
+        desc = ";".join(notExistedItems)
+      })
       continue
     }
 
-    if (duration_in_seconds <= 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "wrong_duration_in_seconds", desc = offer })
-      continue
+    if(externalItems.len() == 0) {
+      checkExternalItemsComplete(notExistedItems, currentOfferData)
+      return
     }
 
-    let recievedOfferContent = gerRecievedOfferContent(offerBlk % "i")
-    if(recievedOfferContent.len() > 0) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "has_content", desc = ";".join(recievedOfferContent) })
-      continue
-    }
-
-    let finishTime = ::load_local_account_settings($"personalOffer/{offerName}/finishTime") ?? 0
-    if (finishTime == 0
-        && ((serverTime + duration_in_seconds) > (personalOffer?.timeExpired ?? 0).tointeger())) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "expired_time_less_duration_time" })
-      continue
-    }
-    let timeExpired = finishTime !=0 ? finishTime : serverTime + duration_in_seconds
-    if(timeExpired <= serverTime) {
-      sendDataToBqOnce({ offerName, serverTime, reason = "offer_is_expired", desc = $"timeExpired:{timeExpired}" })
-      continue
-    }
-
-    curPersonalOffer({
-      offerName
-      timeExpired
-      offerBlk
-    })
-    ::save_local_account_settings($"personalOffer/{offerName}/finishTime", timeExpired)
-    setTimeout(timeExpired - serverTime, clearOfferCache)
-    break
+    inventoryClient.requestItemdefsByIds(externalItems, @() onGetExternalItems(notExistedItems, externalItems, currentOfferData))
+    isInProgressOfferValidation(true)
+    return
   }
-  checkedOffers(checked)
 }
+
+isInProgressOfferValidation.subscribe(function(v) {
+  if(!v)
+    ::handlersManager.doDelayed(cachePersonalOfferIfNeed)
+})
 
 addListenersWithoutEnv({
   function SignOut(_) {

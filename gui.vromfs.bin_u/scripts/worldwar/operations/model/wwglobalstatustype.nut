@@ -1,10 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let {
@@ -35,7 +37,7 @@ const MAPS_OUT_OF_DATE_DAYS = 1
       setValidGlobalStatusListMask(validListsMask | this.typeMask)
     }
     if (filterFunc)
-      return ::u.filter(this.cachedList, filterFunc)
+      return u.filter(this.cachedList, filterFunc)
     return this.cachedList
   }
 
@@ -59,7 +61,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     loadList = function() {
       this.cachedList = {}
       let data = this.getData()
-      if (!::u.isTable(data))
+      if (!u.isTable(data))
         return
 
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
@@ -75,7 +77,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     loadList = function() {
       this.cachedList = []
       let data = this.getData()
-      if (!::u.isArray(data))
+      if (!u.isArray(data))
         return
 
       foreach (opData in data) {
@@ -94,11 +96,11 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
     loadList = function() {
       this.cachedList = {}
       let data = this.getData()
-      if (!::u.isTable(data) || (data.len() <= 0))
+      if (!u.isTable(data) || (data.len() <= 0))
         return
 
       foreach (name, mapData in data)
-        this.cachedList[name] <- ::WwMap(name, mapData)
+        this.cachedList[name] <- WwMap(name, mapData)
 
       let guiScene = ::get_cur_gui_scene()
       if (guiScene) //need all other configs invalidate too before push event
@@ -116,13 +118,13 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
     loadList = function() {
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
-      this.cachedList = ::u.map(mapsList, @(map) ::WwOperationsGroup(map.name))
+      this.cachedList = u.map(mapsList, @(map) ::WwOperationsGroup(map.name))
     }
   }
 })
 
 seenWWMapsAvailable.setListGetter(function() {
-  return ::u.map(
+  return u.map(
     ::g_ww_global_status_type.MAPS.getList().filter(@(map) map.isAnnounceAndNotDebug()),
     @(map) map.name)
 })

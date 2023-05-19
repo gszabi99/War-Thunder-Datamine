@@ -5,6 +5,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+
 //
 // Unit crew data cache.
 // Used to speed up 'get_aircraft_crew_by_id' calls.
@@ -36,11 +38,11 @@ from "%scripts/dagui_library.nut" import *
 }
 
 ::g_unit_crew_cache.initCache <- function initCache() {
-  ::add_event_listener("CrewSkillsChanged", this.onEventCrewSkillsChanged,
+  add_event_listener("CrewSkillsChanged", this.onEventCrewSkillsChanged,
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
-  ::add_event_listener("QualificationIncreased", @(_p) this.invalidateCache(),
+  add_event_listener("QualificationIncreased", @(_p) this.invalidateCache(),
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
-  ::add_event_listener("CrewChanged", this.onEventCrewChanged,
+  add_event_listener("CrewChanged", this.onEventCrewChanged,
     this, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 }
 

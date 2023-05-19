@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
@@ -37,7 +39,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen() {
     this.membersObj = this.scene.findObject("members")
-    let viewBlk = ::handyman.renderCached(this.memberTplName,
+    let viewBlk = handyman.renderCached(this.memberTplName,
       { members = array(this.squad?.data?.propertis?.maxMembers ?? ::g_squad_manager.MAX_SQUAD_SIZE, null) })
     this.guiScene.replaceContentFromText(this.membersObj, viewBlk, viewBlk.len(), this)
     this.scene.findObject("squad_info_update").setUserData(this)
@@ -142,7 +144,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onEventClanSquadsListChanged(_params) {
     let leader = this.squad.leader
-    let newSquad = ::u.search(squadsListData.getList(), @(s) s?.leader == leader)
+    let newSquad = u.search(squadsListData.getList(), @(s) s?.leader == leader)
     if (!newSquad) {
       this.goBack()
       return

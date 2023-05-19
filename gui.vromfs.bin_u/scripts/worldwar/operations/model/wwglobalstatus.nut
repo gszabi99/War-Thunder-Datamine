@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -57,7 +58,7 @@ let function onGlobalStatusReceived(newData) {
   lastUpdatetTime(get_time_msec())
   local changedListsMask = 0
   foreach (gsType in ::g_ww_global_status_type.types)
-    if (!::u.isEqual(gsType.getData(curData.value), gsType.getData(newData)))
+    if (!u.isEqual(gsType.getData(curData.value), gsType.getData(newData)))
       changedListsMask = changedListsMask | gsType.typeMask
 
   if (!changedListsMask)

@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -127,8 +128,8 @@ local EpicShopPurchasableItem = class {
   isCanBuy = @() this.isPurchasable && !this.isBought
   isInactive = @() !this.isPurchasable || this.isBought
 
-  getIcon = @(...) this.imagePath ? ::LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
-                             : ::LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
+  getIcon = @(...) this.imagePath ? LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
+                             : LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
 
   getSeenId = @() this.id.tostring()
   canBeUnseen = @() this.isBought

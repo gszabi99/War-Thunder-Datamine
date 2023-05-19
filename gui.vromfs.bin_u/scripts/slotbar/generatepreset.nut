@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { setUnits, getSlotItem, getCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
@@ -21,7 +22,7 @@ let function getBestPresetData(availableUnits, country, hasSlotbarByUnitsGroups)
     if (!unitAmount)
       continue
 
-    let unit = ::getAircraftByName(unitName)
+    let unit = getAircraftByName(unitName)
     if (unit.canAssignToCrew(country) || hasSlotbarByUnitsGroups)
       unitsArray.append({ unit = unit, rank = unit.getBattleRating(eDiff) })
   }
@@ -141,7 +142,7 @@ let function generatePreset(availableUnits, country, hasSlotbarByUnitsGroups) {
           batchTrainCrew(
             ::get_crews_list_by_country(country).map(@(c) { crewId = c.id,
               airName = bestPresetData.trainCrewsData?[c.id].name ?? "" }),
-            null, @() ::broadcastEvent("SlotbarPresetLoaded"))
+            null, @() broadcastEvent("SlotbarPresetLoaded"))
         }
       ],
       ["no", @() null]

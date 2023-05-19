@@ -4,14 +4,15 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { broadcastEvent, subscribe_handler, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwtFromServer } = require("chard")
 let { format } = require("string")
 let { subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
-let subscriptions = require_optional("%sqStdLibs/helpers/subscriptions.nut")
 
 if ("g_script_reloader" in getroottable())
-  ::g_script_reloader.loadIfExist("%scripts/framework/msgBox.nut")
+  g_script_reloader.loadIfExist("%scripts/framework/msgBox.nut")
 
 global enum TASK_CB_TYPE {
   BASIC,
@@ -70,7 +71,7 @@ let function hideTaskProgressBox() {
   let guiScene = currentProgressBox.getScene()
   guiScene.destroyElement(currentProgressBox)
   if ("broadcastEvent" in getroottable())
-    ::broadcastEvent("ModalWndDestroy")
+    broadcastEvent("ModalWndDestroy")
   currentProgressBox = null
 }
 
@@ -221,8 +222,7 @@ subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComple
 
 restoreCharCallback()
 
-if (subscriptions)
-  subscriptions.subscribeHandler(::g_tasker, subscriptions.DEFAULT_HANDLER)
+subscribe_handler(::g_tasker, DEFAULT_HANDLER)
 
 return {
   charRequestJwt

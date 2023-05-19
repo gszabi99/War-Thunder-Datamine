@@ -10,13 +10,33 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "statType": "hydra",
     "caliber": 0.214,
     "length": 1.26,
-    "explosiveType": "fp02",
-    "explosiveMass": 9.5,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.0,
+    "distFromCmToStab": 0.01,
     "mass": 112.0,
     "massEnd": 91.0,
-    "statType": "hydra",
+    "timeFire": 0.9,
+    "force": 37000.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "maxSpeed": 320.0,
+    "endSpeed": 0.0,
+    "maxDistance": 5500.0,
+    "minDistance": 30.0,
+    "effectOffset": [
+      -0.4,
+      0.0,
+      0.0
+    ],
+    "explosiveType": "fp02",
+    "explosiveMass": 9.5,
     "selfDestructionInAir": true,
     "rendinstDamageRadius": 9.0,
     "explodeTreshold": 0.01,
@@ -26,24 +46,9 @@
       1.3,
       5.0
     ],
-    "maxDistance": 5500.0,
-    "minDistance": 30.0,
-    "force": 37000.0,
-    "timeFire": 0.9,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
-    "distFromCmToStab": 0.01,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
     "dragCx": 0.067,
-    "CxK": 1.0,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 0.0,
-    "maxSpeed": 320.0,
     "amountPerTier": 1.0,
     "iconType": "rockets_he_large",
     "normalizationPreset": "heat",
@@ -107,11 +112,11 @@
     "explosionPatchRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "rocket_fire_dark",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_early_med",
+    "smokeEffect": "smoke_rocket_tail_dark",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
@@ -257,7 +262,7 @@
         "countPortion": 0.16,
         "segment": [
           {
-            "radiusScale": 0.15,
+            "radiusScale": 0.3,
             "penetrationScale": 3.5,
             "damageScale": 1.0,
             "angles": [
@@ -269,7 +274,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               30.0,
@@ -279,7 +284,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               70.0,
@@ -290,7 +295,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               111.0,
@@ -300,7 +305,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               181.0,
@@ -310,7 +315,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               250.0,
@@ -321,7 +326,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               291.0,

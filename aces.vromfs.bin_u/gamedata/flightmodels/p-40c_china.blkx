@@ -5,6 +5,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.12,
   "gearSinkRangeC": 0.058,
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
@@ -583,6 +584,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -624,6 +631,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -1870,7 +1883,7 @@
         40.0,
         150.0
       ],
-      "fuel1": [
+      "fuel": [
         0.0,
         200.0
       ],

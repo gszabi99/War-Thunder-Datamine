@@ -43,14 +43,15 @@ def isVectorType ( typ:Type )
         typ==Type tInt2   || typ==Type tInt3   || typ==Type tInt4   ||
         typ==Type tUInt2  || typ==Type tUInt3  || typ==Type tUInt4  ||
         typ==Type tFloat2 || typ==Type tFloat3 || typ==Type tFloat4 ||
-        typ==Type tRange  || typ==Type tURange
+        typ==Type tRange  || typ==Type tURange || typ==Type tRange64||
+        typ==Type tURange64
     )
 
 def describe(list:AnnotationArgumentList)
     return join([{ for arg in list; "{arg.name}={get_annotation_argument_value(arg)}" }],",")
 
 def describe(ann:AnnotationDeclaration)
-    if ann.arguments.length != 0
+    if ann.arguments |> length != 0
         return "{ann.annotation.name}({describe(ann.arguments)})"
     else
         return "{ann.annotation.name}"
@@ -78,7 +79,7 @@ def describe_function_short(func:FunctionPtr)
 def isExpression(t:TypeDeclPtr; top:bool=true) : bool
     if t==null
         return false
-    elif t.dim.length!=0
+    elif t.dim |> length!=0
         return false
     elif t.baseType==Type tHandle
         if t.annotation._module.name=="ast"
@@ -101,13 +102,13 @@ def is_same_or_inherited ( parent,child: Structure? )
 def is_class_method ( cinfo:StructurePtr; finfo:TypeDeclPtr )
     if finfo.baseType != Type tFunction
         return false
-    if finfo.dim.length !=0
+    if finfo.dim |> length !=0
         return false
-    if finfo.argTypes.length == 0
+    if finfo.argTypes |> length == 0
         return false
     if finfo.argTypes[0].baseType != Type tStructure
         return false
-    if finfo.argTypes[0].dim.length != 0
+    if finfo.argTypes[0].dim |> length != 0
         return false
     if !is_same_or_inherited(finfo.argTypes[0].structType,get_ptr(cinfo))
         return false
@@ -278,7 +279,7 @@ def setup_macro(name: string; at:LineInfo) : ExprBlock?
             panic("expecting func.ExprBlock")
         unsafe
             var blk = reinterpret<ExprBlock?> fn.body
-            if blk.list.length!=1 || blk.list[0].__rtti!="ExprIfThenElse"
+            if blk.list |> length!=1 || blk.list[0].__rtti!="ExprIfThenElse"
                 panic("expecting is_compiling_macros")
             var ife = reinterpret<ExprIfThenElse?> blk.list[0]
             if ife.if_true.__rtti != "ExprBlock"
@@ -477,7 +478,7 @@ def private walk_and_convert_pointer ( data : uint8?; info:TypeDeclPtr; at:LineI
 
 def private walk_and_convert_tuple ( data : uint8?; info:TypeDeclPtr; at:LineInfo ) : ExpressionPtr
     var inscope mkArr <- new [[ExprMakeTuple() at=at, recordType<-clone_type(info)]]
-    for idx in range( info.argTypes.length)
+    for idx in range( info.argTypes |> length)
         let offset = get_tuple_field_offset(info,idx)
         unsafe
             var elem <- walk_and_convert(data + offset, info.argTypes[idx], at)
@@ -555,6 +556,10 @@ def private walk_and_convert_basic ( data : uint8?; info:TypeDeclPtr; at:LineInf
             return new [[ExprConstRange() at=at, value=*reinterpret<range?> data]]
         elif info.baseType == Type tURange
             return new [[ExprConstURange() at=at, value=*reinterpret<urange?> data]]
+        elif info.baseType == Type tRange64
+            return new [[ExprConstRange64() at=at, value=*reinterpret<range64?> data]]
+        elif info.baseType == Type tURange64
+            return new [[ExprConstURange64() at=at, value=*reinterpret<urange64?> data]]
         elif info.baseType == Type tString
             return new [[ExprConstString() at=at, value:=*reinterpret<string?> data]]
         else
@@ -577,7 +582,7 @@ def private walk_and_convert_enumeration ( data : uint8?; info:TypeDeclPtr; at:L
 
 def private walk_and_convert ( data : uint8?; info:TypeDeclPtr; at:LineInfo ) : ExpressionPtr
 	// print("0x{intptr(data)} {describe(info)}\n")
-	if info.dim.length != 0
+	if info.dim |> length != 0
 		return <- walk_and_convert_dim(data,info,at)
 	elif info.baseType == Type tArray
 		return <- walk_and_convert_array(data,info,at)
@@ -815,7 +820,8 @@ def public get_workhorse_types
         Type tInt3;             Type tInt4;             Type tUInt;             Type tBitfield;
         Type tUInt2;            Type tUInt3;            Type tUInt4;            Type tFloat;
         Type tFloat2;           Type tFloat3;           Type tFloat4;           Type tRange;
-        Type tURange;           Type tString;           Type tDouble;           Type tPointer
+        Type tURange;           Type tRange64;          Type tURange64;         Type tString;
+        Type tDouble;           Type tPointer
     ]]
 
 def public find_argument_index ( typ:TypeDeclPtr; name:string )
@@ -926,3 +932,34 @@ def public debug_expression ( expr:Expression? )
 def public describe ( expr:Expression? )
     unsafe
         return describe(reinterpret<ExpressionPtr> expr)
+
+def getVectorElementCount ( bt:Type )
+    return 2 if bt==Type tFloat2 || bt==Type tInt2 || bt==Type tUInt2 || bt==Type tRange || bt==Type tURange || bt==Type tRange64 || bt==Type tURange64
+    return 3 if bt==Type tFloat3 || bt==Type tInt3 || bt==Type tUInt3
+    return 4 if bt==Type tFloat4 || bt==Type tInt4 || bt==Type tUInt4
+    return 0
+
+def getVectorElementSize ( bt:Type )
+    return 8 if bt==Type tRange64 || bt==Type tURange64
+    return 4
+
+def getVectorElementType ( bt:Type )
+    return Type tFloat if bt==Type tFloat2 || bt==Type tFloat3 || bt==Type tFloat4
+    return Type tInt if bt==Type tInt2 || bt==Type tInt3 || bt==Type tInt4 || bt==Type tRange
+    return Type tUInt if bt==Type tUInt2 || bt==Type tUInt3 || bt==Type tUInt4 || bt==Type tURange
+    return Type tInt64 if bt==Type tRange64
+    return Type tUInt64 if bt==Type tURange64
+    return Type tVoid
+
+def getVectorOffset ( bt:Type; ident:string )
+    var ofs = -1
+    if ident=="x" || ident=="X"
+        ofs = 0
+    elif ident=="y" || ident=="Y"
+        ofs = 1
+    elif ident=="z" || ident=="Z"
+        ofs = 2
+    elif ident=="w" || ident=="W"
+        ofs = 3
+    let count = getVectorElementCount(bt)
+    return ofs>=count ? -1 : ofs

@@ -1,5 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -64,9 +67,9 @@ let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
   getDescriptionTitle = @() base.getName()
 
   getIcon = @(_addItemName = true)
-    ::LayersIcon.getIconData(this.usingStyle, this.defaultIcon, 1.0, this.defaultIconStyle)
+    LayersIcon.getIconData(this.usingStyle, this.defaultIcon, 1.0, this.defaultIconStyle)
 
-  getBigIcon = @() ::LayersIcon.getIconData($"{this.usingStyle}_big", this.defaultIcon, 1.0, this.defaultIconStyle)
+  getBigIcon = @() LayersIcon.getIconData($"{this.usingStyle}_big", this.defaultIcon, 1.0, this.defaultIconStyle)
 
   getMainActionData = @(isShort = false, _params = {}) this.isActive() ? null : {
       btnName = this.isUnlocked() ? loc("item/consume") : this.getBuyText(false, isShort)
@@ -149,7 +152,7 @@ let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
   function getCost(ignoreCanBuy = false) {
     return (this.isCanBuy() || ignoreCanBuy) && !this.isUnlocked()
       ? getUnlockCost(this.id).multiply(this.getSellAmount())
-      : ::Cost()
+      : Cost()
   }
 
   function getUsingStyle(blk) {
@@ -158,7 +161,7 @@ let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
       if (blk?[pos] != "")
         pref.append(pos)
   pref = ["aerobatic_smoke", blk.rarity].extend(pref.len() < 3 ? pref : ["triple"])
-    return ::g_string.implode(pref, "_")
+    return "_".join(pref, true)
   }
 
   function setCurrOption() {

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -14,7 +15,7 @@ let class ItemLifetimeModifier {
   dependencies = null
 
   constructor(formulaStr) {
-    if (type(formulaStr) != "string" || ::u.isEmpty(formulaStr))
+    if (type(formulaStr) != "string" || u.isEmpty(formulaStr))
       return
 
     // for compatibility

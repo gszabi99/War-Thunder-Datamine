@@ -5,9 +5,11 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
+let { startsWith, slice } = require("%sqstd/string.nut")
 
 global enum CLAN_SEASON_MEDAL_TYPE {
   PLACE
@@ -26,7 +28,7 @@ global enum CLAN_SEASON_MEDAL_TYPE {
       return
 
     this._inited = true
-    ::subscribe_handler(this)
+    subscribe_handler(this)
   }
 
 
@@ -310,8 +312,8 @@ global enum CLAN_SEASON_MEDAL_TYPE {
    */
   function getMaxPlaceForBlock(blockName) {
     foreach (prefix in ["top", "till"])
-      if (::g_string.startsWith(blockName, prefix))
-        return ::g_string.slice(blockName, prefix.len()).tointeger()
+      if (startsWith(blockName, prefix))
+        return slice(blockName, prefix.len()).tointeger()
 
     return 0
   }

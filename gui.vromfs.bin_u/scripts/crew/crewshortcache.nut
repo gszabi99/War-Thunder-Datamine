@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 /*
  Short tie cache for current viewing crew with selected unit
  saved only for one crew,
@@ -59,4 +60,4 @@ from "%scripts/dagui_library.nut" import *
   this.resetCache(this.cacheCrewid, this.unit)
 }
 
-::subscribe_handler(::g_crew_short_cache, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
+subscribe_handler(::g_crew_short_cache, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)

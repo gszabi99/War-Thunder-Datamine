@@ -10,8 +10,8 @@
   "gearSinkRangeLR": 0.4,
   "gearSinkRangeC": 0.308,
   "jetEnginePowerFullScale": true,
+  "gyroSight": false,
   "radarCScope": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "italy_late_para",
   "advancedInstructor": true,
@@ -279,6 +279,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -290,6 +302,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -308,6 +332,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -319,6 +355,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -2681,7 +2729,7 @@
           {
             "iconType": "ltc",
             "name": "ltc_left",
-            "reqModification": "countermeasures_belt_pack",
+            "reqModification": "countermeasures_belt_pack_unchecked",
             "ShowNodes": {
               "node": [
                 "early_short_pylon1",
@@ -3270,7 +3318,7 @@
           {
             "iconType": "ltc",
             "name": "ltc_right",
-            "reqModification": "countermeasures_belt_pack",
+            "reqModification": "countermeasures_belt_pack_unchecked",
             "ShowNodes": {
               "node": [
                 "early_short_pylon4",
@@ -3460,17 +3508,18 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
-    "countermeasures_belt_pack": {
+    "countermeasures_launcher_chaff_only_unchecked": {},
+    "countermeasures_launcher_flare_only_unchecked": {},
+    "countermeasures_launcher_chaff_priority_unchecked": {},
+    "countermeasures_launcher_flare_priority_unchecked": {},
+    "countermeasures_belt_pack_unchecked": {
       "group": "countermeasures",
       "modClass": "weapon",
-      "tier": 1
+      "tier": 1,
+      "deactivationIsAllowed": false
     },
     "us_aim_9b": {
-      "reqModification": "countermeasures_belt_pack",
+      "reqModification": "countermeasures_belt_pack_unchecked",
       "tier": 3,
       "modClass": "weapon"
     },

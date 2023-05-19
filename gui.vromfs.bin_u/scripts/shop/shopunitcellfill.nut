@@ -1,5 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -298,8 +300,8 @@ let function getUnitResearchStatusTbl(unit, params) {
 
   return {
     progressText        =  isSquadronVehicle
-      ? ::Cost().setSap(unitReqExp - unitCurExp).tostring()
-      : ::Cost().setRp(unitReqExp - unitCurExp).tostring()
+      ? Cost().setSap(unitReqExp - unitCurExp).tostring()
+      : Cost().setRp(unitReqExp - unitCurExp).tostring()
     progressStatus      = isFull ? "researched"
       : isVehicleInResearch ? "research"
       : ""

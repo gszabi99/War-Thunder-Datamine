@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -147,7 +148,7 @@ let function convertLeaderboardData(result, applyLocalisationToName = false) {
     }
     foreach (columnId, columnData in rowData) {
       let key = leaderboardKeyCorrection?[columnId] ?? columnId
-      if (key in lbData && ::u.isEmpty(columnData))
+      if (key in lbData && u.isEmpty(columnData))
         continue
 
       let valueFactor = leaderboardValueFactors?[columnId]

@@ -1,8 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -310,7 +314,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
       res.warningText <- loc("weapons/restock_advice")
   }
   else if (params?.isInHudActionBar) {
-    let modData = ::u.search(getActionBarItems(),
+    let modData = u.search(getActionBarItems(),
       @(itemData) getActionItemModificationName(itemData, unit) == item.name)
     if (modData)
       res.amountText <- getActionItemAmountText(modData, true)
@@ -323,7 +327,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     if (discount > 0 && statusTbl.showPrice && currentPrice != "") {
       let cost = "cost" in item ? item.cost : 0
       let costGold = "costGold" in item ? item.costGold : 0
-      let priceText = ::Cost(cost, costGold).getUncoloredText()
+      let priceText = Cost(cost, costGold).getUncoloredText()
       if (priceText != "")
         res.noDiscountPrice <- "<color=@oldPrice>" + priceText + "</color>"
       currentPrice = "<color=@goodTextColor>" + currentPrice + "</color>"
@@ -339,7 +343,7 @@ let function getItemDescTbl(unit, item, params = null, effect = null, updateEffe
     if (avgCost)
       addDesc += "\n" + loc("shop/avg_repair_cost") + ::nbsp
         + (avgCost > 0 ? "+" : "")
-        + ::Cost(avgCost).toStringWithParams({ isWpAlwaysShown = true, isColored = false })
+        + Cost(avgCost).toStringWithParams({ isWpAlwaysShown = true, isColored = false })
   }
 
   if (hasPlayerInfo) {
@@ -384,13 +388,13 @@ let function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect =
       if (is_researching || is_paused)
         expText = loc("currency/researchPoints/name") + loc("ui/colon") +
           colorize("activeTextColor",
-            ::Cost().setRp(curExp).toStringWithParams({ isRpAlwaysShown = true }) +
-            loc("ui/slash") + ::Cost().setRp(item.reqExp).tostring())
+            Cost().setRp(curExp).toStringWithParams({ isRpAlwaysShown = true }) +
+            loc("ui/slash") + Cost().setRp(item.reqExp).tostring())
       else
         expText = loc("shop/required_rp") + " " + "<color=@activeTextColor>" +
-          ::Cost().setRp(item.reqExp).tostring() + "</color>"
+          Cost().setRp(item.reqExp).tostring() + "</color>"
 
-      let diffExp = ::Cost().setRp(getTblValue("diffExp", params, 0)).tostring()
+      let diffExp = Cost().setRp(getTblValue("diffExp", params, 0)).tostring()
       if (diffExp.len())
         expText += " (+" + diffExp + ")"
       descTbl.expText <- expText
@@ -399,7 +403,7 @@ let function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect =
   else if (params?.hasPlayerInfo ?? true)
     descTbl.showPrice <- ("currentPrice" in descTbl) || ("noDiscountPrice" in descTbl)
 
-  let data = ::handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"), descTbl)
+  let data = handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"), descTbl)
   obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 }
 

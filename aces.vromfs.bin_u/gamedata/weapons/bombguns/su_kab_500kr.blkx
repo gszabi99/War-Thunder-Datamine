@@ -16,16 +16,16 @@
     "dragCx": 0.025,
     "caliber": 0.35,
     "length": 3.05,
-    "distFromCmToStab": 0.1,
-    "CxK": 1.6,
+    "distFromCmToStab": 0.55,
+    "CxK": 1.7,
     "WdK": [
-      0.1,
-      0.1,
-      0.1
+      2.5,
+      2.5,
+      2.5
     ],
-    "wingAreaMult": 1.2,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
+    "wingAreaMult": 1.8,
+    "finsAoaHor": 0.2,
+    "finsAoaVer": 0.2,
     "isHasTVChannel": true,
     "guidanceType": "ir",
     "opticSightFov": [
@@ -116,7 +116,7 @@
         "lockAngleMax": 55.0,
         "angleMax": 58.0,
         "rateMax": 7.0,
-        "prolongationTimeMax": 1.0,
+        "prolongationTimeMax": 2.5,
         "designationSourceTypeMask": 1,
         "constantDesignationSourceTypeMask": 0,
         "aircraftAsTarget": false,
@@ -124,37 +124,35 @@
         "surfaceAsTarget": true
       },
       "guidanceAutopilot": {
+        "loftEnabled": true,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -40.0,
+        "loftAngleToAccelMult": 0.001,
+        "loftTargetOmegaMax": 0.75,
         "timeToGain0": [
-          0.0,
-          1.0
+          0.09,
+          0.0
         ],
         "timeToGain1": [
-          40.0,
+          0.1,
           1.0
         ],
         "timeToGain2": [
+          40.0,
+          1.0
+        ],
+        "timeToGain3": [
           40.1,
           0.0
         ],
-        "timeToGain3": [
-          60.0,
-          0.0
-        ],
-        "baseIndSpeed": 1300.0,
-        "angleToAccelMult": 0.0,
-        "omegaToAccelMult": 3.5,
-        "elevationAdd": 3.5,
-        "reqAccelMax": 4.5,
-        "accelControlProp": 0.1,
-        "accelControlIntg": 0.05,
+        "baseIndSpeed": 1800.0,
+        "propNavMult": 4.0,
+        "reqAccelMax": 3.5,
+        "accelControlProp": 0.0451,
+        "accelControlIntg": 0.1276,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.1
+        "accelControlDiff": 0.0003
       }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18,
-      "timeFire": 0.0
     },
     "shatterCollisions": {
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",

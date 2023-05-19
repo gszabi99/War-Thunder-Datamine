@@ -6,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -32,7 +34,7 @@ global enum MIS_PROGRESS { //value received from get_mission_progress
 
 let needCheckForVictory = Watched(false)
 
-::g_script_reloader.registerPersistentData("MissionsUtilsGlobals", getroottable(),
+g_script_reloader.registerPersistentData("MissionsUtilsGlobals", getroottable(),
   [
     "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
   ])
@@ -311,7 +313,7 @@ let needCheckForVictory = Watched(false)
   ::enable_coop_in_QMB            = hasFeature(isPlatformSony ? "QmbCoopPs4"            : "QmbCoopPc")
   ::enable_coop_in_SingleMissions = hasFeature(isPlatformSony ? "SingleMissionsCoopPs4" : "SingleMissionsCoopPc")
   ::enable_custom_battles         = hasFeature(isPlatformSony ? "CustomBattlesPs4"      : "CustomBattlesPc")
-  ::broadcastEvent("GameModesAvailability")
+  broadcastEvent("GameModesAvailability")
 }
 
 ::get_mission_name <- function get_mission_name(missionId, config, locNameKey = "locName") {

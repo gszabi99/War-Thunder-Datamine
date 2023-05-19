@@ -45,6 +45,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "radarAnimVar": "radar_drive",
+  "radarAnimPitchVar": "radar_drive2",
   "radarDeployTime": 5.0,
   "radarAntenaSpeed": 720.0,
   "type": "typeSPAA",
@@ -1800,16 +1801,16 @@
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -4.0,
           -4.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilMultiplier": 0.2,
         "recoilOffset": 0.045,
@@ -1917,16 +1918,16 @@
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -8.0,
           -4.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilMultiplier": 0.2,
         "recoilOffset": 0.045,
@@ -2090,7 +2091,9 @@
       "node": [
         "antenna_target_location",
         "antenna_target_location_mount",
-        "ex_armor_05"
+        "ex_armor_05",
+        "bone_roll_01",
+        "bone_roll_02"
       ]
     }
   },
@@ -3029,16 +3032,16 @@
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_01",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_01",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -4.0,
                 -4.0
               ],
-              "linkSleeveToGun": true,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "recoilMultiplier": 0.2,
               "recoilOffset": 0.045,
@@ -3146,16 +3149,16 @@
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_02",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_02",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -8.0,
                 -4.0
               ],
-              "linkSleeveToGun": true,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "recoilMultiplier": 0.2,
               "recoilOffset": 0.045,
@@ -3373,7 +3376,9 @@
             "node": [
               "antenna_target_location",
               "antenna_target_location_mount",
-              "ex_armor_05"
+              "ex_armor_05",
+              "bone_roll_01",
+              "bone_roll_02"
             ]
           }
         }

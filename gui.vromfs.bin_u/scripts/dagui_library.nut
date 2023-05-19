@@ -37,6 +37,8 @@ let is_platform_windows = ["win32", "win64"].contains(platformId)
 let is_platform_android = platformId == "android"
 let is_platform_xbox = platformId == "xboxOne" || platformId == "xboxScarlett"
 
+let getAircraftByName = @(name) getroottable()?["all_units"][name]
+
 return log.__merge({
   platformId
   is_platform_pc
@@ -63,6 +65,9 @@ return log.__merge({
   //function tools
   kwarg
   memoize
+
+  //some ugly stuff
+  getAircraftByName
 })
 
 

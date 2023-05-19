@@ -1575,12 +1575,12 @@
         "blk": "gameData/Weapons/groundModels_weapons/20mm_akan_m47_D_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
         "openHatchTime": 0.3,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -2.0,
           3.0
@@ -1927,13 +1927,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2044,6 +2044,26 @@
           },
           {
             "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
           }
         ]
       }
@@ -2876,12 +2896,12 @@
               "blk": "gameData/Weapons/groundModels_weapons/20mm_akan_m47_D_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
               "openHatchTime": 0.3,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -2.0,
                 3.0

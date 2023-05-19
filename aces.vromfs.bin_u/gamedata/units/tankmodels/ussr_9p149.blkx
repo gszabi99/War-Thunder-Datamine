@@ -1562,17 +1562,17 @@
         "emitter": "bone_rocket_01",
         "reloadAnimVar": "9p149_action",
         "recoilMultiplier": 0.01,
-        "sleeveEmitter": "bone_rocket_01",
-        "sleeveMesh": "9m114_rocket_container",
+        "shellCasingEmitter": "bone_rocket_01",
+        "shellCasingMesh": "9m114_rocket_container",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 15.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 15.0,
+        "shellCasingImpulse": [
           0.0,
           1.0,
           0.0
         ],
-        "linkSleeveToGun": true,
-        "needScaleSleeve": false,
+        "linkShellCasingToGun": true,
+        "needScaleShellCasing": false,
         "stopForFire": true,
         "readyToFireVar": "9p149_close_action",
         "readyToFireTime": 2.5,
@@ -1880,13 +1880,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2811,6 +2811,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

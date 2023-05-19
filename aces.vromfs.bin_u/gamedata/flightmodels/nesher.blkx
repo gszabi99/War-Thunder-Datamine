@@ -10,7 +10,7 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "gyroscopicSightOverSensors": true,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
@@ -533,6 +533,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -544,6 +556,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -602,6 +626,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -639,6 +669,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -660,6 +696,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -701,6 +743,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2266,6 +2314,10 @@
         "blk": "gameData/FlightModels/weaponPresets/nesher_mk82.blk"
       },
       {
+        "name": "nesher_mk82_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/nesher_mk82_snakeye.blk"
+      },
+      {
         "name": "nesher_mk83",
         "blk": "gameData/FlightModels/weaponPresets/nesher_mk83.blk"
       },
@@ -2489,6 +2541,25 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag_group",
+            "name": "ter_mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_wing_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/fr_500lb_mk_82_250_snakeye_x3_ter9a_1.blk",
+              "emitter": "pylon_ter_iaf_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle_group_x2",
             "name": "ter_us_750lb_m117_cone_45_x2_left_wing",
             "reqModification": "us_750lb_m117a1",
@@ -2630,6 +2701,26 @@
             }
           },
           {
+            "iconType": "bombs_small_high_drag",
+            "name": "pylon_c2_f5_fr_samp_mk_82_250_ldgp_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_samp_mk_82_250_ldgp_snakeye.blk",
+              "emitter": "pylon_5f_001_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "pylon_c2_f5_us_750lb_m117_cone_45",
             "reqModification": "us_750lb_m117a1",
@@ -2676,19 +2767,34 @@
         "tier": 6,
         "order": 7,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_small_group_x5",
-          "name": "napgach_us_500lb_mk_82_ldgp_x5",
-          "reqModification": "us_500lb_mk82",
-          "Weapon": {
-            "trigger": "bombs",
-            "blk": "gameData/Weapons/containers/napgach_us_500lb_mk_82_ldgp_x5.blk",
-            "emitter": "pylon_napgach",
-            "external": true,
-            "separate": true,
-            "machLimit": 1.01
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x5",
+            "name": "napgach_us_500lb_mk_82_ldgp_x5",
+            "reqModification": "us_500lb_mk82",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/napgach_us_500lb_mk_82_ldgp_x5.blk",
+              "emitter": "pylon_napgach",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x5",
+            "name": "napgach_fr_samp_mk_82_250_ldgp_snakeye_x5",
+            "reqModification": "us_500lb_mk82",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/napgach_fr_samp_mk_82_250_ldgp_snakeye_x5.blk",
+              "emitter": "pylon_napgach",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
-        }
+        ]
       },
       {
         "index": 5,
@@ -2709,6 +2815,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "pylon_5f_002_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag",
+            "name": "pylon_c2_f5_fr_samp_mk_82_250_ldgp_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_samp_mk_82_250_ldgp_snakeye.blk",
               "emitter": "pylon_5f_002_bomb_001",
               "external": true,
               "separate": true,
@@ -2811,6 +2937,25 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/ter_us_500lb_mk_82_x3.blk",
+              "emitter": "pylon_ter_iaf_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group",
+            "name": "ter_mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_wing_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/fr_500lb_mk_82_250_snakeye_x3_ter9a_1.blk",
               "emitter": "pylon_ter_iaf_002",
               "external": true,
               "separate": true,

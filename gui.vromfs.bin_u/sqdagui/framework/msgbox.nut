@@ -4,7 +4,7 @@
 let { format } = require("string")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { get_time_msec } = require("dagor.time")
-let broadcastEvent = require("%sqStdLibs/helpers/subscriptions.nut").broadcast
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { stripTags } =  require("%sqstd/string.nut")
 
 ::scene_msg_boxes_list <- [] //FIX ME need to make it part of handler manager

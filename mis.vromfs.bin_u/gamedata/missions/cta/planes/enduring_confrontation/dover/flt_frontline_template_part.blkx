@@ -1,0 +1,414 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "flt_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/enduring_confrontation/flt_frontline_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/enduring_confrontation/dover/frontline/flt_frontline_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/enduring_confrontation/ad_air_dom_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/enduring_confrontation/dover/frontline/flt_sea_spawns_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "flt_parts_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "ogranichivaem kolichestvo bitv"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": "zapreshchaem generirovanie nachal'nogo stejta"
+          },
+          {
+            "value": "tak kak slozhnaya lokaciya"
+          },
+          {
+            "value": "ukazhem stejty vruchnuyu"
+          },
+          {
+            "value": "umen'shaem boevuyu zonu"
+          },
+          {
+            "value": "nastrojki frontlajna"
+          },
+          {
+            "value": "kolichestvo col i row"
+          },
+          {
+            "value": "vyschityvaem obshchee kolichestvo zon"
+          },
+          {
+            "value": "pomechaem zony komandy A"
+          },
+          {
+            "value": "pomechaem zony komandy B"
+          },
+          {
+            "value": "pomechaem zony morskimi"
+          },
+          {
+            "value": "pomechaem zony komand (v cikle po algoritmu)"
+          },
+          {
+            "value": "risuem liniyu fronta"
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetInt": [
+          {
+            "value": 2,
+            "var": "lbt_battle_max_battle_num"
+          },
+          {
+            "value": 10,
+            "var": "flt_big_aaa_weight"
+          },
+          {
+            "value": 10,
+            "var": "flt_small_aaa_weight"
+          },
+          {
+            "value": 20,
+            "var": "flt_art_weight"
+          },
+          {
+            "value": 50,
+            "var": "flt_tank_weight"
+          },
+          {
+            "value": 7,
+            "var": "flt_zones_in_row"
+          },
+          {
+            "value": 7,
+            "var": "flt_zones_in_col"
+          },
+          {
+            "value": 0,
+            "var": "flt_total_zones"
+          },
+          {
+            "value": 1,
+            "var": [
+              "flt_area_02_state",
+              "flt_area_03_state",
+              "flt_area_04_state",
+              "flt_area_08_state",
+              "flt_area_09_state",
+              "flt_area_10_state",
+              "flt_area_11_state",
+              "flt_area_15_state",
+              "flt_area_16_state",
+              "flt_area_17_state"
+            ]
+          },
+          {
+            "value": 2,
+            "var": [
+              "flt_area_27_state",
+              "flt_area_28_state",
+              "flt_area_33_state",
+              "flt_area_34_state",
+              "flt_area_35_state",
+              "flt_area_36_state",
+              "flt_area_40_state",
+              "flt_area_41_state",
+              "flt_area_42_state",
+              "flt_area_47_state",
+              "flt_area_48_state",
+              "flt_area_49_state"
+            ]
+          },
+          {
+            "value": 0,
+            "var": [
+              "flt_area_01_state",
+              "flt_area_05_state",
+              "flt_area_06_state",
+              "flt_area_07_state",
+              "flt_area_12_state",
+              "flt_area_13_state",
+              "flt_area_14_state",
+              "flt_area_18_state",
+              "flt_area_19_state",
+              "flt_area_20_state",
+              "flt_area_21_state",
+              "flt_area_22_state",
+              "flt_area_23_state",
+              "flt_area_24_state",
+              "flt_area_25_state",
+              "flt_area_26_state",
+              "flt_area_29_state",
+              "flt_area_30_state",
+              "flt_area_31_state",
+              "flt_area_32_state",
+              "flt_area_36_state",
+              "flt_area_37_state",
+              "flt_area_38_state",
+              "flt_area_39_state",
+              "flt_area_43_state",
+              "flt_area_44_state",
+              "flt_area_45_state",
+              "flt_area_46_state"
+            ]
+          }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "flt_disable_state_filling"
+        },
+        "missionBattleArea": {
+          "air": true,
+          "ground": true,
+          "mapArea": false,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "airMapArea": true,
+          "area": "flt_battle_area",
+          "newGridHorizontalCellCount": 7
+        },
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 0.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "mul",
+            "value": 3.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col"
+          }
+        ],
+        "varSetString": {
+          "value": "sea",
+          "var": [
+            "flt_area_01_type",
+            "flt_area_05_type",
+            "flt_area_06_type",
+            "flt_area_07_type",
+            "flt_area_12_type",
+            "flt_area_13_type",
+            "flt_area_14_type",
+            "flt_area_18_type",
+            "flt_area_19_type",
+            "flt_area_20_type",
+            "flt_area_21_type",
+            "flt_area_22_type",
+            "flt_area_23_type",
+            "flt_area_24_type",
+            "flt_area_25_type",
+            "flt_area_26_type",
+            "flt_area_29_type",
+            "flt_area_30_type",
+            "flt_area_31_type",
+            "flt_area_32_type",
+            "flt_area_36_type",
+            "flt_area_37_type",
+            "flt_area_38_type",
+            "flt_area_39_type",
+            "flt_area_43_type",
+            "flt_area_44_type",
+            "flt_area_45_type",
+            "flt_area_46_type"
+          ]
+        },
+        "triggerEnable": [
+          {
+            "target": "flt_army_state_start"
+          },
+          {
+            "target": "flt_draw_frontline"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": {
+      "name": "flt_armada",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1886.8,
+          1388.0,
+          -6765.8
+        ]
+      ],
+      "unit_class": "yak-1_early",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 1,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
+    }
+  },
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

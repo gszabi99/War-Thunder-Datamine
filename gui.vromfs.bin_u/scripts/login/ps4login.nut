@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
@@ -31,7 +33,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 
     this.isAutologin = !(getroottable()?.disable_autorelogin_once ?? false)
 
-    let data = ::handyman.renderCached("%gui/commonParts/button.tpl", {
+    let data = handyman.renderCached("%gui/commonParts/button.tpl", {
       id = "authorization_button"
       text = "#HUD_PRESS_A_CNT"
       shortcut = "A"
@@ -118,5 +120,5 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 }
 
 ::on_ps4_autologin <- function on_ps4_autologin() {
-  ::broadcastEvent("Ps4AutoLoginRequested")
+  broadcastEvent("Ps4AutoLoginRequested")
 }

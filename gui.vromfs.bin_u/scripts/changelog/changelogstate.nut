@@ -114,7 +114,7 @@ let function filterVersions(vers) {
 let function processPatchnotesList(response) {
   let status = response?.status ?? -1
   let http_code = response?.http_code ?? -1
-  if (status != http.SUCCESS || http_code < 200 || 300 <= http_code) {
+  if (status != http.HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_versions_receive_errors", {
       reason = "Error in version response"
       stage = "get_versions"
@@ -210,7 +210,7 @@ let function afterGetRequestedPatchnote(result) {
 let function cachePatchnote(response) {
   let status = response?.status ?? -1
   let http_code = response?.http_code ?? -1
-  if (status != http.SUCCESS || http_code < 200 || 300 <= http_code) {
+  if (status != http.HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
     logError("changelog_receive_errors", {
       reason = "Error in patchnotes response"
       stage = "get_patchnote",

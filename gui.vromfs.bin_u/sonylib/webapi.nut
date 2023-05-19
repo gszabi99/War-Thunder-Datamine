@@ -1,6 +1,6 @@
 let DataBlock = require("DataBlock")
-let json = require_optional("json")
-let toJson = json?.to_string ?? getroottable()?.save_to_json
+let {json_to_string=null} = require_optional("json")
+let toJson = json_to_string ?? getroottable()?.save_to_json
 
 assert(toJson!=null, "no json module found")
 
@@ -9,8 +9,10 @@ let {abortAllPendingRequests= @() null,
   getPreferredVersion = @() 2,
   subscribeToBlocklistUpdates= @(...) null,
   subscribeToFriendsUpdates = @(...) null,
+  subscribeToPresenceUpdates = @(...) null,
   unsubscribeFromBlocklistUpdates = @(...) null,
-  unsubscribeFromFriendsUpdates = @(...) null
+  unsubscribeFromFriendsUpdates = @(...) null,
+  unsubscribeFromPresenceUpdates = @(...) null,
   } = nativeApi
 
 let nativeSend = nativeApi?.send ?? @(...) null
@@ -425,6 +427,9 @@ return {
     friendslist = unsubscribeFromFriendsUpdates
     blocklist = unsubscribeFromBlocklistUpdates
   }
+
+  subscribeToPresenceUpdates
+  unsubscribeFromPresenceUpdates
 
   serviceLabel = platformId == "ps5"? 1 : 0
 }

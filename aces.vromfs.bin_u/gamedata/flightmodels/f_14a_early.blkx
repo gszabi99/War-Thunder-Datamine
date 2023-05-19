@@ -13,12 +13,12 @@
   "disableExhaustFxIfContrailIsActive": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ilsF14": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
@@ -344,6 +344,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -355,6 +367,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -373,6 +397,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -384,6 +420,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -561,6 +609,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -598,6 +652,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -619,6 +679,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -660,6 +726,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2039,11 +2111,11 @@
       ],
       "fuel_consume": [
         0.0,
-        100.0
+        500.0
       ],
       "fuel_consume1": [
         0.0,
-        100.0
+        500.0
       ],
       "rpm": [
         0.0,
@@ -2208,7 +2280,8 @@
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
             "ilsColor": "Cv8KZA==",
-            "nightColor": "/woKZA=="
+            "nightColor": "/woKZA==",
+            "lineWidthScale": 0.7
           }
         }
       ]
@@ -2298,6 +2371,14 @@
         "blk": "gameData/FlightModels/weaponPresets/f_14a_early_mk84.blk"
       },
       {
+        "name": "f_14a_early_mk82_air",
+        "blk": "gameData/FlightModels/weaponPresets/f_14a_early_mk82_air.blk"
+      },
+      {
+        "name": "f_14a_early_mk83_air",
+        "blk": "gameData/FlightModels/weaponPresets/f_14a_early_mk83_air.blk"
+      },
+      {
         "name": "f_14a_early_lau_10a",
         "blk": "gameData/FlightModels/weaponPresets/f_14a_early_lau_10a.blk"
       }
@@ -2360,7 +2441,8 @@
               "flash": "flare1",
               "dm": "cannon1_dm",
               "bullets": 676,
-              "spread": 1.0
+              "spread": 1.0,
+              "rotationAnimScale": "gun_rotate_01:CRS"
             }
           },
           {
@@ -2373,7 +2455,8 @@
                 "flash": "flare1",
                 "dm": "cannon1_dm",
                 "bullets": 676,
-                "spread": 1.0
+                "spread": 1.0,
+                "rotationAnimScale": "gun_rotate_01:CRS"
               },
               {
                 "trigger": "countermeasures",
@@ -2602,7 +2685,7 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim7e2_dogfight_sparrow.blk",
-              "emitter": "aim_7_3",
+              "emitter": "aim_7_4",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2677,6 +2760,14 @@
               {
                 "slot": 4,
                 "preset": "us_mk84_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "us_mk82_air_x8"
+              },
+              {
+                "slot": 4,
+                "preset": "us_mk83_air_x2"
               }
             ]
           },
@@ -2721,14 +2812,12 @@
               "node": [
                 "pylon_phoenix3",
                 "pylon_phoenix5",
-                "pylon_mk82_1",
-                "pylon_mk82_2",
-                "pylon_mk82_3",
-                "pylon_mk82_4",
-                "pylon_mk82_5",
-                "pylon_mk82_6",
-                "pylon_mk82_7",
-                "pylon_mk82_8"
+                "pylon_mk82_9",
+                "pylon_mk82_10",
+                "pylon_mk82_11",
+                "pylon_mk82_12",
+                "pylon_mk82_13",
+                "pylon_mk82_14"
               ]
             },
             "Weapon": [
@@ -2790,14 +2879,12 @@
               "node": [
                 "pylon_phoenix3",
                 "pylon_phoenix5",
-                "pylon_mk82_1",
-                "pylon_mk82_2",
-                "pylon_mk82_3",
-                "pylon_mk82_4",
-                "pylon_mk82_5",
-                "pylon_mk82_6",
-                "pylon_mk82_7",
-                "pylon_mk82_8"
+                "pylon_mk82_9",
+                "pylon_mk82_10",
+                "pylon_mk82_11",
+                "pylon_mk82_12",
+                "pylon_mk82_13",
+                "pylon_mk82_14"
               ]
             },
             "Weapon": [
@@ -2906,6 +2993,104 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+                "emitter": "2000lb_mk_84_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "us_mk82_air_x6",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix3",
+                "pylon_phoenix5",
+                "pylon_mk82_9",
+                "pylon_mk82_10",
+                "pylon_mk82_11",
+                "pylon_mk82_12",
+                "pylon_mk82_13",
+                "pylon_mk82_14"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_013",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_014",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_009",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_010",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_011",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_012",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "us_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix3",
+                "pylon_phoenix5",
+                "pylon_mk84_3",
+                "pylon_mk84_4"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+                "emitter": "2000lb_mk_84_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
                 "emitter": "2000lb_mk_84_004",
                 "bullets": 1,
                 "external": true,
@@ -3022,12 +3207,14 @@
               "node": [
                 "pylon_phoenix2",
                 "pylon_phoenix4",
-                "pylon_mk82_9",
-                "pylon_mk82_10",
-                "pylon_mk82_11",
-                "pylon_mk82_12",
-                "pylon_mk82_13",
-                "pylon_mk82_14"
+                "pylon_mk82_1",
+                "pylon_mk82_2",
+                "pylon_mk82_3",
+                "pylon_mk82_4",
+                "pylon_mk82_5",
+                "pylon_mk82_6",
+                "pylon_mk82_7",
+                "pylon_mk82_8"
               ]
             },
             "Weapon": [
@@ -3105,12 +3292,14 @@
               "node": [
                 "pylon_phoenix2",
                 "pylon_phoenix4",
-                "pylon_mk82_9",
-                "pylon_mk82_10",
-                "pylon_mk82_11",
-                "pylon_mk82_12",
-                "pylon_mk82_13",
-                "pylon_mk82_14"
+                "pylon_mk82_1",
+                "pylon_mk82_2",
+                "pylon_mk82_3",
+                "pylon_mk82_4",
+                "pylon_mk82_5",
+                "pylon_mk82_6",
+                "pylon_mk82_7",
+                "pylon_mk82_8"
               ]
             },
             "Weapon": [
@@ -3235,6 +3424,122 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+                "emitter": "2000lb_mk_84_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x8",
+            "name": "us_mk82_air_x8",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix2",
+                "pylon_phoenix4",
+                "pylon_mk82_1",
+                "pylon_mk82_2",
+                "pylon_mk82_3",
+                "pylon_mk82_4",
+                "pylon_mk82_5",
+                "pylon_mk82_6",
+                "pylon_mk82_7",
+                "pylon_mk82_8"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_006",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_007",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_008",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_air.blk",
+                "emitter": "500lb_mk_82_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "us_mk83_air_x2",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix2",
+                "pylon_phoenix4",
+                "pylon_mk84_1",
+                "pylon_mk84_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
+                "emitter": "2000lb_mk_84_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
                 "emitter": "2000lb_mk_84_002",
                 "bullets": 1,
                 "external": true,

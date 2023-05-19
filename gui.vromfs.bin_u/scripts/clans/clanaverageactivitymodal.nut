@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { round } = require("math")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
@@ -41,7 +43,7 @@ let PROGRESS_PARAMS = {
     if (this.clanData.maxClanActivity > 0) {
       let maxActivity = maxMemberActivity * this.clanData.members.len()
       let limitClanActivity = min(maxActivity, this.clanData.maxClanActivity)
-      let myActivity = ::u.search(this.clanData.members,
+      let myActivity = u.search(this.clanData.members,
         @(member) member.uid == ::my_user_id_str)?.curPeriodActivity ?? 0
       let clanActivity = this.getClanActivity()
 
@@ -85,7 +87,7 @@ let PROGRESS_PARAMS = {
         view = {
           clan_activity_header_text = loc("clan/my_activity_in_period",
             { activity = myActivity.tostring() + loc("ui/slash") + maxMemberActivity.tostring() })
-          clan_activity_description = ::g_string.implode(descrArray, "\n")
+          clan_activity_description = "\n".join(descrArray, true)
           rows = [
             {
               title = loc("clan/squadron_activity")
@@ -149,7 +151,7 @@ let PROGRESS_PARAMS = {
       }
     }
 
-    let data = ::handyman.renderCached("%gui/clans/clanAverageActivityModal.tpl", view)
+    let data = handyman.renderCached("%gui/clans/clanAverageActivityModal.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 

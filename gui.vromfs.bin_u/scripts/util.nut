@@ -1,9 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
@@ -12,7 +18,7 @@ let { rnd } = require("dagor.random")
 let { json_to_string } = require("json")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
-let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
+let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
 let time = require("%scripts/time.nut")
 let penalty = require("penalty")
 let { isPlatformSony, getPlayerName } = require("%scripts/clientState/platform.nut")
@@ -27,6 +33,8 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
+let { hangar_enable_controls } = require("hangar")
+let { stripTags, cutPrefix, isStringFloat } = require("%sqstd/string.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
@@ -49,7 +57,7 @@ const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 
 local gui_start_logout_scheduled = false
 
-::g_script_reloader.registerPersistentData("util", getroottable(),
+g_script_reloader.registerPersistentData("util", getroottable(),
   ["current_campaign_id", "current_campaign_mission"])
 
 ::nbsp <- " " // Non-breaking space character
@@ -89,7 +97,7 @@ foreach (i, v in ::cssColorsMapDark)
 }
 
 ::locOrStrip <- function locOrStrip(text) {
-  return (text.len() && text.slice(0, 1) != "#") ? ::g_string.stripTags(text) : text
+  return (text.len() && text.slice(0, 1) != "#") ? stripTags(text) : text
 }
 
 let function get_gamepad_specific_localization(locId) {
@@ -111,11 +119,6 @@ let function get_gamepad_specific_localization(locId) {
 ::getCompoundedText <- function getCompoundedText(firstPart, secondPart, color) {
   return "".concat(firstPart, colorize(color, secondPart))
 }
-
-::getAircraftByName <- function getAircraftByName(name) {
-  return ::all_units?[name]
-}
-
 
 ::current_wait_screen_txt <- ""
 ::show_wait_screen <- function show_wait_screen(txt) {
@@ -145,7 +148,7 @@ let function get_gamepad_specific_localization(locId) {
 
   obj.setValue(loc(txt))
   ::current_wait_screen_txt = txt
-  ::broadcastEvent("WaitBoxCreated")
+  broadcastEvent("WaitBoxCreated")
 }
 
 ::close_wait_screen <- function close_wait_screen() {
@@ -157,7 +160,7 @@ let function get_gamepad_specific_localization(locId) {
   guiScene.destroyElement(::current_wait_screen)
   ::current_wait_screen = null
   ::reset_msg_box_check_anim_time()
-  ::broadcastEvent("ModalWndDestroy")
+  broadcastEvent("ModalWndDestroy")
 
   guiScene.performDelayed(getroottable(), ::update_msg_boxes)
 }
@@ -187,7 +190,7 @@ let function on_lost_psn() {
 
   if (!::isInMenu()) {
     gui_start_logout_scheduled = true
-    ::destroy_session_scripted()
+    ::destroy_session_scripted("on lost psn while not in menu")
     quit_to_debriefing()
     interrupt_multiplayer(true)
   }
@@ -196,7 +199,7 @@ let function on_lost_psn() {
     ::add_msg_box("lost_live", loc("yn1/disconnection/psn"), [["ok",
         function() {
           ::in_on_lost_psn = false
-          ::destroy_session_scripted()
+          ::destroy_session_scripted("after 'on lost psn' message")
           startLogout()
         }
         ]], "ok")
@@ -313,7 +316,7 @@ let function on_lost_psn() {
 }
 
 ::getShopCountry <- function getShopCountry(airName) {
-  let air = ::getAircraftByName(airName)
+  let air = getAircraftByName(airName)
   return air?.shopCountry ?? ""
 }
 
@@ -438,7 +441,7 @@ let function getPriceText(wp, gold = 0, colored = true, showWp = false, showGold
 }
 
 ::getPriceAccordingToPlayersCurrency <- function getPriceAccordingToPlayersCurrency(wpCurrency, eaglesCurrency, colored = true) {
-  let cost = ::Cost(wpCurrency, eaglesCurrency)
+  let cost = Cost(wpCurrency, eaglesCurrency)
   if (colored)
     return cost.getTextAccordingToBalance()
   return cost.getUncoloredText()
@@ -500,21 +503,21 @@ let function getPriceText(wp, gold = 0, colored = true, showWp = false, showGold
   if (!id)
     return null
 
-  return ::g_string.cutPrefix(id, prefix)
+  return cutPrefix(id, prefix)
 }
 
 ::getTooltipObjId <- function getTooltipObjId(obj) {
   return obj?.tooltipId ?? ::getObjIdByPrefix(obj, "tooltip_")
 }
 
-::is_hangar_controls_enabled <- false
+local is_hangar_controls_enabled = false
 ::enableHangarControls <- function enableHangarControls(value, save = true) {
-  ::hangar_enable_controls(value)
+  hangar_enable_controls(value)
   if (save)
-    ::is_hangar_controls_enabled = value
+    is_hangar_controls_enabled = value
 }
 ::restoreHangarControls <- function restoreHangarControls() {
-  ::hangar_enable_controls(::is_hangar_controls_enabled)
+  hangar_enable_controls(is_hangar_controls_enabled)
 }
 
 ::array_to_blk <- function array_to_blk(arr, id) {
@@ -541,7 +544,7 @@ let function getPriceText(wp, gold = 0, colored = true, showWp = false, showGold
 
 ::build_blk_from_container <- function build_blk_from_container(container, arrayKey = "array") {
   let blk = DataBlock()
-  let isContainerArray = ::u.isArray(container)
+  let isContainerArray = u.isArray(container)
 
   local addValue = ::assign_value_to_blk
   if (isContainerArray)
@@ -550,7 +553,7 @@ let function getPriceText(wp, gold = 0, colored = true, showWp = false, showGold
   foreach (key, value in container) {
     local newValue = value
     let index = isContainerArray ? arrayKey : key.tostring()
-    if (::u.isTable(value) || ::u.isArray(value))
+    if (u.isTable(value) || u.isArray(value))
       newValue = ::build_blk_from_container(value, arrayKey)
 
     addValue(blk, index, newValue)
@@ -611,7 +614,7 @@ let function getPriceText(wp, gold = 0, colored = true, showWp = false, showGold
     view.cell.append(config)
   }
 
-  return ::handyman.renderCached("%gui/commonParts/tableRow.tpl", view)
+  return handyman.renderCached("%gui/commonParts/tableRow.tpl", view)
 }
 
 ::buildTableRowNoPad <- function buildTableRowNoPad(rowName, rowData, even = null, trParams = "") {
@@ -840,13 +843,6 @@ const MAX_ROMAN_DIGIT = 3
   return result;
 }
 
-::scene_objects_under_cursor <- function scene_objects_under_cursor() {
-  local db = DataBlock();
-  ::get_scene_objects_under_cursor(db);
-  //TODO:
-}
-
-
 ::isProductionCircuit <- function isProductionCircuit() {
   return ::get_cur_circuit_name().indexof("production") != null
 }
@@ -863,7 +859,7 @@ const MAX_ROMAN_DIGIT = 3
   local paginatorObj = nest_obj.findObject("paginator_container")
 
   if (!checkObj(paginatorObj)) {
-    let paginatorMarkUpData = ::handyman.renderCached(paginatorTpl, { hasSimpleNavButtons = hasSimpleNavButtons })
+    let paginatorMarkUpData = handyman.renderCached(paginatorTpl, { hasSimpleNavButtons = hasSimpleNavButtons })
     paginatorObj = guiScene.createElement(nest_obj, "paginator", handler)
     guiScene.replaceContentFromText(paginatorObj, paginatorMarkUpData, paginatorMarkUpData.len(), handler)
   }
@@ -955,7 +951,7 @@ const MAX_ROMAN_DIGIT = 3
     ::add_bg_task_cb(taskId, (@(oldPenaltyStatus) function() {
       let  newPenaltyStatus = penalty.getPenaltyStatus()
       if (newPenaltyStatus.status != oldPenaltyStatus.status || newPenaltyStatus.duration != oldPenaltyStatus.duration)
-        ::broadcastEvent("PlayerPenaltyStatusChanged", { status = newPenaltyStatus.status })
+        broadcastEvent("PlayerPenaltyStatusChanged", { status = newPenaltyStatus.status })
     })(oldPenaltyStatus))
   }
 }
@@ -1224,7 +1220,7 @@ local server_message_end_time = 0
 ::show_aas_notify <- function show_aas_notify(text, timeseconds) {
   server_message_text = loc(text)
   server_message_end_time = get_time_msec() + timeseconds * 1000
-  ::broadcastEvent("ServerMessage")
+  broadcastEvent("ServerMessage")
   ::update_gamercards()
 }
 
@@ -1262,7 +1258,7 @@ local server_message_end_time = 0
 }
 
 ::to_integer_safe <- function to_integer_safe(value, defValue = 0, needAssert = true) {
-  if (!::is_numeric(value) && (!::u.isString(value) || !::g_string.isStringFloat(value))) {
+  if (!::is_numeric(value) && (!u.isString(value) || !isStringFloat(value))) {
     if (needAssert)
       ::script_net_assert_once("to_int_safe", $"can't convert '{value}' to integer")
     return defValue
@@ -1272,7 +1268,7 @@ local server_message_end_time = 0
 
 ::to_float_safe <- function to_float_safe(value, defValue = 0, needAssert = true) {
   if (!::is_numeric(value)
-    && (!::u.isString(value) || !::g_string.isStringFloat(value))) {
+    && (!u.isString(value) || !isStringFloat(value))) {
     if (needAssert)
       ::script_net_assert_once("to_float_safe", "can't convert '" + value + "' to float")
     return defValue
@@ -1290,7 +1286,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 }
 
 ::inherit_table <- function inherit_table(parent_table, child_table) {
-  return ::u.extend(::u.copy(parent_table), child_table)
+  return u.extend(u.copy(parent_table), child_table)
 }
 
 ::is_mode_with_teams <- function is_mode_with_teams(gt = null) {
@@ -1356,12 +1352,12 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   }
 }
 
-::destroy_session_scripted <- function destroy_session_scripted() {
+::destroy_session_scripted <- function destroy_session_scripted(sourceInfo) {
   let needEvent = is_mplayer_peer()
-  ::destroy_session()
+  destroy_session(sourceInfo)
   if (needEvent)
     //need delay after destroy session before is_multiplayer become false
-    ::handlersManager.doDelayed(@() ::broadcastEvent("SessionDestroyed"))
+    ::handlersManager.doDelayed(@() broadcastEvent("SessionDestroyed"))
 }
 
 ::show_not_available_msg_box <- function show_not_available_msg_box() {

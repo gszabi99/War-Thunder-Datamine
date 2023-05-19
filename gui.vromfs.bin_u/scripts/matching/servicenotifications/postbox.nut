@@ -3,8 +3,10 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-::matching_rpc_subscribe("postbox.notify_mail", @(p) ::broadcastEvent("PostboxNewMsg", p))
+matchingRpcSubscribe("postbox.notify_mail", @(p) broadcastEvent("PostboxNewMsg", p))
 
 return {
   addMail = @(data, succCb = null, errCb = null, reqOpt = null)

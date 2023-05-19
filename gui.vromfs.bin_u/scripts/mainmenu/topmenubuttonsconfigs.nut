@@ -434,7 +434,7 @@ let list = {
   }
   EULA = {
     text = @() "#mainmenu/licenseAgreement"
-    onClickFunc = @(_obj, _handler) ::gui_start_eula(::TEXT_EULA, true)
+    onClickFunc = @(_obj, _handler) ::gui_start_eula(true)
     isDelayed = false
     isHidden = @(...) !hasFeature("EulaInMenu") || !::isInMenu()
   }
@@ -447,7 +447,7 @@ let list = {
         itemInfo.append(item.imagePath)
         itemInfo.append(item.getDescription())
       }
-      let data = ::g_string.implode(itemInfo, "\n")
+      let data = "\n".join(itemInfo, true)
       log(data)
       ::script_net_assert("PS4 Internal debug shop data")
     }

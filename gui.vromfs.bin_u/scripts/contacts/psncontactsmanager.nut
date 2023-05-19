@@ -1,17 +1,20 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let logS = log_with_prefix("[PSN: Contacts] ")
 
-let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let psn = require("%sonyLib/webApi.nut")
-let { isPlatformSony, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
-let { addContact, addContactGroup, EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
+let { psnApprovedUids, psnBlockedUids } = require("%scripts/contacts/contactsManager.nut")
+let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isEqual } = u
 
 let isContactsUpdated = persist("isContactsUpdated", @() Watched(false))
 
@@ -29,99 +32,75 @@ let convertPsnContact = (psn.getPreferredVersion() == 2)
 let pendingContactsChanges = {}
 let checkGroups = []
 
+let uidsListByGroupName = {
+  [EPL_FRIENDLIST] = psnApprovedUids,
+  [EPL_BLOCKLIST] = psnBlockedUids
+}
 
-let tryUpdateContacts = function(contactsBlk) {
-  local haveAnyUpdate = false
-  foreach (_group, usersList in contactsBlk)
-    haveAnyUpdate = haveAnyUpdate || usersList.paramCount() > 0
+let console2uid = {}
 
-  if (!haveAnyUpdate) {
-    logS("Update: No changes. No need to server call")
-    return
+let function onPresencesReceived(response, _err) {
+  let updPresences = []
+  foreach (userInfo in (response?.basicPresences ?? [])) {
+    if (userInfo.accountId not in console2uid)
+      continue
+
+    updPresences.append({
+      userId = console2uid[userInfo.accountId]
+      presences = { online = userInfo.onlineStatus == "online" }
+    })
   }
+  updatePresencesByList(updPresences)
+}
 
-  let result = ::request_edit_player_lists(contactsBlk, false)
-  if (result) {
-    foreach (group, playersBlock in contactsBlk) {
-      foreach (uid, isAdding in playersBlock) {
-        let contact = ::getContact(uid)
-        if (!contact)
-          continue
-
-        if (isAdding)
-          addContact(contact, group)
-        else
-          ::g_contacts.removeContact(contact, group)
-
-        contact.updateMuteStatus()
-      }
-      ::broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE { groupName = group })
-    }
+let function gatherPresences(entries) {
+  local accounts = entries.map(@(e) e.accountId)
+  while (accounts.len() > 0) {
+    let chunk = accounts.slice(0, LIMIT_FOR_ONE_TASK_GET_USERS)
+    psn.send(psn.profile.getBasicPresences(chunk), onPresencesReceived)
+    accounts = accounts.slice(LIMIT_FOR_ONE_TASK_GET_USERS)
   }
 }
 
 let function psnUpdateContactsList(usersTable) {
   //Create or update exist contacts
   let contactsTable = {}
-  foreach (uid, playerData in usersTable)
+  foreach (uid, playerData in usersTable) {
     contactsTable[playerData.id] <- ::updateContact({
       uid = uid
       name = playerData.nick
       psnId = playerData.id
     })
+    console2uid[playerData.id] <- uid
+  }
 
-  let contactsBlk = DataBlock()
-  contactsBlk[EPLX_PS4_FRIENDS] <- DataBlock()
-  contactsBlk[EPL_BLOCKLIST]  <- DataBlock()
-  contactsBlk[EPL_FRIENDLIST] <- DataBlock()
-
+  local hasChanged = false
   foreach (groupName, groupData in pendingContactsChanges) {
-    let existedPSNContacts = ::get_contacts_array_by_filter_func(groupName, isPS4PlayerName)
+    let lastUids = uidsListByGroupName[groupName].value
+    let curUids = {}
 
     foreach (userInfo in groupData.users) {
       let contact = contactsTable?[userInfo.accountId]
       if (!contact)
         continue
 
-      if (!contact.isInPSNFriends() && groupName == EPLX_PS4_FRIENDS) {
-        contactsBlk[EPLX_PS4_FRIENDS][contact.uid] = true
-        if (contact.isInBlockGroup())
-          contactsBlk[EPL_BLOCKLIST][contact.uid] = false
-      }
-
-      if (!contact.isInBlockGroup() && groupName == EPL_BLOCKLIST) {
-        contactsBlk[EPL_BLOCKLIST][contact.uid] = true
-        if (contact.isInPSNFriends())
-          contactsBlk[EPLX_PS4_FRIENDS][contact.uid] = false
-
-        if (contact.isInFriendGroup())
-          contactsBlk[EPL_FRIENDLIST][contact.uid] = false
-      }
-
-      //Check both lists, as there can be mistakes
-      if (contact.isInPSNFriends() && contact.isInBlockGroup()) {
-        if (groupName == EPLX_PS4_FRIENDS)
-          contactsBlk[EPL_BLOCKLIST][contact.uid] = false
-        else
-          contactsBlk[EPLX_PS4_FRIENDS][contact.uid] = false
-      }
-
-      //Validate in-game contacts list
-      //in case if in psn contacts list some players
-      //are gone. So we need to clear then in game.
-      for (local i = existedPSNContacts.len() - 1; i >= 0; i--)
-        if (contact.isSameContact(existedPSNContacts[i].uid)) {
-          existedPSNContacts.remove(i)
-          break
-        }
+      let uid = contact.uid
+      curUids[uid] <- true
     }
-
-    foreach (oldContact in existedPSNContacts)
-      contactsBlk[groupName][oldContact.uid] = false
+    let hasGroupChanged = !isEqual(curUids, lastUids)
+    if (hasGroupChanged)
+      uidsListByGroupName[groupName](curUids)
+    hasChanged = hasChanged || hasGroupChanged
+    if (groupName == EPL_FRIENDLIST && hasGroupChanged)
+      gatherPresences(groupData.users)
   }
 
-  tryUpdateContacts(contactsBlk)
   pendingContactsChanges.clear()
+  if (!hasChanged) {
+    logS("Update: No changes. No need to server call")
+    return
+  }
+  fetchContacts()
 }
 
 let function proceedPlayersList() {
@@ -167,7 +146,7 @@ let function onReceviedUsersList(groupName, responseInfoName, response, err) {
   }
   else {
     logS($"Update {groupName}: received error: {toString(err)}")
-    if (::u.isString(err.code) || err.code < 500 || err.code >= 600)
+    if (u.isString(err.code) || err.code < 500 || err.code >= 600)
       logerr($"[PSN: Contacts] Update {groupName}: received error: {toString(err)}")
   }
 
@@ -176,11 +155,10 @@ let function onReceviedUsersList(groupName, responseInfoName, response, err) {
 }
 
 let function fetchFriendlist() {
-  checkGroups.append(EPLX_PS4_FRIENDS)
-  addContactGroup(EPLX_PS4_FRIENDS)
+  checkGroups.append(EPL_FRIENDLIST)
   psn.fetch(
     psn.profile.listFriends(),
-    @(response, err) onReceviedUsersList(EPLX_PS4_FRIENDS, PSN_RESPONSE_FIELDS.friends, response, err),
+    @(response, err) onReceviedUsersList(EPL_FRIENDLIST, PSN_RESPONSE_FIELDS.friends, response, err),
     LIMIT_FOR_ONE_TASK_GET_USERS
   )
 }
@@ -223,26 +201,42 @@ let function updateContacts(needIgnoreInitedFlag = false) {
   fetchContactsList()
 }
 
-::add_event_listener("LoginComplete", function(_p) {
+let function onPresenceUpdate(accountId) {
+  let userId = console2uid?[accountId.tostring()]
+  let contact = ::getContact(userId)
+  if (contact == null)
+    return
+
+  updatePresencesByList([{
+    userId
+    presences = { online = !contact.online }
+  }])
+}
+
+let function initHandlers() {
   updateContacts(true)
+  psn.subscribe.friendslist(@() updateContacts(true))
+  psn.subscribe.blocklist(@() updateContacts(true))
+  psn.subscribeToPresenceUpdates(onPresenceUpdate)
+}
 
-  psn.subscribe.friendslist(function() {
-    updateContacts(true)
-  })
-
-  psn.subscribe.blocklist(function() {
-    updateContacts(true)
-  })
-})
-
-::add_event_listener("SignOut", function(_p) {
+let function disposeHandlers() {
   pendingContactsChanges.clear()
   isContactsUpdated(false)
 
   psn.unsubscribe.friendslist()
   psn.unsubscribe.blocklist()
+  psn.unsubscribeFromPresenceUpdates()
   psn.abortAllPendingRequests()
+}
+
+addListenersWithoutEnv({
+  LoginComplete = @(_) initHandlers()
+  SignOut = @(_) disposeHandlers()
 })
+
+if (::g_login.isLoggedIn())
+  initHandlers()
 
 return {
   updateContacts

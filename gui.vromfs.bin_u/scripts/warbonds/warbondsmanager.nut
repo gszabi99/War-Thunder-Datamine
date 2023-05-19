@@ -1,12 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { PRICE } = require("%scripts/utils/configs.nut")
+let { Warbond } = require("%scripts/warbonds/warbond.nut")
+let { split } = require("%sqstd/string.nut")
 
 const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
 let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
@@ -28,7 +32,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   function getList(filterFunc = null) {
     this.validateList()
     if (filterFunc)
-      return ::u.filter(this.list, filterFunc)
+      return u.filter(this.list, filterFunc)
     return this.list
   }
 
@@ -60,7 +64,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
     let warbondBlk = wBlk.getBlock(i)
     for (local j = 0; j < warbondBlk.blockCount(); j++) {
       let wbListBlk = warbondBlk.getBlock(j)
-      let wbClass = ::Warbond(warbondBlk.getBlockName(), wbListBlk.getBlockName())
+      let wbClass = Warbond(warbondBlk.getBlockName(), wbListBlk.getBlockName())
       this.list.append(wbClass)
       seenWarbondsShop.setSubListGetter(wbClass.getSeenId(), @() wbClass.getUnseenAwardIds())
     }
@@ -101,7 +105,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   if (!wbListId)
     wbListId = ::get_warbond_curr_stage_name(wbId)
 
-  return ::u.search(this.getList(), @(wb) wbId == wb.id && wbListId == wb.listId)
+  return u.search(this.getList(), @(wb) wbId == wb.id && wbListId == wb.listId)
 }
 
 ::g_warbonds.getCurrentWarbond <- function getCurrentWarbond() {
@@ -109,14 +113,14 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
 }
 
 ::g_warbonds.getWarbondByFullId <- function getWarbondByFullId(wbFullId) {
-  let data = ::g_string.split(wbFullId, this.FULL_ID_SEPARATOR)
+  let data = split(wbFullId, this.FULL_ID_SEPARATOR)
   if (data.len() >= 2)
     return this.findWarbond(data[0], data[1])
   return null
 }
 
 ::g_warbonds.getWarbondAwardByFullId <- function getWarbondAwardByFullId(wbAwardFullId) {
-  let data = ::g_string.split(wbAwardFullId, this.FULL_ID_SEPARATOR)
+  let data = split(wbAwardFullId, this.FULL_ID_SEPARATOR)
   if (data.len() < 3)
     return null
 
@@ -134,7 +138,6 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   if (!this.isShopAvailable())
     return ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  ::g_warbonds_view.resetShowProgressBarFlag()
   ::handlersManager.loadHandler(::gui_handlers.WarbondsShop, params)
 }
 
@@ -182,14 +185,14 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   this.isFontIconsValid = false
 }
 
-::subscribe_handler(::g_warbonds ::g_listener_priority.CONFIG_VALIDATION)
+subscribe_handler(::g_warbonds ::g_listener_priority.CONFIG_VALIDATION)
 
 seenWarbondsShop.setListGetter(@() ::g_warbonds.getUnseenAwardIds())
 seenWarbondsShop.setCompatibilityLoadData(function() {
    let res = {}
    let savePath = "seen/warbond_shop_award"
    let blk = ::loadLocalByAccount(savePath)
-   if (!::u.isDataBlock(blk))
+   if (!u.isDataBlock(blk))
      return res
 
    for (local i = 0; i < blk.blockCount(); i++) {

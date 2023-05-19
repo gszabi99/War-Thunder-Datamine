@@ -1,8 +1,10 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::strength_unit_expclass_group <- {
   bomber = "bomber"
@@ -92,7 +94,7 @@ foreach (fn in [
                  "worldWarUtils.nut"
                  "debugTools/dbgUtils.nut"
                ])
-  ::g_script_reloader.loadOnce("%scripts/worldWar/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
+  g_script_reloader.loadOnce($"%scripts/worldWar/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
 
 // Independed Modules
 require("%scripts/worldWar/wwPromo.nut")
@@ -105,5 +107,5 @@ foreach (bhvName, bhvClass in ::ww_gui_bhv)
   ::replace_script_gui_behaviour(bhvName, bhvClass)
 
 ::ww_event <- function ww_event(name, params = {}) {
-  ::broadcastEvent("WW" + name, params || {})
+  broadcastEvent($"WW{name}", params || {})
 }

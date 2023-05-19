@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -27,7 +28,7 @@ let { getEntitlementConfig, getEntitlementName,
 
   function getIcon(addItemName = true) {
     return this.showAsContentItem()
-      ? ::LayersIcon.getIconData(null, this.typeIcon)
+      ? LayersIcon.getIconData(null, this.typeIcon)
       : base.getIcon(addItemName)
   }
 }

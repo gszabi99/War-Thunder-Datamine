@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let statsd = require("statsd")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
@@ -13,6 +14,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 let XboxShopPurchasableItem = require("%scripts/onlineShop/XboxShopPurchasableItem.nut")
+let { gather_products_list } = require("%xboxLib/impl/store.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 
@@ -26,26 +28,25 @@ local statsdMetric = "unknown"
 local reqProgressMsg = false
 local invalidateSeenList = false
 local haveItemDiscount = null
-::xbox_browse_catalog_callback <- function(catalog) {
-  if (!catalog || !catalog.blockCount()) {
-    statsd.send_counter("sq.ingame_store.open.empty_catalog", 1, { catalog = statsdMetric })
-    log("XBOX SHOP: Empty catalog. Don't open shop.")
+
+let function on_xbox_products_list_update(success, products) {
+  log($"XBOX SHOP: products list update succeeded: {success}")
+  if (!success)
     return
-  }
 
   let xboxShopBlk = GUI.get()?.xbox_ingame_shop
   let skipItemsList = xboxShopBlk?.itemsHide ?? DataBlock()
 
   let xbItems = {}
   itemsList.clear()
-  for (local i = 0; i < catalog.blockCount(); i++) {
-    let itemBlock = catalog.getBlock(i)
-    if (itemBlock.getBlockName() in skipItemsList) {
-      log("XBOX SHOP: SKIP: " + itemBlock.Name + " by id " + itemBlock.getBlockName())
+
+  foreach (product in products) {
+    if (product.store_id in skipItemsList) {
+      log($"XBOX SHOP: SKIP: {product.title} by id {product.store_id}")
       continue
     }
 
-    let item = XboxShopPurchasableItem(itemBlock)
+    let item = XboxShopPurchasableItem(product)
     foreach (xbItemType in item.categoriesList) {
       if (!(xbItemType in xbItems))
         xbItems[xbItemType] <- []
@@ -73,7 +74,7 @@ local haveItemDiscount = null
   onReceiveCatalogCb = null
   statsdMetric = "unknown"
 
-  ::broadcastEvent("XboxShopDataUpdated")
+  broadcastEvent("XboxShopDataUpdated")
 }
 
 let requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown") {
@@ -89,15 +90,7 @@ let requestData = function(isSilent = false, cb = null, invSeenList = false, met
   if (reqProgressMsg)
     progressMsg.create(XBOX_RECEIVE_CATALOG_MSG_ID, null)
 
-  ::xbox_browse_catalog_async()
-
-  /* Debug Purpose Only
-  {
-    local blk = DataBlock()
-    blk.load("browseCatalog.blk")
-    ::xbox_browse_catalog_callback(blk)
-  }
-  */
+  gather_products_list(on_xbox_products_list_update)
 }
 
 let canUseIngameShop = @() isPlatformXboxOne && hasFeature("XboxIngameShop")

@@ -1,26 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
+let { subscribe_handler, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-::create_promo_blocks <- function create_promo_blocks(handler) {
-  if (!::handlersManager.isHandlerValid(handler))
-    return null
-
-  let owner = handler.weakref()
-  let guiScene = handler.guiScene
-  local scene = handler.scene.findObject("promo_mainmenu_place")
-
-  return ::Promo(owner, guiScene, scene)
-}
-
-::Promo <- class {
+let Promo = class {
   owner = null
   guiScene = null
   scene = null
@@ -47,7 +39,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
 
       this.updateFunctions[key] <- @() updateFunctionInHandler()
       foreach (event in (updateByEvents ?? []))
-        ::add_event_listener(event, @(_p) updateFunctionInHandler(), this)
+        add_event_listener(event, @(_p) updateFunctionInHandler(), this)
     }
 
     this.initScreen(true)
@@ -60,7 +52,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     }
     clearOldVotedPolls(pollsTable)
 
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
   function initScreen(forceReplaceContent = false) {
@@ -143,8 +135,8 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
         this.needUpdateByTimerArr.append(blockId)
     }
     return {
-      upper = ::handyman.renderCached("%gui/promo/promoBlocks.tpl", upperPromoView)
-      bottom = ::handyman.renderCached("%gui/promo/promoBlocks.tpl", bottomPromoView)
+      upper = handyman.renderCached("%gui/promo/promoBlocks.tpl", upperPromoView)
+      bottom = handyman.renderCached("%gui/promo/promoBlocks.tpl", bottomPromoView)
     }
   }
 
@@ -152,7 +144,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     if (!checkObj(object))
       return
 
-    let data = ::handyman.renderCached(tplPath, view)
+    let data = handyman.renderCached(tplPath, view)
     this.guiScene.replaceContentFromText(object, data, data.len(), this)
   }
 
@@ -233,7 +225,7 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
       return null
 
     local show = getTblValue(param, this.sourceDataBlock[id], defaultValue)
-    if (::u.isString(show))
+    if (u.isString(show))
       show = show == "yes" ? true : false
 
     return show
@@ -331,3 +323,16 @@ let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfi
     }
   }
 }
+
+let function create_promo_blocks(handler) {
+  if (!::handlersManager.isHandlerValid(handler))
+    return null
+
+  let owner = handler.weakref()
+  let guiScene = handler.guiScene
+  local scene = handler.scene.findObject("promo_mainmenu_place")
+
+  return Promo(owner, guiScene, scene)
+}
+
+return { create_promo_blocks }

@@ -1,13 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let DataBlock  = require("DataBlock")
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let time = require("%scripts/time.nut")
 let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
@@ -179,7 +181,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   }
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_world_war")
+g_script_reloader.registerPersistentDataFromRoot("g_world_war")
 
 ::g_world_war.getSetting <- function getSetting(settingName, defaultValue) {
   return ::get_game_settings_blk()?.ww_settings?[settingName] ?? defaultValue
@@ -194,7 +196,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     return false
 
   let minRankRequired = this.getSetting("minCraftRank", 0)
-  let unit = ::u.search(::all_units, @(unit)
+  let unit = u.search(::all_units, @(unit)
     unit.canUseByPlayer() && unit.rank >= minRankRequired
   )
 
@@ -295,7 +297,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
   this.stopWar()
 
-  if (::u.isEmpty(country))
+  if (u.isEmpty(country))
     country = operation.getMyAssignCountry() || profileCountrySq.value
 
   operation.join(country, null, isSilence, onSuccess, forced)
@@ -508,7 +510,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 ::g_world_war.getSelectedArmies <- function getSelectedArmies() {
-  return ::u.map(::ww_get_selected_armies_names(), function(name) {
+  return u.map(::ww_get_selected_armies_names(), function(name) {
     return ::g_world_war.getArmyByName(name)
   })
 }
@@ -536,7 +538,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
       wwUnitsList.extend(wwActionsWithUnitsList.loadUnitsFromBlk(unitTypeBlk))
     }
 
-    let collectedWwUnits = ::u.values(::g_world_war.collectUnitsData(wwUnitsList))
+    let collectedWwUnits = u.values(::g_world_war.collectUnitsData(wwUnitsList))
     collectedWwUnits.sort(::g_world_war.sortUnitsBySortCodeAndCount)
     unitsStrenghtBySide[sideBlk.getBlockName().tointeger()] = collectedWwUnits
   }
@@ -558,14 +560,14 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     return allOperationUnits
 
   foreach (unitName in sideBlk.unitsEverSeen % "item")
-    if (::getAircraftByName(unitName))
+    if (getAircraftByName(unitName))
       allOperationUnits[unitName] <- true
 
   return allOperationUnits
 }
 
 ::g_world_war.filterArmiesByManagementAccess <- function filterArmiesByManagementAccess(armiesArray) {
-  return ::u.filter(armiesArray, function(army) { return army.hasManageAccess() })
+  return u.filter(armiesArray, function(army) { return army.hasManageAccess() })
 }
 
 ::g_world_war.haveManagementAccessForSelectedArmies <- function haveManagementAccessForSelectedArmies() {
@@ -586,7 +588,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 ::g_world_war.haveManagementAccessForAnyGroup <- function haveManagementAccessForAnyGroup() {
-  local result = ::u.search(this.getMyAccessLevelListForCurrentBattle(),
+  local result = u.search(this.getMyAccessLevelListForCurrentBattle(),
     function(access) {
       return access & WW_BATTLE_ACCESS.MANAGER
     }
@@ -615,7 +617,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 ::g_world_war.getArmyGroups <- function getArmyGroups(filterFunc = null) {
   this.updateArmyGroups()
 
-  return filterFunc ? ::u.filter(this.armyGroups, filterFunc) : this.armyGroups
+  return filterFunc ? u.filter(this.armyGroups, filterFunc) : this.armyGroups
 }
 
 
@@ -634,7 +636,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
 // return WwArmyGroup or null
 ::g_world_war.getArmyGroupByArmy <- function getArmyGroupByArmy(army) {
-  return ::u.search(this.getArmyGroups(),
+  return u.search(this.getArmyGroups(),
     (@(army) function (group) {
       return group.isMyArmy(army)
     })(army)
@@ -642,7 +644,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 ::g_world_war.getMyArmyGroup <- function getMyArmyGroup() {
-  return ::u.search(this.getArmyGroups(),
+  return u.search(this.getArmyGroups(),
       function(group) {
         return isInArray(::my_user_id_int64, group.observerUids)
       }
@@ -656,7 +658,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 ::g_world_war.getArmyByArmyGroup <- function getArmyByArmyGroup(armyGroup) {
-  let armyName = ::u.search(::ww_get_armies_names(), (@(armyGroup) function(armyName) {
+  let armyName = u.search(::ww_get_armies_names(), (@(armyGroup) function(armyName) {
       let army = ::g_world_war.getArmyByName(armyName)
       return armyGroup.isMyArmy(army)
     })(armyGroup))
@@ -700,14 +702,14 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 
 ::g_world_war.getBattles <- function getBattles(filterFunc = null, forced = false) {
   this.updateBattles(forced)
-  return filterFunc ? ::u.filter(this.battles, filterFunc) : this.battles
+  return filterFunc ? u.filter(this.battles, filterFunc) : this.battles
 }
 
 ::g_world_war.getBattleForArmy <- function getBattleForArmy(army, _playerSide = SIDE_NONE) {
   if (!army)
     return null
 
-  return ::u.search(this.getBattles(),
+  return u.search(this.getBattles(),
     (@(army) function (battle) {
       return !battle.isFinished() && battle.isArmyJoined(army.name)
     })(army)
@@ -825,17 +827,17 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 ::g_world_war.getMyReinforcementsArray <- function getMyReinforcementsArray() {
-  return ::u.filter(this.getReinforcementsArrayBySide(::ww_get_player_side()),
+  return u.filter(this.getReinforcementsArrayBySide(::ww_get_player_side()),
     function(reinf) { return reinf.hasManageAccess() }
   )
 }
 
 ::g_world_war.getMyReadyReinforcementsArray <- function getMyReadyReinforcementsArray() {
-  return ::u.filter(this.getMyReinforcementsArray(), function(reinf) { return reinf.isReady() })
+  return u.filter(this.getMyReinforcementsArray(), function(reinf) { return reinf.isReady() })
 }
 
 ::g_world_war.hasSuspendedReinforcements <- function hasSuspendedReinforcements() {
-  return ::u.search(
+  return u.search(
       this.getMyReinforcementsArray(),
       function(reinf) {
         return !reinf.isReady()
@@ -1032,7 +1034,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   if (!filteredArray.len())
     return
 
-  let entrenchedArmies = ::u.filter(filteredArray, function(army) { return !army.isEntrenched() })
+  let entrenchedArmies = u.filter(filteredArray, function(army) { return !army.isEntrenched() })
   if (!entrenchedArmies.len())
     return
 
@@ -1132,7 +1134,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
 }
 
 ::g_world_war.get_last_weapon_preset <- function get_last_weapon_preset(unitName) {
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return ""
 
@@ -1230,4 +1232,4 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
     openWwOperationRewardPopup(logObj)
 }
 
-::subscribe_handler(::g_world_war, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_world_war, ::g_listener_priority.DEFAULT_HANDLER)

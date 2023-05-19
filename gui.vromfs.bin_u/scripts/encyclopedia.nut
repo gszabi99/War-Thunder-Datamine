@@ -4,14 +4,16 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let persistent = { encyclopediaData = [] }
 
-::g_script_reloader.registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
+g_script_reloader.registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
 
 let initEncyclopediaData = function() {
   if (persistent.encyclopediaData.len() || !hasFeature("Encyclopedia"))
@@ -93,7 +95,7 @@ let open = function() {
         navImagesText = ::get_navigation_images_text(idx, persistent.encyclopediaData.len())
       })
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let chaptersObj = this.scene.findObject("chapter_top_list")
     this.guiScene.replaceContentFromText(chaptersObj, data, data.len(), this)
     chaptersObj.on_select = "onChapterSelect"
@@ -129,7 +131,7 @@ let open = function() {
         itemText = (this.curChapter.id == "aircrafts") ? "#" + article.id + "_0" : "#encyclopedia/" + article.id
       })
 
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
 
     this.guiScene.replaceContentFromText(objArticles, data, data.len(), this)
     ::move_mouse_on_child(objArticles, 0)

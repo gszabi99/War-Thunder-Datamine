@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { round } = require("math")
 ::tonemappingMode_list <- ["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"];
@@ -12,7 +13,7 @@ let { round } = require("math")
 ::lut_textures <- [""];
 ::lenseFlareMode_list <- ["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"];
 
-::g_script_reloader.registerPersistentData("PostFxGlobals", getroottable(),
+g_script_reloader.registerPersistentData("PostFxGlobals", getroottable(),
   [
     "lut_list", "lut_textures"
   ])

@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { format } = require("string")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let chard = require("chard")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -24,7 +26,7 @@ enum CTU_PROGRESS {
 }
 
 /* API:
-::CrewTakeUnitProcess(crewOrCountry, unitToTake = null, callback = null)
+CrewTakeUnitProcess(crewOrCountry, unitToTake = null, callback = null)
     crewOrCountry - can be:
        * crew table. If crew table not set, new crew will be trained by chosen country or unit
        * country name string
@@ -40,7 +42,7 @@ enum CTU_PROGRESS {
     return false if process still exist.
 */
 
-::CrewTakeUnitProcess <- class {
+let CrewTakeUnitProcess = class {
   crew = null
   country = null //used only when crew not unlocked
   unit = null
@@ -190,7 +192,7 @@ enum CTU_PROGRESS {
     this.unit = unitToTake
     if (!crewOrCountry)
       this.country = ::getUnitCountry(this.unit)
-    else if (::u.isString(crewOrCountry))
+    else if (u.isString(crewOrCountry))
       this.country = crewOrCountry
     else
       this.crew = crewOrCountry
@@ -208,7 +210,7 @@ enum CTU_PROGRESS {
     ::g_crews_list.suspendSlotbarUpdates()
     this.nextStep()
 
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 
   static function getProcessCost(crew, unit, country = null) {
@@ -327,7 +329,10 @@ enum CTU_PROGRESS {
       setShowUnit(this.unit)
     }
     ::g_crews_list.flushSlotbarUpdate()
-    ::broadcastEvent("CrewTakeUnit", { unit = this.unit, prevUnit = this.prevUnit })
+    broadcastEvent("CrewTakeUnit", { unit = this.unit, prevUnit = this.prevUnit })
     this.remove()
   }
+}
+return {
+  CrewTakeUnitProcess
 }

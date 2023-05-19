@@ -1,6 +1,4 @@
 require ecs
-require %game.utils_common
-require %dasGameLibs.math.base
 require DagorMath
 require DagorDebug3D
 require DagorConsole
@@ -12,6 +10,8 @@ require WTDamageModel
 require WTFx
 require DmDebug
 require DagorSystem
+require %dasGameLibs.math.base
+require %game.utils.utils_common
 
 
 [es(on_appear)]

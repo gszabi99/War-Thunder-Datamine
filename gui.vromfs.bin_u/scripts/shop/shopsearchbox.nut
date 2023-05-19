@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -9,6 +10,7 @@ let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { trim } = require("%sqstd/string.nut")
 
 ::gui_handlers.ShopSearchBox <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -87,7 +89,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     this.isClear = searchStr == ""
     this.prevSearchString = searchStr
     local units = shopSearchCore.findUnitsByLocName(searchStr)
-    if (this.prevIsClear == this.isClear && ::u.isEqual(this.prevSearchResult, units))
+    if (this.prevIsClear == this.isClear && u.isEqual(this.prevSearchResult, units))
       return
 
     this.prevIsClear = this.isClear
@@ -117,7 +119,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     obj = obj || this.scene.findObject("search_edit_box")
     if (!checkObj(obj))
       return
-    let searchStr = ::g_string.trim(obj.getValue())
+    let searchStr = trim(obj.getValue())
     if (searchStr != "")
       if (shopSearchWnd.open(searchStr, this.cbOwnerShowUnit, this.getEdiffFunc))
         this.searchClear()

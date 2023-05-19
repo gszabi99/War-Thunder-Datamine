@@ -128,7 +128,7 @@ local function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNa
  * @param {bool} [shouldPersistTypes] - true if need to persist all types in typesToAdd,
           to preserve the existing links on type tables during scripts reloads. True by default.
  */
-local function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor = null, addTypeNameKey = null,
+let function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor = null, addTypeNameKey = null,
                                     shouldPersistTypes = true) {
 
   local enumTable = getroottable()?[enumTableName]
@@ -137,7 +137,7 @@ local function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor =
     return
   }
 
-  local enumTablePersistId = shouldPersistTypes ? enumTableName : null
+  let enumTablePersistId = shouldPersistTypes ? enumTableName : null
   addTypes(enumTable, typesToAdd, typeConstructor, addTypeNameKey, enumTablePersistId)
 }
 

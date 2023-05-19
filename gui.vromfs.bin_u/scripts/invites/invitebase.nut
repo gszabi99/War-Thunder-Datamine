@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -152,7 +154,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   function showInvitePopup() {
     if (!this.isVisible()
-        || ::g_script_reloader.isInReloading
+        || g_script_reloader.isInReloading
         || ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY) == false
       )
       return
@@ -177,7 +179,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
       )
     }
 
-    ::g_popups.add(null, ::g_string.implode(msg, "\n"), ::gui_start_invites, buttons, this, "invite_" + this.uid)
+    ::g_popups.add(null, "\n".join(msg, true), ::gui_start_invites, buttons, this, "invite_" + this.uid)
   }
 
   function reject() {
@@ -212,7 +214,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
   }
 
   function hasInviter() {
-    return !::u.isEmpty(this.inviterName)
+    return !u.isEmpty(this.inviterName)
   }
 
   function isAvailableByCrossPlay() {

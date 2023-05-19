@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -162,7 +164,7 @@ let function getEntitlementPrice(ent) {
       ent?.chapter == "eagles" ? totalPrice.tostring() : decimalFormat(totalPrice))
   }
   else if ("goldCost" in ent)
-    return ::Cost(0, ::get_entitlement_cost_gold(ent.name)).tostring()
+    return Cost(0, ::get_entitlement_cost_gold(ent.name)).tostring()
   return ""
 }
 

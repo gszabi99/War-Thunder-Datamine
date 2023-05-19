@@ -34,7 +34,7 @@ let function getKeyFormat(typeName, isNewbie) {
   if (isNewbie)
     path.append("newbie")
   path.append("tip%d")
-  return ::g_string.implode(path, "/")
+  return "/".join(path, true)
 }
 
 // for global tips unitType = null

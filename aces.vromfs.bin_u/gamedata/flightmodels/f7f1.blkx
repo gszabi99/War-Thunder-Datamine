@@ -5,6 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "mustHaveCockpit": false,
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "isCapableOfAttackTurn": false,
@@ -2716,19 +2717,48 @@
     "turnTime": 19.7329
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
     "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth",
       "effects": {
         "cutProbabilityMult": 1.1,
         "mulMass": 1.2
       }
     },
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "50cal_universal": {},
     "50cal_ground_targets": {},
     "50cal_tracers": {},

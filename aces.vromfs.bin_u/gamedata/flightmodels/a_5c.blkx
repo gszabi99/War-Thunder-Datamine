@@ -4,6 +4,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.166,
   "gearSinkRangeC": 0.188,
+  "gyroSight": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -449,6 +450,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -460,6 +473,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -478,6 +503,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -489,6 +526,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -629,6 +678,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -666,6 +721,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -687,6 +748,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -728,6 +795,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2173,6 +2246,10 @@
         "blk": "gameData/FlightModels/weaponPresets/a_5c_4x500kg_bombs.blk"
       },
       {
+        "name": "a_5c_4x500kg_4_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/a_5c_4x500kg_4_bombs.blk"
+      },
+      {
         "name": "a_5c_4x750lbs_bombs",
         "blk": "gameData/FlightModels/weaponPresets/a_5c_4x750lbs_bombs.blk"
       },
@@ -2195,10 +2272,10 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 2400.0,
-    "maxloadMassLeftConsoles": 1500.0,
-    "maxloadMassRightConsoles": 1500.0,
-    "maxDisbalance": 1000.0,
+    "maxloadMass": 2550.0,
+    "maxloadMassLeftConsoles": 1775.0,
+    "maxloadMassRightConsoles": 1775.0,
+    "maxDisbalance": 1200.0,
     "HideNodes": {
       "node": [
         "ltc_cap",
@@ -2473,6 +2550,45 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/china_250kg_mk_82.blk",
+                "emitter": "bomb500_4",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x4",
+            "name": "us_500lb_4_x4",
+            "reqModification": "us_500lb_mk82",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "bomb500_1",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "bomb500_2",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "bomb500_3",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
                 "emitter": "bomb500_4",
                 "bullets": 1,
                 "external": true,

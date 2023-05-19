@@ -24,7 +24,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
     getText = function(playerInfo = {}) {
       let stateLoc = this.stateText.len() ? loc("multiplayer/state/" + this.stateText) : ""
       let roleLoc = this.isSpectator(playerInfo) ? loc("multiplayer/state/player_referee") : ""
-      return ::g_string.implode([ roleLoc, stateLoc ], loc("ui/semicolon"))
+      return loc("ui/semicolon").join([ roleLoc, stateLoc ], true)
     }
   }
 }

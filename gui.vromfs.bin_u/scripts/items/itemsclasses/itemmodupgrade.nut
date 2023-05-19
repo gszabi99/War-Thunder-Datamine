@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 
 ::items_classes.ModUpgrade <- class extends BaseItemModClass {
@@ -34,7 +36,7 @@ let DataBlock  = require("DataBlock")
     return null
   }
 
-  getIconMainLayer = @() ::LayersIcon.findLayerCfg("mod_upgrade")
+  getIconMainLayer = @() LayersIcon.findLayerCfg("mod_upgrade")
 
   function canActivateOnMod(unit, mod) {
     if (this.modsList && !isInArray(mod.name, this.modsList)
@@ -59,7 +61,7 @@ let DataBlock  = require("DataBlock")
     let successCb = function() {
       if (extSuccessCb)
         extSuccessCb()
-      ::broadcastEvent("ModUpgraded", { unit = unit, mod = mod })
+      broadcastEvent("ModUpgraded", { unit = unit, mod = mod })
     }
 
     let blk = DataBlock()

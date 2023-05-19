@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -9,9 +10,10 @@ let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let globalEnv = require("globalEnv")
 let { getShortcutById, isAxisBoundToMouse, getComplexAxesId,
-  isComponentsAssignedToSingleInputItem
+  isComponentsAssignedToSingleInputItem, isShortcutMapped
 } = require("%scripts/controls/shortcutsUtils.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
+let { endsWith } = require("%sqstd/string.nut")
 
 let function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
   let nullInput = ::Input.NullInput()
@@ -39,7 +41,7 @@ let imageRe = regexp2(@"^#[\w/_]*#[\w\d_]+")
 
 ::g_shortcut_type.isAxisShortcut <- function isAxisShortcut(shortcutId) {
   foreach (postfix in ["rangeMin", "rangeMax"])
-    if (::g_string.endsWith(shortcutId, postfix))
+    if (endsWith(shortcutId, postfix))
       return true
   return false
 }
@@ -192,7 +194,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
     }
 
     isAssigned = function (shortcutId, preset = null) {
-      return ::g_controls_utils.isShortcutMapped(::get_shortcuts([shortcutId], preset)[0])
+      return isShortcutMapped(::get_shortcuts([shortcutId], preset)[0])
     }
 
     getInputs = kwarg(function getInputs(shortcutId, preset = null,
@@ -271,7 +273,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
     getInputs = kwarg(function getInputs(shortcutId, preset = null,
       _isMouseHigherPriority = true, _showShortcutsNameIfNotAssign = false) {
       if (this.hasDirection(shortcutId) && !isAssignedToAxis(shortcutId)) {
-        let input = ::Input.KeyboardAxis(::u.map(this.getBaseAxesShortcuts(shortcutId),
+        let input = ::Input.KeyboardAxis(u.map(this.getBaseAxesShortcuts(shortcutId),
           function(element) {
             let elementId = element.shortcut
             element.input <- ::g_shortcut_type.getShortcutTypeByShortcutId(elementId).getFirstInput(elementId, preset)
@@ -457,7 +459,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
       else if (isAxisBoundToMouse(axes[0]))
         doubleAxis.deviceId = STD_MOUSE_DEVICE_ID
       else if (this.hasDirection(shortcutId)) {
-        let input = ::Input.KeyboardAxis(::u.map(this.getBaseAxesShortcuts(shortcutId),
+        let input = ::Input.KeyboardAxis(u.map(this.getBaseAxesShortcuts(shortcutId),
           function(element) {
             let elementId = element.shortcut
             element.input <- ::g_shortcut_type.getShortcutTypeByShortcutId(elementId).getFirstInput(elementId, preset)

@@ -1,15 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
 
-::Warbond <- class {
+let Warbond = class {
   id = ""
   listId = ""
   fontIcon = "currency/warbond"
@@ -41,7 +45,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
     let pBlk = ::get_price_blk()
     let listBlk = get_blk_value_by_path(pBlk, this.blkListPath)
-    if (!::u.isDataBlock(listBlk))
+    if (!u.isDataBlock(listBlk))
       return
 
     this.fontIcon = ::g_warbonds.defaultWbFontIcon
@@ -80,12 +84,12 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
     let pBlk = ::get_price_blk()
     let config = get_blk_value_by_path(pBlk, this.blkListPath + "/shop")
-    if (!::u.isDataBlock(config))
+    if (!u.isDataBlock(config))
       return
 
     let total = config.blockCount()
     for (local i = 0; i < total; i++)
-      this.awardsList.append(::WarbondAward(this, config.getBlock(i), i))
+      this.awardsList.append(WarbondAward(this, config.getBlock(i), i))
   }
 
   function getAwardsList() {
@@ -99,7 +103,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   }
 
   function getAwardById(awardId) {
-    return ::u.search(this.getAwardsList(), @(award) award.id == awardId)
+    return u.search(this.getAwardsList(), @(award) award.id == awardId)
   }
 
   getAwardByType = @(awardType)
@@ -146,14 +150,14 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   }
 
   function haveAnyOrdinaryRequirements() {
-    return ::u.search(this.getAwardsList(), @(award) award.haveOrdinaryRequirement()) != null
+    return u.search(this.getAwardsList(), @(award) award.haveOrdinaryRequirement()) != null
   }
 
   function haveAnySpecialRequirements() {
-    return ::u.search(this.getAwardsList(), @(award) award.haveSpecialRequirement()) != null
+    return u.search(this.getAwardsList(), @(award) award.haveSpecialRequirement()) != null
   }
 
-  getLayeredIconStyle = @() ::LayersIcon.getIconData($"reward_battle_task_{this.medalIcon}")
+  getLayeredIconStyle = @() LayersIcon.getIconData($"reward_battle_task_{this.medalIcon}")
   getMedalIcon = @() $"#ui/gameuiskin#{this.medalIcon}.svg"
   getLevelIcon = @() $"#ui/gameuiskin#{this.levelIcon}.svg"
   getLevelIconOverlay = @() $"#ui/gameuiskin#{this.levelIcon}_overlay"
@@ -186,10 +190,6 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     return getTblValue(level, this.levelsArray, this.levelsArray.len() ? this.levelsArray.top() : 0)
   }
 
-  function getNextShopLevelTasks() {
-    return this.getShopLevelTasks(this.getCurrentShopLevel() + 1)
-  }
-
   function isMaxLevelReached() {
     return this.levelsArray.top() <= this.getCurrentShopLevelTasks()
   }
@@ -217,7 +217,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     let lastSeen = ::loadLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, 0)
     if (curLevel != 0 && lastSeen != curLevel) {
       let balance = this.getBalance()
-      if (::u.search(this.getAwardsList(),
+      if (u.search(this.getAwardsList(),
           (@(award) this.getShopLevel(award.ordinaryTasks) == curLevel &&
             award.getCost() <= balance).bindenv(this)
         ) != null)
@@ -234,7 +234,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
     ::saveLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_MONTH_PATH, this.listId)
     ::saveLocalByAccount(this.LAST_SEEN_WARBOND_SHOP_LEVEL_PATH, this.getCurrentShopLevel())
-    ::broadcastEvent("WarbondShopMarkSeenLevel")
+    broadcastEvent("WarbondShopMarkSeenLevel")
   }
 
   getUnseenAwardIds = @() this.getAwardsList()
@@ -243,3 +243,4 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
   getSeenId = @() this.listId
 }
+return {Warbond}

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let function getPrizeChanceConfig(prize) {
   let res = {
@@ -36,7 +37,7 @@ let function getPrizeChanceLegendMarkup() {
   if (chances.len() == 0)
     return ""
 
-  return ::handyman.renderCached("%gui/items/prizeChanceLegend.tpl", { chances = chances })
+  return handyman.renderCached("%gui/items/prizeChanceLegend.tpl", { chances = chances })
 }
 
 

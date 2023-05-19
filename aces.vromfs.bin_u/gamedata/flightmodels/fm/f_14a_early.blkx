@@ -1090,7 +1090,7 @@
       ],
       "SensitivityMultiplier1": [
         0.2,
-        1.0
+        2.0
       ],
       "SensitivityMultiplier2": [
         0.85,
@@ -2266,7 +2266,12 @@
       "Retractable": true,
       "LeftBrake": true,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.65,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.95,
+        10.0,
+        0.65
+      ],
       "WaterFriction": 1.0,
       "SteerType": "Fixed"
     },
@@ -2279,7 +2284,12 @@
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": true,
-      "FullBrakeSlidingFrictionMult": 0.65,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.95,
+        10.0,
+        0.65
+      ],
       "WaterFriction": 1.0,
       "SteerType": "Fixed"
     },
@@ -2292,7 +2302,12 @@
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.45,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.65,
+        0.0,
+        0.65
+      ],
       "WaterFriction": 1.0,
       "SteerType": "ManualSteering"
     },
@@ -2305,7 +2320,12 @@
       "Retractable": false,
       "LeftBrake": false,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.4,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.45,
+        0.0,
+        0.45
+      ],
       "WaterFriction": 1.0,
       "SteerType": "ManualSteering"
     }

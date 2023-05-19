@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -16,6 +17,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { get_decal_tex } = require("unitCustomization")
 let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
 
 ::Decorator <- class {
@@ -52,9 +54,9 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
 
   constructor(blkOrId, decType) {
     this.decoratorType = decType
-    if (::u.isString(blkOrId))
+    if (u.isString(blkOrId))
       this.id = blkOrId
-    else if (::u.isDataBlock(blkOrId)) {
+    else if (u.isDataBlock(blkOrId)) {
       this.blk = blkOrId
       this.id = this.blk.getBlockName()
     }
@@ -72,7 +74,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     this.cost = this.decoratorType.getCost(this.id)
     this.maxSurfaceAngle = this.blk?.maxSurfaceAngle ?? 180
 
-    this.tex = this.blk ? ::get_decal_tex(this.blk, 1) : this.id
+    this.tex = this.blk ? get_decal_tex(this.blk, 1) : this.id
     this.aspect_ratio = this.blk ? this.decoratorType.getRatio(this.blk) : 1
 
     if ("countries" in this.blk) {
@@ -147,17 +149,17 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     if (this.decoratorType == ::g_decorator_type.SKINS)
       return unit?.name != getPlaneBySkinId(this.id)
 
-    if (::u.isEmpty(this.units))
+    if (u.isEmpty(this.units))
       return false
 
     return !isInArray(unit?.name, this.units)
   }
 
   function getUnitTypeLockIcon() {
-    if (::u.isEmpty(this.units))
+    if (u.isEmpty(this.units))
       return null
 
-    return ::get_unit_type_font_icon(::get_es_unit_type(::getAircraftByName(this.units[0])))
+    return ::get_unit_type_font_icon(::get_es_unit_type(getAircraftByName(this.units[0])))
   }
 
   function getTypeDesc() {
@@ -171,23 +173,23 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     let important = []
     let common    = []
 
-    if (!::u.isEmpty(this.units)) {
-      let visUnits = ::u.filter(this.units, @(u) ::getAircraftByName(u)?.isInShop)
+    if (!u.isEmpty(this.units)) {
+      let visUnits = u.filter(this.units, @(u) getAircraftByName(u)?.isInShop)
       important.append(loc("options/unit") + loc("ui/colon") +
-        ::g_string.implode(::u.map(visUnits, @(u) ::getUnitName(u)), loc("ui/comma")))
+        loc("ui/comma").join(u.map(visUnits, @(u) ::getUnitName(u)), true))
     }
 
     if (this.countries) {
-      let visCountries = ::u.filter(this.countries, @(c) isInArray(c, shopCountriesList))
+      let visCountries = u.filter(this.countries, @(c) isInArray(c, shopCountriesList))
       important.append(loc("events/countres") + " " +
-        ::g_string.implode(::u.map(visCountries, @(c) loc(c)), loc("ui/comma")))
+        loc("ui/comma").join(u.map(visCountries, @(c) loc(c)), true))
     }
 
     if (this.limit != -1)
       common.append(loc("mainmenu/decoratorLimit", { limit = this.limit }))
 
-    return colorize("warningTextColor", ::g_string.implode(important, "\n")) +
-      (important.len() ? "\n" : "") + ::g_string.implode(common, "\n")
+    return colorize("warningTextColor", "\n".join(important, true)) +
+      (important.len() ? "\n" : "") + "\n".join(common, true)
   }
 
   function getLocationDesc() {
@@ -200,7 +202,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
       return ""
 
     return loc("camouflage/for_environment_conditions") +
-      loc("ui/colon") + ::g_string.implode(locations.map(@(l) colorize("activeTextColor", l)), ", ")
+      loc("ui/colon") + ", ".join(locations.map(@(l) colorize("activeTextColor", l)), true)
   }
 
   function getTagsDesc() {
@@ -208,8 +210,8 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     if (!tagsLoc.len())
       return ""
 
-    tagsLoc = ::u.map(tagsLoc, @(txt) colorize("activeTextColor", txt))
-    return loc("ugm/tags") + loc("ui/colon") + ::g_string.implode(tagsLoc, loc("ui/comma"))
+    tagsLoc = u.map(tagsLoc, @(txt) colorize("activeTextColor", txt))
+    return loc("ugm/tags") + loc("ui/colon") + loc("ui/comma").join(tagsLoc, true)
   }
 
   function getCostText() {

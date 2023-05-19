@@ -1,10 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { format } = require("string")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let stdMath = require("%sqstd/math.nut")
 let { ceil } = require("math")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
@@ -311,7 +314,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
 }
 
 ::g_crew.getCrewUnit <- function getCrewUnit(crew) {
-  return ::getAircraftByName(crew?.aircraft ?? "")
+  return getAircraftByName(crew?.aircraft ?? "")
 }
 
 ::g_crew.getCrewCountry <- function getCrewCountry(crew) {
@@ -320,7 +323,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
 }
 
 ::g_crew.getCrewTrainCost <- function getCrewTrainCost(crew, unit) {
-  let res = ::Cost()
+  let res = Cost()
   if (!unit)
     return res
   if (crew)
@@ -452,7 +455,7 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
   let onTaskSuccess = (@(crew, unit, upgradesAmount) function() {
     ::updateAirAfterSwitchMod(unit)
     ::update_gamercards()
-    ::broadcastEvent("QualificationIncreased", { unit = unit, crew = crew })
+    broadcastEvent("QualificationIncreased", { unit = unit, crew = crew })
 
     if (upgradesAmount > 0)
       return ::g_crew._upgradeUnitSpec(crew, unit, upgradesAmount)
@@ -539,7 +542,7 @@ let function is_crew_slot_empty(crew) {
     ::shop_upgrade_crew(crew.id, blk),
     { showProgressBox = true },
     function() {
-      ::broadcastEvent("CrewSkillsChanged", { crew = crew, unit = unit })
+      broadcastEvent("CrewSkillsChanged", { crew = crew, unit = unit })
       ::g_crews_list.flushSlotbarUpdate()
     },
     @(_err) ::g_crews_list.flushSlotbarUpdate()
@@ -581,7 +584,7 @@ let function is_crew_slot_empty(crew) {
   return this.getCrewSkillPoints(crew) >= skillPointsNeeded
 }
 
-::subscribe_handler(::g_crew, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
+subscribe_handler(::g_crew, ::g_listener_priority.UNIT_CREW_CACHE_UPDATE)
 
 let min_steps_for_crew_status = [1, 2, 3]
 
@@ -641,7 +644,7 @@ local is_crew_skills_available_inited = false
     ::crew_skills.append(page)
   })
 
-  ::broadcastEvent("CrewSkillsReloaded")
+  broadcastEvent("CrewSkillsReloaded")
 
   let reqBlk = blk?.train_req
   if (reqBlk == null)
@@ -747,7 +750,7 @@ let function count_available_skills(crew, crewUnitType) { //return part of avail
   foreach (id, data in ::crew_skills_available) {
     if (id != crew.id)
       continue
-    unit = unit ?? ::getAircraftByName(crew?.aircraft ?? "")
+    unit = unit ?? getAircraftByName(crew?.aircraft ?? "")
     if (unit == null)
       break
     let crewUnitType = unit.getCrewUnitType()

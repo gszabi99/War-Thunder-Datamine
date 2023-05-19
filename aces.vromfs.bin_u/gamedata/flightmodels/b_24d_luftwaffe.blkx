@@ -11,6 +11,7 @@
   "noEffectsDist": 8.0,
   "gearSinkRangeLR": 0.203,
   "gearSinkRangeC": 0.176,
+  "gyroSight": false,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -2850,14 +2851,50 @@
     "turnTime": 43.7131
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_engine_injection": {
+      "prevModification": "hp_105",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "b-24_sbc": {
       "modClass": "weapon",
       "tier": 1,
@@ -2940,13 +2977,6 @@
     "bmg50_turret_belt_pack": {},
     "bmg50_turret_new_gun": {
       "reqModification": "bmg50_turret_belt_pack"
-    },
-    "air_extinguisher": {
-      "image": "#ui/gameuiskin#engine_extinguisher",
-      "prevModification": "bmg50_turret_new_gun",
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
     },
     "50cal_turret_ap": {},
     "50cal_turret_api": {}
@@ -3497,7 +3527,7 @@
       "headNode": "Bip01 Head",
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
-      "suffix": "8",
+      "suffix": "3",
       "isTailPositioned": true,
       "ikNode": [
         {
@@ -3550,7 +3580,6 @@
   "attach": {
     "pilot1": "pilot_lw_500",
     "pilot2": "pilot_lw_500",
-    "gunner1": "gunner_sit_lw_500",
     "gunner2": "gunner_sit_lw_500",
     "gunner3": "gunner_sit_lw_500",
     "gunner4": "gunner_sit_lw_500",

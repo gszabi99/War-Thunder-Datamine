@@ -2429,6 +2429,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "updateAnimBonesAlways": true,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -2674,6 +2675,7 @@
         "parkInDeadzone": false,
         "speedYaw": 120.0,
         "speedPitch": 90.0,
+        "animatedEmitter": "bone_commander_sight_v",
         "limits": {
           "yaw": [
             -180.0,
@@ -2727,12 +2729,7 @@
       ]
     },
     "animatedBones": {
-      "node": [
-        "bone_gun_01",
-        "bone_commander_sight_v",
-        "optic_turret",
-        "commander_panoramic_sight"
-      ]
+      "node": "bone_gun_01"
     }
   },
   "weapon_presets": {
@@ -2846,13 +2843,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -3621,6 +3618,7 @@
       "tier": 3,
       "effects": {
         "commonWeapons": {
+          "updateAnimBonesAlways": true,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -3866,6 +3864,7 @@
               "parkInDeadzone": false,
               "speedYaw": 120.0,
               "speedPitch": 90.0,
+              "animatedEmitter": "bone_commander_sight_v",
               "limits": {
                 "yaw": [
                   -180.0,
@@ -3973,12 +3972,7 @@
             ]
           },
           "animatedBones": {
-            "node": [
-              "bone_gun_01",
-              "bone_commander_sight_v",
-              "optic_turret",
-              "commander_panoramic_sight"
-            ]
+            "node": "bone_gun_01"
           }
         }
       }

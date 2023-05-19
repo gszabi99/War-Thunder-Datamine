@@ -5,6 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.3,
   "gearSinkRangeC": 0.2,
+  "gyroSight": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -446,6 +447,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -457,6 +470,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -761,6 +786,12 @@
             "damage": 50.0,
             "wing_r_dm": 0.5,
             "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -798,6 +829,12 @@
             "fire": 5.0,
             "wing_l_dm": 1.0,
             "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -819,6 +856,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -860,6 +903,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2194,6 +2243,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f9f_5_8_100lb_bombs.blk"
       },
       {
+        "name": "f9f_5_8_250lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/f9f_5_8_250lb_bombs.blk"
+      },
+      {
         "name": "f9f5_6_500lb_bombs",
         "blk": "gameData/FlightModels/weaponPresets/f9f_5_6_500lb_bombs.blk"
       },
@@ -2336,6 +2389,21 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon3_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "us_100lbs_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2380,6 +2448,21 @@
           },
           {
             "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "us_100lbs_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
             "name": "500lbs_slot2",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2397,6 +2480,10 @@
               {
                 "slot": 1,
                 "preset": "100lbs"
+              },
+              {
+                "slot": 1,
+                "preset": "250lbs"
               },
               {
                 "slot": 1,
@@ -2447,6 +2534,21 @@
           },
           {
             "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "us_100lbs_5",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
             "name": "500lbs_slot3",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2460,10 +2562,16 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": {
-              "slot": 4,
-              "preset": "100lbs"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "100lbs"
+              },
+              {
+                "slot": 4,
+                "preset": "250lbs"
+              }
+            ]
           }
         ]
       },
@@ -2489,6 +2597,21 @@
           },
           {
             "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "us_100lbs_7",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
             "name": "500lbs_slot4",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2504,7 +2627,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bombs_special",
             "name": "1000lbs",
             "reqModification": "flbc_mk2",
             "ShowNodes": {
@@ -2543,6 +2666,21 @@
           },
           {
             "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "us_100lbs_8",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
             "name": "500lbs_slot5",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2558,7 +2696,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bombs_special",
             "name": "1000lbs",
             "reqModification": "flbc_mk2",
             "ShowNodes": {
@@ -2616,6 +2754,21 @@
           },
           {
             "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "us_100lbs_6",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
             "name": "500lbs_slot6",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2629,10 +2782,16 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": {
-              "slot": 5,
-              "preset": "100lbs"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "100lbs"
+              },
+              {
+                "slot": 5,
+                "preset": "250lbs"
+              }
+            ]
           }
         ]
       },
@@ -2677,6 +2836,21 @@
           },
           {
             "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "us_100lbs_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
             "name": "500lbs_slot7",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2694,6 +2868,10 @@
               {
                 "slot": 8,
                 "preset": "100lbs"
+              },
+              {
+                "slot": 8,
+                "preset": "250lbs"
               },
               {
                 "slot": 8,
@@ -2736,6 +2914,21 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "emitter": "us_100lbs_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lbs",
+            "ShowNodes": {
+              "node": "mk_55_bomb_pylon3_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
               "emitter": "us_100lbs_2",
               "bullets": 1,
               "external": true,

@@ -11,7 +11,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 subscriptions.addListenersWithoutEnv({
   UnitBought = function(p) {
-    let unit = ::getAircraftByName(p?.unitName)
+    let unit = getAircraftByName(p?.unitName)
     if (!unit)
       return
 

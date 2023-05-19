@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { format } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let itemNotifications = require("%scripts/items/itemNotifications.nut")
@@ -37,7 +38,7 @@ let function showGblkErrorPopup(errCode, path) {
   let msg = loc(format("gblk/saveError/text/%d", errCode), { path = path })
   ::g_popups.add(title, msg, null, [{ id = "copy_button",
                               text = loc("gblk/saveError/copy"),
-                              func = (@(msg) function() { ::copy_to_clipboard(msg) })(msg) }])
+                              func = @() ::copy_to_clipboard(msg) }])
 }
 ::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
 
@@ -64,7 +65,6 @@ local function onMainMenuReturn(handler, isAfterLogin) {
     checkReconnect()
 
   if (!isAfterLogin) {
-    ::g_warbonds_view.resetShowProgressBarFlag()
     ::checkUnlockedCountriesByAirs()
     penalties.showBannedStatusMsgBox(true)
     if (isAllowPopups && !::disable_network()) {
@@ -135,7 +135,7 @@ local function onMainMenuReturn(handler, isAfterLogin) {
 
   guiScene.initCursor("%gui/cursor.blk", "normal")
 
-  ::broadcastEvent("MainMenuReturn")
+  broadcastEvent("MainMenuReturn")
 }
 
 onMainMenuReturnActions.mutate(@(v) v.onMainMenuReturn <- onMainMenuReturn)

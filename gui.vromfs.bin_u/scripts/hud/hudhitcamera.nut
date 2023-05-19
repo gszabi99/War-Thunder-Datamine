@@ -9,6 +9,7 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
+let { get_mission_difficulty_int } = require("guiMission")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST_SEC = 1 //To sum up the number of crew losses from multiple bullets in a single salvo
@@ -65,7 +66,7 @@ local minAliveCrewCount = 2
 local canShowCritAnimation = false
 
 let function getMinAliveCrewCount() {
-  let diffCode = ::get_mission_difficulty_int()
+  let diffCode = get_mission_difficulty_int()
   let settingsName = ::g_difficulty.getDifficultyByDiffCode(diffCode).settingsName
   let path = $"difficulty_settings/baseDifficulty/{settingsName}/changeCrewTime"
   let changeCrewTime = get_blk_value_by_path(::dgs_get_game_params(), path)

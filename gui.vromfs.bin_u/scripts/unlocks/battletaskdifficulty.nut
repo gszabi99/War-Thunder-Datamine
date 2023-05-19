@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
 let { getUnlockProgress } = require("unlocks")
 
@@ -53,7 +55,6 @@ let function _getTimeLeft(task) {
   getTimeLeft = function(_task) { return -1 }
   isTimeExpired = @(task) this.hasTimer && this.getTimeLeft(task) < 0
   showSeasonIcon = false
-  canIncreaseShopLevel = true
   hasTimer = true
   userstatUnlockId = ""
 
@@ -67,7 +68,7 @@ let function _getTimeLeft(task) {
       this.expireProcessed = this.expireProcessed ?? {}
       this.expireProcessed[generationId] <- true
     }
-    ::broadcastEvent("BattleTasksTimeExpired")
+    broadcastEvent("BattleTasksTimeExpired")
   }
 }
 
@@ -93,7 +94,6 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
   HARD = {
     image = "#ui/gameuiskin#hard_task_medal3.svg"
     showSeasonIcon = true
-    canIncreaseShopLevel = false
     timeParamId = "specialTasks"
     timeLimit = function() { return time.daysToSeconds(1) }
     getTimeLeft = _getTimeLeft
@@ -150,7 +150,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 ::g_battle_task_difficulty.getRequiredDifficultyTypeDone <- function getRequiredDifficultyTypeDone(diff) {
   local res = null
   if (diff.executeOrder >= 0)
-    res = ::u.search(this.types, @(t) t.executeOrder == (diff.executeOrder - 1))
+    res = u.search(this.types, @(t) t.executeOrder == (diff.executeOrder - 1))
 
   return res || ::g_battle_task_difficulty.UNKNOWN
 }
@@ -160,7 +160,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
   if (!overrideStatus)
     foreach (task in tasksArray) {
       let t = this.getDifficultyTypeByTask(task)
-      ::u.appendOnce(t.timeParamId, processedTimeParamIds)
+      u.appendOnce(t.timeParamId, processedTimeParamIds)
     }
 
   let resultArray = []
@@ -240,7 +240,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
 }
 
 ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty <- function withdrawTasksArrayByDifficulty(diff, tasks) {
-  return ::u.filter(tasks, @(task) diff == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
+  return u.filter(tasks, @(task) diff == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
 }
 
 ::g_battle_task_difficulty.getDefaultDifficultyGroup <- function getDefaultDifficultyGroup() {

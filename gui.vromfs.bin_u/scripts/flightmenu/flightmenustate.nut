@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
+let { is_benchmark_game_mode, is_restart_option_hidden, get_game_mode, get_game_type } = require("mission")
 
 let function canRestart() {
   return !::is_multiplayer()
@@ -12,6 +12,7 @@ let function canRestart() {
     && !is_benchmark_game_mode()
     && (get_game_type() & GT_COOPERATIVE) == 0
     && ::get_mission_status() != MISSION_STATUS_SUCCESS
+    && !is_restart_option_hidden()
 }
 
 let function canBailout() {

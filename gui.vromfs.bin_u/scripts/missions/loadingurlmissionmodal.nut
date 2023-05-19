@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -102,7 +103,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (success) {
       ::upgrade_url_mission(blk)
       errorText = ::validate_custom_mission(blk)
-      this.requestSuccess = ::u.isEmpty(errorText)
+      this.requestSuccess = u.isEmpty(errorText)
       success = this.requestSuccess
       if (!success)
         errorText = loc("wait/ugm_not_valid", { errorText = errorText })

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -12,6 +13,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   presets              = null
   messageText          = null
   ok_fn                = null
+  isForced             = false
 
   function initScreen() {
     let weaponsSlotCount = this.presets.presetBefore.weaponsSlotCount
@@ -28,10 +30,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     this.setContent(presetViewBefore, this.presets.presetBefore)
     this.setContent(presetViewAfter, this.presets.presetAfter)
+    this.showSceneBtn("cancelBtn", !this.isForced)
   }
 
   function setContent(view, preset) {
-    let data = ::handyman.renderCached("%gui/weaponry/simplyWeaponryPreset.tpl", {
+    let data = handyman.renderCached("%gui/weaponry/simplyWeaponryPreset.tpl", {
       tiersView = preset.tiersView.map(@(t) {
         tierId        = t.tierId
         img           = t?.img ?? ""
@@ -42,10 +45,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.guiScene.replaceContentFromText(view, data, data.len(), this)
   }
 
+  function goBack() {
+    if(this.isForced && this.ok_fn != null)
+      this.ok_fn()
+
+    base.goBack()
+  }
+
   function onPresetChange() {
     if (this.ok_fn != null)
       this.ok_fn()
-    this.goBack()
+    base.goBack()
   }
 }
 

@@ -132,7 +132,7 @@
         "countPortion": 0.16,
         "segment": [
           {
-            "radiusScale": 0.15,
+            "radiusScale": 0.3,
             "penetrationScale": 3.5,
             "damageScale": 1.0,
             "angles": [
@@ -144,7 +144,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               30.0,
@@ -154,7 +154,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               70.0,
@@ -165,7 +165,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               111.0,
@@ -175,7 +175,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               181.0,
@@ -185,7 +185,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               250.0,
@@ -196,7 +196,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               291.0,
@@ -490,7 +490,7 @@
           "countPortion": 0.16,
           "segment": [
             {
-              "radiusScale": 0.15,
+              "radiusScale": 0.3,
               "penetrationScale": 3.5,
               "damageScale": 1.0,
               "angles": [
@@ -502,7 +502,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [
                 30.0,
@@ -512,7 +512,7 @@
             },
             {
               "radiusScale": 0.375,
-              "penetrationScale": 2.25,
+              "penetrationScale": 2.75,
               "damageScale": 1.5,
               "angles": [
                 70.0,
@@ -523,7 +523,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [
                 111.0,
@@ -533,7 +533,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [
                 181.0,
@@ -543,7 +543,7 @@
             },
             {
               "radiusScale": 0.375,
-              "penetrationScale": 2.25,
+              "penetrationScale": 2.75,
               "damageScale": 1.5,
               "angles": [
                 250.0,
@@ -554,7 +554,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.75,
               "damageScale": 1.0,
               "angles": [
                 291.0,
@@ -805,7 +805,8 @@
         200.0,
         1000.0
       ],
-      "fuseDelayDist": 0.0,
+      "explodeTreshold": 0.1,
+      "fuseDelayDist": 0.3,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -948,6 +949,20 @@
             }
           ]
         }
+      },
+      "armorpower": {
+        "ArmorPower0m": [
+          20.0,
+          100.0
+        ],
+        "ArmorPower4000m": [
+          16.0,
+          4000.0
+        ],
+        "ArmorPower10000m": [
+          0.0,
+          10000.0
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [

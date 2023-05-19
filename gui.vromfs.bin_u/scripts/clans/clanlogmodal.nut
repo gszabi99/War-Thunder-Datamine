@@ -4,12 +4,14 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
+let { cutPrefix } = require("%sqstd/string.nut")
 
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId) {
@@ -71,7 +73,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
         logData.logEntries[i].details = ::getFilteredClanData(logData.logEntries[i].details, author)
     }
 
-    let blk = ::handyman.renderCached("%gui/logEntryList.tpl", logData, {
+    let blk = handyman.renderCached("%gui/logEntryList.tpl", logData, {
       details = loadTemplateText("%gui/clans/clanLogDetails.tpl")
     })
     this.guiScene.appendWithBlk(this.logListObj, blk, this)
@@ -89,7 +91,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
   }
 
   function onUserLinkRClick(_obj, _itype, link) {
-    let uid = ::g_string.cutPrefix(link, "uid_", null)
+    let uid = cutPrefix(link, "uid_", null)
 
     if (uid == null)
       return
@@ -111,7 +113,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
       obj = this.logListObj.findObject(this.loadButtonId)
     }
 
-    let viewBlk = ::handyman.renderCached("%gui/userLog/userLogRow.tpl",
+    let viewBlk = handyman.renderCached("%gui/userLog/userLogRow.tpl",
       {
         middle = loc("userlog/showMore")
         hasExpandImg = true

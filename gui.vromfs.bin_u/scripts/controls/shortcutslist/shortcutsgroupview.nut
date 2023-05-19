@@ -39,7 +39,7 @@ return [
       let old = joyParams.useTouchpadAiming
       joyParams.useTouchpadAiming = objValue
       if (objValue != old)
-        ::set_controls_preset("")
+        ::g_controls_manager.commitControls()
     }
     showFunc = @() hasFeature("EnableMouse") && isPlatformSony
   }

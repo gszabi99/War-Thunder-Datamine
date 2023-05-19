@@ -18,7 +18,7 @@ let function needChooseClanUnitResearch() {
   if (researchingUnitName == "")
     return true
 
-  let unit = ::getAircraftByName(researchingUnitName)
+  let unit = getAircraftByName(researchingUnitName)
   if (!unit || !unit.isVisibleInShop())
     return false
 

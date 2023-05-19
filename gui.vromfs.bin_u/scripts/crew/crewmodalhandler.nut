@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -18,6 +20,7 @@ let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -97,12 +100,12 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
   function updateCrewInfo() {
     local text = ""
     if (this.curUnit != null && this.curUnit.getCrewUnitType() == this.curCrewUnitType) {
-      text = ::g_string.implode([
+      text = loc("ui/comma").join([
         loc("crew/currentAircraft") + loc("ui/colon")
           + colorize("activeTextColor", ::getUnitName(this.curUnit))
         loc("crew/totalCrew") + loc("ui/colon")
           + colorize("activeTextColor", this.curUnit.getCrewTotalCount())
-      ], loc("ui/comma"))
+      ], true)
       if (this.curUnit.unitType.hasAiGunners && (this.curUnit?.gunnersCount ?? 0) > 0)
         text += "\n" + loc("crew/numDefensiveArmamentTurrets") + loc("ui/colon")
           + colorize("activeTextColor", this.curUnit.gunnersCount)
@@ -158,7 +161,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     this.updateBuyAllButton()
     this.updatePointsAdvice()
     this.updateAvailableSkillsIcons()
-    ::broadcastEvent("CrewNewSkillsChanged", { crew = this.crew })
+    broadcastEvent("CrewNewSkillsChanged", { crew = this.crew })
   }
 
   function getCurCountryName() {
@@ -248,7 +251,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
     }
     let pagesObj = this.scene.findObject("crew_pages_list")
     pagesObj.smallFont = this.needSmallerHeaderFont(pagesObj.getSize(), view.tabs) ? "yes" : "no"
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(pagesObj, data, data.len(), this)
 
     pagesObj.setValue(this.curPage)
@@ -391,7 +394,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
         else {
           sortData.append({
             unit = unit
-            locname = ::g_string.utf8ToLower(::getUnitName(unit))
+            locname = utf8ToLower(::getUnitName(unit))
           })
         }
       }
@@ -484,7 +487,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
       ::shop_upgrade_crew(this.crew.id, blk),
       { showProgressBox = true },
       function() {
-        ::broadcastEvent("CrewSkillsChanged",
+        broadcastEvent("CrewSkillsChanged",
           { crew = curHandler.crew, unit = curHandler.curUnit })
         if (curHandler.isValid() && curHandler.afterApplyAction) {
           curHandler.afterApplyAction()

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -14,7 +15,7 @@ let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { register_command } = require("console")
 let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 let { multiStageLocIdConfig, hasMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
-let json = require("%sqstd/json.nut")
+let { saveJson } = require("%sqstd/json.nut")
 
 let function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!::is_dev_version)
@@ -115,7 +116,7 @@ let function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, 
   }
 
   if (!langsInfo.len()) {
-    json.save($"{path}/status.json", status)
+    saveJson($"{path}/status.json", status)
     return ::g_language.setGameLocalization(curLang, false, false)
   }
 
@@ -164,9 +165,9 @@ let function debug_show_debriefing_trophy(trophyItemId) {
 }
 
 let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
-  local unit = ::getAircraftByName(unitName)
+  local unit = getAircraftByName(unitName)
   if (!unit)
-    unit = ::u.search(::all_units, @(u) u.isBought())
+    unit = u.search(::all_units, @(un) un.isBought())
 
   ::gui_start_modal_wnd(::gui_handlers.ShowUnlockHandler,
     {

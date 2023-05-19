@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -12,7 +13,8 @@ let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { get_game_mode, get_game_type } = require("mission")
+let { get_game_mode, get_game_type, get_local_mplayer } = require("mission")
+let { get_mission_difficulty_int } = require("guiMission")
 
 ::mission_rules.Base <- class {
   missionParams = null
@@ -91,7 +93,7 @@ let { get_game_mode, get_game_type } = require("mission")
       return ""
 
     let presetIconsText = ::get_weapon_icons_text(unit.name, unitWeaponLimit.name)
-    if (::u.isEmpty(presetIconsText))
+    if (u.isEmpty(presetIconsText))
       return ""
 
     return presetNumber + presetIconsText
@@ -172,7 +174,7 @@ let { get_game_mode, get_game_type } = require("mission")
       if (crew.country == country)
         foreach (slot in crew.crews) {
           let airName = ("aircraft" in slot) ? slot.aircraft : ""
-          let air = ::getAircraftByName(airName)
+          let air = getAircraftByName(airName)
           if (air
             && ::is_crew_available_in_session(slot.idInCountry, false)
             && ::is_crew_slot_was_ready_at_host(slot.idInCountry, airName, false)
@@ -188,8 +190,8 @@ let { get_game_mode, get_game_type } = require("mission")
 
   function getCurSpawnScore() {
     if (this.isTeamScoreRespawnEnabled)
-      return getTblValue("teamSpawnScore", ::get_local_mplayer(), 0)
-    return this.isScoreRespawnEnabled ? getTblValue("spawnScore", ::get_local_mplayer(), 0) : 0
+      return getTblValue("teamSpawnScore", get_local_mplayer(), 0)
+    return this.isScoreRespawnEnabled ? getTblValue("spawnScore", get_local_mplayer(), 0) : 0
   }
 
   function canRespawnOnUnitBySpawnScore(unit) {
@@ -320,7 +322,7 @@ let { get_game_mode, get_game_type } = require("mission")
       return null
 
     let res = getTblValue(::get_team_name_by_mp_team(team), teamsBlk)
-    return ::u.isDataBlock(res) ? res : null
+    return u.isDataBlock(res) ? res : null
   }
 
   function getMyTeamDataBlk(keyName = "teams") {
@@ -421,7 +423,7 @@ let { get_game_mode, get_game_type } = require("mission")
     if (!randomGroups)
       return ""
 
-    let ediff = ::get_mission_difficulty_int()
+    let ediff = get_mission_difficulty_int()
     let getBR = @(unit) unit.getBattleRating(ediff)
     let valueBR = this.getRandomUnitsGroupValueRange(randomGroups, getBR)
     let minBR = valueBR.minValue
@@ -450,7 +452,7 @@ let { get_game_mode, get_game_type } = require("mission")
     local minValue
     local maxValue
     foreach (name, _u in randomGroups) {
-      let unit = ::getAircraftByName(name)
+      let unit = getAircraftByName(name)
 
       if (!unit)
         continue
@@ -523,7 +525,7 @@ let { get_game_mode, get_game_type } = require("mission")
   function isUnitEnabledBySessionRank(unit) {
     if (!(this.missionParams?.disableUnitsOutOfSessionRank ?? false) || (unit == null))
       return true
-    return unit.getEconomicRank(::get_mission_difficulty_int()) >= this.getMinSessionRank()
+    return unit.getEconomicRank(get_mission_difficulty_int()) >= this.getMinSessionRank()
   }
 }
 

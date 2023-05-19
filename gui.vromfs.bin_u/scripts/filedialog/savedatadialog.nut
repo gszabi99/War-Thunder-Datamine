@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -118,7 +119,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
       })
     }
 
-    let data = ::handyman.renderCached("%gui/commonParts/comboBox.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/comboBox.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     this.getSortListObj().setValue(curVal)
   }
@@ -210,7 +211,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
       markUp.append(::buildTableRowNoPad(rowName, rowData, idx % 2 != 0))
     }
 
-    markUp = ::g_string.implode(markUp)
+    markUp = "".join(markUp, true)
     this.guiScene.replaceContentFromText(fileTableObj, markUp, markUp.len(), this)
   }
 

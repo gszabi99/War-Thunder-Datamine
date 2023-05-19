@@ -1,18 +1,22 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
+let { isEqual } = u
 let { clear_contacts, EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
 let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 
 ::contacts_handler <- null
 ::contacts_groups <- []
@@ -44,8 +48,6 @@ let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
   findContactByPSNId = @(psnId) ::contacts_players.findvalue(@(player) player.psnId == psnId)
 }
 
-let editContactsList = require("%scripts/contacts/editContacts.nut")
-
 foreach (fn in [
     "contactPresence.nut"
     "contact.nut"
@@ -53,7 +55,7 @@ foreach (fn in [
     "contactsHandler.nut"
     "searchForSquadHandler.nut"
   ])
-::g_script_reloader.loadOnce("%scripts/contacts/" + fn)
+g_script_reloader.loadOnce("%scripts/contacts/" + fn)
 
 ::g_contacts.onEventUserInfoManagerDataUpdated <- function onEventUserInfoManagerDataUpdated(params) {
   let usersInfoData = getTblValue("usersInfo", params, null)
@@ -77,7 +79,7 @@ foreach (fn in [
 
 ::g_contacts.removeContactGroup <- function removeContactGroup(group) {
   ::contacts.rawdelete(group)
-  ::u.removeFrom(::contacts_groups, group)
+  u.removeFrom(::contacts_groups, group)
 }
 
 ::g_contacts.removeContact <- function removeContact(player, group) {
@@ -101,12 +103,12 @@ foreach (fn in [
 
 ::missed_contacts_data <- {}
 
-::g_script_reloader.registerPersistentData("ContactsGlobals", getroottable(),
+g_script_reloader.registerPersistentData("ContactsGlobals", getroottable(),
   ["contacts_groups", "contacts_players", "contacts"])
 
 ::sortContacts <- function sortContacts(a, b) {
   return b.presence.sortOrder <=> a.presence.sortOrder
-    || ::g_string.utf8ToLower(a.name) <=> ::g_string.utf8ToLower(b.name)
+    || utf8ToLower(a.name) <=> utf8ToLower(b.name)
 }
 
 ::getContactsGroupUidList <- function getContactsGroupUidList(groupName) {
@@ -119,7 +121,7 @@ foreach (fn in [
 }
 
 ::isPlayerInContacts <- function isPlayerInContacts(uid, groupName) {
-  if (!(groupName in ::contacts) || ::u.isEmpty(uid))
+  if (!(groupName in ::contacts) || u.isEmpty(uid))
     return false
   foreach (p in ::contacts[groupName])
     if (p.uid == uid)
@@ -136,15 +138,14 @@ foreach (fn in [
   return false
 }
 
-::can_add_player_to_contacts_list <- function can_add_player_to_contacts_list(groupName, isSilent = false) {
+::can_add_player_to_contacts_list <- function can_add_player_to_contacts_list(groupName) {
   if (::contacts[groupName].len() < EPL_MAX_PLAYERS_IN_LIST)
     return true
 
-  if (!isSilent)
-    ::showInfoMsgBox(
-      format(loc("msg/cant_add/too_many_contacts"), EPL_MAX_PLAYERS_IN_LIST),
-      "cant_add_contact"
-    )
+  ::showInfoMsgBox(
+    format(loc("msg/cant_add/too_many_contacts"), EPL_MAX_PLAYERS_IN_LIST),
+    "cant_add_contact"
+  )
 
   return false
 }
@@ -177,64 +178,6 @@ foreach (fn in [
   let taskId = ::find_nicks_by_prefix(playerName, 1, false)
   ::g_tasker.addTask(taskId, null, taskCallback, taskCallback)
   return taskId
-}
-
-::send_friend_added_event <- function send_friend_added_event(friend_uid) {
-  ::matching_api_notify("mpresence.notify_friend_added",
-      {
-        friendId = friend_uid
-      })
-}
-
-
-::editContactMsgBox <- function editContactMsgBox(player, groupName, add) { //playerConfig: { uid, name }
-  if (!player)
-    return null
-
-  if (!("uid" in player) || !player.uid || player.uid == "") {
-    if (!("name" in player))
-      return null
-
-    return ::find_contact_by_name_and_do(
-      player.name,
-      @(contact) ::editContactMsgBox(contact, groupName, add)
-    )
-  }
-
-  let contact = ::getContact(player.uid, player.name)
-  if (contact.canOpenXBoxFriendsWindow(groupName)) {
-    contact.openXBoxFriendsEdit()
-    return null
-  }
-
-  if (add) {
-    editContactsList({ [true] = [contact] }, groupName, true)
-  }
-  else {
-    ::scene_msg_box(
-      "remove_from_list",
-      null,
-      format(loc("msg/ask_remove_from_" + groupName), contact.getName()),
-      [
-        ["ok", @() editContactsList({ [false] = [contact] }, groupName)],
-        ["cancel", @() null ]
-      ],
-      "cancel", { cancel_fn = @() null }
-    )
-  }
-  return null
-}
-
-::request_edit_player_lists <- function request_edit_player_lists(editBlk, checkFeature = true) {
-  let taskId = ::edit_player_lists(editBlk)
-  let taskCallback = function (_result = null) {
-    if (checkFeature && !hasFeature("Friends"))
-      return
-
-    ::reload_contact_list()
-  }
-
-  return ::g_tasker.addTask(taskId, null, taskCallback, taskCallback)
 }
 
 ::loadContactsToObj <- function loadContactsToObj(obj, owner = null) {
@@ -318,12 +261,12 @@ foreach (fn in [
       ::updateContact(config)
 
   if (needEvent)
-    ::broadcastEvent(contactEvent.CONTACTS_UPDATED)
+    broadcastEvent(contactEvent.CONTACTS_UPDATED)
 }
 
 ::updateContact <- function updateContact(config) {
-  let configIsContact = ::u.isInstance(config) && config instanceof ::Contact
-  if (::u.isInstance(config) && !configIsContact) { //Contact no need update by instances because foreach use function as so constructor
+  let configIsContact = u.isInstance(config) && config instanceof ::Contact
+  if (u.isInstance(config) && !configIsContact) { //Contact no need update by instances because foreach use function as so constructor
     ::script_net_assert_once("strange config for contact update", "strange config for contact update")
     return null
   }
@@ -439,7 +382,7 @@ foreach (fn in [
         view.unitList.append({ header = loc("conditions/playerTag") })
         if (!event?.multiSlot) {
           let unitName = memberData.selAirs[memberData.country]
-          let unit = ::getAircraftByName(unitName)
+          let unit = getAircraftByName(unitName)
           view.unitList.append({
             rank = format("%.1f", unit.getBattleRating(ediff))
             unit = unitName
@@ -448,7 +391,7 @@ foreach (fn in [
         }
         else {
           foreach (id, unitName in memberDataAirs) {
-            let unit = ::getAircraftByName(unitName)
+            let unit = getAircraftByName(unitName)
             view.unitList.append({
               rank = format("%.1f", unit.getBattleRating(ediff))
               unit = unitName
@@ -463,7 +406,7 @@ foreach (fn in [
     }
   }
 
-  let blk = ::handyman.renderCached("%gui/contacts/contactTooltip.tpl", view)
+  let blk = handyman.renderCached("%gui/contacts/contactTooltip.tpl", view)
   let guiScene = obj.getScene()
   guiScene.replaceContentFromText(obj, blk, blk.len(), handler)
 
@@ -483,7 +426,7 @@ foreach (fn in [
 }
 
 ::isPlayerInFriendsGroup <- function isPlayerInFriendsGroup(uid, searchByUid = true, playerNick = "") {
-  if (::u.isEmpty(uid))
+  if (u.isEmpty(uid))
     searchByUid = false
 
   local isFriend = false
@@ -496,22 +439,13 @@ foreach (fn in [
 }
 
 
-
-::get_contacts_array_by_filter_func <- function get_contacts_array_by_filter_func(groupName, filterFunc) {
-  if (!(groupName in ::contacts))
-    return []
-
-  return ::u.filter(::contacts[groupName], @(contact) filterFunc(contact.name))
-}
-
 if (!::contacts)
   clear_contacts()
 
-::subscribe_handler(::g_contacts, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_contacts, ::g_listener_priority.DEFAULT_HANDLER)
 
-::xbox_on_returned_from_system_ui <- @() ::broadcastEvent("XboxSystemUIReturn")
+::xbox_on_returned_from_system_ui <- @() broadcastEvent("XboxSystemUIReturn")
 
-::can_view_target_presence_callback <- xboxContactsManager.updateContactXBoxPresence
 ::xbox_on_add_remove_friend_closed <- xboxContactsManager.xboxOverlayContactClosedCallback
 ::xbox_get_people_list_callback <- @(list) xboxContactsManager.onReceivedXboxListCallback(list, EPL_FRIENDLIST)
 ::xbox_get_avoid_list_callback <- @(list) xboxContactsManager.onReceivedXboxListCallback(list, EPL_BLOCKLIST)

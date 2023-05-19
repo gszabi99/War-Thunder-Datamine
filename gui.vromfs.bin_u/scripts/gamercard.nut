@@ -1,11 +1,14 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { money_type, Money, Balance } = require("%scripts/money.nut")
 let { format } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
@@ -15,7 +18,6 @@ let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { boosterEffectType, haveActiveBonusesByEffectType } = require("%scripts/items/boosterEffect.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { money_type } = require("%scripts/money.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
@@ -89,7 +91,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
           }
           break
         case "gold":
-          let moneyInst = ::Money(money_type.none, 0, val)
+          let moneyInst = Money(money_type.none, 0, val)
           let valStr = moneyInst.toStringWithParams({ isGoldAlwaysShown = true })
 
           let tooltipText = "\n".concat(colorize("activeTextColor", valStr), loc("mainmenu/gold"))
@@ -111,7 +113,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
           obj.setValue(valStr)
           break
         case "free_exp":
-          let valStr = ::Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })
+          let valStr = Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })
           let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
             loc("currency/freeResearchPoints/desc"),
             ::get_current_bonuses_text(boosterEffectType.RP))
@@ -122,7 +124,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
           break
         case "name":
           local valStr
-          if (::u.isEmpty(val))
+          if (u.isEmpty(val))
             valStr = loc("mainmenu/pleaseSignIn")
           else
             valStr = platformModule.getPlayerName(val)
@@ -288,7 +290,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     return
 
   ::checkNewNotificationUserlogs()
-  ::broadcastEvent("UpdateGamercard")
+  broadcastEvent("UpdateGamercard")
 }
 
 ::do_with_all_gamercards <- function do_with_all_gamercards(func) {
@@ -359,10 +361,9 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 ::update_clan_alert_icon <- function update_clan_alert_icon() {
   let needAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
-  ::do_with_all_gamercards(
-    (@(needAlert) function(scene) {
+  ::do_with_all_gamercards(function(scene) {
       ::showBtn("gc_clanAlert", needAlert, scene)
-    })(needAlert))
+    })
 }
 
 ::update_gamercards_chat_info <- function update_gamercards_chat_info(prefix = "gc_") {
@@ -395,6 +396,6 @@ hasMenuChat.subscribe(@(_) updateGamercardChatButton())
 
 globalCallbacks.addTypes({
   onOpenGameModeSelect = {
-    onCb = @(_obj, _params) ::broadcastEvent("OpenGameModeSelect")
+    onCb = @(_obj, _params) broadcastEvent("OpenGameModeSelect")
   }
 })

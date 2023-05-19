@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil } = require("math")
 let { getCollectionsList } = require("%scripts/collections/collections.nut")
@@ -94,7 +95,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
     view.hasCollections <- view.collections.len() > 0
 
-    let data = ::handyman.renderCached("%gui/collections/collection.tpl", view)
+    let data = handyman.renderCached("%gui/collections/collection.tpl", view)
     if (checkObj(this.collectionsListObj))
       this.guiScene.replaceContentFromText(this.collectionsListObj, data, data.len(), this)
 

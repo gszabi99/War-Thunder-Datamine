@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { hangar_get_current_unit_name } = require("hangar")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -32,7 +33,7 @@ let function getCountryHangarDefaultUnit(countryId, esUnitType) {
 let function getFallbackUnitForHangar(params) {
   // Trying a currently loaded hangar unit
   let countryId = params?.country ?? profileCountrySq.value
-  let curHangarUnit = ::getAircraftByName(hangar_get_current_unit_name())
+  let curHangarUnit = getAircraftByName(hangar_get_current_unit_name())
   if (curHangarUnit?.shopCountry == countryId
       && (params?.slotbarUnits ?? []).indexof(curHangarUnit) != null)
     return curHangarUnit
@@ -54,7 +55,7 @@ let getShowedUnitName = @() showedUnit.value?.name ??
   (isFallbackUnitInHangar ? "" : hangar_get_current_unit_name())
 
 let getShowedUnit = @() showedUnit.value ??
-  (isFallbackUnitInHangar ? null : ::getAircraftByName(hangar_get_current_unit_name()))
+  (isFallbackUnitInHangar ? null : getAircraftByName(hangar_get_current_unit_name()))
 
 let function setShowUnit(unit, params = null) {
   showedUnit(unit)
@@ -63,15 +64,15 @@ let function setShowUnit(unit, params = null) {
 }
 
 showedUnit.subscribe(function(_v) {
-  ::broadcastEvent("ShowedUnitChanged")
+  broadcastEvent("ShowedUnitChanged")
 })
 
 let function getPlayerCurUnit() {
   local unit = null
   if (::is_in_flight())
-    unit = ::getAircraftByName(::get_player_unit_name())
+    unit = getAircraftByName(::get_player_unit_name())
   if (!unit || unit.name == "dummy_plane")
-    unit = showedUnit.value ?? ::getAircraftByName(hangar_get_current_unit_name())
+    unit = showedUnit.value ?? getAircraftByName(hangar_get_current_unit_name())
   return unit
 }
 

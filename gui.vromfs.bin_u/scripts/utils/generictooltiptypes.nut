@@ -4,7 +4,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { floor } = require("math")
 let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
@@ -137,7 +138,7 @@ let exportTypes = addTooltipTypes({
 
       let view = ::g_unlock_view.getSubunlocksView(subunlockCfg ?? config)
       if (view) {
-        let markup = ::handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
+        let markup = handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
         let nestObj = obj.findObject("subunlocks")
         nestObj.show(true)
         obj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
@@ -272,7 +273,7 @@ let exportTypes = addTooltipTypes({
     fillTooltip = function(obj, handler, id, params) {
       if (!checkObj(obj))
         return false
-      let unit = ::getAircraftByName(id)
+      let unit = getAircraftByName(id)
       if (!unit)
         return false
       let guiScene = obj.getScene()
@@ -313,7 +314,7 @@ let exportTypes = addTooltipTypes({
       let name = loc("ui/quotes", { text = loc(group.name) })
       let list = []
       foreach (str in group.units) {
-        let unit = ::getAircraftByName(str)
+        let unit = getAircraftByName(str)
         if (!unit)
           continue
 
@@ -334,7 +335,7 @@ let exportTypes = addTooltipTypes({
         columns.append({ groupList = list.slice(unitsInArmyRowsMax) })
       }
 
-      let data = ::handyman.renderCached("%gui/tooltips/unitGroupTooltip.tpl", {
+      let data = handyman.renderCached("%gui/tooltips/unitGroupTooltip.tpl", {
         title = $"{loc("unitsGroup/groupContains", { name = name})}{loc("ui/colon")}",
         hasMultipleColumns = hasMultipleColumns,
         columns = columns
@@ -358,7 +359,7 @@ let exportTypes = addTooltipTypes({
       let unitsView = []
       local unit
       foreach (unitName in unitsList) {
-        unit = ::getAircraftByName(unitName)
+        unit = getAircraftByName(unitName)
         if (!unit)
           unitsView.append({ name = unitName })
         else
@@ -379,7 +380,7 @@ let exportTypes = addTooltipTypes({
           colorize("activeTextColor", missionRules.getRandomUnitsGroupLocBattleRating(groupName))
         units = unitsView
       }
-      let data = ::handyman.renderCached("%gui/tooltips/randomUnitTooltip.tpl", tooltipParams)
+      let data = handyman.renderCached("%gui/tooltips/randomUnitTooltip.tpl", tooltipParams)
 
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true
@@ -391,10 +392,10 @@ let exportTypes = addTooltipTypes({
       return this._buildId(categoryName, { unitName = unitName })
     }
     getTooltipContent = function(categoryName, params) {
-      let unit = ::getAircraftByName(params?.unitName ?? "")
+      let unit = getAircraftByName(params?.unitName ?? "")
       let crewUnitType = (unit?.unitType ?? unitTypes.INVALID).crewUnitType
       let skillCategory = getSkillCategoryByName(categoryName)
-      let crewCountryId = ::find_in_array(shopCountriesList, profileCountrySq.value, -1)
+      let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.value, -1)
       let crewIdInCountry = getTblValue(crewCountryId, ::selected_crews, -1)
       let crewData = getCrew(crewCountryId, crewIdInCountry)
       if (skillCategory != null && crewUnitType != CUT_INVALID && crewData != null)
@@ -409,7 +410,7 @@ let exportTypes = addTooltipTypes({
     }
     getTooltipContent = function(crewIdStr, params) {
       let crew = ::get_crew_by_id(::to_integer_safe(crewIdStr, -1))
-      let unit = ::getAircraftByName(getTblValue("unitName", params, ""))
+      let unit = getAircraftByName(getTblValue("unitName", params, ""))
       if (!unit)
         return ""
 
@@ -429,7 +430,7 @@ let exportTypes = addTooltipTypes({
     }
     getTooltipContent = function(crewIdStr, params) {
       let crew = ::get_crew_by_id(::to_integer_safe(crewIdStr, -1))
-      let unit = ::getAircraftByName(getTblValue("unitName", params, ""))
+      let unit = getAircraftByName(getTblValue("unitName", params, ""))
       if (!unit)
         return ""
 
@@ -483,7 +484,7 @@ let exportTypes = addTooltipTypes({
 
       let config = ::g_battle_tasks.generateUnlockConfigByTask(battleTask)
       let view = ::g_battle_tasks.generateItemView(config, { isOnlyInfo = true })
-      let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", { items = [view], isSmallText = true })
+      let data = handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", { items = [view], isSmallText = true })
 
       let guiScene = obj.getScene()
       obj.width = "1@unlockBlockWidth"
@@ -503,7 +504,7 @@ let exportTypes = addTooltipTypes({
         items = [getChallengeView(unlockBlk, { isOnlyInfo = true, isInteractive = false })]
         isSmallText = true
       }
-      let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", view)
+      let data = handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", view)
 
       let guiScene = obj.getScene()
       obj.width = "1@unlockBlockWidth"
@@ -537,13 +538,13 @@ let exportTypes = addTooltipTypes({
         guiScene.appendWithBlk(obj, " ".concat("img{", bgImage, size, svgSize, "}"), this)
       }
       else if (decoratorType == ::g_decorator_type.SKINS) {
-        let unit = ::getAircraftByName(getPlaneBySkinId(name))
+        let unit = getAircraftByName(getPlaneBySkinId(name))
         local text = []
         if (unit)
           text.append(loc("reward/skin_for") + " " + ::getUnitName(unit))
         text.append(decoratorType.getLocDesc(name))
 
-        text = ::locOrStrip(::g_string.implode(text, "\n"))
+        text = ::locOrStrip("\n".join(text, true))
         let textBlock = "textareaNoTab {smallFont:t='yes'; max-width:t='0.5@sf'; text:t='%s';}"
         guiScene.appendWithBlk(obj, format(textBlock, text), this)
       }

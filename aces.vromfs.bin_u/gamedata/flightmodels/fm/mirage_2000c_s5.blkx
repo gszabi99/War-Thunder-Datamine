@@ -162,9 +162,6 @@
       "allowOverrideByForcedStabilization": true
     }
   },
-  "MouseAim": {
-    "PreciseRotStopDetection": true
-  },
   "Aerodynamics": {
     "GearCd": 0.026,
     "GearCentralCd": 0.0,
@@ -923,7 +920,7 @@
       "Power": 1160.4,
       "ConsumptionOmegaMax": 0.95,
       "TorqueZeroOmegaMult": 3.0,
-      "TurbineTimeConstant": 2.2,
+      "TurbineTimeConstant": 1.2,
       "ThrustMax": {
         "Altitude_0": 0.0,
         "Altitude_1": 3000.0,
@@ -951,13 +948,13 @@
         "ThrAftMaxCoeff_0_0": 1.0,
         "TorqueMaxCoeff_0_0": 1.0,
         "ThrustMaxCoeff_0_1": 0.92,
-        "ThrAftMaxCoeff_0_1": 1.0,
+        "ThrAftMaxCoeff_0_1": 1.01,
         "TorqueMaxCoeff_0_1": 1.0,
         "ThrustMaxCoeff_0_2": 0.9,
-        "ThrAftMaxCoeff_0_2": 1.0,
+        "ThrAftMaxCoeff_0_2": 1.02,
         "TorqueMaxCoeff_0_2": 1.0,
         "ThrustMaxCoeff_0_3": 0.9,
-        "ThrAftMaxCoeff_0_3": 1.05,
+        "ThrAftMaxCoeff_0_3": 1.06,
         "TorqueMaxCoeff_0_3": 1.0,
         "ThrustMaxCoeff_0_4": 0.94,
         "ThrAftMaxCoeff_0_4": 1.08,
@@ -990,7 +987,7 @@
         "ThrAftMaxCoeff_1_0": 1.0,
         "TorqueMaxCoeff_1_0": 0.78,
         "ThrustMaxCoeff_1_1": 0.72,
-        "ThrAftMaxCoeff_1_1": 1.0,
+        "ThrAftMaxCoeff_1_1": 1.01,
         "TorqueMaxCoeff_1_1": 0.72,
         "ThrustMaxCoeff_1_2": 0.7,
         "ThrAftMaxCoeff_1_2": 1.04,
@@ -1241,7 +1238,7 @@
       },
       "Mode2": {
         "Throttle": 0.6,
-        "RPM": 0.93,
+        "RPM": 0.9,
         "ThrustMult": 0.68,
         "TorqueMultMinRpm": 0.6,
         "TorqueMultMaxRpm": 0.2,
@@ -1250,7 +1247,7 @@
       },
       "Mode3": {
         "Throttle": 0.8,
-        "RPM": 0.97,
+        "RPM": 0.96,
         "ThrustMult": 0.82,
         "TorqueMultMinRpm": 1.5,
         "TorqueMultMaxRpm": 0.5,
@@ -1258,15 +1255,6 @@
         "TurbineTimeConstantMult": 1.0
       },
       "Mode4": {
-        "Throttle": 0.95,
-        "RPM": 0.9809,
-        "ThrustMult": 0.927,
-        "TorqueMultMinRpm": 2.73,
-        "TorqueMultMaxRpm": 0.91,
-        "ConsumptionMult": 1.01,
-        "TurbineTimeConstantMult": 1.0
-      },
-      "Mode5": {
         "Throttle": 1.0,
         "RPM": 0.998,
         "ThrustMult": 1.0,
@@ -1275,14 +1263,14 @@
         "ConsumptionMult": 1.0,
         "TurbineTimeConstantMult": 1.0
       },
-      "Mode6": {
+      "Mode5": {
         "Throttle": 1.1,
         "RPM": 1.01,
         "ThrustMult": 1.25,
         "TorqueMultMinRpm": 3.5,
         "TorqueMultMaxRpm": 1.28,
         "ConsumptionMult": 2.05,
-        "TurbineTimeConstantMult": 1.0
+        "TurbineTimeConstantMult": 0.05
       }
     },
     "AutoThrottle": {
@@ -1590,6 +1578,7 @@
   "Mass": {
     "EmptyMass": 7470.0,
     "MaxFuelMass0": 3340.0,
+    "MaxFuelMassExternal0": 0.0,
     "FuelAccumulatorCapacity0": 70.0,
     "MinimalLoadFactor0": -0.5,
     "FuelAccumulatorFlowRate0": 9.5,
@@ -1620,42 +1609,46 @@
       389.0
     ],
     "Parts": {
-      "tank1_capacity": 334.0,
+      "tank1_capacity": 371.0,
       "tank1_system": 0,
       "tank1_external": false,
       "tank1_priority": 5,
-      "tank2_capacity": 334.0,
+      "tank2_capacity": 371.0,
       "tank2_system": 0,
       "tank2_external": false,
       "tank2_priority": 3,
-      "tank3_capacity": 334.0,
+      "tank3_capacity": 371.0,
       "tank3_system": 0,
       "tank3_external": false,
       "tank3_priority": 3,
-      "tank4_capacity": 334.0,
+      "tank4_capacity": 371.0,
       "tank4_system": 0,
       "tank4_external": false,
       "tank4_priority": 2,
-      "tank5_capacity": 334.0,
+      "tank5_capacity": 371.0,
       "tank5_system": 0,
       "tank5_external": false,
       "tank5_priority": 2,
-      "tank6_capacity": 334.0,
+      "tank6_capacity": 371.0,
       "tank6_system": 0,
       "tank6_external": false,
       "tank6_priority": 1,
-      "tank7_capacity": 334.0,
+      "tank7_capacity": 371.0,
       "tank7_system": 0,
       "tank7_external": false,
       "tank7_priority": 1,
-      "tank8_capacity": 334.0,
+      "tank8_capacity": 371.0,
       "tank8_system": 0,
       "tank8_external": false,
       "tank8_priority": 4,
-      "tank9_capacity": 334.0,
+      "tank9_capacity": 371.0,
       "tank9_system": 0,
       "tank9_external": false,
       "tank9_priority": 4,
+      "tank10_capacity": 0.0,
+      "tank10_system": 0,
+      "tank10_external": true,
+      "tank10_priority": 0,
       "engine1_dm": 1860.0
     },
     "PartsWithSurface": {
@@ -1958,6 +1951,71 @@
           312.765,
           51.5662
         ]
+      ]
+    }
+  },
+  "Instructor": {
+    "critMult": [
+      0.75,
+      0.75
+    ],
+    "limitOverload": true,
+    "overloadMult": [
+      0.7,
+      0.72,
+      0.85,
+      0.92
+    ],
+    "overloadTimeRange": [
+      0.9,
+      1.0
+    ],
+    "overloadTimeRate": 0.145,
+    "limitLoadfactor": false,
+    "loadFactorLimit": [
+      -5.0,
+      12.0
+    ],
+    "MouseAim": {
+      "forceAdvanced": true,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
+      "rollAndPullUpWishDirYMin": -0.7,
+      "rollandPullUpWishDirMin": 0.3,
+      "allowedRollRateCoeff": [
+        0.17,
+        0.3,
+        0.4,
+        1.5
+      ],
+      "rollTimeMult": 0.44,
+      "rollPidKpMult": 1.25,
+      "dirXZFactorPitch0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorPitchMin": 0.02,
+      "dirXZFactorYaw0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorYawMin": 0.02,
+      "dirXZToRollRateLim": [
+        0.0,
+        0.0
+      ],
+      "rollRateLimToDirXZFactorMin": [
+        0.7,
+        1000000.0
+      ],
+      "rollRateLimToDirXZFactorMax": [
+        0.7,
+        1000000.0
       ]
     }
   },

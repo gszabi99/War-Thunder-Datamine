@@ -1,12 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { matchingApiFunc } = require("%scripts/matching/api.nut")
 
 ::g_user_presence <- {
   inited = false
@@ -23,7 +26,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
   if (!this.inited) {
     this.inited = true
-    ::subscribe_handler(this, ::g_listener_priority.USER_PRESENCE_UPDATE)
+    subscribe_handler(this, ::g_listener_priority.USER_PRESENCE_UPDATE)
 
     isInBattleState.subscribe(function(_isInBattle) {
       this.updateBattlePresence()
@@ -81,8 +84,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   // Copy new values to current presence object.
   foreach (key, value in presence)
     this.currentPresence[key] <- value
-  ::matching_api_func("mpresence.set_presence", @(_) null, presence)
-  ::broadcastEvent("MyPresenceChanged", presence)
+  matchingApiFunc("mpresence.set_presence", @(_) null, presence)
+  broadcastEvent("MyPresenceChanged", presence)
 }
 
 /**
@@ -101,5 +104,5 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   foreach (key, _value in presence)
     this.helperObj[key] <- getTblValue(key, this.currentPresence)
 
-  return !::u.isEqual(this.helperObj, presence)
+  return !u.isEqual(this.helperObj, presence)
 }

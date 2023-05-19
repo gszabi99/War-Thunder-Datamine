@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { split_by_chars } = require("string")
 enum HINT_PIECE_TYPE {
@@ -30,7 +31,7 @@ let function getTextSlice(textsArray) {
   * timeoffset  //0 - only to show time in text
 */
 ::g_hints.buildHintMarkup <- function buildHintMarkup(text, params = {}) {
-  return ::handyman.renderCached("%gui/hint.tpl", this.getHintSlices(text, params))
+  return handyman.renderCached("%gui/hint.tpl", this.getHintSlices(text, params))
 }
 
 ::g_hints.getHintSlices <- function getHintSlices(text, params = {}) {

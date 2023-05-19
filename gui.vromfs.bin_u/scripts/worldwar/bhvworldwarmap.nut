@@ -320,7 +320,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
   function setSelectedArmies(obj, selectedArmies) {
     let params = obj.getUserData() || {}
-    params[this.selectedArmiesID] <- ::g_string.implode(selectedArmies, ",")
+    params[this.selectedArmiesID] <- ",".join(selectedArmies, true)
     obj.setUserData(params)
     let selectedArmiesInfo = []
     foreach (armyName in selectedArmies) {

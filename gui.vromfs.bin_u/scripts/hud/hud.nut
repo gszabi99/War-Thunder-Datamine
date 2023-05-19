@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { send } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -14,7 +16,7 @@ let { isProgressVisible, getHudUnitType } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { showHudTankMovementStates } = require("%scripts/hud/hudTankStates.nut")
 let { mpTankHudBlkPath } = require("%scripts/hud/hudBlkPath.nut")
-let { isDmgIndicatorVisible } = require("gameplayBinding")
+let { isDmgIndicatorVisible, isShowTankMinimap } = require("gameplayBinding")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -259,7 +261,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
     this.hudType = newHudType
 
     this.onHudSwitched()
-    ::broadcastEvent("HudTypeSwitched")
+    broadcastEvent("HudTypeSwitched")
     return true
   }
 
@@ -372,15 +374,15 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
       return
     }
 
-    if (::u.isEqual(unmapped, this.ucPrevList))
+    if (u.isEqual(unmapped, this.ucPrevList))
       return
 
     let warningObj = this.scene.findObject("unmapped_shortcuts_warning")
     if (!checkObj(warningObj))
       return
 
-    let unmappedLocalized = ::u.map(unmapped, loc)
-    let text = loc("controls/warningUnmapped") + loc("ui/colon") + "\n" + ::g_string.implode(unmappedLocalized, loc("ui/comma"))
+    let unmappedLocalized = u.map(unmapped, loc)
+    let text = loc("controls/warningUnmapped") + loc("ui/colon") + "\n" + loc("ui/comma").join(unmappedLocalized, true)
     warningObj.setValue(text)
     warningObj.show(true)
     warningObj.wink = "yes"
@@ -586,7 +588,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   function updateTacticalMapVisibility() {
     let shouldShowMapForAircraft = (get_game_type() & GT_RACE) != 0 // Race mission
       || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") // Strike UCAV in Tanks mission
-      || (hasFeature("uavMiniMap") && (::getAircraftByName(getOwnerUnitName())?.isTank() ?? false)) // Scout UCAV in Tanks mission
+      || (hasFeature("uavMiniMap") && (getAircraftByName(getOwnerUnitName())?.isTank() ?? false)) // Scout UCAV in Tanks mission
     let isVisible = shouldShowMapForAircraft && !is_replay_playing()
       && ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
     this.showSceneBtn("hud_air_tactical_map", isVisible)
@@ -664,6 +666,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
     ::hudEnemyDamage.init(this.scene)
     this.actionBar = ::ActionBar(this.scene.findObject("hud_action_bar"))
     this.updatePosHudMultiplayerScore()
+    this.updateTacticalMapVisibility()
 
     ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
       @(_) this.updateDmgIndicatorState(), this)
@@ -671,6 +674,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
 
   function reinitScreen(_params = {}) {
     this.actionBar.reinit()
+    this.updateTacticalMapVisibility()
     ::hudEnemyDamage.reinit()
     maybeOfferControlsHelp()
     this.updateDmgIndicatorState()
@@ -683,6 +687,13 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
         size = obj.getSize()
         pos = obj.getPos()
       })
+  }
+
+  function updateTacticalMapVisibility() {
+    let shouldShowMapForHelicopter = isShowTankMinimap()
+    let isVisible = shouldShowMapForHelicopter && !is_replay_playing()
+      && ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
+    this.showSceneBtn("hud_air_tactical_map", isVisible)
   }
 }
 

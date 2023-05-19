@@ -77,7 +77,7 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
   function createCraftsInfoConfig(craftsInfo) {
     let res = []
     foreach (idx, unitName in craftsInfo) {
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (unit == null)
         continue
 

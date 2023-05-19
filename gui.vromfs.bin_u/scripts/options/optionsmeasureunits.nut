@@ -4,17 +4,19 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { Point2 } = require("dagor.math")
 let { pow } = require("math")
 let { format } = require("string")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { floatToStringRounded } = require("%sqstd/string.nut")
 
 let persistent = {
   unitsCfg = null
 }
-::g_script_reloader.registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
+g_script_reloader.registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
 
 // Preserve the same order as in measureUnits.blk
 let optionsByIndex = [
@@ -96,7 +98,7 @@ local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = 
     if (shouldRoundValue && isPresize)
       return format("%d", ((val / unit.roundAfterBy + 0.5).tointeger() * unit.roundAfterBy).tointeger())
     let roundPrecision = (unit.round == 0 || !isPresize) ? 1 : pow(0.1, unit.round)
-    return ::g_string.floatToStringRounded(val, roundPrecision)
+    return floatToStringRounded(val, roundPrecision)
   })
   local result = separator.join(valuesList)
   if (addMeasureUnits)

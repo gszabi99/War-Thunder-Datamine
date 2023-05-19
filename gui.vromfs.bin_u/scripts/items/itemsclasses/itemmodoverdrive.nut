@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 
 ::items_classes.ModOverdrive <- class extends BaseItemModClass {
@@ -28,7 +30,7 @@ let DataBlock  = require("DataBlock")
   canActivate = @() this.isInventoryItem && !this.isActive()
   isActive = @(...) this.isActiveOverdrive
 
-  getIconMainLayer = @() ::LayersIcon.findLayerCfg("mod_overdrive")
+  getIconMainLayer = @() LayersIcon.findLayerCfg("mod_overdrive")
 
   function getMainActionData(isShort = false, params = {}) {
     if (this.amount && this.canActivate())
@@ -54,7 +56,7 @@ let DataBlock  = require("DataBlock")
     let successCb = function() {
       if (cb)
         cb({ success = true, item = item })
-      ::broadcastEvent("OverdriveActivated")
+      broadcastEvent("OverdriveActivated")
     }
 
     let blk = DataBlock()

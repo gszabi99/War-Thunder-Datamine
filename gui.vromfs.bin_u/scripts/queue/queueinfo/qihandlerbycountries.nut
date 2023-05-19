@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 ::gui_handlers.QiHandlerByCountries <- class extends ::gui_handlers.QiHandlerBase {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
@@ -30,7 +32,7 @@ from "%scripts/dagui_library.nut" import *
   function updateStats() {
     ::g_qi_view_utils.updateViewByCountries(this.statsObj, this.queue, this.curClusterName)
     let countrySets = ::events.getAllCountriesSets(this.event)
-    if (!::u.isEqual(this.visibleCountrySets, countrySets))
+    if (!u.isEqual(this.visibleCountrySets, countrySets))
       this.fillCountrySets(countrySets)
     this.updateCustomModeCheckbox()
   }
@@ -51,13 +53,13 @@ from "%scripts/dagui_library.nut" import *
 
     let view = {
       isCentered = true
-      countriesSets = ::u.map(sortedSets, function(cSet) {
+      countriesSets = u.map(sortedSets, function(cSet) {
         let res = {}
         let teams = ::g_team.getTeams()
         foreach (idx, team in teams)
           if (idx in cSet.countries) {
             res[team.name] <- {
-              countries = ::u.map(cSet.countries[idx], function(c) {
+              countries = u.map(cSet.countries[idx], function(c) {
                 return { countryIcon = ::get_country_icon(c) }
               })
             }
@@ -67,7 +69,7 @@ from "%scripts/dagui_library.nut" import *
       })
     }
 
-    let markup = ::handyman.renderCached("%gui/events/countriesByTeamsList.tpl", view)
+    let markup = handyman.renderCached("%gui/events/countriesByTeamsList.tpl", view)
     let nestObj = this.scene.findObject("countries_sets")
     this.guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
     this.showSceneBtn("countries_sets_header", true)
@@ -123,7 +125,7 @@ from "%scripts/dagui_library.nut" import *
       })
     }
 
-    let markup = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let markup = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(clustersObj, markup, markup.len(), this)
     if (view.tabs.len()) {
       this.curClusterName = view.tabs[0].id

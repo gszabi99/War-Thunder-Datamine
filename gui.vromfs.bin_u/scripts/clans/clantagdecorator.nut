@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -45,7 +46,7 @@ from "%scripts/dagui_library.nut" import *
 
     foreach (list in decoratorLists)
       foreach (decorator in list)
-        if (!::u.search(result, @(d) d.id == decorator.id))
+        if (!u.search(result, @(d) d.id == decorator.id))
           result.append(decorator)
 
     return result

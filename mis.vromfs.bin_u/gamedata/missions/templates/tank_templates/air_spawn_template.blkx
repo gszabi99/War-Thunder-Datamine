@@ -47,11 +47,51 @@
             "fromDescriptor": "disableAirfields"
           }
         ],
+        "varSetPoint3": [
+          {
+            "value": [
+              15000.0,
+              1500.0,
+              0.0
+            ],
+            "var": "defense_air_spawn_attack_pos",
+            "fromDescriptor": "defense_air_spawn_attack_pos"
+          },
+          {
+            "value": [
+              6500.0,
+              1500.0,
+              0.0
+            ],
+            "var": "defense_air_spawn_defense_pos",
+            "fromDescriptor": "defense_air_spawn_defense_pos"
+          }
+        ],
         "missionGetBalanceLevel": {
           "input_var": "session_rank"
         },
         "triggerEnable": {
           "target": "air_spawn_init"
+        }
+      },
+      "else_actions": {}
+    },
+    "air_spawn_set_props": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": "defense_air_spawn_structure",
+          "isImmortal": true
         }
       },
       "else_actions": {}
@@ -935,9 +975,87 @@
         }
       },
       "actions": {
+        "varSetString": [
+          {
+            "value": "t1_air_spawn_arcade",
+            "var": "t1_air_spawn_str"
+          },
+          {
+            "value": "t2_air_spawn_hardcore",
+            "var": "t2_air_spawn_str"
+          }
+        ],
+        "unitMoveTo": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@battlearea_name",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": true,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "defense_air_spawn_structure",
+            "move_type": "teleport",
+            "lookat": "@t1_air_spawn_str"
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@battlearea_name",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "defense_air_spawn_structure",
+            "move_type": "teleport",
+            "lookat": "@t2_air_spawn_str"
+          }
+        ],
+        "duplicateAreaAtPos": [
+          {
+            "area": "@t1_air_spawn_str",
+            "target": "defense_air_spawn_structure",
+            "var_out": "t1_air_spawn_str",
+            "posOffsetVar": "defense_air_spawn_defense_pos",
+            "turnOffset": 180.0,
+            "spawnOffsetSpace": "object"
+          },
+          {
+            "area": "@t2_air_spawn_str",
+            "target": "defense_air_spawn_structure",
+            "var_out": "t2_air_spawn_str",
+            "posOffsetVar": "defense_air_spawn_attack_pos",
+            "turnOffset": 180.0,
+            "spawnOffsetSpace": "object"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
-            "loc_name": "missions/bombers_spawn",
+            "loc_name": "missions/air_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
             "isAirfield": false,
@@ -953,11 +1071,10 @@
             "replaceAreas": false,
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
-            "target": "t1_bombers_spawn_arcade",
+            "target": "@t1_air_spawn_str",
             "spawnArrangeTo": "@battlearea_name",
             "team": "A",
             "tags": {
-              "type_longrange_bomber": true,
               "type_strike_ucav": false,
               "helicopter": false,
               "type_attack_helicopter": false,
@@ -985,39 +1102,7 @@
             "replaceAreas": false,
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
-            "target": "t1_air_spawn_arcade",
-            "spawnArrangeTo": "@battlearea_name",
-            "team": "A",
-            "tags": {
-              "type_longrange_bomber": false,
-              "type_strike_ucav": false,
-              "helicopter": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false
-            }
-          },
-          {
-            "loc_name": "missions/air_spawn",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "radius": -1.0,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "t2_air_spawn_hardcore",
+            "target": "@t2_air_spawn_str",
             "spawnArrangeTo": "@battlearea_name",
             "team": "B",
             "tags": {
@@ -1037,9 +1122,88 @@
         }
       },
       "else_actions": {
+        "varSetString": [
+          {
+            "value": "t2_air_spawn_arcade",
+            "var": "t2_air_spawn_str"
+          },
+          {
+            "value": "t1_air_spawn_hardcore",
+            "var": "t1_air_spawn_str"
+          }
+        ],
+        "unitMoveTo": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@battlearea_name",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "defense_air_spawn_structure",
+            "move_type": "teleport",
+            "shipTurnRadius": 100.0,
+            "lookat": "@t2_air_spawn_str"
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "@battlearea_name",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "defense_air_spawn_structure",
+            "move_type": "teleport",
+            "lookat": "@t1_air_spawn_str"
+          }
+        ],
+        "duplicateAreaAtPos": [
+          {
+            "area": "@t2_air_spawn_str",
+            "target": "defense_air_spawn_structure",
+            "var_out": "t2_air_spawn_str",
+            "posOffsetVar": "defense_air_spawn_defense_pos",
+            "turnOffset": 180.0,
+            "spawnOffsetSpace": "object"
+          },
+          {
+            "area": "@t1_air_spawn_str",
+            "target": "defense_air_spawn_structure",
+            "var_out": "t1_air_spawn_str",
+            "posOffsetVar": "defense_air_spawn_attack_pos",
+            "turnOffset": 180.0,
+            "spawnOffsetSpace": "object"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
-            "loc_name": "missions/bombers_spawn",
+            "loc_name": "missions/air_spawn",
             "spawnEffect": false,
             "isStrictSpawn": false,
             "isAirfield": false,
@@ -1055,11 +1219,10 @@
             "replaceAreas": false,
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
-            "target": "t2_bombers_spawn_arcade",
+            "target": "@t2_air_spawn_str",
             "spawnArrangeTo": "@battlearea_name",
             "team": "B",
             "tags": {
-              "type_longrange_bomber": true,
               "type_strike_ucav": false,
               "helicopter": false,
               "type_attack_helicopter": false,
@@ -1087,39 +1250,7 @@
             "replaceAreas": false,
             "forceCreate": false,
             "ignoreTeamsOnReuse": false,
-            "target": "t2_air_spawn_arcade",
-            "spawnArrangeTo": "@battlearea_name",
-            "team": "B",
-            "tags": {
-              "type_longrange_bomber": false,
-              "type_strike_ucav": false,
-              "helicopter": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false
-            }
-          },
-          {
-            "loc_name": "missions/air_spawn",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "isUnit": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "radius": -1.0,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "t1_air_spawn_hardcore",
+            "target": "@t1_air_spawn_str",
             "spawnArrangeTo": "@battlearea_name",
             "team": "A",
             "tags": {
@@ -1634,14 +1765,14 @@
             ]
           },
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "@t1_helipad_farspawn",
               "@t2_helipad_farspawn"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "calmDetection": true
           },
           "missionMarkAsRespawnPoint": [
@@ -1729,14 +1860,14 @@
             ]
           },
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "@t1_helipad_str",
               "@t2_helipad_str"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "calmDetection": true
           },
           "missionMarkAsRespawnPoint": [
@@ -1876,20 +2007,20 @@
           },
           "unitSetProperties": [
             {
+              "object": "t1_helipad_aaa_squad",
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
-              "object": "t1_helipad_aaa_squad",
               "army": 1,
               "stealthRadius": 3000.0
             },
             {
+              "object": "t2_helipad_aaa_squad",
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
-              "object": "t2_helipad_aaa_squad",
               "army": 2,
               "stealthRadius": 3000.0
             }
@@ -2069,26 +2200,26 @@
             {
               "area": "spawn_ucav",
               "target": "@t1_helipad_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 6000.0,
                 3000.0,
                 0.0
               ],
-              "turnOffset": 180.0
+              "turnOffset": 180.0,
+              "spawnOffsetSpace": "object"
             },
             {
               "area": "spawn_ucav",
               "target": "@t2_helipad_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 6000.0,
                 3000.0,
                 0.0
               ],
-              "turnOffset": 180.0
+              "turnOffset": 180.0,
+              "spawnOffsetSpace": "object"
             }
           ],
           "missionMarkAsRespawnPoint": [
@@ -2180,24 +2311,24 @@
             {
               "area": "spawn_ucav",
               "target": "@t1_air_spawn_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 -7.5,
                 7.5,
                 0.0
-              ]
+              ],
+              "spawnOffsetSpace": "object"
             },
             {
               "area": "spawn_ucav",
               "target": "@t2_air_spawn_str",
-              "spawnOffsetSpace": "object",
               "var_out": "ucav_spawn_name",
               "posOffset": [
                 -7.5,
                 7.5,
                 0.0
-              ]
+              ],
+              "spawnOffsetSpace": "object"
             }
           ],
           "missionMarkAsRespawnPoint": [
@@ -2288,12 +2419,81 @@
     "session_rank": 0,
     "ucav_spawn_name": "",
     "ucav_min_mrank": 0,
-    "ucav_disable_spawn": false
+    "ucav_disable_spawn": false,
+    "defense_air_spawn_attack_pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "defense_air_spawn_defense_pos": [
+      0.0,
+      0.0,
+      0.0
+    ]
   },
   "dialogs": {},
   "airfields": {},
   "effects": {},
-  "units": {},
+  "units": {
+    "structures": {
+      "name": "defense_air_spawn_structure",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1000.0,
+          233.0,
+          0.0
+        ]
+      ],
+      "unit_class": "dummy",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "stealthRadius": 0.01,
+        "setStealth": true
+      },
+      "way": {}
+    }
+  },
   "areas": {
     "spawn_ucav": {
       "type": "Sphere",

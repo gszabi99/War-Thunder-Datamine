@@ -1,11 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { ceil } = require("math")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::g_crew_points <- {}
 
@@ -19,7 +23,7 @@ let { ceil } = require("math")
     local blkName = block.getBlockName()
     res.append({
       name = blkName
-      cost = ::Cost(0, ::wp_get_skill_points_cost_gold(blkName, country))
+      cost = Cost(0, ::wp_get_skill_points_cost_gold(blkName, country))
       skills = block?.crewExp ?? 1
     })
   }
@@ -29,9 +33,9 @@ let { ceil } = require("math")
 
 //pack can be a single pack or packs array
 ::g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onCancel = @() null) {
-  if (!::u.isArray(packsList))
+  if (!u.isArray(packsList))
     packsList = [packsList]
-  local cost = ::Cost()
+  local cost = Cost()
   local amount = 0
   foreach (pack in packsList) {
     amount += pack.skills
@@ -55,7 +59,7 @@ let { ceil } = require("math")
   let pack = packsList.remove(0)
   let taskId = ::shop_purchase_skillpoints(crew.id, pack.name)
   let cb = Callback(function() {
-    ::broadcastEvent("CrewSkillsChanged", { crew = crew, isOnlyPointsChanged = true })
+    broadcastEvent("CrewSkillsChanged", { crew = crew, isOnlyPointsChanged = true })
     if (packsList.len())
       this.buyPackImpl(crew, packsList, onSuccess)
     else if (onSuccess)

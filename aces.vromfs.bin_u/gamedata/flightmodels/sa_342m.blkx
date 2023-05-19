@@ -5,6 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "gearSinkRangeLR": 0.001,
   "gearSinkRangeC": 0.001,
+  "gyroSight": true,
   "tpsCameraTargetOffsetAtZoom": [
     -80.0,
     60.0,
@@ -539,6 +540,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -550,6 +563,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -826,6 +851,10 @@
         -180.0,
         180.0
       ],
+      "bank": [
+        -8.0,
+        8.0
+      ],
       "altitude_hour": [
         0.0,
         10000.0
@@ -922,37 +951,6 @@
       0.5
     ]
   },
-  "commonWeapons": {
-    "Weapon": {
-      "dummy": true,
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/dummy_weapon.blk",
-      "emitter": "optic1_gun",
-      "parkInDeadzone": false,
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "speedYaw": 25.0,
-      "speedPitch": 25.0,
-      "aimForOperatedShell": true,
-      "turret": {
-        "head": "optic1_turret",
-        "gun": "optic1_gun",
-        "playerControllable": false,
-        "mainTurret": true
-      },
-      "limits": {
-        "yaw": [
-          -115.0,
-          90.0
-        ],
-        "pitch": [
-          -50.0,
-          25.0
-        ]
-      }
-    }
-  },
   "gunnerOpticFps": {
     "pos": [
       1.5,
@@ -968,205 +966,439 @@
     ],
     "crosshairPreset": "test_crosshair"
   },
+  "commonWeapons": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
   "weapon_presets": {
     "preset": [
       {
         "name": "sa_342m_default",
-        "blk": "gameData/flightModels/weaponPresets/sa_342m_rocket_ffar.blk",
-        "tags": {
-          "free": true
-        },
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-            "amountPerTier": 7.0,
-            "iconType": "nar_ap_small"
-          }
-        }
-      },
-      {
-        "name": "sa_342m_hot",
-        "blk": "gameData/flightModels/weaponPresets/sa_342m_hot.blk",
-        "reqModification": "sa_heli_hot",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/euro_hot.blk",
-            "amountPerTier": 4.0,
-            "tier": [
-              {
-                "amountPerTier": 1.0,
-                "idx": 4,
-                "iconType": "atgm_type1x1"
-              },
-              {
-                "amountPerTier": 1.0,
-                "idx": 5,
-                "iconType": "atgm_type1x1"
-              },
-              {
-                "amountPerTier": 1.0,
-                "idx": 7,
-                "iconType": "atgm_type1x1"
-              },
-              {
-                "amountPerTier": 1.0,
-                "idx": 8,
-                "iconType": "atgm_type1x1"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "name": "sa_342m_hot_2",
-        "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_2.blk",
-        "reqModification": "sa_heli_hot_2",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/euro_hot2.blk",
-            "amountPerTier": 4.0,
-            "tier": [
-              {
-                "amountPerTier": 1.0,
-                "idx": 4,
-                "iconType": "atgm_type1x1_late"
-              },
-              {
-                "amountPerTier": 1.0,
-                "idx": 5,
-                "iconType": "atgm_type1x1_late"
-              },
-              {
-                "amountPerTier": 1.0,
-                "idx": 7,
-                "iconType": "atgm_type1x1_late"
-              },
-              {
-                "amountPerTier": 1.0,
-                "idx": 8,
-                "iconType": "atgm_type1x1_late"
-              }
-            ]
-          }
-        }
+        "blk": "gameData/flightModels/weaponPresets/sa_342m_rocket_ffar.blk"
       },
       {
         "name": "sa_342m_rocket_atam_mistral",
-        "blk": "gameData/flightModels/weaponPresets/sa_342m_rocket_atam_mistral.blk",
-        "reqModification": "heli_atam_mistral",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk",
-            "amountPerTier": 2.0,
-            "tier": [
+        "blk": "gameData/flightModels/weaponPresets/sa_342m_rocket_atam_mistral.blk"
+      },
+      {
+        "name": "sa_342m_hot_default",
+        "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_default.blk"
+      },
+      {
+        "name": "sa_342m_hot",
+        "blk": "gameData/flightModels/weaponPresets/sa_342m_hot.blk"
+      },
+      {
+        "name": "sa_342m_hot_2",
+        "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_2.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 400.0,
+    "maxloadMassLeftConsoles": 200.0,
+    "maxloadMassRightConsoles": 200.0,
+    "maxDisbalance": 100.0,
+    "HideNodes": {
+      "node": [
+        "pylon_rocket_l",
+        "pylon_rocket_r",
+        "pylon_ffar_l",
+        "pylon_ffar_r",
+        "matra_saphir_b"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": [
+          {
+            "name": "default_common",
+            "Weapon": {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "parkInDeadzone": false,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "playerControllable": false,
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -115.0,
+                  90.0
+                ],
+                "pitch": [
+                  -50.0,
+                  25.0
+                ]
+              }
+            }
+          },
+          {
+            "name": "default_ltc_common",
+            "ShowNodes": {
+              "node": "matra_saphir_b"
+            },
+            "Weapon": [
               {
-                "amountPerTier": 1.0,
-                "idx": 5,
-                "iconType": "missile_air_to_air_group"
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "playerControllable": false
+                },
+                "limits": {
+                  "yaw": [
+                    -50.0,
+                    50.0
+                  ],
+                  "pitch": [
+                    -40.0,
+                    20.0
+                  ]
+                }
               },
               {
-                "amountPerTier": 1.0,
-                "idx": 7,
-                "iconType": "missile_air_to_air_group"
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 16,
+                "external": true,
+                "separate": false,
+                "dragCx": 0.05,
+                "mass": 2.0
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 16,
+                "external": true,
+                "separate": false
               }
             ]
           }
-        }
+        ]
       },
       {
-        "name": "sa_342m_ffar_rocket_atam_mistral",
-        "blk": "gameData/flightModels/weaponPresets/sa_342m_ffar_rocket_atam_mistral.blk",
-        "reqModification": "heli_atam_mistral",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 7.0,
-              "iconType": "nar_ap_small",
-              "tier": {
-                "idx": 7,
-                "iconType": "nar_ap_small"
-              }
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "atgm_type1x1",
+            "name": "hot_default_slot1",
+            "ShowNodes": {
+              "node": "pylon_rocket_l"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk",
-              "amountPerTier": 2.0,
-              "tier": {
-                "amountPerTier": 1.0,
-                "idx": 5,
-                "iconType": "missile_air_to_air_group"
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot_tube_default.blk",
+              "emitter": "hot_tube_launcher_001",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "mistral_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "ffar_slot2"
               }
-            }
-          ]
-        }
+            ]
+          },
+          {
+            "iconType": "atgm_type1x1_late",
+            "name": "hot2_slot1",
+            "reqModification": "sa_heli_hot_2",
+            "ShowNodes": {
+              "node": "pylon_rocket_l"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot2_tube.blk",
+              "emitter": "hot_tube_launcher_001",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "mistral_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "ffar_slot2"
+              }
+            ]
+          }
+        ]
       },
       {
-        "name": "sa_342m_hot_rocket_atam_mistral",
-        "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_rocket_atam_mistral.blk",
-        "reqModification": "heli_atam_mistral",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/euro_hot.blk",
-              "amountPerTier": 2.0,
-              "tier": [
-                {
-                  "amountPerTier": 1.0,
-                  "idx": 7,
-                  "iconType": "atgm_type1x1"
-                },
-                {
-                  "amountPerTier": 1.0,
-                  "idx": 8,
-                  "iconType": "atgm_type1x1"
-                }
-              ]
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_group",
+            "name": "mistral_slot2",
+            "reqModification": "heli_atam_mistral",
+            "ShowNodes": {
+              "node": "pylon_ffar_l"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk",
-              "amountPerTier": 2.0,
-              "tier": {
-                "amountPerTier": 1.0,
-                "idx": 5,
-                "iconType": "missile_air_to_air_group"
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+              "emitter": "atam_mistral_pod_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "hot_default_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "hot2_slot1"
               }
+            ]
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "ffar_slot2",
+            "ShowNodes": {
+              "node": "pylon_ffar_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_no_cup_stone_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "hot_default_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "hot2_slot1"
+              }
+            ]
+          },
+          {
+            "iconType": "atgm_type1x1",
+            "name": "hot_default_slot2",
+            "ShowNodes": {
+              "node": "pylon_rocket_l"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot_tube_default.blk",
+              "emitter": "hot_tube_launcher_002",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
             }
-          ]
-        }
+          },
+          {
+            "iconType": "atgm_type1x1_late",
+            "name": "hot2_slot2",
+            "reqModification": "sa_heli_hot_2",
+            "ShowNodes": {
+              "node": "pylon_rocket_l"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot2_tube.blk",
+              "emitter": "hot_tube_launcher_002",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
+            }
+          }
+        ]
       },
       {
-        "name": "sa_342m_hot_2_rocket_atam_mistral",
-        "blk": "gameData/flightModels/weaponPresets/sa_342m_hot_2_rocket_atam_mistral.blk",
-        "reqModification": "heli_atam_mistral",
-        "weaponConfig": {
-          "Weapon": [
-            {
-              "blk": "gameData/Weapons/rocketGuns/euro_hot2.blk",
-              "amountPerTier": 2.0,
-              "tier": [
-                {
-                  "amountPerTier": 1.0,
-                  "idx": 7,
-                  "iconType": "atgm_type1x1_late"
-                },
-                {
-                  "amountPerTier": 1.0,
-                  "idx": 8,
-                  "iconType": "atgm_type1x1_late"
-                }
-              ]
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_group",
+            "name": "mistral_slot3",
+            "reqModification": "heli_atam_mistral",
+            "ShowNodes": {
+              "node": "pylon_ffar_r"
             },
-            {
-              "blk": "gameData/Weapons/rocketGuns/atam_mistral.blk",
-              "amountPerTier": 2.0,
-              "tier": {
-                "amountPerTier": 1.0,
-                "idx": 5,
-                "iconType": "missile_air_to_air_group"
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+              "emitter": "atam_mistral_pod_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "hot_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "hot2_slot4"
               }
+            ]
+          },
+          {
+            "iconType": "nar_ap_small",
+            "name": "ffar_slot3",
+            "ShowNodes": {
+              "node": "pylon_ffar_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/aero_6a_no_cup_stone_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "aero_6_b002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "hot_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "hot2_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "atgm_type1x1",
+            "name": "hot_slot3",
+            "reqModification": "sa_heli_hot",
+            "ShowNodes": {
+              "node": "pylon_rocket_r"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot_tube.blk",
+              "emitter": "hot_tube_launcher_003",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
             }
-          ]
-        }
+          },
+          {
+            "iconType": "atgm_type1x1_late",
+            "name": "hot2_slot3",
+            "reqModification": "sa_heli_hot_2",
+            "ShowNodes": {
+              "node": "pylon_rocket_r"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot2_tube.blk",
+              "emitter": "hot_tube_launcher_003",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "atgm_type1x1",
+            "name": "hot_slot4",
+            "reqModification": "sa_heli_hot",
+            "ShowNodes": {
+              "node": "pylon_rocket_r"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot_tube.blk",
+              "emitter": "hot_tube_launcher_004",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "mistral_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "ffar_slot3"
+              }
+            ]
+          },
+          {
+            "iconType": "atgm_type1x1_late",
+            "name": "hot2_slot4",
+            "reqModification": "sa_heli_hot_2",
+            "ShowNodes": {
+              "node": "pylon_rocket_r"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/hot2_tube.blk",
+              "emitter": "hot_tube_launcher_004",
+              "external": true,
+              "separate": true,
+              "jettisonable": false
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "mistral_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "ffar_slot3"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1232,55 +1464,10 @@
       "group": "countermeasures",
       "effects": {
         "commonWeapons": {
-          "Weapon": [
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "parkInDeadzone": false,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "playerControllable": false,
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [
-                  -115.0,
-                  90.0
-                ],
-                "pitch": [
-                  -50.0,
-                  25.0
-                ]
-              }
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 16,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 16,
-              "external": true,
-              "separate": false
-            }
-          ]
+          "Weapon": {
+            "slot": 0,
+            "preset": "default_ltc_common"
+          }
         }
       }
     },

@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 ::gui_handlers.WwArmiesList <- class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -46,7 +48,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     for (local i = 0; i < this.itemsPerPageWithoutPaginator; i++)
       emptyViewData.army.append({})
 
-    let markUpData = ::handyman.renderCached(this.contentBlockTplName, emptyViewData)
+    let markUpData = handyman.renderCached(this.contentBlockTplName, emptyViewData)
     this.guiScene.replaceContentFromText(contentObj, markUpData, markUpData.len(), this)
   }
 
@@ -79,7 +81,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function getArmiesStateTabs() {
-    return ::u.map(this.tabOrder, function(tab) { return tab.getTitleViewData() })
+    return u.map(this.tabOrder, function(tab) { return tab.getTitleViewData() })
   }
 
   function onArmiesByStatusTabChange(obj) {
@@ -241,12 +243,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return this.doWhenActiveOnce("fullViewUpdate")
 
     let armies = getTblValue("armies", params)
-    if (::u.isEmpty(armies))
+    if (u.isEmpty(armies))
       return
 
     this.updateTabs()
 
-    let curTabArmies = ::u.filter(
+    let curTabArmies = u.filter(
       armies,
       (@(lastTabSelected) function(army) {
         return army.getActionStatus() == lastTabSelected.status
@@ -256,16 +258,16 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (curTabArmies.len() == 0)
       return
 
-    this.updateTabContent(::u.indexBy(curTabArmies, "name"))
+    this.updateTabContent(u.indexBy(curTabArmies, "name"))
   }
 
   function onEventWWMapArmySelected(_params) {
     let selectedArmyNames = ::ww_get_selected_armies_names()
-    if (::u.isEmpty(selectedArmyNames))
+    if (u.isEmpty(selectedArmyNames))
       return
 
     let armyName = selectedArmyNames[0]
-    if (::u.isEmpty(armyName))
+    if (u.isEmpty(armyName))
       return
 
     this.setArmyViewSelection(armyName, true)

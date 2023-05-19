@@ -1,7 +1,7 @@
 require ecs
 require Unit
 require DagorMath
-require %game.utils_common
+require %game.utils.utils_common
 
 def is_point_in_box_zone(pos : float3; transform : float3x4)
   var zonePos : float3 = inverse(transform) * float3(pos.x, 0.0, pos.z)
@@ -18,7 +18,6 @@ def restricted_area_unit_update_es(act : UpdateStageInfoAct;
       find_query() <| $ [es] (transform : float3x4; eid : EntityId; restricted_area__away_time : float)
         let isBox = has(eid, "box_area")
         let isSphere = has(eid, "sphere_area")
-        let isCylinder = has(eid, "cylinder_area")
         let pos = unit.pos
         if isBox
           if is_point_in_box_zone(pos, transform)

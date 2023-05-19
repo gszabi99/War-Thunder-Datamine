@@ -1,9 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { format } = require("string")
@@ -21,6 +25,7 @@ let { getUnlockCost, getUnlockRewardCost, hasSpecialMultiStageLocId, hasMultiSta
   getMultiStageLocId, hasSpecialMultiStageLocIdByStage
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { Status, get_status } = require("%xboxLib/impl/achievements.nut")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -190,7 +195,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
     if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
       isUnlocked = ::ps4_is_trophy_unlocked(id)
     else if (isPlatformXboxOne && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
-      isUnlocked = ::xbox_is_achievement_unlocked(id)
+      isUnlocked = get_status(id) == Status.Achieved
   }
   return isUnlocked
 }
@@ -385,7 +390,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   }
 
   if (unlockType == UNLOCKABLE_AIRCRAFT) {
-    let unit = ::getAircraftByName(unlockBlk.id)
+    let unit = getAircraftByName(unlockBlk.id)
     if (unit)
       return unit.getUnlockImage()
   }
@@ -433,7 +438,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
     if (isForTooltip) {
       let view = ::g_unlock_view.getSubunlocksView(config.unlockCfg)
       if (view) {
-        let markup = ::handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
+        let markup = handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
         let nestObj = obj.findObject("subunlocks")
         nestObj.show(true)
         obj.getScene().replaceContentFromText(nestObj, markup, markup.len(), this)
@@ -449,7 +454,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
     else if (config.maxVal)
       cond = format(loc("streaks/max_limit"), config.maxVal)
 
-    let desc = ::g_string.implode([config?.desc ?? "", cond, getUnlockMultDesc(config)], "\n")
+    let desc = "\n".join([config?.desc ?? "", cond, getUnlockMultDesc(config)], true)
     obj.findObject("desc_text").setValue(desc)
   }
   else
@@ -492,7 +497,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   local image = ("descrImage" in config) ? config.descrImage : ""
   if (isForTooltip)
     image = config?.tooltipImage ?? image
-  ::LayersIcon.replaceIcon(obj, iconStyle, image, ratio, null, iconParams, config?.iconConfig, containerSizePx)
+  LayersIcon.replaceIcon(obj, iconStyle, image, ratio, null, iconParams, config?.iconConfig, containerSizePx)
 }
 
 ::build_unlock_tooltip_by_config <- function build_unlock_tooltip_by_config(obj, config, handler) {
@@ -778,7 +783,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
         res.rewardText = wb.getPriceText(wbAmount, true, false)
       break
     case UNLOCKABLE_AIRCRAFT:
-      let unit = ::getAircraftByName(id)
+      let unit = getAircraftByName(id)
       if (unit)
         res.image = unit.getUnlockImage()
       break
@@ -900,7 +905,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   }
 
   if (showLocalState) {
-    let cost = ::Cost(getTblValue("wp", res, 0),
+    let cost = Cost(getTblValue("wp", res, 0),
                         getTblValue("gold", res, 0),
                         getTblValue("frp", res, 0),
                         getTblValue("rp", res, 0))

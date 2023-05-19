@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -87,7 +88,7 @@ global enum RCLICK_MENU_ORIENT {
         tooltip = getTblValue("tooltip", item, "")
         enabled = enabled
         isVisualDisabled = item?.isVisualDisabled ?? false
-        needTimer = ::u.isFunction(getTblValue("onUpdateButton", item))
+        needTimer = u.isFunction(getTblValue("onUpdateButton", item))
         hasSeparator = item?.hasSeparator ?? false
       }
 
@@ -130,7 +131,7 @@ global enum RCLICK_MENU_ORIENT {
   function initTimers(listObj, actions) {
     foreach (idx, item in actions) {
       let onUpdateButton = getTblValue("onUpdateButton", item)
-      if (!::u.isFunction(onUpdateButton))
+      if (!u.isFunction(onUpdateButton))
         continue
 
       let btnObj = listObj.findObject(this.idPrefix + idx.tostring())
@@ -147,13 +148,13 @@ global enum RCLICK_MENU_ORIENT {
 
   function updateBtnByTable(btnObj, data) {
     let text = getTblValue("text", data)
-    if (!::u.isEmpty(text)) {
+    if (!u.isEmpty(text)) {
       btnObj.setValue(::g_dagui_utils.removeTextareaTags(text))
       btnObj.findObject("text").setValue(text)
     }
 
     let enable = getTblValue("enable", data)
-    if (::u.isBool(enable))
+    if (u.isBool(enable))
       btnObj.enable(enable)
   }
 

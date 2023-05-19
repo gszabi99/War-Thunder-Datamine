@@ -236,7 +236,7 @@ let function getValInCacheVargved(path, cache) {
     else
       return NO_VALUE
   }
-  return curTbl[Leaf]
+  return (Leaf in curTbl) ? curTbl[Leaf] : NO_VALUE
 }
 
 let function setValInCache(path, value, cache) {

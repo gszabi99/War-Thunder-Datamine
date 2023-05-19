@@ -79,6 +79,5 @@ def plane_routing_update_es(act : ecs::UpdateStageInfoAct;
     ecs::query(unit_current_route__curWayPoint) <| $ [es] (way_point__transform : float3x4;
                                                            way_point__radius : float)
       let distSq = length_sq(way_point__transform[3] - get_unit_pos(uid))
-      let dist = length(way_point__transform[3] - get_unit_pos(uid))
       if (distSq < way_point__radius * way_point__radius)
         sendEvent(unit_current_route__routeEid, [[ArrivedToWayPoint uId=uid, uEid=eid, wpEid=unit_current_route__curWayPoint ]])

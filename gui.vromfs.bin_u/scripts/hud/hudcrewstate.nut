@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -114,7 +115,7 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
       return
 
     this.guiScene = this.scene.getScene()
-    let blk = ::handyman.renderCached("%gui/hud/hudCrewState.tpl",
+    let blk = handyman.renderCached("%gui/hud/hudCrewState.tpl",
       { drivingDirectionModeValue = getConfigValueById("driving_direction_mode") })
     this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
 

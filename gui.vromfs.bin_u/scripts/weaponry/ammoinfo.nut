@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { Cost } = require("%scripts/money.nut")
 let { get_game_params } = require("gameparams")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 
@@ -24,7 +25,7 @@ let function getAmmoAmount(unit, ammoName, ammoType) {
 }
 
 let function getAmmoCost(unit, ammoName, ammoType) {
-  let res = ::Cost()
+  let res = Cost()
   if (ammoType == AMMO.MODIFICATION) {
     res.wp = max(::wp_get_modification_cost(unit.name, ammoName), 0)
     res.gold = max(::wp_get_modification_cost_gold(unit.name, ammoName), 0)

@@ -1670,15 +1670,15 @@
         "blk": "gameData/Weapons/groundModels_weapons/30mm_ZPZ02_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "auto_cannon_cartridge_case",
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           2.5,
           0.0,
           0.5
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.1,
         "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
@@ -1712,7 +1712,6 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret",
           "linkedAnimPart": {
             "verNode": "bone_roll_01",
             "verLimits": [
@@ -1824,6 +1823,7 @@
         "stopForFire": true,
         "maxSpeedForFire": 6.0,
         "circleAim": false,
+        "staticElevation": 2.75,
         "speedYaw": 40.0,
         "speedPitch": 15.0,
         "createGunEffects": true,
@@ -1851,7 +1851,6 @@
           "gun": "bone_turret_05",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret",
           "barrel": "gun_barrel_02_dm"
         },
         "limits": {
@@ -1861,7 +1860,7 @@
           ],
           "pitch": [
             -5.0,
-            52.0
+            30.0
           ]
         }
       },
@@ -1879,6 +1878,7 @@
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.1,
         "circleAim": false,
+        "staticElevation": 2.75,
         "barrelDP": "gun_barrel_05_dm",
         "createGunEffects": true,
         "defaultYaw": 0.0,
@@ -1908,7 +1908,6 @@
           "gun": "bone_turret_05",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret",
           "barrel": "gun_barrel_02_dm"
         },
         "limits": {
@@ -1918,7 +1917,7 @@
           ],
           "pitch": [
             -5.0,
-            52.0
+            30.0
           ]
         },
         "gunStabilizer": {
@@ -2023,7 +2022,31 @@
         "roll_05",
         "roll_06",
         "roll_07",
-        "roll_08"
+        "roll_08",
+        "ex_armor_turret_01",
+        "ex_armor_turret_02",
+        "ex_armor_turret_03",
+        "ex_armor_turret_04",
+        "ex_armor_turret_05",
+        "ex_armor_turret_06",
+        "ex_armor_turret_07",
+        "ex_armor_turret_08",
+        "ex_armor_turret_09",
+        "ex_armor_turret_10",
+        "ex_armor_turret_11",
+        "ex_armor_turret_12",
+        "ex_armor_turret_13",
+        "ex_armor_turret_14",
+        "ex_armor_turret_15",
+        "ex_armor_turret_16",
+        "ex_armor_turret_17",
+        "ex_armor_turret_18",
+        "ex_armor_turret_19",
+        "ex_armor_turret_20",
+        "ex_armor_turret_21",
+        "ex_armor_turret_22",
+        "ex_armor_turret_23",
+        "ex_armor_turret_24"
       ]
     },
     "animatedBones": {
@@ -2138,13 +2161,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2255,6 +2278,26 @@
           },
           {
             "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
           }
         ]
       }
@@ -3015,15 +3058,15 @@
               "blk": "gameData/Weapons/groundModels_weapons/30mm_ZPZ02_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "auto_cannon_cartridge_case",
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 2.5,
                 0.0,
                 0.5
               ],
-              "linkSleeveToGun": true,
+              "linkShellCasingToGun": true,
               "recoilOffset": 0.1,
               "maxAdditionalPitch": 0.0,
               "defaultYaw": 0.0,
@@ -3057,7 +3100,6 @@
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret",
                 "linkedAnimPart": {
                   "verNode": "bone_roll_01",
                   "verLimits": [
@@ -3169,6 +3211,7 @@
               "stopForFire": true,
               "maxSpeedForFire": 6.0,
               "circleAim": false,
+              "staticElevation": 2.75,
               "speedYaw": 40.0,
               "speedPitch": 15.0,
               "createGunEffects": true,
@@ -3196,7 +3239,6 @@
                 "gun": "bone_turret_05",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret",
                 "barrel": "gun_barrel_02_dm"
               },
               "limits": {
@@ -3206,7 +3248,7 @@
                 ],
                 "pitch": [
                   -5.0,
-                  52.0
+                  30.0
                 ]
               }
             },
@@ -3224,6 +3266,7 @@
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.1,
               "circleAim": false,
+              "staticElevation": 2.75,
               "barrelDP": "gun_barrel_05_dm",
               "createGunEffects": true,
               "defaultYaw": 0.0,
@@ -3253,7 +3296,6 @@
                 "gun": "bone_turret_05",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret",
                 "barrel": "gun_barrel_02_dm"
               },
               "limits": {
@@ -3263,7 +3305,7 @@
                 ],
                 "pitch": [
                   -5.0,
-                  52.0
+                  30.0
                 ]
               },
               "gunStabilizer": {
@@ -3422,7 +3464,31 @@
               "roll_05",
               "roll_06",
               "roll_07",
-              "roll_08"
+              "roll_08",
+              "ex_armor_turret_01",
+              "ex_armor_turret_02",
+              "ex_armor_turret_03",
+              "ex_armor_turret_04",
+              "ex_armor_turret_05",
+              "ex_armor_turret_06",
+              "ex_armor_turret_07",
+              "ex_armor_turret_08",
+              "ex_armor_turret_09",
+              "ex_armor_turret_10",
+              "ex_armor_turret_11",
+              "ex_armor_turret_12",
+              "ex_armor_turret_13",
+              "ex_armor_turret_14",
+              "ex_armor_turret_15",
+              "ex_armor_turret_16",
+              "ex_armor_turret_17",
+              "ex_armor_turret_18",
+              "ex_armor_turret_19",
+              "ex_armor_turret_20",
+              "ex_armor_turret_21",
+              "ex_armor_turret_22",
+              "ex_armor_turret_23",
+              "ex_armor_turret_24"
             ]
           },
           "animatedBones": {
@@ -3725,6 +3791,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

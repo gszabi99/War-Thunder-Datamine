@@ -18,3 +18,24 @@ shortcutCell {
   foreground-repeat: expand;
   padding:3@dp, 0;
 }
+
+shortcutCell gamepadButton,
+shortcutCell shortcutAxis {
+  size:0.9@kbh, 0.9@kbh;
+  background-svg-size:0.9@kbh, 0.9@kbh;
+}
+
+shortcutCell keyboardButton {
+  min-width:0.7@kbh;
+  height:0.7@kbh;
+  top:0.1@kbh;
+  position:relative;
+}
+
+shortcutCell keyboardButtonText {
+  font:@fontHudSmall;
+}
+
+shortcutCell combination > textareaNoTab {
+  font:@fontMedium;
+}

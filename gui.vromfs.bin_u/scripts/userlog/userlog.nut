@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { format } = require("string")
@@ -167,7 +169,7 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
         navImagesText = ::get_navigation_images_text(idx, ::userlog_pages.len())
       })
     }
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let tabsObj = this.scene.findObject("tabs_list")
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     this.updateTabNewIconWidgets()
@@ -248,7 +250,7 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
     let rowData = ::get_userlog_view_data(logObj)
     if ((rowData?.descriptionBlk ?? "") != "")
       rowData.hasExpandImg <- true
-    let viewBlk = ::handyman.renderCached(this.logRowTplName, rowData)
+    let viewBlk = handyman.renderCached(this.logRowTplName, rowData)
 
     this.guiScene.replaceContentFromText(rowObj, viewBlk, viewBlk.len(), this)
 
@@ -266,7 +268,7 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
       rowObj = this.listObj.findObject(rowName)
     }
 
-    let viewBlk = ::handyman.renderCached(this.logRowTplName,
+    let viewBlk = handyman.renderCached(this.logRowTplName,
       {
         middle = loc("userlog/showMore")
       })
@@ -417,7 +419,7 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
   function onUserLogAction(obj) {
     let logIdx = obj?.logIdx
     let logObj = logIdx != null
-      ? ::u.search(this.logs, @(l) l.idx == logIdx.tointeger())
+      ? u.search(this.logs, @(l) l.idx == logIdx.tointeger())
       : this.logs?[this.selectedIndex]
     if (!logObj)
       return

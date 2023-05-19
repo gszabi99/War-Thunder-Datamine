@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -193,7 +194,7 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
 
     let aircraftName = dataItem?.aircraftName
     if (aircraftName != null) {
-      let unit = ::getAircraftByName(aircraftName)
+      let unit = getAircraftByName(aircraftName)
       if (unit != null) {
         locParams.aircraftName <- ::getUnitName(unit, true)
         locParams.unit <- unit
@@ -298,12 +299,12 @@ let { parseDiscountDescription, createDiscountDescriptionSortData,
   }
 
   function _getTextLayer() {
-    let layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
+    let layerCfg = LayersIcon.findLayerCfg("item_multiaward_text")
     if (!layerCfg)
       return ""
 
     layerCfg.text <- this.getLayerText()
-    return ::LayersIcon.getTextDataFromLayer(layerCfg)
+    return LayersIcon.getTextDataFromLayer(layerCfg)
   }
 
   consume = @(cb, _params) this.activateDiscount(cb, null)

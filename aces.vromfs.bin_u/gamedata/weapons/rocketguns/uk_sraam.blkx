@@ -8,6 +8,40 @@
   "mesh": "uk_sraam",
   "tags": {},
   "rocket": {
+    "bulletName": "uk_sraam",
+    "statType": "hydra",
+    "caliber": 0.165,
+    "length": 2.75,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 3.3,
+    "finsAoaHor": 0.0,
+    "finsAoaVer": 0.0,
+    "distFromCmToStab": 0.08,
+    "mass": 70.0,
+    "massEnd": 51.0,
+    "timeFire": 3.2,
+    "force": 15300.0,
+    "timeLife": 3.7,
+    "thrustVectoringAngle": 0.05,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "machMax": 2.4,
+    "endSpeed": 1000.0,
+    "maxDistance": 3000.0,
+    "minDistance": 30.0,
+    "rangeMax": 2000.0,
+    "loadFactorMax": 20.0,
+    "guidanceType": "ir",
+    "guidanceSfx": "alarm_spin_scan",
+    "effectOffset": [
+      -1.8,
+      0.0,
+      0.0
+    ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
@@ -16,27 +50,10 @@
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
-    "bulletName": "us_aim9e_sidewinder",
-    "caliber": 0.165,
-    "mass": 70.0,
     "explosiveType": "tnt",
     "explosiveMass": 4.0,
-    "massEnd": 51.0,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.014,
-    "length": 2.75,
-    "distFromCmToStab": 0.08,
-    "CxK": 3.3,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "finsAoaHor": 0.0,
-    "finsAoaVer": 0.0,
-    "force": 15300.0,
-    "thrustVectoringAngle": 0.05,
-    "timeFire": 3.2,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "explosionEffect": "explosion_midair_medium",
@@ -46,25 +63,17 @@
     "explosionPatchRadius": 3.4,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_rocket_tail_modern_air",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_early_big",
+    "smokeEffect": "smoke_rocket_tail_light_huge",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.5,
-    "maxDistance": 3000.0,
-    "minDistance": 30.0,
+    "endSmokeViscosity": 0.05,
     "distanceFuse": false,
     "hitPowerMult": 400.0,
     "fuseDelayDist": 1.0,
     "explodeTreshold": [
       0.1,
       0.01
-    ],
-    "guidanceSfx": "alarm_spin_scan",
-    "guidanceType": "ir",
-    "effectOffset": [
-      -1.6,
-      0.0,
-      0.0
     ],
     "hasProximityFuse": true,
     "explodeHitPower": 550.0,
@@ -74,21 +83,46 @@
       3.5
     ],
     "rendinstDamageRadius": 9.0,
-    "statType": "hydra",
     "shutterDamage": true,
     "shutterDamageRadius": 17.0,
     "shutterAmount": 2000,
     "shutterArmorPower": 12.0,
     "shutterHit": 10.0,
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 1000.0,
-    "timeLife": 3.7,
-    "machMax": 2.4,
-    "loadFactorMax": 20.0,
-    "rangeMax": 2000.0,
     "price": 3000.0,
+    "arcadeProp": {
+      "finsAoaHor": 0.0,
+      "finsAoaVer": 0.0
+    },
+    "guidance": {
+      "warmUpTime": 1.0,
+      "workTime": 20.0,
+      "uncageBeforeLaunch": true,
+      "useThrustVectoring": true,
+      "breakLockMaxTime": 1.0,
+      "irSeeker": {
+        "rangeBand0": 4000.0,
+        "rangeBand2": 6000.0,
+        "rangeBand3": 6000.0,
+        "rangeBand7": 500.0,
+        "rangeMax": 11000.0,
+        "fov": 5.0,
+        "minAngleToSun": 10.0,
+        "lockAngleMax": 40.0,
+        "angleMax": 50.0,
+        "rateMax": 100.0,
+        "prolongationTimeMax": 0.5
+      },
+      "guidanceAutopilot": {
+        "timeOut": 0.0,
+        "propNavMult": 12.0,
+        "velFrameReference": false,
+        "baseIndSpeed": 2600.0,
+        "accelControlProp": 0.0004,
+        "accelControlIntg": 0.002,
+        "accelControlIntgLim": 0.7,
+        "accelControlDiff": 0.0006
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -338,40 +372,6 @@
       "stone_snow": {
         "fx": "hit_12_18mm_snow_ap"
       }
-    },
-    "guidance": {
-      "warmUpTime": 1.0,
-      "workTime": 20.0,
-      "uncageBeforeLaunch": true,
-      "useThrustVectoring": true,
-      "breakLockMaxTime": 1.0,
-      "irSeeker": {
-        "rangeBand0": 4000.0,
-        "rangeBand2": 6000.0,
-        "rangeBand3": 6000.0,
-        "rangeBand7": 500.0,
-        "rangeMax": 11000.0,
-        "fov": 5.0,
-        "minAngleToSun": 10.0,
-        "lockAngleMax": 40.0,
-        "angleMax": 50.0,
-        "rateMax": 100.0,
-        "prolongationTimeMax": 0.5
-      },
-      "guidanceAutopilot": {
-        "timeOut": 0.0,
-        "propNavMult": 12.0,
-        "velFrameReference": false,
-        "baseIndSpeed": 2600.0,
-        "accelControlProp": 0.0004,
-        "accelControlIntg": 0.002,
-        "accelControlIntgLim": 0.7,
-        "accelControlDiff": 0.0006
-      }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.0,
-      "finsAoaVer": 0.0
     },
     "proximityFuse": {
       "timeOut": 0.5,

@@ -10,8 +10,8 @@
   "gearSinkRangeC": 0.09,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
-  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
@@ -423,6 +423,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -434,6 +446,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -452,6 +476,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -463,6 +499,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -605,6 +653,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -646,6 +700,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2296,6 +2356,10 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_105g_bomb_mk82.blk"
       },
       {
+        "name": "saab_105g_bomb_mk82_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/saab_105g_bomb_mk82_snakeye.blk"
+      },
+      {
         "name": "saab_105g_bomb_m117",
         "blk": "gameData/FlightModels/weaponPresets/saab_105g_bomb_m117.blk"
       },
@@ -2492,6 +2556,26 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_k105_001",
+                "pylon_k105_001_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -2619,6 +2703,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_k105_001",
+                "pylon_k105_002_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_002",
               "bullets": 1,
               "external": true,
@@ -2828,6 +2932,26 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_k105_002",
+                "pylon_k105_003_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "mk117",
             "reqModification": "us_750lb_m117",
@@ -3001,6 +3125,26 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_k105_003",
+                "pylon_k105_004_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "500lb_mk_82_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "mk117",
             "reqModification": "us_750lb_m117",
@@ -3163,6 +3307,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_k60_002"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_005",
               "bullets": 1,
               "external": true,
@@ -3366,6 +3527,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "mk82_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon_k105_004"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "500lb_mk_82_006",
               "bullets": 1,
               "external": true,

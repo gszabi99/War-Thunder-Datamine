@@ -20,6 +20,28 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "bulletName": "152mm_rp_3",
+    "statType": "hydra",
+    "caliber": 0.152,
+    "length": 1.4,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.2,
+    "distFromCmToStab": 0.01,
+    "mass": 43.1,
+    "massEnd": 37.42,
+    "timeFire": 1.5,
+    "force": 7100.0,
+    "thrustDeviation": 0.01,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 260.0,
+    "maxDistance": 4500.0,
+    "minDistance": 30.0,
+    "maxDeltaAngle": 1.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
@@ -37,31 +59,19 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/rocket_he.ivf",
-    "bulletName": "152mm_rp_3",
-    "caliber": 0.152,
-    "mass": 43.1,
-    "massEnd": 37.42,
     "explosiveType": "tnt",
     "explosiveMass": 5.44,
-    "maxDeltaAngle": 1.0,
     "dragCx": 0.016,
-    "length": 1.4,
-    "distFromCmToStab": 0.01,
-    "CxK": 1.2,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "force": 7100.0,
-    "timeFire": 1.5,
-    "thrustDeviation": 0.01,
-    "fireEffect": "rocket_fire_dark",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_early_small",
+    "smokeEffect": "smoke_rocket_tail_dark",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDistance": 4500.0,
-    "minDistance": 30.0,
+    "effectOffset": [
+      -1.1,
+      0.0,
+      0.0
+    ],
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
     "explosionOffset": 0.05,
@@ -73,11 +83,6 @@
     "explodeTreshold": 0.5,
     "fuseDelayDist": 1.0,
     "rendinstDamageRadius": 4.0,
-    "statType": "hydra",
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 260.0,
     "price": 3000.0,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_133_160mm_metal_he",
@@ -146,7 +151,7 @@
         "countPortion": 0.16,
         "segment": [
           {
-            "radiusScale": 0.15,
+            "radiusScale": 0.3,
             "penetrationScale": 3.5,
             "damageScale": 1.0,
             "angles": [
@@ -158,7 +163,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               30.0,
@@ -168,7 +173,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               70.0,
@@ -179,7 +184,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               111.0,
@@ -189,7 +194,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               181.0,
@@ -199,7 +204,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               250.0,
@@ -210,7 +215,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               291.0,

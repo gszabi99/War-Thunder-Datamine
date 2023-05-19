@@ -44,6 +44,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
   "hideNodesInDmg": {
@@ -2912,6 +2913,35 @@
       }
     ]
   },
+  "skin": [
+    {
+      "name": "ger_camo_navy_gray",
+      "nameLocId": "skin/ger_camo_navy_gray",
+      "descLocId": "skin/ger_camo_navy_gray/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_navy_gray*"
+      }
+    },
+    {
+      "name": "ger_camo_browngray_modern",
+      "nameLocId": "skin/ger_camo_browngray_modern",
+      "descLocId": "skin/ger_camo_browngray_modern/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_browngray_modern*"
+      }
+    },
+    {
+      "name": "ger_camo_blackwhite_cubes",
+      "nameLocId": "skin/ger_camo_blackwhite_cubes",
+      "descLocId": "skin/ger_camo_blackwhite_cubes/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackwhite_cubes*"
+      }
+    }
+  ],
   "DamageParts": {
     "formatVersion": 2,
     "createSecondaryShatters": false,
@@ -2926,7 +2956,7 @@
         "hp": 2100.0
       },
       "compartment_02_dm": {
-        "hp": 2018.0
+        "hp": 1945.0
       },
       "compartment_03_dm": {
         "hp": 1700.0
@@ -3690,7 +3720,7 @@
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 47
+      "crew": 46
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
@@ -3700,7 +3730,7 @@
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 39
+      "crew": 40
     },
     "sailor6": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -3763,17 +3793,17 @@
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           5.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
@@ -3912,17 +3942,17 @@
         "emitter": "emtr_gun_flame_16",
         "flash": "emtr_gun_flame_16",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           5.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_02_dm",
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,

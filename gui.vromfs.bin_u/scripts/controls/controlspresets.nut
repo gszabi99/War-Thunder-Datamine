@@ -18,11 +18,6 @@ let presetFileNameExtention = ".blk"
 let versionRegExp = regexp(@"_ver(\d+)$")
 let versionDigits = regexp(@"\d+$")
 
-//Path in local settings BLK, where stored hidhest version number which was displayed
-//to player.
-//Append preset name to this path get version of preset.
-let highestVersionSettingsPath = "controls_presets/highest_version_displayed"
-
 /**
  * Slice version from name and fill version field.
  */
@@ -51,39 +46,6 @@ let function _handleVersion(preset) {
 
   presetsListCached = null
 
-  /**
-   * Function compare current controls preset version and highest available.
-   * Returns true if new version is available.
-   * If custom preset used or user already been asked about last version returns false.
-   */
-  function isNewerControlsPresetVersionAvailable() {
-    let currentPreset = this.getCurrentPresetInfo()
-    if (currentPreset.name == "")
-      return false
-
-    let controlsPresetsList = this.getControlsPresetsList()
-    let highestDisplayedVersion = this.getHighestDisplayedPresetVersion(currentPreset.name)
-
-    foreach (value in controlsPresetsList) {
-      let preset = this.parsePresetName(value)
-      if (preset.name != currentPreset.name)
-        continue
-
-      if (preset.version > highestDisplayedVersion && preset.version > currentPreset.version)
-        return true
-    }
-
-    return false
-  }
-
-  function getHighestDisplayedPresetVersion(presetName) {
-    return ::load_local_account_settings(highestVersionSettingsPath + "/" + presetName, -1)
-  }
-
-  function setHighestDisplayedPresetVersion(presetName, version) {
-    ::save_local_account_settings(highestVersionSettingsPath + "/" + presetName, version)
-  }
-
   function getHighestVersionPreset(preset) {
     let controlsPresetsList = this.getControlsPresetsList()
     local highestVersionPreset = preset
@@ -98,24 +60,6 @@ let function _handleVersion(preset) {
     }
 
     return highestVersionPreset
-  }
-
-  function setHighestVersionOfCurrentPreset() {
-    let currentPreset = this.getCurrentPresetInfo()
-    if (currentPreset.name == "")
-      return
-
-    ::apply_joy_preset_xchange(this.getHighestVersionPreset(currentPreset).fileName)
-    ::save_profile(false)
-  }
-
-  function rejectHighestVersionOfCurrentPreset() {
-    let currentPreset = this.getCurrentPresetInfo()
-    if (currentPreset.name == "")
-      return
-
-    let preset = this.getHighestVersionPreset(currentPreset)
-    this.setHighestDisplayedPresetVersion(preset.name, preset.version)
   }
 
   /**
@@ -139,24 +83,7 @@ let function _handleVersion(preset) {
     return result
   }
 
-  function getPatchNoteTextForCurrentPreset() {
-    local result = ""
-    let currentPreset = this.getCurrentPresetInfo()
-    let versions = this.getNewerVersions(currentPreset)
-
-    foreach (version in versions) {
-      let patchNote = loc("presets/" + currentPreset.name + "_ver" + version + "/patchnote", "")
-      if (patchNote.len())
-        result += (result.len() ? "\n" : "") + patchNote
-    }
-
-    return result
-  }
-
-  /**
-   * Returns current players preset in format { name, version, filename }.
-   */
-  getCurrentPresetInfo = @() this.parsePresetFileName(::get_controls_preset())
+  getNullPresetInfo = @() clone this.nullPreset
 
   /**
    * Breaks preset file name string into table {version = @integer, name = @string }
@@ -209,9 +136,6 @@ let function _handleVersion(preset) {
         : blk % "preset"
     }
     let result = [].extend(this.presetsListCached)
-    let curPresetId = this.getCurrentPresetInfo().id
-    if (curPresetId != "" && this.presetsListCached.indexof(curPresetId) == null)
-      result.append(curPresetId)
     return result
   }
 

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -65,19 +66,19 @@ local ModificationBase = class extends ::BaseItem {
           return res
         })
       textParts.append(loc("multiAward/type/modification") + loc("ui/colon")
-          + colorize("activeTextColor", ::g_string.implode(locMods, ", ")))
+          + colorize("activeTextColor", ", ".join(locMods, true)))
     }
 
     if (this.countries) {
       let locCountries = u.map(this.countries, @(country) loc("unlockTag/" + country))
       textParts.append(loc("trophy/unlockables_names/country") + loc("ui/colon")
-          + colorize("activeTextColor", ::g_string.implode(locCountries, ", ")))
+          + colorize("activeTextColor", ", ".join(locCountries, true)))
     }
     if (this.unitTypes) {
       let processedUnitTypes = processUnitTypeArray(this.unitTypes)
       let locUnitTypes = u.map(processedUnitTypes, @(unitType) loc($"mainmenu/type_{unitType}"))
       textParts.append(loc("mainmenu/btnUnits") + loc("ui/colon")
-          + colorize("activeTextColor", ::g_string.implode(locUnitTypes, ", ")))
+          + colorize("activeTextColor", ", ".join(locUnitTypes, true)))
     }
 
     let rankText = this.getRankText()
@@ -88,7 +89,7 @@ local ModificationBase = class extends ::BaseItem {
     if (outro)
       textParts.extend(outro)
 
-    return ::g_string.implode (textParts, "\n")
+    return "\n".join(textParts, true)
   }
 
   function getRankText() {
@@ -99,20 +100,20 @@ local ModificationBase = class extends ::BaseItem {
   }
 
   function getIcon(_addItemName = true) {
-    local res = ::LayersIcon.genDataFromLayer(this.getIconBgLayer())
-    res += ::LayersIcon.genDataFromLayer(this.getIconMainLayer())
-    res += ::LayersIcon.genDataFromLayer(this.getIconRankLayer())
+    local res = LayersIcon.genDataFromLayer(this.getIconBgLayer())
+    res += LayersIcon.genDataFromLayer(this.getIconMainLayer())
+    res += LayersIcon.genDataFromLayer(this.getIconRankLayer())
     return res
   }
 
-  getIconBgLayer = @() ::LayersIcon.findLayerCfg("mod_upgrade_bg")
+  getIconBgLayer = @() LayersIcon.findLayerCfg("mod_upgrade_bg")
   getIconMainLayer = @() null
 
   getIconRankLayer = function() {
     if (!this.rankRange)
       return null
 
-    let res = ::LayersIcon.findLayerCfg("mod_upgrade_rank")
+    let res = LayersIcon.findLayerCfg("mod_upgrade_rank")
     if (res)
       res.img = $"#ui/gameuiskin#item_rank_{clamp(this.rankRange.y, 1, 6)}"
     return res

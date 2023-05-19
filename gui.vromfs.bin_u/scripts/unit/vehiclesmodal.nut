@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -237,7 +238,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     local bonusData = unit.name
     if (::isUnitGroup(unit))
-      bonusData = ::u.map(unit.airsGroup, function(unit) { return unit.name })
+      bonusData = u.map(unit.airsGroup, function(unit) { return unit.name })
     ::showAirExpWpBonus(placeObj.findObject(unit.name + "-bonus"), bonusData)
   }
 
@@ -254,7 +255,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.lastSelectedUnit = null
     let slotObj = this.getCurSlotObj()
     if (checkObj(slotObj))
-      this.lastSelectedUnit = ::getAircraftByName(slotObj.unit_name)
+      this.lastSelectedUnit = getAircraftByName(slotObj.unit_name)
 
     this.updateButtons()
   }
@@ -281,14 +282,14 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
     let unitName = p?.unitName
 
     if (prevUnitName && prevUnitName != unitName)
-      this.checkUnitItemAndUpdate(::getAircraftByName(prevUnitName))
+      this.checkUnitItemAndUpdate(getAircraftByName(prevUnitName))
 
-    this.checkUnitItemAndUpdate(::getAircraftByName(unitName))
+    this.checkUnitItemAndUpdate(getAircraftByName(unitName))
   }
 
   function onEventUnitBought(p) {
     ::update_gamercards()
-    this.checkUnitItemAndUpdate(::getAircraftByName(p?.unitName))
+    this.checkUnitItemAndUpdate(getAircraftByName(p?.unitName))
   }
 
   function onEventFlushSquadronExp(_p) {

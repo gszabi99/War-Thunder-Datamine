@@ -2109,17 +2109,17 @@
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           6.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
@@ -3613,5 +3613,34 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "usa_camo_navy_blue",
+      "nameLocId": "skin/usa_camo_navy_blue",
+      "descLocId": "skin/usa_camo_navy_blue/desc",
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "usa_camo_navy_blue*"
+      }
+    },
+    {
+      "name": "usa_camo_blackblue_geometry",
+      "nameLocId": "skin/usa_camo_blackblue_geometry",
+      "descLocId": "skin/usa_camo_blackblue_geometry/desc",
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "usa_camo_blackblue_geometry*"
+      }
+    },
+    {
+      "name": "usa_camo_modern_cubes",
+      "nameLocId": "skin/usa_camo_modern_cubes",
+      "descLocId": "skin/usa_camo_modern_cubes/desc",
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "usa_camo_modern_cubes*"
+      }
+    }
+  ]
 }

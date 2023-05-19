@@ -301,7 +301,7 @@ let registerBroadcastEvent = mkRegisterEventByType(ecs.EVCAST_BROADCAST)
 //this is done here only to have all events in all VMs
 //broadcastSqEvents.__update(events.broadcastEvents)//for type check in register es
 
-return ecs.__update({
+return ecs.__merge({
   //this APIs needed cause we have different VMs and need to have all events be accessible
   registerUnicastEvent
   registerBroadcastEvent

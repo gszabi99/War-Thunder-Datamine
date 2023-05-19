@@ -5,7 +5,9 @@
 #explicit-this
 
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let time = require("%scripts/time.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
@@ -50,7 +52,7 @@ let function afterCloseTrophyWnd(configsTable) {
   if(configsTable.len()>0)
     ::gui_start_open_trophy(configsTable)
   else
-    ::broadcastEvent("TrophyWndClose", {})
+    broadcastEvent("TrophyWndClose", {})
 }
 
 ::gui_start_open_trophy <- function gui_start_open_trophy(configsTable = {}) {
@@ -241,7 +243,7 @@ let function afterCloseTrophyWnd(configsTable) {
     return true
   }
 
-  notifyTrophyVisible = @() ::broadcastEvent("TrophyContentVisible", { trophyItem = this.trophyItem })
+  notifyTrophyVisible = @() broadcastEvent("TrophyContentVisible", { trophyItem = this.trophyItem })
 
   function updateWnd() {
     this.updateImage()
@@ -272,11 +274,11 @@ let function afterCloseTrophyWnd(configsTable) {
       return null
 
     let trophyStyle = $"{this.rewardIcon}{this.opened ? "_opened" : ""}"
-    local layerCfg = ::LayersIcon.findLayerCfg(trophyStyle)
+    local layerCfg = LayersIcon.findLayerCfg(trophyStyle)
     if (!layerCfg)
-      layerCfg = ::LayersIcon.findLayerCfg("default_unlocked")
+      layerCfg = LayersIcon.findLayerCfg("default_unlocked")
 
-    return ::LayersIcon.genDataFromLayer(layerCfg)
+    return LayersIcon.genDataFromLayer(layerCfg)
   }
 
   function updateTrophyImage() {
@@ -362,7 +364,7 @@ let function afterCloseTrophyWnd(configsTable) {
       this.haveItems = this.haveItems || ::trophyReward.isRewardItem(rewardType)
 
       if (rewardType == "unit" || rewardType == "rentedUnit") {
-        this.unit = ::getAircraftByName(reward[rewardType]) || this.unit
+        this.unit = getAircraftByName(reward[rewardType]) || this.unit
         //Datablock adapter used only to avoid bug with duplicate timeHours in userlog.
         this.rentTimeHours = DataBlockAdapter(reward)?.timeHours || this.rentTimeHours
         continue
@@ -400,11 +402,11 @@ let function afterCloseTrophyWnd(configsTable) {
       return ""
 
     let layerId = "item_place_container"
-    local layerCfg = ::LayersIcon.findLayerCfg(trophyStyle + "_" + layerId)
+    local layerCfg = LayersIcon.findLayerCfg(trophyStyle + "_" + layerId)
     if (!layerCfg)
-      layerCfg = ::LayersIcon.findLayerCfg(layerId)
+      layerCfg = LayersIcon.findLayerCfg(layerId)
 
-    return ::LayersIcon.genDataFromLayer(layerCfg, layersData)
+    return LayersIcon.genDataFromLayer(layerCfg, layersData)
   }
 
   function onTake(unitToTake) {

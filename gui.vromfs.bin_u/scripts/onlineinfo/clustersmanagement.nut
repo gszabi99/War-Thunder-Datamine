@@ -1,13 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 let { getCountryCode } = require("auth_wt")
 let { getClustersByCountry } = require("%scripts/onlineInfo/defaultClusters.nut")
+let { optimalClusters } = require("%scripts/onlineInfo/optimalClusters.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { fetchClustersList } = require("%scripts/matching/serviceNotifications/match.nut")
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const MAX_FETCH_RETRIES = 5
 
@@ -51,7 +55,7 @@ let mkCluster = @(name) {
     debugTableData(params)
 
     let clusters = getTblValue("clusters", params)
-    if (!::u.isArray(clusters))
+    if (!u.isArray(clusters))
       return false
 
     this.clusters_info.clear()
@@ -65,7 +69,9 @@ let mkCluster = @(name) {
   }
 
   function updateDefaultClusters() {
-    let defaults = getClustersByCountry(getCountryCode())
+    let defaults = optimalClusters.value.len() > 0
+      ? optimalClusters.value
+      : getClustersByCountry(getCountryCode())
     this.clusters_info.each(@(info) info.isDefault <- defaults.contains(info.name))
     let hasDefault = this.clusters_info.findindex(@(info) info.isDefault) != null
     if (!hasDefault)
@@ -116,7 +122,7 @@ let mkCluster = @(name) {
 
     this.__clusters_fetching = true
     this.__fetch_counter++
-    ::fetch_clusters_list(null,
+    fetchClustersList(null,
       function(params) {
         if (!this)
           return
@@ -134,11 +140,8 @@ let mkCluster = @(name) {
           log("fetch cluster error, retry - " + this.__fetch_counter)
           this.__update_clusters_list()
         }
-        else {
-          ::checkMatchingError(params, true)
-          if (!::is_dev_version)
-            startLogout()
-        }
+        else if (!::is_dev_version)
+          startLogout()
       }.bindenv(::g_clusters))
   }
 
@@ -163,4 +166,5 @@ let mkCluster = @(name) {
   isClusterUnstable
 }
 
-::subscribe_handler(::g_clusters)
+optimalClusters.subscribe(@(_) ::g_clusters.updateDefaultClusters())
+subscribe_handler(::g_clusters)

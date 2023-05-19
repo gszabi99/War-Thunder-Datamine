@@ -12,7 +12,7 @@ subscribe("hideMainMenuUi", function(params) {
     return
 
   if (params.hide)
-    emptySceneWithDarg({})
+    emptySceneWithDarg({ wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_VEHICLE_FULL })
   else
     ::gui_start_mainmenu()
 })

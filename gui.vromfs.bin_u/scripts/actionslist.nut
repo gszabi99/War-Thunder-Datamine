@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 /*
   API
     ActionsList.create(parent, params)
@@ -90,7 +92,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
     }
     this.scene.iconed = isIconed ? "yes" : "no"
 
-    let data = ::handyman.renderCached(__al_item_obj_tpl, this.params)
+    let data = handyman.renderCached(__al_item_obj_tpl, this.params)
     this.guiScene.replaceContentFromText(nest, data, data.len(), this)
 
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
@@ -107,6 +109,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
         let selIdx = this.params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
         this.guiScene.applyPendingChanges(false)
         ::move_mouse_on_child(nest, max(selIdx, 0))
+        this.updatePosition() // after calling move_mouse_on_child the position can change, cause there is scrollToView() call
       })
   }
 
@@ -127,7 +130,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
     if (actionName == "")
       return
 
-    this.guiScene.performDelayed(this, (@(actionName) function () {
+    this.guiScene.performDelayed(this, function () {
       if (!checkObj(this.scene))
         return
 
@@ -146,12 +149,12 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
         this.params.handler[func].call(this.params.handler)
       else
         func.call(this.params.handler)
-    })(actionName))
+    })
   }
 
   function close() {
     this.goBack()
-    ::broadcastEvent("ClosedUnitItemMenu")
+    broadcastEvent("ClosedUnitItemMenu")
   }
 
   function onFocus(obj) {

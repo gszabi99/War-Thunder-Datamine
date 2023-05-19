@@ -9,6 +9,7 @@ let logS = log_with_prefix(LOG_PREFIX)
 
 let statsd = require("statsd")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
@@ -22,7 +23,7 @@ let isInitedOnce = Watched(false)
 local onItemsReceivedCb = null
 
 isLoadingInProgress.subscribe(@(val)
-  ::broadcastEvent("EpicShopDataUpdated", { isLoadingInProgress = val })
+  broadcastEvent("EpicShopDataUpdated", { isLoadingInProgress = val })
 )
 
 let function requestData(cb = null) {
@@ -115,7 +116,7 @@ let function onUpdateItemCb(blk) {
   }
 
   epicItems.value[itemId].update(blk)
-  ::broadcastEvent("EpicShopItemUpdated", { item = epicItems.value[itemId] })
+  broadcastEvent("EpicShopItemUpdated", { item = epicItems.value[itemId] })
 }
 
 let haveAnyItemWithDiscount = Computed(@()

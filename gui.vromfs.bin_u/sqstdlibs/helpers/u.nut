@@ -10,9 +10,9 @@ let DataBlock = require("DataBlock")
 let dagorMath = require("dagor.math")
 let underscore = require("%sqstd/underscore.nut")
 let functools = require("%sqstd/functools.nut")
-local {isTable, isArray, isDataBlock } = underscore
+let {isTable, isArray, isDataBlock } = underscore
 
-local rnd = require_optional("dagor.random")?.rnd
+let rnd = require_optional("dagor.random")?.rnd
   ?? require("math")?.rand
   ?? function() {
        throw("no math library exist")
@@ -22,8 +22,8 @@ local rnd = require_optional("dagor.random")?.rnd
  * Looks through each value in the list, returning an array of all the values
  * that pass a truth test (predicate).
  */
-local function filter(list, predicate) {
-  local res = []
+let function filter(list, predicate) {
+  let res = []
   foreach (element in list)
     if (predicate(element))
       res.append(element)
@@ -34,15 +34,16 @@ local function filter(list, predicate) {
  * Produces a new array of values by mapping each value in list through a
  * transformation function (iteratee(value, key, list)).
  */
-local function mapAdvanced(list, iteratee) {
-  if (type(list) == "array") {
+let function mapAdvanced(list, iteratee) {
+  let t = type(list)
+  if (t == "array") {
     local res = []
-    for (local i = 0; i < list.len(); ++i)
-      res.append(iteratee(list[i], i, list))
+    foreach (idx, val in list)
+      res.append(iteratee(val, idx, list))
     return res
   }
-  if (type(list) == "table" || isDataBlock(list)) {
-    local res = {}
+  if (t == "table" || isDataBlock(list)) {
+    let res = {}
     foreach (key, val in list)
       res[key] <- iteratee(val, key, list)
     return res
@@ -50,7 +51,7 @@ local function mapAdvanced(list, iteratee) {
   return []
 }
 
-local function map(list, func) {
+let function map(list, func) {
   return mapAdvanced(list, (@(func) function(val, ...) { return func(val) })(func))
 }
 
@@ -59,9 +60,9 @@ local function map(list, func) {
 /**
  * keys return an array of keys of specified table
  */
-local function keys(data) {
+let function keys(data) {
   if (type(data) == "array"){
-    local res = array(data.len())
+    let res = array(data.len())
     foreach (i, _k in res)
       res[i]=i
     return res
@@ -72,7 +73,7 @@ local function keys(data) {
 /**
  * Return all of the values of the table's properties.
  */
-local function values(data) {
+let function values(data) {
   if (type(data) == "array")
     return clone data
   return data.values()
@@ -82,11 +83,11 @@ local function values(data) {
  **************************** Custom Classes register **************************
  ******************************************************************************/
 
-local customIsEqual = {}
-local customIsEmpty = {}
+let customIsEqual = {}
+let customIsEmpty = {}
 
 
-local function registerIsEqual(classRef, isEqualFunc){
+let function registerIsEqual(classRef, isEqualFunc){
   customIsEqual[classRef] <- isEqualFunc
 }
 
@@ -96,7 +97,7 @@ local function registerIsEqual(classRef, isEqualFunc){
  * return true for null
  */
 
-local function isEmpty(val) {
+let function isEmpty(val) {
   if (!val)
     return true
 
@@ -116,8 +117,8 @@ local function isEmpty(val) {
 /*
   register instance class to work with u.is<className>, u.isEqual,  u.isEmpty
 */
-local function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc = null) {
-  local funcName = $"is{className.slice(0, 1).toupper()}{className.slice(1)}"
+let function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc = null) {
+  let funcName = $"is{className.slice(0, 1).toupper()}{className.slice(1)}"
   this[funcName] <- @(value) type(value) == "instance" && (value instanceof classRef)
 
   if (isEqualFunc != null)
@@ -126,15 +127,15 @@ local function registerClass(className, classRef, isEqualFunc = null, isEmptyFun
     customIsEmpty[classRef] <- isEmptyFunc
 }
 
-local uIsEqual = underscore.isEqual
-local function isEqual(val1, val2){
+let uIsEqual = underscore.isEqual
+let function isEqual(val1, val2){
   return uIsEqual(val1, val2, customIsEqual)
 }
 
 /*
   try to register standard dagor classes
 */
-local dagorClasses = {
+let dagorClasses = {
   DataBlock = {
     classRef = DataBlock
     isEmpty = @(val) !val.paramCount() && !val.blockCount()
@@ -146,8 +147,8 @@ local dagorClasses = {
         if (val1.getParamName(i) != val2.getParamName(i) || ! isEqual(val1.getParamValue(i), val2.getParamValue(i)))
           return false
       for (local i = 0; i < val1.blockCount(); i++) {
-        local b1 = val1.getBlock(i)
-        local b2 = val2.getBlock(i)
+        let b1 = val1.getBlock(i)
+        let b2 = val2.getBlock(i)
         if (b1.getBlockName() != b2.getBlockName() || !isEqual(b1, b2))
           return false
       }
@@ -205,7 +206,7 @@ local dagorClasses = {
  * object, and return the destination object. It's in-order, so the last source
  * will override properties of the same name in previous arguments.
  */
-local function extend(destination, ... /*sources*/) {
+let function extend(destination, ... /*sources*/) {
   for (local i = 0; i < vargv.len(); i++)
     foreach (key, val in vargv[i]) {
       local v = val
@@ -225,7 +226,7 @@ local function extend(destination, ... /*sources*/) {
  * Recursevly copy all fields of obj to the new instance of same type and
  * returns it.
  */
-local function copy(obj) {
+let function copy(obj) {
   if (obj == null)
     return null
 
@@ -234,9 +235,9 @@ local function copy(obj) {
 
   //!!FIX ME: Better to make clone method work with datablocks, or move it to custom methods same as isEqual
   if ("isDataBlock" in this && isDataBlock(obj)) {
-    local res = DataBlock()
+    let res = DataBlock()
     res.setFrom(obj)
-    local name = obj.getBlockName()
+    let name = obj.getBlockName()
     if (name)
       res.changeBlockName(name)
     return res
@@ -249,9 +250,9 @@ local function copy(obj) {
   * Find and remove {value} from {data} (table/array) once
   * return true if found
 */
-local function removeFrom(data, value) {
+let function removeFrom(data, value) {
   if (isArray(data)) {
-    local idx = data.indexof(value)
+    let idx = data.indexof(value)
     if (idx != null) {
       data.remove(idx)
       return true
@@ -271,8 +272,8 @@ local function removeFrom(data, value) {
  * Create new table which have keys, replaced from keysEqual table.
  * deepLevel param set deep of recursion for replace keys in tbl childs
 */
-local function keysReplace(tbl, keysEqual, deepLevel = -1) {
-  local res = {}
+let function keysReplace(tbl, keysEqual, deepLevel = -1) {
+  let res = {}
   local newValue = null
   foreach(key, value in tbl) {
     if (isTable(value) && deepLevel != 0)
@@ -295,7 +296,7 @@ local function keysReplace(tbl, keysEqual, deepLevel = -1) {
  ******************************************************************************/
 
 
-local function getMax(arr, iteratee = null) {
+let function getMax(arr, iteratee = null) {
   local result = null
   if (!arr)
     return result
@@ -305,7 +306,7 @@ local function getMax(arr, iteratee = null) {
 
   local lastMaxValue = null
   foreach (data in arr) {
-    local value = iteratee(data)
+    let value = iteratee(data)
     if (lastMaxValue != null && value <= lastMaxValue)
       continue
 
@@ -316,13 +317,13 @@ local function getMax(arr, iteratee = null) {
   return result
 }
 
-local function getMin(arr, iteratee = null) {
+let function getMin(arr, iteratee = null) {
   local newIteratee = null
   if (!iteratee)
     newIteratee = @(val) (type(val) == "integer" || type(val) == "float") ? -val : null
   else {
     newIteratee = function(val) {
-      local value = iteratee(val)
+      let value = iteratee(val)
       return value != null ? -value : null
     }
   }
@@ -330,7 +331,7 @@ local function getMin(arr, iteratee = null) {
   return getMax(arr, newIteratee)
 }
 
-local function appendOnce(v, arr, skipNull = false, customIsEqualFunc = null) {
+let function appendOnce(v, arr, skipNull = false, customIsEqualFunc = null) {
   if(skipNull && v == null)
     return
 
@@ -345,13 +346,13 @@ local function appendOnce(v, arr, skipNull = false, customIsEqualFunc = null) {
   arr.append(v)
 }
 
-local chooseRandom = @(arr) arr.len() ?
+let chooseRandom = @(arr) arr.len() ?
   arr[rnd() % arr.len()] :
   null
 
-local function shuffle(arr) {
-  local res = clone arr
-  local size = res.len()
+let function shuffle(arr) {
+  let res = clone arr
+  let size = res.len()
   local j
   local v
   for (local i = size - 1; i > 0; i--) {
@@ -363,7 +364,7 @@ local function shuffle(arr) {
   return res
 }
 
-local function chooseRandomNoRepeat(arr, prevIdx) {
+let function chooseRandomNoRepeat(arr, prevIdx) {
   if (prevIdx < 0)
     return chooseRandom(arr)
   if (!arr.len())
@@ -382,7 +383,7 @@ local function chooseRandomNoRepeat(arr, prevIdx) {
 *  Returns the adjusted index in array range, keeping its offset.
 *  In case of zero @length returns -1
 */
-local function wrapIdxInArrayLen(index, length) {
+let function wrapIdxInArrayLen(index, length) {
   return length > 0 ? (((index % length) + length) % length) : -1
 }
 
@@ -393,7 +394,7 @@ local function wrapIdxInArrayLen(index, length) {
  * the entire data.
  * @reverseOrder work only with arrays.
  */
-local function search(data, predicate, reverseOrder = false) {
+let function search(data, predicate, reverseOrder = false) {
   if (!reverseOrder || type(data) != "array") {
     foreach(value in data)
       if (predicate(value))
@@ -405,6 +406,14 @@ local function search(data, predicate, reverseOrder = false) {
     if (predicate(data[i]))
       return data[i]
   return null
+}
+
+
+let function find_in_array(arr, val, def = -1) {
+  if (type(arr) != "array" && type(arr) != "table")
+    return def
+
+  return arr.findindex(@(v) v==val) ?? def
 }
 
 
@@ -431,13 +440,14 @@ local export = underscore.__merge({
   filter
   keys
   values
+  find_in_array
 
 }, functools)
 
 /**
  * Add type checking functions such as isFloat()
  */
-local internalTypes = ["integer", "int64", "float", "null",
+let internalTypes = ["integer", "int64", "float", "null",
                       "bool",
                       "class", "instance", "generator",
                       "userdata", "thread", "weakref"]

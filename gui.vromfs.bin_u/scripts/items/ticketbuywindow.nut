@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,13 +20,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function initScreen() {
     let view = {
       headerText = loc("ticketBuyWindow/header")
-      tickets = ::handyman.renderCached("%gui/items/item.tpl", this.createTicketsView(this.tickets))
+      tickets = handyman.renderCached("%gui/items/item.tpl", this.createTicketsView(this.tickets))
       windowMainText = this.createMainText()
       ticketCaptions = this.createTicketCaptionsView()
       activeTicketText = this.createActiveTicketText()
       hasActiveTicket = this.activeTicket != null
     }
-    let data = ::handyman.renderCached("%gui/items/ticketBuyWindow.tpl", view)
+    let data = handyman.renderCached("%gui/items/ticketBuyWindow.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
     this.updateTicketCaptionsPosition()
     this.updateBuyButtonText()
@@ -167,7 +168,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     textParts.append(loc("ticketBuyWindow/unfinishedSessions", tournamentData))
     textParts.append(this.activeTicket.getDefeatCountText(tournamentData))
     textParts.append(this.activeTicket.getSequenceDefeatCountText(tournamentData))
-    text += ::g_string.implode(textParts, "\n")
+    text += "\n".join(textParts, true)
     return text
   }
 }

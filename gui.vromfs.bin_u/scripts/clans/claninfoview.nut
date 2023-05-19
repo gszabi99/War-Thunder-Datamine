@@ -30,7 +30,7 @@ let function getClanRequirementsText(membershipRequirements) {
 
   local ranksReqText = ""
   if (ranksReqTextArray.len()) {
-    ranksReqText = ::g_string.implode(ranksReqTextArray, " " + ranksConditionTypeText + " ")
+    ranksReqText = $" {ranksConditionTypeText } ".join(ranksReqTextArray, true)
     ranksReqText = loc("clan/rankReqInfoHead") + loc("ui/colon") + ranksReqText
   }
 
@@ -55,7 +55,7 @@ let function getClanRequirementsText(membershipRequirements) {
       }
     }
 
-  return ::g_string.implode([ranksReqText, battlesReqText], "\n")
+  return "\n".join([ranksReqText, battlesReqText], true)
 }
 
 return {

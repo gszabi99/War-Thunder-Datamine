@@ -1,17 +1,22 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { rnd } = require("dagor.random")
-let { isIPoint2 } = require("%sqStdLibs/helpers/u.nut")
+let { isIPoint2 } = u
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 let class TrophyMultiAward {
   blk = null
@@ -54,7 +59,7 @@ let class TrophyMultiAward {
   }
 
   function getCost() {
-    return ::Cost(0, this.blk?.multiAwardsOnWorthGold ?? 0)
+    return Cost(0, this.blk?.multiAwardsOnWorthGold ?? 0)
   }
 
   function getName() {
@@ -98,7 +103,7 @@ let class TrophyMultiAward {
       return header
 
     textList.insert(0, header + loc("ui/colon"))
-    return ::g_string.implode(textList, (skipUnconditional && count == 1) ? "\n" : this.listDiv)
+    return ((skipUnconditional && count == 1) ? "\n" : this.listDiv).join(textList, true)
   }
 
   function getAwardText(awardBlk, skipUnconditional = false, useBoldAsSmaller = false) {
@@ -110,9 +115,9 @@ let class TrophyMultiAward {
       if (skipUnconditional)
         return ""
 
-      let uTypes = ::u.map(awardBlk % "type",
+      let uTypes = u.map(awardBlk % "type",
                                  function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
-      return ::g_string.implode(uTypes, this.listDiv)
+      return this.listDiv.join(uTypes, true)
     }
 
     if (curAwardType == "modificationsList") {
@@ -128,9 +133,9 @@ let class TrophyMultiAward {
       if (skipUnconditional)
         return ""
 
-      let uTypes = ::u.map(awardBlk % "resourceType",
+      let uTypes = u.map(awardBlk % "resourceType",
                                  function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
-      return ::g_string.implode(uTypes, this.listDiv)
+      return this.listDiv.join(uTypes, true)
     }
 
     local res = ""
@@ -160,7 +165,7 @@ let class TrophyMultiAward {
     this._addCondRanks(awardBlk, condList)
     this._addCondUnitClass(awardBlk, condList)
     this._addCondExistingUnit(awardBlk, condList)
-    return ::g_string.implode(condList, "; ")
+    return "; ".join(condList, true)
   }
 
   function _addCondExistingUnit(awardBlk, condList) {
@@ -182,9 +187,9 @@ let class TrophyMultiAward {
       return
 
     local text = loc("options/country") + loc("ui/colon")
-    countries = ::u.map(countries,
+    countries = u.map(countries,
                             function(val) { return colorize(this.condColor loc(val)) }.bindenv(this))
-    text += ::g_string.implode(countries, ", ")
+    text += ", ".join(countries, true)
     condList.append(text)
   }
 
@@ -194,7 +199,7 @@ let class TrophyMultiAward {
       return
 
     local text = loc("shop/age") + loc("ui/colon")
-    ranks = ::u.map(ranks,
+    ranks = u.map(ranks,
       function(val) {
         if (!isIPoint2(val))
           return ""
@@ -207,7 +212,7 @@ let class TrophyMultiAward {
         return res + div + colorize(this.condColor, ::get_roman_numeral(val.y))
       }.bindenv(this))
 
-    text += ::g_string.implode(ranks, ", ")
+    text += ", ".join(ranks, true)
     condList.append(text)
   }
 
@@ -217,16 +222,16 @@ let class TrophyMultiAward {
       return
 
     local text = loc("unit_type") + loc("ui/colon")
-    classes = ::u.map(classes,
+    classes = u.map(classes,
                           function(val) {
                             local role = val.tolower()
-                            role = ::g_string.cutPrefix(role, "exp_", role)
+                            role = cutPrefix(role, "exp_", role)
                             if (role == "aircraft")
                               return colorize(this.condColor, loc("unlockTag/unit_aircraft"))
                             return colorize(this.condColor, getRoleText(role))
                           }.bindenv(this))
 
-    text += ::g_string.implode(classes, ", ")
+    text += ", ".join(classes, true)
     condList.append(text)
   }
 
@@ -356,7 +361,7 @@ let class TrophyMultiAward {
       let unitName = qBlk?["unit" + i]
       if (!unitName)
         break
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       if (!unit)
         continue
 
@@ -500,11 +505,11 @@ let class TrophyMultiAward {
         let typesKey = (awardType == "resource") ?  "resourceType" : "type"
         let uTypes = awardBlk % typesKey
         foreach (uType in uTypes)
-          ::u.appendOnce(uType, res)
+          u.appendOnce(uType, res)
         continue
       }
 
-      ::u.appendOnce(awardType, res)
+      u.appendOnce(awardType, res)
     }
     return res
   }
@@ -567,23 +572,23 @@ let class TrophyMultiAward {
     let layerName = singleType ? "item_multiaward_single" : "item_multiaward"
     let chosen = this._chooseIconsForLayer(iconsList, singleType ? this.maxRouletteIconsSingleType : this.maxRouletteIcons)
     for (local idx = chosen.len() - 1; idx >= 0; idx--) {
-      let layerCfg = ::LayersIcon.findLayerCfg(layerName + idx)
+      let layerCfg = LayersIcon.findLayerCfg(layerName + idx)
       if (!layerCfg)
         continue
 
       layerCfg.img = chosen[idx]
-      res += ::LayersIcon.genDataFromLayer(layerCfg)
+      res += LayersIcon.genDataFromLayer(layerCfg)
     }
     return res
   }
 
   function _getTextLayer() {
-    let layerCfg = ::LayersIcon.findLayerCfg("item_multiaward_text")
+    let layerCfg = LayersIcon.findLayerCfg("item_multiaward_text")
     if (!layerCfg)
       return ""
 
     layerCfg.text <- this.haveCount() ? "x" + this.getCount() : this.getCost().tostring()
-    return ::LayersIcon.getTextDataFromLayer(layerCfg)
+    return LayersIcon.getTextDataFromLayer(layerCfg)
   }
 }
 

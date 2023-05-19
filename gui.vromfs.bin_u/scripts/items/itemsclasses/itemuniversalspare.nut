@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 
 ::items_classes.UniversalSpare <- class extends BaseItemModClass {
@@ -59,7 +61,7 @@ let DataBlock  = require("DataBlock")
     let successCb = function() {
       if (extSuccessCb)
         extSuccessCb()
-      ::broadcastEvent("UniversalSpareActivated")
+      broadcastEvent("UniversalSpareActivated")
     }
 
     let blk = DataBlock()
@@ -71,27 +73,27 @@ let DataBlock  = require("DataBlock")
   }
 
   function getIcon(_addItemName = true) {
-    local res = ::LayersIcon.genDataFromLayer(this._getBaseIconCfg())
-    res += ::LayersIcon.genDataFromLayer(this._getFlagLayer())
-    res += ::LayersIcon.genDataFromLayer(this._getuUnitTypesLayer())
-    res += ::LayersIcon.getTextDataFromLayer(this._getRankLayer())
+    local res = LayersIcon.genDataFromLayer(this._getBaseIconCfg())
+    res += LayersIcon.genDataFromLayer(this._getFlagLayer())
+    res += LayersIcon.genDataFromLayer(this._getuUnitTypesLayer())
+    res += LayersIcon.getTextDataFromLayer(this._getRankLayer())
     return res
   }
 
   function _getBaseIconCfg() {
     let layerId = "universal_spare_base"
-    return ::LayersIcon.findLayerCfg(layerId)
+    return LayersIcon.findLayerCfg(layerId)
   }
 
   function _getuUnitTypesLayer() {
     if (!this.unitTypes || this.unitTypes.len() != 1)
-      return ::LayersIcon.findLayerCfg("universal_spare_all")
-    return ::LayersIcon.findLayerCfg("universal_spare_" + this.unitTypes[0])
+      return LayersIcon.findLayerCfg("universal_spare_all")
+    return LayersIcon.findLayerCfg("universal_spare_" + this.unitTypes[0])
   }
 
   function _getRankLayer() {
     let textLayerStyle = "universal_spare_rank_text"
-    let layerCfg = ::LayersIcon.findLayerCfg(textLayerStyle)
+    let layerCfg = LayersIcon.findLayerCfg(textLayerStyle)
     if (!layerCfg)
       return null
     layerCfg.text <- this.getRankText()
@@ -102,7 +104,7 @@ let DataBlock  = require("DataBlock")
     if (!this.countries || this.countries.len() != 1)
       return null
     let flagLayerStyle = "universal_spare_flag"
-    let layerCfg = ::LayersIcon.findLayerCfg(flagLayerStyle)
+    let layerCfg = LayersIcon.findLayerCfg(flagLayerStyle)
     if (!layerCfg)
       return null
     layerCfg.img <- ::get_country_icon(this.countries[0])

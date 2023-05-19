@@ -1,12 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { abs, round } = require("math")
+let { Cost, Money, Balance, money_type } = require("%scripts/money.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { format } = require("string")
@@ -21,11 +24,12 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
-let { money_type } = require("%scripts/money.nut")
 let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { stripTags, cutPrefix, split, startsWith, endsWith } = require("%sqstd/string.nut")
+let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -89,7 +93,7 @@ local function getResourcesConfig(resources) {
 
   //after convertation from DataBlk to table array with 1 element becomes table.
   //So we normalize data format.
-  if (::u.isTable(resources))
+  if (u.isTable(resources))
     resources = [resources]
 
   foreach (resource in resources) {
@@ -110,7 +114,7 @@ local function getResourcesConfig(resources) {
 }
 
 let function getLinkMarkup(text, url, acccessKeyName = null) {
-  if (!::u.isString(url) || url.len() == 0 || !hasFeature("AllowExternalLink"))
+  if (!u.isString(url) || url.len() == 0 || !hasFeature("AllowExternalLink"))
     return ""
 
   let btnParams = {
@@ -121,7 +125,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
   if (acccessKeyName && acccessKeyName.len() > 0) {
     btnParams.acccessKeyName <- acccessKeyName
   }
-  return ::handyman.renderCached("%gui/commonParts/button.tpl", btnParams)
+  return handyman.renderCached("%gui/commonParts/button.tpl", btnParams)
 }
 
 ::update_repair_cost <- function update_repair_cost(units, repairCost) {
@@ -149,7 +153,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     buttonName = null
   }
   local logName = ::getLogNameByType(logObj.type)
-  local priceText = ::Cost(("wpCost" in logObj) ? logObj.wpCost : 0,
+  local priceText = Cost(("wpCost" in logObj) ? logObj.wpCost : 0,
     ("goldCost" in logObj) ? logObj.goldCost : 0).tostring()
   if (priceText != "")
     priceText = " (" + priceText + ")"
@@ -186,7 +190,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     local wp = getTblValue("wpEarned", logObj, 0) + getTblValue("baseTournamentWp", logObj, 0)
     local gold = getTblValue("goldEarned", logObj, 0) + getTblValue("baseTournamentGold", logObj, 0)
     let xp = getTblValue("xpEarned", logObj, 0)
-    local earnedText = ::Cost(wp, gold, xp).toStringWithParams({ isWpAlwaysShown = true })
+    local earnedText = Cost(wp, gold, xp).toStringWithParams({ isWpAlwaysShown = true })
     if (earnedText != "") {
       earnedText = loc("ui/colon") + "<color=@activeTextColor>" + earnedText + "</color>"
       desc += ((desc != "") ? "\n" : "") + loc("userlog/earned") + earnedText
@@ -200,14 +204,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (("friendlyFirePenalty" in logObj) && logObj.friendlyFirePenalty != 0) {
       desc += "\n" + loc("debriefing/FriendlyKills") + loc("ui/colon")
       desc += "<color=@activeTextColor>" +
-        ::Cost(logObj.friendlyFirePenalty).toStringWithParams({ isWpAlwaysShown = true }) + "</color>"
+        Cost(logObj.friendlyFirePenalty).toStringWithParams({ isWpAlwaysShown = true }) + "</color>"
       wp += logObj.friendlyFirePenalty
     }
 
     if (("nRespawnsWp" in logObj) && logObj.nRespawnsWp != 0) {
       desc += "\n" + loc("debriefing/MultiRespawns") + loc("ui/colon")
       desc += "<color=@activeTextColor>" +
-        ::Cost(logObj.nRespawnsWp).toStringWithParams({ isWpAlwaysShown = true }) + "</color>"
+        Cost(logObj.nRespawnsWp).toStringWithParams({ isWpAlwaysShown = true }) + "</color>"
       wp += logObj.nRespawnsWp
     }
 
@@ -246,14 +250,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     if (repairCost.rCost > 0) {
       desc += "\n" + loc("shop/auto_repair_cost") + loc("ui/colon")
-      desc += "<color=@activeTextColor>" + ::Cost(-repairCost.rCost).toStringWithParams({ isWpAlwaysShown = true }) + "</color>"
+      desc += "<color=@activeTextColor>" + Cost(-repairCost.rCost).toStringWithParams({ isWpAlwaysShown = true }) + "</color>"
       wp -= repairCost.rCost
       freeRepair = false
     }
     if (repairCost.notEnoughCost != 0) {
       desc += "\n" + loc("shop/auto_repair_failed") + loc("ui/colon")
       desc += "<color=@warningTextColor>(" +
-        ::Cost(repairCost.notEnoughCost).toStringWithParams({ isWpAlwaysShown = true }) + ")</color>"
+        Cost(repairCost.notEnoughCost).toStringWithParams({ isWpAlwaysShown = true }) + ")</color>"
       freeRepair = false
     }
 
@@ -265,7 +269,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let wRefillGold = getTblValue("goldCostWeaponRefill", containerLog, 0)
     if (wRefillWp || wRefillGold) {
       desc += "\n" + loc("shop/auto_buy_weapons_cost") + loc("ui/colon")
-      desc += "<color=@activeTextColor>" + ::Cost(-wRefillWp, -wRefillGold).tostring() + "</color>"
+      desc += "<color=@activeTextColor>" + Cost(-wRefillWp, -wRefillGold).tostring() + "</color>"
       wp -= wRefillWp
       gold -= wRefillGold
     }
@@ -286,14 +290,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
         local modText = ""
         if (modId)
-          modText = $" - {getModificationName(::getAircraftByName(unitId), modId)}"
+          modText = $" - {getModificationName(getAircraftByName(unitId), modId)}"
         let title = $"{::getUnitName(unitId)}{modText}"
         local item = "".join(["\n", title, loc("ui/colon"), "<color=@activeTextColor>",
-          ::Cost().setRp(mrp).tostring(), "</color>"])
+          Cost().setRp(mrp).tostring(), "</color>"])
 
         if (fromExcessRP > 0)
           item += " + " + loc("userlog/excessExpEarned") + loc("ui/colon") +
-            "<color=@activeTextColor>" + ::Cost().setRp(fromExcessRP).tostring() + "</color>"
+            "<color=@activeTextColor>" + Cost().setRp(fromExcessRP).tostring() + "</color>"
 
         if (!modId)
           descUnits += item
@@ -340,7 +344,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
       if (usedItems.len())
         desc += "\n\n" + colorize("activeTextColor", loc("debriefing/used_items") + loc("ui/colon")) +
-          "\n" + ::g_string.implode(usedItems, "\n")
+          "\n" + "\n".join(usedItems, true)
     }
 
     if (("tournamentResult" in logObj) && (::events.getEvent(eventId)?.leaderboardEventTable == null)) {
@@ -367,7 +371,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     local totalText = res.tooltip
     totalText = "<color=@userlogColoredText>" + totalText + loc("ui/colon") + "</color>"
 
-    let total = ::Cost(wp, gold, xp, rp).toStringWithParams({ isWpAlwaysShown = true })
+    let total = Cost(wp, gold, xp, rp).toStringWithParams({ isWpAlwaysShown = true })
     totalText += "<color=@activeTextColor>" + total + "</color>"
 
     desc += "\n\n" + totalText
@@ -425,7 +429,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.name = loc(nameLoc, { mode = loc("multiplayer/" + logObj.mode + "Mode"), mission = mission }) + nameLocPostfix
 
     local desc = ""
-    local earnedText = ::Cost(logObj?.wpEarned ?? 0, logObj?.goldEarned ?? 0, 0, logObj?.xpEarned ?? 0)
+    local earnedText = Cost(logObj?.wpEarned ?? 0, logObj?.goldEarned ?? 0, 0, logObj?.xpEarned ?? 0)
       .toStringWithParams({ isWpAlwaysShown = true })
     if (earnedText != "") {
       earnedText = loc("debriefing/total") + loc("ui/colon") + earnedText
@@ -463,7 +467,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         desc += "\n"
       let airName = logObj["aname" + idx]
       desc += ::getUnitName(airName) + loc("ui/colon") +
-        ::Cost(logObj["cost" + idx]).toStringWithParams({ isWpAlwaysShown = true })
+        Cost(logObj["cost" + idx]).toStringWithParams({ isWpAlwaysShown = true })
       totalCost += logObj["cost" + idx]
       if (oneCountry) {
         let c = ::getShopCountry(airName)
@@ -474,7 +478,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       }
       idx++
     }
-    priceText = ::Cost(totalCost).tostring()
+    priceText = Cost(totalCost).tostring()
     if (priceText != "")
       priceText = " (" + priceText + ")"
     res.name = loc("userlog/" + logName) + priceText
@@ -519,7 +523,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
           if (logObj.rawin("wgoldCost" + idx))
             goldCost = logObj["wgoldCost" + idx]
 
-          desc += " x" + logObj["wcount" + idx] + " " + ::Cost(wpCost, goldCost).tostring()
+          desc += " x" + logObj["wcount" + idx] + " " + Cost(wpCost, goldCost).tostring()
         }
         if (logObj["aname" + idx] in airDesc)
           airDesc[logObj["aname" + idx]] += "\n" + desc
@@ -535,7 +539,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       do {
         local desc = ""
         if (logObj.rawin("maname" + idx) && logObj.rawin("mname" + idx)) {
-        desc = $"{desc}{getModificationName(::getAircraftByName(logObj["maname"+idx]), logObj["mname"+idx])}"
+        desc = $"{desc}{getModificationName(getAircraftByName(logObj["maname"+idx]), logObj["mname"+idx])}"
           local wpCost = 0
           local goldCost = 0
           if (logObj.rawin("mcount" + idx)) {
@@ -544,7 +548,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
             if (logObj.rawin("mgoldCost" + idx))
               goldCost = logObj["mgoldCost" + idx]
 
-            desc += " x" + logObj["mcount" + idx] + " " + ::Cost(wpCost, goldCost).tostring()
+            desc += " x" + logObj["mcount" + idx] + " " + Cost(wpCost, goldCost).tostring()
           }
           if (logObj["maname" + idx] in airDesc)
             airDesc[logObj["maname" + idx]] += "\n" + desc
@@ -670,11 +674,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.name = format(loc("userlog/" + logName), ::getUnitName(logObj.aname)) + priceText
     res.logImg = "".concat("#ui/gameuiskin#", logObj.type == EULT_BUYING_MODIFICATION ? "log_buy_mods" : "log_refill_weapon_no_money")
     if (("mname" in logObj) && ("aname" in logObj)) {
-      res.description <- getModificationName(::getAircraftByName(logObj.aname), logObj.mname)
+      res.description <- getModificationName(getAircraftByName(logObj.aname), logObj.mname)
       if ("count" in logObj && logObj.count > 1)
         res.description += " x" + logObj.count
 
-      local xpEarnedText = ("xpEarned" in logObj) ? ::Cost().setRp(logObj.xpEarned).tostring() : ""
+      local xpEarnedText = ("xpEarned" in logObj) ? Cost().setRp(logObj.xpEarned).tostring() : ""
       if (xpEarnedText != "") {
         xpEarnedText = loc("reward") + loc("ui/colon") + "<color=@activeTextColor>" + xpEarnedText + "</color>"
         res.description += ((res.description != "") ? "\n" : "") + xpEarnedText
@@ -738,7 +742,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (decoratorType)
       desc = decoratorType.getLocDesc(config.id)
 
-    if (!::u.isEmpty(desc))
+    if (!u.isEmpty(desc))
       res.description <- desc
 
     res.logImg = config.image
@@ -754,7 +758,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.description <- loc("userlog/" + getTblValue("name", logObj, ""))
 
     let wp = logObj?.wpEarned ?? 0, gold = logObj?.goldEarned ?? 0, exp = logObj?.xpEarned ?? 0
-    let reward = ::Cost(wp.tointeger(), gold.tointeger(), 0, exp.tointeger()).tostring()
+    let reward = Cost(wp.tointeger(), gold.tointeger(), 0, exp.tointeger()).tostring()
     if (reward != "")
       res.description += " <color=@activeTextColor>" + reward + "</color>"
 
@@ -775,18 +779,18 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
           lineReward += getWeaponNameText(blk.aname, false, blk.wname, loc("ui/comma")) + " "
         if ("mname" in blk)
           lineReward = "".join([
-            lineReward, getModificationName(::getAircraftByName(blk.aname), blk.mname), " "])
+            lineReward, getModificationName(getAircraftByName(blk.aname), blk.mname), " "])
       }
 
       let blkWp = blk?.wpEarned ?? 0
       let blkGold = blk?.goldEarned ?? 0
       let blkExp = blk?.xpEarned ?? 0
-      local blkReward = ::Cost(blkWp.tointeger(), blkGold.tointeger()).tostring()
+      local blkReward = Cost(blkWp.tointeger(), blkGold.tointeger()).tostring()
       if (blkExp) {
         let changeLightToXP = blk?.name == MSG_FREE_EXP_DENOMINATE_OLD
         blkReward += ((blkReward != "") ? ", " : "") + (changeLightToXP ?
           (blkExp + " <color=@white>" + loc("mainmenu/experience/oldName") + "</color>")
-          : ::Cost().setRp(blkExp.tointeger()).tostring())
+          : Cost().setRp(blkExp.tointeger()).tostring())
       }
 
       lineReward += blkReward
@@ -825,7 +829,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       }
 
       res.description = ""
-      let rewardCurency = ::Cost(wp, gold, exp).tostring()
+      let rewardCurency = Cost(wp, gold, exp).tostring()
       if (rewardCurency != "")
         res.description += loc("reward") + loc("ui/colon") + " " + colorize("activeTextColor", rewardCurency)
 
@@ -909,7 +913,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         desc.append(loc("items/wager/numFails", { numFails = getTblValue("numFails", logObj), maxFails = item.maxFails }))
 
         res.logImg = "#ui/gameuiskin#unlock_achievement"
-        res.description += (res.description == "" ? "" : "\n") + ::g_string.implode(desc, "\n")
+        res.description += (res.description == "" ? "" : "\n") + "\n".join(desc, true)
         res.descriptionBlk <- ::get_userlog_image_item(item)
       }
     }
@@ -920,7 +924,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         desc.append(getConditionText(rewardBlk))
 
       lineReward = getTotalRewardDescText(result)
-      res.description = ::g_string.implode(desc, "\n")
+      res.description = "\n".join(desc, true)
       res.name = loc("userlog/" + rewardType, {
                          name = colorize("userlogColoredText", ::events.getNameByEconomicName(getTblValue("name", logObj)))
                        })
@@ -935,8 +939,8 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let suffix = (goldAdd >= 0) ? "/positive" : "/negative"
 
     res.name = loc("userlog/" + logName + suffix, {
-      gold = ::Money(money_type.none, 0, abs(goldAdd)).toStringWithParams({ isGoldAlwaysShown = true }),
-      balance = ::Balance(0, goldBalance).toStringWithParams({ isGoldAlwaysShown = true })
+      gold = Money(money_type.none, 0, abs(goldAdd)).toStringWithParams({ isGoldAlwaysShown = true }),
+      balance = Balance(0, goldBalance).toStringWithParams({ isGoldAlwaysShown = true })
     })
     res.description <- logObj?.comment ?? "" // not localized
   }
@@ -952,19 +956,19 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     local desc = ""
     if ("expToInvUnit" in logObj && "resUnit" in logObj) {
-      locTbl.resUnitExpInvest <- ::Cost().setRp(logObj.expToInvUnit).tostring()
+      locTbl.resUnitExpInvest <- Cost().setRp(logObj.expToInvUnit).tostring()
       locTbl.resUnitName <- ::getUnitName(logObj.resUnit)
       desc = "\n" + loc("userlog/" + logName + "/resName", locTbl)
       locTbl.exp += logObj.expToInvUnit
     }
 
     if ("expToExcess" in logObj) {
-      locTbl.expToExcess <- ::Cost().setRp(logObj.expToExcess).tostring()
+      locTbl.expToExcess <- Cost().setRp(logObj.expToExcess).tostring()
       desc += "\n" + loc("userlog/" + logName + "/excessName", locTbl)
       locTbl.exp += logObj.expToExcess
     }
 
-    locTbl.exp = ::Cost().setRp(locTbl.exp).tostring()
+    locTbl.exp = Cost().setRp(locTbl.exp).tostring()
     res.name <- loc("userlog/" + logName + "/name", locTbl)
     res.description <- loc("userlog/" + logName + "/desc", locTbl) + desc
 
@@ -987,7 +991,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     do {
       local desc = ""
       if (logObj.rawin("maname" + idx) && logObj.rawin("mname" + idx)) {
-        desc = $"{desc}{getModificationName(::getAircraftByName(logObj["maname"+idx]), logObj["mname"+idx])}"
+        desc = $"{desc}{getModificationName(getAircraftByName(logObj["maname"+idx]), logObj["mname"+idx])}"
         local wpCost = 0
         local goldCost = 0
         if (logObj.rawin("mcount" + idx)) {
@@ -996,7 +1000,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
           if (logObj.rawin("mgoldCost" + idx))
             goldCost = logObj["mgoldCost" + idx]
 
-          desc += " x" + logObj["mcount" + idx] + " " + ::Cost(wpCost, goldCost).tostring()
+          desc += " x" + logObj["mcount" + idx] + " " + Cost(wpCost, goldCost).tostring()
         }
         if (logObj["maname" + idx] in airDesc)
           airDesc[logObj["maname" + idx]] += "\n" + desc
@@ -1027,7 +1031,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (item) {
       let tags = item?.itemDef.tags
       let isAutoConsume = tags?.autoConsume ?? false
-      let cost = item.isEveryDayAward() ? ::Cost() : item.getCost()
+      let cost = item.isEveryDayAward() ? Cost() : item.getCost()
       logName = (item?.userlogOpenLoc ?? logName) != logName
         || item.isEveryDayAward() ? item.userlogOpenLoc
           : $"{cost.gold > 0 ? "purchase_" : ""}{logName}"
@@ -1049,11 +1053,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
       let nameMarkup = item.getNameMarkup()
       let rewardMarkup = format(textareaFormat,
-        ::g_string.stripTags($"{loc("reward")}{loc("ui/colon")}"))
+        stripTags($"{loc("reward")}{loc("ui/colon")}"))
       res.descriptionBlk <- isAutoConsume
         ? ::get_userlog_image_item(item)
         : "".concat(format(textareaFormat,
-          $"{::g_string.stripTags(usedText)}{loc("ui/colon")}"), $"{nameMarkup}{rewardMarkup}")
+          $"{stripTags(usedText)}{loc("ui/colon")}"), $"{nameMarkup}{rewardMarkup}")
 
       local resTextArr = []
       local rewards = {}
@@ -1107,11 +1111,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       {
         local color = prizeType == "entitlement" ? "userlogColoredText" : "activeTextColor"
         local title = colorize(color, rewardText)
-        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(loc("reward") + loc("ui/colon") + title))
+        res.descriptionBlk += format(textareaFormat, stripTags(loc("reward") + loc("ui/colon") + title))
       }
       else if (prizeType == "item")
       {
-        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(loc("reward") + loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, stripTags(loc("reward") + loc("ui/colon")))
         res.descriptionBlk += ::get_userlog_image_item(::ItemsManager.findItemById(prize.item))
       }
       else if (prizeType == "unlock" && getTblValue("unlockType", logObj) == "decal")
@@ -1119,18 +1123,18 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         local title = colorize("userlogColoredText", rewardText)
         local config = ::build_log_unlock_data({ id = logObj.unlock })
         local imgSize = getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
-        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(loc("reward") + loc("ui/colon") + title))
+        res.descriptionBlk += format(textareaFormat, stripTags(loc("reward") + loc("ui/colon") + title))
         res.descriptionBlk += format(imgFormat, imgSize, config.descrImage)
       }
       else
       {
-        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(loc("reward") + loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, stripTags(loc("reward") + loc("ui/colon")))
         res.descriptionBlk += ::PrizesView.getPrizesListView(prizes)
       }
     }
     else
     {
-        res.descriptionBlk += format(textareaFormat, ::g_string.stripTags(loc("reward") + loc("ui/colon")))
+        res.descriptionBlk += format(textareaFormat, stripTags(loc("reward") + loc("ui/colon")))
         res.descriptionBlk += ::PrizesView.getPrizesListView(prizes)
     }
     */
@@ -1141,7 +1145,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
-                     price = ::Cost(logObj.cost * logObj.count, logObj.costGold * logObj.count).tostring()
+                     price = Cost(logObj.cost * logObj.count, logObj.costGold * logObj.count).tostring()
                      amount = logObj.count
                    })
     res.descriptionBlk <- ::get_userlog_image_item(item, { type = logObj.type })
@@ -1178,7 +1182,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
       if (wager > 0 || wagerGold > 0)
         res.description <- loc("userlog/" + logName + "_desc/wager") + " " +
-          ::Cost(wager, wagerGold).tostring()
+          Cost(wager, wagerGold).tostring()
     }
     res.descriptionBlk <- ::get_userlog_image_item(item)
   }
@@ -1216,11 +1220,11 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
                      unitName = (unit != null ? colorize("userlogColoredText", ::getUnitName(unit)) : "")
                    })
       res.descriptionBlk <- format(textareaFormat,
-                                ::g_string.stripTags(loc(locId + "_desc/universalSpare") + loc("ui/colon")))
+                                stripTags(loc(locId + "_desc/universalSpare") + loc("ui/colon")))
       res.descriptionBlk += item.getNameMarkup(numSpares, true)
     }
     else if (itemTypeValue == "wager") {
-      let earned = ::Cost(getTblValue("wpEarned", logObj, 0), getTblValue("goldEarned", logObj, 0))
+      let earned = Cost(getTblValue("wpEarned", logObj, 0), getTblValue("goldEarned", logObj, 0))
       if (earned > ::zero_money)
         res.description <- loc("userlog/" + logName + "_desc/wager") + " " + earned.tostring()
     }
@@ -1283,13 +1287,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (getTblValue("sequenceDefeatCountReminder", logObj))
       desc.append(loc("userlog/sequenceDefeatCountReminder") + loc("ui/colon") + logObj.sequenceDefeatCountReminder)
 
-    res.description <- ::g_string.implode(desc, "\n")
+    res.description <- "\n".join(desc, true)
   }
   else if (logObj.type == EULT_BUY_BATTLE) {
     res.name = loc("userlog/" + logName) + loc("ui/colon") +
       colorize("userlogColoredText", ::events.getNameByEconomicName(logObj.tournamentName))
 
-    let cost = ::Cost()
+    let cost = Cost()
     cost.wp = getTblValue("costWP", logObj, 0)
     cost.gold = getTblValue("costGold", logObj, 0)
     res.description <- loc("events/battle_cost", { cost = cost.tostring() })
@@ -1303,13 +1307,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (::checkCountry(country, "getShopCountry"))
       res.logImg2 = ::get_country_icon(country)
 
-    let cost = ::Cost()
+    let cost = Cost()
     cost.wp = getTblValue("costWP", logObj, 0)
     cost.gold = getTblValue("costGold", logObj, 0)
     let exp = getTblValue("exp", logObj, 0)
 
     res.description <- loc(logId + "/desc", { cost = cost.tostring(), unitName = ::getUnitName(unitName),
-      exp = ::Cost().setFrp(exp).tostring() })
+      exp = Cost().setFrp(exp).tostring() })
   }
   else if (logObj.type == EULT_SELL_BLUEPRINT) {
     let itemId = getTblValue("id", logObj, "")
@@ -1317,7 +1321,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
-                     price = ::Cost(logObj.cost * logObj.count, logObj.costGold * logObj.count).tostring()
+                     price = Cost(logObj.cost * logObj.count, logObj.costGold * logObj.count).tostring()
                      amount = logObj.count
                    })
     res.descriptionBlk <- ::get_userlog_image_item(item)
@@ -1417,14 +1421,14 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (::is_worldwar_enabled())
       operation = ::WwOperation.getNameTextByIdAndMapName(
         getTblValue("operationId", logObj),
-        ::WwMap.getNameTextByMapName(getTblValue("mapName", logObj))
+        WwMap.getNameTextByMapName(getTblValue("mapName", logObj))
       )
     res.name = loc(locId, { clan = logObj?.name, operation = operation })
     let appName = ::getContact(logObj?.registratorId.tostring())?.getName()
     let description = [appName ? $"{loc("worldwar/applicant")}{colon} {appName}" : ""]
 
     if (logObj?.wpCost != null) {
-      let costString = ::Cost(logObj.wpCost).toStringWithParams({ isWpAlwaysShown = true })
+      let costString = Cost(logObj.wpCost).toStringWithParams({ isWpAlwaysShown = true })
       description.append($"{loc("worldwar/creation_cost")}{colon} {costString}")
     }
     res.description <- "\n".join(description, true)
@@ -1434,7 +1438,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     textLocId += getTblValue("winner", logObj) ? "win" : "lose"
     let mapName = getTblValue("mapName", logObj)
     let opId = getTblValue("operationId", logObj)
-    let earnedText = ::Cost(getTblValue("wp", logObj, 0)).toStringWithParams({ isWpAlwaysShown = true })
+    let earnedText = Cost(getTblValue("wp", logObj, 0)).toStringWithParams({ isWpAlwaysShown = true })
     res.name = loc(textLocId, {
       opId = opId, mapName = loc("worldWar/map/" + mapName), reward = earnedText })
 
@@ -1458,7 +1462,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         $"{loc("multiplayer/commander_activity")}{colon}{"".concat((activity * 100 + 0.5).tointeger(), "%")}"
       )
     }
-    let reward = ::Cost((logObj?.wp ?? 0) - (logObj?.managerStats.wpManager ?? 0)).toStringWithParams({
+    let reward = Cost((logObj?.wp ?? 0) - (logObj?.managerStats.wpManager ?? 0)).toStringWithParams({
       isWpAlwaysShown = true })
     description.append(
       "",
@@ -1466,7 +1470,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     )
 
     if (hasManager) {
-      let manager_reward = ::Cost(logObj?.managerStats.wpManager ?? 0).toStringWithParams({
+      let manager_reward = Cost(logObj?.managerStats.wpManager ?? 0).toStringWithParams({
         isWpAlwaysShown = true })
       description.append($"{loc("worldWar/endOperation/manager_reward")}{colon}{manager_reward}")
     }
@@ -1484,7 +1488,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
           foreach (_award_idx, award_val in logObj.awards) {
             if (award_val.type == "gold")
               desc += "\n" + "<color=@activeTextColor>" +
-                ::Cost(0, abs(award_val.award)).toStringWithParams({ isGoldAlwaysShown = true }) + "</color>"
+                Cost(0, abs(award_val.award)).toStringWithParams({ isGoldAlwaysShown = true }) + "</color>"
             if (award_val.type == "premium")
               desc += "\n" + "<color=@activeTextColor>" + award_val.award + "</color>"
             if (award_val.type == "booster") {
@@ -1533,13 +1537,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let descLoc = textLocId + "/desc"
 
     if (logObj.optype == "flush") {
-      res.description <- loc(descLoc, { unit = loc(logObj.unit + "_0"), rp = ::Cost().setSap(logObj.rp).tostring() })
+      res.description <- loc(descLoc, { unit = loc(logObj.unit + "_0"), rp = Cost().setSap(logObj.rp).tostring() })
     }
     else if (logObj.optype == "add_unit") {
       res.description <- loc(descLoc, { unit = loc(logObj.unit + "_0") })
     }
     else if (logObj.optype == "buy_closed_unit") {
-      res.description <- loc(descLoc, { unit = loc(logObj.unit + "_0"), cost = ::Cost(0, logObj.costGold) })
+      res.description <- loc(descLoc, { unit = loc(logObj.unit + "_0"), cost = Cost(0, logObj.costGold) })
     }
   }
   else if (logObj.type == EULT_WW_AWARD) {
@@ -1547,21 +1551,21 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let awardsFor = logObj?.awardsFor
     let descLines = []
     if (awardsFor != null) {
-      let day = ::g_string.cutPrefix(awardsFor.table, "day")
+      let day = cutPrefix(awardsFor.table, "day")
       let period = day ? loc("enumerated_day", { number = day }) : loc("worldwar/allSeason")
-      let modeStr = ::g_string.split(awardsFor.mode, "__")
+      let modeStr = split(awardsFor.mode, "__")
       local mapName = null
       local country = null
       foreach (partStr in modeStr) {
-        if (::g_string.startsWith(partStr, "country_"))
+        if (startsWith(partStr, "country_"))
           country = partStr
-        if (::g_string.endsWith(partStr, "_wwmap"))
+        if (endsWith(partStr, "_wwmap"))
           mapName = partStr
       }
       country = country ? loc(country) : loc("worldwar/allCountries")
       mapName = mapName ? loc("worldWar/map/" + mapName) : loc("worldwar/allMaps")
       let leaderboard = loc("mainmenu/leaderboard") + loc("ui/colon")
-        + ::g_string.implode([period, mapName, country], loc("ui/comma"))
+        + loc("ui/comma").join([period, mapName, country], true)
       descLines.append(leaderboard)
 
       switch (awardsFor.leaderboard_type) {
@@ -1595,7 +1599,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     }
 
     res.descriptionBlk <- descriptionBlkMultipleFormat.subst("".join(markupArr))
-    res.description <- ::g_string.implode(descLines, "\n")
+    res.description <- "\n".join(descLines, true)
   }
 
   if ((res?.description ?? "") != "") {
@@ -1604,7 +1608,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     res.descriptionBlk = "".concat(res.descriptionBlk,
       "textareaNoTab { id:t='description'; width:t='pw'; text:t='",
-      ::g_string.stripTags(res.description), "';}")
+      stripTags(res.description), "';}")
   }
 
   //------------- when userlog not found or not full filled -------------//

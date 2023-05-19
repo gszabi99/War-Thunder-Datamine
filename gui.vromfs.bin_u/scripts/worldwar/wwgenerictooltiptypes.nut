@@ -1,8 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -15,7 +17,7 @@ let wwTooltipTypes = {
 
       let army = ::g_world_war.getArmyByName(params.currentId)
       if (army)
-        return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", army.getView())
+        return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", army.getView())
       return ""
     }
   }
@@ -33,7 +35,7 @@ let wwTooltipTypes = {
       view.defineTeamBlock(::g_world_war.getSidesOrder())
       view.showBattleStatus = true
       view.hideDesc = true
-      return ::handyman.renderCached("%gui/worldWar/battleDescription.tpl", view)
+      return handyman.renderCached("%gui/worldWar/battleDescription.tpl", view)
     }
   }
 
@@ -41,7 +43,7 @@ let wwTooltipTypes = {
     getTooltipContent = function(_id, params) {
       let battle = ::g_world_war.getBattleById(params.currentId)
       let battleView = battle.isValid() ? battle.getView() : ::WwBattleView()
-      return ::handyman.renderCached("%gui/worldWar/wwControlHelp.tpl", battleView)
+      return handyman.renderCached("%gui/worldWar/wwControlHelp.tpl", battleView)
     }
   }
 
@@ -51,7 +53,7 @@ let wwTooltipTypes = {
       if (!::is_worldwar_enabled())
         return false
 
-      let group = ::u.search(::g_world_war.getArmyGroups(), (@(id) function(group) { return group.clanId == id })(id))
+      let group = u.search(::g_world_war.getArmyGroups(), (@(id) function(group) { return group.clanId == id })(id))
       if (!group)
         return false
 
@@ -60,7 +62,7 @@ let wwTooltipTypes = {
       let afterUpdate = function(updatedClanInfo) {
         if (!checkObj(obj))
           return
-        let content = ::handyman.renderCached("%gui/worldWar/worldWarClanTooltip.tpl", updatedClanInfo)
+        let content = handyman.renderCached("%gui/worldWar/worldWarClanTooltip.tpl", updatedClanInfo)
         obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
       }
 
@@ -92,12 +94,12 @@ let wwTooltipTypes = {
         if (!checkObj(obj))
           return
 
-        let content = ::handyman.renderCached("%gui/commonParts/errorFrame.tpl", { errorNum = errorCode })
+        let content = handyman.renderCached("%gui/commonParts/errorFrame.tpl", { errorNum = errorCode })
         obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
       }
       ::g_tasker.addTask(taskId, { showProgressBox = false }, onTaskSuccess, onTaskError)
 
-      let content = ::handyman.renderCached("%gui/worldWar/worldWarClanTooltip.tpl",
+      let content = handyman.renderCached("%gui/worldWar/worldWarClanTooltip.tpl",
         { isLoading = true })
       obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
       return true

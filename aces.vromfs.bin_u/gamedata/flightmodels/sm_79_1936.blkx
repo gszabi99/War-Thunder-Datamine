@@ -4,6 +4,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "harmonizationSuffix": "_tomoe",
   "noEffectsDist": 8.0,
+  "gyroSight": false,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -2262,9 +2263,9 @@
           "upNode": "Bip01 L UpperArm",
           "targetNode": "throttle_lhand_",
           "flexionDir": [
-            0.0,
+            0.5,
             -1.0,
-            0.1
+            -3.0
           ]
         },
         {
@@ -2273,9 +2274,9 @@
           "upNode": "Bip01 R UpperArm",
           "targetNode": "stick_rhand_",
           "flexionDir": [
-            0.0,
+            -0.2,
             -1.0,
-            -0.1
+            -2.0
           ]
         },
         {
@@ -2286,7 +2287,7 @@
           "flexionDir": [
             0.0,
             1.0,
-            -0.2
+            -0.3
           ]
         },
         {
@@ -2296,8 +2297,8 @@
           "targetNode": "pedal_rfoot_",
           "flexionDir": [
             0.0,
-            1.0,
-            0.2
+            6.0,
+            0.3
           ]
         }
       ]
@@ -2857,19 +2858,45 @@
     "turnTime": 31.6356
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
     "air_extinguisher": {
       "image": "#ui/gameuiskin#engine_extinguisher",
       "tier": 4,
-      "modClass": "weapon",
+      "modClass": "armor",
       "invertEnableLogic": false
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
     "safat12_turret_belt_pack": {
       "prevModification": "safat12_new_gun",
       "tier": 3

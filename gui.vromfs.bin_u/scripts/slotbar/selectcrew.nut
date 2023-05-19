@@ -1,10 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -12,9 +16,10 @@ let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nu
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
+let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
-  if (::CrewTakeUnitProcess.safeInterrupt())
+  if (CrewTakeUnitProcess.safeInterrupt())
     ::handlersManager.destroyPrevHandlerAndLoadNew(::gui_handlers.SelectCrew, config)
 }
 
@@ -215,7 +220,7 @@ let function getObjPosInSafeArea(obj) {
     if (!costTable)
       return
 
-    let cost = ::Cost(costTable.cost, costTable.costGold)
+    let cost = Cost(costTable.cost, costTable.costGold)
     if (cost.gold > 0)
       return
 
@@ -223,13 +228,13 @@ let function getObjPosInSafeArea(obj) {
   }
 
   function getCurrentEdiff() {
-    return ::u.isFunction(this.getEdiffFunc) ? this.getEdiffFunc() : ::get_current_ediff()
+    return u.isFunction(this.getEdiffFunc) ? this.getEdiffFunc() : ::get_current_ediff()
   }
 
   function getTakeAirCost() {
     return this.isSelectByGroups
-      ? ::Cost()
-      : ::CrewTakeUnitProcess.getProcessCost(
+      ? Cost()
+      : CrewTakeUnitProcess.getProcessCost(
           this.getCurCrew(),
           this.unit
         )
@@ -254,7 +259,7 @@ let function getObjPosInSafeArea(obj) {
   }
 
   function startTutorial() {
-    let playerBalance = ::Cost()
+    let playerBalance = Cost()
     let playerInfo = ::get_profile_info()
     playerBalance.wp = playerInfo.balance
     playerBalance.gold = playerInfo.gold
@@ -297,7 +302,7 @@ let function getObjPosInSafeArea(obj) {
         onFinishCb = onFinishCb
       })
     else
-      ::CrewTakeUnitProcess(crew, this.unit, onFinishCb)
+      CrewTakeUnitProcess(crew, this.unit, onFinishCb)
   }
 
   function onTakeProcessFinish(isSuccess) {
@@ -356,7 +361,7 @@ let function getObjPosInSafeArea(obj) {
       this.addLegendData(legendData, specType)
     }
 
-    if (::u.isEmpty(legendData))
+    if (u.isEmpty(legendData))
       return null
 
     legendData.sort(function(a, b) {
@@ -375,7 +380,7 @@ let function getObjPosInSafeArea(obj) {
     if (!checkObj(obj))
       return null
 
-    let blk = ::handyman.renderCached("%gui/slotbar/legend_block.tpl", view)
+    let blk = handyman.renderCached("%gui/slotbar/legend_block.tpl", view)
     this.guiScene.replaceContentFromText(obj, blk, blk.len(), this)
 
     return obj

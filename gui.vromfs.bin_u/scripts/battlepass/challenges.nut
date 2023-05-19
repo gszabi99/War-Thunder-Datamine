@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { getTimestampFromStringUtc, buildDateStr } = require("%scripts/time.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let {  addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
 let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
@@ -64,7 +64,7 @@ let mainChallengeOfSeason = Computed(@() curSeasonChallenges.value
 
 let function invalidateUnlocksCache() {
   battlePassChallenges([])
-  ::broadcastEvent("BattlePassCacheInvalidate")
+  broadcastEvent("BattlePassCacheInvalidate")
 }
 
 addListenersWithoutEnv({

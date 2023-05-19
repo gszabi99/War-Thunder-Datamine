@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -7,6 +8,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { cutPrefix, endsWith } = require("%sqstd/string.nut")
+let { get_mplayers_count } = require("mission")
 
 ::mission_rules.SharedPool <- class extends ::mission_rules.Base {
   function getMaxRespawns() {
@@ -77,7 +80,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     local res = ::RESPAWNS_UNLIMITED
     let limitedClasses = getTblValue("limitedClasses", teamDataBlk)
-    if (::u.isDataBlock(limitedClasses)) {
+    if (u.isDataBlock(limitedClasses)) {
       let total = limitedClasses.paramCount()
       for (local i = 0; i < total; i++) {
         let expClassName = limitedClasses.getParamName(i)
@@ -91,7 +94,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     }
 
     let limitedTags = getTblValue("limitedTags", teamDataBlk)
-    if (::u.isDataBlock(limitedTags)) {
+    if (u.isDataBlock(limitedTags)) {
       let total = limitedTags.paramCount()
       for (local i = 0; i < total; i++)
         if (isInArray(limitedTags.getParamName(i), unit.tags))
@@ -117,7 +120,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     res.defaultUnitRespawnsLeft = "unlimitedUnits" in myTeamDataBlk ? 0 : ::RESPAWNS_UNLIMITED
 
     let limitedClasses = getTblValue("limitedClasses", myTeamDataBlk)
-    if (::u.isDataBlock(limitedClasses)) {
+    if (u.isDataBlock(limitedClasses)) {
       let total = limitedClasses.paramCount()
       for (local i = 0; i < total; i++) {
         let expClassName = limitedClasses.getParamName(i)
@@ -127,7 +130,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     }
 
     let limitedTags = getTblValue("limitedTags", myTeamDataBlk)
-    if (::u.isDataBlock(limitedTags)) {
+    if (u.isDataBlock(limitedTags)) {
       let total = limitedTags.paramCount()
       for (local i = 0; i < total; i++) {
         let tag = limitedTags.getParamName(i)
@@ -139,7 +142,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
           continue
         }
 
-        let role = ::g_string.cutPrefix(tag, "type_", null)
+        let role = cutPrefix(tag, "type_", null)
         if (role)
           res.unitLimits.append(::g_unit_limit_classes.LimitByUnitRole(role, respLeft))
       }
@@ -147,25 +150,25 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
     let unitsGroups = this.getUnitsGroups()
     local blk = getTblValue("limitedUnits", myTeamDataBlk)
-    if (::u.isDataBlock(blk))
+    if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
         res.unitLimits.append(::g_unit_limit_classes.LimitByUnitName(blk.getParamName(i), blk.getParamValue(i),
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
     blk = getTblValue("unlimitedUnits", myTeamDataBlk)
-    if (::u.isDataBlock(blk))
+    if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
         res.unitLimits.append(::g_unit_limit_classes.LimitByUnitName(blk.getParamName(i), ::RESPAWNS_UNLIMITED,
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
     let activeLimitsBlk = getTblValue("limitedActiveClasses", myTeamDataBlk)
-    if (::u.isDataBlock(activeLimitsBlk)) {
+    if (u.isDataBlock(activeLimitsBlk)) {
       let limitByExpClassName = {}
       let total = activeLimitsBlk.paramCount()
       for (local i = 0; i < total; i++) {
         local value = activeLimitsBlk.getParamValue(i)
         local expClassName = activeLimitsBlk.getParamName(i)
-        if (::g_string.endsWith(expClassName, "_perc")) {
+        if (endsWith(expClassName, "_perc")) {
           value = this.getAmountByTeamPercent(value)
           expClassName = expClassName.slice(0, expClassName.len() - 5)
         }
@@ -190,7 +193,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
   }
 
   function getAmountByTeamPercent(percent) {
-    return ((percent * ::get_mplayers_count(::get_mp_local_team(), false)) / 100).tointeger()
+    return ((percent * get_mplayers_count(::get_mp_local_team(), false)) / 100).tointeger()
   }
 
   function getActiveAtOnceExpClass(expClassName) {

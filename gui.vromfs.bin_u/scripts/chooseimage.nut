@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -128,7 +129,7 @@ let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
     }
 
     this.isPageFill = true
-    let blk = ::handyman.renderCached("%gui/avatars.tpl", view)
+    let blk = handyman.renderCached("%gui/avatars.tpl", view)
     this.guiScene.replaceContentFromText(this.contentObj, blk, blk.len(), this)
     this.updatePaginator()
 

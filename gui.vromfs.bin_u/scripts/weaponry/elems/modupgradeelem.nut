@@ -5,16 +5,18 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { isModUpgradeable, hasActiveOverdrive } = require("%scripts/weaponry/modificationInfo.nut")
+let { stripTags } = require("%sqstd/string.nut")
 
 elemModelType.addTypes({
   MOD_UPGRADE = {
     hasUpgradeItems = null
 
-    init = @() ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    init = @() subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     onEventModUpgraded = @(p) this.notify([p.unit.name, p.mod.name])
     onEventOverdriveActivated = @(_p) this.notify([])
     onEventInventoryUpdate = function(_p) {
@@ -38,7 +40,7 @@ elemViewType.addTypes({
         subscriptions = [params?.unit || "", params?.mod || ""]
       }))
     createMarkup = @(params, objId = null) format("modUpgradeImg { id:t='%s'; value:t='%s' } ",
-      objId || "", ::g_string.stripTags(this.getBhvParamsString(params)))
+      objId || "", stripTags(this.getBhvParamsString(params)))
 
     updateView = function(obj, params) {
       let unitName = params?.unit

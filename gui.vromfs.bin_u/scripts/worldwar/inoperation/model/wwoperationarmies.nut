@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -59,7 +60,7 @@ from "%scripts/dagui_library.nut" import *
       this.addArmyToCache(army)
     }
 
-    let deletingCachedArmiesNames = ::u.filter(
+    let deletingCachedArmiesNames = u.filter(
       this.armiesByNameCache,
       (@(findedCachedArmies) function(cachedArmy) {
         return cachedArmy.name in findedCachedArmies
@@ -67,7 +68,7 @@ from "%scripts/dagui_library.nut" import *
     )
 
     foreach (_armyName, cachedArmy in deletingCachedArmiesNames)
-      ::u.removeFrom(this.armiesByNameCache, cachedArmy)
+      u.removeFrom(this.armiesByNameCache, cachedArmy)
 
     if (changedArmies.len() > 0 || armiesCountChanged) {
       foreach (_status, cacheData in this.armiesByStatusCache) {

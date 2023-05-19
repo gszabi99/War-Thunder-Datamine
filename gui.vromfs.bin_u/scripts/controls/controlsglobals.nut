@@ -12,7 +12,6 @@ from "%scripts/dagui_library.nut" import *
   let otherPreset = ::ControlsPreset(blkOrPresetPath)
   if (otherPreset.isLoaded && otherPreset.hotkeys.len() > 0) {
     ::g_controls_manager.setCurPreset(otherPreset)
-    ::controls_fix_device_mapping()
     ::is_last_load_controls_succeeded = true
   }
   else {

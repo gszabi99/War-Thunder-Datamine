@@ -76,7 +76,7 @@ class private JsonReader : AstReaderMacro
         return <- convert_to_expression(json,expr.at)
 
 [expect_any_enum(ent), template(ent)]
-def from_JV ( v:JsonValue?; ent : auto(EnumT); defV : EnumT = [[EnumT]] ) : EnumT
+def from_JV ( v:JsonValue explicit?; ent : auto(EnumT); defV : EnumT = [[EnumT]] ) : EnumT
     //! Parse a JSON value and return the corresponding native value.
     if v==null || !(v.value is _string)
         return defV
@@ -92,49 +92,49 @@ def from_JV ( v:JsonValue?; ent : auto(EnumT); defV : EnumT = [[EnumT]] ) : Enum
     return res
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:string; defV:string="" )
+def from_JV ( var v : JsonValue explicit?; ent:string; defV:string="" )
     if v==null || !(v.value is _string)
         return defV
     else
         return v.value as _string
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:bool; defV:bool=false )
+def from_JV ( var v : JsonValue explicit?; ent:bool; defV:bool=false )
     if v==null || !(v.value is _bool)
         return defV
     else
         return v.value as _bool
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:float; defV:float=0. )
+def from_JV ( var v : JsonValue explicit?; ent:float; defV:float=0. )
     if v==null || !(v.value is _number)
         return defV
     else
         return float(v.value as _number)
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:double; defV:double=0.lf )
+def from_JV ( var v : JsonValue explicit?; ent:double; defV:double=0.lf )
     if v==null || !(v.value is _number)
         return defV
     else
         return v.value as _number
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:int; defV:int=0 )
+def from_JV ( var v : JsonValue explicit?; ent:int; defV:int=0 )
     if v==null || !(v.value is _number)
         return defV
     else
         return int(v.value as _number)
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:uint; defV:uint=0u )
+def from_JV ( var v : JsonValue explicit?; ent:uint; defV:uint=0u )
     if v==null || !(v.value is _number)
         return defV
     else
         return uint(v.value as _number)
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:int64; defV:int64=0l )
+def from_JV ( var v : JsonValue explicit?; ent:int64; defV:int64=0l )
     if v == null
         return defV
     elif v.value is _number
@@ -145,7 +145,7 @@ def from_JV ( var v : JsonValue?; ent:int64; defV:int64=0l )
         return defV
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:uint64; defV:uint64=0ul )
+def from_JV ( var v : JsonValue explicit?; ent:uint64; defV:uint64=0ul )
     if v == null
         return defV
     elif v.value is _number
@@ -156,35 +156,35 @@ def from_JV ( var v : JsonValue?; ent:uint64; defV:uint64=0ul )
         return defV
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:int8; defV:int8=int8(0) )
+def from_JV ( var v : JsonValue explicit?; ent:int8; defV:int8=int8(0) )
     if v==null || !(v.value is _number)
         return defV
     else
         return int8(v.value as _number)
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:uint8; defV:uint8=uint8(0) )
+def from_JV ( var v : JsonValue explicit?; ent:uint8; defV:uint8=uint8(0) )
     if v==null || !(v.value is _number)
         return defV
     else
         return uint8(v.value as _number)
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:int16; defV:int16=int16(0) )
+def from_JV ( var v : JsonValue explicit?; ent:int16; defV:int16=int16(0) )
     if v==null || !(v.value is _number)
         return defV
     else
         return int16(v.value as _number)
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:uint16; defV:uint16=uint16(0) )
+def from_JV ( var v : JsonValue explicit?; ent:uint16; defV:uint16=uint16(0) )
     if v==null || !(v.value is _number)
         return defV
     else
         return uint16(v.value as _number)
 
 [generic,template(ent)]
-def from_JV ( var v : JsonValue?; ent:bitfield; defV:bitfield=[[bitfield]] )
+def from_JV ( var v : JsonValue explicit?; ent:bitfield; defV:bitfield=[[bitfield]] )
     if v==null || !(v.value is _number)
         return defV
     else
@@ -201,7 +201,7 @@ def JV ( v : auto(VecT) )
         return JV({{"x" => JV(v.x); "y" => JV(v.y); "z" => JV(v.z); "w" => JV(v.w)}})
 
 [expect_any_vector_type(ent),template(ent)]
-def from_JV ( var v : JsonValue?; ent: auto(VecT); defV:VecT=[[VecT]]  )
+def from_JV ( var v : JsonValue explicit?; ent: auto(VecT); defV:VecT=[[VecT]]  )
     if v==null
         return defV
     let VecV : auto(VecTT) = VecT()
@@ -223,17 +223,17 @@ def from_JV ( var v : JsonValue?; ent: auto(VecT); defV:VecT=[[VecT]]  )
             vo["w"].value as _number)
 
 [template(anything)]
-def from_JV ( var v:JsonValue?; anything : table< auto(KT);auto(VT) > )
+def from_JV ( var v:JsonValue explicit?; anything : table< auto(KT);auto(VT) > )
     var ret : table<KT;VT>
     if v==null || !(v.value is _object)
         return <- ret
     unsafe
         var tab & = v.value as _object
         for k,vv in keys(tab),values(tab)
-            move_to_ref ( ret[k], from_JV(vv, type<VT-&>) )
+            move_to_ref ( ret[k], _::from_JV(vv, type<VT-&>) )
     return <- ret
 
-def from_JV ( var v:JsonValue?; anything : auto(TT) )
+def from_JV ( var v:JsonValue explicit?; anything : auto(TT) )
 	static_if typeinfo(is_dim anything)
         var ret : TT[typeinfo(dim anything)]
 		if v==null || !(v.value is _array)
@@ -243,12 +243,12 @@ def from_JV ( var v:JsonValue?; anything : auto(TT) )
 			if arr |> length != typeinfo(dim anything)
 				return <- ret
             for i in 0..typeinfo(dim anything)
-                move_to_ref ( ret[i], from_JV(arr[i], decltype_noref(anything[0])) )
+                move_to_ref ( ret[i], _::from_JV(arr[i], decltype_noref(anything[0])) )
 			return <- ret
 	static_elif typeinfo(is_struct anything) || typeinfo(is_tuple anything)
 		var ret : TT
 		apply(ret) <| $ ( name:string; var field )
-            move_to_ref ( field, from_JV((v as _object)[name], decltype_noref(field)) )
+            move_to_ref ( field, _::from_JV((v as _object)[name], decltype_noref(field)) )
 		return <- ret
     static_elif typeinfo(is_array anything)
         var ret : TT
@@ -257,7 +257,10 @@ def from_JV ( var v:JsonValue?; anything : auto(TT) )
 		unsafe
 			var arr & = v.value as _array
             for i in range(arr |> length)
-                ret |> push <| from_JV(arr[i], decltype_noref(anything[0]))
+                if typeinfo(can_copy anything[0])
+                    ret |> push_clone <| _::from_JV(arr[i], decltype_noref(anything[0]))
+                else
+                    ret |> emplace <| _::from_JV(arr[i], decltype_noref(anything[0]))
 			return <- ret
     static_elif typeinfo(is_variant anything)
         var ret : TT
@@ -269,7 +272,7 @@ def from_JV ( var v:JsonValue?; anything : auto(TT) )
         unsafe
             set_variant_index(ret, int(vv.value as _number))
 		apply(ret) <| $ ( name:string; var field )
-            move_to_ref ( field, from_JV((v as _object)[name], decltype_noref(field)) )
+            move_to_ref ( field, _::from_JV((v as _object)[name], decltype_noref(field)) )
         return <- ret
 	else
         concept_assert(false, "unsupported json serialization type. missing 'fromJV")
@@ -314,7 +317,7 @@ def JV(value): JsonValue?
     static_if typeinfo(is_dim value)
         var arr: array<JsonValue?>
         for t in value
-            arr |> push(JV(t))
+            arr |> push_clone(JV(t))
         return _::JV(arr)
     static_if typeinfo(typename value) == "json::JsonValue?" || typeinfo(typename value) == "json::JsonValue? const"
         return value
@@ -345,7 +348,7 @@ def JV(value): JsonValue?
     static_elif typeinfo(is_iterable value)
         var arr: array<JsonValue?>
         for x in value
-            arr |> push <| _::JV(x)
+            arr |> push_clone <| _::JV(x)
         return _::JV(arr)
     static_elif typeinfo(is_variant value)
         var map: table<string; JsonValue?>

@@ -26,6 +26,17 @@ root {
     padByLine:t='yes'
 
     include '%gui/shop/shopInclude.blk'
+
+    frame_header{
+      textareaNoTab {
+        id:t='shop_header'
+        caption:t='yes'
+        text:t=''
+      }
+      Button_close {
+        on_click:t='onTryCloseShop'
+      }
+    }
   }
 
   gamercard_div {

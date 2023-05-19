@@ -1940,6 +1940,61 @@
           "horizontal": true,
           "maxAllowedRoll": 37.0
         }
+      },
+      {
+        "trigger": "gunner5",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 120.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "forceEnabled": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.00015
+              ],
+              [
+                80.0,
+                0.0002
+              ]
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -15.0,
+            60.0
+          ]
+        }
       }
     ]
   },
@@ -2088,13 +2143,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2167,6 +2222,16 @@
       "rotation": 0.5,
       "collisionNode": "cls_gun"
     }
+  },
+  "commanderView": {
+    "aimModeAvailable": true,
+    "optics": "commander_optics_square",
+    "zoomOutFov": 30.0,
+    "zoomInFov": 7.4,
+    "sightSize": [
+      0.57,
+      0.4
+    ]
   },
   "unitFx": {
     "event": [

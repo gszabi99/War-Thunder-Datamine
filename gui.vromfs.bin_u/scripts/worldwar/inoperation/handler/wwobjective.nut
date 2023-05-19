@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { Point2 } = require("dagor.math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -11,7 +13,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let DataBlock  = require("DataBlock")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-
+let { startsWith } = require("%sqstd/string.nut")
 
 ::gui_handlers.wwObjective <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
@@ -68,7 +70,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       hiddenObjectives = max(objectivesList.primaryCount - this.getShowMaxObjectivesCount().x, 0)
       hasObjectiveDesc = this.hasObjectiveDesc
     }
-    let data = ::handyman.renderCached(this.objectiveItemTpl, view)
+    let data = handyman.renderCached(this.objectiveItemTpl, view)
     this.guiScene.replaceContentFromText(placeObj, data, data.len(), this)
   }
 
@@ -88,8 +90,8 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (!objectivesBlk)
       return
 
-    this.staticBlk = ::u.copy(objectivesBlk?.data) || DataBlock()
-    this.dynamicBlk = ::u.copy(objectivesBlk?.status) || DataBlock()
+    this.staticBlk = u.copy(objectivesBlk?.data) || DataBlock()
+    this.dynamicBlk = u.copy(objectivesBlk?.status) || DataBlock()
   }
 
   function canShowObjective(objBlock, checkType = true, isForceVisible = false) {
@@ -239,7 +241,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (!::g_world_war.isCurrentOperationFinished())
       return null
     foreach (idx, inst in this.staticBlk)
-      if (::g_string.startsWith(idx, "dont_afk") && this.getStatusBlock(inst)?.winner)
+      if (startsWith(idx, "dont_afk") && this.getStatusBlock(inst)?.winner)
         return inst
     return null
   }
@@ -284,14 +286,14 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
       }
     }
 
-    if (::u.isEmpty(list.primary) && checkType)
+    if (u.isEmpty(list.primary) && checkType)
       list = this.getObjectivesList(Point2(1, 0), false)
 
     return list
   }
 
   function getObjectiveViewsArray(objectives) {
-    return ::u.mapAdvanced(objectives, Callback(
+    return u.mapAdvanced(objectives, Callback(
       @(dataBlk, idx, arr)
         ::WwObjectiveView(
           dataBlk,
@@ -321,7 +323,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   }
 
   function updateDynamicData(objectivesBlk) {
-    this.dynamicBlk = ::u.copy(objectivesBlk?.status) || DataBlock()
+    this.dynamicBlk = u.copy(objectivesBlk?.status) || DataBlock()
     this.updateDynamicDataBlocks()
     this.updateReinforcementSpeedup()
   }

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -62,7 +63,7 @@ let DataBlock  = require("DataBlock")
       this.getLocText(dataBlk, side, this.prefixNameLocId, "/desc", "", this.getTitleLocId(dataBlk, statusBlk))
     ]
 
-    return ::g_string.implode(descList, "\n")
+    return "\n".join(descList, true)
   }
 
   getParamName = function(blk, side, paramName) {
@@ -99,7 +100,7 @@ let DataBlock  = require("DataBlock")
   getTitleLocParamsDefaultValue = function(dataBlk, pName) {
     if (pName in this.defaultValuesTable) {
       let value = this.defaultValuesTable[pName]
-      return ::u.isFunction(value) ? value(dataBlk) : value
+      return u.isFunction(value) ? value(dataBlk) : value
     }
     return ""
   }
@@ -178,7 +179,7 @@ let DataBlock  = require("DataBlock")
         let val = statusBlk?[checkName]
 
         local block = statusBlk?[checkName]
-        let isDataBlock = ::u.isDataBlock(val)
+        let isDataBlock = u.isDataBlock(val)
         if (!isDataBlock) {
           block = DataBlock()
           block[checkName] = val
@@ -298,7 +299,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         let leftTime = ((dataBlk?[updateParam] ?? 0) - minCapturedTimeSec) / ::ww_get_speedup_factor()
         let pValueText = t.convertParamValue?[updateParam](leftTime, dataBlk)
         pValueObj.setValue(pValueText)
-        nestObj.show(!::u.isEmpty(pValueText))
+        nestObj.show(!u.isEmpty(pValueText))
 
         return t.needStopTimer(statusBlk, leftTime)
       }
@@ -343,7 +344,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
       let zonesArray = []
       let data = statusBlk?.zones ?? dataBlk?.zones
-      if (::u.isDataBlock(data)) {
+      if (u.isDataBlock(data)) {
         let num = data.paramCount()
         let lastZoneName = data.getParamName(num - 1)
         foreach (zoneName, holderSide in data) {
@@ -402,7 +403,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         return ""
 
       let zonesData = dataBlk?.zones ?? statusBlk?.zones
-      let zonesCount = ::u.isDataBlock(zonesData) ? zonesData.paramCount() : 0
+      let zonesCount = u.isDataBlock(zonesData) ? zonesData.paramCount() : 0
       return zonesNeeded < zonesCount ? "/approximate" : "/accurate"
     }
 

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -98,7 +99,7 @@ let effectTypeTemplate = {
 
   valueToString = function(value, needAdditionToZero = false) {
     local res = ""
-    if (!::u.isString(this.measureType))
+    if (!u.isString(this.measureType))
       res = countMeasure(this.measureType, value)
     else {
       let measureText = this.measureType != ""

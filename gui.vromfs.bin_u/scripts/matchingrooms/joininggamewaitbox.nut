@@ -128,7 +128,7 @@ let { set_game_mode, get_game_mode, get_cur_game_mode_name } = require("mission"
     this.guiScene.performDelayed(this, function() {
       if (this.timer >= 0)
         return
-      ::destroy_session_scripted()
+      ::destroy_session_scripted("on cancel join game")
       ::SessionLobby.leaveRoom()
     })
   }

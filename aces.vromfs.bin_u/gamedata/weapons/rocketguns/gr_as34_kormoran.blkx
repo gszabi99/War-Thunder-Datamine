@@ -8,6 +8,38 @@
   "mesh": "de_as_34_kormoran",
   "tags": {},
   "rocket": {
+    "bulletName": "gr_as34_kormoran",
+    "statType": "hydra",
+    "caliber": 0.345,
+    "length": 4.4,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.5,
+    "wingAreaMult": 2.75,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "distFromCmToStab": 0.05,
+    "mass": 600.0,
+    "massEnd": 587.75,
+    "massEnd1": 460.0,
+    "timeFire": 1.0,
+    "timeFire1": 100.0,
+    "force": 26950.0,
+    "force1": 2810.5,
+    "timeLife": 101.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "machMax": 0.95,
+    "endSpeed": 1000.0,
+    "maxDistance": 34000.0,
+    "minDistance": 2000.0,
+    "rangeMax": 32000.0,
+    "loadFactorMax": 2.5,
+    "guidanceType": "radar",
+    "guidanceSfx": "alarm_spin_scan",
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
@@ -24,30 +56,10 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/heat_fs.ivf",
-    "bulletName": "gr_as34_kormoran",
-    "caliber": 0.345,
-    "mass": 600.0,
     "explosiveType": "comp_b",
     "explosiveMass": 56.0,
     "maxDeltaAngle": 0.02,
     "dragCx": 0.02,
-    "length": 4.4,
-    "distFromCmToStab": 0.05,
-    "wingAreaMult": 2.75,
-    "CxK": 1.5,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
-    "force": 26950.0,
-    "timeFire": 1.0,
-    "massEnd": 587.75,
-    "force1": 2810.5,
-    "timeFire1": 100.0,
-    "massEnd1": 460.0,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "explosionEffect": "explosion_midair_big",
@@ -57,10 +69,7 @@
     "explosionPatchRadius": 5.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "maxDistance": 34000.0,
-    "minDistance": 2000.0,
     "distanceFuse": false,
-    "guidanceType": "radar",
     "effectOffset": [
       -1.8,
       0.0,
@@ -68,22 +77,85 @@
     ],
     "fuseDelayDist": 5.0,
     "explodeTreshold": 0.5,
-    "guidanceSfx": "alarm_spin_scan",
     "rendinstDamageRadius": 9.0,
-    "statType": "hydra",
-    "fireEffect": "fires_rocket_tail_modern_air",
-    "smokeEffect": "rocket_fire_short_nofire",
+    "fireEffect": "fires_exhaust_jet_early_big",
+    "smokeEffect": "smoke_rocket_tail_light_huge",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.5,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 1000.0,
-    "timeLife": 101.0,
-    "machMax": 0.95,
-    "loadFactorMax": 2.5,
-    "rangeMax": 32000.0,
+    "endSmokeViscosity": 0.05,
     "price": 3000.0,
     "iconType": "missile_air_to_uni_middle",
+    "arcadeProp": {
+      "finsAoaHor": 0.18,
+      "finsAoaVer": 0.18
+    },
+    "guidance": {
+      "inertialNavigation": true,
+      "warmUpTime": 1.4,
+      "workTime": 100.0,
+      "uncageBeforeLaunch": true,
+      "lockAfterLaunch": true,
+      "breakLockMaxTime": 101.0,
+      "inertialGuidance": {
+        "inertialNavigationDriftSpeed": 0.0
+      },
+      "radarSeeker": {
+        "band": 8,
+        "active": true,
+        "groundVehiclesAsTarget": true,
+        "aircraftAsTarget": false,
+        "targetRadiusMin": 15.0,
+        "groundClutter": false,
+        "sideLobesAttenuation": -80.0,
+        "lockAngleMax": 15.0,
+        "angleMax": 45.0,
+        "rateMax": 20.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 2,
+        "transmitter": {
+          "power": 2000.0,
+          "antenna": {
+            "angleHalfSens": 5.0,
+            "sideLobesSensitivity": -60.0
+          }
+        },
+        "receiver": {
+          "rcs": 2.0,
+          "range": 15000.0,
+          "rangeMax": 18000.0,
+          "antenna": {
+            "angleHalfSens": 5.0,
+            "sideLobesSensitivity": -60.0
+          }
+        },
+        "distance": {
+          "presents": true,
+          "minValue": 150.0,
+          "maxValue": 15000.0,
+          "width": 150.0,
+          "signalWidthMin": 75.0,
+          "refWidth": 750.0
+        },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05
+        }
+      },
+      "guidanceAutopilot": {
+        "loftEnabled": true,
+        "loftElevation": 7.0,
+        "loftTargetElevation": -10.0,
+        "loftAngleToAccelMult": 3.0,
+        "loftTargetOmegaMax": 2.0,
+        "propNavMult": 6.0,
+        "reqAccelMax": 5.0,
+        "baseIndSpeed": 1800.0,
+        "accelControlProp": 0.012,
+        "accelControlIntg": 0.0001,
+        "accelControlDiff": 0.0005,
+        "accelControlIntgLim": 1.0
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -219,77 +291,6 @@
       "stone_snow": {
         "fx": "hit_12_18mm_snow_ap"
       }
-    },
-    "guidance": {
-      "inertialNavigation": true,
-      "warmUpTime": 1.4,
-      "workTime": 100.0,
-      "uncageBeforeLaunch": true,
-      "lockAfterLaunch": true,
-      "breakLockMaxTime": 101.0,
-      "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 0.0
-      },
-      "radarSeeker": {
-        "band": 8,
-        "active": true,
-        "groundVehiclesAsTarget": true,
-        "aircraftAsTarget": false,
-        "targetRadiusMin": 15.0,
-        "groundClutter": false,
-        "sideLobesAttenuation": -80.0,
-        "lockAngleMax": 15.0,
-        "angleMax": 45.0,
-        "rateMax": 20.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 2,
-        "transmitter": {
-          "power": 2000.0,
-          "antenna": {
-            "angleHalfSens": 5.0,
-            "sideLobesSensitivity": -60.0
-          }
-        },
-        "receiver": {
-          "rcs": 2.0,
-          "range": 15000.0,
-          "rangeMax": 18000.0,
-          "antenna": {
-            "angleHalfSens": 5.0,
-            "sideLobesSensitivity": -60.0
-          }
-        },
-        "distance": {
-          "presents": true,
-          "minValue": 150.0,
-          "maxValue": 15000.0,
-          "width": 150.0,
-          "signalWidthMin": 75.0,
-          "refWidth": 750.0
-        },
-        "distGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05
-        }
-      },
-      "guidanceAutopilot": {
-        "loftEnabled": true,
-        "loftElevation": 7.0,
-        "loftTargetElevation": -10.0,
-        "loftAngleToAccelMult": 3.0,
-        "loftTargetOmegaMax": 2.0,
-        "propNavMult": 6.0,
-        "reqAccelMax": 5.0,
-        "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.012,
-        "accelControlIntg": 0.0001,
-        "accelControlDiff": 0.0005,
-        "accelControlIntgLim": 1.0
-      }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
     },
     "armorpower": {
       "ArmorPower0m": [

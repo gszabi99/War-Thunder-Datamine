@@ -5,6 +5,7 @@
   "gearSinkRangeLR": 0.066,
   "gearSinkRangeC": 0.355,
   "noEffectsDist": 8.0,
+  "gyroSight": false,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -3291,13 +3292,45 @@
     ]
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "bmg30_turret_belt_pack": {
       "tier": 1
     },
@@ -3323,12 +3356,6 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "b-17_sbc"
-    },
-    "air_extinguisher": {
-      "image": "#ui/gameuiskin#engine_extinguisher",
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
     }
   }
 }

@@ -21,6 +21,29 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
+    "at_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitLoadBehTree": {
+          "name": "missionAssault",
+          "objects": [
+            "at_t1_assault",
+            "at_t2_assault"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
     "at_start": {
       "is_enabled": true,
       "comments": "",
@@ -295,7 +318,7 @@
             "resetFormation": true
           }
         ],
-        "unitLoadBehTree": {
+        "__unitLoadBehTree": {
           "name": "missionAssault",
           "objects": [
             "at_t1_assault",
@@ -317,14 +340,14 @@
           }
         ],
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "at_t1_assault",
             "at_t2_assault"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "airAccuracy": 0.0,
           "airEffShootingRate": 0.0,
           "aiGunnersCanTargetGroundUnits": false,

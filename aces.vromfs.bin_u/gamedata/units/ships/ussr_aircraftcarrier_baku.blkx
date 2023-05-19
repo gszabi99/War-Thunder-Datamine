@@ -33,7 +33,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_med",
+  "exhaustFx": "ship_exhaust_big",
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "smokeScreenActivateTime": 5.0,
@@ -48,6 +48,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
   "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
@@ -1697,17 +1698,17 @@
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
@@ -1815,17 +1816,17 @@
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_02_dm",
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
@@ -3310,6 +3311,13 @@
         }
       },
       {
+        "name": "ammo_aux_fire_5",
+        "fx": {
+          "name": "explosion_ship_small_ammo_second",
+          "emitter": "emtr_fire_ammo_05"
+        }
+      },
+      {
         "name": "ammo_aux_explosion_1",
         "fx": {
           "name": "explosion_ship_big_ammo_second",
@@ -3335,6 +3343,13 @@
         "fx": {
           "name": "explosion_ship_big_ammo_second",
           "emitter": "emtr_fire_ammo_04"
+        }
+      },
+      {
+        "name": "ammo_aux_explosion_5",
+        "fx": {
+          "name": "explosion_ship_big_ammo_second",
+          "emitter": "emtr_fire_ammo_05"
         }
       },
       {

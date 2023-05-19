@@ -52,6 +52,12 @@ def operator ?[] (t : Point3List; idx : int) : float3 const? const#
   unsafe
     return reinterpret<float3 const? const#> null
 
+def operator ?[] (t : Point4List; idx : int) : float4 const? const#
+  if uint(idx) < uint(length(t))
+    unsafe
+      return reinterpret<float4 const? const#> addr(t.[idx])
+  unsafe
+    return reinterpret<float4 const? const#> null
 
 def operator ?[] (t : Array const; idx : int) : ChildComponent const? const#
   if uint(idx) < uint(length(t))
@@ -86,7 +92,7 @@ def operator .(var t : Object == const; name : string) : ChildComponent?
 
 
 [generic, constant_expression(name=false), unused_argument(name)]
-def operator ?.(t : Object const? const; name : string) : ChildComponent const? const
+def operator ?.(t : Object const? const == const; name : string) : ChildComponent const? const
   if t != null
     static_if typeinfo(is_argument name)
       return (*t)[name]
@@ -96,7 +102,7 @@ def operator ?.(t : Object const? const; name : string) : ChildComponent const? 
 
 
 [generic, constant_expression(name=false), unused_argument(name)]
-def operator ?.(var t : Object?; name : string) : ChildComponent?
+def operator ?.(var t : Object? == const; name : string) : ChildComponent?
   if t != null
     static_if typeinfo(is_argument name)
       return (*t)[name]

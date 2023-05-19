@@ -8,7 +8,8 @@ root {
     position:t='absolute'
     css-hier-invalidate:t='yes'
     frame_header {
-      activeText {
+      textareaNoTab {
+        id:t='headerTxt'
         caption:t='yes'
         text:t='#edit/secondary_weapons'
       }
@@ -39,6 +40,7 @@ root {
     navBar {
       navLeft {
         Button_text{
+          id:t='cancelBtn'
           text:t='#msgbox/btn_cancel'
           on_click:t='goBack'
           btnName:t='B'

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 local blockNameByDirection = {
   [AxisDirection.X] = {
@@ -30,7 +31,7 @@ local blockNameByDirection = {
 
   function getMarkup() {
     let data = this.getMarkupData()
-    return ::handyman.renderCached(data.template, data.view)
+    return handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData() {
@@ -55,7 +56,7 @@ local blockNameByDirection = {
   }
 
   function getText() {
-    return ::g_string.implode(this.elements.map(@(e) e.getText()), " - ")
+    return " - ".join(this.elements.map(@(e) e.getText()), true)
   }
 
   function getDeviceId() {

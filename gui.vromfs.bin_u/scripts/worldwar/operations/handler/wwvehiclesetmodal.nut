@@ -4,15 +4,44 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
-let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { setCurPreset, getCurPreset, getWarningTextTbl, getBestAvailableUnitByGroup,
+  getCurPresetUnitNames } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
 
 const WW_VEHICLE_SET_OUT_OF_DATE_DAYS = 90
+
+let function getAvailableUnits(map, country) {
+  let res = {}
+  let curPreset = getCurPreset()
+  let countryGroups = map.getUnitsGroupsByCountry()?[country]
+  let curSlotbarUnits = curPreset?.countryPresets[country].units ?? []
+  foreach (unit in curSlotbarUnits) {
+    if (!unit)
+      continue
+
+    let groupName = countryGroups?.groupIdByUnitName[unit.name] ?? ""
+    let curGroup = countryGroups?.groups[groupName]
+    let groupUnits = curGroup?.units
+    if (groupUnits == null)
+      res[unit.name] <- 1
+    else {
+      let bestAvailableUnit = getBestAvailableUnitByGroup(
+        curSlotbarUnits, groupUnits, curPreset.groupsList, country)
+      //curGroup cannot be null cause of groupUnits is not null here
+      res[(bestAvailableUnit?.unit.name ?? curGroup.defaultUnit.name)] <- 1// warning disable: -access-potentially-nulled
+    }
+  }
+
+  return res
+}
 
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -21,7 +50,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
   slotbarActions = [ "aircraft", "sec_weapons", "weapons", "crew", "info", "repair" ]
 
   map = null
-  descHandlerWeak = null
 
   function initScreen() {
     this.updateWindow()
@@ -33,6 +61,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.updateTitle()
     this.updateDescription()
     this.updateSlotbar()
+    this.updateButtons()
   }
 
   function updateTitle() {
@@ -51,7 +80,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateTeamsInfo() {
     foreach (side in ::g_world_war.getCommonSidesOrder()) {
-      let data = ::handyman.renderCached(
+      let data = handyman.renderCached(
         this.sceneTplTeamStrenght, this.getUnitsListViewBySide(side, side == SIDE_2))
       this.guiScene.replaceContentFromText(
         this.scene.findObject($"team_{::ww_side_val_to_name(side)}_unit_info"),
@@ -88,6 +117,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
       hasExtraInfoBlock = true
       customUnitsListName = this.map.getNameText()
       getLockedCountryData
+      onCountryChanged = @() broadcastEvent(
+        "PresetsByGroupsCountryChanged", {unitNames = getCurPresetUnitNames()})
     },"nav-slotbar")
   }
 
@@ -100,10 +131,63 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
     }.__update(this.getUnitParamsFromObj(unitObj)))
   }
 
+  function onRunAutoPreset(_obj) {
+    let cb = Callback(this.generateAutoPreset, this)
+    ::queues.checkAndStart(
+      Callback(function() {
+        ::g_squad_utils.checkSquadUnreadyAndDo(cb, @() null, true)
+      }, this),
+      @() null,
+      "isCanModifyCrew"
+    )
+  }
+
+  function generateAutoPreset() {
+    let country = ::get_profile_country()
+    generatePreset(getAvailableUnits(this.map, country), country, true)
+  }
+
+  function updateButtons() {
+    let country = ::get_profile_country()
+    let availableUnits = getAvailableUnits(this.map, country)
+    let wData = getWarningTextTbl(
+      availableUnits, getCurPreset().countryPresets?[country].units, true)
+    let isVisibleBtnAutoPreset = wData.needMsgBox
+    let btnAutoPreset = this.showSceneBtn("btn_auto_preset", isVisibleBtnAutoPreset)
+    if (isVisibleBtnAutoPreset) {
+      let bestPresetData = getBestPresetData(availableUnits, country, true)
+      let hasChangeInPreset = bestPresetData?.hasChangeInPreset ?? false
+      btnAutoPreset.inactiveColor = hasChangeInPreset ? "no" : "yes"
+      btnAutoPreset.hasUnseenIcon = hasChangeInPreset ? "yes" : "no"
+      ::showBtn("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset)
+    }
+    let warningTextObj = this.showSceneBtn("cant_join_reason_txt", wData.warningText != "")
+    warningTextObj.setValue(wData.warningText)
+
+    let warningIconObj = this.showSceneBtn("warning_icon", wData.fullWarningText != "")
+    warningIconObj.tooltip = wData.fullWarningText
+  }
+
   function onEventWWGlobalStatusChanged(p) {
     if (p.changedListsMask & WW_GLOBAL_STATUS_TYPE.MAPS)
       this.updateWindow()
   }
+
+  function onEventPresetsByGroupsChanged(_) {
+    this.updateButtons()
+  }
+
+  function onEventCrewTakeUnit(_) {
+    this.updateButtons()
+  }
+
+  function onEventSlotbarPresetLoaded(_) {
+    this.guiScene.performDelayed(this, function() {
+      if (this.isValid())
+        this.updateButtons()
+    })
+  }
+
 }
 
 ::gui_handlers.wwVehicleSetModal <- handlerClass

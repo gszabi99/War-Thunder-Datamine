@@ -6,6 +6,7 @@
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
   "haveCCRPForRocket": false,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "haveCCRPForGun": false,
@@ -205,6 +206,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -216,6 +229,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -234,6 +259,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -245,6 +282,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -635,6 +684,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -646,6 +707,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -2120,7 +2193,7 @@
               {
                 "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 48,
                 "external": true,
@@ -2473,11 +2546,11 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
-    "countermeasures_belt_pack": {
+    "maw_countermeasures_launcher_chaff_only": {},
+    "maw_countermeasures_launcher_flare_only": {},
+    "maw_countermeasures_launcher_chaff_priority": {},
+    "maw_countermeasures_launcher_flare_priority": {},
+    "MAW_system_heli_false_thermal_targets": {
       "modClass": "weapon",
       "turn_it_off": false,
       "tier": 1,
@@ -2519,7 +2592,7 @@
     "heli_night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
       "tier": 3,
-      "prevModification": "countermeasures_belt_pack",
+      "prevModification": "MAW_system_heli_false_thermal_targets",
       "effects": {
         "nightVision": {
           "gunnerIr": {

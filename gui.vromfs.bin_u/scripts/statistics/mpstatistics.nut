@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil } = require("math")
 let { get_time_msec } = require("dagor.time")
@@ -18,6 +20,7 @@ let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadI
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode, get_game_type } = require("mission")
+let { get_mission_difficulty_int } = require("guiMission")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -194,7 +197,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
           countryIcon = ""
         })
     }
-    let result = ::handyman.renderCached("%gui/countriesList.tpl", view)
+    let result = handyman.renderCached("%gui/countriesList.tpl", view)
     this.guiScene.replaceContentFromText(countriesBlock, result, result.len(), this)
   }
 
@@ -267,7 +270,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.isTeamsRandom = !this.isTeamplay || this.gameMode == GM_DOMINATION
     if (::SessionLobby.isInRoom() || is_replay_playing())
       this.isTeamsWithCountryFlags = this.isTeamplay &&
-        (::get_mission_difficulty_int() > 0 || !::SessionLobby.getPublicParam("symmetricTeams", true))
+        (get_mission_difficulty_int() > 0 || !::SessionLobby.getPublicParam("symmetricTeams", true))
 
     this.missionObjectives = ::g_mission_type.getCurrentObjectives()
   }
@@ -305,9 +308,9 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
           tblData.append(id)
 
       if (!showUnits)
-        ::u.removeFrom(tblData, "aircraft")
+        u.removeFrom(tblData, "aircraft")
       if (!isShowSquad())
-        ::u.removeFrom(tblData, "squad")
+        u.removeFrom(tblData, "squad")
 
       foreach (name in tblData)
         markupData.columns[name] <- ::g_mplayer_param_type.getTypeById(name).getMarkupData()
@@ -429,7 +432,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function isShowEnemyAirs() {
-    return this.showAircrafts && ::get_mission_difficulty_int() == 0
+    return this.showAircrafts && get_mission_difficulty_int() == 0
   }
 
   function createStats() {
@@ -647,7 +650,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
       })
     }
 
-    let tdData = ::handyman.renderCached(("%gui/statistics/statTableHeaderCell.tpl"), view)
+    let tdData = handyman.renderCached(("%gui/statistics/statTableHeaderCell.tpl"), view)
     let trId = "team-header" + teamNum
     let trSize = getTblValue("tr_size", markupData, "0,0")
     let trData = format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
@@ -894,11 +897,11 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
       // Before spawn bots has wrong unit names.
       if (country == "country_0" && (!player.isDead || player.deaths > 0)) {
         let unitName = getTblValue("aircraftName", player, null)
-        let unit = ::getAircraftByName(unitName)
+        let unit = getAircraftByName(unitName)
         if (unit != null)
           country = ::getUnitCountry(unit)
       }
-      ::u.appendOnce(country, countries, true)
+      u.appendOnce(country, countries, true)
     }
     return countries
   }

@@ -23,7 +23,7 @@ let function showMessageBox(params) {
     : @() null
 
   ::scene_msg_box("show_message_from_matching", null,
-    ::g_string.implode([colorize("activeTextColor", title), message], "\n"),
+    "\n".join([colorize("activeTextColor", title), message], true),
     [["ok", @() closeFunction() ]], "ok", { cancel_fn = @() closeFunction() })
 
   return { result = "ok" }

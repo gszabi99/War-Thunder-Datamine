@@ -1,13 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { split_by_chars } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { isString, isArray, isTable, isFunction } = require("%sqStdLibs/helpers/u.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+let { isString, isArray, isTable, isFunction } = u
 let time = require("%scripts/time.nut")
 let contentPreview = require("%scripts/customization/contentPreview.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
@@ -24,6 +27,7 @@ let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeap
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
+let { get_skins_for_unit } = require("unitCustomization")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 
 let MOD_TIERS_COUNT = 4
@@ -279,7 +283,7 @@ local Unit = class {
   isResearched          = @() ::isUnitResearched(this)
   isInResearch          = @() ::isUnitInResearch(this)
   getRentTimeleft       = @() ::rented_units_get_expired_time_sec(this.name)
-  getRepairCost         = @() ::Cost(::wp_get_repair_cost(this.name))
+  getRepairCost         = @() Cost(::wp_get_repair_cost(this.name))
   getCrewTotalCount     = @() this.getUnitWpCostBlk()?.crewTotalCount || 1
   getCrewUnitType       = @() this.unitType.crewUnitType
   getExp                = @() ::getUnitExp(this)
@@ -395,7 +399,7 @@ local Unit = class {
 
   function getSkins() {
     if (this.skins.len() == 0)
-      this.skins = ::get_skins_for_unit(this.name) //always returns at least one entry
+      this.skins = get_skins_for_unit(this.name) //always returns at least one entry
     return this.skins
   }
 
@@ -499,7 +503,7 @@ local Unit = class {
   }
 
   isSquadronVehicle       = @() this.researchType == "clanVehicle"
-  getOpenCost             = @() ::Cost(0, ::clan_get_unit_open_cost_gold(this.name))
+  getOpenCost             = @() Cost(0, ::clan_get_unit_open_cost_gold(this.name))
   getWeapons = function() {
     if (!this.hasWeaponSlots || !hasFeature("WeaponryCustomPresets"))
       return this.weapons
@@ -508,6 +512,6 @@ local Unit = class {
   }
 }
 
-::u.registerClass("Unit", Unit, @(u1, u2) u1.name == u2.name, @(unit) !unit.name.len())
+u.registerClass("Unit", Unit, @(u1, u2) u1.name == u2.name, @(unit) !unit.name.len())
 
 return Unit

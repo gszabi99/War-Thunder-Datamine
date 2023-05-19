@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getRollIndicator = @() null, getIsVisibleRollIndicator = @() Watched(false) } = require("hudTankStates")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
@@ -41,7 +42,7 @@ let function initIconedHints(scene, esUnitType) {
   if (!hintsObj?.isValid())
     return
 
-  let blk = ::handyman.renderCached("%gui/hud/iconedHints.tpl", {
+  let blk = handyman.renderCached("%gui/hud/iconedHints.tpl", {
     iconedHints = iconedHintsConfig.filter(@(v) v.esUnitType == esUnitType)
       .map(@(v) {
         hintValue = stashBhvValueConfig(v.updateConfigs)

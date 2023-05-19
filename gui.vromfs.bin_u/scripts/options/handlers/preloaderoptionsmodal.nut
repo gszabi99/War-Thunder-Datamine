@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
   getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
@@ -13,6 +14,7 @@ let { isLoadingScreenBanned,
 let { havePremium } = require("%scripts/user/premium.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { utf8ToLower, trim } = require("%sqstd/string.nut")
 
 local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
@@ -49,7 +51,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT {
 
     view.items.sort(@(a, b) a.itemText <=> b.itemText)
     let selectedIdx = view.items.findindex((@(a) a.id == this.selectedId).bindenv(this)) ?? 0
-    let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     let itemsListObj = this.scene.findObject("items_list")
     this.guiScene.replaceContentFromText(itemsListObj, data, data.len(), this)
     itemsListObj.setValue(selectedIdx)
@@ -162,7 +164,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onFilterEditBoxChangeValue(obj) {
     let value = obj.getValue()
-    let searchStr = ::g_string.utf8ToLower(::g_string.trim(value))
+    let searchStr = utf8ToLower(trim(value))
     local isFound = false
     let itemsListObj = this.scene.findObject("items_list")
     let numItems = itemsListObj.childrenCount()
@@ -171,7 +173,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT {
     for (local i = 0; i < numItems; i++) {
       let itemObj = itemsListObj.getChild(i)
       let titleStr = itemObj.findObject($"txt_{itemObj.id}").getValue()
-      let isVisible = searchStr == "" || ::g_string.utf8ToLower(titleStr).contains(searchStr)
+      let isVisible = searchStr == "" || utf8ToLower(titleStr).contains(searchStr)
       itemObj.show(isVisible)
       itemObj.enable(isVisible)
       isFound = isFound || isVisible

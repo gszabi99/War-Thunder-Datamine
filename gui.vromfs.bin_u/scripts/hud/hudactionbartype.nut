@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -16,14 +17,14 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_MINE, EII_MORTAR, EII_ROCKET, EII_GRENADE, EII_SMOKE_GRENADE, EII_REPAIR_BREACHES,
   EII_SMOKE_SCREEN, EII_SCOUT, EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR, EII_SPEED_BOOSTER,
   EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2,
-  EII_SUPPORT_PLANE_ORBITING, EII_SUPPORT_PLANE_CHANGE, EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK,
-  EII_WEAPON_LEAD, EII_FORCED_GUN,
+  EII_SUPPORT_PLANE_3, EII_SUPPORT_PLANE_4, EII_SUPPORT_PLANE_ORBITING, EII_SUPPORT_PLANE_CHANGE,
+  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK, EII_WEAPON_LEAD, EII_FORCED_GUN,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
   GUIDANCE_LEAD_MODE_OFF, GUIDANCE_LEAD_MODE_ON, EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
-  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW,
+  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -49,8 +50,8 @@ let function getCooldownText(actionItem) {
   return ""
 }
 
-let getUnit = @() ::getAircraftByName(getActionBarUnitName())
-let getOwnerUnit = @() ::getAircraftByName(getOwnerUnitName())
+let getUnit = @() getAircraftByName(getActionBarUnitName())
+let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
 
 ::g_hud_action_bar_type.template <- {
   code = -1
@@ -456,14 +457,14 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() true
 
     getName = function (_actionItem, killStreakTag = null) {
-      if (::u.isString(killStreakTag))
+      if (u.isString(killStreakTag))
         return this._name + "_" + killStreakTag
       return ""
     }
 
     getIcon = function (_actionItem, killStreakTag = null, _unit = null, _hudUnitType = null) {
       // killStreakTag is expected to be "bomber", "attacker" or "fighter".
-      if (::u.isString(killStreakTag))
+      if (u.isString(killStreakTag))
         return $"#ui/gameuiskin#{killStreakTag}_streak"
       return ""
     }
@@ -544,7 +545,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getShortcut = @(actionItem, _hudUnitType = null)
       "ID_SHIP_DAMAGE_CONTROL_PRESET_" + (actionItem.userHandle >> 3).tostring()
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      return "#ui/gameuiskin#ship_damage_control_" + (actionItem.userHandle & 7).tostring() + ""
+      return "#ui/gameuiskin#ship_damage_control_" + ((actionItem.userHandle & 7) + 1).tostring() + ""
     }
   }
 
@@ -732,6 +733,64 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       return hudUnitType == HUD_UNIT_TYPE.TANK ? this._title
         : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? loc("actionBarItem/switch_to_ship")
         : loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP_2")
+    }
+  }
+
+  SUPPORT_PLANE_3 = {
+    code = EII_SUPPORT_PLANE_3
+    _name = "support_plane_3"
+    _icon = "#ui/gameuiskin#scout_streak"
+    _title = loc("hotkeys/ID_START_SUPPORT_PLANE_3")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, hudUnitType = null)
+      hudUnitType == HUD_UNIT_TYPE.TANK ? "ID_START_SUPPORT_PLANE_3"
+        : "ID_START_SUPPORT_PLANE_SHIP_3"
+    getName = function(_actionItem, _killStreakTag = null) {
+      let hudUnitType = getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.TANK ? this._name
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? "switch_to_ship"
+        : "support_plane_ship"
+    }
+    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
+      hudUnitType = hudUnitType ?? getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.TANK ? "#ui/gameuiskin#scout_streak"
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? "#ui/gameuiskin#supportPlane_to_ship_controls"
+        : "#ui/gameuiskin#shipSupportPlane"
+    }
+    getTitle = function(_actionItem, _killStreakTag = null) {
+      let hudUnitType = getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.TANK ? this._title
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? loc("actionBarItem/switch_to_ship")
+        : loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP_3")
+    }
+  }
+
+  SUPPORT_PLANE_4 = {
+    code = EII_SUPPORT_PLANE_4
+    _name = "support_plane_4"
+    _icon = "#ui/gameuiskin#scout_streak"
+    _title = loc("hotkeys/ID_START_SUPPORT_PLANE_4")
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, hudUnitType = null)
+      hudUnitType == HUD_UNIT_TYPE.TANK ? "ID_START_SUPPORT_PLANE_4"
+        : "ID_START_SUPPORT_PLANE_SHIP_4"
+    getName = function(_actionItem, _killStreakTag = null) {
+      let hudUnitType = getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.TANK ? this._name
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? "switch_to_ship"
+        : "support_plane_ship"
+    }
+    getIcon = function(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) {
+      hudUnitType = hudUnitType ?? getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.TANK ? "#ui/gameuiskin#scout_streak"
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? "#ui/gameuiskin#supportPlane_to_ship_controls"
+        : "#ui/gameuiskin#shipSupportPlane"
+    }
+    getTitle = function(_actionItem, _killStreakTag = null) {
+      let hudUnitType = getHudUnitType()
+      return hudUnitType == HUD_UNIT_TYPE.TANK ? this._title
+        : hudUnitType == HUD_UNIT_TYPE.AIRCRAFT ? loc("actionBarItem/switch_to_ship")
+        : loc("hotkeys/ID_START_SUPPORT_PLANE_SHIP_4")
     }
   }
 
@@ -935,6 +994,15 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#exoskelet_sight"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_VIEW_HUMAN"
   }
+  //
+
+
+
+
+
+
+
+
 })
 
 ::g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code) {

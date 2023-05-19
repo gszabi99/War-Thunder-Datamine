@@ -40,6 +40,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
   "haveAnchor": true,
@@ -691,7 +692,7 @@
         "hp": 2100.0
       },
       "compartment_04_dm": {
-        "hp": 1811.0
+        "hp": 1746.0
       }
     },
     "control_compartments": {
@@ -815,7 +816,7 @@
         "hp": 2000.0
       },
       "transmission_02_dm": {
-        "hp": 2087.0
+        "hp": 2185.0
       }
     },
     "funnels": {
@@ -1205,7 +1206,7 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 31
+      "crew": 32
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
@@ -1215,12 +1216,12 @@
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 31
+      "crew": 32
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 28
+      "crew": 26
     },
     "sailor6": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -4054,5 +4055,34 @@
       "from": "camo_warshipgray*",
       "to": "camo_warshipdeepgray*"
     }
-  }
+  },
+  "skin": [
+    {
+      "name": "jp_camo_navy_green",
+      "nameLocId": "skin/jp_camo_navy_green",
+      "descLocId": "skin/jp_camo_navy_green/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_navy_green*"
+      }
+    },
+    {
+      "name": "jp_camo_green_fleet",
+      "nameLocId": "skin/jp_camo_green_fleet",
+      "descLocId": "skin/jp_camo_green_fleet/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_green_fleet*"
+      }
+    },
+    {
+      "name": "jp_camo_modern_spots",
+      "nameLocId": "skin/jp_camo_modern_spots",
+      "descLocId": "skin/jp_camo_modern_spots/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_modern_spots*"
+      }
+    }
+  ]
 }

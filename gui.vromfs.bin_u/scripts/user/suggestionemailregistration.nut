@@ -12,24 +12,34 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { register_command } = require("console")
-let { getPlayerSsoShortToken } = require("auth_wt")
+let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
+let { validateEmail } = require("%sqstd/string.nut")
+let { subscribe } = require("eventbus")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 
-let function launchGuestEmailRegistration() {
+let function launchGuestEmailRegistration(stoken) {
   let language = ::g_language.getShortName()
-  let stoken = getPlayerSsoShortToken()
   let url = loc("url/pc_bind_url", { language, stoken })
   openUrl(url, false, false, "profile_page")
 }
+
+let function onGetStokenForGuestEmail(msg) {
+  let { status, stoken = null } = msg
+  if (status != YU2_OK)
+    ::error_message_box("yn1/connect_error", status, [["ok"]], "ok")
+  else
+    launchGuestEmailRegistration(stoken)
+}
+subscribe("onGetStokenForGuestEmail", onGetStokenForGuestEmail)
 
 let function showGuestEmailRegistration() {
   ::showUnlockWnd({
     name = loc("mainmenu/SteamEmailRegistration")
     desc = loc("mainmenu/guestEmailRegistration/desc")
     popupImage = "ui/images/invite_big?P1"
-    onOkFunc = launchGuestEmailRegistration
+    onOkFunc = @() getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
     okBtnText = "msgbox/btn_bind"
   })
 }
@@ -122,7 +132,7 @@ let function launchXboxEmailRegistration(override = {}) {
     leftAlignedLabel = true
     title = loc("mainmenu/XboxOneEmailRegistration")
     label = loc("mainmenu/XboxOneEmailRegistration/desc")
-    checkWarningFunc = ::g_string.validateEmail
+    checkWarningFunc = validateEmail
     allowEmpty = false
     needOpenIMEonInit = false
     editBoxEnableFunc = canEmailRegistration

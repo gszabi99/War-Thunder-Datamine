@@ -50,14 +50,14 @@
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
-  "smokeScreenOffset": [
-    -3.0,
-    0.0,
-    2.0
-  ],
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
+  "smokeScreenOffset": [
+    -1.0,
+    0.0,
+    -4.0
+  ],
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -1112,7 +1112,11 @@
     "ex_armor_turret_24_dm": true,
     "ex_armor_turret_25_dm": true,
     "ex_decor_10_dm": true,
-    "ex_armor_27_dm": true
+    "ex_armor_27_dm": true,
+    "ex_armor_body_15_dm": true,
+    "ex_armor_body_16_dm": true,
+    "ex_armor_body_21_dm": true,
+    "ex_armor_body_22_dm": true
   },
   "sound": {
     "EngineName": "engine_leo2a5",
@@ -2607,13 +2611,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -4368,6 +4372,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   },

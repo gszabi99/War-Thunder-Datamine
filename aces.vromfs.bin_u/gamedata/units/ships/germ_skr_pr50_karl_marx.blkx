@@ -41,6 +41,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
   "hideNodesInDmg": {
@@ -2382,7 +2383,7 @@
         "hp": 300.0
       },
       "radio_station_dm": {
-        "hp": 349.0
+        "hp": 368.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -2491,10 +2492,10 @@
       "genericDamageMult": 1.5,
       "armorThrough": 150.0,
       "engine_room_01_dm": {
-        "hp": 2450.0
+        "hp": 2422.0
       },
       "engine_room_02_dm": {
-        "hp": 2452.0
+        "hp": 2423.0
       },
       "engine_room_03_dm": {
         "hp": 2000.0
@@ -2769,7 +2770,7 @@
         "hp": 1300.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1256.0
+        "hp": 1300.0
       }
     },
     "ammo_storages_charges": {
@@ -5142,5 +5143,34 @@
         "maxWaterAlive": 1.0
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "ger_camo_navy_gray",
+      "nameLocId": "skin/ger_camo_navy_gray",
+      "descLocId": "skin/ger_camo_navy_gray/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_navy_gray*"
+      }
+    },
+    {
+      "name": "ger_camo_browngray_modern",
+      "nameLocId": "skin/ger_camo_browngray_modern",
+      "descLocId": "skin/ger_camo_browngray_modern/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_browngray_modern*"
+      }
+    },
+    {
+      "name": "ger_camo_blackwhite_cubes",
+      "nameLocId": "skin/ger_camo_blackwhite_cubes",
+      "descLocId": "skin/ger_camo_blackwhite_cubes/desc",
+      "replace_tex": {
+        "from": "camo_hellgrau_50*",
+        "to": "ger_camo_blackwhite_cubes*"
+      }
+    }
+  ]
 }

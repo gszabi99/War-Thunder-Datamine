@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let colorCorrector = require("colorCorrector")
@@ -416,7 +417,7 @@ let function getHandlerControlsAllowMask(handler) {
   this.updateWidgets()
   this._updateSceneBgBlur()
   this._updateSceneVrParams()
-  ::broadcastEvent("ActiveHandlersChanged")
+  broadcastEvent("ActiveHandlersChanged")
 }
 
 ::handlersManager.onEventWaitBoxCreated <- function onEventWaitBoxCreated(_p) {
@@ -450,7 +451,7 @@ let function getHandlerControlsAllowMask(handler) {
 ::handlersManager.validateHandlersAfterLoading <- function validateHandlersAfterLoading() {
   this.clearInvalidHandlers()
   this.updateLoadingFlag()
-  ::broadcastEvent("FinishLoading")
+  broadcastEvent("FinishLoading")
 }
 
 ::handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
@@ -495,7 +496,11 @@ let function getHandlerControlsAllowMask(handler) {
   if (!child.isValid())
     return
   child.scrollToView()
-  child.setMouseCursorOnObject()
+  ::get_cur_gui_scene().performDelayed({}, function() {
+    if (!child?.isValid())
+      return
+    child.setMouseCursorOnObject()
+  })
 }
 
 ::move_mouse_on_child_by_value <- function move_mouse_on_child_by_value(obj) { //it used in a lot of places, so leave it global

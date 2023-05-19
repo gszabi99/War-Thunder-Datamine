@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+
 let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 
 let function canLogout() {
@@ -21,11 +23,11 @@ let function startLogout() {
       return
     }
     else
-      ::destroy_session_scripted()
+      ::destroy_session_scripted("on start logout")
   }
 
   if (::should_disable_menu() || ::g_login.isProfileReceived())
-    ::broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
+    broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
 
   log("Start Logout")
   ::disable_autorelogin_once <- true

@@ -1,8 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { get_game_mode } = require("mission")
 let { setGuiOptionsMode } = require("guiOptions")
@@ -88,7 +91,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
 
     if (rewardMoney == null) {
       let muls = ::get_player_multipliers()
-      rewardMoney = ::Cost(getRewardValue(dataBlk, misDataBlk, diff, "wp") * muls.wpMultiplier,
+      rewardMoney = Cost(getRewardValue(dataBlk, misDataBlk, diff, "wp") * muls.wpMultiplier,
         getRewardValue(dataBlk, misDataBlk, diff, "gold"), 0,
         getRewardValue(dataBlk, misDataBlk, diff, "xp") * muls.xpMultiplier)
     }
@@ -120,7 +123,7 @@ let function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
       resourceImageSize
     }
   }).filter(@(reward) reward.rewardText != "")
-  return ::handyman.renderCached("%gui/missions/missionReward.tpl", { rewards = rewards })
+  return handyman.renderCached("%gui/missions/missionReward.tpl", { rewards = rewards })
 }
 
 let getMissionLocName = @(config, key = "locId") "".join(getLocIdsArray(config?[key])

@@ -1,6 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -105,7 +108,7 @@ const COMPARE_NO_COMPARE = "no"
   getValueText = function(value, _unit) {
     if (value == null)
       return null
-    return ::u.isString(value) ? value : toString(value)
+    return u.isString(value) ? value : toString(value)
   }
   compare = COMPARE_NO_COMPARE
   order = -1
@@ -308,7 +311,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         blk.hide = true
         return
       }
-      let valueText = ::Cost(value).getUncoloredText()
+      let valueText = Cost(value).getUncoloredText()
       blk.value = DataBlock()
       blk.valueText = DataBlock()
       foreach (diff in ::g_difficulty.types)
@@ -345,7 +348,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
           value =  value * (::get_warpoints_blk()?.avgRepairMul ?? 1.0) //avgRepairMul same as in tooltip
           value *= costMultiplier
           blk.value[mode] = value
-          blk.valueText[mode] = value ? ::Cost(value).getUncoloredText() : loc("shop/free")
+          blk.valueText[mode] = value ? Cost(value).getUncoloredText() : loc("shop/free")
         }
     }
   }

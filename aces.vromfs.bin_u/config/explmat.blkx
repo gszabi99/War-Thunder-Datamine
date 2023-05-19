@@ -224,8 +224,14 @@
       }
     },
     "glass": {
-      "shader": "explosion_patch",
-      "normalMap": "explosion_patch_rocks_n",
+      "shader": "explosion_patch_color",
+      "normalMap": "explosion_patch_ps_n",
+      "colorMap": "explosion_patch_ps_c",
+      "materialParamsMap": "explosion_patch_ps_m",
+      "minVolumeBias": 0.05,
+      "minTraceDist": 0.1,
+      "maxTraceDist": 0.5,
+      "parallaxDepthLimit": 1.0,
       "rendinst_normalMap": "explosion_patch_environment_n",
       "rendinst_colorMap": "explosion_patch_environment_c",
       "rendinst_materialMap": "explosion_patch_environment_m",
@@ -329,6 +335,44 @@
           ],
           "sizeScale": 0.8,
           "randomCount": 3
+        }
+      },
+      "props": {
+        "kinetic_penetration": {
+          "tc": [
+            0.75,
+            0.75,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 65.0
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.75,
+            0.75,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 65.0
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.75,
+            0.75,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 80.0
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.75,
+            0.75,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 80.0
         }
       }
     },
@@ -500,7 +544,8 @@
             0.75,
             0.5
           ],
-          "sizeScale": 12.5
+          "sizeScale": 12.5,
+          "angleLimit": 1.0
         },
         "explosive_non_penetration": {
           "tc": [
@@ -509,7 +554,8 @@
             1.0,
             0.5
           ],
-          "sizeScale": 12.5
+          "sizeScale": 12.5,
+          "angleLimit": 1.0
         },
         "kinetic_sabot_penetration": {
           "tc": [
@@ -522,9 +568,9 @@
         },
         "kinetic_sabot_non_penetration": {
           "tc": [
+            0.0,
+            0.5,
             0.25,
-            0.5,
-            0.5,
             0.75
           ],
           "sizeScale": 5.0
@@ -536,7 +582,8 @@
             0.75,
             0.75
           ],
-          "sizeScale": 7.5
+          "sizeScale": 7.5,
+          "angleLimit": 1.0
         },
         "heat_non_penetration": {
           "tc": [
@@ -545,25 +592,46 @@
             1.0,
             0.75
           ],
-          "sizeScale": 7.5
+          "sizeScale": 7.5,
+          "angleLimit": 1.0
         },
         "kinetic_discard_sabot_penetration": {
           "tc": [
-            0.0,
-            0.25,
-            0.25,
-            0.5
+            0.75,
+            0.5,
+            1.0,
+            0.75
           ],
           "sizeScale": 7.0
         },
         "kinetic_discard_sabot_non_penetration": {
           "tc": [
-            0.25,
-            0.25,
+            0.75,
             0.5,
-            0.5
+            1.0,
+            0.75
           ],
           "sizeScale": 7.0
+        },
+        "kinetic_discard_sabot_penetration_angled": {
+          "tc": [
+            0.25,
+            0.5,
+            0.5,
+            0.75
+          ],
+          "sizeScale": 10.0,
+          "angleLimit": 1.0
+        },
+        "kinetic_discard_sabot_non_penetration_angled": {
+          "tc": [
+            0.25,
+            0.5,
+            0.5,
+            0.75
+          ],
+          "sizeScale": 10.0,
+          "angleLimit": 1.0
         }
       },
       "rendinstProps": {
@@ -929,6 +997,91 @@
         }
       }
     },
+    "proximityShrapnelSteelArmor": {
+      "shader": "explosion_patch_color",
+      "normalMap": "shrapnel_ground_vehicles_atlas_n",
+      "colorMap": "shrapnel_ground_vehicles_atlas_a",
+      "materialParamsMap": "shrapnel_ground_vehicles_atlas_m",
+      "props": {
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.25,
+            1.0
+          ],
+          "sizeScale": 1.0
+        }
+      }
+    },
+    "proximityShrapnelAluminumArmor": {
+      "shader": "explosion_patch_color",
+      "normalMap": "shrapnel_ground_vehicles_atlas_n",
+      "colorMap": "shrapnel_ground_vehicles_atlas_a",
+      "materialParamsMap": "shrapnel_ground_vehicles_atlas_m",
+      "props": {
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            0.25,
+            1.0
+          ],
+          "sizeScale": 1.0
+        }
+      }
+    },
+    "proximityShrapnelWood": {
+      "shader": "explosion_patch_color",
+      "normalMap": "shrapnel_ground_vehicles_atlas_n",
+      "colorMap": "shrapnel_ground_vehicles_atlas_a",
+      "materialParamsMap": "shrapnel_ground_vehicles_atlas_m",
+      "props": {
+        "shrapnel_penetration": {
+          "tc": [
+            0.25,
+            0.0,
+            0.5,
+            1.0
+          ],
+          "sizeScale": 1.0
+        }
+      }
+    },
+    "proximityShrapnelSheetMetal": {
+      "shader": "explosion_patch_color",
+      "normalMap": "shrapnel_ground_vehicles_atlas_n",
+      "colorMap": "shrapnel_ground_vehicles_atlas_a",
+      "materialParamsMap": "shrapnel_ground_vehicles_atlas_m",
+      "props": {
+        "shrapnel_penetration": {
+          "tc": [
+            0.5,
+            0.0,
+            0.75,
+            1.0
+          ],
+          "sizeScale": 1.0
+        }
+      }
+    },
+    "proximityShrapnelGlass": {
+      "shader": "explosion_patch_color",
+      "normalMap": "shrapnel_ground_vehicles_atlas_n",
+      "colorMap": "shrapnel_ground_vehicles_atlas_a",
+      "materialParamsMap": "shrapnel_ground_vehicles_atlas_m",
+      "props": {
+        "shrapnel_penetration": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 1.5
+        }
+      }
+    },
     "aircraftSteel": {
       "shader": "explosion_patch_color",
       "normalMap": "explosion_patch_ps_n",
@@ -946,7 +1099,7 @@
             0.25,
             1.0
           ],
-          "sizeScale": 2.0
+          "sizeScale": 4.0
         },
         "kinetic_non_penetration": {
           "tc": [
@@ -955,7 +1108,7 @@
             0.25,
             1.0
           ],
-          "sizeScale": 2.0
+          "sizeScale": 4.0
         },
         "explosive_penetration": {
           "tc": [
@@ -982,7 +1135,7 @@
             0.25,
             1.0
           ],
-          "sizeScale": 4.0
+          "sizeScale": 5.0
         },
         "kinetic_sabot_non_penetration": {
           "tc": [
@@ -991,7 +1144,7 @@
             0.25,
             1.0
           ],
-          "sizeScale": 4.0
+          "sizeScale": 5.0
         },
         "heat_penetration": {
           "tc": [
@@ -1018,7 +1171,7 @@
             0.25,
             1.0
           ],
-          "sizeScale": 4.0
+          "sizeScale": 5.0
         },
         "kinetic_discard_sabot_non_penetration": {
           "tc": [
@@ -1027,7 +1180,7 @@
             0.25,
             1.0
           ],
-          "sizeScale": 4.0
+          "sizeScale": 5.0
         }
       }
     },
@@ -1157,7 +1310,25 @@
         }
       }
     },
-    "proximityShrapnel": {
+    "aircraftProximityShrapnel": {
+      "shader": "explosion_patch_color",
+      "normalMap": "proxy_fuse_shrapnell_decals_atlas_n",
+      "colorMap": "proxy_fuse_shrapnell_decals_atlas_a",
+      "materialParamsMap": "proxy_fuse_shrapnell_decals_atlas_m",
+      "props": {
+        "shrapnel_penetration": {
+          "tc": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "sizeScale": 3.0,
+          "randomCount": 4
+        }
+      }
+    },
+    "aircraftProximityShrapnelWood": {
       "shader": "explosion_patch_color",
       "normalMap": "proxy_fuse_shrapnell_decals_atlas_n",
       "colorMap": "proxy_fuse_shrapnell_decals_atlas_a",

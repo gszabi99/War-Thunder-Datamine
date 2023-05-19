@@ -6,10 +6,11 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let DataBlock = require("DataBlock")
 
-::WarbondAward <- class {
+let WarbondAward = class {
   id = ""
   idx = 0
   awardType = ::g_wb_award_type[EWBAT_INVALID]
@@ -166,7 +167,7 @@ let DataBlock = require("DataBlock")
 
   function onBought() {
     ::update_gamercards()
-    ::broadcastEvent("WarbondAwardBought", { award = this })
+    broadcastEvent("WarbondAwardBought", { award = this })
   }
 
   function isAllBought() {
@@ -199,9 +200,9 @@ let DataBlock = require("DataBlock")
     : 0
 
   function addAmountTextToDesc(desc) {
-    return ::g_string.implode([
-      ::g_string.implode(this.getAdditionalTextsArray(), "\n"),
-      desc, this.getRequiredUnitsRankLevel()], "\n\n")
+    return "\n\n".join([
+      "\n".join(this.getAdditionalTextsArray(), true),
+      desc, this.getRequiredUnitsRankLevel()], true)
   }
 
   function getAdditionalTextsArray() {
@@ -341,3 +342,5 @@ let DataBlock = require("DataBlock")
   unseenIcon = @() !this.isItemLocked() && bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, this.getSeenId())
   /************************** end of params override ****************************************/
 }
+
+return { WarbondAward }

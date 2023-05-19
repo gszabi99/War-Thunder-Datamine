@@ -1,15 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { getHudElementAabb, dmPanelStatesAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
 
@@ -50,14 +53,12 @@ enum HintShowState {
     this.updatePosHudHintBlock()
   }
 
-
   function reinit() {
     if (!this.findSceneObjects())
       return
     this.restoreAllHints()
     this.updatePosHudHintBlock()
   }
-
 
   function onEventLoadingStateChange(_p) {
     if (!::is_in_flight()) {
@@ -74,12 +75,12 @@ enum HintShowState {
   }
 
   function removeAllHints(hintFilterField = "isHideOnDeath") {
-    let hints = ::u.filter(this.activeHints, @(hintData) hintData.hint[hintFilterField])
+    let hints = u.filter(this.activeHints, @(hintData) hintData.hint[hintFilterField])
     foreach (hintData in hints)
       this.removeHint(hintData, true)
   }
 
-  function onLocalPlayerDead() {
+    function onLocalPlayerDead() {
     this.removeAllHints()
   }
 
@@ -103,6 +104,20 @@ enum HintShowState {
       this.updateHint(hintData)
   }
 
+  function changeMissionHintsPosition(value) {
+    if (!(this.nest?.isValid() ?? false))
+      return
+    let mission_hints = this.nest.findObject("mission_action_hints_holder")
+    if (!(mission_hints?.isValid() ?? false))
+      return
+
+    let left = $"{value.size[0]} + 0.015@shHud"
+    mission_hints["left"] = $"{left} - 1/6@rwHud"
+
+    let map_left = getHudElementAabb("map")?.pos[0] ?? 0
+    if(map_left > 0)
+      mission_hints["width"] = $"{map_left - value.size[0]} - 0.03@shHud - 1@bwHud"
+  }
 
   function updatePosHudHintBlock() {
     if (!(this.nest?.isValid() ?? false))
@@ -133,7 +148,7 @@ enum HintShowState {
         continue
       }
 
-      if (!::u.isNull(hint.showEvent))
+      if (!u.isNull(hint.showEvent))
         ::g_hud_event_manager.subscribe(hint.showEvent, (@(hint) function (eventData) {
           if (this.isHintShowCountExceeded(hint))
             return
@@ -144,7 +159,7 @@ enum HintShowState {
             this.onShowEvent(hint, eventData)
         })(hint), this)
 
-      if (!::u.isNull(hint.hideEvent))
+      if (!u.isNull(hint.hideEvent))
         ::g_hud_event_manager.subscribe(hint.hideEvent, (@(hint) function (eventData) {
           if (!hint.isCurrent(eventData, true))
             return
@@ -172,7 +187,7 @@ enum HintShowState {
   }
 
   function findActiveHintFromSameGroup(hint) {
-    return ::u.search(this.activeHints, (@(hint) function (hintData) {
+    return u.search(this.activeHints, (@(hint) function (hintData) {
       return hint.hintType.isSameReplaceGroup(hintData.hint, hint)
     })(hint))
   }
@@ -267,10 +282,8 @@ enum HintShowState {
     this.updateHint(hintData)
   }
 
-
-
   function isHintNestEmpty(hint) {
-    return !::u.search(this.activeHints, @(hintData)
+    return !u.search(this.activeHints, @(hintData)
       hintData.hint != hint && hintData.hint.hintType == hint.hintType)
   }
 
@@ -423,5 +436,7 @@ enum HintShowState {
   }
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_hud_hints_manager")
-::subscribe_handler(::g_hud_hints_manager, ::g_listener_priority.DEFAULT_HANDLER)
+dmPanelStatesAabb.subscribe(@(value) ::g_hud_hints_manager.changeMissionHintsPosition(value))
+
+g_script_reloader.registerPersistentDataFromRoot("g_hud_hints_manager")
+subscribe_handler(::g_hud_hints_manager, ::g_listener_priority.DEFAULT_HANDLER)

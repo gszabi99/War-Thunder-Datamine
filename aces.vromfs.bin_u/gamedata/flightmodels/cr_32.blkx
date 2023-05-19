@@ -4,6 +4,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "harmonizationSuffix": "_tomoe",
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "italy_para",
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -1715,6 +1716,11 @@
     "maxSpeedMultiplier": 1.21,
     "wepOverspeed": 1.8
   },
+  "spawn_count": {
+    "numSpawnsPerBattleSimulation": 1,
+    "numSpawnsPerBattleArcade": 2,
+    "numSpawnsPerBattleHistorical": 2
+  },
   "DamageArcade": {
     "hp": 150.0
   },
@@ -2367,19 +2373,45 @@
     "turnTime": 13.6679
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_radiator": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "new_compressor": {
+      "prevModification": "new_radiator",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105": {
+      "prevModification": "new_compressor",
+      "tier": 3,
+      "modClass": "lth"
+    },
     "air_extinguisher": {
       "image": "#ui/gameuiskin#engine_extinguisher",
       "tier": 4,
-      "modClass": "weapon",
+      "modClass": "armor",
       "invertEnableLogic": false
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
     "breda12_7_universal": {},
     "breda12_7_air_targets": {},
     "breda12_7_all_tracers": {},

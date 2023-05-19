@@ -1,9 +1,11 @@
 {
   "torpedoGun": true,
-  "preset_cost": 250,
+  "preset_cost": 15,
   "bullets": 1,
   "shotFreq": 1.5,
   "external": true,
+  "reloadTime": 60.0,
+  "allowHumanReload": true,
   "mesh": "it_f200_450_torpedo",
   "tags": {
     "antiShipBomb": true
@@ -32,21 +34,24 @@
     "mass": 936.0,
     "explosiveType": "tnt",
     "explosiveMass": 110.0,
-    "dragCx": 0.24,
-    "startPropulsionDelay": 0.1,
     "explosionFx": "bomb_expl_100kg",
     "explosionEffect": "water_under_explosion_medium",
+    "splashFallBySquare": true,
+    "dragCx": 0.24,
+    "startSpeed": 0.0,
+    "startPropulsionDelay": 0.1,
+    "useStartSpeed": true,
     "autoaimEnabled": false,
     "aaMaxAimAngle": 0.0,
     "aaSpeedPrediction": 0.0,
     "aaAccelPrediction": 0.0,
     "aaAngleCorrection": 0.0,
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
     "relativeVelArmorShift": [
       200.0,
+      1000.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
       1000.0
     ],
     "explodeTreshold": 1E-05,
@@ -71,14 +76,13 @@
         "armorThickness": 1.0
       }
     },
+    "pressureDamage": {
+      "damageType": "pressureInWater"
+    },
     "damage": {
-      "explosive": {
-        "radius": 0.0,
-        "offset": 0.0
-      },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.005,
+        "countPortion": 0.0,
         "segment": [
           {
             "radiusScale": 0.1,

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil } = require("math")
 let { rnd } = require("dagor.random")
@@ -185,7 +186,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.curPageStagesList = view.battlePassStage
     let stagesObj = this.scene.findObject("battlePassStages")
     if (isChangesRewards || forceUpdate) {
-      let data = ::handyman.renderCached("%gui/battlePass/battlePassStage.tpl", view)
+      let data = handyman.renderCached("%gui/battlePass/battlePassStage.tpl", view)
       this.guiScene.replaceContentFromText(stagesObj, data, data.len(), this)
     }
     else {
@@ -309,14 +310,14 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       this.scene.findObject("promo_img")["background-image"] = promoImage
 
     this.showSceneBtn("congrat_content", false)
-    this.showSceneBtn("promo_preview", ::getAircraftByName(this.mainPrizeData?.mainPrizeId) != null)
+    this.showSceneBtn("promo_preview", getAircraftByName(this.mainPrizeData?.mainPrizeId) != null)
   }
 
   function onMainPrizePreview(_obj) {
     if (!this.isValid())
       return
 
-    ::getAircraftByName(this.mainPrizeData?.mainPrizeId)?.doPreview()
+    getAircraftByName(this.mainPrizeData?.mainPrizeId)?.doPreview()
   }
 
   function getHandlerRestoreData() {
@@ -357,7 +358,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         tabImageParam = sheetData?.getTabImageParam()
       })
     }
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let sheetsListObj = this.scene.findObject("sheet_list")
     this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     let showSheet = this.currSheet;
@@ -422,7 +423,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     let view = { items = challenges.map(
       @(config) getChallengeView(config, { hoverAction = "onChallengeHover" })) }
     let challengesObj = this.scene.findObject("challenges_list")
-    let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", view)
+    let data = handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", view)
     this.guiScene.replaceContentFromText(challengesObj, data, data.len(), this)
 
     let challengeId = this.curChallengeId

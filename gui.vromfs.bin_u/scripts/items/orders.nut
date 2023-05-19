@@ -1,21 +1,24 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 let { HUD_MSG_OBJECTIVE } = require("hudMessages")
+let { get_mplayer_by_id, get_game_type, get_local_mplayer } = require("mission")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { debug_dump_stack } = require("dagor.debug")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { add_event_listener, broadcastEvent } = subscriptions
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { get_time_msec } = require("dagor.time")
 let { send } = require("eventbus")
-let { get_game_type } = require("mission")
 
 const AUTO_ACTIVATE_TIME = 60
 /**
@@ -222,7 +225,7 @@ const AUTO_ACTIVATE_TIME = 60
 }
 
 ::g_orders.enableOrders <- function enableOrders(statusObj) {
-  if (!this.ordersCanBeUsed() || ::u.isEqual(statusObj, this.ordersStatusObj))
+  if (!this.ordersCanBeUsed() || u.isEqual(statusObj, this.ordersStatusObj))
     return
 
   this.ordersEnabled = true
@@ -236,11 +239,11 @@ const AUTO_ACTIVATE_TIME = 60
     return
   this.listenersEnabled = true
 
-  ::add_event_listener("LobbyStatusChange", this.onEventLobbyStatusChange, this)
-  ::add_event_listener("ActiveOrderChanged", this.onEventActiveOrderChanged, this)
-  ::add_event_listener("OrderUpdated", this.onEventOrderUpdated, this)
-  ::add_event_listener("WatchedHeroSwitched", this.onEventWatchedHeroSwitched, this)
-  ::add_event_listener("ChangedCursorVisibility", this.onEventChangedCursorVisibility, this)
+  add_event_listener("LobbyStatusChange", this.onEventLobbyStatusChange, this)
+  add_event_listener("ActiveOrderChanged", this.onEventActiveOrderChanged, this)
+  add_event_listener("OrderUpdated", this.onEventOrderUpdated, this)
+  add_event_listener("WatchedHeroSwitched", this.onEventWatchedHeroSwitched, this)
+  add_event_listener("ChangedCursorVisibility", this.onEventChangedCursorVisibility, this)
 }
 
 
@@ -254,11 +257,11 @@ const AUTO_ACTIVATE_TIME = 60
     return
   this.listenersEnabled = true
 
-  ::add_event_listener("LobbyStatusChange", this.onEventLobbyStatusChange, this)
-  ::add_event_listener("ActiveOrderChanged", this.onEventActiveOrderChanged, this)
-  ::add_event_listener("OrderUpdated", this.onEventOrderUpdated, this)
-  ::add_event_listener("WatchedHeroSwitched", this.onEventWatchedHeroSwitched, this)
-  ::add_event_listener("ChangedCursorVisibility", this.onEventChangedCursorVisibility, this)
+  add_event_listener("LobbyStatusChange", this.onEventLobbyStatusChange, this)
+  add_event_listener("ActiveOrderChanged", this.onEventActiveOrderChanged, this)
+  add_event_listener("OrderUpdated", this.onEventOrderUpdated, this)
+  add_event_listener("WatchedHeroSwitched", this.onEventWatchedHeroSwitched, this)
+  add_event_listener("ChangedCursorVisibility", this.onEventChangedCursorVisibility, this)
 }
 
 
@@ -363,10 +366,10 @@ const AUTO_ACTIVATE_TIME = 60
 
   if (dispatchEvents) {
     if (activeOrderChanged)
-      ::broadcastEvent("ActiveOrderChanged", { oldActiveOrder = oldActiveOrder })
+      broadcastEvent("ActiveOrderChanged", { oldActiveOrder = oldActiveOrder })
     else if (orderStatusChanged)
-      ::broadcastEvent("OrderStatusChanged", { oldActiveOrder = oldActiveOrder })
-    ::broadcastEvent("OrderUpdated", { oldActiveOrder = oldActiveOrder })
+      broadcastEvent("OrderStatusChanged", { oldActiveOrder = oldActiveOrder })
+    broadcastEvent("OrderUpdated", { oldActiveOrder = oldActiveOrder })
   }
 
   local visibleScoreTableTexts = this.getScoreTableTexts()
@@ -691,7 +694,7 @@ const AUTO_ACTIVATE_TIME = 60
   }
   for (local i = 0; i < this.maxRowsInScoreTable; ++i)
     view.rows.append({ rowIndex = i })
-  return ::handyman.renderCached("%gui/items/orderStatus.tpl", view)
+  return handyman.renderCached("%gui/items/orderStatus.tpl", view)
 }
 
 /**
@@ -741,7 +744,7 @@ const AUTO_ACTIVATE_TIME = 60
   if (!isSilent)
     ::scene_msg_box("order_use_result", null, useResult.createResultMessage(true),
       [["ok", function() {
-        ::broadcastEvent("OrderUseResultMsgBoxClosed")
+        broadcastEvent("OrderUseResultMsgBoxClosed")
       } ]], "ok")
   if (useResult == ::g_order_use_result.OK) {
     if (this.activatingLocalOrderId == null) {
@@ -750,7 +753,7 @@ const AUTO_ACTIVATE_TIME = 60
         "Activating local order is null. Report this issue immediately.")
     }
     this.activeLocalOrderIds.append(this.activatingLocalOrderId)
-    ::broadcastEvent("OrderActivated")
+    broadcastEvent("OrderActivated")
   }
   if (this.activatingLocalOrderCallback != null) {
     this.activatingLocalOrderCallback({
@@ -861,7 +864,7 @@ const AUTO_ACTIVATE_TIME = 60
     this.debugPrint("g_orders::getPlayerDataById: Calling when orders are disabled.")
     debug_dump_stack()
   }
-  let playerData = this.playerDataById?[playerId] ?? ::get_mplayer_by_id(playerId) ?? this.emptyPlayerData
+  let playerData = this.playerDataById?[playerId] ?? get_mplayer_by_id(playerId) ?? this.emptyPlayerData
   if (is_replay_playing()) {
     playerData.isLocal = spectatorWatchedHero.id == playerData.id
     playerData.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, playerData?.squadId)
@@ -1052,7 +1055,7 @@ const AUTO_ACTIVATE_TIME = 60
     this.localPlayerData = this.getPlayerDataById(spectatorWatchedHero.id)
 
   if (this.localPlayerData == null)
-    this.localPlayerData = ::get_local_mplayer()
+    this.localPlayerData = get_local_mplayer()
   return this.localPlayerData
 }
 
@@ -1060,4 +1063,4 @@ const AUTO_ACTIVATE_TIME = 60
 ::cross_call_api.active_order_request_update <- @()::g_orders.updateActiveOrder()
 ::cross_call_api.active_order_enable <- @()::g_orders.enableOrdersWithoutDagui()
 
-::g_script_reloader.registerPersistentDataFromRoot("g_orders")
+g_script_reloader.registerPersistentDataFromRoot("g_orders")

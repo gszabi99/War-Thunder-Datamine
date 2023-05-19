@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -197,7 +198,7 @@ local clanBlackList = [
 
   function onEventClanCandidatesListChanged(p) {
     let uid = p?.userId
-    let candidate = ::u.search(this.blacklistData, @(candidate) candidate.uid == uid)
+    let candidate = u.search(this.blacklistData, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
 }

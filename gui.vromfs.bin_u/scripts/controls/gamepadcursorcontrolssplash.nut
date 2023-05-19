@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -109,7 +110,7 @@ const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_control
 
     view.isGamepadCursorControlsEnabled <- ::g_gamepad_cursor_controls.getValue()
 
-    let markUp = ::handyman.renderCached("%gui/controls/gamepadCursorcontrolsController.tpl", view)
+    let markUp = handyman.renderCached("%gui/controls/gamepadCursorcontrolsController.tpl", view)
     this.guiScene.replaceContentFromText(contentObj, markUp, markUp.len(), this)
 
     let linkingObjsContainer = this.getObj("gamepad_image")

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
 
@@ -11,7 +12,7 @@ let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut
 
   function getMarkup() {
     return this.showPlaceholder
-      ? ::handyman.renderCached("%gui/controls/input/nullInput.tpl", { text = this.getText() })
+      ? handyman.renderCached("%gui/controls/input/nullInput.tpl", { text = this.getText() })
       : null
   }
 

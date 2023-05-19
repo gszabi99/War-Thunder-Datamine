@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let hudTankStates = require("hudTankStates")
 let { hudTankMovementStatesVisible } = require("%scripts/hud/hudConfigByGame.nut")
@@ -164,7 +165,7 @@ let function showHudTankMovementStates(scene) {
   if (!checkObj(movementStatesObj))
     return
 
-  let blk = ::handyman.renderCached("%gui/hud/hudTankMovementInfo.tpl", { tankStates = getMovementViewArray() })
+  let blk = handyman.renderCached("%gui/hud/hudTankMovementInfo.tpl", { tankStates = getMovementViewArray() })
   this.guiScene.replaceContentFromText(movementStatesObj, blk, blk.len(), this)
 }
 

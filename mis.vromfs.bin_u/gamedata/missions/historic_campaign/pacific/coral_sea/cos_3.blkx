@@ -197,19 +197,19 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "us_fleet",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "us_fleet",
             "effShootingRate": 0.5
           },
           {
+            "object": "us_fleet_figters_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "us_fleet_figters_sq",
             "plane": {
               "targetDeviation": {
                 "trigger": "machine gun",
@@ -222,15 +222,15 @@
             }
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "us_fighters03",
               "us_bombers01",
               "us_bombers02"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "plane": {
               "targetDeviation": [
                 {
@@ -253,11 +253,11 @@
             }
           },
           {
+            "object": "jpn_armada_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "jpn_armada_sq",
             "plane": {
               "targetDeviation": [
                 {
@@ -280,11 +280,11 @@
             }
           },
           {
+            "object": "shokaku_fighters",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "shokaku_fighters",
             "effShootingRate": 0.5,
             "plane": {
               "targetDeviation": {
@@ -298,11 +298,11 @@
             }
           },
           {
+            "object": "us_carrier_lexington",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "us_carrier_lexington",
             "isImmortal": true
           }
         ],
@@ -393,6 +393,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": [
             "shokaku_b5n",
             "shokaku_fighters"
@@ -676,7 +679,8 @@
           "target": "corS_mission03_fly01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": [
           {
@@ -724,6 +728,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
             "lookat": "us_fleet_4500",
@@ -746,6 +753,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "shokaku_b5n",
             "move_type": "teleport",
             "lookat": "us_fleet_4000",
@@ -768,6 +778,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "shokaku_fighters",
             "move_type": "teleport",
             "lookat": "us_fleet_4500",
@@ -790,6 +803,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "shokaku_b5n",
             "speed": 250.0
           },
@@ -810,6 +826,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "shokaku_fighters",
             "speed": 250.0
           }
@@ -1328,6 +1347,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "us_fighters03"
         }
       },
@@ -1389,6 +1411,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "us_bombers01",
           "distributionRadius": 100.0
         }
@@ -1451,6 +1476,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "us_bombers02",
           "distributionRadius": 100.0
         }
@@ -1486,7 +1514,8 @@
           "target": "corS_mission03_def00",
           "status": 3,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionFailed": {}
       },
@@ -1533,7 +1562,8 @@
           "target": "corS_mission03_def00",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "unitSetIndication": [
           {
@@ -1629,6 +1659,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": [
             "shokaku_b5n",
             "2nd_wave_d3a"
@@ -1872,7 +1905,8 @@
           "target": "corS_mission03_att01",
           "status": 3,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionForceMusic": {
           "evName": "japan_defeat_theme"
@@ -1920,6 +1954,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "zuikaku_attack01"
         },
         "unitAttackTarget": {
@@ -1930,11 +1967,11 @@
         },
         "unitSetProperties": [
           {
+            "object": "us_fleet_figters_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "us_fleet_figters_sq",
             "effShootingRate": 1.0,
             "plane": {
               "targetDeviation": {
@@ -1948,19 +1985,19 @@
             }
           },
           {
+            "object": "zuikaku_attack01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "zuikaku_attack01",
             "effShootingRate": 0.0
           },
           {
+            "object": "zuikaku_attack_leader",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "zuikaku_attack_leader",
             "isImmortal": true
           }
         ],
@@ -2062,11 +2099,11 @@
           "target": "fail_cut_skip"
         },
         "unitSetProperties": {
+          "object": "zuikaku_attack_leader",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "zuikaku_attack_leader",
           "isImmortal": false,
           "engineFire": true
         },
@@ -2215,7 +2252,8 @@
           "target": "corS_mission03_att01",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "missionForceMusic": {
           "evName": "2_japan_coral"
@@ -2265,6 +2303,9 @@
           "recalculatePathDist": -1.0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "lookat": "jpn_carrier_shokaku",
@@ -2325,19 +2366,19 @@
         },
         "unitSetProperties": [
           {
+            "object": "zuikaku_attack01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "zuikaku_attack01",
             "effShootingRate": 1.0
           },
           {
+            "object": "us_carrier_lexington",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "us_carrier_lexington",
             "isImmortal": false
           }
         ],
@@ -2365,6 +2406,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zuikaku_attack01",
             "move_type": "teleport",
             "lookat": "us_carrier_lexington",
@@ -2387,6 +2431,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zuikaku_attack01",
             "move_type": "move"
           },
@@ -2407,6 +2454,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zuikaku_attack_group"
           },
           {
@@ -2426,6 +2476,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zero_cut"
           }
         ],
@@ -2721,11 +2774,11 @@
           "shouldBlink": false
         },
         "unitSetProperties": {
+          "object": "us_carrier_lexington",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "us_carrier_lexington",
           "isImmortal": false
         },
         "unitDamage": {
@@ -2895,7 +2948,8 @@
           "target": "corS_mission03_fly00",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 3.0
@@ -3022,6 +3076,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zuikaku_attack01",
             "move_type": "teleport",
             "lookat": "us_carrier_lexington",
@@ -3044,6 +3101,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "us_fighters01",
             "move_type": "teleport",
             "lookat": "zuikaku_attack01",
@@ -3072,14 +3132,14 @@
         ],
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "zuikaku_attack_group",
               "zero_cut"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "isImmortal": true,
             "plane": {
               "targetDeviation": [
@@ -3103,11 +3163,11 @@
             }
           },
           {
+            "object": "us_fighters01",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "us_fighters01",
             "effShootingRate": 0.0,
             "plane": {
               "targetDeviation": {
@@ -3121,14 +3181,14 @@
             }
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "zuikaku_attack01",
               "zero_cut"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "isImmortal": true
           }
         ],
@@ -3324,6 +3384,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zuikaku_attack01",
             "move_type": "teleport",
             "lookat": "us_carrier_lexington",
@@ -3346,6 +3409,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zero_cut",
             "move_type": "teleport",
             "lookat": "deb_look_at",
@@ -3368,6 +3434,9 @@
             "recalculatePathDist": -1.0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "zero_cut",
             "velocity": 250.0
           }
@@ -3467,19 +3536,19 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "player",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player",
             "targetableByAi": false
           },
           {
+            "object": "player_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player_sq",
             "targetableByAi": true
           }
         ]
@@ -3975,6 +4044,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4036,6 +4106,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4097,6 +4168,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4158,6 +4230,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4207,8 +4280,8 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
               "tas": false,
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -4252,6 +4325,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4313,6 +4387,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4374,6 +4449,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4435,6 +4511,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4496,6 +4573,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4557,6 +4635,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4618,6 +4697,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4679,6 +4759,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -4740,6 +4821,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -4801,6 +4883,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -4851,7 +4934,7 @@
             26685.2
           ]
         ],
-        "unit_class": "uss_cv_lexington",
+        "unit_class": "us_aircraftcarrier_lexington",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4865,6 +4948,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4878,8 +4962,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": "unic_lexington"
+          "uniqueName": "unic_lexington",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4907,7 +4991,7 @@
             26313.6
           ]
         ],
-        "unit_class": "uss_cv_enterprise",
+        "unit_class": "us_aircraftcarrier_enterprise",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4921,6 +5005,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4934,8 +5019,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": "unic_yorktown"
+          "uniqueName": "unic_yorktown",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -4963,7 +5048,7 @@
             27278.9
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_portland_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4977,6 +5062,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4990,8 +5076,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5019,7 +5105,7 @@
             23476.9
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5033,6 +5119,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5046,8 +5133,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5075,7 +5162,7 @@
             23076.0
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_portland_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5089,6 +5176,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5102,8 +5190,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5131,7 +5219,7 @@
             25705.2
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_portland_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5145,6 +5233,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5158,8 +5247,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5187,7 +5276,7 @@
             29450.7
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5201,6 +5290,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5214,8 +5304,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5243,7 +5333,7 @@
             29132.1
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5257,6 +5347,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5270,8 +5361,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5299,7 +5390,7 @@
             27269.4
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5313,6 +5404,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5326,8 +5418,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5355,7 +5447,7 @@
             24552.4
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_portland_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5369,6 +5461,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5382,8 +5475,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5411,7 +5504,7 @@
             23200.3
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_portland_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5425,6 +5518,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5438,8 +5532,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5467,7 +5561,7 @@
             22430.8
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5481,6 +5575,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5494,8 +5589,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5523,7 +5618,7 @@
             23167.4
           ]
         ],
-        "unit_class": "uss_ca_sanfrancisco",
+        "unit_class": "us_cruiser_new_orleans_class",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5537,6 +5632,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5550,8 +5646,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5579,7 +5675,7 @@
             28377.4
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "us_destroyer_porter_1941",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5593,6 +5689,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5606,8 +5703,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5635,7 +5732,7 @@
             30664.6
           ]
         ],
-        "unit_class": "ijn_cv_zuikaku",
+        "unit_class": "jp_cruiser_furutaka_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5649,6 +5746,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5662,8 +5760,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": "unic_zuikaku"
+          "uniqueName": "unic_zuikaku",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5691,7 +5789,7 @@
             34704.0
           ]
         ],
-        "unit_class": "ijn_cv_zuikaku",
+        "unit_class": "jp_aircraftcarrier_shokaku",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5705,6 +5803,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5718,10 +5817,40 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": "unic_shokaku"
+          "uniqueName": "unic_shokaku",
+          "attack_type": "fire_at_will"
         },
-        "way": {}
+        "way": {
+          "jpn_carrier_shokaku_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                33261.7,
+                0.0,
+                33608.7
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
       },
       {
         "name": "jpn_destroyer_01",
@@ -5747,7 +5876,7 @@
             28163.2
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5761,6 +5890,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5774,8 +5904,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5803,7 +5933,7 @@
             26981.3
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5817,6 +5947,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5830,8 +5961,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5859,7 +5990,7 @@
             27565.4
           ]
         ],
-        "unit_class": "ijn_dd_shiratsuyu",
+        "unit_class": "jp_destroyer_mutsuki_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5873,6 +6004,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5886,8 +6018,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5915,7 +6047,7 @@
             29102.4
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_myoko",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5929,6 +6061,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5942,8 +6075,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -5971,7 +6104,7 @@
             30164.0
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_furutaka_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5985,6 +6118,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -5998,8 +6132,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -6027,7 +6161,7 @@
             36426.3
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_furutaka_EC",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6041,6 +6175,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6054,8 +6189,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       },
@@ -6083,7 +6218,7 @@
             37148.8
           ]
         ],
-        "unit_class": "ijn_ca_myoko",
+        "unit_class": "jp_cruiser_myoko",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6097,6 +6232,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -6110,8 +6246,8 @@
             0.1,
             0.1
           ],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": {}
       }
@@ -6142,7 +6278,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "us_carrier_lexington",
             "us_carrier_yorktown",
@@ -6158,7 +6293,8 @@
             "us_cruiser_russell",
             "us_cruiser_hammann",
             "us_destroyer_aylwin"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6186,11 +6322,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "zuikaku_attack01",
             "zuikaku_attack02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6218,12 +6354,12 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "zuikaku_attack_group",
             "shokaku_group01",
             "shokaku_group02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6251,7 +6387,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "us_fighters01",
             "us_fighters02",
@@ -6259,7 +6394,8 @@
             "us_fighters04",
             "us_bombers01",
             "us_bombers02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6287,7 +6423,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "jpn_carrier_zuikaku",
             "jpn_carrier_shokaku",
@@ -6298,7 +6433,8 @@
             "jap_cruiser_haguro",
             "jap_cruiser_kinugasa",
             "jap_cruiser_furutaka"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6326,9 +6462,9 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "player",
-          "object_type": "isPlayer"
+          "object_type": "isPlayer",
+          "object_marking": 0
         }
       },
       {
@@ -6356,11 +6492,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "shokaku_fighters",
             "shokaku_b5n"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6388,11 +6524,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "2nd_wave_zero",
             "2nd_wave_d3a"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6420,12 +6556,12 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "us_fighters01",
             "us_fighters02",
             "us_fighters04"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -6453,9 +6589,9 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": "zuikaku_attack01",
-          "object_type": "isFormationLeader"
+          "object_type": "isFormationLeader",
+          "object_marking": 0
         }
       }
     ]
@@ -6992,6 +7128,33 @@
       "props": {
         "forceReplication": true
       }
+    },
+    "area_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          485.859,
+          0.0,
+          -2191.57
+        ],
+        [
+          0.0,
+          2244.78,
+          0.0
+        ],
+        [
+          2191.57,
+          0.0,
+          485.859
+        ],
+        [
+          33018.8,
+          0.0,
+          34704.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {},

@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -255,7 +256,7 @@ enums.addTypesByGlobalName("g_mission_type", {
 
 ::g_mission_type.getHelpPathForCurrentMission <- function getHelpPathForCurrentMission() {
   let path = this.getCurrent().helpBlkPath
-  if (path != "" && !::u.isEmpty(blkOptFromPath(path)))
+  if (path != "" && !u.isEmpty(blkOptFromPath(path)))
     return path
   return null
 }

@@ -12,6 +12,7 @@ let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 ::gui_handlers.ShopSearchWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -128,7 +129,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   }
 
   function onUnitClick(obj) {
-    this.unitToShowOnClose = ::g_string.cutPrefix(obj.id, "btn_") ?? ""
+    this.unitToShowOnClose = cutPrefix(obj.id, "btn_") ?? ""
     this.goBack()
   }
 

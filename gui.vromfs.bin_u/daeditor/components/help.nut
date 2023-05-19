@@ -35,9 +35,9 @@ Ctrl+Alt+T - Reset rotation
 
 Space - Free camera mode (WASD + mouse, E up, C down, LShift faster, Q/Z focus)
 
-Canned camera pan - Middle mouse button
-Canned camera rotate (around selected) - Alt + Middle mouse button
-Canned camera move forward/back - Mouse wheel (Ctrl faster, Alt slower)
+Middle Mouse Button - Canned camera pan
+Alt + Middle Mouse Button - Canned camera rotate (around selected entity)
+Mouse Wheel (Ctrl faster, Alt slower) - Canned camera move forward/backward
 
 Alt+H - Find entity
 F1 - Help

@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let DataBlock = require("DataBlock")
@@ -160,7 +161,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       if (topMenuShopActive.value)
         this.shopWndSwitch()
 
-      ::broadcastEvent("SetInQueue")
+      broadcastEvent("SetInQueue")
     }
   }
 
@@ -222,7 +223,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     if (this.shopWeak && this.shopWeak.getCurrentEdiff() != ::get_current_ediff())
       this.shopWeak.updateSlotbarDifficulty()
 
-    ::broadcastEvent("ShopWndSwitched")
+    broadcastEvent("ShopWndSwitched")
   }
 
   function openShop(unitType = null) {
@@ -280,8 +281,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     let isShow = topMenuShopActive.value
     this.updateSceneShade()
     if (isVisible)
-      ::broadcastEvent("ShopWndVisible", { isShopShow = isShow })
-    ::broadcastEvent("ShopWndAnimation", { isShow = isShow, isVisible = isVisible })
+      broadcastEvent("ShopWndVisible", { isShopShow = isShow })
+    broadcastEvent("ShopWndAnimation", { isShow = isShow, isVisible = isVisible })
   }
 
   function activateShopImpl(shouldActivate, unitType = null) {

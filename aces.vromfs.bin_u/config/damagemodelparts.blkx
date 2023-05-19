@@ -38,12 +38,24 @@
     "body_shield_NN": {
       "template": "body_shield_#10#"
     },
-    "body_front": {},
-    "body_back": {},
-    "body_side": {},
-    "body_top": {},
-    "body_bottom": {},
-    "ship_hull": {},
+    "body_front": {
+      "externalArmorForHitDecals": false
+    },
+    "body_back": {
+      "externalArmorForHitDecals": false
+    },
+    "body_side": {
+      "externalArmorForHitDecals": false
+    },
+    "body_top": {
+      "externalArmorForHitDecals": false
+    },
+    "body_bottom": {
+      "externalArmorForHitDecals": false
+    },
+    "ship_hull": {
+      "externalArmorForHitDecals": false
+    },
     "composite_armor_hull_NN": {
       "template": "composite_armor_hull_#30#"
     },
@@ -125,11 +137,21 @@
   "superstructure": {
     "externalArmor": true,
     "chest_armor": {},
-    "superstructure_front": {},
-    "superstructure_back": {},
-    "superstructure_side": {},
-    "superstructure_top": {},
-    "superstructure_bottom": {}
+    "superstructure_front": {
+      "externalArmorForHitDecals": false
+    },
+    "superstructure_back": {
+      "externalArmorForHitDecals": false
+    },
+    "superstructure_side": {
+      "externalArmorForHitDecals": false
+    },
+    "superstructure_top": {
+      "externalArmorForHitDecals": false
+    },
+    "superstructure_bottom": {
+      "externalArmorForHitDecals": false
+    }
   },
   "human_body_parts": {
     "head": {},
@@ -184,6 +206,12 @@
       "hitTestType": "inner",
       "steering_gear_NN": {
         "template": "steering_gear_#10#"
+      }
+    },
+    "shaft": {
+      "hitTestType": "inner",
+      "shaft_NN": {
+        "template": "shaft_#04#"
       }
     }
   },
@@ -727,6 +755,7 @@
   },
   "turret": {
     "externalArmor": true,
+    "externalArmorForHitDecals": false,
     "turret_front": {},
     "turret_back": {},
     "turret_side": {},
@@ -805,7 +834,7 @@
     "externalArmor": true
   },
   "ex_decor_NN": {
-    "template": "ex_decor_#30#",
+    "template": "ex_decor_#40#",
     "externalArmor": true
   },
   "fuse": {

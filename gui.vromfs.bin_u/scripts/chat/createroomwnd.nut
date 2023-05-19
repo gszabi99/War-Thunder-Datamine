@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let regexp2 = require("regexp2")
@@ -41,7 +43,7 @@ let { is_chat_message_empty } = require("chat")
     this.tabsList = []
     this.tabBlocksList = []
     foreach (tab in this.fullTabsList) {
-      ::u.appendOnce(tab.tabBlockName, this.tabBlocksList)
+      u.appendOnce(tab.tabBlockName, this.tabBlocksList)
       if (tab.roomType.canCreateRoom())
         this.tabsList.append(tab)
     }
@@ -83,7 +85,7 @@ let { is_chat_message_empty } = require("chat")
       })
 
     let tabsObj = this.showSceneBtn("tabs_list", true)
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(0)
   }
@@ -169,10 +171,10 @@ let { is_chat_message_empty } = require("chat")
       pass = clearBorderSymbols(pass, [" "])
     let invitationsOnly = this.guiScene["room_invitation"].getValue()
     if (::menu_chat_handler) {
-      ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, (@(name, invitationsOnly) function () {
+      ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, function () {
         if (invitationsOnly)
           ::gchat_raw_command(format("MODE %s +i", ::gchat_escape_target(name)))
-      })(name, invitationsOnly))
+      })
     }
   }
 }

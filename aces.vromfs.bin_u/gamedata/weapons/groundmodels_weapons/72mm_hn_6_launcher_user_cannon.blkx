@@ -44,6 +44,7 @@
   "animChar": "hn_6_rocket_char",
   "reloadAnimParam": "rocket_hide",
   "bullet": {
+    "mass": 10.77,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
@@ -61,7 +62,6 @@
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/sam.ivf",
     "bulletName": "72mm_hn_6",
-    "mass": 10.77,
     "caliber": 0.072,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm/roland",
@@ -87,6 +87,42 @@
       "damageType": "pressure"
     },
     "rocket": {
+      "bulletName": "72mm_hn_6",
+      "statType": "hydra",
+      "caliber": 0.071,
+      "length": 1.495,
+      "WdK": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "CxK": 1.8,
+      "wingAreaMult": 1.05,
+      "finsAoaHor": 0.05,
+      "finsAoaVer": 0.05,
+      "distFromCmToStab": 0.0175,
+      "mass": 10.77,
+      "massEnd": 7.685,
+      "massEnd1": 5.7,
+      "timeFire": 2.0,
+      "timeFire1": 6.0,
+      "force": 2910.0,
+      "force1": 723.0,
+      "fireDelay": 0.4,
+      "timeLife": 16.0,
+      "useStartSpeed": true,
+      "startSpeed": 30.0,
+      "machMax": 1.76,
+      "endSpeed": 600.0,
+      "maxDistance": 10000.0,
+      "minDistance": 30.0,
+      "rangeMax": 5000.0,
+      "loadFactorMax": 12.0,
+      "guidanceType": "ir",
+      "guidanceSfx": "alarm_con_scan",
+      "maxDeltaAngle": 2.0,
+      "explosiveType": "a_ix_2",
+      "explosiveMass": 0.5,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
@@ -96,38 +132,8 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "aam",
       "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
-      "bulletName": "72mm_hn_6",
-      "caliber": 0.071,
-      "mass": 10.77,
-      "explosiveType": "a_ix_2",
-      "explosiveMass": 0.5,
-      "massEnd": 7.685,
-      "massEnd1": 5.7,
-      "maxDeltaAngle": 2.0,
       "dragCx": 0.014,
-      "length": 1.495,
-      "wingAreaMult": 1.05,
-      "distFromCmToStab": 0.0175,
-      "CxK": 1.8,
-      "WdK": [
-        0.1,
-        0.1,
-        0.1
-      ],
-      "finsAoaHor": 0.05,
-      "finsAoaVer": 0.05,
-      "fireDelay": 0.4,
-      "force": 2910.0,
-      "timeFire": 2.0,
-      "force1": 723.0,
-      "timeFire1": 6.0,
-      "effectOffset": [
-        -2.0,
-        0.0,
-        0.0
-      ],
-      "spawnExplosionFx": false,
-      "spawnExplosionWreckage": false,
+      "hasProximityFuse": false,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "explosion_midair_small",
       "groundCollisionEffect": "hit_133_160mm_dirt_he",
@@ -136,31 +142,63 @@
       "explosionPatchRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "fireEffect": "fires_rocket_tail_modern_air",
-      "smokeEffect": "",
+      "fireEffect": "fires_exhaust_jet_early_big",
+      "smokeEffect": "smoke_rocket_tail_light_huge",
+      "smokeEffect2": "",
       "hazeEffect": "haze_missile",
-      "endSmokeViscosity": 0.5,
-      "maxDistance": 10000.0,
-      "minDistance": 30.0,
-      "distanceFuse": false,
+      "endSmokeViscosity": 0.05,
+      "effectOffset": [
+        -1.15,
+        0.0,
+        0.0
+      ],
+      "rendinstDamageRadius": 1.0,
+      "spawnExplosionWreckage": false,
+      "spawnExplosionFx": false,
       "hitPowerMult": 400.0,
+      "distanceFuse": false,
       "fuseDelayDist": 1.0,
       "explodeTreshold": 0.1,
-      "guidanceType": "ir",
-      "guidanceSfx": "alarm_con_scan",
-      "hasProximityFuse": false,
-      "rendinstDamageRadius": 9.0,
-      "statType": "hydra",
-      "advancedMissiles": false,
-      "useStartSpeed": true,
-      "startSpeed": 30.0,
-      "endSpeed": 600.0,
-      "timeLife": 16.0,
-      "machMax": 1.76,
-      "loadFactorMax": 12.0,
-      "rangeMax": 5000.0,
       "price": 3000.0,
       "mesh": "us_aim92_stinger_rocket",
+      "guidance": {
+        "warmUpTime": 4.0,
+        "workTime": 60.0,
+        "uncageBeforeLaunch": true,
+        "guidanceSfx": "alarm_con_scan",
+        "breakLockMaxTime": 3.0,
+        "irSeeker": {
+          "rangeBand0": 11000.0,
+          "rangeBand1": 6000.0,
+          "rangeBand2": 11000.0,
+          "rangeBand3": 0.0,
+          "rangeBand6": 1000.0,
+          "rangeBand7": 6000.0,
+          "rangeMax": 11000.0,
+          "fov": 3.0,
+          "arretAngles": [
+            0.0,
+            0.0
+          ],
+          "gateWidth": 1.25,
+          "bandMaskToReject": 4,
+          "minAngleToSun": 5.0,
+          "lockAngleMax": 15.0,
+          "angleMax": 40.0,
+          "rateMax": 12.0,
+          "prolongationTimeMax": 3.0
+        },
+        "guidanceAutopilot": {
+          "timeOut": 0.25,
+          "propNavMult": 4.0,
+          "reqAccelMax": 12.0,
+          "baseIndSpeed": 1800.0,
+          "accelControlProp": 0.0036,
+          "accelControlIntg": 0.1121,
+          "accelControlIntgLim": 1.0,
+          "accelControlDiff": 0.0008
+        }
+      },
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -202,118 +240,12 @@
           }
         }
       },
-      "damage": {
-        "shatter": {
-          "useRealShatters": true,
-          "countPortion": 0.15,
-          "segment": [
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.5,
-              "damageScale": 1.5,
-              "angles": [
-                0.0,
-                9.0
-              ],
-              "countPortion": 0.1
-            },
-            {
-              "angles": [
-                10.0,
-                29.0
-              ],
-              "countPortion": 0.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                30.0,
-                124.0
-              ],
-              "countPortion": 0.35
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.5,
-              "damageScale": 1.5,
-              "angles": [
-                45.0,
-                70.0
-              ],
-              "countPortion": 0.05
-            },
-            {
-              "angles": [
-                125.0,
-                169.0
-              ],
-              "countPortion": 0.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                170.0,
-                189.0
-              ],
-              "countPortion": 0.1
-            },
-            {
-              "angles": [
-                190.0,
-                234.0
-              ],
-              "countPortion": 0.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [
-                235.0,
-                329.0
-              ],
-              "countPortion": 0.35
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.5,
-              "damageScale": 1.5,
-              "angles": [
-                290.0,
-                315.0
-              ],
-              "countPortion": 0.05
-            },
-            {
-              "angles": [
-                330.0,
-                349.0
-              ],
-              "countPortion": 0.0
-            },
-            {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.5,
-              "damageScale": 1.5,
-              "angles": [
-                350.0,
-                359.0
-              ],
-              "countPortion": 0.1
-            }
-          ]
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
-        },
-        "explosive": {
-          "radius": 0.15,
-          "offset": 0.9
-        }
+      "proximityFuse": {
+        "timeOut": 0.7,
+        "radius": 0.5,
+        "detectAirUnits": true,
+        "detectGroundUnits": false,
+        "detectGround": false
       },
       "collisions": {
         "default": {
@@ -477,60 +409,6 @@
           "fx": "hit_12_18mm_snow_ap"
         }
       },
-      "guidance": {
-        "warmUpTime": 4.0,
-        "workTime": 60.0,
-        "uncageBeforeLaunch": true,
-        "loftTime": [
-          0.05,
-          0.5
-        ],
-        "loftOmegaLimit": 0.1,
-        "loftAccel": 45.0,
-        "guidanceSfx": "alarm_con_scan",
-        "breakLockMaxTime": 3.0,
-        "irSeeker": {
-          "rangeBand0": 11000.0,
-          "rangeBand1": 6000.0,
-          "rangeBand2": 11000.0,
-          "rangeBand3": 0.0,
-          "rangeBand6": 1000.0,
-          "rangeBand7": 6000.0,
-          "rangeMax": 11000.0,
-          "fov": 3.0,
-          "arretAngles": [
-            0.0,
-            0.0
-          ],
-          "gateWidth": 1.25,
-          "bandMaskToReject": 4,
-          "minAngleToSun": 5.0,
-          "lockAngleMax": 15.0,
-          "angleMax": 40.0,
-          "rateMax": 12.0,
-          "prolongationTimeMax": 3.0
-        },
-        "guidanceAutopilot": {
-          "timeOut": 0.25,
-          "propNavMult": 4.0,
-          "reqAccelMax": [
-            10.0,
-            12.0
-          ],
-          "baseIndSpeed": 1800.0,
-          "accelControlProp": 0.0036,
-          "accelControlIntg": 0.1121,
-          "accelControlIntgLim": 1.0,
-          "accelControlDiff": 0.0008
-        }
-      },
-      "proximityFuse": {
-        "timeOut": 0.7,
-        "radius": 0.5,
-        "detectAirUnits": true,
-        "detectGroundUnits": false,
-        "detectGround": false
-      },
       "armorpower": {
         "ArmorPower0m": [
           28.0,
@@ -558,11 +436,125 @@
           400.0,
           10000.0
         ]
+      },
+      "damage": {
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.15,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [
+                0.0,
+                9.0
+              ],
+              "countPortion": 0.1
+            },
+            {
+              "angles": [
+                10.0,
+                29.0
+              ],
+              "countPortion": 0.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                30.0,
+                124.0
+              ],
+              "countPortion": 0.35
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [
+                45.0,
+                70.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "angles": [
+                125.0,
+                169.0
+              ],
+              "countPortion": 0.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                170.0,
+                189.0
+              ],
+              "countPortion": 0.1
+            },
+            {
+              "angles": [
+                190.0,
+                234.0
+              ],
+              "countPortion": 0.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                235.0,
+                329.0
+              ],
+              "countPortion": 0.35
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [
+                290.0,
+                315.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "angles": [
+                330.0,
+                349.0
+              ],
+              "countPortion": 0.0
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.5,
+              "damageScale": 1.5,
+              "angles": [
+                350.0,
+                359.0
+              ],
+              "countPortion": 0.1
+            }
+          ]
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
+        },
+        "explosive": {
+          "radius": 0.15,
+          "offset": 0.9
+        }
       }
     }
   },
   "72mm_hn_6_aam": {
     "bullet": {
+      "mass": 10.77,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
@@ -580,7 +572,6 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
       "bulletName": "72mm_hn_6",
-      "mass": 10.77,
       "caliber": 0.072,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm/roland",
@@ -606,6 +597,42 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "bulletName": "72mm_hn_6",
+        "statType": "hydra",
+        "caliber": 0.071,
+        "length": 1.495,
+        "WdK": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "CxK": 1.8,
+        "wingAreaMult": 1.05,
+        "finsAoaHor": 0.05,
+        "finsAoaVer": 0.05,
+        "distFromCmToStab": 0.0175,
+        "mass": 10.77,
+        "massEnd": 7.685,
+        "massEnd1": 5.7,
+        "timeFire": 2.0,
+        "timeFire1": 6.0,
+        "force": 2910.0,
+        "force1": 723.0,
+        "fireDelay": 0.4,
+        "timeLife": 16.0,
+        "useStartSpeed": true,
+        "startSpeed": 30.0,
+        "machMax": 1.76,
+        "endSpeed": 600.0,
+        "maxDistance": 10000.0,
+        "minDistance": 30.0,
+        "rangeMax": 5000.0,
+        "loadFactorMax": 12.0,
+        "guidanceType": "ir",
+        "guidanceSfx": "alarm_con_scan",
+        "maxDeltaAngle": 2.0,
+        "explosiveType": "a_ix_2",
+        "explosiveMass": 0.5,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
@@ -615,38 +642,8 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "aam",
         "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
-        "bulletName": "72mm_hn_6",
-        "caliber": 0.071,
-        "mass": 10.77,
-        "explosiveType": "a_ix_2",
-        "explosiveMass": 0.5,
-        "massEnd": 7.685,
-        "massEnd1": 5.7,
-        "maxDeltaAngle": 2.0,
         "dragCx": 0.014,
-        "length": 1.495,
-        "wingAreaMult": 1.05,
-        "distFromCmToStab": 0.0175,
-        "CxK": 1.8,
-        "WdK": [
-          0.1,
-          0.1,
-          0.1
-        ],
-        "finsAoaHor": 0.05,
-        "finsAoaVer": 0.05,
-        "fireDelay": 0.4,
-        "force": 2910.0,
-        "timeFire": 2.0,
-        "force1": 723.0,
-        "timeFire1": 6.0,
-        "effectOffset": [
-          -2.0,
-          0.0,
-          0.0
-        ],
-        "spawnExplosionFx": false,
-        "spawnExplosionWreckage": false,
+        "hasProximityFuse": false,
         "selfDestructionFx": "explosion_air_selfexplosion_big",
         "explosionEffect": "explosion_midair_small",
         "groundCollisionEffect": "hit_133_160mm_dirt_he",
@@ -655,31 +652,63 @@
         "explosionPatchRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_rocket_tail_modern_air",
-        "smokeEffect": "",
+        "fireEffect": "fires_exhaust_jet_early_big",
+        "smokeEffect": "smoke_rocket_tail_light_huge",
+        "smokeEffect2": "",
         "hazeEffect": "haze_missile",
-        "endSmokeViscosity": 0.5,
-        "maxDistance": 10000.0,
-        "minDistance": 30.0,
-        "distanceFuse": false,
+        "endSmokeViscosity": 0.05,
+        "effectOffset": [
+          -1.15,
+          0.0,
+          0.0
+        ],
+        "rendinstDamageRadius": 1.0,
+        "spawnExplosionWreckage": false,
+        "spawnExplosionFx": false,
         "hitPowerMult": 400.0,
+        "distanceFuse": false,
         "fuseDelayDist": 1.0,
         "explodeTreshold": 0.1,
-        "guidanceType": "ir",
-        "guidanceSfx": "alarm_con_scan",
-        "hasProximityFuse": false,
-        "rendinstDamageRadius": 9.0,
-        "statType": "hydra",
-        "advancedMissiles": false,
-        "useStartSpeed": true,
-        "startSpeed": 30.0,
-        "endSpeed": 600.0,
-        "timeLife": 16.0,
-        "machMax": 1.76,
-        "loadFactorMax": 12.0,
-        "rangeMax": 5000.0,
         "price": 3000.0,
         "mesh": "us_aim92_stinger_rocket",
+        "guidance": {
+          "warmUpTime": 4.0,
+          "workTime": 60.0,
+          "uncageBeforeLaunch": true,
+          "guidanceSfx": "alarm_con_scan",
+          "breakLockMaxTime": 3.0,
+          "irSeeker": {
+            "rangeBand0": 11000.0,
+            "rangeBand1": 6000.0,
+            "rangeBand2": 11000.0,
+            "rangeBand3": 0.0,
+            "rangeBand6": 1000.0,
+            "rangeBand7": 6000.0,
+            "rangeMax": 11000.0,
+            "fov": 3.0,
+            "arretAngles": [
+              0.0,
+              0.0
+            ],
+            "gateWidth": 1.25,
+            "bandMaskToReject": 4,
+            "minAngleToSun": 5.0,
+            "lockAngleMax": 15.0,
+            "angleMax": 40.0,
+            "rateMax": 12.0,
+            "prolongationTimeMax": 3.0
+          },
+          "guidanceAutopilot": {
+            "timeOut": 0.25,
+            "propNavMult": 4.0,
+            "reqAccelMax": 12.0,
+            "baseIndSpeed": 1800.0,
+            "accelControlProp": 0.0036,
+            "accelControlIntg": 0.1121,
+            "accelControlIntgLim": 1.0,
+            "accelControlDiff": 0.0008
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -721,118 +750,12 @@
             }
           }
         },
-        "damage": {
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.15,
-            "segment": [
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  0.0,
-                  9.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "angles": [
-                  10.0,
-                  29.0
-                ],
-                "countPortion": 0.0
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  30.0,
-                  124.0
-                ],
-                "countPortion": 0.35
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  45.0,
-                  70.0
-                ],
-                "countPortion": 0.05
-              },
-              {
-                "angles": [
-                  125.0,
-                  169.0
-                ],
-                "countPortion": 0.0
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  170.0,
-                  189.0
-                ],
-                "countPortion": 0.1
-              },
-              {
-                "angles": [
-                  190.0,
-                  234.0
-                ],
-                "countPortion": 0.0
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  235.0,
-                  329.0
-                ],
-                "countPortion": 0.35
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  290.0,
-                  315.0
-                ],
-                "countPortion": 0.05
-              },
-              {
-                "angles": [
-                  330.0,
-                  349.0
-                ],
-                "countPortion": 0.0
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.5,
-                "damageScale": 1.5,
-                "angles": [
-                  350.0,
-                  359.0
-                ],
-                "countPortion": 0.1
-              }
-            ]
-          },
-          "shatterDamage": {
-            "breachConeAngle": 45.0
-          },
-          "explosive": {
-            "radius": 0.15,
-            "offset": 0.9
-          }
+        "proximityFuse": {
+          "timeOut": 0.7,
+          "radius": 0.5,
+          "detectAirUnits": true,
+          "detectGroundUnits": false,
+          "detectGround": false
         },
         "collisions": {
           "default": {
@@ -996,60 +919,6 @@
             "fx": "hit_12_18mm_snow_ap"
           }
         },
-        "guidance": {
-          "warmUpTime": 4.0,
-          "workTime": 60.0,
-          "uncageBeforeLaunch": true,
-          "loftTime": [
-            0.05,
-            0.5
-          ],
-          "loftOmegaLimit": 0.1,
-          "loftAccel": 45.0,
-          "guidanceSfx": "alarm_con_scan",
-          "breakLockMaxTime": 3.0,
-          "irSeeker": {
-            "rangeBand0": 11000.0,
-            "rangeBand1": 6000.0,
-            "rangeBand2": 11000.0,
-            "rangeBand3": 0.0,
-            "rangeBand6": 1000.0,
-            "rangeBand7": 6000.0,
-            "rangeMax": 11000.0,
-            "fov": 3.0,
-            "arretAngles": [
-              0.0,
-              0.0
-            ],
-            "gateWidth": 1.25,
-            "bandMaskToReject": 4,
-            "minAngleToSun": 5.0,
-            "lockAngleMax": 15.0,
-            "angleMax": 40.0,
-            "rateMax": 12.0,
-            "prolongationTimeMax": 3.0
-          },
-          "guidanceAutopilot": {
-            "timeOut": 0.25,
-            "propNavMult": 4.0,
-            "reqAccelMax": [
-              10.0,
-              12.0
-            ],
-            "baseIndSpeed": 1800.0,
-            "accelControlProp": 0.0036,
-            "accelControlIntg": 0.1121,
-            "accelControlIntgLim": 1.0,
-            "accelControlDiff": 0.0008
-          }
-        },
-        "proximityFuse": {
-          "timeOut": 0.7,
-          "radius": 0.5,
-          "detectAirUnits": true,
-          "detectGroundUnits": false,
-          "detectGround": false
-        },
         "armorpower": {
           "ArmorPower0m": [
             28.0,
@@ -1077,6 +946,119 @@
             400.0,
             10000.0
           ]
+        },
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.15,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.5,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  9.0
+                ],
+                "countPortion": 0.1
+              },
+              {
+                "angles": [
+                  10.0,
+                  29.0
+                ],
+                "countPortion": 0.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  30.0,
+                  124.0
+                ],
+                "countPortion": 0.35
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.5,
+                "damageScale": 1.5,
+                "angles": [
+                  45.0,
+                  70.0
+                ],
+                "countPortion": 0.05
+              },
+              {
+                "angles": [
+                  125.0,
+                  169.0
+                ],
+                "countPortion": 0.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  170.0,
+                  189.0
+                ],
+                "countPortion": 0.1
+              },
+              {
+                "angles": [
+                  190.0,
+                  234.0
+                ],
+                "countPortion": 0.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  235.0,
+                  329.0
+                ],
+                "countPortion": 0.35
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.5,
+                "damageScale": 1.5,
+                "angles": [
+                  290.0,
+                  315.0
+                ],
+                "countPortion": 0.05
+              },
+              {
+                "angles": [
+                  330.0,
+                  349.0
+                ],
+                "countPortion": 0.0
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.5,
+                "damageScale": 1.5,
+                "angles": [
+                  350.0,
+                  359.0
+                ],
+                "countPortion": 0.1
+              }
+            ]
+          },
+          "shatterDamage": {
+            "breachConeAngle": 45.0
+          },
+          "explosive": {
+            "radius": 0.15,
+            "offset": 0.9
+          }
         }
       }
     }

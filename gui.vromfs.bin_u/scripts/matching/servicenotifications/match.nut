@@ -1,33 +1,20 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
-
 let { rnd } = require("dagor.random")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = subscriptions
 let { register_command } = require("console")
+let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 
-local debug_mm = null
+let changedGameModes = persist("changedGameModes", @() [])
 
-register_command(function(enable) { debug_mm = enable }, "matchmacking.set_debug_mm")
+let clearChangedGameModesParams = @() changedGameModes.clear()
 
-::notify_clusters_changed <- function notify_clusters_changed(params) {
-  log("notify_clusters_changed")
-  ::g_clusters.onClustersChanged(params)
-}
-
-let changedGameModes = {
-  paramsArray = []
-}
-::g_script_reloader.registerPersistentData("changedGameModes", changedGameModes, [ "paramsArray" ])
-
-let clearChangedGameModesParams = @() changedGameModes.paramsArray.clear()
-
-::notify_game_modes_changed <- function notify_game_modes_changed(params) {
+let function notifyGameModesChanged(params) {
   if (!::is_online_available()) {
     clearChangedGameModesParams()
     return
@@ -35,66 +22,56 @@ let clearChangedGameModesParams = @() changedGameModes.paramsArray.clear()
 
   if (::is_in_flight()) { // do not handle while session is active
     log("is_in_flight need notify_game_modes_changed after battle")
-    changedGameModes.paramsArray.append(params)
+    changedGameModes.append(params)
     return
   }
 
   log("notify_game_modes_changed")
-  ::g_matching_game_modes.onGameModesChangedNotify(getTblValue("added", params, null),
-                                                 getTblValue("removed", params, null),
-                                                 getTblValue("changed", params, null))
+  let { added = null, removed = null, changed = null } = params
+  ::g_matching_game_modes.onGameModesChangedNotify(added, removed, changed)
 }
 
-subscriptions.addListenersWithoutEnv({
-  SignOut = @(_p) clearChangedGameModesParams()
-  BattleEnded = function(_p) {
-    if (::is_in_flight() || changedGameModes.paramsArray.len() == 0)
-      return
+let function onClustersChanged(params) {
+  log("notify_clusters_changed")
+  ::g_clusters.onClustersChanged(params)
+}
 
-    foreach (params in changedGameModes.paramsArray)
-      ::notify_game_modes_changed(params)
-    clearChangedGameModesParams()
-  }
-})
-
-::notify_game_modes_changed_rnd_delay <- function notify_game_modes_changed_rnd_delay(params) {
+let function onGameModesChangedRndDelay(params) {
   let maxFetchDelaySec = 60
   let rndDelaySec = rnd() % maxFetchDelaySec
-  log("notify_game_modes_changed_rnd_delay " + rndDelaySec)
-  ::g_delayed_actions.add((@(params) function() { ::notify_game_modes_changed(params) })(params),
-                        rndDelaySec * 1000)
+  log($"notify_game_modes_changed_rnd_delay {rndDelaySec}")
+  ::g_delayed_actions.add(@() notifyGameModesChanged(params), rndDelaySec * 1000)
 }
 
-::on_queue_info_updated <- function on_queue_info_updated(params) {
-  ::broadcastEvent("QueueInfoRecived", { queue_info = params })
+let function onQueueInfoUpdated(params) {
+  broadcastEvent("QueueInfoRecived", { queue_info = params })
 }
 
-::notify_queue_join <- function notify_queue_join(params) {
+let function onQueueJoin(params) {
   let queue = ::queues.createQueue(params)
   ::queues.afterJoinQueue(queue)
 }
 
-::notify_queue_leave <- function notify_queue_leave(params) {
+let function notifyQueueLeave(params) {
   ::queues.afterLeaveQueues(params)
 }
 
-::fetch_clusters_list <- function fetch_clusters_list(params, cb) {
-  ::matching_api_func("wtmm_static.fetch_clusters_list", cb, params)
+let function fetchClustersList(params, cb) {
+  matchingApiFunc("wtmm_static.fetch_clusters_list", cb, params)
 }
 
-::fetch_game_modes_info <- function fetch_game_modes_info(params, cb) {
-  ::matching_api_func("match.fetch_game_modes_info", cb, params)
+let function fetchGameModesInfo(params, cb) {
+  matchingApiFunc("match.fetch_game_modes_info", cb, params)
 }
 
-::fetch_game_modes_digest <- function fetch_game_modes_digest(params, cb) {
-  ::matching_api_func("wtmm_static.fetch_game_modes_digest", cb, params)
+let function fetchGameModesDigest(params, cb) {
+  matchingApiFunc("wtmm_static.fetch_game_modes_digest", cb, params)
 }
 
-::leave_session_queue <- function leave_session_queue(params, cb) {
-  ::matching_api_func("match.leave_queue", cb, params)
-}
+local debug_mm = null
+register_command(@(enable) debug_mm = enable, "matchmacking.set_debug_mm")
 
-::enqueue_in_session <- function enqueue_in_session(params, cb) {
+let function enqueueInSession(params, cb) {
   let missionName = ::get_forced_network_mission()
   if (missionName.len() > 0)
     params["forced_network_mission"] <- missionName
@@ -104,20 +81,32 @@ subscriptions.addListenersWithoutEnv({
   if (debug_mm != null)
     params["debug_mm"] <- debug_mm
 
-  ::matching_api_func("match.enqueue", cb, params)
+  matchingApiFunc("match.enqueue", cb, params)
 }
 
-foreach (notificationName, callback in
-          {
-            ["match.notify_clusters_changed"] = ::notify_clusters_changed,
+matchingRpcSubscribe("match.notify_clusters_changed", onClustersChanged)
+matchingRpcSubscribe("match.notify_game_modes_changed", onGameModesChangedRndDelay)
+matchingRpcSubscribe("match.update_queue_info", onQueueInfoUpdated)
+matchingRpcSubscribe("match.notify_queue_join", onQueueJoin)
+matchingRpcSubscribe("match.notify_queue_leave", notifyQueueLeave)
 
-            ["match.notify_game_modes_changed"] = ::notify_game_modes_changed_rnd_delay,
+subscriptions.addListenersWithoutEnv({
+  SignOut = @(_) clearChangedGameModesParams()
+  BattleEnded = function(_) {
+    if (::is_in_flight() || changedGameModes.len() == 0)
+      return
 
-            ["match.update_queue_info"] = ::on_queue_info_updated,
+    foreach (params in changedGameModes)
+      notifyGameModesChanged(params)
 
-            ["match.notify_queue_join"] = ::notify_queue_join,
+    clearChangedGameModesParams()
+  }
+})
 
-            ["match.notify_queue_leave"] = ::notify_queue_leave
-          }
-        )
-  ::matching_rpc_subscribe(notificationName, callback)
+return {
+  notifyQueueLeave
+  enqueueInSession
+  fetchGameModesDigest
+  fetchGameModesInfo
+  fetchClustersList
+}

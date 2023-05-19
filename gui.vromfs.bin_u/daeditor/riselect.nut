@@ -1,7 +1,7 @@
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
 from "string" import regexp
-from "ecs" import *
+from "%sqstd/ecs.nut" import *
 
 let DataBlock = require("DataBlock")
 

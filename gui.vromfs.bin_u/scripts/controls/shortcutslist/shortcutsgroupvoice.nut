@@ -44,7 +44,7 @@ groupList.append(
       let old  = joyParams.useJoystickMouseForVoiceMessage
       joyParams.useJoystickMouseForVoiceMessage = objValue
       if (joyParams.useJoystickMouseForVoiceMessage != old)
-        ::set_controls_preset("")
+        ::g_controls_manager.commitControls()
     }
   }
   {
@@ -56,7 +56,7 @@ groupList.append(
       let old  = joyParams.useMouseForVoiceMessage
       joyParams.useMouseForVoiceMessage = objValue
       if (joyParams.useMouseForVoiceMessage != old)
-        ::set_controls_preset("")
+        ::g_controls_manager.commitControls()
     }
   }
 )

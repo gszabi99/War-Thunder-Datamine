@@ -1,5 +1,5 @@
 from "%darg/ui_imports.nut" import *
-from "ecs" import *
+from "%sqstd/ecs.nut" import *
 
 let {getValFromObj, compValToString} = require("attrUtil.nut")
 

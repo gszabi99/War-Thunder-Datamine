@@ -43,6 +43,8 @@ let MfdVdiVisible = Watched(false)
 let MfdVdiPosSize = [0, 0, 0, 0]
 let VdiColor = Watched(Color(255, 255, 0, 240))
 let IsOnGround = Watched(false)
+let DigitalDevicesVisible = Watched(false)
+let DigDevicesPosSize = [0, 0, 0, 0]
 
 let planeState = {
   BlkFileName,
@@ -84,7 +86,9 @@ let planeState = {
   MfdVdiPosSize,
   VdiColor,
   IsOnGround,
-  AirCannonMode
+  AirCannonMode,
+  DigitalDevicesVisible,
+  DigDevicesPosSize
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {
@@ -113,6 +117,13 @@ interop.updatePlaneVdiPosSize <- function(x, y, w, h) {
   MfdVdiPosSize[1] = y
   MfdVdiPosSize[2] = w
   MfdVdiPosSize[3] = h
+}
+
+interop.updateDigDevicesPosSize <- function(x, y, w, h) {
+  DigDevicesPosSize[0] = x
+  DigDevicesPosSize[1] = y
+  DigDevicesPosSize[2] = w
+  DigDevicesPosSize[3] = h
 }
 
 interop.updateAimLockPos <- function(x, y) {

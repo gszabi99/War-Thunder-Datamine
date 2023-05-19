@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -189,7 +190,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (!missionsTbl)
       return
 
-    let missionsNames = ::u.keys(missionsTbl)
+    let missionsNames = u.keys(missionsTbl)
     this.fullMissionsList = this.misListType.getMissionsListByNames(missionsNames)
     this.fullMissionsList = this.misListType.sortMissionsByName(this.fullMissionsList)
     this.loadChosenMissions()
@@ -202,7 +203,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   function loadChosenMissions() {
     this.chosenMissionsList.clear()
     let blk = ::load_local_account_settings(this.getMissionsSaveId())
-    if (!::u.isDataBlock(blk))
+    if (!u.isDataBlock(blk))
       return
 
     let chosenNames = blk % CHOSEN_EVENT_MISSIONS_SAVE_KEY
@@ -212,7 +213,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   function saveChosenMissions() {
-    let names = ::u.map(this.chosenMissionsList, @(m) m.id)
+    let names = u.map(this.chosenMissionsList, @(m) m.id)
     ::save_local_account_settings(this.getMissionsSaveId(), ::array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
   }
 
@@ -294,7 +295,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       res.cluster = ::g_clusters.clusters_info.filter(@(info) info.isDefault)[0].name
 
     if (!this.isAllMissionsSelected())
-      res.missions <- ::u.map(this.chosenMissionsList, @(m) m.id)
+      res.missions <- u.map(this.chosenMissionsList, @(m) m.id)
 
     return res
   }

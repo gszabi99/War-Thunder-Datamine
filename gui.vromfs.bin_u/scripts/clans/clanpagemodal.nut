@@ -1,11 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getPlayerName,
@@ -147,7 +150,7 @@ foreach (idx, item in clan_member_list) {
         if (!this.clanData)
           return this.goBack()
         this.fillClanPage()
-        ::broadcastEvent("ClanInfoAvailable", { clanId = this.clanData.id })
+        broadcastEvent("ClanInfoAvailable", { clanId = this.clanData.id })
       }
       this.afterSlotOpError = function(_result) {
         this.goBack()
@@ -197,7 +200,7 @@ foreach (idx, item in clan_member_list) {
     if (!checkObj(obj))
       return
 
-    if (!::u.isEmpty(feature) && !hasFeature(feature))
+    if (!u.isEmpty(feature) && !hasFeature(feature))
       text = ""
     text = ::g_chat.filterMessageText(text, false)
 
@@ -362,7 +365,7 @@ foreach (idx, item in clan_member_list) {
     if (showClanSeasonRewards) {
       let containerObj = this.scene.findObject("clan_awards_container")
       if (checkObj(containerObj))
-        this.guiScene.performDelayed(this, (@(containerObj, clanData) function () {
+        this.guiScene.performDelayed(this, (@(clanData) function () {
           if (!this.isValid())
             return
 
@@ -376,10 +379,10 @@ foreach (idx, item in clan_member_list) {
                 markup = "".concat(markup,
                   "layeredIconContainer { size:t='@clanMedalSizeMin,",
                   "@clanMedalSizeMin'; overflow:t='hidden' ",
-                  ::LayersIcon.getIconData(m.iconStyle, null, null, null, m.iconParams, m.iconConfig),
+                  LayersIcon.getIconData(m.iconStyle, null, null, null, m.iconParams, m.iconConfig),
                   "}")
           this.guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
-        })(containerObj, this.clanData))
+        })(this.clanData))
     }
 
     this.updateAdminModeSwitch()
@@ -728,9 +731,9 @@ foreach (idx, item in clan_member_list) {
     if (columnId == ::ranked_column_prefix)
       fieldName = $"{::ranked_column_prefix}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
     else {
-      let category = ::u.search(clan_member_list, (@(columnId) function(category) { return category.id == columnId })(columnId))
+      let category = u.search(clan_member_list, (@(columnId) function(category) { return category.id == columnId })(columnId))
       let field = category?.field ?? columnId
-      fieldName = ::u.isFunction(field) ? field() : field
+      fieldName = u.isFunction(field) ? field() : field
     }
     return fieldName
   }
@@ -767,7 +770,7 @@ foreach (idx, item in clan_member_list) {
       return column.id
 
     let field = column?.field ?? column.id
-    local fieldId = ::u.isFunction(field) ? field() : field
+    local fieldId = u.isFunction(field) ? field() : field
     if (column.byDifficulty)
       fieldId = $"{fieldId}{::g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
     return fieldId
@@ -819,7 +822,7 @@ foreach (idx, item in clan_member_list) {
     if (!("members" in ::my_clan_info))
       return
 
-    let member = ::u.search(
+    let member = u.search(
       ::my_clan_info.members,
       (@(nick) function (member) { return member.nick == nick })(nick)
     )
@@ -858,7 +861,7 @@ foreach (idx, item in clan_member_list) {
   }
 
   function getColumnDataById(id) {
-    return ::u.search(clan_member_list, (@(id) function(c) { return c.id == id })(id))
+    return u.search(clan_member_list, (@(id) function(c) { return c.id == id })(id))
   }
 
   function onStatsCategory(obj) {
@@ -942,7 +945,7 @@ foreach (idx, item in clan_member_list) {
     if (!this.curPlayer)
       return
 
-    let curMember = ::u.search(this.clanData.members, (@(member) member.nick == this.curPlayer).bindenv(this))
+    let curMember = u.search(this.clanData.members, (@(member) member.nick == this.curPlayer).bindenv(this))
     if (!curMember)
       return
 
@@ -967,7 +970,7 @@ foreach (idx, item in clan_member_list) {
   function onClanVehicles(_obj = null) {
     vehiclesModal.open(@(u)u.isSquadronVehicle() && u.isVisibleInShop(), {
       wndTitleLocId = "clan/vehicles"
-      lastSelectedUnit = ::getAircraftByName(::clan_get_researching_unit())
+      lastSelectedUnit = getAircraftByName(::clan_get_researching_unit())
     })
   }
 
@@ -1133,7 +1136,7 @@ foreach (idx, item in clan_member_list) {
     let res = {}
     foreach (member in this.clanData.members) {
       res[member.nick] <- this.getDefaultWwMemberData(member)
-      let data = ::u.search(membersData, @(inst) inst?._id == member.uid.tointeger())
+      let data = u.search(membersData, @(inst) inst?._id == member.uid.tointeger())
       if (data != null)
         res[member.nick].__update(data)
     }

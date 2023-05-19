@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 enum PLAYBACK_STATUS {
   INVALID,
@@ -22,16 +24,16 @@ enum PLAYBACK_STATUS {
 
 ::g_sound.onCachedMusicDowloaded <- function onCachedMusicDowloaded(playbackId, success) {
   this.playbackStatus[playbackId] <- success ? PLAYBACK_STATUS.VALID : PLAYBACK_STATUS.INVALID
-  ::broadcastEvent("PlaybackDownloaded", { id = playbackId, success = success })
+  broadcastEvent("PlaybackDownloaded", { id = playbackId, success = success })
 }
 
 ::g_sound.onCachedMusicPlayEnd <- function onCachedMusicPlayEnd(playbackId) {
   this.curPlaying = ""
-  ::broadcastEvent("FinishedPlayback", { id = playbackId })
+  broadcastEvent("FinishedPlayback", { id = playbackId })
 }
 
 ::g_sound.preparePlayback <- function preparePlayback(url, playbackId) {
-  if (::u.isEmpty(url)
+  if (u.isEmpty(url)
       || this.getPlaybackStatus(playbackId) != PLAYBACK_STATUS.INVALID)
     return
 
@@ -72,8 +74,8 @@ enum PLAYBACK_STATUS {
   this.playbackStatus.clear()
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_sound")
-::subscribe_handler(::g_sound, ::g_listener_priority.DEFAULT_HANDLER)
+g_script_reloader.registerPersistentDataFromRoot("g_sound")
+subscribe_handler(::g_sound, ::g_listener_priority.DEFAULT_HANDLER)
 
 //C++ call
 ::on_cached_music_play_end <- ::g_sound.onCachedMusicPlayEnd.bindenv(::g_sound)

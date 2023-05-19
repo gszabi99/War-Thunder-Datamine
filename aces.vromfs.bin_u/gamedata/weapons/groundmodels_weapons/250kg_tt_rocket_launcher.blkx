@@ -19,6 +19,27 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "bulletName": "250kg_tt",
+    "caliber": 0.425,
+    "length": 0.68,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.2,
+    "distFromCmToStab": 0.5,
+    "mass": 250.0,
+    "massEnd": 233.0,
+    "timeFire": 1.5,
+    "force": 22500.0,
+    "thrustDeviation": 0.01,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 135.0,
+    "maxDistance": 1800.0,
+    "minDistance": 30.0,
+    "maxDeltaAngle": 0.5,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
@@ -36,35 +57,23 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/rocket_he.ivf",
-    "bulletName": "250kg_tt",
-    "caliber": 0.425,
-    "mass": 250.0,
-    "massEnd": 233.0,
     "explosiveType": "tnt",
     "explosiveMass": 130.0,
-    "maxDeltaAngle": 0.5,
     "dragCx": 0.01,
-    "length": 0.68,
-    "distFromCmToStab": 0.5,
-    "CxK": 1.2,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "force": 22500.0,
-    "timeFire": 1.5,
-    "thrustDeviation": 0.01,
     "explosionEffect": [
       "bomb_expl_200kg",
       "hit_206_290mm_metal_he"
     ],
-    "fireEffect": "rocket_fire_dark",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_early_med",
+    "smokeEffect": "smoke_rocket_tail_dark",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDistance": 1800.0,
-    "minDistance": 30.0,
+    "effectOffset": [
+      -0.4,
+      0.0,
+      0.0
+    ],
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
     "explosionPatchRadius": [
@@ -83,10 +92,6 @@
     "explodeTreshold": 0.1,
     "fuseDelayDist": 0.0,
     "rendinstDamageRadius": 18.0,
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 135.0,
     "price": 3000.0,
     "stabilityRicochetModifier": {
       "mod1": [
@@ -115,7 +120,7 @@
         "countPortion": 0.16,
         "segment": [
           {
-            "radiusScale": 0.15,
+            "radiusScale": 0.3,
             "penetrationScale": 3.5,
             "damageScale": 1.0,
             "angles": [
@@ -127,7 +132,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               30.0,
@@ -137,7 +142,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               70.0,
@@ -148,7 +153,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               111.0,
@@ -158,7 +163,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               181.0,
@@ -168,7 +173,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               250.0,
@@ -179,7 +184,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               291.0,

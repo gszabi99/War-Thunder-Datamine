@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -85,7 +86,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
     let map = this.getMap()
     if (map)
       txtList.append(map.getDescription(false))
-    return ::g_string.implode(txtList, "\n")
+    return "\n".join(txtList, true)
   }
 
   function getStartDateTxt() {
@@ -133,7 +134,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
         return res
       }
 
-      if (!::u.isEmpty(summaryCantJoinReasonText))
+      if (!u.isEmpty(summaryCantJoinReasonText))
         summaryCantJoinReasonText += "\n"
 
       summaryCantJoinReasonText += loc(country) + loc("ui/colon") + reasonData.reasonText
@@ -221,7 +222,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
     let countriesByTeams = this.getCountriesByTeams()
     let sideCountries = getTblValue(side, countriesByTeams)
 
-    return ::u.filter(
+    return u.filter(
       this.getArmyGroups(),
       (@(sideCountries) function(ag) {
         return isInArray(getTblValue("cntr", ag, ""), sideCountries)
@@ -286,7 +287,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
 
       if (!(side in res))
         res[side] <- []
-      ::u.appendOnce(country, res[side])
+      u.appendOnce(country, res[side])
     }
     return res
   }

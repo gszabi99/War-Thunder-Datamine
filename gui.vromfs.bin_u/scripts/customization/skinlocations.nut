@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -49,7 +50,7 @@ let function debugLocationMask(mask) {
   foreach (name, bit in locationTypeNameToId)
     if (bit & mask)
       list.append(name)
-  return mask + ": " + string.implode(list, ", ")
+  return mask + ": " + ", ".join(list, true)
 }
 
 let function getLocationMaskByNamesArray(namesList) {
@@ -116,7 +117,7 @@ let function getMaskByLevel(level) {
   local res = 0
   let levelBlk = blkFromPath($"{string.slice(level, 0, -3)}blk")
   let vehiclesSkinsBlk = levelBlk?.technicsSkins
-  if (::u.isDataBlock(vehiclesSkinsBlk))
+  if (u.isDataBlock(vehiclesSkinsBlk))
     res = getLocationMaskByNamesArray(vehiclesSkinsBlk % "groundSkin")
 
   levelsMask[level] <- res

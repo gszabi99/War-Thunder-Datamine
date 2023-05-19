@@ -11,7 +11,7 @@ let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { interpolateArray } = require("%sqstd/math.nut")
 let { get_selected_mission } = require("mission")
 
-let log = @(...) println(" ".join(vargv))
+let log = @(...) print(" ".join(vargv))
 
 ::DS_UT_AIRCRAFT <- "Air"
 ::DS_UT_TANK <- "Tank"

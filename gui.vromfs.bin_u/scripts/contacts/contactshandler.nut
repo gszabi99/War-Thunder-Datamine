@@ -5,10 +5,11 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let DataBlock = require("DataBlock")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { clearBorderSymbols, utf8ToLower } = require("%sqstd/string.nut")
 let { parse_json } = require("json")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -23,6 +24,8 @@ let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { is_chat_message_empty } = require("chat")
 let { isGuestLogin } = require("%scripts/user/userUtils.nut")
 let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManager.nut")
+let { searchContactsResults, searchContacts, addContact, removeContact
+} = require("%scripts/contacts/contactsState.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -46,7 +49,6 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
   curPlayer = null
   curHoverObjId = null
 
-  maxSearchPlayers = 20
   searchInProgress = false
   searchShowNotFound = false
   searchShowDefaultOnReset = false
@@ -55,7 +57,7 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
 
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     this.listNotPlayerChildsByGroup = {}
   }
 
@@ -269,7 +271,7 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
     }
 
     this.listNotPlayerChildsByGroup[gName] = this.listNotPlayerChildsByGroup[gName] + playerListView.playerButton.len()
-    return ::handyman.renderCached(("%gui/contacts/playerList.tpl"), playerListView)
+    return handyman.renderCached(("%gui/contacts/playerList.tpl"), playerListView)
   }
 
   function createPlayerButtonView(gId, gIcon, callback) {
@@ -513,7 +515,7 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
   }
 
   function setSearchText(search_text, set_in_edit_box = true) {
-    this.searchText = ::g_string.utf8ToLower(search_text)
+    this.searchText = utf8ToLower(search_text)
     if (set_in_edit_box) {
       let searchEditBox = this.scene.findObject("search_edit_box")
       if (checkObj(searchEditBox)) {
@@ -534,7 +536,7 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
       if (!checkObj(contactObject))
         continue
 
-      local contactName = ::g_string.utf8ToLower(contact_data.name)
+      local contactName = utf8ToLower(contact_data.name)
       contactName = platformModule.getPlayerName(contactName)
       let searchResult = this.searchText == "" || contactName.indexof(this.searchText) != null
       contactObject.show(searchResult)
@@ -873,11 +875,6 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
         : "contacts/choosePlayer"))
   }
 
-  function editPlayerInList(obj, listName, add) {
-    this.updateCurPlayer(obj)
-    ::editContactMsgBox(this.curPlayer, listName, add)
-  }
-
   function updateCurPlayer(button_object) {
     if (!checkObj(button_object))
       return
@@ -903,19 +900,23 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
   }
 
   function onFriendAdd(obj) {
-    this.editPlayerInList(obj, EPL_FRIENDLIST, true)
+    this.updateCurPlayer(obj)
+    addContact(this.curPlayer, EPL_FRIENDLIST)
   }
 
   function onFriendRemove(obj) {
-    this.editPlayerInList(obj, EPL_FRIENDLIST, false)
+    this.updateCurPlayer(obj)
+    removeContact(this.curPlayer, EPL_FRIENDLIST)
   }
 
   function onBlacklistAdd(obj) {
-    this.editPlayerInList(obj, EPL_BLOCKLIST, true)
+    this.updateCurPlayer(obj)
+    addContact(this.curPlayer, EPL_BLOCKLIST)
   }
 
   function onBlacklistRemove(obj) {
-    this.editPlayerInList(obj, EPL_BLOCKLIST, false)
+    this.updateCurPlayer(obj)
+    removeContact(this.curPlayer, EPL_BLOCKLIST)
   }
 
   function onPlayerMsg(obj) {
@@ -1003,25 +1004,20 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
     let searchGroupText = loc($"contacts/{EPLX_SEARCH}")
     searchGroupActiveTextObject.setValue($"{searchGroupText}: {value}")
 
-    let taskId = ::find_nicks_by_prefix(value, this.maxSearchPlayers, true)
-    if (taskId >= 0) {
-      this.searchInProgress = true
-      ::contacts[EPLX_SEARCH] <- []
-      this.updateSearchList()
-    }
-    ::g_tasker.addTask(taskId, null, Callback(this.onSearchCb, this))
+    searchContacts(value, Callback(this.onSearchCb, this))
+    this.searchInProgress = true
+    ::contacts[EPLX_SEARCH] <- []
+    this.updateSearchList()
   }
 
   function onSearchCb() {
     this.searchInProgress = false
 
-    local searchRes = DataBlock()
-    searchRes = ::get_nicks_find_result_blk()
+    let searchRes = searchContactsResults.value
     ::contacts[EPLX_SEARCH] <- []
-
     local brokenData = false
-    for (local i = 0; i < searchRes.paramCount(); i++) {
-      let contact = ::getContact(searchRes.getParamName(i), searchRes.getParamValue(i))
+    foreach (uid, nick in searchRes) {
+      let contact = ::getContact(uid, nick)
       if (contact) {
         if (!contact.isMe() && !contact.isInFriendGroup() && platformModule.isPs4XboxOneInteractionAvailable(contact.name))
           ::contacts[EPLX_SEARCH].append(contact)
@@ -1031,8 +1027,8 @@ let { EPLX_SEARCH, contactsWndSizes } = require("%scripts/contacts/contactsManag
     }
 
     if (brokenData) {
-      let errText = "broken result on find_nicks_by_prefix cb: \n" + toString(searchRes)
-      ::script_net_assert_once("broken searchCb data", errText)
+      let searchResStr = toString(searchRes) // warning disable: -declared-never-used
+      ::script_net_assert_once("broken_searchCb_data", "broken result on searchContacts cb")
     }
 
     this.updateSearchList()

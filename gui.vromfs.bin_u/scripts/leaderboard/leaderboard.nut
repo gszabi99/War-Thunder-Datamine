@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -372,7 +373,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
  * @return markup ready for insertion into scene
  */
 ::getLeaderboardItemWidgets <- function getLeaderboardItemWidgets(view) {
-  return ::handyman.renderCached("%gui/leaderboard/leaderboardItemWidget.tpl", view)
+  return handyman.renderCached("%gui/leaderboard/leaderboardItemWidget.tpl", view)
 }
 
 ::gui_handlers.LeaderboardWindow <- class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -699,7 +700,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
       return
 
     let tplView = this.getTopItemsTplView()
-    let data = ::handyman.renderCached("%gui/leaderboard/leaderboardTopItem.tpl", tplView)
+    let data = handyman.renderCached("%gui/leaderboard/leaderboardTopItem.tpl", tplView)
 
     this.guiScene.replaceContentFromText(holder, data, data.len(), this)
   }
@@ -834,7 +835,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
         selected = idx == 0
       })
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(nestObj, data, data.len(), this)
   }
 

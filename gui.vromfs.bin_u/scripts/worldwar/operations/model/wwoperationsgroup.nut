@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -58,14 +59,14 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 
     this._countriesByTeams = {}
     foreach (op in this.getOperationsList())
-      this._countriesByTeams = ::u.tablesCombine(this._countriesByTeams, op.getCountriesByTeams(),
+      this._countriesByTeams = u.tablesCombine(this._countriesByTeams, op.getCountriesByTeams(),
         function(list1, list2) {
           if (!list1)
             return clone list2
           if (!list2)
             return list1
           foreach (country in list2)
-            ::u.appendOnce(country, list1)
+            u.appendOnce(country, list1)
           return list1
         }
       )
@@ -97,20 +98,20 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
     }
 
     //find operation which can join by country
-    let operation = ::u.search(this.getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
+    let operation = u.search(this.getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
     if (!operation)
       return res
     return operation.getCantJoinReasonData(country)
   }
 
   function join(country) {
-    let opList = ::u.filter(this.getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
+    let opList = u.filter(this.getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
     if (!opList.len()) {
       ::showInfoMsgBox(this.getCantJoinReasonData(country).reasonText)
       return false
     }
 
-    ::u.chooseRandom(opList).join(country)
+    u.chooseRandom(opList).join(country)
   }
 
   function isMyClanParticipate() {

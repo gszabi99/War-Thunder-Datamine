@@ -41,13 +41,13 @@
             {
               "icontype": "fighter",
               "side": "player",
-              "target": "airfield00",
-              "lookAt": "airfield01"
+              "target": "briefing_airfielnd_start_point",
+              "lookAt": "briefing_airfielnd_end_point"
             },
             {
               "icontype": "airfield",
               "side": "ally",
-              "target": "airfield01"
+              "target": "airfield"
             }
           ]
         }
@@ -71,15 +71,8 @@
       },
       "conditions": {},
       "actions": {
-        "addAirfield": {
-          "runwayStart": "airfield00",
-          "runwayEnd": "airfield01",
-          "runwayWidth": 50.0,
-          "army": 1,
-          "spawnPoint": "spawnpoint"
-        },
         "spawnOnAirfield": {
-          "runwayName": "airfield00",
+          "runwayName": "airfield",
           "objects": "armada_01"
         },
         "unitSetIndication": {
@@ -94,14 +87,14 @@
           ]
         },
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "structures_04",
             "structures_05"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "lockSpeed": true,
           "waypointReachedDist": 0.0
         },
@@ -142,7 +135,7 @@
           "time": 3.0
         },
         "spawnOnAirfield": {
-          "runwayName": "airfield00",
+          "runwayName": "airfield",
           "objects": "armada_01"
         }
       },
@@ -308,8 +301,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -340,8 +333,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -372,8 +365,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -404,8 +397,8 @@
             ],
             "props": {
               "speed": 300.0,
-              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
@@ -646,61 +639,40 @@
         },
         "way": {}
       }
-    ]
+    ],
+    "objectGroups": {
+      "name": "airfield",
+      "tm": [
+        [
+          -0.594079,
+          0.0,
+          0.804407
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.804407,
+          0.0,
+          -0.594079
+        ],
+        [
+          503.583,
+          48.6825,
+          5879.28
+        ]
+      ],
+      "unit_class": "dynaf_universal_1line_3000_a",
+      "objLayer": 2,
+      "props": {
+        "army": 1,
+        "active": true
+      }
+    }
   },
   "areas": {
-    "airfield00": {
-      "type": "Sphere",
-      "tm": [
-        [
-          64.2788,
-          0.0,
-          76.6044
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          -76.6044,
-          0.0,
-          64.2788
-        ],
-        [
-          -528.85,
-          39.2,
-          6270.55
-        ]
-      ],
-      "props": {}
-    },
-    "airfield01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          64.2788,
-          0.0,
-          76.6044
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          -76.6044,
-          0.0,
-          64.2788
-        ],
-        [
-          426.25,
-          39.2,
-          5503.05
-        ]
-      ],
-      "props": {}
-    },
     "spawnpoint": {
       "type": "Sphere",
       "tm": [
@@ -725,6 +697,60 @@
           6222.78
         ]
       ],
+      "props": {}
+    },
+    "briefing_airfielnd_end_point": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1563.81,
+          94.3621,
+          4801.33
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_airfielnd_start_point": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -292.202,
+          94.3617,
+          7345.48
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },
@@ -776,8 +802,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -808,8 +834,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -840,8 +866,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -872,8 +898,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -904,8 +930,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
@@ -936,8 +962,8 @@
           ],
           "props": {
             "speed": 300.0,
-            "tas": false,
             "moveType": "USE_SPLINES",
+            "tas": false,
             "shouldKeepFormation": false,
             "canUsePathFinder": false
           }

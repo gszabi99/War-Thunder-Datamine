@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let chard = require("chard")
 let DataBlock = require("DataBlock")
 
@@ -17,7 +18,7 @@ let function trainCrewUnitWithoutSwitchCurrUnit(crew, unit) {
     return
 
   let trainedUnit = unit
-  let onSuccessCb = @() ::broadcastEvent("CrewTakeUnit", { unit = trainedUnit })
+  let onSuccessCb = @() broadcastEvent("CrewTakeUnit", { unit = trainedUnit })
   let onTrainCrew = function() {
     let taskId = chard.trainCrewAircraft(crewId, unitName, true)
     let taskOptions = {

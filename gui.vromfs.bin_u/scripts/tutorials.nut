@@ -31,7 +31,7 @@ let function getReserveAircraftName(paramsTable) {
   let trainedSpec = getTblValue("trainedSpec", preferredCrew, {})
 
   foreach (unitName, _unitSpec in trainedSpec) {
-    let unit = ::getAircraftByName(unitName)
+    let unit = getAircraftByName(unitName)
     if (unit != null && checkReserveUnit(unit, paramsTable))
       return unit.name
   }

@@ -4,7 +4,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -42,7 +43,7 @@ enum ChangeCountryAction {
       shopFilterItems = this.createShopFilterItems(this.availableCountries)
     }
 
-    let data = ::handyman.renderCached("%gui/changeCountry.tpl", view)
+    let data = handyman.renderCached("%gui/changeCountry.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
     this.buttonObject = this.getObj("btn_apply")
@@ -109,7 +110,7 @@ enum ChangeCountryAction {
   }
 
   function getValueByCountry(country) {
-    return ::find_in_array(this.getAvailableCountries(), country, 0)
+    return find_in_array(this.getAvailableCountries(), country, 0)
   }
 
   function getCountryByValue(value) {

@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -32,7 +33,7 @@ let function getQueueWaitIconImageMarkup() {
   if (circlesCount)
     foreach (idx, icon in view.icons)
       icon.rotation = (rotationStart + idx * FULL_CIRCLE_GRAD / circlesCount) % FULL_CIRCLE_GRAD
-  return ::handyman.renderCached("%gui/queue/queueWaitingIcon.tpl", view)
+  return handyman.renderCached("%gui/queue/queueWaitingIcon.tpl", view)
 }
 
 return {

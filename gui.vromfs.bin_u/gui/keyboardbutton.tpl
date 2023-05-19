@@ -1,7 +1,7 @@
 keyboardButton {
   keyboardButtonText {
     position:t='relative'
-    pos:t='pw/2 - w/2, ph/2.5 - h/2'
+    pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
     text:t='<<text>>'
   }
 }

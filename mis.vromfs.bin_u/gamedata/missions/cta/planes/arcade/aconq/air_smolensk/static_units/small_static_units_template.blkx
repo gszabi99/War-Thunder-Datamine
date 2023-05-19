@@ -1,0 +1,2970 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/air_israel.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "static_units_small_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "static units"
+          },
+          {
+            "value": "static aaa"
+          },
+          {
+            "value": ""
+          }
+        ],
+        "unitSetProperties": [
+          {
+            "object": [
+              "t1_artillery_small_squad",
+              "t1_bunkers_small_squad",
+              "t2_artillery_small_squad",
+              "t2_bunkers_small_squad"
+            ],
+            "accuracy": 0.1,
+            "checkVisibilityTarget": false
+          },
+          {
+            "object": [
+              "t1_aaa_small_squad",
+              "t2_aaa_small_squad"
+            ],
+            "targetGnd": false,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "DelayAfterShoot": 3.0
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "t1_trench_small_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.999235,
+            -0.0390957
+          ],
+          [
+            0.0,
+            0.0390957,
+            0.999235
+          ],
+          [
+            -1861.19,
+            110.578,
+            -17326.7
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_trench_small_02",
+        "tm": [
+          [
+            0.999217,
+            0.0395814,
+            0.000365641
+          ],
+          [
+            -0.0395829,
+            0.999202,
+            0.00548261
+          ],
+          [
+            -0.000148339,
+            -0.00549279,
+            0.999985
+          ],
+          [
+            -5900.07,
+            146.517,
+            -17320.2
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_trench_small_03",
+        "tm": [
+          [
+            0.999998,
+            -0.00177577,
+            0.000365641
+          ],
+          [
+            0.00177374,
+            0.999983,
+            0.00548261
+          ],
+          [
+            -0.00037537,
+            -0.00548195,
+            0.999985
+          ],
+          [
+            -5164.0,
+            142.015,
+            -17918.8
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_trench_small_04",
+        "tm": [
+          [
+            0.999998,
+            -0.00175253,
+            0.000464424
+          ],
+          [
+            0.00177374,
+            0.998723,
+            -0.0504759
+          ],
+          [
+            -0.00037537,
+            0.0504766,
+            0.998725
+          ],
+          [
+            -2886.71,
+            113.541,
+            -17981.0
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_trench_small_05",
+        "tm": [
+          [
+            0.99984,
+            0.0178835,
+            0.000365641
+          ],
+          [
+            -0.0178853,
+            0.999825,
+            0.00548261
+          ],
+          [
+            -0.000267528,
+            -0.00548827,
+            0.999985
+          ],
+          [
+            -3967.14,
+            137.435,
+            -18188.2
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_trench_small_01",
+        "tm": [
+          [
+            -0.972323,
+            0.0099852,
+            0.233428
+          ],
+          [
+            0.0294871,
+            0.996342,
+            0.080206
+          ],
+          [
+            -0.231773,
+            0.0848692,
+            -0.96906
+          ],
+          [
+            -1840.6,
+            115.487,
+            -13078.7
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_trench_small_02",
+        "tm": [
+          [
+            -0.953657,
+            0.0248516,
+            -0.299868
+          ],
+          [
+            0.0265494,
+            0.999647,
+            -0.00158808
+          ],
+          [
+            0.299722,
+            -0.00947571,
+            -0.953979
+          ],
+          [
+            -6082.75,
+            141.836,
+            -13092.8
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_trench_small_03",
+        "tm": [
+          [
+            -0.993024,
+            0.00932524,
+            0.11754
+          ],
+          [
+            0.0106064,
+            0.999891,
+            0.0102796
+          ],
+          [
+            -0.117431,
+            0.0114545,
+            -0.993015
+          ],
+          [
+            -5276.75,
+            140.639,
+            -12463.6
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_trench_small_04",
+        "tm": [
+          [
+            -0.997824,
+            0.0290503,
+            0.0591801
+          ],
+          [
+            0.0321159,
+            0.998155,
+            0.0515256
+          ],
+          [
+            -0.0575741,
+            0.0533142,
+            -0.996917
+          ],
+          [
+            -2567.36,
+            121.286,
+            -12492.8
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_trench_small_05",
+        "tm": [
+          [
+            -0.998011,
+            0.0317975,
+            0.054432
+          ],
+          [
+            0.035536,
+            0.996973,
+            0.0691505
+          ],
+          [
+            -0.0520685,
+            0.0709472,
+            -0.996121
+          ],
+          [
+            -3952.97,
+            102.881,
+            -12192.9
+          ]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ],
+    "structures": [
+      {
+        "name": "t1_art_small_01",
+        "tm": [
+          [
+            0.00976805,
+            0.0390938,
+            0.999188
+          ],
+          [
+            0.0,
+            0.999235,
+            -0.0390957
+          ],
+          [
+            -0.999952,
+            0.000381889,
+            0.00976058
+          ],
+          [
+            -1778.42,
+            116.629,
+            -17298.3
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_02",
+        "tm": [
+          [
+            0.00976805,
+            0.0390938,
+            0.999188
+          ],
+          [
+            0.0,
+            0.999235,
+            -0.0390957
+          ],
+          [
+            -0.999952,
+            0.000381889,
+            0.00976058
+          ],
+          [
+            -1943.51,
+            118.688,
+            -17328.7
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bunker_small_01",
+        "tm": [
+          [
+            -0.0885438,
+            0.0389422,
+            0.99531
+          ],
+          [
+            0.0,
+            0.999235,
+            -0.0390957
+          ],
+          [
+            -0.996072,
+            -0.00346168,
+            -0.0884761
+          ],
+          [
+            -1851.22,
+            122.428,
+            -17316.8
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_03",
+        "tm": [
+          [
+            0.00961206,
+            -0.00510589,
+            0.999941
+          ],
+          [
+            -0.0395829,
+            0.999202,
+            0.00548261
+          ],
+          [
+            -0.99917,
+            -0.0396332,
+            0.00940228
+          ],
+          [
+            -5817.57,
+            154.569,
+            -17291.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_04",
+        "tm": [
+          [
+            0.00961206,
+            -0.00510589,
+            0.999941
+          ],
+          [
+            -0.0395829,
+            0.999202,
+            0.00548261
+          ],
+          [
+            -0.99917,
+            -0.0396332,
+            0.00940228
+          ],
+          [
+            -5982.66,
+            151.445,
+            -17321.9
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bunker_small_02",
+        "tm": [
+          [
+            -0.0886221,
+            -0.00897591,
+            0.996025
+          ],
+          [
+            -0.0395829,
+            0.999202,
+            0.00548261
+          ],
+          [
+            -0.995279,
+            -0.0389397,
+            -0.0889066
+          ],
+          [
+            -5890.57,
+            158.298,
+            -17309.7
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_05",
+        "tm": [
+          [
+            0.00939268,
+            -0.00549904,
+            0.999941
+          ],
+          [
+            0.00177374,
+            0.999983,
+            0.00548261
+          ],
+          [
+            -0.999954,
+            0.00172214,
+            0.00940228
+          ],
+          [
+            -5081.23,
+            146.647,
+            -17890.1
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_06",
+        "tm": [
+          [
+            0.00939268,
+            -0.00549904,
+            0.999941
+          ],
+          [
+            0.00177374,
+            0.999983,
+            0.00548261
+          ],
+          [
+            -0.999954,
+            0.00172214,
+            0.00940228
+          ],
+          [
+            -5246.31,
+            150.354,
+            -17920.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bunker_small_03",
+        "tm": [
+          [
+            -0.0889175,
+            -0.00530319,
+            0.996025
+          ],
+          [
+            0.00177374,
+            0.999983,
+            0.00548261
+          ],
+          [
+            -0.996037,
+            0.0022542,
+            -0.0889066
+          ],
+          [
+            -5154.01,
+            153.392,
+            -17908.3
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_07",
+        "tm": [
+          [
+            0.00939268,
+            0.0504571,
+            0.998682
+          ],
+          [
+            0.00177374,
+            0.998723,
+            -0.0504759
+          ],
+          [
+            -0.999954,
+            0.00224551,
+            0.0092912
+          ],
+          [
+            -2803.95,
+            119.77,
+            -17952.6
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_08",
+        "tm": [
+          [
+            0.00939268,
+            0.0504571,
+            0.998682
+          ],
+          [
+            0.00177374,
+            0.998723,
+            -0.0504759
+          ],
+          [
+            -0.999954,
+            0.00224551,
+            0.0092912
+          ],
+          [
+            -2969.02,
+            121.771,
+            -17983.1
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bunker_small_04",
+        "tm": [
+          [
+            -0.0889175,
+            0.0504336,
+            0.994761
+          ],
+          [
+            0.00177374,
+            0.998723,
+            -0.0504759
+          ],
+          [
+            -0.996037,
+            -0.00272373,
+            -0.0888935
+          ],
+          [
+            -2876.72,
+            125.485,
+            -17971.2
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_09",
+        "tm": [
+          [
+            0.00949897,
+            -0.00531332,
+            0.999941
+          ],
+          [
+            -0.0178853,
+            0.999825,
+            0.00548261
+          ],
+          [
+            -0.999795,
+            -0.0179363,
+            0.00940228
+          ],
+          [
+            -3884.48,
+            143.693,
+            -18159.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_art_small_10",
+        "tm": [
+          [
+            0.00949897,
+            -0.00531332,
+            0.999941
+          ],
+          [
+            -0.0178853,
+            0.999825,
+            0.00548261
+          ],
+          [
+            -0.999795,
+            -0.0179363,
+            0.00940228
+          ],
+          [
+            -4049.6,
+            144.154,
+            -18189.9
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bunker_small_05",
+        "tm": [
+          [
+            -0.0887961,
+            -0.00705019,
+            0.996025
+          ],
+          [
+            -0.0178853,
+            0.999825,
+            0.00548261
+          ],
+          [
+            -0.995889,
+            -0.0173273,
+            -0.0889066
+          ],
+          [
+            -3957.38,
+            149.006,
+            -18177.8
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_01",
+        "tm": [
+          [
+            -0.24126,
+            0.0849627,
+            -0.966734
+          ],
+          [
+            0.0294871,
+            0.996342,
+            0.080206
+          ],
+          [
+            0.970012,
+            -0.00915578,
+            -0.242883
+          ],
+          [
+            -1927.57,
+            123.66,
+            -13086.7
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_02",
+        "tm": [
+          [
+            -0.24126,
+            0.0849627,
+            -0.966734
+          ],
+          [
+            0.0294871,
+            0.996342,
+            0.080206
+          ],
+          [
+            0.970012,
+            -0.00915578,
+            -0.242883
+          ],
+          [
+            -1759.91,
+            122.673,
+            -13095.6
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bunker_small_01",
+        "tm": [
+          [
+            -0.14477,
+            0.0836517,
+            -0.985923
+          ],
+          [
+            0.0294871,
+            0.996342,
+            0.080206
+          ],
+          [
+            0.989026,
+            -0.0174607,
+            -0.146707
+          ],
+          [
+            -1852.37,
+            127.879,
+            -13085.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_03",
+        "tm": [
+          [
+            0.290393,
+            -0.00923251,
+            -0.956863
+          ],
+          [
+            0.0265494,
+            0.999647,
+            -0.00158808
+          ],
+          [
+            0.956539,
+            -0.024943,
+            0.290535
+          ],
+          [
+            -6152.98,
+            148.556,
+            -13144.9
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_04",
+        "tm": [
+          [
+            0.290393,
+            -0.00923251,
+            -0.956863
+          ],
+          [
+            0.0265494,
+            0.999647,
+            -0.00158808
+          ],
+          [
+            0.956539,
+            -0.024943,
+            0.290535
+          ],
+          [
+            -6004.54,
+            147.989,
+            -13066.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bunker_small_02",
+        "tm": [
+          [
+            0.382986,
+            -0.011639,
+            -0.923681
+          ],
+          [
+            0.0265494,
+            0.999647,
+            -0.00158808
+          ],
+          [
+            0.923372,
+            -0.0239149,
+            0.383159
+          ],
+          [
+            -6088.84,
+            153.433,
+            -13105.7
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_05",
+        "tm": [
+          [
+            -0.127126,
+            0.0115451,
+            -0.991819
+          ],
+          [
+            0.0106064,
+            0.999891,
+            0.0102796
+          ],
+          [
+            0.99183,
+            -0.00921289,
+            -0.127234
+          ],
+          [
+            -5362.25,
+            146.673,
+            -12482.2
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_06",
+        "tm": [
+          [
+            -0.127126,
+            0.0115451,
+            -0.991819
+          ],
+          [
+            0.0106064,
+            0.999891,
+            0.0102796
+          ],
+          [
+            0.99183,
+            -0.00921289,
+            -0.127234
+          ],
+          [
+            -5194.71,
+            148.035,
+            -12471.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bunker_small_03",
+        "tm": [
+          [
+            -0.0290442,
+            0.0105838,
+            -0.999522
+          ],
+          [
+            0.0106064,
+            0.999891,
+            0.0102796
+          ],
+          [
+            0.999522,
+            -0.0103027,
+            -0.0291533
+          ],
+          [
+            -5287.75,
+            152.302,
+            -12472.6
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_07",
+        "tm": [
+          [
+            -0.0673182,
+            0.0535954,
+            -0.996291
+          ],
+          [
+            0.0321159,
+            0.998155,
+            0.0515256
+          ],
+          [
+            0.997214,
+            -0.0285282,
+            -0.0689152
+          ],
+          [
+            -2651.43,
+            130.143,
+            -12516.2
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_08",
+        "tm": [
+          [
+            -0.0673182,
+            0.0535954,
+            -0.996291
+          ],
+          [
+            0.0321159,
+            0.998155,
+            0.0515256
+          ],
+          [
+            0.997214,
+            -0.0285282,
+            -0.0689152
+          ],
+          [
+            -2484.85,
+            126.972,
+            -12495.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bunker_small_04",
+        "tm": [
+          [
+            0.0310032,
+            0.0505325,
+            -0.998241
+          ],
+          [
+            0.0321159,
+            0.998155,
+            0.0515256
+          ],
+          [
+            0.999003,
+            -0.0336569,
+            0.029323
+          ],
+          [
+            -2577.55,
+            133.56,
+            -12502.0
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_09",
+        "tm": [
+          [
+            -0.0618146,
+            0.0712544,
+            -0.995541
+          ],
+          [
+            0.035536,
+            0.996973,
+            0.0691505
+          ],
+          [
+            0.997455,
+            -0.031103,
+            -0.0641596
+          ],
+          [
+            -4036.88,
+            112.465,
+            -12216.5
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_art_small_10",
+        "tm": [
+          [
+            -0.0618146,
+            0.0712544,
+            -0.995541
+          ],
+          [
+            0.035536,
+            0.996973,
+            0.0691505
+          ],
+          [
+            0.997455,
+            -0.031103,
+            -0.0641596
+          ],
+          [
+            -3870.42,
+            108.301,
+            -12195.1
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bunker_small_05",
+        "tm": [
+          [
+            0.0365037,
+            0.067853,
+            -0.997027
+          ],
+          [
+            0.035536,
+            0.996973,
+            0.0691505
+          ],
+          [
+            0.998701,
+            -0.0379546,
+            0.0339819
+          ],
+          [
+            -3963.06,
+            115.353,
+            -12201.9
+          ]
+        ],
+        "unit_class": "ussr_quest_large_art_noground",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      }
+    ],
+    "tankModels": [
+      {
+        "name": "t1_aaa_small_01",
+        "tm": [
+          [
+            -0.319965,
+            0.0370404,
+            0.946705
+          ],
+          [
+            0.0,
+            0.999235,
+            -0.0390957
+          ],
+          [
+            -0.947429,
+            -0.0125093,
+            -0.31972
+          ],
+          [
+            -1851.42,
+            113.451,
+            -17373.7
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_small_02",
+        "tm": [
+          [
+            -0.298487,
+            0.0746273,
+            0.951492
+          ],
+          [
+            0.041712,
+            0.997006,
+            -0.065112
+          ],
+          [
+            -0.953502,
+            0.0202536,
+            -0.300706
+          ],
+          [
+            -5890.07,
+            151.271,
+            -17366.9
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_small_03",
+        "tm": [
+          [
+            -0.17191,
+            -0.00177577,
+            0.985111
+          ],
+          [
+            -0.00570562,
+            0.999983,
+            0.000806901
+          ],
+          [
+            -0.985096,
+            -0.00548195,
+            -0.171918
+          ],
+          [
+            -5154.19,
+            147.045,
+            -17965.5
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_small_04",
+        "tm": [
+          [
+            -0.210449,
+            0.0529247,
+            0.976171
+          ],
+          [
+            -0.0057329,
+            0.998449,
+            -0.0553685
+          ],
+          [
+            -0.977588,
+            -0.0172486,
+            -0.20982
+          ],
+          [
+            -2876.69,
+            114.984,
+            -18027.7
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_small_05",
+        "tm": [
+          [
+            -0.0809432,
+            0.0178835,
+            0.996558
+          ],
+          [
+            -0.00402337,
+            0.999825,
+            -0.018269
+          ],
+          [
+            -0.996711,
+            -0.00548827,
+            -0.0808571
+          ],
+          [
+            -3957.28,
+            142.48,
+            -18234.9
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_small_01",
+        "tm": [
+          [
+            -0.0846913,
+            0.156872,
+            -0.983981
+          ],
+          [
+            0.0349392,
+            0.98739,
+            0.154409
+          ],
+          [
+            0.995794,
+            -0.0213025,
+            -0.0891042
+          ],
+          [
+            -1839.32,
+            115.97,
+            -13030.1
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_small_02",
+        "tm": [
+          [
+            0.52343,
+            0.0445074,
+            -0.850905
+          ],
+          [
+            0.118061,
+            0.985214,
+            0.124157
+          ],
+          [
+            0.84385,
+            -0.165446,
+            0.510437
+          ],
+          [
+            -6106.2,
+            146.874,
+            -13051.3
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_small_03",
+        "tm": [
+          [
+            -0.0219367,
+            0.0563578,
+            -0.99817
+          ],
+          [
+            -0.0643158,
+            0.996262,
+            0.0576635
+          ],
+          [
+            0.997689,
+            0.065463,
+            -0.0182299
+          ],
+          [
+            -5280.89,
+            144.055,
+            -12415.8
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_small_04",
+        "tm": [
+          [
+            -0.0677332,
+            0.132642,
+            -0.988846
+          ],
+          [
+            -0.00163498,
+            0.991107,
+            0.133057
+          ],
+          [
+            0.997703,
+            0.0106292,
+            -0.0669139
+          ],
+          [
+            -2574.46,
+            123.778,
+            -12444.9
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_small_05",
+        "tm": [
+          [
+            -0.0331818,
+            0.0906468,
+            -0.99533
+          ],
+          [
+            0.0641542,
+            0.994018,
+            0.0883885
+          ],
+          [
+            0.997389,
+            -0.0609218,
+            -0.0387987
+          ],
+          [
+            -3960.79,
+            104.411,
+            -12145.0
+          ]
+        ],
+        "unit_class": "ussr_btr_152a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ]
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t1_aaa_small_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7696.62,
+            287.205,
+            -18808.7
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_aaa_small_01",
+            "t1_aaa_small_02",
+            "t1_aaa_small_03",
+            "t1_aaa_small_04",
+            "t1_aaa_small_05"
+          ]
+        }
+      },
+      {
+        "name": "t1_artillery_small_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7875.82,
+            283.671,
+            -18511.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_art_small_01",
+            "t1_art_small_02",
+            "t1_art_small_03",
+            "t1_art_small_04",
+            "t1_art_small_05",
+            "t1_art_small_06",
+            "t1_art_small_07",
+            "t1_art_small_08",
+            "t1_art_small_09",
+            "t1_art_small_10"
+          ]
+        }
+      },
+      {
+        "name": "t1_bunkers_small_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -8076.17,
+            288.728,
+            -18650.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_bunker_small_01",
+            "t1_bunker_small_02",
+            "t1_bunker_small_03",
+            "t1_bunker_small_04",
+            "t1_bunker_small_05"
+          ]
+        }
+      },
+      {
+        "name": "t2_aaa_small_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7576.62,
+            294.016,
+            -12763.7
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_aaa_small_01",
+            "t2_aaa_small_02",
+            "t2_aaa_small_03",
+            "t2_aaa_small_04",
+            "t2_aaa_small_05"
+          ]
+        }
+      },
+      {
+        "name": "t2_artillery_small_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7664.66,
+            288.605,
+            -12485.2
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_art_small_01",
+            "t2_art_small_02",
+            "t2_art_small_03",
+            "t2_art_small_04",
+            "t2_art_small_05",
+            "t2_art_small_06",
+            "t2_art_small_07",
+            "t2_art_small_08",
+            "t2_art_small_09",
+            "t2_art_small_10"
+          ]
+        }
+      },
+      {
+        "name": "t2_bunkers_small_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7234.14,
+            293.826,
+            -12529.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_bunker_small_01",
+            "t2_bunker_small_02",
+            "t2_bunker_small_03",
+            "t2_bunker_small_04",
+            "t2_bunker_small_05"
+          ]
+        }
+      },
+      {
+        "name": "t1_static_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -8452.36,
+            286.533,
+            -19643.7
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_aaa_small_squad",
+            "t1_artillery_small_squad",
+            "t1_bunkers_small_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_static_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -8512.54,
+            292.149,
+            -11199.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_aaa_small_squad",
+            "t2_artillery_small_squad",
+            "t2_bunkers_small_squad"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "small_battle_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          6000.0,
+          0.0,
+          9.15525E-05
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          -9.15525E-05,
+          0.0,
+          6000.0
+        ],
+        [
+          -3963.9,
+          317.23,
+          -15194.7
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

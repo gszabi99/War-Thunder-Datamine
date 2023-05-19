@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -72,7 +73,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
         unseenIcon = bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, wb.getSeenId())
       })
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let tabsObj = this.getTabsListObj()
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
 
@@ -154,7 +155,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
     }
 
     let listObj = this.getItemsListObj()
-    let data = ::handyman.renderCached(("%gui/items/item.tpl"), view)
+    let data = handyman.renderCached(("%gui/items/item.tpl"), view)
     listObj.enable(data != "")
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 

@@ -10,6 +10,7 @@
   "gearSinkRangeLR": 0.147,
   "gearSinkRangeC": 0.126,
   "gearSinkRange2C": 0.126,
+  "gyroSight": false,
   "type": "typeBomber",
   "paratrooper": "france_late_para",
   "advancedInstructor": true,
@@ -463,6 +464,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -474,6 +487,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -492,6 +517,18 @@
             "fire": 0.005,
             "leak_oil": 0.95,
             "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 0.25,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 0.5,
+            "leak_oil": 0.95,
+            "cut": 0.0
           }
         ],
         "onKill": [
@@ -503,6 +540,18 @@
           {
             "damage": 30.0,
             "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 60.0,
+            "fire": 40.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          },
+          {
+            "damage": 100.0,
+            "fire": 50.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -2033,8 +2082,8 @@
       0.0
     ],
     "mirrorNorm": [
-      -0.987,
-      -0.16,
+      -0.995,
+      -0.1,
       0.0
     ],
     "mirrorNode": "blister7",
@@ -2536,7 +2585,10 @@
             "Weapon": {
               "trigger": "bombs",
               "external": true,
-              "separate": true,
+              "separate": [
+                true,
+                true
+              ],
               "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
               "emitter": "us_250lb_anm57_1",
               "bullets": 1
@@ -2768,7 +2820,10 @@
             "Weapon": {
               "trigger": "bombs",
               "external": true,
-              "separate": true,
+              "separate": [
+                true,
+                true
+              ],
               "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
               "emitter": "us_250lb_anm57_3",
               "bullets": 1
@@ -2836,42 +2891,60 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "separate": true,
+                "separate": [
+                  true,
+                  true
+                ],
                 "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
                 "emitter": "us_250lb_anm57_9",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "separate": true,
+                "separate": [
+                  true,
+                  true
+                ],
                 "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
                 "emitter": "us_250lb_anm57_5",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "separate": true,
+                "separate": [
+                  true,
+                  true
+                ],
                 "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
                 "emitter": "us_250lb_anm57_7",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "separate": true,
+                "separate": [
+                  true,
+                  true
+                ],
                 "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
                 "emitter": "us_250lb_anm57_10",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "separate": true,
+                "separate": [
+                  true,
+                  true
+                ],
                 "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
                 "emitter": "us_250lb_anm57_8",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "separate": true,
+                "separate": [
+                  true,
+                  true
+                ],
                 "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
                 "emitter": "us_250lb_anm57_6",
                 "bullets": 1
@@ -3175,7 +3248,10 @@
             "Weapon": {
               "trigger": "bombs",
               "external": true,
-              "separate": true,
+              "separate": [
+                true,
+                true
+              ],
               "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
               "emitter": "us_250lb_anm57_4",
               "bullets": 1
@@ -3407,7 +3483,10 @@
             "Weapon": {
               "trigger": "bombs",
               "external": true,
-              "separate": true,
+              "separate": [
+                true,
+                true
+              ],
               "blk": "gameData/Weapons/BombGuns/il_100_50_kg_gp.blk",
               "emitter": "us_250lb_anm57_2",
               "bullets": 1

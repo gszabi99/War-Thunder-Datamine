@@ -41,6 +41,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "rearmTimeOnField": 60.0,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
@@ -1003,7 +1004,7 @@
         "hp": 2100.0
       },
       "compartment_02_dm": {
-        "hp": 2089.0
+        "hp": 2014.0
       },
       "compartment_03_dm": {
         "hp": 2100.0
@@ -1024,7 +1025,7 @@
         "hp": 400.0
       },
       "radio_station_dm": {
-        "hp": 354.0
+        "hp": 373.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -2107,17 +2108,17 @@
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
@@ -2244,17 +2245,17 @@
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
@@ -2357,17 +2358,17 @@
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_03",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell_03",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_02_dm",
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
@@ -2470,17 +2471,17 @@
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_04",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell_04",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "",
         "openHatchTime": 0.4,
-        "sleevesLifeTime": 4.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 4.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           1.0
         ],
-        "linkSleeveToGun": false,
+        "linkShellCasingToGun": false,
         "barrelDP": "main_caliber_gun_02_dm",
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
@@ -4662,5 +4663,43 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "ussr_camo_navy_purple",
+      "nameLocId": "skin/ussr_camo_navy_purple",
+      "descLocId": "skin/ussr_camo_navy_purple/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_navy_purple*"
+      }
+    },
+    {
+      "name": "ussr_camo_blackgreen_geometry",
+      "nameLocId": "skin/ussr_camo_blackgreen_geometry",
+      "descLocId": "skin/ussr_camo_blackgreen_geometry/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_blackgreen_geometry*"
+      }
+    },
+    {
+      "name": "ussr_camo_modern_spots",
+      "nameLocId": "skin/ussr_camo_modern_spots",
+      "descLocId": "skin/ussr_camo_modern_spots/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_modern_spots*"
+      }
+    },
+    {
+      "name": "ussr_camo_multicolor_geometry",
+      "nameLocId": "skin/ussr_camo_multicolor_geometry",
+      "descLocId": "skin/ussr_camo_multicolor_geometry/desc",
+      "replace_tex": {
+        "from": "camo_bluegray*",
+        "to": "ussr_camo_multicolor_geometry*"
+      }
+    }
+  ]
 }

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member,
   update_voice_chat_member_friendship, is_voice_chat_member_muted, voiceChatMembers } = require("%xboxLib/voice.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let requestedIds = persist("requestedIds", @() {})
 
@@ -88,9 +89,9 @@ let function on_contacts_group_update(params) {
 }
 
 
-::add_event_listener("ContactsUpdated", @(_) on_contacts_update())
-::add_event_listener("ContactsGroupUpdate", @(p) on_contacts_group_update(p))
-::add_event_listener("UpdateExternalsIDs", @(p) on_external_ids_update(p))
+add_event_listener("ContactsUpdated", @(_) on_contacts_update())
+add_event_listener("ContactsGroupUpdate", @(p) on_contacts_group_update(p))
+add_event_listener("UpdateExternalsIDs", @(p) on_external_ids_update(p))
 subscribe_to_state_update(on_state_update)
 
 

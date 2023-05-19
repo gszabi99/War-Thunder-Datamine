@@ -29,6 +29,8 @@ let test_flight_unit_info = {}
 
 ::get_mp_kick_countdown <- @() 1000000
 
+let u = require("%sqStdLibs/helpers/u.nut")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/worldWar/worldWarConst.nut")
 require("%globalScripts/ui_globals.nut")
 
@@ -43,19 +45,15 @@ require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
 
-::handyman <- require("%sqStdLibs/helpers/handyman.nut").handyman
-
 let { get_local_unixtime } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
 
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
-::nda_version <- 5
 ::eula_version <- 6
 
 ::TEXT_EULA <- 0
-::TEXT_NDA <- 1
 
 ::is_dev_version <- false // WARNING : this is unsecure
 
@@ -76,9 +74,9 @@ if (::disable_network())
 
 ::FORCE_UPDATE <- true
 
-::g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
+g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
   [
-    "nda_version", "eula_version",
+    "eula_version",
     "is_debug_mode_enabled", "first_generation",
     "show_console_buttons", "is_dev_version"
   ])
@@ -341,22 +339,13 @@ global enum ONLINE_SHOP_TYPES {
 global const LEADERBOARD_VALUE_TOTAL = "value_total"
 global const LEADERBOARD_VALUE_INHISTORY = "value_inhistory"
 
-::randomize <- function randomize() {
-  set_rnd_seed(get_local_unixtime())
-}
-::randomize()
+set_rnd_seed(get_local_unixtime())
 
 //------- vvv files before login vvv ----------
-
-::g_string <- require("%sqstd/string.nut") //put g_string to root_table
-::u <- require("%sqStdLibs/helpers/u.nut") //put u to roottable
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- require("g_listener_priority.nut")
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
-::broadcastEvent <- subscriptions.broadcast
-::add_event_listener <- subscriptions.addEventListener
-::subscribe_handler <- subscriptions.subscribeHandler
 
 ::add_big_query_record <- require("chard")?.addBigQueryRecord
   ?? ::add_big_query_record // Compatibility with 2.15.0.X
@@ -434,9 +423,7 @@ foreach (fn in [
   "%scripts/hangarLights.nut"
 
   "%scripts/webRPC.nut"
-  "%scripts/matching/api.nut"
   "%scripts/matching/client.nut"
-  "%scripts/matching/matchingConnect.nut"
 
   "%scripts/wndLib/editBoxHandler.nut"
   "%scripts/wndLib/rightClickMenu.nut"
@@ -447,17 +434,17 @@ foreach (fn in [
   //used for SSO login
   "%scripts/onlineShop/browserWnd.nut"
 ]) {
-  ::g_script_reloader.loadOnce(fn)
+  g_script_reloader.loadOnce(fn)
 }
 
-if (::g_script_reloader.isInReloading)
+if (g_script_reloader.isInReloading)
   foreach (bhvName, bhvClass in ::gui_bhv)
     ::replace_script_gui_behaviour(bhvName, bhvClass)
 
 foreach (bhvName, bhvClass in ::gui_bhv_deprecated)
   ::add_script_gui_behaviour(bhvName, bhvClass)
 
-::u.registerClass(
+u.registerClass(
   "DaGuiObject",
   ::DaGuiObject,
   @(obj1, obj2) obj1.isValid() && obj2.isValid() && obj1.isEqual(obj2),
@@ -479,6 +466,7 @@ require("%scripts/debugTools/dbgUtils.nut")
 require("%scripts/debugTools/dbgImage.nut")
 require("%scripts/debugTools/dbgMarketplace.nut")
 require("%scripts/debugTools/dbgCrewLock.nut")
+require("%scripts/debugTools/dbgDedicLogerrs.nut")
 require("%globalScripts/debugTools/dbgTimer.nut").registerConsoleCommand("dagui")
   // end of Independent Modules
 
@@ -557,7 +545,7 @@ if (is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug
 
 if (::g_login.isAuthorized() || ::should_disable_menu()) { //scripts reload
   ::load_scripts_after_login_once()
-  if (!::g_script_reloader.isInReloading)
+  if (!g_script_reloader.isInReloading)
     ::run_reactive_gui()
 }
 

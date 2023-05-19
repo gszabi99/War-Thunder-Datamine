@@ -1,10 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { round } = require("math")
 let { format, split_by_chars } = require("string")
@@ -17,6 +20,7 @@ let { copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { getPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { EPLX_CLAN } = require("%scripts/contacts/contactsManager.nut")
+let { startsWith, slice } = require("%sqstd/string.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -27,7 +31,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 ::last_update_my_clan_time <- MY_CLAN_UPDATE_DELAY_MSEC
 ::get_my_clan_data_free <- true
 
-::g_script_reloader.registerPersistentData("ClansGlobals", getroottable(),
+g_script_reloader.registerPersistentData("ClansGlobals", getroottable(),
   [
     "my_clan_info"
     "last_update_my_clan_time"
@@ -71,14 +75,14 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
   ::set_char_cb(handler, handler.slotOpCb)
   handler.showTaskProgressBox()
   ::sync_handler_simulate_signal("clan_info_reload")
-  handler.afterSlotOp = (@(handler) function() {
+  handler.afterSlotOp = function() {
     ::requestMyClanData()
     ::update_gamercards()
     handler.msgBox(
       "clan_create_sacces",
       loc("clan/create_clan_success"),
       [["ok", (@(handler) function() { handler.goBack() })(handler)]], "ok")
-  })(handler)
+  }
 }
 
 /**
@@ -139,7 +143,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 
   let cb = Callback(
       (@(clanId) function() {
-        ::broadcastEvent("ClanMembersUpgraded", { clanId = clanId })
+        broadcastEvent("ClanMembersUpgraded", { clanId = clanId })
         ::update_gamercards()
         ::showInfoMsgBox(loc("clan/members_upgrade_success"), "clan_members_upgrade_success")
       })(clanId),
@@ -333,7 +337,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
   let needEvent = this.lastClanId != CLAN_ID_NOT_INITED
   this.lastClanId = ::clan_get_my_clan_id()
   if (needEvent)
-    ::broadcastEvent("MyClanIdChanged")
+    broadcastEvent("MyClanIdChanged")
 }
 
 ::g_clans.onEventProfileUpdated <- function onEventProfileUpdated(_p) {
@@ -446,7 +450,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 
   if (newCandidatesNicknames.len())
     ::g_popups.add(null,
-      loc("clan/requestRecieved") + loc("ui/colon") + ::g_string.implode(newCandidatesNicknames, ", ") +
+      loc("clan/requestRecieved") + loc("ui/colon") + ", ".join(newCandidatesNicknames, true) +
       " " + extraText,
       function() {
         if (this.getMyClanCandidates().len())
@@ -568,7 +572,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
     loc("clan/btnDismissMember"),
     function(comment) {
       let onSuccess = function() {
-        ::broadcastEvent("ClanMemberDismissed")
+        broadcastEvent("ClanMemberDismissed")
         ::g_popups.add("", loc("clan/memberDismissed"))
       }
 
@@ -602,23 +606,23 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
   let taskId = ::clan_request_membership_request(clanId, "", "", "")
   let onSuccess = function() {
     if (clanId == "") { //Means that membership was canceled
-      ::broadcastEvent("ClanMembershipCanceled")
+      broadcastEvent("ClanMembershipCanceled")
       return
     }
 
     ::g_popups.add("", loc("clan/requestSent"))
-    ::broadcastEvent("ClanMembershipRequested")
+    broadcastEvent("ClanMembershipRequested")
   }
   ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 
 ::g_clans.approvePlayerRequest <- function approvePlayerRequest(playerUid, clanId) {
-  if (::u.isEmpty(playerUid) || ::u.isEmpty(clanId))
+  if (u.isEmpty(playerUid) || u.isEmpty(clanId))
     return
 
   let onSuccess = function() {
     ::g_popups.add("", loc("clan/requestApproved"))
-    ::broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
+    broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
   }
 
   let taskId = ::clan_request_accept_membership_request(clanId, playerUid, "REGULAR", false)
@@ -627,7 +631,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 }
 
 ::g_clans.rejectPlayerRequest <- function rejectPlayerRequest(playerUid, clanId) {
-  if (::u.isEmpty(playerUid))
+  if (u.isEmpty(playerUid))
     return
 
   ::gui_modal_comment(
@@ -637,7 +641,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
     function(comment) {
       let onSuccess = function() {
         ::g_popups.add("", loc("clan/requestRejected"))
-        ::broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
+        broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
       }
 
       let taskId = ::clan_request_reject_membership_request(playerUid, comment, clanId)
@@ -656,7 +660,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
       let onSuccess = function() {
         let text = actionAdd ? loc("clan/blacklistAddSuccess") : loc("clan/blacklistRemoveSuccess")
         ::g_popups.add("", text)
-        ::broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
+        broadcastEvent("ClanCandidatesListChanged", { userId = playerUid })
       }
 
       let taskId = ::clan_request_edit_black_list(playerUid, actionAdd, comment, clanId)
@@ -680,7 +684,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 }
 
 ::g_clans.openComplainWnd <- function openComplainWnd(clanData) {
-  local leader = ::u.search(clanData.members, @(member) member.role == ECMR_LEADER)
+  local leader = u.search(clanData.members, @(member) member.role == ECMR_LEADER)
   if (leader == null)
     leader = clanData.members[0]
   ::gui_modal_complain({ name = leader.nick, userId = leader.uid, clanData = clanData })
@@ -692,7 +696,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
     return
 
   this.squadronExp = curSquadronExp
-  ::broadcastEvent("SquadronExpChanged")
+  broadcastEvent("SquadronExpChanged")
 }
 
 ::ranked_column_prefix <- "dr_era5"  //really used only rank 5, but in lb exist 5
@@ -709,8 +713,8 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
     if (::my_clan_info) {
       ::my_clan_info = null
       ::g_clans.parseSeenCandidates()
-      ::broadcastEvent("ClanInfoUpdate")
-      ::broadcastEvent("ClanChanged") //i.e. dismissed
+      broadcastEvent("ClanInfoUpdate")
+      broadcastEvent("ClanChanged") //i.e. dismissed
       ::update_gamercards()
     }
     return
@@ -728,10 +732,10 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
     ::my_clan_info = ::get_clan_info_table()
     ::handle_new_my_clan_data()
     ::get_my_clan_data_free = true
-    ::broadcastEvent("ClanInfoUpdate")
+    broadcastEvent("ClanInfoUpdate")
     ::update_gamercards()
     if (wasCreated)
-      ::broadcastEvent("ClanChanged") //i.e created
+      broadcastEvent("ClanChanged") //i.e created
   })
 }
 
@@ -816,7 +820,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
     let result = []
     foreach (rewards in ["seasonRewards", "seasonRatingRewards"]) {
       local regalias = getTblValue("regaliaTags", this[rewards], [])
-      if (!::u.isArray(regalias))
+      if (!u.isArray(regalias))
         regalias = [regalias]
 
       //check for duplicate before add
@@ -1110,14 +1114,14 @@ let function getSeasonName(blk) {
   }
 
   function isWinner() {
-    return ::g_string.startsWith(this.place, "place")
+    return startsWith(this.place, "place")
   }
 
   function getPlaceTitle() {
     if (this.isWinner())
       return loc("clan/season_award/place/" + this.place)
     else
-      return loc("clan/season_award/place/top", { top = ::g_string.slice(this.place, 3) })
+      return loc("clan/season_award/place/top", { top = slice(this.place, 3) })
   }
 
   function name() {
@@ -1160,7 +1164,7 @@ let function getSeasonName(blk) {
     let path = this.isWinner() ? this.place : "rating"
     let bin_img = "clan_medal_ww_" + this.seasonTag + "_bin_" + path
     local place_img = "clan_medal_ww_" + this.place
-    return ::g_string.implode([bg_img, bin_img, place_img], ";")
+    return ";".join([bg_img, bin_img, place_img], true)
   }
 
   function iconParams() {
@@ -1276,4 +1280,4 @@ let function getSeasonName(blk) {
 // Independent Modules
 require("%scripts/slotbar/elems/squadronExpIconElem.nut")
 
-::subscribe_handler(::g_clans, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_clans, ::g_listener_priority.DEFAULT_HANDLER)

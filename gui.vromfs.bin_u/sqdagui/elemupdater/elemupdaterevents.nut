@@ -113,7 +113,7 @@ clearInvalidSubscriptions = function(subs) { //this function will never remove f
 }
 
 //all subscriptions for dagui objects, so we can clear all on full scene reload.
-stdSubscriptions.addEventListener("GuiSceneCleared",
+stdSubscriptions.add_event_listener("GuiSceneCleared",
   @(_p) clearInvalidSubscriptions(subscriptions),
   null,
   stdSubscriptions.CONFIG_VALIDATION)

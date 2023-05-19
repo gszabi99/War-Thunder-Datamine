@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let eventbus = require("eventbus")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hangar_load_model, hangar_get_current_unit_name, hangar_get_loaded_unit_name } = require("hangar")
 
 enum HangarModelLoadState {
@@ -29,7 +30,7 @@ let function loadModel(modelName) {
     return
   isLoading(true)
   hangar_load_model(modelName)
-  ::broadcastEvent("HangarModelLoading", { modelName })
+  broadcastEvent("HangarModelLoading", { modelName })
 }
 
 let function onHangarModelLoaded() {
@@ -37,7 +38,7 @@ let function onHangarModelLoaded() {
   if (hangar_get_loaded_unit_name() == modelName) {
     isLoading(false)
     hangarUnitName(modelName)
-    ::broadcastEvent("HangarModelLoaded", { modelName })
+    broadcastEvent("HangarModelLoaded", { modelName })
   }
 }
 

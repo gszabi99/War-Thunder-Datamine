@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -8,6 +9,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 /*
   config {
@@ -68,19 +70,19 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
   }
 
   function validateImageData() {
-    if (!::u.isEmpty(this.image))
+    if (!u.isEmpty(this.image))
       return
 
     this.image = "#ui/images/login_reward?P1"
     let imgBlk = get_blk_by_path_array(["entitlementsAdvert", this.purchaseData.sourceEntitlement],
                                            ::get_gui_regional_blk())
-    if (!::u.isDataBlock(imgBlk))
+    if (!u.isDataBlock(imgBlk))
       return
 
-    let rndImg = ::u.chooseRandom(imgBlk % "image")
-    if (::u.isString(rndImg)) {
+    let rndImg = u.chooseRandom(imgBlk % "image")
+    if (u.isString(rndImg)) {
       let country = profileCountrySq.value
-      this.image = rndImg.subst({ country = ::g_string.cutPrefix(country, "country_", country) })
+      this.image = rndImg.subst({ country = cutPrefix(country, "country_", country) })
     }
     if (::is_numeric(imgBlk?.imageRatio))
       this.imageRatioHeight = imgBlk.imageRatio
@@ -94,7 +96,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
     if (!::has_entitlement(this.purchaseData.sourceEntitlement))
       return
 
-    if (!::u.isEmpty(this.checkPackage))
+    if (!u.isEmpty(this.checkPackage))
       ::check_package_and_ask_download(this.checkPackage)
 
     this.goBack()

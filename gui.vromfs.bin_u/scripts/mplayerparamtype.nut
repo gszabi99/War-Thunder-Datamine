@@ -245,7 +245,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
         if (rowVal)
           res.append(loc(row.label) + loc("ui/colon") + rowVal)
       }
-      return ::g_string.implode(res, "\n")
+      return "\n".join(res, true)
     }
   }
 

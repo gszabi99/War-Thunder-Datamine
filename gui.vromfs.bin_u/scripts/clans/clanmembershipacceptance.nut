@@ -1,8 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let function canChange(clanData) {
   if (!clanData)
@@ -17,6 +18,9 @@ let function canChange(clanData) {
 let function getValue(clanData) {
   return (clanData?.status ?? "closed") != "closed"
 }
+
+let LOC_CLAN_CLOSED = loc("clan/was_closed")
+let LOC_CLAN_OPENED = loc("clan/was_opened")
 
 let function setValue(clanData, value, handler) {
   if (!canChange(clanData) || value == getValue(clanData))
@@ -34,9 +38,9 @@ let function setValue(clanData, value, handler) {
   if (clanId == "-1")
     ::sync_handler_simulate_signal("clan_info_reload")
   handler.afterSlotOp = function() {
-    ::broadcastEvent("ClanMembershipAcceptanceChanged")
+    broadcastEvent("ClanMembershipAcceptanceChanged")
     handler.msgBox("clan_membership_acceptance",
-      loc("clan/" + (isLocking ? "was_closed" : "was_opened")), [["ok"]], "ok")
+      isLocking ? LOC_CLAN_CLOSED : LOC_CLAN_OPENED, [["ok"]], "ok")
   }
 }
 

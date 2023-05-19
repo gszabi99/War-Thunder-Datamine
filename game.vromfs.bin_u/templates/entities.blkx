@@ -1,8 +1,6 @@
 {
-  "import": [
-    "#game_pkg_dev/templates/*.blk",
-    "%danetlibs/route_prober/templates/route_prober.blk"
-  ],
+  "import_optional": "#game_pkg_dev/templates/*.blk",
+  "import": "%danetlibs/route_prober/templates/route_prober.blk",
   "ecs_no_debug": {
     "noECSDebug:tag": {
       "_tags": "ecsDebug"
@@ -99,6 +97,7 @@
     "setting__toGround": false,
     "setting__loadSound": true,
     "setting__aiEnabled": true,
+    "setting__canControlInHangar": false,
     "setting__bullets:list<t>": {},
     "setting__bulletsCount:list<i>": {},
     "setting__unit_target_list:list<t>": {}
@@ -1161,6 +1160,19 @@
     "ammo_slots__numAmmo:list<ip2>": {},
     "ammo_slots__node": {}
   },
+  "tank_engine": {
+    "_tags": "server",
+    "tank_engine__overheat": false,
+    "tank_engine__overheatDelay": 0.0,
+    "tank_engine__overheatDamage": 0.0,
+    "tank_engine__overheatDamageType": -1,
+    "tank_engine__overheatDamageCooldown": 0.0,
+    "tank_engine__overheatDamageTime": -1.0,
+    "tank_engine__brokenRadiatorFxEventId": -1,
+    "tank_engine__engine_parts": {},
+    "tank_engine__radiator_parts": {},
+    "tank_engine__overheatOffender": {}
+  },
   "ground_unit": {
     "_extends": [
       "simple_ground_unit",
@@ -1168,6 +1180,7 @@
       "unit_fire_and_extinguish",
       "unit_fire_damage",
       "unit_fire_fx",
+      "tank_engine",
       "unit_ammo_stowage"
     ],
     "move_sys__maxDecel": 0.0,
@@ -1227,7 +1240,6 @@
     "_extends": "simple_ground_unit"
   },
   "ship_cover_parts": {
-    "ship_water_next_net_sync": 0.0,
     "ship_cover_parts_part_id": {},
     "ship_cover_parts_compartment_id:list<i>": {},
     "ship_cover_parts_water:list<p3>": {},
@@ -1268,7 +1280,6 @@
     ]
   },
   "ship_repair": {
-    "ship_repair_crew_alive_mult": 1.0,
     "ship_repair_part_idx": -1,
     "ship_repair_part_remaining_time": -1.0,
     "_group": {
@@ -1296,7 +1307,7 @@
       "ship_unwatering"
     ],
     "ship_modern_damage_control": false,
-    "ship_damage_control_running": false,
+    "ship_damage_control_cooldown_time": 0.0,
     "ship_damage_control_cooldown_end_time": 0.0,
     "ship_damage_control_time_penalty": [
       1.0,
@@ -1325,6 +1336,9 @@
     "track_sound": {
       "_tags": "sound"
     }
+  },
+  "disabled_update": {
+    "disabled:tag": {}
   },
   "controlled_hero": {
     "controlledHero:tag": {}
@@ -1917,7 +1931,8 @@
     "music__curUnitType": 0,
     "music__curHangarCountry_id": -1,
     "music__curForcedEvtName": "",
-    "music__lockedHangar": false
+    "music__lockedHangar": false,
+    "music__useHangarMusicForUnitType": false
   },
   "base_area": {
     "_extends": "replicating",
@@ -2004,10 +2019,78 @@
     ]
   },
   "projectile": {
-    "_extends": "ecs_no_debug"
+    "_extends": "ecs_no_debug",
+    "active": false
   },
   "bullet": {
     "_extends": "projectile",
     "bullet_component": {}
+  },
+  "shell_delayed": {
+    "shell_delayed:tag": {
+      "_tags": "net,netClient"
+    }
+  },
+  "arh_shell": {
+    "_extends": "replicating",
+    "arh_shell:tag": {}
+  },
+  "shell": {
+    "_extends": [
+      "projectile",
+      "replicating"
+    ],
+    "shell_ref": {}
+  },
+  "rocket": {
+    "_extends": "shell",
+    "rocket_component": {}
+  },
+  "bomb": {
+    "_extends": "shell",
+    "bomb_component": {}
+  },
+  "torpedo": {
+    "_extends": "shell",
+    "torpedo_component": {}
+  },
+  "payload": {
+    "_extends": "shell",
+    "payload_component": {}
+  },
+  "jettisoned": {
+    "_extends": "shell",
+    "jettisoned_component": {}
+  },
+  "sound_point": {
+    "_extends": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "sound_point__event_name": "",
+    "sound_point__near_dist": 50.0,
+    "sound_point__event:SoundEvent": {
+      "_tags": "sound"
+    },
+    "destroyable_with_rendinst:tag": {}
   }
 }

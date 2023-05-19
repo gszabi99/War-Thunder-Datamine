@@ -48,21 +48,23 @@ let function gamepadButton(shortcutConfig, override, isAxis = true) {
 
 let function keyboardButton(shortcutConfig, override) {
   let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
+  let btnSize = sizeParam.keyboardButtonSize
   return {
-    size = sizeParam.keyboardButtonSize
+    size = btnSize
     minWidth = sizeParam.keyboardButtonMinWidth
-    rendObj = ROBJ_IMAGE
-    image = Picture("!ui/gameuiskin#keyboardBtn")
-    color = colors.white
+    rendObj = ROBJ_9RECT
+    image = Picture($"ui/gameuiskin#keyboard_btn_flat.svg:{btnSize[1]}")
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     padding = sizeParam.keyboardButtonPad
-    children = [{
+    texOffs = [0, 10]
+    screenOffs = [0, hdpx(10)]
+    children = {
       rendObj = ROBJ_TEXT
       font = sizeParam.keyboardButtonTextFont
       text = shortcutConfig.text
-      color = Color(0, 0, 0)
-    }]
+      color = colors.menu.commonTextColor
+    }
   }
 }
 

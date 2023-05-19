@@ -252,6 +252,11 @@
       },
       "turret_07_front_dm": {
         "armorThickness": 20.0
+      },
+      "turret_08_side_dm": {
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 6.0,
+        "secondaryShatterArmorQuality": 0.8
       }
     },
     "ufp_era": {
@@ -1974,24 +1979,24 @@
         "blk": "gameData/Weapons/groundModels_weapons/125mm_Type_99A_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "semi_combustible_cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "semi_combustible_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
         "openHatchTime": 1.3,
-        "sleevesLifeTime": 10.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 10.0,
+        "shellCasingImpulse": [
           5.0,
           0.0,
           0.0
         ],
-        "sleeveExtractSound": "shell_eject_hatch",
+        "shellCasingExtractSound": "shell_eject_hatch",
         "defaultYaw": 0.0,
         "defaultPitch": 1.664,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
         "autoLoader": true,
         "speedYaw": 38.0,
-        "speedPitch": 7.0,
+        "speedPitch": 15.0,
         "fireConeAngle": 1.0,
         "bullets": 39,
         "salvoAmount": 100.0,
@@ -2408,13 +2413,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -3466,24 +3471,24 @@
               "blk": "gameData/Weapons/groundModels_weapons/125mm_Type_99A_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
-              "sleeveEmitter": "emtr_shell",
-              "sleeveMesh": "semi_combustible_cartridge_case",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "semi_combustible_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
               "openHatchTime": 1.3,
-              "sleevesLifeTime": 10.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 10.0,
+              "shellCasingImpulse": [
                 5.0,
                 0.0,
                 0.0
               ],
-              "sleeveExtractSound": "shell_eject_hatch",
+              "shellCasingExtractSound": "shell_eject_hatch",
               "defaultYaw": 0.0,
               "defaultPitch": 1.664,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
               "autoLoader": true,
               "speedYaw": 38.0,
-              "speedPitch": 7.0,
+              "speedPitch": 15.0,
               "fireConeAngle": 1.0,
               "bullets": 39,
               "salvoAmount": 100.0,
@@ -3917,6 +3922,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

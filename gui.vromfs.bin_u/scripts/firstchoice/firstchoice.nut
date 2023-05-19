@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerName, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -34,7 +35,7 @@ let fillUserNick = function (nestObj, _headerLocId = null) {
     return
 
   let cfg = ::get_profile_info()
-  let data =  ::handyman.renderCached("%gui/firstChoice/userNick.tpl", {
+  let data =  handyman.renderCached("%gui/firstChoice/userNick.tpl", {
       userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}" : ""
       userName = colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
     })

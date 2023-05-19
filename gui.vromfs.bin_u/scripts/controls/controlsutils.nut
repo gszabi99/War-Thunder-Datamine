@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+from "modules" import on_module_unload
 
 //checked for explicitness
 #no-root-fallback
@@ -9,83 +10,51 @@ let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { get_gui_option } = require("guiOptions")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { subscribe } = require("eventbus")
 let { DeviceType, register_for_devices_change } = require("%xboxLib/impl/input.nut")
 
-::classic_control_preset <- "classic"
-::shooter_control_preset <- "shooter"
-::thrustmaster_hotas_one_preset_type <- "thrustmaster_hotas_one"
+const CLASSIC_PRESET = "classic"
+const SHOOTER_PRESET = "shooter"
+const THRUSTMASTER_HOTAS_ONE_PERESET = "thrustmaster_hotas_one"
 
-::recomended_control_presets <- [
-  ::classic_control_preset
-  ::shooter_control_preset
+let recomendedControlPresets = [
+  CLASSIC_PRESET
+  SHOOTER_PRESET
 ]
-
 if (isPlatformXboxOne)
-  ::recomended_control_presets.append(::thrustmaster_hotas_one_preset_type)
+  recomendedControlPresets.append(THRUSTMASTER_HOTAS_ONE_PERESET)
 
-::g_controls_utils <- {
-  [PERSISTENT_DATA_PARAMS] = ["eventHandler"]
-  eventHandler = null
-
-  function getMouseUsageMask() {
-    let usage = ::g_aircraft_helpers.getOptionValue(
-      ::USEROPT_MOUSE_USAGE)
-    let usageNoAim = ::g_aircraft_helpers.getOptionValue(
-      ::USEROPT_MOUSE_USAGE_NO_AIM)
-    return (usage ? usage : 0) | (usageNoAim ? usageNoAim : 0)
+let presetsNamesByTypes =
+  isPlatformSony ? {
+    [CLASSIC_PRESET] = "default",
+    [SHOOTER_PRESET] = "dualshock4"
+  }
+  : is_platform_xbox ? {
+    [CLASSIC_PRESET] = "xboxone_simulator",
+    [SHOOTER_PRESET] = "xboxone_ma",
+    [THRUSTMASTER_HOTAS_ONE_PERESET] = "xboxone_thrustmaster_hotas_one"
+  }
+  : isPlatformSteamDeck ? {
+    [CLASSIC_PRESET] = "steamdeck_simulator",
+    [SHOOTER_PRESET] = "steamdeck_ma"
+  }
+  : {
+    [CLASSIC_PRESET] = "keyboard",
+    [SHOOTER_PRESET] = "keyboard_shooter"
   }
 
-  function checkOptionValue(optName, checkValue) {
-    let val = get_gui_option(optName)
-    if (val != null)
-      return val == checkValue
-    return ::get_option(optName).value == checkValue
-  }
+let function getMouseUsageMask() {
+  let usage = ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE)
+  let usageNoAim = ::g_aircraft_helpers.getOptionValue(::USEROPT_MOUSE_USAGE_NO_AIM)
+  return (usage ?? 0) | (usageNoAim ?? 0)
+}
 
-  function isShortcutEqual(sc1, sc2) {
-    if (sc1.len() != sc2.len())
-      return false
-
-    foreach (_i, sb in sc2)
-      if (!::is_bind_in_shortcut(sb, sc1))
-        return false
-    return true
-  }
-
-  function restoreShortcuts(scList, scNames) {
-    let changeList = []
-    let changeNames = []
-    let curScList = ::get_shortcuts(scNames)
-    foreach (idx, sc in curScList) {
-      let prevSc = scList[idx]
-      if (!this.isShortcutMapped(prevSc))
-        continue
-
-      if (this.isShortcutEqual(sc, prevSc))
-        continue
-
-      changeList.append(prevSc)
-      changeNames.append(scNames[idx])
-    }
-    if (!changeList.len())
-      return
-
-    ::set_controls_preset("")
-    ::set_shortcuts(changeList, changeNames)
-    ::broadcastEvent("ControlsPresetChanged")
-  }
-
-  function isShortcutMapped(shortcut) {
-    foreach (button in shortcut)
-      if (button && button.dev.len() >= 0)
-        foreach (d in button.dev)
-          if (d > 0 && d <= STD_GESTURE_DEVICE_ID)
-              return true
-    return false
-  }
+let function checkOptionValue(optName, checkValue) {
+  let val = get_gui_option(optName)
+  if (val != null)
+    return val == checkValue
+  return ::get_option(optName).value == checkValue
 }
 
 let function getControlsList(unitType, unitTags = []) {
@@ -122,9 +91,7 @@ let function getControlsList(unitType, unitTags = []) {
   return controlsList
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_controls_utils")
-
-local function onJoystickConnected() {
+let function onJoystickConnected() {
   updateExtWatched({ haveXinputDevice = ::have_xinput_device() })
   if (!::isInMenu() || !hasFeature("ControlsDeviceChoice"))
     return
@@ -150,17 +117,17 @@ local function onJoystickConnected() {
   )
 }
 
-local is_keyboard_or_mouse_connected_before = false
+local isKeyboardOrMouseConnectedBefore = false
 
-let on_controller_event = function() {
+let function onControllerEvent() {
   if (!hasFeature("ControlsDeviceChoice") || !hasFeature("ControlsPresets"))
     return
-  let is_keyboard_or_mouse_connected = controllerState.is_keyboard_connected()
+  let isKeyboardOrMouseConnected = controllerState.is_keyboard_connected()
     || controllerState.is_mouse_connected()
-  if (is_keyboard_or_mouse_connected_before == is_keyboard_or_mouse_connected)
+  if (isKeyboardOrMouseConnectedBefore == isKeyboardOrMouseConnected)
     return
-  is_keyboard_or_mouse_connected_before = is_keyboard_or_mouse_connected;
-  if (!is_keyboard_or_mouse_connected || !::isInMenu())
+  isKeyboardOrMouseConnectedBefore = isKeyboardOrMouseConnected
+  if (!isKeyboardOrMouseConnected || !::isInMenu())
     return
   let action = function() { ::gui_modal_controlsWizard() }
   let buttons = [{
@@ -184,32 +151,13 @@ let on_controller_event = function() {
   )
 }
 
-if (::g_controls_utils.eventHandler && controllerState?.remove_event_handler)
-  controllerState.remove_event_handler(::g_controls_utils.eventHandler)
+controllerState.add_event_handler(onControllerEvent)
+on_module_unload(@(_) controllerState.remove_event_handler(onControllerEvent))
 
-::g_controls_utils.eventHandler = on_controller_event
-if (controllerState?.add_event_handler)
-  controllerState.add_event_handler(::g_controls_utils.eventHandler)
-
-::get_controls_preset_by_selected_type <- function get_controls_preset_by_selected_type(cType = "") {
-  let presets = isPlatformSony ? {
-    [::classic_control_preset] = "default",
-    [::shooter_control_preset] = "dualshock4"
-  } : is_platform_xbox ? {
-    [::classic_control_preset] = "xboxone_simulator",
-    [::shooter_control_preset] = "xboxone_ma",
-    [::thrustmaster_hotas_one_preset_type] = "xboxone_thrustmaster_hotas_one"
-  } : isPlatformSteamDeck ? {
-    [::classic_control_preset] = "steamdeck_simulator",
-    [::shooter_control_preset] = "steamdeck_ma"
-  } : {
-    [::classic_control_preset] = "keyboard",
-    [::shooter_control_preset] = "keyboard_shooter"
-  }
-
+let function getControlsPresetBySelectedType(cType) {
   local preset = ""
-  if (cType in presets) {
-    preset = presets[cType]
+  if (cType in presetsNamesByTypes) {
+    preset = presetsNamesByTypes[cType]
   }
   else {
     ::script_net_assert_once("wrong controls type", "Passed wrong controls type")
@@ -248,4 +196,8 @@ register_for_devices_change(function(device_type, count) {
 
 return {
   getControlsList
+  getMouseUsageMask
+  recomendedControlPresets
+  checkOptionValue
+  getControlsPresetBySelectedType
 }

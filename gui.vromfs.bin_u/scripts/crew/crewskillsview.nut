@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { getSkillValue } = require("%scripts/crew/crewSkills.nut")
@@ -54,7 +55,7 @@ let function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewDat
   if (view.parameterRows.len())
     view.headerItems <- view.parameterRows[0].valueItems
 
-  return ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
+  return handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
 }
 
 return {

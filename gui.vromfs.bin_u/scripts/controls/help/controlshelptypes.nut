@@ -22,6 +22,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
 } = require("hudActionBarConst")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { get_game_mode } = require("mission")
+let { get_mission_difficulty_int } = require("guiMission")
 
 let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
@@ -65,7 +66,7 @@ enums.addTypes(result, {
     helpPattern = CONTROL_HELP_PATTERN.MISSION
 
     showByUnit = function(_unit, unitTag) {
-      let difficulty = ::is_in_flight() ? ::get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
+      let difficulty = ::is_in_flight() ? get_mission_difficulty_int() : ::get_current_shop_difficulty().diffCode
       let isAdvanced = difficulty == DIFFICULTY_HARDCORE
       return !::is_me_newbie() && unitTag == null && !isAdvanced
     }

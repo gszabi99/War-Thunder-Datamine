@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -137,7 +138,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 
       let unitsCasualties = wwActionsWithUnitsList.loadUnitsFromBlk(teamBlk?.casualties)
 
-      this.teams[teamName] <- ::u.extend({}, this.teamDefaults, {
+      this.teams[teamName] <- u.extend({}, this.teamDefaults, {
         name            = teamName
         side            = side
         country         = teamCountry
@@ -287,7 +288,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     this.teams = {}
     foreach (side in sidesOrder) {
       let teamName = teamBySide[side]
-      let teamArmiesList = ::u.filter(wwArmies, (@(side) function(army) { return army.side == side })(side))
+      let teamArmiesList = u.filter(wwArmies, (@(side) function(army) { return army.side == side })(side))
       teamArmiesList.sort(function (a, b) { return a.unitType - b.unitType })
 
       local teamCountry = ""
@@ -300,11 +301,11 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
         teamArmyStates[army.name] <- wwBattleResult?.armyStates[army.name].state ?? "EASAB_UNKNOWN"
 
         let armyUnits = initialArmies?[army.name].units ?? {}
-        teamUnits = ::u.tablesCombine(teamUnits, armyUnits, function(a, b) { return a + b }, 0)
+        teamUnits = u.tablesCombine(teamUnits, armyUnits, function(a, b) { return a + b }, 0)
       }
 
       let teamCasualties = getTblValue(teamName, teamsCasualties, {})
-      let teamUnitStats  = ::u.mapAdvanced(teamUnits, (@(teamCasualties) function(initial, unitName, ...) {
+      let teamUnitStats  = u.mapAdvanced(teamUnits, (@(teamCasualties) function(initial, unitName, ...) {
         let casualties = getTblValue(unitName, teamCasualties, 0)
         return {
           initial    = initial
@@ -313,18 +314,18 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
         }
       })(teamCasualties))
 
-      this.teams[teamName] <- ::u.extend({}, this.teamDefaults, {
+      this.teams[teamName] <- u.extend({}, this.teamDefaults, {
         name            = teamName
         side            = side
         country         = teamCountry
         armies          = teamArmiesList
         armyStates      = teamArmyStates
         unitsInitial    = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(
-          ::u.map(teamUnitStats, function(stats) { return stats.initial }))
+          u.map(teamUnitStats, function(stats) { return stats.initial }))
         unitsCasualties = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(
-          ::u.map(teamUnitStats, function(stats) { return stats.casualties }))
+          u.map(teamUnitStats, function(stats) { return stats.casualties }))
         unitsRemain     = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(
-          ::u.map(teamUnitStats, function(stats) { return stats.remain }))
+          u.map(teamUnitStats, function(stats) { return stats.remain }))
       })
     }
 

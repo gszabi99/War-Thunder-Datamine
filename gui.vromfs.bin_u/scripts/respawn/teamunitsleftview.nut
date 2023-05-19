@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -61,19 +62,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getFullUnitsText() {
     let data = this.missionRules.getFullUnitLimitsData()
-    let textsList = ::u.map(data.unitLimits, this.getRespTextByUnitLimit)
+    let textsList = u.map(data.unitLimits, this.getRespTextByUnitLimit)
     textsList.insert(0, colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsAllyListHeaderLocId)))
 
     if (this.missionRules.isEnemyLimitedUnitsVisible()) {
       let enemyData = this.missionRules.getFullEnemyUnitLimitsData()
       if (enemyData.len()) {
-        let enemyTextsList = ::u.map(enemyData.unitLimits, this.getRespTextByUnitLimit)
+        let enemyTextsList = u.map(enemyData.unitLimits, this.getRespTextByUnitLimit)
         textsList.append("\n" + colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsEnemyListHeaderLocId)))
         textsList.extend(enemyTextsList)
       }
     }
 
-    return ::g_string.implode(textsList, "\n")
+    return "\n".join(textsList, true)
   }
 
   function updateInfo(isJustSwitched = false) {
@@ -105,7 +106,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (this.collapsedInfoUnitLimit)
       prevIdx = data.unitLimits.findindex(this.collapsedInfoUnitLimit.isSame.bindenv(this.collapsedInfoUnitLimit)) ?? -1
 
-    this.updateCollapsedInfoByUnitLimit(::u.chooseRandomNoRepeat(data.unitLimits, prevIdx), needAnim)
+    this.updateCollapsedInfoByUnitLimit(u.chooseRandomNoRepeat(data.unitLimits, prevIdx), needAnim)
     this.collapsedInfoTimer = this.collapsedInfoRefreshDelay
   }
 
@@ -114,7 +115,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return this.setNewCollapsedInfo(!isJustSwitched)
 
     let data = this.missionRules.getFullUnitLimitsData()
-    let newUnitLimit = ::u.search(data.unitLimits, this.collapsedInfoUnitLimit.isSame.bindenv(this.collapsedInfoUnitLimit))
+    let newUnitLimit = u.search(data.unitLimits, this.collapsedInfoUnitLimit.isSame.bindenv(this.collapsedInfoUnitLimit))
     if (newUnitLimit)
       this.updateCollapsedInfoByUnitLimit(newUnitLimit, false)
     else

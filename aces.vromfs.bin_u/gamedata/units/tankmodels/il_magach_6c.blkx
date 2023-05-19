@@ -289,7 +289,8 @@
       "ex_armor_body_l_04_dm": {},
       "ex_decor_l_05_dm": {},
       "ex_decor_l_07_dm": {},
-      "ex_decor_l_08_dm": {}
+      "ex_decor_l_08_dm": {},
+      "ex_decor_03_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -486,7 +487,9 @@
         "ex_armor_turret_l_01_dm": {
           "hp": 300.0
         },
-        "ex_armor_turret_01_dm": {}
+        "ex_armor_turret_01_dm": {},
+        "ex_armor_l_01_dm": {},
+        "ex_armor_l_02_dm": {}
       }
     },
     "gun": {
@@ -2324,13 +2327,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -3614,7 +3617,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 360.0,
-              "salvo": 4,
+              "salvo": 2,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": [
@@ -3726,6 +3729,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

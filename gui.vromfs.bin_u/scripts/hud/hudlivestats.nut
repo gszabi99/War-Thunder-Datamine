@@ -1,15 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
 let { GO_NONE, GO_WAITING_FOR_RESULT } = require("guiMission")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { get_game_mode, get_game_type } = require("mission")
+let { get_game_mode, get_game_type, get_mplayers_list, get_mplayer_by_id, get_local_mplayer } = require("mission")
 
 enum LIVE_STATS_MODE {
   WATCH
@@ -103,7 +107,7 @@ enum LIVE_STATS_MODE {
     }
 
     if (!this.isInitialized) {
-      ::add_event_listener("StreakArrived", this.onEventStreakArrived, this)
+      add_event_listener("StreakArrived", this.onEventStreakArrived, this)
       this.isInitialized = true
     }
 
@@ -127,7 +131,7 @@ enum LIVE_STATS_MODE {
     if (!checkObj(_scene))
       return
 
-    this.isSwitchScene = !::u.isEqual(this.scene, _scene)
+    this.isSwitchScene = !u.isEqual(this.scene, _scene)
     this.scene = _scene
 
     this.checkPlayerSpawned()
@@ -137,7 +141,7 @@ enum LIVE_STATS_MODE {
   function getState(playerId = null, diffState = null) {
     let now = ::get_usefull_total_time()
     let isHero = playerId == null
-    let player = isHero ? ::get_local_mplayer() : ::get_mplayer_by_id(playerId)
+    let player = isHero ? get_local_mplayer() : get_mplayer_by_id(playerId)
 
     let state = {
       player    = player || {}
@@ -191,7 +195,7 @@ enum LIVE_STATS_MODE {
 
       let misObjs = this.missionObjectives
       let gt = this.gameType
-      this.curColumnsOrder = ::u.filter(this.curColumnsOrder, @(id)
+      this.curColumnsOrder = u.filter(this.curColumnsOrder, @(id)
         ::g_mplayer_param_type.getTypeById(id).isVisible(misObjs, gt, get_game_mode()))
 
       this.fill()
@@ -252,12 +256,11 @@ enum LIVE_STATS_MODE {
       let unitNames = []
       foreach (unitId in this.hero.units)
         unitNames.append(::getUnitName(unitId))
-      view["units"] <- loc("mainmenu/btnUnits") + loc("ui/colon") +
-        ::g_string.implode(unitNames, loc("ui/comma"))
+      view["units"] <- loc("mainmenu/btnUnits") + loc("ui/colon") + loc("ui/comma").join(unitNames, true)
     }
 
     let template = this.isSelfTogglable ? "%gui/hud/hudLiveStats.tpl" : "%gui/hud/hudLiveStatsSpectator.tpl"
-    let markup = ::handyman.renderCached(template, view)
+    let markup = handyman.renderCached(template, view)
     this.guiScene.replaceContentFromText(this.scene, markup, markup.len(), this)
 
     let timerObj = this.scene.findObject("update_timer")
@@ -321,10 +324,10 @@ enum LIVE_STATS_MODE {
         let view = { awards = [] }
         foreach (award in awardsList)
           view.awards.append({
-            iconLayers = ::LayersIcon.getIconData("streak_" + award.unlockId)
+            iconLayers = LayersIcon.getIconData("streak_" + award.unlockId)
             amount = award.amount > 1 ? "x" + award.amount : null
           })
-        let markup = ::handyman.renderCached(("%gui/statistics/statAwardIcon.tpl"), view)
+        let markup = handyman.renderCached(("%gui/statistics/statAwardIcon.tpl"), view)
         this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
       }
     }
@@ -339,7 +342,7 @@ enum LIVE_STATS_MODE {
   function getPlayerPlaceInTeam(player) {
     let playerId = getTblValue("id", player, -1)
     let teamId = this.isMissionTeamplay ? getTblValue("team", player, GET_MPLAYERS_LIST) : GET_MPLAYERS_LIST
-    let players = ::get_mplayers_list(teamId, true)
+    let players = get_mplayers_list(teamId, true)
 
     players.sort(::mpstat_get_sort_func(this.gameType))
 
@@ -352,7 +355,7 @@ enum LIVE_STATS_MODE {
   function checkPlayerSpawned() {
     if (!this.isAwaitingSpawn)
       return
-    let player = ::get_local_mplayer()
+    let player = get_local_mplayer()
     if (player.isDead || player.state != PLAYER_IN_FLIGHT)
       return
     let aircraftName = getTblValue("aircraftName", player, "")
@@ -367,7 +370,7 @@ enum LIVE_STATS_MODE {
       return
     if (!this.hero.units.len())
       return
-    let player = ::get_local_mplayer()
+    let player = get_local_mplayer()
     if (player.isTemporary)
       return
     if (!player.isDead)
@@ -392,7 +395,7 @@ enum LIVE_STATS_MODE {
     if (!this.isSelfTogglable || this.isMissionFinished)
       return
     this.spawnStartState = this.getState()
-    ::u.appendOnce(getTblValue("aircraftName", this.spawnStartState.player), this.hero.units)
+    u.appendOnce(getTblValue("aircraftName", this.spawnStartState.player), this.hero.units)
     this.show(false)
   }
 
@@ -403,4 +406,4 @@ enum LIVE_STATS_MODE {
   }
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_hud_live_stats")
+g_script_reloader.registerPersistentDataFromRoot("g_hud_live_stats")

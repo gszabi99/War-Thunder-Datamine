@@ -1,17 +1,19 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
 ::gui_start_battle_tasks_select_new_task_wnd <- function gui_start_battle_tasks_select_new_task_wnd(battleTasksArray = null) {
-  if (!::g_battle_tasks.isAvailableForUser() || ::u.isEmpty(battleTasksArray))
+  if (!::g_battle_tasks.isAvailableForUser() || u.isEmpty(battleTasksArray))
     return
 
   ::gui_start_modal_wnd(::gui_handlers.BattleTasksSelectNewTaskWnd, { battleTasksArray = battleTasksArray })
@@ -36,8 +38,8 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
   }
 
   function getBattleTasksViewData() {
-    this.battleTasksConfigsArray = ::u.map(this.battleTasksArray, @(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
-    return ::u.map(this.battleTasksConfigsArray, @(config) ::g_battle_tasks.generateItemView(config))
+    this.battleTasksConfigsArray = u.map(this.battleTasksArray, @(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
+    return u.map(this.battleTasksConfigsArray, @(config) ::g_battle_tasks.generateItemView(config))
   }
 
   function initScreen() {
@@ -84,7 +86,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
       { showProgressBox = true },
       Callback(function() {
           this.goBack()
-          ::broadcastEvent("BattleTasksIncomeUpdate")
+          broadcastEvent("BattleTasksIncomeUpdate")
         }, this)
     )
   }
@@ -98,7 +100,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
     if (!this.isConfigHaveConditions(config))
       return
 
-    let awardsList = ::u.map(config.names,
+    let awardsList = u.map(config.names,
       @(id) ::build_log_unlock_data(
         ::build_conditions_config(
           getUnlockById(id)

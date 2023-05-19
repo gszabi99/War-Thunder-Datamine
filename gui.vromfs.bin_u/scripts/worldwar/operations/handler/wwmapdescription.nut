@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -115,7 +116,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       vsText = loc("country/VS") + "\n "
     }
 
-    let data = ::handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo.tpl", view)
+    let data = handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     obj.show(true)
   }

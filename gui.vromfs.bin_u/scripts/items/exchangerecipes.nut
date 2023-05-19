@@ -1,9 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let DataBlock  = require("DataBlock")
@@ -132,7 +135,7 @@ local ExchangeRecipes = class {
       let shopItem = ::ItemsManager.findItemById(component.itemdefid)
       local cost = null
       if (shopItem?.isCanBuy() ?? false) {
-        cost = ::Cost() + shopItem.getCost()
+        cost = Cost() + shopItem.getCost()
         cost = cost.setFromTbl({
           wp = cost.wp * reqQuantity
           gold = cost.gold * reqQuantity
@@ -256,7 +259,7 @@ local ExchangeRecipes = class {
             craftTimerText = item.getAdditionalTextInAmmount(false)
           })))
       }
-    return ::handyman.renderCached("%gui/items/item.tpl", { items = itemsViewData })
+    return handyman.renderCached("%gui/items/item.tpl", { items = itemsViewData })
   }
 
   getVisibleMarkupComponents = @() this.showRecipeAsProduct != null ? 1 : this.visibleComponents.len()
@@ -305,7 +308,7 @@ local ExchangeRecipes = class {
         tooltip = this.getMarkTooltip()
       }]
     }
-    return ::handyman.renderCached("%gui/items/trophyDesc.tpl", view)
+    return handyman.renderCached("%gui/items/trophyDesc.tpl", view)
   }
 
   function isRecipeLocked() {
@@ -315,7 +318,7 @@ local ExchangeRecipes = class {
 
   getCantAssembleMarkedFakeLocId = @() this.getMarkLocIdByPath(this.getLocIdsList().markMsgBoxCantUsePrefix)
   function getOpenCost(componentItem) {
-    local cost = ::Cost()
+    local cost = Cost()
     foreach (component in this.components) {
       if (componentItem?.id == component.itemdefId)
         continue
@@ -406,7 +409,7 @@ local ExchangeRecipes = class {
         res.append(recipe.getText(params))
     }
 
-    return ::g_string.implode(res, shouldReturnMarkup ? "" : "\n")
+    return (shouldReturnMarkup ? "" : "\n").join(res, true)
   }
 
   static function getRecipesCraftTimeText(recipes) {
@@ -713,10 +716,10 @@ local ExchangeRecipes = class {
     ? this.getMarkLocIdByPath(this.getLocIdsList().craftFinishedTitlePrefix)
     : this.getLocIdsList().rewardTitle
 
-  getRecipeStr = @() ::g_string.implode(
+  getRecipeStr = @() ",".join(
     u.map(this.initedComponents, @(component) component.itemdefid.tostring()
       + (component.quantity > 1 ? ("x" + component.quantity) : "")),
-    ",")
+    true)
 
   getLocIdsList = function() {
     if (this.locIdsList)

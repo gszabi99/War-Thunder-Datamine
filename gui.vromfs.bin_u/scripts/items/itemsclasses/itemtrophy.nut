@@ -1,5 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -70,7 +74,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     }
 
     let blksArray = [blk]
-    if (::u.isDataBlock(blk?.prizes))
+    if (u.isDataBlock(blk?.prizes))
       blksArray.insert(0, blk.prizes) //if prizes block exist, it's content must be shown in the first place
 
     this.contentRaw = []
@@ -157,7 +161,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     if ((::get_trophy_info(this.id)?.openCount ?? 0) == 0)
       return false
 
-    if (!(::getAircraftByName(this.getTopPrize()?.unit)?.isBought() ?? false))
+    if (!(getAircraftByName(this.getTopPrize()?.unit)?.isBought() ?? false))
       return false
 
     return t <= TIME_WEEK_IN_SECONDS
@@ -260,16 +264,16 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 
   function getCost(ignoreCanBuy = false) {
     if (this.isCanBuy() || ignoreCanBuy)
-      return ::Cost(::wp_get_trophy_cost(this.id), ::wp_get_trophy_cost_gold(this.id))
-    return ::Cost()
+      return Cost(::wp_get_trophy_cost(this.id), ::wp_get_trophy_cost_gold(this.id))
+    return Cost()
   }
 
   function getTrophyImage(id) {
-    let layerStyle = ::LayersIcon.findLayerCfg(id)
+    let layerStyle = LayersIcon.findLayerCfg(id)
     if (layerStyle)
-      return ::LayersIcon.genDataFromLayer(layerStyle)
+      return LayersIcon.genDataFromLayer(layerStyle)
 
-    return ::LayersIcon.getIconData(id, this.defaultIcon, 1.0, this.defaultIconStyle)
+    return LayersIcon.getIconData(id, this.defaultIcon, 1.0, this.defaultIconStyle)
   }
 
   function getUsingStyle() {

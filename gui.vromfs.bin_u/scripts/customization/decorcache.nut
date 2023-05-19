@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let regexp2 = require("regexp2")
 
@@ -178,7 +178,7 @@ let function buildLiveDecoratorFromResource(resource, resourceType, itemDef, par
 
 let function invalidateCache() {
   cache.clear()
-  ::broadcastEvent("DecorCacheInvalidate")
+  broadcastEvent("DecorCacheInvalidate")
 }
 
 let function updateDecorVisible(decorId, decType) {
@@ -232,7 +232,7 @@ addListenersWithoutEnv({
 
 // native code callback
 ::update_unit_skins_list <- function update_unit_skins_list(unitName) {
-  ::getAircraftByName(unitName)?.resetSkins()
+  getAircraftByName(unitName)?.resetSkins()
 }
 
 return {

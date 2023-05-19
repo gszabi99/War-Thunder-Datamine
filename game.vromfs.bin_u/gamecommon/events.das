@@ -1,13 +1,14 @@
 module events shared
 require ecs
 require dm
-require %game.unit_events
-require %game.dm_events
-require %game.ammo_stowage_events
-require %game.fire_system_events
-require %game.repair_system_events
-require %game.extinguish_system_events
-require %game.ship_events
+require %game.dm.dm_events
+require %game.dm.fire_system_events
+require %game.unit.unit_events
+require %game.unit.ammo_stowage_events
+require %game.unit.repair_system_events
+require %game.unit.extinguish_system_events
+require %game.unit.ship_events
+
 
 [cpp_event(broadcast)]
 struct ParallelUpdateFrameDelayed

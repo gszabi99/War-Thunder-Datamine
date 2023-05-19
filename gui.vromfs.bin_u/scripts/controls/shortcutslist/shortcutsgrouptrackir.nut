@@ -61,7 +61,7 @@ return [
       let prev = joyParams.trackIrZoom
       joyParams.trackIrZoom = objValue
       if (prev != objValue)
-        ::set_controls_preset("")
+        ::g_controls_manager.commitControls()
     }
   }
   {
@@ -73,7 +73,7 @@ return [
       let prev = joyParams.trackIrForLateralMovement
       joyParams.trackIrForLateralMovement = objValue
       if (prev != objValue)
-        ::set_controls_preset("")
+        ::g_controls_manager.commitControls()
     }
   }
   {
@@ -84,7 +84,7 @@ return [
       let prev = joyParams.trackIrAsHeadInTPS
       joyParams.trackIrAsHeadInTPS = objValue
       if (joyParams.trackIrAsHeadInTPS != prev)
-        ::set_controls_preset("")
+        ::g_controls_manager.commitControls()
     }
   }
   {

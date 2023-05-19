@@ -111,9 +111,6 @@
         "armorThickness": 8.9,
         "hp": 10000.0
       },
-      "turret_01_back_dm": {
-        "armorThickness": 15.0
-      },
       "turret_05_front_dm": {
         "armorThickness": 15.0
       },
@@ -149,6 +146,16 @@
       "ex_decor_body_r_05_dm": {},
       "ex_decor_body_l_01_dm": {},
       "ex_decor_body_r_01_dm": {},
+      "ex_decor_body_r_03_dm": {},
+      "ex_decor_body_l_03_dm": {},
+      "turret_01_back_dm": {},
+      "ex_decor_04_dm": {},
+      "ex_decor_06_dm": {},
+      "ex_decor_07_dm": {},
+      "ex_decor_08_dm": {},
+      "ex_decor_10_dm": {},
+      "ex_decor_11_dm": {},
+      "ex_decor_12_dm": {},
       "timber": {
         "armorClass": "ship_wood",
         "armorThickness": 100.0,
@@ -1587,16 +1594,16 @@
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "rearmCartridgeTime": 20.0,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           3.0,
           0.0,
           0.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -1626,30 +1633,17 @@
           "gunnerDm": "gunner_dm",
           "verDriveDm": "drive_turret_v_dm",
           "horDriveDm": "drive_turret_h_dm",
-          "linkedAnimPart": [
-            {
-              "verNode": "gun_mask_top_anim",
-              "verLimits": [
-                0.0,
-                96.0
-              ],
-              "verOriginLimits": [
-                -0.0,
-                90.0
-              ]
-            },
-            {
-              "verNode": "gun_mount_anim",
-              "verLimits": [
-                -100.0,
-                0.0
-              ],
-              "verOriginLimits": [
-                -180.0,
-                180.0
-              ]
-            }
-          ]
+          "linkedAnimPart": {
+            "verNode": "gun_mask_top_anim",
+            "verLimits": [
+              0.0,
+              96.0
+            ],
+            "verOriginLimits": [
+              -0.0,
+              90.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -1704,16 +1698,16 @@
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
         "rearmCartridgeTime": 20.0,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           0.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -1799,16 +1793,16 @@
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
         "rearmCartridgeTime": 20.0,
-        "sleeveEmitter": "emtr_shell_03",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_03",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           0.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -1895,16 +1889,16 @@
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
         "rearmCartridgeTime": 20.0,
-        "sleeveEmitter": "emtr_shell_04",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_04",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           4.0,
           0.0,
           0.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "jammedReloadTime": 12.0,
         "defaultYaw": 0.0,
@@ -2117,13 +2111,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2134,6 +2128,130 @@
         "to": "wheel"
       }
     }
+  },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      }
+    ]
   },
   "ammo": {
     "combustionTime": 10.0,

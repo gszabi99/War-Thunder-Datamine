@@ -1,5 +1,5 @@
 from "%darg/ui_imports.nut" import *
-from "ecs" import *
+from "%sqstd/ecs.nut" import *
 let { regexp, strip, format } = require("string")
 let dagorMath = require("dagor.math")
 let {tostring_r} = require("%sqstd/string.nut")

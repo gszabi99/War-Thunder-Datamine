@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -24,6 +26,7 @@ let { showGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 let { canRestartClient } = require("%scripts/utils/restartClient.nut")
 let { isOptionReqRestartChanged, setOptionReqRestartValue
 } = require("%scripts/options/optionsUtils.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -90,7 +93,7 @@ let function openOptionsWnd(group = null) {
         curOption = idx
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let groupsObj = this.scene.findObject("groups_list")
     this.optionIdToObjCache.clear()
     this.guiScene.replaceContentFromText(groupsObj, data, data.len(), this)
@@ -180,7 +183,7 @@ let function openOptionsWnd(group = null) {
     if (!checkObj(filterEditBox))
       return
 
-    this.filterText = ::g_string.utf8ToLower(filterEditBox.getValue())
+    this.filterText = utf8ToLower(filterEditBox.getValue())
 
     if (! this.filterText.len()) {
       this.showOptionsSelectedNavigation()
@@ -192,7 +195,7 @@ let function openOptionsWnd(group = null) {
     let visibleHeadersArray = {}
     local needShowSearchNotify = false
     foreach (option in this.getCurrentOptionsList()) {
-      local show = ::g_string.utf8ToLower(option.getTitle()).indexof(this.filterText) != null
+      local show = utf8ToLower(option.getTitle()).indexof(this.filterText) != null
       needShowSearchNotify = needShowSearchNotify
         || (show && searchResultOptions.len() >= MAX_NUM_VISIBLE_FILTER_OPTIONS)
       show = show && !needShowSearchNotify
@@ -257,8 +260,6 @@ let function openOptionsWnd(group = null) {
     if (event.len() > 1)
       event.remove(0);
 
-    ::set_controls_preset(""); //custom mode
-
     ::set_shortcuts(shortcut, [shortcut_id_name]);
     this.save(false);
 
@@ -270,8 +271,6 @@ let function openOptionsWnd(group = null) {
     let shortcut = ::get_shortcuts([shortcut_id_name]);
 
     shortcut[0] = [];
-
-    ::set_controls_preset(""); //custom mode
 
     ::set_shortcuts(shortcut, [shortcut_id_name]);
     this.save(false);
@@ -361,8 +360,6 @@ let function openOptionsWnd(group = null) {
     if (event.len() > 1)
       event.remove(0);
 
-    ::set_controls_preset(""); //custom mode
-
     ::set_shortcuts(ptt_shortcut, ["ID_PTT"]);
     this.save(false);
 
@@ -375,8 +372,6 @@ let function openOptionsWnd(group = null) {
     let ptt_shortcut = ::get_shortcuts(["ID_PTT"]);
 
     ptt_shortcut[0] = [];
-
-    ::set_controls_preset(""); //custom mode
 
     ::set_shortcuts(ptt_shortcut, ["ID_PTT"]);
     this.save(false);
@@ -536,7 +531,7 @@ let function openOptionsWnd(group = null) {
       [
         ["ok", (@(nameRadio) function() {
           ::remove_internet_radio_station(nameRadio);
-          ::broadcastEvent("UpdateListRadio", {})
+          broadcastEvent("UpdateListRadio", {})
         })(nameRadio)],
         ["cancel", function() {}]
       ], "ok")
@@ -580,7 +575,7 @@ let function openOptionsWnd(group = null) {
 
     ::save_local_account_settings("skipped_msg", null)
     resetTutorialSkip()
-    ::broadcastEvent("ResetSkipedNotifications")
+    broadcastEvent("ResetSkipedNotifications")
 
     //To notify player about success, it is only for player,
     // to be sure, that operation is done.

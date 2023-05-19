@@ -1668,18 +1668,18 @@
         "blk": "gameData/Weapons/groundModels_weapons/76mm_T185E1_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
-        "sleeveEmitter": "emtr_shell",
-        "sleeveMesh": "cartridge_case",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "cartridge_case",
         "hatchAnimVar": "hatch_toggle",
         "openHatchTime": 1.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           5.0,
           0.0,
           0.0
         ],
-        "sleeveExtractSound": "shell_eject",
-        "linkSleeveToGun": true,
+        "shellCasingExtractSound": "shell_eject",
+        "linkShellCasingToGun": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -2004,13 +2004,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }

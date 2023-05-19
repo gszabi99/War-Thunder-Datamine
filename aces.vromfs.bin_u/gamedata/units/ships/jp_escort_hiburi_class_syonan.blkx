@@ -43,6 +43,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1559,7 +1560,7 @@
       "pressureDamageMult": 7.0,
       "napalmDamageMult": 1.0,
       "main_caliber_turret_01_dm": {
-        "hp": 256.0
+        "hp": 240.0
       },
       "main_caliber_turret_02_dm": {
         "hp": 240.0
@@ -6887,5 +6888,34 @@
         "param": "camo_skin_tex"
       }
     ]
-  }
+  },
+  "skin": [
+    {
+      "name": "jp_camo_navy_green",
+      "nameLocId": "skin/jp_camo_navy_green",
+      "descLocId": "skin/jp_camo_navy_green/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_navy_green*"
+      }
+    },
+    {
+      "name": "jp_camo_green_spots",
+      "nameLocId": "skin/jp_camo_green_spots",
+      "descLocId": "skin/jp_camo_green_spots/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_green_spots*"
+      }
+    },
+    {
+      "name": "jp_camo_asiatic_forest",
+      "nameLocId": "skin/jp_camo_asiatic_forest",
+      "descLocId": "skin/jp_camo_asiatic_forest/desc",
+      "replace_tex": {
+        "from": "camo_warshipgray*",
+        "to": "jp_camo_asiatic_forest*"
+      }
+    }
+  ]
 }

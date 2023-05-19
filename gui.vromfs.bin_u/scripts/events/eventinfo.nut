@@ -25,7 +25,7 @@ let function getEventSlotbarHint(event, country) {
     return ""
 
   let hasNotUnlockedUnit = crews.findindex(
-    @(c) isRequireUnlockForUnit(::getAircraftByName(c.aircraft))
+    @(c) isRequireUnlockForUnit(getAircraftByName(c.aircraft))
   ) != null
 
   return hasNotUnlockedUnit ? loc("event/unlockAircrafts") : ""

@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { actionWithGlobalStatusRequest,
@@ -42,7 +44,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function getSortedOperationsData() {
-    let opDataList = ::u.map(this.getOpGroup().getOperationsList(),
+    let opDataList = u.map(this.getOpGroup().getOperationsList(),
                                function(o) { return { operation = o, priority = o.getPriority() } })
 
     opDataList.sort(
@@ -113,7 +115,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let isOperationListVisible = view != null
     this.showSceneBtn("chapter_place", isOperationListVisible)
     this.showSceneBtn("separator_line", isOperationListVisible)
-    let data = ::handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList.tpl", view)
+    let data = handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList.tpl", view)
     this.guiScene.replaceContentFromText(this.opListObj, data, data.len(), this)
 
     this.selectFirstItem(this.opListObj)

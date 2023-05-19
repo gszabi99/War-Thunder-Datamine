@@ -5,6 +5,7 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.162,
   "gearSinkRangeC": 0.056,
+  "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "france_para",
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -563,6 +564,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -604,6 +611,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2166,6 +2179,12 @@
   },
   "modifications": {
     "cd_98": {},
+    "automatic_air_extinguisher": {
+      "image": "#ui/gameuiskin#engine_extinguisher",
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "CdMin_Fuse": {},
     "new_cover": {},
     "structure_str": {},

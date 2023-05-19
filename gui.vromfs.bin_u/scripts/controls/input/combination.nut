@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -23,7 +24,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   function getMarkup() {
     let data = this.getMarkupData()
-    return ::handyman.renderCached(data.template, data.view)
+    return handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData() {
@@ -41,7 +42,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
     foreach (element in this.elements)
       text.append(element.getText())
 
-    return ::g_string.implode(text, " + ")
+    return " + ".join(text, true)
   }
 
   function getDeviceId() {

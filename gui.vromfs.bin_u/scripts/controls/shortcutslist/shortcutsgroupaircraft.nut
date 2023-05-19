@@ -19,8 +19,9 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { MAX_CAMERA_SPEED, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
 let { ActionGroup } = require("controls")
+let { getMouseUsageMask, checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 
-let isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
+let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne || !isMouseAimSelected()
 
 return [
@@ -135,7 +136,7 @@ return [
       let old  = joyParams.holdThrottleForWEP
       joyParams.holdThrottleForWEP = objValue
       if (objValue != old)
-        ::set_controls_preset("")
+        ::g_controls_manager.commitControls()
     }
   }
   {
@@ -197,7 +198,7 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_INSTRUCTOR, globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
     optionType = ::USEROPT_INVERTX
-    showFunc = @() ::g_controls_utils.checkOptionValue(::USEROPT_INVERTY, true)
+    showFunc = @() checkOptionValue(::USEROPT_INVERTY, true)
   }
   {
     id = "joyFX"
@@ -800,14 +801,14 @@ return [
     id = "ID_PLANE_JOYSTICK_HEADER"
     type = CONTROL_TYPE.SECTION
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
+    showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
   }
   {
     id = "mouse_joystick_mode"
     type = CONTROL_TYPE.SPINNER
     filterHide = [globalEnv.EM_MOUSE_AIM]
     options = ["#options/mouse_joy_mode_simple", "#options/mouse_joy_mode_standard"]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
+    showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) get_option_int(OPTION_MOUSE_JOYSTICK_MODE)
     setValue = @(_joyParams, objValue) set_option_int(OPTION_MOUSE_JOYSTICK_MODE, objValue)
   }
@@ -815,7 +816,7 @@ return [
     id = "mouse_joystick_sensitivity"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
+    showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let gp = get_game_params()
       let minSens = gp?.minMouseJoystickSensitivity ?? 0.0
@@ -833,7 +834,7 @@ return [
     id = "mouse_joystick_deadzone"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
+    showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let dz = get_game_params()?.maxMouseJoystickDeadZone ?? 1.0
       return 100.0 * get_option_multiplier(OPTION_MOUSE_JOYSTICK_DEADZONE) / dz
@@ -847,7 +848,7 @@ return [
     id = "mouse_joystick_screensize"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
+    showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let gp = get_game_params()
       let minVal = gp?.minMouseJoystickScreenSize ?? 0.0
@@ -865,7 +866,7 @@ return [
     id = "mouse_joystick_screen_place"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
+    showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE)
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE, objValue / 100.0)
   }
@@ -873,7 +874,7 @@ return [
     id = "mouse_joystick_aileron"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
+    showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickAileron ?? 1.0
       return 100.0 * get_option_multiplier(OPTION_MOUSE_AILERON_AILERON_FACTOR) / maxVal
@@ -887,7 +888,7 @@ return [
     id = "mouse_joystick_rudder"
     type = CONTROL_TYPE.SLIDER
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
+    showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickRudder ?? 1.0
       return 100.0 * get_option_multiplier(OPTION_MOUSE_AILERON_RUDDER_FACTOR) / maxVal
@@ -901,14 +902,14 @@ return [
     id = "mouse_joystick_square"
     type = CONTROL_TYPE.SWITCH_BOX
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
+    showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) ::get_option_mouse_joystick_square()
     setValue = @(_joyParams, objValue) ::set_option_mouse_joystick_square(objValue)
   }
   {
     id = "ID_CENTER_MOUSE_JOYSTICK"
     filterHide = [globalEnv.EM_MOUSE_AIM]
-    showFunc = @() ::is_mouse_available() && (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
+    showFunc = @() ::is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
 //-------------------------------------------------------

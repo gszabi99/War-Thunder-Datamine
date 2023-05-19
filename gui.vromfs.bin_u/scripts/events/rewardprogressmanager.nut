@@ -6,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { format } = require("string")
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+
 /**
  * Caches data from leaderboard to provide always
  * actual values of reward progress.
@@ -82,4 +84,4 @@ let { format } = require("string")
   }
 }
 
-::add_event_listener("EventBattleEnded", ::g_reward_progress_manager.onEventEventBattleEnded, ::g_reward_progress_manager)
+add_event_listener("EventBattleEnded", ::g_reward_progress_manager.onEventEventBattleEnded, ::g_reward_progress_manager)

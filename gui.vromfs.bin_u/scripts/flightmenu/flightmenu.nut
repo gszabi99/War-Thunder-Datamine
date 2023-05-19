@@ -1,9 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { is_mplayer_host } = require("multiplayer")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
@@ -45,7 +48,7 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
     this.setSceneTitle(::getCurMpTitle())
 
     this.menuButtonsCfg = flightMenuButtonTypes.types.filter(@(btn) btn.isAvailableInMission())
-    let markup = ::handyman.renderCached("%gui/flightMenu/menuButtons.tpl", { buttons = this.menuButtonsCfg })
+    let markup = handyman.renderCached("%gui/flightMenu/menuButtons.tpl", { buttons = this.menuButtonsCfg })
     this.guiScene.replaceContentFromText(this.scene.findObject("menu-buttons"), markup, markup.len(), this)
     this.guiScene.applyPendingChanges(false)
 
@@ -172,7 +175,7 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
   }
 
   function sendDisconnectMessage() {
-    ::broadcastEvent("PlayerQuitMission")
+    broadcastEvent("PlayerQuitMission")
     if (::is_multiplayer()) {
       leave_mp_session()
       this.onResumeRaw()
@@ -202,7 +205,7 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
         text = loc("flightmenu/questionQuitMissionHost")
       else if (get_game_mode() == GM_DOMINATION) {
         let unitsData = ::g_mis_custom_state.getCurMissionRules().getAvailableToSpawnUnitsData()
-        let unitsTexts = ::u.map(unitsData,
+        let unitsTexts = u.map(unitsData,
                                    function(ud) {
                                      local res = colorize("userlogColoredText", ::getUnitName(ud.unit))
                                      if (ud.comment.len())
@@ -210,7 +213,7 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
                                      return res
                                    })
         if (unitsTexts.len())
-          text = loc("flightmenu/haveAvailableCrews") + "\n" + ::g_string.implode(unitsTexts, ", ") + "\n\n"
+          text = loc("flightmenu/haveAvailableCrews") + "\n" + ", ".join(unitsTexts, true) + "\n\n"
 
         text += loc("flightmenu/questionQuitMissionInProgress")
       }
@@ -301,7 +304,7 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
   ::in_flight_menu(false)
   ::pause_game(false)
   ::gui_start_hud()
-  ::broadcastEvent("PlayerQuitMission")
+  broadcastEvent("PlayerQuitMission")
 
   if (::is_multiplayer())
     return leave_mp_session()

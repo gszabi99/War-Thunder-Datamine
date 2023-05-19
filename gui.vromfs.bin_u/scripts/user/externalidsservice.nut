@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let updateExternalIDsTable = function(request) {
   let blk = DataBlock()
@@ -27,7 +28,7 @@ let updateExternalIDsTable = function(request) {
   if (eIDtable?[EPL_XBOXONE]?.id)
     table.xboxId <- eIDtable[EPL_XBOXONE].id
 
-  ::broadcastEvent("UpdateExternalsIDs", { externalIds = table, request = request })
+  broadcastEvent("UpdateExternalsIDs", { externalIds = table, request = request })
 }
 
 let requestExternalIDsFromServer = function(taskId, request, taskOptions) {

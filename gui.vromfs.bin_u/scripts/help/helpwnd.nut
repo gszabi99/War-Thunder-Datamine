@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -106,7 +107,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       })
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
 
     this.fillSubTabs()
@@ -129,7 +130,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
         })
       }
 
-      let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+      let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
       this.guiScene.replaceContentFromText(subTabsObj, data, data.len(), this)
     }
 
@@ -335,11 +336,11 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       view.texts.append({
         width = 100.0 / (scTextFull.len() || 1) + "%pw"
         viewclass = "parInvert"
-        text = ::g_string.implode(textsArr, "\n")
+        text = "\n".join(textsArr, true)
       })
 
     let obj = this.scene.findObject("full_shortcuts_texts")
-    let data = ::handyman.renderCached("%gui/commonParts/text.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/text.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
 
     let kbdObj = this.scene.findObject("keyboard_div")
@@ -607,7 +608,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       view.rows.append(rowData)
     }
 
-    let markup = ::handyman.renderCached("%gui/help/helpShortcutsList.tpl", view)
+    let markup = handyman.renderCached("%gui/help/helpShortcutsList.tpl", view)
     this.guiScene.replaceContentFromText(defControlsFrame, markup, markup.len(), this)
   }
 
@@ -694,7 +695,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       let view = {
         items = items
       }
-      let blk = ::handyman.renderCached(("%gui/help/helpActionBarItem.tpl"), view)
+      let blk = handyman.renderCached(("%gui/help/helpActionBarItem.tpl"), view)
       this.guiScene.replaceContentFromText(obj, blk, blk.len(), this)
     }
   }
@@ -711,7 +712,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       viewItem.icon <- item.icon
     else
       viewItem.icon <- actionBarType.getIcon(item, null,
-        ::getAircraftByName(actionBar?.unitId ?? ""), actionBar?.hudUnitType ?? "")
+        getAircraftByName(actionBar?.unitId ?? ""), actionBar?.hudUnitType ?? "")
 
     return viewItem
   }

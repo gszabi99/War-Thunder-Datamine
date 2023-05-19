@@ -6,7 +6,8 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { getAvailableRespawnBases } = require("guiRespawn")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 enum MIS_LOAD { //bit enum
   //loading parts
@@ -22,13 +23,13 @@ enum MIS_LOAD { //bit enum
   log("on_update_es_from_host called")
   ::g_crews_list.invalidate()
   ::reinitAllSlotbars()
-  ::broadcastEvent("UpdateEsFromHost")
+  broadcastEvent("UpdateEsFromHost")
 }
 
   //calls from c++ code. Signals that something is changed in mission
   // for now it's only state of respawn bases
 ::on_mission_changed <- function on_mission_changed() {
-  ::broadcastEvent("ChangedMissionRespawnBasesStatus")
+  broadcastEvent("ChangedMissionRespawnBasesStatus")
 }
 
 ::g_mis_loading_state <- {
@@ -90,5 +91,5 @@ enum MIS_LOAD { //bit enum
   this.checkRespawnBases()
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_mis_loading_state")
-::subscribe_handler(::g_mis_loading_state ::g_listener_priority.CONFIG_VALIDATION)
+g_script_reloader.registerPersistentDataFromRoot("g_mis_loading_state")
+subscribe_handler(::g_mis_loading_state ::g_listener_priority.CONFIG_VALIDATION)

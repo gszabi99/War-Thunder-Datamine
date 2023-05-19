@@ -4,7 +4,9 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -111,7 +113,7 @@ enum CChoiceState {
 
     switchProfileCountry(this.selectedCountry)
     this.goBack()
-    ::broadcastEvent("UnitTypeChosen")
+    broadcastEvent("UnitTypeChosen")
   }
 
   function isCountryAvailable(country, unitType) {
@@ -154,13 +156,13 @@ enum CChoiceState {
       }.bindenv(this)
     }
 
-    let data = ::handyman.renderCached("%gui/firstChoice/unitTypeChoice.tpl", view)
+    let data = handyman.renderCached("%gui/firstChoice/unitTypeChoice.tpl", view)
     if (this.selectedUnitType == null) {
       let preselectUnits = [unitTypes.AIRCRAFT, unitTypes.TANK]
       this.selectedUnitType = preselectUnits[rnd() % preselectUnits.len()]
     }
 
-    this.fillChoiceScene(data, ::find_in_array(this.unitTypesList, this.selectedUnitType, 0), "firstUnit")
+    this.fillChoiceScene(data, find_in_array(this.unitTypesList, this.selectedUnitType, 0), "firstUnit")
   }
 
   function fillChoiceScene(data, focusItemNum, headerLocId) {
@@ -264,7 +266,7 @@ enum CChoiceState {
       }.bindenv(this)
     }
 
-    data = ::handyman.renderCached("%gui/firstChoice/countryFirstChoiceItem.tpl", view)
+    data = handyman.renderCached("%gui/firstChoice/countryFirstChoiceItem.tpl", view)
 
     if (!availCountries.len()) {
       let message = format("Error: Empty available countries List for userId = %s\nunitType = %s:\ncountries = %s\n%s",
@@ -278,11 +280,11 @@ enum CChoiceState {
     else if (!isInArray(this.selectedCountry, availCountries)) {
       local rndC = rnd() % availCountries.len()
       if (::is_vietnamese_version())
-        rndC = ::find_in_array(availCountries, "country_ussr", rndC)
+        rndC = find_in_array(availCountries, "country_ussr", rndC)
       this.selectedCountry = availCountries[rndC]
     }
 
-    let selectId = ::find_in_array(this.countries, this.selectedCountry, 0)
+    let selectId = find_in_array(this.countries, this.selectedCountry, 0)
     this.fillChoiceScene(data, selectId, "firstCountry")
   }
 
@@ -435,7 +437,7 @@ enum CChoiceState {
         ::slotbarPresets.newbieInit(presetsData)
 
         ::checkUnlockedCountriesByAirs()
-        ::broadcastEvent("EventsDataUpdated")
+        broadcastEvent("EventsDataUpdated")
         ::gui_handlers.BaseGuiHandlerWT.goBack.call(handler)
       })(presetsData, handler))
   }

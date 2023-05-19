@@ -29,6 +29,7 @@ let function register_important_live_error_callback(callback) {
 return {
   launch_browser = app.launch_browser
   get_title_id = app.get_title_id
+  get_region = app.get_region
 
   register_activation_callback
   register_constrain_callback

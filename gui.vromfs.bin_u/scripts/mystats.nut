@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -105,7 +107,7 @@ local summaryNameArray = [
     this._my_stats = getPlayerStatsFromBlk(blk)
 
     seenTitles.onListChanged()
-    ::broadcastEvent("MyStatsUpdated")
+    broadcastEvent("MyStatsUpdated")
   }
 
   function isStatsLoaded() {
@@ -346,7 +348,7 @@ local summaryNameArray = [
     if (!pvpSummary)
       return res
 
-    let roles = ::u.map(getUnitClassTypesByEsUnitType(filter?.unitType),
+    let roles = u.map(getUnitClassTypesByEsUnitType(filter?.unitType),
        @(t) t.expClassName)
 
     foreach (_idx, diffData in pvpSummary)
@@ -366,19 +368,26 @@ local summaryNameArray = [
     return this.getSummary("pvp_played", { addArray = ["respawns"] })
   }
 
+  function getPvpRespawnsOnUnitType(unitType) {
+    return this.getSummary("pvp_played", {
+      unitType
+      addArray = ["respawns"]
+    })
+  }
+
   function getKillsOnUnitType(unitType) {
     return this.getSummary("pvp_played", {
-                                      addArray = ["air_kills", "ground_kills", "naval_kills"],
-                                      subtractArray = ["air_kills_ai", "ground_kills_ai", "naval_kills_ai"]
-                                      unitType = unitType
-                                    })
+      addArray = ["air_kills", "ground_kills", "naval_kills"],
+      subtractArray = ["air_kills_ai", "ground_kills_ai", "naval_kills_ai"]
+      unitType
+    })
   }
 
   function getTimePlayedOnUnitType(unitType) {
     return this.getSummary("pvp_played", {
-                                      addArray = ["timePlayed"]
-                                      unitType = unitType
-                                    })
+      addArray = ["timePlayed"]
+      unitType
+    })
   }
 
   function getClassFlags(unitType) {
@@ -481,7 +490,7 @@ local summaryNameArray = [
         saveBlk[curUnitType.tostring()] = max(getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
       }
 
-    if (!::u.isEqual(saveBlk, loadedBlk))
+    if (!u.isEqual(saveBlk, loadedBlk))
       ::saveLocalByAccount("tutor/newbieBattles/unitsRank", saveBlk)
 
     return saveBlk
@@ -517,7 +526,7 @@ local summaryNameArray = [
 
 seenTitles.setListGetter(@() ::my_stats.getTitles())
 
-::subscribe_handler(::my_stats, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::my_stats, ::g_listener_priority.DEFAULT_HANDLER)
 
 ::is_me_newbie <- function is_me_newbie() { //used in code
   return ::my_stats.isMeNewbie()

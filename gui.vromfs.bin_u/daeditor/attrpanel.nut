@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
-from "ecs" import *
+from "%sqstd/ecs.nut" import *
 
 let { Point2, Point3, Point4 } = require("dagor.math")
 

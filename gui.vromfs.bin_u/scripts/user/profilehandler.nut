@@ -1,9 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -53,6 +56,7 @@ let { isUnlockFav, canAddFavorite, unlockToFavorites,
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { getCachedDataByType, getDecorator, getDecoratorById, getCachedDecoratorsListByType, getPlaneBySkinId
 } = require("%scripts/customization/decorCache.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -172,13 +176,13 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
           return (country != "") ? country : null
         })
 
-      this.unlockFilters.UnlockSkin = ::u.filter(shopCountriesList, @(c) isInArray(c, skinCountries))
+      this.unlockFilters.UnlockSkin = u.filter(shopCountriesList, @(c) isInArray(c, skinCountries))
     }
 
     //fill medal filters
     if ("Medal" in this.unlockFilters) {
       let medalCountries = this.getUnlockFiltersList("medal", @(unlock) unlock?.country)
-      this.unlockFilters.Medal = ::u.filter(shopCountriesList, @(c) isInArray(c, medalCountries))
+      this.unlockFilters.Medal = u.filter(shopCountriesList, @(c) isInArray(c, medalCountries))
     }
 
     let bntGetLinkObj = this.scene.findObject("btn_getLink")
@@ -281,7 +285,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
         curSheetIdx = idx
     }
 
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let sheetsListObj = this.scene.findObject("profile_sheet_list")
     this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
     sheetsListObj.setValue(curSheetIdx)
@@ -309,7 +313,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     let unlocks = getUnlocksByType(uType)
     foreach (unlock in unlocks)
       if (isUnlockVisible(unlock))
-        ::u.appendOnce(getCategoryFunc(unlock), categories, true)
+        u.appendOnce(getCategoryFunc(unlock), categories, true)
 
     return categories
   }
@@ -467,7 +471,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
         }
       }
 
-      let data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+      let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
       let categoriesListObj = this.scene.findObject("decals_group_list")
       this.guiScene.replaceContentFromText(categoriesListObj, data, data.len(), this)
 
@@ -494,7 +498,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
         view.items.append({ text = $"#{filter}" })
       }
 
-      let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+      let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
       let pageList = this.scene.findObject("medals_list")
       this.guiScene.replaceContentFromText(pageList, data, data.len(), this)
 
@@ -527,7 +531,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
           )
         }
 
-        let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+        let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
         this.guiScene.replaceContentFromText(pageList, data, data.len(), this)  // fill countries listbox
         pageList.setValue(selIdx)
         if (selIdx <= 0)
@@ -769,7 +773,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
             }
           )
 
-      let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+      let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
       this.guiScene.replaceContentFromText(unitypeListObj, data, data.len(), this)
     }
 
@@ -797,7 +801,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   function recacheSkins() {
     this.skinsCache = {}
     foreach (skinName, decorator in getCachedDecoratorsListByType(::g_decorator_type.SKINS)) {
-      let unit = ::getAircraftByName(getPlaneBySkinId(skinName))
+      let unit = getAircraftByName(getPlaneBySkinId(skinName))
       if (!unit)
         continue
 
@@ -869,14 +873,14 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
     if (pageTypeId == UNLOCKABLE_SKIN) {
       let itemsView = this.getSkinsView()
-      data = ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", { items = itemsView })
+      data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", { items = itemsView })
       let skinId = this.initSkinId
       curIndex = itemsView.findindex(@(p) p.id == skinId) ?? 0
     }
     else {
       let view = { items = [] }
       view.items = this.generateItems(pageTypeId)
-      data = ::handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
+      data = handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
     }
 
     let unlocksObj = this.scene.findObject(containerObjId)
@@ -931,7 +935,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
           })
         }
     }
-    data += ::handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    data += handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
     this.guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
     this.guiScene.setUpdatesEnabled(true, true)
 
@@ -1052,7 +1056,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function getUnitBySkin(skinName) {
-    return ::getAircraftByName(getPlaneBySkinId(skinName))
+    return getAircraftByName(getPlaneBySkinId(skinName))
   }
 
   function getDecalsMarkup(categoryId, groupId) {
@@ -1072,11 +1076,11 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
         statusLock = decorator.isUnlocked() ? null : "achievement"
       })
     }
-    return ::handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
+    return handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
   }
 
   function checkSkinVehicle(unitName) {
-    let unit = ::getAircraftByName(unitName)
+    let unit = getAircraftByName(unitName)
     if (unit == null)
       return false
     return unit.isVisibleInShop()
@@ -1228,7 +1232,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     }
 
     this.guiScene.setUpdatesEnabled(false, false)
-    let markUpData = ::handyman.renderCached("%gui/profile/profileSkins.tpl", skinView)
+    let markUpData = handyman.renderCached("%gui/profile/profileSkins.tpl", skinView)
     let objDesc = this.showSceneBtn("item_desc", true)
     this.guiScene.replaceContentFromText(objDesc, markUpData, markUpData.len(), this)
 
@@ -1282,7 +1286,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function onBuyUnlock(obj) {
     let unlockId = getTblValue("unlockId", obj)
-    if (::u.isEmpty(unlockId))
+    if (u.isEmpty(unlockId))
       return
 
     let cost = getUnlockCost(unlockId)
@@ -1304,7 +1308,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function updateUnlockBlock(unlockData) {
     local unlock = unlockData
-    if (::u.isString(unlockData))
+    if (u.isString(unlockData))
       unlock = getUnlockById(unlockData)
 
     let unlockObj = this.scene.findObject(this.getUnlockBlockId(unlock.id))
@@ -1329,7 +1333,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     if (!unitName)
       return
 
-    ::broadcastEvent("ShowUnitInShop", { unitName })
+    broadcastEvent("ShowUnitInShop", { unitName })
     this.goBack()
   }
 
@@ -1443,7 +1447,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       rewardText = rewardText != "" ? rewardText : null
     }
 
-    let markup = ::handyman.renderCached("%gui/profile/profileMedal.tpl", view)
+    let markup = handyman.renderCached("%gui/profile/profileMedal.tpl", view)
     this.guiScene.setUpdatesEnabled(false, false)
     this.guiScene.replaceContentFromText(descObj, markup, markup.len(), this)
     ::g_unlock_view.fillUnlockFav(name, containerObj)
@@ -1574,7 +1578,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   function openProfileTab(tab, selectedBlock) {
     let obj = this.scene.findObject("profile_sheet_list")
     if (checkObj(obj)) {
-      let num = ::find_in_array(this.sheetsList, tab)
+      let num = u.find_in_array(this.sheetsList, tab)
       if (num < 0)
         return
       obj.setValue(num)
@@ -1675,7 +1679,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     if (obj)
       obj.setValue(::get_profile_info().icon)
 
-    ::broadcastEvent(profileEvent.AVATAR_CHANGED)
+    broadcastEvent(profileEvent.AVATAR_CHANGED)
   }
 
   function onEventMyStatsUpdated(_params) {
@@ -1722,7 +1726,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       unlocksList = this.unlocksTree[id].rootItems
     else
       foreach (chapterName, chapterItem in this.unlocksTree) {
-        let subsectionName = ::g_string.cutPrefix(id, chapterName + "/", null)
+        let subsectionName = cutPrefix(id, chapterName + "/", null)
         if (!subsectionName)
           continue
 

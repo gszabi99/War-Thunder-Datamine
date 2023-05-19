@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil, floor } = require("math")
 let { rnd } = require("dagor.random")
@@ -14,6 +15,7 @@ let mapPreferences    = require("mapPreferences")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { setMapPreview, getMissionBriefingConfig } = require("%scripts/missions/mapPreview.nut")
+let { trim, utf8ToLower } = require("%sqstd/string.nut")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
@@ -111,14 +113,14 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     foreach (idx, inst in mapPreferencesParams.getPrefTypes()) {
       let checkBoxObj = this.scene.findObject("map_preview").findObject(inst.id)
       checkBoxObj.setValue(idx == "disliked" ? !banned && disliked : this.mapsList[this.currentMapId][idx])
-      checkBoxObj.findObject("title").setValue(::g_string.implode([
+      checkBoxObj.findObject("title").setValue(" ".join([
         loc("maps/preferences/{0}".subst(this.mapsList[this.currentMapId][idx]
           ? inst.tooltip_remove_id
           : inst.id)),
         isLevelBanMode
           ? loc("ui/parentheses/space", { text = loc("maps/preferences/all_missions") })
           : ""
-      ], " "))
+      ], true))
       checkBoxObj.inactiveColor = (idx == "disliked" ?  banned : false)
         || (this.hasMaxCount(idx) && !this.mapsList[this.currentMapId][idx]) ? "yes" : "no"
     }
@@ -140,11 +142,11 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
   }
 
   function getCounterTitleText() {
-    return ::g_string.implode([
+    return " ".join([
       loc("maps/preferences/counter/dislike", { counterText = this.getCounterTextByType("disliked") }),
       loc("maps/preferences/counter/ban", { counterText = this.getCounterTextByType("banned") }),
       loc("maps/preferences/counter/like", { counterText = this.getCounterTextByType("liked") })
-    ], " ")
+    ], true)
   }
 
   function updateCounterTitle() {
@@ -351,7 +353,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     if (!checkObj(listObj))
       return
 
-    let data = ::handyman.renderCached("%gui/missions/mapStateBox.tpl", { mapStateBox = this.getBanList() })
+    let data = handyman.renderCached("%gui/missions/mapStateBox.tpl", { mapStateBox = this.getBanList() })
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
   }
 
@@ -383,9 +385,9 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     let value = obj.getValue()
     this.scene.findObject("filter_edit_cancel_btn")?.show(value.len() != 0)
 
-    let searchStr = ::g_string.utf8ToLower(::g_string.trim(value))
+    let searchStr = utf8ToLower(trim(value))
     let visibleMapsList = searchStr != "" ? this.mapsList.filter(@(inst)
-      ::g_string.utf8ToLower(inst.title).indexof(searchStr) != null) : this.mapsList
+      utf8ToLower(inst.title).indexof(searchStr) != null) : this.mapsList
 
     let mlistObj = this.scene.findObject("maps_list")
     foreach (inst in this.mapsList)

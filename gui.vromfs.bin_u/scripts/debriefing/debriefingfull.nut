@@ -1,5 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost, Money, money_type } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -12,13 +15,14 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("%scripts/debriefing/rewardSources.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { money_type } = require("%scripts/money.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { is_replay_playing } = require("replays")
 let { subscribe } = require("eventbus")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
+let { get_mission_difficulty_int, stat_get_benchmark } = require("guiMission")
 let { dynamicApplyStatus } = require("dynamicMission")
+let { toUpper } = require("%sqstd/string.nut")
 
 global enum debrState {
   init
@@ -37,7 +41,7 @@ let function countWholeRewardInTable(table, currency, specParam = null) {
     return 0
 
   local reward = 0
-  let upCur = ::g_string.toUpper(currency, 1)
+  let upCur = toUpper(currency, 1)
   let searchArray = specParam || ["noBonus", "premMod", "premAcc", "booster"]
   foreach (cur in searchArray)
     reward += getTblValue(cur + upCur, table, 0)
@@ -264,10 +268,10 @@ debriefingRows = [
     tooltipComment = function() {
       let firstWinMulRp = (debriefingResult?.xpFirstWinInDayMul ?? 1.0).tointeger()
       let firstWinMulWp = (debriefingResult?.wpFirstWinInDayMul ?? 1.0).tointeger()
-      return loc("reward") + loc("ui/colon") + ::g_string.implode([
+      return loc("reward") + loc("ui/colon") + loc("ui/comma").join([
         firstWinMulRp > 1 ? ::getRpPriceText("x" + firstWinMulRp, true) : "",
         firstWinMulWp > 1 ? ::getWpPriceText("x" + firstWinMulWp, true) : "",
-      ], loc("ui/comma"))
+      ], true)
     }
     canShowRewardAsValue = true
     isCountedInUnits = false
@@ -294,14 +298,14 @@ debriefingRows = [
       let tournamentGold = getTblValue("goldTournamentBaseReward", debriefingResult.exp, 0)
       let goldTotal = getTblValue("goldTotal",   debriefingResult.exp, 0)
       if (tournamentWp || tournamentGold)
-        texts.append(loc("debriefing/tournamentBaseReward") + loc("ui/colon") + ::Cost(tournamentWp, tournamentGold))
+        texts.append(loc("debriefing/tournamentBaseReward") + loc("ui/colon") + Cost(tournamentWp, tournamentGold))
       else if (goldTotal)
-        texts.append(loc("chapters/training") + loc("ui/colon") + ::Cost(0, goldTotal))
+        texts.append(loc("chapters/training") + loc("ui/colon") + Cost(0, goldTotal))
       let raceWp = getTblValue("wpRace",  debriefingResult.exp, 0)
       let raceRp = getTblValue("expRace", debriefingResult.exp, 0)
       if (raceWp || raceRp)
-        texts.append(loc("events/chapter/race") + loc("ui/colon") + ::Cost(raceWp, 0, 0, raceRp))
-      return texts.len() ? colorize("commonTextColor", ::g_string.implode(texts, "\n")) : null
+        texts.append(loc("events/chapter/race") + loc("ui/colon") + Cost(raceWp, 0, 0, raceRp))
+      return texts.len() ? colorize("commonTextColor", "\n".join(texts, true)) : null
     }
   }
   {
@@ -324,8 +328,8 @@ debriefingRows = [
     isOverall = true
     tooltipComment = function() { return loc("debriefing/EfficiencyReason") }
     tooltipRowBonuses = function(unitId, unitData) {
-      let unitTypeName = ::getAircraftByName(unitId)?.unitType?.name ?? ""
-      let investUnit = ::getAircraftByName(debriefingResult?.exp?["investUnitName" + unitTypeName])
+      let unitTypeName = getAircraftByName(unitId)?.unitType?.name ?? ""
+      let investUnit = getAircraftByName(debriefingResult?.exp?["investUnitName" + unitTypeName])
       let prevUnit = ::getPrevUnit(investUnit)
       if (unitId != prevUnit?.name)
         return null
@@ -340,8 +344,8 @@ debriefingRows = [
 
       return {
         sources = [
-          NO_BONUS.__merge({ text = ::Cost().setRp(noBonus).tostring() }),
-          PREV_UNIT_EFFICIENCY.__merge({ text = $"{::Cost().setRp(bonus).tostring()}{comment}" })
+          NO_BONUS.__merge({ text = Cost().setRp(noBonus).tostring() }),
+          PREV_UNIT_EFFICIENCY.__merge({ text = $"{Cost().setRp(bonus).tostring()}{comment}" })
         ]
       }
     }
@@ -472,7 +476,7 @@ let function getStatReward(row, currency, keysArray = []) {
 
   local result = 0
   let tableId = getTableNameById(row)
-  let currencyName = ::g_string.toUpper(currency, 1)
+  let currencyName = toUpper(currency, 1)
   foreach (key in keysArray)
     result += debriefingResult.exp?[tableId][key + currencyName] ?? 0
   return result
@@ -497,7 +501,7 @@ let function calculateDebriefingTabularData(addVirtPremAcc = false) {
   foreach (row in debriefingRows) {
     if (!row.isUsedInRecount)
       continue
-    if (::u.isEmpty(debriefingResult.exp?[getTableNameById(row)]))
+    if (u.isEmpty(debriefingResult.exp?[getTableNameById(row)]))
       continue
 
     foreach (currency in [ "wp", "exp" ])
@@ -572,7 +576,7 @@ let function debriefingResultHaveTeamkills() {
 }
 
 let function getDebriefingBaseTournamentReward() {
-  let result = ::Cost()
+  let result = Cost()
 
   local logs = ::getUserLogsList({
     show = [
@@ -682,7 +686,7 @@ let function getDebriefingActiveWager() {
   }
 
   if (data.wagerWpEarned != 0 || data.wagerGoldEarned != 0) {
-    let money = ::Money(money_type.cost, data.wagerWpEarned, data.wagerGoldEarned)
+    let money = Money(money_type.cost, data.wagerWpEarned, data.wagerGoldEarned)
     let rewardText = money.tostring()
     let locParams = {
       wagerRewardText = rewardText
@@ -721,7 +725,7 @@ let function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
         if (!(keyFrom in tbl))
           continue
         let val = tbl[keyFrom]
-        let isTable = ::u.isTable(val)
+        let isTable = u.isTable(val)
         if (!(keyTo in tbl))
           tbl[keyTo] <- isTable ? (clone val) : val
         else {
@@ -792,7 +796,7 @@ let function debriefingApplyFirstWinInDayMul(exp, debrResult) {
 
 let function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   let pveTrophyName = getTblValue("pveTrophyName", ::get_current_mission_info_cached())
-  if (::u.isEmpty(pveTrophyName))
+  if (u.isEmpty(pveTrophyName))
     return null
 
   let warpoints = ::get_warpoints_blk()
@@ -899,13 +903,13 @@ let function gatherDebriefingResult() {
   debriefingResult.mpTblTeams <- ::get_mp_tbl_teams()
   debriefingResult.unitTypesMask <- ::SessionLobby.getUnitTypesMask()
   debriefingResult.playersInfo <- clone ::SessionLobby.getPlayersInfo()
-  debriefingResult.missionDifficultyInt <- ::get_mission_difficulty_int()
+  debriefingResult.missionDifficultyInt <- get_mission_difficulty_int()
   debriefingResult.isSymmetric <- ::SessionLobby.getPublicParam("symmetricTeams", true)
   debriefingResult.missionObjectives <- ::g_mission_type.getCurrentObjectives()
 
 
   if (is_benchmark_game_mode())
-    debriefingResult.benchmark <- ::stat_get_benchmark()
+    debriefingResult.benchmark <- stat_get_benchmark()
 
   debriefingResult.numberOfWinningPlaces <- ::get_race_winners_count()
   debriefingResult.mplayers_list <- getMplayersList()
@@ -913,7 +917,7 @@ let function gatherDebriefingResult() {
   //Fill Exp and WP table in correct format
   let exp = ::stat_get_exp() || {}
 
-  debriefingResult.expDump <- ::u.copy(exp) // Untouched copy for debug
+  debriefingResult.expDump <- u.copy(exp) // Untouched copy for debug
 
   // Put exp data compatibility changes here.
 
@@ -969,7 +973,7 @@ let function gatherDebriefingResult() {
   // So deleting info about killstreak units is very important.
   let aircraftsForDelete = []
   foreach (airName, airData in debriefingResult.exp.aircrafts)
-    if (airData.sessionTime == 0 || !::getAircraftByName(airName))
+    if (airData.sessionTime == 0 || !getAircraftByName(airName))
       aircraftsForDelete.append(airName)
   foreach (airName in aircraftsForDelete)
     debriefingResult.exp.aircrafts.rawdelete(airName)
@@ -1020,7 +1024,7 @@ let function gatherDebriefingResult() {
   recountDebriefingResult()
 
   if (is_mplayer_peer())
-    ::destroy_session_scripted()
+    ::destroy_session_scripted("after gather debriefing result")
 }
 
 let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
@@ -1039,7 +1043,7 @@ let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
     foreach (ut in unitTypes.types) {
       let typeName = ut.name
       let unitId = getTblValue("investUnitName" + typeName, data, "")
-      if (::u.isEmpty(unitId))
+      if (u.isEmpty(unitId))
         continue
       let unitVirtPremAccExp = data?.aircrafts[unitId].tblTotal.virtPremAccExp ?? 0
       if (unitVirtPremAccExp > 0 && getTblValue("expInvestUnit" + typeName, data, 0) > 0)
@@ -1050,7 +1054,7 @@ let function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
     if (!row.isUsedInRecount)
       continue
     let rowTbl = data?[getTableNameById(row)]
-    if (::u.isEmpty(rowTbl))
+    if (u.isEmpty(rowTbl))
       continue
     foreach (suffix in [ "Exp", "Wp" ]) {
       let virtPremAcc = getTblValue("virtPremAcc" + suffix, rowTbl, 0)
@@ -1086,7 +1090,7 @@ let function debriefingAddVirtualPremAcc() {
 }
 
 let function getMoneyFromDebriefingResult() {
-  let res = ::Cost()
+  let res = Cost()
   gatherDebriefingResult()
   if (debriefingResult == null)
     return res

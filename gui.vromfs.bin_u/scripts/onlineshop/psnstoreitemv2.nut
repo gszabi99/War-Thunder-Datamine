@@ -1,10 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calcPercent } = require("%sqstd/math.nut")
 let psnStore = require("sony.store")
 let psnUser = require("sony.user")
@@ -29,7 +31,7 @@ let function handleNewPurchase(itemId) {
   ::ps4_update_purchases_on_auth()
   let taskParams = { showProgressBox = true, progressBoxText = loc("charServer/checking") }
   ::g_tasker.addTask(::update_entitlements_limited(true), taskParams)
-  ::broadcastEvent("PS4ItemUpdate", { id = itemId })
+  broadcastEvent("PS4ItemUpdate", { id = itemId })
 }
 
 let getActionText = @(action) action == psnStore.Action.PURCHASED ? "purchased"
@@ -204,8 +206,8 @@ local psnV2ShopPurchasableItem = class {
   isCanBuy = @() this.isPurchasable && !this.isBought
   isInactive = @() !this.isPurchasable || this.isBought
 
-  getIcon = @(...) this.imagePath ? ::LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
-                             : ::LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
+  getIcon = @(...) this.imagePath ? LayersIcon.getCustomSizeIconData(this.imagePath, "pw, ph")
+                             : LayersIcon.getIconData(null, null, 1.0, this.defaultIconStyle)
 
   getSeenId = @() this.id.tostring()
   canBeUnseen = @() this.isBought

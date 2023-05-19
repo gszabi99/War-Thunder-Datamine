@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -59,9 +61,9 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
     let emptyLog = { battleArmy = emptyBattleArmies, damagedArmy = emptyDamagedArmies }
     let logsList = array(WW_LOG_MAX_DISPLAY_AMOUNT, emptyLog)
-    let logData = ::handyman.renderCached(this.logRowTplName, { operationLogRow = logsList })
+    let logData = handyman.renderCached(this.logRowTplName, { operationLogRow = logsList })
     this.guiScene.replaceContentFromText(this.logContainerObj, logData, logData.len(), this)
-    this.emptyLogChild = ::handyman.renderCached(this.logRowTplName, { operationLogRow = [emptyLog] })
+    this.emptyLogChild = handyman.renderCached(this.logRowTplName, { operationLogRow = [emptyLog] })
   }
 
   function onEventWWNewLogsAdded(params = {}) {
@@ -502,7 +504,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   }
 
   function findArmyObjsInLog(armyName) {
-    if (::u.isEmpty(armyName))
+    if (u.isEmpty(armyName))
       return []
 
     let armyObjects = []

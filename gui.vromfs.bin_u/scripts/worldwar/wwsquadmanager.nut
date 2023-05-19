@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let DataBlock  = require("DataBlock")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
 let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
@@ -50,7 +50,7 @@ let function onSquadDataReceived(data) {
   }
 
   if (isDataChanged)
-    ::broadcastEvent("OperationInfoUpdated")
+    broadcastEvent("OperationInfoUpdated")
 }
 
 addListenersWithoutEnv({

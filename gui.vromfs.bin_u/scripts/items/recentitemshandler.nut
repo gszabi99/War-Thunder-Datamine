@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -67,7 +68,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     let otherItemsText = this.createOtherItemsText(this.numOtherItems)
     let view = {
       id = ::g_promo.getActionParamsKey(this.scene.id)
-      items = ::handyman.renderCached("%gui/items/item.tpl", this.createItemsView(this.recentItems))
+      items = handyman.renderCached("%gui/items/item.tpl", this.createItemsView(this.recentItems))
       otherItemsText = otherItemsText
       needAutoScroll = getStringWidthPx(otherItemsText, "fontNormal", this.guiScene)
         > to_pixels("1@arrowButtonWidth") ? "yes" : "no"
@@ -76,7 +77,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
       collapsedText = ::g_promo.getCollapsedText(promoView, this.scene.id)
       collapsedIcon = ::g_promo.getCollapsedIcon(promoView, this.scene.id)
     }
-    let blk = ::handyman.renderCached("%gui/items/recentItemsHandler.tpl", view)
+    let blk = handyman.renderCached("%gui/items/recentItemsHandler.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
     this.scene.findObject("update_timer").setUserData(this)
   }

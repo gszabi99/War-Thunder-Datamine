@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
@@ -40,7 +41,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
     ::queues.updateQueueInfoByType(::g_queue_type.WW_BATTLE,
       function(queueInfo) {
-        ::broadcastEvent("QueueInfoRecived", { queue_info = queueInfo })
+        broadcastEvent("QueueInfoRecived", { queue_info = queueInfo })
       })
   }
 

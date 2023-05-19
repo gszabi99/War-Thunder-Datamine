@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
@@ -25,17 +27,17 @@ let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.n
 let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::shown_userlog_notifications <- []
 
-::g_script_reloader.registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
+g_script_reloader.registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
 
 let function checkPopupUserLog(user_log_blk) {
   if (user_log_blk == null)
     return false
   foreach (popupItem in ::popup_userlogs) {
-    if (::u.isTable(popupItem)) {
+    if (u.isTable(popupItem)) {
       if (popupItem.type != user_log_blk?.type)
         continue
       let rewardType = user_log_blk?.body.rewardType
@@ -151,7 +153,7 @@ local logNameByType = {
   }
 
   params = defaultParams.__merge(params)
-  return item ? ::handyman.renderCached(("%gui/items/item.tpl"), { items = item.getViewData(params) }) : ""
+  return item ? handyman.renderCached(("%gui/items/item.tpl"), { items = item.getViewData(params) }) : ""
 }
 
 ::check_new_user_logs <- function check_new_user_logs() {
@@ -245,7 +247,7 @@ local logNameByType = {
         ::my_stats.markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
           ::checkNonApprovedResearches(true)
-        ::broadcastEvent("BattleEnded", { eventId = blk?.body.eventId })
+        broadcastEvent("BattleEnded", { eventId = blk?.body.eventId })
       }
       else if (blk?.type == EULT_CHARD_AWARD) {
         let rewardType = blk?.body.rewardType
@@ -271,7 +273,7 @@ local logNameByType = {
           let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
           msg = awardType.getUserlogBuyText(awardBlk, priceText)
           if (awardType.id == EWBAT_BATTLE_TASK && !::warbonds_has_active_battle_task(awardBlk?.name))
-            ::broadcastEvent("BattleTasksIncomeUpdate")
+            broadcastEvent("BattleTasksIncomeUpdate")
         }
       }
       else
@@ -337,7 +339,7 @@ local logNameByType = {
       let logTypeName = ::getLogNameByType(blk.type)
       let logName = getTblValue("rentContinue", blk.body, false) ? "rent_unit_extended" : logTypeName
       let unitName = getTblValue("unit", blk.body)
-      let unit = ::getAircraftByName(unitName)
+      let unit = getAircraftByName(unitName)
       let config = {
         unitName = unitName
         name = loc("mainmenu/rent/" + logName)
@@ -419,7 +421,7 @@ local logNameByType = {
       handler.doWhenActive((@(blk) function() { showEveryDayLoginAwardWnd(blk) })(blk))
     }
     else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL) {
-      ::broadcastEvent("BattleTasksIncomeUpdate")
+      broadcastEvent("BattleTasksIncomeUpdate")
       markDisabled = true
     }
     else if (blk?.type == EULT_INVENTORY_ADD_ITEM) {
@@ -485,7 +487,7 @@ local logNameByType = {
       if (getTblValue("sequenceDefeatCountReminder", blk.body))
         desc.append(loc("userlog/sequenceDefeatCountReminder") + loc("ui/colon") + (blk?.body.sequenceDefeatCountReminder ?? ""))
 
-      ::g_popups.add(name, ::g_string.implode(desc, "\n"), null, null, null, logTypeName)
+      ::g_popups.add(name, "\n".join(desc, true), null, null, null, logTypeName)
       markDisabled = true
     }
     else if (blk?.type == EULT_ACTIVATE_ITEM) {
@@ -541,7 +543,7 @@ local logNameByType = {
     }
     else if (blk?.type == EULT_CLAN_UNITS && blk.body?.optype == "flush"
              && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()) {
-      let needChoseResearch = (::getAircraftByName(blk.body.unit)?.isResearched() ?? false)
+      let needChoseResearch = (getAircraftByName(blk.body.unit)?.isResearched() ?? false)
         && needChooseClanUnitResearch()
       if (!needChoseResearch && ::load_local_account_settings(SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, false))
         markDisabled = true
@@ -560,7 +562,7 @@ local logNameByType = {
   }
 
   if (unlocksNeedsPopupWnd)
-    handler.doWhenActive((@(handler) function() { ::g_popup_msg.showPopupWndIfNeed(handler) })(handler))
+    handler.doWhenActive(function() { ::g_popup_msg.showPopupWndIfNeed(handler) })
 
   foreach (inventoryItemId, invData in inventoryRewards.cache)
     if (invData.rewardsCount <= 0) {

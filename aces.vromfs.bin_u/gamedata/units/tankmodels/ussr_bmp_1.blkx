@@ -2100,13 +2100,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2955,6 +2955,7 @@
         "rcostAddParam": 0.9,
         "changeMass": 400.0,
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -3063,6 +3064,7 @@
               "triggerGroup": "special",
               "blk": "gameData/Weapons/groundModels_weapons/125mm_9M113_rocket_launcher.blk",
               "weaponType": "rockets",
+              "staticElevation": 2.35,
               "useEmitter": true,
               "emitter": "bone_rocket_02",
               "stopForFire": true,
@@ -3418,6 +3420,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

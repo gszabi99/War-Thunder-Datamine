@@ -1,9 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { pow } = require("math")
 let DataBlock  = require("DataBlock")
@@ -211,7 +215,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
         a = p3.x
         b = p3.y
         c = p3.z
-        //iconName = ::LayersIcon.findLayerCfg(getBasePartOfLayerId(/*small*/true) + "_" + rewardDataTypeName)
+        //iconName = LayersIcon.findLayerCfg(getBasePartOfLayerId(/*small*/true) + "_" + rewardDataTypeName)
       }
       res.isEmpty = false
     }
@@ -232,7 +236,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
       if (paramName != "unlock")
         continue
       let paramValue = winBlk.getParamValue(i)
-      if (!::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(false) + "_" + paramValue))
+      if (!LayersIcon.findLayerCfg(this.getBasePartOfLayerId(false) + "_" + paramValue))
         continue
 
       iconName = paramValue
@@ -251,11 +255,11 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   }
 
   function getLayersData(small = true) {
-    local layersData = ::LayersIcon.genDataFromLayer(this._getBestRewardImage(small))
+    local layersData = LayersIcon.genDataFromLayer(this._getBestRewardImage(small))
     layersData += this._getWinIconData(small)
 
     let mainLayerCfg = this._getBackground(small)
-    return ::LayersIcon.genDataFromLayer(mainLayerCfg, layersData)
+    return LayersIcon.genDataFromLayer(mainLayerCfg, layersData)
   }
 
   function getBasePartOfLayerId(_small) {
@@ -263,7 +267,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   }
 
   function _getBackground(small) {
-    return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small))
+    return LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small))
   }
 
   function _getWinIconData(small) {
@@ -274,7 +278,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
     if (this.reqWinsNum && this.reqWinsNum > 1) {
       let textLayerId = this.getBasePartOfLayerId(small) + "_" + this.defaultTextType
-      let textLayerCfg = ::LayersIcon.findLayerCfg(textLayerId)
+      let textLayerCfg = LayersIcon.findLayerCfg(textLayerId)
       if (textLayerCfg) {
         textLayerCfg.id <- textLayerId
         textLayerCfg.text <- this.reqWinsNum ? this.reqWinsNum.tostring() : ""
@@ -282,23 +286,23 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
       }
     }
 
-    local imageLayerCfg = ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.winIcon)
+    local imageLayerCfg = LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.winIcon)
     if (imageLayerCfg)
       layers.append(imageLayerCfg)
     else {
-      imageLayerCfg = ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.defaultWinIcon)
+      imageLayerCfg = LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.defaultWinIcon)
       if (imageLayerCfg)
         layers.append(imageLayerCfg)
     }
 
-    return ::LayersIcon.genInsertedDataFromLayer(::LayersIcon.findLayerCfg("wager_place_container"), layers)
+    return LayersIcon.genInsertedDataFromLayer(LayersIcon.findLayerCfg("wager_place_container"), layers)
   }
 
   function _getBestRewardImage(small) {
     if (!this.rewardType)
       return
 
-    return ::LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.rewardType)
+    return LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.rewardType)
   }
 
   function getAvailableStakeText() {
@@ -339,15 +343,15 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     local stakeText
     let costParam = { isWpAlwaysShown = true }
     if (this.isActive())
-      stakeText = ::Cost(this.curWager).toStringWithParams(costParam)
+      stakeText = Cost(this.curWager).toStringWithParams(costParam)
     else if (this.maxWager == 0)
       stakeText = ""
     else if (this.minWager == this.maxWager)
-      stakeText = ::Cost(this.minWager).toStringWithParams(costParam)
+      stakeText = Cost(this.minWager).toStringWithParams(costParam)
     else
       stakeText = format("%s-%s",
-        ::Cost(this.minWager).toStringWithParams(costParam),
-        ::Cost(this.maxWager).toStringWithParams(costParam))
+        Cost(this.minWager).toStringWithParams(costParam),
+        Cost(this.maxWager).toStringWithParams(costParam))
     if (stakeText != "")
       desc += loc("items/wager/stake", { stakeText = stakeText }) + "\n"
 
@@ -428,7 +432,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     let usualCond = getUnlockCondsDesc(this.winConditions)
     view.rows.append({ text = usualCond })
     view.rows.append({ text = colorize("grayOptionColor", loc("items/wager/winConditions/caption")) })
-    return ::handyman.renderCached("%gui/items/conditionsTexts.tpl", view)
+    return handyman.renderCached("%gui/items/conditionsTexts.tpl", view)
   }
 
   function getDescriptionAboveTable() {
@@ -458,7 +462,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     return null
   }
 
-  getWagerCost = @(value) this.isGoldWager ? ::Cost(0, value) : ::Cost(value)
+  getWagerCost = @(value) this.isGoldWager ? Cost(0, value) : Cost(value)
 
   function doMainAction(cb, handler, params = null) {
     let baseResult = base.doMainAction(cb, handler, params)
@@ -574,7 +578,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
       descVars.append(colorize("badTextColor", (this.numBattles - this.numWins) + "/" + this.maxFails))
 
     if (descVars.len() > 0)
-      desc += loc("ui/parentheses/space", { text = ::g_string.implode(descVars, ", ") })
+      desc += loc("ui/parentheses/space", { text = ", ".join(descVars, true) })
 
     return desc
   }
@@ -591,7 +595,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     if (this.winParamsData == null || this.winParamsData.len() == 0)
       return null
     let view = this.createTableDataView(this.winParamsData, this.numWins)
-    return ::handyman.renderCached("%gui/items/wagerRewardsTable.tpl", view)
+    return handyman.renderCached("%gui/items/wagerRewardsTable.tpl", view)
   }
 
   function createTableDataView(winParams, winsNum) {

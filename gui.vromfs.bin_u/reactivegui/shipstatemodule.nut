@@ -4,7 +4,7 @@ let cross_call = require("%rGui/globals/cross_call.nut")
 let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
-  steering, sightAngle, fwdAngle, hasAiGunners, fov
+  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl
 } = require("shipState.nut")
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
@@ -237,8 +237,10 @@ let crewBlock = {
       marigin = [hdpx(STATE_ICON_MARGIN), 0]
       rendObj = ROBJ_IMAGE
       image = images.driver
-      color = driverAlive.value ? damageModule.inactive : damageModule.alert
-      watch = driverAlive
+      watch = [ driverAlive, blockMoveControl ]
+      color = driverAlive.value && !blockMoveControl.value
+        ? damageModule.inactive
+        : damageModule.alert
     }
     @() {
       size = [iconSize, iconSize]

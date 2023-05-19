@@ -197,12 +197,12 @@ let function basicFunction(funcName, time) { //time >= -1, time <= 1
 
   function selfRemove(obj) {
     let guiScene = obj.getScene()
-    guiScene.performDelayed(this, (@(obj, guiScene) function() {
+    guiScene.performDelayed(this, function() {
       if (obj && obj.isValid()) {
         obj.sendNotify("end_edit")
         guiScene.destroyElement(obj)
       }
-    })(obj, guiScene))
+    })
   }
 
   function getObjProp(obj, name, defaultRes = "") {

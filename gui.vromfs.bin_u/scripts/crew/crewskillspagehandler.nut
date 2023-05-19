@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let stdMath = require("%sqstd/math.nut")
@@ -65,7 +66,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
       view.buySpecTooltipId2 <- ::g_crew_spec_type.ACE.getBtnBuyTooltipId(this.crew, this.unit)
     }
 
-    let data = ::handyman.renderCached(this.sceneTplName, view)
+    let data = handyman.renderCached(this.sceneTplName, view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
 
     if (row != null)
@@ -297,7 +298,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let difficulty = ::get_current_shop_difficulty()
     let view = getSkillDescriptionView(
       this.crew, difficulty, memberName, skillName, this.curCrewUnitType, this.unit)
-    let data = ::handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
+    let data = handyman.renderCached("%gui/crew/crewSkillParametersTooltip.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
   }
 

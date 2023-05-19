@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let userstat = require("userstat")
 let time = require("%scripts/time.nut")
@@ -55,12 +57,12 @@ let fetchRewardsTimeData = function(cb) {
     if (!checkObj(this.rewardsListObj))
       return this.goBack()
 
-    let wndTitle = ::g_string.implode([
+    let wndTitle = loc("ui/comma").join([
       (this.lbMode ? loc("worldwar/leaderboard/" + this.lbMode) : ""),
       (this.lbDay ? loc("enumerated_day", { number = this.lbDay }) : !this.isClanRewards ? loc("worldwar/allSeason") : ""),
       (this.lbMap ? this.lbMap.getNameText() : loc("worldwar/allMaps")),
       (this.lbCountry ? loc(this.lbCountry) : loc("worldwar/allCountries")),
-    ], loc("ui/comma")) + " " + loc("ui/mdash") + " " + loc("worldwar/btn_rewards")
+    ], true) + " " + loc("ui/mdash") + " " + loc("worldwar/btn_rewards")
     this.scene.findObject("wnd_title").setValue(wndTitle)
 
     this.showSceneBtn("nav-help", true)
@@ -108,7 +110,7 @@ let fetchRewardsTimeData = function(cb) {
         interactive = true
       }))
 
-    return ::handyman.renderCached("%gui/items/item.tpl", view)
+    return handyman.renderCached("%gui/items/item.tpl", view)
   }
 
   function getPlaceText(tillPlace, prevPlace, isClan = false) {
@@ -133,7 +135,7 @@ let fetchRewardsTimeData = function(cb) {
   function getRewardsView() {
     local prevPlace = 0
     return {
-      rewardsList = ::u.map(this.rewards, function(reward) {
+      rewardsList = u.map(this.rewards, function(reward) {
         let rewardRowView = {
           title = this.getRewardTitle(reward.tillPlace, prevPlace)
           condition = this.getPlaceText(reward.tillPlace, prevPlace, this.isClanRewards)
@@ -189,7 +191,7 @@ let fetchRewardsTimeData = function(cb) {
 
   function onBtnMoreInfo(_obj) {
     let rewardsArray = []
-    let addItem = @(item) ::u.appendOnce(item?.itemdefid, rewardsArray, true)
+    let addItem = @(item) u.appendOnce(item?.itemdefid, rewardsArray, true)
     this.rewards.each(@(reward) reward?.internalRewards.each(addItem) ?? addItem(reward))
     ::gui_start_open_trophy_rewards_list({
       rewardsArray = rewardsArray.map(@(reward) { item = reward })
@@ -200,7 +202,7 @@ let fetchRewardsTimeData = function(cb) {
 
   function updateRewardsList() {
     local val = ::get_obj_valid_index(this.rewardsListObj)
-    let markup = ::handyman.renderCached("%gui/worldWar/wwRewardItem.tpl", this.getRewardsView())
+    let markup = handyman.renderCached("%gui/worldWar/wwRewardItem.tpl", this.getRewardsView())
     this.guiScene.replaceContentFromText(this.rewardsListObj, markup, markup.len(), this)
 
     if (val < 0 || val >= this.rewardsListObj.childrenCount())

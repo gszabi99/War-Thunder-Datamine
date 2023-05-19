@@ -16,18 +16,7 @@ let function askHotasPresetChange() {
   if ((!isPlatformSony && !isPlatformXboxOne) || ::loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
-  let preset = ::g_controls_presets.getCurrentPresetInfo()
-  let is_ps4_non_gamepad_preset = isPlatformSony
-    && preset.name.indexof("dualshock4") == null
-    && preset.name.indexof("default") == null
-  let is_xboxone_non_gamepad_preset = isPlatformXboxOne
-    && preset.name.indexof("xboxone_ma") == null
-    && preset.name.indexof("xboxone_simulator") == null
-
   ::saveLocalByAccount("wnd/detectThrustmasterHotas", true)
-
-  if (is_ps4_non_gamepad_preset && is_xboxone_non_gamepad_preset)
-    return
 
   let questionLocId =
     isPlatformSony ? "msgbox/controller_hotas4_found" :

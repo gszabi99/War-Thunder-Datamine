@@ -37,7 +37,7 @@ def private is_undef(arg)
   return (arg is tBool) || (arg is tString)
 
 def private is_undef(annotations : AnnotationArgumentList)
-  return is_undef(find_arg("undef", annotations))
+  return is_undef(find_arg(annotations, "undef"))
 
 def follow_the_yellow_brick_road(expr : ExpressionPtr; var res : ExpressionPtr&) : void
   if expr is ExprRef2Value
@@ -95,7 +95,7 @@ class CreateTemplateAnnotation : AstStructureAnnotation
     if show_completion && is_in_completion()
       return true
     for field in st.fields
-      let arg = find_arg("undef", field.annotation)
+      let arg = field.annotation |> find_arg("undef")
       if is_undef(arg)
         let typeName = describe(field._type)
         let undefType = field._type.baseType == Type tVoid || field._type.baseType == Type autoinfer

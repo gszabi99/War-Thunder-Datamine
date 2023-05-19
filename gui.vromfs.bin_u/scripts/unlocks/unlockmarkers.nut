@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqualSimple } = require("%sqstd/underscore.nut")
 let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
@@ -28,7 +28,7 @@ let function getUnitsByUnlock(unlockBlk, ediff) {
   let unitCond = conditions.findvalue(@(c) ["playerUnit", "offenderUnit"].contains(c.type))
   if (unitCond)
     return (unitCond % "class")
-      .map(@(n) ::getAircraftByName(n))
+      .map(@(n) getAircraftByName(n))
       .filter(@(u) u != null && isUnitUnlocked(u))
 
   local units = null
@@ -78,7 +78,7 @@ let function invalidateCache() {
   cacheByEdiff.clear()
   curUnlockIds = null
   seenList.onListChanged()
-  ::broadcastEvent("UnlockMarkersCacheInvalidate")
+  broadcastEvent("UnlockMarkersCacheInvalidate")
 }
 
 let function getDoableUnlocks() {
@@ -155,7 +155,7 @@ let function getUnitListByUnlockId(unlockId) {
   if (!unitCond)
     return []
 
-  return (unitCond % "class").map(@(n) ::getAircraftByName(n))
+  return (unitCond % "class").map(@(n) getAircraftByName(n))
 }
 
 let function hasMarkerByUnitName(unitName, ediff) {

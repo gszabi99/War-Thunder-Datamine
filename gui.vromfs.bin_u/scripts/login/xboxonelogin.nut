@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -49,7 +51,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 
     local data = ""
     foreach (view in buttonsView)
-      data += ::handyman.renderCached("%gui/commonParts/button.tpl", view)
+      data += handyman.renderCached("%gui/commonParts/button.tpl", view)
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
     this.scene.findObject("user_notify_text").setValue(loc("xbox/reqInstantConnection"))
@@ -129,4 +131,4 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 }
 
 //Calling from C++
-::xbox_on_gamertag_changed <- @() ::broadcastEvent("XboxActiveUserGamertagChanged")
+::xbox_on_gamertag_changed <- @() broadcastEvent("XboxActiveUserGamertagChanged")

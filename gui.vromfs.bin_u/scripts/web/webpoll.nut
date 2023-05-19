@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = subscriptions
 let api = require("dagor.webpoll")
 let { get_time_msec } = require("dagor.time")
 let DataBlock = require("DataBlock")
@@ -74,7 +75,7 @@ local function webpollEvent(id, token, voted) {
     set_blk_value_by_path(getVotedPolls(), idString, true)
     saveVotedPolls()
   }
-  ::broadcastEvent("WebPollAuthResult", { pollId = idString })
+  broadcastEvent("WebPollAuthResult", { pollId = idString })
 }
 
 let function onCanVoteResponse(response) {
@@ -100,7 +101,7 @@ let function invalidateTokensCache(pollId = null) {
   }
 
   ::get_cur_gui_scene().performDelayed(this,
-    function() { ::broadcastEvent("WebPollTokenInvalidated", { pollId = pollId?.tostring() }) })
+    function() { broadcastEvent("WebPollTokenInvalidated", { pollId = pollId?.tostring() }) })
 }
 
 let function checkTokensCacheTimeout(pollId) {

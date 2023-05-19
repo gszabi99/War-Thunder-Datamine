@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { startsWith } = require("%sqstd/string.nut")
 
 let DEFAULT_BRANCH_CONFIG = {
   locId = ""
@@ -56,7 +57,7 @@ let function getReqItemsArray(reqItems) {
   foreach (reqItemsString in reqItems) {
     let itemsTbl = {}
     foreach (reqId in reqItemsString.split(",")) {
-      let needHave = !::g_string.startsWith(reqId, "!") // true = need to have, false = need to NOT have.
+      let needHave = !startsWith(reqId, "!") // true = need to have, false = need to NOT have.
       let itemId = reqId.slice(needHave ? 0 : 1).tointeger()
       itemsTbl[itemId] <- needHave
     }
@@ -195,7 +196,7 @@ let function generateRows(branchBlk, treeRows, treeBlk) {
 
   if (notFoundReqForItems.len() > 0) {
     let craftTreeName = branchBlk?.locId ?? ""  // warning disable: -declared-never-used
-    let reqItems = ::g_string.implode(notFoundReqForItems.keys(), "; ") // warning disable: -declared-never-used
+    let reqItems = "; ".join(notFoundReqForItems.keys(), true) // warning disable: -declared-never-used
     ::script_net_assert_once("Not found reqItems for craftTree", "Error: Not found reqItems")
   }
 

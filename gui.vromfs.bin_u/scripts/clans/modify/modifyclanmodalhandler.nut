@@ -4,11 +4,12 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-let { clearBorderSymbols } = require("%sqstd/string.nut")
+let { clearBorderSymbols, slice } = require("%sqstd/string.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
@@ -46,7 +47,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
   function initScreen() {
     let view = this.createView()
-    let data = ::handyman.renderCached("%gui/clans/clanModifyWindowContent.tpl", view)
+    let data = handyman.renderCached("%gui/clans/clanModifyWindowContent.tpl", view)
     let contentObj = this.scene.findObject("content")
     this.guiScene.replaceContentFromText(contentObj, data, data.len(), this)
 
@@ -152,7 +153,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
         isDecoratorSelected = selectedTag != null && decorator.checkTagText(selectedTag)
       })
     }
-    let blk = ::handyman.renderCached("%gui/clans/clanTagDecoratorItem.tpl", view)
+    let blk = handyman.renderCached("%gui/clans/clanTagDecoratorItem.tpl", view)
     this.guiScene.replaceContentFromText(tagDecorationObj, blk, blk.len(), this)
     this.updateDecoration(this.scene.findObject("newclan_tag"))
   }
@@ -292,7 +293,7 @@ let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
       newClanTagObj["max-len"] = tagLengthLimit.tostring()
       let curText = newClanTagObj.getValue()
       if (curText.len() > tagLengthLimit) {
-        let newText = ::g_string.slice(curText, 0, tagLengthLimit)
+        let newText = slice(curText, 0, tagLengthLimit)
         newClanTagObj.setValue(newText)
         this.newClanTag = newText
       }

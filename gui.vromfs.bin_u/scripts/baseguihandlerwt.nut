@@ -1,9 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -19,6 +22,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { set_game_mode, get_game_mode } = require("mission")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
+let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -107,7 +111,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     let tplView = this.getNavbarTplView()
     if (!tplView)
       return null
-    return ::handyman.renderCached("%gui/commonParts/navBar.tpl", tplView)
+    return handyman.renderCached("%gui/commonParts/navBar.tpl", tplView)
   }
 
   function getNavbarTplView() { return null }
@@ -183,7 +187,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function updateModesTabsContent(modesObj, view) {
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
 
     let selectCb = modesObj?.on_select
@@ -230,17 +234,17 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
           txt = "xbox360/questionSelectDevice"
         this.msgBox("no_save_device", loc(txt),
         [
-          ["yes", (@(handler, onlineSave) function() {
+          ["yes", function() {
               log("performDelayed save")
-              handler.guiScene.performDelayed(handler, (@(handler, onlineSave) function() {
+              handler.guiScene.performDelayed(handler, function() {
                 ::select_save_device(true)
                 this.save(onlineSave)
                 handler.afterSave()
-              })(handler, onlineSave))
-          })(handler, onlineSave)],
-          ["no", (@(handler) function() {
+              })
+          }],
+          ["no", function() {
             handler.afterSave()
-          })(handler)
+          }
           ]
         ], "yes")
       }
@@ -258,9 +262,9 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
               this.save(onlineSave)
             })(handler, onlineSave))
         })(handler, onlineSave)],
-        ["no", (@(handler) function() {
+        ["no", function() {
           handler.afterSave()
-        })(handler)
+        }
         ]
       ], "yes")
     }
@@ -312,13 +316,13 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     })(start_func, start_without_forward), this)
     let errorCb = skippable ? successCb : null
 
-    ::g_matching_connect.connect(successCb, errorCb)
+    checkShowMatchingConnect(successCb, errorCb)
   }
 
   function destroyProgressBox() {
     if (checkObj(this.progressBox)) {
       this.guiScene.destroyElement(this.progressBox)
-      ::broadcastEvent("ModalWndDestroy")
+      broadcastEvent("ModalWndDestroy")
     }
     this.progressBox = null
   }
@@ -471,7 +475,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
 
     this.hasAutoRefillChangeInProcess = true
-    ::broadcastEvent("AutorefillChanged", { id = obj.id, value })
+    broadcastEvent("AutorefillChanged", { id = obj.id, value })
     this.hasAutoRefillChangeInProcess = false
   }
 
@@ -482,7 +486,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
       return
     }
 
-    if (::u.isString(nest))
+    if (u.isString(nest))
       nest = this.scene.findObject(nest)
     params.scene <- nest
     params.ownerWeak <- this.weakref()
@@ -517,7 +521,7 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
 
   getParamsForActionsList = @() {}
   getUnitParamsFromObj = @(unitObj) {
-    unit = ::getAircraftByName(unitObj?.unit_name)
+    unit = getAircraftByName(unitObj?.unit_name)
     crew = unitObj?.crew_id ? ::get_crew_by_id(unitObj.crew_id.tointeger()) : null
   }
 

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -8,6 +9,7 @@ from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { startsWith, stripTags } = require("%sqstd/string.nut")
 
 global enum LB_MODE {
   ARCADE            = 0x00001
@@ -76,10 +78,10 @@ global enum WW_LB_MODE {
 
 
 ::get_lb_mode <- function get_lb_mode(name, isWwLeaderboard = false) {
-  if (!isWwLeaderboard && ::u.isEmpty(name))
+  if (!isWwLeaderboard && u.isEmpty(name))
     return 0
 
-  if (::u.isEmpty(name))  //if not mode name then it events leaderboard and WW_LB_MODE need all
+  if (u.isEmpty(name))  //if not mode name then it events leaderboard and WW_LB_MODE need all
     return WW_LB_MODE.ALL
 
   let lbModeNames = isWwLeaderboard ? ::ww_lb_mode_name : ::lb_mode_name
@@ -135,11 +137,11 @@ global enum WW_LB_MODE {
       continue
 
     local tooltipKey = additionalCategory.headerTooltip
-    if (::g_string.startsWith(tooltipKey, "#"))
+    if (startsWith(tooltipKey, "#"))
       tooltipKey = tooltipKey.slice(1)
 
     res += (res.len() ? "\n" : "") +
-      loc(tooltipKey) + loc("ui/colon") + ::g_string.stripTags("" + value)
+      loc(tooltipKey) + loc("ui/colon") + stripTags("" + value)
   }
 
   return res

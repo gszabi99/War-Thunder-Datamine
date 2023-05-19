@@ -273,9 +273,9 @@ let function getThrottleCaption(mode, isControled, idx) {
 let function getModeCaption(mode) {
   let texts = []
   if (mode & (1 << WeaponMode.CCRP_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_AUTO"))
+    texts.append(loc("HUD/TXT_WEAPON_MODE_AUTO"))
   else if (mode & (1 << WeaponMode.GYRO_MODE))
-    texts.append(loc("HUD/WEAPON_MODE_GYRO"))
+    texts.append(loc("HUD/TXT_WEAPON_MODE_GYRO"))
   if (mode & (1 << WeaponMode.CCIP_MODE)) {
     if (texts.len() > 0)
       texts.append("/")

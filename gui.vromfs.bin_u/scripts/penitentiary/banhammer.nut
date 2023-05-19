@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -10,7 +11,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
-let { get_game_mode } = require("mission")
+let { get_game_mode, get_local_mplayer } = require("mission")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
   ::handlersManager.loadHandler(::gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
@@ -24,7 +25,7 @@ let { get_game_mode } = require("mission")
 }
 
 let chatLogToString = function(chatLog) {
-  if (!::u.isTable(chatLog)) {
+  if (!u.isTable(chatLog)) {
     ::script_net_assert_once("Chatlog value is not a table", "Invalid type of chatlog")
     return ""
   }
@@ -280,7 +281,7 @@ let chatLogToString = function(chatLog) {
     let cValue = this.scene.findObject(option.id).getValue()
     let category = (cValue in option.values) ? option.values[cValue] : option.values[0]
     let details = ::save_to_json({
-      own      = this.collectUserDetailsForTribunal(::get_local_mplayer()),
+      own      = this.collectUserDetailsForTribunal(get_local_mplayer()),
       offender = this.collectUserDetailsForTribunal(this.pInfo),
       chats    = this.collectThreadListForTribunal()
     });

@@ -1,10 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
@@ -12,7 +14,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX } = require("%scripts/unit/unitInfoType.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
-let json = require("%sqstd/json.nut")
+let { saveJson } = require("%sqstd/json.nut")
 
 const COUNTRY_GROUP = "country"
 const RANK_GROUP = "rank"
@@ -47,15 +49,15 @@ let class UnitInfoExporter {
     this.activeUnitInfoExporters.append(this)
     this.updateActive()
 
-    ::subscribe_handler(this)
+    subscribe_handler(this)
 
     this.langBeforeExport = ::get_current_language()
-    if (::u.isArray(genLangsList))
+    if (u.isArray(genLangsList))
       this.langsList = clone genLangsList
-    else if (::u.isString(genLangsList))
+    else if (u.isString(genLangsList))
       this.langsList = [genLangsList]
     else
-      this.langsList = ::u.map(::g_language.getGameLocalizationInfo(), function(lang) { return lang.id })
+      this.langsList = u.map(::g_language.getGameLocalizationInfo(), function(lang) { return lang.id })
 
     this.path = genPath
 
@@ -139,7 +141,7 @@ let class UnitInfoExporter {
     }
 
     if (!this.langsList.len()) {
-      json.save(this.getStatusFullPath(), this.status)
+      saveJson(this.getStatusFullPath(), this.status)
       this.remove()
       this.debugLog("Exporter: DONE.")
       return
@@ -153,17 +155,17 @@ let class UnitInfoExporter {
   }
 
   function getCalculationParemetersFullPath() {
-    let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
+    let relPath = u.isEmpty(this.path) ? "" : $"{this.path}/"
     return format("%scalculationParameters.blk", relPath)
   }
 
   function getLangFullPath() {
-    let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
+    let relPath = u.isEmpty(this.path) ? "" : $"{this.path}/"
     return format("%sunitInfo%s.blk", relPath, this.curLang)
   }
 
   function getStatusFullPath() {
-    let relPath = ::u.isEmpty(this.path) ? "" : $"{this.path}/"
+    let relPath = u.isEmpty(this.path) ? "" : $"{this.path}/"
     return format("%sstatus.json", relPath)
   }
 

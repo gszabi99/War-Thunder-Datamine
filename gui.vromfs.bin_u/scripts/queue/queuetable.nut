@@ -4,6 +4,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -82,7 +84,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
       this.updateQueueWaitIconImage()
     }
 
-    ::broadcastEvent("RequestToggleVisibility", { target = this.scene, visible = value })
+    broadcastEvent("RequestToggleVisibility", { target = this.scene, visible = value })
   }
 
   function updateTip() {
@@ -148,7 +150,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     if (countriesList.len() == 0)
       availCountriesObj.show(false)
     else {
-      let blk = ::handyman.renderCached("%gui/countriesList.tpl",
+      let blk = handyman.renderCached("%gui/countriesList.tpl",
                                           {
                                             countries = (@(countriesList) function () {
                                               let res = []
@@ -220,7 +222,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
       }
     }
 
-    return ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    return handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
   }
 
   function fillQueueTable() {

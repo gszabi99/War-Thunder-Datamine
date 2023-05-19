@@ -4,7 +4,8 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
-
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -77,7 +78,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       if (langInfo)
         view.countries.append({ countryIcon = langInfo.icon })
     }
-    let data = ::handyman.renderCached("%gui/countriesList.tpl", view)
+    let data = handyman.renderCached("%gui/countriesList.tpl", view)
     this.guiScene.replaceContentFromText(this.scene.findObject("language_btn"), data, data.len(), this)
   }
 
@@ -192,7 +193,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     for (local i = 0; i < maxPos; i++)
       menu.append({
         text = loc("chat/moveThreadToPosition", { place = i + 1 })
-        action = (@(i) function() { this.moveChatToPlace(i) })(i)
+        action = function() { this.moveChatToPlace(i) }
       })
     ::gui_right_click_menu(menu, this)
   }
@@ -203,7 +204,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     place = clamp(place, 0, list.len() - 1)
-    let curPlace = ::find_in_array(list, this.threadInfo)
+    let curPlace = find_in_array(list, this.threadInfo)
     if (curPlace >= 0 && curPlace < place)
       place++
 

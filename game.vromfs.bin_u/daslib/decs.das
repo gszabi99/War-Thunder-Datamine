@@ -10,7 +10,7 @@ require daslib/templates
 
 require daslib/rtti public
 require daslib/algorithm
-require daslib/sort_boost
+// require daslib/sort_boost
 require daslib/functional
 require daslib/archive public
 require daslib/contracts
@@ -148,6 +148,8 @@ def public operator := ( var cv:ComponentValue; val:EntityId )    { set(cv, val)
 def public operator := ( var cv:ComponentValue; val:bool )        { set(cv, val); }
 def public operator := ( var cv:ComponentValue; val:range )       { set(cv, val); }
 def public operator := ( var cv:ComponentValue; val:urange )      { set(cv, val); }
+def public operator := ( var cv:ComponentValue; val:range64 )     { set(cv, val); }
+def public operator := ( var cv:ComponentValue; val:urange64 )    { set(cv, val); }
 def public operator := ( var cv:ComponentValue; val:string )      { set(cv, val); }
 def public operator := ( var cv:ComponentValue; val:int )         { set(cv, val); }
 def public operator := ( var cv:ComponentValue; val:int8 )        { set(cv, val); }

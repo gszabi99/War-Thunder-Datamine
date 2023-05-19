@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -193,7 +195,7 @@ local armyIdByMask = {
     if (view.tabs.len() > 0)
       view.tabs[selectedId].selected = true
 
-    return ::handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
+    return handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
   }
 
   function getNavbarTplView() {
@@ -633,7 +635,7 @@ local armyIdByMask = {
     if (unitTable.isUnitsGroup)
       return
     let selectedWeaponName = unitTable.unitWeapon
-    let unit = ::getAircraftByName(unitTable.unitName)
+    let unit = getAircraftByName(unitTable.unitName)
     let weapon = unit.getWeapons().findvalue(@(w) w.name == selectedWeaponName)
     if (!weapon)
       return
@@ -692,7 +694,7 @@ local armyIdByMask = {
   }
 
   function onModItemClick(obj) {
-    let unit = ::getAircraftByName(obj.unitName)
+    let unit = getAircraftByName(obj.unitName)
     if (!this.hasPresetToChoose(unit))
       return
 
@@ -734,7 +736,7 @@ local armyIdByMask = {
   }
 
   function getAvailableGroup(armyGroupIdx) {
-    return ::u.search(this.airfield.formations, @(group) group.owner.armyGroupIdx == armyGroupIdx)
+    return u.search(this.airfield.formations, @(group) group.owner.armyGroupIdx == armyGroupIdx)
   }
 
   function getSelectedUnitsFlyTimeText(_armyGroupIdx) {
@@ -803,7 +805,7 @@ local armyIdByMask = {
   }
 
   function onUnitClassChange(obj) {
-    let unit = ::getAircraftByName(obj.id)
+    let unit = getAircraftByName(obj.id)
     if (!this.hasPresetToChoose(unit))
       return
 

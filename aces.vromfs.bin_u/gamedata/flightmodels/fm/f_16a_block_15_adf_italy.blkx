@@ -428,8 +428,8 @@
       },
       "Strength": {
         "CritOverload": [
-          -340000.0,
-          700000.0
+          -370000.0,
+          740000.0
         ],
         "VNE": 1555.0,
         "MNE": 2.2
@@ -1773,11 +1773,16 @@
       "SpringCoeff": 500000.0,
       "SpringDampCoeff": 5.0,
       "SpringDampForceMaxMult": 5.0,
-      "WheelRadus": 0.39,
+      "WheelRadus": 0.29,
       "Retractable": true,
       "LeftBrake": true,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.6,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.95,
+        10.0,
+        0.6
+      ],
       "WaterFriction": 1.0,
       "SteerType": "Fixed"
     },
@@ -1786,11 +1791,16 @@
       "SpringCoeff": 500000.0,
       "SpringDampCoeff": 5.0,
       "SpringDampForceMaxMult": 5.0,
-      "WheelRadus": 0.39,
+      "WheelRadus": 0.29,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": true,
-      "FullBrakeSlidingFrictionMult": 0.6,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.95,
+        10.0,
+        0.6
+      ],
       "WaterFriction": 1.0,
       "SteerType": "Fixed"
     },
@@ -1799,11 +1809,16 @@
       "SpringCoeff": 200000.0,
       "SpringDampCoeff": 0.5,
       "SpringDampForceMaxMult": 2.0,
-      "WheelRadus": 0.303,
+      "WheelRadus": 0.203,
       "Retractable": true,
       "LeftBrake": false,
       "RightBrake": false,
-      "FullBrakeSlidingFrictionMult": 0.5,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.95,
+        10.0,
+        0.6
+      ],
       "WaterFriction": 1.0,
       "SteerType": "ManualSteering"
     }

@@ -1,14 +1,16 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let time = require("%scripts/time.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 
 ::g_partner_unlocks <- {
@@ -32,7 +34,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
     if (!::g_partner_unlocks.applyNewPartnerUnlockData(result))
       return
 
-    ::broadcastEvent("PartnerUnlocksUpdated")
+    broadcastEvent("PartnerUnlocksUpdated")
   }
 
   let requestBlk = DataBlock()
@@ -52,7 +54,7 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 }
 
 ::g_partner_unlocks.getPartnerUnlockTime <- function getPartnerUnlockTime(unlockId) {
-  if (::u.isEmpty(unlockId))
+  if (u.isEmpty(unlockId))
     return null
 
   if (!(unlockId in this.partnerExectutedUnlocks)) {
@@ -65,11 +67,11 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
 }
 
 ::g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockData(result) {
-  if (!::u.isDataBlock(result))
+  if (!u.isDataBlock(result))
     return false
 
   let newPartnerUnlocks = ::buildTableFromBlk(result)
-  if (::u.isEqual(this.partnerExectutedUnlocks, newPartnerUnlocks))
+  if (u.isEqual(this.partnerExectutedUnlocks, newPartnerUnlocks))
     return false
 
   this.partnerExectutedUnlocks = newPartnerUnlocks
@@ -98,5 +100,5 @@ let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReload
   this.partnerExectutedUnlocks = {}
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("g_partner_unlocks")
-::subscribe_handler(::g_partner_unlocks, ::g_listener_priority.CONFIG_VALIDATION)
+g_script_reloader.registerPersistentDataFromRoot("g_partner_unlocks")
+subscribe_handler(::g_partner_unlocks, ::g_listener_priority.CONFIG_VALIDATION)

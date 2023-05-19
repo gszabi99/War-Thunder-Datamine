@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -34,7 +35,7 @@ from "%scripts/dagui_library.nut" import *
       return
 
     for (local i = 0; i < pointsBlk.blockCount(); i++)
-      this.points.append(::u.copy(pointsBlk.getBlock(i)))
+      this.points.append(u.copy(pointsBlk.getBlock(i)))
   }
 
   function isMove() {

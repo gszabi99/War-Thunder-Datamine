@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
@@ -28,7 +30,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   function updateList() {
     let listObj = this.scene.findObject("invites_list")
     let selInvite = this.getInviteByObj()
-    let list = ::u.filter(::g_invites.list,
+    let list = u.filter(::g_invites.list,
       function (invite) { return invite.isVisible() })
 
     list.sort(function(a, b) {
@@ -38,11 +40,11 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     })
 
     let view = { invites = list }
-    let data = ::handyman.renderCached("%gui/chat/inviteListRows.tpl", view)
+    let data = handyman.renderCached("%gui/chat/inviteListRows.tpl", view)
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     if (list.len()) {
-      listObj.setValue(::find_in_array(list, selInvite, 0))
+      listObj.setValue(u.find_in_array(list, selInvite, 0))
       ::move_mouse_on_child_by_value(listObj)
     }
 

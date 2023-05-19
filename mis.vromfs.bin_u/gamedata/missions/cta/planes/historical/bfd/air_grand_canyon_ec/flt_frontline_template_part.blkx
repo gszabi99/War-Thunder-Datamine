@@ -1,0 +1,194 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "flt_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/enduring_confrontation/flt_frontline_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/historical/BfD/air_grand_canyon_ec/frontline/flt_frontline_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "flt_parts_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
+            "value": 10,
+            "var": "flt_big_aaa_weight"
+          },
+          {
+            "value": 10,
+            "var": "flt_small_aaa_weight"
+          },
+          {
+            "value": 20,
+            "var": "flt_art_weight"
+          },
+          {
+            "value": 50,
+            "var": "flt_tank_weight"
+          },
+          {
+            "value": 8,
+            "var": [
+              "flt_zones_in_row",
+              "flt_zones_in_col_real"
+            ]
+          },
+          {
+            "value": 8,
+            "var": [
+              "flt_zones_in_col",
+              "flt_zones_in_row_real"
+            ]
+          },
+          {
+            "value": 0,
+            "var": "flt_total_zones"
+          }
+        ],
+        "comment": [
+          {
+            "value": "nastrojki frontlajna"
+          },
+          {
+            "value": "obshchee kolichestvo zon"
+          },
+          {
+            "value": "vyschityvaem kolichestvo zon pokazyvayushchih glubinu fronta"
+          },
+          {
+            "value": "pomechaem zony komand (v cikle po algoritmu)"
+          },
+          {
+            "value": "risuem liniyu fronta"
+          }
+        ],
+        "varModify": [
+          {
+            "operator": "add",
+            "value": 0.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          },
+          {
+            "operator": "mul",
+            "value": 3.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col"
+          }
+        ],
+        "varSetBool": {
+          "value": true,
+          "var": "flt_mirrior_start"
+        },
+        "triggerEnable": [
+          {
+            "target": "flt_army_state_start"
+          },
+          {
+            "target": "flt_draw_frontline"
+          }
+        ],
+        "missionBattleArea": {
+          "air": true,
+          "ground": false,
+          "mapArea": false,
+          "airMapArea": true,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "flt_battle_area",
+          "newGridHorizontalCellCount": 8,
+          "gridCellCountVar": "flt_zones_in_row"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

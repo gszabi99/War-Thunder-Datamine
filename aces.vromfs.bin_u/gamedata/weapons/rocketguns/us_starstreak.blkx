@@ -7,6 +7,7 @@
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
   "mesh": "starstreak_hvm_rocket",
+  "mesh_deployed": "starstreak_hvm_rocket_deployed",
   "amountPerTier": 2.0,
   "tags": {},
   "rocket": {
@@ -70,8 +71,9 @@
     "explosionPatchRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "rocket_fire_short",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_early_tiny",
+    "smokeEffect": "smoke_rocket_tail_short",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "maxDistance": 7000.0,
@@ -161,8 +163,9 @@
       "ricochetEffect": "hit_39_58mm_metal_ap",
       "waterCollisionEffect": "hit_39_58mm_water",
       "explosionPatchRadius": 0.7,
-      "fireEffect": "rocket_fire_short",
-      "smokeEffect": "",
+      "fireEffect": "fires_exhaust_jet_early_tiny",
+      "smokeEffect": "smoke_rocket_tail_short",
+      "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
       "maxDistance": 9800.0,
@@ -242,7 +245,7 @@
           "fx": "hit_39_58mm_snow_ap"
         },
         "glass": {
-          "fx": "hit_39_58mm_metal_ap"
+          "fx": "armoured_glass"
         },
         "wood": {
           "fx": "hit_39_58mm_wood_ap"
@@ -522,12 +525,12 @@
     },
     "armorpower": {
       "ArmorPower0m": [
-        50.0,
+        30.0,
         10.0
       ],
       "ArmorPower7000m": [
-        50.0,
-        6000.0
+        30.0,
+        7000.0
       ]
     },
     "hitpower": {

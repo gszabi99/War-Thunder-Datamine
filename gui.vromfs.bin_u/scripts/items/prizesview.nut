@@ -1,9 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
@@ -149,7 +152,7 @@ let prizeViewConfig = {
   [PRIZE_TYPE.UNIT] = {
     getDescriptionMarkup = function(config) {
       let data = ::PrizesView.getPrizesViewData(config, true)
-      return ::handyman.renderCached(template, { list = [data] })
+      return handyman.renderCached(template, { list = [data] })
     }
     getTooltipConfig = @(prize) { tooltipId = UNIT.getTooltipId(prize.unit) }
   },
@@ -183,7 +186,7 @@ let prizeViewConfig = {
         continue
 
       let prizeType = this.getPrizeType(prize)
-      let isReceived = prizeType == PRIZE_TYPE.UNIT && ::isUnitBought(::getAircraftByName(prize.unit))
+      let isReceived = prizeType == PRIZE_TYPE.UNIT && ::isUnitBought(getAircraftByName(prize.unit))
       let locId = isReceived ? "trophy/prizeAlreadyReceived" : "trophy/openCountTillPrize"
       res.append(loc(locId, {
         prizeText = this.getPrizeText(prize, false, false, !isReceived)
@@ -378,7 +381,7 @@ let prizeViewConfig = {
     }))
 
     view.list <- prizeListView
-    return ::handyman.renderCached(template, view)
+    return handyman.renderCached(template, view)
   }
 
 
@@ -535,7 +538,7 @@ let prizeViewConfig = {
     }))
 
     view.list <- prizeListView
-    return ::handyman.renderCached(template, view)
+    return handyman.renderCached(template, view)
   }
 }
 
@@ -702,11 +705,11 @@ let prizeViewConfig = {
   else if (prize?.resourceType)
     name = loc("trophy/unlockables_names/" + prize.resourceType)
   else if (prize?.gold)
-    name = ::Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, isColored = colored })
+    name = Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, isColored = colored })
   else if (prize?.warpoints)
-    name = ::Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, isColored = colored })
+    name = Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, isColored = colored })
   else if (prize?.exp)
-    name = ::Cost().setFrp(prize.exp).toStringWithParams({ isColored = colored })
+    name = Cost().setFrp(prize.exp).toStringWithParams({ isColored = colored })
   else if (prize?.warbonds) {
     let wb = ::g_warbonds.findWarbond(prize.warbonds)
     name = wb && prize?.count ? wb.getPriceText(prize.count, true, false) : ""
@@ -885,11 +888,11 @@ let prizeViewConfig = {
 
 ::PrizesView.getPrizeCurrencyCfg <- function getPrizeCurrencyCfg(prize) {
   if ((prize?.gold ?? 0) > 0)
-    return { type = PRIZE_TYPE.GOLD, val = prize.gold, printFunc = @(val) ::Cost(0, val).tostring() }
+    return { type = PRIZE_TYPE.GOLD, val = prize.gold, printFunc = @(val) Cost(0, val).tostring() }
   if ((prize?.warpoints ?? 0) > 0)
-    return {  type = PRIZE_TYPE.WARPOINTS, val = prize.warpoints, printFunc = @(val) ::Cost(val).tostring() }
+    return {  type = PRIZE_TYPE.WARPOINTS, val = prize.warpoints, printFunc = @(val) Cost(val).tostring() }
   if ((prize?.exp ?? 0) > 0)
-    return {  type = PRIZE_TYPE.EXP, val = prize.exp, printFunc = @(val) ::Cost().setFrp(val).tostring() }
+    return {  type = PRIZE_TYPE.EXP, val = prize.exp, printFunc = @(val) Cost().setFrp(val).tostring() }
   if (prize?.warbonds && (prize?.count ?? 0) > 0) {
     let wbId = prize.warbonds
     return {  type = PRIZE_TYPE.WARBONDS, val = prize.count, printFunc = @(val) ::g_warbonds.findWarbond(wbId).getPriceText(val, true, false) }
@@ -976,7 +979,7 @@ let prizeViewConfig = {
   let headerSeparator = loc("ui/colon") + (isDetailed ? "\n" : "")
   let unitsSeparator  = isDetailed ? "\n" : loc("ui/comma")
 
-  return header + headerSeparator + ::g_string.implode(units, unitsSeparator)
+  return header + headerSeparator + unitsSeparator.join(units, true)
 }
 
 ::PrizesView._stackContent <- function _stackContent(content, stackLevel = prizesStack.BY_TYPE, shopDesc = false) {
@@ -1036,11 +1039,11 @@ let prizeViewConfig = {
     }
   }
 
-  return ::g_string.implode(list, "\n")
+  return "\n".join(list, true)
 }
 
 ::PrizesView.getViewDataUnit <- function getViewDataUnit(unitName, params = null, rentTimeHours = 0, numSpares = 0) {
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return null
 
@@ -1103,7 +1106,7 @@ let prizeViewConfig = {
 }
 
 ::PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params) {
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return null
 
@@ -1127,7 +1130,7 @@ let prizeViewConfig = {
 }
 
 ::PrizesView.getViewDataSpare <- function getViewDataSpare(unitName, count, params) {
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   let spare = getTblValue("spare", unit)
   if (!spare)
     return null
@@ -1149,7 +1152,7 @@ let prizeViewConfig = {
 ::PrizesView.getViewDataSpecialization <- function getViewDataSpecialization(prize, params) {
   let specLevel = prize?.specialization ?? 1
   let unitName = prize?.unitName
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return null
 
@@ -1301,7 +1304,7 @@ let prizeViewConfig = {
     if (data)
       view.list.append(data)
   }
-  return ::handyman.renderCached(template, view)
+  return handyman.renderCached(template, view)
 }
 
 ::PrizesView.getPrizesStacksView <- function getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = {}) {
@@ -1316,7 +1319,7 @@ let prizeViewConfig = {
 
   params.fixedAmount <- fixedAmount
   view.list <- this.getPrizesStacksArrayForView(content, params)
-  return ::handyman.renderCached(template, view)
+  return handyman.renderCached(template, view)
 }
 
 ::PrizesView.getPrizeActionButtonsView <- function getPrizeActionButtonsView(prize, params = null) {
@@ -1351,7 +1354,7 @@ let prizeViewConfig = {
   }
 
   let unitId = prize?.unit || prize?.rentedUnit
-  if (unitId && ::getAircraftByName(unitId)?.isInShop) {
+  if (unitId && getAircraftByName(unitId)?.isInShop) {
     let gcb = globalCallbacks.UNIT_PREVIEW
     view.append({
       image = "#ui/gameuiskin#btn_preview.svg"

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -176,10 +177,10 @@ let function getTimestampFromStringLocal(str, fillMissedByTimestamp) {
 
 
 let function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
-  if (!::u.isEmpty(beginDateStr) &&
+  if (!u.isEmpty(beginDateStr) &&
     getTimestampFromStringUtc(beginDateStr) > ::get_charserver_time_sec())
     return false
-  if (!::u.isEmpty(endDateStr) &&
+  if (!u.isEmpty(endDateStr) &&
     getTimestampFromStringUtc(endDateStr) < ::get_charserver_time_sec())
     return false
   return true

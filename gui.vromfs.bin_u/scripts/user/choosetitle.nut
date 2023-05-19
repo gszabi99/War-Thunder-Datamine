@@ -15,6 +15,7 @@ let { ceil } = require("math")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 
 ::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
@@ -45,7 +46,7 @@ let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
       return {
         name
         text = locText
-        lowerText = ::g_string.utf8ToLower(locText)
+        lowerText = utf8ToLower(locText)
         tooltipId = UNLOCK_SHORT.getTooltipId(name)
         isCurrent = name == this.curTitle
         isLocked = !isOwn

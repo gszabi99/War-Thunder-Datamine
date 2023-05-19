@@ -6,6 +6,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { isMeBanned } = require("%scripts/penitentiary/penalties.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { matchingApiFunc } = require("%scripts/matching/api.nut")
 
 let isReconnectChecking = persist("isReconnectChecking", @() Watched(false))
 
@@ -35,7 +36,7 @@ let function checkReconnect() {
     return
 
   isReconnectChecking(true)
-  ::matching_api_func("match.check_reconnect", onCheckReconnect)
+  matchingApiFunc("match.check_reconnect", onCheckReconnect)
 }
 
 addListenersWithoutEnv({

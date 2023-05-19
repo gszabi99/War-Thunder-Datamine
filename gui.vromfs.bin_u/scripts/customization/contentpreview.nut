@@ -1,13 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { format } = require("string")
-let { hangar_is_model_loaded } = require("hangar")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = subscriptions
+let { hangar_is_model_loaded } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -61,7 +63,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   if (!canStartPreviewScene(true, true))
     return
 
-  let unit = ::getAircraftByName(unitId)
+  let unit = getAircraftByName(unitId)
   if (!unit)
     return false
 
@@ -69,7 +71,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   skinId = skinId || unitPreviewSkin
   let isUnitPreview = skinId == unitPreviewSkin
 
-  ::broadcastEvent("BeforeStartShowroom")
+  broadcastEvent("BeforeStartShowroom")
   showedUnit(unit)
   let startFunc = function() {
     ::gui_start_decals({
@@ -90,7 +92,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
 let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null) {
   local unit = null
   if (forcedUnitId) {
-    unit = ::getAircraftByName(forcedUnitId)
+    unit = getAircraftByName(forcedUnitId)
     return isAvailableFn(unit, false) ? unit : null
   }
 
@@ -103,14 +105,14 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
 
   foreach (crew in crews)
     if ((crew?.aircraft ?? "") != "") {
-      unit = ::getAircraftByName(crew.aircraft)
+      unit = getAircraftByName(crew.aircraft)
       if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
         return unit
     }
 
   foreach (crew in crews)
     for (local i = crew.trained.len() - 1; i >= 0; i--) {
-      unit = ::getAircraftByName(crew.trained[i])
+      unit = getAircraftByName(crew.trained[i])
       if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
         return unit
     }
@@ -123,7 +125,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
     }
   }
 
-  unit = ::getAircraftByName(getReserveAircraftName({
+  unit = getAircraftByName(getReserveAircraftName({
     country = countryId
     unitType = allowedUnitType
     ignoreSlotbarCheck = true
@@ -131,7 +133,7 @@ let function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forced
   if (isAvailableFn(unit, false))
     return unit
 
-  unit = ::getAircraftByName(getReserveAircraftName({
+  unit = getAircraftByName(getReserveAircraftName({
     country = "country_usa"
     unitType = allowedUnitType
     ignoreSlotbarCheck = true
@@ -166,7 +168,7 @@ let function showUnitDecorator(unitId, resource, resourceType) {
     return false
 
   let hangarUnit = getPlayerCurUnit()
-  ::broadcastEvent("BeforeStartShowroom")
+  broadcastEvent("BeforeStartShowroom")
   showedUnit(unit)
   let startFunc = function() {
     ::gui_start_decals({
@@ -249,7 +251,7 @@ let function onSkinDownloaded(unitId, skinId, result) {
 let function marketViewItem(params) {
   if (::to_integer_safe(params?.appId, 0, false) != APP_ID)
     return
-  let assets = ::u.filter(params?.assetClass ?? [], @(asset) asset?.name == "__itemdefid")
+  let assets = u.filter(params?.assetClass ?? [], @(asset) asset?.name == "__itemdefid")
   if (!assets.len())
     return
   let itemDefId = ::to_integer_safe(assets?[0]?.value)
@@ -267,7 +269,7 @@ let function requestUnitPreview(params) {
   let reason = getCantStartPreviewSceneReason(true)
   if (reason != "")
     return reason
-  let unit = ::getAircraftByName(params?.unitId)
+  let unit = getAircraftByName(params?.unitId)
   if (unit == null)
     return "unit_not_found"
   if (!unit.canPreview())
@@ -299,7 +301,7 @@ let function getDecoratorDataToUse(resource, resourceType) {
 
   let decoratorType = decorator.decoratorType
   let decoratorUnit = decoratorType == ::g_decorator_type.SKINS
-    ? ::getAircraftByName(getPlaneBySkinId(decorator.id))
+    ? getAircraftByName(getPlaneBySkinId(decorator.id))
     : getPlayerCurUnit()
 
   if (decoratorUnit == null || !decoratorType.isAvailable(decoratorUnit) || !decorator.canUse(decoratorUnit))
@@ -330,7 +332,7 @@ let function showDecoratorAccessRestriction(decorator, unit) {
       unitsList.append(colorize("userlogColoredText", ::getUnitName(unitName)))
     text.append(loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
       decoratorName = colorize("activeTextColor", decorator.getName()),
-      unitsList = ::g_string.implode(unitsList, ",") }))
+      unitsList = ",".join(unitsList, true) }))
   }
 
   if (!decorator.isAllowedByUnitTypes(unit.unitType.tag))
@@ -343,7 +345,7 @@ let function showDecoratorAccessRestriction(decorator, unit) {
     text.append(format(loc("mainmenu/decalNoCampaign"), loc($"charServer/entitlement/{decorator.lockedByDLC}")))
 
   if (text.len() != 0) {
-    ::g_popups.add("", ::g_string.implode(text, ", "))
+    ::g_popups.add("", ", ".join(text, true))
     return true
   }
 
@@ -400,7 +402,7 @@ globalCallbacks.addTypes({
   }
   UNIT_PREVIEW = {
     onCb = function(_obj, params) {
-      let unit = ::getAircraftByName(params?.unitId)
+      let unit = getAircraftByName(params?.unitId)
       if (unit && unit.canPreview() && canStartPreviewScene(true, true))
         doDelayed(@() unit.doPreview())
     }

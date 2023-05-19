@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -27,10 +29,10 @@ local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
     firstAwardVesselsRank = ::get_roman_numeral(awardVesselsRanks[0]),
     secondAwardVesselsRank = ::get_roman_numeral(awardVesselsRanks[1]),
     thirdAwardVesselsRank = ::get_roman_numeral(awardVesselsRanks[2]),
-    firstAwardPrize = ::Cost(awards[0][0], awards[0][1]).tostring(),
-    secondAwardPrize = ::Cost(awards[1][0], awards[1][1]).tostring(),
-    thirdAwardPrize = ::Cost(awards[2][0], awards[2][1]).tostring(),
-    gift = ::Cost(0, 50).tostring(),
+    firstAwardPrize = Cost(awards[0][0], awards[0][1]).tostring(),
+    secondAwardPrize = Cost(awards[1][0], awards[1][1]).tostring(),
+    thirdAwardPrize = Cost(awards[2][0], awards[2][1]).tostring(),
+    gift = Cost(0, 50).tostring(),
     link = getLinkString() })
   return desc
 }

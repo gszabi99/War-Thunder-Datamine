@@ -1,9 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let time = require("%scripts/time.nut")
 let { ceil } = require("math")
@@ -98,7 +100,7 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
           loc("ui/colon"))
       })
     let view = this.getSectionsView(sections, isMultipleColumns)
-    return ::handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList.tpl", view)
+    return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList.tpl", view)
   }
 
   /** exclude infantry */
@@ -371,7 +373,7 @@ let { WW_MAP_TOOLTIP_TYPE_GROUP } = require("%scripts/worldWar/wwGenericTooltipT
     local text = this.getUnitsCountTextIcon()
     if (!this.isArtillery())
       text += " " + this.getMoralText()
-    return ::u.isEmpty(text) ? "" : loc("ui/parentheses", { text = text })
+    return u.isEmpty(text) ? "" : loc("ui/parentheses", { text = text })
   }
 
   function setRedrawArmyStatusData() {

@@ -33,22 +33,22 @@ let BhvUnseen = class {
   function buildConfig(value) {
     local seenData = this.getVerifiedData(value)
 
-    if (!::u.isArray(seenData))
+    if (!u.isArray(seenData))
       return [this.getConfig(seenData)]
 
-    seenData = ::u.map(seenData, (@(s) this.getVerifiedData(s)).bindenv(this))
+    seenData = u.map(seenData, (@(s) this.getVerifiedData(s)).bindenv(this))
 
-    return ::u.map(seenData, (@(s) this.getConfig(s)).bindenv(this))
+    return u.map(seenData, (@(s) this.getConfig(s)).bindenv(this))
   }
 
   function getVerifiedData(value) {
     if (value == "")
       return null
-    return ::u.isString(value)
+    return u.isString(value)
       ? seenList.isSeenList(value)
         ? { listId = value }
         : parse_json(value)
-      : ::u.isTable(value)
+      : u.isTable(value)
         ? value
         : null
   }

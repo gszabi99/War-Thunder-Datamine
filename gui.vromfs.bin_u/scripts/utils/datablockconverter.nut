@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -24,6 +25,7 @@ from "%scripts/dagui_library.nut" import *
  */
 let { isDataBlock } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
+let { startsWith, slice } = require("%sqstd/string.nut")
 
 let keyToStr = function(key) {
   let t = type(key)
@@ -35,10 +37,10 @@ let keyToStr = function(key) {
 }
 
 let strToKey = function(str) {
-  return !::g_string.startsWith(str, "__")   ? str
-    : ::g_string.startsWith(str, "__int_")   ? ::g_string.slice(str, 6).tointeger()
-    : ::g_string.startsWith(str, "__float_") ? ::g_string.slice(str, 8).tofloat()
-    : ::g_string.startsWith(str, "__bool_")  ? ::g_string.slice(str, 7) == "1"
+  return !startsWith(str, "__")   ? str
+    : startsWith(str, "__int_")   ? slice(str, 6).tointeger()
+    : startsWith(str, "__float_") ? slice(str, 8).tofloat()
+    : startsWith(str, "__bool_")  ? slice(str, 7) == "1"
     : "__unsupported"
 }
 
@@ -55,7 +57,7 @@ let function dataToBlk(data) {
     case "array":
     case "table":
       let blk = DataBlock()
-      let isArray = ::u.isArray(data)
+      let isArray = u.isArray(data)
       if (isArray)
         blk.__array <- true
       foreach (key, value in data)
@@ -72,7 +74,7 @@ let function dataToBlk(data) {
 }
 
 let function blkToData(blk) {
-  if (::u.isString(blk) && ::g_string.startsWith(blk, "__unsupported")) {
+  if (u.isString(blk) && startsWith(blk, "__unsupported")) {
     return null
   }
   if (!isDataBlock(blk)) {

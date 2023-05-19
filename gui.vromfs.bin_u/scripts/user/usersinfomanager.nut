@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { get_time_msec } = require("dagor.time")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let avatars = require("%scripts/user/avatars.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
@@ -75,7 +76,7 @@ let function _requestDataCommonSuccessCallback(response) {
   }
 
   if (isUpdated)
-    ::broadcastEvent(userInfoEventName.UPDATED, { usersInfo = response })
+    broadcastEvent(userInfoEventName.UPDATED, { usersInfo = response })
 }
 
 let function _convertServerResponse(response) {
@@ -123,7 +124,7 @@ let function requestUsersInfo(users, successCb = null, errorCb = null) {
   if (fastResponse != null && successCb != null)
     return successCb(fastResponse)
 
-  let usersList = ::g_string.implode(users, ";")
+  let usersList = ";".join(users, true)
 
   let requestBlk = DataBlock()
   requestBlk.setStr("usersList", usersList)

@@ -1,11 +1,14 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { split_by_chars } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { startsWith, cutPrefix } = require("%sqstd/string.nut")
+
 enum hintTagCheckOrder {
   EXACT_WORD //single word tags
   REGULAR
@@ -77,20 +80,20 @@ enums.addTypesByGlobalName("g_hint_tag", {
   IMAGE = {
     typeName = "img="
     checkOrder = hintTagCheckOrder.REGULAR
-    checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
+    checkTag = function(tagName) { return startsWith(tagName, this.typeName) }
     colorParam = "color="
     sizeParam = "sizeStyle="
     delimiter = " "
     getViewSlices = function(tagName, _params) {
       let paramsList = split_by_chars(tagName, this.delimiter)
       let res = {
-        image = ::g_string.cutPrefix(paramsList[0], this.typeName,  "")
+        image = cutPrefix(paramsList[0], this.typeName,  "")
         color = null
         sizeStyle = null
       }
       for (local i = 1; i < paramsList.len(); i++) {
-        res.color = res.color || ::g_string.cutPrefix(paramsList[i], this.colorParam)
-        res.sizeStyle = res.sizeStyle || ::g_string.cutPrefix(paramsList[i], this.sizeParam)
+        res.color = res.color || cutPrefix(paramsList[i], this.colorParam)
+        res.sizeStyle = res.sizeStyle || cutPrefix(paramsList[i], this.sizeParam)
       }
       return [res]
     }
@@ -104,7 +107,7 @@ enums.addTypesByGlobalName("g_hint_tag", {
   MISSION_ATTEMPTS_LEFT = {
     typeName = "attempts_left" //{{attempts_left}} or {{attempts_left=locId}}
     checkOrder = hintTagCheckOrder.REGULAR
-    checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
+    checkTag = function(tagName) { return startsWith(tagName, this.typeName) }
     getViewSlices = function(tagName, _params) {
       let attempts = ::get_num_attempts_left()
       local attemptsText = attempts < 0 ? loc("options/attemptsUnlimited") : attempts
@@ -123,12 +126,12 @@ enums.addTypesByGlobalName("g_hint_tag", {
     typeName = "INPUT_BUTTON"
     delimiter = " "
     checkOrder = hintTagCheckOrder.REGULAR
-    checkTag = function(tagName) { return ::g_string.startsWith(tagName, this.typeName) }
+    checkTag = function(tagName) { return startsWith(tagName, this.typeName) }
 
     getViewSlices = function(tagName, params) { //tagName == shortcutId
       let paramsList = split_by_chars(tagName, this.delimiter)
       let shortcut = ::SHORTCUT?[paramsList?[1]]
-      if (!::u.isTable(shortcut))
+      if (!u.isTable(shortcut))
         return []
 
       let input = ::Input.Button(shortcut.dev[0], shortcut.btn[0])

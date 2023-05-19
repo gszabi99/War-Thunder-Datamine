@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -27,7 +28,7 @@ let function updateMapIcons() {
 
   foreach (idx, airfield in curAirfields) {
     let lastAirfield = savedAirfields?[idx] ?? {}
-    if (::u.isEqual(airfield, lastAirfield))
+    if (u.isEqual(airfield, lastAirfield))
       continue
 
     let spriteType = airfield.spriteType

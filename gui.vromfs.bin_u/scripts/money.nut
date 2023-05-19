@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -24,7 +25,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     This need for optimize comparison.
 */
 
-local money_type = {
+let money_type = {
   none = 0
   cost = 1
   balance = 2
@@ -65,7 +66,7 @@ let function __get_color_id_by_value(value) {
   return (value < 0) ? money_color.BAD : (value > 0) ? money_color.GOOD : money_color.NEUTRAL
 }
 
-::Money <- class {
+let Money = class {
   wp   = 0
   gold = 0
   frp  = 0
@@ -81,163 +82,165 @@ let function __get_color_id_by_value(value) {
     this.sap  = sap_in || 0
     this.mType = type_in
   }
+
+  function setFrp(value) {
+    this.frp = value
+    return this
+  }
+
+  function setRp(value) {
+    this.rp = value
+    return this
+  }
+
+  function setSap(value) {
+    this.sap = value
+    return this
+  }
+  function setFromTbl(tbl = null) {
+    this.wp = tbl?.wp ?? 0
+    this.gold = tbl?.gold ?? 0
+    this.rp = tbl?.rp ?? 0
+    this.frp = tbl?.exp ?? tbl?.frp ?? 0
+    this.sap = tbl?.sap ?? 0
+    return this
+  }
+
+  function isZero() {
+    return !this.wp && !this.gold && !this.frp && !this.rp && !this.sap
+  }
+
+  //Math methods
+  function _add(that) {
+    let newClass = this.getclass()
+    return newClass(this.wp + that.wp,
+                    this.gold + that.gold,
+                    this.frp + that.frp,
+                    this.rp + that.rp,
+                    this.sap + that.sap)
+  }
+
+  function _sub(that) {
+    let newClass = this.getclass()
+    return newClass(this.wp - that.wp,
+                    this.gold - that.gold,
+                    this.frp - that.frp,
+                    this.rp - that.rp,
+                    this.sap - that.sap)
+  }
+
+  function multiply(multiplier) {
+    this.wp   = (multiplier * this.wp   + 0.5).tointeger()
+    this.gold = (multiplier * this.gold + 0.5).tointeger()
+    this.frp  = (multiplier * this.frp  + 0.5).tointeger()
+    this.rp   = (multiplier * this.rp   + 0.5).tointeger()
+    this.sap  = (multiplier * this.sap   + 0.5).tointeger()
+    return this
+  }
+
+
+  function _cmp(that) {
+    if (this.mType == money_type.balance && that.mType == money_type.cost)
+      return __impl_cost_to_balance_cmp(this, that)
+
+    if (this.mType == money_type.cost && that.mType == money_type.balance)
+      return __impl_cost_to_balance_cmp(that, this) * -1
+
+    foreach (key in __data_fields)
+      if (this[key] != that[key])
+        return this[key] > that[key] ? 1 : -1
+    return 0
+  }
+
+  //String methods
+  function _tostring() {
+    return this.__impl_get_text()
+  }
+
+  function toStringWithParams(params) {
+    return this.__impl_get_text(params)
+  }
+
+  function getTextAccordingToBalance() {
+    return this.__impl_get_text({ needCheckBalance = true })
+  }
+
+  function getUncoloredText() {
+    return this.__impl_get_text({ isColored = false })
+  }
+
+  function getUncoloredWpText() {
+    return this.__impl_get_wp_text(false)
+  }
+
+  function getColoredWpText() {
+    return this.__impl_get_wp_text(true)
+  }
+
+  function getGoldText(colored, checkBalance) {
+    return this.__impl_get_gold_text(colored, checkBalance)
+  }
+
+  function __get_wp_color_id()   { return money_color.NEUTRAL }
+  function __get_gold_color_id() { return money_color.NEUTRAL }
+  function __get_frp_color_id()  { return money_color.NEUTRAL }
+  function __get_rp_color_id()   { return money_color.NEUTRAL }
+  function __get_sap_color_id()   { return money_color.NEUTRAL }
+
+  function __impl_get_wp_text(colored = true, checkBalance = false, needIcon = true) {
+    let color_id = (checkBalance && colored) ? this.__get_wp_color_id() : money_color.NEUTRAL
+    let sign = needIcon ? loc(colored ? "warpoints/short/colored" : "warpoints/short") : ""
+    return __check_color(decimalFormat(this.wp), color_id) + sign
+  }
+
+  function __impl_get_gold_text(colored = true, checkBalance = false, needIcon = true) {
+    let color_id = (checkBalance && colored) ? this.__get_gold_color_id() : money_color.NEUTRAL
+    let sign = needIcon ? loc(colored ? "gold/short/colored" : "gold/short") : ""
+    return __check_color(decimalFormat(this.gold), color_id) + sign
+  }
+
+  function __impl_get_frp_text(colored = true, checkBalance = false, needIcon = true) {
+    let color_id = (checkBalance && colored) ? this.__get_frp_color_id() : money_color.NEUTRAL
+    let sign = needIcon ? loc(colored ? "currency/freeResearchPoints/sign/colored" : "currency/freeResearchPoints/sign") : ""
+    return __check_color(decimalFormat(this.frp), color_id) + sign
+  }
+
+  function __impl_get_rp_text(colored = true, checkBalance = false, needIcon = true) {
+    let color_id = (checkBalance && colored) ? this.__get_rp_color_id() : money_color.NEUTRAL
+    let sign = needIcon ? loc(colored ? "currency/researchPoints/sign/colored" : "currency/researchPoints/sign") : ""
+    return __check_color(decimalFormat(this.rp), color_id) + sign
+  }
+
+  function __impl_get_sap_text(colored = true, checkBalance = false, needIcon = true) {
+    let color_id = (checkBalance && colored) ? this.__get_sap_color_id() : money_color.NEUTRAL
+    let sign = needIcon ? loc(colored ? "currency/squadronActivity/colored" : "currency/squadronActivity") : ""
+    return __check_color(decimalFormat(this.sap), color_id) + sign
+  }
+
+  function __impl_get_text(params = null) {
+    local text = ""
+    let isColored = params?.isColored ?? true
+    let needCheckBalance = params?.needCheckBalance ?? false
+    let needIcon = params?.needIcon ?? true
+
+    if (this.gold != 0 || params?.isGoldAlwaysShown)
+      text += this.__impl_get_gold_text(isColored, needCheckBalance, needIcon)
+    if (this.wp != 0 || params?.isWpAlwaysShown)
+      text += ((text == "") ? "" : ", ") + this.__impl_get_wp_text(isColored, needCheckBalance, needIcon)
+    if (this.frp != 0 || params?.isFrpAlwaysShown)
+      text += ((text == "") ? "" : ", ") + this.__impl_get_frp_text(isColored, needCheckBalance, needIcon)
+    if (this.rp != 0 || params?.isRpAlwaysShown)
+      text += ((text == "") ? "" : ", ") + this.__impl_get_rp_text(isColored, needCheckBalance, needIcon)
+    if (this.sap != 0 || params?.isSapAlwaysShown)
+      text += ((text == "") ? "" : ", ") + this.__impl_get_sap_text(isColored, needCheckBalance, needIcon)
+    return text
+  }
+
 }
 
-::Money.setFrp <- function setFrp(value) {
-  this.frp = value
-  return this
-}
-
-::Money.setRp <- function setRp(value) {
-  this.rp = value
-  return this
-}
-
-::Money.setSap <- function setSap(value) {
-  this.sap = value
-  return this
-}
-
-::Money.setFromTbl <- function setFromTbl(tbl = null) {
-  this.wp = tbl?.wp ?? 0
-  this.gold = tbl?.gold ?? 0
-  this.rp = tbl?.rp ?? 0
-  this.frp = tbl?.exp ?? tbl?.frp ?? 0
-  this.sap = tbl?.sap ?? 0
-  return this
-}
-
-::Money.isZero <- function isZero() {
-  return !this.wp && !this.gold && !this.frp && !this.rp && !this.sap
-}
-
-//Math methods
-::Money._add <- function _add(that) {
-  let newClass = this.getclass()
-  return newClass(this.wp + that.wp,
-                  this.gold + that.gold,
-                  this.frp + that.frp,
-                  this.rp + that.rp,
-                  this.sap + that.sap)
-}
-
-::Money._sub <- function _sub(that) {
-  let newClass = this.getclass()
-  return newClass(this.wp - that.wp,
-                  this.gold - that.gold,
-                  this.frp - that.frp,
-                  this.rp - that.rp,
-                  this.sap - that.sap)
-}
-
-::Money.multiply <- function multiply(multiplier) {
-  this.wp   = (multiplier * this.wp   + 0.5).tointeger()
-  this.gold = (multiplier * this.gold + 0.5).tointeger()
-  this.frp  = (multiplier * this.frp  + 0.5).tointeger()
-  this.rp   = (multiplier * this.rp   + 0.5).tointeger()
-  this.sap  = (multiplier * this.sap   + 0.5).tointeger()
-  return this
-}
 
 
-::Money._cmp <- function _cmp(that) {
-  if (this.mType == money_type.balance && that.mType == money_type.cost)
-    return __impl_cost_to_balance_cmp(this, that)
-
-  if (this.mType == money_type.cost && that.mType == money_type.balance)
-    return __impl_cost_to_balance_cmp(that, this) * -1
-
-  foreach (key in __data_fields)
-    if (this[key] != that[key])
-      return this[key] > that[key] ? 1 : -1
-  return 0
-}
-
-//String methods
-::Money._tostring <- function _tostring() {
-  return this.__impl_get_text()
-}
-
-::Money.toStringWithParams <- function toStringWithParams(params) {
-  return this.__impl_get_text(params)
-}
-
-::Money.getTextAccordingToBalance <- function getTextAccordingToBalance() {
-  return this.__impl_get_text({ needCheckBalance = true })
-}
-
-::Money.getUncoloredText <- function getUncoloredText() {
-  return this.__impl_get_text({ isColored = false })
-}
-
-::Money.getUncoloredWpText <- function getUncoloredWpText() {
-  return this.__impl_get_wp_text(false)
-}
-
-::Money.getColoredWpText <- function getColoredWpText() {
-  return this.__impl_get_wp_text(true)
-}
-
-::Money.getGoldText <- function getGoldText(colored, checkBalance) {
-  return this.__impl_get_gold_text(colored, checkBalance)
-}
-
-::Money.__get_wp_color_id <- function __get_wp_color_id()   { return money_color.NEUTRAL }
-::Money.__get_gold_color_id <- function __get_gold_color_id() { return money_color.NEUTRAL }
-::Money.__get_frp_color_id <- function __get_frp_color_id()  { return money_color.NEUTRAL }
-::Money.__get_rp_color_id <- function __get_rp_color_id()   { return money_color.NEUTRAL }
-::Money.__get_sap_color_id <- function __get_sap_color_id()   { return money_color.NEUTRAL }
-
-::Money.__impl_get_wp_text <- function __impl_get_wp_text(colored = true, checkBalance = false, needIcon = true) {
-  let color_id = (checkBalance && colored) ? this.__get_wp_color_id() : money_color.NEUTRAL
-  let sign = needIcon ? loc(colored ? "warpoints/short/colored" : "warpoints/short") : ""
-  return __check_color(decimalFormat(this.wp), color_id) + sign
-}
-
-::Money.__impl_get_gold_text <- function __impl_get_gold_text(colored = true, checkBalance = false, needIcon = true) {
-  let color_id = (checkBalance && colored) ? this.__get_gold_color_id() : money_color.NEUTRAL
-  let sign = needIcon ? loc(colored ? "gold/short/colored" : "gold/short") : ""
-  return __check_color(decimalFormat(this.gold), color_id) + sign
-}
-
-::Money.__impl_get_frp_text <- function __impl_get_frp_text(colored = true, checkBalance = false, needIcon = true) {
-  let color_id = (checkBalance && colored) ? this.__get_frp_color_id() : money_color.NEUTRAL
-  let sign = needIcon ? loc(colored ? "currency/freeResearchPoints/sign/colored" : "currency/freeResearchPoints/sign") : ""
-  return __check_color(decimalFormat(this.frp), color_id) + sign
-}
-
-::Money.__impl_get_rp_text <- function __impl_get_rp_text(colored = true, checkBalance = false, needIcon = true) {
-  let color_id = (checkBalance && colored) ? this.__get_rp_color_id() : money_color.NEUTRAL
-  let sign = needIcon ? loc(colored ? "currency/researchPoints/sign/colored" : "currency/researchPoints/sign") : ""
-  return __check_color(decimalFormat(this.rp), color_id) + sign
-}
-
-::Money.__impl_get_sap_text <- function __impl_get_sap_text(colored = true, checkBalance = false, needIcon = true) {
-  let color_id = (checkBalance && colored) ? this.__get_sap_color_id() : money_color.NEUTRAL
-  let sign = needIcon ? loc(colored ? "currency/squadronActivity/colored" : "currency/squadronActivity") : ""
-  return __check_color(decimalFormat(this.sap), color_id) + sign
-}
-
-::Money.__impl_get_text <- function __impl_get_text(params = null) {
-  local text = ""
-  let isColored = params?.isColored ?? true
-  let needCheckBalance = params?.needCheckBalance ?? false
-  let needIcon = params?.needIcon ?? true
-
-  if (this.gold != 0 || params?.isGoldAlwaysShown)
-    text += this.__impl_get_gold_text(isColored, needCheckBalance, needIcon)
-  if (this.wp != 0 || params?.isWpAlwaysShown)
-    text += ((text == "") ? "" : ", ") + this.__impl_get_wp_text(isColored, needCheckBalance, needIcon)
-  if (this.frp != 0 || params?.isFrpAlwaysShown)
-    text += ((text == "") ? "" : ", ") + this.__impl_get_frp_text(isColored, needCheckBalance, needIcon)
-  if (this.rp != 0 || params?.isRpAlwaysShown)
-    text += ((text == "") ? "" : ", ") + this.__impl_get_rp_text(isColored, needCheckBalance, needIcon)
-  if (this.sap != 0 || params?.isSapAlwaysShown)
-    text += ((text == "") ? "" : ", ") + this.__impl_get_sap_text(isColored, needCheckBalance, needIcon)
-  return text
-}
-
-::Balance <- class extends ::Money {
+let Balance = class extends Money {
   mType = money_type.balance
 
   constructor(wp_in = 0, gold_in = 0, frp_in = 0, rp_in = 0, sap_in = 0) {
@@ -251,7 +254,7 @@ let function __get_color_id_by_value(value) {
   function __get_sap_color_id()   { return __get_color_id_by_value(this.sap) }
 }
 
-::Cost <- class extends ::Money {
+let Cost = class extends Money {
   mType = money_type.cost
 
   constructor(wp_in = 0, gold_in = 0, frp_in = 0, rp_in = 0, sap_in = 0) {
@@ -271,10 +274,13 @@ let function __get_color_id_by_value(value) {
   }
 }
 
-::zero_money = ::Money(money_type.none)
+::zero_money = Money(money_type.none)
 
-::u.registerClass("Money", ::Money, @(m1, m2) m1 <= m2 && m1 >= m2, @(m) m.isZero())
+u.registerClass("Money", Money, @(m1, m2) m1 <= m2 && m1 >= m2, @(m) m.isZero())
 
 return {
   money_type
+  Money
+  Balance
+  Cost
 }

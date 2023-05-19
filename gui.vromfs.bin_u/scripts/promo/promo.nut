@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { split_by_chars } = require("string")
 let time = require("%scripts/time.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
@@ -19,6 +21,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { is_chat_message_empty } = require("chat")
 let { checkUnlockString } = require("%scripts/unlocks/unlocksModule.nut")
+let { split, cutPrefix } = require("%sqstd/string.nut")
 
 ::g_promo <- {
   PROMO_BUTTON_TYPE = {
@@ -123,26 +126,26 @@ let function getFirstActiveSubBlockIndex(block) {
 
 ::g_promo.recievePromoBlk <- function recievePromoBlk() {
   local customPromoBlk = ::get_gui_regional_blk()?.promo_block
-  if (!::u.isDataBlock(customPromoBlk)) { //compatibility with not exist or old gui_regional
+  if (!u.isDataBlock(customPromoBlk)) { //compatibility with not exist or old gui_regional
     let blk = ::get_game_settings_blk()
     customPromoBlk = blk?.promo_block
-    if (!::u.isDataBlock(customPromoBlk))
+    if (!u.isDataBlock(customPromoBlk))
       customPromoBlk = DataBlock()
   }
   let showAllPromo = ::g_promo.getShowAllPromoBlocks()
 
-  let promoBlk = ::u.copy(customPromoBlk)
+  let promoBlk = u.copy(customPromoBlk)
   let guiBlk = GUI.get()
   let staticPromoBlk = guiBlk?.static_promo_block
 
-  if (!::u.isEmpty(staticPromoBlk)) {
+  if (!u.isEmpty(staticPromoBlk)) {
     //---Check on non-unique block names-----
     for (local i = 0; i < staticPromoBlk.blockCount(); i++) {
       let block = staticPromoBlk.getBlock(i)
       let blockName = block.getBlockName()
       let haveDouble = blockName in promoBlk
       if (!haveDouble || showAllPromo)
-        promoBlk[blockName] <- ::u.copy(block)
+        promoBlk[blockName] <- u.copy(block)
     }
   }
 
@@ -153,7 +156,7 @@ let function getFirstActiveSubBlockIndex(block) {
 
 ::g_promo.requestUpdate <- function requestUpdate() {
   let promoBlk = ::g_promo.recievePromoBlk()
-  if (::u.isEmpty(promoBlk))
+  if (u.isEmpty(promoBlk))
     return false
 
   ::g_promo.checkOldRecordsOnInit()
@@ -198,16 +201,16 @@ let function getFirstActiveSubBlockIndex(block) {
 
 ::g_promo.gatherActionParamsData <- function gatherActionParamsData(block) {
   let actionStr = getTblValue("action", block)
-  if (::u.isEmpty(actionStr))
+  if (u.isEmpty(actionStr))
     return null
 
-  let params = ::g_string.split(actionStr, this.paramsSeparator)
+  let params = split(actionStr, this.paramsSeparator)
   local action = params.remove(0)
   return this.createActionParamsData(action, params)
 }
 
 ::g_promo.setActionParamsData <- function setActionParamsData(blockId, actionOrActionData, paramsArray = null) {
-  if (::u.isString(actionOrActionData))
+  if (u.isString(actionOrActionData))
     actionOrActionData = this.createActionParamsData(actionOrActionData, paramsArray)
 
   this.actionParamsByBlockId[blockId] <- actionOrActionData
@@ -280,9 +283,9 @@ let function getFirstActiveSubBlockIndex(block) {
     }
 
     local link = this.getLinkText(fillBlock)
-    if (::u.isEmpty(link) && isMultiblock)
+    if (u.isEmpty(link) && isMultiblock)
       link = this.getLinkText(block)
-    if (!::u.isEmpty(link)) {
+    if (!u.isEmpty(link)) {
       fillBlock.link <- link
       this.setActionParamsData(actionParamsKey, "url", [link, getTblValue("forceExternalBrowser", checkBlock, false)])
       fillBlock.action <- this.PERFORM_ACTON_NAME
@@ -298,7 +301,7 @@ let function getFirstActiveSubBlockIndex(block) {
     }
 
     local text = promoButtonConfig?.getText() ?? this.getViewText(fillBlock, isMultiblock ? "" : null)
-    if (::u.isEmpty(text) && isMultiblock)
+    if (u.isEmpty(text) && isMultiblock)
       text = this.getViewText(block)
     fillBlock.text <- text
     fillBlock.needAutoScroll <- getStringWidthPx(text, "fontNormal")
@@ -443,12 +446,12 @@ let function getFirstActiveSubBlockIndex(block) {
 }
 
 ::g_promo.isLinkVisible <- function isLinkVisible(block) {
-  return ::u.isEmpty(block?.link) || hasFeature("AllowExternalLink")
+  return u.isEmpty(block?.link) || hasFeature("AllowExternalLink")
 }
 
 ::g_promo.getUTCTimeFromBlock <- function getUTCTimeFromBlock(block, timeProperty) {
   let timeText = getTblValue(timeProperty, block, null)
-  if (!::u.isString(timeText) || timeText.len() == 0)
+  if (!u.isString(timeText) || timeText.len() == 0)
     return -1
   return time.getTimestampFromStringUtc(timeText)
 }
@@ -463,7 +466,7 @@ let function getFirstActiveSubBlockIndex(block) {
 }
 
 ::g_promo.cutActionParamsKey <- function cutActionParamsKey(id) {
-  return ::g_string.cutPrefix(id, "perform_action_", id)
+  return cutPrefix(id, "perform_action_", id)
 }
 
 ::g_promo.getType <- function getType(block) {
@@ -598,7 +601,7 @@ let function getFirstActiveSubBlockIndex(block) {
 ::g_promo.setShowAllPromoBlocks <- function setShowAllPromoBlocks(value) {
   if (this.showAllPromoBlocks != value) {
     this.showAllPromoBlocks = value
-    ::broadcastEvent("ShowAllPromoBlocksValueChanged")
+    broadcastEvent("ShowAllPromoBlocksValueChanged")
   }
 }
 
@@ -718,7 +721,7 @@ let function getFirstActiveSubBlockIndex(block) {
   if (this.PLAYLIST_SONG_TIMER_TASK >= 0)
     return
 
-  ::set_cached_music(CACHED_MUSIC_MENU, ::u.chooseRandom(playlistArray), "")
+  ::set_cached_music(CACHED_MUSIC_MENU, u.chooseRandom(playlistArray), "")
   this.PLAYLIST_SONG_TIMER_TASK = ::periodic_task_register(this, ::g_promo.requestTurnOffPlayMenuMusic, tm)
 }
 

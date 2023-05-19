@@ -8,6 +8,42 @@
   "mesh": "su_r_60_rocket",
   "tags": {},
   "rocket": {
+    "bulletName": "su_r_60",
+    "statType": "hydra",
+    "caliber": 0.12,
+    "length": 2.095,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 3.1,
+    "wingAreaMult": 1.25,
+    "finsAoaHor": 0.18,
+    "finsAoaVer": 0.18,
+    "finsLatAccel": 29.1,
+    "distFromCmToStab": 0.06,
+    "mass": 43.5,
+    "massEnd": 33.5,
+    "timeFire": 3.0,
+    "force": 9500.0,
+    "fireDelay": 0.0,
+    "timeLife": 25.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "machMax": 2.5,
+    "endSpeed": 0.0,
+    "maxDistance": 15000.0,
+    "minDistance": 30.0,
+    "rangeMax": 10000.0,
+    "loadFactorMax": 30.0,
+    "guidanceType": "ir",
+    "guidanceSfx": "alarm_con_scan",
+    "effectOffset": [
+      -1.0,
+      0.0,
+      0.0
+    ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
@@ -16,29 +52,10 @@
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
-    "bulletName": "su_r3s",
-    "caliber": 0.12,
-    "mass": 43.5,
     "explosiveType": "tnt",
     "explosiveMass": 1.15,
-    "massEnd": 33.5,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.015,
-    "length": 2.095,
-    "wingAreaMult": 1.25,
-    "distFromCmToStab": 0.06,
-    "CxK": 3.1,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "finsAoaHor": 0.18,
-    "finsAoaVer": 0.18,
-    "finsLatAccel": 29.1,
-    "force": 9500.0,
-    "timeFire": 3.0,
-    "fireDelay": 0.0,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -49,17 +66,11 @@
     "explosionPatchRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_rocket_tail_modern_air",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_mach_discs_small",
+    "smokeEffect": "smoke_rocket_tail_light",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.5,
-    "effectOffset": [
-      -2.0,
-      0.0,
-      0.0
-    ],
-    "maxDistance": 15000.0,
-    "minDistance": 30.0,
+    "endSmokeViscosity": 0.05,
     "distanceFuse": false,
     "hitPowerMult": 400.0,
     "fuseDelayDist": 1.0,
@@ -67,8 +78,6 @@
       0.1,
       0.01
     ],
-    "guidanceSfx": "alarm_con_scan",
-    "guidanceType": "ir",
     "hasProximityFuse": true,
     "explodeHitPower": 550.0,
     "explodeArmorPower": 75.0,
@@ -77,23 +86,160 @@
       3.5
     ],
     "rendinstDamageRadius": 9.0,
-    "statType": "hydra",
     "shutterDamage": true,
     "shutterDamageRadius": 17.0,
     "shutterAmount": 2000,
     "shutterArmorPower": 12.0,
     "shutterHit": 10.0,
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 0.0,
-    "timeLife": 25.0,
-    "machMax": 2.5,
-    "loadFactorMax": 30.0,
-    "rangeMax": 10000.0,
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "missile_type_b_air_to_air",
+    "arcadeProp": {
+      "finsAoaHor": 0.2,
+      "finsAoaVer": 0.2
+    },
+    "guidance": {
+      "warmUpTime": 1.0,
+      "workTime": 20.0,
+      "uncageBeforeLaunch": true,
+      "breakLockMaxTime": 3.0,
+      "irSeeker": {
+        "rangeBand0": 5000.0,
+        "rangeBand2": 7500.0,
+        "rangeBand3": 7500.0,
+        "rangeBand7": 500.0,
+        "rangeMax": 10000.0,
+        "fov": 5.0,
+        "minAngleToSun": 10.0,
+        "lockAngleMax": 12.0,
+        "angleMax": 45.0,
+        "rateMax": 35.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 18,
+        "constantDesignationSourceTypeMask": 2
+      },
+      "guidanceAutopilot": {
+        "timeOut": 0.35,
+        "propNavMult": 4.0,
+        "reqAccelMax": 30.0,
+        "accelControlProp": 0.0015,
+        "accelControlIntg": 0.0496,
+        "accelControlDiff": 0.0005,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
+      },
+      "table0": {
+        "altitude": 1000.0,
+        "fighterMach": [
+          0.91,
+          0.74
+        ],
+        "targetMach": [
+          0.74,
+          0.58
+        ],
+        "rangeMin": [
+          300.0,
+          2600.0,
+          250.0,
+          1700.0
+        ],
+        "rangeMax": [
+          2300.0,
+          3600.0,
+          2500.0,
+          3800.0
+        ],
+        "timeMax": [
+          3.2,
+          5.1,
+          3.6,
+          5.4
+        ],
+        "rangeMaxAltDiff": [
+          500.0,
+          1000.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
+        ]
+      },
+      "table1": {
+        "altitude": 5000.0,
+        "fighterMach": [
+          0.95,
+          0.61
+        ],
+        "targetMach": [
+          0.61,
+          0.78
+        ],
+        "rangeMin": [
+          300.0,
+          2600.0,
+          250.0,
+          1700.0
+        ],
+        "rangeMax": [
+          3900.0,
+          5000.0,
+          4300.0,
+          5500.0
+        ],
+        "timeMax": [
+          5.5,
+          7.1,
+          6.1,
+          7.9
+        ],
+        "rangeMaxAltDiff": [
+          500.0,
+          1000.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.4
+        ]
+      },
+      "table2": {
+        "altitude": 10000.0,
+        "fighterMach": [
+          1.02,
+          0.84
+        ],
+        "targetMach": [
+          0.84,
+          0.65
+        ],
+        "rangeMin": [
+          400.0,
+          3200.0,
+          1600.0,
+          2400.0
+        ],
+        "rangeMax": [
+          6000.0,
+          8000.0,
+          7000.0,
+          9000.0
+        ],
+        "timeMax": [
+          8.6,
+          11.4,
+          10.0,
+          12.9
+        ],
+        "rangeMaxAltDiff": [
+          500.0,
+          800.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          1.1
+        ]
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -409,152 +555,6 @@
         "radius": 0.15,
         "offset": 0.9
       }
-    },
-    "guidance": {
-      "warmUpTime": 1.0,
-      "workTime": 20.0,
-      "uncageBeforeLaunch": true,
-      "breakLockMaxTime": 3.0,
-      "irSeeker": {
-        "rangeBand0": 5000.0,
-        "rangeBand2": 7500.0,
-        "rangeBand3": 7500.0,
-        "rangeBand7": 500.0,
-        "rangeMax": 10000.0,
-        "fov": 5.0,
-        "minAngleToSun": 10.0,
-        "lockAngleMax": 12.0,
-        "angleMax": 45.0,
-        "rateMax": 35.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 18,
-        "constantDesignationSourceTypeMask": 2
-      },
-      "guidanceAutopilot": {
-        "timeOut": 0.35,
-        "propNavMult": 4.0,
-        "reqAccelMax": 30.0,
-        "accelControlProp": 0.0015,
-        "accelControlIntg": 0.0496,
-        "accelControlDiff": 0.0005,
-        "baseIndSpeed": 1800.0,
-        "accelControlIntgLim": 1.0
-      },
-      "table0": {
-        "altitude": 1000.0,
-        "fighterMach": [
-          0.91,
-          0.74
-        ],
-        "targetMach": [
-          0.74,
-          0.58
-        ],
-        "rangeMin": [
-          300.0,
-          2600.0,
-          250.0,
-          1700.0
-        ],
-        "rangeMax": [
-          2300.0,
-          3600.0,
-          2500.0,
-          3800.0
-        ],
-        "timeMax": [
-          3.2,
-          5.1,
-          3.6,
-          5.4
-        ],
-        "rangeMaxAltDiff": [
-          500.0,
-          1000.0
-        ],
-        "timeMaxAltDiff": [
-          500.0,
-          1.4
-        ]
-      },
-      "table1": {
-        "altitude": 5000.0,
-        "fighterMach": [
-          0.95,
-          0.61
-        ],
-        "targetMach": [
-          0.61,
-          0.78
-        ],
-        "rangeMin": [
-          300.0,
-          2600.0,
-          250.0,
-          1700.0
-        ],
-        "rangeMax": [
-          3900.0,
-          5000.0,
-          4300.0,
-          5500.0
-        ],
-        "timeMax": [
-          5.5,
-          7.1,
-          6.1,
-          7.9
-        ],
-        "rangeMaxAltDiff": [
-          500.0,
-          1000.0
-        ],
-        "timeMaxAltDiff": [
-          500.0,
-          1.4
-        ]
-      },
-      "table2": {
-        "altitude": 10000.0,
-        "fighterMach": [
-          1.02,
-          0.84
-        ],
-        "targetMach": [
-          0.84,
-          0.65
-        ],
-        "rangeMin": [
-          400.0,
-          3200.0,
-          1600.0,
-          2400.0
-        ],
-        "rangeMax": [
-          6000.0,
-          8000.0,
-          7000.0,
-          9000.0
-        ],
-        "timeMax": [
-          8.6,
-          11.4,
-          10.0,
-          12.9
-        ],
-        "rangeMaxAltDiff": [
-          500.0,
-          800.0
-        ],
-        "timeMaxAltDiff": [
-          500.0,
-          1.1
-        ]
-      }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.2,
-      "finsAoaVer": 0.2
     },
     "proximityFuse": {
       "timeOut": 0.5,

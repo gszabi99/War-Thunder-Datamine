@@ -88,9 +88,9 @@ local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
 
     ::scene_msg_box("show_message_from_matching",
       null,
-      ::g_string.implode([colorize("warningTextColor",
+      "\n".join([colorize("warningTextColor",
         loc("NEW_CLIENT/EXIT_TITLE")),
-        loc("NEW_CLIENT/EXIT_MESSAGE")], "\n"),
+        loc("NEW_CLIENT/EXIT_MESSAGE")], true),
         [["ok", @() exitGame() ]],
         "ok",
         { cancel_fn = @() exitGame() })

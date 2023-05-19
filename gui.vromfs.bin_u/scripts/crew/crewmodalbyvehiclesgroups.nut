@@ -1,6 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -9,6 +11,7 @@ let { format } = require("string")
 let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 
 let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler {
   slotbarActions = ["aircraft", "changeUnitsGroup", "repair"]
@@ -40,7 +43,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler {
         else {
           sortData.append({
             unit = unit
-            locname = ::g_string.utf8ToLower(::getUnitName(unit))
+            locname = utf8ToLower(::getUnitName(unit))
           })
         }
       }
@@ -66,7 +69,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler {
     this.showSceneBtn("btn_recruit", !isRecrutedCrew)
     if (!isRecrutedCrew) {
       let rawCost = ::get_crew_slot_cost(this.getCurCountryName())
-      let cost = rawCost ? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
+      let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
       let text = "".concat(loc("shop/recruitCrew"),
         loc("ui/parentheses/space", { text = cost.getTextAccordingToBalance() }))
       setColoredDoubleTextToButton(this.scene, "btn_recruit", text)
@@ -76,7 +79,7 @@ let class CrewModalByVehiclesGroups extends ::gui_handlers.CrewModalHandler {
   function onRecruitCrew() {
     let country = this.getCurCountryName()
     let rawCost = ::get_crew_slot_cost(country)
-    let cost = rawCost ? ::Cost(rawCost.cost, rawCost.costGold) : ::Cost()
+    let cost = rawCost ? Cost(rawCost.cost, rawCost.costGold) : Cost()
     if (!::check_balance_msgBox(cost))
       return
 

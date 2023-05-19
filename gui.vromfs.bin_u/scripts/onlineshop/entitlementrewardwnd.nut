@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -34,7 +35,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function checkConfigsArray() {
     let unitNames = this.entitlementConfig?.aircraftGift ?? []
     if (unitNames.len())
-      this.unit = ::getAircraftByName(unitNames[0])
+      this.unit = getAircraftByName(unitNames[0])
 
     let decalsNames = this.entitlementConfig?.decalGift ?? []
     let attachablesNames = this.entitlementConfig?.attachableGift ?? []
@@ -63,7 +64,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return ""
 
     return "{0}{1}".subst(
-      ::LayersIcon.getIconData($"{this.chestDefaultImg}_opened"),
+      LayersIcon.getIconData($"{this.chestDefaultImg}_opened"),
       getEntitlementLayerIcons(this.entitlementConfig)
     )
   }

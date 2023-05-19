@@ -1,9 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -20,7 +22,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getSceneTplView() {
     return {
-      items = ::handyman.renderCached("%gui/items/item.tpl", { items = ::u.map(this.itemsList, @(i) i.getViewData()) })
+      items = handyman.renderCached("%gui/items/item.tpl", { items = u.map(this.itemsList, @(i) i.getViewData()) })
       columns = stdMath.calc_golden_ratio_columns(this.itemsList.len())
 
       align = this.align

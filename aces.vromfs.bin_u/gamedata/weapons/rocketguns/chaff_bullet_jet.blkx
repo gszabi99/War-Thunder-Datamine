@@ -1,6 +1,6 @@
 {
   "bullet": {
-    "mass": 0.09,
+    "mass": 0.1,
     "sound_path": "sounds/guns",
     "sound_pathStudio": "aircraft/weapon",
     "sound": "chaff_launcher_outside",
@@ -16,6 +16,30 @@
       "antiShipRocket": true
     },
     "rocket": {
+      "caliber": 0.026,
+      "length": 0.08,
+      "WdK": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "CxK": 100.0,
+      "CxAoA": 0.0,
+      "CyK": 0.0,
+      "distFromCmToStab": 0.0,
+      "mass": 0.01,
+      "massEnd": 0.01,
+      "timeFire": 0.0,
+      "force": 0.1,
+      "timeLife": 15.0,
+      "thrustDeviation": 0.01,
+      "useStartSpeed": true,
+      "startSpeed": 70.0,
+      "endSpeed": 0.0,
+      "maxDistance": 1000.0,
+      "minDistance": 200.0,
+      "maxDeltaAngle": 15.0,
+      "maxDeltaAngleVertical": 5.0,
       "normalizationPreset": "default",
       "ricochetPreset": "defaultExt",
       "secondaryShattersPreset": "ap",
@@ -24,36 +48,15 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "flare",
-      "caliber": 0.026,
-      "mass": 0.09,
-      "massEnd": 0.04,
-      "maxDeltaAngle": 15.0,
-      "maxDeltaAngleVertical": 5.0,
       "dragCx": 0.0001,
-      "length": 0.08,
-      "distFromCmToStab": 0.0,
-      "CxK": 90.0,
-      "CyK": 0.0,
-      "CxAoA": 0.0,
-      "WdK": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "precision": 10,
+      "precision": 30,
       "isChaff": true,
-      "force": 0.1,
-      "timeFire": 0.0,
-      "thrustDeviation": 0.01,
       "explosionEffect": "",
       "fireEffect": "",
       "smokeEffect": "misc_chaff",
       "hazeFx": "",
       "pylonFx": "",
       "waterExplosionEffect": "hit_39_58mm_water",
-      "timeLife": 15.0,
-      "maxDistance": 1000.0,
-      "minDistance": 200.0,
       "smokeShell": false,
       "smokeFx": "",
       "smokeShellRad": 10.0,
@@ -102,9 +105,6 @@
       "distanceFuse": false,
       "rendinstDamageRadius": 0.1,
       "advancedMissiles": false,
-      "useStartSpeed": true,
-      "startSpeed": 70.0,
-      "endSpeed": 0.0,
       "speedViscosity": 0.2,
       "price": 300.0,
       "stabilityRicochetModifier": {
@@ -128,7 +128,7 @@
         ]
       },
       "radarVisibility": {
-        "band0": 0.08
+        "band0": 0.2
       }
     }
   }

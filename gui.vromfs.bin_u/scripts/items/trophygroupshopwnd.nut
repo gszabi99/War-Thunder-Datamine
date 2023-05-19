@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -133,7 +134,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 
     for (local i = 0; i < this.trophy.numTotal; i++) {
       let isOpened = this.isTrophyPurchased(i)
-      view.trophyItems += ::handyman.renderCached(("%gui/items/item.tpl"), {
+      view.trophyItems += handyman.renderCached(("%gui/items/item.tpl"), {
         items = this.trophy.getViewData({
           showPrice = false,
           contentIcon = false,
@@ -146,7 +147,7 @@ let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
         }) })
     }
 
-    let data = ::handyman.renderCached(this.sceneTplName, view)
+    let data = handyman.renderCached(this.sceneTplName, view)
     this.guiScene.replaceContentFromText(this.scene.findObject("root-box"), data, data.len(), this)
     this.infoHandler = itemInfoHandler(this.scene.findObject("item_info_desc_place"))
   }

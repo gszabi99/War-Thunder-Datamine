@@ -1,6 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -62,7 +64,7 @@ local WwOperationRewardPopup = class extends ::gui_handlers.BaseGuiHandlerWT {
     let rewardsList = [{
       icon = "#ui/gameuiskin#medal_bonus"
       name = $"{loc("worldWar/endOperation/reward")}{loc("ui/colon")}"
-      earnedText = ::Cost((uLog?.wp ?? 0) - (uLog?.managerStats.wpManager ?? 0)).toStringWithParams({
+      earnedText = Cost((uLog?.wp ?? 0) - (uLog?.managerStats.wpManager ?? 0)).toStringWithParams({
         isWpAlwaysShown = true })
       last = !hasManager
     }]
@@ -85,7 +87,7 @@ local WwOperationRewardPopup = class extends ::gui_handlers.BaseGuiHandlerWT {
       rewardsList.append({
         icon = "#ui/gameuiskin#card_medal"
         name = $"{loc("worldWar/endOperation/manager_reward")}{loc("ui/colon")}"
-        earnedText = ::Cost(uLog?.managerStats.wpManager ?? 0).toStringWithParams({
+        earnedText = Cost(uLog?.managerStats.wpManager ?? 0).toStringWithParams({
           isWpAlwaysShown = true })
         last = true
       })

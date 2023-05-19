@@ -1,14 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { format } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { abs, fabs, pow } = require("math")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let { MAX_DEADZONE, MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getShortcutData } = require("%scripts/controls/shortcutsUtils.nut")
+let { stripTags } = require("%sqstd/string.nut")
 
 ::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys {
   wndType = handlerType.MODAL
@@ -26,7 +30,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   axisShortcuts = null
   dontCheckControlsDupes = null
   numAxisInList = 0
-  curDevice = null
   bindAxisNum = -1
 
   changedShortcuts = null
@@ -55,7 +58,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function reinitScreen() {
-    this.curDevice = ::joystick_get_default()
     this.setupAxisMode = this.axisItem.axisIndex
 
     let axis = this.curJoyParams.getAxis(this.setupAxisMode)
@@ -191,17 +193,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!checkObj(listObj))
       return
 
-    this.curDevice = ::joystick_get_default()
+    let curDevice = ::joystick_get_default()
     let curPreset = ::g_controls_manager.getCurPreset()
-    this.numAxisInList = this.curDevice ? curPreset.getNumAxes() : 0
+    this.numAxisInList = curDevice ? curPreset.getNumAxes() : 0
 
     local data = "option { id:t='axisopt_'; text:t='#joystick/axis_not_assigned' }\n"
     for (local i = 0; i < this.numAxisInList; i++)
       data += format("option { id:t='axisopt_%d'; text:t='%s' }\n",
-              i, ::g_string.stripTags(::remapAxisName(curPreset, i)))
+              i, stripTags(::remapAxisName(curPreset, i)))
 
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
-    listObj.setValue(this.curDevice ? (this.bindAxisNum + 1) : 0)
+    listObj.setValue(curDevice ? (this.bindAxisNum + 1) : 0)
 
     this.updateAxisListValue()
   }
@@ -244,7 +246,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function onAxisReset() {
     this.bindAxisNum = -1
 
-    ::set_controls_preset("")
     this.curJoyParams.resetAxis(this.setupAxisMode)
     let axis = this.curJoyParams.getAxis(this.setupAxisMode)
 
@@ -267,7 +268,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onAxisBindChange(obj) {
     this.bindAxisNum = obj.getValue() - 1
-    ::u.appendOnce(this.axisItem.modifiersId[""], this.changedShortcuts)
+    u.appendOnce(this.axisItem.modifiersId[""], this.changedShortcuts)
   }
 
   function onAxisRestore() {
@@ -282,18 +283,17 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (this.scene.getModalCounter() > 0)
       return
 
-    this.curDevice = ::joystick_get_default()
-
-    if (!this.curDevice)
+    let curDevice = ::joystick_get_default()
+    if (!curDevice)
       return
 
     local foundAxis = -1
     local deviation = 12000 //foundedAxis deviation, cant be lower than a initial value
-    let totalAxes = this.curDevice.getNumAxes()
+    let totalAxes = curDevice.getNumAxes()
 
     for (local i = 0; i < totalAxes; i++) {
-      let rawValues = this.getAxisRawValues(this.curDevice, i)
-      let rawPos = this.curDevice.getAxisPosRaw(i)
+      let rawValues = this.getAxisRawValues(curDevice, i)
+      let rawPos = curDevice.getAxisPosRaw(i)
       if (!rawValues.inited && rawPos != 0) {
         rawValues.def = rawPos //reinit
         rawValues.inited = true
@@ -325,7 +325,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     //!!FIX ME: Have to adjust the code below taking values from the table and only when they change
-    local val = this.curDevice.getAxisPosRaw(this.bindAxisNum) / 32000.0
+    local val = curDevice.getAxisPosRaw(this.bindAxisNum) / 32000.0
 
     let isInv = this.scene.findObject("invertAxis").getValue()
 
@@ -448,11 +448,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function doBindAxis() {
-    this.curDevice = ::joystick_get_default()
-    ::set_controls_preset(""); //custom mode
     this.curJoyParams.bindAxis(this.setupAxisMode, this.bindAxisNum)
     this.doApplyJoystick()
-    this.curJoyParams.applyParams(this.curDevice)
+    ::g_controls_manager.commitControls()
     this.guiScene.performDelayed(this, this.closeWnd)
   }
 
@@ -494,7 +492,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   function findButtons(devs, btns, curItem) {
     let res = []
 
-    if (::find_in_array(this.dontCheckControlsDupes, curItem.shortcutId) < 0)
+    if (u.find_in_array(this.dontCheckControlsDupes, curItem.shortcutId) < 0)
       foreach (idx, event in this.shortcuts)
         if (this.axisItem.checkGroup & this.shortcutItems[idx].checkGroup)
           foreach (button_index, button in event) {
@@ -506,7 +504,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
                 if ((button.dev[i] == devs[j]) && (button.btn[i] == btns[j]))
                   numEqual++
 
-            if (numEqual == btns.len() && ::find_in_array(this.dontCheckControlsDupes, this.shortcutItems[idx].id) < 0)
+            if (numEqual == btns.len() && u.find_in_array(this.dontCheckControlsDupes, this.shortcutItems[idx].id) < 0)
               res.append([idx, button_index])
           }
 
@@ -576,25 +574,26 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (event.len() > MAX_SHORTCUTS)
       event.remove(0)
 
-    ::set_controls_preset("") //custom mode
     this.onShortcutChange(item.shortcutId)
   }
 
-  function updateShortcutText(shortcutId) {
+  function updateShortcut(shortcutId) {
     if (!(shortcutId in this.shortcuts) ||
-      !isInArray(shortcutId, ::u.values(this.axisItem.modifiersId)))
+      !isInArray(shortcutId, u.values(this.axisItem.modifiersId)))
       return
 
     let itemId = this.getShortcutLocId(shortcutId, false)
-    let obj = this.scene.findObject("txt_sc_" + itemId)
+    let itemObj = this.scene.findObject($"sc_{itemId}")
 
-    if (checkObj(obj))
-      obj.setValue(::get_shortcut_text({ shortcuts = this.shortcuts, shortcutId = shortcutId }))
+    if (itemObj?.isValid()) {
+      let data = getShortcutData(this.shortcuts, shortcutId)
+      this.guiScene.replaceContentFromText(itemObj, data, data.len(), this)
+    }
   }
 
   function onShortcutChange(shortcutId) {
-    this.updateShortcutText(shortcutId)
-    ::u.appendOnce(shortcutId, this.changedShortcuts)
+    this.updateShortcut(shortcutId)
+    u.appendOnce(shortcutId, this.changedShortcuts)
   }
 
   function onButtonReset() {
@@ -617,8 +616,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function afterModalDestroy() {
-    ::broadcastEvent("ControlsChangedShortcuts", { changedShortcuts = this.changedShortcuts })
-    ::broadcastEvent("ControlsChangedAxes", { changedAxes = this.changedAxes })
+    broadcastEvent("ControlsChangedShortcuts", { changedShortcuts = this.changedShortcuts })
+    broadcastEvent("ControlsChangedAxes", { changedAxes = this.changedAxes })
   }
 
   function goBack() {

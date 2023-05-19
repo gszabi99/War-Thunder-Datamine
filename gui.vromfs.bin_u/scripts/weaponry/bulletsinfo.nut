@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let { format } = require("string")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { ceil, change_bit } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
@@ -18,9 +20,11 @@ let { getGuiOptionsMode, set_unit_option } = require("guiOptions")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { appendOnce } = u
 let { eachParam } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
+let { set_last_bullets } = require("unitCustomization")
+let { startsWith, slice } = require("%sqstd/string.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR          = "rocket_aircraft"
@@ -92,7 +96,7 @@ let function isWeaponTierAvailable(unit, tierNum) {
 }
 
 let function isFakeBullet(modName) {
-  return ::g_string.startsWith(modName, ::fakeBullets_prefix)
+  return startsWith(modName, ::fakeBullets_prefix)
 }
 
 let function setUnitLastBullets(unit, groupIndex, value) {
@@ -101,8 +105,8 @@ let function setUnitLastBullets(unit, groupIndex, value) {
   if (curBullets != saveValue) {
     set_unit_option(unit.name, ::USEROPT_BULLETS0 + groupIndex, saveValue)
     log($"Bullets Info: {unit.name}: bullet {groupIndex}: Set unit last bullets: change from '{curBullets}' to '{saveValue}'")
-    ::set_last_bullets(unit.name, groupIndex, saveValue)
-    ::broadcastEvent("UnitBulletsChanged", { unit = unit,
+    set_last_bullets(unit.name, groupIndex, saveValue)
+    broadcastEvent("UnitBulletsChanged", { unit = unit,
       groupIdx = groupIndex, bulletName = value })
   }
 }
@@ -199,7 +203,7 @@ let function getBulletsSetData(air, modifName, noModList = null) {
   foreach (wBlkName in wpList) {
     index++
     let wBlk = blkFromPath(wBlkName)
-    if (::u.isEmpty(wBlk) || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
+    if (u.isEmpty(wBlk) || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
       continue
     if (noModList) {
       local skip = false
@@ -239,7 +243,7 @@ let function getBulletsSetData(air, modifName, noModList = null) {
       && ((wBlk?.isBulletBelt != false || (wBlk?.bulletsCartridge ?? 0) > 1) && !wBlk?.useSingleIconForBullet)
 
     foreach (b in bulletsList) {
-      let paramsBlk = ::u.isDataBlock(b?.rocket) ? b.rocket : b
+      let paramsBlk = u.isDataBlock(b?.rocket) ? b.rocket : b
       let bulletAnimations = paramsBlk % "shellAnimation"
       if (!res)
         if (paramsBlk?.caliber) {
@@ -387,7 +391,7 @@ let function getActiveBulletsIntByWeaponsBlk(air, weaponsArr, weaponToFakeBullet
       }
 
       let wBlk = blkFromPath(wBlkName)
-      if (::u.isEmpty(wBlk))
+      if (u.isEmpty(wBlk))
         continue
 
       foreach (idx, modName in modsList)
@@ -436,7 +440,7 @@ let function findIdenticalWeapon(weapon, weaponList, modsList) {
     return weapon
 
   let weaponBlk = blkFromPath(weapon)
-  if (::u.isEmpty(weaponBlk))
+  if (u.isEmpty(weaponBlk))
     return null
 
   let cartridgeSize = weaponBlk?.bulletsCartridge || 1
@@ -483,7 +487,7 @@ let function getBulletsInfoForPrimaryGuns(air) {
 
         wpList[weapon.blk].total = weapon?.bullets ?? 0
         let wBlk = blkFromPath(weapon.blk)
-        if (::u.isEmpty(wBlk))
+        if (u.isEmpty(wBlk))
           continue
 
         wpList[weapon.blk].catridge = wBlk?.bulletsCartridge || 1
@@ -580,7 +584,7 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
   limitedName = false, obj = null, itemDescrRewriteFunc = null) {
   let res = { desc = "", delayed = false }
   if (type(air) == "string")
-    air = ::getAircraftByName(air)
+    air = getAircraftByName(air)
   if (!air)
     return res
 
@@ -754,7 +758,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     //only when genText
     items = []
   }
-  let air = ::getAircraftByName(airName)
+  let air = getAircraftByName(airName)
   if (!air || !("modifications" in air))
     return descr
 
@@ -795,7 +799,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
       continue;
 
     //get group index
-    local currentGroup = ::find_in_array(groups, groupName)
+    local currentGroup = u.find_in_array(groups, groupName)
     if (currentGroup == -1) {
       currentGroup = groups.len()
       groups.append(groupName)
@@ -869,7 +873,7 @@ let function getBulletGroupIndex(airName, bulletName) {
   if (!groupName || groupName == "")
     return -1
 
-  let unit = ::getAircraftByName(airName)
+  let unit = getAircraftByName(airName)
   if (unit == null)
     return -1
 
@@ -877,7 +881,7 @@ let function getBulletGroupIndex(airName, bulletName) {
     let bulletsList = getBulletsList(airName, groupIndex, {
       needCheckUnitPurchase = false, needOnlyAvailable = false })
 
-    if (::find_in_array(bulletsList.values, bulletName) >= 0) {
+    if (u.find_in_array(bulletsList.values, bulletName) >= 0) {
       group = groupIndex
       break
     }
@@ -969,7 +973,7 @@ let function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedA
   }) //only_bought=true
 
   let curModif = getSavedBullets(air.name, groupIndex)
-  local value = curModif ? ::find_in_array(res.saveValues, curModif) : -1
+  local value = curModif ? u.find_in_array(res.saveValues, curModif) : -1
 
   if (value < 0 || !res.items[value].enabled) {
     value = 0
@@ -989,7 +993,7 @@ let function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedA
 
 let function getFakeBulletsModByName(unit, modName) {
   if (isFakeBullet(modName)) {
-    let groupIdxStr = ::g_string.slice(
+    let groupIdxStr = slice(
       modName, ::fakeBullets_prefix.len(), ::fakeBullets_prefix.len() + 1)
     let groupIdx = ::to_integer_safe(groupIdxStr, -1)
     if (groupIdx < 0)

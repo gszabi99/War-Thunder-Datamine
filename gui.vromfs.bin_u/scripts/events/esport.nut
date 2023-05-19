@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -9,6 +10,7 @@ let { buildTimeStr,  buildDateStrShort, isInTimerangeByUtcStrings,
   getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { secondsToString } = require("%appGlobals/timeLoc.nut")
 let { secondsToDays } = require("%sqstd/time.nut")
+let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 
 const NEXT_DAYS = 14
 
@@ -102,13 +104,13 @@ let function getTourParams(tour) {
   }
   //Nearest coming session
   foreach (idx, inst in sList) {
-    trainingTime = (!::u.isEmpty(inst.train.start)
+    trainingTime = (!u.isEmpty(inst.train.start)
         ? getTimestampFromStringUtc(inst.train.start)
         : 0)
       - now
     isTraining = trainingTime > 0
     sTime = trainingTime > 0 ? trainingTime
-      : !::u.isEmpty(inst.battle.start) ? getTimestampFromStringUtc(inst.battle.start) - now
+      : !u.isEmpty(inst.battle.start) ? getTimestampFromStringUtc(inst.battle.start) - now
       : -1
     if (sTime >= 0) {
       res.sesTime = sTime
@@ -204,7 +206,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     // Need to reverse icon order to get shadow matched to mockup
     let idx = reverseCountries ? cNames.len() - 1 - i : i
     countries.append({
-      icon = ::get_country_icon($"{::g_string.trim(cNames[idx])}_round")
+      icon = ::get_country_icon($"{trim(cNames[idx])}_round")
       xPos = idx
       halfLen = 0.5 * cNames.len()
     })
@@ -223,7 +225,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     itemBgr =  $"#ui/images/tournament_{armyId}"
     tournamentName = loc($"tournament/{tour.id}")
     vehicleType = loc($"tournaments/battle_{armyId}")
-    rank = $"{::g_string.utf8ToUpper(loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
+    rank = $"{utf8ToUpper(loc("shop/age"))} {::get_roman_numeral(tour.rank)}"
     tournamentType = $" {loc("country/VS")} ".join(teamSizes)
     divisionImg = "#ui/gameuiskin#icon_progress_bar_stage_07" //!!!FIX IMG PATH
     battleDate = getBattleDateStr(tour)
@@ -240,7 +242,7 @@ let function getTourCommonViewParams(tour, tourParams, reverseCountries = false)
     curStartTime = sesIdx < 0 ? null
       : getSessionTimeIntervalStr(tour.scheduler[day][sesIdx].battle)
     overlayTextColor = getOverlayTextColor(isSesActive)
-    lbBtnTxt = ::g_string.utf8ToUpper(loc("tournaments/leaderboard"))
+    lbBtnTxt = utf8ToUpper(loc("tournaments/leaderboard"))
   }
 }
 

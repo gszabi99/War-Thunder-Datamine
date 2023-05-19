@@ -153,6 +153,14 @@
             "attack_type": "hold_fire",
             "effShootingRate": 0.2,
             "targetableByAi": false
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player_wing",
+            "bombDelayExplosion": 1.2
           }
         ],
         "missionDestroyArea": [
@@ -186,6 +194,9 @@
         },
         "moAddMissionObjective": {
           "target": "dlc_surgical_strike_main"
+        },
+        "comment": {
+          "value": "delay for bombs"
         }
       },
       "else_actions": {}
@@ -2435,7 +2446,7 @@
       ],
       "unit_class": "il-2m",
       "closed_waypoints": false,
-      "weapons": "IL2M_fab100_rs132",
+      "weapons": "il_2m_fab250",
       "bullets0": "",
       "bullets1": "",
       "bullets2": "",

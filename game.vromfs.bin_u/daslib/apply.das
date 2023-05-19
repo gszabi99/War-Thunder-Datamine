@@ -21,7 +21,7 @@ require daslib/macro_boost
 [macro_function]
 def generateApplyVisitStruct ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
     assert(stype.baseType==Type tStructure)
-    assert(stype.dim.length==0)
+    assert(stype.dim |> length==0)
     var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags isExplicit | TypeDeclFlags explicitConst
     var inscope blkList : array<ExpressionPtr>
@@ -40,7 +40,7 @@ def generateApplyVisitStruct ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
             move_new(argT.firstType) <| new [[TypeDecl() baseType=Type tVoid,at=at]]
             argT.flags = TypeDeclFlags constant
             func_args |> emplace_new <| new [[Variable() name := "__arg_{fld.name}", _type <- argT]]
-    var inscope fn <- qmacro_function(fnname) <| $ ( _`_self:$t(selfT); $a(func_args) )
+    var inscope fn <- qmacro_function(fnname) <| $ [unused_argument( _`_self)] ( _`_self:$t(selfT); $a(func_args) )
         $b(blkList)
     fn.flags |= FunctionFlags privateFunction
     compiling_module() |> add_function(fn)
@@ -54,7 +54,7 @@ def generateApplyVisitStruct ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
 [macro_function]
 def generateApplyVisitTuple ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
     assert(stype.baseType==Type tTuple)
-    assert(stype.dim.length==0)
+    assert(stype.dim |> length==0)
     var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags isExplicit | TypeDeclFlags explicitConst
     var inscope blkList : array<ExpressionPtr>
@@ -74,7 +74,7 @@ def generateApplyVisitTuple ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
             move_new(argT.firstType) <| new [[TypeDecl() baseType=Type tVoid,at=at]]
             argT.flags = TypeDeclFlags constant
             func_args |> emplace_new <| new [[Variable() name := "__arg_{fldname}", _type <- argT]]
-    var inscope fn <- qmacro_function(fnname) <| $ ( _`_self:$t(selfT); $a(func_args) )
+    var inscope fn <- qmacro_function(fnname) <| $ [unused_argument( _`_self)] ( _`_self:$t(selfT); $a(func_args) )
         $b(blkList)
     fn.flags |= FunctionFlags privateFunction
     compiling_module() |> add_function(fn)
@@ -92,7 +92,7 @@ def generateApplyVisitTuple ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
 [macro_function]
 def generateApplyVisitVariant ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
     assert(stype.baseType==Type tVariant)
-    assert(stype.dim.length==0)
+    assert(stype.dim |> length==0)
     var inscope selfT <- clone_type(stype)
     selfT.flags |= TypeDeclFlags isExplicit | TypeDeclFlags explicitConst
     var inscope blkList : array<ExpressionPtr>
@@ -116,7 +116,7 @@ def generateApplyVisitVariant ( stype:TypeDeclPtr; fnname:string; at:LineInfo )
             move_new(argT.firstType) <| new [[TypeDecl() baseType=Type tVoid,at=at]]
             argT.flags = TypeDeclFlags constant
             func_args |> emplace_new <| new [[Variable() name:="__arg_{fldname}", _type <- argT]]
-    var inscope fn <- qmacro_function(fnname) <| $ ( _`_self:$t(selfT); $a(func_args) )
+    var inscope fn <- qmacro_function(fnname) <| $ [unused_argument( _`_self)] ( _`_self:$t(selfT); $a(func_args) )
         $b(blkList)
     fn.flags |= FunctionFlags privateFunction
     compiling_module() |> add_function(fn)
@@ -134,10 +134,10 @@ class ApplyMacro : AstCallMacro
     //!
     //! Would print x = 1.0 y = 2.0
     def override visit ( prog:ProgramPtr; mod:Module?; var expr:smart_ptr<ExprCallMacro> ) : ExpressionPtr
-        macro_verify(expr.arguments.length==2,prog,expr.at,"expecting apply(value, block)")
+        macro_verify(expr.arguments |> length==2,prog,expr.at,"expecting apply(value, block)")
         if expr.arguments[0]._type!=null    // need value inferred
             var inscope argT := expr.arguments[0]._type
-            macro_verify(argT.dim.length==0,prog,expr.at,"can't apply to dim")
+            macro_verify(argT.dim |> length==0,prog,expr.at,"can't apply to dim")
             macro_verify(argT.baseType==Type tStructure || argT.baseType==Type tTuple || argT.baseType==Type tVariant,
                 prog,expr.at,"can only apply to {describe(expr.arguments[0]._type)}")
             macro_verify(expr.arguments[1] is ExprMakeBlock,prog,expr.at,"expecting make block, i.e. $(..)")
@@ -145,7 +145,7 @@ class ApplyMacro : AstCallMacro
             var nfields : int
             if argT.baseType == Type tStructure
                 callName = "apply`struct`{argT.structType.name}`{expr.at.line}"
-                nfields = argT.structType.fields.length
+                nfields = argT.structType.fields |> length
                 generateApplyVisitStruct(expr.arguments[0]._type,callName,expr.at)
             elif argT.baseType == Type tTuple
                 callName = "apply`tuple`{intptr(expr)}`{expr.at.line}"

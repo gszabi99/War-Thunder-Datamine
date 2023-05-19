@@ -4,6 +4,9 @@
 #explicit-this
 
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { getUnlockTypeText } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -85,7 +88,7 @@ register_command(
     foreach (unlock in this.unlocks) {
       let unlockType = ::g_unlock_view.getUnlockType(unlock)
       if (unlockType == UNLOCKABLE_AIRCRAFT)
-        units.append(::getAircraftByName(unlock.id))
+        units.append(getAircraftByName(unlock.id))
       else if (unlockType == UNLOCKABLE_DECAL
         || unlockType == UNLOCKABLE_SKIN
         || unlockType == UNLOCKABLE_ATTACHABLE)
@@ -227,8 +230,8 @@ register_command(
     if (layersData == "")
       return ""
 
-    let layerCfg = ::LayersIcon.findLayerCfg("item_place_container")
-    let res = ::LayersIcon.genDataFromLayer(layerCfg, layersData)
+    let layerCfg = LayersIcon.findLayerCfg("item_place_container")
+    let res = LayersIcon.genDataFromLayer(layerCfg, layersData)
     return res
   }
 
@@ -266,10 +269,10 @@ register_command(
   onPreviewDecorator = @() null
 
   function getImageLayer(unlock, config) {
-    let imageLayer = ::LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
+    let imageLayer = LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
     let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
 
-    return ::handyman.renderCached(("%gui/items/item.tpl"), { items = [tooltipConfig.__update({
+    return handyman.renderCached(("%gui/items/item.tpl"), { items = [tooltipConfig.__update({
       layered_image = imageLayer,
       hasFocusBorder = true })] })
   }

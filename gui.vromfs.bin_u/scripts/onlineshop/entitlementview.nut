@@ -1,8 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -114,7 +116,7 @@ let function getUnitActionButtonsView(unit) {
 }
 
 let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).map(function(unitName) {
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return null
 
@@ -160,42 +162,42 @@ local function getEntitlementView(entitlement, params = {}) {
   view.list.extend(getDecoratorGiftView(entitlement?.attachableGift, ::g_decorator_type.ATTACHABLES, params))
   view.list.extend(getDecoratorGiftView(entitlement?.skinGift, ::g_decorator_type.SKINS, params))
   view.list.extend(getUnitsGiftView(entitlement, params))
-  return ::handyman.renderCached(template, view)
+  return handyman.renderCached(template, view)
 }
 
 let generateLayers = function(layersArray) {
-  let offsetByItem = ::LayersIcon.getOffset(layersArray.len(), MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET)
+  let offsetByItem = LayersIcon.getOffset(layersArray.len(), MIN_ITEMS_OFFSET, MAX_ITEMS_OFFSET)
   let offsetAllItems = (layersArray.len() - 1) / 2.0
   let res = layersArray.map(function(imageLayer, idx) {
-    return ::LayersIcon.genDataFromLayer(
+    return LayersIcon.genDataFromLayer(
       { x = $"({offsetByItem} * {idx - offsetAllItems})@itemWidth", w = "1@itemWidth", h = "1@itemWidth" },
-      ::LayersIcon.genDataFromLayer(
-        ::LayersIcon.findLayerCfg(singleItemIconLayer),
+      LayersIcon.genDataFromLayer(
+        LayersIcon.findLayerCfg(singleItemIconLayer),
         imageLayer
       )
     )
   })
-  return ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg(itemContainerLayer), "".join(res))
+  return LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg(itemContainerLayer), "".join(res))
 }
 
 let getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(function(giftId) {
   let decorator = getDecorator(giftId, decoratorType)
-  let cfg = clone ::LayersIcon.findLayerCfg("item_decal")
+  let cfg = clone LayersIcon.findLayerCfg("item_decal")
   cfg.img <- decoratorType.getImage(decorator)
 
   local image = ""
   if (cfg.img != "")
-    image = ::LayersIcon.genDataFromLayer(cfg)
+    image = LayersIcon.genDataFromLayer(cfg)
 
   if (image == "")
-    image = ::LayersIcon.getIconData("reward_" + decoratorType.resourceType)
+    image = LayersIcon.getIconData("reward_" + decoratorType.resourceType)
 
   return image
 })
 
 let getUnitLayeredIcon = @(unitArray) (unitArray ?? []).map(function(unitId) {
-  let unitType = ::getUnitTypeTextByUnit(::getAircraftByName(unitId)).tolower()
-  return ::LayersIcon.getIconData($"reward_unit_{unitType}")
+  let unitType = ::getUnitTypeTextByUnit(getAircraftByName(unitId)).tolower()
+  return LayersIcon.getIconData($"reward_unit_{unitType}")
 })
 
 local function getEntitlementLayerIcons(entitlement) {
@@ -217,7 +219,7 @@ local function getEntitlementLayerIcons(entitlement) {
   )
   layerStyles.extend((entitlement?.unlockGift ?? []).map(@(_unlockId) "reward_unlock"))
 
-  let layersArray = layerStyles.map(@(style) ::LayersIcon.getIconData(style))
+  let layersArray = layerStyles.map(@(style) LayersIcon.getIconData(style))
 
   layersArray.extend(getDecoratorLayeredIcon(entitlement?.decalGift, ::g_decorator_type.DECALS))
   layersArray.extend(getDecoratorLayeredIcon(entitlement?.attachableGift, ::g_decorator_type.ATTACHABLES))

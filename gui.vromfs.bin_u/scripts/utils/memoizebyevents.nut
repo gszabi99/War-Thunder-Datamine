@@ -1,8 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+
+let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 /**
  * Works as standard memoize() func, but clears cache on given subscriptions.broadcast events.
@@ -42,9 +45,9 @@ let function memoizeByEvents(func, hashFunc = null, clearOnEvents = []) {
 
   clearOnEvents = [].extend(clearOnEvents)
   foreach (event in alwaysClearOnEvents)
-    ::u.appendOnce(event, clearOnEvents)
+    u.appendOnce(event, clearOnEvents)
   foreach (event in clearOnEvents)
-    ::add_event_listener(event, onEventCb, this, ::g_listener_priority.MEMOIZE_VALIDATION)
+    add_event_listener(event, onEventCb, this, ::g_listener_priority.MEMOIZE_VALIDATION)
 
   if (hashFunc != null) {
     return function memoizedFuncHash(...) {

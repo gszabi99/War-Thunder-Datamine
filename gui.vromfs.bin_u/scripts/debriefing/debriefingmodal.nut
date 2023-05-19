@@ -1,9 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+
+let { Cost } = require("%scripts/money.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let DataBlock = require("DataBlock")
 let { format, split_by_chars } = require("string")
@@ -52,11 +58,12 @@ let { is_replay_turned_on, is_replay_saved, is_replay_present,
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { is_benchmark_game_mode, get_game_mode, get_cur_game_mode_name
 } = require("mission")
-let { select_mission_full } = require("guiMission")
+let { select_mission_full, stat_get_benchmark } = require("guiMission")
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { dynamicGetLayout, dynamicGetList } = require("dynamicMission")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { stripTags, toUpper } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
@@ -125,7 +132,7 @@ let statTooltipColumnParamByType = {
 
 ::gui_start_debriefing <- function gui_start_debriefing() {
   if (needLogoutAfterSession.value) {
-    ::destroy_session_scripted()
+    ::destroy_session_scripted("on needLogoutAfterSession from gui_start_debriefing")
     //need delay after destroy session before is_multiplayer become false
     ::get_gui_scene().performDelayed(getroottable(), startLogout)
     return
@@ -146,7 +153,7 @@ let statTooltipColumnParamByType = {
 
   if (is_benchmark_game_mode()) {
     let title = ::loc_current_mission_name()
-    let benchmark_data = ::stat_get_benchmark()
+    let benchmark_data = stat_get_benchmark()
     ::gui_start_mainmenu()
     ::gui_start_modal_wnd(::gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
     return
@@ -381,7 +388,7 @@ let statTooltipColumnParamByType = {
       if (this.gm == GM_DYNAMIC) {
         ::save_profile(true)
         if (getDynamicResult() > MISSION_STATUS_RUNNING)
-          ::destroy_session_scripted()
+          ::destroy_session_scripted("on iniScreen debriefing on finish dynCampaign")
         else
           ::g_squad_manager.setReadyFlag(true)
       }
@@ -486,7 +493,7 @@ let statTooltipColumnParamByType = {
     iconStyle = ::trophyReward.getWPIcon(wpBattleTrophy)
     title = loc("debriefing/BattleTrophy"),
     desc = loc("debriefing/BattleTrophy/desc"),
-    rewardText = ::Cost(wpBattleTrophy).toStringWithParams({ isWpAlwaysShown = true }),
+    rewardText = Cost(wpBattleTrophy).toStringWithParams({ isWpAlwaysShown = true }),
   })
 
   function getAwardsList(filter) {
@@ -598,20 +605,20 @@ let statTooltipColumnParamByType = {
     if (canSuggestPrem) {
       let currencies = []
       if (premTeaser.exp > 0)
-        currencies.append(::Cost().setRp(premTeaser.exp).tostring())
+        currencies.append(Cost().setRp(premTeaser.exp).tostring())
       if (premTeaser.wp  > 0)
-        currencies.append(::Cost(premTeaser.wp).tostring())
-      tooltip = loc("debriefing/PremiumNotEarned") + loc("ui/colon") + "\n" + ::g_string.implode(currencies, loc("ui/comma"))
+        currencies.append(Cost(premTeaser.wp).tostring())
+      tooltip = loc("debriefing/PremiumNotEarned") + loc("ui/colon") + "\n" + loc("ui/comma").join(currencies, true)
     }
 
     this.totalObj = this.scene.findObject("wnd_total")
-    let markup = ::handyman.renderCached("%gui/debriefing/debriefingTotals.tpl", {
+    let markup = handyman.renderCached("%gui/debriefing/debriefingTotals.tpl", {
       showTeaser = canSuggestPrem && premTeaser.isPositive
       canSuggestPrem = canSuggestPrem
-      exp = ::Cost().setRp(this.totalCurValues["exp"]).tostring()
-      wp  = ::Cost(this.totalCurValues["wp"]).tostring()
-      expTeaser = ::Cost().setRp(premTeaser.exp).toStringWithParams({ isColored = false })
-      wpTeaser  = ::Cost(premTeaser.wp).toStringWithParams({ isColored = false })
+      exp = Cost().setRp(this.totalCurValues["exp"]).tostring()
+      wp  = Cost(this.totalCurValues["wp"]).tostring()
+      expTeaser = Cost().setRp(premTeaser.exp).toStringWithParams({ isColored = false })
+      wpTeaser  = Cost(premTeaser.wp).toStringWithParams({ isColored = false })
       teaserTooltip = tooltip
     })
     this.guiScene.replaceContentFromText(this.totalObj, markup, markup.len(), this)
@@ -830,7 +837,7 @@ let statTooltipColumnParamByType = {
       stage = stage
     }
 
-    let data = ::handyman.renderCached("%gui/debriefing/pveReward.tpl", view)
+    let data = handyman.renderCached("%gui/debriefing/pveReward.tpl", view)
     this.guiScene.replaceContentFromText(pveTrophyPlaceObj, data, data.len(), this)
   }
 
@@ -870,11 +877,11 @@ let statTooltipColumnParamByType = {
     }
 
     let layerId = "item_place_container"
-    local layerCfg = ::LayersIcon.findLayerCfg(trophyItem.iconStyle + "_" + layerId)
+    local layerCfg = LayersIcon.findLayerCfg(trophyItem.iconStyle + "_" + layerId)
     if (!layerCfg)
-      layerCfg = ::LayersIcon.findLayerCfg(layerId)
+      layerCfg = LayersIcon.findLayerCfg(layerId)
 
-    let data = ::LayersIcon.genDataFromLayer(layerCfg, layersData)
+    let data = LayersIcon.genDataFromLayer(layerCfg, layersData)
     this.guiScene.replaceContentFromText(trophyContentPlaceObj, data, data.len(), this)
   }
 
@@ -1064,16 +1071,16 @@ let statTooltipColumnParamByType = {
         if (!bonusExp && !bonusWp)
           continue
         bonusesTotal.append(loc(getTblValue(bonusType, bonusNames, "")) + loc("ui/colon") +
-          ::Cost(bonusWp, 0, bonusExp).tostring())
+          Cost(bonusWp, 0, bonusExp).tostring())
       }
-      if (!::u.isEmpty(bonusesTotal))
-        textArray.append(::g_string.implode(bonusesTotal, "\n"))
+      if (!u.isEmpty(bonusesTotal))
+        textArray.append("\n".join(bonusesTotal, true))
 
       let boostersText = this.getBoostersText()
-      if (!::u.isEmpty(boostersText))
+      if (!u.isEmpty(boostersText))
         textArray.append(boostersText)
 
-      if (::u.isEmpty(textArray)) //no bonus
+      if (u.isEmpty(textArray)) //no bonus
         return this.switchState()
 
       if (!isDebriefingResultFull() &&
@@ -1090,7 +1097,7 @@ let statTooltipColumnParamByType = {
       if (checkObj(objTarget)) {
         objTarget["background-image"] = havePremium.value ?
           "#ui/gameuiskin#medal_premium" : "#ui/gameuiskin#medal_bonus"
-        objTarget.tooltip = ::g_string.implode(textArray, "\n\n")
+        objTarget.tooltip = "\n\n".join(textArray, true)
       }
 
       if (!this.skipAnim) {
@@ -1216,7 +1223,7 @@ let statTooltipColumnParamByType = {
         rowObj.title = loc(row.tooltip)
 
       local rowProps = getTblValue("rowProps", row, null)
-      if (::u.isFunction(rowProps))
+      if (u.isFunction(rowProps))
         rowProps = rowProps()
 
       if (rowProps != null)
@@ -1272,17 +1279,17 @@ let statTooltipColumnParamByType = {
   function getStatValue(row, name, tgtName = null) {
     if (!tgtName)
       tgtName = "base"
-    return !::u.isTable(row[name]) ? row[name] : getTblValue(tgtName, row[name], null)
+    return !u.isTable(row[name]) ? row[name] : getTblValue(tgtName, row[name], null)
   }
 
   function getTextByType(value, paramType, showEmpty = false) {
     if (!showEmpty && (value == 0 || (value == 1 && paramType == "mul")))
       return ""
     switch (paramType) {
-      case "wp":  return ::Cost(value).toStringWithParams({ isWpAlwaysShown = true })
-      case "gold": return ::Cost(0, value).toStringWithParams({ isGoldAlwaysShown = true })
-      case "exp": return ::Cost().setRp(value).tostring()
-      case "frp": return ::Cost().setFrp(value).tostring()
+      case "wp":  return Cost(value).toStringWithParams({ isWpAlwaysShown = true })
+      case "gold": return Cost(0, value).toStringWithParams({ isGoldAlwaysShown = true })
+      case "exp": return Cost().setRp(value).tostring()
+      case "frp": return Cost().setFrp(value).tostring()
       case "num": return value.tostring()
       case "sec": return value + loc("debriefing/timeSec")
       case "mul": return "x" + value
@@ -1295,7 +1302,7 @@ let statTooltipColumnParamByType = {
   }
 
   function updateTotal(dt) {
-    if (!this.isInited && (!this.totalCurValues || ::u.isEqual(this.totalCurValues, this.totalTarValues)))
+    if (!this.isInited && (!this.totalCurValues || u.isEqual(this.totalCurValues, this.totalTarValues)))
       return
 
     if (this.isInited) {
@@ -1306,7 +1313,7 @@ let statTooltipColumnParamByType = {
       }
     }
 
-    let cost = ::Cost()
+    let cost = Cost()
     foreach (p in [ "exp", "wp", "expTeaser", "wpTeaser" ])
       if (this.totalCurValues[p] != this.totalTarValues[p]) {
         this.totalCurValues[p] = this.skipAnim ? this.totalTarValues[p] :
@@ -1334,7 +1341,7 @@ let statTooltipColumnParamByType = {
 
     let usedUnitsList = []
     foreach (unitId, unitData in this.debriefingResult.exp.aircrafts) {
-      let unit = ::getAircraftByName(unitId)
+      let unit = getAircraftByName(unitId)
       if (unit && this.isShowUnitInModsResearch(unitId))
         usedUnitsList.append({ unit = unit, unitData = unitData })
     }
@@ -1380,10 +1387,10 @@ let statTooltipColumnParamByType = {
       let expInvestUnitTotal = this.getExpInvestUnitTotal()
       if (expInvestUnitTotal > 0) {
         let msg = format(loc("debriefing/all_units_researched"),
-          ::Cost().setRp(expInvestUnitTotal).tostring())
+          Cost().setRp(expInvestUnitTotal).tostring())
         let noUnitObj = this.scene.findObject("no_air_text")
         if (checkObj(noUnitObj))
-          noUnitObj.setValue(::g_string.stripTags(msg))
+          noUnitObj.setValue(stripTags(msg))
       }
     }
   }
@@ -1415,7 +1422,7 @@ let statTooltipColumnParamByType = {
       let modName = getTblValue("investModuleName", unitData, "")
       if (modName == "")
         continue
-      let unit = ::getAircraftByName(unitId)
+      let unit = getAircraftByName(unitId)
       let mod = unit && getModificationByName(unit, modName)
       if (unit && mod && isModResearched(unit, mod))
         return true
@@ -1432,7 +1439,7 @@ let statTooltipColumnParamByType = {
 
   function getResearchUnitInfo(unitTypeName) {
     let unitId = this.debriefingResult?.exp["investUnitName" + unitTypeName] ?? ""
-    let unit = ::getAircraftByName(unitId)
+    let unit = getAircraftByName(unitId)
     if (!unit)
       return null
     local expInvest = this.debriefingResult?.exp["expInvestUnit" + unitTypeName] ?? 0
@@ -1496,7 +1503,7 @@ let statTooltipColumnParamByType = {
       isTooltipByHold = ::show_console_buttons
     }
 
-    let markup = ::handyman.renderCached("%gui/debriefing/modificationProgress.tpl", view)
+    let markup = handyman.renderCached("%gui/debriefing/modificationProgress.tpl", view)
     this.guiScene.appendWithBlk(holderObj, markup, this)
     let obj = holderObj.findObject(unitId)
 
@@ -1508,7 +1515,7 @@ let statTooltipColumnParamByType = {
       local msg = "debriefing/but_all_mods_researched"
       if (findAnyNotResearchedMod(unit))
         msg = "debriefing/but_not_any_research_active"
-      msg = format(loc(msg), ::Cost().setRp(this.getModExp(airData) || airData.expTotal).tostring())
+      msg = format(loc(msg), Cost().setRp(this.getModExp(airData) || airData.expTotal).tostring())
       obj.findObject("no_mod_text").setValue(msg)
     }
   }
@@ -1531,7 +1538,7 @@ let statTooltipColumnParamByType = {
     let airData = this.debriefingResult?.exp.aircrafts[unitId]
     if (!airData)
       return
-    let unit = ::getAircraftByName(unitId)
+    let unit = getAircraftByName(unitId)
     let mod = this.getResearchModFromAirData(unit, airData)
     if (!mod || (modId != "" && modId != mod.name))
       return
@@ -1678,7 +1685,7 @@ let statTooltipColumnParamByType = {
       tooltipComment = tRow.tooltipComment ? tRow.tooltipComment() : null
     }
 
-    let markup = ::handyman.renderCached("%gui/debriefing/statRowTooltip.tpl", tooltipView)
+    let markup = handyman.renderCached("%gui/debriefing/statRowTooltip.tpl", tooltipView)
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 
@@ -1699,7 +1706,7 @@ let statTooltipColumnParamByType = {
           continue
         let currencySourcesView = []
         foreach (source in [ "noBonus", "premAcc", "premMod", "booster" ]) {
-          let val = rowTbl?[$"{source}{::g_string.toUpper(currency, 1)}"] ?? 0
+          let val = rowTbl?[$"{source}{toUpper(currency, 1)}"] ?? 0
           if (val <= 0)
             continue
           local extra = ""
@@ -1735,11 +1742,11 @@ let statTooltipColumnParamByType = {
     let showColumns = { time = false, value = false, reward = false, info = false }
     foreach (rowView in view)
       foreach (col, _isShow in showColumns)
-        if (!::u.isEmpty(rowView[col]))
+        if (!u.isEmpty(rowView[col]))
           showColumns[col] = true
     foreach (rowView in view)
       foreach (col, isShow in showColumns)
-        if (isShow && ::u.isEmpty(rowView[col]))
+        if (isShow && u.isEmpty(rowView[col]))
           rowView[col] = ::nbsp
 
     let headerRow = { name = colorize("fadedTextColor", loc("options/unit")) }
@@ -1757,7 +1764,7 @@ let statTooltipColumnParamByType = {
   }
 
   function getDebriefingRowById(id) {
-    return ::u.search(debriefingRows, @(row) row.id == id)
+    return u.search(debriefingRows, @(row) row.id == id)
   }
 
   function getPremTeaserInfo() {
@@ -1829,7 +1836,7 @@ let statTooltipColumnParamByType = {
 
     let ent = getEntitlementConfig(entName)
     let entNameText = getEntitlementName(ent)
-    let price = ::Cost(0, ent?.goldCost ?? 0)
+    let price = Cost(0, ent?.goldCost ?? 0)
     let cb = Callback(this.onBuyPremiumAward, this)
 
     let msgText = format(loc("msgbox/EarnNow"), entNameText, this.getCurAwardText(), price.getTextAccordingToBalance())
@@ -2222,7 +2229,7 @@ let statTooltipColumnParamByType = {
     foreach (config in configsArray)
       currentBattleTasksConfigs[config.id] <- config
 
-    if (!::u.isEqual(currentBattleTasksConfigs, this.battleTasksConfigs)) {
+    if (!u.isEqual(currentBattleTasksConfigs, this.battleTasksConfigs)) {
       this.shouldBattleTasksListUpdate = true
       this.battleTasksConfigs = currentBattleTasksConfigs
       this.updateBattleTasksList()
@@ -2251,7 +2258,7 @@ let statTooltipColumnParamByType = {
     foreach (config in this.battleTasksConfigs) {
       battleTasksArray.append(::g_battle_tasks.generateItemView(config, { showUnlockImage = false }))
     }
-    let data = ::handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", { items = battleTasksArray })
+    let data = handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", { items = battleTasksArray })
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     if (battleTasksArray.len() > 0)
@@ -2279,7 +2286,7 @@ let statTooltipColumnParamByType = {
     let isDone = ::g_battle_tasks.isTaskDone(task)
     let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
 
-    let showRerollButton = isBattleTask && !isDone && !canGetReward && !::u.isEmpty(::g_battle_tasks.rerollCost)
+    let showRerollButton = isBattleTask && !isDone && !canGetReward && !u.isEmpty(::g_battle_tasks.rerollCost)
     ::showBtn("btn_reroll", showRerollButton, taskObj)
     ::showBtn("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
@@ -2389,7 +2396,7 @@ let statTooltipColumnParamByType = {
 
     let taskCallback = Callback(function() {
       let view = wwBattleResults.getView()
-      let markup = ::handyman.renderCached("%gui/worldWar/battleResults.tpl", view)
+      let markup = handyman.renderCached("%gui/worldWar/battleResults.tpl", view)
       let contentObj = this.scene.findObject("ww_casualties_div")
       if (checkObj(contentObj))
         this.guiScene.replaceContentFromText(contentObj, markup, markup.len(), this)
@@ -2419,7 +2426,7 @@ let statTooltipColumnParamByType = {
           tabValue = idx
       }
     }
-    let data = ::handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
     this.guiScene.replaceContentFromText(tabsObj, data, data.len(), this)
     tabsObj.setValue(tabValue)
     this.onChangeTab(tabsObj)
@@ -2439,14 +2446,14 @@ let statTooltipColumnParamByType = {
     foreach (config in this.battleTasksConfigs) {
       battleTasksArray.append(::g_battle_tasks.generateItemView(config, { isShortDescription = true }))
     }
-    if (::u.isEmpty(battleTasksArray))
+    if (u.isEmpty(battleTasksArray))
       battleTasksArray.append(::g_battle_tasks.generateItemView({
         id = "current_battle_tasks"
         text = "#mainmenu/btnBattleTasks"
         shouldRefreshTimer = true
         }, { isShortDescription = true }))
 
-    let data = ::handyman.renderCached("%gui/unlocks/battleTasksShortItem.tpl", { items = battleTasksArray })
+    let data = handyman.renderCached("%gui/unlocks/battleTasksShortItem.tpl", { items = battleTasksArray })
     this.guiScene.replaceContentFromText(buttonObj, data, data.len(), this)
     ::g_battle_tasks.setUpdateTimer(null, buttonObj)
   }
@@ -2469,7 +2476,7 @@ let statTooltipColumnParamByType = {
     return this.is_show_awards_list() || this.is_show_inventory_gift()
   }
   function is_show_awards_list() {
-    return !::u.isEmpty(this.awardsList)
+    return !u.isEmpty(this.awardsList)
   }
   function is_show_inventory_gift() {
     return this.giftItems != null
@@ -2711,7 +2718,7 @@ let statTooltipColumnParamByType = {
     }
     else {
       log("no mission_settings.layout, destroy session")
-      ::destroy_session_scripted()
+      ::destroy_session_scripted("on unable to recalc dynamic layout")
     }
   }
 
@@ -2721,7 +2728,7 @@ let statTooltipColumnParamByType = {
 
   function applyReturn() {
     if (::go_debriefing_next_func != ::gui_start_dynamic_summary)
-      ::destroy_session_scripted()
+      ::destroy_session_scripted("on leave debriefing")
 
     if (this.is_show_my_stats())
       setNeedShowRate(this.debriefingResult, this.getMyPlace())
@@ -2868,8 +2875,8 @@ let statTooltipColumnParamByType = {
   function throwBattleEndEvent() {
     let eventId = getTblValue("eventId", this.debriefingResult)
     if (eventId)
-      ::broadcastEvent("EventBattleEnded", { eventId = eventId })
-    ::broadcastEvent("BattleEnded", { battleResult = this.debriefingResult?.exp.result })
+      broadcastEvent("EventBattleEnded", { eventId = eventId })
+    broadcastEvent("BattleEnded", { battleResult = this.debriefingResult?.exp.result })
   }
 
   function checkPopupWindows() {
@@ -3000,7 +3007,7 @@ let statTooltipColumnParamByType = {
         if (boostersArray.len())
           textsList.append(getActiveBoostersDescription(boostersArray, effectType))
       }
-    return ::g_string.implode(textsList, "\n\n")
+    return "\n\n".join(textsList, true)
   }
 
   function getBoostersTotalEffects() {
@@ -3088,11 +3095,11 @@ let statTooltipColumnParamByType = {
         textRp = ::getRpPriceText($"+{rp}%", true)
       }
     }
-    return ::g_string.implode([textRp, textWp], loc("ui/comma"))
+    return loc("ui/comma").join([textRp, textWp], true)
   }
 
   function getCurAwardText() {
-    return ::Cost(::get_premium_reward_wp(), 0, ::get_premium_reward_xp()).tostring()
+    return Cost(::get_premium_reward_wp(), 0, ::get_premium_reward_xp()).tostring()
   }
 
   getLocalTeam = @() ::get_local_team_for_mpstats(this.debriefingResult.localTeam)

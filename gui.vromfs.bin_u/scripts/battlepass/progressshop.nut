@@ -1,9 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { Cost } = require("%scripts/money.nut")
+
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { FRP_INITIAL } = require("frp")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,7 +22,7 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { itemsShopListVersion, inventoryListVersion } = require("%scripts/items/itemsManager.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
@@ -170,7 +173,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.guiScene.setUpdatesEnabled(false, false)
 
     let contentObj = this.scene.findObject("wnd_content")
-    let data = ::handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow.tpl"), {
+    let data = handyman.renderCached(("%gui/onlineShop/onlineShopWithVisualRow.tpl"), {
       chImages = "#ui/onlineShop/battle_pass_header.ddsx"
       descText = loc("battlePass/buy/desc", { count = maxSeasonLvl.value })
       rows = rowsView
@@ -204,7 +207,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       buyUnlock(battlePassUnlock, function() {
         tryBuyAdditionalTrophy()
         refreshUserstatUnlocks()
-        ::broadcastEvent("BattlePassPurchased")
+        broadcastEvent("BattlePassPurchased")
       })
     else
       tryBuyAdditionalTrophy()
@@ -270,7 +273,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local valueText = ""
     local isBought = false
     local isDisabled = false
-    local cost = ::Cost()
+    local cost = Cost()
     let { additionalTrophyItems, battlePassUnlock, passExchangeItem, seasonId } = goodsConfig
     local additionalTrophyItem = getAdditionalTrophyItemForBuy(additionalTrophyItems)
     local seenRowName = $"{additionalTrophyItem?.id ?? ""}"

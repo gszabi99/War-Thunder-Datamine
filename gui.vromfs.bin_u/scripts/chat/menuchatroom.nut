@@ -4,10 +4,13 @@ from "%scripts/dagui_library.nut" import *
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { endsWith, slice, cutPrefix } = require("%sqstd/string.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -24,17 +27,17 @@ let privateColor = "@chatTextPrivateColor"
 let blockedColor = "@chatTextBlockedColor"
 let systemColor = "@chatInfoColor"
 
-::g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
+g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
 
 local function localizeSystemMsg(msg) {
   local localized = false
   foreach (ending in ["is set READONLY", "is set BANNED"]) {
-    if (!::g_string.endsWith(msg, ending))
+    if (!endsWith(msg, ending))
       continue
 
     localized = true
     let locText = loc(ending, "")
-    local playerName = ::g_string.slice(msg, 0, -ending.len() - 1)
+    local playerName = slice(msg, 0, -ending.len() - 1)
     playerName = platformModule.getPlayerName(playerName)
     if (locText != "")
       msg = format(locText, playerName)
@@ -253,11 +256,11 @@ let function newRoom(id, customScene = null, ownerHandler = null) {
     function getLogForBanhammer() {
       let logObj = this.mBlocks.map(@(mBlock) {
         from = mBlock.from
-        userColor = mBlock.userColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(mBlock.userColor, "@")) : ""
+        userColor = mBlock.userColor != "" ? ::get_main_gui_scene().getConstantValue(cutPrefix(mBlock.userColor, "@")) : ""
         fromUid = mBlock.uid
         clanTag = mBlock.clanTag
         msgs = mBlock.msgsSrc
-        msgColor = mBlock.msgColor != "" ? ::get_main_gui_scene().getConstantValue(::g_string.cutPrefix(mBlock.msgColor, "@")) : ""
+        msgColor = mBlock.msgColor != "" ? ::get_main_gui_scene().getConstantValue(cutPrefix(mBlock.msgColor, "@")) : ""
         sTime = mBlock.sTime
       })
       return this.chatLogFormatForBanhammer().__merge({ chatLog = logObj })
@@ -275,7 +278,7 @@ let function initChatMessageListOn(sceneObject, handler, customRoomId = null) {
     messages.append({ childIndex = i });
   }
   let view = { messages = messages, customRoomId = customRoomId }
-  let messageListView = ::handyman.renderCached("%gui/chat/chatMessageList.tpl", view)
+  let messageListView = handyman.renderCached("%gui/chat/chatMessageList.tpl", view)
   sceneObject.getScene().replaceContentFromText(sceneObject,
     messageListView, messageListView.len(), handler)
 }

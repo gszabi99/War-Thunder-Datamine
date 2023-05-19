@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 
 ::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -188,7 +189,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     let isHover = obj.isHovered()
-    let dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
+    let dataIdx = ::to_integer_safe(cutPrefix(obj.id, "row_", ""), -1, false)
     if (isHover == (dataIdx == this.lastHoveredDataIdx))
      return
 

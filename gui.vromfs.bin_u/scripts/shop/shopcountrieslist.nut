@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let shopCountriesList = persist("shopCountriesList", @() [])
 
@@ -13,7 +13,7 @@ local shopVisibleCountries = null
 
 let function invalidateVisibleCountriesCache() {
   shopVisibleCountries = null
-  ::broadcastEvent("VisibleCountriesCacheInvalidate")
+  broadcastEvent("VisibleCountriesCacheInvalidate")
 }
 
 let function getShopVisibleCountries() {

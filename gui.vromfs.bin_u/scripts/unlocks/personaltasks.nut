@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { updateChallenges, curSeasonChallenges, getChallengeView
 } = require("%scripts/battlePass/challenges.nut")
@@ -63,7 +65,7 @@ let function getFavUnlocksView() {
     let hasProgressBar = progressData.show && mainCondition != ""
     let hasLock = ::g_unlock_view.needShowLockIcon(cfg)
     let imageCfg = ::g_unlock_view.getUnlockImageConfig(cfg)
-    let image = ::LayersIcon.getIconData(imageCfg.style, imageCfg.image,
+    let image = LayersIcon.getIconData(imageCfg.style, imageCfg.image,
       imageCfg.ratio, null, imageCfg.params)
     let { rewardText, tooltipId } = ::g_unlock_view.getRewardConfig(cfg)
     let { subunlocks = null } = ::g_unlock_view.getSubunlocksView(cfg, NUM_SUBUNLOCK_COLUMNS, true)
@@ -130,7 +132,7 @@ let class PersonalTasksModal extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     let tabList = this.scene.findObject("tab_list")
-    let data = ::handyman.renderCached("%gui/frameHeaderTabs.tpl", getTabsView())
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", getTabsView())
     this.guiScene.replaceContentFromText(tabList, data, data.len(), this)
 
     let hasBattleTasks = getCurBattleTasks().len() > 0
@@ -146,7 +148,7 @@ let class PersonalTasksModal extends ::gui_handlers.BaseGuiHandlerWT {
     let noTasksObj = this.showSceneBtn("no_tasks_text", !hasTasks)
 
     if (hasTasks) {
-      let data = ::handyman.renderCached(tasksTpl, view)
+      let data = handyman.renderCached(tasksTpl, view)
       this.guiScene.replaceContentFromText(tasksObj, data, data.len(), this)
       tasksObj.setValue(0)
     }

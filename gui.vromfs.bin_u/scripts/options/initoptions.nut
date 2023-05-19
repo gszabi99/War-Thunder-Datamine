@@ -1,11 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let Unit = require("%scripts/unit/unit.nut")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
@@ -21,7 +24,7 @@ let { floor } = require("math")
 
 ::all_units <- {}
 
-::g_script_reloader.registerPersistentData("initOptionsGlobals", getroottable(),
+g_script_reloader.registerPersistentData("initOptionsGlobals", getroottable(),
   [ "all_units"])
 
 //remap all units to new class on scripts reload
@@ -131,7 +134,7 @@ local usageAmountCounted = false
     if (type(blk?.unlocks_punctuation_without_space) == "string")
       ::unlocks_punctuation_without_space = blk.unlocks_punctuation_without_space
 
-    ::LayersIcon.initConfigOnce(blk)
+    LayersIcon.initConfigOnce(blk)
   }
 
   function() {
@@ -180,6 +183,6 @@ local usageAmountCounted = false
   }
 
   function() {
-    ::broadcastEvent("InitConfigs")
+    broadcastEvent("InitConfigs")
   }
 ]

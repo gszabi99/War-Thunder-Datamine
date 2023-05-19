@@ -49,8 +49,6 @@
   "digForwardOffset": 1.4,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "radarAnimVar": "radar_drive",
-  "radarAntenaSpeed": 720.0,
   "radarDeployTime": 3.3,
   "xray_viewer_data": [
     {
@@ -966,13 +964,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2443,16 +2441,16 @@
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_01",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_01",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -4.0,
           -4.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilMultiplier": 0.2,
         "recoilOffset": 0.045,
@@ -2563,16 +2561,16 @@
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "sleeveEmitter": "emtr_shell_02",
-        "sleeveMesh": "auto_cannon_cartridge_case",
+        "shellCasingEmitter": "emtr_shell_02",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
         "openHatchTime": 0.0,
-        "sleevesLifeTime": 5.0,
-        "sleeveImpulse": [
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
           1.0,
           -2.0,
           -2.0
         ],
-        "linkSleeveToGun": true,
+        "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
         "recoilMultiplier": 0.2,
         "recoilOffset": 0.045,
@@ -2609,38 +2607,17 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": "drive_turret_v_dm",
           "horDriveDm": "drive_turret_h_dm",
-          "selfDirectedPart": {
-            "node": "antenna_target_tagging_mount",
-            "limits": [
+          "linkedAnimPart": {
+            "verNode": "bone_camera_gunner",
+            "verLimits": [
               -180.0,
               180.0
             ],
-            "turnSpeed": 80.0
-          },
-          "linkedAnimPart": [
-            {
-              "verNode": "antenna_target_tagging",
-              "verLimits": [
-                0.0,
-                90.0
-              ],
-              "verOriginLimits": [
-                -0.0,
-                85.0
-              ]
-            },
-            {
-              "verNode": "bone_camera_gunner",
-              "verLimits": [
-                -180.0,
-                180.0
-              ],
-              "verOriginLimits": [
-                -180.0,
-                180.0
-              ]
-            }
-          ]
+            "verOriginLimits": [
+              -180.0,
+              180.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -3022,16 +2999,16 @@
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_01",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_01",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -4.0,
                 -4.0
               ],
-              "linkSleeveToGun": true,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "recoilMultiplier": 0.2,
               "recoilOffset": 0.045,
@@ -3142,16 +3119,16 @@
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,
-              "sleeveEmitter": "emtr_shell_02",
-              "sleeveMesh": "auto_cannon_cartridge_case",
+              "shellCasingEmitter": "emtr_shell_02",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
               "openHatchTime": 0.0,
-              "sleevesLifeTime": 5.0,
-              "sleeveImpulse": [
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
                 1.0,
                 -2.0,
                 -2.0
               ],
-              "linkSleeveToGun": true,
+              "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
               "recoilMultiplier": 0.2,
               "recoilOffset": 0.045,
@@ -3188,38 +3165,17 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": "drive_turret_v_dm",
                 "horDriveDm": "drive_turret_h_dm",
-                "selfDirectedPart": {
-                  "node": "antenna_target_tagging_mount",
-                  "limits": [
+                "linkedAnimPart": {
+                  "verNode": "bone_camera_gunner",
+                  "verLimits": [
                     -180.0,
                     180.0
                   ],
-                  "turnSpeed": 80.0
-                },
-                "linkedAnimPart": [
-                  {
-                    "verNode": "antenna_target_tagging",
-                    "verLimits": [
-                      0.0,
-                      90.0
-                    ],
-                    "verOriginLimits": [
-                      -0.0,
-                      85.0
-                    ]
-                  },
-                  {
-                    "verNode": "bone_camera_gunner",
-                    "verLimits": [
-                      -180.0,
-                      180.0
-                    ],
-                    "verOriginLimits": [
-                      -180.0,
-                      180.0
-                    ]
-                  }
-                ]
+                  "verOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -3425,6 +3381,26 @@
         "blk": "gameData/sensors/jp_type_87_track.blk",
         "turretIndex": 0,
         "dmPart": "antenna_target_tagging_dm"
+      }
+    ]
+  },
+  "radarAnimations": {
+    "anim": [
+      {
+        "animatedRadarIdx": 0,
+        "radarAnimVar": "radar_drive",
+        "radarAntenaSpeed": 720.0
+      },
+      {
+        "animatedRadarIdx": 0,
+        "radarElevationScan": true,
+        "pitchByTurret": true,
+        "pitchLimits": [
+          -10.0,
+          85.0
+        ],
+        "radarAntenaSpeed": 50.0,
+        "radarAnimPitchVar": "target_tagging_pitch_rotate"
       }
     ]
   }

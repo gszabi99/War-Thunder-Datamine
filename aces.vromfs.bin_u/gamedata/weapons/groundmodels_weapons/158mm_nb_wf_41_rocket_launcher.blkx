@@ -20,6 +20,28 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "bulletName": "152mm_wgr_41",
+    "statType": "hydra",
+    "caliber": 0.15,
+    "length": 0.68,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 0.75,
+    "distFromCmToStab": 0.01,
+    "mass": 34.15,
+    "massEnd": 28.3,
+    "timeFire": 1.0,
+    "force": 10650.0,
+    "thrustDeviation": 0.005,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "endSpeed": 340.0,
+    "maxDistance": 7055.0,
+    "minDistance": 30.0,
+    "maxDeltaAngle": 0.3,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
@@ -37,26 +59,10 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/rocket_he.ivf",
-    "bulletName": "152mm_wgr_41",
-    "caliber": 0.15,
-    "mass": 34.15,
-    "massEnd": 28.3,
     "explosiveType": "fp02",
     "explosiveMass": 2.15,
-    "maxDeltaAngle": 0.3,
     "dragCx": 0.01,
-    "length": 0.68,
     "mesh": "nebelwerfer_42_rocket",
-    "distFromCmToStab": 0.01,
-    "CxK": 0.75,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "force": 10650.0,
-    "timeFire": 1.0,
-    "thrustDeviation": 0.005,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_133_160mm_metal_he",
     "groundCollisionEffect": "hit_133_160mm_dirt_he",
@@ -65,12 +71,11 @@
     "explosionPatchRadius": 4.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "rocket_fire_light_multiple",
-    "smokeEffect": "",
+    "fireEffect": "fires_exhaust_jet_early_small",
+    "smokeEffect": "smoke_rocket_tail_light_multiple",
+    "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDistance": 7055.0,
-    "minDistance": 30.0,
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
     "explosionOffset": 0.05,
@@ -79,11 +84,6 @@
     "fuseDelayDist": 0.0,
     "distanceFuse": false,
     "rendinstDamageRadius": 4.0,
-    "statType": "hydra",
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 340.0,
     "price": 3000.0,
     "stabilityRicochetModifier": {
       "mod1": [
@@ -288,7 +288,7 @@
         "countPortion": 0.16,
         "segment": [
           {
-            "radiusScale": 0.15,
+            "radiusScale": 0.3,
             "penetrationScale": 3.5,
             "damageScale": 1.0,
             "angles": [
@@ -300,7 +300,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               30.0,
@@ -310,7 +310,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               70.0,
@@ -321,7 +321,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               111.0,
@@ -331,7 +331,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               181.0,
@@ -341,7 +341,7 @@
           },
           {
             "radiusScale": 0.375,
-            "penetrationScale": 2.25,
+            "penetrationScale": 2.75,
             "damageScale": 1.5,
             "angles": [
               250.0,
@@ -352,7 +352,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 2.75,
             "damageScale": 1.0,
             "angles": [
               291.0,

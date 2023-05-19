@@ -7,6 +7,7 @@
   "gearSinkRangeC": 0.36,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
+  "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "isBwOpticSight": true,
@@ -14,7 +15,6 @@
   "ilsAVQ7": true,
   "ilsHaveAVQ7CCIP": true,
   "ilsHaveAVQ7CCRP": true,
-  "gyroscopicSightOverSensors": true,
   "viewDistKInSight": 6.0,
   "type": "typeBomber",
   "paratrooper": "raf_para",
@@ -831,6 +831,12 @@
           {
             "damage": 50.0,
             "tail_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
           }
         ],
         "onKill": [
@@ -872,6 +878,12 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
           }
         ]
       },
@@ -2331,7 +2343,7 @@
         -0.5,
         2.0
       ],
-      "head": "optic2_turret",
+      "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -20.0,
@@ -2406,6 +2418,14 @@
         "blk": "gameData/FlightModels/weaponPresets/a_7e_bomb_mk82.blk"
       },
       {
+        "name": "a_7e_bomb_mk81_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/a_7e_bomb_mk81_snakeye.blk"
+      },
+      {
+        "name": "a_7e_bomb_mk82_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/a_7e_bomb_mk82_snakeye.blk"
+      },
+      {
         "name": "a_7e_bomb_m117",
         "blk": "gameData/FlightModels/weaponPresets/a_7e_bomb_m117.blk"
       },
@@ -2466,7 +2486,8 @@
         "us_lau_88a_002",
         "flare_cover",
         "flir_lana_pod",
-        "optic2_gun"
+        "optic2_gun",
+        "optic2_turret"
       ]
     },
     "HideDmParts": {
@@ -2527,7 +2548,8 @@
                 "bullets": 1000,
                 "light": false,
                 "spread": 1.2,
-                "traceOffset": 1
+                "traceOffset": 1,
+                "rotationAnimScale": "gun_rotate_01:CRS"
               }
             ]
           },
@@ -2571,7 +2593,8 @@
                 "bullets": 1000,
                 "light": false,
                 "spread": 1.2,
-                "traceOffset": 1
+                "traceOffset": 1,
+                "rotationAnimScale": "gun_rotate_01:CRS"
               },
               {
                 "trigger": "countermeasures",
@@ -2642,6 +2665,29 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x6",
+            "name": "mer_mk81_x6_snakeye",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6_snakeye.blk",
+              "emitter": "mer_001",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "mer_mk82_x6_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_snakeye.blk",
               "emitter": "mer_001",
               "external": true,
               "machLimit": 1.01
@@ -2763,6 +2809,29 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x6",
+            "name": "mer_mk81_x6_snakeye",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6_snakeye.blk",
+              "emitter": "mer_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "mer_mk82_x6_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_snakeye.blk",
               "emitter": "mer_002",
               "external": true,
               "machLimit": 1.01
@@ -2946,7 +3015,8 @@
               "bullets": 1200,
               "spread": 1.5,
               "traceOffset": 1,
-              "external": true
+              "external": true,
+              "rotationAnimScale": "gun_rotate_01:CRS"
             }
           },
           {
@@ -3155,7 +3225,8 @@
               "bullets": 1200,
               "spread": 1.5,
               "traceOffset": 1,
-              "external": true
+              "external": true,
+              "rotationAnimScale": "gun_rotate_01:CRS"
             }
           },
           {
@@ -3193,7 +3264,8 @@
             "ShowNodes": {
               "node": [
                 "flir_lana_pod",
-                "optic2_gun"
+                "optic2_gun",
+                "optic2_turret"
               ]
             },
             "Weapon": {
@@ -3264,6 +3336,29 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/mer_us_750lb_m117_x4_right_wing.blk",
+              "emitter": "mer_005",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x6",
+            "name": "mer_mk81_x6_snakeye",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6_snakeye.blk",
+              "emitter": "mer_005",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "mer_mk82_x6_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_snakeye.blk",
               "emitter": "mer_005",
               "external": true,
               "machLimit": 1.01
@@ -3387,6 +3482,29 @@
               "emitter": "bomb_m117_2",
               "external": true,
               "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small_high_drag_group_x6",
+            "name": "mer_mk81_x6_snakeye",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_250lb_mk_81_x6_snakeye.blk",
+              "emitter": "mer_006",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "mer_mk82_x6_snakeye",
+            "reqModification": "us_500lb_mk82",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_snakeye.blk",
+              "emitter": "mer_006",
+              "external": true,
               "machLimit": 1.01
             }
           },

@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -89,7 +90,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
           { time = time.hoursToString(time.secondsToHours(elapsed), true, true) }))
     }
 
-    return ::g_string.implode(desc, "\n")
+    return "\n".join(desc, true)
   }
 
   function getArrivalTime() {
@@ -111,12 +112,12 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   function getFullDescription() {
     local desc = this.getFullName()
     desc += "\n"
-    desc += ::g_string.implode(this.getUnitsMapFullName(), "\n")
+    desc += "\n".join(this.getUnitsMapFullName(), true)
     return desc
   }
 
   function getUnitsMapFullName() {
-    return ::u.map(this.getUnits(), function(unit) { return unit.getFullName() })
+    return u.map(this.getUnits(), function(unit) { return unit.getFullName() })
   }
 
   function secondsLeftToEntrench() {

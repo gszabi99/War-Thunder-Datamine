@@ -37,6 +37,25 @@
           "sideLobesSensitivity": -50.0
         }
       }
+    },
+    "MTI": {
+      "sideLobesAttenuation": -20.0,
+      "power": 70000.0,
+      "band": 10,
+      "rcs": 40.0,
+      "range": 8000.0,
+      "rangeMax": 10000.0,
+      "timeGainControl": true,
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 0.5,
+          "sideLobesSensitivity": -50.0
+        },
+        "elevation": {
+          "angleHalfSens": 20.0,
+          "sideLobesSensitivity": -50.0
+        }
+      }
     }
   },
   "scanPatterns": {
@@ -200,6 +219,82 @@
       "barsCount": 1,
       "rowMajor": true,
       "preciseMinor": true
+    },
+    "searchWideMTI": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -25.0,
+        25.0
+      ],
+      "pitchStabLimit": 25.0,
+      "rollStabLimit": 20.0,
+      "period": 1.5,
+      "width": 45.0,
+      "barHeight": 20.0,
+      "barsCount": 1,
+      "rowMajor": true,
+      "preciseMinor": true
+    },
+    "searchMediumMTI": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -25.0,
+        25.0
+      ],
+      "pitchStabLimit": 25.0,
+      "rollStabLimit": 20.0,
+      "period": 0.75,
+      "width": 22.5,
+      "barHeight": 20.0,
+      "barsCount": 1,
+      "rowMajor": true,
+      "preciseMinor": true
+    },
+    "searchNarrowMTI": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -25.0,
+        25.0
+      ],
+      "pitchStabLimit": 25.0,
+      "rollStabLimit": 20.0,
+      "period": 0.5,
+      "width": 15.0,
+      "barHeight": 20.0,
+      "barsCount": 1,
+      "rowMajor": true,
+      "preciseMinor": true
+    },
+    "searchZoomMTI": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -45.0,
+        45.0
+      ],
+      "elevationLimits": [
+        -25.0,
+        25.0
+      ],
+      "pitchStabLimit": 25.0,
+      "rollStabLimit": 20.0,
+      "period": 0.25,
+      "width": 7.5,
+      "barHeight": 20.0,
+      "barsCount": 1,
+      "rowMajor": true,
+      "preciseMinor": true
     }
   },
   "signals": {
@@ -230,6 +325,28 @@
         "maxValue": 8000.0,
         "width": 15.0
       }
+    },
+    "MTI": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 8000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 10.0,
+        "maxValue": 1000.0,
+        "signalWidthMin": 5.0,
+        "width": 0.0
+      }
     }
   },
   "scanPatternSets": {
@@ -238,6 +355,12 @@
       "scanPattern2": "searchMediumGTM",
       "scanPattern3": "searchNarrowGTM",
       "scanPattern4": "searchZoomGTM"
+    },
+    "MTI": {
+      "scanPattern1": "searchWideMTI",
+      "scanPattern2": "searchMediumMTI",
+      "scanPattern3": "searchNarrowMTI",
+      "scanPattern4": "searchZoomMTI"
     },
     "ATM": {
       "scanPattern1": "searchWideATM",
@@ -477,6 +600,27 @@
             }
           ]
         },
+        "scanMTI": {
+          "scan": {},
+          "setCenterAzimuth": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "designationCue"
+            }
+          ],
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "designationCue"
+            }
+          ]
+        },
         "scanATM": {
           "setCenterAzimuth": {
             "source": "body"
@@ -576,13 +720,53 @@
             "actionTemplateName": "scanATM"
           },
           "clearTargets": {}
+        },
+        "setMTIMode": {
+          "setModeName": {
+            "name": "MTI search"
+          },
+          "setTransiver": {
+            "transiver": "MTI"
+          },
+          "setSignal": {
+            "signal": "MTI"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "MTI"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": -6.25
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -45.0,
+              45.0
+            ],
+            "azimuthRelWidthMin": 0.03,
+            "elevationRange": [
+              -20.0,
+              20.0
+            ],
+            "distanceRange": [
+              500.0,
+              8000.0
+            ],
+            "fromBody": false
+          },
+          "setCustomActionTemplate": {
+            "fsm": "search",
+            "name": "scan",
+            "actionTemplateName": "scanGTM"
+          },
+          "clearTargets": {}
         }
       },
       "transitions": {
         "init": {
           "stateFrom": "init",
           "event": "fsmActivate",
-          "stateTo": "gtm",
+          "stateTo": "mti",
           "actions": {
             "setGTMMode": {}
           }
@@ -603,8 +787,16 @@
             "setATMMode": {}
           }
         },
+        "showMTI": {
+          "stateFrom": "mti",
+          "event": "fsmActivate",
+          "stateTo": "mti",
+          "actions": {
+            "setMTIMode": {}
+          }
+        },
         "switchToATM": {
-          "stateFrom": "gtm",
+          "stateFrom": "mti",
           "command": "modeSwitch",
           "stateTo": "atm",
           "actions": {
@@ -617,6 +809,14 @@
           "stateTo": "gtm",
           "actions": {
             "setGTMMode": {}
+          }
+        },
+        "switchToMTI": {
+          "stateFrom": "gtm",
+          "command": "modeSwitch",
+          "stateTo": "mti",
+          "actions": {
+            "setMTIMode": {}
           }
         }
       }

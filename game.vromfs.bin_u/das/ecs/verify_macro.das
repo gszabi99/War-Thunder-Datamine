@@ -14,7 +14,7 @@ require daslib/macro_boost
 [call_macro(name="ecs_type_hash")]
 class EcsTypeMacro : AstCallMacro
   [unused_argument(mod)] def override visit(prog : ProgramPtr; mod : Module ?; var expr : smart_ptr<ExprCallMacro>) : ExpressionPtr
-    if expr.arguments.length != 1
+    if length(expr.arguments) != 1
       macro_error(prog, expr.at, "ecs_type_hash expecting 1 argument")
       return [[ExpressionPtr]]
     if expr.arguments[0]._type == null || expr.arguments[0]._type.isAutoOrAlias

@@ -1721,7 +1721,6 @@ let B_ScopeHalfCircleTopMarkers = @(size, color) function() {
 }
 
 let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
-
   let res = { watch = [IsRadarVisible, IsRadar2Visible, HasDistanceScale,
                          HasAzimuthScale, ScanAzimuthMax, ScanAzimuthMin] }
 
@@ -1730,9 +1729,9 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
   if (hiddenText)
     return res
 
-  let scanRangeX = size[0] * 0.47
-  let scanRangeY = size[1] * 0.51
-  let scanYaw = size[0] * 0.58
+  let scanRangeX = size[0] * 0.51
+  let scanRangeY = size[1] * 0.55
+  let scanYaw = size[0] * 0.67
   let scanPitch = size[0] * 0.51
   return res.__update({
     size = [offsetScaleFactor * size[0], offsetScaleFactor * size[1]]
@@ -1750,7 +1749,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
             fontFxColor = calcFontFxColor(color)
             fontSize = hudFontHgt * fontScale
             pos = [scanRangeX, scanRangeY]
-            hplace = ALIGN_RIGHT
+            hplace = ALIGN_CENTER
             text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), deg, "x",
                             floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), deg,
                             (ScanPatternsMax.value > 1 ? "*" : " "))
@@ -1891,6 +1890,7 @@ let function B_ScopeHalf(size, color, fontScale) {
     children.append(tgts)
     return {
       watch = [IsRadarVisible, IsRadarEmitting, IsRadar2Visible, IsRadar2Emitting, HasDistanceScale, IsAamLaunchZoneVisible]
+      pos = [maxLabelWidth, 0]
       flow = FLOW_VERTICAL
       children = [
         topMarkers,

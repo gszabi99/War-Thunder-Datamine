@@ -1,5 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
+let { Cost } = require("%scripts/money.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -264,14 +266,14 @@ let function getDiscountPath(unit, item, discountType) {
 }
 
 let function getAllModsCost(unit, open = false) {
-  local modsCost = ::Cost()
+  local modsCost = Cost()
   foreach (modification in (unit?.modifications ?? {})) {
     let statusTbl = getItemStatusTbl(unit, modification)
     if (statusTbl.maxAmount == statusTbl.amount)
       continue
 
     local skipSummary = false
-    local _modCost = ::Cost()
+    local _modCost = Cost()
 
     if (open) {
       let openCost = getItemUnlockCost(unit, modification)

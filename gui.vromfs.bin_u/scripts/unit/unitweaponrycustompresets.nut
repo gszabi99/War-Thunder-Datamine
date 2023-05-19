@@ -5,8 +5,9 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { hangar_force_reload_model } = require("hangar")
 let { initUnitCustomPresetsWeapons } = require("%scripts/unit/initUnitWeapons.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCustomWpnPresetBlk, charSendBlk } = require("chard")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 
@@ -89,8 +90,8 @@ let function addCustomPreset(unit, preset) {
   let presetId = preset.name
   let function cb() {
     if (presetId == getLastWeapon(unit.name))
-      ::hangar_force_reload_model()
-    ::broadcastEvent("CustomPresetChanged", { unitName = unit.name, presetId })
+      hangar_force_reload_model()
+    broadcastEvent("CustomPresetChanged", { unitName = unit.name, presetId })
   }
   savePresetInProfile(unit, presetId, presetBlk, cb)
 }
@@ -100,7 +101,7 @@ let function deleteCustomPreset(unit, presetId) {
   if (presetId not in presets)
     return
 
-  let cb = @() ::broadcastEvent("CustomPresetRemoved", { unitName = unit.name, presetId })
+  let cb = @() broadcastEvent("CustomPresetRemoved", { unitName = unit.name, presetId })
   savePresetInProfile(unit, presetId, DataBlock(), cb)
 }
 
@@ -110,7 +111,7 @@ let function renameCustomPreset(unit, presetId, name) {
     return
 
   presets[presetId].name = name
-  let cb = @() ::broadcastEvent("CustomPresetChanged", { unitName = unit.name, presetId })
+  let cb = @() broadcastEvent("CustomPresetChanged", { unitName = unit.name, presetId })
   savePresetInProfile(unit, presetId, presets[presetId], cb)
 }
 

@@ -61,6 +61,8 @@ let controlsList = { //table for faster check existance
   r_stick_to_left_n_right = true
   r_stick_to_up_n_down = true
   r_stick_up = true
+  l_stick_center = true
+  r_stick_center = true
 
   table_plays_icon = true
   team_dirpad = true

@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 require("%scripts/onlineShop/ingameConsoleStore.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let shopData = require("%scripts/onlineShop/xboxShopData.nut")
@@ -14,6 +15,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCountry.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
+let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
+let { show_marketplace, ProductKind } = require("%xboxLib/impl/store.nut")
 
 
 let sheetsArray = []
@@ -90,39 +93,44 @@ shopData.xboxProceedItems.subscribe(function(val) {
   }
 
   function onEventXboxSystemUIReturn(_p) {
+    if (isPlayerRecommendedEmailRegistration())
+      showPcStorePromo()
+
     this.curItem = this.getCurItem()
     if (!this.curItem)
       return
 
     let wasItemBought = this.curItem.isBought
-    this.curItem.updateIsBoughtStatus()
+    this.curItem.updateIsBoughtStatus(Callback(function(success) {
 
-    let wasPurchasePerformed = wasItemBought != this.curItem.isBought
+      let wasPurchasePerformed = success && (wasItemBought != this.curItem.isBought)
 
-    if (wasPurchasePerformed) {
-      ::broadcastEvent("EntitlementStoreItemPurchased", { id = this.curItem.id })
-      statsd.send_counter("sq.close_product.purchased", 1)
-      ::add_big_query_record("close_product",
-        ::save_to_json({
-          itemId = this.curItem.id,
-          action = "purchased"
-        })
-      )
-      ::g_tasker.addTask(::update_entitlements_limited(),
-        {
-          showProgressBox = true
-          progressBoxText = loc("charServer/checking")
-        },
-        Callback(function() {
-          this.updateSorting()
-          this.fillItemsList()
-          ::g_discount.updateOnlineShopDiscounts()
+      if (wasPurchasePerformed) {
+        broadcastEvent("EntitlementStoreItemPurchased", { id = this.curItem.id })
+        statsd.send_counter("sq.close_product.purchased", 1)
+        ::add_big_query_record("close_product",
+          ::save_to_json({
+            itemId = this.curItem.id,
+            action = "purchased"
+          })
+        )
+        ::g_tasker.addTask(::update_entitlements_limited(),
+          {
+            showProgressBox = true
+            progressBoxText = loc("charServer/checking")
+          },
+          Callback(function() {
+            this.updateSorting()
+            this.fillItemsList()
+            ::g_discount.updateOnlineShopDiscounts()
 
-          if (this.curItem.isMultiConsumable || wasPurchasePerformed)
-            ::update_gamercards()
-        }, this)
-      )
-    }
+            if (this.curItem.isMultiConsumable || wasPurchasePerformed)
+              ::update_gamercards()
+          }, this)
+        )
+      }
+
+    }, this))
   }
 
   function goBack() {
@@ -157,7 +165,7 @@ let openIngameStoreImpl = kwarg(
           let curItem = shopData.getShopItem(curItemId)
           local curSheetId = null
           if (curItem?.categoriesList) {
-            let unitTypeName = ::getAircraftByName(unitName).unitType.typeName
+            let unitTypeName = getAircraftByName(unitName).unitType.typeName
             curSheetId = curItem.categoriesList.contains(unitTypeName) ? unitTypeName
               : curItem.categoriesList?[0]
 
@@ -189,8 +197,10 @@ let openIngameStoreImpl = kwarg(
           local curItem = shopData.getShopItem(curItemId)
           if (curItem)
             curItem.showDetails(statsdMetric)
-          else
-            ::xbox_show_marketplace(chapter == "eagles")
+          else {
+            let productKind = (chapter == "eagles") ? ProductKind.Consumable : ProductKind.Durable
+            show_marketplace(productKind, null)
+          }
         }
       )
     }, this), null, "isCanUseOnlineShop")

@@ -1,10 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
@@ -16,6 +19,7 @@ let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatState
 let { is_replay_playing } = require("replays")
 let { send } = require("eventbus")
 let { chat_on_text_update, toggle_ingame_chat, chat_on_send, chat_set_mode } = require("chat")
+let { get_mplayers_list } = require("mission")
 
 ::game_chat_handler <- null
 
@@ -71,12 +75,12 @@ local MP_CHAT_PARAMS = {
   hasEnableChatMode = false
 
   constructor() {
-    ::g_script_reloader.registerPersistentData("mpChat", this,
+    g_script_reloader.registerPersistentData("mpChat", this,
       ["log_text", "curMode",
        "isActive", "chatInputText"
       ])
 
-    ::subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
+    subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     this.maxLogSize = ::g_chat.getMaxRoomMsgAmount()
     this.isMouseCursorVisible = ::is_cursor_visible_in_gui()
   }
@@ -237,7 +241,7 @@ local MP_CHAT_PARAMS = {
       this.visibleTime = CHAT_WINDOW_VISIBLE_TIME
 
     this.doForAllScenes(this.updateChatInput)
-    ::broadcastEvent("MpChatInputToggled", { active = this.isActive })
+    broadcastEvent("MpChatInputToggled", { active = this.isActive })
     ::handlersManager.updateControlsAllowMask()
   }
 
@@ -555,7 +559,7 @@ local MP_CHAT_PARAMS = {
     let logObj = ingame_chat.getLog()
     this.log_text = ""
     for (local i = 0; i < logObj.len(); ++i)
-      this.log_text = ::g_string.implode([this.log_text,  this.makeTextFromMessage(logObj[i])], "\n")
+      this.log_text = "\n".join([this.log_text,  this.makeTextFromMessage(logObj[i])], true)
     this.updateAllLogs()
 
     let autoShowOpt = ::get_option(::USEROPT_AUTO_SHOW_CHAT)
@@ -647,7 +651,7 @@ local MP_CHAT_PARAMS = {
 
   function isSenderInMySquad(message) {
     if (is_replay_playing()) {
-      let player = ::u.search(::get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == message.sender)
+      let player = u.search(get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == message.sender)
       return ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
     return ::g_squad_manager.isInMySquad(message.sender)
@@ -670,7 +674,7 @@ local MP_CHAT_PARAMS = {
   }
 
   function addNickToEdit(sceneData, user) {
-    ::broadcastEvent("MpChatInputRequested", { activate = true })
+    broadcastEvent("MpChatInputRequested", { activate = true })
 
     let inputObj = sceneData.scene.findObject("chat_input")
     if (!inputObj)
@@ -740,7 +744,7 @@ local MP_CHAT_PARAMS = {
 
 ::enable_game_chat_input <- function enable_game_chat_input(value) { // called from client
   if (value)
-    ::broadcastEvent("MpChatInputRequested")
+    broadcastEvent("MpChatInputRequested")
 
   let handler = ::get_game_chat_handler()
   if (value && !handler.hasEnableChatMode) {
@@ -779,7 +783,7 @@ local MP_CHAT_PARAMS = {
 }
 
 ::add_tags_for_mp_players <- function add_tags_for_mp_players() {
-  let tbl = ::get_mplayers_list(GET_MPLAYERS_LIST, true)
+  let tbl = get_mplayers_list(GET_MPLAYERS_LIST, true)
   if (tbl) {
     foreach (block in tbl)
       if (!block.isBot)

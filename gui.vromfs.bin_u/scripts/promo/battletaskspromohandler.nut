@@ -1,14 +1,16 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { easyDailyTaskProgressWatchObj,
-  mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
+let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj,
+  leftSpecialTasksBoughtCountWatchObj
 } = require("%scripts/battlePass/watchObjInfoConfig.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
@@ -42,16 +44,12 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     // 1) Search for task with available reward
     local reqTask = ::g_battle_tasks.getTaskWithAvailableAward(tasksArray)
 
-    // No need to show some additional info on button
-    // when battle task is complete and need to receive a reward
-    let isTaskWithReward = reqTask != null
-
     let currentGameModeId = ::game_mode_manager.getCurrentGameModeId()
     // 2) Search for task by selected gameMode
     if (!reqTask && currentGameModeId) {
       local curDifficultyGroup = ::load_local_account_settings(this.savePathBattleTasksDiff,
         ::g_battle_task_difficulty.getDefaultDifficultyGroup())
-      let activeTasks = ::u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
+      let activeTasks = u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
         @(task) !::g_battle_tasks.isTaskDone(task)
           && ::g_battle_tasks.isTaskActive(task)
           && (::g_battle_tasks.canGetReward(task) || !::g_battle_tasks.isTaskTimeExpired(task)))
@@ -62,12 +60,10 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
         curDifficultyGroup)
       if (difficultyGroupArray.len() == 1)
         curDifficultyGroup = difficultyGroupArray[0].difficultyGroup
-      reqTask = ::u.search(activeTasks,
+      reqTask = u.search(activeTasks,
         @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task).getDifficultyGroup() == curDifficultyGroup))
     }
 
-    local showProgressBar = false
-    local currentWarbond = null
     let promoView = copyParamsToTable(::g_promo.getConfig()?[id])
     local view = {}
 
@@ -77,31 +73,8 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 
       let itemView = ::g_battle_tasks.generateItemView(config, { isPromo = true })
       itemView.canReroll = false
-      view = ::u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null ? val1 : val2 })
+      view = u.tablesCombine(itemView, promoView, function(val1, val2) { return val1 != null ? val1 : val2 })
       view.collapsedText <- ::g_promo.getCollapsedText(view, id)
-
-      currentWarbond = ::g_warbonds.getCurrentWarbond()
-      if (currentWarbond && currentWarbond.levelsArray.len()) {
-        showProgressBar = (isTaskWithReward || ::g_warbonds_view.needShowProgressBarInPromo)
-          && ::g_battle_task_difficulty.getDifficultyTypeByTask(reqTask).canIncreaseShopLevel
-        if (showProgressBar) {
-          local curLevel = currentWarbond.getCurrentShopLevel()
-          local nextLevel = curLevel + 1
-          local markUp = ::g_warbonds_view.getProgressBoxMarkUp()
-          if (currentWarbond.isMaxLevelReached()) {
-            nextLevel = curLevel
-            curLevel -= 1
-          }
-          markUp += ::g_warbonds_view.getLevelItemMarkUp(currentWarbond, curLevel, "-50%w")
-          markUp += ::g_warbonds_view.getLevelItemMarkUp(currentWarbond, nextLevel, "pw-50%w")
-          view.warbondLevelPlace <- markUp
-        }
-        else if (!isTaskWithReward) {
-          view.isConsoleMode <- ::show_console_buttons
-          view.newItemsAvailable <- currentWarbond.needShowNewItemsNotifications()
-          view.unseenIcon <- SEEN.WARBONDS_SHOP
-        }
-      }
     }
     else {
       promoView.id <- id
@@ -141,19 +114,15 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     if (isEmptyTask) {
       view.easyDailyTaskProgressValue <- stashBhvValueConfig(easyDailyTaskProgressWatchObj)
       view.mediumDailyTaskProgressValue <- stashBhvValueConfig(mediumDailyTaskProgressWatchObj)
-      if (::g_battle_tasks.canActivateHardTasks()) {
+      if (::g_battle_tasks.canActivateHardTasks())
         view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig(leftSpecialTasksBoughtCountWatchObj)
-        view.newItemsAvailable <- leftSpecialTasksBoughtCountWatchObj.watch.value > 0
-      }
     }
 
-    let data = ::handyman.renderCached("%gui/promo/promoBattleTasks.tpl",
+    let data = handyman.renderCached("%gui/promo/promoBattleTasks.tpl",
       { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME })
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
     ::g_battle_tasks.setUpdateTimer(reqTask, this.scene)
-    if (showProgressBar && currentWarbond)
-      ::g_warbonds_view.updateProgressBar(currentWarbond, this.scene, true)
   }
 
   function onGetRewardForTask(obj) {
@@ -185,7 +154,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     let result = []
     foreach (btDiffType in difficultyTypeArray) {
       let difficultyGroup = btDiffType.getDifficultyGroup()
-      let tasksByDiff = ::u.search(tasksArray,
+      let tasksByDiff = u.search(tasksArray,
           @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task) == btDiffType))
 
       if (!tasksByDiff)
@@ -211,7 +180,6 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
   onEventBattleTasksTimeExpired               = @(_p) this.updateHandler()
   onEventCurrentGameModeIdChanged             = @(_p) this.updateHandler()
   onEventWarbondShopMarkSeenLevel             = @(_p) this.updateHandler()
-  onEventWarbondViewShowProgressBarFlagUpdate = @(_p) this.updateHandler()
   onEventXboxMultiplayerPrivilegeUpdated      = @(_p) this.updateHandler()
 }
 

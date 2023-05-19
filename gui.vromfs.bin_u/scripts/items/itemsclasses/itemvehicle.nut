@@ -15,7 +15,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 
   function addResources() {
     base.addResources()
-    this.unit = ::getAircraftByName(this.metaBlk?.unit)
+    this.unit = getAircraftByName(this.metaBlk?.unit)
   }
 
   getContentIconData = @() { contentIcon = ::image_for_air(this.unit?.name ?? ""), contentType = "unit" }

@@ -42,7 +42,7 @@ class public MemSerializer : Serializer
     def override write ( bytes:void? implicit; size:int ) : bool
         //! Appends bytes at the end of the data.
         let pos = length(data)
-        data |> resize(pos + size)
+        data |> resize_no_init(pos + size)
         unsafe
             memcpy ( addr(data[pos]), bytes, size)
         return true
@@ -88,7 +88,7 @@ def public write_raw ( var arch:Archive; var value : auto(TT)& )
     assert(!arch.reading)
     arch.stream->write(unsafe(addr(value)), typeinfo(sizeof value))
 
-[expect_any_enum(value)]
+[expect_any_enum(value) || expect_any_workhorse_raw(value) || expect_value_handle(value)]
 def public serialize ( var arch:Archive; var value : auto(TT)& )
     //! Serializes structured data, based on the `value` type.
     arch |> serialize_raw(value)
@@ -105,10 +105,6 @@ def public serialize ( var arch:Archive; var value:auto(TT)& )
         var mnh = get_function_mangled_name_hash(value)
         arch |> write_raw(mnh)
 
-[expect_any_workhorse_raw(value)]
-def public serialize ( var arch:Archive; var value : auto(TT)& )
-    arch |> serialize_raw(value)
-
 def public serialize ( var arch:Archive; var value : float3x3 )
     arch |> serialize_raw(value)
 
@@ -122,14 +118,14 @@ def public serialize ( var arch:Archive; var value : float4x4 )
 def public serialize ( var arch:Archive; var value : auto(TT)& )
     if arch.reading
         delete value
-    apply(value) <| $ ( name:string; field )
+    apply(value) <| $ [unused_argument(name)] ( name:string; field )
         arch |> _::serialize(field)
 
 [expect_any_tuple(value)]
 def public serialize ( var arch:Archive; var value : auto(TT)& )
     if arch.reading
         delete value
-    apply(value) <| $ ( name:string; field )
+    apply(value) <| $ [unused_argument(name)] ( name:string; field )
         arch |> _::serialize(field)
 
 [expect_any_variant(value)]
@@ -143,7 +139,7 @@ def public serialize ( var arch:Archive; var value : auto(TT)& )
     else
         var index = variant_index(value)
         arch |> write_raw(index)
-    apply(value) <| $ ( name:string; field )
+    apply(value) <| $ [unused_argument(name)] ( name:string; field )
         arch |> _::serialize(field)
 
 def public serialize ( var arch:Archive; var value : auto(TT)[] )
@@ -169,7 +165,7 @@ def public serialize ( var arch:Archive; var value : table<auto(KT);auto(VT)> )
         var len : int
         arch |> read_raw(len)
         delete value
-        for i in range(len)
+        for _ in range(len)
             var k : KT-const-&-#
             arch |> _::serialize(k)
             arch |> _::serialize(value[k])
@@ -185,17 +181,22 @@ def public serialize ( var arch:Archive; var value : string& )
     unsafe
         if arch.reading
             var len: int
-            var tbuf: array<uint8>
             arch |> read_raw(len)
-            tbuf |> resize(len+1)                           // todo: implement preallocat string with raii
-            arch.stream->read(addr(tbuf[0]), len+1)
-            let tstr = reinterpret<string#> addr(tbuf[0])
-            value := tstr
-            delete tbuf
+            if len > 0
+                var tbuf: array<uint8>
+                tbuf |> resize_no_init(len+1)                           // todo: implement preallocat string with raii
+                arch.stream->read(addr(tbuf[0]), len)
+                tbuf[len] = 0u8
+                let tstr = reinterpret<string#> addr(tbuf[0])
+                value := tstr
+                delete tbuf
+            else
+                value = ""
         else
             var len = length(value)
             arch |> write_raw(len)
-            arch.stream->write(reinterpret<void?> value, len+1)
+            if len > 0
+                arch.stream->write(reinterpret<void?> value, len)
 
 def public serialize ( var arch:Archive; var value:auto(TT)? )
     if arch.reading

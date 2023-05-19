@@ -41,6 +41,7 @@
   ],
   "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
+  "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
   "depthTraceWarningDepth": 7.0,
   "depthTraceCriticalDepth": 5.3,
@@ -1517,7 +1518,7 @@
       "genericDamageMult": 0.25,
       "armorThrough": 25.0,
       "compartment_01_dm": {
-        "hp": 2369.0
+        "hp": 2328.0
       },
       "compartment_02_dm": {
         "hp": 2900.0
@@ -1546,7 +1547,7 @@
         "hp": 580.0
       },
       "radio_station_dm": {
-        "hp": 527.0
+        "hp": 544.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -1685,10 +1686,10 @@
       "explosionDamageMult": 1.5,
       "armorThrough": 180.0,
       "transmission_01_dm": {
-        "hp": 3369.0
+        "hp": 3015.0
       },
       "transmission_02_dm": {
-        "hp": 3380.0
+        "hp": 3024.0
       },
       "transmission_03_dm": {
         "hp": 2800.0
@@ -2106,15 +2107,15 @@
       "armorThickness": 30.0,
       "stopChanceOnDeadPart": 0.0,
       "ignoreDeadWithSplash": true,
-      "explosionArmorQuality": 10.5,
-      "explosionDamageMult": 1.2,
+      "explosionArmorQuality": 8.15,
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
+      "pressureDamageMult": 150.0,
       "at_bulge_01_dm": {
-        "hp": 5000.0
+        "hp": 2000.0
       },
       "at_bulge_02_dm": {
-        "hp": 5000.0
+        "hp": 2000.0
       }
     },
     "turrets_main_caliber": {
@@ -2470,67 +2471,67 @@
     "sailor2": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 75
+      "crew": 85
     },
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 91
+      "crew": 107
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 73
+      "crew": 84
     },
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 91
+      "crew": 106
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 72
+      "crew": 84
     },
     "sailor11": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 17
+      "crew": 6
     },
     "sailor12": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 17
+      "crew": 6
     },
     "sailor13": {
       "dmPart": "main_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 17
+      "crew": 6
     },
     "sailor14": {
       "dmPart": "main_caliber_turret_04_dm",
       "role": "sailor",
-      "crew": 17
+      "crew": 6
     },
     "sailor15": {
       "dmPart": "auxiliary_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 3
     },
     "sailor16": {
       "dmPart": "auxiliary_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 3
     },
     "sailor17": {
       "dmPart": "auxiliary_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 3
     },
     "sailor18": {
       "dmPart": "auxiliary_caliber_turret_04_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 3
     },
     "sailor19": {
       "dmPart": "radio_station_dm",
@@ -3225,7 +3226,9 @@
         "rangefinder_07_dm",
         "rangefinder_08_dm",
         "rangefinder_09_dm",
-        "rangefinder_10_dm"
+        "rangefinder_10_dm",
+        "at_bulge_01_dm",
+        "at_bulge_02_dm"
       ],
       "effect": {
         "pressureOpen": true

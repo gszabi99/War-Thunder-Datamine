@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { split_by_chars } = require("string")
 let { register_command } = require("console")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
@@ -171,7 +172,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
   else
     ::handlersManager.markfullReloadOnSwitchScene()
 
-  ::broadcastEvent("GameLocalizationChanged")
+  broadcastEvent("GameLocalizationChanged")
   currentLanguageW(currentLanguage)
 }
 
@@ -294,7 +295,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
 
 ::cross_call_api.language <- ::g_language
 
-::subscribe_handler(::g_language, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(::g_language, ::g_listener_priority.DEFAULT_HANDLER)
 
 register_command(@() ::g_language.reload(), "ui.language_reload")
 

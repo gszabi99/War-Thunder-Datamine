@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -77,8 +78,8 @@ let function getMissionLoc(missionId, config, isLevelBanMode, locNameKey = "locN
       getMissionLocName(config, locNameKey)
 
   return isLevelBanMode
-    ? ::g_string.implode([missionLocName,
-      loc("ui/parentheses/space", { text = loc("maps/preferences/all_missions") })], " ")
+    ? " ".join([missionLocName,
+      loc("ui/parentheses/space", { text = loc("maps/preferences/all_missions") })], true)
     : missionLocName
 }
 
@@ -92,7 +93,7 @@ let function getInactiveMaps(curEvent, mapsList) {
   foreach (name, list in banData) {
     res[name] <- []
       foreach (map in list)
-        if (!::u.search(mapsList, @(inst) inst.map == map))
+        if (!u.search(mapsList, @(inst) inst.map == map))
           res[name].append(map)
   }
 
@@ -147,7 +148,7 @@ let function getMapsListImpl(curEvent) {
     let level = missionToLevelTable?[name].level ?? ::map_to_location(missionInfo.level)
     let map = isLevelBanMode ? level : name
     if (isLevelBanMode) {
-      let levelMap = ::u.search(list, @(inst) inst.map == map)
+      let levelMap = u.search(list, @(inst) inst.map == map)
       if (levelMap) {
         levelMap.missions.append(getMissionParams(name, missionInfo))
         continue

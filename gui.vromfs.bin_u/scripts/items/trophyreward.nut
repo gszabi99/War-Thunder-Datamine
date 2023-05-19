@@ -1,9 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
@@ -69,13 +73,13 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
       tempBuffer[checkBuffer].count += count
 
     if (rType == "unit")
-      ::broadcastEvent("UnitBought", { unitName = typeVal, receivedFromTrophy = true })
+      broadcastEvent("UnitBought", { unitName = typeVal, receivedFromTrophy = true })
     else if (rType == "rentedUnit")
-      ::broadcastEvent("UnitRented", { unitName = typeVal, receivedFromTrophy = true })
+      broadcastEvent("UnitRented", { unitName = typeVal, receivedFromTrophy = true })
     else if (rType == "resourceType" && typeVal == ::g_decorator_type.DECALS.resourceType)
-      ::broadcastEvent("DecalReceived", { id = config?.resource })
+      broadcastEvent("DecalReceived", { id = config?.resource })
     else if (rType == "resourceType" && typeVal == ::g_decorator_type.ATTACHABLES.resourceType)
-      ::broadcastEvent("AttachableReceived", { id = config?.resource })
+      broadcastEvent("AttachableReceived", { id = config?.resource })
   }
 
   let res = []
@@ -130,7 +134,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
     if (onlyImage)
       return item.getIcon()
 
-    image = ::handyman.renderCached(("%gui/items/item.tpl"), {
+    image = handyman.renderCached(("%gui/items/item.tpl"), {
       items = item.getViewData({
             enableBackground = config?.enableBackground ?? false,
             showAction = false,
@@ -144,7 +148,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
     return image
   }
   else if (rewardType == "unit" || rewardType == "rentedUnit")
-    style += "_" + ::getUnitTypeText(::get_es_unit_type(::getAircraftByName(rewardValue))).tolower()
+    style += "_" + ::getUnitTypeText(::get_es_unit_type(getAircraftByName(rewardValue))).tolower()
   else if (rewardType == "resource" || rewardType == "resourceType") {
     if (config.resourceType) {
       let visCfg = this.getDecoratorVisualConfig(config)
@@ -154,7 +158,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
   }
   else if (rewardType == "unlockType") {
     style = "reward_" + rewardValue
-    if (!::LayersIcon.findStyleCfg(style))
+    if (!LayersIcon.findStyleCfg(style))
       style = "reward_unlock"
   }
   else if (rewardType == "warpoints")
@@ -168,24 +172,24 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
       let unlockConditions = ::build_conditions_config(rewardConfig)
       unlock = ::build_log_unlock_data(unlockConditions)
     }
-    image = ::LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
+    image = LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
   }
   else if (rewardType == "unlockAddProgress") {
-    image = ::LayersIcon.getIconData("", ::PrizesView.getPrizeTypeIcon(config))
+    image = LayersIcon.getIconData("", ::PrizesView.getPrizeTypeIcon(config))
   }
 
   if (image == "")
-    image = ::LayersIcon.getIconData(style)
+    image = LayersIcon.getIconData(style)
 
   if (!this.isRewardMultiAward(config) && !onlyImage)
     image += this.getMoneyLayer(config)
 
-  let resultImage = ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg(layerCfgName), image)
+  let resultImage = LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg(layerCfgName), image)
   if (!imageAsItem)
     return resultImage
 
   let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
-  return ::handyman.renderCached(("%gui/items/reward_item.tpl"), { items = [tooltipConfig.__update({
+  return handyman.renderCached(("%gui/items/reward_item.tpl"), { items = [tooltipConfig.__update({
     layered_image = resultImage,
     hasFocusBorder = true })] })
 }
@@ -199,15 +203,15 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
   let decoratorType = ::g_decorator_type.getTypeByResourceType(config.resourceType)
   if (decoratorType) {
     let decorator = getDecorator(config?.resource, decoratorType)
-    let cfg = clone ::LayersIcon.findLayerCfg("item_decal")
+    let cfg = clone LayersIcon.findLayerCfg("item_decal")
     cfg.img <- decoratorType.getImage(decorator)
     if (cfg.img != "")
-      res.image = ::LayersIcon.genDataFromLayer(cfg)
+      res.image = LayersIcon.genDataFromLayer(cfg)
   }
 
   if (res.image == "") {
     res.style = "reward_" + config.resourceType
-    if (!::LayersIcon.findStyleCfg(res.style))
+    if (!LayersIcon.findStyleCfg(res.style))
       res.style = "reward_unlock"
   }
 
@@ -219,12 +223,12 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
   if (!currencyCfg)
     return  ""
 
-  let layerCfg = ::LayersIcon.findLayerCfg("roulette_money_text")
+  let layerCfg = LayersIcon.findLayerCfg("roulette_money_text")
   if (!layerCfg)
     return ""
 
   layerCfg.text <- currencyCfg.printFunc(currencyCfg.val)
-  return ::LayersIcon.getTextDataFromLayer(layerCfg)
+  return LayersIcon.getTextDataFromLayer(layerCfg)
 }
 
 ::trophyReward.getWPIcon <- function getWPIcon(wp) {
@@ -236,11 +240,11 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
 }
 
 ::trophyReward.getFullWPIcon <- function getFullWPIcon(wp) {
-  return ::LayersIcon.getIconData(this.getWPIcon(wp), null, null, "reward_warpoints")
+  return LayersIcon.getIconData(this.getWPIcon(wp), null, null, "reward_warpoints")
 }
 
 ::trophyReward.getFullWarbondsIcon <- function getFullWarbondsIcon() {
-  return ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg("item_warbonds"))
+  return LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg("item_warbonds"))
 }
 
 ::trophyReward.getRestRewardsNumLayer <- function getRestRewardsNumLayer(configsArray, maxNum) {
@@ -248,12 +252,12 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
   if (restRewards <= 0)
     return ""
 
-  let layer = ::LayersIcon.findLayerCfg("item_rest_rewards_text")
+  let layer = LayersIcon.findLayerCfg("item_rest_rewards_text")
   if (!layer)
     return ""
 
   layer.text <- loc("trophy/moreRewards", { num = restRewards })
-  return ::LayersIcon.getTextDataFromLayer(layer)
+  return LayersIcon.getTextDataFromLayer(layer)
 }
 
 ::trophyReward.getReward <- function getReward(configsArray = []) {
@@ -334,10 +338,10 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
     result[rewType].num++;
   }
 
-  currencies = ::u.values(currencies)
+  currencies = u.values(currencies)
   currencies.sort(@(a, b) a.type <=> b.type)
-  currencies = ::u.map(currencies, @(c) c.printFunc(c.val))
-  currencies = ::g_string.implode(currencies, loc("ui/comma"))
+  currencies = u.map(currencies, @(c) c.printFunc(c.val))
+  currencies = loc("ui/comma").join(currencies, true)
 
   local returnData = [ currencies ]
 
@@ -354,7 +358,7 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
       returnData.append(text)
     }
   }
-  returnData = ::g_string.implode(returnData, ", ")
+  returnData = ", ".join(returnData, true)
   return colorize("activeTextColor", returnData)
 }
 
@@ -423,5 +427,5 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
     markupDesc = ::PrizesView.getDescriptonView(prizeConfig).markupDesc
   }
 
-  return ::handyman.renderCached("%gui/items/trophyRewardDesc.tpl", view)
+  return handyman.renderCached("%gui/items/trophyRewardDesc.tpl", view)
 }

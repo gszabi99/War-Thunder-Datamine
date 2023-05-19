@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-from "ecs" import *
+from "%sqstd/ecs.nut" import *
 
 let {showEntitySelect, selectedEntities, de4workMode} = require("state.nut")
 let {colors} = require("components/style.nut")

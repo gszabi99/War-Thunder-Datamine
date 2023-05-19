@@ -4,12 +4,13 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
+let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 
 let persistentData = {
   isConsoleClientFullOnStart = !platformModule.isPlatformXboxOne && !platformModule.isPlatformSony
 }
-::g_script_reloader.registerPersistentData("contentState", persistentData,
+g_script_reloader.registerPersistentData("contentState", persistentData,
   ["isConsoleClientFullOnStart"])
 
 local isConsoleClientFullyDownloaded = @() true

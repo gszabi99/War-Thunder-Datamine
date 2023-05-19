@@ -1603,6 +1603,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1787,6 +1788,7 @@
         "recoilMultiplier": 0.1,
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
+        "staticElevation": 1.725,
         "changeBulletTypeForSet": true,
         "barrelDP": "gun_barrel_02_dm",
         "brokenBarrelAllowShoot": false,
@@ -1922,13 +1924,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -2738,6 +2740,7 @@
       "modClass": "protection",
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2922,6 +2925,7 @@
               "recoilMultiplier": 0.1,
               "stopForFire": true,
               "maxSpeedForFire": 5.0,
+              "staticElevation": 1.725,
               "changeBulletTypeForSet": true,
               "barrelDP": "gun_barrel_02_dm",
               "brokenBarrelAllowShoot": false,

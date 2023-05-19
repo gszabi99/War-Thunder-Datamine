@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -14,6 +15,8 @@ let { updateTopSquadScore, getSquadInfo, isShowSquad,
   getSquadInfoByMemberName, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode } = require("mission")
+let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
+let { stripTags } = require("%sqstd/string.nut")
 
 ::gui_start_mpstatscreen_ <- function gui_start_mpstatscreen_(params = {}) { // used from native code
   let isFromGame = params?.isFromGame ?? false
@@ -34,7 +37,7 @@ let function getWeaponTypeIcoByWeapon(airName, weapon) {
     additionalGuns  = { icon = "", ratio = 0.375 }
     mine            = { icon = "", ratio = 0.594 }
   }
-  let air = ::getAircraftByName(airName)
+  let air = getAircraftByName(airName)
   if (!air)
     return config
 
@@ -150,7 +153,7 @@ let function guiStartMPStatScreenFromGame() {
     let isEmpty = i >= numTblRows
     local trData = format("even:t='%s'; ", (i % 2 == 0) ? "yes" : "no")
     local trAdd = isEmpty ? "inactive:t='yes'; " : ""
-    if (!::u.isEmpty(trOnHover))
+    if (!u.isEmpty(trOnHover))
       trAdd = "".concat(trAdd, $"rowIdx='{i}'; on_hover:t='{trOnHover}'; on_unhover:t='{trOnHover}';")
 
     for (local j = 0; j < hdr.len(); ++j) {
@@ -196,7 +199,7 @@ let function guiStartMPStatScreenFromGame() {
         if (!isEmpty && !isHeader && !table[i].isBot)
           nameText = ::g_contacts.getPlayerFullName(platformModule.getPlayerName(nameText), table[i].clanTag)
 
-        nameText = ::g_string.stripTags(nameText)
+        nameText = stripTags(nameText)
 
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
         let nameAlign = isRowInvert ? "text-align:t='right' " : ""
@@ -224,7 +227,7 @@ let function guiStartMPStatScreenFromGame() {
           images.reverse()
         let cellWidth = markup?[hdr[j]]?.width ?? "@tableIcoSize, @tableIcoSize"
         let divPos = isRowInvert ? "0" : "pw-w"
-        tdData += format("width:t='%s'; tdiv { pos:t='%s, ph/2-h/2'; position:t='absolute'; %s } ", cellWidth, divPos, ::g_string.implode(images))
+        tdData += format("width:t='%s'; tdiv { pos:t='%s, ph/2-h/2'; position:t='absolute'; %s } ", cellWidth, divPos, "".join(images, true))
       }
       else if (hdr[j] == "rank") {
         local prestigeImg = "";
@@ -477,7 +480,7 @@ let function guiStartMPStatScreenFromGame() {
           tooltip = $"{tooltip}\n\n{loc("squad/auto")}\n"
 
         if (!table[i].isBot
-          && ::get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
+          && get_mission_difficulty() == ::g_difficulty.ARCADE.gameTypeName
           && !::g_mis_custom_state.getCurMissionRules().isWorldWar) {
           let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
           if (data) {
@@ -644,7 +647,7 @@ let function guiStartMPStatScreenFromGame() {
   else {
     let gm = get_game_mode()
     if (gm == GM_DOMINATION) {
-      let diffCode = ::get_mission_difficulty_int()
+      let diffCode = get_mission_difficulty_int()
       text = ::g_difficulty.getDifficultyByDiffCode(diffCode).getLocName()
     }
     else if (gm == GM_SKIRMISH)
@@ -669,7 +672,7 @@ let function guiStartMPStatScreenFromGame() {
   local unitName = unit?.name ?? ""
   if (type(unit) == "string") {
     unitName = unit
-    unit = ::getAircraftByName(unit)
+    unit = getAircraftByName(unit)
   }
   return unitName == "" ? ""
     : unit?.customClassIco ?? $"#ui/gameuiskin#{unitName}_ico.svg"
@@ -683,10 +686,10 @@ let function guiStartMPStatScreenFromGame() {
 }
 
 ::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName) {
-  if (!weaponName || ::u.isEmpty(weaponName))
+  if (!weaponName || u.isEmpty(weaponName))
     return ""
 
-  let unit = ::getAircraftByName(unitName)
+  let unit = getAircraftByName(unitName)
   if (!unit)
     return ""
 

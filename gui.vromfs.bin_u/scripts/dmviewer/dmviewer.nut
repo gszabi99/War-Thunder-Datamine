@@ -1,15 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
 #explicit-this
 
 let DataBlock = require("DataBlock")
+let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
-let { hangar_get_current_unit_name } = require("hangar")
+let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode,
+  hangar_get_dm_viewer_parts_count } = require("hangar")
 let { blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -26,10 +29,10 @@ let { unique } = require("%sqstd/underscore.nut")
 let { fileName } = require("%sqstd/path.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-
+let { utf8ToUpper, startsWith, utf8ToLower } = require("%sqstd/string.nut")
 
 /*
   ::dmViewer API:
@@ -42,21 +45,21 @@ let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 
-local compareWeaponFunc = @(w1, w2) ::u.isEqual(w1?.trigger ?? "", w2?.trigger ?? "")
-  && ::u.isEqual(w1?.blk ?? "", w2?.blk ?? "")
-  && ::u.isEqual(w1?.bullets ?? "", w2?.bullets ?? "")
-  && ::u.isEqual(w1?.gunDm ?? "", w2?.gunDm ?? "")
-  && ::u.isEqual(w1?.barrelDP ?? "", w2?.barrelDP ?? "")
-  && ::u.isEqual(w1?.breechDP ?? "", w2?.breechDP ?? "")
-  && ::u.isEqual(w1?.ammoDP ?? "", w2?.ammoDP ?? "")
-  && ::u.isEqual(w1?.dm ?? "", w2?.dm ?? "")
+local compareWeaponFunc = @(w1, w2) u.isEqual(w1?.trigger ?? "", w2?.trigger ?? "")
+  && u.isEqual(w1?.blk ?? "", w2?.blk ?? "")
+  && u.isEqual(w1?.bullets ?? "", w2?.bullets ?? "")
+  && u.isEqual(w1?.gunDm ?? "", w2?.gunDm ?? "")
+  && u.isEqual(w1?.barrelDP ?? "", w2?.barrelDP ?? "")
+  && u.isEqual(w1?.breechDP ?? "", w2?.breechDP ?? "")
+  && u.isEqual(w1?.ammoDP ?? "", w2?.ammoDP ?? "")
+  && u.isEqual(w1?.dm ?? "", w2?.dm ?? "")
 
 const AFTERBURNER_CHAMBER = 3
 
 const MAX_VIEW_MODE_TUTOR_SHOWS = 2
 
 ::on_check_protection <- function(params) { // called from client
-  ::broadcastEvent("ProtectionAnalysisResult", params)
+  broadcastEvent("ProtectionAnalysisResult", params)
 }
 
 let function isViewModeTutorAvailableForUser() {
@@ -141,7 +144,7 @@ let descByPartId = {
   function getCurrentViewMode() { return this._currentViewMode }
   function setCurrentViewMode(value) {
     this._currentViewMode = value
-    ::hangar_set_dm_viewer_mode(value)
+    hangar_set_dm_viewer_mode(value)
     this.updateNoPartsNotification()
   }
 
@@ -192,7 +195,7 @@ let descByPartId = {
 
   function canUse() {
     let hangarUnitName = hangar_get_current_unit_name()
-    let hangarUnit = ::getAircraftByName(hangarUnitName)
+    let hangarUnit = getAircraftByName(hangarUnitName)
     return hasFeature("DamageModelViewer") && hangarUnit
   }
 
@@ -208,13 +211,13 @@ let descByPartId = {
     let unitId = fircedUnitId || hangar_get_current_unit_name()
     if (this.unit && unitId == this.unit.name)
       return
-    this.unit = ::getAircraftByName(unitId)
+    this.unit = getAircraftByName(unitId)
     if (! this.unit)
       return
     this.crew = ::getCrewByAir(this.unit)
     this.loadUnitBlk()
     let map = getTblValue("xray", this.unitBlk)
-    this.xrayRemap = map ? ::u.map(map, function(val) { return val }) : {}
+    this.xrayRemap = map ? u.map(map, function(val) { return val }) : {}
     this.armorClassToSteel = this.collectArmorClassToSteelMuls()
     this.resetXrayCache()
     this.clearHint()
@@ -224,7 +227,7 @@ let descByPartId = {
 
   function updateNoPartsNotification() {
     let isShow = hasLoadedModel()
-      && this.getCurrentViewMode() == DM_VIEWER_ARMOR && ::hangar_get_dm_viewer_parts_count() == 0
+      && this.getCurrentViewMode() == DM_VIEWER_ARMOR && hangar_get_dm_viewer_parts_count() == 0
     let handler = ::handlersManager.getActiveBaseHandler()
     if (!handler || !checkObj(handler.scene))
       return
@@ -254,17 +257,17 @@ let descByPartId = {
 
     let primaryList = [ getLastPrimaryWeapon(this.unit) ]
     foreach (modName in getPrimaryWeaponsList(this.unit))
-      ::u.appendOnce(modName, primaryList)
+      u.appendOnce(modName, primaryList)
 
     foreach (modName in primaryList)
       foreach (weapon in getCommonWeapons(this.unitBlk, modName))
         if (weapon?.blk && !weapon?.dummy)
-          ::u.appendOnce(weapon, this.unitWeaponBlkList, false, compareWeaponFunc)
+          u.appendOnce(weapon, this.unitWeaponBlkList, false, compareWeaponFunc)
 
     let weapons = getUnitWeapons(this.unitBlk)
     foreach (weap in weapons)
       if (weap?.blk && !weap?.dummy)
-        ::u.appendOnce(::u.copy(weap), this.unitWeaponBlkList, false, compareWeaponFunc)
+        u.appendOnce(u.copy(weap), this.unitWeaponBlkList, false, compareWeaponFunc)
   }
 
   function getUnitSensorsList() {
@@ -279,7 +282,14 @@ let descByPartId = {
 
       if (this.isDebugBatchExportProcess && isMod && this.unitBlk?.sensors != null)
         for (local b = 0; b < this.unitBlk.sensors.blockCount(); b++)
-          ::u.appendOnce(this.unitBlk.sensors.getBlock(b), this.unitSensorsBlkList, false, ::u.isEqual)
+          u.appendOnce(this.unitBlk.sensors.getBlock(b), this.unitSensorsBlkList, false, u.isEqual)
+
+      if (this.unitBlk?.WeaponSlots)
+        foreach (slotBlk in this.unitBlk.WeaponSlots % "WeaponSlot")
+          foreach (slotPresetBlk in (slotBlk % "WeaponPreset"))
+            if (slotPresetBlk?.sensors)
+              for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
+                u.appendOnce(slotPresetBlk.sensors.getBlock(b), this.unitSensorsBlkList, false, u.isEqual)
     }
     return this.unitSensorsBlkList
   }
@@ -611,7 +621,7 @@ let descByPartId = {
         let locId = "".concat(localizationSource, nameVariant)
         localizedName = doesLocTextExist(locId) ? loc(locId, "") : ""
         if (localizedName != "")
-          return ::g_string.utf8ToUpper(localizedName, 1);
+          return utf8ToUpper(localizedName, 1);
       }
     return nameId
   }
@@ -689,6 +699,7 @@ let descByPartId = {
       case "engine_room":
         return "#ui/gameuiskin#engine_state_indicator.svg"
 
+      case "shaft":
       case "transmission":
         return "#ui/gameuiskin#ship_transmission_state_indicator.svg"
 
@@ -721,6 +732,7 @@ let descByPartId = {
 
   function getExtHintLocKey(partType, partName) {
     switch (partType) {
+      case "shaft":
       case "ammo_turret":
       case "pump":
       case "bridge":
@@ -831,7 +843,7 @@ let descByPartId = {
     if (rawPartName)
       desc.append(rawPartName)
 
-    return ::g_string.implode(desc, "\n")
+    return "\n".join(desc, true)
   }
 
   function getFirstFound(dataArray, getter, defValue = null) {
@@ -1117,8 +1129,8 @@ let descByPartId = {
             loc("engine_manufacturer/" + info.manufacturer, ""))
                                : ""
           let model = info?.model ? loc("transmission_model/" + info.model, "") : ""
-          let props = info?.type ? ::g_string.utf8ToLower(loc("transmission_type/" + info.type, "")) : ""
-          desc.append(::g_string.implode([ manufacturer, model ], " ") +
+          let props = info?.type ? utf8ToLower(loc("transmission_type/" + info.type, "")) : ""
+          desc.append(" ".join([ manufacturer, model ], true) +
             (props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
           let maxSpeed = this.unit?.modificators?[this.difficulty.crewSkillName]?.maxSpeed ?? 0
@@ -1652,7 +1664,7 @@ let descByPartId = {
         if ("filling_polyurethane" in tankInfoTable)
           tankInfo.append(loc("fuelTank/fillingPolyurethane"))
         if (tankInfo.len())
-          desc.append(::g_string.implode(tankInfo, ", "))
+          desc.append(", ".join(tankInfo, true))
 
       break
 
@@ -1670,7 +1682,7 @@ let descByPartId = {
           params.nameId <- info.titleLoc
 
         foreach (data in info.referenceProtectionArray) {
-          if (::u.isPoint2(data.angles))
+          if (u.isPoint2(data.angles))
             desc.append(loc("shop/armorThicknessEquivalent/angles",
               { angle1 = abs(data.angles.y), angle2 = abs(data.angles.x) }))
           else
@@ -1686,21 +1698,21 @@ let descByPartId = {
 
         let blockSep = desc.len() ? "\n" : ""
 
-        if (info.isComposite && !::u.isEmpty(info.layersArray)) { // composite armor
+        if (info.isComposite && !u.isEmpty(info.layersArray)) { // composite armor
           let texts = []
           foreach (layer in info.layersArray) {
             local thicknessText = ""
-            if (::u.isFloat(layer?.armorThickness) && layer.armorThickness > 0)
+            if (u.isFloat(layer?.armorThickness) && layer.armorThickness > 0)
               thicknessText = round(layer.armorThickness).tostring()
-            else if (::u.isPoint2(layer?.armorThickness) && layer.armorThickness.x > 0 && layer.armorThickness.y > 0)
+            else if (u.isPoint2(layer?.armorThickness) && layer.armorThickness.x > 0 && layer.armorThickness.y > 0)
               thicknessText = round(layer.armorThickness.x).tostring() + loc("ui/mdash") + round(layer.armorThickness.y).tostring()
             if (thicknessText != "")
               thicknessText = loc("ui/parentheses/space", { text = thicknessText + strUnits })
             texts.append(strBullet + this.getPartNameLocText(layer?.armorClass) + thicknessText)
           }
-          desc.append(blockSep + loc("xray/armor_composition") + loc("ui/colon") + "\n" + ::g_string.implode(texts, "\n"))
+          desc.append(blockSep + loc("xray/armor_composition") + loc("ui/colon") + "\n" + "\n".join(texts, true))
         }
-        else if (!info.isComposite && !::u.isEmpty(info.armorClass)) // reactive armor
+        else if (!info.isComposite && !u.isEmpty(info.armorClass)) // reactive armor
           desc.append(blockSep + loc("plane_engine_type") + loc("ui/colon") + this.getPartNameLocText(info.armorClass))
 
         break
@@ -1777,7 +1789,7 @@ let descByPartId = {
     if (rawPartName)
       desc.append(rawPartName)
 
-    let description = ::g_string.implode(desc, "\n")
+    let description = "\n".join(desc, true)
     return description
   }
 
@@ -1853,11 +1865,11 @@ let descByPartId = {
       zoom.remove(0)
       fovOutIn.remove(0)
     }
-    let zoomTexts = ::u.map(zoom, @(zoom) format("%.1fx", zoom))
+    let zoomTexts = u.map(zoom, @(v) format("%.1fx", v))
     let fovTexts = fovOutIn.map(@(fov) "".concat(round(fov), loc("measureUnits/deg")))
     return {
-      zoom = ::g_string.implode(zoomTexts, loc("ui/mdash"))
-      fov  = ::g_string.implode(fovTexts,  loc("ui/mdash"))
+      zoom = loc("ui/mdash").join(zoomTexts, true)
+      fov  = loc("ui/mdash").join(fovTexts,  true)
     }
   }
 
@@ -1988,7 +2000,7 @@ let descByPartId = {
       foreach (linkKey in partLinkSources)
         if (linkKey in weapon && weapon[linkKey] == weaponPartName)
           return weapon
-      if (::u.isPoint2(weapon?.emitterGenRange)) {
+      if (u.isPoint2(weapon?.emitterGenRange)) {
         let rangeMin = min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
         let rangeMax = max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
         foreach (linkKeyFmt in partLinkSourcesGenFmt)
@@ -2029,8 +2041,8 @@ let descByPartId = {
         return { isPrimary = isPrimary, isSecondary = isSecondary, isMachinegun = isMachinegun }
       case ES_UNIT_TYPE_BOAT:
       case ES_UNIT_TYPE_SHIP:
-        let isPrimaryName       = ::g_string.startsWith(weaponPartName, "main")
-        let isSecondaryName     = ::g_string.startsWith(weaponPartName, "auxiliary")
+        let isPrimaryName       = startsWith(weaponPartName, "main")
+        let isSecondaryName     = startsWith(weaponPartName, "auxiliary")
         let isPrimaryTrigger    = weaponInfoBlk?.triggerGroup == "primary"
         let isSecondaryTrigger  = weaponInfoBlk?.triggerGroup == "secondary"
         return {
@@ -2220,7 +2232,7 @@ let descByPartId = {
 
         if (reloadTimeS)
           break
-        cyclicShotFreqS = ::u.search(getCommonWeapons(::dmViewer.unitBlk, ""),
+        cyclicShotFreqS = u.search(getCommonWeapons(::dmViewer.unitBlk, ""),
           @(inst) inst.trigger  == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
         shotFreqRPM = cyclicShotFreqS * 60
 
@@ -2233,9 +2245,9 @@ let descByPartId = {
 
     let desc = []
     if (firstStageShotFreq)
-      desc.append(::g_string.implode([loc("shop/shotFreq/firstStage"),
+      desc.append(" ".join([loc("shop/shotFreq/firstStage"),
         round(firstStageShotFreq),
-        loc("measureUnits/rounds_per_min")], " "))
+        loc("measureUnits/rounds_per_min")], true))
 
     if (shotFreqRPM) {
       shotFreqRPM = ::round(shotFreqRPM, shotFreqRPM > 600 ? -1
@@ -2305,7 +2317,7 @@ let descByPartId = {
 
   function getModernArmorParamsByDmPartName(partName) {
     local res = {
-      isComposite = ::g_string.startsWith(partName, "composite_armor")
+      isComposite = startsWith(partName, "composite_armor")
       titleLoc = ""
       armorClass = ""
       referenceProtectionArray = []
@@ -2319,7 +2331,7 @@ let descByPartId = {
       let referenceProtectionBlocks = blk?.referenceProtectionTable ? (blk.referenceProtectionTable % "i")
         : (blk?.kineticProtectionEquivalent || blk?.cumulativeProtectionEquivalent) ? [ blk ]
         : []
-      res.referenceProtectionArray = ::u.map(referenceProtectionBlocks, @(b) {
+      res.referenceProtectionArray = u.map(referenceProtectionBlocks, @(b) {
         angles = b?.angles
         kineticProtectionEquivalent    = b?.kineticProtectionEquivalent    ?? 0
         cumulativeProtectionEquivalent = b?.cumulativeProtectionEquivalent ?? 0
@@ -2343,7 +2355,7 @@ let descByPartId = {
         kineticProtectionEquivalent    = info.kineticProtectionEquivalent
         cumulativeProtectionEquivalent = info.cumulativeProtectionEquivalent
       }]
-      res = ::u.tablesCombine(res, info, @(a, b) b == null ? a : b, null, false)
+      res = u.tablesCombine(res, info, @(a, b) b == null ? a : b, null, false)
     }
 
     return res
@@ -2354,13 +2366,13 @@ let descByPartId = {
     if (!this.unitBlk?.DamageParts)
       return res
     let dmPartsBlk = this.unitBlk.DamageParts
-    res = ::u.tablesCombine(res, dmPartsBlk, @(a, b) b == null ? a : b, null, false)
-    for (local b = 0; b < dmPartsBlk.blockCount(); b++) {
-      let groupBlk = dmPartsBlk.getBlock(b)
+    res = u.tablesCombine(res, dmPartsBlk, @(a, b) b == null ? a : b, null, false)
+    for (local i = 0; i < dmPartsBlk.blockCount(); i++) {
+      let groupBlk = dmPartsBlk.getBlock(i)
       if (!groupBlk || !groupBlk?[partName])
         continue
-      res = ::u.tablesCombine(res, groupBlk, @(a, b) b == null ? a : b, null, false)
-      res = ::u.tablesCombine(res, groupBlk[partName], @(a, b) b == null ? a : b, null, false)
+      res = u.tablesCombine(res, groupBlk, @(a, b) b == null ? a : b, null, false)
+      res = u.tablesCombine(res, groupBlk[partName], @(a, b) b == null ? a : b, null, false)
       break
     }
     return res
@@ -2384,14 +2396,14 @@ let descByPartId = {
         break
       case ES_UNIT_TYPE_BOAT:
       case ES_UNIT_TYPE_SHIP:
-        if (::g_string.startsWith(partId, "main") && weaponInfoBlk?.triggerGroup == "secondary")
+        if (startsWith(partId, "main") && weaponInfoBlk?.triggerGroup == "secondary")
           params.partLocId <- ::stringReplace(partId, "main", "auxiliary")
-        if (::g_string.startsWith(partId, "auxiliary") && weaponInfoBlk?.triggerGroup == "primary")
+        if (startsWith(partId, "auxiliary") && weaponInfoBlk?.triggerGroup == "primary")
           params.partLocId <- ::stringReplace(partId, "auxiliary", "main")
         break
       case ES_UNIT_TYPE_HELICOPTER:
         if (isInArray(partId, [ "gun", "cannon" ]))
-          params.partLocId <- ::g_string.startsWith(weaponInfoBlk?.trigger, "gunner") ? "turret" : "cannon"
+          params.partLocId <- startsWith(weaponInfoBlk?.trigger, "gunner") ? "turret" : "cannon"
     }
   }
 
@@ -2466,8 +2478,8 @@ let descByPartId = {
   }
 }
 
-::g_script_reloader.registerPersistentDataFromRoot("dmViewer")
-::subscribe_handler(::dmViewer, ::g_listener_priority.DEFAULT_HANDLER)
+g_script_reloader.registerPersistentDataFromRoot("dmViewer")
+subscribe_handler(::dmViewer, ::g_listener_priority.DEFAULT_HANDLER)
 
 ::on_hangar_damage_part_pick <- function on_hangar_damage_part_pick(params) { // Called from API
   ::dmViewer.updateHint(params)

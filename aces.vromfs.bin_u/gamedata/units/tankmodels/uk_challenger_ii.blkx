@@ -184,6 +184,10 @@
       "ex_armor_02_dm": {
         "armorThickness": 25.4,
         "armorClass": "tank_structural_steel"
+      },
+      "ex_armor_03_dm": {
+        "armorThickness": 30.0,
+        "armorClass": "tank_structural_steel"
       }
     },
     "turret_cha": {
@@ -632,8 +636,7 @@
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
         "hp": 200.0,
-        "ex_armor_body_01_dm": {},
-        "ex_armor_01_dm": {}
+        "ex_armor_body_01_dm": {}
       }
     },
     "gun": {
@@ -2645,13 +2648,13 @@
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }
@@ -3432,7 +3435,13 @@
             "ex_lantern_r_02",
             "ex_lantern_l_02",
             "ex_decor_14",
-            "body_02"
+            "body_02",
+            "body_04",
+            "roll_01",
+            "roll_02",
+            "roll_03",
+            "roll_04",
+            "ex_armor_03"
           ]
         }
       },
@@ -4287,6 +4296,8 @@
   "smokeScreenExhaustEmitters": {
     "emitter": [
       "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
       "emtr_exhaust_04"
     ]
   }

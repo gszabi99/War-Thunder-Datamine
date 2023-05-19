@@ -239,11 +239,11 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
         insertedSubHeader = true
       }
     }
-    detailedDescription.append(::g_string.implode(detailedArray, "\n"))
+    detailedDescription.append("\n".join(detailedArray, true))
   }
 
   let description = $"{loc("mainmenu/boostersTooltip", effectType)}{loc("ui/colon")}\n"
-  return $"{description}{::g_string.implode(separateBoosters, "\n")}{::g_string.implode(detailedDescription, "\n\n")}"
+  return $"{description}{"\n".join(separateBoosters, true)}{"\n\n".join(detailedDescription, true)}"
 }
 
 let function updateExpireAlarmIcon(item, itemObj) {

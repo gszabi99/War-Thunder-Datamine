@@ -7,60 +7,61 @@ from "%scripts/dagui_library.nut" import *
  /*
  module with low-level matching server interface
 
- matching_rpc_subscribe - set handler for server-side rpc or notification
- matching_api_func - call remote function by name and set callback for answer
- matching_api_notify - call remote function without callback
+ matchingRpcSubscribe - set handler for server-side rpc or notification
+ matchingApiFunc - call remote function by name and set callback for answer
+ matchingApiNotify - call remote function without callback
 */
 
-let _matching = {
-  function translate_matching_params(params) {
-    if (params == null)
-      return params
-    foreach (key, value in params) {
-      if (type(value) == "string") {
-        switch (key) {
-          case "userId":
-          case "roomId":
-            params[key] = value.tointeger()
-        }
+let function translateMatchingParams(params) {
+  if (params == null)
+    return params
+  foreach (key, value in params) {
+    if (type(value) == "string") {
+      switch (key) {
+        case "userId":
+        case "roomId":
+          params[key] = value.tointeger()
       }
     }
-    return params
   }
+  return params
 }
 
 /*
   translate old API functions into new ones
   TODO: remove them by search&replace
 */
-::matching_api_func <- function matching_api_func(name, cb, params = null) {
+let function matchingApiFunc(name, cb, params = null) {
   log("send matching request: " + name)
-  ::matching.rpc_call(name, _matching.translate_matching_params(params),
-    function (resp) {
-      if (cb)
-        cb(resp)
-    })
+  ::matching.rpc_call(name, translateMatchingParams(params), @(resp) cb?(resp))
 }
 
-::matching_api_notify <- function matching_api_notify(name, params = null) {
+let function matchingApiNotify(name, params = null) {
   log("send matching notify: " + name)
-  ::matching.notify(name, _matching.translate_matching_params(params))
+  ::matching.notify(name, translateMatchingParams(params))
 }
 
-::is_matching_error <- function is_matching_error(code) {
+let function isMatchingError(code) {
   if ("matching" in getroottable())
     return ::matching.is_matching_error(code)
   return false
 }
 
-::matching_error_string <- function matching_error_string(code) {
+let function matchingErrorString(code) {
   if ("matching" in getroottable())
     return ::matching.error_string(code)
   return false
 }
 
-::matching_rpc_subscribe <- function matching_rpc_subscribe(name, cb) {
+let function matchingRpcSubscribe(name, cb) {
   if ("matching" in getroottable())
     ::matching.subscribe(name, cb)
 }
 
+return {
+  matchingApiFunc
+  matchingApiNotify
+  isMatchingError
+  matchingErrorString
+  matchingRpcSubscribe
+}
