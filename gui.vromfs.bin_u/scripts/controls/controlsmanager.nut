@@ -4,12 +4,12 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
-g_script_reloader.loadOnce("%scripts/controls/controlsPreset.nut")
-g_script_reloader.loadOnce("%scripts/controls/controlsGlobals.nut")
-g_script_reloader.loadOnce("%scripts/controls/controlsCompatibility.nut")
+loadOnce("%scripts/controls/controlsPreset.nut")
+loadOnce("%scripts/controls/controlsGlobals.nut")
+loadOnce("%scripts/controls/controlsCompatibility.nut")
 
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")

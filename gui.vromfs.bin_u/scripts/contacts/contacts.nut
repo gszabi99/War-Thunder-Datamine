@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
@@ -55,7 +55,7 @@ foreach (fn in [
     "contactsHandler.nut"
     "searchForSquadHandler.nut"
   ])
-g_script_reloader.loadOnce("%scripts/contacts/" + fn)
+loadOnce("%scripts/contacts/" + fn)
 
 ::g_contacts.onEventUserInfoManagerDataUpdated <- function onEventUserInfoManagerDataUpdated(params) {
   let usersInfoData = getTblValue("usersInfo", params, null)
@@ -103,7 +103,7 @@ g_script_reloader.loadOnce("%scripts/contacts/" + fn)
 
 ::missed_contacts_data <- {}
 
-g_script_reloader.registerPersistentData("ContactsGlobals", getroottable(),
+registerPersistentData("ContactsGlobals", getroottable(),
   ["contacts_groups", "contacts_players", "contacts"])
 
 ::sortContacts <- function sortContacts(a, b) {

@@ -368,7 +368,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
-      this.repairUpdater = SecondsUpdater(timeTextObj, (@(debuffs_data, createTime) function(obj, _p) {
+      this.repairUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
         let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
@@ -376,7 +376,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
         obj.setValue(timeToShowSeconds.tointeger().tostring())
         return false
-      })(debuffs_data, createTime))
+      })
     }
 
     ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)
@@ -473,7 +473,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
-      this.repairBreachesUpdater = SecondsUpdater(timeTextObj, (@(debuffs_data, createTime) function(obj, _p) {
+      this.repairBreachesUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
         let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
@@ -481,7 +481,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
         obj.setValue(timeToShowSeconds.tointeger().tostring())
         return false
-      })(debuffs_data, createTime))
+      })
     }
 
     ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)
@@ -551,7 +551,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
       iconObj.wink = "no"
       ::g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
-      this.extinguishUpdater = SecondsUpdater(timeTextObj, (@(debuffs_data, createTime) function(obj, _p) {
+      this.extinguishUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
         let timeToShowSeconds = debuffs_data.time - time.millisecondsToSeconds(curTime - createTime)
         if (timeToShowSeconds < 0)
@@ -559,7 +559,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
         obj.setValue(timeToShowSeconds.tointeger().tostring())
         return false
-      })(debuffs_data, createTime))
+      })
     }
 
     ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)

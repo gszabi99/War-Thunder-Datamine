@@ -29,7 +29,7 @@ let { unique } = require("%sqstd/underscore.nut")
 let { fileName } = require("%sqstd/path.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
 let { utf8ToUpper, startsWith, utf8ToLower } = require("%sqstd/string.nut")
@@ -2478,7 +2478,7 @@ let descByPartId = {
   }
 }
 
-g_script_reloader.registerPersistentDataFromRoot("dmViewer")
+registerPersistentDataFromRoot("dmViewer")
 subscribe_handler(::dmViewer, ::g_listener_priority.DEFAULT_HANDLER)
 
 ::on_hangar_damage_part_pick <- function on_hangar_damage_part_pick(params) { // Called from API

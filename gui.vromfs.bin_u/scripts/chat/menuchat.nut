@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let DataBlock = require("DataBlock")
@@ -74,7 +74,7 @@ const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
   [voiceChatStats.muted] = "voip_banned" //picture existed, was not renamed
 }
 
-g_script_reloader.registerPersistentData("MenuChatGlobals", getroottable(), ["clanUserTable"]) //!!FIX ME: must be in contacts
+registerPersistentData("MenuChatGlobals", getroottable(), ["clanUserTable"]) //!!FIX ME: must be in contacts
 
 let sortChatUsers = @(a, b) a.name <=> b.name
 let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
@@ -130,7 +130,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   static editboxObjIdList = [ "menuchat_input", "search_edit" ]
 
   constructor(gui_scene, params = {}) {
-    g_script_reloader.registerPersistentData("MenuChatHandler", this, ["roomsInited"]) //!!FIX ME: must be in g_chat
+    registerPersistentData("MenuChatHandler", this, ["roomsInited"]) //!!FIX ME: must be in g_chat
 
     base.constructor(gui_scene, params)
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
@@ -1005,7 +1005,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (room.id.slice(0, 1) != "#" || ::g_chat.isSystemChatRoom(room.id))
           continue
 
-        let cb = (!checkObj(room.customScene)) ? null : (@(room) function() { this.afterReconnectCustomRoom(room.id) })(room)
+        let roomId = room.id
+        let cb = (!checkObj(room.customScene)) ? null : function() { this.afterReconnectCustomRoom(roomId) }
         this.joinRoom(room.id, "", cb, null, null, true)
       }
       this.updateRoomsList()

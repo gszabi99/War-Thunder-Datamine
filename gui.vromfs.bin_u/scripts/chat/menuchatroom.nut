@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
@@ -27,7 +27,7 @@ let privateColor = "@chatTextPrivateColor"
 let blockedColor = "@chatTextBlockedColor"
 let systemColor = "@chatInfoColor"
 
-g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
+registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
 
 local function localizeSystemMsg(msg) {
   local localized = false

@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -154,7 +154,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
 
   function showInvitePopup() {
     if (!this.isVisible()
-        || g_script_reloader.isInReloading
+        || isInReloading()
         || ::get_gui_option_in_mode(::USEROPT_SHOW_SOCIAL_NOTIFICATIONS, ::OPTIONS_MODE_GAMEPLAY) == false
       )
       return

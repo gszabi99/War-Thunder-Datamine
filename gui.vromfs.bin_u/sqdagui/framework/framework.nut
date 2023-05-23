@@ -3,7 +3,7 @@
 
 let { loc } = require("dagor.localize")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 ::gui_handlers <- {}
 
 foreach (fn in [
@@ -12,7 +12,7 @@ foreach (fn in [
                  "baseGuiHandlerManager.nut"
                  "framedMessageBox.nut"
                ])
-  g_script_reloader.loadOnce($"%sqDagui/framework/{fn}")
+  loadOnce($"%sqDagui/framework/{fn}")
 
 
 ::open_url_by_obj <- function open_url_by_obj(obj) {

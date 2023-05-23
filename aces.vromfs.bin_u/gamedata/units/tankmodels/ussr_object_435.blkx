@@ -84,6 +84,9 @@
       "body_back_dm": {
         "armorThickness": 20.0,
         "variableThickness": true
+      },
+      "turret_01_back_dm": {
+        "armorThickness": 5.0
       }
     },
     "hull_CHA": {
@@ -110,9 +113,6 @@
       },
       "turret_commander_dm": {
         "armorThickness": 90.0
-      },
-      "turret_01_back_dm": {
-        "armorThickness": 100.0
       },
       "turret_01_side_dm": {
         "armorThickness": 100.0
@@ -1684,7 +1684,7 @@
         "speedYaw": 20.0,
         "speedPitch": 4.5,
         "fireConeAngle": 1.0,
-        "bullets": 42,
+        "bullets": 37,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -1854,6 +1854,34 @@
             180.0,
             -5.0,
             60.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -5.0,
+            10.0
           ]
         }
       }
@@ -2667,10 +2695,10 @@
     }
   },
   "cockpit": {
-    "zoomOutFov": 21.1,
-    "zoomInFov": 10.5,
-    "sightFov": 10.0,
-    "sightName": "tsh2b_41",
+    "zoomOutFov": 10.2,
+    "zoomInFov": 9.2,
+    "sightFov": 4.5,
+    "sightName": "tpd2_49",
     "headPos": [
       0.0,
       3.5,
@@ -2698,6 +2726,26 @@
       -0.1,
       0.35
     ]
+  },
+  "commanderView": {
+    "optics": "commander_optics_square",
+    "zoomOutFov": 15.0,
+    "zoomInFov": 14.7,
+    "sightSize": [
+      0.29,
+      0.2
+    ],
+    "ircmProjector": {
+      "node": "bone_commander_sight_v",
+      "beamRadius": [
+        600.0,
+        50.0
+      ],
+      "projectorPower": [
+        0.02,
+        0.04
+      ]
+    }
   },
   "skin": [
     {

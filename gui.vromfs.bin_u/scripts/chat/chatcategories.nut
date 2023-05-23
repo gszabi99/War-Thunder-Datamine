@@ -11,7 +11,7 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")
 
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
 
 ::g_chat_categories <- {
@@ -155,5 +155,5 @@ const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
   broadcastEvent("ChatSearchCategoriesChanged")
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_chat_categories")
+registerPersistentDataFromRoot("g_chat_categories")
 subscribe_handler(::g_chat_categories, ::g_listener_priority.DEFAULT_HANDLER)

@@ -140,22 +140,20 @@ local class WeaponsPurchaseProcess {
     let repairCost = this.checkRepair ? this.unit.getRepairCost() : Cost()
     let price = this.cost + repairCost
     this.msgLocParams.cost <- price.getTextAccordingToBalance()
-
-    let performAction = (@(repairCost, mainFunc, amount, completeOnCancel) function() {
+    let performAction = Callback(function() {
       if (repairCost.isZero())
-        mainFunc(amount)
+        this.mainFunc(amount)
       else
-        this.repair(Callback((@(amount) function() { mainFunc(amount) })(amount), this),
-               Callback((@(amount, completeOnCancel) function() { this.execute(amount, completeOnCancel) })(amount, completeOnCancel), this))
-    })(repairCost, this.mainFunc, amount, completeOnCancel)
-
+        this.repair(Callback(@() this.mainFunc(amount), this),
+          Callback(@() this.execute(amount, completeOnCancel), this))
+    }, this)
     if (this.silent)
       return performAction()
 
-    let cancelAction = (@(completeOnCancel) function() {
+    let cancelAction = function() {
       if (completeOnCancel)
         this.complete()
-    })(completeOnCancel)
+    }
 
     let text = ::warningIfGold(
         loc(repairCost.isZero() ? this.msgLocId : this.repairMsgLocId,
@@ -335,18 +333,18 @@ local class WeaponsPurchaseProcess {
     let hadUnitModResearch = ::shop_get_researchable_module_name(this.unit.name)
     let taskId = ::char_send_blk("cln_buy_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, modName, hadUnitModResearch, afterSuccessfullPurchaseCb) function() {
+    let afterOpFunc = Callback(function() {
       ::update_gamercards()
-      ::updateAirAfterSwitchMod(unit, modName)
+      ::updateAirAfterSwitchMod(this.unit, this.modName)
 
-      let newResearch = ::shop_get_researchable_module_name(unit.name)
+      let newResearch = ::shop_get_researchable_module_name(this.unit.name)
       if (u.isEmpty(newResearch) && !u.isEmpty(hadUnitModResearch))
-        broadcastEvent("AllModificationsPurchased", { unit = unit })
+        broadcastEvent("AllModificationsPurchased", { unit = this.unit })
 
-      broadcastEvent("ModificationPurchased", { unit = unit, modName = modName })
+      broadcastEvent("ModificationPurchased", { unit = this.unit, modName = this.modName })
 
-      afterSuccessfullPurchaseCb?()
-    })(this.unit, this.modName, hadUnitModResearch, this.afterSuccessfullPurchaseCb)
+      this.afterSuccessfullPurchaseCb?()
+    }, this)
 
     ::g_tasker.addTask(taskId, taskOptions, afterOpFunc)
     this.complete()

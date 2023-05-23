@@ -11,7 +11,7 @@ let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getHudElementAabb, dmPanelStatesAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
@@ -142,14 +142,14 @@ enum HintShowState {
       this.onWatchedHeroChanged()
     }, this)
 
-    foreach (hint in ::g_hud_hints.types) {
-      if (!hint.isEnabled() || this.isHintShowCountExceeded(hint)) {
-        log("Hints: " + (hint?.showEvent ?? "_") + " is disabled")
+    foreach (hintType in ::g_hud_hints.types) {
+      if (!hintType.isEnabled() || this.isHintShowCountExceeded(hintType)) {
+        log($"Hints: {(hintType?.showEvent ?? "_")} is disabled")
         continue
       }
-
+      let hint = hintType
       if (!u.isNull(hint.showEvent))
-        ::g_hud_event_manager.subscribe(hint.showEvent, (@(hint) function (eventData) {
+        ::g_hud_event_manager.subscribe(hint.showEvent, function (eventData) {
           if (this.isHintShowCountExceeded(hint))
             return
 
@@ -157,10 +157,10 @@ enum HintShowState {
             this.showDelayed(hint, eventData)
           else
             this.onShowEvent(hint, eventData)
-        })(hint), this)
+        }, this)
 
       if (!u.isNull(hint.hideEvent))
-        ::g_hud_event_manager.subscribe(hint.hideEvent, (@(hint) function (eventData) {
+        ::g_hud_event_manager.subscribe(hint.hideEvent, function (eventData) {
           if (!hint.isCurrent(eventData, true))
             return
 
@@ -170,26 +170,26 @@ enum HintShowState {
           if (!hintData)
             return
           this.removeHint(hintData, hintData.hint.isInstantHide(eventData))
-        })(hint), this)
+        }, this)
 
       if (hint.updateCbs)
-        foreach (eventName, func in hint.updateCbs)
-          ::g_hud_event_manager.subscribe(eventName, (@(hint, func) function (eventData) {
+        foreach (eventName, func in hint.updateCbs) {
+          let cbFunc = func
+          ::g_hud_event_manager.subscribe(eventName, function (eventData) {
             if (!hint.isCurrent(eventData, false))
               return
 
             let hintData = this.findActiveHintFromSameGroup(hint)
-            let needUpdate = func.call(hint, hintData, eventData)
+            let needUpdate = cbFunc.call(hint, hintData, eventData)
             if (hintData && needUpdate)
               this.updateHint(hintData)
-          })(hint, func), this)
+          }, this)
+        }
     }
   }
 
   function findActiveHintFromSameGroup(hint) {
-    return u.search(this.activeHints, (@(hint) function (hintData) {
-      return hint.hintType.isSameReplaceGroup(hintData.hint, hint)
-    })(hint))
+    return u.search(this.activeHints, @(hintData) hint.hintType.isSameReplaceGroup(hintData.hint, hint))
   }
 
   function addToList(hint, eventData) {
@@ -438,5 +438,5 @@ enum HintShowState {
 
 dmPanelStatesAabb.subscribe(@(value) ::g_hud_hints_manager.changeMissionHintsPosition(value))
 
-g_script_reloader.registerPersistentDataFromRoot("g_hud_hints_manager")
+registerPersistentDataFromRoot("g_hud_hints_manager")
 subscribe_handler(::g_hud_hints_manager, ::g_listener_priority.DEFAULT_HANDLER)

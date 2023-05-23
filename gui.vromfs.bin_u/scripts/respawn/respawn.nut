@@ -10,7 +10,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let { get_gui_option } = require("guiOptions")
 let { ceil } = require("math")
@@ -67,7 +67,7 @@ let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 
 ::before_first_flight_in_session <- false
 
-g_script_reloader.registerPersistentData("RespawnGlobals", getroottable(),
+registerPersistentData("RespawnGlobals", getroottable(),
   ["last_ca_aircraft", "used_planes", "need_race_finish_results", "before_first_flight_in_session"])
 
 ::COLORED_DROPRIGHT_TEXT_STYLE <- "textStyle:t='textarea';"

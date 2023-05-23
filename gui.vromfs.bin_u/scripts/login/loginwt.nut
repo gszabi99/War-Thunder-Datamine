@@ -9,7 +9,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let statsd = require("statsd")
 let DataBlock = require("DataBlock")
 let { get_authenticated_url_sso } = require("url")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
@@ -34,7 +34,7 @@ let { get_meta_missions_info } = require("guiMission")
 ::my_user_id_int64 <- -1
 ::my_user_name <- ""
 
-g_script_reloader.registerPersistentData("LoginWTGlobals", getroottable(),
+registerPersistentData("LoginWTGlobals", getroottable(),
   [
     "my_user_id_str", "my_user_id_int64", "my_user_name"
   ])

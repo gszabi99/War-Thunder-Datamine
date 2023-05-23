@@ -70,11 +70,11 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
     let eventEconomicName = finalAwardDate ? tourId : ::events.getEventEconomicName(event)
     let view = {
       total      = rewards.len()
-      baseReward = (@(event) function () {
+      baseReward = function () {
         let reward = getBaseVictoryReward(event)
         return reward ? loc("tournaments/reward/everyVictory",  { reward = reward }) : reward
-      })(event)
-      items = (@(rewards, _event) function () {
+      }
+      items = function () {
         local even = true
         let res = []
         foreach (conditionName, condition in rewards)
@@ -95,7 +95,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
             res.append(item)
           }
         return res
-      })(rewards, event)
+      }
     }
 
     let data = handyman.renderCached(this.rewardsTableTplName, view)

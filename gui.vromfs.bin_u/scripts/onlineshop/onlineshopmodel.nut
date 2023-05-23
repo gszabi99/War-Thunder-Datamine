@@ -391,7 +391,7 @@ let function getEntitlementsByFeature(name) {
   else
     ::scene_msg_box("onlineShop_buy_" + chapter, null,
       loc("charServer/web_recharge"),
-      [["ok", (@(customUrl) function() { ::OnlineShopModel.openShopUrl(customUrl) })(customUrl) ],
+      [["ok", @() ::OnlineShopModel.openShopUrl(customUrl) ],
        ["cancel", function() {} ]
       ],
       "ok",

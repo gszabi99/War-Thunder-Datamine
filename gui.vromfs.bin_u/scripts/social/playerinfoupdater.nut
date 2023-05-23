@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { write_number } = require("%xboxLib/impl/stats.nut")
 let { set_presence } = require("%xboxLib/impl/presence.nut")
 
@@ -86,7 +86,7 @@ let playerInfoUpdater = {
   }
 }
 
-g_script_reloader.registerPersistentData("PlayerInfoUpdater", playerInfoUpdater, playerInfoUpdater[PERSISTENT_DATA_PARAMS])
+registerPersistentData("PlayerInfoUpdater", playerInfoUpdater, playerInfoUpdater[PERSISTENT_DATA_PARAMS])
 subscribe_handler(playerInfoUpdater, ::g_listener_priority.DEFAULT_HANDLER)
 
 return playerInfoUpdater

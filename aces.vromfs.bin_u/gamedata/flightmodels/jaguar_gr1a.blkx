@@ -2330,6 +2330,10 @@
         "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1a_bomb_uk_1000lbs_gp.blk"
       },
       {
+        "name": "jaguar_gr1a_bomb_uk_1000lbs_gp_n117",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1a_bomb_uk_1000lbs_gp_n117.blk"
+      },
+      {
         "name": "jaguar_gr1_a_mk_13_tiald",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1_a_mk_13_tiald.blk"
       },
@@ -2348,9 +2352,9 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 4000.0,
-    "maxloadMassLeftConsoles": 2000.0,
-    "maxloadMassRightConsoles": 2000.0,
+    "maxloadMass": 4100.0,
+    "maxloadMassLeftConsoles": 2050.0,
+    "maxloadMassRightConsoles": 2050.0,
     "maxDisbalance": 1500.0,
     "HideNodes": {
       "node": [
@@ -2550,6 +2554,22 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "uk_1000lbs_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "emitter": "uk_1000lbs_gp_001",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "nar_ap_large",
             "name": "lau_5003b",
             "reqModification": "uk_lau_5003b_a",
@@ -2609,6 +2629,21 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/mer_uk_1000lbs_x2.blk",
+              "emitter": "jaguar_gr1_mer_1",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "uk_1000lbs_x2_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_uk_1000lbs_x2_n117.blk",
               "emitter": "jaguar_gr1_mer_1",
               "external": true,
               "machLimit": 1.01
@@ -2744,6 +2779,32 @@
             ]
           },
           {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "uk_1000lbs_x2_fuse_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+                "emitter": "uk_1000lbs_gp_007",
+                "bullets": 1,
+                "external": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+                "emitter": "uk_1000lbs_gp_008",
+                "bullets": 1,
+                "external": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
             "iconType": "flir_container",
             "name": "tiald",
             "reqModification": "uk_tiald",
@@ -2830,6 +2891,21 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "uk_1000lbs_x2_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_uk_1000lbs_x2_n117.blk",
+              "emitter": "jaguar_gr1_mer_2",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "nar_ap_large",
             "name": "lau_5003b",
             "reqModification": "uk_lau_5003b_a",
@@ -2910,6 +2986,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "uk_1000lbs_gp_002",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "uk_1000lbs_n117",
+            "reqModification": "uk_mk_10_1000lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
               "emitter": "uk_1000lbs_gp_002",
               "bullets": 1,
               "external": true,

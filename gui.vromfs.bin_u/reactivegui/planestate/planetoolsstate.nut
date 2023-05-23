@@ -26,6 +26,7 @@ let IlsAtgmTrackerVisible = Watched(false)
 let IlsAtgmTargetPos = [0, 0]
 let IlsAtgmLocked = Watched(false)
 let RwrScale = Watched(1.0)
+let RwrBackHide = Watched(false)
 let RadarTargetDistRate = Watched(0.0)
 let RadarTargetDist = Watched(0.0)
 let RadarTargetPosValid = Watched(false)
@@ -69,6 +70,7 @@ let planeState = {
   IlsAtgmTargetPos,
   IlsAtgmLocked,
   RwrScale,
+  RwrBackHide,
   RadarTargetDist,
   RadarTargetPosValid,
   RadarTargetPos,

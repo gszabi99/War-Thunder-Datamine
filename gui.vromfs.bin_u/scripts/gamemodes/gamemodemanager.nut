@@ -738,24 +738,25 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
   function getGameModesPartitions() {
     let partitions = []
     foreach (partitionData in ::game_mode_select_partitions_data) {
+      let { forClan, diffCode, skipFeatured, skipEnableOnDebug } = partitionData
       let partition = {
-        separator = partitionData.forClan
+        separator = forClan
         gameModes = ::game_mode_manager.getGameModes(
           ES_UNIT_TYPE_INVALID,
-          (@(partitionData) function (gameMode) {
-            let checkForClan = gameMode.forClan == partitionData.forClan
-            let checkDiffCode = partitionData.diffCode == -1 || gameMode.diffCode == partitionData.diffCode
-            let checkSkipFeatured = !partitionData.skipFeatured || gameMode.displayType != ::g_event_display_type.FEATURED
+          function (gameMode) {
+            let checkForClan = gameMode.forClan == forClan
+            let checkDiffCode = diffCode == -1 || gameMode.diffCode == diffCode
+            let checkSkipFeatured = !skipFeatured || gameMode.displayType != ::g_event_display_type.FEATURED
             let isPVEBattle = gameMode.displayType == ::g_event_display_type.PVE_BATTLE
-            let checkSkipEnableOnDebug = !partitionData.skipEnableOnDebug || !gameMode.enableOnDebug
+            let checkSkipEnableOnDebug = !skipEnableOnDebug || !gameMode.enableOnDebug
             return checkForClan && checkDiffCode && checkSkipFeatured
               && checkSkipEnableOnDebug && !isPVEBattle && !gameMode.forClan
-          })(partitionData)
+          }
         )
       }
       // If diff code is not provided
       // sort game modes by difficulty.
-      if (partitionData.diffCode == -1) {
+      if (diffCode == -1) {
         partition.gameModes.sort(function (gm1, gm2) {
           return ::events.diffCodeCompare(gm1.diffCode, gm2.diffCode)
         })

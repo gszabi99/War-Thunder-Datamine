@@ -912,11 +912,11 @@ let function isInArrayRecursive(v, arr) {
       actionText += ((actionText == "") ? "" : ", ") + loc("hotkeys/" + this.shortcutNames[binding[0]])
     let msg = loc("hotkeys/msg/unbind_question", { action = actionText })
     this.msgBox("controls_wizard_bind_existing_shortcut", msg, [
-      ["add", (@(_curBinding, devs, btns, shortcutId) function() {
+      ["add", function() {
         this.doBind(devs, btns, shortcutId)
         this.onButtonDone()
-      })(curBinding, devs, btns, shortcutId)],
-      ["replace", (@(curBinding, devs, btns, shortcutId) function() {
+      }],
+      ["replace", function() {
         foreach (binding in curBinding) {
           this.shortcuts[binding[0]].remove(binding[1])
           let item = this.shortcutItems[binding[0]]
@@ -925,7 +925,7 @@ let function isInArrayRecursive(v, arr) {
         }
         this.doBind(devs, btns, shortcutId)
         this.onButtonDone()
-      })(curBinding, devs, btns, shortcutId)],
+      }],
       ["cancel", function() { this.askShortcut() }],
       ["skip", function() { this.onButtonDone() }],
     ], "add")
@@ -1111,10 +1111,10 @@ let function isInArrayRecursive(v, arr) {
     })
     this.msgBox("controls_wizard_bind_existing_axis", msg, [
       ["add", function() { this.bindAxis() }],
-      ["replace", (@(curBinding) function() {
+      ["replace", function() {
         this.repeatItemsList.extend(curBinding)
         this.bindAxis()
-      })(curBinding)],
+      }],
       ["cancel", function() { this.askAxis() }],
       ["skip", function() { this.onCancelButtonInput(null) }],
     ], "add")
@@ -1386,7 +1386,7 @@ let function isInArrayRecursive(v, arr) {
       return
 
     this.waitMsgButton = false
-    this.guiScene.performDelayed(this, (@(value) function() {
+    this.guiScene.performDelayed(this, function() {
       if ("optionType" in this.curItem) {
         this.optionsToSave.append({ type = this.curItem.optionType, value = value })
         if ("isFilterObj" in this.curItem && this.curItem.isFilterObj) {
@@ -1404,7 +1404,7 @@ let function isInArrayRecursive(v, arr) {
       if ("onButton" in this.curItem)
         this.curItem.onButton.call(this, value)
       this.nextItem()
-    })(value))
+    })
   }
 
   function getCurListboxObj() {

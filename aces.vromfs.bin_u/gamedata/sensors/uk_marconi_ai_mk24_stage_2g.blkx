@@ -12,7 +12,7 @@
       "rangeMax": 150000.0,
       "antenna": {
         "angleHalfSens": 2.6,
-        "sideLobesSensitivity": -34.0
+        "sideLobesSensitivity": -35.0
       }
     },
     "pulseDopplerVelocitySearch": {
@@ -24,7 +24,7 @@
       "rangeMax": 200000.0,
       "antenna": {
         "angleHalfSens": 2.6,
-        "sideLobesSensitivity": -34.0
+        "sideLobesSensitivity": -35.0
       }
     },
     "pulseDoppler": {
@@ -36,7 +36,7 @@
       "rangeMax": 160000.0,
       "antenna": {
         "angleHalfSens": 2.6,
-        "sideLobesSensitivity": -34.0
+        "sideLobesSensitivity": -35.0
       }
     }
   },
@@ -243,7 +243,7 @@
     "pulseSearch": {
       "dynamicRange": [
         40.0,
-        15.0
+        20.0
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
@@ -260,31 +260,33 @@
       "dopplerSpeedFinder": true,
       "dynamicRange": [
         40.0,
-        15.0
+        20.0
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": false,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
+      "mainBeamNotchWidth": 30.0,
       "dopplerSpeed": {
         "presents": true,
         "minValue": -410.0,
         "maxValue": 2050.0,
         "signalWidthMin": 5.0,
-        "width": 120.0
+        "width": 90.0
       }
     },
     "pulseDopplerSearch": {
       "dynamicRange": [
         40.0,
-        15.0
+        20.0
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
       "friendFoeId": true,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
+      "mainBeamNotchWidth": 30.0,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -296,13 +298,13 @@
         "minValue": -410.0,
         "maxValue": 2050.0,
         "signalWidthMin": 5.0,
-        "width": 120.0
+        "width": 90.0
       }
     },
     "pulseTrack": {
       "dynamicRange": [
         40.0,
-        15.0
+        20.0
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
@@ -321,7 +323,7 @@
       "dopplerSpeedFinder": true,
       "dynamicRange": [
         40.0,
-        15.0
+        20.0
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
@@ -329,6 +331,7 @@
       "distanceAccuracy": 12.0,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
+      "mainBeamNotchWidth": 30.0,
       "track": true,
       "distance": {
         "presents": true,
@@ -341,7 +344,7 @@
         "minValue": -410.0,
         "maxValue": 2050.0,
         "signalWidthMin": 2.0,
-        "width": 120.0
+        "width": 90.0
       }
     }
   },

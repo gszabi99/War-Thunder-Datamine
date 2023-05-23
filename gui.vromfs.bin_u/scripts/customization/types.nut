@@ -14,7 +14,7 @@ let { format } = require("string")
 let { get_last_skin, get_decal_in_slot, set_current_decal_slot, set_decal_in_slot,
   enter_decal_mode, add_attachable, remove_attachable, select_attachable_slot,
   exit_attachables_mode, get_attachable_name, get_attachable_group, focus_on_current_decal,
-  get_num_decal_slots, get_max_num_decal_slots, exit_decal_mode
+  get_num_decal_slots, get_max_num_decal_slots, exit_decal_mode, save_decals
 } = require("unitCustomization")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let guidParser = require("%scripts/guidParser.nut")
@@ -246,7 +246,7 @@ enums.addTypesByGlobalName("g_decorator_type", {
       if (!hasFeature("DecalsUse"))
         return
 
-      let taskId = ::save_decals(unitName)
+      let taskId = save_decals(unitName)
       let taskOptions = { showProgressBox = showProgressBox }
       ::g_tasker.addTask(taskId, taskOptions)
     }

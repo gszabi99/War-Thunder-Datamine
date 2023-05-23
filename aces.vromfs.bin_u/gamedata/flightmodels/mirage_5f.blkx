@@ -2081,6 +2081,14 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_5f_400kg.blk"
       },
       {
+        "name": "mirage_5f_250kg_200",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_250kg_200.blk"
+      },
+      {
+        "name": "mirage_5f_400kg_200",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_5f_400kg_200.blk"
+      },
+      {
         "name": "mirage_5f_sneb",
         "blk": "gameData/FlightModels/weaponPresets/mirage_5f_sneb.blk"
       },
@@ -2372,6 +2380,46 @@
               "bullets": 1,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "fr_250kg_type_25c_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "pylon_5f_001_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fr_400kg_type_21b_200",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21_200.blk",
+              "emitter": "pylon_5f_001_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -2406,6 +2454,36 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21.blk",
+              "emitter": "pylon_pm3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "pm3_fr_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25_200.blk",
+              "emitter": "pylon_pm3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "pm3_fr_400_200",
+            "reqModification": "fr_400kg_type_21b",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21_200.blk",
               "emitter": "pylon_pm3",
               "external": true,
               "separate": true
@@ -2470,6 +2548,46 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+              "emitter": "pylon_5f_002_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "fr_250kg_type_25c_200",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
+              "emitter": "pylon_5f_002_bomb_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fr_400kg_type_21b_200",
+            "reqModification": "fr_400kg_type_21b",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_5f_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21_200.blk",
               "emitter": "pylon_5f_002_bomb_001",
               "external": true,
               "separate": true,

@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -35,7 +35,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 ::current_replay_author <- null
 ::back_from_replays <- null
 
-g_script_reloader.registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay", "current_replay_author"])
+registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay", "current_replay_author"])
 
 ::gui_start_replays <- function gui_start_replays() {
   ::gui_start_modal_wnd(::gui_handlers.ReplayScreen)

@@ -63,12 +63,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
                                           this.onProgress(dltotal, dlnow)
                                         }, this)
 
-    this.requestId = ::download_blk(this.urlMission.url, 0, (@(requestCallback) function(success, blk) {
-                                                                 requestCallback(success, blk)
-                                                               })(requestCallback),
-                                                               (@(progressCallback) function(dltotal, dlnow) {
-                                                                 progressCallback(dltotal, dlnow)
-                                                               })(progressCallback))
+    this.requestId = ::download_blk(this.urlMission.url, 0,
+      @(success, blk) requestCallback(success, blk),
+      @(dltotal, dlnow) progressCallback(dltotal, dlnow))
   }
 
   function resetTimer() {

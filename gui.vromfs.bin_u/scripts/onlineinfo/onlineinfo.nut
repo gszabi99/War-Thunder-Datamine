@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 
 ::online_stats <- {
@@ -45,7 +45,7 @@ let { get_time_msec } = require("dagor.time")
 ::online_info_server_time_param <- 0
 ::online_info_server_time_recieved <- 0
 
-g_script_reloader.registerPersistentData("onlineInfoGlobals", getroottable(),
+registerPersistentData("onlineInfoGlobals", getroottable(),
   ["online_stats", "online_info_server_time_param", "online_info_server_time_recieved"])
 
 ::get_matching_server_time <- function get_matching_server_time() {

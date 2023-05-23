@@ -8,7 +8,7 @@ from "hudMessages" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { CHAT_MODE_ALL, chat_set_mode, toggle_ingame_chat } = require("chat")
@@ -162,7 +162,7 @@ let weaponIconsReloadBits = {
   }]
 
   function initScreen() {
-    g_script_reloader.registerPersistentData("Spectator", this, [ "debugMode" ])
+    registerPersistentData("Spectator", this, [ "debugMode" ])
 
     this.gameType = get_game_type()
     let mplayerTable = get_local_mplayer() || {}

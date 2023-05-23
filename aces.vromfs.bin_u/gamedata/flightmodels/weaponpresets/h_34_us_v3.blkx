@@ -1,10 +1,586 @@
 {
-  "Weapon": {
-    "trigger": "atgm",
-    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup_heli.blk",
-    "emitter": "rocket_agm12b_1",
-    "bullets": 1,
-    "external": true,
-    "separate": true
-  }
+  "hideNodes": {
+    "node": [
+      "pylon_usa_1",
+      "pylon_usa_1_dop",
+      "cannon1",
+      "flare1",
+      "cannon2",
+      "flare2",
+      "mgun1",
+      "flare3",
+      "mgun2",
+      "flare4",
+      "mgun3",
+      "flare5",
+      "mgun4",
+      "flare6",
+      "mgun5",
+      "flare7",
+      "mgun6",
+      "flare8",
+      "turret1",
+      "gun1",
+      "flare9",
+      "turret2",
+      "gun2",
+      "flare10",
+      "flare11",
+      "blister3o",
+      "pylon_usa_3",
+      "mgun7",
+      "flare12",
+      "mgun8",
+      "flare13",
+      "mgun9",
+      "flare14",
+      "mgun10",
+      "flare15",
+      "pylon_usa_5",
+      "aero_7_l_b001",
+      "aero_7_l_b002",
+      "flare18",
+      "flare19",
+      "pylon_usa_6",
+      "flare16",
+      "flare17",
+      "pylon_usa_6_r",
+      "pylon_fr_1",
+      "pylon_fr_3",
+      "Bip01 Pelvis_3",
+      "throttle_lhand_3",
+      "stick_rhand_3",
+      "pedal_lfoot_3",
+      "pedal_rfoot_3",
+      "Bip01 Spine_3",
+      "Bip02 Spine_3",
+      "Bip01 Head_3",
+      "Bip01 Pelvis_4",
+      "throttle_lhand_4",
+      "stick_rhand_4",
+      "pedal_lfoot_4",
+      "pedal_rfoot_4",
+      "Bip01 Spine_4",
+      "Bip02 Spine_4",
+      "Bip01 Head_4"
+    ]
+  },
+  "hideDmParts": {
+    "node": [
+      "gun1_dm",
+      "gun2_dm",
+      "gun3_dm",
+      "mgun1_dm",
+      "mgun2_dm",
+      "mgun3_dm",
+      "mgun4_dm",
+      "mgun5_dm",
+      "mgun6_dm",
+      "cannon1_dm",
+      "cannon2_dm",
+      "gunner2_dm",
+      "gunner3_dm",
+      "mgun12_dm",
+      "mgun13_dm",
+      "mgun14_dm",
+      "mgun15_dm",
+      "mgun16_dm",
+      "mgun17_dm",
+      "cannon3_dm"
+    ]
+  },
+  "Weapon": [
+    {
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+      "emitter": "flare12",
+      "flash": "flare12",
+      "shell": "emtr_shellrejection11",
+      "dm": "mgun12_dm",
+      "bullets": 500,
+      "light": true,
+      "spread": 1.2
+    },
+    {
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+      "emitter": "flare13",
+      "flash": "flare13",
+      "shell": "emtr_shellrejection12",
+      "dm": "mgun13_dm",
+      "bullets": 500,
+      "light": true,
+      "spread": 1.2
+    },
+    {
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+      "emitter": "flare14",
+      "flash": "flare14",
+      "shell": "emtr_shellrejection13",
+      "dm": "mgun14_dm",
+      "bullets": 500,
+      "light": true,
+      "spread": 1.2
+    },
+    {
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/gunBrowning50_M3.blk",
+      "emitter": "flare15",
+      "flash": "flare15",
+      "shell": "emtr_shellrejection14",
+      "dm": "mgun15_dm",
+      "bullets": 500,
+      "light": true,
+      "spread": 1.2
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_001_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_001_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_002_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_002_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_003_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_003_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_004_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_004_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_005_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_005_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_006_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_006_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_007_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_007_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_008_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_008_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_009_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_009_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_010_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_010_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_011_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_011_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_012_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_012_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_013_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_013_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_014_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_014_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_015_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_015_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_016_b001",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    },
+    {
+      "trigger": "rockets",
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+      "emitter": "2_75_ffar_us3_016_b002",
+      "bullets": 1,
+      "minSize": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "mass": 0.01,
+      "dragCx": 0.06
+    }
+  ]
 }

@@ -220,9 +220,9 @@ let function filterSkillsList(skillsList) {
   foreach (skill in skillsList) {
     let group = getTblValue(skill.skillName, skillGroups)
     if (group) {
-      let resSkill = u.search(res, (@(skill, group) function(resSkill) {
+      let resSkill = u.search(res, function(resSkill) {
                          return skill.skillName == resSkill.skillName && isInArray(resSkill.memberName, group)
-                       })(skill, group))
+                       })
       if (resSkill)
         continue
     }

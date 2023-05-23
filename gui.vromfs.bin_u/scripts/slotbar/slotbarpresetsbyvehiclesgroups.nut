@@ -1,6 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 #no-root-fallback
 #explicit-this
@@ -51,7 +51,7 @@ let function savePresets(presetId, countryPresets) {
     blk[countryId] <- ",".join(preset.units.map(@(unit) unit?.name ?? ""))
 
   let cfgBlk = ::load_local_account_settings(getPresetSaveIdByEventId(presetId))
-  if (u.isEqual(blk, cfgBlk))
+  if (isEqual(blk, cfgBlk))
     return
 
   ::save_local_account_settings(getPresetSaveIdByEventId(presetId), blk)
@@ -200,8 +200,8 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
     onFinishCb?(true)
   }
 
-  let oldGroupIdx = curCountryPreset.units.findindex(@(u)
-    groupIdByUnitName?[u?.name ?? ""] == unitGroup)
+  let oldGroupIdx = curCountryPreset.units.findindex(@(unit)
+    groupIdByUnitName?[unit?.name ?? ""] == unitGroup)
   if (unitGroup != curUnitGroup && oldGroupIdx != null) {
     let replaceUnitGroup = function() {
       curPreset.countryPresets[country].units[oldGroupIdx] = curUnit
@@ -235,7 +235,7 @@ let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotifica
 })
 
 let getCurPresetUnitNames = @()
-  (curPreset.countryPresets?[::get_profile_country()].units.map(@(u) u?.name)
+  (curPreset.countryPresets?[::get_profile_country()].units.map(@(unit) unit?.name)
     ?? []).filter(@(n) n)
 
 let function setCurPreset(presetId, groupsList) {

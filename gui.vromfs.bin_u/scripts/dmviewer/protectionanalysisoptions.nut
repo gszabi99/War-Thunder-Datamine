@@ -229,9 +229,9 @@ options.addTypes({
       let rank = options.RANK.value
       let country = options.COUNTRY.value
       let ediff = ::get_current_ediff()
-      local list = ::get_units_list(@(u) u.esUnitType == unitType
-        && u.shopCountry == country && u.rank == rank && u.isVisibleInShop())
-      list = u.map(list, @(u) { unit = u, id = u.name, br = u.getBattleRating(ediff) })
+      local list = ::get_units_list(@(unit) unit.esUnitType == unitType
+        && unit.shopCountry == country && unit.rank == rank && unit.isVisibleInShop())
+      list = u.map(list, @(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)
       this.values = u.map(list, @(v) v.unit)
       this.items = u.map(list, @(v) {

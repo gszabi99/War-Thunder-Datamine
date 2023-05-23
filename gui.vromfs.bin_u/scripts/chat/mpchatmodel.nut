@@ -7,7 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
 let { send } = require("eventbus")
 let { CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
@@ -160,7 +160,7 @@ local mpChatModel = {
 }
 
 
-g_script_reloader.registerPersistentData(
+registerPersistentData(
   "mpChatState",
   mpChatState,
   ["log", "currentModeId"]

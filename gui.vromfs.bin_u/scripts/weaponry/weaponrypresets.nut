@@ -92,12 +92,6 @@ let getPresetWeapons = @(unitBlk, weapon) weapon == null ? []
   : "weaponsBlk" in weapon ? getWeaponsByTypes(unitBlk, weapon.weaponsBlk)
   : getPresetWeaponsByName(unitBlk, weapon.name)
 
-let function getPresetWeaponsUniqueIdsByName(unitBlk, name) {
-  let blk = blkOptFromPath(getUnitPresets(unitBlk).findvalue(@(p) p.name == name)?.blk)
-  return (blk % "Weapon").map(@(v) v.preset)
-    .reduce(@(acc, v) acc.contains(v) ? acc : acc.append(v), []) //warning disable: -unwanted-modification
-}
-
 let function getSlotWeapons(slotBlk, tiersCount = MIN_TIERS_COUNT) {
   let res = []
   if (slotBlk == null)
@@ -225,7 +219,6 @@ return {
   getUnitPresets
   getWeaponsByTypes
   getPresetWeapons
-  getPresetWeaponsUniqueIdsByName
   getDefaultPresetId
   getUnitWeaponSlots
   getDefaultCustomPresetParams

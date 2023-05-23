@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let regexp2 = require("regexp2")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { clearBorderSymbols, split } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -335,9 +335,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
                       validateFunc = function (value) {
                         return ::slotbarPresets.validatePresetName(value)
                       },
-                      okFunc = (@(idx, countryId) function(newName) {
-                        this.onChangePresetName(idx, clearBorderSymbols(newName), countryId)
-                      })(idx, countryId)
+                      okFunc = @(newName) this.onChangePresetName(idx, clearBorderSymbols(newName), countryId)
                     })
   }
 
@@ -516,9 +514,7 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
     ::g_crews_list.suspendSlotbarUpdates()
     this.invalidateUnitsModificators(countryIdx)
     batchTrainCrew(tasksData, { showProgressBox = true },
-      (@(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset) function () {
-        this.onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset)
-      })(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset),
+      @() this.onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset),
       function (_taskResult = -1) {
         ::g_crews_list.flushSlotbarUpdate()
         this.onTrainCrewTasksFail()
@@ -761,5 +757,5 @@ let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p
   }
 }
 
-g_script_reloader.registerPersistentDataFromRoot("slotbarPresets")
+registerPersistentDataFromRoot("slotbarPresets")
 subscribe_handler(::slotbarPresets)

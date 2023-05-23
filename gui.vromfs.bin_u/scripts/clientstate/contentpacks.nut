@@ -160,17 +160,17 @@ let function request_packages_and_restart(packList) {
 
   ::scene_msg_box("new_content", null, text,
     [["ok",
-      (@(reqPacksList) function() {
+      function() {
         request_packages_and_restart(reqPacksList)
-      })(reqPacksList)],
+      }],
      ["cancel",
-       (@(reqPacksList) function() {
+       function() {
          let canceledPacks = ::loadLocalByAccount("canceledPacks") ?? DataBlock()
          foreach (pack in reqPacksList)
            if (!(pack in canceledPacks))
              canceledPacks[pack] = true
          ::saveLocalByAccount("canceledPacks", canceledPacks)
-       })(reqPacksList)]
+       }]
     ],
     "ok")
 }
@@ -277,7 +277,7 @@ let function set_asked_pack(pack, askTag = null) {
   }
 
   ::scene_msg_box("req_pkg_locatization", null, loc("yn1/have_new_content_lang"),
-    [["download", (@(pack) function() { request_packages_and_restart([pack]) })(pack)], ["cancel"]], "cancel", params)
+    [["download", function() { request_packages_and_restart([pack]) }], ["cancel"]], "cancel", params)
 }
 
 ::check_speech_country_unit_localization_package_and_ask_download <- function check_speech_country_unit_localization_package_and_ask_download() {
@@ -302,9 +302,7 @@ let function set_asked_pack(pack, askTag = null) {
     [
       [
         "ok",
-        (@(reqPacksList) function() {
-          request_packages_and_restart(reqPacksList)
-        })(reqPacksList)
+        @() request_packages_and_restart(reqPacksList)
       ],
       ["cancel", function() {}]
     ],

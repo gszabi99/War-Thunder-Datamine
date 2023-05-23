@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
@@ -75,7 +75,7 @@ local MP_CHAT_PARAMS = {
   hasEnableChatMode = false
 
   constructor() {
-    g_script_reloader.registerPersistentData("mpChat", this,
+    registerPersistentData("mpChat", this,
       ["log_text", "curMode",
        "isActive", "chatInputText"
       ])

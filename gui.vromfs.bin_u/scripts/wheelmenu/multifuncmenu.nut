@@ -18,7 +18,6 @@ local { emulateShortcut } = require("controls")
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
                                  | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
-                                 | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
 
   wndControlsAllowMaskWhenInactive = CtrlsInGui.CTRL_ALLOW_FULL
 

@@ -831,13 +831,15 @@ local axisMappedOnMouse = {
     if (!::can_change_helpers_mode() && this.filter != null) {
       foreach (idx, value in this.filterValues)
         if (value == this.filter) {
-          if (idx != filterId)
+          if (idx != filterId) {
+            let newValue = idx
             this.msgBox("cant_change_controls", loc("msgbox/tutorial_controls_type_locked"),
-                   [["ok", (@(filterObj, idx) function() {
+                   [["ok", function() {
                        if (checkObj(filterObj))
-                         filterObj.setValue(idx)
-                     })(filterObj, idx)
+                         filterObj.setValue(newValue)
+                     }
                    ]], "ok")
+          }
           break
         }
       return
@@ -1099,10 +1101,8 @@ local axisMappedOnMouse = {
       )
     })
     this.msgBox("controls_bind_existing_shortcut", msg, [
-      ["add", (@(_curBinding, devs, btns, shortcutId) function() {
-        this.doBind(devs, btns, shortcutId)
-      })(curBinding, devs, btns, shortcutId)],
-      ["replace", (@(curBinding, devs, btns, shortcutId) function() {
+      ["add", @() this.doBind(devs, btns, shortcutId)],
+      ["replace", function() {
         for (local i = curBinding.len() - 1; i >= 0; i--) {
           let binding = curBinding[i]
           if (!(binding[1] in this.shortcuts[binding[0]]))
@@ -1112,7 +1112,7 @@ local axisMappedOnMouse = {
           this.updateShortcutText(binding[0])
         }
         this.doBind(devs, btns, shortcutId)
-      })(curBinding, devs, btns, shortcutId)],
+      }],
       ["cancel", function() { }],
     ], "cancel")
     return true
@@ -1493,9 +1493,7 @@ local axisMappedOnMouse = {
       this.guiScene.performDelayed(this, @()
         this.msgBox("zoom_axis_assigned", msg,
         [
-          ["replace", (@(zoomAxisIndex) function() {
-            this.setAxisBind(zoomAxisIndex, -1, axisName)
-          })(zoomAxisIndex)],
+          ["replace", @() this.setAxisBind(zoomAxisIndex, -1, axisName)],
           ["cancel", function() {
             if (checkObj(obj))
               obj.setValue(0)

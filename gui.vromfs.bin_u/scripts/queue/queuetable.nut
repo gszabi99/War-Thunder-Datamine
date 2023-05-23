@@ -152,7 +152,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
     else {
       let blk = handyman.renderCached("%gui/countriesList.tpl",
                                           {
-                                            countries = (@(countriesList) function () {
+                                            countries = function() {
                                               let res = []
                                               foreach (country in countriesList)
                                                 res.append({
@@ -160,7 +160,7 @@ local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
                                                   countryIcon = ::get_country_icon(country)
                                                 })
                                               return res
-                                            })(countriesList)
+                                            }
                                           })
 
       let iconsObj = availCountriesObj.findObject("countries_icons")

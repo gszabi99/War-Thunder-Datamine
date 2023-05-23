@@ -78,7 +78,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   }
 
   function getRoom(roomId) {
-    return u.search(this.getList(), (@(roomId) function(r) { return r.roomId == roomId })(roomId))
+    return this.getList().findvalue(@(r) r.roomId == roomId)
   }
 
   function requestList(filter) {

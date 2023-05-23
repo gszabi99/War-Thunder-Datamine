@@ -71,18 +71,18 @@ def extinguish_system_update_es(act : UpdateStageInfoAct;
 
     // if extinguishing is complete
     if 0.0 < extinguish_system_extinguish_time_end && extinguish_system_extinguish_time_end < total_time
-      let has_mod = has_extinguisher_mod(gm, extinguish_system_extinguisher_count, extinguish_system_extinguisher_count_max)
       let assistee_eid = unit.extinguishAssisteeEid
       let assistant_eid = unit.extinguishAssistantEid
       assert((assistee_eid != INVALID_ENTITY_ID) == extinguish_system_is_assisting) // has assistee doesnt match is assisting state
       assert(assistant_eid == INVALID_ENTITY_ID || !extinguish_system_is_assisting) // has assistant but assisting someone
 
-      sendEvent(eid, [[EventExtinguishSystemStopBurnWithExtinguisher
-        targetEid = assistee_eid != INVALID_ENTITY_ID ? assistee_eid : eid,
-        hasMod = has_mod,
-        withPenalty = extinguish_system_penalty_without_mod
-      ]])
       if assistant_eid == INVALID_ENTITY_ID
+        let has_mod = has_extinguisher_mod(gm, extinguish_system_extinguisher_count, extinguish_system_extinguisher_count_max)
+        sendEvent(eid, [[EventExtinguishSystemStopBurnWithExtinguisher
+          targetEid = assistee_eid != INVALID_ENTITY_ID ? assistee_eid : eid,
+          hasMod = has_mod,
+          withPenalty = extinguish_system_penalty_without_mod
+        ]])
         sendEvent(eid, [[EventExtinguishSystemSpendExtinguisher]])
 
   // if all fire is already extinguished, but extinguisher is activated - spend it and turn it off

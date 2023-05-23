@@ -133,6 +133,8 @@ let function getShopBlkTable(selAirName = "") {
             airData.reqAir <- airBlk.reqAir
           if (airBlk?.futureReqAir != null)
             airData.futureReqAir <- airBlk.futureReqAir
+          if (airBlk?.futureReqAirDesc != null)
+            airData.futureReqAirDesc <- airBlk.futureReqAirDesc
           if (airBlk?.rankPosXY) {
             airData.rankPosXY <- airBlk.rankPosXY
             hasRankPosXY = true

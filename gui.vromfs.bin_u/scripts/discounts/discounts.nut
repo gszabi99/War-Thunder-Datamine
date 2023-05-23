@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { targetPlatform, isPlatformPC, isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 
@@ -362,4 +362,4 @@ local updateGiftUnitsDiscountTask = -1
 require("%scripts/slotbar/elems/discountIconElem.nut")
 
 subscribe_handler(::g_discount, ::g_listener_priority.CONFIG_VALIDATION)
-g_script_reloader.registerPersistentDataFromRoot("g_discount")
+registerPersistentDataFromRoot("g_discount")

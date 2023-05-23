@@ -78,7 +78,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     if (!invite)
       return
 
-    this.guiScene.performDelayed(this, (@(invite) function() {
+    this.guiScene.performDelayed(this, function() {
       if (invite.haveRestrictions()) {
         if (invite.needCheckSystemRestriction) {
           if (!isMultiplayerPrivilegeAvailable.value) {
@@ -103,7 +103,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
       invite.accept()
       if (this.isAutoClose)
         this.goBack()
-    })(invite))
+    })
   }
 
   function onReject(obj) {
@@ -111,9 +111,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
     if (!invite)
       return
 
-    this.guiScene.performDelayed(this, (@(invite) function() {
-      invite.reject()
-    })(invite))
+    this.guiScene.performDelayed(this, @() invite.reject())
   }
 
   function initAutoClose() {

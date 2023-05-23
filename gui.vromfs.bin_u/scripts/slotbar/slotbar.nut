@@ -11,7 +11,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { round } = require("math")
@@ -78,7 +78,7 @@ if need - put commented in array above
 ::selected_crews <- []
 ::unlocked_countries <- []
 
-g_script_reloader.registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unlocked_countries"])
+registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unlocked_countries"])
 
 ::build_aircraft_item <- function build_aircraft_item(id, air, params = {}) {
   local res = ""

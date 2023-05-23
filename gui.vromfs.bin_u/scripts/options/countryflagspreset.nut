@@ -4,10 +4,10 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-g_script_reloader.loadOnce("%scripts/options/bhvHarmonizedImage.nut")
+loadOnce("%scripts/options/bhvHarmonizedImage.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let DataBlock = require("DataBlock")

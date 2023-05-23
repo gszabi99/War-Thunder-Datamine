@@ -51,14 +51,14 @@ requestOptions:
 ::request_matching <- function request_matching(functionName, onSuccess = null, onError = null, params = null, requestOptions = null) {
   let showError = getTblValue("showError", requestOptions, true)
 
-  let callback = (@(onSuccess, onError, showError) function(response) {
+  let callback = function(response) {
                      if (!::checkMatchingError(response, showError)) {
                        if (onError != null)
                          onError(response)
                      }
                      else if (onSuccess != null)
                       onSuccess(response)
-                   })(onSuccess, onError, showError)
+                   }
 
   matchingApiFunc(functionName, callback, params)
 }

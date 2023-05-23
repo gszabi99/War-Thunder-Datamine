@@ -288,7 +288,8 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     this.teams = {}
     foreach (side in sidesOrder) {
       let teamName = teamBySide[side]
-      let teamArmiesList = u.filter(wwArmies, (@(side) function(army) { return army.side == side })(side))
+      let teamSide = side
+      let teamArmiesList = u.filter(wwArmies, (@(army) army.side == teamSide))
       teamArmiesList.sort(function (a, b) { return a.unitType - b.unitType })
 
       local teamCountry = ""
@@ -305,14 +306,14 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
       }
 
       let teamCasualties = getTblValue(teamName, teamsCasualties, {})
-      let teamUnitStats  = u.mapAdvanced(teamUnits, (@(teamCasualties) function(initial, unitName, ...) {
+      let teamUnitStats  = u.mapAdvanced(teamUnits, function(initial, unitName, ...) {
         let casualties = getTblValue(unitName, teamCasualties, 0)
         return {
           initial    = initial
           remain     = initial - casualties
           casualties = casualties
         }
-      })(teamCasualties))
+      })
 
       this.teams[teamName] <- u.extend({}, this.teamDefaults, {
         name            = teamName

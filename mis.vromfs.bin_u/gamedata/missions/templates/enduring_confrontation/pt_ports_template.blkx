@@ -76,11 +76,11 @@
           }
         ],
         "unitSetProperties": {
+          "object": "all_port_defenders_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "all_port_defenders_squad",
           "targetAir": false,
           "checkVisibilityTarget": true
         }
@@ -358,13 +358,7 @@
             "time": 0.0
           }
         },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "pt_ship_spawn_enable",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
+        "conditions": {},
         "actions": {
           "varSetInt": {
             "value": 0,
@@ -677,7 +671,12 @@
               "target": "@pt_generate_spawns_destroyers_squad_name",
               "type": "squad"
             }
-          ]
+          ],
+          "varCompareBool": {
+            "var_value": "pt_ship_spawn_enable",
+            "value": true,
+            "comparasion_func": "equal"
+          }
         },
         "actions": {
           "comment": {
@@ -4298,14 +4297,14 @@
             "input_var": "pt_generate_ship_t1_cur_idx"
           },
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "pt_t1_destroyers_squad",
               "pt_t1_cruisers_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.9,
             "gndAccuracy": 0.1,
             "airAccuracy": 0.3,
@@ -4789,14 +4788,14 @@
             "input_var": "pt_generate_ship_t2_cur_idx"
           },
           "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "pt_t2_destroyers_squad",
               "pt_t2_cruisers_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.9,
             "gndAccuracy": 0.1,
             "airAccuracy": 0.3,
@@ -5845,17 +5844,17 @@
           "moAddMissionObjective": [
             {
               "target": "pt_t2_assist_attack_port",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
+              "unit_or_area": "@pt_attack_port_capture_area_name",
               "object_marking": 0,
-              "unit_or_area": "@pt_attack_port_capture_area_name"
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             },
             {
               "target": "pt_t1_assist_defend_port",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
+              "unit_or_area": "@pt_attack_port_capture_area_name",
               "object_marking": 0,
-              "unit_or_area": "@pt_attack_port_capture_area_name"
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             }
           ],
           "varSetString": [
@@ -5896,17 +5895,17 @@
           "moAddMissionObjective": [
             {
               "target": "pt_t1_assist_attack_port",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
+              "unit_or_area": "@pt_attack_port_capture_area_name",
               "object_marking": 0,
-              "unit_or_area": "@pt_attack_port_capture_area_name"
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             },
             {
               "target": "pt_t2_assist_defend_port",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
+              "unit_or_area": "@pt_attack_port_capture_area_name",
               "object_marking": 0,
-              "unit_or_area": "@pt_attack_port_capture_area_name"
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             }
           ],
           "varSetString": [
@@ -7054,12 +7053,12 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@pt_capture_port_t1_defenders_name",
+            "object_type": "any",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@pt_capture_port_t1_defenders_name",
-            "object_type": "any",
             "army": 1
           },
           "varSetInt": {
@@ -7871,12 +7870,12 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@pt_capture_port_t2_defenders_name",
+            "object_type": "any",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@pt_capture_port_t2_defenders_name",
-            "object_type": "any",
             "army": 2
           },
           "varSetInt": {

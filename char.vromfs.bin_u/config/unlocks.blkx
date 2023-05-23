@@ -82,51 +82,12 @@
     {
       "id": "gift_beginners_kit_first_login",
       "type": "challenge",
-      "hidden": true,
-      "mode": {
-        "type": "char_login_time_range",
-        "beginDate": "2023-01-30 00:00:00",
-        "endDate": "2032-01-01 00:00:00",
-        "condition": [
-          {
-            "type": "playerFirstLogin",
-            "beginDate": "2023-01-30 00:00:00",
-            "endDate": "2032-01-01 00:00:00"
-          },
-          {
-            "type": "char_player_has_feature",
-            "feature": "steam_only_event"
-          }
-        ]
-      }
+      "hidden": true
     },
     {
       "id": "gift_beginners_kit_time_played",
       "type": "challenge",
-      "hidden": true,
-      "mode": {
-        "type": "timePlayed",
-        "num": 1,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerPlatform",
-            "platform": [
-              "win32",
-              "win32_wow64",
-              "win64",
-              "linux64",
-              "macosx"
-            ]
-          },
-          {
-            "type": "playerHasFeature",
-            "feature": "steam_only_event"
-          }
-        ]
-      }
+      "hidden": true
     },
     {
       "id": "gift_beginners_kit_tech",
@@ -142,21 +103,7 @@
       "id": "gift_beginners_kit_tech_battle",
       "type": "achievement",
       "chapter": "test",
-      "hidden": true,
-      "mode": {
-        "type": "char_mission",
-        "num": 2,
-        "condition": [
-          {
-            "type": "char_unlocked",
-            "unlock": "gift_beginners_kit_tech"
-          },
-          {
-            "type": "char_player_has_feature",
-            "feature": "steam_only_event"
-          }
-        ]
-      }
+      "hidden": true
     },
     {
       "id": "title_high_roller",
@@ -10179,6 +10126,50 @@
         "premium": true,
         "country": "country_ussr",
         "unitClass": "aircraft_only"
+      }
+    },
+    {
+      "id": "il_magach_6b_gal/isr_camo_sandgray",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_israel",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 420,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "il_magach_6b_gal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "il_magach_6b_gal/uk_camo_winter_olive",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_israel",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 610,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "il_magach_6b_gal"
+          }
+        ]
       }
     },
     {

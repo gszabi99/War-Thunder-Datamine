@@ -206,8 +206,8 @@ let WwMap = class {
 
         local wwUnits = wwActionsWithUnitsList.loadWWUnitsFromUnitsArray(group.units)
         wwUnits.sort(@(a, b) a.name <=> b.name)
-        wwUnitsList.extend(wwUnits.map(@(u)
-          u.getShortStringView({ addPreset = false, needShopInfo = true, hasIndent = true })))
+        wwUnitsList.extend(wwUnits.map(@(unit)
+          unit.getShortStringView({ addPreset = false, needShopInfo = true, hasIndent = true })))
       }
     }
     else

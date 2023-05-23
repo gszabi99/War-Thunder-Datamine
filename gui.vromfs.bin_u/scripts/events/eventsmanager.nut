@@ -866,8 +866,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
         continue
 
       let countries = this.getCountriesByTeams(mgm)
-      local cSet = u.search(res,
-        (@(countries) function(set) { return u.isEqual(set.countries, countries) })(countries))
+      local cSet = u.search(res, @(set) u.isEqual(set.countries, countries))
 
       if (!cSet) {
         cSet = {
@@ -2015,7 +2014,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     else if (!this.isAllowedByRoomBalance(mGameMode, room)) {
       let teamsCnt = ::SessionLobby.getMembersCountByTeams(room)
       let myTeam = this.getAvailableTeams(mGameMode, room)[0]
-      let otherTeam = u.search(this.getSidesList(mGameMode), (@(myTeam) function(t) { return t != myTeam })(myTeam))
+      let otherTeam = u.search(this.getSidesList(mGameMode), @(t) t != myTeam)
       let membersCount = ::g_squad_manager.getOnlineMembersCount()
       let locParams = {
         chosenTeam = colorize("teamBlueColor", ::g_team.getTeamByCode(myTeam).getShortName())
@@ -2138,9 +2137,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
   /** Returns tickets available for purchase. */
   function getEventTickets(event, canBuyOnly = false) {
     let eventId = this.getEventEconomicName(event)
-    let tickets = ::ItemsManager.getItemsList(itemType.TICKET, (@(eventId, canBuyOnly) function (item) {
-      return item.isForEvent(eventId) && (!canBuyOnly || item.isCanBuy())
-    })(eventId, canBuyOnly))
+    let tickets = ::ItemsManager.getItemsList(itemType.TICKET,
+      @(item) item.isForEvent(eventId) && (!canBuyOnly || item.isCanBuy()))
     return tickets
   }
 
@@ -2149,9 +2147,8 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     let eventId = event.economicName
     if (!::have_you_valid_tournament_ticket(eventId))
       return null
-    let tickets = ::ItemsManager.getInventoryList(itemType.TICKET, (@(eventId) function (item) {
-      return item.isForEvent(eventId) && item.isActive()
-    })(eventId))
+    let tickets = ::ItemsManager.getInventoryList(itemType.TICKET,
+      @(item) item.isForEvent(eventId) && item.isActive())
     return tickets.len() > 0 ? tickets[0] : null
   }
 

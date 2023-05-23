@@ -230,9 +230,9 @@ let function initConfigs() {
     if (!("locId" in cfg))
       cfg.locId = "reward/" + id
     if (!("getValue" in cfg))
-      cfg.getValue = (@(id) function(blk) { return blk?[id] })(id)
+      cfg.getValue = @(blk) blk?[id]
     if (!("getIconStyle" in cfg))
-      cfg.getIconStyle = (@(id) function(_value, _blk) { return LayersIcon.getIconData("reward_" + id) })(id)
+      cfg.getIconStyle = @(_value, _blk) LayersIcon.getIconData($"reward_{id}")
   }
 }
 initConfigs()
@@ -275,7 +275,7 @@ let function getSortedRewardsByConditions(event, awardsBlk  = null) {
 
   //sort rewards
   foreach (condName, typeData in res)
-    typeData.sort((@(condName) function(a, b) {
+    typeData.sort(function(a, b) {
         let aValue = getConditionValue(a)
         let bValue = getConditionValue(b)
         if (aValue != bValue)
@@ -283,7 +283,7 @@ let function getSortedRewardsByConditions(event, awardsBlk  = null) {
         if (a?[condName] != b?[condName])
           return ((a?[condName] ?? "") > (b?[condName] ?? "")) ? 1 : -1
         return 0
-      })(condName))
+      })
 
   return res
 }

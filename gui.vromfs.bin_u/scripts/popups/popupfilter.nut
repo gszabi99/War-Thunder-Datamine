@@ -114,8 +114,8 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!this.onChangeFn)
       return
 
-    foreach (inst in this.stateList.filter(@(inst) inst.typeName == obj.typeName))
-      this.stateList[inst.id].value = false
+    foreach (state in this.stateList.filter(@(inst) inst.typeName == obj.typeName))
+      this.stateList[state.id].value = false
 
     this.updateMainBtn()
     this.updateColumn(obj.typeName)

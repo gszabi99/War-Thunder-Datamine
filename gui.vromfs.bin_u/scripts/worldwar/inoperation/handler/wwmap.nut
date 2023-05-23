@@ -667,9 +667,8 @@ let { LEADER_OPERATION_STATES,
     if (!selectedArmy.needUpdateDescription())
       return
 
-    this.timerDescriptionHandler = ::Timer(blockObj, 1, (@(blockObj, selectedArmy) function() {
-      this.updateSelectedArmy(blockObj, selectedArmy)
-    })(blockObj, selectedArmy), this, true)
+    this.timerDescriptionHandler = ::Timer(blockObj, 1,
+      @() this.updateSelectedArmy(blockObj, selectedArmy), this, true)
   }
 
   function showSelectedLogArmy(params) {

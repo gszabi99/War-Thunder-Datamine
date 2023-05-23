@@ -430,7 +430,7 @@ enum CChoiceState {
   function goBack() {
     let presetsData = this.createNewbiePresetsData()
     let handler = this
-    this.clnSetStartingInfo(presetsData, (@(presetsData, handler) function () {
+    this.clnSetStartingInfo(presetsData, function () {
         // This call won't procude any additional char-requests
         // as all units are already set previously as a single
         // batch char request.
@@ -439,7 +439,7 @@ enum CChoiceState {
         ::checkUnlockedCountriesByAirs()
         broadcastEvent("EventsDataUpdated")
         ::gui_handlers.BaseGuiHandlerWT.goBack.call(handler)
-      })(presetsData, handler))
+      })
   }
 
   function afterModalDestroy() {

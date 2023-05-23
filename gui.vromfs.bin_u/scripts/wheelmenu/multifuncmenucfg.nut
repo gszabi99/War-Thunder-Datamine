@@ -14,7 +14,8 @@ let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { get_mission_difficulty_int } = require("guiMission")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getPresetWeaponsUniqueIdsByName } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getUnitPresets } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 
 let getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
@@ -131,18 +132,31 @@ let function hasRadarInSensorsBlk(sensorsBlk) {
   return false
 }
 
-let hasRadar = memoize(function hasRadar(unitId, secondaryWeaponId) {
+let hasRadar = memoizeByMission(function hasRadar(unitId, secondaryWeaponId) {
   let unitBlk = ::get_full_unit_blk(unitId)
   if (hasRadarInSensorsBlk(unitBlk?.sensors))
     return true
   if (unitBlk?.WeaponSlots) {
-    let ids = getPresetWeaponsUniqueIdsByName(unitBlk, secondaryWeaponId)
-    foreach (slot in unitBlk.WeaponSlots % "WeaponSlot") {
-      let wPresets = slot % "WeaponPreset"
-      let acviteSlotBlk = wPresets.findvalue(@(b) ids.contains(b.name))
-      if (hasRadarInSensorsBlk(acviteSlotBlk?.sensors))
-        return true
+    let predefinedPreset = getUnitPresets(unitBlk).findvalue(@(p) p.name == secondaryWeaponId)
+    local weaponsBlk
+    if (predefinedPreset != null)
+      weaponsBlk = blkOptFromPath(predefinedPreset?.blk)
+    else {
+      let unit = getAircraftByName(unitId)
+      if (unit != null)
+        weaponsBlk = getWeaponryCustomPresets(unit).findvalue(@(p) p.name == secondaryWeaponId)?.weaponsBlk
     }
+    let weaponBlkList = weaponsBlk != null ? (weaponsBlk % "Weapon") : []
+    let ids = weaponBlkList
+      .map(@(v) v.preset)
+      .reduce(@(acc, v) acc.contains(v) ? acc : acc.append(v), []) //warning disable: -unwanted-modification
+    if (ids.len())
+      foreach (slot in unitBlk.WeaponSlots % "WeaponSlot") {
+        let wPresets = slot % "WeaponPreset"
+        let acviteSlotBlk = wPresets.findvalue(@(b) ids.contains(b.name))
+        if (hasRadarInSensorsBlk(acviteSlotBlk?.sensors))
+          return true
+      }
   }
   return false
 })

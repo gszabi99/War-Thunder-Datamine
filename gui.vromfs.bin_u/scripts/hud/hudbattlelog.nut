@@ -12,7 +12,7 @@ let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { send } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
 let { get_mplayer_by_id, get_local_mplayer } = require("mission")
@@ -400,4 +400,4 @@ enum BATTLE_LOG_FILTER {
   }
 }
 
-g_script_reloader.registerPersistentDataFromRoot("HudBattleLog")
+registerPersistentDataFromRoot("HudBattleLog")

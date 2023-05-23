@@ -8,7 +8,7 @@ let LoginProcess = require("loginProcess.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 global enum LOGIN_STATE { //bit mask
   AUTHORIZED               = 0x0001 //succesfully connected to auth
@@ -52,7 +52,7 @@ global enum LOGIN_STATE { //bit mask
 }
 
 ::g_login.init <- function init() {
-  g_script_reloader.registerPersistentDataFromRoot("g_login")
+  registerPersistentDataFromRoot("g_login")
   subscribe_handler(this, ::g_listener_priority.CONFIG_VALIDATION)
 }
 

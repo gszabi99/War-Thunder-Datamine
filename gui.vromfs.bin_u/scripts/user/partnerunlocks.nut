@@ -10,7 +10,7 @@ let time = require("%scripts/time.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 
 ::g_partner_unlocks <- {
@@ -100,5 +100,5 @@ let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptRe
   this.partnerExectutedUnlocks = {}
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_partner_unlocks")
+registerPersistentDataFromRoot("g_partner_unlocks")
 subscribe_handler(::g_partner_unlocks, ::g_listener_priority.CONFIG_VALIDATION)

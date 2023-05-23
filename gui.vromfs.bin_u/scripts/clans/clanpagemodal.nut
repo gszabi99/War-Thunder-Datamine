@@ -786,7 +786,8 @@ foreach (idx, item in clan_member_list) {
       foreach (m in members)
         columnData.sortPrepare(m)
 
-    members.sort((@(sortId, statsSortReverse) function(left, right) {
+    let isReversSort = this.statsSortReverse
+    members.sort(function(left, right) {
       local res = 0
       if (sortId != "" && sortId != "nick") {
         if (left[sortId] < right[sortId])
@@ -803,8 +804,8 @@ foreach (idx, item in clan_member_list) {
         else if (nickLeft > nickRight)
           res = -1
       }
-      return statsSortReverse ? -res : res
-    })(sortId, this.statsSortReverse))
+      return isReversSort ? -res : res
+    })
   }
 
   function onEventClanRoomMembersChanged(params = {}) {
@@ -824,7 +825,7 @@ foreach (idx, item in clan_member_list) {
 
     let member = u.search(
       ::my_clan_info.members,
-      (@(nick) function (member) { return member.nick == nick })(nick)
+      function (member) { return member.nick == nick }
     )
 
     if (member) {
@@ -968,7 +969,7 @@ foreach (idx, item in clan_member_list) {
   }
 
   function onClanVehicles(_obj = null) {
-    vehiclesModal.open(@(u)u.isSquadronVehicle() && u.isVisibleInShop(), {
+    vehiclesModal.open(@(unit) unit.isSquadronVehicle() && unit.isVisibleInShop(), {
       wndTitleLocId = "clan/vehicles"
       lastSelectedUnit = getAircraftByName(::clan_get_researching_unit())
     })

@@ -994,12 +994,12 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     if (!playerTeam)
       return ""
 
-    let unitTypeArray = playerTeam.unitTypes.map(@(u) u.tostring())
+    let unitTypeArray = playerTeam.unitTypes.map(@(unitType) unitType.tostring())
     unitTypeArray.append("vs")
 
     foreach (team in this.teams)
       if (team.side != playerSide)
-        unitTypeArray.extend(team.unitTypes.map(@(u) u.tostring()))
+        unitTypeArray.extend(team.unitTypes.map(@(unitType) unitType.tostring()))
     return "".join(unitTypeArray, true)
   }
 

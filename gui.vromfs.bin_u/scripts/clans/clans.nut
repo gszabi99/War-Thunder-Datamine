@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { round } = require("math")
@@ -31,7 +31,7 @@ const MY_CLAN_UPDATE_DELAY_MSEC = -60000
 ::last_update_my_clan_time <- MY_CLAN_UPDATE_DELAY_MSEC
 ::get_my_clan_data_free <- true
 
-g_script_reloader.registerPersistentData("ClansGlobals", getroottable(),
+registerPersistentData("ClansGlobals", getroottable(),
   [
     "my_clan_info"
     "last_update_my_clan_time"
@@ -266,7 +266,7 @@ g_script_reloader.registerPersistentData("ClansGlobals", getroottable(),
   ::g_tasker.addTask(
     taskId,
     null,
-    (@(successCb) function () {
+    function () {
       let logData = {}
       let logDataBlk = ::clan_get_clan_log()
 
@@ -306,7 +306,7 @@ g_script_reloader.registerPersistentData("ClansGlobals", getroottable(),
       }
 
       successCb(logData)
-    })(successCb),
+    },
     errorCb
   )
 }
@@ -960,7 +960,7 @@ g_script_reloader.registerPersistentData("ClansGlobals", getroottable(),
     clan.blacklist.append(blackTemp)
   }
 
-  let getRewardLog = (@(clan) function(clanInfo, rewardBlockId, titleClass) {
+  let getRewardLog = function(clanInfo, rewardBlockId, titleClass) {
     if (!(rewardBlockId in clanInfo))
       return []
 
@@ -970,7 +970,7 @@ g_script_reloader.registerPersistentData("ClansGlobals", getroottable(),
         logObj.append(titleClass.createFromClanReward(title, idx, season, clan))
     })
     return logObj
-  })(clan)
+  }
 
   let sortRewardsInlog = @(a, b) b.seasonTime <=> a.seasonTime
   let getBestRewardLog = function() {

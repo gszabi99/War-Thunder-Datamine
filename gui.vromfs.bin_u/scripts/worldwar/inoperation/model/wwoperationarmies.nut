@@ -60,12 +60,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
       this.addArmyToCache(army)
     }
 
-    let deletingCachedArmiesNames = u.filter(
-      this.armiesByNameCache,
-      (@(findedCachedArmies) function(cachedArmy) {
-        return cachedArmy.name in findedCachedArmies
-      })(findedCachedArmies)
-    )
+    let deletingCachedArmiesNames = u.filter(this.armiesByNameCache,
+      @(cachedArmy) cachedArmy.name in findedCachedArmies)
 
     foreach (_armyName, cachedArmy in deletingCachedArmiesNames)
       u.removeFrom(this.armiesByNameCache, cachedArmy)

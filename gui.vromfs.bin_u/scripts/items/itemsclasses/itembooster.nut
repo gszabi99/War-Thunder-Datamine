@@ -201,9 +201,7 @@ let { getFullUnlockCondsDesc,
     let savedThis = this
     handler.msgBox("activate_additional_booster", bodyText, [
       [
-        "yes", (@(handler, savedThis, checkParams) function () {
-          savedThis._activate(null, handler, checkParams)
-        })(handler, savedThis, checkParams).bindenv(this)
+        "yes", @() savedThis._activate(null, handler, checkParams)
       ], [
         "no", function () {}
       ]], "no", { cancel_fn = function() {} })
@@ -213,9 +211,7 @@ let { getFullUnlockCondsDesc,
     let bodyText = loc("msgbox/isInFlightBooster")
     let savedThis = this
     handler.msgBox("activate_in_flight_booster", bodyText, [[
-      "yes", (@(handler, savedThis, checkParams) function () {
-          savedThis._activate(null, handler, checkParams)
-        })(handler, savedThis, checkParams).bindenv(this)
+      "yes", @() savedThis._activate(null, handler, checkParams)
     ], [
         "no", function () {}
     ]], "no", { cancel_fn = function() {} })

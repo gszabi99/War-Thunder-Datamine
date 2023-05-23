@@ -433,10 +433,10 @@ let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[i
     cost)
   ::scene_msg_box("purchase_ask", null, msgText,
     [
-      ["yes", (@(cost, crew, unit, upgradesAmount) function() {
+      ["yes", function() {
                  if (::check_balance_msgBox(cost))
                    ::g_crew._upgradeUnitSpec(crew, unit, upgradesAmount)
-               })(cost, crew, unit, upgradesAmount)
+               }
       ],
       ["no", function() {}]
     ],

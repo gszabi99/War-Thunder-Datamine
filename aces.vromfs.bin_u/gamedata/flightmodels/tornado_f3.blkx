@@ -3513,7 +3513,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/uk_marconi_ai_mk24z.blk",
+        "blk": "gameData/sensors/uk_marconi_ai_mk24_stage_2g.blk",
         "dmPart": "radar_dm"
       },
       {
@@ -3807,8 +3807,34 @@
       "tier": 2,
       "modClass": "armor"
     },
-    "air_extinguisher": {
+    "heli_night_vision_system": {
       "prevModification": "f_4c_g_suit",
+      "tier": 3,
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
+          "pilotIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
+    "air_extinguisher": {
+      "prevModification": "heli_night_vision_system",
       "tier": 4,
       "modClass": "armor",
       "invertEnableLogic": false
@@ -3842,31 +3868,6 @@
       "reqModification": "uk_skyflash",
       "tier": 4,
       "modClass": "weapon"
-    },
-    "heli_night_vision_system": {
-      "tier": 4,
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "pilotIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          }
-        }
-      }
     }
   },
   "parachutes": {

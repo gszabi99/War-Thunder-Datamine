@@ -7,7 +7,7 @@ let { handlerType } = require("handlerType.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { debug_dump_stack } = require("dagor.debug")
-let { PERSISTENT_DATA_PARAMS, g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { PERSISTENT_DATA_PARAMS, registerPersistentDataFromRoot } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = subscriptions
 
@@ -61,7 +61,7 @@ let { broadcastEvent } = subscriptions
   delayedActionsGuiScene             = null
 
   function init() {
-    g_script_reloader.registerPersistentDataFromRoot("handlersManager")
+    registerPersistentDataFromRoot("handlersManager")
     subscriptions.subscribe_handler(::handlersManager, subscriptions.DEFAULT_HANDLER)
   }
 

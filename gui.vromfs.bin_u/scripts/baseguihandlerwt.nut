@@ -254,14 +254,14 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
     else {
       this.msgBox("no_save_device", loc("xbox360/questionSelectDevice"),
       [
-        ["yes", (@(handler, onlineSave) function() {
+        ["yes", function() {
 
             log("performDelayed save")
-            handler.guiScene.performDelayed(handler, (@(_handler, onlineSave) function() {
+            handler.guiScene.performDelayed(handler, function() {
               ::select_save_device(true)
               this.save(onlineSave)
-            })(handler, onlineSave))
-        })(handler, onlineSave)],
+            })
+        }],
         ["no", function() {
           handler.afterSave()
         }

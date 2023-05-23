@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::strength_unit_expclass_group <- {
@@ -94,7 +94,7 @@ foreach (fn in [
                  "worldWarUtils.nut"
                  "debugTools/dbgUtils.nut"
                ])
-  g_script_reloader.loadOnce($"%scripts/worldWar/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
+  loadOnce($"%scripts/worldWar/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
 
 // Independed Modules
 require("%scripts/worldWar/wwPromo.nut")

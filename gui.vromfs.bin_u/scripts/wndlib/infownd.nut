@@ -99,12 +99,12 @@ const INFO_WND_SAVE_PATH = "infoWnd"
           cb = Callback(btn.onClick, this.buttonsContext)
 
         let cbName = "onClickBtn" + idx
-        this.buttonsCbs[cbName] <- (@(cb, infoHandler) function() {
+        this.buttonsCbs[cbName] <- function() {
           if (cb)
             cb()
           if (infoHandler && infoHandler.isValid())
             infoHandler.onButtonClick()
-        })(cb, infoHandler)
+        }
         btn.funcName <- cbName
         markup += handyman.renderCached("%gui/commonParts/button.tpl", btn)
 

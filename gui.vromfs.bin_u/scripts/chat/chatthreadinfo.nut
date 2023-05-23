@@ -182,9 +182,9 @@ const MAX_THREAD_LANG_VISIBLE = 3
     let menu = [
       {
         text = this.getJoinText()
-        action = (@(thread) function() {
+        action = function() {
           thread.join()
-        })(thread)
+        }
       }
     ]
 

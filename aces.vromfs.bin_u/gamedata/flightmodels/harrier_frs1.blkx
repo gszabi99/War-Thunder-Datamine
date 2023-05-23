@@ -2232,6 +2232,14 @@
         "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_bomb_dlt_1000lbs.blk"
       },
       {
+        "name": "harrier_frs1_bomb_1000lbs_n117",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_bomb_1000lbs_n117.blk"
+      },
+      {
+        "name": "harrier_frs1_bomb_dlt_1000lbs_n117",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_bomb_dlt_1000lbs_n117.blk"
+      },
+      {
         "name": "harrier_frs1_bomb_1000lbs_aim9",
         "blk": "gameData/FlightModels/weaponPresets/harrier_frs1_bomb_1000lbs_aim9.blk"
       },
@@ -2509,6 +2517,44 @@
               "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_left_wing.blk",
               "emitter": "dlt_001"
             }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "emitter": "1000lbs_gp_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_x2_left_wing_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "dlt_001",
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_left_wing_n117.blk",
+              "emitter": "dlt_001"
+            }
           }
         ]
       },
@@ -2517,25 +2563,46 @@
         "tier": 6,
         "order": 5,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_large",
-          "name": "1000lbs",
-          "reqModification": "sea_hawk_2x1000lb",
-          "ShowNodes": {
-            "node": [
-              "pylon_c",
-              "pylon_c_upor"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_c",
+                "pylon_c_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "1000lbs_gp_002",
+              "bullets": 1
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-            "emitter": "1000lbs_gp_002",
-            "bullets": 1
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_c",
+                "pylon_c_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "emitter": "1000lbs_gp_002",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 4,
@@ -2595,6 +2662,44 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_right_wing.blk",
+              "emitter": "dlt_002"
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "1000lbs_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
+              "emitter": "1000lbs_gp_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "1000lbs_x2_right_wing_n117",
+            "reqModification": "sea_hawk_2x1000lb",
+            "ShowNodes": {
+              "node": [
+                "dlt_002",
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/uk_dlt_1000_gp_x2_right_wing_n117.blk",
               "emitter": "dlt_002"
             }
           }

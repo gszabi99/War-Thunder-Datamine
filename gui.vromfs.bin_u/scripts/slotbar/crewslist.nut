@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -131,4 +131,4 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 }
 
 subscribe_handler(::g_crews_list, ::g_listener_priority.DEFAULT_HANDLER)
-g_script_reloader.registerPersistentData("g_crews_list", ::g_crews_list, [ "isCrewListOverrided" ])
+registerPersistentData("g_crews_list", ::g_crews_list, [ "isCrewListOverrided" ])

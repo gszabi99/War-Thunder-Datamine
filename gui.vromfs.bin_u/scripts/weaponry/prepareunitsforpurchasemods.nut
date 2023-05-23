@@ -70,12 +70,12 @@ checkUnboughtMods = function(silent = false) {
   ::scene_msg_box("buy_all_available_mods", null,
     loc("msgbox/buy_all_researched_modifications",
       { unitsList = ",".join(stringOfUnits, true), cost = cost.getTextAccordingToBalance() }),
-    [["yes", (@(cost, unitsWithNBMods) function() {
+    [["yes", function() {
         if (!::check_balance_msgBox(cost, @()checkUnboughtMods()))
           return
 
         purchaseModifications(unitsWithNBMods)
-      })(cost, unitsWithNBMods)],
+      }],
      ["no", @()clear() ]],
       "yes", { cancel_fn = @()clear() })
 }

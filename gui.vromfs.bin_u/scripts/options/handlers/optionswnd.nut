@@ -115,10 +115,10 @@ let function openOptionsWnd(group = null) {
     this.resetNavigation()
 
     if (this.curGroup >= 0) {
-      this.applyFunc = (@(newGroup) function() {
+      this.applyFunc = function() {
         this.fillOptions(newGroup)
         this.applyFunc = null
-      })(newGroup)
+      }
       this.applyOptions()
     }
     else
@@ -529,10 +529,10 @@ let function openOptionsWnd(group = null) {
     this.msgBox("warning",
       format(loc("options/msg_remove_radio"), nameRadio),
       [
-        ["ok", (@(nameRadio) function() {
+        ["ok", function() {
           ::remove_internet_radio_station(nameRadio);
           broadcastEvent("UpdateListRadio", {})
-        })(nameRadio)],
+        }],
         ["cancel", function() {}]
       ], "ok")
   }

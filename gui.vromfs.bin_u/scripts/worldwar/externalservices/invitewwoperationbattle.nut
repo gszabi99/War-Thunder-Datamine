@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -27,7 +27,7 @@ const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
     this.battleId = params?.battleId ?? this.battleId
 
     //do not set delayed when scipt reload to not receive invite popup on each script reload
-    this.setDelayed(!g_script_reloader.isInReloading && !this.getOperation())
+    this.setDelayed(!isInReloading() && !this.getOperation())
 
     if (!initial)
       return

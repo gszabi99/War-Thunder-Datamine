@@ -124,7 +124,7 @@ let function proceedPlayersList() {
   }
 
   requestUnknownPSNIds(
-    playersList.map(@(u) u.accountId),
+    playersList.map(@(player) player.accountId),
     knownUsers,
     psnUpdateContactsList
   )

@@ -111,8 +111,8 @@ options.addTypes({
     isShowForUnit = @(_p) true
     getUseropt = function(p) {
       let skinsOpt = getSkinsOption(p.unit?.name ?? "")
-      skinsOpt.items = skinsOpt.items.map(@(v, idx) v.__merge({
-        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[idx].id, UNLOCKABLE_SKIN) }
+      skinsOpt.items = skinsOpt.items.map(@(v, i) v.__merge({
+        tooltipObj = { id = DECORATION.getTooltipId(skinsOpt.decorators[i].id, UNLOCKABLE_SKIN) }
       }))
       return skinsOpt
     }

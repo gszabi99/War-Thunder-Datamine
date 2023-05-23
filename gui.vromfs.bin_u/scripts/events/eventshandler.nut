@@ -150,12 +150,12 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     if (newChapterId == this.curChapterId && this.curEventId == newEventId)
       return this.updateWindow()
 
-    this.checkQueue((@(newEventId) function () {
+    this.checkQueue(function () {
         this.curChapterId = newChapterId
         this.curEventId = newEventId
         this.selectedIdx = curEventIdx
         this.updateWindow()
-      })(newEventId),
+      },
       function() { this.selectEvent(this.curEventId) })
   }
 

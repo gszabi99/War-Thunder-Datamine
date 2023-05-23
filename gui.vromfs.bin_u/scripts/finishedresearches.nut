@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::researched_items_table <- null
@@ -14,7 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 ::researchedModForCheck <- "prevMod"
 ::researchedUnitForCheck <- "prevUnit"
 
-g_script_reloader.registerPersistentData("finishedResearchesGlobals", getroottable(),
+registerPersistentData("finishedResearchesGlobals", getroottable(),
   ["researched_items_table", "abandoned_researched_items_for_session"])
 
 let isResearchForModification = @(research)

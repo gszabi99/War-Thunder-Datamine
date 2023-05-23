@@ -24,12 +24,12 @@ let { get_gui_option } = require("guiOptions")
 let { dynamicGetVisual } = require("dynamicMission")
 let { select_mission, select_mission_full } = require("guiMission")
 let { get_game_mode, get_game_type } = require("mission")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { split, utf8ToLower } = require("%sqstd/string.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
-g_script_reloader.registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
+registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
 ::gui_handlers.CampaignChapter <- class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -302,12 +302,12 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     if (!::check_package_and_ask_download("hc_pacific"))
       return
 
-    this.guiScene.performDelayed(this, (@(videoName) function(_obj) {
+    this.guiScene.performDelayed(this, function(_obj) {
       if (!::is_system_ui_active()) {
         ::play_movie(videoName, false, true, true)
         ::add_video_seen(videoName)
       }
-    })(videoName))
+    })
   }
 
   function getSelectedMissionIndex(needCheckFocused = true) {
@@ -747,10 +747,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.needCheckDiffAfterOptions = diffOption != null
 
     let cb = Callback(this.afterMissionOptionsApply, this)
-    this.createModalOptions(optionItems, (@(cb, missionBlk) function() {
-      ::gui_handlers.Briefing.finalApply.call(this, missionBlk) //!!FIX ME: DIRTY HACK - called brifing function in modalOptions enviroment
+    let misBlk = this.missionBlk
+    this.createModalOptions(optionItems, function() {
+      ::gui_handlers.Briefing.finalApply.call(this, misBlk) //!!FIX ME: DIRTY HACK - called brifing function in modalOptions enviroment
       cb()
-    })(cb, this.missionBlk))
+    })
   }
 
   function afterMissionOptionsApply() {
@@ -1042,7 +1043,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     .sort(@(a, b) a <=> b)
 
   getAvailableUnitTypes = @() unitTypes.types
-    .filter(@(u) u.isAvailable())
+    .filter(@(unitType) unitType.isAvailable())
     .sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
 
   function getFiltersView() {
@@ -1050,11 +1051,11 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     let availableMissionGroups = this.getAvailableMissionGroups()
     let mask = this.getFilterMask()
 
-    let unitColumnView = availableUnitTypes.map(@(u) {
-      id    = $"unit_{u.bit}"
-      image = u.testFlightIcon
-      text  = u.getArmyLocName()
-      value = !!(u.bit & mask.unit)
+    let unitColumnView = availableUnitTypes.map(@(unitType) {
+      id    = $"unit_{unitType.bit}"
+      image = unitType.testFlightIcon
+      text  = unitType.getArmyLocName()
+      value = !!(unitType.bit & mask.unit)
     })
 
     let groupColumnView = availableMissionGroups.map(@(g) {

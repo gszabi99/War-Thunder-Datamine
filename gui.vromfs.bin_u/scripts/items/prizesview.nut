@@ -859,7 +859,7 @@ let prizeViewConfig = {
     return true
 
   let itype = item.iType
-  local stack = this._findOneStack(stackList, PRIZE_TYPE.ITEM, (@(itype, item, prize, stackLevel) function(stack) {
+  local stack = this._findOneStack(stackList, PRIZE_TYPE.ITEM, function(stack) {
       let sItem = stack.item
       if (!sItem || sItem.iType != itype)
         return false
@@ -873,7 +873,7 @@ let prizeViewConfig = {
 
       this._addPrizeItemToStack(stack, item, prize, curStackLevel)
       return true
-    })(itype, item, prize, stackLevel))
+    })
 
   if (stack)
     return true

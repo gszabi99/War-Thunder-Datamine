@@ -908,44 +908,52 @@ let function getBulletSetNameByBulletName(unit, bulletName) {
   return null
 }
 
-let function getActiveBulletsGroupInt(air, params = null) {
-  let primaryWeapon = getLastPrimaryWeapon(air)
-  let secondaryWeapon = getLastWeapon(air.name)
-  if (!(primaryWeapon in air.primaryBullets) || !(secondaryWeapon in air.secondaryBullets)) {
-    let weaponToFakeBulletMask = {}
-    let lastFakeIdx = getLastFakeBulletsIndex(air)
-    let total = getBulletsGroupCount(air, true) - getBulletsGroupCount(air, false)
-    let fakeBulletsOffset = lastFakeIdx - total
-    for (local i = 0; i < total; i++) {
-      let bulSet = getBulletsSetData(air, getFakeBulletName(i))
-      if (bulSet)
-        weaponToFakeBulletMask[bulSet.weaponBlkName] <- 1 << (fakeBulletsOffset + i)
-    }
+let function getWeaponToFakeBulletMask(unit) {
+  let res = {}
+  let lastFakeIdx = getLastFakeBulletsIndex(unit)
+  let total = getBulletsGroupCount(unit, true) - getBulletsGroupCount(unit, false)
+  let fakeBulletsOffset = lastFakeIdx - total
+  for (local i = 0; i < total; i++) {
+    let bulSet = getBulletsSetData(unit, getFakeBulletName(i))
+    if (bulSet)
+      res[bulSet.weaponBlkName] <- 1 << (fakeBulletsOffset + i)
+  }
+  return res
+}
 
-    if (!(primaryWeapon in air.primaryBullets)) {
-      local primary = 0
-      let primaryList = getPrimaryWeaponsList(air)
-      if (primaryList.len() > 0) {
-        let airBlk = ::get_full_unit_blk(air.name)
-        if (airBlk)
-          primary = getActiveBulletsIntByWeaponsBlk(air,
-            getCommonWeapons(airBlk, primaryWeapon), weaponToFakeBulletMask)
-      }
-      air.primaryBullets[primaryWeapon] <- primary
-    }
+let function updatePrimaryBullets(unit, primaryWeapon, weaponToFakeBulletMask) {
+  local primary = 0
+  let primaryList = getPrimaryWeaponsList(unit)
+  if (primaryList.len() > 0) {
+    let airBlk = ::get_full_unit_blk(unit.name)
+    if (airBlk)
+      primary = getActiveBulletsIntByWeaponsBlk(unit,
+        getCommonWeapons(airBlk, primaryWeapon), weaponToFakeBulletMask)
+  }
+  unit.primaryBullets[primaryWeapon] <- primary
+}
 
-    if (!(secondaryWeapon in air.secondaryBullets)) {
-      let weapon = air.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
-      air.secondaryBullets[secondaryWeapon] <- getActiveBulletsIntByWeaponsBlk(air,
-        getPresetWeapons(::get_full_unit_blk(air.name), weapon),
-        weaponToFakeBulletMask)
-    }
+let function updateSecondaryBullets(unit, secondaryWeapon, weaponToFakeBulletMask) {
+  let weapon = unit.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
+  unit.secondaryBullets[secondaryWeapon] <- getActiveBulletsIntByWeaponsBlk(unit,
+    getPresetWeapons(::get_full_unit_blk(unit.name), weapon), weaponToFakeBulletMask)
+}
+
+let function getActiveBulletsGroupInt(unit, params = null) {
+  let primaryWeapon = getLastPrimaryWeapon(unit)
+  let secondaryWeapon = getLastWeapon(unit.name)
+  if (!(primaryWeapon in unit.primaryBullets) || !(secondaryWeapon in unit.secondaryBullets)) {
+    let weaponToFakeBulletMask = getWeaponToFakeBulletMask(unit)
+    if (!(primaryWeapon in unit.primaryBullets))
+      updatePrimaryBullets(unit, primaryWeapon, weaponToFakeBulletMask)
+    if (!(secondaryWeapon in unit.secondaryBullets))
+      updateSecondaryBullets(unit, secondaryWeapon, weaponToFakeBulletMask)
   }
 
-  local res = air.primaryBullets[primaryWeapon] | air.secondaryBullets[secondaryWeapon]
-  if (canBulletsBeDuplicate(air)) {
-    res = res & ~((1 << air.unitType.bulletSetsQuantity) - 1) //use only fake bullets mask
-    res = res | getActiveBulletsGroupIntForDuplicates(air, params)
+  local res = unit.primaryBullets[primaryWeapon] | unit.secondaryBullets[secondaryWeapon]
+  if (canBulletsBeDuplicate(unit)) {
+    res = res & ~((1 << unit.unitType.bulletSetsQuantity) - 1) //use only fake bullets mask
+    res = res | getActiveBulletsGroupIntForDuplicates(unit, params)
   }
   return res
 }
@@ -1058,4 +1066,6 @@ return {
   getBulletAnnotation
   getBulletSetNameByBulletName
   getModifIconItem
+  getWeaponToFakeBulletMask
+  updateSecondaryBullets
 }

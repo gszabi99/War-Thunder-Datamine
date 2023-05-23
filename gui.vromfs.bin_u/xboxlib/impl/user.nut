@@ -59,5 +59,6 @@ return {
 
   show_profile_card
   get_xuid = user.get_xuid
+  get_gamertag = user.get_gamertag
   is_any_user_active = user.is_any_user_active
 }

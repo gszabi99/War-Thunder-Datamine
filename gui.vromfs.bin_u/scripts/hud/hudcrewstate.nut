@@ -120,12 +120,13 @@ enums.addTypesByGlobalName("g_hud_crew_member", {
     this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
 
     foreach (crewMemberType in ::g_hud_crew_member.types) {
-      ::g_hud_event_manager.subscribe(crewMemberType.hudEventName,
-        (@(crewMemberType) function (eventData) {
-          let crewObj = this.scene.findObject(crewMemberType.sceneId)
+      let memberType = crewMemberType
+      ::g_hud_event_manager.subscribe(memberType.hudEventName,
+        function (eventData) {
+          let crewObj = this.scene.findObject(memberType.sceneId)
           if (checkObj(crewObj))
-            crewMemberType.setCrewMemberState(crewObj, eventData)
-        })(crewMemberType), this)
+            memberType.setCrewMemberState(crewObj, eventData)
+        }, this)
     }
 
     ::hud_request_hud_crew_state()

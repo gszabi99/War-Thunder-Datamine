@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let DataBlock  = require("DataBlock")
@@ -60,7 +60,7 @@ foreach (fn in [
                  "listPopupWnd/modUpgradeApplyWnd.nut"
                  "roulette/itemsRoulette.nut"
                ])
-  g_script_reloader.loadOnce($"%scripts/items/{fn}")
+  loadOnce($"%scripts/items/{fn}")
 
 foreach (fn in [
                  "itemsBase.nut"
@@ -95,7 +95,7 @@ foreach (fn in [
                  "itemUnitCouponMod.nut"
                  "itemProfileIcon.nut"
                ])
-  g_script_reloader.loadOnce($"%scripts/items/itemsClasses/{fn}")
+  loadOnce($"%scripts/items/itemsClasses/{fn}")
 
 
 ::ItemsManager <- {

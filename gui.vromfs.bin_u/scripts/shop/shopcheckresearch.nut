@@ -200,11 +200,11 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     this.destroyGroupChoose(::isGroupPart(unit) ? unit.group : "")
 
     if (::isGroupPart(unit))
-      this.guiScene.performDelayed(this, (@(unit) function() {
+      this.guiScene.performDelayed(this, function() {
         if (!this.isSceneActiveNoModals())
           return
         this.checkSelectAirGroup(this.getItemBlockFromShopTree(unit.group), unit.name)
-      })(unit))
+      })
 
     this.selectCellByUnitName(unit.name)
   }
@@ -386,20 +386,20 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   }
 
   function flushItemExp(unitOnResearch, afterDoneFunc = null) {
-    let executeAfterDoneFunc = (@(_unitOnResearch, afterDoneFunc) function() {
-        if (!this.isValid())
-          return
+    let executeAfterDoneFunc = function() {
+      if (!this.isValid())
+        return
 
-        this.setResearchManually = true
-        this.updateResearchVariables()
-        this.fillAircraftsList()
-        this.updateButtons()
+      this.setResearchManually = true
+      this.updateResearchVariables()
+      this.fillAircraftsList()
+      this.updateButtons()
 
-        this.selectRequiredUnit()
+      this.selectRequiredUnit()
 
-        if (afterDoneFunc)
-          afterDoneFunc()
-      })(unitOnResearch, afterDoneFunc)
+      if (afterDoneFunc)
+        afterDoneFunc()
+    }
 
     if (this.availableFlushExp <= 0) {
       executeAfterDoneFunc()
@@ -410,9 +410,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     if (this.taskId >= 0) {
       ::set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = executeAfterDoneFunc
-      this.afterSlotOpError = (@(executeAfterDoneFunc) function(_res) {
-          executeAfterDoneFunc()
-        })(executeAfterDoneFunc)
+      this.afterSlotOpError = @(_res) executeAfterDoneFunc()
     }
   }
 

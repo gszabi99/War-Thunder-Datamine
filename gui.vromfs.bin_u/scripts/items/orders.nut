@@ -10,7 +10,7 @@ let { get_mplayer_by_id, get_game_type, get_local_mplayer } = require("mission")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { debug_dump_stack } = require("dagor.debug")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -1063,4 +1063,4 @@ const AUTO_ACTIVATE_TIME = 60
 ::cross_call_api.active_order_request_update <- @()::g_orders.updateActiveOrder()
 ::cross_call_api.active_order_enable <- @()::g_orders.enableOrdersWithoutDagui()
 
-g_script_reloader.registerPersistentDataFromRoot("g_orders")
+registerPersistentDataFromRoot("g_orders")

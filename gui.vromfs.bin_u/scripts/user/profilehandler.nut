@@ -894,7 +894,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     let ediff = getShopDiffCode()
 
     let markerUnlockIds = getUnlockIds(ediff)
-    let manualUnlockIds = getManualUnlocks().map(@(u) u.id)
+    let manualUnlockIds = getManualUnlocks().map(@(unlock) unlock.id)
     let view = { items = [] }
     foreach (chapterName, chapterItem in this.unlocksTree) {
       if (isAchievementPage && chapterName == this.curAchievementGroupName)
@@ -922,8 +922,8 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
           if (isAchievementPage && id == this.curAchievementGroupName)
             curIndex = view.items.len()
 
-          markerSeenIds = markerSeenIds.filter(@(u) groupItem.contains(u))
-          manualSeenIds = manualUnlockIds.filter(@(u) groupItem.contains(u))
+          markerSeenIds = markerSeenIds.filter(@(unlock) groupItem.contains(unlock))
+          manualSeenIds = manualUnlockIds.filter(@(unlock) groupItem.contains(unlock))
 
           view.items.append({
             id = id
@@ -1326,7 +1326,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   }
 
   function showUnlockUnits(obj) {
-    openUnlockUnitListWnd(obj.unlockId, Callback(@(u) this.showUnitInShop(u), this))
+    openUnlockUnitListWnd(obj.unlockId, Callback(@(unit) this.showUnitInShop(unit), this))
   }
 
   function showUnitInShop(unitName) {
@@ -1406,7 +1406,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     if (unlocksListObj.childrenCount() > 0)
       unlocksListObj.setValue(selIdx ?? 0)
 
-    seenUnlockMarkers.markSeen(getUnlockIds(::get_current_ediff()).filter(@(u) unlocksList.contains(u)))
+    seenUnlockMarkers.markSeen(getUnlockIds(::get_current_ediff()).filter(@(unlock) unlocksList.contains(unlock)))
   }
 
   function getUnlockBlockId(unlockId) {

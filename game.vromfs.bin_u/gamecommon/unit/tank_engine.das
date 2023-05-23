@@ -51,20 +51,26 @@ def tank_engine_init_es(evt : CmdInitComponent;
   if !unit.isGroundModel
     return
 
-  assume blk = *evt.modelBlk
-  blk |> datablock_get_block("tankEngine") <| $(tankEngineBlk)
-    tankEngineBlk |> datablock_get_block("engine") <| $(engineBlk)
-      tank_engine__overheatDelay = engineBlk |> datablock_getReal("overheatDelay", tank_engine__overheatDelay)
-      tank_engine__overheatDamage = engineBlk |> datablock_getReal("overheatDamage", tank_engine__overheatDamage)
-      let damageTypeName = engineBlk |> datablock_getStr("overheatDamageType", "")
-      tank_engine__overheatDamageType = find_damage_type_id_by_name(damageTypeName)
-      tank_engine__overheatDamageCooldown = engineBlk |> datablock_getReal("overheatDamageCooldown", tank_engine__overheatDamageCooldown)
-      engineBlk |> datablock_for_each_param("part") <| $(i, t)
-        if t == int(DataBlockParamType TYPE_STRING)
-          let partName = engineBlk |> datablock_getStr(i)
-          let partId = find_part_id(unit.dmData, partName)
-          if partId.valid
-            tank_engine__engine_parts |> push(partId)
+  let tankEngineModelBlk = *evt.modelBlk |> datablock_get_block_by_name("tankEngine")
+  let tankEngineCommonBlk = get_common_unit_systems_blk()
+  if tankEngineModelBlk == null && tankEngineCommonBlk == null
+    return
+
+  assume tankEngineBlk = tankEngineModelBlk != null ? *tankEngineModelBlk : *tankEngineCommonBlk
+  print("tank_engine_es {tankEngineBlk}")
+  tankEngineBlk |> datablock_get_block("engine") <| $(engineBlk)
+    tank_engine__overheatDelay = engineBlk |> datablock_getReal("overheatDelay", tank_engine__overheatDelay)
+    tank_engine__overheatDelay = engineBlk |> datablock_getReal("overheatDelay", tank_engine__overheatDelay)
+    tank_engine__overheatDamage = engineBlk |> datablock_getReal("overheatDamage", tank_engine__overheatDamage)
+    let damageTypeName = engineBlk |> datablock_getStr("overheatDamageType", "")
+    tank_engine__overheatDamageType = find_damage_type_id_by_name(damageTypeName)
+    tank_engine__overheatDamageCooldown = engineBlk |> datablock_getReal("overheatDamageCooldown", tank_engine__overheatDamageCooldown)
+    engineBlk |> datablock_for_each_param("part") <| $(i, t)
+      if t == int(DataBlockParamType TYPE_STRING)
+        let partName = engineBlk |> datablock_getStr(i)
+        let partId = find_part_id(unit.dmData, partName)
+        if partId.valid
+          tank_engine__engine_parts |> push(partId)
     tankEngineBlk |> datablock_get_block("radiator") <| $(radiatorBlk)
       let brokenRadiatorFxEvenName = radiatorBlk |> datablock_getStr("brokenFxEvent", "")
       tank_engine__brokenRadiatorFxEventId = *get_unit_fx(unit) |> getEventIdByName(brokenRadiatorFxEvenName)

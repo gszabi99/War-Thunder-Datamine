@@ -2216,6 +2216,14 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_3e_2x400kg.blk"
       },
       {
+        "name": "mirage_3e_2x250kg_200",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_3e_2x250kg_200.blk"
+      },
+      {
+        "name": "mirage_3e_2x400kg_200",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_3e_2x400kg_200.blk"
+      },
+      {
         "name": "mirage_3e_lau_32",
         "blk": "gameData/FlightModels/weaponPresets/mirage_3e_lau_32.blk"
       },
@@ -2466,6 +2474,36 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21.blk",
+              "emitter": "pylon_pm3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "pm3_fr_250_200",
+            "reqModification": "fr_250kg_type_25c",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_250_samp_type_25_200.blk",
+              "emitter": "pylon_pm3",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "pm3_fr_400_200",
+            "reqModification": "fr_400kg_type_21b",
+            "HideNodes": {
+              "node": "fuse_cap"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pm3_fr_400_samp_type_21_200.blk",
               "emitter": "pylon_pm3",
               "external": true,
               "separate": true

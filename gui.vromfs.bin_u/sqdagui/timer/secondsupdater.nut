@@ -3,8 +3,8 @@
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-g_script_reloader.loadOnce("%sqDagui/daguiUtil.nut")  //!!FIX ME: better to make this modules too
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+loadOnce("%sqDagui/daguiUtil.nut")  //!!FIX ME: better to make this modules too
 
 let class SecondsUpdater {
   timer = 0.0

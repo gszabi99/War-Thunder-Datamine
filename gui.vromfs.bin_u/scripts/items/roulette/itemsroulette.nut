@@ -87,7 +87,7 @@ let function reinitParams() {
 
 let function getRandomItem(trophyData) {
   local res = null
-  local rndChance = frnd() * trophyData.trophy.reduce(@(res, v) res + v.dropChance, 0.0)
+  local rndChance = frnd() * trophyData.trophy.reduce(@(resChance, v) resChance + v.dropChance, 0.0)
 
   foreach (item in trophyData.trophy) {
     res = item

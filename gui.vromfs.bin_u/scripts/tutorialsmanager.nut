@@ -40,7 +40,7 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
 
   function onEventCrewTakeUnit(params) {
     let unit = getTblValue("unit", params)
-    this.actions.append((@(unit) function() { return this.checkTutorialOnSetUnit(unit) })(unit).bindenv(this))
+    this.actions.append((function() { return this.checkTutorialOnSetUnit(unit) }).bindenv(this))
     this.processActions()
   }
 

@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { xboxApprovedUids, xboxBlockedUids } = require("%scripts/contacts/contactsManager.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
@@ -21,7 +21,7 @@ let { isEqual } = u
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
 
-g_script_reloader.registerPersistentData("XboxContactsManagerGlobals", persistent, ["isInitedXboxContacts"])
+registerPersistentData("XboxContactsManagerGlobals", persistent, ["isInitedXboxContacts"])
 
 let presenceStatuses = {
   ONLINE = "online"

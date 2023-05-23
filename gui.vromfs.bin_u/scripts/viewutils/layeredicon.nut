@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 let { round } = require("math")
 let { format, split_by_chars } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { stripTags } = require("%sqstd/string.nut")
 
 /* LayersIcon API:
@@ -249,5 +249,5 @@ LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg) {
 
 LayersIcon.getOffset <- @(itemsLen, minOffset, maxOffset) itemsLen <= 1 ? 0 : max(minOffset, maxOffset / (itemsLen - 1))
 
-g_script_reloader.registerPersistentData("LayersIcon", LayersIcon, LayersIcon[PERSISTENT_DATA_PARAMS])
+registerPersistentData("LayersIcon", LayersIcon, LayersIcon[PERSISTENT_DATA_PARAMS])
 return {LayersIcon}

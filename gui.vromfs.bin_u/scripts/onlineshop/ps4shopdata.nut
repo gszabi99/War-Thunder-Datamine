@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let datablock = require("DataBlock")
@@ -21,7 +21,7 @@ let persistent = {
   categoriesData = datablock() // Collect one time in a session, reset on relogin
   itemsList = {} //Updatable during game
 }
-g_script_reloader.registerPersistentData("PS4ShopData", persistent, ["categoriesData", "itemsList"])
+registerPersistentData("PS4ShopData", persistent, ["categoriesData", "itemsList"])
 
 
 

@@ -171,15 +171,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function onPinChatMenu() {
     let hoursList = [1, 2, 3, 4, 6, 12, 18, 24, 2 * 24, 3 * 24, 5 * 24, 7 * 24, 10 * 24, 14 * 24]
-    let menu = []
-    foreach (hours in hoursList)
-      menu.append({
-        text = loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
-        action = (@(hours) function() {
-          let timeInt = ::get_charserver_time_sec() + time.hoursToSeconds(hours)
-          this.setChatTime(timeInt)
-        })(hours)
-      })
+    let menu = hoursList.map(@(hours) {
+      text = loc("chat/pinThreadForTime", { time = time.hoursToString(hours) })
+      action = function() {
+        let timeInt = ::get_charserver_time_sec() + time.hoursToSeconds(hours)
+        this.setChatTime(timeInt)
+      }
+    })
     ::gui_right_click_menu(menu, this)
   }
 

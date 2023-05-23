@@ -444,7 +444,7 @@ shopData = [
       let endReleaseDate = reqAir.getEndRecentlyReleasedTime()
       if (endReleaseDate > 0) {
         let hasReqAir = (air?.reqAir ?? "") != ""
-        let locId = hasReqAir ? "shop/futureReqAir/desc" : "shop/futureReqAir/desc/withoutReqAir"
+        let locId = air?.futureReqAirDesc ?? (hasReqAir ? "shop/futureReqAir/desc" : "shop/futureReqAir/desc/withoutReqAir")
         alarmTooltip = stripTags(loc(locId, {
           futureReqAir = ::getUnitName(air.futureReqAir)
           curAir = ::getUnitName(air)
@@ -1456,8 +1456,8 @@ shopData = [
   }
 
   function fillUnitsInGroup(tblObj, unitList, selectUnitName = "") {
-    let selected = unitList.findindex(@(u) selectUnitName == u.name) ?? tblObj.getValue()
-    this.initUnitCells(tblObj, unitList.map(@(u) { id = u.name, position = "relative" }))
+    let selected = unitList.findindex(@(unit) selectUnitName == unit.name) ?? tblObj.getValue()
+    this.initUnitCells(tblObj, unitList.map(@(unit) { id = unit.name, position = "relative" }))
     foreach (idx, unit in unitList)
       this.updateUnitCell(tblObj.getChild(idx), unit)
 
@@ -1922,7 +1922,7 @@ shopData = [
 
           if (!this.shopResearchMode) {
             let hasObjective = ::isUnitGroup(unit)
-              ? unit.airsGroup.findindex((@(u) hasMarkerByUnitName(u.name, curEdiff))) != null
+              ? unit.airsGroup.findindex((@(groupUnit) hasMarkerByUnitName(groupUnit.name, curEdiff))) != null
               : u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
             ::show_obj(unitObj.findObject("unlockMarker"), hasObjective)
           }

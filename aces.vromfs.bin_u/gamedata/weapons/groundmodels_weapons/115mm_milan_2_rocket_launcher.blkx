@@ -28,14 +28,14 @@
     "caliber": 0.115,
     "length": 0.68,
     "WdK": [
-      0.1,
-      0.1,
-      0.1
+      1.0,
+      1.0,
+      1.0
     ],
     "CxK": 1.8,
-    "CyK": 6.0,
-    "CyMaxAoA": 2.8,
-    "wingAreaMult": 1.7,
+    "wingAreaMult": 2.25,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
     "distFromCmToStab": 0.01,
     "mass": 7.0,
     "massEnd": 6.83,
@@ -44,7 +44,7 @@
     "timeFire1": 10.7,
     "force": 230.0,
     "force1": 135.0,
-    "timeLife": 15.0,
+    "timeLife": 13.0,
     "thrustDeviation": 0.0,
     "useStartSpeed": true,
     "startSpeed": 75.0,
@@ -52,14 +52,9 @@
     "maxDistance": 2000.0,
     "minDistance": 30.0,
     "operatedDist": 2000.0,
-    "visRotationFreqX": 5.0,
-    "operated": true,
-    "maxLateralAcceleration": 6.0,
-    "autoLeveling": true,
-    "autoAiming": true,
-    "aimCorrectionVelMin": 300.0,
-    "aimSensitivity": 8.0,
-    "maxAxisValues": 0.5,
+    "visRotationFreqX": 12.0,
+    "autoAimingMaxAngle": 1.0,
+    "guidanceType": "saclos",
     "maxDeltaAngle": 0.03,
     "explosiveType": "comp_b",
     "explosiveMass": 1.8,
@@ -121,6 +116,26 @@
       0.0,
       0.0
     ],
+    "guidance": {
+      "launchAngleMax": 5.0,
+      "controlConeFov": 15.0,
+      "breakLockMaxTime": 3.0,
+      "lineOfSightAutopilot": {
+        "timeOut": 0.0,
+        "crossDistToReqCrossVelMult": 3.0,
+        "reqCrossVelRationMax": 0.75,
+        "velDiffToReqAccelMult": 8.0,
+        "accelControl": {
+          "velFrameReference": true,
+          "baseIndSpeed": 1800.0,
+          "reqAccelMax": 5.0,
+          "accelControlProp": 0.0436,
+          "accelControlIntg": 0.0,
+          "accelControlDiff": 0.0006,
+          "accelControlIntgLim": 0.0
+        }
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -459,7 +474,7 @@
       "smokeEffect": "",
       "visual": {
         "traceFreq": 1,
-        "tracer": "100mmRed",
+        "tracer": "tracers_rocket_med_red_sparks",
         "trail": "noTrail"
       }
     }

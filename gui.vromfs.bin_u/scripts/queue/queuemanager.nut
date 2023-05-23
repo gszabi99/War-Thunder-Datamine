@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -46,7 +46,7 @@ foreach (fn in [
                  "queueInfo/qiViewUtils.nut"
                  "queueTable.nut"
                ])
-  g_script_reloader.loadOnce($"%scripts/queue/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
+  loadOnce($"%scripts/queue/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
 
 matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
   if (params?.service != "match" || ::queues.lastQueueReqParams == null)
@@ -75,7 +75,7 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
 
   constructor() {
     this.init()
-    g_script_reloader.registerPersistentData("QueueManager", this, ["queuesList", "lastId", "state"])
+    registerPersistentData("QueueManager", this, ["queuesList", "lastId", "state"])
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 

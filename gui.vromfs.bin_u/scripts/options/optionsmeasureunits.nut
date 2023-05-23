@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { Point2 } = require("dagor.math")
 let { pow } = require("math")
@@ -16,7 +16,7 @@ let { floatToStringRounded } = require("%sqstd/string.nut")
 let persistent = {
   unitsCfg = null
 }
-g_script_reloader.registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
+registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
 
 // Preserve the same order as in measureUnits.blk
 let optionsByIndex = [

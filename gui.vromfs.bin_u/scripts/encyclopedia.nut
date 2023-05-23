@@ -10,10 +10,10 @@ let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let persistent = { encyclopediaData = [] }
 
-g_script_reloader.registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
+registerPersistentData("EncyclopediaGlobals", persistent, ["encyclopediaData"])
 
 let initEncyclopediaData = function() {
   if (persistent.encyclopediaData.len() || !hasFeature("Encyclopedia"))

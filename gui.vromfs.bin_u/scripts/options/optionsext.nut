@@ -10,7 +10,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_unit_option, set_unit_option, set_gui_option, get_gui_option,
   setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption, getCdBaseDifficulty
 } = require("guiOptions")
@@ -143,7 +143,7 @@ let clanRequirementsRankDescId = {
 
 ::mission_name_for_takeoff <- ""
 
-g_script_reloader.registerPersistentData("OptionsExtGlobals", getroottable(),
+registerPersistentData("OptionsExtGlobals", getroottable(),
   [
     "game_mode_maps", "dynamic_layouts",
     "bullets_locId_by_caliber", "modifications_locId_by_caliber",

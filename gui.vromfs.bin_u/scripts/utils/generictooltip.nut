@@ -97,9 +97,8 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
   foreach (key, value in tooltipType)
     if (u.isFunction(value) && startsWith(key, "onEvent")) {
       let eventName = key.slice("onEvent".len())
-      add_event_listener(eventName, (@(eventName) function(eventParams) {
-        tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params)
-      })(eventName), data)
+      add_event_listener(eventName,
+        @(eventParams) tooltipType["onEvent" + eventName](eventParams, obj, handler, id, params))
     }
   return data
 }

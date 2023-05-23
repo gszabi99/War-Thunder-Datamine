@@ -9,7 +9,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
@@ -57,7 +57,7 @@ const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 
 local gui_start_logout_scheduled = false
 
-g_script_reloader.registerPersistentData("util", getroottable(),
+registerPersistentData("util", getroottable(),
   ["current_campaign_id", "current_campaign_mission"])
 
 ::nbsp <- " " // Non-breaking space character
@@ -948,11 +948,11 @@ const MAX_ROMAN_DIGIT = 3
   else if (message == "profile_reload") {
     let oldPenaltyStatus = penalty.getPenaltyStatus()
     let taskId = ::chard_request_profile()
-    ::add_bg_task_cb(taskId, (@(oldPenaltyStatus) function() {
+    ::add_bg_task_cb(taskId, function() {
       let  newPenaltyStatus = penalty.getPenaltyStatus()
       if (newPenaltyStatus.status != oldPenaltyStatus.status || newPenaltyStatus.duration != oldPenaltyStatus.duration)
         broadcastEvent("PlayerPenaltyStatusChanged", { status = newPenaltyStatus.status })
-    })(oldPenaltyStatus))
+    })
   }
 }
 

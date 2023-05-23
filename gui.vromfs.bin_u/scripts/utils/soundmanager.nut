@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 enum PLAYBACK_STATUS {
@@ -74,7 +74,7 @@ enum PLAYBACK_STATUS {
   this.playbackStatus.clear()
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_sound")
+registerPersistentDataFromRoot("g_sound")
 subscribe_handler(::g_sound, ::g_listener_priority.DEFAULT_HANDLER)
 
 //C++ call

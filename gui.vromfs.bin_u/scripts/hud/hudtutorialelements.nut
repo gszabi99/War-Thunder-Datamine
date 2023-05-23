@@ -11,7 +11,7 @@ let DataBlock = require("DataBlock")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 ::g_hud_tutorial_elements <- {
   [PERSISTENT_DATA_PARAMS] = ["visibleHTObjects", "isDebugMode", "debugBlkName"]
@@ -247,5 +247,5 @@ let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptRe
   return this.debugBlkName
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_hud_tutorial_elements")
+registerPersistentDataFromRoot("g_hud_tutorial_elements")
 subscribe_handler(::g_hud_tutorial_elements, ::g_listener_priority.DEFAULT_HANDLER)

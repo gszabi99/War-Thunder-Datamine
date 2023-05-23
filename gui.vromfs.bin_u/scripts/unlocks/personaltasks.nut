@@ -15,16 +15,39 @@ let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlo
 
 const NUM_SUBUNLOCK_COLUMNS = 3
 
+let difficultyTypes = [
+  ::g_battle_task_difficulty.EASY,
+  ::g_battle_task_difficulty.MEDIUM,
+  ::g_battle_task_difficulty.HARD
+]
+
 let function getCurBattleTasks() {
-  let tasks = ::g_battle_tasks.getFullTasksArrayByIncreasingDifficulty()
-  let gameModeId = ::game_mode_manager.getCurrentGameModeId()
-  return ::g_battle_tasks.filterTasksByGameModeId(tasks, gameModeId)
+  let tasks = ::g_battle_tasks.activeTasksArray
+    .filter(@(t) ::g_battle_tasks.isTaskActual(t) && ::g_battle_tasks.canInteract(t))
+  let res = []
+  foreach (diff in difficultyTypes) {
+    let tasksByDiff = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(diff, tasks)
+    if (tasksByDiff.len() == 0)
+      continue
+
+    let taskWithReward = ::g_battle_tasks.getTaskWithAvailableAward(tasksByDiff)
+    if (taskWithReward != null)
+      res.append(taskWithReward)
+    else
+      res.extend(tasksByDiff.filter(@(t) ::g_battle_tasks.isTaskDone(t)
+        || ::g_battle_tasks.isTaskForGM(t, ::game_mode_manager.getCurrentGameModeId())))
+  }
+  return res
 }
 
 let function getBattleTasksView() {
-  let items = getCurBattleTasks()
-    .map(@(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
-    .map(@(cfg) ::g_battle_tasks.generateItemView(cfg, { isInteractive = false }))
+  let items = []
+  foreach (task in getCurBattleTasks()) {
+    let cfg = ::g_battle_tasks.generateUnlockConfigByTask(task)
+    let item = ::g_battle_tasks.generateItemView(cfg, { isInteractive = false })
+    item.isSelected <- !::g_battle_tasks.isTaskDone(task)
+    items.append(item)
+  }
   return { items }
 }
 
@@ -150,7 +173,9 @@ let class PersonalTasksModal extends ::gui_handlers.BaseGuiHandlerWT {
     if (hasTasks) {
       let data = handyman.renderCached(tasksTpl, view)
       this.guiScene.replaceContentFromText(tasksObj, data, data.len(), this)
-      tasksObj.setValue(0)
+
+      let idx = view.items.findindex(@(i) i?.isSelected ?? false) ?? 0
+      tasksObj.setValue(idx)
     }
     else
       noTasksObj.setValue(loc(noTasksLocId))
@@ -165,7 +190,10 @@ let class PersonalTasksModal extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onViewBattleTaskRequirements(obj) {
-    let unlockCfg = ::build_conditions_config(getUnlockById(obj.task_id))
+    let unlockBlk = ::g_battle_tasks.isBattleTask(obj.task_id)
+      ? ::g_battle_tasks.getTaskById(obj.task_id)
+      : getUnlockById(obj.task_id)
+    let unlockCfg = ::build_conditions_config(unlockBlk)
     let reqUnlocks = unlockCfg.names.map(
       @(id) ::build_log_unlock_data(::build_conditions_config(getUnlockById(id))))
     showUnlocksGroupWnd(reqUnlocks, loc("unlocks/requirements"))

@@ -7,8 +7,8 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { Balance } = require("%scripts/money.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-g_script_reloader.loadOnce("%appGlobals/ranks_common_shared.nut")
+let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+loadOnce("%appGlobals/ranks_common_shared.nut")
 
 let { get_time_msec } = require("dagor.time")
 let avatars = require("%scripts/user/avatars.nut")
@@ -48,7 +48,7 @@ let current_user_profile = {
 ::exp_per_rank <- []
 ::prestige_by_rank <- []
 
-g_script_reloader.registerPersistentData("RanksGlobals", getroottable(),
+registerPersistentData("RanksGlobals", getroottable(),
   [
     "discounts", "event_muls",
     "exp_per_rank", "max_player_rank", "prestige_by_rank"

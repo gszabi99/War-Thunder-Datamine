@@ -11,6 +11,7 @@ let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
+let { get_gamertag } = require("%xboxLib/impl/user.nut")
 
 ::gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -69,7 +70,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
   }
 
   function loginStep1_checkGamercard() {
-    if (::xbox_get_active_user_gamertag() == "") {
+    if (get_gamertag() == "") {
       this.isLoginInProcess = false
       this.needAutoLogin = true
       this.onChangeGamertag()
@@ -106,7 +107,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
   }
 
   function updateGamertag() {
-    local text = ::xbox_get_active_user_gamertag()
+    local text = get_gamertag()
     if (text != "")
       text = loc("xbox/playAs", { name = text })
 
@@ -115,7 +116,7 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 
   function onEventXboxActiveUserGamertagChanged(_params) {
     this.updateGamertag()
-    if (this.needAutoLogin && ::xbox_get_active_user_gamertag() != "")
+    if (this.needAutoLogin && get_gamertag() != "")
       this.onOk()
   }
 

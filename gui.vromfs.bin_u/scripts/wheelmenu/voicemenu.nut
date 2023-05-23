@@ -46,7 +46,6 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
                                    | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
-                                   | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
 
   isActive = true
   squadMsg = false

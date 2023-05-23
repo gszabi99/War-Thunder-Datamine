@@ -1249,9 +1249,7 @@ enum decalTwoSidedMode {
         return
 
       if (decorator.canBuyUnlock(this.unit))
-        return this.askBuyDecorator(decorator, (@(curSlotIdx, decorator) function() {
-                                            this.enterEditDecalMode(curSlotIdx, decorator)
-                                          })(curSlotIdx, decorator))
+        return this.askBuyDecorator(decorator, @() this.enterEditDecalMode(curSlotIdx, decorator))
 
       if (decorator.canBuyCouponOnMarketplace(this.unit))
         return this.askMarketplaceCouponAction(decorator)
@@ -1656,10 +1654,10 @@ enum decalTwoSidedMode {
                           }), cost)
 
     this.msgBox("need_money", msgText,
-          [["ok", (@(previewSkinId, cost) function() {
+          [["ok", function() {
             if (::check_balance_msgBox(cost))
-              this.buySkin(previewSkinId, cost)
-          })(this.previewSkinId, cost)],
+              this.buySkin(this.previewSkinId, cost)
+          }],
           ["cancel", function() {} ]], "ok")
   }
 
@@ -1813,14 +1811,14 @@ enum decalTwoSidedMode {
     let slotInfo = this.getSlotInfo(slotId, false, decoratorType)
     this.msgBox("delete_decal", loc(decoratorType.removeDecoratorLocId, { name = decoratorType.getLocName(slotInfo.decalId) }),
     [
-      ["ok", (@(decoratorType, slotInfo) function() {
+      ["ok", function() {
           decoratorType.removeDecorator(slotInfo.id, true)
           ::save_profile(false)
 
           this.generateDecorationsList(slotInfo, decoratorType)
           this.updateSlotsBlockByType(decoratorType)
           this.updateButtons(decoratorType, false)
-        })(decoratorType, slotInfo)
+        }
       ],
       ["cancel", function() {} ]
     ], "cancel")

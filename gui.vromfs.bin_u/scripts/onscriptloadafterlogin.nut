@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 log($"onScriptLoadAfterLogin: wt")
 
 // Please don't move paths from the main list here anymore. Instead, just edit paths in the main list below.
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce, loadIfExist } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 require("unit/initUnitTypes.nut")
 require("controls/shortcutsList/updateShortcutsModulesList.nut")
@@ -388,7 +388,7 @@ foreach (fn in [
 
   "%scripts/gamepadSceneSettings.nut"
 ]) {
-  g_script_reloader.loadOnce(fn)
+  loadOnce(fn)
 }
 
 require("%scripts/controls/controlsFootballNy2021Hack.nut")
@@ -409,4 +409,4 @@ require("%scripts/debugTools/dbgVoiceChat.nut")
 
 
 if (::g_login.isAuthorized() || ::disable_network()) //load scripts from packs only after login
-  g_script_reloader.loadIfExist("%scripts/worldWar/worldWar.nut")
+  loadIfExist("%scripts/worldWar/worldWar.nut")

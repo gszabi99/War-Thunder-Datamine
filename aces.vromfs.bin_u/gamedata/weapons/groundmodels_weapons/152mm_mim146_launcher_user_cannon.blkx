@@ -95,7 +95,7 @@
       "wingAreaMult": 1.2,
       "finsAoaHor": 0.12,
       "finsAoaVer": 0.12,
-      "distFromCmToStab": 0.04,
+      "distFromCmToStab": 0.06,
       "mass": 51.0,
       "massEnd": 31.4,
       "timeFire": 2.0,
@@ -141,8 +141,8 @@
       "explosionPatchRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "fireEffect": "fires_exhaust_jet_early_big",
-      "smokeEffect": "smoke_rocket_tail_light_huge",
+      "fireEffect": "fires_exhaust_jet_early_tiny",
+      "smokeEffect": "smoke_rocket_tail_short",
       "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
@@ -181,15 +181,44 @@
         "beamRider": true,
         "breakLockMaxTime": 3.0,
         "lineOfSightAutopilot": {
-          "timeOut": 0.0,
-          "crossDistToReqCrossVelMult": 3.0,
-          "reqCrossVelRationMax": 0.75,
-          "velDiffToReqAccelMult": 10.0,
+          "timeToGain0": [
+            0.0,
+            0.1
+          ],
+          "timeToGain1": [
+            1.0,
+            0.5
+          ],
+          "timeToGain2": [
+            1.5,
+            0.7
+          ],
+          "timeToGain3": [
+            [
+              2.01,
+              1.0
+            ],
+            [
+              5.0,
+              1.0
+            ]
+          ],
+          "timeToGain4": [
+            11.0,
+            1.0
+          ],
+          "timeToGain5": [
+            18.0,
+            0.7
+          ],
+          "crossDistToReqCrossVelMult": 9.0,
+          "reqCrossVelRationMax": 0.45,
+          "velDiffToReqAccelMult": 5.5,
           "accelControl": {
             "reqAccelMax": 35.0,
-            "accelControlProp": 0.0406,
+            "accelControlProp": 0.0176,
             "accelControlIntg": 0.0,
-            "accelControlDiff": 0.0009,
+            "accelControlDiff": 0.0006,
             "accelControlIntgLim": 0.0
           }
         }
@@ -560,7 +589,7 @@
         "smokeEffect": "",
         "visual": {
           "traceFreq": 1,
-          "tracer": "152mmRed",
+          "tracer": "tracers_rocket_med_red_sparks",
           "trail": "noTrail"
         }
       }
@@ -617,7 +646,7 @@
         "wingAreaMult": 1.2,
         "finsAoaHor": 0.12,
         "finsAoaVer": 0.12,
-        "distFromCmToStab": 0.04,
+        "distFromCmToStab": 0.06,
         "mass": 51.0,
         "massEnd": 31.4,
         "timeFire": 2.0,
@@ -663,8 +692,8 @@
         "explosionPatchRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_exhaust_jet_early_big",
-        "smokeEffect": "smoke_rocket_tail_light_huge",
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "smoke_rocket_tail_short",
         "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
@@ -703,15 +732,44 @@
           "beamRider": true,
           "breakLockMaxTime": 3.0,
           "lineOfSightAutopilot": {
-            "timeOut": 0.0,
-            "crossDistToReqCrossVelMult": 3.0,
-            "reqCrossVelRationMax": 0.75,
-            "velDiffToReqAccelMult": 10.0,
+            "timeToGain0": [
+              0.0,
+              0.1
+            ],
+            "timeToGain1": [
+              1.0,
+              0.5
+            ],
+            "timeToGain2": [
+              1.5,
+              0.7
+            ],
+            "timeToGain3": [
+              [
+                2.01,
+                1.0
+              ],
+              [
+                5.0,
+                1.0
+              ]
+            ],
+            "timeToGain4": [
+              11.0,
+              1.0
+            ],
+            "timeToGain5": [
+              18.0,
+              0.7
+            ],
+            "crossDistToReqCrossVelMult": 9.0,
+            "reqCrossVelRationMax": 0.45,
+            "velDiffToReqAccelMult": 5.5,
             "accelControl": {
               "reqAccelMax": 35.0,
-              "accelControlProp": 0.0406,
+              "accelControlProp": 0.0176,
               "accelControlIntg": 0.0,
-              "accelControlDiff": 0.0009,
+              "accelControlDiff": 0.0006,
               "accelControlIntgLim": 0.0
             }
           }
@@ -1082,7 +1140,7 @@
           "smokeEffect": "",
           "visual": {
             "traceFreq": 1,
-            "tracer": "152mmRed",
+            "tracer": "tracers_rocket_med_red_sparks",
             "trail": "noTrail"
           }
         }

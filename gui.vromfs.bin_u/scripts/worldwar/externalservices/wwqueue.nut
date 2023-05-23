@@ -69,7 +69,7 @@ let DataBlock  = require("DataBlock")
     this.myClanCountries = []
     foreach (country in shopCountriesList) {
       let groups = this.getArmyGroupsByCountry(country)
-      let myGroup = groups && u.search(groups, (@(myClanId) function(ag) { return getTblValue("clanId", ag) == myClanId })(myClanId))
+      let myGroup = groups && u.search(groups, @(ag) getTblValue("clanId", ag) == myClanId)
       if (myGroup) {
         this.myClanCountries.append(country)
         this.myClanQueueTime = max(this.myClanQueueTime, getTblValue("at", myGroup, -1))

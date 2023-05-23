@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { startsWith } = require("%sqstd/string.nut")
 
 ::g_invites <- {
@@ -257,4 +257,4 @@ let { startsWith } = require("%sqstd/string.nut")
 
 
 subscribe_handler(::g_invites, ::g_listener_priority.DEFAULT_HANDLER)
-g_script_reloader.registerPersistentDataFromRoot("g_invites")
+registerPersistentDataFromRoot("g_invites")

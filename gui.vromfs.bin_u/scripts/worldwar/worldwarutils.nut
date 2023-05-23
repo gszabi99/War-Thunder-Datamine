@@ -9,7 +9,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let time = require("%scripts/time.nut")
 let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
@@ -181,7 +181,7 @@ local LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableM
   }
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_world_war")
+registerPersistentDataFromRoot("g_world_war")
 
 ::g_world_war.getSetting <- function getSetting(settingName, defaultValue) {
   return ::get_game_settings_blk()?.ww_settings?[settingName] ?? defaultValue

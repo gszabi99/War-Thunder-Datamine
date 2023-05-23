@@ -7,7 +7,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 #explicit-this
 
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let Unit = require("%scripts/unit/unit.nut")
@@ -24,7 +24,7 @@ let { floor } = require("math")
 
 ::all_units <- {}
 
-g_script_reloader.registerPersistentData("initOptionsGlobals", getroottable(),
+registerPersistentData("initOptionsGlobals", getroottable(),
   [ "all_units"])
 
 //remap all units to new class on scripts reload

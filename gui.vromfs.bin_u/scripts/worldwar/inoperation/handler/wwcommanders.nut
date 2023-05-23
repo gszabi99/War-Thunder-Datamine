@@ -128,7 +128,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
 
   function onHoverArmyItem(obj) {
     let clanId = obj.clanId
-    let groups = ::g_world_war.getArmyGroups((@(clanId) function(group) { return group.clanId == clanId })(clanId))
+    let groups = ::g_world_war.getArmyGroups(@(group) group.clanId == clanId)
     let groupArmyNames = []
     foreach (group in groups)
       groupArmyNames.extend(::ww_get_armies_names_of_armygroup({

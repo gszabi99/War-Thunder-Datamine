@@ -62,8 +62,8 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
     let busyUnits = ::get_crews_list_by_country(country)
       .map(@(cc) cc?.aircraft ?? "").filter(@(id) id != "" && id != crewUnitId)
     busyUnitsCount = busyUnits.len()
-    unitsArray = ::all_units.filter(@(u) busyUnits.indexof(u.name) == null
-      && u.canAssignToCrew(country)).values()
+    unitsArray = ::all_units.filter(@(unit) busyUnits.indexof(unit.name) == null
+      && unit.canAssignToCrew(country)).values()
   }
   else {
     let unitsGroups = slotbar.unitsGroupsByCountry?[country]

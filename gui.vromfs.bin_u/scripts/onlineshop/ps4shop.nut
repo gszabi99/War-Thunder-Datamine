@@ -12,7 +12,7 @@ let psnSystem = require("sony.sys")
 
 let seenEnumId = SEEN.EXT_PS4_SHOP
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
@@ -26,7 +26,7 @@ let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let persistent = {
   sheetsArray = []
 }
-g_script_reloader.registerPersistentData("PS4Shop", persistent, ["sheetsArray"])
+registerPersistentData("PS4Shop", persistent, ["sheetsArray"])
 
 
 let defaultsSheetData = {

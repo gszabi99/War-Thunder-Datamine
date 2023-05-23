@@ -30,7 +30,8 @@ let test_flight_unit_info = {}
 ::get_mp_kick_countdown <- @() 1000000
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce, registerPersistentData, isInReloading
+} = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("%scripts/worldWar/worldWarConst.nut")
 require("%globalScripts/ui_globals.nut")
 
@@ -74,7 +75,7 @@ if (::disable_network())
 
 ::FORCE_UPDATE <- true
 
-g_script_reloader.registerPersistentData("MainGlobals", getroottable(),
+registerPersistentData("MainGlobals", getroottable(),
   [
     "eula_version",
     "is_debug_mode_enabled", "first_generation",
@@ -434,10 +435,10 @@ foreach (fn in [
   //used for SSO login
   "%scripts/onlineShop/browserWnd.nut"
 ]) {
-  g_script_reloader.loadOnce(fn)
+  loadOnce(fn)
 }
 
-if (g_script_reloader.isInReloading)
+if (isInReloading())
   foreach (bhvName, bhvClass in ::gui_bhv)
     ::replace_script_gui_behaviour(bhvName, bhvClass)
 
@@ -545,7 +546,7 @@ if (is_platform_pc && !::isProductionCircuit() && ::getSystemConfigOption("debug
 
 if (::g_login.isAuthorized() || ::should_disable_menu()) { //scripts reload
   ::load_scripts_after_login_once()
-  if (!g_script_reloader.isInReloading)
+  if (!isInReloading())
     ::run_reactive_gui()
 }
 

@@ -7,7 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #explicit-this
 let { toUpper } = require("%sqstd/string.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 ::mission_rules <- {}
 foreach (fn in [
@@ -18,7 +18,7 @@ foreach (fn in [
                  "ruleNumSpawnsByUnitType.nut"
                  "ruleUnitsDeck.nut"
                ])
-  g_script_reloader.loadOnce($"%scripts/misCustomRules/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
+  loadOnce($"%scripts/misCustomRules/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
 
 ::on_custom_mission_state_changed <- function on_custom_mission_state_changed() {
   ::g_mis_custom_state.onMissionStateChanged()

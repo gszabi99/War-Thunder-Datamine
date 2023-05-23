@@ -72,6 +72,7 @@ local Unit = class {
    isInShop = false
    reqAir = null //name of unit required by shop tree
    futureReqAir = null
+   futureReqAirDesc = null
    group = null //name of units group in shop
    fakeReqUnits = null //[] or null when no required fake units
    showOnlyWhenBought = false
@@ -239,6 +240,7 @@ local Unit = class {
     this.isInShop = true
     this.reqAir = prevShopUnitName
     this.futureReqAir = shopUnitBlk?.futureReqAir
+    this.futureReqAirDesc = shopUnitBlk?.futureReqAirDesc
     this.group = unitGroupName
     if ("fakeReqUnitType" in shopUnitBlk)
       this.fakeReqUnits = shopUnitBlk % "fakeReqUnitType"

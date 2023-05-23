@@ -6,7 +6,7 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
@@ -34,7 +34,7 @@ global enum MIS_PROGRESS { //value received from get_mission_progress
 
 let needCheckForVictory = Watched(false)
 
-g_script_reloader.registerPersistentData("MissionsUtilsGlobals", getroottable(),
+registerPersistentData("MissionsUtilsGlobals", getroottable(),
   [
     "enable_coop_in_QMB", "enable_coop_in_SingleMissions", "enable_custom_battles"
   ])

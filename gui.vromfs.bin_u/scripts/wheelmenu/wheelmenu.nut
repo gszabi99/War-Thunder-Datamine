@@ -81,7 +81,6 @@ const ITEMS_PER_PAGE = 8
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
                                    | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
-                                   | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
 
   invalidIndex = -1
   applyIndex = -1
@@ -114,6 +113,8 @@ const ITEMS_PER_PAGE = 8
     if (!this.menu || !checkObj(this.scene))
       return this.close()
 
+    if (!::ps4_is_circle_selected_as_enter_button())
+      this.wndControlsAllowMaskWhenActive = this.wndControlsAllowMaskWhenActive | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
     ::close_cur_wheelmenu()
 
     this.guiScene = this.scene.getScene()

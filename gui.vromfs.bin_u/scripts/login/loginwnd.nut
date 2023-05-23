@@ -303,7 +303,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         actionName  = lang.id
         text        = lang.title
         icon        = lang.icon
-        action      = (@(lang) function () { this.onChangeLanguage(lang.id) })(lang)
+        action      = @() this.onChangeLanguage(lang.id)
         selected    = lang.id == curLangId
       })
     }

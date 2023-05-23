@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let ecs = require("%sqstd/ecs.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { abs, floor } = require("math")
 let { EventOnConnectedToServer } = require("net")
 let { MatchingRoomExtraParams = null } = require_optional("dasevents")
@@ -975,12 +975,12 @@ let allowed_mission_settings = { //only this settings are allowed in room
   if (this.isRoomOwner && this.status != lobbyStates.NOT_IN_ROOM && this.status != lobbyStates.CREATING_ROOM) {
     let prevPass = this.password
     roomSetPassword({ roomId = this.roomId, password = v_password },
-      (@(prevPass) function(p) {
+      function(p) {
         if (!::checkMatchingError(p)) {
           ::SessionLobby.password = prevPass
           ::SessionLobby.checkDynamicSettings()
         }
-      })(prevPass))
+      })
   }
   this.password = v_password
 }
@@ -1037,7 +1037,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
   this.switchStatus(lobbyStates.UPLOAD_CONTENT)
   setRoomAttributes({ roomId = this.roomId, private = { userMission = blkData.result } },
-                        (@(missionId, afterDoneFunc) function(p) {
+                        function(p) {
                           if (!::checkMatchingError(p)) {
                             ::SessionLobby.returnStatusToRoom()
                             return
@@ -1046,7 +1046,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
                           ::SessionLobby.returnStatusToRoom()
                           if (afterDoneFunc)
                             afterDoneFunc()
-                        })(missionId, afterDoneFunc))
+                        })
 }
 
 ::SessionLobby.mergeTblChanges <- function mergeTblChanges(tblBase, tblNew) {
@@ -2509,7 +2509,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 }
 
 ::web_rpc.register_handler("join_battle", ::SessionLobby.rpcJoinBattle)
-g_script_reloader.registerPersistentDataFromRoot("SessionLobby")
+registerPersistentDataFromRoot("SessionLobby")
 subscribe_handler(::SessionLobby, ::g_listener_priority.DEFAULT_HANDLER)
 
 matchingRpcSubscribe("match.notify_wait_for_session_join",

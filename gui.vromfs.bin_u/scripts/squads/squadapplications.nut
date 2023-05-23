@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 let SquadApplicationsList = class {
   [PERSISTENT_DATA_PARAMS] = ["applicationsList"]
@@ -15,7 +15,7 @@ let SquadApplicationsList = class {
   applicationsList = {}
 
   constructor() {
-    g_script_reloader.registerPersistentData("SquadApplicationsList", this, this.PERSISTENT_DATA_PARAMS)
+    registerPersistentData("SquadApplicationsList", this, this.PERSISTENT_DATA_PARAMS)
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
   }
 

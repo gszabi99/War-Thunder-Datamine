@@ -9,7 +9,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format, split_by_chars } = require("string")
 // warning disable: -file:forbidden-function
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { reload } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let dbgExportToFile = require("%scripts/debugTools/dbgExportToFile.nut")
@@ -38,7 +38,7 @@ require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 let function reload_dagui() {
   ::get_cur_gui_scene()?.resetGamepadMouseTarget()
-  let res = g_script_reloader.reload(::reload_main_script_module)
+  let res = reload(::reload_main_script_module)
   ::update_objects_under_windows_state(::get_cur_gui_scene())
   dlog("Dagui reloaded")
   return res

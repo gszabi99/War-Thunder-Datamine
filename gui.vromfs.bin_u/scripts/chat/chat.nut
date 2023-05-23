@@ -16,7 +16,7 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { clearBorderSymbolsMultiline, endsWith, cutPrefix  } = require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 global enum chatUpdateState {
   OUTDATED
@@ -513,14 +513,15 @@ global enum chatErrorName {
         continue
     }
 
+    let roomId = room.id
     menu.append({
       text = room.getRoomName()
       show = true
-      action = (@(playerName, room) function () {
+      action = function () {
           ::gchat_raw_command(format("INVITE %s %s",
-                                        ::gchat_escape_target(playerName),
-                                        ::gchat_escape_target(room.id)))
-          })(playerName, room)
+            ::gchat_escape_target(playerName),
+            ::gchat_escape_target(roomId)))
+          }
     })
   }
   return menu
@@ -617,5 +618,5 @@ global enum chatErrorName {
   return u.isTable(defaultColor) ? defaultColor[isHighlighted] : defaultColor
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_chat")
+registerPersistentDataFromRoot("g_chat")
 subscribe_handler(::g_chat, ::g_listener_priority.DEFAULT_HANDLER)

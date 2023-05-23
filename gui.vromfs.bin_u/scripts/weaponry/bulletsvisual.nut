@@ -469,11 +469,13 @@ let function buildBulletsData(bullet_parameters, bulletsSet = null) {
             armor = u.map(bullet_params.armorPiercing[i], @(f) round(f).tointeger())
           else if (d < idist && i) {
             let prevDist = bullet_params.armorPiercingDist[i - 1].tointeger()
-            if (d > prevDist)
-              armor = u.tablesCombine(bullet_params.armorPiercing[i - 1], bullet_params.armorPiercing[i],
-                        (@(d, prevDist, idist) function(prev, next) {
-                          return (prev + (next - prev) * (d - prevDist.tointeger()) / (idist - prevDist)).tointeger()
-                        })(d, prevDist, idist), 0)
+            if (d > prevDist) {
+              let newDist = d
+              let idx = i
+              armor = u.tablesCombine(bullet_params.armorPiercing[idx - 1], bullet_params.armorPiercing[idx],
+                @(prev, next) (prev + (next - prev) * (newDist - prevDist.tointeger()) / (idist - prevDist)).tointeger(),
+                0)
+            }
           }
           if (armor == null)
             continue

@@ -10,7 +10,7 @@ let { initUnitCustomPresetsWeapons } = require("%scripts/unit/initUnitWeapons.nu
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCustomWpnPresetBlk, charSendBlk } = require("chard")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-
+let { getWeaponToFakeBulletMask, updateSecondaryBullets } = require("%scripts/weaponry/bulletsInfo.nut")
 let customPresetsConfigByUnit = mkWatched(persist, "customPresetsConfigByUnit", {})
 let customPresetsByUnit = mkWatched(persist, "customPresetsByUnit", {})
 
@@ -91,6 +91,8 @@ let function addCustomPreset(unit, preset) {
   let function cb() {
     if (presetId == getLastWeapon(unit.name))
       hangar_force_reload_model()
+
+    updateSecondaryBullets(unit, presetId, getWeaponToFakeBulletMask(unit))
     broadcastEvent("CustomPresetChanged", { unitName = unit.name, presetId })
   }
   savePresetInProfile(unit, presetId, presetBlk, cb)

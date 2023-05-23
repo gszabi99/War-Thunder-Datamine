@@ -3,8 +3,7 @@
   "bin_dump_file": "",
   "mission_settings": {
     "player": {
-      "army": 1,
-      "wing": "bdt_armada"
+      "army": 1
     },
     "player_teamB": {
       "army": 2
@@ -13,12 +12,8 @@
       "level": "levels/water.bin",
       "type": "singleMission",
       "environment": "Day",
-      "weather": "hazy",
-      "allowEmptyTeams": true,
-      "restoreType": "attempts",
-      "optionalTakeOff": false
-    },
-    "spectator_points": {}
+      "weather": "hazy"
+    }
   },
   "imports": {},
   "triggers": {
@@ -304,7 +299,7 @@
               "var_value": "bdt_t1_cur_base_spawn_idx",
               "value": 0,
               "comparasion_func": "less",
-              "var_value_other": "bdt_t1_active_bases_max_count"
+              "var_value_other": "bdt_t1_total_bases_max_count"
             },
             {
               "var_value": "bdt_t1_cur_bases_count",
@@ -868,6 +863,26 @@
           "comment": {
             "value": "active base near. need to find another zone"
           },
+          "unitGetDistanceToVar": {
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isActive",
+            "target_marking": 0,
+            "distance_type": "nearest",
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "@bdt_t1_cur_spawn_zone_name",
+            "target": "bdt_t1_targets_squad",
+            "var": "t1_distance_variable"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "bdt_t1_cur_base_spawn_idx"
+          },
           "triggerEnable": {
             "target": "bdt_t1_spawn_rotator"
           }
@@ -1094,7 +1109,7 @@
               "var_value": "bdt_t2_cur_base_spawn_idx",
               "value": 0,
               "comparasion_func": "less",
-              "var_value_other": "bdt_t2_active_bases_max_count"
+              "var_value_other": "bdt_t2_total_bases_max_count"
             },
             {
               "var_value": "bdt_t2_cur_bases_count",
@@ -1657,6 +1672,26 @@
         "else_actions": {
           "comment": {
             "value": "active base near. need to find another zone"
+          },
+          "unitGetDistanceToVar": {
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isActive",
+            "target_marking": 0,
+            "distance_type": "nearest",
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "@bdt_t2_cur_spawn_zone_name",
+            "target": "bdt_t2_targets_squad",
+            "var": "t2_distance_variable"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "bdt_t2_cur_base_spawn_idx"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_rotator"
@@ -4862,7 +4897,9 @@
     "bdt_capture_t2_object_name": "",
     "bdt_t1_min_zone_distance": 10000.0,
     "bdt_t2_min_zone_distance": 10000.0,
-    "bdt_base_name_suffix": ""
+    "bdt_base_name_suffix": "",
+    "t1_distance_variable": 0.0,
+    "t2_distance_variable": 0.0
   },
   "dialogs": {},
   "airfields": {},

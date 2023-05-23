@@ -11,7 +11,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
 let { GO_NONE, GO_WAITING_FOR_RESULT } = require("guiMission")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_game_mode, get_game_type, get_mplayers_list, get_mplayer_by_id, get_local_mplayer } = require("mission")
 
@@ -406,4 +406,4 @@ enum LIVE_STATS_MODE {
   }
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_hud_live_stats")
+registerPersistentDataFromRoot("g_hud_live_stats")

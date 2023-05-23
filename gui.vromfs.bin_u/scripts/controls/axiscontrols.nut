@@ -390,11 +390,11 @@ let { stripTags } = require("%sqstd/string.nut")
           let msg = format(loc("msg/zoomAssignmentsConflict"), loc("controls/mouse_z"))
           this.msgBox("zoom_axis_assigned", msg,
           [
-            ["replace", (@(wheelObj) function() {
+            ["replace", function() {
               if (wheelObj && wheelObj.isValid())
                 wheelObj.setValue(0)
               this.doAxisApply()
-            })(wheelObj)],
+            }],
             ["cancel", function() {
               this.bindAxisNum = -1
               this.doAxisApply()
@@ -549,16 +549,14 @@ let { stripTags } = require("%sqstd/string.nut")
     let msg = loc("hotkeys/msg/unbind_question", { action = actions })
 
     this.msgBox("controls_axis_bind_existing_shortcut", msg, [
-      ["add", (@(devs, btns, item) function() {
-        this.doBind(devs, btns, item)
-      })(devs, btns, item)],
-      ["replace", (@(curBinding, devs, btns, item) function() {
+      ["add", @() this.doBind(devs, btns, item)],
+      ["replace", function() {
         foreach (binding in curBinding) {
           this.shortcuts[binding[0]].remove(binding[1])
           this.onShortcutChange(binding[0])
         }
         this.doBind(devs, btns, item)
-      })(curBinding, devs, btns, item)],
+      }],
       ["cancel", function() { }],
     ], "cancel")
     return

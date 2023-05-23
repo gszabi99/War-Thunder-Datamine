@@ -382,10 +382,10 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
     else
       scrollTargetObj = this.logContainerObj.getChild(this.viewLogAmount - 1)
 
-    this.guiScene.performDelayed(this, (@(scrollTargetObj) function () {
+    this.guiScene.performDelayed(this, function () {
       if (checkObj(scrollTargetObj))
         scrollTargetObj.scrollToView()
-    })(scrollTargetObj))
+    })
   }
 
   function configManageBlocks() {

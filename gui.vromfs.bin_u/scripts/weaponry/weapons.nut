@@ -275,12 +275,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       let modForResearch = findAnyNotResearchedMod(this.air)
       if (modForResearch) {
         this.setModificatonOnResearch(modForResearch,
-          (@(modForResearch) function() {
+          function() {
             this.updateAllItems()
             let guiPosIdx = getTblValue("guiPosIdx", modForResearch, -1)
             assert(guiPosIdx >= 0, "missing guiPosIdx, mod - " + getTblValue("name", modForResearch, "none") + "; unit - " + this.air.name)
             this.selectResearchModule(guiPosIdx >= 0 ? guiPosIdx : 0)
-          })(modForResearch))
+          })
       }
     }
   }
@@ -361,7 +361,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
         nextActionShortcut = "help/OBJ_CLICK"
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
-        cb = (@(newIdx) function() { this.setModificatonOnResearch(this.items[newIdx], function() { this.updateAllItems() }) })(newIdx)
+        cb = @() this.setModificatonOnResearch(this.items[newIdx], @() this.updateAllItems())
       },
       {
         obj = ["available_free_exp_text"]
@@ -384,7 +384,7 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
           nextActionShortcut = "help/OBJ_CLICK"
           actionType = tutorAction.OBJ_CLICK
           shortcut = ::GAMEPAD_ENTER_SHORTCUT
-          cb =  (@(finItem) function () { this.checkAndBuyWeaponry(finItem) })(finItem)
+          cb = @() this.checkAndBuyWeaponry(finItem)
         })
     }
 
@@ -1246,27 +1246,24 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
-      this.afterSlotOpError = (@(executeAfterDoneFunc) function(_res) {
-          this.msgBox("unit_modul_research_fail", loc("weaponry/module_set_research_failed"),
-            [["ok", (@(executeAfterDoneFunc) function() { executeAfterDoneFunc() })(executeAfterDoneFunc)]], "ok")
-        })(executeAfterDoneFunc)
+      this.afterSlotOpError = @(_res) this.msgBox("unit_modul_research_fail",
+        loc("weaponry/module_set_research_failed"),
+        [["ok", @() executeAfterDoneFunc() ]], "ok")
     }
     else
       executeAfterDoneFunc()
   }
 
   function flushItemExp(modName, afterDoneFunc = null) {
-    this.checkSaveBulletsAndDo((@(modName, afterDoneFunc) function() {
-      this._flushItemExp(modName, afterDoneFunc)
-    })(modName, afterDoneFunc))
+    this.checkSaveBulletsAndDo(@() this._flushItemExp(modName, afterDoneFunc))
   }
 
   function _flushItemExp(modName, afterDoneFunc = null) {
-    let executeAfterDoneFunc = (@(afterDoneFunc) function() {
+    let executeAfterDoneFunc = function() {
         this.setResearchManually = true
         if (afterDoneFunc)
           afterDoneFunc()
-      })(afterDoneFunc)
+      }
 
     if (this.availableFlushExp <= 0) {
       executeAfterDoneFunc()
@@ -1278,9 +1275,9 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = afterDoneFunc
-      this.afterSlotOpError = (@(executeAfterDoneFunc) function(_res) {
-          executeAfterDoneFunc()
-        })(executeAfterDoneFunc)
+      this.afterSlotOpError = function(_res) {
+        executeAfterDoneFunc()
+      }
     }
     else
       executeAfterDoneFunc()
@@ -1340,9 +1337,8 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 
   function onBuyAll(forceOpen = true, silent = false) {
-    this.checkSaveBulletsAndDo(Callback((@(air, forceOpen, silent) function() {
-      weaponsPurchase(air, { open = forceOpen, silent = silent })
-    })(this.air, forceOpen, silent), this))
+    let unit = this.air
+    this.checkSaveBulletsAndDo(@() weaponsPurchase(unit, { open = forceOpen, silent = silent }))
   }
 
   function setLastBullets(item, groupIdx) {
@@ -1387,14 +1383,15 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
     this.guiScene.playSound(!equipped ? "check" : "uncheck")
 
-    this.checkSaveBulletsAndDo((@(item, equipped) function() { this.doSwitchMod(item, equipped) })(item, equipped))
+    this.checkSaveBulletsAndDo(@() this.doSwitchMod(item, equipped))
   }
 
   function doSwitchMod(item, equipped) {
-    let taskSuccessCallback = (@(air, item) function() {
-      ::updateAirAfterSwitchMod(air, item.name)
+    let unit = this.air
+    let taskSuccessCallback = function() {
+      ::updateAirAfterSwitchMod(unit, item.name)
       broadcastEvent("ModificationChanged")
-    }) (this.air, item)
+    }
 
     let taskId = ::enable_modifications(this.airName, [item.name], !equipped)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, taskSuccessCallback)

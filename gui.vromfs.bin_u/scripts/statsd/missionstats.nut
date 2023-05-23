@@ -8,7 +8,7 @@ from "%scripts/dagui_library.nut" import *
 let statsd = require("statsd")
 let { get_time_msec } = require("dagor.time")
 let { get_current_mission_name, get_game_mode } = require("mission")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::MissionStats <- {
@@ -49,4 +49,4 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 //!!must be atthe end of the file
 ::MissionStats.init()
-g_script_reloader.registerPersistentDataFromRoot("MissionStats")
+registerPersistentDataFromRoot("MissionStats")

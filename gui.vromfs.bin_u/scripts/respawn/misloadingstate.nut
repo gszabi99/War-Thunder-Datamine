@@ -7,7 +7,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getAvailableRespawnBases } = require("guiRespawn")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 enum MIS_LOAD { //bit enum
   //loading parts
@@ -91,5 +91,5 @@ enum MIS_LOAD { //bit enum
   this.checkRespawnBases()
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_mis_loading_state")
+registerPersistentDataFromRoot("g_mis_loading_state")
 subscribe_handler(::g_mis_loading_state ::g_listener_priority.CONFIG_VALIDATION)

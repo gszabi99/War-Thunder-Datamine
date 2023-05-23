@@ -5,8 +5,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-g_script_reloader.loadOnce("%scripts/controls/controlsPresets.nut")
+let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+loadOnce("%scripts/controls/controlsPresets.nut")
 let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { copyParamsToTable, eachBlock, eachParam } = require("%sqstd/datablock.nut")

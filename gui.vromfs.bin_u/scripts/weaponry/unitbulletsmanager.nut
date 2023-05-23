@@ -255,9 +255,7 @@ global enum bulletsAmountState {
       weaponItemParams = itemParams
       alignObj = alignObj
       align = align
-      onChangeValueCb = Callback((@(bulGroup) function(mod) {
-        this.changeBulletsValue(bulGroup, mod.name)
-      })(bulGroup), this)
+      onChangeValueCb = Callback(@(mod) this.changeBulletsValue(bulGroup, mod.name), this)
     })
   }
 

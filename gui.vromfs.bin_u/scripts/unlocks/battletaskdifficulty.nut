@@ -8,8 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let time = require("%scripts/time.nut")
-let { getUnlockProgress } = require("unlocks")
+let { secondsToHours, hoursToString } = require("%scripts/time.nut")
 
 ::g_battle_task_difficulty <- {
   types = []
@@ -21,22 +20,8 @@ let { getUnlockProgress } = require("unlocks")
   }
 }
 
-let function _getTimeLeft(task) {
-  let expireTime = this.expireTimeByGen?[::g_battle_tasks.getGenerationIdInt(task)] ?? this.lastGenExpireTime
-  return expireTime - ::get_charserver_time_sec()
-}
-
-::g_battle_task_difficulty._getTimeLeftText <- function _getTimeLeftText(task) {
-  let timeLeft = this.getTimeLeft(task)
-  if (timeLeft < 0)
-    return ""
-
-  return time.hoursToString(time.secondsToHours(timeLeft), false, true, true)
-}
-
 ::g_battle_task_difficulty.template <- {
-  getLocName = @() loc("battleTasks/" + this.timeParamId + "/name")
-  getTimeLeftText = ::g_battle_task_difficulty._getTimeLeftText
+  getLocName = @() loc($"battleTasks/{this.timeParamId}/name")
   getDifficultyGroup = @() this.timeParamId
 
   name = ""
@@ -50,16 +35,13 @@ let function _getTimeLeft(task) {
   generationPeriodSec = -1
   lastGenExpireTime = -1
   expireTimeByGen = null
-  showAtPositiveProgress = false
-  timeLimit = function() { return -1 }
-  getTimeLeft = function(_task) { return -1 }
   isTimeExpired = @(task) this.hasTimer && this.getTimeLeft(task) < 0
   showSeasonIcon = false
   hasTimer = true
   userstatUnlockId = ""
 
   expireProcessed = null
-  notifyTimeExpired = function(task) {
+  function notifyTimeExpired(task) {
     let generationId = ::g_battle_tasks.getGenerationIdInt(task)
     if (this.expireProcessed?[generationId] ?? false)
       return
@@ -70,6 +52,20 @@ let function _getTimeLeft(task) {
     }
     broadcastEvent("BattleTasksTimeExpired")
   }
+
+  function getTimeLeft(task) {
+    let generationId = ::g_battle_tasks.getGenerationIdInt(task)
+    let expireTime = this.expireTimeByGen?[generationId] ?? this.lastGenExpireTime
+    return expireTime - ::get_charserver_time_sec()
+  }
+
+  function getTimeLeftText(task) {
+    let timeLeft = this.getTimeLeft(task)
+    if (timeLeft < 0)
+      return ""
+
+    return hoursToString(secondsToHours(timeLeft), false, true, true)
+  }
 }
 
 enums.addTypesByGlobalName("g_battle_task_difficulty", {
@@ -77,8 +73,6 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     image = "#ui/gameuiskin#battle_tasks_easy.svg"
     timeParamId = "daily"
     executeOrder = 0
-    timeLimit = function() { return time.daysToSeconds(1) }
-    getTimeLeft = _getTimeLeft
     userstatUnlockId = "easy_tasks_streak"
   }
 
@@ -86,8 +80,6 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     image = "#ui/gameuiskin#battle_tasks_middle.svg"
     timeParamId = "daily"
     executeOrder = 1
-    timeLimit = function() { return time.daysToSeconds(1) }
-    getTimeLeft = _getTimeLeft
     userstatUnlockId = "medium_tasks_streak"
   }
 
@@ -95,29 +87,17 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     image = "#ui/gameuiskin#hard_task_medal3.svg"
     showSeasonIcon = true
     timeParamId = "specialTasks"
-    timeLimit = function() { return time.daysToSeconds(1) }
-    getTimeLeft = _getTimeLeft
     hasTimer = false
     userstatUnlockId = "hard_tasks_streak"
   }
 
   UNKNOWN = {
     hasTimer = false
+    getTimeLeft = @(_task) -1
   }
-
-/******** Old types **********/
-  WEEKLY = {}
-  DAILY = {}
-  MONTHLY = {}
-  COMMON = {}
-/*****************************/
 }, null, "name")
 
-::g_battle_task_difficulty.types.sort(function(a, b) {
-  if (a.executeOrder != b.executeOrder)
-    return a.executeOrder > b.executeOrder ? 1 : -1
-  return 0
-})
+::g_battle_task_difficulty.types.sort(@(a, b) a.executeOrder <=> b.executeOrder)
 
 ::g_battle_task_difficulty.getDifficultyTypeByName <- function getDifficultyTypeByName(typeName) {
   return enums.getCachedType("name", typeName, ::g_battle_task_difficulty.cache.byName,
@@ -225,18 +205,6 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
       t.expireProcessed[t.lastGenerationId] <- t.lastGenExpireTime < ::get_charserver_time_sec()
     }
   }
-}
-
-::g_battle_task_difficulty.checkAvailabilityByProgress <- function checkAvailabilityByProgress(task, overrideStatus = false) {
-  if (overrideStatus)
-    return true
-
-  if (!::g_battle_tasks.isTaskDone(task) ||
-    !this.getDifficultyTypeByTask(task).showAtPositiveProgress)
-    return true
-
-  let progress = getUnlockProgress(task.id)
-  return getTblValue("curVal", progress, 0) > 0
 }
 
 ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty <- function withdrawTasksArrayByDifficulty(diff, tasks) {

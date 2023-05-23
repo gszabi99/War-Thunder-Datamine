@@ -712,7 +712,7 @@ local ExchangeRecipes = class {
     return this.mark ?? MARK_RECIPE.NONE
   }
 
-  getRewardTitleLocId = @(hasFakeRecipes = true) hasFakeRecipes
+  getRewardTitleLocId = @(hasFakeRecipe = true) hasFakeRecipe
     ? this.getMarkLocIdByPath(this.getLocIdsList().craftFinishedTitlePrefix)
     : this.getLocIdsList().rewardTitle
 

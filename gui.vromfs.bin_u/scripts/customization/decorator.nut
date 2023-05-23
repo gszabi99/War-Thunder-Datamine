@@ -174,9 +174,9 @@ let { getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
     let common    = []
 
     if (!u.isEmpty(this.units)) {
-      let visUnits = u.filter(this.units, @(u) getAircraftByName(u)?.isInShop)
+      let visUnits = u.filter(this.units, @(unit) getAircraftByName(unit)?.isInShop)
       important.append(loc("options/unit") + loc("ui/colon") +
-        loc("ui/comma").join(u.map(visUnits, @(u) ::getUnitName(u)), true))
+        loc("ui/comma").join(u.map(visUnits, @(unit) ::getUnitName(unit)), true))
     }
 
     if (this.countries) {

@@ -4,15 +4,14 @@ from "%scripts/dagui_library.nut" import *
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loadIfExist } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent, subscribe_handler, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwtFromServer } = require("chard")
 let { format } = require("string")
 let { subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
 
-if ("g_script_reloader" in getroottable())
-  g_script_reloader.loadIfExist("%scripts/framework/msgBox.nut")
+loadIfExist("%scripts/framework/msgBox.nut")
 
 global enum TASK_CB_TYPE {
   BASIC,

@@ -7,7 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { sessionsListBlkPath } = require("%scripts/matchingRooms/getSessionsListBlkPath.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
@@ -25,7 +25,7 @@ let { get_game_mode } = require("mission")
 
 ::back_sessions_func <- ::gui_start_mainmenu
 
-g_script_reloader.registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
+registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
 
 ::gui_start_session_list <- function gui_start_session_list(prev_scene_func = null) {
   if (prev_scene_func)
@@ -420,9 +420,7 @@ g_script_reloader.registerPersistentData("SessionsList", getroottable(), ["match
       )
       return
 
-    this.checkedNewFlight((@(room) function() {
-      ::SessionLobby.joinFoundRoom(room)
-    })(room))
+    this.checkedNewFlight(@() ::SessionLobby.joinFoundRoom(room))
   }
 
   function onVehiclesInfo(_obj) {

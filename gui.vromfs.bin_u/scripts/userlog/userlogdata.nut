@@ -6,7 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #explicit-this
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
@@ -31,7 +31,7 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 
 ::shown_userlog_notifications <- []
 
-g_script_reloader.registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
+registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
 
 let function checkPopupUserLog(user_log_blk) {
   if (user_log_blk == null)
@@ -418,7 +418,7 @@ local logNameByType = {
              && getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward"
              && ::my_stats.isNewbieInited() && !::my_stats.isMeNewbie()
              && !::isHandlerInScene(::gui_handlers.DebriefingModal)) {
-      handler.doWhenActive((@(blk) function() { showEveryDayLoginAwardWnd(blk) })(blk))
+      handler.doWhenActive(@() showEveryDayLoginAwardWnd(blk))
     }
     else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL) {
       broadcastEvent("BattleTasksIncomeUpdate")

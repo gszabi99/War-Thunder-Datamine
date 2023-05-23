@@ -249,13 +249,13 @@ let { stripTags } = require("%sqstd/string.nut")
 
   function onBtnPresetLoad(_obj) {
     let handler = this
-    this.checkedCrewModify((@(handler, chosenValue) function () {
+    this.checkedCrewModify(function () {
       if (::slotbarPresets.canLoad())
-        if (chosenValue in this.presets) {
-          ::slotbarPresets.load(chosenValue)
+        if (this.chosenValue in this.presets) {
+          ::slotbarPresets.load(this.chosenValue)
           handler.goBack()
         }
-    })(handler, this.chosenValue))
+    })
   }
 
   function onBtnPresetMoveUp(_obj) {

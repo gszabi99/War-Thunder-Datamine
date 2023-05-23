@@ -492,7 +492,7 @@ local expireTypes = {
       return false
 
     let item = this
-    let onSuccessCb = (@(cb, item) function() {
+    let onSuccessCb = function() {
       ::update_gamercards()
       item.forceRefreshLimits()
       if (cb)
@@ -501,8 +501,8 @@ local expireTypes = {
         item = this
       })
       broadcastEvent("ItemBought", { item = item })
-    })(cb, item)
-    let onErrorCb = (@(item) function(_res) { item.forceRefreshLimits() })(item)
+    }
+    let onErrorCb = @(_res) item.forceRefreshLimits()
 
     let taskId = this._requestBuy(params)
     ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccessCb, onErrorCb)
@@ -544,7 +544,7 @@ local expireTypes = {
     params["cost"] <- cost.wp
     params["costGold"] <- cost.gold
     handler.msgBox("need_money", msgText,
-          [["purchase", (@(item, cb, params) function() { item._buy(cb, params) })(item, cb, params) ],
+          [["purchase", @() item._buy(cb, params)],
           ["cancel", function() {} ]], "purchase")
   }
 

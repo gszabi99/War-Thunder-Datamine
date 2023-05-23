@@ -12,7 +12,7 @@ let time = require("%scripts/time.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let promoConditions = require("%scripts/promo/promoConditions.nut")
 let { isPollVoted } = require("%scripts/web/webpoll.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { startsWith } = require("%sqstd/string.nut")
 
 enum POPUP_VIEW_TYPES {
@@ -195,4 +195,4 @@ let function getTimeIntByString(stringDate, defaultValue = 0) {
   return false
 }
 
-g_script_reloader.registerPersistentDataFromRoot("g_popup_msg")
+registerPersistentDataFromRoot("g_popup_msg")

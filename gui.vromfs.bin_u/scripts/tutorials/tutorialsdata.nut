@@ -320,13 +320,13 @@ let function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = nul
   if (needMsgBox)
     ::scene_msg_box("req_tutorial_msgbox", null, msgText,
       [
-        ["startTutorial", (@(mData, diff) function() {
+        ["startTutorial", function() {
           mData.mission.setStr("difficulty", ::get_option(::USEROPT_DIFFICULTY).values[diff])
           select_mission(mData.mission, true)
           ::current_campaign_mission = mData.mission.name
           saveTutorialToCheckReward(mData.mission)
           ::handlersManager.animatedSwitchScene(::gui_start_flight)
-        })(mData, diff)],
+        }],
         ["cancel", cancelCb]
       ], "cancel")
   else if (cancelCb)

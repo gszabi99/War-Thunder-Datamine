@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 //checked for explicitness
 #no-root-fallback
@@ -238,7 +237,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     local bonusData = unit.name
     if (::isUnitGroup(unit))
-      bonusData = u.map(unit.airsGroup, function(unit) { return unit.name })
+      bonusData = unit.airsGroup.map(@(unit) unit.name)
     ::showAirExpWpBonus(placeObj.findObject(unit.name + "-bonus"), bonusData)
   }
 

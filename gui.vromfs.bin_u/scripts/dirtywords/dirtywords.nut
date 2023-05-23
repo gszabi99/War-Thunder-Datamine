@@ -65,7 +65,7 @@ local function init(langSources) {
           if (!(k in res))
             res[k] <- v
           else
-            res[k].extend(v.filter(@(v) !res[k].contains(v)))
+            res[k].extend(v.filter(@(value) !res[k].contains(value)))
     }
     dictAsian[varName] = res
   }

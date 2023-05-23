@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #no-root-fallback
 #explicit-this
 
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
 /**
@@ -90,7 +90,7 @@ let persistent = {
   backup = null
 }
 
-g_script_reloader.registerPersistentData("dbgDump", persistent, [ "backup" ])
+registerPersistentData("dbgDump", persistent, [ "backup" ])
 
 let function isLoaded() {
   return persistent.backup != null

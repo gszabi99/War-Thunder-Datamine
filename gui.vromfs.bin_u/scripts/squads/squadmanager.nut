@@ -24,7 +24,7 @@ let { sendSystemInvite } = require("%scripts/social/xboxSquadManager/xboxSquadMa
 let SquadMember = require("%scripts/squads/squadMember.nut")
 let { needActualizeQueueData, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { g_script_reloader, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -825,10 +825,10 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     local fullCallback = null
     if (callback != null) {
       let counterTbl = { invitesLeft = ::g_squad_manager.getInvitedPlayers().len() }
-      fullCallback = (@(callback, counterTbl) function() {
+      fullCallback = function() {
         if (!--counterTbl.invitesLeft)
           callback()
-      })(callback, counterTbl)
+      }
     }
 
     foreach (uid, _memberData in this.getInvitedPlayers())
@@ -1429,6 +1429,6 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
 ::cross_call_api.squad_manger <- ::g_squad_manager
 
-g_script_reloader.registerPersistentDataFromRoot("g_squad_manager")
+registerPersistentDataFromRoot("g_squad_manager")
 
 subscribe_handler(::g_squad_manager, ::g_listener_priority.DEFAULT_HANDLER)

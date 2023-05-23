@@ -18,12 +18,12 @@ let { get_meta_missions_info, get_meta_mission_info_by_name, do_start_flight,
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
-let { g_script_reloader } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 
 ::back_from_briefing <- ::gui_start_mainmenu
 
-g_script_reloader.registerPersistentData("BriefingGlobals", getroottable(), ["back_from_briefing"])
+registerPersistentData("BriefingGlobals", getroottable(), ["back_from_briefing"])
 
 ::mission_settings <- {
   name = null
@@ -163,7 +163,7 @@ g_script_reloader.registerPersistentData("BriefingGlobals", getroottable(), ["ba
     ::get_cur_base_gui_handler().goForward(::gui_start_flight);
 }
 
-g_script_reloader.registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
+registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
 
 ::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk) {
   let optionItems = []

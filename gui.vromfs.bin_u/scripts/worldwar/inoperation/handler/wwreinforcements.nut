@@ -249,7 +249,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     this.timerHandler = ::Timer(
       placeObj,
       this.updateDelay,
-      (@(placeObj) function() {
+      function() {
         local haveNewReinforcementsReady = false
         foreach (reinforcementHandler in this.armiesBlocks) {
           let id = reinforcementHandler.getView().getId()
@@ -267,7 +267,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
         }
         if (haveNewReinforcementsReady)
           this.updateScene()
-      })(placeObj),
+      },
       this, true)
   }
 

@@ -85,9 +85,9 @@ let { cutPrefix } = require("%sqstd/string.nut")
       this.updateTimer.destroy()
 
     this.updateTimer = ::Timer(placeObj, this.updateDelay,
-      (@(placeObj, airfieldIdx, cooldownView) function() {
+      function() {
         this.onUpdateTimer(placeObj, airfieldIdx, cooldownView)
-      })(placeObj, airfieldIdx, cooldownView), this, true)
+      }, this, true)
 
     this.onUpdateTimer(placeObj, airfieldIdx, cooldownView)
   }

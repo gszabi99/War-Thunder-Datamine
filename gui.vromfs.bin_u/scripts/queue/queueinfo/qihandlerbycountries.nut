@@ -44,12 +44,12 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
     let myCountry = ::queues.getQueueCountry(this.queue)
     let sortedSets = clone countrySets
-    sortedSets.sort((@(myCountry) function(a, b) {
+    sortedSets.sort(function(a, b) {
       let countryDiff = (myCountry in a.allCountries ? 0 : 1) - (myCountry in b.allCountries ? 0 : 1)
       if (countryDiff)
         return countryDiff
       return a.gameModeIds[0] - b.gameModeIds[0]
-    })(myCountry))
+    })
 
     let view = {
       isCentered = true

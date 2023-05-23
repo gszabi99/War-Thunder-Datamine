@@ -147,8 +147,7 @@ let difficultyTypes = [
       task.setFrom(tasksDataBlock.getBlock(i))
       task.isActive = false
       this.proposedTasksArray.append(task)
-      if (!this.isTaskActual(task) || !this.canInteract(task)
-        || !::g_battle_task_difficulty.checkAvailabilityByProgress(task, this.showAllTasksValue))
+      if (!this.isTaskActual(task) || !this.canInteract(task))
         continue
 
       this.currentTasksArray.append(task)
@@ -169,8 +168,7 @@ let difficultyTypes = [
       task.isActive = true
       this.activeTasksArray.append(task)
 
-      if (!this.isTaskActual(task) || !this.canInteract(task)
-        || !::g_battle_task_difficulty.checkAvailabilityByProgress(task, this.showAllTasksValue))
+      if (!this.isTaskActual(task) || !this.canInteract(task))
         continue
 
       this.currentTasksArray.append(task)
@@ -375,8 +373,6 @@ let difficultyTypes = [
     let blackList = []
     let whiteList = []
 
-    let proposedTasks = this.getProposedTasksArray()
-
     foreach (taskId, table in logObj) {
       local header = ""
       let diffTypeName = getTblValue("type", table)
@@ -387,7 +383,7 @@ let difficultyTypes = [
         let diff = ::g_battle_task_difficulty.getDifficultyTypeByName(diffTypeName)
         if (!isInArray(diffTypeName, whiteList)
             && !::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff,
-                                          proposedTasks, this.showAllTasksValue)) {
+              this.proposedTasksArray, this.showAllTasksValue)) {
           blackList.append(diffTypeName)
           continue
         }
@@ -863,30 +859,6 @@ let difficultyTypes = [
     return difficulty.image
   }
 
-  function getAllTasks() {
-    let res = []
-    foreach (task in this.proposedTasksArray)
-      if (this.isTaskActual(task))
-        res.append(task)
-    foreach (task in this.activeTasksArray)
-      if (this.isTaskActual(task))
-        res.append(task)
-    return res
-  }
-
-  function getFullTasksArrayByIncreasingDifficulty() {
-    let tasks = this.getAllTasks()
-    let result = []
-    foreach (t in difficultyTypes) {
-      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, tasks)
-      if (arr.len() == 0)
-        continue
-
-      result.extend(arr)
-    }
-    return result
-  }
-
   function getTasksArrayByIncreasingDifficulty() {
     let result = []
     foreach (t in difficultyTypes) {
@@ -900,27 +872,29 @@ let difficultyTypes = [
     return result
   }
 
+  function isTaskForGM(task, gameModeId) {
+    if (!this.isBattleTask(task))
+      return false
+
+    let cfg = ::build_conditions_config(task)
+    foreach (condition in cfg.conditions) {
+      let values = getTblValue("values", condition)
+      if (u.isEmpty(values))
+        continue
+      if (isInArray(gameModeId, values))
+        return true
+    }
+    return false
+  }
+
   function filterTasksByGameModeId(tasksArray, gameModeId) {
     if (u.isEmpty(gameModeId))
       return tasksArray
 
     let res = []
-    foreach (task in tasksArray) {
-      if (!this.isBattleTask(task))
-        continue
-
-      let blk = ::build_conditions_config(task)
-      foreach (condition in blk.conditions) {
-        let values = getTblValue("values", condition)
-        if (u.isEmpty(values))
-            continue
-
-        if (isInArray(gameModeId, values)) {
-          res.append(task)
-          break
-        }
-      }
-    }
+    foreach (task in tasksArray)
+      if (this.isTaskForGM(task, gameModeId))
+        res.append(task)
     return res
   }
 

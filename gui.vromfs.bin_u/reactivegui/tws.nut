@@ -405,12 +405,12 @@ let rwrTargetsComponent = function(colorWatched) {
   }
 }
 
-let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale) {
+let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale, needDrawBackground) {
   return {
     size = flex()
     children = [
       twsBackground(colorWatched, !needDrawCentralIcon),
-      rwrBackground(colorWatched, scale),
+      needDrawBackground ? rwrBackground(colorWatched, scale) : null,
       needDrawCentralIcon ? centeredAircraftIcon(colorWatched) : null,
       {
         size = [pw(relativCircleRadius * scale), ph(relativCircleRadius * scale)]
@@ -426,14 +426,14 @@ let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale
   }
 }
 
-let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, needDrawCentralIcon = true, scale = 1.0) {
+let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, needDrawCentralIcon = true, scale = 1.0, needDrawBackground = true) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value
     pos = posWatched.value
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorWatched, relativCircleSize, needDrawCentralIcon, scale)
+    children = scope(colorWatched, relativCircleSize, needDrawCentralIcon, scale, needDrawBackground)
   }
 })
 

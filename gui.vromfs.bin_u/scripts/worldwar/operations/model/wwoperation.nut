@@ -222,12 +222,8 @@ enum WW_OPERATION_PRIORITY { //bit enum
     let countriesByTeams = this.getCountriesByTeams()
     let sideCountries = getTblValue(side, countriesByTeams)
 
-    return u.filter(
-      this.getArmyGroups(),
-      (@(sideCountries) function(ag) {
-        return isInArray(getTblValue("cntr", ag, ""), sideCountries)
-      })(sideCountries)
-    )
+    return u.filter(this.getArmyGroups(),
+      @(ag) isInArray(getTblValue("cntr", ag, ""), sideCountries))
   }
 
   function getMyClanGroup() {
