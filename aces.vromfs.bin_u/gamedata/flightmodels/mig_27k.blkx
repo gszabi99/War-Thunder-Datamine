@@ -237,6 +237,11 @@
       "tank8_dm": {
         "hp": 39.5
       }
+    },
+    "steel_tank_s": {
+      "tank9_dm": {
+        "hp": 80.5
+      }
     }
   },
   "DamageEffects": {
@@ -1195,6 +1200,48 @@
             "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
           }
         ]
       },
@@ -2386,7 +2433,8 @@
         "cover3_dm",
         "cannon2_dm",
         "cover4_dm",
-        "cannon3_dm"
+        "cannon3_dm",
+        "tank9_dm"
       ]
     },
     "WeaponSlot": [
@@ -2412,6 +2460,35 @@
                 "turret": {
                   "head": "optic1_turret",
                   "gun": "optic1_gun",
+                  "mainTurret": true,
+                  "playerControllable": false
+                },
+                "limits": {
+                  "yaw": [
+                    -40.0,
+                    40.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    90.0
+                  ]
+                }
+              },
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic2_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 200.0,
+                "speedPitch": 200.0,
+                "parkInDeadzone": true,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic2_turret",
+                  "gun": "optic2_gun",
                   "mainTurret": true,
                   "playerControllable": false
                 },
@@ -2466,6 +2543,35 @@
                 "turret": {
                   "head": "optic1_turret",
                   "gun": "optic1_gun",
+                  "mainTurret": true,
+                  "playerControllable": false
+                },
+                "limits": {
+                  "yaw": [
+                    -40.0,
+                    40.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    90.0
+                  ]
+                }
+              },
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic2_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 200.0,
+                "speedPitch": 200.0,
+                "parkInDeadzone": true,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic2_turret",
+                  "gun": "optic2_gun",
                   "mainTurret": true,
                   "playerControllable": false
                 },
@@ -3540,6 +3646,24 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_fueltank"
+            },
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_mig_23_27_silver_fuse.blk",
+              "emitter": "su_800l_mig_23_27_drop_tank_central",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -4493,7 +4617,7 @@
         38.0
       ],
       "opticType": "tv",
-      "turretNo": 0
+      "turretNo": 1
     }
   },
   "turbulence": {

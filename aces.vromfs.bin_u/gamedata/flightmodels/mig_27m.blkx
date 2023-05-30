@@ -17,7 +17,6 @@
   "hasMissileCommandLine": false,
   "laserOpticSightColor": "//8A3A==",
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -38,6 +37,7 @@
   "fightAiBehaviour": "fighter",
   "laserDesignator": true,
   "autopilotImpl": "FBW",
+  "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor10": {
       "armor1_dm": {
@@ -235,6 +235,11 @@
       },
       "tank8_dm": {
         "hp": 39.5
+      }
+    },
+    "steel_tank_s": {
+      "tank9_dm": {
+        "hp": 80.5
       }
     }
   },
@@ -1194,6 +1199,48 @@
             "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
           }
         ]
       },
@@ -2372,7 +2419,8 @@
         "cover3_dm",
         "cannon2_dm",
         "cover4_dm",
-        "cannon3_dm"
+        "cannon3_dm",
+        "tank9_dm"
       ]
     },
     "WeaponSlot": [
@@ -3477,6 +3525,24 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_fueltank"
+            },
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_mig_23_27_silver_fuse.blk",
+              "emitter": "su_800l_mig_23_27_drop_tank_central",
+              "bullets": 1,
+              "external": true
             }
           }
         ]
@@ -4616,6 +4682,29 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

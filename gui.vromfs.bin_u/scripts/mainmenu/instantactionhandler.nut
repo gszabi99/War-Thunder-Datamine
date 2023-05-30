@@ -31,7 +31,7 @@ let { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
 let { isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarState.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { showBackgroundModelHint, initBackgroundModelHint, placeBackgroundModelHint
+let { initBackgroundModelHint, placeBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
@@ -452,8 +452,13 @@ let { select_mission } = require("guiMission")
         //No need to check broken units when set unready
         if (!::g_squad_manager.isMeReady()) {
           let leaderEvent = ::events.getEvent(::g_squad_manager.getLeaderGameModeId())
+          if (leaderEvent == null) { //not found game mode of leader, skip check broken units
+            ::g_squad_manager.setReadyFlag()
+            return
+          }
           let repairInfo = ::events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
-          ::checkBrokenAirsAndDo(repairInfo, this, @() null, false)
+          ::checkBrokenAirsAndDo(repairInfo, this, @() ::g_squad_manager.setReadyFlag(), false)
+          return
         }
         ::g_squad_manager.setReadyFlag()
       }
@@ -1240,6 +1245,5 @@ let { select_mission } = require("guiMission")
         @() ::gui_handlers.GameModeSelect.open(), null))
   }
 
-  onEventBackgroundHangarVehicleHoverChanged = @(params) showBackgroundModelHint(params)
   onBackgroundModelHintTimer = @(obj, _dt) placeBackgroundModelHint(obj)
 }

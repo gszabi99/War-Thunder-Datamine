@@ -18,6 +18,7 @@ let { encode_uri_component } = require("url")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01

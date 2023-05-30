@@ -33,6 +33,12 @@ let fcsState = {
   TargetSpeed = Watched(0.0)
   TargetAzimuth = Watched(0.0)
 
+  HeadingAngle = Watched(0.0)
+  HeroAzimuthAngle = Watched(0.0)
+  TargetAzimuthAngle = Watched(0.0)
+  ShotState = Watched(FCSShotState.SHOT_NONE)
+  ShotDiscrepancy = Watched(0.0)
+
   IsForestallVisible = Watched(false)
   IsHorizontalAxisVisible = Watched(true)
   IsVerticalAxisVisible = Watched(true)

@@ -27,6 +27,7 @@ let { canRestartClient } = require("%scripts/utils/restartClient.nut")
 let { isOptionReqRestartChanged, setOptionReqRestartValue
 } = require("%scripts/options/optionsUtils.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
+let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -260,7 +261,7 @@ let function openOptionsWnd(group = null) {
     if (event.len() > 1)
       event.remove(0);
 
-    ::set_shortcuts(shortcut, [shortcut_id_name]);
+    setShortcutsAndSaveControls(shortcut, [shortcut_id_name]);
     this.save(false);
 
     let data = ::get_shortcut_text({ shortcuts = shortcut, shortcutId = 0 })
@@ -272,7 +273,7 @@ let function openOptionsWnd(group = null) {
 
     shortcut[0] = [];
 
-    ::set_shortcuts(shortcut, [shortcut_id_name]);
+    setShortcutsAndSaveControls(shortcut, [shortcut_id_name]);
     this.save(false);
 
     this.scene.findObject(shortcut_object_name).setValue("---");
@@ -360,7 +361,7 @@ let function openOptionsWnd(group = null) {
     if (event.len() > 1)
       event.remove(0);
 
-    ::set_shortcuts(ptt_shortcut, ["ID_PTT"]);
+    setShortcutsAndSaveControls(ptt_shortcut, ["ID_PTT"]);
     this.save(false);
 
     local data = ::get_shortcut_text({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false })
@@ -373,7 +374,7 @@ let function openOptionsWnd(group = null) {
 
     ptt_shortcut[0] = [];
 
-    ::set_shortcuts(ptt_shortcut, ["ID_PTT"]);
+    setShortcutsAndSaveControls(ptt_shortcut, ["ID_PTT"]);
     this.save(false);
 
     this.scene.findObject("ptt_shortcut").setValue("---");

@@ -16,14 +16,14 @@
     "dragCx": 0.0257,
     "caliber": 0.299,
     "length": 2.735,
-    "distFromCmToStab": 0.05,
-    "CxK": 0.8,
+    "distFromCmToStab": 0.55,
+    "CxK": 1.625,
     "WdK": [
-      0.1,
-      0.1,
-      0.1
+      2.5,
+      2.5,
+      2.5
     ],
-    "wingAreaMult": 1.8,
+    "wingAreaMult": 1.5,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
     "guidanceType": "laser",
@@ -32,7 +32,7 @@
       5.0,
       5.0
     ],
-    "timeLife": 60.0,
+    "timeLife": 80.0,
     "sound": "weapon.bomb_std",
     "explosionFx": "bomb_expl_500kg",
     "explosionPatchRadius": 12.0,
@@ -101,38 +101,36 @@
     },
     "guidance": {
       "permanentlyActivated": true,
-      "lockOnAfterLaunch": true,
-      "inertialNavigation": false,
-      "inertialNavigationDriftSpeed": 3.5,
+      "inertialNavigation": true,
+      "inertialNavigationDriftSpeed": 5.0,
       "laserSeeker": {
         "range": 7000.0,
         "rangeMax": 12000.0,
-        "fov": 20.0,
-        "lockAngleMax": 0.0,
-        "angleMax": 0.0,
-        "rateMax": 10000.0,
+        "fov": 30.0,
+        "lockAngleMax": 35.0,
+        "angleMax": 35.0,
+        "rateMax": 8.0,
         "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 5,
         "filterAlpha": 0.85,
         "filterBetta": 0.2
       },
       "guidanceAutopilot": {
         "timeToGain0": [
-          60.0,
+          80.0,
           1.0
         ],
         "timeToGain1": [
-          60.1,
+          80.1,
           0.0
         ],
-        "baseIndSpeed": 1300.0,
-        "angleToAccelMult": 0.0,
-        "omegaToAccelMult": 3.0,
-        "elevationAdd": 1.2,
-        "reqAccelMax": 3.0,
-        "accelControlProp": 0.1,
-        "accelControlIntg": 0.1,
-        "accelControlIntgLim": 0.75,
-        "accelControlDiff": 0.1
+        "baseIndSpeed": 1800.0,
+        "propNavMult": 4.0,
+        "reqAccelMax": 4.0,
+        "accelControlProp": 0.0351,
+        "accelControlIntg": 0.1446,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.0005
       }
     },
     "arcadeProp": {

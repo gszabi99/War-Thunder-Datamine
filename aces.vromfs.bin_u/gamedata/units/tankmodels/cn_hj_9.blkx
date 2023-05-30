@@ -1093,6 +1093,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1498,6 +1499,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": {
       "trigger": "gunner0",
       "triggerGroup": "primary",
@@ -1522,6 +1524,7 @@
         0.23
       ],
       "waitShellForPark": true,
+      "staticElevation": 1.2,
       "canChangeBulletInReload": false,
       "createGunEffects": true,
       "parkForReload": true,
@@ -2468,6 +2471,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2544,6 +2554,7 @@
       "tier": 4,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2569,6 +2580,7 @@
                 0.23
               ],
               "waitShellForPark": true,
+              "staticElevation": 1.2,
               "canChangeBulletInReload": false,
               "createGunEffects": true,
               "parkForReload": true,

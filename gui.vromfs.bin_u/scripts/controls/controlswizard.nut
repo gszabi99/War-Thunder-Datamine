@@ -19,6 +19,8 @@ let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPa
 let { getHelpPreviewHandler } = require("%scripts/help/helpPreview.nut")
 let { recomendedControlPresets, getControlsPresetBySelectedType
 } = require("%scripts/controls/controlsUtils.nut")
+let { joystickSetCurSettings, setShortcutsAndSaveControls
+} = require("%scripts/controls/controlsCompatibility.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id = "helpers_mode"
@@ -400,8 +402,7 @@ let function isInArrayRecursive(v, arr) {
     this.shortcutNames = []
     this.shortcutItems = []
 
-    this.curJoyParams = ::JoystickParams()
-    this.curJoyParams.setFrom(::joystick_get_cur_settings())
+    this.curJoyParams = ::joystick_get_cur_settings()
     this.deviceMapping = u.copy(::g_controls_manager.getCurPreset().deviceMapping)
 
     this.initAxisPresetup()
@@ -1528,8 +1529,8 @@ let function isInArrayRecursive(v, arr) {
   function doApply() {
     foreach (option in this.optionsToSave)
       ::set_option(option.type, option.value)
-    ::set_shortcuts(this.shortcuts, this.shortcutNames)
-    ::joystick_set_cur_settings(this.curJoyParams)
+    joystickSetCurSettings(this.curJoyParams)
+    setShortcutsAndSaveControls(this.shortcuts, this.shortcutNames)
     this.save(false)
   }
 

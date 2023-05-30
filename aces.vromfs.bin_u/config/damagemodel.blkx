@@ -4045,6 +4045,7 @@
     "fr_somua_sau40": 140,
     "fr_somua_sm": 140,
     "fr_vab_santal": 125,
+    "fr_vbci2_mct30": 133,
     "fr_vcac_mephisto": 125,
     "germ_at_gun_flak36": 125,
     "germ_at_gun_pak36": 125,
@@ -4217,6 +4218,7 @@
     "il_magach_6_rocket": 140,
     "il_magach_6a": 140,
     "il_magach_6b": 140,
+    "il_magach_6b_gal": 140,
     "il_magach_6b_gal_batash": 140,
     "il_magach_6c": 140,
     "il_magach_6m": 140,
@@ -4566,6 +4568,7 @@
     "uk_vickers_mbt_mk_3": 140,
     "uk_vickers_mk7": 140,
     "uk_vickers_mk_6_aa_mk_1": 125,
+    "uk_vijayanta": 140,
     "uk_ystervark_spaa": 125,
     "us_adats_bradley": 125,
     "us_ags_teledyne": 133,
@@ -4853,12 +4856,15 @@
     "ussr_zsu_37_2": 125,
     "ussr_zsu_57_2": 125,
     "ussr_zut_37": 125,
+    "fr_battleship_courbet_class_paris": 140,
     "fr_cruiser_dugauy_class_dugauy_trouin": 82,
     "fr_cruiser_dugauy_class_primaguet": 100,
     "fr_cruiser_jeanne_darc": 83,
     "fr_cruiser_suffren_class_colbert": 117,
     "fr_destroyer_aigle_class_aigle": 71,
+    "fr_destroyer_aigle_class_milan": 71,
     "fr_destroyer_aigle_class_vautour": 71,
+    "fr_destroyer_bourrasque_class_bourrasque": 75,
     "fr_destroyer_jaguar_class_chacal": 71,
     "fr_destroyer_jaguar_class_panthere": 71,
     "fr_destroyer_le_fantasque_class_le_malin": 71,
@@ -8562,9 +8568,9 @@
         "stretchAircraft": true
       },
       "kinetic_discard_sabot_penetration": {
-        "stretch": true,
-        "breach": true,
-        "stretchAircraft": true
+        "stretch": false,
+        "breach": false,
+        "stretchAircraft": false
       },
       "kinetic_discard_sabot_non_penetration": {
         "stretch": true,
@@ -8600,6 +8606,16 @@
         "stretch": false,
         "breach": false,
         "stretchAircraft": false
+      },
+      "explosive_penetration_bombs": {
+        "stretch": false,
+        "breach": false,
+        "stretchAircraft": false
+      },
+      "explosive_non_penetration_bombs": {
+        "stretch": false,
+        "breach": false,
+        "stretchAircraft": false
       }
     }
   },
@@ -8615,7 +8631,7 @@
       "bullets": "apds_fs_tank, apds_fs_long_tank, apds_fs_long_l30_tank, apds_fs_full_body_steel_tank, apds_fs_tungsten_small_core_tank, apds_fs_tungsten_l10_l15_tank, apds_fs_tungsten_caliber_fins_tank",
       "pierce": "kinetic_discard_sabot_penetration",
       "stop": "kinetic_discard_sabot_non_penetration",
-      "ricochet": "kinetic_discard_sabot_non_penetration",
+      "ricochet": "kinetic_non_penetration",
       "pierceAngled": "kinetic_discard_sabot_penetration_angled",
       "stopAngled": "kinetic_discard_sabot_non_penetration_angled",
       "splash": false
@@ -8632,6 +8648,14 @@
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_non_penetration",
+      "splash": false
+    },
+    "he_bomb": {
+      "bullets": "he_bomb",
+      "pierce": "explosive_penetration_bombs",
+      "stop": "explosive_penetration_bombs",
+      "ricochet": "explosive_penetration_bombs",
+      "breach": "explosive_penetration_bombs",
       "splash": false
     },
     "hesh": {

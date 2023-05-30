@@ -639,6 +639,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1750,6 +1751,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2524,6 +2532,7 @@
     }
   },
   "commonWeapons": {
+    "remotelyGuidedWeaponsMax": 1,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -2876,6 +2885,7 @@
       "tier": 3,
       "effects": {
         "commonWeapons": {
+          "remotelyGuidedWeaponsMax": 1,
           "Weapon": [
             {
               "trigger": "gunner0",

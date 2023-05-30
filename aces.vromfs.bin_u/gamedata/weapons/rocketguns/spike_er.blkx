@@ -59,11 +59,10 @@
     "explosionPatchRadius": 3.4,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_doubleside",
-    "smokeEffect": "",
-    "smokeEffect2": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
+    "hasTracerTrail": [
+      true,
+      true
+    ],
     "maxDeltaAngle": 0.02,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -109,7 +108,6 @@
     "dragCx": 0.0035,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "hasTracerTrail": true,
     "tracerTrailEmitter": [
       0.1,
       -0.01,
@@ -341,6 +339,35 @@
         "fx": "hit_12_18mm_snow_ap"
       }
     },
+    "tracerTrail": [
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_1",
+        "fireEffect": "fires_exhaust_jet_doubleside",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_2",
+        "fireEffect": "fires_exhaust_jet_doubleside",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "smokeEffect": "",
+        "hazeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "100mmRed",
+          "trail": "noTrail"
+        }
+      }
+    ],
     "DamageParts": {
       "body": {
         "hp": 5.0,
@@ -364,15 +391,6 @@
       "distance": 7.5,
       "damage": 300.0,
       "onHitChanceMultFire": 25.0
-    },
-    "tracerTrail": {
-      "smokeEffect": "",
-      "hazeEffect": "",
-      "visual": {
-        "traceFreq": 1,
-        "tracer": "100mmRed",
-        "trail": "noTrail"
-      }
     }
   }
 }

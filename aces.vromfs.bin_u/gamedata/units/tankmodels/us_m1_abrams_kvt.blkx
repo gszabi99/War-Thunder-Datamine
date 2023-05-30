@@ -1086,6 +1086,52 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "reloadTimeMult": 2.0,
+          "fireParamsPreset": "hull_bustle",
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          },
+          "ammo_body_10_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_body_01_dm": {
+            "count": 1
+          },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "reloadTimeMult": 2.0,
           "fireParamsPreset": "turret_bustle",
           "ammo_turret_14_dm": {
             "count": 1
@@ -1151,52 +1197,6 @@
             "count": 1
           },
           "ammo_turret_44_dm": {
-            "count": 1
-          }
-        },
-        {
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "reloadTimeMult": 2.0,
-          "fireParamsPreset": "hull_bustle",
-          "ammo_body_04_dm": {
-            "count": 1
-          },
-          "ammo_body_05_dm": {
-            "count": 1
-          },
-          "ammo_body_06_dm": {
-            "count": 1
-          },
-          "ammo_body_07_dm": {
-            "count": 1
-          },
-          "ammo_body_08_dm": {
-            "count": 1
-          },
-          "ammo_body_09_dm": {
-            "count": 1
-          },
-          "ammo_body_10_dm": {
-            "count": 1
-          },
-          "ammo_body_11_dm": {
-            "count": 1
-          }
-        },
-        {
-          "fatalFire": true,
-          "fatalExplosion": true,
-          "fireEvent": "ammo_fire",
-          "explosionEvent": "ammo_explosion",
-          "wreckedPartId": 0,
-          "ammo_body_01_dm": {
-            "count": 1
-          },
-          "ammo_body_02_dm": {
-            "count": 1
-          },
-          "ammo_body_03_dm": {
             "count": 1
           }
         }
@@ -1498,6 +1498,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.4,
           "nothing": 0.6,
           "fHitCritical": true
@@ -2370,9 +2371,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 54200.0,
+      "Empty": 54700.0,
       "Fuel": 1000.0,
-      "TakeOff": 55200.0,
+      "TakeOff": 55700.0,
       "momentOfInertia": [
         3.0,
         2.5,
@@ -3174,6 +3175,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3236,11 +3244,11 @@
       "tier": 4
     },
     "m_1_fuel_tanks": {
-      "invertEnableLogic": true,
+      "invertEnableLogic": false,
       "turn_it_off": false,
       "effects": {
         "rcostAddParam": 0.98,
-        "changeMass": 500.0,
+        "changeMass": -500.0,
         "commonWeapons": {
           "Weapon": [
             {
@@ -3508,6 +3516,28 @@
         },
         "hideNodes": {
           "node": [
+            "ex_armor_l_01",
+            "ex_armor_l_02",
+            "ex_armor_l_03",
+            "ex_armor_l_04",
+            "ex_armor_l_05",
+            "ex_armor_l_06",
+            "ex_armor_l_07",
+            "ex_armor_r_01",
+            "ex_armor_r_02",
+            "ex_armor_r_03",
+            "ex_armor_r_04",
+            "ex_armor_r_05",
+            "ex_armor_r_06",
+            "ex_armor_r_07",
+            "ex_decor_l_08",
+            "ex_decor_r_08"
+          ]
+        }
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
             "ex_decor_l_07",
             "ex_decor_r_07",
             "ex_decor_l_04",
@@ -3542,28 +3572,6 @@
             "ex_era_turret_11",
             "ex_era_turret_12",
             "gun_net"
-          ]
-        }
-      },
-      "disableModEffects": {
-        "hideNodes": {
-          "node": [
-            "ex_armor_l_01",
-            "ex_armor_l_02",
-            "ex_armor_l_03",
-            "ex_armor_l_04",
-            "ex_armor_l_05",
-            "ex_armor_l_06",
-            "ex_armor_l_07",
-            "ex_armor_r_01",
-            "ex_armor_r_02",
-            "ex_armor_r_03",
-            "ex_armor_r_04",
-            "ex_armor_r_05",
-            "ex_armor_r_06",
-            "ex_armor_r_07",
-            "ex_decor_l_08",
-            "ex_decor_r_08"
           ]
         }
       }

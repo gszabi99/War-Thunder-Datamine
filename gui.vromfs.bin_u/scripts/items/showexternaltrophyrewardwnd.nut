@@ -42,8 +42,7 @@ let function hideWaitingProgressBox() {
 
   let guiScene = currentProgressBox.getScene()
   guiScene.destroyElement(currentProgressBox)
-  if ("broadcastEvent" in getroottable())
-    broadcastEvent("ModalWndDestroy")
+  broadcastEvent("ModalWndDestroy")
   currentProgressBox = null
 }
 

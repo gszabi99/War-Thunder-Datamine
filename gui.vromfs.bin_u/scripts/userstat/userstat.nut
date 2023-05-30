@@ -11,6 +11,7 @@ let { APP_ID_CUSTOM_LEADERBOARD
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
+let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval

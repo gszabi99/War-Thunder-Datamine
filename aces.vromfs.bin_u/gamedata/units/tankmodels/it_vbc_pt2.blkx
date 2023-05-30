@@ -220,6 +220,10 @@
       "composite_armor_hull_03_dm": {
         "armorThickness": 8.0,
         "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_04_dm": {
+        "armorThickness": 8.0,
+        "hidableInXrayViewer": true
       }
     },
     "add_turret_armor": {
@@ -1317,6 +1321,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1654,6 +1659,15 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_03_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_04_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_04_dm"
           }
         }
       }
@@ -2940,6 +2954,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

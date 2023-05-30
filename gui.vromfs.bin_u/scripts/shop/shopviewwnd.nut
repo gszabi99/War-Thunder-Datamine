@@ -51,7 +51,7 @@ let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCo
       this.highlightUnitsInTree([this.curAirName])
   }
 
-  function onCloseShop() {
+  function goBack() {
     ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
 }

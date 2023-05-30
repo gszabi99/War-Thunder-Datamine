@@ -567,7 +567,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     if (k.indexof("pinfo_") != 0)
       continue
     let uid = k.slice(6).tointeger()
-    if (pinfo == null) {
+    if (pinfo == null || pinfo.len() == 0) {
       if (uid in this.playersInfo)
         delete this.playersInfo[uid]
     }

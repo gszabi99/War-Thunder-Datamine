@@ -427,8 +427,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
     let ignoreAxis = ["camx", "camy"]
     let customLocalization = { ["camx"] = "controls/help/camx" }
 
-    let curJoyParams = ::JoystickParams()
-    curJoyParams.setFrom(::joystick_get_cur_settings())
+    let curJoyParams = ::joystick_get_cur_settings()
     let axisIds = [
       { id = "joy_axis_l", x = 0, y = 1 }
       { id = "joy_axis_r", x = 2, y = 3 }

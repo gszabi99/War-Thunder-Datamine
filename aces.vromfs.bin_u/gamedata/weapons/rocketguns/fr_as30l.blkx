@@ -1,11 +1,11 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "mesh": "as_30l",
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
-  "mesh": "as_30l",
   "tags": {},
   "rocket": {
     "statType": "hydra",
@@ -13,12 +13,11 @@
     "length": 3.885,
     "WdK": [
       0.1,
-      1.1,
-      1.1
+      0.1,
+      0.1
     ],
     "CxK": 1.25,
-    "CyK": 18.0,
-    "CyMaxAoA": 15.0,
+    "wingAreaMult": 1.15,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
     "distFromCmToStab": 0.02,
@@ -30,7 +29,7 @@
     "force": 63325.0,
     "force1": 6560.0,
     "fireDelay": 0.0,
-    "timeLife": 22.0,
+    "timeLife": 21.0,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 370.0,
@@ -167,14 +166,12 @@
         "loftAngleToAccelMult": 5.0,
         "loftTargetOmegaMax": 1.5,
         "baseIndSpeed": 1800.0,
-        "angleToAccelMult": 0.0,
-        "omegaToAccelMult": 8.0,
-        "elevationAdd": 1.0,
+        "propNavMult": 4.0,
         "reqAccelMax": 6.0,
-        "accelControlProp": 5.0,
-        "accelControlIntg": 0.7,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.5
+        "accelControlProp": 0.0395,
+        "accelControlIntg": 0.0345,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.0061
       }
     },
     "stabilityRicochetModifier": {

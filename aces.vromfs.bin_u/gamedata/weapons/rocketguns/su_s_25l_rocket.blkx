@@ -105,7 +105,7 @@
       ],
       "breakLockMaxTime": 5.0,
       "laserSeeker": {
-        "range": 7000.0,
+        "range": 10000.0,
         "rangeMax": 12000.0,
         "fov": 30.0,
         "lockAngleMax": 30.0,
@@ -117,16 +117,19 @@
         "designationSourceTypeMask": 5
       },
       "guidanceAutopilot": {
-        "timeOut": 0.8,
-        "baseIndSpeed": 1300.0,
-        "angleToAccelMult": 0.0,
-        "omegaToAccelMult": 8.0,
-        "elevationAdd": 1.0,
-        "reqAccelMax": 6.0,
-        "accelControlProp": 5.0,
-        "accelControlIntg": 0.7,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.5
+        "timeOut": 0.5,
+        "loftEnabled": true,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -35.0,
+        "loftAngleToAccelMult": 0.2,
+        "loftTargetOmegaMax": 0.75,
+        "baseIndSpeed": 1800.0,
+        "propNavMult": 4.0,
+        "reqAccelMax": 8.0,
+        "accelControlProp": 0.0035,
+        "accelControlIntg": 0.058,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.0016
       }
     },
     "stabilityRicochetModifier": {

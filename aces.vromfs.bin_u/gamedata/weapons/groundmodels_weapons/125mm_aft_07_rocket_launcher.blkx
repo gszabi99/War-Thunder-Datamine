@@ -27,21 +27,18 @@
     "statType": "hydra",
     "caliber": 0.125,
     "length": 1.04,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
     "CxK": 1.65,
-    "CyK": 6.0,
-    "CyMaxAoA": 1.75,
-    "wingAreaMult": 1.5,
-    "distFromCmToStab": 0.01,
+    "finsAoaHor": 0.0,
+    "finsAoaVer": 0.0,
+    "wingAreaMult": 2.5,
+    "distFromCmToStab": 0.005,
     "mass": 12.5,
     "massEnd": 11.6,
     "massEnd1": 9.6,
     "timeFire": 0.9,
     "timeFire1": 27.0,
+    "thrustVectoringAngle": 0.006,
+    "thrustVectoringAngle1": 0.2,
     "force": 1600.0,
     "force1": 50.0,
     "timeLife": 28.0,
@@ -51,15 +48,10 @@
     "endSpeed": 130.0,
     "maxDistance": 3200.0,
     "minDistance": 30.0,
-    "operatedDist": 3200.0,
+    "rangeMax": 3200.0,
     "visRotationFreqX": 8.5,
-    "operated": true,
-    "maxLateralAcceleration": 3.0,
-    "autoLeveling": true,
-    "autoAiming": true,
-    "aimCorrectionVelMin": 125.0,
-    "aimSensitivity": 8.0,
-    "maxAxisValues": 0.25,
+    "autoAimingMaxAngle": 1.0,
+    "guidanceType": "saclos",
     "maxDeltaAngle": 0.03,
     "explosiveType": "comp_b",
     "explosiveMass": 1.4,
@@ -88,11 +80,10 @@
     "explosionPatchRadius": 3.5,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_short_doubleside",
-    "smokeEffect": "smoke_rocket_tail_doubleside",
-    "smokeEffect2": "rocket_wire",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
+    "hasTracerTrail": [
+      true,
+      true
+    ],
     "effectOffset": [
       -0.01,
       0.0,
@@ -115,12 +106,54 @@
     "fuseDelayDist": 0.4,
     "explodeTreshold": 0.01,
     "price": 3000.0,
-    "hasTracerTrail": true,
     "tracerTrailEmitter": [
       0.5,
       0.0,
       0.0
     ],
+    "guidance": {
+      "range": [
+        100.0,
+        3000.0
+      ],
+      "launchAngleMax": 5.0,
+      "controlConeFov": 15.0,
+      "breakLockMaxTime": 3.0,
+      "lineOfSightAutopilot": {
+        "timeToGain0": [
+          0.0,
+          0.0
+        ],
+        "timeToGain1": [
+          0.45,
+          0.0
+        ],
+        "timeToGain2": [
+          0.5,
+          0.3
+        ],
+        "timeToGain3": [
+          2.0,
+          0.4
+        ],
+        "timeToGain4": [
+          2.5,
+          1.0
+        ],
+        "crossDistToReqCrossVelMult": 3.25,
+        "reqCrossVelRationMax": 0.25,
+        "velDiffToReqAccelMult": 2.5,
+        "accelControl": {
+          "velFrameReference": true,
+          "baseIndSpeed": 1800.0,
+          "reqAccelMax": 3.5,
+          "accelControlProp": 0.015,
+          "accelControlIntg": 0.0,
+          "accelControlDiff": 0.0001,
+          "accelControlIntgLim": 0.0
+        }
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -318,6 +351,42 @@
         "fx": "hit_12_18mm_snow_ap"
       }
     },
+    "tracerTrail": [
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_1",
+        "fireEffect": "fires_exhaust_jet_short_doubleside",
+        "smokeEffect": "smoke_rocket_tail_doubleside",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_2",
+        "fireEffect": "fires_exhaust_jet_short_doubleside",
+        "smokeEffect": "smoke_rocket_tail_doubleside",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "tracers_rocket_med_red_sparks",
+          "trail": "noTrail"
+        }
+      },
+      {
+        "hasTracerTrail": true,
+        "tracerTrailEmitter": [
+          -0.3,
+          0.0,
+          0.0
+        ],
+        "smokeEffect2": "rocket_wire"
+      }
+    ],
     "hitpower": {
       "HitPower0m": [
         1.0,
@@ -471,14 +540,6 @@
       "distance": 5.5,
       "damage": 600.0,
       "onHitChanceMultFire": 25.0
-    },
-    "tracerTrail": {
-      "smokeEffect": "",
-      "visual": {
-        "traceFreq": 1,
-        "tracer": "tracers_rocket_med_red_sparks",
-        "trail": "noTrail"
-      }
     }
   }
 }

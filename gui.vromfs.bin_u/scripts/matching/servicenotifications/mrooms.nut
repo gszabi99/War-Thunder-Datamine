@@ -426,6 +426,15 @@ let function serializeDyncampaign(cb) {
   matchingApiFunc("mrooms.set_attributes", cb, { private = priv })
 }
 
+// funcs called from native code
+::get_current_room <- function get_current_room() {
+  return roomState.roomId
+}
+
+::is_player_room_operator <- function is_player_room_operator(user_id) {
+  return (user_id in roomState.roomOps)
+}
+
 return {
   isMyUserId
   isHostInRoom

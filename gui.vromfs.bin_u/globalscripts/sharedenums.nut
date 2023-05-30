@@ -183,6 +183,16 @@ global enum HudColorState {
   HIGH_ALERT       = 4
 };
 
+global enum FCSShotState {
+  SHOT_NONE   = 0,
+  SHOT_OVER   = 1,
+  SHOT_SHORT  = 2,
+  SHOT_STRADLE = 3,
+  SHOT_HIT    = 4,
+  SHOT_LEFT   = 5,
+  SHOT_RIGHT  = 6
+};
+
 //Need recalculate wpCost if change values of mask for exist weapons
 global enum WeaponMask {
   MACHINE_GUN_MASK      = 0x000001,

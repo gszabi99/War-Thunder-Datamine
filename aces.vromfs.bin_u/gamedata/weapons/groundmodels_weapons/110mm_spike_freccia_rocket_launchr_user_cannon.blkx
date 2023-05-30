@@ -42,8 +42,8 @@
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
   "allowRearmOnField": true,
-  "mesh": "spike_er2_rocked",
-  "animChar": "spike_er2_rocked_char",
+  "mesh": "spike_er2_rocket_deployed",
+  "animChar": "spike_er2_rocket_char",
   "reloadAnimParam": "rocket_hide",
   "bullet": {
     "mass": 13.0,
@@ -63,14 +63,14 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
-    "bulletName": "110mm_spike_er2",
+    "bulletName": "110mm_spike_mr",
     "caliber": 0.11,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm",
     "sound": "atgm_TOW",
     "sound_inside": "atgm_TOW_interior",
     "recoilMultiplier": 0.05,
-    "mesh": "spike_er2_rocked",
+    "mesh": "spike_er2_rocket",
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -142,11 +142,7 @@
       "explosionPatchRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "fireEffect": "fires_exhaust_jet_short_doubleside",
-      "smokeEffect": "smoke_rocket_tail_doubleside",
-      "smokeEffect2": "",
-      "hazeEffect": "haze_missile",
-      "endSmokeViscosity": 0.05,
+      "hasTracerTrail": true,
       "effectOffset": [
         0.1,
         0.0,
@@ -169,7 +165,7 @@
       "fuseDelayDist": 0.4,
       "explodeTreshold": 0.01,
       "price": 3000.0,
-      "mesh": "spike_er2_rocked",
+      "mesh": "spike_er2_rocket",
       "guidance": {
         "warmUpTime": 0.2,
         "acquisitionTime": 0.2,
@@ -408,6 +404,26 @@
           "fx": "hit_12_18mm_snow_ap"
         }
       },
+      "tracerTrail": [
+        {
+          "hasTracerTrail": true,
+          "rocketTailName": "emtr_jet_1",
+          "fireEffect": "fires_exhaust_jet_short_doubleside",
+          "smokeEffect": "smoke_rocket_tail_doubleside",
+          "smokeEffect2": "",
+          "hazeEffect": "haze_missile",
+          "endSmokeViscosity": 0.05
+        },
+        {
+          "hasTracerTrail": true,
+          "rocketTailName": "emtr_jet_2",
+          "fireEffect": "fires_exhaust_jet_short_doubleside",
+          "smokeEffect": "smoke_rocket_tail_doubleside",
+          "smokeEffect2": "",
+          "hazeEffect": "haze_missile",
+          "endSmokeViscosity": 0.05
+        }
+      ],
       "hitpower": {
         "HitPower0m": [
           1.0,
@@ -583,14 +599,14 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
-      "bulletName": "110mm_spike_er2",
+      "bulletName": "110mm_spike_mr",
       "caliber": 0.11,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
       "sound": "atgm_TOW",
       "sound_inside": "atgm_TOW_interior",
       "recoilMultiplier": 0.05,
-      "mesh": "spike_er2_rocked",
+      "mesh": "spike_er2_rocket",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -662,11 +678,7 @@
         "explosionPatchRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_exhaust_jet_short_doubleside",
-        "smokeEffect": "smoke_rocket_tail_doubleside",
-        "smokeEffect2": "",
-        "hazeEffect": "haze_missile",
-        "endSmokeViscosity": 0.05,
+        "hasTracerTrail": true,
         "effectOffset": [
           0.1,
           0.0,
@@ -689,7 +701,7 @@
         "fuseDelayDist": 0.4,
         "explodeTreshold": 0.01,
         "price": 3000.0,
-        "mesh": "spike_er2_rocked",
+        "mesh": "spike_er2_rocket",
         "guidance": {
           "warmUpTime": 0.2,
           "acquisitionTime": 0.2,
@@ -928,6 +940,26 @@
             "fx": "hit_12_18mm_snow_ap"
           }
         },
+        "tracerTrail": [
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_1",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          },
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_2",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          }
+        ],
         "hitpower": {
           "HitPower0m": [
             1.0,

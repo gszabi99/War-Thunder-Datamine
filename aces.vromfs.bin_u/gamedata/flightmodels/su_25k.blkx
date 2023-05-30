@@ -13,7 +13,6 @@
   "ilsASP17": true,
   "havePointOfInterestDesignator": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -34,6 +33,7 @@
   "fightAiBehaviour": "assault",
   "laserDesignator": true,
   "autopilotImpl": "FBW",
+  "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -280,6 +280,20 @@
       },
       "tank4_dm": {
         "hp": 100.5
+      }
+    },
+    "steel_tank_s": {
+      "tank5_dm": {
+        "hp": 80.5
+      },
+      "tank6_dm": {
+        "hp": 80.5
+      },
+      "tank7_dm": {
+        "hp": 80.5
+      },
+      "tank8_dm": {
+        "hp": 80.5
       }
     },
     "titan10": {
@@ -1432,6 +1446,174 @@
             "damage": 80.0,
             "fire": 0.3,
             "leak": 1.0
+          }
+        ]
+      },
+      {
+        "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
           }
         ]
       },
@@ -2694,7 +2876,11 @@
         "cannon4_dm",
         "cover5_dm",
         "cannon5_dm",
-        "cover6_dm"
+        "cover6_dm",
+        "tank5_dm",
+        "tank6_dm",
+        "tank7_dm",
+        "tank8_dm"
       ]
     },
     "WeaponSlot": [
@@ -3980,6 +4166,28 @@
               "traceOffset": 1,
               "external": true
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_left",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_25_left_wing.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_002",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "ptb_right"
+            }
           }
         ]
       },
@@ -4265,6 +4473,24 @@
               "bullets": 250,
               "spread": 1.5,
               "traceOffset": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_right",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_5"
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_25_right_wing.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_003",
+              "bullets": 1,
               "external": true
             }
           }
@@ -5430,6 +5656,36 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.0
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": [
+      "blister1",
+      "blister8"
+    ],
+    "hide": [
+      "seat_01",
+      "blister3",
+      "blister2"
+    ],
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

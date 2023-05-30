@@ -678,6 +678,21 @@
           "comment": {
             "value": "imya zony - validno"
           },
+          "unitGetDistanceToVar": {
+            "object_type": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "any",
+            "target_marking": 0,
+            "distance_type": "nearest",
+            "check_objects": "any",
+            "check_targets": "all",
+            "object": "@bdt_t1_cur_spawn_zone_name",
+            "target": "bdt_t1_targets_squad",
+            "var": "t1_distance_check_variable"
+          },
           "triggerEnable": {
             "target": "bdt_t1_frontline_start"
           }
@@ -825,7 +840,7 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
@@ -834,22 +849,19 @@
           }
         },
         "conditions": {
-          "unitDistanceBetween": {
-            "value": 15000.0,
-            "math": "notNear2D",
-            "object_type": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "target_type": "isActive",
-            "target_marking": 0,
-            "check_objects": "any",
-            "check_targets": "all",
-            "object": "@bdt_t1_cur_spawn_zone_name",
-            "target": "bdt_t1_targets_squad",
-            "var": "bdt_t1_min_zone_distance",
-            "compareCenters": false
-          }
+          "varCompareReal": [
+            {
+              "var_value": "t1_distance_check_variable",
+              "value": 0.0,
+              "comparasion_func": "notLess",
+              "var_value_other": "bdt_t1_min_zone_distance"
+            },
+            {
+              "var_value": "t1_distance_check_variable",
+              "value": -1.0,
+              "comparasion_func": "equal"
+            }
+          ]
         },
         "actions": {
           "comment": {
@@ -862,21 +874,6 @@
         "else_actions": {
           "comment": {
             "value": "active base near. need to find another zone"
-          },
-          "unitGetDistanceToVar": {
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_type": "isActive",
-            "target_marking": 0,
-            "distance_type": "nearest",
-            "check_objects": "any",
-            "check_targets": "any",
-            "object": "@bdt_t1_cur_spawn_zone_name",
-            "target": "bdt_t1_targets_squad",
-            "var": "t1_distance_variable"
           },
           "varModify": {
             "operator": "add",
@@ -933,7 +930,7 @@
             "target": "@bdt_spawn_t1_bombing_zone_object_name"
           },
           "unitRespawn": {
-            "delay": 1.0,
+            "delay": 0.0,
             "offset": [
               0.0,
               0.0,
@@ -1488,6 +1485,21 @@
           "comment": {
             "value": "imya zony - validno"
           },
+          "unitGetDistanceToVar": {
+            "object_type": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "any",
+            "target_marking": 0,
+            "distance_type": "nearest",
+            "check_objects": "any",
+            "check_targets": "all",
+            "object": "@bdt_t2_cur_spawn_zone_name",
+            "target": "bdt_t2_targets_squad",
+            "var": "t2_distance_check_variable"
+          },
           "triggerEnable": {
             "target": "bdt_t2_frontline_start"
           }
@@ -1635,7 +1647,7 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
@@ -1644,22 +1656,19 @@
           }
         },
         "conditions": {
-          "unitDistanceBetween": {
-            "value": 15000.0,
-            "math": "notNear2D",
-            "object_type": "any",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "target_type": "isActive",
-            "target_marking": 0,
-            "check_objects": "any",
-            "check_targets": "all",
-            "object": "@bdt_t2_cur_spawn_zone_name",
-            "target": "bdt_t2_targets_squad",
-            "var": "bdt_t2_min_zone_distance",
-            "compareCenters": false
-          }
+          "varCompareReal": [
+            {
+              "var_value": "t2_distance_check_variable",
+              "value": 0.0,
+              "comparasion_func": "notLess",
+              "var_value_other": "bdt_t2_min_zone_distance"
+            },
+            {
+              "var_value": "t2_distance_check_variable",
+              "value": -1.0,
+              "comparasion_func": "equal"
+            }
+          ]
         },
         "actions": {
           "comment": {
@@ -1672,21 +1681,6 @@
         "else_actions": {
           "comment": {
             "value": "active base near. need to find another zone"
-          },
-          "unitGetDistanceToVar": {
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_type": "isActive",
-            "target_marking": 0,
-            "distance_type": "nearest",
-            "check_objects": "any",
-            "check_targets": "any",
-            "object": "@bdt_t2_cur_spawn_zone_name",
-            "target": "bdt_t2_targets_squad",
-            "var": "t2_distance_variable"
           },
           "varModify": {
             "operator": "add",
@@ -1743,7 +1737,7 @@
             "target": "@bdt_spawn_t2_bombing_zone_object_name"
           },
           "unitRespawn": {
-            "delay": 1.0,
+            "delay": 0.0,
             "offset": [
               0.0,
               0.0,
@@ -4898,8 +4892,12 @@
     "bdt_t1_min_zone_distance": 10000.0,
     "bdt_t2_min_zone_distance": 10000.0,
     "bdt_base_name_suffix": "",
-    "t1_distance_variable": 0.0,
-    "t2_distance_variable": 0.0
+    "t1_distance_fail_variable": 0.0,
+    "t2_distance_fail_variable": 0.0,
+    "t1_distance_success_variable": 0.0,
+    "t2_distance_success_variable": 0.0,
+    "t1_distance_check_variable": 0.0,
+    "t2_distance_check_variable": 0.0
   },
   "dialogs": {},
   "airfields": {},

@@ -142,38 +142,38 @@
         ],
         "unitSetProperties": [
           {
+            "object": "usr_aaa_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "usr_aaa_sq",
             "targetableByAi": false,
             "stealthRadius": 10.0,
             "accuracy": 0.1,
             "effShootingRate": 0.0
           },
           {
+            "object": "ussr_atack_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "ussr_atack_sq",
             "accuracy": 0.4,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.4,
             "speed": 0.0
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "ussr_aaa01",
               "ussr_aaa02",
               "ussr_aaa03",
               "ussr_aaa04"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetAir": true,
             "accuracy": 0.4,
             "effShootingRate": 0.0,
@@ -293,38 +293,38 @@
         }
       },
       "conditions": {
-        "unitDistanceBetween": [
-          {
-            "value": 500.0,
-            "math": "2D",
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "target_type": "isAlive",
-            "target_marking": 0,
-            "check_objects": "any",
-            "check_targets": "any",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "germ_sparviero",
-            "target": "fall_down01"
-          },
-          {
-            "value": 800.0,
-            "math": "2D",
-            "object_type": "isAlive",
-            "object_marking": 0,
-            "target_type": "isAlive",
-            "target_marking": 0,
-            "check_objects": "any",
-            "check_targets": "any",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object": "player",
-            "target": "sparviero_sq"
-          }
-        ]
+        "unitDistanceBetween": {
+          "value": 500.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "germ_sparviero",
+          "target": "fall_down01",
+          "compareCenters": false
+        }
       },
       "actions": {
+        "moSetObjectiveStatus": {
+          "target": "spain_wet_job_fly_in_formation",
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "wait": [
+          {
+            "time": 3.0
+          },
+          {
+            "time": 3.0
+          }
+        ],
         "unitPlayEffect": [
           {
             "effect_type": "specify",
@@ -406,23 +406,8 @@
             ]
           }
         ],
-        "wait": [
-          {
-            "time": 3.0
-          },
-          {
-            "time": 5.0
-          }
-        ],
         "moAddMissionObjective": {
           "target": "spain_wet_job_follow_sparviero_to_fall_zone",
-          "object_marking": 0,
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
-        },
-        "moSetObjectiveStatus": {
-          "target": "spain_wet_job_fly_in_formation",
-          "status": 2,
           "object_marking": 0,
           "object_var_comp_op": "equal",
           "object_var_name": ""
@@ -460,10 +445,11 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "germ_sparviero",
-            "target": "fall_down01"
+            "target": "fall_down01",
+            "compareCenters": false
           },
           {
-            "value": 500.0,
+            "value": 250.0,
             "math": "notNear2D",
             "object_type": "isAlive",
             "object_marking": 0,
@@ -474,7 +460,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object": "germ_sparviero",
-            "target": "sparviero_sq"
+            "target": "sparviero_sq",
+            "compareCenters": false
           }
         ]
       },
@@ -529,7 +516,7 @@
       },
       "conditions": {
         "unitDistanceBetween": {
-          "value": 1000.0,
+          "value": 3000.0,
           "math": "2D",
           "object_type": "isAlive",
           "object_marking": 0,
@@ -545,15 +532,15 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "germ_sparviero",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "germ_sparviero",
           "useForTriggerFiltered": true,
-          "speed": 270.0,
+          "speed": 170.0,
           "lockSpeed": true,
-          "aiEnabled": false,
+          "ignoreCollisions": true,
           "disableFallUndergroundAtDestroyed": true
         },
         "unitSetControls": [
@@ -754,11 +741,11 @@
           "target": "ussr_atack_sq"
         },
         "unitSetProperties": {
+          "object": "ussr_atack_sq",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ussr_atack_sq",
           "stealthRadius": 50000.0,
           "speed": 27.0
         },
@@ -950,28 +937,28 @@
         },
         "unitSetProperties": [
           {
+            "object": "boats_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "boats_sq",
             "army": 1,
             "stealthRadius": 50000.0
           },
           {
+            "object": "boats_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "boats_sq",
             "stealthRadius": 128000.0
           },
           {
+            "object": "ussr_fighter_sq",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "ussr_fighter_sq",
             "accuracy": 0.4,
             "effShootingRate": 0.4
           }
@@ -1499,8 +1486,7 @@
           "target": [
             "sparviero_sq",
             "germ_sparviero"
-          ],
-          "compareCenters": false
+          ]
         }
       },
       "actions": {
@@ -1563,7 +1549,7 @@
           "status": "notCompleted"
         },
         "unitDistanceBetween": {
-          "value": 600.0,
+          "value": 800.0,
           "math": "2D",
           "object_type": "isAlive",
           "object_marking": 0,
@@ -1657,11 +1643,11 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "ussr_fighter_sq",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "ussr_fighter_sq",
           "attack_type": "dont_aim"
         },
         "unitMoveTo": {
@@ -1926,9 +1912,9 @@
             0.130526
           ],
           [
-            24488.5,
+            24463.3,
             200.0,
-            -52043.1
+            -52058.9
           ]
         ],
         "unit_class": "sm_79_1936",
@@ -5819,7 +5805,7 @@
         ],
         [
           22780.4,
-          130.85,
+          95.4819,
           -38778.4
         ]
       ],

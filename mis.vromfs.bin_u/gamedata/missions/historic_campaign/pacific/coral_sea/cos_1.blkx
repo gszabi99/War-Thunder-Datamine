@@ -244,9 +244,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "effShootingRate": 0.5,
             "speed": 0.0,
-            "lockSpeed": true
+            "lockSpeed": true,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "ChainfireTime": 2.0,
+            "DelayAfterShoot": 2.0
           },
           {
             "object": "lexington_group",
@@ -437,6 +444,12 @@
         ],
         "unitPutToSleep": {
           "target": "us_fleet"
+        },
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target": "player"
         },
         "unitMoveTo": [
           {
@@ -1737,15 +1750,47 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "jap_carrier_shoho"
-        }
+        "unitWhenPartHp": [
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.3,
+            "object": "jap_carrier_shoho",
+            "planePart": [
+              "cover_01_dm",
+              "cover_02_dm",
+              "cover_03_dm",
+              "cover_04_dm",
+              "cover_05_dm",
+              "cover_06_dm",
+              "cover_07_dm",
+              "cover_08_dm",
+              "cover_09_dm"
+            ],
+            "tankPart": ""
+          },
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.3,
+            "object": "jap_carrier_shoho",
+            "planePart": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "compartment_05_dm",
+              "compartment_06_dm",
+              "compartment_07_dm",
+              "compartment_08_dm",
+              "compartment_09_dm",
+              "compartment_10_dm"
+            ],
+            "tankPart": ""
+          }
+        ]
       },
       "actions": {
         "triggerDisable": {
@@ -1754,6 +1799,27 @@
             "mission_fail",
             "torpedo_miss_hint"
           ]
+        },
+        "unitDamage": {
+          "part": 0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [
+            1.0,
+            1.0
+          ],
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "radiusOffset": [
+            10.0,
+            15.0
+          ],
+          "power": 1.0,
+          "target": "jap_carrier_shoho",
+          "doExplosion": true
         },
         "moSetObjectiveStatus": {
           "target": "corS_mission01_att00",
@@ -1856,33 +1922,100 @@
           "wait": false,
           "object": "jap_carrier_shoho"
         },
-        "wait": [
+        "wait": {
+          "time": 1.0
+        },
+        "triggerEnable": {
+          "target": [
+            "shoho_dmg_by_player_twice",
+            "bombing_done"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "shoho_dmg_by_player_twice": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": [
           {
-            "time": 1.0
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.5,
+            "object": "jap_carrier_shoho",
+            "planePart": [
+              "cover_01_dm",
+              "cover_02_dm",
+              "cover_03_dm",
+              "cover_04_dm",
+              "cover_05_dm",
+              "cover_06_dm",
+              "cover_07_dm",
+              "cover_08_dm",
+              "cover_09_dm"
+            ],
+            "tankPart": ""
           },
           {
-            "time": 3.0
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.5,
+            "object": "jap_carrier_shoho",
+            "planePart": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "compartment_05_dm",
+              "compartment_06_dm",
+              "compartment_07_dm",
+              "compartment_08_dm",
+              "compartment_09_dm",
+              "compartment_10_dm"
+            ],
+            "tankPart": ""
           }
-        ],
-        "unitDamage": {
-          "part": 0,
-          "useEffect": false,
-          "countEffects": 1,
-          "delay": [
-            1.0,
-            1.0
-          ],
+        ]
+      },
+      "actions": {
+        "unitPlayEffect": {
+          "effect": "ship_model_fire",
           "offset": [
             0.0,
             0.0,
             0.0
           ],
-          "radiusOffset": [
-            10.0,
-            15.0
+          "show": true,
+          "loop": true,
+          "scale": 1.0,
+          "effect_type": "specify",
+          "attach": true,
+          "loopSpawn": true,
+          "delay": [
+            1.0,
+            1.0
           ],
           "target": "jap_carrier_shoho",
-          "power": 1.0
+          "radiusOffset": [
+            0.0,
+            0.0
+          ]
+        },
+        "comment": {
+          "value": ""
         },
         "triggerEnable": {
           "target": "bombing_done"
@@ -4948,6 +5081,16 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "modification": [
+          "CdMin_Fuse",
+          "structure_str",
+          "cd_98",
+          "new_cover",
+          "new_radiator",
+          "new_compressor",
+          "hp_105",
+          "new_engine_injection"
+        ],
         "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {
@@ -4958,8 +5101,8 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
-          "count": 4,
-          "numInWing": 4,
+          "count": 6,
+          "numInWing": 2,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -5907,9 +6050,9 @@
           1.0
         ],
         [
-          -4757.5,
+          -7560.47,
           1500.0,
-          3570.6
+          4336.33
         ]
       ],
       "props": {
@@ -6187,9 +6330,9 @@
           14000.0
         ],
         [
-          -2932.8,
+          -6378.32,
           1500.0,
-          22192.7
+          16741.5
         ]
       ],
       "props": {

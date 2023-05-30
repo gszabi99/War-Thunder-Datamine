@@ -45,8 +45,11 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeTankDestroyer",
+  "crosshairPreset": [
+    "sw_landsverk_ush_405",
+    "sw_landsverk_ush_405"
+  ],
   "rearmTimeOnField": 30.0,
-  "crosshairPreset": "sw_landsverk_ush_405",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1046,6 +1049,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -2638,6 +2642,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

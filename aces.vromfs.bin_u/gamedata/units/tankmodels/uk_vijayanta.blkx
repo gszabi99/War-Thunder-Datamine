@@ -44,9 +44,6 @@
   "type": "typeMediumTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -169,7 +166,9 @@
       "ex_decor_l_04_dm": {},
       "ex_decor_06_dm": {},
       "ex_decor_04_dm": {},
-      "ex_decor_10_dm": {}
+      "ex_decor_10_dm": {},
+      "ex_armor_l_12_dm": {},
+      "ex_armor_r_12_dm": {}
     },
     "turret": {
       "armorClass": "CHA_tank",
@@ -1354,6 +1353,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1865,7 +1865,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/105mm_L7_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/105mm_L7_Mk_3_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.2,
@@ -1966,6 +1966,50 @@
         }
       },
       {
+        "trigger": "gunner3",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+        "emitter": "emtr_mg_flame_01",
+        "flash": "emtr_mg_flame_01",
+        "useEmitter": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_03_dm",
+        "parkInDeadzone": false,
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "bullets": 1000,
+        "isBulletBelt": true,
+        "fireConeAngle": 5.0,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_mg_aa_h",
+          "gun": "bone_mg_aa_v",
+          "gunnerDm": "commander_dm"
+        },
+        "limits": {
+          "yaw": [
+            -60.0,
+            60.0
+          ],
+          "pitch": [
+            -10.0,
+            30.0
+          ]
+        }
+      },
+      {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
         "circleAim": false,
@@ -2016,7 +2060,7 @@
         "circleAim": false,
         "blk": "gameData/Weapons/groundModels_weapons/12_7mm_L21A1_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin_01",
-        "flash": "emtr_mg_flame_01",
+        "flash": "emtr_mg_flame_04",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_02_dm",
@@ -2058,50 +2102,7 @@
         }
       },
       {
-        "trigger": "gunner2",
-        "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
-        "emitter": "bone_mg_aa_v",
-        "flash": "emtr_mg_flame_04",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_03_dm",
-        "parkInDeadzone": false,
-        "speedYaw": 90.0,
-        "speedPitch": 90.0,
-        "bullets": 600,
-        "isBulletBelt": true,
-        "fireConeAngle": 5.0,
-        "ChainfireTime": 0.5,
-        "DelayAfterShoot": 2.0,
-        "accuracyAir": 1.5,
-        "accuracyGnd": 0.0,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 1.5,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "forestallTime": 0.1,
-        "turret": {
-          "head": "bone_mg_aa_h",
-          "gun": "bone_mg_aa_v",
-          "gunnerDm": "commander_dm"
-        },
-        "limits": {
-          "yaw": [
-            -60.0,
-            60.0
-          ],
-          "pitch": [
-            -10.0,
-            30.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner3",
+        "trigger": "gunner5",
         "triggerGroup": "commander",
         "blk": "gameData/Weapons/dummy_weapon.blk",
         "emitter": "bone_commander_sight_v",
@@ -2919,6 +2920,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2954,6 +2962,22 @@
     ],
     "detectionHeight": 2.81
   },
+  "ircmProjector": {
+    "node": "ex_lantern_01",
+    "beamRadius": [
+      1400.0,
+      100.0
+    ],
+    "projectorPower": [
+      0.02,
+      0.07
+    ],
+    "glowOffset": [
+      0.1,
+      0.0,
+      0.0
+    ]
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -2973,14 +2997,20 @@
       "image": "#ui/gameuiskin#tank_reinforcement_uk"
     },
     "art_support": {},
+    "105mm_britain_HESH": {},
+    "105mm_usa_HEAT_FS": {},
+    "105mm_usa_HEAT_FS_ammo_pack": {
+      "tier": 3
+    },
     "tank_smoke_screen_system_mod": {
-      "tier": 3,
+      "tier": 4,
+      "modClass": "protection",
       "effects": {
         "commonWeapons": {
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/105mm_L7_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/105mm_L7_Mk_3_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.2,
@@ -3081,6 +3111,50 @@
               }
             },
             {
+              "trigger": "gunner3",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+              "emitter": "emtr_mg_flame_01",
+              "flash": "emtr_mg_flame_01",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "barrelDP": "gun_barrel_03_dm",
+              "parkInDeadzone": false,
+              "speedYaw": 90.0,
+              "speedPitch": 90.0,
+              "bullets": 1000,
+              "isBulletBelt": true,
+              "fireConeAngle": 5.0,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_mg_aa_h",
+                "gun": "bone_mg_aa_v",
+                "gunnerDm": "commander_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -60.0,
+                  60.0
+                ],
+                "pitch": [
+                  -10.0,
+                  30.0
+                ]
+              }
+            },
+            {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
               "circleAim": false,
@@ -3131,7 +3205,7 @@
               "circleAim": false,
               "blk": "gameData/Weapons/groundModels_weapons/12_7mm_L21A1_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin_01",
-              "flash": "emtr_mg_flame_01",
+              "flash": "emtr_mg_flame_04",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_02_dm",
@@ -3173,50 +3247,7 @@
               }
             },
             {
-              "trigger": "gunner2",
-              "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
-              "emitter": "bone_mg_aa_v",
-              "flash": "emtr_mg_flame_04",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "barrelDP": "gun_barrel_03_dm",
-              "parkInDeadzone": false,
-              "speedYaw": 90.0,
-              "speedPitch": 90.0,
-              "bullets": 600,
-              "isBulletBelt": true,
-              "fireConeAngle": 5.0,
-              "ChainfireTime": 0.5,
-              "DelayAfterShoot": 2.0,
-              "accuracyAir": 1.5,
-              "accuracyGnd": 0.0,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 1.5,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "forestallTime": 0.1,
-              "turret": {
-                "head": "bone_mg_aa_h",
-                "gun": "bone_mg_aa_v",
-                "gunnerDm": "commander_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -60.0,
-                  60.0
-                ],
-                "pitch": [
-                  -10.0,
-                  30.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner3",
+              "trigger": "gunner5",
               "triggerGroup": "commander",
               "blk": "gameData/Weapons/dummy_weapon.blk",
               "emitter": "bone_commander_sight_v",
@@ -3321,96 +3352,7 @@
     "name": "default",
     "replace_tex": {
       "from": "uk_camo_middle_deep_bronze_greens*",
-      "to": "uk_camo_very_dark_drab*"
+      "to": "us_camo_modern_green*"
     }
-  },
-  "user_skin": {
-    "name": "chieftain_mk_5",
-    "replace_tex": {
-      "from": "uk_camo_middle_deep_bronze_greens*"
-    }
-  },
-  "skin": [
-    {
-      "name": "uk_camo_earth_yellow",
-      "nameLocId": "skin/uk_camo_earth_yellow",
-      "descLocId": "skin/uk_camo_earth_yellow/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "uk_camo_earth_yellow*"
-      }
-    },
-    {
-      "name": "uk_camo_light_mud_blue_black",
-      "nameLocId": "skin/uk_camo_light_mud_blue_black",
-      "descLocId": "skin/uk_camo_light_mud_blue_black/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "uk_camo_light_mud_blue_black*"
-      }
-    },
-    {
-      "name": "uk_camo_light_mud_slate_grey",
-      "nameLocId": "skin/uk_camo_light_mud_slate_grey",
-      "descLocId": "skin/uk_camo_light_mud_slate_grey/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "uk_camo_light_mud_slate_grey*"
-      }
-    },
-    {
-      "name": "uk_camo_light_stone_dark_green",
-      "nameLocId": "skin/uk_camo_light_stone_dark_green",
-      "descLocId": "skin/uk_camo_light_stone_dark_green/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "uk_camo_light_stone_dark_green*"
-      }
-    },
-    {
-      "name": "uk_camo_light_stone_light_grey_slate_grey",
-      "nameLocId": "skin/uk_camo_light_stone_light_grey_slate_grey",
-      "descLocId": "skin/uk_camo_light_stone_light_grey_slate_grey/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "uk_camo_light_stone_light_grey_slate_grey*"
-      }
-    },
-    {
-      "name": "uk_camo_light_stone_slate_grey",
-      "nameLocId": "skin/uk_camo_light_stone_slate_grey",
-      "descLocId": "skin/uk_camo_light_stone_slate_grey/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "uk_camo_light_stone_slate_grey*"
-      }
-    },
-    {
-      "name": "uk_camo_winter_olive",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "us_camo_winter_olive*"
-      }
-    },
-    {
-      "name": "uk_camo_middle_deep_bronze_greens",
-      "nameLocId": "skin/uk_camo_middle_deep_bronze_greens",
-      "descLocId": "skin/uk_camo_middle_deep_bronze_greens/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "uk_camo_middle_deep_bronze_greens*"
-      }
-    },
-    {
-      "name": "fr_camo_winter_green_white",
-      "nameLocId": "skin/fr_camo_winter_green_white",
-      "descLocId": "skin/fr_camo_winter_green_white/desc",
-      "replace_tex": {
-        "from": "uk_camo_middle_deep_bronze_greens*",
-        "to": "fr_camo_winter_green_white*"
-      }
-    }
-  ]
+  }
 }

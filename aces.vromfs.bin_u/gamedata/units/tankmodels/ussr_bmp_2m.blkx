@@ -1020,6 +1020,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.4,
           "nothing": 0.6,
           "fHitCritical": true
@@ -1465,6 +1466,7 @@
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "stopForFire": false,
+        "staticElevation": 1.125,
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2721,6 +2723,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3170,6 +3179,7 @@
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "stopForFire": false,
+              "staticElevation": 1.125,
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,

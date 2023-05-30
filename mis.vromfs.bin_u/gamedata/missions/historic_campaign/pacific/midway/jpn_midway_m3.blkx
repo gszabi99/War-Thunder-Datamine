@@ -607,6 +607,12 @@
             "velocity": 300.0
           }
         ],
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target": "armada_01"
+        },
         "tacticalMapControl": {
           "follow_player": true,
           "use_scale": true,
@@ -1394,26 +1400,51 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.01
+          "time": 1.0
         }
       },
       "conditions": {
-        "unitWhenPartHp": {
-          "func": "less",
-          "check_objects": "any",
-          "check_parts": "any",
-          "value": 0.95,
-          "object": "tf16_cv6",
-          "partNo": [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6
-          ]
-        }
+        "unitWhenPartHp": [
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.75,
+            "object": "tf16_cv6",
+            "planePart": [
+              "cover_01_dm",
+              "cover_02_dm",
+              "cover_03_dm",
+              "cover_04_dm",
+              "cover_05_dm",
+              "cover_06_dm",
+              "cover_07_dm",
+              "cover_08_dm",
+              "cover_09_dm"
+            ],
+            "tankPart": ""
+          },
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.75,
+            "object": "tf16_cv6",
+            "planePart": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "compartment_05_dm",
+              "compartment_06_dm",
+              "compartment_07_dm",
+              "compartment_08_dm",
+              "compartment_09_dm",
+              "compartment_10_dm"
+            ],
+            "tankPart": ""
+          }
+        ]
       },
       "actions": {
         "unitPlayEffect": {
@@ -1450,6 +1481,10 @@
           "set": true,
           "radius": 0.0,
           "target": "tf16_cv6"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "cv6_dead"
         }
       },
       "else_actions": {}
@@ -1464,26 +1499,51 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.01
+          "time": 1.0
         }
       },
       "conditions": {
-        "unitWhenPartHp": {
-          "func": "less",
-          "check_objects": "any",
-          "check_parts": "any",
-          "value": 0.95,
-          "object": "tf16_cv8",
-          "partNo": [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6
-          ]
-        }
+        "unitWhenPartHp": [
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.75,
+            "object": "tf16_cv8",
+            "planePart": [
+              "cover_01_dm",
+              "cover_02_dm",
+              "cover_03_dm",
+              "cover_04_dm",
+              "cover_05_dm",
+              "cover_06_dm",
+              "cover_07_dm",
+              "cover_08_dm",
+              "cover_09_dm"
+            ],
+            "tankPart": ""
+          },
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.75,
+            "object": "tf16_cv8",
+            "planePart": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "compartment_05_dm",
+              "compartment_06_dm",
+              "compartment_07_dm",
+              "compartment_08_dm",
+              "compartment_09_dm",
+              "compartment_10_dm"
+            ],
+            "tankPart": ""
+          }
+        ]
       },
       "actions": {
         "unitPlayEffect": {
@@ -1520,6 +1580,10 @@
           "set": true,
           "radius": 0.0,
           "target": "tf16_cv8"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "cv8_dead"
         }
       },
       "else_actions": {}
@@ -1538,38 +1602,16 @@
         }
       },
       "conditions": {
-        "unitWhenPartHp": [
+        "varCompareBool": [
           {
-            "func": "less",
-            "check_objects": "any",
-            "check_parts": "any",
-            "value": 0.95,
-            "object": "tf16_cv6",
-            "partNo": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ]
+            "var_value": "cv6_dead",
+            "value": true,
+            "comparasion_func": "equal"
           },
           {
-            "func": "less",
-            "check_objects": "any",
-            "check_parts": "any",
-            "value": 0.95,
-            "object": "tf16_cv8",
-            "partNo": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ]
+            "var_value": "cv8_dead",
+            "value": true,
+            "comparasion_func": "equal"
           }
         ]
       },
@@ -1615,12 +1657,6 @@
         }
       },
       "actions": {
-        "unitRestore": {
-          "target_marking": 0,
-          "ressurectIfDead": false,
-          "fullRestore": true,
-          "target": "tf17_cv5"
-        },
         "triggerEnable": {
           "target": "yorktown_die"
         }
@@ -1636,21 +1672,52 @@
         "enableAfterComplete": false
       },
       "events": {
-        "timeExpires": {
-          "time": 0.0
+        "periodicEvent": {
+          "time": 1.0
         }
       },
       "conditions": {
-        "unitWhenPartHp": {
-          "func": "less",
-          "check_objects": "any",
-          "check_parts": "any",
-          "value": 0.99,
-          "object": "tf17_cv5",
-          "partNo": 1,
-          "planePart": "",
-          "tankPart": ""
-        }
+        "unitWhenPartHp": [
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.5,
+            "object": "tf17_cv5",
+            "planePart": [
+              "cover_01_dm",
+              "cover_02_dm",
+              "cover_03_dm",
+              "cover_04_dm",
+              "cover_05_dm",
+              "cover_06_dm",
+              "cover_07_dm",
+              "cover_08_dm",
+              "cover_09_dm"
+            ],
+            "tankPart": ""
+          },
+          {
+            "func": "less",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.5,
+            "object": "tf17_cv5",
+            "planePart": [
+              "compartment_01_dm",
+              "compartment_02_dm",
+              "compartment_03_dm",
+              "compartment_04_dm",
+              "compartment_05_dm",
+              "compartment_06_dm",
+              "compartment_07_dm",
+              "compartment_08_dm",
+              "compartment_09_dm",
+              "compartment_10_dm"
+            ],
+            "tankPart": ""
+          }
+        ]
       },
       "actions": {
         "triggerDisable": {
@@ -3533,7 +3600,9 @@
   "variables": {
     "debug_timer": 0,
     "player_met_tf16": false,
-    "tf16_carriers_dead": false
+    "tf16_carriers_dead": false,
+    "cv6_dead": false,
+    "cv8_dead": false
   },
   "dialogs": {
     "debriefing_dialog": {
@@ -6065,6 +6134,16 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "modification": [
+          "cd_98",
+          "CdMin_Fuse",
+          "new_cover",
+          "structure_str",
+          "hp_105",
+          "new_radiator",
+          "new_compressor",
+          "new_engine_injection"
+        ],
         "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {

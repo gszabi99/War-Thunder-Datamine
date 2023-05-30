@@ -15,6 +15,8 @@ let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj,
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
+let { getDifficultyTypeByTask, getDefaultDifficultyGroup
+} = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")
@@ -48,7 +50,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     // 2) Search for task by selected gameMode
     if (!reqTask && currentGameModeId) {
       local curDifficultyGroup = ::load_local_account_settings(this.savePathBattleTasksDiff,
-        ::g_battle_task_difficulty.getDefaultDifficultyGroup())
+        getDefaultDifficultyGroup())
       let activeTasks = u.filter(::g_battle_tasks.filterTasksByGameModeId(tasksArray, currentGameModeId),
         @(task) !::g_battle_tasks.isTaskDone(task)
           && ::g_battle_tasks.isTaskActive(task)
@@ -61,7 +63,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
       if (difficultyGroupArray.len() == 1)
         curDifficultyGroup = difficultyGroupArray[0].difficultyGroup
       reqTask = u.search(activeTasks,
-        @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task).getDifficultyGroup() == curDifficultyGroup))
+        @(task) (getDifficultyTypeByTask(task).getDifficultyGroup() == curDifficultyGroup))
     }
 
     let promoView = copyParamsToTable(::g_promo.getConfig()?[id])
@@ -155,7 +157,7 @@ let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
     foreach (btDiffType in difficultyTypeArray) {
       let difficultyGroup = btDiffType.getDifficultyGroup()
       let tasksByDiff = u.search(tasksArray,
-          @(task) (::g_battle_task_difficulty.getDifficultyTypeByTask(task) == btDiffType))
+          @(task) (getDifficultyTypeByTask(task) == btDiffType))
 
       if (!tasksByDiff)
         continue

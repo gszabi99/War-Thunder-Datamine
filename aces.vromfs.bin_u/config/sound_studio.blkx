@@ -1080,7 +1080,7 @@
         "updInterval": 0.05
       },
       "lod_1": {
-        "radius": 300.0,
+        "radius": 400.0,
         "maxSounds": 8,
         "updInterval": 0.2
       }
@@ -17675,6 +17675,12 @@
           "player": -1,
           "minSpeechInterval": 0.0
         },
+        "helicopter": {
+          "event": "05_targeting/voice_message_commander_target_helicopter",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 0.0
+        },
         "T34": {
           "event": "05_targeting/voice_message_commander_target_t34",
           "playerRole": "commander",
@@ -18032,14 +18038,6 @@
           "minSpeechInterval": 0.0,
           "delayTime": 0.5
         },
-        "targetHit": {
-          "event": "06_shooting_results/voice_message_driver_correction_bracketed",
-          "radioNoiseType": "inner_driver",
-          "playerRole": "driver",
-          "player": -1,
-          "minSpeechInterval": 1.0,
-          "delayTime": 1.0
-        },
         "enemyDestroyed": {
           "event": "06_shooting_results/voice_message_driver_correction_target_hit",
           "radioNoiseType": "inner_driver",
@@ -18233,6 +18231,11 @@
           "playerRole": "tank_gunner",
           "delayTime": 1.0
         },
+        "radiatorDamaged": {
+          "event": "07_fighting_for_survivability/voice_message_driver_radiator_damaged",
+          "playerRole": "tank_gunner",
+          "delayTime": 1.0
+        },
         "transmissionRepaired": {
           "event": "07_fighting_for_survivability/voice_message_driver_on_the_move",
           "radioNoiseType": "inner_driver",
@@ -18254,7 +18257,7 @@
           "event": "07_fighting_for_survivability/voice_message_driver_engine_repaired",
           "radioNoiseType": "inner_driver",
           "playerRole": "driver",
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 5.0
         },
         "vertDriveRepaired": {
           "event": "07_fighting_for_survivability/voice_message_gunner_elevation_drive_repaired",
@@ -18891,6 +18894,7 @@
       },
       "bulletTypeToEvent": {
         "apbc_tank": "loadBulletAP",
+        "apbc_usa_tank": "loadBulletAP",
         "apc_tank": "loadBulletAP",
         "aphe_tank": "loadBulletAP",
         "aphebc_tank": "loadBulletAP",

@@ -13,6 +13,9 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty,
+  EASY_TASK, MEDIUM_TASK, HARD_TASK
+} = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null) {
   if (!::g_battle_tasks.isAvailableForUser())
@@ -45,8 +48,8 @@ global enum BattleTasksWndTab {
   }
 
   difficultiesByTabType = {
-    [BattleTasksWndTab.BATTLE_TASKS] = [::g_battle_task_difficulty.EASY, ::g_battle_task_difficulty.MEDIUM],
-    [BattleTasksWndTab.BATTLE_TASKS_HARD] = [::g_battle_task_difficulty.HARD]
+    [BattleTasksWndTab.BATTLE_TASKS] = [EASY_TASK, MEDIUM_TASK],
+    [BattleTasksWndTab.BATTLE_TASKS_HARD] = [HARD_TASK]
   }
 
   newIconWidgetByTaskId = null
@@ -123,46 +126,38 @@ global enum BattleTasksWndTab {
     return this.scene.findObject("root-box")
   }
 
+  function getSelectedGmDifficulty() {
+    let obj = this.scene.findObject("battle_tasks_modes_radiobuttons")
+    let diffCode = this.usingDifficulties?[obj.getValue()] ?? DIFFICULTY_ARCADE
+    return ::g_difficulty.getDifficultyByDiffCode(diffCode)
+  }
+
   function buildBattleTasksArray(tabType) {
-    let filteredByDiffArray = []
-    local haveRewards = false
-    foreach (t in this.difficultiesByTabType[tabType]) {
-      // 0) Prepare: Receive tasks list by available battle tasks difficulty
-      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
-      if (arr.len() == 0)
+    let gmDiff = (tabType == BattleTasksWndTab.BATTLE_TASKS) ? this.getSelectedGmDifficulty() : null
+    let tasks = ::g_battle_tasks.showAllTasksValue // debug
+      ? ::g_battle_tasks.currentTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
+      : ::g_battle_tasks.activeTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
+
+    let res = []
+    foreach (diff in this.difficultiesByTabType[tabType]) {
+      let canInteract = ::g_battle_tasks.showAllTasksValue // debug
+        || canPlayerInteractWithDifficulty(diff, ::g_battle_tasks.currentTasksArray)
+      if (!canInteract)
         continue
 
-      // 1) Search for task with reward, to put it first in list
-      let taskWithReward = ::g_battle_tasks.getTaskWithAvailableAward(arr)
-      if (!::g_battle_tasks.showAllTasksValue && !u.isEmpty(taskWithReward)) {
-        filteredByDiffArray.append(taskWithReward)
-        haveRewards = true
-      }
-      else if (::g_battle_task_difficulty.canPlayerInteractWithDifficulty(t, arr, ::g_battle_tasks.showAllTasksValue))
-        filteredByDiffArray.extend(arr)
+      let tasksByDiff = withdrawTasksArrayByDifficulty(diff, tasks)
+      if (tasksByDiff.len() == 0)
+        continue
+
+      let taskWithReward = ::g_battle_tasks.getTaskWithAvailableAward(tasksByDiff)
+      if (taskWithReward != null)
+        res.append(taskWithReward)
+      else
+        res.extend(tasksByDiff.filter(@(t) ::g_battle_tasks.isTaskDone(t)
+          || gmDiff == null || ::g_battle_tasks.isTaskSameDifficulty(t, gmDiff)))
     }
 
-    local resultArray = filteredByDiffArray
-    if (!haveRewards && filteredByDiffArray.len()) {
-      local gameModeDifficulty = null
-      if (tabType != BattleTasksWndTab.BATTLE_TASKS_HARD) {
-        let obj = this.getDifficultySwitchObj()
-        let val = obj.getValue()
-        let diffCode = getTblValue(val, this.usingDifficulties, DIFFICULTY_ARCADE)
-        gameModeDifficulty = ::g_difficulty.getDifficultyByDiffCode(diffCode)
-      }
-
-      let filteredByModeArray = ::g_battle_tasks.getTasksArrayByDifficulty(filteredByDiffArray, gameModeDifficulty)
-
-      resultArray = filteredByModeArray.filter(@(task) (
-          ::g_battle_tasks.showAllTasksValue
-          || ::g_battle_tasks.isTaskDone(task)
-          || ::g_battle_tasks.isTaskActive(task)
-        )
-      )
-    }
-
-    this.configsArrayByTabType[tabType] = resultArray.map(@(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
+    this.configsArrayByTabType[tabType] = res.map(@(t) ::g_battle_tasks.generateUnlockConfigByTask(t))
   }
 
   function fillBattleTasksList() {
@@ -473,10 +468,6 @@ global enum BattleTasksWndTab {
     if (checkObj(this.scene))
       return this.scene.findObject("tasks_list")
     return null
-  }
-
-  function getDifficultySwitchObj() {
-    return this.scene.findObject("battle_tasks_modes_radiobuttons")
   }
 
   function goBack() {

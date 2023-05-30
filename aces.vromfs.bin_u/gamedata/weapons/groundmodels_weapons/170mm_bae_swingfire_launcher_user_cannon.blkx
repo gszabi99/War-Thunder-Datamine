@@ -91,24 +91,21 @@
       "statType": "hydra",
       "caliber": 0.17,
       "length": 1.07,
-      "WdK": [
-        0.1,
-        0.1,
-        0.1
-      ],
-      "CxK": 2.23,
-      "CyK": 12.0,
-      "CyMaxAoA": 6.0,
-      "wingAreaMult": 1.7,
-      "distFromCmToStab": 0.05,
+      "CxK": 1.9,
+      "wingAreaMult": 2.45,
+      "finsAoaHor": 0.0,
+      "finsAoaVer": 0.0,
+      "distFromCmToStab": 0.005,
       "mass": 27.0,
-      "massEnd": 24.65,
-      "massEnd1": 22.3,
-      "timeFire": 2.0,
-      "timeFire1": 24.0,
-      "force": 2370.0,
-      "force1": 230.0,
+      "massEnd": 24.25,
+      "massEnd1": 21.5,
+      "timeFire": 6.0,
+      "timeFire1": 20.0,
+      "force": 870.0,
+      "force1": 275.0,
       "timeLife": 26.0,
+      "thrustVectoringAngle": 0.01,
+      "thrustVectoringAngle1": 0.1,
       "thrustDeviation": 0.01,
       "useStartSpeed": true,
       "startSpeed": 10.0,
@@ -116,12 +113,9 @@
       "maxDistance": 4000.0,
       "minDistance": 30.0,
       "operatedDist": 4000.0,
-      "visRotationFreqX": 5.0,
-      "operated": true,
-      "maxLateralAcceleration": 10.0,
-      "autoLeveling": true,
-      "autoAiming": true,
-      "maxAxisValues": 1.0,
+      "visRotationFreqX": 0.6,
+      "autoAimingMaxAngle": 1.0,
+      "guidanceType": "saclos",
       "maxDeltaAngle": 0.03,
       "explosiveType": "comp_b",
       "explosiveMass": 3.47,
@@ -152,7 +146,7 @@
       "visualShattersGroundOffset": 1.2,
       "fireEffect": "fires_exhaust_jet_early_tiny",
       "smokeEffect": "smoke_rocket_tail_short",
-      "smokeEffect2": "rocket_wire",
+      "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
       "effectOffset": [
@@ -184,6 +178,53 @@
         0.0,
         0.0
       ],
+      "guidance": {
+        "launchAngleMax": 5.0,
+        "controlConeFov": 60.0,
+        "breakLockMaxTime": 3.0,
+        "lineOfSightAutopilot": {
+          "timeToGain0": [
+            0.0,
+            1.0
+          ],
+          "timeToGain1": [
+            0.25,
+            0.8
+          ],
+          "timeToGain2": [
+            1.7,
+            0.1
+          ],
+          "timeToGain3": [
+            2.5,
+            0.1
+          ],
+          "timeToGain4": [
+            2.6,
+            0.3
+          ],
+          "timeToGain5": [
+            3.0,
+            0.7
+          ],
+          "timeToGain6": [
+            3.6,
+            1.0
+          ],
+          "crossDistToReqCrossVelMult": 2.0,
+          "reqCrossVelRationMax": 0.25,
+          "velDiffToReqAccelMult": 3.0,
+          "accelControl": {
+            "velFrameReference": true,
+            "baseIndSpeed": 1800.0,
+            "reqAccelMax": 7.0,
+            "accelControlProp": 0.016,
+            "accelControlIntg": 0.0,
+            "accelControlDiff": 0.00065,
+            "accelControlIntgLim": 0.0
+          }
+        }
+      },
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -533,14 +574,24 @@
         "damage": 600.0,
         "onHitChanceMultFire": 25.0
       },
-      "tracerTrail": {
-        "smokeEffect": "",
-        "visual": {
-          "traceFreq": 1,
-          "tracer": "tracers_rocket_med_red_sparks",
-          "trail": "noTrail"
+      "tracerTrail": [
+        {
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "tracers_rocket_med_red_sparks",
+            "trail": "noTrail"
+          }
+        },
+        {
+          "hasTracerTrail": true,
+          "tracerTrailEmitter": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "smokeEffect2": "rocket_wire"
         }
-      }
+      ]
     }
   },
   "170mm_uk_swingfire": {
@@ -591,24 +642,21 @@
         "statType": "hydra",
         "caliber": 0.17,
         "length": 1.07,
-        "WdK": [
-          0.1,
-          0.1,
-          0.1
-        ],
-        "CxK": 2.23,
-        "CyK": 12.0,
-        "CyMaxAoA": 6.0,
-        "wingAreaMult": 1.7,
-        "distFromCmToStab": 0.05,
+        "CxK": 1.9,
+        "wingAreaMult": 2.45,
+        "finsAoaHor": 0.0,
+        "finsAoaVer": 0.0,
+        "distFromCmToStab": 0.005,
         "mass": 27.0,
-        "massEnd": 24.65,
-        "massEnd1": 22.3,
-        "timeFire": 2.0,
-        "timeFire1": 24.0,
-        "force": 2370.0,
-        "force1": 230.0,
+        "massEnd": 24.25,
+        "massEnd1": 21.5,
+        "timeFire": 6.0,
+        "timeFire1": 20.0,
+        "force": 870.0,
+        "force1": 275.0,
         "timeLife": 26.0,
+        "thrustVectoringAngle": 0.01,
+        "thrustVectoringAngle1": 0.1,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
         "startSpeed": 10.0,
@@ -616,12 +664,9 @@
         "maxDistance": 4000.0,
         "minDistance": 30.0,
         "operatedDist": 4000.0,
-        "visRotationFreqX": 5.0,
-        "operated": true,
-        "maxLateralAcceleration": 10.0,
-        "autoLeveling": true,
-        "autoAiming": true,
-        "maxAxisValues": 1.0,
+        "visRotationFreqX": 0.6,
+        "autoAimingMaxAngle": 1.0,
+        "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
         "explosiveType": "comp_b",
         "explosiveMass": 3.47,
@@ -652,7 +697,7 @@
         "visualShattersGroundOffset": 1.2,
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_short",
-        "smokeEffect2": "rocket_wire",
+        "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [
@@ -684,6 +729,53 @@
           0.0,
           0.0
         ],
+        "guidance": {
+          "launchAngleMax": 5.0,
+          "controlConeFov": 60.0,
+          "breakLockMaxTime": 3.0,
+          "lineOfSightAutopilot": {
+            "timeToGain0": [
+              0.0,
+              1.0
+            ],
+            "timeToGain1": [
+              0.25,
+              0.8
+            ],
+            "timeToGain2": [
+              1.7,
+              0.1
+            ],
+            "timeToGain3": [
+              2.5,
+              0.1
+            ],
+            "timeToGain4": [
+              2.6,
+              0.3
+            ],
+            "timeToGain5": [
+              3.0,
+              0.7
+            ],
+            "timeToGain6": [
+              3.6,
+              1.0
+            ],
+            "crossDistToReqCrossVelMult": 2.0,
+            "reqCrossVelRationMax": 0.25,
+            "velDiffToReqAccelMult": 3.0,
+            "accelControl": {
+              "velFrameReference": true,
+              "baseIndSpeed": 1800.0,
+              "reqAccelMax": 7.0,
+              "accelControlProp": 0.016,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.00065,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -1033,14 +1125,24 @@
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
         },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
+        "tracerTrail": [
+          {
+            "visual": {
+              "traceFreq": 1,
+              "tracer": "tracers_rocket_med_red_sparks",
+              "trail": "noTrail"
+            }
+          },
+          {
+            "hasTracerTrail": true,
+            "tracerTrailEmitter": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "smokeEffect2": "rocket_wire"
           }
-        }
+        ]
       }
     }
   },
@@ -1092,24 +1194,21 @@
         "statType": "hydra",
         "caliber": 0.17,
         "length": 1.07,
-        "WdK": [
-          0.1,
-          0.1,
-          0.1
-        ],
-        "CxK": 2.23,
-        "CyK": 12.0,
-        "CyMaxAoA": 6.0,
-        "wingAreaMult": 1.7,
-        "distFromCmToStab": 0.05,
+        "CxK": 1.9,
+        "wingAreaMult": 2.45,
+        "finsAoaHor": 0.0,
+        "finsAoaVer": 0.0,
+        "distFromCmToStab": 0.005,
         "mass": 27.0,
-        "massEnd": 24.65,
-        "massEnd1": 22.3,
-        "timeFire": 2.0,
-        "timeFire1": 24.0,
-        "force": 2370.0,
-        "force1": 230.0,
+        "massEnd": 24.25,
+        "massEnd1": 21.5,
+        "timeFire": 6.0,
+        "timeFire1": 20.0,
+        "force": 870.0,
+        "force1": 275.0,
         "timeLife": 26.0,
+        "thrustVectoringAngle": 0.01,
+        "thrustVectoringAngle1": 0.1,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
         "startSpeed": 10.0,
@@ -1117,12 +1216,9 @@
         "maxDistance": 4000.0,
         "minDistance": 30.0,
         "operatedDist": 4000.0,
-        "visRotationFreqX": 5.0,
-        "operated": true,
-        "maxLateralAcceleration": 10.0,
-        "autoLeveling": true,
-        "autoAiming": true,
-        "maxAxisValues": 1.0,
+        "visRotationFreqX": 0.6,
+        "autoAimingMaxAngle": 1.0,
+        "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
         "explosiveType": "comp_b",
         "explosiveMass": 3.47,
@@ -1153,7 +1249,7 @@
         "visualShattersGroundOffset": 1.2,
         "fireEffect": "fires_exhaust_jet_early_tiny",
         "smokeEffect": "smoke_rocket_tail_short",
-        "smokeEffect2": "rocket_wire",
+        "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [
@@ -1185,6 +1281,53 @@
           0.0,
           0.0
         ],
+        "guidance": {
+          "launchAngleMax": 5.0,
+          "controlConeFov": 60.0,
+          "breakLockMaxTime": 3.0,
+          "lineOfSightAutopilot": {
+            "timeToGain0": [
+              0.0,
+              1.0
+            ],
+            "timeToGain1": [
+              0.25,
+              0.8
+            ],
+            "timeToGain2": [
+              1.7,
+              0.1
+            ],
+            "timeToGain3": [
+              2.5,
+              0.1
+            ],
+            "timeToGain4": [
+              2.6,
+              0.3
+            ],
+            "timeToGain5": [
+              3.0,
+              0.7
+            ],
+            "timeToGain6": [
+              3.6,
+              1.0
+            ],
+            "crossDistToReqCrossVelMult": 2.0,
+            "reqCrossVelRationMax": 0.25,
+            "velDiffToReqAccelMult": 3.0,
+            "accelControl": {
+              "velFrameReference": true,
+              "baseIndSpeed": 1800.0,
+              "reqAccelMax": 7.0,
+              "accelControlProp": 0.016,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.00065,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -1534,14 +1677,24 @@
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
         },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
+        "tracerTrail": [
+          {
+            "visual": {
+              "traceFreq": 1,
+              "tracer": "tracers_rocket_med_red_sparks",
+              "trail": "noTrail"
+            }
+          },
+          {
+            "hasTracerTrail": true,
+            "tracerTrailEmitter": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "smokeEffect2": "rocket_wire"
           }
-        }
+        ]
       }
     }
   }

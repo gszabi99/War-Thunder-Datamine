@@ -97,18 +97,16 @@
     ],
     "explodeTreshold": 1E-05,
     "rendinstDamageRadius": 2.0,
-    "fireEffect": "fires_exhaust_jet_doubleside",
-    "smokeEffect": "",
-    "smokeEffect2": "",
-    "hazeEffect": "haze_missile",
-    "endSmokeViscosity": 0.05,
+    "hasTracerTrail": [
+      true,
+      true
+    ],
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "dragCx": 0.0032,
     "lifeTime": 20.0,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "hasTracerTrail": true,
     "tracerTrailEmitter": [
       0.1,
       -0.01,
@@ -358,18 +356,38 @@
         }
       }
     },
+    "tracerTrail": [
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_1",
+        "fireEffect": "fires_exhaust_jet_doubleside",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "hasTracerTrail": true,
+        "rocketTailName": "emtr_jet_2",
+        "fireEffect": "fires_exhaust_jet_doubleside",
+        "smokeEffect": "",
+        "smokeEffect2": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05
+      },
+      {
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "100mmBlue",
+          "trail": "black"
+        }
+      }
+    ],
     "cumulativeDamage": {
       "armorPower": 650.0,
       "distance": 5.0,
       "damage": 500.0,
       "onHitChanceMultFire": 15.0
-    },
-    "tracerTrail": {
-      "visual": {
-        "traceFreq": 1,
-        "tracer": "100mmBlue",
-        "trail": "black"
-      }
     }
   }
 }

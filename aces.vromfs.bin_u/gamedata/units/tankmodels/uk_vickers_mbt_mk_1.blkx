@@ -1351,6 +1351,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -2873,6 +2874,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3236,12 +3244,6 @@
     "replace_tex": {
       "from": "uk_camo_middle_deep_bronze_greens*",
       "to": "uk_camo_very_dark_drab*"
-    }
-  },
-  "user_skin": {
-    "name": "chieftain_mk_5",
-    "replace_tex": {
-      "from": "uk_camo_middle_deep_bronze_greens*"
     }
   },
   "skin": [

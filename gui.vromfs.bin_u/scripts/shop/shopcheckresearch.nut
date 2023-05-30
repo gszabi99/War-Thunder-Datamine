@@ -277,7 +277,6 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
       return
 
     this.updateRepairAllButton()
-    this.showSceneBtn("btn_back", this.curResearchingUnit == null || ::isUnitResearched(this.curResearchingUnit))
     let unit = this.getCurAircraft(true, true)
     if (!unit)
       return
@@ -433,6 +432,8 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 
     ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
+
+  goBack = @() this.onTryCloseShop()
 
   function onEventModalWndDestroy(params) {
     let closedHandler = getTblValue("handler", params, null)

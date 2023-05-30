@@ -23,11 +23,12 @@ let { getDecoratorById, getPlaneBySkinId } = require("%scripts/customization/dec
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
+let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
 let conditionsOrder = [
-  "beginDate", "endDate",
+  "beginDate", "endDate", "battlepassProgress",
   "missionsWon", "mission", "char_mission_completed",
   "missionType", "atLeastOneUnitsRankOnStartMission", "maxUnitsRankOnStartMission",
   "unitExists", "additional", "unitClass",
@@ -75,7 +76,7 @@ let function getUnlockBeginDateText(unlock) {
   let conds = isBlk ? getUnlockConditions(unlock.mode) : unlock?.conditions
   local timeCond = conds?.findvalue(@(c) isTimeRangeCondition(c.type))
   if (isBlk)
-    timeCond = loadCondition(timeCond, unlock.mode?.type)
+    timeCond = loadCondition(timeCond, unlock)
   return (timeCond?.beginTime != null)
     ? buildDateStrShort(timeCond.beginTime).replace(" ", ::nbsp)
     : ""
@@ -455,6 +456,14 @@ let function getUsualCondValueText(condType, v, condition) {
       return loc(v)
     case "operationMap":
       return loc($"worldWar/map/{v}")
+    case "battlepassProgress":
+      let reqLevel = getLevelByExp(v)
+      if (condition.season != season.value)
+        return $"{reqLevel}"
+      let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
+      return reqLevel <= seasonLevel.value
+        ? $"{reqLevel} {curLevelText}"
+        : $"{reqLevel} {colorize("red" ,curLevelText)}"
     default:
       return loc($"{condType}/{v}")
   }

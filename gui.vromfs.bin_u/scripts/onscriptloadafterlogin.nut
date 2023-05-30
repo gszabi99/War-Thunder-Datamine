@@ -89,7 +89,6 @@ foreach (fn in [
   "%scripts/changeCountry.nut"
   "%scripts/instantAction.nut"
   "%scripts/promo/promoViewUtils.nut"
-  "%scripts/unlocks/battleTaskDifficulty.nut"
   "%scripts/unlocks/battleTasks.nut"
   "%scripts/promo/promo.nut"
   "%scripts/promo/promoHandler.nut"

@@ -109,7 +109,7 @@
       "endSpeed": 329.0,
       "maxDistance": 3750.0,
       "minDistance": 30.0,
-      "operatedDist": 3750.0,
+      "rangeMax": 3750.0,
       "guidanceType": "saclos",
       "maxDeltaAngle": 0.03,
       "explosiveType": "lx14",
@@ -139,11 +139,10 @@
       "explosionPatchRadius": 4.0,
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "fireEffect": "fires_exhaust_jet_short_doubleside",
-      "smokeEffect": "smoke_rocket_tail_doubleside",
-      "smokeEffect2": "rocket_wire",
-      "hazeEffect": "haze_missile",
-      "endSmokeViscosity": 0.05,
+      "hasTracerTrail": [
+        true,
+        true
+      ],
       "effectOffset": [
         0.05,
         0.0,
@@ -167,7 +166,6 @@
       "explodeTreshold": 0.1,
       "price": 3000.0,
       "mesh": "bgm_71_tow_rocket_deployed",
-      "hasTracerTrail": true,
       "tracerTrailEmitter": [
         0.4,
         0.0,
@@ -391,6 +389,42 @@
           "fx": "hit_12_18mm_snow_ap"
         }
       },
+      "tracerTrail": [
+        {
+          "hasTracerTrail": true,
+          "rocketTailName": "emtr_jet_1",
+          "fireEffect": "fires_exhaust_jet_short_doubleside",
+          "smokeEffect": "smoke_rocket_tail_doubleside",
+          "smokeEffect2": "",
+          "hazeEffect": "haze_missile",
+          "endSmokeViscosity": 0.05
+        },
+        {
+          "hasTracerTrail": true,
+          "rocketTailName": "emtr_jet_2",
+          "fireEffect": "fires_exhaust_jet_short_doubleside",
+          "smokeEffect": "smoke_rocket_tail_doubleside",
+          "smokeEffect2": "",
+          "hazeEffect": "haze_missile",
+          "endSmokeViscosity": 0.05
+        },
+        {
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "tracers_rocket_med_red_sparks",
+            "trail": "noTrail"
+          }
+        },
+        {
+          "hasTracerTrail": true,
+          "tracerTrailEmitter": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "smokeEffect2": "rocket_wire"
+        }
+      ],
       "hitpower": {
         "HitPower0m": [
           1.0,
@@ -541,14 +575,6 @@
         "distance": 8.0,
         "damage": 700.0,
         "onHitChanceMultFire": 25.0
-      },
-      "tracerTrail": {
-        "smokeEffect": "",
-        "visual": {
-          "traceFreq": 1,
-          "tracer": "tracers_rocket_med_red_sparks",
-          "trail": "noTrail"
-        }
       }
     }
   },
@@ -617,7 +643,7 @@
         "endSpeed": 329.0,
         "maxDistance": 3750.0,
         "minDistance": 30.0,
-        "operatedDist": 3750.0,
+        "rangeMax": 3750.0,
         "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
         "explosiveType": "lx14",
@@ -647,11 +673,10 @@
         "explosionPatchRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_exhaust_jet_short_doubleside",
-        "smokeEffect": "smoke_rocket_tail_doubleside",
-        "smokeEffect2": "rocket_wire",
-        "hazeEffect": "haze_missile",
-        "endSmokeViscosity": 0.05,
+        "hasTracerTrail": [
+          true,
+          true
+        ],
         "effectOffset": [
           0.05,
           0.0,
@@ -675,7 +700,6 @@
         "explodeTreshold": 0.1,
         "price": 3000.0,
         "mesh": "bgm_71_tow_rocket_deployed",
-        "hasTracerTrail": true,
         "tracerTrailEmitter": [
           0.4,
           0.0,
@@ -899,6 +923,42 @@
             "fx": "hit_12_18mm_snow_ap"
           }
         },
+        "tracerTrail": [
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_1",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          },
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_2",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          },
+          {
+            "visual": {
+              "traceFreq": 1,
+              "tracer": "tracers_rocket_med_red_sparks",
+              "trail": "noTrail"
+            }
+          },
+          {
+            "hasTracerTrail": true,
+            "tracerTrailEmitter": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "smokeEffect2": "rocket_wire"
+          }
+        ],
         "hitpower": {
           "HitPower0m": [
             1.0,
@@ -1049,14 +1109,6 @@
           "distance": 8.0,
           "damage": 700.0,
           "onHitChanceMultFire": 25.0
-        },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
-          }
         }
       }
     }
@@ -1126,7 +1178,7 @@
         "endSpeed": 329.0,
         "maxDistance": 3750.0,
         "minDistance": 30.0,
-        "operatedDist": 3750.0,
+        "rangeMax": 3750.0,
         "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
         "explosiveType": "lx14",
@@ -1156,11 +1208,10 @@
         "explosionPatchRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_exhaust_jet_short_doubleside",
-        "smokeEffect": "smoke_rocket_tail_doubleside",
-        "smokeEffect2": "rocket_wire",
-        "hazeEffect": "haze_missile",
-        "endSmokeViscosity": 0.05,
+        "hasTracerTrail": [
+          true,
+          true
+        ],
         "effectOffset": [
           0.05,
           0.0,
@@ -1182,7 +1233,6 @@
         "hitPower": 260.0,
         "price": 3000.0,
         "mesh": "bgm_71_tow_rocket_deployed",
-        "hasTracerTrail": true,
         "tracerTrailEmitter": [
           0.4,
           0.0,
@@ -1408,6 +1458,42 @@
             "fx": "hit_12_18mm_snow_ap"
           }
         },
+        "tracerTrail": [
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_1",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          },
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_2",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          },
+          {
+            "visual": {
+              "traceFreq": 1,
+              "tracer": "tracers_rocket_med_red_sparks",
+              "trail": "noTrail"
+            }
+          },
+          {
+            "hasTracerTrail": true,
+            "tracerTrailEmitter": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "smokeEffect2": "rocket_wire"
+          }
+        ],
         "hitpower": {
           "HitPower0m": [
             1.0,
@@ -1549,14 +1635,6 @@
           "damage": 700.0,
           "onHitChanceMultFire": 25.0
         },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
-          }
-        },
         "kineticDamage": {
           "damageType": "tandemPrecharge"
         },
@@ -1636,7 +1714,6 @@
         "endSpeed": 309.0,
         "maxDistance": 3750.0,
         "minDistance": 30.0,
-        "operatedDist": 3750.0,
         "explosiveType": "lx14",
         "explosiveMass": 2.4,
         "normalizationPreset": "heat",
@@ -1664,11 +1741,10 @@
         "explosionPatchRadius": 4.0,
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_exhaust_jet_short_doubleside",
-        "smokeEffect": "smoke_rocket_tail_doubleside",
-        "smokeEffect2": "rocket_wire",
-        "hazeEffect": "haze_missile",
-        "endSmokeViscosity": 0.05,
+        "hasTracerTrail": [
+          true,
+          true
+        ],
         "effectOffset": [
           0.05,
           0.0,
@@ -1692,7 +1768,6 @@
         "explodeTreshold": 0.1,
         "price": 3000.0,
         "mesh": "bgm_71_tow_rocket_deployed",
-        "hasTracerTrail": true,
         "tracerTrailEmitter": [
           0.4,
           0.0,
@@ -1707,6 +1782,7 @@
         "cumulativeDeviationAngle": 90.0,
         "CyK": 6.0,
         "CyMaxAoA": 2.8,
+        "operatedDist": 3750.0,
         "operated": true,
         "maxLateralAcceleration": 6.0,
         "autoLeveling": true,
@@ -1912,6 +1988,42 @@
             "fx": "hit_12_18mm_snow_ap"
           }
         },
+        "tracerTrail": [
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_1",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          },
+          {
+            "hasTracerTrail": true,
+            "rocketTailName": "emtr_jet_2",
+            "fireEffect": "fires_exhaust_jet_short_doubleside",
+            "smokeEffect": "smoke_rocket_tail_doubleside",
+            "smokeEffect2": "",
+            "hazeEffect": "haze_missile",
+            "endSmokeViscosity": 0.05
+          },
+          {
+            "visual": {
+              "traceFreq": 1,
+              "tracer": "tracers_rocket_med_red_sparks",
+              "trail": "noTrail"
+            }
+          },
+          {
+            "hasTracerTrail": true,
+            "tracerTrailEmitter": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "smokeEffect2": "rocket_wire"
+          }
+        ],
         "hitpower": {
           "HitPower0m": [
             1.0,
@@ -2056,14 +2168,6 @@
         },
         "shatterDamage": {
           "breachConeAngle": 45.0
-        },
-        "tracerTrail": {
-          "smokeEffect": "",
-          "visual": {
-            "traceFreq": 1,
-            "tracer": "tracers_rocket_med_red_sparks",
-            "trail": "noTrail"
-          }
         },
         "proximityFuse": {
           "radius": 3.0,

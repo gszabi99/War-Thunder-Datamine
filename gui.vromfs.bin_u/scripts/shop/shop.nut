@@ -1040,10 +1040,12 @@ shopData = [
     this.fillAircraftsList()
   }
 
-  function onCloseShop() {
+  function goBack() {
     if (this.closeShop)
       this.closeShop()
   }
+
+  onCloseShop = @() this.goBack()
 
   function fillPagesListBoxNoOpenGroup() {
     this.skipOpenGroup = true
@@ -1739,7 +1741,7 @@ shopData = [
     this.save(false)
   }
   function afterSave() {
-    this.goBack()
+    base.goBack()
   }
 
   function onUnitMainFunc(obj) {

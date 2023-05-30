@@ -20,8 +20,7 @@ let getFirstShortcutText = @(shortcutId) ::get_shortcut_text({
 let function getAxisTextOrAxisName(shortcutId) {
   let comma = loc("ui/comma")
   let shortcuts = []
-  let joyParams = ::JoystickParams()
-  joyParams.setFrom(::joystick_get_cur_settings())
+  let joyParams = ::joystick_get_cur_settings()
   let axis = joyParams.getAxis(::get_axis_index(shortcutId))
   if (axis.axisId >= 0)
     shortcuts.append(::remapAxisName(::g_controls_manager.getCurPreset(), axis.axisId))

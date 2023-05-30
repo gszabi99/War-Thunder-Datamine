@@ -353,6 +353,10 @@ let statTooltipColumnParamByType = {
           resReward = "".concat(loc("debriefing/MissionLoseReward"), loc("ui/colon"), loseBonus)
       }
       else if (mpResult == STATS_RESULT_ABORTED_BY_KICK) {
+        resReward = colorize("badTextColor", loc("MISSION_ABORTED_BY_KICK"))
+        resTheme = DEBR_THEME.LOSE
+      }
+      else if (mpResult == STATS_RESULT_ABORTED_BY_ANTICHEAT) {
         resReward = colorize("badTextColor", this.getKickReasonLocText())
         resTheme = DEBR_THEME.LOSE
       }
@@ -562,7 +566,7 @@ let statTooltipColumnParamByType = {
   function getKickReasonLocText() {
     if (this.debriefingResult?.exp.eacKickMessage != null)
       return loc("MISSION_ABORTED_BY_KICK/EAC")
-    return loc("MISSION_ABORTED_BY_KICK")
+    return loc("MISSION_ABORTED_BY_KICK/AC")
   }
 
   function onNoAwardsInfoBtn() {
@@ -2216,13 +2220,8 @@ let statTooltipColumnParamByType = {
     if (!this.is_show_battle_tasks_list(false) || !this.mGameMode)
       return
 
-    let tasksArray = ::g_battle_tasks.getTasksArrayByIncreasingDifficulty()
-    local filteredTasks = ::g_battle_tasks.filterTasksByGameModeId(tasksArray, this.mGameMode?.name)
-
-    filteredTasks = filteredTasks.filter(@(task)
-      !::g_battle_tasks.isTaskDone(task) &&
-      ::g_battle_tasks.isTaskActive(task)
-    )
+    let filteredTasks = ::g_battle_tasks.getCurBattleTasksByGm(this.mGameMode?.name)
+      .filter(@(t) !::g_battle_tasks.isTaskDone(t))
 
     let currentBattleTasksConfigs = {}
     let configsArray = filteredTasks.map(@(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
@@ -2955,6 +2954,10 @@ let statTooltipColumnParamByType = {
       infoColor = "bad"
     }
     else if (this.debriefingResult.exp.result == STATS_RESULT_ABORTED_BY_KICK) {
+      infoText = loc("MISSION_ABORTED_BY_KICK")
+      infoColor = "bad"
+    }
+    else if (this.debriefingResult.exp.result == STATS_RESULT_ABORTED_BY_ANTICHEAT) {
       infoText = this.getKickReasonLocText()
       infoColor = "bad"
     }

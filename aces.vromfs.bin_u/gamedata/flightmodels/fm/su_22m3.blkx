@@ -1759,7 +1759,8 @@
   },
   "Mass": {
     "EmptyMass": 10945.0,
-    "MaxFuelMass0": 3800.0,
+    "MaxFuelMass0": 5400.0,
+    "MaxFuelMassExternal0": 1600.0,
     "FuelAccumulatorCapacity0": 55.0,
     "MinimalLoadFactor0": -0.5,
     "FuelAccumulatorFlowRate0": 15.5,
@@ -1814,6 +1815,22 @@
       "tank6_system": 0,
       "tank6_external": false,
       "tank6_priority": 1,
+      "tank7_capacity": 1.0,
+      "tank7_system": 0,
+      "tank7_external": true,
+      "tank7_priority": 0,
+      "tank8_capacity": 800.0,
+      "tank8_system": 0,
+      "tank8_external": true,
+      "tank8_priority": 0,
+      "tank9_capacity": 800.0,
+      "tank9_system": 0,
+      "tank9_external": true,
+      "tank9_priority": 0,
+      "tank10_capacity": 1.0,
+      "tank10_system": 0,
+      "tank10_external": true,
+      "tank10_priority": 0,
       "wingcontrol_dm": 2.31895,
       "armor4_dm": 10.044,
       "armor3_dm": 24.3066,
@@ -1878,10 +1895,10 @@
     "tank4_dm": true,
     "tank5_dm": true,
     "tank6_dm": true,
-    "tank7_dm": true,
-    "tank8_dm": true,
-    "tank9_dm": true,
-    "tank10_dm": true,
+    "tank7_dm": false,
+    "tank8_dm": false,
+    "tank9_dm": false,
+    "tank10_dm": false,
     "tank11_dm": true,
     "tank12_dm": true,
     "tank13_dm": true,
@@ -1920,7 +1937,10 @@
       "RightBrake": false,
       "FullBrakeSlidingFrictionMult": 0.45,
       "WaterFriction": 1.0,
-      "SteerType": "Fixed"
+      "SteerType": "Fixed",
+      "SpringDampCoeff": 1.6,
+      "SpringDampForceMaxMult": 2.0,
+      "BreakTresholdMult": 1.5
     },
     "StrutR": {
       "SpringHeight": 0.35,
@@ -1931,7 +1951,10 @@
       "RightBrake": true,
       "FullBrakeSlidingFrictionMult": 0.45,
       "WaterFriction": 1.0,
-      "SteerType": "Fixed"
+      "SteerType": "Fixed",
+      "SpringDampCoeff": 1.6,
+      "SpringDampForceMaxMult": 2.0,
+      "BreakTresholdMult": 1.5
     },
     "StrutC": {
       "SpringHeight": 0.55,
@@ -1942,7 +1965,10 @@
       "RightBrake": false,
       "FullBrakeSlidingFrictionMult": 0.45,
       "WaterFriction": 1.0,
-      "SteerType": "ManualSteering"
+      "SteerType": "ManualSteering",
+      "SpringDampCoeff": 1.6,
+      "SpringDampForceMaxMult": 2.0,
+      "BreakTresholdMult": 1.5
     }
   },
   "Passport": {

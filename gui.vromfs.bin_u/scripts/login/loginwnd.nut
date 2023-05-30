@@ -16,7 +16,6 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
 let { setGuiOptionsMode } = require("guiOptions")
-let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { getDistr } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
@@ -24,6 +23,7 @@ let regexp2 = require("regexp2")
 let { register_command } = require("console")
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { validateEmail } = require("%sqstd/string.nut")
+let { subscribe } = require("eventbus")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -420,9 +420,8 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     this.proceedAuthorizationResult(result, no_dump_login)
   }
 
-  function onSteamAuthorization(steamSpecCode = null) {
+  function steamAuthorization(steamSpecCode = "steam") {
     this.isSteamAuth = true
-    steamSpecCode = steamSpecCode || "steam"
     this.isLoginRequestInprogress = true
     ::disable_autorelogin_once <- false
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam" })
@@ -430,6 +429,8 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     let result = ::check_login_pass("", "", "steam", steamSpecCode, false, false)
     this.proceedAuthorizationResult(result, "")
   }
+
+  onSteamAuthorization = @() this.steamAuthorization()
 
   function onSsoAuthorization() {
     let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
@@ -448,7 +449,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     }
   }
 
-  function onEventProceedGetTwoStepCode(data) {
+  function proceedGetTwoStepCode(data) {
     if (!this.isValid() || this.isLoginRequestInprogress) {
       return
     }
@@ -469,13 +470,6 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     }
   }
 
-  function needTrySteamLink() {
-    return ::steam_is_running()
-           && hasFeature("AllowSteamAccountLinking")
-           && ::load_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID) == null
-  }
-
-
   function proceedAuthorizationResult(result, no_dump_login) {
     this.isLoginRequestInprogress = false
     if (!checkObj(this.scene)) //check_login_pass is not instant
@@ -485,33 +479,8 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     this.stoken = ""
     switch (result) {
       case YU2_OK:
-        if (::steam_is_running()
-            && !hasFeature("AllowSteamAccountLinking")
-            && !havePlayerTag("steam")) {
-          this.msgBox("steam_relogin_request",
-            loc("mainmenu/login/steamRelogin"),
-          [
-            ["ok", ::restart_without_steam],
-            ["cancel"]
-          ],
-          "ok", { cancel_fn = @() null })
-          return
-        }
-
-        if (this.needTrySteamLink()) {
-          let isRemoteComp = ::get_object_value(this.scene, "loginbox_remote_comp", false)
-          statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam_link" })
-          log("Steam Link Login: check_login_pass")
-          let res = ::check_login_pass("", "", "steam", "steam", true, isRemoteComp)
-          log("Steam Link Login: link existing account, result = " + res)
-          if (res == YU2_OK)
-            ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
-          else if (res == YU2_ALREADY)
-            ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, false)
-        }
-        else if (::steam_is_running() && !hasFeature("AllowSteamAccountLinking"))
+        if (::steam_is_running())
           ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
-
         this.continueLogin(no_dump_login)
         break
 
@@ -529,10 +498,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
             if (!checkObj(scene))
               return
 
-            if ("get_two_step_code_async2" in getroottable())
-              ::get_two_step_code_async2("ProceedGetTwoStepCode")
-            else
-              ::get_two_step_code_async(this, this.onEventProceedGetTwoStepCode)
+            ::get_two_step_code_async2("ProceedGetTwoStepCode")
           })(this.scene))
         }
         break
@@ -700,3 +666,10 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     })
   }
 }
+
+subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
+  let loginWnd = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
+  if (loginWnd == null)
+    return
+  loginWnd.proceedGetTwoStepCode(p)
+})

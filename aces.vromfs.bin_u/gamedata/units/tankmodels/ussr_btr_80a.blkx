@@ -124,10 +124,6 @@
       "turret_04_side_dm": {
         "armorThickness": 10.0
       },
-      "turret_05_top_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "RHA_tank"
-      },
       "turret_07_side_dm": {
         "armorThickness": 15.0
       },
@@ -154,6 +150,12 @@
         "armorThickness": 6.0
       },
       "ex_armor_r_04_dm": {
+        "armorThickness": 6.0
+      },
+      "turret_05_side_dm": {
+        "armorThickness": 6.0
+      },
+      "turret_05_top_dm": {
         "armorThickness": 6.0
       }
     },
@@ -209,7 +211,8 @@
       "turret_03_bottom_dm": {},
       "turret_03_back_dm": {},
       "ex_armor_04_dm": {},
-      "turret_01_back_dm": {}
+      "turret_01_back_dm": {},
+      "turret_04_bottom_dm": {}
     },
     "chassis": {
       "hp": 250.0,
@@ -1080,6 +1083,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1640,7 +1644,7 @@
         "linkShellCasingToGun": true,
         "shellCasingScale": 0.15,
         "shellCasingImpulseOffset": 0.02,
-        "recoilOffset": 0.045,
+        "recoilOffset": 0.3,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -1759,6 +1763,34 @@
             0.0
           ]
         }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -50.0,
+            50.0
+          ],
+          "pitch": [
+            -13.0,
+            33.0
+          ]
+        }
       }
     ]
   },
@@ -1803,7 +1835,7 @@
     },
     "engine": {
       "horsePowers": 260.0,
-      "maxRPM": 2900.0,
+      "maxRPM": 2600.0,
       "minRPM": 600.0,
       "rpmTau": 1.9
     },
@@ -1811,7 +1843,7 @@
       "maxBrakeForce": 45000.0,
       "driveGearRadius": 0.45,
       "mainGearRatio": 4.75,
-      "sideGearRatio": 1.195,
+      "sideGearRatio": 1.067,
       "tracked": false,
       "gearRatios": {
         "ratio": [
@@ -2673,6 +2705,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2680,6 +2719,26 @@
       "fx": {
         "name": "tank_engine_fire"
       }
+    }
+  },
+  "commanderView": {
+    "optics": "commander_optics_square",
+    "zoomOutFov": 15.0,
+    "zoomInFov": 14.7,
+    "sightSize": [
+      0.29,
+      0.2
+    ],
+    "ircmProjector": {
+      "node": "ex_decor_01",
+      "beamRadius": [
+        600.0,
+        50.0
+      ],
+      "projectorPower": [
+        0.02,
+        0.04
+      ]
     }
   },
   "cockpit": {
@@ -2699,6 +2758,22 @@
       0.1
     ],
     "detectionHeight": 3.1
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_01_dm": {
+          "count": 300
+        }
+      }
+    }
   },
   "modifications": {
     "new_wheels": {},
@@ -2758,8 +2833,14 @@
     },
     "30mm_2a72_BTR_HE": {},
     "30mm_2a72_BTR_AP": {},
+    "30mm_2a42_APDS": {},
     "30mm_2a72_BTR_HE_ammo_pack": {},
-    "30mm_2a72_BTR_AP_ammo_pack": {},
+    "30mm_2a72_BTR_AP_ammo_pack": {
+      "tier": 1
+    },
+    "30mm_2a42_APDS_ammo_pack": {
+      "tier": 4
+    },
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
       "tier": 4,
@@ -2782,7 +2863,7 @@
               "linkShellCasingToGun": true,
               "shellCasingScale": 0.15,
               "shellCasingImpulseOffset": 0.02,
-              "recoilOffset": 0.045,
+              "recoilOffset": 0.3,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
@@ -2899,6 +2980,34 @@
                 "pitch": [
                   -0.0,
                   0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 90.0,
+              "speedPitch": 90.0,
+              "turret": {
+                "head": "bone_commander_sight_h",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -50.0,
+                  50.0
+                ],
+                "pitch": [
+                  -13.0,
+                  33.0
                 ]
               }
             },

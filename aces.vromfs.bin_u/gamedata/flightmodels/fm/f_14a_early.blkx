@@ -282,8 +282,8 @@
       "Angle": 1.5,
       "VAngle": -1.5,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.22,
-      "SpinClloss": 0.18,
+      "SpinCdloss": 0.05,
+      "SpinClloss": 0.002,
       "DownwashType": 2,
       "DownwashCoeff": 0.45,
       "Areas": {
@@ -332,6 +332,18 @@
         "AoaShiftAdd2": [
           5.0,
           -0.1
+        ],
+        "AoaShiftAdd3": [
+          15.0,
+          -0.1
+        ],
+        "AoaShiftAdd4": [
+          30.0,
+          -0.15
+        ],
+        "AoaShiftAdd5": [
+          45.0,
+          -0.1
         ]
       },
       "FlapsPolar0": {
@@ -350,7 +362,7 @@
         "MultMachMax1": 7.5,
         "MultLineCoeff1": 0.1,
         "MultLimit1": 8.2,
-        "MachCrit2": 0.4,
+        "MachCrit2": 0.5,
         "MachMax2": 0.95,
         "MultMachMax2": 0.55,
         "MultLineCoeff2": -0.1,
@@ -384,10 +396,20 @@
         "ClToCmByMach0": [
           0.2,
           0.0,
-          0.0
+          -0.03
         ],
         "ClToCmByMach1": [
-          0.4,
+          0.3,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach2": [
+          0.55,
+          0.0,
+          -0.05
+        ],
+        "ClToCmByMach3": [
+          0.7,
           0.0,
           0.0
         ],
@@ -414,7 +436,7 @@
         "MultMachMax1": 6.5,
         "MultLineCoeff1": 0.1,
         "MultLimit1": 8.2,
-        "MachCrit2": 0.4,
+        "MachCrit2": 0.5,
         "MachMax2": 0.95,
         "MultMachMax2": 0.55,
         "MultLineCoeff2": -0.1,
@@ -448,10 +470,20 @@
         "ClToCmByMach0": [
           0.2,
           0.0,
-          0.0
+          -0.03
         ],
         "ClToCmByMach1": [
           0.3,
+          0.1,
+          -0.03
+        ],
+        "ClToCmByMach2": [
+          0.55,
+          0.1,
+          -0.05
+        ],
+        "ClToCmByMach3": [
+          0.7,
           0.1,
           0.0
         ],
@@ -479,8 +511,8 @@
       "Angle": 1.0,
       "VAngle": -1.5,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.2,
-      "SpinClloss": 0.14,
+      "SpinCdloss": 0.05,
+      "SpinClloss": 0.005,
       "DownwashType": 2,
       "DownwashCoeff": 0.45,
       "Areas": {
@@ -528,7 +560,19 @@
         ],
         "AoaShiftAdd2": [
           5.0,
-          -0.02
+          -0.05
+        ],
+        "AoaShiftAdd3": [
+          15.0,
+          -0.06
+        ],
+        "AoaShiftAdd4": [
+          30.0,
+          -0.22
+        ],
+        "AoaShiftAdd5": [
+          45.0,
+          -0.06
         ]
       },
       "FlapsPolar0": {
@@ -547,7 +591,7 @@
         "MultMachMax1": 3.3,
         "MultLineCoeff1": 0.1,
         "MultLimit1": 5.2,
-        "MachCrit2": 0.4,
+        "MachCrit2": 0.5,
         "MachMax2": 0.95,
         "MultMachMax2": 0.6,
         "MultLineCoeff2": -0.1,
@@ -578,7 +622,23 @@
         "MultLineCoeff7": -0.1,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach1": [
+          0.3,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach2": [
+          0.55,
+          0.0,
+          -0.05
+        ],
+        "ClToCmByMach3": [
+          0.7,
           0.0,
           0.0
         ],
@@ -605,7 +665,7 @@
         "MultMachMax1": 5.0,
         "MultLineCoeff1": 0.1,
         "MultLimit1": 5.2,
-        "MachCrit2": 0.4,
+        "MachCrit2": 0.5,
         "MachMax2": 0.95,
         "MultMachMax2": 0.6,
         "MultLineCoeff2": -0.1,
@@ -636,8 +696,24 @@
         "MultLineCoeff7": -0.1,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.03,
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach1": [
+          0.3,
+          0.05,
+          -0.03
+        ],
+        "ClToCmByMach2": [
+          0.55,
+          0.05,
+          -0.05
+        ],
+        "ClToCmByMach3": [
+          0.7,
+          0.05,
           0.0
         ],
         "Cl0": 0.55,
@@ -664,8 +740,8 @@
       "Angle": 1.0,
       "VAngle": -1.5,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.18,
-      "SpinClloss": 0.12,
+      "SpinCdloss": 0.05,
+      "SpinClloss": 0.005,
       "DownwashType": 2,
       "DownwashCoeff": 0.5,
       "Areas": {
@@ -714,6 +790,18 @@
         "AoaShiftAdd2": [
           5.0,
           -0.02
+        ],
+        "AoaShiftAdd3": [
+          15.0,
+          -0.05
+        ],
+        "AoaShiftAdd4": [
+          30.0,
+          -0.2
+        ],
+        "AoaShiftAdd5": [
+          45.0,
+          -0.05
         ]
       },
       "FlapsPolar0": {
@@ -732,7 +820,7 @@
         "MultMachMax1": 2.2,
         "MultLineCoeff1": 0.1,
         "MultLimit1": 5.2,
-        "MachCrit2": 0.4,
+        "MachCrit2": 0.5,
         "MachMax2": 0.95,
         "MultMachMax2": 0.6,
         "MultLineCoeff2": -0.1,
@@ -763,7 +851,23 @@
         "MultLineCoeff7": -0.1,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach1": [
+          0.3,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach2": [
+          0.55,
+          0.0,
+          -0.05
+        ],
+        "ClToCmByMach3": [
+          0.7,
           0.0,
           0.0
         ],
@@ -790,7 +894,7 @@
         "MultMachMax1": 2.2,
         "MultLineCoeff1": 0.1,
         "MultLimit1": 5.2,
-        "MachCrit2": 0.4,
+        "MachCrit2": 0.5,
         "MachMax2": 0.95,
         "MultMachMax2": 0.6,
         "MultLineCoeff2": -0.1,
@@ -821,8 +925,24 @@
         "MultLineCoeff7": -0.1,
         "MultLimit7": 0.0,
         "CombinedCl": false,
-        "ClToCmByMach": [
-          0.03,
+        "ClToCmByMach0": [
+          0.2,
+          0.0,
+          -0.03
+        ],
+        "ClToCmByMach1": [
+          0.3,
+          0.05,
+          -0.03
+        ],
+        "ClToCmByMach2": [
+          0.55,
+          0.05,
+          -0.05
+        ],
+        "ClToCmByMach3": [
+          0.7,
+          0.05,
           0.0
         ],
         "Cl0": 0.5,
@@ -1393,19 +1513,19 @@
         "ThrAftMaxCoeff_0_6": 1.35,
         "TorqueMaxCoeff_0_6": 1.03,
         "ThrustMaxCoeff_0_7": 1.06,
-        "ThrAftMaxCoeff_0_7": 1.34,
+        "ThrAftMaxCoeff_0_7": 1.3,
         "TorqueMaxCoeff_0_7": 1.06,
         "ThrustMaxCoeff_0_8": 1.08,
-        "ThrAftMaxCoeff_0_8": 1.32,
+        "ThrAftMaxCoeff_0_8": 1.21,
         "TorqueMaxCoeff_0_8": 1.08,
         "ThrustMaxCoeff_0_9": 1.08,
-        "ThrAftMaxCoeff_0_9": 1.3,
+        "ThrAftMaxCoeff_0_9": 1.18,
         "TorqueMaxCoeff_0_9": 1.08,
         "ThrustMaxCoeff_0_10": 1.06,
-        "ThrAftMaxCoeff_0_10": 1.3,
+        "ThrAftMaxCoeff_0_10": 1.16,
         "TorqueMaxCoeff_0_10": 1.06,
         "ThrustMaxCoeff_0_11": 1.02,
-        "ThrAftMaxCoeff_0_11": 1.2,
+        "ThrAftMaxCoeff_0_11": 1.14,
         "TorqueMaxCoeff_0_11": 1.02,
         "ThrustMaxCoeff_0_12": 1.0,
         "ThrAftMaxCoeff_0_12": 1.0,
@@ -1435,7 +1555,7 @@
         "ThrAftMaxCoeff_1_7": 1.5,
         "TorqueMaxCoeff_1_7": 0.84,
         "ThrustMaxCoeff_1_8": 0.88,
-        "ThrAftMaxCoeff_1_8": 1.5,
+        "ThrAftMaxCoeff_1_8": 1.54,
         "TorqueMaxCoeff_1_8": 0.88,
         "ThrustMaxCoeff_1_9": 0.88,
         "ThrAftMaxCoeff_1_9": 1.65,
@@ -1480,10 +1600,10 @@
         "ThrAftMaxCoeff_2_9": 1.8,
         "TorqueMaxCoeff_2_9": 0.69,
         "ThrustMaxCoeff_2_10": 0.67,
-        "ThrAftMaxCoeff_2_10": 1.9,
+        "ThrAftMaxCoeff_2_10": 1.98,
         "TorqueMaxCoeff_2_10": 0.67,
         "ThrustMaxCoeff_2_11": 0.61,
-        "ThrAftMaxCoeff_2_11": 2.1,
+        "ThrAftMaxCoeff_2_11": 2.2,
         "TorqueMaxCoeff_2_11": 0.61,
         "ThrustMaxCoeff_2_12": 0.6,
         "ThrAftMaxCoeff_2_12": 2.2,
@@ -1519,13 +1639,13 @@
         "ThrAftMaxCoeff_3_9": 2.7,
         "TorqueMaxCoeff_3_9": 0.4,
         "ThrustMaxCoeff_3_10": 0.4,
-        "ThrAftMaxCoeff_3_10": 2.8,
+        "ThrAftMaxCoeff_3_10": 2.75,
         "TorqueMaxCoeff_3_10": 0.4,
         "ThrustMaxCoeff_3_11": 0.4,
-        "ThrAftMaxCoeff_3_11": 2.9,
+        "ThrAftMaxCoeff_3_11": 2.8,
         "TorqueMaxCoeff_3_11": 0.4,
         "ThrustMaxCoeff_3_12": 0.4,
-        "ThrAftMaxCoeff_3_12": 2.9,
+        "ThrAftMaxCoeff_3_12": 2.85,
         "TorqueMaxCoeff_3_12": 0.4,
         "ThrustMaxCoeff_4_0": 0.12,
         "ThrAftMaxCoeff_4_0": 1.0,
@@ -1582,28 +1702,28 @@
         "ThrAftMaxCoeff_5_4": 1.6,
         "TorqueMaxCoeff_5_4": 0.08,
         "ThrustMaxCoeff_5_5": 0.09,
-        "ThrAftMaxCoeff_5_5": 1.9,
+        "ThrAftMaxCoeff_5_5": 2.0,
         "TorqueMaxCoeff_5_5": 0.09,
         "ThrustMaxCoeff_5_6": 0.1,
-        "ThrAftMaxCoeff_5_6": 2.2,
+        "ThrAftMaxCoeff_5_6": 2.3,
         "TorqueMaxCoeff_5_6": 0.1,
         "ThrustMaxCoeff_5_7": 0.11,
-        "ThrAftMaxCoeff_5_7": 2.5,
+        "ThrAftMaxCoeff_5_7": 2.7,
         "TorqueMaxCoeff_5_7": 0.11,
         "ThrustMaxCoeff_5_8": 0.12,
-        "ThrAftMaxCoeff_5_8": 2.75,
+        "ThrAftMaxCoeff_5_8": 3.1,
         "TorqueMaxCoeff_5_8": 0.12,
         "ThrustMaxCoeff_5_9": 0.13,
-        "ThrAftMaxCoeff_5_9": 3.2,
+        "ThrAftMaxCoeff_5_9": 3.5,
         "TorqueMaxCoeff_5_9": 0.13,
         "ThrustMaxCoeff_5_10": 0.14,
-        "ThrAftMaxCoeff_5_10": 3.4,
+        "ThrAftMaxCoeff_5_10": 3.7,
         "TorqueMaxCoeff_5_10": 0.14,
         "ThrustMaxCoeff_5_11": 0.15,
-        "ThrAftMaxCoeff_5_11": 3.4,
+        "ThrAftMaxCoeff_5_11": 3.7,
         "TorqueMaxCoeff_5_11": 0.15,
         "ThrustMaxCoeff_5_12": 0.16,
-        "ThrAftMaxCoeff_5_12": 3.4,
+        "ThrAftMaxCoeff_5_12": 3.7,
         "TorqueMaxCoeff_5_12": 0.16,
         "ThrustMaxCoeff_6_0": 0.02,
         "ThrAftMaxCoeff_6_0": 1.0,

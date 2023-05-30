@@ -21,6 +21,7 @@
   "isBwOpticSight": true,
   "haveOpticTurret": true,
   "havePointOfInterestDesignator": true,
+  "hasPointOfInterestMemory": true,
   "type": "typeFighter",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
@@ -1963,9 +1964,9 @@
     "lightRadius2": 0.35,
     "zoomOutFov": 24.7,
     "zoomInFov": 7.7,
-    "sightInFov": 1.2,
-    "sightOutFov": -1.0,
-    "sightFov": 0.001,
+    "sightInFov": 7.37,
+    "sightOutFov": 18.49,
+    "sightFov": 18.49,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2192,66 +2193,72 @@
             1.0,
             1.0
           ],
-          "page": {
-            "type": "vdi",
-            "figureType": "trapezoid",
-            "groundColor": [
-              0.0,
-              0.1,
-              0.0,
-              1.0
-            ],
-            "figureColor": [
-              0.0,
-              0.04,
-              0.0,
-              1.0
-            ],
-            "figureSize": 0.2,
-            "nightColor": "PwAA/w==",
-            "nightGroundColor": [
-              0.1,
-              0.0,
-              0.0,
-              1.0
-            ],
-            "nightFigureColor": [
-              0.04,
-              0.0,
-              0.0,
-              1.0
-            ],
-            "uiColor": "CugK8A==",
-            "nightUiColor": "6AoK8A==",
-            "positions": {
-              "p": [
-                [
-                  -0.2,
-                  0.7
-                ],
-                [
-                  -0.7,
-                  1.0
-                ],
-                [
-                  0.7,
-                  1.0
-                ],
-                [
-                  -0.7,
-                  0.4
-                ],
-                [
-                  0.7,
-                  0.4
-                ],
-                [
-                  -0.2,
-                  0.2
+          "page": [
+            {
+              "type": "vdi",
+              "figureType": "trapezoid",
+              "groundColor": [
+                0.0,
+                0.1,
+                0.0,
+                1.0
+              ],
+              "figureColor": [
+                0.0,
+                0.04,
+                0.0,
+                1.0
+              ],
+              "figureSize": 0.2,
+              "nightColor": "PwAA/w==",
+              "nightGroundColor": [
+                0.1,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "nightFigureColor": [
+                0.04,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "uiColor": "CugK8A==",
+              "nightUiColor": "6AoK8A==",
+              "positions": {
+                "p": [
+                  [
+                    -0.2,
+                    0.7
+                  ],
+                  [
+                    -0.7,
+                    1.0
+                  ],
+                  [
+                    0.7,
+                    1.0
+                  ],
+                  [
+                    -0.7,
+                    0.4
+                  ],
+                  [
+                    0.7,
+                    0.4
+                  ],
+                  [
+                    -0.2,
+                    0.2
+                  ]
                 ]
-              ]
+              }
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             }
-          }
+          ]
         },
         {
           "textureArea": [
@@ -2265,17 +2272,11 @@
             0.38,
             0.17
           ],
-          "page": [
-            {
-              "type": "radar",
-              "radarScale": 1.0,
-              "hideRadarBackground": true
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            }
-          ]
+          "page": {
+            "type": "radar",
+            "radarScale": 1.0,
+            "hideRadarBackground": true
+          }
         },
         {
           "textureArea": [
@@ -3759,6 +3760,7 @@
           {
             "iconType": "flir_container",
             "name": "lantirn",
+            "reqModification": "us_lantirn_pod",
             "hasTargetingPod": true,
             "removeGunnerOpticFps": 0,
             "ShowNodes": {
@@ -3777,13 +3779,6 @@
             },
             "sensors": {
               "sensor": [
-                {
-                  "blk": "gameData/sensors/us_an_awg_9_tiseo.blk",
-                  "dmPart": "radar_dm"
-                },
-                {
-                  "blk": "gameData/sensors/us_an_alr_67.blk"
-                },
                 {
                   "blk": "gameData/sensors/LaserDesignatorSensor.blk"
                 },
@@ -4146,30 +4141,45 @@
     "new_cover": {
       "tier": 4
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "group": "countermeasures",
+    "heli_night_vision_system": {
       "tier": 1,
+      "modClass": "weapon",
       "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "m61a1_ltc_common"
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "pilotIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "sightThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
           }
         }
       }
     },
-    "M60_air_targets": {},
+    "M60_air_targets": {
+      "prevModification": "f_4c_g_suit"
+    },
     "M60_armor_targets": {},
     "M60_stealth": {},
     "M60_belt_pack": {
-      "prevModification": "countermeasures_belt_pack",
       "tier": 2
     },
     "M60_new_gun": {
@@ -4220,9 +4230,29 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "uk_ltc_bol": {
+    "countermeasures_launcher_chaff_only": {},
+    "countermeasures_launcher_flare_only": {},
+    "countermeasures_launcher_chaff_priority": {},
+    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_belt_pack": {
       "modClass": "weapon",
-      "tier": 1
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "countermeasures",
+      "tier": 1,
+      "effects": {
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "m61a1_ltc_common"
+          }
+        }
+      }
+    },
+    "uk_ltc_bol": {
+      "reqModification": "countermeasures_belt_pack",
+      "modClass": "weapon",
+      "tier": 2
     },
     "us_aim_9l": {
       "reqModification": "uk_ltc_bol",

@@ -32,7 +32,7 @@ let tcsfAimMark = @() {
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = RadarTargetPosValid.value ? RadarTargetPos : [TargetPos.value[0], TargetPos.value[1]]
+          translate = [TargetPos.value[0], TargetPos.value[1]]
         }
       }
     } :
@@ -51,6 +51,49 @@ let tcsfAimMark = @() {
     })
   : null
 }
+
+let tcsfRadarAimMark = @() {
+  watch = RadarTargetPosValid
+  size = flex()
+  children = RadarTargetPosValid.value ? (
+    {
+      size = [pw(8), ph(8)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = Color(255, 70, 10)
+      fillColor = Color(255, 70, 10)
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_LINE, -100, 0, -70, -30],
+        [VECTOR_LINE, -50, -50, -50, -50],
+        [VECTOR_LINE, -30, -70, 0, -100],
+        [VECTOR_LINE, 100, 0, 70, -30],
+        [VECTOR_LINE, 50, -50, 50, -50],
+        [VECTOR_LINE, 30, -70, 0, -100],
+        [VECTOR_LINE, -100, 0, -70, 30],
+        [VECTOR_LINE, -50, 50, -50, 50],
+        [VECTOR_LINE, -30, 70, 0, 100],
+        [VECTOR_LINE, 100, 0, 70, 30],
+        [VECTOR_LINE, 50, 50, 50, 50],
+        [VECTOR_LINE, 30, 70, 0, 100]
+      ]
+      children = {
+        watch = IlsColor
+        pos = [-baseLineWidth * IlsLineScale.value * 1.5, -baseLineWidth * IlsLineScale.value * 1.5]
+        size = [baseLineWidth * IlsLineScale.value * 3, baseLineWidth * IlsLineScale.value * 3]
+        rendObj = ROBJ_SOLID
+        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value
+      }
+      behavior = Behaviors.RtPropUpdate
+      update = @() {
+        transform = {
+          translate = [RadarTargetPos[0], RadarTargetPos[1]]
+        }
+      }
+    })
+  : null
+}
+
 
 let tcsfAirSymbol = {
   size = flex()
@@ -230,6 +273,7 @@ let function TCSF196(width, height) {
       tcsfAirSymbol,
       compassWrap(width, height, -0.1, generateCompassTCSFMark, 0.4, 2.0, true),
       tcsfAimMark,
+      tcsfRadarAimMark,
       altWrap(width, height, generateAltMark),
       pitch(width, height, generatePitchLine),
       {

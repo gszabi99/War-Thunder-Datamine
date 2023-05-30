@@ -44,6 +44,8 @@ let { get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_missio
 let { utf8ToLower, stripTags, startsWith } = require("%sqstd/string.nut")
 let { recomendedControlPresets, getControlsPresetBySelectedType
 } = require("%scripts/controls/controlsUtils.nut")
+let { joystickSetCurSettings, setShortcutsAndSaveControls
+} = require("%scripts/controls/controlsCompatibility.nut")
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -132,12 +134,6 @@ local shortcutsNotChangeByPreset = [
 
   let scToRestore = ::get_shortcuts(shortcutsNotChangeByPreset)
   ::g_controls_manager.setCurPreset(::ControlsPreset(preset))
-
-  let joyCurSettings = ::joystick_get_cur_settings()
-  let curJoyParams = ::JoystickParams()
-  curJoyParams.setFrom(joyCurSettings)
-  ::g_controls_manager.commitControls()
-
   restoreShortcuts(scToRestore, shortcutsNotChangeByPreset)
 
   if (is_platform_pc)
@@ -189,10 +185,8 @@ local axisMappedOnMouse = {
   if (axis)
     return axis((helpersMode ?? ::getCurrentHelpersMode()) == globalEnv.EM_MOUSE_AIM)
 
-  if (!joyParams) {
-    joyParams = ::JoystickParams()
-    joyParams.setFrom(::joystick_get_cur_settings())
-  }
+  if (!joyParams)
+    joyParams = ::joystick_get_cur_settings()
   for (local i = 0; i < MouseAxis.NUM_MOUSE_AXIS_TOTAL; ++i) {
     if (shortcutId == joyParams.getMouseAxis(i))
       return 1 << min(i, MOUSE_AXIS.TOTAL - 1)
@@ -308,8 +302,7 @@ local axisMappedOnMouse = {
 
   function initMainParams() {
     this.initShortcutsNames()
-    this.curJoyParams = ::JoystickParams()
-    this.curJoyParams.setFrom(::joystick_get_cur_settings())
+    this.curJoyParams = ::joystick_get_cur_settings()
     this.updateButtons()
 
     ::g_controls_manager.restoreHardcodedKeys(MAX_SHORTCUTS)
@@ -1374,7 +1367,7 @@ local axisMappedOnMouse = {
         item.setValue(setValueContext, value)
     }
 
-    ::joystick_set_cur_settings(this.curJoyParams)
+    joystickSetCurSettings(this.curJoyParams)
   }
 
   function onEventControlsPresetChanged(_p) {
@@ -1543,8 +1536,8 @@ local axisMappedOnMouse = {
   }
 
   function saveShortcutsAndAxes() {
-    ::set_shortcuts(this.shortcuts, this.shortcutNames)
     this.doApplyJoystick()
+    setShortcutsAndSaveControls(this.shortcuts, this.shortcutNames)
   }
 
   function updateCurPresetForExport() {
@@ -2421,9 +2414,7 @@ let function getWeaponFeatures(weaponsList) {
 ::getUnmappedControls <- function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCheckRequirements = false) {
   let unmapped = []
 
-  let joyParams = ::JoystickParams()
-  joyParams.setFrom(::joystick_get_cur_settings())
-
+  let joyParams = ::joystick_get_cur_settings()
   foreach (item in ::shortcutsList) {
     if (isInArray(item.id, controls)) {
       if ((("filterHide" in item) && isInArray(helpersMode, item.filterHide))

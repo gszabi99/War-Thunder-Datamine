@@ -6,6 +6,7 @@ from "%scripts/dagui_library.nut" import *
 
 let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
 
 let getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
 
@@ -26,8 +27,7 @@ let function getBitArrayAxisIdByShortcutId(joyParams, shortcutId) {
 }
 
 let function getComplexAxesId(shortcutComponents) {
-  let joyParams = ::JoystickParams()
-  joyParams.setFrom(::joystick_get_cur_settings())
+  let joyParams = ::joystick_get_cur_settings()
   local axesId = 0
   foreach (shortcutId in shortcutComponents)
     axesId = axesId | getBitArrayAxisIdByShortcutId(joyParams, shortcutId)
@@ -129,7 +129,7 @@ let function restoreShortcuts(scList, scNames) {
   if (!changeList.len())
     return
 
-  ::set_shortcuts(changeList, changeNames)
+  setShortcutsAndSaveControls(changeList, changeNames)
   broadcastEvent("ControlsPresetChanged")
 }
 return {

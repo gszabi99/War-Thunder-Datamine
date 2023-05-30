@@ -22,7 +22,7 @@ let { selectedTargetSpeedBlinking, selectedTargetBlinking, targetAspectEnabled, 
   ScanZoneWatched, LockZoneWatched, IsScanZoneAzimuthVisible, IsScanZoneElevationVisible,
   IsLockZoneVisible, IsAamLaunchZoneVisible, AamLaunchZoneDist, AamLaunchZoneDistMin,
   AamLaunchZoneDistMax, VelocitySearch, MfdRadarHideBkg,
-  AzimuthRange, AzimuthRangeInv, ElevationRangeInv } = require("radarState.nut")
+  AzimuthRange, AzimuthRangeInv, ElevationRangeInv, MfdRadarFontScale } = require("radarState.nut")
 
 let areaBackgroundColor = Color(0, 0, 0, 120)
 const RADAR_LINES_OPACITY = 0.42
@@ -691,7 +691,7 @@ let function makeRadar2ModeText(textConfig, color) {
 
 let offsetScaleFactor = 1.3
 
-let function B_ScopeSquareMarkers(size, color) {
+let function B_ScopeSquareMarkers(size, color, fontScale) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
 
@@ -702,6 +702,7 @@ let function B_ScopeSquareMarkers(size, color) {
       color
       fontFxFactor
       fontFxColor
+      fontSize = hudFontHgt * fontScale
       text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), deg, "x",
               floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), deg,
               (ScanPatternsMax.value > 1 ? "*" : " "))
@@ -717,6 +718,7 @@ let function B_ScopeSquareMarkers(size, color) {
       color
       fontFxFactor
       fontFxColor
+      fontSize = hudFontHgt * fontScale
       text = "".concat(VelocitySearch.value
               ? cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false)
               : cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
@@ -732,6 +734,7 @@ let function B_ScopeSquareMarkers(size, color) {
       color
       fontFxFactor
       fontFxColor
+      fontSize = hudFontHgt * fontScale
       size = [size[0], SIZE_TO_CONTENT]
       text = VelocitySearch.value
         ? cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false)
@@ -749,6 +752,7 @@ let function B_ScopeSquareMarkers(size, color) {
       color
       fontFxFactor
       fontFxColor
+      fontSize = hudFontHgt * fontScale
       pos = [0, (-ElevationMin.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
       text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), deg)
     })
@@ -764,6 +768,7 @@ let function B_ScopeSquareMarkers(size, color) {
       color
       fontFxFactor
       fontFxColor
+      fontSize = hudFontHgt * fontScale
       pos = [0, (-ElevationMax.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
       text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), deg)
     })
@@ -778,6 +783,7 @@ let function B_ScopeSquareMarkers(size, color) {
       fontFxColor = Color(0, 0, 0, 120)
       size
       padding = hdpx(4)
+      fontSize = hudFontHgt * fontScale
       text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), deg)
     })
   }
@@ -791,6 +797,7 @@ let function B_ScopeSquareMarkers(size, color) {
       fontFxFactor = fontOutlineFxFactor
       fontFxColor = Color(0, 0, 0, 120)
       size
+      fontSize = hudFontHgt * fontScale
       padding = hdpx(4)
       text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), deg)
     })
@@ -805,6 +812,7 @@ let function B_ScopeSquareMarkers(size, color) {
       color = isColorOrWhite(color)
       fontFxFactor = fontOutlineFxFactor
       fontFxColor = Color(0, 0, 0, 120)
+      fontSize = hudFontHgt * fontScale
       margin = [hdpx(4), 0, 0, 0]
       text = "".concat(floor((AzimuthMax.value - AzimuthMin.value) * radToDeg + 0.5), deg)
     })
@@ -911,7 +919,7 @@ let function mkRadarPartPlaceComp(extraParams = {}) {
   }.__update(extraParams)
 }
 
-let function B_ScopeSquare(size, color, hide_back) {
+let function B_ScopeSquare(size, color, hide_back, fontScale) {
   let bkg = hide_back ? null : B_ScopeSquareBackground(size, color)
   let scopeTgtSectorComp = hide_back ? null : B_ScopeSquareTargetSectorComponent(size, TurretAzimuth, TargetRadarDist, TargetRadarAzimuthWidth, color)
   let scopeSquareAzimuthComp0 = B_ScopeSquareAzimuthComponent(size, TurretAzimuth, null, null, true, color)
@@ -929,7 +937,7 @@ let function B_ScopeSquare(size, color, hide_back) {
   let scopeSquareElevationComp2 = B_ScopeSquareElevationComp(size, Elevation2, ElevationMin, ElevationMax, ScanElevationMin, ScanElevationMax, color)
   let scopeSqLaunchRangeComp = B_ScopeSquareLaunchRangeComponent(size, AamLaunchZoneDist, AamLaunchZoneDistMin, AamLaunchZoneDistMax, color)
   let tgts = targetsComponent(size, createTargetOnRadarSquare, color)
-  let markers = B_ScopeSquareMarkers(size, color)
+  let markers = B_ScopeSquareMarkers(size, color, fontScale)
   let cue = B_ScopeSquareCue(size, color)
 
   let leftPlace = {
@@ -2902,7 +2910,7 @@ let mkRadarBase = @(posWatch, size, _isAir, color, mode, fontScale = 1.0, hide_b
       if (azimuthRange > PI)
         scopeChild = B_Scope(size, color)
       else
-        scopeChild = B_ScopeSquare(squareSize, color, hide_back)
+        scopeChild = B_ScopeSquare(squareSize, color, hide_back, fontScale)
     }
     else if (mode.value == RadarViewMode.B_SCOPE_ROUND) {
       if (azimuthRange > PI)
@@ -3002,8 +3010,8 @@ let function mkRadar(posWatched, radarSize = sh(28), isAir = false, radar_color_
   }
 }
 
-let radarPosSizeX = Computed(@() radarPosSize.value.x)
-let radarPosSizeY = Computed(@() radarPosSize.value.y)
+let radarPosSizeX = Computed(@() radarPosSize.value.x - 1.0 * maxLabelWidth)
+let radarPosSizeY = Computed(@() radarPosSize.value.y - 2.0 * maxLabelHeight)
 let radarPosSizeW = Computed(@() radarPosSize.value.w)
 let radarPosSizeH = Computed(@() radarPosSize.value.h)
 let radarPos = Computed(@() [radarPosSizeX.value, radarPosSizeY.value])
@@ -3011,7 +3019,7 @@ let radarPos = Computed(@() [radarPosSizeX.value, radarPosSizeY.value])
 let mkRadarForMfd = @(radarColorWatched) function() {
   let color = radarColorWatched.value
   return {
-    watch = [MfdRadarEnabled, radarColorWatched, MfdRadarHideBkg, radarPosSizeW, radarPosSizeH]
+    watch = [MfdRadarEnabled, radarColorWatched, MfdRadarHideBkg, radarPosSizeW, radarPosSizeH, MfdRadarFontScale]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
     size = [sw(100), sh(100)]
@@ -3020,7 +3028,7 @@ let mkRadarForMfd = @(radarColorWatched) function() {
       MfdRadarEnabled.value
        ? mkRadarBase(radarPos,
           [radarPosSizeW.value, radarPosSizeH.value],
-          true, color, MfdViewMode, radarPosSizeH.value / 512.0, MfdRadarHideBkg.value, false)
+          true, color, MfdViewMode, MfdRadarFontScale.value > 0 ? MfdRadarFontScale.value : radarPosSizeH.value / 512.0, MfdRadarHideBkg.value, false)
        : null
     ]
   }

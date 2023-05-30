@@ -165,6 +165,52 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "reloadTimeMult": 2.0,
+          "fireParamsPreset": "hull_bustle",
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          },
+          "ammo_body_10_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "ammo_body_01_dm": {
+            "count": 1
+          },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "reloadTimeMult": 2.0,
           "fireParamsPreset": "turret_bustle",
           "ammo_turret_14_dm": {
             "count": 1
@@ -230,52 +276,6 @@
             "count": 1
           },
           "ammo_turret_44_dm": {
-            "count": 1
-          }
-        },
-        {
-          "fatalFire": false,
-          "fatalExplosion": false,
-          "reloadTimeMult": 2.0,
-          "fireParamsPreset": "hull_bustle",
-          "ammo_body_04_dm": {
-            "count": 1
-          },
-          "ammo_body_05_dm": {
-            "count": 1
-          },
-          "ammo_body_06_dm": {
-            "count": 1
-          },
-          "ammo_body_07_dm": {
-            "count": 1
-          },
-          "ammo_body_08_dm": {
-            "count": 1
-          },
-          "ammo_body_09_dm": {
-            "count": 1
-          },
-          "ammo_body_10_dm": {
-            "count": 1
-          },
-          "ammo_body_11_dm": {
-            "count": 1
-          }
-        },
-        {
-          "fatalFire": true,
-          "fatalExplosion": true,
-          "fireEvent": "ammo_fire",
-          "explosionEvent": "ammo_explosion",
-          "wreckedPartId": 0,
-          "ammo_body_01_dm": {
-            "count": 1
-          },
-          "ammo_body_02_dm": {
-            "count": 1
-          },
-          "ammo_body_03_dm": {
             "count": 1
           }
         }
@@ -559,6 +559,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.4,
           "nothing": 0.6,
           "fHitCritical": true
@@ -1655,6 +1656,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

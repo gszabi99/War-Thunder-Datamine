@@ -53,9 +53,6 @@
     6.07,
     -1.94
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1062,31 +1059,38 @@
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_engine_01"
+            "emitter": "emtr_fire_engine_01",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_engine_02"
+            "emitter": "emtr_fire_engine_02",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_engine_03"
+            "emitter": "emtr_fire_engine_03",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_engine_04"
+            "emitter": "emtr_fire_engine_04",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_engine_05"
+            "emitter": "emtr_fire_engine_05",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_engine_06"
+            "emitter": "emtr_fire_engine_06",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_engine_07"
+            "emitter": "emtr_fire_engine_07",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_smoke_medium",
@@ -1332,67 +1336,83 @@
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_01"
+            "emitter": "emtr_fire_small_dmg_01",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_02"
+            "emitter": "emtr_fire_small_dmg_02",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_03"
+            "emitter": "emtr_fire_small_dmg_03",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_04"
+            "emitter": "emtr_fire_small_dmg_04",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_05"
+            "emitter": "emtr_fire_small_dmg_05",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_06"
+            "emitter": "emtr_fire_small_dmg_06",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_07"
+            "emitter": "emtr_fire_small_dmg_07",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_08"
+            "emitter": "emtr_fire_small_dmg_08",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_09"
+            "emitter": "emtr_fire_small_dmg_09",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_10"
+            "emitter": "emtr_fire_small_dmg_10",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_11"
+            "emitter": "emtr_fire_small_dmg_11",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_12"
+            "emitter": "emtr_fire_small_dmg_12",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_13"
+            "emitter": "emtr_fire_small_dmg_13",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_14"
+            "emitter": "emtr_fire_small_dmg_14",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_15"
+            "emitter": "emtr_fire_small_dmg_15",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_small",
-            "emitter": "emtr_fire_small_dmg_16"
+            "emitter": "emtr_fire_small_dmg_16",
+            "isFireBurnMark": true
           }
         ]
       },
@@ -3437,10 +3457,10 @@
       "explosionDamageMult": 1.2,
       "armorThrough": 1500.0,
       "transmission_01_dm": {
-        "hp": 2488.0
+        "hp": 3000.0
       },
       "transmission_02_dm": {
-        "hp": 3000.0
+        "hp": 2488.0
       }
     },
     "funnels": {
@@ -3448,7 +3468,13 @@
       "armorThickness": 7.0,
       "genericDamageMult": 0.15,
       "explosionDamageMult": 1.5,
-      "fireDamageMult": 0.1
+      "fireDamageMult": 0.1,
+      "funnel_01_dm": {
+        "hp": 1500.0
+      },
+      "funnel_02_dm": {
+        "hp": 1205.0
+      }
     },
     "steering_gear": {
       "fireProtectionHp": 5.0,
@@ -7704,7 +7730,7 @@
       },
       {
         "node": "aa_turret_05",
-        "idx": 5,
+        "idx": 4,
         "mass": 1100.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
@@ -7713,7 +7739,7 @@
       },
       {
         "node": "tt_01",
-        "idx": 6,
+        "idx": 5,
         "mass": 1300.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
@@ -7722,7 +7748,7 @@
       },
       {
         "node": "tt_02",
-        "idx": 7,
+        "idx": 6,
         "mass": 1300.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
@@ -7731,7 +7757,7 @@
       },
       {
         "node": "aa_turret_01",
-        "idx": 5,
+        "idx": 7,
         "mass": 1100.0,
         "cutDamage": 350.0,
         "deviation": 0.6,

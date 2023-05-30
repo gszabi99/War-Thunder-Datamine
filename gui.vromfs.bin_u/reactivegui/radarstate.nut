@@ -117,6 +117,7 @@ let MfdRadarEnabled = Watched(false)
 let MfdIlsEnabled = Watched(false)
 let MfdRadarColor = Watched(Color(10, 202, 10, 250))
 let MfdRadarHideBkg = Watched(false)
+let MfdRadarFontScale = Watched(-1)
 
 let Speed = Watched(0.0)
 
@@ -240,7 +241,7 @@ radarState.__update({
 
     AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
 
-    HmdSensorVisible, HmdSensorDesignation
+    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale
   }
 )
 

@@ -471,7 +471,7 @@ let function getDiffTextArrayByPoint3(val, formatStr = "%s", lessIsBetter = fals
   return res
 }
 
-let function loadCondition(blk, unlockMode) {
+let function loadCondition(blk, unlockBlk) {
   if (blk?.hidden)
     return null
 
@@ -505,6 +505,10 @@ let function loadCondition(blk, unlockMode) {
       res.locParamName <- blk.locParamName
     if (blk?.locValuePrefix)
       res.locValuePrefix <- blk.locValuePrefix
+  }
+  else if (t == "battlepassProgress") {
+    res.values = blk.progress
+    res.season <- unlockBlk?.battlePassSeason ?? -1
   }
   else if (t == "eventMode") {
     res.values = (blk % "event_name")
@@ -671,7 +675,7 @@ let function loadCondition(blk, unlockMode) {
     }
   }
 
-  let overrideCondType = getOverrideCondType(blk, unlockMode)
+  let overrideCondType = getOverrideCondType(blk, unlockBlk?.mode.type)
   if (overrideCondType)
     res.type = overrideCondType
 
@@ -702,10 +706,9 @@ let function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
 
   hideConditionsFromBlk(blk, unlockBlk) // don't show conditions by rule
 
-  let unlockMode = unlockBlk?.mode.type
   let conditionsArray = getUnlockConditions(blk)
   foreach (condBlk in conditionsArray) {
-    let condition = loadCondition(condBlk, unlockMode)
+    let condition = loadCondition(condBlk, unlockBlk)
     if (condition)
       mergeConditionToList(condition, res)
   }

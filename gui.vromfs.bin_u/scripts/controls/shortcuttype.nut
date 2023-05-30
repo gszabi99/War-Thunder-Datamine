@@ -115,8 +115,7 @@ let function splitCompositAxis(compositAxis) {
     inverse = false
   }
 
-  let joyParams = ::JoystickParams()
-  joyParams.setFrom(::joystick_get_cur_settings())
+  let joyParams = ::joystick_get_cur_settings()
   let axisIndex = getShortcutById(shortcutId)?.axisIndex ?? -1
   if (axisIndex < 0)
     return result

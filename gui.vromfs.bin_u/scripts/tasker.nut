@@ -13,7 +13,7 @@ let DataBlock = require("DataBlock")
 
 loadIfExist("%scripts/framework/msgBox.nut")
 
-global enum TASK_CB_TYPE {
+enum TASK_CB_TYPE {
   BASIC,
   REQUEST_DATA
 }
@@ -69,8 +69,7 @@ let function hideTaskProgressBox() {
 
   let guiScene = currentProgressBox.getScene()
   guiScene.destroyElement(currentProgressBox)
-  if ("broadcastEvent" in getroottable())
-    broadcastEvent("ModalWndDestroy")
+  broadcastEvent("ModalWndDestroy")
   currentProgressBox = null
 }
 
@@ -225,4 +224,5 @@ subscribe_handler(::g_tasker, DEFAULT_HANDLER)
 
 return {
   charRequestJwt
+  TASK_CB_TYPE
 }

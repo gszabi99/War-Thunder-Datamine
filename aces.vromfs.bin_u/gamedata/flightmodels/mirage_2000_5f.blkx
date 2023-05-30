@@ -16,7 +16,9 @@
     true
   ],
   "ilsTCSFVE130": true,
+  "needTpsNightVision": true,
   "havePointOfInterestDesignator": true,
+  "hasPointOfInterestMemory": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -2320,22 +2322,23 @@
         },
         {
           "textureArea": [
-            -0.08,
-            0.495,
+            0.0,
+            0.57,
             0.25,
-            1.0
+            0.98
           ],
+          "fontScale": 0.7,
           "page": {
             "type": "radar",
-            "radarScale": 0.6,
+            "radarScale": 0.65,
             "hideRadarBackground": true
           }
         },
         {
           "textureArea": [
-            -0.05,
-            -0.1,
-            0.23,
+            0.0,
+            0.0,
+            0.25,
             0.5
           ],
           "page": {
@@ -3879,22 +3882,10 @@
               "bullets": 1
             },
             "sensors": {
-              "sensor": [
-                {
-                  "blk": "gameData/sensors/ir_tracker_tgp.blk",
-                  "node": "optic1_gun"
-                },
-                {
-                  "blk": "gameData/sensors/fr_thales_rdy.blk",
-                  "dmPart": "radar_dm"
-                },
-                {
-                  "blk": "gameData/sensors/fr_serval_rwr.blk"
-                },
-                {
-                  "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-                }
-              ]
+              "sensor": {
+                "blk": "gameData/sensors/ir_tracker_tgp.blk",
+                "node": "optic1_gun"
+              }
             }
           }
         ]
@@ -4466,21 +4457,21 @@
         "nightVision": {
           "gunnerIr": {
             "resolution": [
-              1024,
-              768
+              1920,
+              1080
             ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
           },
           "pilotIr": {
             "resolution": [
-              1024,
-              768
+              1920,
+              1080
             ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
           },
           "sightThermal": {
             "resolution": [

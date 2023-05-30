@@ -1645,7 +1645,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     this.msgBox("question_change_name", loc("mainmenu/questionChangePlayer"),
       [
         ["yes", function() {
-          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, null)
+          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, false)
           startLogout()
         }],
         ["no", @() null ]

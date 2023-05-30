@@ -33,7 +33,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 }
 
 
-::set_shortcuts <- function set_shortcuts(shortcutList, nameList) {
+let function setShortcutsAndSaveControls(shortcutList, nameList) {
   let preset = ::g_controls_manager.getCurPreset()
   foreach (i, name in nameList) {
     let hotkey = []
@@ -112,26 +112,24 @@ let joystick_params_template = {
 u.extend(joystick_params_template, ::ControlsPreset.getDefaultParams())
 
 
-::JoystickParams <- function JoystickParams() {
+let function JoystickParams() {
   return u.copy(joystick_params_template)
 }
 
-
 ::joystick_get_cur_settings <- function joystick_get_cur_settings() {
-  let result = ::JoystickParams()
-  u.extend(result, ::g_controls_manager.getCurPreset().params)
+  let result = JoystickParams()
+  result.setFrom(::g_controls_manager.getCurPreset().params)
   return result
 }
 
-
-::joystick_set_cur_settings <- function joystick_set_cur_settings(other) {
+let function joystickSetCurSettings(other) {
   let params = ::g_controls_manager.getCurPreset().params
-  local isChanged = false
   foreach (name, value in other)
-    if (!u.isFunction(value) && params?[name] != value) {
+    if (!u.isFunction(value) && params?[name] != value)
       params[name] <- value
-      isChanged = true
-    }
-  if (isChanged)
-    ::g_controls_manager.commitControls()
+}
+
+return {
+  setShortcutsAndSaveControls
+  joystickSetCurSettings
 }

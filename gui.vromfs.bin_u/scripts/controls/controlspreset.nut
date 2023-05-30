@@ -531,7 +531,7 @@ let function isSameMapping(lhs, rhs) {
       let blkBasePresetPaths = blk["basePresetPaths"]
 
       if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0) {
-        blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("keyboard_updates")
+        blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("empty_ver1")
         log("ControlsPreset: Compatibility preset added to base presets")
       }
 

@@ -719,10 +719,6 @@ textareaNoTab[shadeStyle=LiveStats] {
   background-svg-size:0.06sh, 0.06sh;
 }
 
-[hintStyle=hudHintAction] {
-  pos:0, 0;
-}
-
 [hintStyle=hudHintAction] hintRow {
   height:2/3@shortcutImageHeight;
 }
@@ -766,4 +762,24 @@ textareaNoTab[shadeStyle=LiveStats] {
 [hintStyle=hudMinor] hintRow > img[sizeStyle=small] {
   size:0.030sh, 0.030sh;
   background-svg-size:0.030sh, 0.030sh;
+}
+
+[hintSizeStyle=common] tdiv > hint {
+  hintStyle:hudHintCommon;
+  width: pw;
+}
+
+[hintSizeStyle=action] tdiv > hint {
+  hintStyle:hudHintAction;
+  width: pw;
+}
+
+[hintSizeStyle=action] hintRow {
+  pos:0, 0;
+  flow-align: left;
+}
+
+[hintSizeStyle=common] hintRow {
+  pos:pw/2 - w/2, 0;
+  flow-align: center;
 }

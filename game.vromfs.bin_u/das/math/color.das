@@ -67,3 +67,45 @@ def hsv2rgb(hsv : float3)
       rgb.y = p
       rgb.z = q
   return rgb
+
+// Convert RGB intensities to HSV colour specification.
+// H in [0, 360], S V R G B in [0,1]
+[generic]
+def rgb2hsv(rgb : float3)
+  var hsv : float3
+
+  var min = rgb.x < rgb.y ? rgb.x : rgb.y
+  min = min < rgb.z ? min : rgb.z
+
+  var max = rgb.x > rgb.y ? rgb.x : rgb.y
+  max = max > rgb.z ? max : rgb.z
+
+  hsv.z = max
+  let delta = max - min
+  if delta < 1e-6f
+    hsv.y = 0.0
+    hsv.x = 0.0
+    return hsv
+
+  if max > 1e-5f
+    hsv.y = (delta / max)
+  else
+    // if max is 0, then r = g = b = 0
+    // s = 0, h is undefined
+    hsv.y = 0.0
+    hsv.x = 0.0 // undefined
+    return hsv
+
+  if rgb.x >= max
+    hsv.x = (rgb.y - rgb.z) / delta // between yellow & magenta
+  elif rgb.y >= max
+    hsv.x = 2.0 + (rgb.z - rgb.x) / delta // between cyan & yellow
+  else
+    hsv.x = 4.0 + (rgb.x - rgb.y) / delta // between magenta & cyan
+
+  hsv.x *= 60.0f // degrees
+
+  if hsv.x < 0.0
+    hsv.x += 360.0f
+
+  return hsv

@@ -1142,6 +1142,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1675,6 +1676,7 @@
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
         "changeBulletTypeForSet": true,
+        "staticElevation": 2.425,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 20.0,
@@ -2607,6 +2609,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2728,6 +2737,7 @@
               "stopForFire": true,
               "maxSpeedForFire": 5.0,
               "changeBulletTypeForSet": true,
+              "staticElevation": 2.425,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 20.0,

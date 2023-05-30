@@ -220,6 +220,7 @@
       "ex_decor_l_01_dm": {},
       "ex_decor_29_dm": {},
       "ex_decor_17_dm": {},
+      "ex_decor_18_dm": {},
       "ex_decor_r_06_dm": {},
       "ex_decor_l_06_dm": {}
     },
@@ -336,34 +337,26 @@
         "armorThickness": 20.0,
         "hp": 300.0,
         "ex_armor_04_dm": {
-          "hp": 300.0
+          "armorThickness": 10.0
         },
         "ex_armor_05_dm": {
-          "hp": 300.0
+          "armorThickness": 10.0
         },
-        "ex_armor_r_02_dm": {
-          "hp": 300.0
-        },
+        "ex_armor_r_02_dm": {},
         "ex_armor_r_03_dm": {
-          "hp": 300.0
+          "armorThickness": 10.0
         },
-        "ex_armor_r_04_dm": {
-          "hp": 300.0
-        },
+        "ex_armor_r_04_dm": {},
         "ex_armor_r_05_dm": {
-          "hp": 300.0
+          "armorThickness": 10.0
         },
-        "ex_armor_l_02_dm": {
-          "hp": 300.0
-        },
+        "ex_armor_l_02_dm": {},
         "ex_armor_l_03_dm": {
-          "hp": 300.0
+          "armorThickness": 10.0
         },
-        "ex_armor_l_04_dm": {
-          "hp": 300.0
-        },
+        "ex_armor_l_04_dm": {},
         "ex_armor_l_05_dm": {
-          "hp": 300.0
+          "armorThickness": 10.0
         }
       }
     },
@@ -1287,6 +1280,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -2739,6 +2733,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

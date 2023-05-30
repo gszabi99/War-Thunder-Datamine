@@ -27,6 +27,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1400kph",
   "fightAiBehaviour": "fighter",
+  "autopilotImpl": "FBW",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2045,12 +2046,20 @@
         "blk": "gameData/flightModels/weaponPresets/f_100a_2xagm12b.blk"
       },
       {
+        "name": "f_100a_mk82",
+        "blk": "gameData/flightModels/weaponPresets/f_100a_mk82.blk"
+      },
+      {
         "name": "f_100a_2x750lbs",
         "blk": "gameData/flightModels/weaponPresets/f_100a_2x750lbs.blk"
       },
       {
         "name": "f_100a_2x1000lbs",
         "blk": "gameData/flightModels/weaponPresets/f_100a_2x1000lbs.blk"
+      },
+      {
+        "name": "f_100a_mk82_snakeye",
+        "blk": "gameData/flightModels/weaponPresets/f_100a_mk82_snakeye.blk"
       },
       {
         "name": "f_100a_2x_m116a2",
@@ -2215,6 +2224,22 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "mk82",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon4_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb_anm117_9",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "750lb",
             "reqModification": "us_750lb_m117",
@@ -2241,6 +2266,22 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65_cone.blk",
               "emitter": "bomb_anm65_1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "mk82_drag",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon4_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb_anm117_9",
               "bullets": 1,
               "external": true,
               "machLimit": 1.01
@@ -2353,6 +2394,22 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "mk82",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon4_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb_anm117_10",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "750lb",
             "reqModification": "us_750lb_m117",
@@ -2379,6 +2436,22 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65_cone.blk",
               "emitter": "bomb_anm65_2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "mk82_drag",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "pylon4_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb_anm117_10",
               "bullets": 1,
               "external": true,
               "machLimit": 1.01
@@ -2658,9 +2731,14 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "us_750lb_m117": {
+    "us_500lb_mk82": {
       "modClass": "weapon",
       "tier": 1
+    },
+    "us_750lb_m117": {
+      "reqModification": "us_500lb_mk82",
+      "modClass": "weapon",
+      "tier": 2
     },
     "us_1000lb_m65": {
       "modClass": "weapon",

@@ -1413,6 +1413,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1819,6 +1820,7 @@
         "recoilMultiplier": 0.0,
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
+        "staticElevation": 0.75,
         "maxAdditionalPitch": 0.0,
         "createGunEffects": true,
         "defaultYaw": 0.0,
@@ -2935,6 +2937,13 @@
         "fx": {
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
+        }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
         }
       }
     ],

@@ -62,3 +62,7 @@ struct CmdApplyPartDamageEffect
   dmEffects : int
   pos : float3
   seed : int
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventEngineOverheatDamage
+  start : bool

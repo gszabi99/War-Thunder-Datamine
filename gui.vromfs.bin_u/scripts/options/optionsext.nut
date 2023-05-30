@@ -4341,7 +4341,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_ZOOM_FOR_TURRET:
       log("USEROPT_ZOOM_FOR_TURRET" + value.tostring())
       ::set_option_zoom_turret(value)
-      ::apply_joy_preset_xchange(null)
       break
 
     case ::USEROPT_XCHG_STICKS:

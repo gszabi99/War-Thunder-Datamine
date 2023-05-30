@@ -664,7 +664,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!player || player.isBot || !this.isOnline)
       return;
 
-    ::gui_modal_userCard({ name = player.name /*, id = player.id*/ }); //search by nick no work, but session can be not exist at that moment
+    ::gui_modal_userCard({ uid = player.userId });
   }
 
   function onUserRClick(obj) {

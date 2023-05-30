@@ -15,6 +15,8 @@ let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStd
 let { getHudElementAabb, dmPanelStatesAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
+let { getHudUnitType } = require("hudState")
+let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -51,6 +53,7 @@ enum HintShowState {
       return
     this.restoreAllHints()
     this.updatePosHudHintBlock()
+    this.changeMissionHintsPosition(dmPanelStatesAabb.value)
   }
 
   function reinit() {
@@ -58,6 +61,7 @@ enum HintShowState {
       return
     this.restoreAllHints()
     this.updatePosHudHintBlock()
+    this.changeMissionHintsPosition(dmPanelStatesAabb.value)
   }
 
   function onEventLoadingStateChange(_p) {
@@ -111,12 +115,20 @@ enum HintShowState {
     if (!(mission_hints?.isValid() ?? false))
       return
 
-    let left = $"{value.size[0]} + 0.015@shHud"
+    mission_hints["width"] = "pw"
+    let isShip = [HUD_UNIT_TYPE.SHIP, HUD_UNIT_TYPE.SHIP_EX].contains(getHudUnitType())
+    if(!isShip) {
+      mission_hints["hintSizeStyle"] = "common"
+      mission_hints["left"] = ""
+      return
+    }
+    mission_hints["hintSizeStyle"] = "action"
+    let dmgPanelWidth = value?.size[0] ?? 0
+    let left = $"{dmgPanelWidth} + 0.015@shHud"
     mission_hints["left"] = $"{left} - 1/6@rwHud"
-
     let map_left = getHudElementAabb("map")?.pos[0] ?? 0
     if(map_left > 0)
-      mission_hints["width"] = $"{map_left - value.size[0]} - 0.03@shHud - 1@bwHud"
+      mission_hints["width"] = $"{map_left - dmgPanelWidth} - 0.03@shHud - 1@bwHud"
   }
 
   function updatePosHudHintBlock() {

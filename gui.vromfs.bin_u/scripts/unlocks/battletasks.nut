@@ -28,11 +28,15 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { updateTimeParamsFromBlk, getDifficultyTypeByName, getDifficultyTypeByTask,
+  canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty,
+  EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
+} = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 let difficultyTypes = [
-  ::g_battle_task_difficulty.EASY,
-  ::g_battle_task_difficulty.MEDIUM,
-  ::g_battle_task_difficulty.HARD
+  EASY_TASK,
+  MEDIUM_TASK,
+  HARD_TASK
 ]
 
 ::g_battle_tasks <- null
@@ -133,7 +137,7 @@ let difficultyTypes = [
 
   function updatedProposedTasks() {
     let tasksDataBlock = ::get_proposed_personal_unlocks_blk()
-    ::g_battle_task_difficulty.updateTimeParamsFromBlk(tasksDataBlock)
+    updateTimeParamsFromBlk(tasksDataBlock)
     this.lastGenerationId = tasksDataBlock?[this.dailyTasksId + "_lastGenerationId"] ?? 0
     this.specTasksLastGenerationId = tasksDataBlock?[this.specialTasksId + "_lastGenerationId"] ?? 0
 
@@ -188,7 +192,7 @@ let difficultyTypes = [
   }
 
   function isTaskTimeExpired(task) {
-    return ::g_battle_task_difficulty.getDifficultyTypeByTask(task).isTimeExpired(task)
+    return getDifficultyTypeByTask(task).isTimeExpired(task)
   }
 
   function isTaskDone(config) {
@@ -355,8 +359,8 @@ let difficultyTypes = [
     if (u.isString(task))
       task = this.getTaskById(task)
 
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    return diff != ::g_battle_task_difficulty.UNKNOWN
+    let diff = getDifficultyTypeByTask(task)
+    return diff != UNKNOWN_TASK
   }
 
   function isUserlogForBattleTasksGroup(body) {
@@ -380,9 +384,9 @@ let difficultyTypes = [
         if (isInArray(diffTypeName, blackList))
           continue
 
-        let diff = ::g_battle_task_difficulty.getDifficultyTypeByName(diffTypeName)
+        let diff = getDifficultyTypeByName(diffTypeName)
         if (!isInArray(diffTypeName, whiteList)
-            && !::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff,
+            && !canPlayerInteractWithDifficulty(diff,
               this.proposedTasksArray, this.showAllTasksValue)) {
           blackList.append(diffTypeName)
           continue
@@ -417,11 +421,11 @@ let difficultyTypes = [
   function getDifficultyByProposals(proposals) {
     if (proposals.findindex(function(_v, id) {
       let battleTask = ::g_battle_tasks.getTaskById(id)
-      return ::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask)
+      return HARD_TASK == getDifficultyTypeByTask(battleTask)
     }))
-      return ::g_battle_task_difficulty.HARD
+      return HARD_TASK
 
-    return ::g_battle_task_difficulty.EASY
+    return EASY_TASK
   }
 
   function generateStringForUserlog(table, taskId) {
@@ -476,7 +480,7 @@ let difficultyTypes = [
     if (!typesToCheck)
       return true
 
-    return isInArray(::g_battle_task_difficulty.getDifficultyTypeByTask(checkTask).name, typesToCheck)
+    return isInArray(getDifficultyTypeByTask(checkTask).name, typesToCheck)
   }
 
   function getTasksListByControllerTask(taskController, conditions) {
@@ -694,7 +698,7 @@ let difficultyTypes = [
   }
 
   function getRefreshTimeTextForTask(task) {
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let diff = getDifficultyTypeByTask(task)
     let timeLeft = diff.getTimeLeft(task)
     if (timeLeft < 0)
       return ""
@@ -709,7 +713,7 @@ let difficultyTypes = [
     if (!checkObj(taskBlockObj))
       return
 
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let diff = getDifficultyTypeByTask(task)
     if (!diff.hasTimer)
       return
 
@@ -729,7 +733,7 @@ let difficultyTypes = [
     holderObj = taskBlockObj.findObject("tasks_refresh_timer")
     if (checkObj(holderObj))
       SecondsUpdater(holderObj, function(obj, _params) {
-        let timeText = ::g_battle_task_difficulty.EASY.getTimeLeftText(task)
+        let timeText = EASY_TASK.getTimeLeftText(task)
         obj.setValue(loc("ui/parentheses/space", { text = timeText + loc("icon/timer") }))
 
         return timeText == ""
@@ -764,7 +768,7 @@ let difficultyTypes = [
     }
 
     local reward = getUnlockRewardsText(config)
-    let difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let difficulty = getDifficultyTypeByTask(task)
     if (hasFeature("BattlePass")) {
       let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
 
@@ -772,7 +776,7 @@ let difficultyTypes = [
       rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
     }
 
-    if (difficulty == ::g_battle_task_difficulty.MEDIUM) {
+    if (difficulty == MEDIUM_TASK) {
       let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
       if (specialTaskAward?.awardType.hasIncreasingLimit()) {
         let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
@@ -849,7 +853,7 @@ let difficultyTypes = [
   }
 
   function getDifficultyImage(task) {
-    let difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+    let difficulty = getDifficultyTypeByTask(task)
     if (difficulty.showSeasonIcon) {
       let curWarbond = ::g_warbonds.getCurrentWarbond()
       if (curWarbond)
@@ -862,14 +866,43 @@ let difficultyTypes = [
   function getTasksArrayByIncreasingDifficulty() {
     let result = []
     foreach (t in difficultyTypes) {
-      let arr = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
+      let arr = withdrawTasksArrayByDifficulty(t, this.currentTasksArray)
       if (arr.len() == 0)
         continue
 
-      if (::g_battle_task_difficulty.canPlayerInteractWithDifficulty(t, arr))
+      if (canPlayerInteractWithDifficulty(t, this.currentTasksArray))
         result.extend(arr)
     }
     return result
+  }
+
+  // Returns only tasks that can be completed in the game mode specified,
+  // including tasks with unclaimed rewards or those that have been completed.
+  function getCurBattleTasksByGm(gameModeId) {
+    let hasTaskForGm = this.activeTasksArray.findindex(
+      @(t) ::g_battle_tasks.isTaskForGM(t, gameModeId)) != null
+    if (!hasTaskForGm)
+      return []
+
+    let tasks = this.activeTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
+    let res = []
+    foreach (diff in difficultyTypes) {
+      let canInteract = canPlayerInteractWithDifficulty(diff, tasks)
+      if (!canInteract)
+        continue
+
+      let tasksByDiff = withdrawTasksArrayByDifficulty(diff, tasks)
+      if (tasksByDiff.len() == 0)
+        continue
+
+      let taskWithReward = this.getTaskWithAvailableAward(tasksByDiff)
+      if (taskWithReward != null)
+        res.append(taskWithReward)
+      else
+        res.extend(tasksByDiff.filter(@(t) ::g_battle_tasks.isTaskDone(t)
+          || ::g_battle_tasks.isTaskForGM(t, gameModeId)))
+    }
+    return res
   }
 
   function isTaskForGM(task, gameModeId) {
@@ -1026,7 +1059,7 @@ let difficultyTypes = [
 
   function getDifficultyTypeGroup() {
     let result = []
-    foreach (t in ::g_battle_task_difficulty.types) {
+    foreach (t in difficultyTypes) {
       let difficultyGroup = t.getDifficultyGroup()
       if (difficultyGroup == "")
         continue
@@ -1037,8 +1070,8 @@ let difficultyTypes = [
   }
 
   function canInteract(task) {
-    let diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
-    return ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, this.currentTasksArray, this.showAllTasksValue)
+    let diff = getDifficultyTypeByTask(task)
+    return canPlayerInteractWithDifficulty(diff, this.currentTasksArray, this.showAllTasksValue)
   }
 
   function updateCompleteTaskWatched() {
@@ -1053,17 +1086,17 @@ let difficultyTypes = [
         continue
 
       if (!this.isTaskDone(task)) {
-        if (::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
+        if (HARD_TASK == getDifficultyTypeByTask(task))
           hasInCompleteHard = true
         continue
       }
 
-      if (::g_battle_task_difficulty.EASY == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+      if (EASY_TASK == getDifficultyTypeByTask(task)) {
         isCompleteEasy = true
         continue
       }
 
-      if (::g_battle_task_difficulty.MEDIUM == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+      if (MEDIUM_TASK == getDifficultyTypeByTask(task)) {
         isCompleteMedium = true
         continue
       }

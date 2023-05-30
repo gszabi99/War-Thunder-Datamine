@@ -46,9 +46,6 @@
   "type": "typeMediumTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -1326,6 +1323,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1958,6 +1956,53 @@
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
+        "flash": "emtr_gun_flame_01",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_01_dm",
+        "speedYaw": 90.0,
+        "speedPitch": 90.0,
+        "fireConeAngle": [
+          1.0,
+          5.0
+        ],
+        "bullets": 6000,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "showBulletsInHud": false,
+        "turret": {
+          "head": "bone_mg_aa_h_01",
+          "gun": "bone_mg_aa_v_01",
+          "gunnerDm": "commander_dm",
+          "rotatedTurret": "bone_mg_aa_h",
+          "hasNightVision": false
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -9.0,
+            60.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
+        "emitter": "bone_mg_aa_v_02",
         "flash": "emtr_gun_flame_02",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1982,8 +2027,8 @@
         "errExplTime": 0.0,
         "forestallTime": 0.1,
         "turret": {
-          "head": "bone_mg_aa_h_01",
-          "gun": "bone_mg_aa_v_01",
+          "head": "bone_mg_aa_h_02",
+          "gun": "bone_mg_aa_v_02",
           "gunnerDm": "commander_dm",
           "rotatedTurret": "bone_mg_aa_h",
           "hasNightVision": false
@@ -2020,56 +2065,9 @@
         }
       },
       {
-        "trigger": "gunner4",
-        "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
-        "emitter": "bone_mg_aa_v",
-        "flash": "emtr_gun_flame_01",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_01_dm",
-        "speedYaw": 90.0,
-        "speedPitch": 90.0,
-        "fireConeAngle": [
-          1.0,
-          5.0
-        ],
-        "bullets": 6000,
-        "ChainfireTime": 0.5,
-        "DelayAfterShoot": 2.0,
-        "accuracyAir": 1.5,
-        "accuracyGnd": 0.0,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 1.5,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "forestallTime": 0.1,
-        "showBulletsInHud": false,
-        "turret": {
-          "head": "bone_mg_aa_h",
-          "gun": "bone_mg_aa_v",
-          "gunnerDm": "commander_dm",
-          "rotatedTurret": "bone_mg_aa_h",
-          "hasNightVision": false
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -9.0,
-            60.0
-          ]
-        }
-      },
-      {
         "trigger": "gunner5",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/70mm_Hydra_70_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/70mm_Hydra_70_magach_user_cannon.blk",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
         "emitter": "bone_rocket_11",
@@ -2952,6 +2950,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3084,6 +3089,132 @@
           }
         }
       ]
+    },
+    "ammo3": {
+      "weaponTrigger": "gunner5",
+      "removeLoadedAmmo": false,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "fatalFire": false,
+        "fatalExplosion": false,
+        "wreckedPartId": 0,
+        "fireParamsPreset": "turret_bustle_small",
+        "ammo_turret_11_dm": {
+          "count": 1
+        },
+        "ammo_turret_12_dm": {
+          "count": 1
+        },
+        "ammo_turret_13_dm": {
+          "count": 1
+        },
+        "ammo_turret_14_dm": {
+          "count": 1
+        },
+        "ammo_turret_15_dm": {
+          "count": 1
+        },
+        "ammo_turret_16_dm": {
+          "count": 1
+        },
+        "ammo_turret_17_dm": {
+          "count": 1
+        },
+        "ammo_turret_18_dm": {
+          "count": 1
+        },
+        "ammo_turret_19_dm": {
+          "count": 1
+        },
+        "ammo_turret_20_dm": {
+          "count": 1
+        },
+        "ammo_turret_21_dm": {
+          "count": 1
+        },
+        "ammo_turret_22_dm": {
+          "count": 1
+        },
+        "ammo_turret_23_dm": {
+          "count": 1
+        },
+        "ammo_turret_24_dm": {
+          "count": 1
+        },
+        "ammo_turret_25_dm": {
+          "count": 1
+        },
+        "ammo_turret_26_dm": {
+          "count": 1
+        },
+        "ammo_turret_27_dm": {
+          "count": 1
+        },
+        "ammo_turret_28_dm": {
+          "count": 1
+        },
+        "ammo_turret_29_dm": {
+          "count": 1
+        },
+        "ammo_turret_30_dm": {
+          "count": 1
+        },
+        "ammo_turret_31_dm": {
+          "count": 1
+        },
+        "ammo_turret_32_dm": {
+          "count": 1
+        },
+        "ammo_turret_33_dm": {
+          "count": 1
+        },
+        "ammo_turret_34_dm": {
+          "count": 1
+        },
+        "ammo_turret_35_dm": {
+          "count": 1
+        },
+        "ammo_turret_36_dm": {
+          "count": 1
+        },
+        "ammo_turret_37_dm": {
+          "count": 1
+        },
+        "ammo_turret_38_dm": {
+          "count": 1
+        },
+        "ammo_turret_39_dm": {
+          "count": 1
+        },
+        "ammo_turret_40_dm": {
+          "count": 1
+        },
+        "ammo_turret_41_dm": {
+          "count": 1
+        },
+        "ammo_turret_42_dm": {
+          "count": 1
+        },
+        "ammo_turret_43_dm": {
+          "count": 1
+        },
+        "ammo_turret_44_dm": {
+          "count": 1
+        },
+        "ammo_turret_45_dm": {
+          "count": 1
+        },
+        "ammo_turret_46_dm": {
+          "count": 1
+        },
+        "ammo_turret_47_dm": {
+          "count": 1
+        },
+        "ammo_turret_48_dm": {
+          "count": 1
+        }
+      }
     }
   },
   "modifications": {

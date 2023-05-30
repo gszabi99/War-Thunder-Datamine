@@ -490,6 +490,11 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
       }
   }
 
+  function onEventCustomPresetChanged(params) {
+    if (params.presetId == this.lastWeapon)
+      this.updateAllItems()
+  }
+
   function onEventUnitBulletsChanged(_params) {
     this.updateAllItems()
   }

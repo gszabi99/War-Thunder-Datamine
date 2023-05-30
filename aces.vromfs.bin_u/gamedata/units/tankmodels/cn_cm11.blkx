@@ -1419,6 +1419,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -3274,6 +3275,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -3670,7 +3678,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/66mm_smoke_grenade_launcher_m60a2.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "startFx": "",
               "useEmitter": true,

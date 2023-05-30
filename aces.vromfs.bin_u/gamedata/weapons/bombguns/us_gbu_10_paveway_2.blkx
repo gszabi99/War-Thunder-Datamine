@@ -15,14 +15,14 @@
     "bombType": "he_bomb",
     "bombName": "us_2000_lb_gbu_10_paveway_1",
     "dragCx": 0.0257,
-    "caliber": 0.789,
-    "length": 4.38,
-    "distFromCmToStab": 0.05,
-    "CxK": 0.8,
+    "caliber": 0.4572,
+    "length": 4.318,
+    "distFromCmToStab": 0.5,
+    "CxK": 1.17,
     "WdK": [
-      0.1,
-      0.1,
-      0.1
+      2.5,
+      2.5,
+      2.5
     ],
     "wingAreaMult": 1.8,
     "finsAoaHor": 0.15,
@@ -104,7 +104,6 @@
       "permanentlyActivated": true,
       "lockOnAfterLaunch": true,
       "inertialNavigation": false,
-      "inertialNavigationDriftSpeed": 3.5,
       "laserSeeker": {
         "range": 7000.0,
         "rangeMax": 12000.0,
@@ -125,15 +124,13 @@
           60.1,
           0.0
         ],
-        "baseIndSpeed": 1300.0,
-        "angleToAccelMult": 0.0,
-        "omegaToAccelMult": 3.0,
-        "elevationAdd": 1.2,
-        "reqAccelMax": 3.0,
-        "accelControlProp": 0.1,
-        "accelControlIntg": 0.1,
-        "accelControlIntgLim": 0.75,
-        "accelControlDiff": 0.1
+        "baseIndSpeed": 1800.0,
+        "propNavMult": 4.0,
+        "reqAccelMax": 4.0,
+        "accelControlProp": 0.0996,
+        "accelControlIntg": 0.0536,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.0001
       }
     },
     "arcadeProp": {

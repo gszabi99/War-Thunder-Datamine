@@ -2,20 +2,15 @@
   "controls": {
     "version": 5,
     "basePresetPaths": {
-      "default": "wt/config/hotkeys/hotkey.empty.blk"
+      "default": "wt/config/hotkeys/hotkey.base.keyboard_and_joystick.blk"
     },
     "hotkeys": {
       "ID_AIR_BRAKE": {
         "joyButton": 7
       },
-      "ID_BAILOUT": [
-        {
-          "keyboardKey": 36
-        },
-        {
-          "joyButton": 12
-        }
-      ],
+      "ID_BAILOUT": {
+        "joyButton": 12
+      },
       "ID_BOMBS": [
         {
           "keyboardKey": 57
@@ -62,18 +57,9 @@
           "keyboardKey": 15
         },
         {
-          "keyboardKey": 49
-        },
-        {
           "joyButton": 9
         }
       ],
-      "ID_PTT": {
-        "keyboardKey": 157
-      },
-      "ID_REPLAY_PAUSE": {
-        "keyboardKey": 57
-      },
       "ID_ROCKETS": [
         {
           "keyboardKey": 56
@@ -85,17 +71,9 @@
       "ID_SHOOT_ARTILLERY": {
         "joyButton": 13
       },
-      "ID_SPECTATOR_CAMERA_ROTATION": {
-        "mouseButton": 1
+      "ID_TACTICAL_MAP": {
+        "joyButton": 10
       },
-      "ID_TACTICAL_MAP": [
-        {
-          "keyboardKey": 50
-        },
-        {
-          "joyButton": 10
-        }
-      ],
       "ID_TOGGLE_ENGINE": {
         "joyButton": 11
       },
@@ -208,13 +186,13 @@
     "params": {},
     "deviceMapping": {
       "joystick": {
-        "devId": "231D:0121",
-        "buttonsOffset": 0,
-        "axesOffset": 0,
-        "name": "VKBsim Gladiator",
-        "connected": true,
+        "axesCount": 9,
+        "axesOffset": 9,
         "buttonsCount": 33,
-        "axesCount": 9
+        "buttonsOffset": 33,
+        "connected": false,
+        "devId": "231D:0121",
+        "name": "VKBsim Gladiator"
       }
     }
   },

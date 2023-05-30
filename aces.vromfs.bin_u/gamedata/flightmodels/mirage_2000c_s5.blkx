@@ -15,6 +15,7 @@
     true
   ],
   "ilsTCSFVE130": true,
+  "needTpsNightVision": true,
   "havePointOfInterestDesignator": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
@@ -3037,57 +3038,34 @@
         "elevatorBooster": 0.9
       }
     },
-    "cd_98": {
-      "prevModification": "hydravlic_power",
-      "tier": 3
-    },
     "hp_105_jet": {
-      "prevModification": "cd_98",
+      "prevModification": "hydravlic_power",
       "tier": 4
     },
     "f_4c_CdMin_Fuse": {
-      "tier": 1
+      "tier": 1,
+      "modClass": "lth"
     },
     "structure_str": {
-      "tier": 2
+      "prevModification": "f_4c_CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
     },
-    "f_4c_g_suit": {
+    "cd_98": {
+      "prevModification": "structure_str",
       "tier": 3
     },
     "new_cover": {
-      "tier": 4
-    },
-    "aden_air_targets": {},
-    "aden_ground_targets": {},
-    "aden_stealth": {},
-    "aden_belt_pack": {
-      "tier": 1
-    },
-    "aden_new_gun": {
-      "reqModification": "aden_belt_pack",
-      "tier": 3
-    },
-    "air_extinguisher": {
-      "prevModification": "aden_new_gun",
+      "prevModification": "cd_98",
       "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
-    },
-    "fr_250kg_type_25c": {
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "fr_jl_100r": {
-      "reqModification": "fr_250kg_type_25c",
-      "tier": 3,
-      "modClass": "weapon"
+      "modClass": "lth"
     },
     "countermeasures_launcher_chaff_only": {},
     "countermeasures_launcher_flare_only": {},
     "countermeasures_launcher_chaff_priority": {},
     "countermeasures_launcher_flare_priority": {},
     "countermeasures_belt_pack": {
-      "modClass": "weapon",
+      "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
@@ -3101,8 +3079,72 @@
         }
       }
     },
-    "fr_matra_r_530_f": {
+    "f_4c_g_suit": {
       "prevModification": "countermeasures_belt_pack",
+      "tier": 2,
+      "modClass": "armor"
+    },
+    "heli_night_vision_system": {
+      "tier": 3,
+      "modClass": "armor",
+      "prevModification": "f_4c_g_suit",
+      "effects": {
+        "nightVision": {
+          "gunnerIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "pilotIr": {
+            "resolution": [
+              1920,
+              1080
+            ],
+            "lightMult": 10.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.15
+          },
+          "sightThermal": {
+            "resolution": [
+              1080,
+              720
+            ],
+            "noiseFactor": 0.05,
+            "index": 2
+          }
+        }
+      }
+    },
+    "air_extinguisher": {
+      "prevModification": "heli_night_vision_system",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
+    },
+    "aden_air_targets": {},
+    "aden_ground_targets": {},
+    "aden_stealth": {},
+    "aden_belt_pack": {
+      "tier": 1
+    },
+    "aden_new_gun": {
+      "reqModification": "aden_belt_pack",
+      "tier": 3
+    },
+    "fr_250kg_type_25c": {
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "fr_jl_100r": {
+      "reqModification": "fr_250kg_type_25c",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "fr_matra_r_530_f": {
       "tier": 2,
       "modClass": "weapon"
     },

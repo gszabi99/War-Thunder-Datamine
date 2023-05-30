@@ -45,9 +45,6 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "controlDevices": {
     "device": [
       {
@@ -133,6 +130,9 @@
       "body_side_dm": {
         "armorThickness": 20.0
       },
+      "superstructure_back_dm": {
+        "armorThickness": 15.0
+      },
       "superstructure_bottom_dm": {
         "armorThickness": 15.0
       },
@@ -140,10 +140,13 @@
         "armorThickness": 15.0
       },
       "body_back_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 50.0
       },
-      "turret_02_top_dm": {
-        "armorThickness": 10.0
+      "turret_09_side_dm": {
+        "armorThickness": 40.0
+      },
+      "body_top_dm": {
+        "armorThickness": 25.0
       },
       "superstructure_top_dm": {
         "armorThickness": 25.0
@@ -154,6 +157,87 @@
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
+      },
+      "turret_03_back_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_02_back_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_04_side_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_03_front_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_04_front_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_03_bottom_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_04_back_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_04_top_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_05_top_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_05_back_dm": {
+        "armorThickness": 50.0
+      },
+      "turret_06_top_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_07_top_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_08_top_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_08_side_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_06_front_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_07_front_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_08_front_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_09_front_dm": {
+        "armorThickness": 5.0
+      },
+      "turret_09_top_dm": {
+        "armorThickness": 5.0
+      },
+      "turret_06_back_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_07_back_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_05_bottom_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_06_bottom_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_07_bottom_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_08_bottom_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_09_bottom_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_09_back_dm": {
+        "armorThickness": 25.0
       }
     },
     "turret": {
@@ -181,11 +265,32 @@
       "turret_top_dm": {
         "armorThickness": 25.0
       },
+      "turret_front_dm": {
+        "armorThickness": 25.0
+      },
       "turret_01_top_dm": {
         "armorThickness": 25.0
       },
       "turret_bottom_dm": {
         "armorThickness": 20.0
+      },
+      "turret_04_bottom_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_02_side_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_01_back_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_01_side_dm": {
+        "armorThickness": 25.0
+      },
+      "turret_01_front_dm": {
+        "armorThickness": 25.0
       }
     },
     "optics": {
@@ -239,7 +344,8 @@
       "turret_03_top_dm": {},
       "turret_03_side_dm": {},
       "ex_decor_r_08_dm": {},
-      "ex_decor_l_08_dm": {}
+      "ex_decor_l_08_dm": {},
+      "turret_01_bottom_dm": {}
     },
     "chassis": {
       "hp": 250.0,
@@ -800,6 +906,7 @@
           }
         ],
         "onKill": {
+          "notDamageType": "overheat",
           "fire": 0.5,
           "nothing": 0.5,
           "fHitCritical": true
@@ -1324,7 +1431,18 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_camera_roll",
+            "verLimits": [
+              -10.0,
+              45.0
+            ],
+            "verOriginLimits": [
+              -10.0,
+              45.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -1360,15 +1478,15 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
         "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
-        "barrelDP": "gun_barrel_03_dm",
+        "barrelDP": "gun_barrel_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "parkInDeadzone": false,
         "speedYaw": 90.0,
-        "speedPitch": 90.0,
+        "speedPitch": 70.0,
         "bullets": 2000,
         "isBulletBelt": true,
         "fireConeAngle": 5.0,
@@ -1397,9 +1515,35 @@
             180.0
           ],
           "pitch": [
-            -10.0,
-            50.0
+            -20.0,
+            60.0
           ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.015
+              ],
+              [
+                80.0,
+                0.02
+              ]
+            ]
+          }
         }
       }
     ]
@@ -1412,16 +1556,16 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 15480.0,
-      "Fuel": 520.0,
-      "TakeOff": 16000.0,
+      "Empty": 31000.0,
+      "Fuel": 1000.0,
+      "TakeOff": 32000.0,
       "momentOfInertia": [
         2.0,
         2.0,
         4.0
       ],
       "CenterOfGravity": [
-        -0.3,
+        0.1,
         1.0,
         0.0
       ],
@@ -1444,24 +1588,23 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 280.0,
+      "horsePowers": 600.0,
       "maxRPM": 2400.0,
       "minRPM": 900.0,
       "rpmTau": 1.9
     },
     "mechanics": {
-      "maxBrakeForce": 63200.0,
+      "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.6,
-      "mainGearRatio": 6.386,
+      "mainGearRatio": 5.42,
       "sideGearRatio": 1.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -1.0,
-          -1.375,
-          -1.833,
           -2.75,
+          -3.8,
           -5.5,
+          -10.5,
           0.0,
           10.5,
           5.5,
@@ -1484,8 +1627,8 @@
       ],
       "defaultGearRadius": 0.6,
       "defaultDampeningForce": [
-        55000.0,
-        55000.0
+        140000.0,
+        140000.0
       ],
       "hasSuspensionOnDriveGear": true,
       "dampeningRelaxationRatio": 0.35,
@@ -1514,7 +1657,9 @@
         "wheel_l_02": 0.3,
         "wheel_r_02": 0.3,
         "wheel_l_03": 0.3,
-        "wheel_r_03": 0.3
+        "wheel_r_03": 0.3,
+        "wheel_l_04": 0.3,
+        "wheel_r_04": 0.3
       }
     },
     "floats": {
@@ -2307,6 +2452,13 @@
           "name": "smoke_after_hit_tiny",
           "setOrientation": true
         }
+      },
+      {
+        "name": "engine_overheat",
+        "fx": {
+          "name": "tank_radiator_steam",
+          "centerDmgPart": false
+        }
       }
     ],
     "procedural": {
@@ -2411,7 +2563,18 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "linkedAnimPart": {
+                  "verNode": "bone_camera_roll",
+                  "verLimits": [
+                    -10.0,
+                    45.0
+                  ],
+                  "verOriginLimits": [
+                    -10.0,
+                    45.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -2447,15 +2610,15 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L37A1_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
               "emitter": "emtr_mg_flame_01",
               "flash": "emtr_mg_flame_01",
-              "barrelDP": "gun_barrel_03_dm",
+              "barrelDP": "gun_barrel_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "parkInDeadzone": false,
               "speedYaw": 90.0,
-              "speedPitch": 90.0,
+              "speedPitch": 70.0,
               "bullets": 2000,
               "isBulletBelt": true,
               "fireConeAngle": 5.0,
@@ -2484,15 +2647,41 @@
                   180.0
                 ],
                 "pitch": [
-                  -10.0,
-                  50.0
+                  -20.0,
+                  60.0
                 ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 75.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 75.0,
+                "speedFromVehicleVerticalMult": -1.0,
+                "errorKPHToDegrees": {
+                  "row": [
+                    [
+                      5.0,
+                      0.0
+                    ],
+                    [
+                      45.0,
+                      0.015
+                    ],
+                    [
+                      80.0,
+                      0.02
+                    ]
+                  ]
+                }
               }
             },
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "startFx": "",
               "useEmitter": true,

@@ -255,7 +255,30 @@
   },
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "cr_start": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 3,
+          "var": [
+            "cr_t1_num_ways_count_plus_one",
+            "cr_t2_num_ways_count_plus_one"
+          ]
+        }
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -271,9 +294,9 @@
       "type": "Point",
       "tm": [
         [
+          0.915235,
           0.0,
-          0.0,
-          -1.0
+          -0.402921
         ],
         [
           0.0,
@@ -281,14 +304,14 @@
           0.0
         ],
         [
-          1.0,
+          0.402921,
           0.0,
-          0.0
+          0.915235
         ],
         [
-          -15663.9,
-          -0.000946,
-          -7266.46
+          -26782.5,
+          -0.000946025,
+          -8790.23
         ]
       ],
       "objLayer": 0,
@@ -298,9 +321,9 @@
       "type": "Point",
       "tm": [
         [
-          1.19209E-07,
+          0.915235,
           0.0,
-          1.0
+          -0.402921
         ],
         [
           0.0,
@@ -308,68 +331,14 @@
           0.0
         ],
         [
-          -1.0,
+          0.402921,
           0.0,
-          1.19209E-07
+          0.915235
         ],
         [
-          -15663.8,
-          -0.000946,
-          -24467.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t1_carrier_spawn_point_03": {
-      "type": "Point",
-      "tm": [
-        [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          -23114.3,
+          -24872.7,
           0.014679,
-          -7266.46
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t1_carrier_spawn_point_04": {
-      "type": "Point",
-      "tm": [
-        [
-          1.19209E-07,
-          0.0,
-          1.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -1.0,
-          0.0,
-          1.19209E-07
-        ],
-        [
-          -23114.3,
-          0.014679,
-          -24467.0
+          -4452.11
         ]
       ],
       "objLayer": 0,
@@ -487,9 +456,9 @@
       "type": "Point",
       "tm": [
         [
-          1.0,
+          -0.874897,
           0.0,
-          -1.67638E-08
+          0.48431
         ],
         [
           0.0,
@@ -497,14 +466,14 @@
           0.0
         ],
         [
-          1.67638E-08,
+          -0.48431,
           0.0,
-          1.0
+          -0.874897
         ],
         [
-          -8867.23,
-          3.0518E-05,
-          -16559.1
+          10709.9,
+          0.00100708,
+          -28656.9
         ]
       ],
       "objLayer": 0,
@@ -514,9 +483,9 @@
       "type": "Point",
       "tm": [
         [
-          -1.0,
+          -0.874897,
           0.0,
-          4.65661E-08
+          0.48431
         ],
         [
           0.0,
@@ -524,68 +493,14 @@
           0.0
         ],
         [
-          -4.65661E-08,
+          -0.48431,
           0.0,
-          -1.0
+          -0.874897
         ],
         [
-          8742.99,
-          3.0518E-05,
-          -16559.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t2_carrier_spawn_point_03": {
-      "type": "Point",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          -1.67638E-08
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.67638E-08,
-          0.0,
-          1.0
-        ],
-        [
-          -8867.24,
-          3.0518E-05,
-          -23155.9
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t2_carrier_spawn_point_04": {
-      "type": "Point",
-      "tm": [
-        [
-          -1.0,
-          0.0,
-          4.65661E-08
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -4.65661E-08,
-          0.0,
-          -1.0
-        ],
-        [
-          8742.96,
-          3.0518E-05,
-          -23155.9
+          13256.7,
+          0.00100708,
+          -24056.3
         ]
       ],
       "objLayer": 0,
@@ -699,13 +614,13 @@
       "objLayer": 0,
       "props": {}
     },
-    "cr_t2_fleet_spawn_point_03": {
+    "cr_t2_fleet_spawn_point_02": {
       "type": "Point",
       "tm": [
         [
-          1.0,
+          -0.874897,
           0.0,
-          -1.67638E-08
+          0.48431
         ],
         [
           0.0,
@@ -713,14 +628,14 @@
           0.0
         ],
         [
-          1.67638E-08,
+          -0.48431,
           0.0,
-          1.0
+          -0.874897
         ],
         [
-          -9367.23,
-          3.0518E-05,
-          -23155.9
+          13694.1,
+          0.00100708,
+          -24298.4
         ]
       ],
       "objLayer": 0,
@@ -730,9 +645,9 @@
       "type": "Point",
       "tm": [
         [
-          1.0,
+          -0.874897,
           0.0,
-          -1.67638E-08
+          0.48431
         ],
         [
           0.0,
@@ -740,68 +655,14 @@
           0.0
         ],
         [
-          1.67638E-08,
+          -0.48431,
           0.0,
-          1.0
+          -0.874897
         ],
         [
-          -9367.23,
-          3.0518E-05,
-          -16559.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t2_fleet_spawn_point_02": {
-      "type": "Point",
-      "tm": [
-        [
-          -1.0,
-          0.0,
-          4.65661E-08
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -4.65661E-08,
-          0.0,
-          -1.0
-        ],
-        [
-          9242.97,
-          3.0518E-05,
-          -16559.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t2_fleet_spawn_point_04": {
-      "type": "Point",
-      "tm": [
-        [
-          -1.0,
-          0.0,
-          4.65661E-08
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -4.65661E-08,
-          0.0,
-          -1.0
-        ],
-        [
-          9242.97,
-          3.0518E-05,
-          -23155.9
+          11147.3,
+          0.00100708,
+          -28899.1
         ]
       ],
       "objLayer": 0,
@@ -811,9 +672,9 @@
       "type": "Point",
       "tm": [
         [
+          0.915235,
           0.0,
-          0.0,
-          -1.0
+          -0.402921
         ],
         [
           0.0,
@@ -821,14 +682,14 @@
           0.0
         ],
         [
-          1.0,
+          0.402921,
           0.0,
-          0.0
+          0.915235
         ],
         [
-          -15663.8,
-          -0.000946,
-          -6766.47
+          -27240.1,
+          -0.000946025,
+          -8588.77
         ]
       ],
       "objLayer": 0,
@@ -838,9 +699,9 @@
       "type": "Point",
       "tm": [
         [
-          1.19209E-07,
+          0.915235,
           0.0,
-          1.0
+          -0.402921
         ],
         [
           0.0,
@@ -848,68 +709,14 @@
           0.0
         ],
         [
-          -1.0,
+          0.402921,
           0.0,
-          1.19209E-07
+          0.915235
         ],
         [
-          -15663.8,
-          -0.000946,
-          -24967.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t1_fleet_spawn_point_03": {
-      "type": "Point",
-      "tm": [
-        [
-          0.0,
-          0.0,
-          -1.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          -23114.3,
+          -25330.3,
           0.014679,
-          -6766.46
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "cr_t1_fleet_spawn_point_04": {
-      "type": "Point",
-      "tm": [
-        [
-          1.19209E-07,
-          0.0,
-          1.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -1.0,
-          0.0,
-          1.19209E-07
-        ],
-        [
-          -23114.3,
-          0.014679,
-          -24967.0
+          -4250.65
         ]
       ],
       "objLayer": 0,
@@ -1154,141 +961,6 @@
       "isShipSpline": false,
       "shipTurnRadius": 1000.0,
       "way": {
-        "cr_t1_carrier_route_01_wp_01": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -15833.0,
-              0.0,
-              -8366.4
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t1_carrier_route_01_wp_02": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -15863.9,
-              -0.0019531,
-              -23367.0
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t1_carrier_route_01_wp_03": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -22914.3,
-              0.0136719,
-              -23367.0
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t1_carrier_route_01_wp_04": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -22914.3,
-              0.0146484,
-              -8366.4
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        }
-      }
-    },
-    "cr_t1_carrier_route_02": {
-      "closed_waypoints": true,
-      "isShipSpline": false,
-      "shipTurnRadius": 1000.0,
-      "way": {
         "cr_t1_carrier_route_02_wp_01": {
           "type": "normal",
           "tm": [
@@ -1308,9 +980,9 @@
               1.0
             ],
             [
-              -15663.9,
-              -0.0019531,
-              -23467.0
+              -25867.2,
+              -0.00195312,
+              -9193.05
             ]
           ],
           "props": {
@@ -1340,9 +1012,9 @@
               1.0
             ],
             [
-              -15663.9,
-              0.0,
-              -8266.5
+              -15606.0,
+              -2.50293E-08,
+              -13710.4
             ]
           ],
           "props": {
@@ -1372,9 +1044,9 @@
               1.0
             ],
             [
-              -23096.5,
+              -13703.3,
               0.015625,
-              -8266.4
+              -9388.74
             ]
           ],
           "props": {
@@ -1404,157 +1076,21 @@
               1.0
             ],
             [
-              -23114.3,
+              -23957.5,
               0.0136719,
-              -23467.0
+              -4855.03
             ]
           ],
           "props": {
             "speed": 15.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         }
       }
     },
-    "cr_t1_carrier_route_03": {
-      "closed_waypoints": true,
-      "isShipSpline": false,
-      "shipTurnRadius": 1000.0,
-      "way": {
-        "cr_t1_carrier_route_03_wp_01": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -23121.4,
-              0.015625,
-              -8266.4
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t1_carrier_route_03_wp_02": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -23114.3,
-              0.0136719,
-              -23467.0
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t1_carrier_route_03_wp_03": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -15663.9,
-              -0.0019531,
-              -23467.0
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t1_carrier_route_03_wp_04": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -15663.9,
-              0.0,
-              -8266.5
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        }
-      }
-    },
-    "cr_t1_carrier_route_04": {
+    "cr_t1_carrier_route_02": {
       "closed_waypoints": true,
       "isShipSpline": false,
       "shipTurnRadius": 1000.0,
@@ -1578,9 +1114,9 @@
               1.0
             ],
             [
-              -23114.3,
+              -23957.5,
               0.0136719,
-              -23467.0
+              -4855.03
             ]
           ],
           "props": {
@@ -1610,9 +1146,9 @@
               1.0
             ],
             [
-              -23085.7,
+              -13707.7,
               0.015625,
-              -8266.4
+              -9398.62
             ]
           ],
           "props": {
@@ -1642,9 +1178,9 @@
               1.0
             ],
             [
-              -15663.9,
-              0.0,
-              -8266.5
+              -15606.0,
+              -2.50293E-08,
+              -13710.4
             ]
           ],
           "props": {
@@ -1674,9 +1210,9 @@
               1.0
             ],
             [
-              -15663.9,
-              -0.0019531,
-              -23467.0
+              -25867.2,
+              -0.00195312,
+              -9193.05
             ]
           ],
           "props": {
@@ -1713,9 +1249,9 @@
               1.0
             ],
             [
-              -7767.33,
-              0.000976563,
-              -16728.3
+              9829.55,
+              0.00195312,
+              -27976.2
             ]
           ],
           "props": {
@@ -1745,9 +1281,9 @@
               1.0
             ],
             [
-              7940.37,
-              0.0,
-              -16759.1
+              -744.474,
+              0.000976562,
+              -22087.6
             ]
           ],
           "props": {
@@ -1777,9 +1313,9 @@
               1.0
             ],
             [
-              7940.36,
-              0.0,
-              -22955.9
+              1608.57,
+              0.000976562,
+              -17836.9
             ]
           ],
           "props": {
@@ -1809,9 +1345,9 @@
               1.0
             ],
             [
-              -7767.33,
-              0.0,
-              -22955.9
+              12197.5,
+              0.000976562,
+              -23698.5
             ]
           ],
           "props": {
@@ -1825,141 +1361,6 @@
       }
     },
     "cr_t2_carrier_route_02": {
-      "closed_waypoints": true,
-      "isShipSpline": false,
-      "shipTurnRadius": 1000.0,
-      "way": {
-        "cr_t2_carrier_route_02_wp_01": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              8040.37,
-              0.0,
-              -16559.1
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t2_carrier_route_02_wp_02": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -7867.23,
-              0.000976563,
-              -16559.1
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t2_carrier_route_02_wp_03": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -7867.33,
-              0.000976563,
-              -23138.1
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t2_carrier_route_02_wp_04": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              8040.37,
-              0.0,
-              -23155.9
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        }
-      }
-    },
-    "cr_t2_carrier_route_03": {
       "closed_waypoints": true,
       "isShipSpline": false,
       "shipTurnRadius": 1000.0,
@@ -1983,16 +1384,15 @@
               1.0
             ],
             [
-              -7867.33,
-              0.000976563,
-              -23163.0
+              12385.3,
+              0.00195312,
+              -23565.8
             ]
           ],
           "props": {
             "speed": 15.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -2015,9 +1415,9 @@
               1.0
             ],
             [
-              8040.37,
-              0.0,
-              -23155.9
+              1617.94,
+              0.000976562,
+              -17613.5
             ]
           ],
           "props": {
@@ -2047,9 +1447,9 @@
               1.0
             ],
             [
-              8040.37,
-              0.0,
-              -16559.1
+              -928.825,
+              0.000976562,
+              -22214.2
             ]
           ],
           "props": {
@@ -2079,144 +1479,9 @@
               1.0
             ],
             [
-              -7867.23,
-              0.000976563,
-              -16559.1
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        }
-      }
-    },
-    "cr_t2_carrier_route_04": {
-      "closed_waypoints": true,
-      "isShipSpline": false,
-      "shipTurnRadius": 1000.0,
-      "way": {
-        "cr_t2_carrier_route_04_wp_01": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              8040.37,
-              0.0,
-              -23155.9
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t2_carrier_route_04_wp_02": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -7867.33,
-              0.000976563,
-              -23127.3
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t2_carrier_route_04_wp_03": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              -7867.23,
-              0.000976563,
-              -16559.1
-            ]
-          ],
-          "props": {
-            "speed": 15.0,
-            "moveType": "MOVETO_STRAIGHT",
-            "tas": false,
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false
-          }
-        },
-        "cr_t2_carrier_route_04_wp_04": {
-          "type": "normal",
-          "tm": [
-            [
-              1.0,
-              0.0,
-              0.0
-            ],
-            [
-              0.0,
-              1.0,
-              0.0
-            ],
-            [
-              0.0,
-              0.0,
-              1.0
-            ],
-            [
-              8040.37,
-              0.0,
-              -16559.1
+              9835.0,
+              0.00195312,
+              -28172.6
             ]
           ],
           "props": {

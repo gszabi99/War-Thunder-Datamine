@@ -30,6 +30,8 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { stripTags, cutPrefix, split, startsWith, endsWith } = require("%sqstd/string.nut")
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
+let { getDifficultyTypeByTask, getDifficultyTypeById, EASY_TASK, HARD_TASK
+} = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -1332,12 +1334,12 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
                                   EULT_PUNLOCK_NEW_PROPOSAL,
                                   EULT_PUNLOCK_ACCEPT_MULTI])) {
     local locNameId = $"userlog/{logName}"
-    res.logImg = ::g_battle_task_difficulty.EASY.image
+    res.logImg = EASY_TASK.image
 
     if ((logObj.type == EULT_PUNLOCK_ACCEPT_MULTI || logObj.type == EULT_PUNLOCK_NEW_PROPOSAL) && "new_proposals" in logObj) {
       if (logObj.new_proposals.len() > 1) {
-        if (::g_battle_tasks.getDifficultyByProposals(logObj.new_proposals) == ::g_battle_task_difficulty.HARD) {
-          res.logImg = ::g_battle_task_difficulty.HARD.image
+        if (::g_battle_tasks.getDifficultyByProposals(logObj.new_proposals) == HARD_TASK) {
+          res.logImg = HARD_TASK.image
           locNameId = "userlog/battle_tasks_new_proposal/special"
         }
         res.description <- ::g_battle_tasks.generateUpdateDescription(logObj.new_proposals)
@@ -1351,9 +1353,9 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (logObj?.id) {
       let battleTask = ::g_battle_tasks.getTaskById(logObj.id)
       if (battleTask)
-        res.logImg = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
+        res.logImg = getDifficultyTypeByTask(battleTask).image
       else
-        res.logImg = ::g_battle_task_difficulty.getDifficultyTypeById(logObj.id).image
+        res.logImg = getDifficultyTypeById(logObj.id).image
 
       taskName = ::g_battle_tasks.generateStringForUserlog(logObj, logObj.id)
     }

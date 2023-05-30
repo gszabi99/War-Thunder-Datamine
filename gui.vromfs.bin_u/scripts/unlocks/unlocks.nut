@@ -26,6 +26,7 @@ let { getUnlockCost, getUnlockRewardCost, hasSpecialMultiStageLocId, hasMultiSta
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { Status, get_status } = require("%xboxLib/impl/achievements.nut")
+let { getDifficultyTypeByTask } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -578,7 +579,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
     if (needTitle)
       res.title = loc("unlocks/battletask")
     res.name = ::g_battle_tasks.getLocalizedTaskNameById(battleTask)
-    res.image = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
+    res.image = getDifficultyTypeByTask(battleTask).image
     if (::g_battle_tasks.isTaskDone(battleTask))
       res.image2 <- "#ui/gameuiskin#icon_primary_ok.svg"
     else if (::g_battle_tasks.isTaskTimeExpired(battleTask))

@@ -11,38 +11,14 @@ let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockTypeById } = require("unlocks")
 let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
-  getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
+  getUnlockTitle, getUnlockSnapshotText } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 const NUM_SUBUNLOCK_COLUMNS = 3
 
-let difficultyTypes = [
-  ::g_battle_task_difficulty.EASY,
-  ::g_battle_task_difficulty.MEDIUM,
-  ::g_battle_task_difficulty.HARD
-]
-
-let function getCurBattleTasks() {
-  let tasks = ::g_battle_tasks.activeTasksArray
-    .filter(@(t) ::g_battle_tasks.isTaskActual(t) && ::g_battle_tasks.canInteract(t))
-  let res = []
-  foreach (diff in difficultyTypes) {
-    let tasksByDiff = ::g_battle_task_difficulty.withdrawTasksArrayByDifficulty(diff, tasks)
-    if (tasksByDiff.len() == 0)
-      continue
-
-    let taskWithReward = ::g_battle_tasks.getTaskWithAvailableAward(tasksByDiff)
-    if (taskWithReward != null)
-      res.append(taskWithReward)
-    else
-      res.extend(tasksByDiff.filter(@(t) ::g_battle_tasks.isTaskDone(t)
-        || ::g_battle_tasks.isTaskForGM(t, ::game_mode_manager.getCurrentGameModeId())))
-  }
-  return res
-}
-
 let function getBattleTasksView() {
+  let gmName = ::game_mode_manager.getCurrentGameModeId()
   let items = []
-  foreach (task in getCurBattleTasks()) {
+  foreach (task in ::g_battle_tasks.getCurBattleTasksByGm(gmName)) {
     let cfg = ::g_battle_tasks.generateUnlockConfigByTask(task)
     let item = ::g_battle_tasks.generateItemView(cfg, { isInteractive = false })
     item.isSelected <- !::g_battle_tasks.isTaskDone(task)
@@ -86,6 +62,7 @@ let function getFavUnlocksView() {
     let progressData = cfg.getProgressBarData()
     let mainCondition = getUnlockMainCondDescByCfg(cfg)
     let hasProgressBar = progressData.show && mainCondition != ""
+    let snapshot = getUnlockSnapshotText(cfg)
     let hasLock = ::g_unlock_view.needShowLockIcon(cfg)
     let imageCfg = ::g_unlock_view.getUnlockImageConfig(cfg)
     let image = LayersIcon.getIconData(imageCfg.style, imageCfg.image,
@@ -102,7 +79,7 @@ let function getFavUnlocksView() {
       description = getUnlockDesc(cfg)
       hasProgressBar
       progress = progressData.value
-      mainCondition
+      mainCondition = " ".join([mainCondition, snapshot], true)
       multDesc = getUnlockMultDescByCfg(cfg)
       conditions = getUnlockCondsDescByCfg(cfg)
       rewardText
@@ -158,7 +135,8 @@ let class PersonalTasksModal extends ::gui_handlers.BaseGuiHandlerWT {
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", getTabsView())
     this.guiScene.replaceContentFromText(tabList, data, data.len(), this)
 
-    let hasBattleTasks = getCurBattleTasks().len() > 0
+    let gmName = ::game_mode_manager.getCurrentGameModeId()
+    let hasBattleTasks = ::g_battle_tasks.getCurBattleTasksByGm(gmName).len() > 0
     tabList.setValue(hasBattleTasks ? 0 : 1) // if no tasks select next one
   }
 

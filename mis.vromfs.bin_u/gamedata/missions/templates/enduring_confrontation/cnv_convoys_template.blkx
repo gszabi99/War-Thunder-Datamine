@@ -859,11 +859,11 @@
             "target": "@cnv_t1_gen_cur_status_squad_name"
           },
           "unitSetProperties": {
+            "object": "@cnv_t1_gen_cur_status_squad_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t1_gen_cur_status_squad_name",
             "stealthRadius": 1500.0
           },
           "varSetBool": [
@@ -1384,11 +1384,11 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@cnv_t1_gen_cur_status_squad_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t1_gen_cur_status_squad_name",
             "stealthRadius": 15000.0
           },
           "triggerEnable": {
@@ -1899,12 +1899,12 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@cnv_t1_gen_cur_status_squad_name",
+            "object_type": "isMarked",
             "object_marking": 2,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t1_gen_cur_status_squad_name",
-            "object_type": "isMarked",
             "speed": 30.0,
             "minDistBetween": 50.0,
             "ignoresObstaclesAfterTime": true
@@ -2861,11 +2861,11 @@
             "target": "@cnv_t2_gen_cur_status_squad_name"
           },
           "unitSetProperties": {
+            "object": "@cnv_t2_gen_cur_status_squad_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t2_gen_cur_status_squad_name",
             "stealthRadius": 1500.0
           },
           "varSetBool": [
@@ -3386,11 +3386,11 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@cnv_t2_gen_cur_status_squad_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t2_gen_cur_status_squad_name",
             "stealthRadius": 15000.0
           },
           "triggerEnable": {
@@ -3901,12 +3901,12 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@cnv_t2_gen_cur_status_squad_name",
+            "object_type": "isMarked",
             "object_marking": 2,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t2_gen_cur_status_squad_name",
-            "object_type": "isMarked",
             "speed": 30.0,
             "minDistBetween": 50.0,
             "ignoresObstaclesAfterTime": true
@@ -8503,11 +8503,11 @@
             "target": "@cnv_t1_detect_convoy_name"
           },
           "unitSetProperties": {
+            "object": "@cnv_t1_detect_convoy_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t1_detect_convoy_name",
             "stealthRadius": 128000.0
           },
           "triggerEnable": {
@@ -8566,19 +8566,19 @@
             {
               "target": "@cnv_t1_to_t1_detect_objective_name",
               "unit_type": "isActive",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
-              "object_marking": 0,
               "unit_or_area": "@cnv_t1_detect_convoy_name",
-              "object_type": "isActive"
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             },
             {
               "target": "@cnv_t1_to_t2_detect_objective_name",
               "unit_type": "isActive",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
+              "unit_or_area": "@cnv_t1_detect_convoy_name",
               "object_marking": 0,
-              "unit_or_area": "@cnv_t1_detect_convoy_name"
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             }
           ],
           "triggerEnable": {
@@ -9144,11 +9144,11 @@
             "target": "@cnv_t2_detect_convoy_name"
           },
           "unitSetProperties": {
+            "object": "@cnv_t2_detect_convoy_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t2_detect_convoy_name",
             "stealthRadius": 128000.0
           },
           "triggerEnable": {
@@ -9213,19 +9213,19 @@
             {
               "target": "@cnv_t2_to_t2_detect_objective_name",
               "unit_type": "isActive",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
-              "object_marking": 0,
               "unit_or_area": "@cnv_t2_detect_convoy_name",
-              "object_type": "isActive"
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             },
             {
               "target": "@cnv_t2_to_t1_detect_objective_name",
               "unit_type": "isActive",
-              "object_var_comp_op": "equal",
-              "object_var_name": "",
+              "unit_or_area": "@cnv_t2_detect_convoy_name",
               "object_marking": 0,
-              "unit_or_area": "@cnv_t2_detect_convoy_name"
+              "object_var_comp_op": "equal",
+              "object_var_name": ""
             }
           ],
           "varSetString": [
@@ -10870,11 +10870,11 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@cnv_t1_move_convoy_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t1_move_convoy_name",
             "speed": 0.0,
             "lockSpeed": true
           },
@@ -12137,11 +12137,11 @@
             }
           ],
           "unitSetProperties": {
+            "object": "@cnv_t2_move_convoy_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@cnv_t2_move_convoy_name",
             "speed": 0.0,
             "lockSpeed": true
           },
@@ -15083,17 +15083,17 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
             "targetGnd": false,
-            "accuracy": 0.5,
-            "airAccuracy": 0.3,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "maxDeviationAngle": 12.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
@@ -15148,18 +15148,18 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
-            "object_type": "isUnitVar",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
             "targetGnd": false,
-            "accuracy": 0.5,
-            "airAccuracy": 0.3,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "maxDeviationAngle": 12.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
@@ -15214,18 +15214,18 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
-            "object_type": "isUnitVar",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
             "targetGnd": false,
-            "accuracy": 0.5,
-            "airAccuracy": 0.3,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "maxDeviationAngle": 12.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
@@ -15280,18 +15280,18 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
-            "object_type": "isUnitVar",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
             "targetGnd": false,
-            "accuracy": 0.5,
-            "airAccuracy": 0.3,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "maxDeviationAngle": 12.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
@@ -15346,18 +15346,18 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
-            "object_type": "isUnitVar",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
             "targetGnd": false,
-            "accuracy": 0.5,
-            "airAccuracy": 0.3,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "maxDeviationAngle": 12.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
@@ -15412,18 +15412,18 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
-            "object_type": "isUnitVar",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
             "targetGnd": false,
-            "accuracy": 0.5,
-            "airAccuracy": 0.3,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "maxDeviationAngle": 12.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
@@ -15478,18 +15478,18 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
+            "object_type": "isUnitVar",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
-            "object_type": "isUnitVar",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
             "targetGnd": false,
-            "accuracy": 0.5,
-            "airAccuracy": 0.3,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "maxDeviationAngle": 12.0,
             "checkVisibilityTarget": true,
             "visibilityTreeTransparencyThreshold": 0.1,
@@ -15533,11 +15533,11 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
@@ -15593,11 +15593,11 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,
@@ -15653,11 +15653,11 @@
             ]
           },
           "unitSetProperties": {
+            "object": "cnv_all_convoys_squad",
             "object_marking": 0,
             "object_var_name": "aaa",
             "object_var_comp_op": "equal",
             "object_var_value": 1,
-            "object": "cnv_all_convoys_squad",
             "stealthRadius": 128000.0,
             "attack_type": "fire_at_will",
             "targetAir": true,

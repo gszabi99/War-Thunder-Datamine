@@ -21,7 +21,7 @@ let awards = [[70000, 0], [300000, 100], [0, 2500]]
 let getLinkString = @() format(loc("msgBox/viralAcquisition"), ::my_user_id_str)
 
 local function getViralAcquisitionDesc(locId = "msgbox/linkCopied") {
-  locId = "/".concat(locId, "separatedVessels") // add separatedVessels postfix when vessels ranks are not equal to other ranks
+  locId = "/".concat(locId, "disabledThirdStageForVessels") // add separatedVessels postfix when vessels ranks are not equal to other ranks
   let desc = loc(locId, {
     firstAwardRank = ::get_roman_numeral(awardRanks[0]),
     secondAwardRank = ::get_roman_numeral(awardRanks[1]),
