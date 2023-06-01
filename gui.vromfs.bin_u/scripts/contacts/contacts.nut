@@ -444,8 +444,4 @@ if (!::contacts)
 
 subscribe_handler(::g_contacts, ::g_listener_priority.DEFAULT_HANDLER)
 
-::xbox_on_returned_from_system_ui <- @() broadcastEvent("XboxSystemUIReturn")
-
 ::xbox_on_add_remove_friend_closed <- xboxContactsManager.xboxOverlayContactClosedCallback
-::xbox_get_people_list_callback <- @(list) xboxContactsManager.onReceivedXboxListCallback(list, EPL_FRIENDLIST)
-::xbox_get_avoid_list_callback <- @(list) xboxContactsManager.onReceivedXboxListCallback(list, EPL_BLOCKLIST)

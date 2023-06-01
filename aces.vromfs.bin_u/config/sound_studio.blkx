@@ -1081,7 +1081,7 @@
       },
       "lod_1": {
         "radius": 400.0,
-        "maxSounds": 8,
+        "maxSounds": 16,
         "updInterval": 0.2
       }
     }
@@ -1117,7 +1117,7 @@
         "maxSounds": 8
       },
       "lod_1": {
-        "radius": 200.0,
+        "radius": 300.0,
         "maxSounds": 12
       }
     }
@@ -11485,6 +11485,63 @@
       }
     }
   },
+  "engine_btr80": {
+    "effects": {
+      "path": "ground/engines/btr80",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop"
+    },
+    "outside": {
+      "path": "ground/engines/btr80",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 1.0,
+      "loadScale": 6.0,
+      "loadSmooth": 0.1,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0,
+      "offsetPos": [
+        -2.0,
+        1.3,
+        0.0
+      ]
+    },
+    "cockpit": {
+      "path": "ground/engines/btr80",
+      "event_cockpit_l": "engine_interior",
+      "event_start_cockpit_l": "engine_start_interior",
+      "event_stop_cockpit_l": "engine_stop_interior",
+      "leftPos": [
+        -1.0,
+        1.0,
+        0.0
+      ]
+    },
+    "ai": {
+      "effects": {
+        "path": "ground/engines/ai/btr80",
+        "eventStart": "engine_start",
+        "eventStop": "engine_stop"
+      },
+      "outside": {
+        "path": "ground/engines/ai/btr80",
+        "eventBack": "engine",
+        "rpmSmooth": 1.0,
+        "loadScale": 6.0,
+        "loadSmooth": 0.5,
+        "distSmooth": 0.9,
+        "distScaleOnNotHero": 1.0
+      }
+    }
+  },
   "engine_patria_rear": {
     "effects": {
       "path": "ground/engines/patria",
@@ -18923,6 +18980,7 @@
         "apds_fs_full_body_steel_tank": "loadBulletAPDS",
         "apds_fs_tungsten_small_core_tank": "loadBulletAPDS",
         "apds_fs_tungsten_l10_l15_tank": "loadBulletAPDS",
+        "apds_fs_long_l30_tank": "loadBulletSubCaliber",
         "atgm_tank": "loadBulletMissile",
         "rocket_tank": "loadBulletMissile"
       }

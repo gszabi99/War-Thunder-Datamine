@@ -21,6 +21,7 @@ let psnSocial = require("sony.social")
 let { EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
 let { replace } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { show_profile_card } = require("%xboxLib/impl/user.nut")
 
 let contactsByName = {}
 
@@ -135,11 +136,17 @@ subscribe("playerProfileDialogClosed", function(r) {
   }
 
   function openXBoxFriendsEdit() {
-    this.updateXboxIdAndDo(@() ::xbox_show_add_remove_friend(this.xboxId))
+    this.updateXboxIdAndDo(function() {
+      if (this.xboxId)
+        show_profile_card(this.xboxId.tointeger())
+    })
   }
 
   function openXboxProfile() {
-    this.updateXboxIdAndDo(@() ::xbox_show_profile_card(this.xboxId))
+    this.updateXboxIdAndDo(function() {
+      if (this.xboxId)
+        show_profile_card(this.xboxId.tointeger())
+    })
   }
 
   function getXboxId(afterSuccessCb = null) {

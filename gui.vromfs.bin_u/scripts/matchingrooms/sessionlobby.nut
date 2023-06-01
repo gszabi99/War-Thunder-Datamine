@@ -47,6 +47,8 @@ let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPasswo
   roomStartSession, kickMember, setRoomAttributes, setMemberAttributes, requestLeaveRoom,
   requestJoinRoom, requestDestroyRoom, requestCreateRoom, isMyUserId
 } = require("%scripts/matching/serviceNotifications/mrooms.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+
 /*
 SessionLobby API
 
@@ -329,7 +331,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   function getMissionNameLocIdsArray(room = null) {
     let misData = this.getMissionData(room)
     if ("name" in misData)
-      return getMissionLocIdsArray(::get_mission_meta_info(misData.name))
+      return getMissionLocIdsArray(getUrlOrFileMissionMetaInfo(misData.name))
     return []
   }
 
@@ -730,7 +732,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 ::SessionLobby.getMissionNameLoc <- function getMissionNameLoc(room = null) {
   let misData = this.getMissionData(room)
   if ("name" in misData) {
-    let missionMetaInfo = ::get_mission_meta_info(misData.name)
+    let missionMetaInfo = getUrlOrFileMissionMetaInfo(misData.name)
     return ::get_combine_loc_name_mission(missionMetaInfo ? missionMetaInfo : misData)
   }
   return ""
@@ -1020,7 +1022,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 
   let missionId = this.getMissionName()
   let missionInfo = DataBlock()
-  missionInfo.setFrom(::get_mission_meta_info(missionId))
+  missionInfo.setFrom(getUrlOrFileMissionMetaInfo(missionId))
   let missionBlk = DataBlock()
   if (missionInfo)
     missionBlk.load(missionInfo.mis_file)

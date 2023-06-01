@@ -18,6 +18,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 
 let function get_country_by_team(team_index) {
   local countries = null
@@ -563,7 +564,7 @@ let function get_country_by_team(team_index) {
     if (!checkObj(optionTrObj))
       return
 
-    let missionBlk = ::get_mission_meta_info(this.optionsConfig?.missionName ?? "")
+    let missionBlk = getUrlOrFileMissionMetaInfo(this.optionsConfig?.missionName ?? "", this.optionsConfig?.gm)
     let useKillStreaks = missionBlk && ::is_skirmish_with_killstreaks(missionBlk) &&
       this.getOptValue(::USEROPT_USE_KILLSTREAKS, false)
     let allowedUnitTypesMask  = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)

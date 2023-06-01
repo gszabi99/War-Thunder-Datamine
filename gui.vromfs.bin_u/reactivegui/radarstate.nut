@@ -46,6 +46,15 @@ let modeNames = [
   "hud/PD HDN VSL",
   "hud/PD HDN track",
 
+  "hud/GTM standby",
+  "hud/GTM search",
+  "hud/GTM acquisition",
+  "hud/GTM ACM",
+  "hud/GTM BST",
+  "hud/GTM VSL",
+  "hud/GTM track",
+
+
   "hud/LD standby",
   "hud/LD search",
   "hud/LD acquisition",
@@ -73,6 +82,14 @@ let modeNames = [
   "hud/TWS HDN BST",
   "hud/TWS HDN VSL",
   "hud/TWS HDN track",
+
+  "hud/TWS GTM standby",
+  "hud/TWS GTM search",
+  "hud/TWS GTM acquisition",
+  "hud/TWS GTM ACM",
+  "hud/TWS GTM BST",
+  "hud/TWS GTM VSL",
+  "hud/TWS GTM track",
 
   "hud/IRST standby",
   "hud/IRST search",

@@ -24,6 +24,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { getTip } = require("%scripts/loading/loadingTips.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -67,7 +68,7 @@ add_event_listener("FinishLoading", function(_p) {
       else if (get_game_type() & GT_DYNAMIC)
         missionBlk.setFrom(::mission_settings.mission)
       else if (::current_campaign_mission)
-        missionBlk.setFrom(::get_mission_meta_info(::current_campaign_mission))
+        missionBlk.setFrom(getUrlOrFileMissionMetaInfo(::current_campaign_mission, this.gm))
 
       if (this.gm == GM_TEST_FLIGHT)
         country = ::getCountryByAircraftName(::get_test_flight_unit_info()?.unit.name)

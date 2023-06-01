@@ -2287,6 +2287,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16a_block_10_iaf_aim_9l.blk"
       },
       {
+        "name": "f_16a_block_10_iaf_pyton3",
+        "blk": "gameData/FlightModels/weaponPresets/f_16a_block_10_iaf_pyton3.blk"
+      },
+      {
         "name": "f_16a_block_10_iaf_mk82",
         "blk": "gameData/FlightModels/weaponPresets/f_16a_block_10_iaf_mk82.blk"
       },
@@ -2494,6 +2498,19 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "pyton3_wingtip",
+            "reqModification": "il_python_3",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "aim_9e_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2539,6 +2556,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "pyton3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "pylon1",
+                "launcher_aim9_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "aim_9e_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2579,6 +2615,25 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9e_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "pyton3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "pylon3",
+                "launcher_aim9_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
               "emitter": "aim_9e_003",
               "bullets": 1,
               "external": true,
@@ -3035,6 +3090,25 @@
             }
           },
           {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "pyton3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "pylon7",
+                "launcher_aim9_4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "aim_9e_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm_65b",
             "reqModification": "us_agm_65b",
@@ -3199,6 +3273,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "pyton3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "pylon8",
+                "launcher_aim9_5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "aim_9e_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -3226,6 +3319,19 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9e_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "pyton3_wingtip",
+            "reqModification": "il_python_3",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
               "emitter": "aim_9e_006",
               "bullets": 1,
               "external": true,
@@ -3440,6 +3546,11 @@
     "us_aim_9l": {
       "reqModification": "us_aim_9p",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "il_python_3": {
+      "reqModification": "us_aim_9l",
+      "tier": 4,
       "modClass": "weapon"
     }
   },

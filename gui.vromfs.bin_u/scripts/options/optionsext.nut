@@ -86,6 +86,7 @@ let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
 let { setLastSkin, getAutoSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
 let { isStringInteger, isStringFloat, toUpper, stripTags } = require("%sqstd/string.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 
 ::BOMB_ASSAULT_FUSE_TIME_OPT_VALUE <- -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -2658,7 +2659,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = unitTypes.types.reduce(@(res, v) res | v.bit, 0)
       prevValue = get_gui_option(optionId) ?? defaultValue
 
-      let missionBlk = ::get_mission_meta_info(context?.missionName ?? "")
+      let missionBlk = getUrlOrFileMissionMetaInfo(context?.missionName ?? "")
       let isKillStreaksOptionAvailable = missionBlk && ::is_skirmish_with_killstreaks(missionBlk)
       let useKillStreaks = isKillStreaksOptionAvailable
         && (get_gui_option(::USEROPT_USE_KILLSTREAKS) ?? false)
@@ -3169,7 +3170,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.values = []
       local index = 0
       if (::current_campaign_mission != null) {
-        let metaInfo = ::get_mission_meta_info(::current_campaign_mission)
+        let metaInfo = getUrlOrFileMissionMetaInfo(::current_campaign_mission)
         let values = ::get_mission_types_from_meta_mission_info(metaInfo)
         for (index = 0; index < values.len(); index++) {
           descr.items.append("#options/" + values[index])
@@ -5253,7 +5254,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       break
     case ::USEROPT_MISSION_NAME_POSTFIX:
       if (::current_campaign_mission != null) {
-        let metaInfo = ::get_mission_meta_info(::current_campaign_mission)
+        let metaInfo = getUrlOrFileMissionMetaInfo(::current_campaign_mission)
         let values = ::get_mission_types_from_meta_mission_info(metaInfo)
         if (values.len() > 0) {
           let optValue = descr.values[value]

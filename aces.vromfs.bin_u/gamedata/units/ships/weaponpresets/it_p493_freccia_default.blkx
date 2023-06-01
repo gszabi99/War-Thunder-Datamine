@@ -6,5 +6,106 @@
       "tt_01",
       "tt_02"
     ]
+  },
+  "Weapon": {
+    "trigger": "gunner2",
+    "triggerGroup": "primary",
+    "blk": "gameData/Weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
+    "emitter": "emtr_gun_flame_03",
+    "flash": "emtr_gun_flame_03",
+    "useEmitter": true,
+    "breechDP": "main_caliber_gun_03_dm",
+    "barrelDP": "main_caliber_gun_03_dm",
+    "defaultYaw": 0.0,
+    "defaultPitch": 0.0,
+    "speedYaw": 95.0,
+    "speedPitch": 95.0,
+    "bullets": 2000,
+    "useGunnerTargetingQuality": false,
+    "allowableDelta": 2.0,
+    "ChainfireTime": 60.0,
+    "DelayAfterShoot": 0.0,
+    "aimMinDist": 20.0,
+    "aimMaxDist": 4500.0,
+    "randomAngle": 0.0,
+    "accuracyBotMultAir": 0.55,
+    "accuracyAir": 1.0,
+    "accuracyGnd": 0.8,
+    "errMeasureVel": 0.0,
+    "errTargettingOn100kmph": 0.0,
+    "errMeasureVelFast": 100.0,
+    "errMeasureVelFwdShift": 0.5,
+    "errMeasureVelDir": 3.0,
+    "errTargetting": 3.0,
+    "errExplTime": 0.0,
+    "turret": {
+      "head": "main_caliber_turret_03",
+      "gun": "main_caliber_gun_03",
+      "barrel": "gun_barrel_03",
+      "gunnerDm": "main_caliber_turret_03_dm"
+    },
+    "limits": {
+      "yaw": [
+        -180.0,
+        180.0
+      ],
+      "pitch": [
+        -6.0,
+        90.0
+      ]
+    },
+    "limitsDeadzone": [
+      {
+        "yaw": [
+          -180.0,
+          -158.0
+        ],
+        "pitch": [
+          -6.0,
+          40.0
+        ]
+      },
+      {
+        "yaw": [
+          -15.0,
+          15.0
+        ],
+        "pitch": [
+          -6.0,
+          7.0
+        ]
+      },
+      {
+        "yaw": [
+          158.0,
+          180.0
+        ],
+        "pitch": [
+          -6.0,
+          40.0
+        ]
+      }
+    ],
+    "gunStabilizer": {
+      "hasVerticalGunFreeMode": true,
+      "hasHorizontal": true,
+      "horizontalOmegaMult": 1.0,
+      "horizontalSpeedLimitKPH": 80.0,
+      "hasVertical": true,
+      "verticalOmegaMult": 1.0,
+      "verticalSpeedLimitKPH": 80.0,
+      "errorKPHToDegrees": {
+        "row": [
+          [
+            5.0,
+            0.01
+          ],
+          [
+            70.0,
+            0.05
+          ]
+        ]
+      }
+    }
   }
 }

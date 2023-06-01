@@ -43,7 +43,7 @@ let { LEADER_OPERATION_STATES,
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { select_mission } = require("guiMission")
+let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
 
 ::gui_handlers.InstantDomination <- class extends ::gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -392,7 +392,7 @@ let { select_mission } = require("guiMission")
 
   function startManualMission(manualMission) {
     let missionBlk = DataBlock()
-    missionBlk.setFrom(::get_mission_meta_info(manualMission.name))
+    missionBlk.setFrom(get_meta_mission_info_by_name(manualMission.name))
     foreach (name, value in manualMission)
       if (name != "name")
         missionBlk[name] <- value

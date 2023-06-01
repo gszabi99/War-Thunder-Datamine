@@ -7,6 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 #explicit-this
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
 let { get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -71,10 +72,6 @@ let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStd
 
   if (this.isDebugMode)
     this.addDebugTimer()
-  else
-    ::g_hud_event_manager.subscribe("hudElementShow", function(data) {
-      this.onElementToggle(data)
-    }, this)
 }
 
 ::g_hud_tutorial_elements.initNestObjects <- function initNestObjects() {
@@ -249,3 +246,5 @@ let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStd
 
 registerPersistentDataFromRoot("g_hud_tutorial_elements")
 subscribe_handler(::g_hud_tutorial_elements, ::g_listener_priority.DEFAULT_HANDLER)
+subscribe("hudElementShow", @(data) ::g_hud_tutorial_elements.onElementToggle(data))
+

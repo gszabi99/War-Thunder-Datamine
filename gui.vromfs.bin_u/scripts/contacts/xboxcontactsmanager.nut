@@ -16,6 +16,7 @@ let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
 let { update_presences_for_users } = require("%xboxLib/presence.nut")
 let { Permission, check_for_users } = require("%xboxLib/impl/permissions.nut")
+let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
 let { isEqual } = u
 
 let persistent = { isInitedXboxContacts = false }
@@ -34,6 +35,8 @@ let uidsListByGroupName = {
   [EPL_FRIENDLIST] = xboxApprovedUids,
   [EPL_BLOCKLIST] = xboxBlockedUids
 }
+
+local onReceivedXboxListCallback = function(_playersList, _group) {} // fwd decl
 
 let function updateContactXBoxPresence(xboxId, isAllowed) {
   let contact = ::findContactByXboxId(xboxId)
@@ -55,8 +58,14 @@ let function fetchContactsList() {
   pendingXboxContactsToUpdate.clear()
   //No matter what will be done first,
   //anyway, we will wait all groups data.
-  ::xbox_get_people_list_async()
-  ::xbox_get_avoid_list_async()
+  retrieve_related_people_list(function(list) {
+    let xuids = list.map(@(v) v.tostring())
+    onReceivedXboxListCallback(xuids, EPL_FRIENDLIST)
+  })
+  retrieve_avoid_people_list(function(list) {
+    let xuids = list.map(@(v) v.tostring())
+    onReceivedXboxListCallback(xuids, EPL_BLOCKLIST)
+  })
 }
 
 let function updateContacts(needIgnoreInitedFlag = false) {
@@ -140,7 +149,7 @@ let function proceedXboxPlayersList() {
   )
 }
 
-let function onReceivedXboxListCallback(playersList, group) {
+onReceivedXboxListCallback = function(playersList, group) {
   pendingXboxContactsToUpdate[group] <- playersList
   proceedXboxPlayersList()
 }
@@ -289,7 +298,6 @@ addListenersWithoutEnv({
 
 return {
   fetchContactsList = fetchContactsList
-  onReceivedXboxListCallback = onReceivedXboxListCallback
 
   xboxOverlayContactClosedCallback = xboxOverlayContactClosedCallback
 

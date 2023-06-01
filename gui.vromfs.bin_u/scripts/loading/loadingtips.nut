@@ -13,6 +13,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { get_game_mode } = require("mission")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -131,7 +132,7 @@ let function getDefaultUnitTypeMask() {
   else if (isInArray(gm, [GM_SINGLE_MISSION, GM_CAMPAIGN, GM_DYNAMIC, GM_BUILDER, GM_DOMINATION]))
     res = unitTypes.AIRCRAFT.bit
   else // keep this check last
-    res = ::get_mission_allowed_unittypes_mask(::get_mission_meta_info(::current_campaign_mission || ""))
+    res = ::get_mission_allowed_unittypes_mask(getUrlOrFileMissionMetaInfo(::current_campaign_mission ?? "", gm))
 
   return (res & existTipsMask) || existTipsMask
 }

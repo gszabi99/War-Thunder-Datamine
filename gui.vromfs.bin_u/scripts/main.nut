@@ -475,6 +475,10 @@ end_es_loading()
 
 let platform = require("%scripts/clientState/platform.nut")
 
+if (platform.isPlatformXboxOne) {
+  require("%scripts/xbox/onLoad.nut")
+}
+
 ::cross_call_api.platform <- {
   getPlayerName = platform.getPlayerName
 }

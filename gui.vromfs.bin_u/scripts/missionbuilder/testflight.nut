@@ -16,7 +16,7 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getCdBaseDifficulty, set_unit_option, set_gui_option, get_gui_option } = require("guiOptions")
 let { getActionBarUnitName } = require("hudActionBar")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { select_training_mission } = require("guiMission")
+let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
 let { isPreviewingLiveSkin, setCurSkinToHangar
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
@@ -341,7 +341,7 @@ let { stripTags } = require("%sqstd/string.nut")
 
   function startTestFlight() {
     let misName = this.getTestFlightMisName(this.unit.testFlight)
-    let misBlk = ::get_mission_meta_info(misName)
+    let misBlk = get_meta_mission_info_by_name(misName)
     if (!misBlk)
       return assert(false, "Error: wrong testflight mission " + misName)
 

@@ -192,6 +192,9 @@
       },
       "tank3_dm": {
         "hp": 39.5
+      },
+      "tank4_dm": {
+        "hp": 39.5
       }
     }
   },
@@ -1078,6 +1081,43 @@
         ]
       },
       {
+        "name": "tank4_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 10.0,
+            "fire": 0.7,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 15.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -1914,66 +1954,163 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunType97.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun1_dm",
-        "bullets": 700,
-        "spread": 1.1,
-        "breechInCockpit": true
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunType97.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 700,
-        "spread": 1.1,
-        "traceOffset": 1,
-        "breechInCockpit": true
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 100,
-        "spread": 2.0,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection3",
-        "dm": "cannon2_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 100,
-        "spread": 2.0
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "common"
+    }
   },
   "weapon_presets": {
     "preset": [
       {
         "name": "a6m3_default",
-        "blk": "gameData/FlightModels/weaponPresets/a6m3_default.blk"
+        "blk": "gameData/FlightModels/weaponPresets/a6m3_zero_default.blk"
+      },
+      {
+        "name": "a6m3_zero_ptb",
+        "blk": "gameData/FlightModels/weaponPresets/a6m3_zero_ptb.blk"
       },
       {
         "name": "A6M3_2x60kg",
-        "blk": "gameData/FlightModels/weaponPresets/a6m2_bombs.blk",
-        "reqModification": "a6m_9in_mod30"
+        "blk": "gameData/FlightModels/weaponPresets/a6m3_zero_bombs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 150.0,
+    "maxloadMassLeftConsoles": 70.0,
+    "maxloadMassRightConsoles": 70.0,
+    "maxDisbalance": 70.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2"
+      ]
+    },
+    "HideDmParts": {
+      "node": "tank4_dm"
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "order": 9,
+        "WeaponPreset": {
+          "name": "common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunType97.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 700,
+              "spread": 1.1,
+              "breechInCockpit": true
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunType97.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 700,
+              "spread": 1.1,
+              "traceOffset": 1,
+              "breechInCockpit": true
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonType99.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon1_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 100,
+              "spread": 2.0,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonType99.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection3",
+              "dm": "cannon2_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 100,
+              "spread": 2.0
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "type97mod6_60kg",
+          "reqModification": "a6m_9in_mod30",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/bombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb2",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb",
+          "showInWeaponMenu": true,
+          "ShowDmParts": {
+            "node": "tank4_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/jp_330_liters_a6m.blk",
+            "emitter": "drop_fueltank",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "jettisonable": false
+          }
+        }
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bombs_small",
+          "name": "type97mod6_60kg",
+          "reqModification": "a6m_9in_mod30",
+          "ShowNodes": {
+            "node": "pylon_bomb2"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/bombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb1",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
       }
     ]
   },

@@ -559,11 +559,6 @@ mShared = {
     setGuiValue("skyQuality", cloudsQualityVal == 0 ? 0 : 1)
   }
 
-  grassClick = function() {
-    let grassRadiusMul = getGuiValue("grassRadiusMul", 100)
-    setGuiValue("grass", (grassRadiusMul > 10))
-  }
-
   ssaoQualityClick = function() {
     if (getGuiValue("ssaoQuality") == 0) {
       setGuiValue("ssrQuality", 0)
@@ -991,12 +986,9 @@ mSettings = {
   }
   physicsQuality = { widgetType = "slider" def = 3 min = 0 max = 5 blk = "graphics/physicsQuality" restart = false
   }
-  grassRadiusMul = { widgetType = "slider" def = 80 min = 1 max = 180 blk = "graphics/grassRadiusMul" restart = false
-    onChanged = "grassClick"
+  grassRadiusMul = { widgetType = "slider" def = 80 min = 10 max = 180 blk = "graphics/grassRadiusMul" restart = false
     getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def / 100.0) * 100).tointeger() }
     setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val / 100.0) }
-  }
-  grass = { widgetType = "checkbox" def = true blk = "render/grass" restart = false
   }
   enableSuspensionAnimation = { widgetType = "checkbox" def = false blk = "graphics/enableSuspensionAnimation" restart = true
   }

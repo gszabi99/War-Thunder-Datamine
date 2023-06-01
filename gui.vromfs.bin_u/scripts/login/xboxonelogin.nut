@@ -5,13 +5,14 @@ from "%scripts/dagui_library.nut" import *
 #explicit-this
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 let { get_gamertag } = require("%xboxLib/impl/user.nut")
+let { init_with_ui } = require("%xboxLib/user.nut")
+let { login } = require("%scripts/xbox/auth.nut")
 
 ::gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -82,9 +83,11 @@ let { get_gamertag } = require("%xboxLib/impl/user.nut")
 
   function performLogin() {
     this.needAutoLogin = false
-    ::xbox_on_login(
-      function(result, err_code) {
-        if (result == XBOX_LOGIN_STATE_SUCCESS) {
+    ::show_wait_screen("msgbox/please_wait")
+    login(
+      function(err_code) {
+        ::close_wait_screen()
+        if (err_code == 0) { // YU2_OK
           forceHideCursor(false)
           ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
               {
@@ -92,18 +95,17 @@ let { get_gamertag } = require("%xboxLib/impl/user.nut")
                 onFinishCallback = ::xbox_complete_login
               })
         }
-        else if (result == XBOX_LOGIN_STATE_FAILED) {
+        else {
           this.msgBox("no_internet_connection", loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
           this.isLoginInProcess = false
           logerr($"XBOX: login failed with error - {err_code}")
         }
-
       }.bindenv(this)
     )
   }
 
   function onChangeGamertag(_obj = null) {
-    ::xbox_account_picker()
+    init_with_ui(null)
   }
 
   function updateGamertag() {
@@ -130,6 +132,3 @@ let { get_gamertag } = require("%xboxLib/impl/user.nut")
 
   function goBack(_obj) {}
 }
-
-//Calling from C++
-::xbox_on_gamertag_changed <- @() broadcastEvent("XboxActiveUserGamertagChanged")

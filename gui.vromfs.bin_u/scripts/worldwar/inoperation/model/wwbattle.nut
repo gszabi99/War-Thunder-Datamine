@@ -22,6 +22,8 @@ let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock  = require("DataBlock")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
+
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -68,7 +70,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
     this.updateAppliedOnHost = blk?.updateAppliedOnHost ?? -1
     this.missionName = blk?.desc.missionName ?? ""
     this.sessionId = blk?.desc.sessionId ?? ""
-    this.missionInfo = ::get_mission_meta_info(this.missionName)
+    this.missionInfo = get_meta_mission_info_by_name(this.missionName)
     this.creationTimeMillisec = blk?.creationTime ?? 0
     this.operationTimeOnCreationMillisec = blk?.operationTimeOnCreation ?? 0
     this.unitsGroups = wwOperationUnitsGroups.getUnitsGroups()

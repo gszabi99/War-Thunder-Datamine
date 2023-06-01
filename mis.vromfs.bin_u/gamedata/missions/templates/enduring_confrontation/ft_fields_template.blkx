@@ -55,15 +55,15 @@
         ],
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "targetChangeProf": 0.25,
             "object": [
               "ft_t1_medium_aaa_squad",
               "ft_t2_medium_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetAir": true,
             "targetGnd": false,
             "accuracy": 0.75,
@@ -80,15 +80,15 @@
             "DelayAfterShoot": 2.0
           },
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "targetChangeProf": 0.25,
             "object": [
               "ft_t1_big_aaa_squad",
               "ft_t2_big_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.75,
             "airAccuracy": 0.75,
             "checkVisibilityTarget": true,
@@ -129,7 +129,7 @@
             "ft_t2_aaa_squad"
           ]
         },
-        "missionMarkAsRespawnPoint": [
+        "__missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/t1_backup_zone",
             "spawnEffect": false,
@@ -329,17 +329,17 @@
         "__moAddMissionObjective": [
           {
             "target": "ft_t1_find_enemy_airfield",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "object_type": "isAlive",
             "object_marking": 0,
-            "object_type": "isAlive"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           },
           {
             "target": "ft_t2_find_enemy_airfield",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "object_type": "isAlive",
             "object_marking": 0,
-            "object_type": "isAlive"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         ]
       },
@@ -902,7 +902,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -1290,7 +1290,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {},
@@ -1644,7 +1644,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.1
+            "time": 0.0
           }
         },
         "conditions": {},
@@ -1747,7 +1747,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.1
+            "time": 0.0
           }
         },
         "conditions": {
@@ -2324,7 +2324,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -2697,7 +2697,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {},
@@ -3051,7 +3051,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.1
+            "time": 0.0
           }
         },
         "conditions": {},
@@ -3154,7 +3154,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 0.1
+            "time": 0.0
           }
         },
         "conditions": {
@@ -3230,44 +3230,77 @@
         "actions": {
           "comment": [
             {
+              "value": "setting backup respawn point"
+            },
+            {
               "value": "fildy ne blizhnie. razreshaem respaun vsem"
             },
             {
               "value": ""
             }
           ],
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "@ft_generate_t1_loc_name",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "radius": -1.0,
-            "useExisting": false,
-            "canSpawnOnNeutral": false,
-            "removeAreas": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": true,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@ft_generate_t1_airfield_name",
-            "team": "A",
-            "separate_fuel_time": true,
-            "modular_airfield": true,
-            "respawnAirBackup": "missions/t1_backup_zone",
-            "tags": {
-              "none_can_spawn": false,
-              "helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
-            }
+          "varSetString": {
+            "value": "",
+            "var": "ft_generate_t1_backup_spawn_name",
+            "input_var": "ft_generate_t1_area_name"
           },
+          "missionMarkAsRespawnPoint": [
+            {
+              "loc_name": "@ft_generate_t1_backup_spawn_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "forceCreate": false,
+              "useExisting": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "radius": -1.0,
+              "ignoreTeamsOnReuse": false,
+              "target": "@ft_generate_t1_backup_spawn_name",
+              "team": "A",
+              "tags": {
+                "none_can_spawn": true
+              }
+            },
+            {
+              "loc_name": "@ft_generate_t1_loc_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "radius": -1.0,
+              "useExisting": false,
+              "canSpawnOnNeutral": false,
+              "removeAreas": false,
+              "showOnMap": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "resetStrictSpawnIndex": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
+              "target": "@ft_generate_t1_airfield_name",
+              "team": "A",
+              "separate_fuel_time": true,
+              "modular_airfield": true,
+              "respawnAirBackup": "@ft_generate_t1_backup_spawn_name",
+              "tags": {
+                "none_can_spawn": false,
+                "helicopter": false,
+                "tank": false,
+                "artillery": false,
+                "aaa": false,
+                "ship": false,
+                "boat": false
+              }
+            }
+          ],
           "triggerEnable": {
             "target": "ft_generate_t1_airfield_set_properties"
           }
@@ -3342,44 +3375,77 @@
         "actions": {
           "comment": [
             {
+              "value": "setting backup respawn point"
+            },
+            {
               "value": "fildy ne blizhnie. razreshaem respaun vsem"
             },
             {
               "value": ""
             }
           ],
-          "missionMarkAsRespawnPoint": {
-            "loc_name": "@ft_generate_t2_loc_name",
-            "spawnEffect": false,
-            "isStrictSpawn": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "radius": -1.0,
-            "useExisting": false,
-            "canSpawnOnNeutral": false,
-            "removeAreas": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": true,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@ft_generate_t2_airfield_name",
-            "team": "B",
-            "separate_fuel_time": true,
-            "modular_airfield": true,
-            "respawnAirBackup": "missions/t2_backup_zone",
-            "tags": {
-              "none_can_spawn": false,
-              "helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
-            }
+          "varSetString": {
+            "value": "",
+            "var": "ft_generate_t2_backup_spawn_name",
+            "input_var": "ft_generate_t2_area_name"
           },
+          "missionMarkAsRespawnPoint": [
+            {
+              "loc_name": "@ft_generate_t2_backup_spawn_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "forceCreate": false,
+              "useExisting": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "radius": -1.0,
+              "ignoreTeamsOnReuse": false,
+              "target": "@ft_generate_t2_backup_spawn_name",
+              "team": "B",
+              "tags": {
+                "none_can_spawn": true
+              }
+            },
+            {
+              "loc_name": "@ft_generate_t2_loc_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "radius": -1.0,
+              "useExisting": false,
+              "canSpawnOnNeutral": false,
+              "removeAreas": false,
+              "showOnMap": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "resetStrictSpawnIndex": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
+              "target": "@ft_generate_t2_airfield_name",
+              "team": "B",
+              "separate_fuel_time": true,
+              "modular_airfield": true,
+              "respawnAirBackup": "@ft_generate_t2_backup_spawn_name",
+              "tags": {
+                "none_can_spawn": false,
+                "helicopter": false,
+                "tank": false,
+                "artillery": false,
+                "aaa": false,
+                "ship": false,
+                "boat": false
+              }
+            }
+          ],
           "triggerEnable": {
             "target": "ft_generate_t2_airfield_set_properties"
           }
@@ -4043,10 +4109,10 @@
           },
           "moAddMissionObjective": {
             "target": "@ft_add_objective_t1_objective_name",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "unit_or_area": "@ft_add_objective_t2_zone_name",
             "object_marking": 0,
-            "unit_or_area": "@ft_add_objective_t2_zone_name"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {}
@@ -4132,10 +4198,10 @@
           },
           "moAddMissionObjective": {
             "target": "@ft_add_objective_t2_objective_name",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "unit_or_area": "@ft_add_objective_t1_zone_name",
             "object_marking": 0,
-            "unit_or_area": "@ft_add_objective_t1_zone_name"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {}
@@ -4391,10 +4457,10 @@
           ],
           "__moAddMissionObjective": {
             "target": "ft_t1_find_enemy_airfield",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "object_type": "isAlive",
             "object_marking": 0,
-            "object_type": "isAlive"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {}
@@ -4452,10 +4518,10 @@
           ],
           "__moAddMissionObjective": {
             "target": "ft_t2_find_enemy_airfield",
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
+            "object_type": "isAlive",
             "object_marking": 0,
-            "object_type": "isAlive"
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {}
@@ -7766,13 +7832,13 @@
             "objects": "@st_t1_generate_name"
           },
           "unitSetProperties": {
+            "stabInfluenceEnabled": true,
+            "realisticAI": false,
+            "object": "@st_t1_generate_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "stabInfluenceEnabled": true,
-            "realisticAI": false,
-            "object": "@st_t1_generate_name"
+            "object_var_value": 0
           },
           "unitMoveTo": {
             "object_marking": 0,
@@ -8223,13 +8289,13 @@
             "objects": "@st_t2_generate_name"
           },
           "unitSetProperties": {
+            "stabInfluenceEnabled": true,
+            "realisticAI": false,
+            "object": "@st_t2_generate_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "stabInfluenceEnabled": true,
-            "realisticAI": false,
-            "object": "@st_t2_generate_name"
+            "object_var_value": 0
           },
           "unitMoveTo": {
             "object_marking": 0,
@@ -11565,7 +11631,9 @@
     "ft_generate_t2_aaa_cur_field_idx": 0,
     "ft_generate_t1_aaa_next_trigger_name": "",
     "ft_generate_t2_aaa_next_trigger_name": "",
-    "ft_helicopters_pad_exclusive": false
+    "ft_helicopters_pad_exclusive": false,
+    "ft_generate_t1_backup_spawn_name": "",
+    "ft_generate_t2_backup_spawn_name": ""
   },
   "dialogs": {},
   "airfields": {},

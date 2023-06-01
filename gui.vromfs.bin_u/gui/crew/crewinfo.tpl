@@ -67,13 +67,19 @@ tdiv {
   }
   <</needCurPoints>>
 
-  table {
+  tdiv {
+    flow:t='vertical'
     padding:t='1@blockInterval'
     width:t='pw'
 
     <<#categoryRows>>
-    tr {
-      td {
+    tdiv {
+      width:t='pw'
+      flow:t='horizontal'
+      position:t='relative'
+      tdiv {
+        width:t='0.47pw'
+        position:t='relative'
         <<#categoryTooltip>>
         title:t='$tooltipObj'
         tooltipObj {
@@ -83,32 +89,28 @@ tdiv {
           display:t='hide'
         }
         <</categoryTooltip>>
-        padding-right:t='12*@sf/@pf_outdated'
-
         textarea {
-          pos:t='0, 0.5(ph-h)'
+          max-width:t='pw'
+          pos:t='0, 0.5ph-0.5h'
           position:t='relative'
+          overflow-y:t='auto'
           text:t='<<categoryName>>'
         }
       }
-      td {
-        expProgress {
-          pos:t='0.5(pw-w), 0.5(ph-h)'
-          width:t='pw'
-          position:t='relative'
-          type:t='old'
-          value:t='<<categoryValue>>'
-          minvalue:t='0'
-          maxvalue:t='<<categoryMaxValue>>'
-        }
+      expProgress {
+        width:t='0.35pw'
+        pos:t='8@sf/@pf, 0.5ph-0.5h'
+        position:t='relative'
+        type:t='old'
+        value:t='<<categoryValue>>'
+        minvalue:t='0'
+        maxvalue:t='<<categoryMaxValue>>'
       }
-
-      td {
-        textarea {
-          pos:t='pw-w, 0'
-          position:t='relative'
-          text:t='<<categoryValue>>/<<categoryMaxValue>>'
-        }
+      textarea {
+        right:t='4@sf/@pf'
+        top:t='0.5ph-0.5h'
+        position:t='relative'
+        text:t='<<categoryValue>>/<<categoryMaxValue>>'
       }
     }
     <</categoryRows>>

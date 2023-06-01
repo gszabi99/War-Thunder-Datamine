@@ -583,6 +583,7 @@
     "EngineName": "engine_type74",
     "TrackSoundPath": "tanks/engines_tanks",
     "TrackSoundPathStudio": "ground/engines",
+    "turret_turn": "turret_turn_servo",
     "TrackSoundName": "tracks",
     "TrackSoundNameCockpit": "tracks_interior",
     "EngineNameAi": "engine_tank_ai_middle",
@@ -1547,7 +1548,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_Raketenautomat_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -1640,7 +1641,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_Raketenautomat_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2757,6 +2758,8 @@
       "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
+      "replenishmentDelay": 4.0,
+      "replenishmentTime": 15.0,
       "shells": [
         {
           "fireEvent": "ammo_fire",

@@ -2315,8 +2315,24 @@
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_Lau10.blk"
       },
       {
+        "name": "fiat_g91y_as20",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_as20.blk"
+      },
+      {
+        "name": "fiat_g91y_as30",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_as30.blk"
+      },
+      {
+        "name": "fiat_g91y_aa20",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_aa20.blk"
+      },
+      {
         "name": "fiat_g91y_4x500lb_bombs",
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_4x500lb_bombs.blk"
+      },
+      {
+        "name": "fiat_g91y_4x500lb_bombs_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91y_4x500lb_bombs_snakeye.blk"
       },
       {
         "name": "fiat_g91y_2x500lb_bombs",
@@ -2412,6 +2428,23 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb3",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "us_1000lb_m83_2",
             "reqModification": "us_1000lb_m83_2",
@@ -2483,6 +2516,23 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb1",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "us_1000lb_m83",
             "reqModification": "us_1000lb_m83",
@@ -2545,6 +2595,54 @@
               "external": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "as20",
+            "reqModification": "nord_as_20",
+            "ShowNodes": {
+              "node": "rocket_pylon1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_as20.blk",
+              "emitter": "lau_10a_b002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange",
+            "name": "aa20",
+            "reqModification": "nord_as_20",
+            "ShowNodes": {
+              "node": "rocket_pylon1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk",
+              "emitter": "lau_10a_b002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_middle",
+            "name": "as30",
+            "reqModification": "nord_as_30",
+            "ShowNodes": {
+              "node": "rocket_pylon1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
+              "emitter": "lau_10a_b002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2563,6 +2661,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_default.blk",
+              "emitter": "bomb2",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "bomb2",
               "external": true,
               "separate": true,
@@ -2633,6 +2748,54 @@
               "external": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "as20",
+            "reqModification": "nord_as_20",
+            "ShowNodes": {
+              "node": "rocket_pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_as20.blk",
+              "emitter": "lau_10a_b003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange",
+            "name": "aa20",
+            "reqModification": "nord_as_20",
+            "ShowNodes": {
+              "node": "rocket_pylon2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk",
+              "emitter": "lau_10a_b003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_middle",
+            "name": "as30",
+            "reqModification": "nord_as_30",
+            "ShowNodes": {
+              "node": "rocket_pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/fr_as30.blk",
+              "emitter": "lau_10a_b003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2651,6 +2814,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "bomb4",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "us_500lb_snakeye",
+            "reqModification": "us_500lb_m82",
+            "ShowNodes": {
+              "node": "pylon_bomb4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
               "emitter": "bomb4",
               "external": true,
               "separate": true,
@@ -4645,6 +4825,15 @@
     "f4c_zuni": {
       "reqModification": "us_2_75_in_ffar_lau_3a",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "nord_as_20": {
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "nord_as_30": {
+      "prevModification": "nord_as_20",
+      "tier": 4,
       "modClass": "weapon"
     }
   },

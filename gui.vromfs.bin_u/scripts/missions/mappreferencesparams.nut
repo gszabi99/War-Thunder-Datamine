@@ -12,6 +12,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
 
 let mapsListByEvent = {}
 
@@ -140,7 +141,7 @@ let function getMapsListImpl(curEvent) {
     if (isLevelBanMode && missionToLevelTable?[name].origMisName)
       continue
 
-    let missionInfo = ::get_mission_meta_info(missionToLevelTable?[name].origMisName ?? name)
+    let missionInfo = get_meta_mission_info_by_name(missionToLevelTable?[name].origMisName ?? name)
     if ((missionInfo?.level ?? "") == "") {
       assertMisNames.append(name)
       continue

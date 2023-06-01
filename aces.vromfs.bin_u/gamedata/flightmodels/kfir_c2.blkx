@@ -2112,6 +2112,10 @@
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_aim9g.blk"
       },
       {
+        "name": "kfir_c2_python3",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_python3.blk"
+      },
+      {
         "name": "kfir_c2_shafrir2",
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_shafrir2.blk"
       },
@@ -2128,24 +2132,24 @@
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk83.blk"
       },
       {
-        "name": "kfir_c2_mk83_aim9g",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk83_aim9g.blk"
+        "name": "kfir_c2_mk83_python3",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk83_python3.blk"
       },
       {
         "name": "kfir_c2_mk117",
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk117.blk"
       },
       {
-        "name": "kfir_c2_mk117_aim9g",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk117_aim9g.blk"
+        "name": "kfir_c2_mk117_python3",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk117_python3.blk"
       },
       {
         "name": "kfir_c2_mk84",
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk84.blk"
       },
       {
-        "name": "kfir_c2_mk84_aim9g",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk84_aim9g.blk"
+        "name": "kfir_c2_mk84_python3",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk84_python3.blk"
       },
       {
         "name": "kfir_c2_suu_23",
@@ -2160,12 +2164,12 @@
         "blk": "gameData/FlightModels/weaponPresets/kfir_c2_lau3a.blk"
       },
       {
-        "name": "kfir_c2_mk82_lau10_aim9g",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk82_lau10_aim9g.blk"
+        "name": "kfir_c2_mk82_lau10_python3",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk82_lau10_python3.blk"
       },
       {
-        "name": "kfir_c2_mk82_lau3a_aim9g",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk82_lau3a_aim9g.blk"
+        "name": "kfir_c2_mk82_lau3a_python3",
+        "blk": "gameData/FlightModels/weaponPresets/kfir_c2_mk82_lau3a_python3.blk"
       }
     ]
   },
@@ -2192,6 +2196,8 @@
         "pylon_5f_002",
         "pylon_aero3b_001",
         "pylon_aero3b_002",
+        "pylon_lau7_001",
+        "pylon_lau7_002",
         "pylon_napgach",
         "fuse_cap",
         "pylon_ces3_shafrir2_001",
@@ -2320,7 +2326,7 @@
               "node": [
                 "fuse_cap",
                 "pylon_ces3_shafrir2_001",
-                "pylon_aero3b_001"
+                "pylon_lau7_001"
               ]
             },
             "Weapon": {
@@ -2340,13 +2346,33 @@
               "node": [
                 "fuse_cap",
                 "pylon_ces3_shafrir2_001",
-                "pylon_aero3b_001"
+                "pylon_lau7_001"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
               "emitter": "rocket_aim9b_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "python3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_ces3_shafrir2_001",
+                "pylon_lau7_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "rocket_python3_001",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3075,7 +3101,7 @@
               "node": [
                 "fuse_cap",
                 "pylon_ces3_shafrir2_002",
-                "pylon_aero3b_002"
+                "pylon_lau7_002"
               ]
             },
             "Weapon": {
@@ -3095,13 +3121,33 @@
               "node": [
                 "fuse_cap",
                 "pylon_ces3_shafrir2_002",
-                "pylon_aero3b_002"
+                "pylon_lau7_002"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
               "emitter": "rocket_aim9b_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "python3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "fuse_cap",
+                "pylon_ces3_shafrir2_002",
+                "pylon_lau7_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "rocket_python3_002",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3234,16 +3280,40 @@
       "tier": 4
     },
     "f_4c_CdMin_Fuse": {
-      "tier": 1
+      "tier": 1,
+      "modClass": "lth"
     },
     "structure_str": {
-      "tier": 2
-    },
-    "f_4c_g_suit": {
-      "tier": 3
+      "tier": 2,
+      "modClass": "lth"
     },
     "new_cover": {
-      "tier": 4
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "countermeasures_launcher_chaff_only": {},
+    "countermeasures_launcher_flare_only": {},
+    "countermeasures_launcher_chaff_priority": {},
+    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_belt_pack": {
+      "modClass": "armor",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "countermeasures",
+      "tier": 1,
+      "effects": {
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "defa552a_ltc_common"
+          }
+        }
+      }
+    },
+    "f_4c_g_suit": {
+      "prevModification": "countermeasures_belt_pack",
+      "tier": 3,
+      "modClass": "armor"
     },
     "aden_air_targets": {},
     "aden_ground_targets": {},
@@ -3296,27 +3366,12 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "group": "countermeasures",
-      "tier": 2,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "defa552a_ltc_common"
-          }
-        }
-      }
-    },
     "us_aim_9g": {
-      "reqModification": "countermeasures_belt_pack",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "il_python_3": {
+      "reqModification": "us_aim_9g",
       "tier": 4,
       "modClass": "weapon"
     }

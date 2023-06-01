@@ -2354,9 +2354,9 @@
     },
     "Target": {
       "pos": [
-        0.5,
-        -0.2,
-        0.0
+        -7.7,
+        0.0,
+        3.45
       ],
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
@@ -2438,6 +2438,10 @@
       {
         "name": "f_14b_gbu_10",
         "blk": "gameData/FlightModels/weaponPresets/f_14b_gbu_10.blk"
+      },
+      {
+        "name": "f_14b_gbu_24",
+        "blk": "gameData/FlightModels/weaponPresets/f_14b_gbu_24.blk"
       },
       {
         "name": "f_14b_lau_10a",
@@ -2688,6 +2692,56 @@
             }
           },
           {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_1",
+                "lau_138_bol_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 160,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_1",
+                "lau_138_bol_001"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+                "emitter": "aim_9_2",
+                "bullets": 1
+              }
+            ]
+          },
+          {
             "iconType": "missile_air_to_air_midrange_special",
             "name": "aim_7m",
             "reqModification": "us_aim_7m",
@@ -2772,10 +2826,16 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": {
-              "slot": 5,
-              "preset": "us_gbu_10_x2"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "us_gbu_10_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "us_gbu_24"
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_air_midrange_special_group",
@@ -2831,6 +2891,10 @@
               {
                 "slot": 5,
                 "preset": "us_mk83_air_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "us_gbu_24"
               }
             ]
           },
@@ -2870,6 +2934,10 @@
               {
                 "slot": 5,
                 "preset": "us_gbu_10_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "us_gbu_24"
               }
             ]
           },
@@ -2909,6 +2977,10 @@
               {
                 "slot": 5,
                 "preset": "us_gbu_10_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "us_gbu_24"
               }
             ]
           },
@@ -3208,6 +3280,29 @@
                 "separate": true
               }
             ]
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix5",
+                "pylon_mk84_4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
+              "emitter": "2000lb_mk_84_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "lantirn"
+            }
           }
         ]
       },
@@ -3518,7 +3613,7 @@
           {
             "iconType": "guided_bomb_small_laser_x2",
             "name": "us_gbu_10_x2",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -3665,6 +3760,29 @@
                 "separate": true
               }
             ]
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix2",
+                "pylon_mk84_1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
+              "emitter": "2000lb_mk_84_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "lantirn"
+            }
           }
         ]
       },
@@ -3691,6 +3809,56 @@
               "emitter": "aim_9_3",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_2",
+                "lau_138_bol_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 160,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": [
+                "pylon_for_lau7a_2",
+                "lau_138_bol_003"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "aam",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+                "emitter": "aim_9_3",
+                "bullets": 1
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_air_midrange_special",
@@ -4225,7 +4393,7 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_gbu_10": {
+    "us_gbu_10_gbu_24": {
       "reqModification": "us_gbu_16",
       "tier": 4,
       "modClass": "weapon"

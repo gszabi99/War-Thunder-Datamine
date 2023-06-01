@@ -236,6 +236,15 @@ let isCanonSightActivated = Watched(false)
 let isTurretSightActivated = Watched(false)
 let isParamTableActivated = Watched(false)
 
+let IlsAtgmLaunchEdge1X = Watched(0)
+let IlsAtgmLaunchEdge1Y = Watched(0)
+let IlsAtgmLaunchEdge2X = Watched(0)
+let IlsAtgmLaunchEdge2Y = Watched(0)
+let IlsAtgmLaunchEdge3X = Watched(0)
+let IlsAtgmLaunchEdge3Y = Watched(0)
+let IlsAtgmLaunchEdge4X = Watched(0)
+let IlsAtgmLaunchEdge4Y = Watched(0)
+
 let helicopterState = {
 
   IndicatorsVisible,
@@ -280,6 +289,14 @@ let helicopterState = {
   AgmRotatedLaunchZonePitchMin,
   AgmLaunchZoneDistMin,
   AgmLaunchZoneDistMax,
+  IlsAtgmLaunchEdge1X,
+  IlsAtgmLaunchEdge1Y,
+  IlsAtgmLaunchEdge2X,
+  IlsAtgmLaunchEdge2Y,
+  IlsAtgmLaunchEdge3X,
+  IlsAtgmLaunchEdge3Y,
+  IlsAtgmLaunchEdge4X,
+  IlsAtgmLaunchEdge4Y,
 
   IRCMState,
 

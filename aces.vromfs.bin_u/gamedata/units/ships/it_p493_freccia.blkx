@@ -2215,7 +2215,8 @@
       12.3,
       0.0
     ],
-    "detectionHeight": 9.8
+    "detectionHeight": 9.8,
+    "cameraAhead": true
   },
   "sound": {
     "EngineName": "engine_shiplight01",
@@ -2459,120 +2460,19 @@
             ]
           }
         }
-      },
-      {
-        "trigger": "gunner2",
-        "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
-        "emitter": "emtr_gun_flame_03",
-        "flash": "emtr_gun_flame_03",
-        "useEmitter": true,
-        "breechDP": "main_caliber_gun_03_dm",
-        "barrelDP": "main_caliber_gun_03_dm",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "speedYaw": 95.0,
-        "speedPitch": 95.0,
-        "bullets": 2000,
-        "useGunnerTargetingQuality": false,
-        "allowableDelta": 2.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
-        "aimMinDist": 20.0,
-        "aimMaxDist": 4500.0,
-        "randomAngle": 0.0,
-        "accuracyBotMultAir": 0.55,
-        "accuracyAir": 1.0,
-        "accuracyGnd": 0.8,
-        "errMeasureVel": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 100.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 3.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "main_caliber_turret_03",
-          "gun": "main_caliber_gun_03",
-          "barrel": "gun_barrel_03",
-          "gunnerDm": "main_caliber_turret_03_dm"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -6.0,
-            90.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -180.0,
-              -158.0
-            ],
-            "pitch": [
-              -6.0,
-              40.0
-            ]
-          },
-          {
-            "yaw": [
-              -15.0,
-              15.0
-            ],
-            "pitch": [
-              -6.0,
-              7.0
-            ]
-          },
-          {
-            "yaw": [
-              158.0,
-              180.0
-            ],
-            "pitch": [
-              -6.0,
-              40.0
-            ]
-          }
-        ],
-        "gunStabilizer": {
-          "hasVerticalGunFreeMode": true,
-          "hasHorizontal": true,
-          "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 80.0,
-          "hasVertical": true,
-          "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 80.0,
-          "errorKPHToDegrees": {
-            "row": [
-              [
-                5.0,
-                0.01
-              ],
-              [
-                70.0,
-                0.05
-              ]
-            ]
-          }
-        }
       }
     ]
   },
   "weapon_presets": {
     "preset": [
       {
-        "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/it_p493_freccia_torpedoes.blk",
-        "reqModification": "ship_torpedoes"
-      },
-      {
         "name": "it_p493_freccia_default",
         "blk": "gameData/units/ships/weaponPresets/it_p493_freccia_default.blk"
+      },
+      {
+        "name": "torpedoes",
+        "blk": "gameData/units/ships/weaponPresets/it_p493_freccia_torpedoes.blk",
+        "reqModification": "ship_p493_freccia_torpedoes"
       }
     ]
   },
@@ -2600,294 +2500,6 @@
             "Bip01 Pelvis_10",
             "Bip01 Pelvis_11",
             "Bip01 Pelvis_12"
-          ]
-        },
-        "commonWeapons": {
-          "hideNodes": {
-            "node": [
-              "ex_decor_13",
-              "main_caliber_turret_03",
-              "main_caliber_gun_03",
-              "gun_barrel_03",
-              "turret_03_front"
-            ]
-          },
-          "animatedBones": {
-            "node": [
-              "antenna_target_location_01",
-              "antenna_target_tagging_01",
-              "antenna_target_tagging_mount_01"
-            ]
-          },
-          "Weapon": [
-            {
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
-              "emitter": "emtr_gun_flame_01",
-              "flash": "emtr_gun_flame_01",
-              "useEmitter": true,
-              "breechDP": "main_caliber_gun_01_dm",
-              "barrelDP": "main_caliber_gun_01_dm",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 95.0,
-              "speedPitch": 95.0,
-              "bullets": 2000,
-              "useGunnerTargetingQuality": false,
-              "allowableDelta": 2.0,
-              "ChainfireTime": 60.0,
-              "DelayAfterShoot": 0.0,
-              "aimMinDist": 20.0,
-              "aimMaxDist": 4500.0,
-              "randomAngle": 0.0,
-              "accuracyBotMultAir": 0.55,
-              "accuracyAir": 1.0,
-              "accuracyGnd": 0.8,
-              "errMeasureVel": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errMeasureVelFast": 100.0,
-              "errMeasureVelFwdShift": 0.5,
-              "errMeasureVelDir": 3.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "main_caliber_turret_01",
-                "gun": "main_caliber_gun_01",
-                "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -6.0,
-                  90.0
-                ]
-              },
-              "limitsTable": {
-                "lim1": [
-                  -180.0,
-                  -145.0,
-                  32.0,
-                  90.0
-                ],
-                "lim2": [
-                  -145.0,
-                  -15.0,
-                  -6.0,
-                  90.0
-                ],
-                "lim3": [
-                  -15.0,
-                  15.0,
-                  -4.0,
-                  90.0
-                ],
-                "lim4": [
-                  15.0,
-                  145.0,
-                  -6.0,
-                  90.0
-                ],
-                "lim5": [
-                  145.0,
-                  180.0,
-                  32.0,
-                  90.0
-                ]
-              },
-              "gunStabilizer": {
-                "hasVerticalGunFreeMode": true,
-                "hasHorizontal": true,
-                "horizontalOmegaMult": 1.0,
-                "horizontalSpeedLimitKPH": 80.0,
-                "hasVertical": true,
-                "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 80.0,
-                "errorKPHToDegrees": {
-                  "row": [
-                    [
-                      5.0,
-                      0.01
-                    ],
-                    [
-                      70.0,
-                      0.05
-                    ]
-                  ]
-                }
-              }
-            },
-            {
-              "trigger": "gunner1",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/navalModels_weapons/40mm_l70_bofors_oto_breda_naval_user_cannon.blk",
-              "emitter": "emtr_gun_flame_02",
-              "flash": "emtr_gun_flame_02",
-              "useEmitter": true,
-              "breechDP": "main_caliber_gun_02_dm",
-              "barrelDP": "main_caliber_gun_02_dm",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 95.0,
-              "speedPitch": 95.0,
-              "bullets": 2000,
-              "useGunnerTargetingQuality": false,
-              "allowableDelta": 2.0,
-              "ChainfireTime": 60.0,
-              "DelayAfterShoot": 0.0,
-              "aimMinDist": 20.0,
-              "aimMaxDist": 4500.0,
-              "randomAngle": 0.0,
-              "accuracyBotMultAir": 0.55,
-              "accuracyAir": 1.0,
-              "accuracyGnd": 0.8,
-              "errMeasureVel": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errMeasureVelFast": 100.0,
-              "errMeasureVelFwdShift": 0.5,
-              "errMeasureVelDir": 3.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "main_caliber_turret_02",
-                "gun": "main_caliber_gun_02",
-                "barrel": "gun_barrel_02",
-                "gunnerDm": "main_caliber_turret_02_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -6.0,
-                  90.0
-                ]
-              },
-              "limitsDeadzone": [
-                {
-                  "yaw": [
-                    -180.0,
-                    -165.0
-                  ],
-                  "pitch": [
-                    -6.0,
-                    30.0
-                  ]
-                },
-                {
-                  "yaw": [
-                    165.0,
-                    180.0
-                  ],
-                  "pitch": [
-                    -6.0,
-                    30.0
-                  ]
-                }
-              ],
-              "gunStabilizer": {
-                "hasVerticalGunFreeMode": true,
-                "hasHorizontal": true,
-                "horizontalOmegaMult": 1.0,
-                "horizontalSpeedLimitKPH": 80.0,
-                "hasVertical": true,
-                "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 80.0,
-                "errorKPHToDegrees": {
-                  "row": [
-                    [
-                      5.0,
-                      0.01
-                    ],
-                    [
-                      70.0,
-                      0.05
-                    ]
-                  ]
-                }
-              }
-            },
-            {
-              "trigger": "gunner3",
-              "triggerGroup": "torpedoes",
-              "external": true,
-              "blk": "gameData/Weapons/torpedoes/it_533mm_si270_tipo_l_torpedo.blk",
-              "emitter": "bone_torpedo_01",
-              "bullets": 1,
-              "barrelDP": "tt_01_dm",
-              "brokenBarrelAllowShoot": false,
-              "ammoDP": "torpedo_01_dm",
-              "enableCourseCorrection": [
-                false,
-                false
-              ],
-              "startFx": "start_torpedo",
-              "startFxOffset": [
-                3.0,
-                0.0,
-                0.0
-              ],
-              "startSpeed": 18.0,
-              "useStartSpeed": true,
-              "allowableDelta": 180.0,
-              "turret": {
-                "head": "bone_torpedo_01",
-                "gun": "bone_torpedo_01"
-              },
-              "limits": {
-                "yaw": [
-                  0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner4",
-              "triggerGroup": "torpedoes",
-              "external": true,
-              "blk": "gameData/Weapons/torpedoes/it_533mm_si270_tipo_l_torpedo.blk",
-              "emitter": "bone_torpedo_02",
-              "bullets": 1,
-              "barrelDP": "tt_02_dm",
-              "brokenBarrelAllowShoot": false,
-              "ammoDP": "torpedo_02_dm",
-              "enableCourseCorrection": [
-                false,
-                false
-              ],
-              "startFx": "start_torpedo",
-              "startFxOffset": [
-                3.0,
-                0.0,
-                0.0
-              ],
-              "startSpeed": 18.0,
-              "useStartSpeed": true,
-              "allowableDelta": 180.0,
-              "turret": {
-                "head": "bone_torpedo_02",
-                "gun": "bone_torpedo_02"
-              },
-              "limits": {
-                "yaw": [
-                  0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
-            }
           ]
         }
       }
@@ -2928,28 +2540,32 @@
         "name": "compartment_fire",
         "fx": {
           "name": "ship_fire_small",
-          "centerDmgPart": true
+          "centerDmgPart": true,
+          "isFireBurnMark": true
         }
       },
       {
         "name": "superstructure_fire",
         "fx": {
           "name": "ship_fire_small",
-          "centerDmgPart": true
+          "centerDmgPart": true,
+          "isFireBurnMark": true
         }
       },
       {
         "name": "turret_fire",
         "fx": {
           "name": "ship_fire_small",
-          "centerDmgPart": true
+          "centerDmgPart": true,
+          "isFireBurnMark": true
         }
       },
       {
         "name": "fuel_tank_fire",
         "fx": {
           "name": "ship_fire_small",
-          "centerDmgPart": true
+          "centerDmgPart": true,
+          "isFireBurnMark": true
         }
       },
       {
@@ -2957,19 +2573,23 @@
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
-            "emitter": "emtr_fire_ammo_01"
+            "emitter": "emtr_fire_ammo_01",
+            "isFireBurnMark": true
           },
           {
             "name": "explosion_ship_small_ammo_second",
-            "emitter": "emtr_fire_ammo_02"
+            "emitter": "emtr_fire_ammo_02",
+            "isFireBurnMark": true
           },
           {
             "name": "explosion_ship_small_ammo",
-            "emitter": "emtr_fire_ammo_03"
+            "emitter": "emtr_fire_ammo_03",
+            "isFireBurnMark": true
           },
           {
             "name": "explosion_ship_small_ammo_second",
-            "emitter": "emtr_fire_ammo_04"
+            "emitter": "emtr_fire_ammo_04",
+            "isFireBurnMark": true
           }
         ]
       },
@@ -3148,11 +2768,13 @@
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_dmg_01"
+            "emitter": "emtr_fire_dmg_01",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_medium",
-            "emitter": "emtr_fire_dmg_02"
+            "emitter": "emtr_fire_dmg_02",
+            "isFireBurnMark": true
           },
           {
             "name": "ship_fire_tiny",
@@ -3391,15 +3013,18 @@
         "fx": [
           {
             "name": "explosion_ship_small",
-            "emitter": "emtr_explosion_center_01"
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": true
           },
           {
             "name": "explosion_ship_small_second",
-            "emitter": "emtr_explosion_center_02"
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": true
           },
           {
             "name": "explosion_ship_small_second",
-            "emitter": "emtr_explosion_center_03"
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": true
           }
         ],
         "wreckages": {
@@ -3414,15 +3039,18 @@
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
-            "emitter": "emtr_explosion_center_01"
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": true
           },
           {
             "name": "explosion_ship_small_ammo_second",
-            "emitter": "emtr_explosion_center_02"
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": true
           },
           {
             "name": "explosion_ship_small_ammo_second",
-            "emitter": "emtr_explosion_center_03"
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": true
           }
         ],
         "wreckages": {
@@ -3436,56 +3064,64 @@
         "name": "ammo_fire_1",
         "fx": {
           "name": "explosion_ship_small_ammo_second",
-          "emitter": "emtr_fire_ammo_01"
+          "emitter": "emtr_fire_ammo_01",
+          "isFireBurnMark": true
         }
       },
       {
         "name": "ammo_fire_2",
         "fx": {
           "name": "explosion_ship_small_ammo_second",
-          "emitter": "emtr_fire_ammo_02"
+          "emitter": "emtr_fire_ammo_02",
+          "isFireBurnMark": true
         }
       },
       {
         "name": "ammo_fire_3",
         "fx": {
           "name": "explosion_ship_small_ammo_second",
-          "emitter": "emtr_fire_ammo_03"
+          "emitter": "emtr_fire_ammo_03",
+          "isFireBurnMark": true
         }
       },
       {
         "name": "ammo_fire_4",
         "fx": {
           "name": "explosion_ship_small_ammo_second",
-          "emitter": "emtr_fire_ammo_04"
+          "emitter": "emtr_fire_ammo_04",
+          "isFireBurnMark": true
         }
       },
       {
         "name": "ammo_explosion_1",
         "fx": {
           "name": "explosion_ship_small_ammo",
-          "emitter": "emtr_fire_ammo_01"
+          "emitter": "emtr_fire_ammo_01",
+          "isFireBurnMark": true
         }
       },
       {
         "name": "ammo_explosion_2",
         "fx": {
           "name": "explosion_ship_small_ammo",
-          "emitter": "emtr_fire_ammo_02"
+          "emitter": "emtr_fire_ammo_02",
+          "isFireBurnMark": true
         }
       },
       {
         "name": "ammo_explosion_3",
         "fx": {
           "name": "explosion_ship_small_ammo",
-          "emitter": "emtr_fire_ammo_03"
+          "emitter": "emtr_fire_ammo_03",
+          "isFireBurnMark": true
         }
       },
       {
         "name": "ammo_explosion_4",
         "fx": {
           "name": "explosion_ship_small_ammo",
-          "emitter": "emtr_fire_ammo_04"
+          "emitter": "emtr_fire_ammo_04",
+          "isFireBurnMark": true
         }
       },
       {
@@ -3499,7 +3135,8 @@
         "name": "torpedo_explosion",
         "fx": {
           "name": "explosion_ship_small_ammo",
-          "centerDmgPart": false
+          "centerDmgPart": false,
+          "isFireBurnMark": true
         }
       },
       {
@@ -3570,7 +3207,8 @@
     "procedural": {
       "name": "default",
       "fx": {
-        "name": "ship_fire_tiny"
+        "name": "ship_fire_tiny",
+        "isFireBurnMark": true
       }
     }
   },

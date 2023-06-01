@@ -36,6 +36,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { encode_uri_component } = require("url")
 let { get_local_mplayer } = require("mission")
+let { show_profile_card } = require("%xboxLib/impl/user.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -1021,7 +1022,8 @@ let { get_local_mplayer } = require("mission")
   }
 
   function onOpenXboxProfile() {
-    ::xbox_show_profile_card(this.curPlayerExternalIds?.xboxId ?? "")
+    if (this.curPlayerExternalIds?.xboxId)
+      show_profile_card(this.curPlayerExternalIds?.xboxId.tointeger())
   }
 
   function onOpenPSNProfile() {

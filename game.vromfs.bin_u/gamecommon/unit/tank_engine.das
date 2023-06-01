@@ -8,10 +8,12 @@ require DagorDataBlock
 require %game.unit.unit_events
 require %game.dm.dm_events
 
+
 [es(tag=server)]
 def tank_engine_updater_es(act : UpdateStageInfoAct;
                            eid : EntityId;
                            uid : int;
+                           var unit_fx : UnitFx;
                            tank_engine__overheatDelay : float;
                            tank_engine__overheatDamageCooldown : float&;
                            tank_engine__engine_parts : PartIdList;
@@ -23,6 +25,8 @@ def tank_engine_updater_es(act : UpdateStageInfoAct;
                            var tank_engine__overheat : bool&;
                            var tank_engine__overheatDamageTime : float&)
   var unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
 
   if tank_engine__overheat && tank_engine__overheatDamageType >= 0 && repair_system_remaining_repair_time <= 0.0f
     if tank_engine__overheatDamageTime < 0.0
@@ -38,11 +42,13 @@ def tank_engine_updater_es(act : UpdateStageInfoAct;
       if !hasDamage
         tank_engine__overheat = false
         send_net_event(eid, [[EventEngineOverheatDamage start=false]])
-        *get_unit_fx(unit) |> stopFxEvent(tank_engine__brokenRadiatorFxEventId)
+        unit_fx |> stopFxEvent(tank_engine__brokenRadiatorFxEventId)
+
 
 [es(tag=server)]
 def tank_engine_init_es(evt : CmdInitComponent;
                         uid : int;
+                        unit_fx : UnitFx;
                         var tank_engine__overheatDelay : float&;
                         var tank_engine__overheatDamage : float&;
                         var tank_engine__overheatDamageType : int&;
@@ -52,7 +58,7 @@ def tank_engine_init_es(evt : CmdInitComponent;
                         var tank_engine__brokenRadiatorFxEventId : int&)
   var unit = get_unit(uid)
   assert(unit != null)
-  if !unit.isGroundModel
+  if unit == null || !unit.isGroundModel
     return
 
   let tankEngineModelBlk = *evt.modelBlk |> datablock_get_block_by_name("tankEngine")
@@ -77,7 +83,7 @@ def tank_engine_init_es(evt : CmdInitComponent;
           tank_engine__engine_parts |> push(partId)
     tankEngineBlk |> datablock_get_block("radiator") <| $(radiatorBlk)
       let brokenRadiatorFxEvenName = radiatorBlk |> datablock_getStr("brokenFxEvent", "")
-      tank_engine__brokenRadiatorFxEventId = *get_unit_fx(unit) |> getEventIdByName(brokenRadiatorFxEvenName)
+      tank_engine__brokenRadiatorFxEventId = unit_fx |> getEventIdByName(brokenRadiatorFxEvenName)
       radiatorBlk |> datablock_for_each_param("part") <| $(i, t)
         if t == int(DataBlockParamType TYPE_STRING)
           let partName = radiatorBlk |> datablock_getStr(i)
@@ -85,16 +91,20 @@ def tank_engine_init_es(evt : CmdInitComponent;
           if partId.valid
             tank_engine__radiator_parts |> push(partId)
 
+
 [es(tag=server)]
 def tank_engine_on_damage_es(evt : EventUnitDamage;
                              eid : EntityId;
                              uid : int;
+                             var unit_fx : UnitFx;
                              tank_engine__radiator_parts : PartIdList;
                              tank_engine__overheatDamageTime : float;
                              tank_engine__brokenRadiatorFxEventId : int;
                              var tank_engine__overheatOffender : OffenderData&;
                              var tank_engine__overheat : bool&)
   var unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
 
   if int(evt.hpFixed) == 0 && tank_engine__overheatDamageTime < 0.0
     var containPart = false
@@ -106,10 +116,10 @@ def tank_engine_on_damage_es(evt : EventUnitDamage;
       tank_engine__overheat = true
       send_net_event(eid, [[EventEngineOverheatDamage start=true]])
       tank_engine__overheatOffender = evt.offender
-      let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(evt.partId.globalId))
-      let coll_node = *unit.visual |> dm_get_collision_node_by_part_id(int(evt.partId.globalId))
       let zero = float3(0.0f)
-      *get_unit_fx(unit) |> startFxEvent(tank_engine__brokenRadiatorFxEventId, geom_node_id, zero, coll_node.boundingSphere.c)
+      let up = float3(0.0f, 1.0f, 0.0f)
+      unit_fx |> startFxEvent(tank_engine__brokenRadiatorFxEventId, unit, evt.partId, zero, up)
+
 
 [es(tag=server)]
 def tank_engine_respawn_handle(evt : EventUnitRespawn;
@@ -120,6 +130,7 @@ def tank_engine_respawn_handle(evt : EventUnitRespawn;
   send_net_event(eid, [[EventEngineOverheatDamage start=false]])
   tank_engine__overheatDamageTime = -1.0
 
+
 [es(tag=server)]
 def tank_engine_repair_handle(evt : EventUnitRepair;
                               eid : EntityId;
@@ -128,6 +139,7 @@ def tank_engine_repair_handle(evt : EventUnitRepair;
   tank_engine__overheat = false
   send_net_event(eid, [[EventEngineOverheatDamage start=false]])
   tank_engine__overheatDamageTime = -1.0
+
 
 [es(tag=server)]
 def tank_engine_on_part_restored_es(evt : EventDamagePartRestored;

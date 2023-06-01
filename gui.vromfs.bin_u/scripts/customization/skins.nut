@@ -12,6 +12,7 @@ let { getDecorator, getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId
 let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let { isGuid } = require("%scripts/guidParser.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -23,7 +24,7 @@ let function getBestSkinsList(unitName, isLockedAllowed) {
 
   let misBlk = ::is_in_flight()
     ? ::get_current_mission_info_cached()
-    : ::get_mission_meta_info(unit.testFlight)
+    : get_meta_mission_info_by_name(unit.testFlight)
   let level = misBlk?.level
   if (!level)
     return [DEFAULT_SKIN_NAME]

@@ -2106,6 +2106,10 @@
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_2x500lb_bombs.blk"
       },
       {
+        "name": "fiat_g91_r3_2x500lb_bombs_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_2x500lb_bombs_snakeye.blk"
+      },
+      {
         "name": "fiat_g91_r3_2x_aerea_559g",
         "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r3_2x_aerea_559g.blk"
       }
@@ -2252,6 +2256,23 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_snakeye",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb1",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "559g1",
             "reqModification": "aerea_559g",
@@ -2387,6 +2408,23 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lbs_snakeye",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "bomb2",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {

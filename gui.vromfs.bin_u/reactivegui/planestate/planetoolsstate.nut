@@ -38,6 +38,7 @@ let MfdRadarWithNavVis = Watched(false)
 let MfdRadarNavPosSize = [0, 0, 0, 0]
 let AimLockPos = [0, 0]
 let AimLockValid = Watched(false)
+let AimLockDist = Watched(-1)
 let TvvMark = [0, 0]
 let AtgmTargetDist = Watched(0.0)
 let MfdVdiVisible = Watched(false)
@@ -81,6 +82,7 @@ let planeState = {
   MfdRadarWithNavVis,
   MfdRadarNavPosSize,
   AimLockValid,
+  AimLockDist,
   AimLockPos,
   TvvMark,
   AtgmTargetDist,

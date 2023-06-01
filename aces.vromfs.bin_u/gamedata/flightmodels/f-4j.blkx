@@ -22,7 +22,6 @@
   "havePointOfInterestDesignator": true,
   "hasHelmetDesignator": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
@@ -36,6 +35,7 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_i_24_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon6_dm": {
@@ -233,6 +233,11 @@
       },
       "tank8_dm": {
         "hp": 120.5
+      }
+    },
+    "steel_tank_s": {
+      "tank9_dm": {
+        "hp": 80.5
       }
     }
   },
@@ -1496,6 +1501,48 @@
         ]
       },
       {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -2586,6 +2633,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_4j_default.blk"
       },
       {
+        "name": "f_4j_default_ptb",
+        "blk": "gameData/FlightModels/weaponPresets/f_4j_default_ptb.blk"
+      },
+      {
         "name": "f_4j_rockets_aim9d_default",
         "blk": "gameData/FlightModels/weaponPresets/f_4j_rockets_aim9d_default.blk"
       },
@@ -2644,7 +2695,7 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 7257.0,
+    "maxloadMass": 7400.0,
     "maxloadMassLeftConsoles": 3000.0,
     "maxloadMassRightConsoles": 3000.0,
     "maxDisbalance": 1500.0,
@@ -2679,7 +2730,8 @@
     "HideDmParts": {
       "node": [
         "cannon6_dm",
-        "cover6_dm"
+        "cover6_dm",
+        "tank9_dm"
       ]
     },
     "WeaponSlot": [
@@ -3530,6 +3582,22 @@
               "traceOffset": 1,
               "counterIndex": 1,
               "gearName": "gear_c"
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_600_gal_fuse_f_4.blk",
+              "emitter": "us_600_phantom_drop_tank",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           }
         ]
@@ -4539,6 +4607,38 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.6
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": [
+      "blister1",
+      "blister2"
+    ],
+    "seat": [
+      "seat_02",
+      "seat_01"
+    ],
+    "fxEmitter": [
+      "blister1",
+      "blister2"
+    ],
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

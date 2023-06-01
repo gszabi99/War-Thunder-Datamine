@@ -67,7 +67,7 @@
         "hp": 40.0
       }
     },
-    "armor_engine": {
+    "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 50.5
@@ -273,6 +273,11 @@
       },
       "tank8_dm": {
         "hp": 120.5
+      }
+    },
+    "steel_tank_s": {
+      "tank9_dm": {
+        "hp": 80.5
       }
     }
   },
@@ -1724,6 +1729,48 @@
         ]
       },
       {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -2905,6 +2952,10 @@
         "blk": "gameData/flightModels/weaponPresets/kurnass_2000_aim9l.blk"
       },
       {
+        "name": "kurnass_2000_python3",
+        "blk": "gameData/flightModels/weaponPresets/kurnass_2000_python3.blk"
+      },
+      {
         "name": "kurnass_2000_suu_23a",
         "blk": "gameData/flightModels/weaponPresets/kurnass_2000_suu_23a.blk"
       },
@@ -2943,14 +2994,6 @@
       {
         "name": "kurnass_2000_rockets_zuni",
         "blk": "gameData/flightModels/weaponPresets/kurnass_2000_rockets_zuni.blk"
-      },
-      {
-        "name": "kurnass_2000_rockets_aim7e2",
-        "blk": "gameData/flightModels/weaponPresets/kurnass_2000_rockets_aim7e2.blk"
-      },
-      {
-        "name": "kurnass_2000_rockets_aim7f",
-        "blk": "gameData/flightModels/weaponPresets/kurnass_2000_rockets_aim7f.blk"
       },
       {
         "name": "kurnass_2000_add_ltc",
@@ -3641,6 +3684,25 @@
               "slot": 2,
               "preset": "agm_65d_x3"
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "python3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": "pylon_l_in"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/aero_3b_python3.blk",
+              "emitter": "aero_3b_001",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "agm_65d_x3"
+            }
           }
         ]
       },
@@ -3649,51 +3711,23 @@
         "tier": 8,
         "order": 7,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "missile_air_to_air_special",
-            "name": "aim_7e2",
-            "reqModification": "us_aim_7e2",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7e2_dogfight_sparrow.blk",
-              "emitter": "aim_7e_003",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "additional_ltc",
+          "reqModification": "countermeasures_belt_pack",
+          "ShowNodes": {
+            "node": "flare_aim_7_002"
           },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7f",
-            "reqModification": "us_aim_7f",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
-              "emitter": "aim_7e_003",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "ltc",
-            "name": "additional_ltc",
-            "reqModification": "countermeasures_belt_pack",
-            "ShowNodes": {
-              "node": "flare_aim_7_002"
-            },
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare5",
-              "bullets": 72,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "countermeasures",
+            "startFx": "",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+            "emitter": "emtr_flare5",
+            "bullets": 72,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       },
       {
         "index": 5,
@@ -3701,32 +3735,6 @@
         "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "missile_air_to_air_special",
-            "name": "aim_7e2",
-            "reqModification": "us_aim_7e2",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7e2_dogfight_sparrow.blk",
-              "emitter": "aim_7e_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7f",
-            "reqModification": "us_aim_7f",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
-              "emitter": "aim_7e_001",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "missile_air_to_air",
             "name": "aim_9g_default",
@@ -3746,20 +3754,10 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "aim_7e2"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_7f"
-              },
-              {
-                "slot": 6,
-                "preset": "mer_blu_27_x2"
-              }
-            ]
+            "BannedWeaponPreset": {
+              "slot": 6,
+              "preset": "mer_blu_27_x2"
+            }
           },
           {
             "iconType": "missile_type_b_air_to_air",
@@ -3782,20 +3780,36 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "aim_7e2"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_7f"
-              },
-              {
-                "slot": 6,
-                "preset": "mer_blu_27_x2"
-              }
-            ]
+            "BannedWeaponPreset": {
+              "slot": 6,
+              "preset": "mer_blu_27_x2"
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "python3_fuse",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "f_4e_iaf_pylon1",
+                "f_4e_iaf_pylon2",
+                "lau_7_001",
+                "sparrow_scoop_l",
+                "sf_4e_iaf_pylon3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "lau_7_001_aim_9",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 6,
+              "preset": "mer_blu_27_x2"
+            }
           },
           {
             "iconType": "optic_container",
@@ -4004,6 +4018,22 @@
               "gearName": "gear_c",
               "rotationAnimScale": "gun_rotate_01:CRS"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/il_600_gal_fuse_f_4.blk",
+              "emitter": "il_600_phantom_drop_tank",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -4013,32 +4043,6 @@
         "order": 10,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "missile_air_to_air_special",
-            "name": "aim_7e2",
-            "reqModification": "us_aim_7e2",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7e2_dogfight_sparrow.blk",
-              "emitter": "aim_7e_002",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7f",
-            "reqModification": "us_aim_7f",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
-              "emitter": "aim_7e_002",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "missile_air_to_air",
             "name": "aim_9g_default",
@@ -4058,20 +4062,10 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": [
-              {
-                "slot": 8,
-                "preset": "aim_7e2"
-              },
-              {
-                "slot": 8,
-                "preset": "aim_7f"
-              },
-              {
-                "slot": 6,
-                "preset": "mer_blu_27_x2"
-              }
-            ]
+            "BannedWeaponPreset": {
+              "slot": 6,
+              "preset": "mer_blu_27_x2"
+            }
           },
           {
             "iconType": "missile_type_b_air_to_air",
@@ -4094,20 +4088,36 @@
               "external": true,
               "separate": true
             },
-            "BannedWeaponPreset": [
-              {
-                "slot": 8,
-                "preset": "aim_7e2"
-              },
-              {
-                "slot": 8,
-                "preset": "aim_7f"
-              },
-              {
-                "slot": 6,
-                "preset": "mer_blu_27_x2"
-              }
-            ]
+            "BannedWeaponPreset": {
+              "slot": 6,
+              "preset": "mer_blu_27_x2"
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "python3_fuse",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": [
+                "f_4e_iaf_pylon3",
+                "f_4e_iaf_pylon4",
+                "lau_7_002",
+                "sparrow_scoop_r",
+                "sf_4e_iaf_pylon1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_pyton_3.blk",
+              "emitter": "lau_7_002_aim_9",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 6,
+              "preset": "mer_blu_27_x2"
+            }
           }
         ]
       },
@@ -4116,51 +4126,23 @@
         "tier": 4,
         "order": 8,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "missile_air_to_air_special",
-            "name": "aim_7e2",
-            "reqModification": "us_aim_7e2",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7e2_dogfight_sparrow.blk",
-              "emitter": "aim_7e_004",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "additional_ltc",
+          "reqModification": "countermeasures_belt_pack",
+          "ShowNodes": {
+            "node": "flare_aim_7_001"
           },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7f",
-            "reqModification": "us_aim_7f",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim7f_sparrow.blk",
-              "emitter": "aim_7e_004",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "ltc",
-            "name": "additional_ltc",
-            "reqModification": "countermeasures_belt_pack",
-            "ShowNodes": {
-              "node": "flare_aim_7_001"
-            },
-            "Weapon": {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare6",
-              "bullets": 72,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "countermeasures",
+            "startFx": "",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+            "emitter": "emtr_flare6",
+            "bullets": 72,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       },
       {
         "index": 9,
@@ -4202,6 +4184,25 @@
             },
             "BannedWeaponPreset": {
               "slot": 10,
+              "preset": "agm_65d_x3"
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "python3",
+            "reqModification": "il_python_3",
+            "ShowNodes": {
+              "node": "pylon_r_in"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/aero_3b_python3.blk",
+              "emitter": "aero_3b_002",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
               "preset": "agm_65d_x3"
             }
           }
@@ -4911,14 +4912,9 @@
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_7e2": {
+    "il_python_3": {
       "reqModification": "us_aim_9l",
       "tier": 3,
-      "modClass": "weapon"
-    },
-    "us_aim_7f": {
-      "reqModification": "us_aim_7e2",
-      "tier": 4,
       "modClass": "weapon"
     },
     "M60_air_targets": {},

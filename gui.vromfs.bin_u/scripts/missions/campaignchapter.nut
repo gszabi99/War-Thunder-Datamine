@@ -778,7 +778,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
   function getModalOptionsParam(optionItems, applyFunc) {
     return {
       options = optionItems
-      optionsConfig = { missionName = this.curMission && this.curMission.id }
+      optionsConfig = { missionName = this.curMission?.id, gm = this.gm }
       applyAtClose = false
       wndOptionsMode = ::get_options_mode(this.gm)
       owner = this

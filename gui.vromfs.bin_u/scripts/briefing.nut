@@ -13,7 +13,7 @@ let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 let { setGuiOptionsMode, set_gui_option, get_gui_option } = require("guiOptions")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
-let { get_meta_missions_info, get_meta_mission_info_by_name, do_start_flight,
+let { get_meta_missions_info, get_meta_mission_info_by_gm_and_name, do_start_flight,
   select_mission, select_mission_full, quit_to_debriefing, get_mission_difficulty
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")
@@ -88,8 +88,9 @@ registerPersistentData("BriefingGlobals", getroottable(), ["back_from_briefing"]
   let missionName = ::current_campaign_mission
   if (missionName != null) {
     let missionBlk = DataBlock()
-    missionBlk.setFrom(get_meta_mission_info_by_name(::current_campaign_mission))
-    let briefingOptions = ::get_briefing_options(get_game_mode(), get_game_type(), missionBlk)
+    let gm = get_game_mode()
+    missionBlk.setFrom(get_meta_mission_info_by_gm_and_name(gm, ::current_campaign_mission))
+    let briefingOptions = ::get_briefing_options(gm, get_game_type(), missionBlk)
     if (briefingOptions.len() == 0)
       return restartCurrentMission()
   }
@@ -374,7 +375,7 @@ let function get_mission_desc_text(missionBlk) {
       return
 
     this.missionBlk = DataBlock()
-    this.missionBlk.setFrom(get_meta_mission_info_by_name(this.missionName))
+    this.missionBlk.setFrom(get_meta_mission_info_by_gm_and_name(gm, this.missionName))
 
     if (gm == GM_EVENT)
       ::mission_settings.coop = true;

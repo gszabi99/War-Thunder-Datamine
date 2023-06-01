@@ -11,7 +11,7 @@ let { Cost } = require("%scripts/money.nut")
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { select_training_mission } = require("guiMission")
+let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
 let { getUnlockTypeById } = require("unlocks")
 let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 
@@ -128,7 +128,7 @@ let { getUnlockCost, buyUnlock } = require("%scripts/unlocks/unlocksModule.nut")
       ::set_gui_option_in_mode(idx, val, ::OPTIONS_MODE_TRAINING)
 
     let misName = "aerobatic_smoke_preview"
-    let misInfo = ::get_mission_meta_info(misName)
+    let misInfo = get_meta_mission_info_by_name(misName)
     if (!misInfo)
       return ::script_net_assert_once("Wrong testflight mission",
         "ItemSmoke: No meta info for aerobatic_smoke_preview")

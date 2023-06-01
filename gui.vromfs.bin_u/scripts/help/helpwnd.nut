@@ -10,6 +10,7 @@ let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
 let { get_current_mission_name } = require("mission")
+let { get_meta_mission_info_by_name } = require("guiMission")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
@@ -640,7 +641,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       local altitudeBottom = 0
       local altitudeTop = 0
 
-      let misInfoBlk = ::get_mission_meta_info(get_current_mission_name())
+      let misInfoBlk = get_meta_mission_info_by_name(get_current_mission_name())
       let misBlk = misInfoBlk?.mis_file ? blkFromPath(misInfoBlk.mis_file) : null
       let areasBlk = misBlk?.areas
       if (areasBlk) {

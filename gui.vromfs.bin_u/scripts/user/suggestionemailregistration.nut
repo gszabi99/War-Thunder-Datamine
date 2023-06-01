@@ -120,12 +120,16 @@ let function checkShowPS4EmailRegistration() {
   })
 }
 
-let sendXboxEmailBind = @(val) ::xbox_link_email(val, function(status) {
-  ::g_popups.add("", colorize(
-    status == YU2_OK ? "activeTextColor" : "warningTextColor",
-    loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
-  ))
-})
+let function sendXboxEmailBind(val) {
+  ::show_wait_screen("msgbox/please_wait")
+  ::xbox_link_email(val, function(status) {
+    ::close_wait_screen()
+    ::g_popups.add("", colorize(
+      status == YU2_OK ? "activeTextColor" : "warningTextColor",
+      loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
+    ))
+  })
+}
 
 let function launchXboxEmailRegistration(override = {}) {
   ::gui_modal_editbox_wnd({

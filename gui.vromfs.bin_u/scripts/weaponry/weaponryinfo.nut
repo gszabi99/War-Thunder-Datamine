@@ -942,7 +942,7 @@ let function checkBadWeapons() {
 }
 
 let function getOverrideBullets(unit) {
-  if (!unit)
+  if (!unit || !::is_in_flight())
     return null
   let missionName = get_current_mission_name()
   if (missionName == "")

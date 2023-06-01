@@ -16,6 +16,7 @@ let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { setMapPreview, getMissionBriefingConfig } = require("%scripts/missions/mapPreview.nut")
 let { trim, utf8ToLower } = require("%sqstd/string.nut")
+let { get_meta_mission_info_by_name } = require("guiMission")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
@@ -421,7 +422,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
     let missionsList = this.mapsList[this.currentMapId].missions
     previewObj.findObject("title").setValue(missionsList[this.currentPage].title)
-    let curMission = ::get_mission_meta_info(missionsList[this.currentPage].id)
+    let curMission = get_meta_mission_info_by_name(missionsList[this.currentPage].id)
     if (curMission) {
       let config = getMissionBriefingConfig({ blk = curMission })
       setMapPreview(this.scene.findObject("tactical-map"), config)

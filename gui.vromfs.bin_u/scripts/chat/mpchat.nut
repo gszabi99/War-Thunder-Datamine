@@ -83,6 +83,9 @@ local MP_CHAT_PARAMS = {
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
     this.maxLogSize = ::g_chat.getMaxRoomMsgAmount()
     this.isMouseCursorVisible = ::is_cursor_visible_in_gui()
+
+    this.validateCurMode()
+    send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
   }
 
   function loadScene(obj, chatBlk, handler, params = MP_CHAT_PARAMS) {

@@ -26,7 +26,7 @@ let itemTransfer = require("%scripts/items/itemsTransfer.nut")
 let { getMarkingPresetsById, getCustomLocalizationPresets,
   getEffectOnOpenChestPresetById } = require("%scripts/items/workshop/workshop.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
-let { select_training_mission } = require("guiMission")
+let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
 let { getDecorator, buildLiveDecoratorFromResource
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
@@ -1010,7 +1010,7 @@ local ItemExternal = class extends ::BaseItem {
     if (!misName)
       return null
 
-    let misBlk = ::get_mission_meta_info(misName)
+    let misBlk = get_meta_mission_info_by_name(misName)
     if (!misBlk || (("reqFeature" in misBlk) && !hasFeature(misBlk.reqFeature)))
       return null
 
@@ -1025,7 +1025,7 @@ local ItemExternal = class extends ::BaseItem {
     if (!this.canRunCustomMission())
         return false
 
-    let misBlk = ::get_mission_meta_info(this.itemDef.tags.canRunCustomMission)
+    let misBlk = get_meta_mission_info_by_name(this.itemDef.tags.canRunCustomMission)
     if (misBlk?.requiredPackage != null && !::check_package_and_ask_download(misBlk.requiredPackage))
       return true
 

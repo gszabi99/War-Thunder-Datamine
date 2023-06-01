@@ -29,7 +29,7 @@ let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let animBg = require("%scripts/loading/animBg.nut")
 let { register_command } = require("console")
-let { get_meta_mission_info_by_name } = require("guiMission")
+let { get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
@@ -214,8 +214,8 @@ let function gui_do_debug_unlock() {
   broadcastEvent("DebugUnlockEnabled")
 }
 
-let function dbg_loading_brief(missionName = "malta_ship_mission", slidesAmount = 0) {
-  let missionBlk = get_meta_mission_info_by_name(missionName)
+let function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china_s01", slidesAmount = 0) {
+  let missionBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
   if (!u.isDataBlock(missionBlk))
     return dlog("Not found mission " + missionName) //warning disable: -dlog-warn
 
@@ -496,7 +496,8 @@ register_command(show_hotas_window_image, "debug.show_hotas_window_image")
 register_command(debug_export_unit_weapons_descriptions, "debug.export_unit_weapons_descriptions")
 register_command(debug_export_unit_xray_parts_descriptions, "debug.export_unit_xray_parts_descriptions")
 register_command(gui_do_debug_unlock, "debug.gui_do_debug_unlock")
-register_command(dbg_loading_brief, "debug.loading_brief")
+register_command(@() dbg_loading_brief(), "debug.loading_brief")
+register_command(dbg_loading_brief, "debug.loading_brief_custom")
 register_command(debug_show_unit, "debug.show_unit")
 register_command(debug_show_units_by_loc_name, "debug.show_units_by_loc_name")
 register_command(debug_show_weapon, "debug.show_weapon")

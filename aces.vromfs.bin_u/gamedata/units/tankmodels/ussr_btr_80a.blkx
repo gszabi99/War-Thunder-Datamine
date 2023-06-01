@@ -74,11 +74,15 @@
       "body_back_dm": {
         "armorThickness": 6.0
       },
-      "body_top_dm": {},
+      "body_top_dm": {
+        "armorThickness": 6.0
+      },
       "turret_05_back_dm": {},
       "body_bottom_dm": {},
       "turret_03_top_dm": {},
-      "turret_01_front_dm": {},
+      "turret_01_front_dm": {
+        "armorThickness": 19.0
+      },
       "superstructure_front_dm": {},
       "body_front_dm": {
         "armorThickness": 10.0
@@ -95,6 +99,9 @@
         "armorThickness": 20.0
       },
       "turret_03_side_dm": {},
+      "turret_05_side_dm": {
+        "armorThickness": 6.0
+      },
       "turret_back_dm": {
         "armorThickness": 13.0
       },
@@ -107,7 +114,7 @@
       },
       "ex_armor_01_dm": {},
       "turret_side_dm": {
-        "armorThickness": 13.0
+        "armorThickness": 23.0
       },
       "turret_top_dm": {
         "armorThickness": 13.0
@@ -116,10 +123,18 @@
         "armorThickness": 10.0
       },
       "gun_mask_dm": {},
-      "turret_02_side_dm": {},
-      "turret_02_top_dm": {},
+      "turret_02_side_dm": {
+        "armorThickness": 6.0
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 6.0,
+        "armorClass": "RHA_tank"
+      },
       "turret_front_dm": {
-        "armorThickness": 13.0
+        "armorThickness": 23.0
+      },
+      "turret_05_front_dm": {
+        "armorThickness": 23.0
       },
       "turret_04_side_dm": {
         "armorThickness": 10.0
@@ -150,9 +165,6 @@
         "armorThickness": 6.0
       },
       "ex_armor_r_04_dm": {
-        "armorThickness": 6.0
-      },
-      "turret_05_side_dm": {
         "armorThickness": 6.0
       },
       "turret_05_top_dm": {
@@ -204,9 +216,9 @@
       "ex_decor_l_08_dm": {},
       "ex_decor_r_08_dm": {},
       "ex_decor_r_09_dm": {},
+      "turret_02_top_dm": {},
       "ex_armor_l_01_dm": {},
       "ex_armor_r_01_dm": {},
-      "turret_02_front_dm": {},
       "ex_decor_02_dm": {},
       "turret_03_bottom_dm": {},
       "turret_03_back_dm": {},
@@ -1615,15 +1627,14 @@
     ]
   },
   "sound": {
-    "EngineName": "engine_mctav6",
+    "EngineName": "engine_btr80",
     "TrackSoundPath": "tanks/engines_tanks",
     "TrackSoundPathStudio": "ground/engines",
     "TrackSoundName": "tracks_wheels",
     "TrackSoundNameCockpit": "tracks_wheels_interior",
-    "turret_turn": "turret_turn_servo",
+    "turret_turn": "turret_turn_manual",
     "EngineNameAi": "engine_truck_ai",
-    "TrackSoundNameAi": "tracks_ai_wheels",
-    "gun_turn": "turret_turn_mg_light"
+    "TrackSoundNameAi": "tracks_ai_wheels"
   },
   "class_tags": {},
   "commonWeapons": {
@@ -2720,6 +2731,17 @@
         "name": "tank_engine_fire"
       }
     }
+  },
+  "ircmProjector": {
+    "node": "ex_decor_turret_01",
+    "beamRadius": [
+      1400.0,
+      100.0
+    ],
+    "projectorPower": [
+      0.02,
+      0.07
+    ]
   },
   "commanderView": {
     "optics": "commander_optics_square",

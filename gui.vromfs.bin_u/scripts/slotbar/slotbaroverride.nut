@@ -12,6 +12,7 @@ let overrideSlotbar = persist("overrideSlotbar", @() Watched(null)) //null or []
 let userSlotbarCountry = persist("userSlotbarCountry", @() Watched("")) //for return user country after reset override slotbar
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 
 overrideSlotbar.subscribe(@(_) broadcastEvent("OverrideSlotbarChanged"))
 
@@ -36,7 +37,7 @@ let function addCrewToCountryData(countryData, crewId, countryId, crewUnitName) 
 }
 
 let function getMissionEditSlotbarBlk(missionName) {
-  let misBlk = ::get_mission_meta_info(missionName)
+  let misBlk = getUrlOrFileMissionMetaInfo(missionName)
   let editSlotbar = misBlk?.editSlotbar
   //override slotbar does not support keepOwnUnits atm.
   if (!isDataBlock(editSlotbar) || editSlotbar.keepOwnUnits)
