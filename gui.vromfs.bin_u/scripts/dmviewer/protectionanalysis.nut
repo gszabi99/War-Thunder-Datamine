@@ -51,7 +51,6 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
   }
 
   function initScreen() {
-    ::enableHangarControls(true)
     ::dmViewer.init(this)
     hangar_focus_model(true)
     this.guiScene.performDelayed(this, @() hangar_set_dm_viewer_mode(this.protectionAnalysisMode))

@@ -11,8 +11,7 @@ require %game.utils.utils_common
 def is_repair_with_mods_availabile(repair_state : uint) : bool
   return ((
     get_flag(repair_state, RepairState REPAIR_AVAILABLE) ||
-    get_flag(repair_state, RepairState NEED_REPAIR_HELP) ||
-    get_flag(repair_state, RepairState REPAIR_ON_BASE)
+    get_flag(repair_state, RepairState NEED_REPAIR_HELP)
   ) && !get_flag(repair_state, RepairState REPAIR_WITHOUT_MODS_ONLY))
 
 
@@ -29,7 +28,7 @@ def is_repair_needed(unit : Unit?; repair_state : uint; speed_multiplier : float
                      with_mods : bool; without_mods : bool; with_help : bool) : bool
   if unit.isGroundModel && speed_multiplier > 0.0f
     assume dmData = unit.dmData
-    let repair_with_mods_available = with_help || get_flag(repair_state, RepairState REPAIR_AVAILABLE) || get_flag(repair_state, RepairState REPAIR_ON_BASE)
+    let repair_with_mods_available = with_help || get_flag(repair_state, RepairState REPAIR_AVAILABLE)
     for part_id, part_state, part_hp in parts_id, parts_state, parts_hp
       if can_repair_part(dmData, part_id, part_state, part_hp, repair_system_repair_hp_multiplier, true)
         if !get_flag(part_state, DmPartRepairState MOD_REQUIRED)

@@ -12,7 +12,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { updateTopSquadScore, getSquadInfo, isShowSquad,
-  getSquadInfoByMemberName, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
+  getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode } = require("mission")
 let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
@@ -207,12 +207,11 @@ let function guiStartMPStatScreenFromGame() {
           "pare-text:t='yes'; width:t='pw'; halign:t='center'; top:t='(ph-h)/2';} %s",
           nameWidth, "textareaNoTab", nameAlign, nameText, textPadding
         )
-
         if (!isEmpty) {
           //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
           if (table[i]?.isLocal)
             trAdd += "mainPlayer:t = 'yes';"
-          else if (table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadByName(item))
+          else if (table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadById(table[i]?.userId.tointeger()))
             trAdd += "inMySquad:t = 'yes';"
           if (("spectator" in table[i]) && table[i].spectator)
             trAdd += "spectator:t = 'yes';"
@@ -466,11 +465,10 @@ let function guiStartMPStatScreenFromGame() {
         let objDlcImg = objTd.findObject("dlc-ico")
         if (checkObj(objDlcImg))
           objDlcImg.show(false)
-
         local tooltip = nameText
         let isLocal = table[i].isLocal
         //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
-        let isInHeroSquad = table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadByName(item)
+        let isInHeroSquad = table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadById(table[i]?.userId.tointeger())
         objTr.mainPlayer = isLocal ? "yes" : "no"
         objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
         objTr.spectator = table[i]?.spectator ? "yes" : "no"
@@ -597,7 +595,7 @@ let function guiStartMPStatScreenFromGame() {
         objTd.getChild(0).setValue(txt)
       }
       else if (hdr == "squad") {
-        let squadInfo = isShowSquad() ? getSquadInfoByMemberName(table[i]?.name ?? "") : null
+        let squadInfo = isShowSquad() ? getSquadInfoByMemberId(table[i]?.userId.tointeger()) : null
         let squadId = getTblValue("squadId", squadInfo, INVALID_SQUAD_ID)
         let labelSquad = squadInfo ? squadInfo.label.tostring() : ""
         let needSquadIcon = labelSquad != ""

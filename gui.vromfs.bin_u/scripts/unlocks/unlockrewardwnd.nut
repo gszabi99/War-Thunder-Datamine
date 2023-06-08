@@ -41,7 +41,6 @@ register_command(
   decorator = null
   decoratorUnit = null
   decoratorSlot = -1
-  unit = null
 
   function initScreen() {
     this.processConfigsArray()
@@ -82,30 +81,18 @@ register_command(
   }
 
   function checkConfigsArray() {
-    let units = []
     let decors = []
 
     foreach (unlock in this.unlocks) {
       let unlockType = ::g_unlock_view.getUnlockType(unlock)
-      if (unlockType == UNLOCKABLE_AIRCRAFT)
-        units.append(getAircraftByName(unlock.id))
-      else if (unlockType == UNLOCKABLE_DECAL
+      if (unlockType == UNLOCKABLE_DECAL
         || unlockType == UNLOCKABLE_SKIN
         || unlockType == UNLOCKABLE_ATTACHABLE)
         decors.append({ unlockId = unlock.id unlockType = unlockType })
     }
 
-    if (units.len() > 1)
-      return
-    if (units.len() == 0 && decors.len() != 1)
-      return
-    if (units.len() == 1 && units[0].isUsable() && !::isUnitInSlotbar(units[0])) {
-      this.unit = units[0]
-      this.showSceneBtn("btn_take_air", true)
-    }
-    else if (units.len() == 0 && decors.len() == 1) {
+    if (decors.len() == 1)
       this.updateResourceData(decors[0].unlockId, decors[0].unlockType)
-    }
   }
 
   function updateResourceData(resource, resourceType) {
@@ -123,20 +110,7 @@ register_command(
     }
   }
 
-  function onTakeNavBar() {
-    if (!this.unit)
-      return
-
-    this.onTake(this.unit)
-  }
-
-  function onTake(unitToTake) {
-    base.onTake(unitToTake, {
-      cellClass = "slotbarClone"
-      isNewUnit = true
-      afterSuccessFunc = Callback(@() this.goBack(), this)
-    })
-  }
+  onTakeNavBar = @() null
 
   function setTitle() {
     let title = this.getTitle()

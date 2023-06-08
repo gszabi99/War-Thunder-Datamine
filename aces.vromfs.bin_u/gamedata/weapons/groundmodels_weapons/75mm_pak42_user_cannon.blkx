@@ -590,6 +590,13 @@
       ],
       "shellAnimation": "video/shells_animations/apcr.ivf",
       "bulletName": "75mm_pzrg_40_42",
+      "breakingArmorThicknessEffective": true,
+      "breakingArmorThickness": [
+        10.0,
+        300.0
+      ],
+      "breakingCriticalSpeed": 1000.0,
+      "breakingDistance": 0.05,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -643,6 +650,34 @@
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        },
+        "breakingScaleByArmor": {
+          "mod0": [
+            5.0,
+            1.0
+          ],
+          "mod1": [
+            10.0,
+            0.8
+          ],
+          "mod2": [
+            40.0,
+            0.5
+          ]
+        },
+        "breakingScaleByAir": {
+          "mod0": [
+            0.05,
+            1.0
+          ],
+          "mod1": [
+            0.2,
+            0.7
+          ],
+          "mod2": [
+            0.5,
+            0.5
+          ]
         }
       },
       "visual": {

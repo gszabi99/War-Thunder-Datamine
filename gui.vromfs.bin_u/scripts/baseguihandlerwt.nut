@@ -95,8 +95,8 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
 
-    if (this.wndType == handlerType.MODAL || this.wndType == handlerType.BASE)
-      ::enableHangarControls(false, this.wndType == handlerType.BASE)
+    if (this.wndType == handlerType.BASE)
+      ::enableHangarControls(false)
 
     this.setWndGameMode()
     this.setWndOptionsMode()
@@ -856,8 +856,6 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onModalWndDestroy() {
-    if (!::handlersManager.isAnyModalHandlerActive())
-      ::restoreHangarControls()
     base.onModalWndDestroy()
     ::checkMenuChatBack()
   }
@@ -920,6 +918,10 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function onModChangeBulletsSlider() {}
 
   function onShowMapRenderFilters() {}
+
+  function onHangarControlHoverChange(obj) {
+    ::enableHangarControls(obj.isHovered())
+  }
 }
 
 ::gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT

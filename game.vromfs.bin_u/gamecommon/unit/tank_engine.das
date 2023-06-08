@@ -124,27 +124,35 @@ def tank_engine_on_damage_es(evt : EventUnitDamage;
 [es(tag=server)]
 def tank_engine_respawn_handle(evt : EventUnitRespawn;
                                eid : EntityId;
+                               tank_engine__brokenRadiatorFxEventId : int;
+                               var unit_fx : UnitFx;
                                var tank_engine__overheatDamageTime : float&;
                                var tank_engine__overheat : bool&)
   tank_engine__overheat = false
   send_net_event(eid, [[EventEngineOverheatDamage start=false]])
   tank_engine__overheatDamageTime = -1.0
+  unit_fx |> stopFxEvent(tank_engine__brokenRadiatorFxEventId)
 
 
 [es(tag=server)]
 def tank_engine_repair_handle(evt : EventUnitRepair;
                               eid : EntityId;
+                              tank_engine__brokenRadiatorFxEventId : int;
+                              var unit_fx : UnitFx;
                               var tank_engine__overheatDamageTime : float&;
                               var tank_engine__overheat : bool&)
   tank_engine__overheat = false
   send_net_event(eid, [[EventEngineOverheatDamage start=false]])
   tank_engine__overheatDamageTime = -1.0
+  unit_fx |> stopFxEvent(tank_engine__brokenRadiatorFxEventId)
 
 
 [es(tag=server)]
 def tank_engine_on_part_restored_es(evt : EventDamagePartRestored;
                                     eid : EntityId;
                                     tank_engine__radiator_parts : PartIdList;
+                                    tank_engine__brokenRadiatorFxEventId : int;
+                                    var unit_fx : UnitFx;
                                     var tank_engine__overheatDamageTime : float&;
                                     var tank_engine__overheat : bool&)
   let evtPartId = unpack_part_id(evt.packedPartId)
@@ -157,6 +165,7 @@ def tank_engine_on_part_restored_es(evt : EventDamagePartRestored;
     tank_engine__overheat = false
     send_net_event(eid, [[EventEngineOverheatDamage start=false]])
     tank_engine__overheatDamageTime = -1.0
+    unit_fx |> stopFxEvent(tank_engine__brokenRadiatorFxEventId)
 
 
 

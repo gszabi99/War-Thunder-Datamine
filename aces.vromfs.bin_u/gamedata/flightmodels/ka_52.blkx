@@ -1306,8 +1306,8 @@
     ]
   },
   "attach": {
-    "pilot1": "pilot_su_500",
-    "gunner1": "gunner_sit_su_500"
+    "gunner1": "gunner_sit_su_500",
+    "pilot1": "pilot_su_500"
   },
   "propellers": {
     "stage1": {
@@ -4759,7 +4759,7 @@
     "seatEjectDelay": 0.5,
     "ejectInterval": 0.3,
     "seatVel": [
-      -5.0,
+      7.0,
       0.0,
       0.0
     ],
@@ -4799,19 +4799,29 @@
     "fxType": "catapult_expl_ejection",
     "seat": [
       {
-        "part": "seat_01",
-        "hide": "seat_01_after_ejection",
-        "fxEmitter": [
-          "seat_01_jet1",
-          "seat_01_jet2"
-        ]
-      },
-      {
         "part": "seat_02",
         "hide": "seat_02_after_ejection",
+        "seatVel": [
+          7.0,
+          0.0,
+          -5.0
+        ],
         "fxEmitter": [
           "seat_02_jet1",
           "seat_02_jet2"
+        ]
+      },
+      {
+        "part": "seat_01",
+        "hide": "seat_01_after_ejection",
+        "seatVel": [
+          7.0,
+          0.0,
+          5.0
+        ],
+        "fxEmitter": [
+          "seat_01_jet1",
+          "seat_01_jet2"
         ]
       }
     ]

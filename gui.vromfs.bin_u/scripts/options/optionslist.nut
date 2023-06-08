@@ -139,6 +139,8 @@ let getMainOptions = function() {
       [::USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
       [::USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
+      [::USEROPT_LWS_IND_H_TIMEOUT, "slider"],
+      [::USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT, "slider"],
 
       ["options/header/tank"],
       [::USEROPT_GRASS_IN_TANK_VISION, "spinner"],
@@ -163,6 +165,8 @@ let getMainOptions = function() {
       [::USEROPT_HIT_INDICATOR_ALPHA, "slider", hasFeature("advancedHitIndicator")],
       [::USEROPT_HIT_INDICATOR_SCALE, "slider", hasFeature("advancedHitIndicator")],
       [::USEROPT_HIT_INDICATOR_FADE_TIME, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_LWS_IND_TIMEOUT, "slider"],
+      [::USEROPT_LWS_AZIMUTH_IND_TIMEOUT, "slider"],
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],

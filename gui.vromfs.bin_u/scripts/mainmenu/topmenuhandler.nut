@@ -307,8 +307,6 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       else if (unitType)
         this.shopWeak.setUnitType(unitType)
     }
-
-    ::enableHangarControls(!shouldActivate)
   }
 
   function goBack() {
@@ -356,10 +354,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     base.onSceneActivate(show)
     if (topMenuShopActive.value && this.shopWeak)
       this.shopWeak.onSceneActivate(show)
-    if (show) {
+    if (show)
       setShowUnit(this.getCurSlotUnit(), this.getHangarFallbackUnitParams())
-      ::enableHangarControls(!topMenuShopActive.value)
-    }
   }
 
   function onHelp() {

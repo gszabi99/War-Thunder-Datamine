@@ -209,6 +209,7 @@ local logNameByType = {
   let trophyRewardsTable = {}
   let entitlementRewards = {}
   let unlocksRewards = {}
+  let unlockUnits = {}
   let rentsTable = {}
   let specialOffers = {}
   let ignoreRentItems = []
@@ -298,17 +299,24 @@ local logNameByType = {
       if ((!isUnlockNeedPopup(blk.body.unlockId)
           && !isUnlockNeedPopupInMenu(blk.body.unlockId))
         || !(popupMask & USERLOG_POPUP.UNLOCK)) {
-        if (!onStartAwards
-            && (!blk?.body.popupInDebriefing || !::isHandlerInScene(::gui_handlers.DebriefingModal))
-            && (unlockType == UNLOCKABLE_TITLE
-               || unlockType == UNLOCKABLE_AIRCRAFT
-               || unlockType == UNLOCKABLE_DECAL
-               || unlockType == UNLOCKABLE_SKIN
-               || unlockType == UNLOCKABLE_ATTACHABLE
-               || unlockType == UNLOCKABLE_PILOT
-               )
-           ) {
-          unlocksRewards[blk.body.unlockId] <- true
+        if (!onStartAwards && (!blk?.body.popupInDebriefing
+          || !::isHandlerInScene(::gui_handlers.DebriefingModal))) {
+          if (unlockType == UNLOCKABLE_TITLE
+            || unlockType == UNLOCKABLE_DECAL
+            || unlockType == UNLOCKABLE_SKIN
+            || unlockType == UNLOCKABLE_ATTACHABLE
+            || unlockType == UNLOCKABLE_PILOT )
+              unlocksRewards[blk.body.unlockId] <- true
+
+          // Don't stack unlocked units together with other ones.
+          // It should look uniform with unit unlock in debriefing
+          // to provide correct crew select logic further.
+          if (unlockType == UNLOCKABLE_AIRCRAFT) {
+            let logObj = {}
+            for (local n = 0, c = blk.body.paramCount(); n < c; n++)
+              logObj[blk.body.getParamName(n)] <- blk.body.getParamValue(n)
+            unlockUnits[blk.body.unlockId] <- logObj
+          }
           seenIdsArray.append(blk?.id)
         }
 
@@ -584,10 +592,11 @@ local logNameByType = {
 
   ::gui_start_open_trophy(trophyRewardsTable)
 
-  entitlementRewards.each(@(_key, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
-
+  entitlementRewards.each(
+    @(_, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
+  unlockUnits.each(@(logObj) handler.doWhenActive(
+    @() ::showUnlockWnd(::build_log_unlock_data(logObj))))
   handler.doWhenActive(@() showUnlocks(unlocksRewards))
-
 
   rentsTable.each(function(config, key) {
     if (!isInArray(key, ignoreRentItems)) {

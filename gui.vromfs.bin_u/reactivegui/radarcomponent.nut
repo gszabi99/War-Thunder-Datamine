@@ -3040,4 +3040,5 @@ return {
   mode = getRadarModeText
   maxLabelWidth
   maxLabelHeight
+  maxMeasuresCompWidth
 }

@@ -163,7 +163,7 @@ let getMessageColor = function(message) {
   if (message.isBlocked)
     return colors.menu.chatTextBlockedColor
   if (message.isAutomatic) {
-    if (cross_call.squad_manger.isInMySquad(message.sender))
+    if (cross_call.squad_manger.isInMySquadById(message.uid))
       return teamColors.value.squadColor
     else if (message.team != hudState.playerArmyForHud.value)
       return teamColors.value.teamRedColor
@@ -181,7 +181,7 @@ let getSenderColor = function (message) {
     return colors.hud.spectatorColor
   else if (message.team != hudState.playerArmyForHud.value || !cross_call.is_mode_with_teams())
     return teamColors.value.teamRedColor
-  else if (cross_call.squad_manger.isInMySquad(message.sender))
+  else if (cross_call.squad_manger.isInMySquadById(message.uid))
     return teamColors.value.squadColor
   return teamColors.value.teamBlueColor
 }

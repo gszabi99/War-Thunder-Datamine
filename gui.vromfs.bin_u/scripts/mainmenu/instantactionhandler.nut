@@ -98,7 +98,6 @@ let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
   slotbarPresetsTutorial = null
 
   function initScreen() {
-    ::enableHangarControls(true)
     // Causes drawer to initialize once.
     this.getGamercardDrawerHandler()
 

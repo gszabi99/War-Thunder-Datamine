@@ -503,8 +503,8 @@ systemMsg.registerLocTags(locTags)
 }
 
 /*use by client .cpp code*/
-::is_in_my_squad <- function is_in_my_squad(name, checkAutosquad = true) {
-  return ::g_squad_manager.isInMySquad(name, checkAutosquad)
+::is_in_my_squad <- function is_in_my_squad(userId, checkAutosquad = true) {
+  return ::g_squad_manager.isInMySquadById(userId, checkAutosquad)
 }
 
 ::is_in_squad <- function is_in_squad(forChat = false) {

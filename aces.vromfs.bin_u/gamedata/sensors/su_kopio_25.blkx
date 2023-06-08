@@ -67,10 +67,29 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 3.5,
-      "width": 15.0,
+      "period": 0.6,
+      "width": 10.0,
       "barHeight": 2.4,
-      "barsCount": 6,
+      "barsCount": 2,
+      "rowMajor": true,
+      "preciseMinor": true
+    },
+    "radarSearchAutoMedium": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -40.0,
+        40.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        10.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 2.3,
+      "width": 20.0,
+      "barHeight": 3.0,
+      "barsCount": 4,
       "rowMajor": true,
       "preciseMinor": true
     },
@@ -86,28 +105,9 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 3.6,
-      "width": 20.0,
+      "period": 4.6,
+      "width": 40.0,
       "barHeight": 3.0,
-      "barsCount": 6,
-      "rowMajor": true,
-      "preciseMinor": true
-    },
-    "radarSearchManual": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -40.0,
-        40.0
-      ],
-      "elevationLimits": [
-        -40.0,
-        10.0
-      ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
-      "period": 3.7,
-      "width": 25.0,
-      "barHeight": 2.5,
       "barsCount": 4,
       "rowMajor": true,
       "preciseMinor": true
@@ -124,7 +124,7 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 0.8,
+      "period": 0.5,
       "width": 4.0,
       "barHeight": 2.5,
       "barsCount": 4,
@@ -142,11 +142,44 @@
         10.0
       ],
       "period": 1.1,
-      "width": 2.5,
+      "width": 25.0,
       "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": false,
-      "centerElevation": 0.0,
+      "centerElevation": -15.0,
+      "indicate": true
+    },
+    "radarBoresightLock": {
+      "type": "cone",
+      "azimuthLimits": [
+        -40.0,
+        40.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        10.0
+      ],
+      "period": 0.3,
+      "width": 1.75,
+      "indicate": true
+    },
+    "radarHudLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -40.0,
+        40.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        10.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.8,
+      "width": 10.0,
+      "barHeight": 2.5,
+      "barsCount": 8,
+      "rowMajor": true,
       "indicate": true
     },
     "radarTrack": {
@@ -313,14 +346,14 @@
   },
   "scanPatternSets": {
     "radarSearchAuto": {
-      "scanPattern1": "radarSearchAutoWide",
-      "scanPattern2": "radarSearchAutoNarrow"
-    },
-    "radarSearchManual": {
-      "scanPattern1": "radarSearchManual"
+      "scanPattern1": "radarSearchAutoMedium",
+      "scanPattern2": "radarSearchAutoWide",
+      "scanPattern3": "radarSearchAutoNarrow"
     },
     "radarAcmLock": {
-      "scanPattern1": "radarVerticalLock"
+      "scanPattern1": "radarVerticalLock",
+      "scanPattern2": "radarBoresightLock",
+      "scanPattern3": "radarHudLock"
     }
   },
   "scopeRangeSets": {
@@ -390,7 +423,7 @@
         "setRadarSearchStandbyModeCommon": {
           "setStandbyModeCommon": {},
           "setScanPatternSet": {
-            "scanPatternSet": "radarSearchManual"
+            "scanPatternSet": "radarSearchAuto"
           },
           "setFsmActive": {
             "fsm": "radarSearchModes",
@@ -438,7 +471,7 @@
         "setRadarSearchModeCommon": {
           "setSearchModeCommon": {},
           "setScanPatternSet": {
-            "scanPatternSet": "radarSearchManual"
+            "scanPatternSet": "radarSearchAuto"
           },
           "setFsmActive": {
             "fsm": "radarSearchModes",
@@ -490,7 +523,7 @@
             "updateActiveTargetUnderCue": true
           },
           "setScanPatternSet": {
-            "scanPatternSet": "radarSearchManual"
+            "scanPatternSet": "radarSearchAuto"
           },
           "setFsmActive": [
             {
@@ -1191,11 +1224,11 @@
       "actionsTemplates": {
         "setMprfTargetDesignationRange": {
           "setTargetDesignationRange": {
-            "azimuthLimits": [
+            "azimuthRange": [
               -40.0,
               40.0
             ],
-            "azmithWidth": 5.0,
+            "azimuthWidth": 5.0,
             "elevationLimits": [
               -40.0,
               10.0
@@ -1210,11 +1243,11 @@
         },
         "setHprfTargetDesignationRange": {
           "setTargetDesignationRange": {
-            "azimuthLimits": [
+            "azimuthRange": [
               -40.0,
               40.0
             ],
-            "azmithWidth": 5.0,
+            "azimuthWidth": 5.0,
             "elevationLimits": [
               -40.0,
               10.0
@@ -1229,11 +1262,11 @@
         },
         "setGTMTargetDesignationRange": {
           "setTargetDesignationRange": {
-            "azimuthLimits": [
+            "azimuthRange": [
               -40.0,
               40.0
             ],
-            "azmithWidth": 5.0,
+            "azimuthWidth": 5.0,
             "elevationLimits": [
               -40.0,
               10.0
@@ -1732,8 +1765,7 @@
                 "value": 0.0
               },
               {
-                "source": "designationCue",
-                "value": 0.334
+                "source": "designationCue"
               }
             ],
             "setCenterElevation": [
@@ -1818,8 +1850,7 @@
                 "value": 0.0
               },
               {
-                "source": "designationCue",
-                "value": 0.334
+                "source": "designationCue"
               }
             ],
             "setCenterElevation": [

@@ -108,8 +108,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     this.registerSubHandler(this.topMenuHandlerWeak)
     this.updateWwarUrlButton()
 
-    ::enableHangarControls(true)
-
     if (this.needToOpenBattles)
       this.openOperationsListModal()
     else if (this.autoOpenMapOperation)

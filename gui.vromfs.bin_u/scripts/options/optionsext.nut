@@ -4089,6 +4089,46 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.getValueLocText = @(val) $"{val}s"
     break
 
+    case ::USEROPT_LWS_IND_TIMEOUT:
+      descr.id = "lws_indicator_timeout"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 1
+      descr.max <- 10
+      descr.step <- 1
+      defaultValue = 2
+      descr.getValueLocText = @(val) $"{val}s"
+    break
+
+    case ::USEROPT_LWS_AZIMUTH_IND_TIMEOUT:
+      descr.id = "lws_azimuth_indicator_timeout"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 1
+      descr.max <- 10
+      descr.step <- 1
+      defaultValue = 2
+      descr.getValueLocText = @(val) $"{val}s"
+    break
+
+    case ::USEROPT_LWS_IND_H_TIMEOUT:
+      descr.id = "lws_indicator_helicopter_timeout"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 1
+      descr.max <- 10
+      descr.step <- 1
+      defaultValue = 2
+      descr.getValueLocText = @(val) $"{val}s"
+    break
+
+    case ::USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT:
+      descr.id = "lws_azimuth_indicator_helicopter_timeout"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 1
+      descr.max <- 10
+      descr.step <- 1
+      defaultValue = 2
+      descr.getValueLocText = @(val) $"{val}s"
+    break
+
     case ::USEROPT_FREE_CAMERA_ZOOM_SPEED:
       descr.id = "free_camera_zoom_speed"
       descr.controlType = optionControlType.SLIDER
@@ -5362,6 +5402,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_HIT_INDICATOR_ALPHA:
     case ::USEROPT_HIT_INDICATOR_SCALE:
     case ::USEROPT_HIT_INDICATOR_FADE_TIME:
+    case ::USEROPT_LWS_IND_TIMEOUT:
+    case ::USEROPT_LWS_AZIMUTH_IND_TIMEOUT:
+    case ::USEROPT_LWS_IND_H_TIMEOUT:
+    case ::USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT:
       set_gui_option(optionId, value)
       break
 

@@ -2161,7 +2161,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 }
 
 ::SessionLobby.getMemberPlayerInfo <- function getMemberPlayerInfo(uid) {
-  return getTblValue(uid.tointeger(), this.playersInfo)
+  return this.playersInfo?[uid.tointeger()]
 }
 
 ::SessionLobby.getPlayersInfo <- function getPlayersInfo() {
@@ -2179,6 +2179,24 @@ let allowed_mission_settings = { //only this settings are allowed in room
   let memberInfo = this.playersInfoByNames?[name] ?? this.playersInfoByNames?[getRealName(name)]
 
   if (memberInfo == null || myInfo == null)
+    return false
+
+  return memberInfo.team == myInfo.team && memberInfo.squad == myInfo.squad
+}
+
+::SessionLobby.isMemberInMySquadById <- function isMemberInMySquadById(userId) {
+  if (userId == null || userId == ::my_user_id_int64)
+    return false
+  if (!::SessionLobby.isInRoom())
+    return false
+
+  let myInfo = this.getMemberPlayerInfo(::my_user_id_int64)
+  if (myInfo == null || myInfo.squad == INVALID_SQUAD_ID)
+    return false
+
+  let memberInfo = this.getMemberPlayerInfo(userId)
+
+  if (memberInfo == null)
     return false
 
   return memberInfo.team == myInfo.team && memberInfo.squad == myInfo.squad

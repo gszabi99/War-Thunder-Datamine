@@ -79,7 +79,7 @@ local mpChatModel = {
       userColor = ""
       msgColor = ""
       clanTag = ""
-      uid = null
+      uid = player?.userId.tointeger()
       sender = sender
       text = msg
       isMyself = sender == ::my_user_name || getRealName(sender) == ::my_user_name

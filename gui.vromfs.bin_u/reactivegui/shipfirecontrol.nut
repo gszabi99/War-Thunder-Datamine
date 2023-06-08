@@ -1,13 +1,14 @@
 from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
-let interopGen = require("interopGen.nut")
 let compass = require("compass.nut")
 let { PI, cos, sin, fabs, sqrt } = require("%sqstd/math.nut")
 let { CompassValue } = require("compassState.nut")
 let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
 let { fwdAngle, fov } = require("shipState.nut")
 let { IsRadarVisible } = require("radarState.nut")
+let fcsState = require("%rGui/fcsState.nut")
+
 
 let redColor = Color(255, 109, 108, 255)
 let greyColor = Color(45, 60, 60, 255)
@@ -19,44 +20,6 @@ let fcsWidth = sh(28)
 let isExtraElementVisible = false
 let rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
 let rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
-
-let fcsState = {
-  IsVisible = Watched(false)
-  IsBinocular = Watched(false)
-  OpticsWidth = Watched(0.0)
-  StaticFov = Watched(0.0)
-  CalcProgress = Watched(-1.0)
-
-  IsTargetSelected = Watched(false)
-  IsTargetDataAvailable = Watched(false)
-  TargetFwdDir = Watched(0.0)
-  TargetSpeed = Watched(0.0)
-  TargetAzimuth = Watched(0.0)
-
-  HeadingAngle = Watched(0.0)
-  HeroAzimuthAngle = Watched(0.0)
-  TargetAzimuthAngle = Watched(0.0)
-  ShotState = Watched(FCSShotState.SHOT_NONE)
-  ShotDiscrepancy = Watched(0.0)
-
-  IsForestallVisible = Watched(false)
-  IsHorizontalAxisVisible = Watched(true)
-  IsVerticalAxisVisible = Watched(true)
-  IsForestallMarkerVisible = Watched(true)
-  ForestallAzimuth = Watched(0.0)
-  ForestallAzimuthWidth = Watched(0.0)
-  ForestallPitchDelta = Watched(0.0)
-  ForestallPosX = Watched(0.0)
-  ForestallPosY = Watched(0.0)
-  TargetPosX = Watched(0.0)
-  TargetPosY = Watched(0.0)
-}
-
-interopGen({
-  stateTable = fcsState
-  prefix = "fcs"
-  postfix = "Update"
-})
 
 let compassComponent = {
   pos = compassPos

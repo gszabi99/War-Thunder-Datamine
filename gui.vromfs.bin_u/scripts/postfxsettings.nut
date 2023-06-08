@@ -147,7 +147,6 @@ const firstColumnWidth = 0.45
   }
 
   function initScreen() {
-    ::enableHangarControls(true)
     //change shader variables
     ::set_tonemappingMode(::get_tonemappingMode());
     if (::use_lense_flares())

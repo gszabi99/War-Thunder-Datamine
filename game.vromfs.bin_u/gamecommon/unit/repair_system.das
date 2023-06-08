@@ -253,7 +253,8 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   set_flag(repair_system_state, RepairState REPAIR_AVAILABLE,
     get_flag(repair_system_state, RepairState HAS_REPAIR_TOOLKIT) ||
     get_flag(repair_system_state, RepairState REPAIR_PENALTY_WITHOUT_TOOLKIT) ||
-    get_flag(repair_system_state, RepairState IS_BOT)
+    get_flag(repair_system_state, RepairState IS_BOT) ||
+    get_flag(repair_system_state, RepairState REPAIR_ON_BASE)
   )
   let repair_with_mods_available = is_repair_with_mods_availabile(repair_system_state)
 

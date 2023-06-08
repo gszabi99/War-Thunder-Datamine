@@ -33,7 +33,6 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
   //custom functions
   function initScreen() {
     ::set_presence_to_player("menu")
-    ::enableHangarControls(true)
 
     if (::g_login.isAuthorized())
       base.initScreen()

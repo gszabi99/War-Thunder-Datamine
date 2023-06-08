@@ -196,7 +196,6 @@ enum decalTwoSidedMode {
     this.initialAppliedSkinId   = get_last_skin(this.unit.name)
     this.initialUserSkinId      = ::get_user_skins_profile_blk()?[this.unit.name] ?? ""
 
-    ::enableHangarControls(true)
     this.scene.findObject("timer_update").setUserData(this)
 
     hangar_focus_model(true)

@@ -30,8 +30,6 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     ::set_presence_to_player("menu")
-    ::enableHangarControls(true)
-
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
 

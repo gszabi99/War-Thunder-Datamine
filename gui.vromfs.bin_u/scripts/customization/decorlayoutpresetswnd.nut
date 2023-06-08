@@ -42,8 +42,6 @@ const PRESET_MIN_USAGE = 2
   }
 
   function initScreen() {
-    ::enableHangarControls(true)
-
     let objCombobox = this.scene.findObject("master_skin")
     let selIdx = this.getIndexBySkinId(this.masterSkinId)
     let markup = ::create_option_combobox(null, this.skinList.items, selIdx, null, false)
