@@ -36,6 +36,7 @@ struct EventOnBurnDamageToPart
   initiatorId : uint
   seed : int
   sph : float4
+  atTime : float
 
 
 

@@ -4,9 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -229,7 +226,7 @@ local class WeaponsPurchaseProcess {
 
     let taskId = ::char_send_blk("cln_buy_all_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
+    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
       broadcastEvent("ModificationPurchased", { unit = unit })
       ::updateAirAfterSwitchMod(unit, "")
@@ -262,7 +259,7 @@ local class WeaponsPurchaseProcess {
 
     let taskId = ::char_send_blk("cln_buy_spare_aircrafts", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() {
+    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
       broadcastEvent("SparePurchased", { unit = unit })
       afterSuccessfullPurchaseCb?()
@@ -296,7 +293,7 @@ local class WeaponsPurchaseProcess {
 
     let taskId = ::char_send_blk("cln_buy_weapon", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() {
+    let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
       ::updateAirAfterSwitchMod(unit)
       broadcastEvent("WeaponPurchased", { unit = unit, weaponName = modName })

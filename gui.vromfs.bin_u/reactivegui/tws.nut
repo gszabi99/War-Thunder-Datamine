@@ -206,6 +206,8 @@ let rocketVector =
     [VECTOR_LINE, 5, 30, 0, 40]
   ]
 
+const sectorOpacityMult = 0.25
+
 let function createMlwsTarget(index, colorWatch) {
   let target = mlwsTargets[index]
   let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
@@ -235,6 +237,23 @@ let function createMlwsTarget(index, colorWatch) {
         }
   }
 
+  local sector = null
+  if (target.sector > 2.0) {
+    sector = @() {
+      watch = [targetOpacity, colorWatch]
+      color = isColorOrWhite(colorWatch.value)
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(100), ph(100)]
+      pos = [pw(0), ph(0)]
+      lineWidth = hdpx(30)
+      fillColor = Color(0, 0, 0, 0)
+      opacity = targetOpacity.value * sectorOpacityMult
+      commands = [
+        [VECTOR_SECTOR, 0, 0, 143, 143, 45 - target.sector, 45 + target.sector]
+      ]
+    }
+  }
+
   return {
     size = flex()
     pos = [pw(50), ph(50)]
@@ -243,7 +262,8 @@ let function createMlwsTarget(index, colorWatch) {
       rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
     }
     children = [
-      targetComponent
+      targetComponent,
+      sector
     ]
   }
 }
@@ -296,6 +316,24 @@ let function createLwsTarget(index, colorWatched, isForTank = false) {
         }
   }
 
+  local sector = null
+  if (target.sector > 2.0) {
+    sector = @() {
+      watch = [targetOpacity, colorWatched]
+      color = isColorOrWhite(colorWatched.value)
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(100), ph(100)]
+      pos = [pw(0), ph(0)]
+      lineWidth = hdpx(30)
+      fillColor = Color(0, 0, 0, 0)
+      opacity = targetOpacity.value * sectorOpacityMult
+      commands = [
+        [VECTOR_SECTOR, 0, 0, 143, 143, -90 - target.sector, -90 + target.sector]
+      ]
+      transform = lswTargetTransform
+    }
+  }
+
   return {
     size = flex()
     pos = [pw(50), ph(50)]
@@ -304,7 +342,8 @@ let function createLwsTarget(index, colorWatched, isForTank = false) {
       rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
     }
     children = [
-      targetComponent
+      targetComponent,
+      sector
     ]
   }
 }
@@ -325,7 +364,6 @@ let function createRwrTarget(index, colorWatched) {
   let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)))
 
   local trackLine = null
-
   if (target.track) {
     trackLine = @() {
       watch = [targetOpacityRwr, colorWatched]
@@ -338,6 +376,24 @@ let function createRwrTarget(index, colorWatched) {
       commands = [
         [VECTOR_LINE_DASHED, -135, -135, -80, -80, hdpx(5), hdpx(3)]
       ]
+    }
+  }
+
+  local sector = null
+  if (target.sector > 2.0) {
+    sector = @() {
+      watch = [targetOpacityRwr, colorWatched]
+      color = isColorOrWhite(colorWatched.value)
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(100), ph(100)]
+      pos = [pw(0), ph(0)]
+      lineWidth = hdpx(35)
+      fillColor = Color(0, 0, 0, 0)
+      opacity = targetOpacityRwr.value * sectorOpacityMult
+      commands = [
+        [VECTOR_SECTOR, 0, 0, 100, 100, -target.sector, target.sector]
+      ]
+      transform = rwrTargetTransform
     }
   }
 
@@ -373,7 +429,8 @@ let function createRwrTarget(index, colorWatched) {
     }
     children = [
       targetComponent,
-      trackLine
+      trackLine,
+      sector
     ]
   }
 }

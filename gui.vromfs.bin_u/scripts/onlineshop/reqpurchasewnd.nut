@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")

@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { is_sound_mods_enabled, restart_game_without_mods } = require("soundModCheck")
 

@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let focusTarget = require("%sqDagui/focusFrame/bhvFocusFrameTarget.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")

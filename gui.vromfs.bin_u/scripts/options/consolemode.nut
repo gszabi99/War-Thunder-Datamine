@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")

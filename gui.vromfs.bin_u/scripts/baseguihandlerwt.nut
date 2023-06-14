@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -95,8 +92,8 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
 
-    if (this.wndType == handlerType.BASE)
-      ::enableHangarControls(false)
+    if (this.wndType == handlerType.MODAL || this.wndType == handlerType.BASE)
+      ::enableHangarControls(false, this.wndType == handlerType.BASE)
 
     this.setWndGameMode()
     this.setWndOptionsMode()
@@ -856,6 +853,8 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   }
 
   function onModalWndDestroy() {
+    if (!::handlersManager.isAnyModalHandlerActive())
+      ::restoreHangarControls()
     base.onModalWndDestroy()
     ::checkMenuChatBack()
   }
@@ -918,10 +917,6 @@ let BaseGuiHandlerWT = class extends ::BaseGuiHandler {
   function onModChangeBulletsSlider() {}
 
   function onShowMapRenderFilters() {}
-
-  function onHangarControlHoverChange(obj) {
-    ::enableHangarControls(obj.isHovered())
-  }
 }
 
 ::gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT

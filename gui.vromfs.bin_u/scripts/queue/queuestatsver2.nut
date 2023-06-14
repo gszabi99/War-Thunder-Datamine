@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 ::queue_stats_versions.StatsVer2 <- class extends ::queue_stats_versions.Base {
   neutralTeamId = ::get_team_name_by_mp_team(MP_TEAM_NEUTRAL)

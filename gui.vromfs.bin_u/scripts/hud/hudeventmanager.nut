@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { subscribeHudEvents } = require("hudMessages")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 ::g_hud_event_manager <-
 {

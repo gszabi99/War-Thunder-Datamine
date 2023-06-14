@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let regexp2 = require("regexp2")

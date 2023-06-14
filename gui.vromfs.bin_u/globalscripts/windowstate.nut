@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 let { Computed } = require("frp")
 let mkHardWatched = require("mkHardWatched.nut")
 let { subscribe } = require("eventbus")

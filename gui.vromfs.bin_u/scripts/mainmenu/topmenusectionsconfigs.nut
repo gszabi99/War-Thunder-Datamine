@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 require("%scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
 
@@ -137,8 +134,8 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
         buttonsList.ENCYCLOPEDIA
         buttonsList.CHANGE_LOG
         buttonsList.CREDITS
-        buttonsList.EULA
         buttonsList.LINE_SEPARATOR
+        buttonsList.EULA
         buttonsList.WIKI
         buttonsList.FAQ
         buttonsList.REPORT_AN_ISSUE

@@ -4,9 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -1072,7 +1069,7 @@ shopData = [
 
     local data = ""
     local curIdx = 0
-    let countryData = u.search(this.shopData, (@(curCountry) function(country) { return country.name == curCountry })(this.curCountry))
+    let countryData = u.search(this.shopData, (@(curCountry) function(country) { return country.name == curCountry })(this.curCountry)) //-ident-hides-ident
     if (countryData) {
       let ediff = this.getCurrentEdiff()
       let view = { tabs = [] }

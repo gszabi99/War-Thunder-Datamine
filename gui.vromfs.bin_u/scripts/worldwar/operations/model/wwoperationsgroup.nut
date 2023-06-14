@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
@@ -42,7 +39,7 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
   function getOperationsList() {
     if (!this._operationsList)
       this._operationsList = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(
-                          (@(mapId) function(op) { return op.getMapId() == mapId })(this.mapId)
+                          (@(mapId) function(op) { return op.getMapId() == mapId })(this.mapId) //-ident-hides-ident
                         )
     return this._operationsList
   }

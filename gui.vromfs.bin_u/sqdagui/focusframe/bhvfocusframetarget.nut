@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 local onSetTarget = null    //onSetTarget(oDaguiObject)
 local onUnsetTarget = null  //onUnsetTarget(DaguiObject)

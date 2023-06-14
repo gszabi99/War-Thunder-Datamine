@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { loadOnce, PERSISTENT_DATA_PARAMS, registerPersistentData

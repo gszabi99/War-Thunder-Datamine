@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format, split_by_chars } = require("string")
 let { round } = require("math")

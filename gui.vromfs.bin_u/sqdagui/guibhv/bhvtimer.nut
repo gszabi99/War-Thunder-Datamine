@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 ::gui_bhv.Timer <- class {
   function onTimer(obj, dt) {

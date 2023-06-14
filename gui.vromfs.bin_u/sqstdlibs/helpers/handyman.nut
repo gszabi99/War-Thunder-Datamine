@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 /**
  * Documenation: http://mustache.github.io/mustache.5.html

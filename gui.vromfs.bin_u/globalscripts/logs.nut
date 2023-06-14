@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 let { Watched } = require("frp")
 let { tostring_r } = require("%sqstd/string.nut")
 

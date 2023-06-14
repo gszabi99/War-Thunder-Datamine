@@ -4,6 +4,22 @@
   "sound": "weapon.bombgun",
   "mesh": "uk_8000lb_hc_mkI_n52_bomb",
   "bomb": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "he_bomb",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "useEffectiveArmorThicknessForShatter": true,
+    "explodeOnRendinst": true,
     "mass": 3787.04,
     "mass_lbs": 8349.0,
     "explosiveType": "torpex",
@@ -70,6 +86,20 @@
     "shutterArmorPower": 28.0,
     "shutterHit": 28.0,
     "iconType": "bombs_heavy_middle_black",
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },

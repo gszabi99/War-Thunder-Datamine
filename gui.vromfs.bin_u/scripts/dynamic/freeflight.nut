@@ -1,7 +1,4 @@
 //checked for plus_string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Point3 } = require("dagor.math")
 let { slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")

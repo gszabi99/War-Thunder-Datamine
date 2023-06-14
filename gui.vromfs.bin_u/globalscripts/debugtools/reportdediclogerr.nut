@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let logDL = log_with_prefix("[LOGERR] ")

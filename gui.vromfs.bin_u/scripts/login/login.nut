@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //checked for explicitness
-#explicit-this
-#no-root-fallback
 
 let LoginProcess = require("loginProcess.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

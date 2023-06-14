@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 //ms
 let { get_time_msec } = require("dagor.time")

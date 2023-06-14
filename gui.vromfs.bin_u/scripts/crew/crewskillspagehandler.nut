@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -274,7 +271,7 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT {
     local defaultButton = "ok"
     if (spendGold) {
       text += "\n" + loc("shop/purchaseMoreSkillPoints")
-      buttonsArray.insert(0, ["yes", (@(crew) function() { ::g_crew.createCrewBuyPointsHandler(crew) })(this.crew)])
+      buttonsArray.insert(0, ["yes", (@(crew) function() { ::g_crew.createCrewBuyPointsHandler(crew) })(this.crew)]) //-ident-hides-ident
       defaultButton = "yes"
     }
     this.msgBox("buySkillPoints", text, buttonsArray, defaultButton)

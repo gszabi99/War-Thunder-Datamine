@@ -6,9 +6,6 @@ let { frnd, rnd } = require("dagor.random")
 let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")

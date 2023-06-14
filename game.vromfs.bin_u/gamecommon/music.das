@@ -76,6 +76,7 @@ def music_init_es(evt : Event;
       music__cooldownCalm = musicBlk |> datablock_getReal("cooldown_calm", 300.)
       music__cooldownBattle = musicBlk |> datablock_getReal("cooldown_battle", 180.)
       music__useHangarMusicForUnitType = musicBlk |> datablock_getBool("use_hangar_music_for_type", false)
+  print("[MUSIC] es inited")
 
 
 def get_game_state(forced : bool) : GameState
@@ -287,6 +288,8 @@ def music_es(info : ParallelUpdateFrameDelayed;
           overwrite_and_set_music_state(int(musicState), trackName)
       elif hangarCountryChanged
         overwrite_and_set_music_state(int(musicState), make_hangar_event_name(hangarCountryId))
+      elif hangarTrackEnded
+        overwrite_and_set_music_state(int(musicState), "")
       music__curHangarCountry_id = hangarCountryId
       music__lockedHangar = false
     elif hangarTrackEnded

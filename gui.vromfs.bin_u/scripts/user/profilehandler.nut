@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -1016,6 +1013,13 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
         continue
 
       if (isUnlockTree) {
+        let mode = cb?.mode
+        if(mode != null) {
+          if((mode % "condition").filter(@(v) v?.type == "battlepassSeason").len() > 0)
+            continue
+          if((mode % "hostCondition").filter(@(v) v?.type == "battlepassSeason").len() > 0)
+            continue
+        }
         let newChapter = cb.getStr("chapter", "")
         let newGroup = cb.getStr("group", "")
         if (newChapter != "") {

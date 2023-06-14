@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { getCountryCode } = require("auth_wt")
 let { getClustersByCountry } = require("%scripts/onlineInfo/defaultClusters.nut")
 let { optimalClusters } = require("%scripts/onlineInfo/optimalClusters.nut")

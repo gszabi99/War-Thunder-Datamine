@@ -1,7 +1,4 @@
 //-file:plus-string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_option_bool } = require("gameOptions")

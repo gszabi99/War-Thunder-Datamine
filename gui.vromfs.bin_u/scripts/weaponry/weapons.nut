@@ -4,9 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -57,7 +54,7 @@ let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut")
 let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-
+let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -1171,6 +1168,12 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
         return
 
       this.guiScene.playSound("check")
+
+      if (needReqModInstall(this.air, item)) {
+        promptReqModInstall(this.air, item)
+        return
+      }
+
       setLastWeapon(this.airName, item.name)
       this.updateItemBundle(item)
       ::check_secondary_weapon_mods_recount(this.air)

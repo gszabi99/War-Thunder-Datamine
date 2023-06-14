@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { getAllModsCost } = require("%scripts/weaponry/itemInfo.nut")
 let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")

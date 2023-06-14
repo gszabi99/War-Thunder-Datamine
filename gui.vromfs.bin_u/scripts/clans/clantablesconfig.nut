@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 let DataBlock  = require("DataBlock")

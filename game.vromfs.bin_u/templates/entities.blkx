@@ -1161,17 +1161,25 @@
     "ammo_slots__node": {}
   },
   "tank_engine": {
-    "_tags": "server",
-    "tank_engine__overheat": false,
-    "tank_engine__overheatDelay": 0.0,
-    "tank_engine__overheatDamage": 0.0,
-    "tank_engine__overheatDamageType": -1,
-    "tank_engine__overheatDamageCooldown": 0.0,
-    "tank_engine__overheatDamageTime": -1.0,
-    "tank_engine__brokenRadiatorFxEventId": -1,
-    "tank_engine__engine_parts": {},
-    "tank_engine__radiator_parts": {},
-    "tank_engine__overheatOffender": {}
+    "_extends": "replicating",
+    "_group": [
+      {
+        "_track": true,
+        "tank_engine__overheat": false
+      },
+      {
+        "_tags": "server",
+        "tank_engine__overheatDelay": 0.0,
+        "tank_engine__overheatDamage": 0.0,
+        "tank_engine__overheatDamageType": -1,
+        "tank_engine__overheatDamageCooldown": 0.0,
+        "tank_engine__overheatDamageTime": -1.0,
+        "tank_engine__brokenRadiatorFxEventId": -1,
+        "tank_engine__engine_parts": {},
+        "tank_engine__radiator_parts": {},
+        "tank_engine__overheatOffender": {}
+      }
+    ]
   },
   "ground_unit": {
     "_extends": [

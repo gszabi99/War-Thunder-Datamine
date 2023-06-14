@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let contentStateModule = require("%scripts/clientState/contentState.nut")

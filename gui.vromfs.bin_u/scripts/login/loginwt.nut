@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -28,6 +25,7 @@ let { isNeedFirstCountryChoice,
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 let { get_meta_missions_info } = require("guiMission")
+let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
 
 
 ::my_user_id_str <- ""
@@ -211,7 +209,7 @@ let function go_to_account_web_page(bqKey = "") {
     }
     function() {
       if (isNeedFirstCountryChoice()) {
-        ::g_matching_game_modes.forceUpdateGameModes()
+        forceUpdateGameModes()
         ::gui_start_countryChoice()
         ::gui_handlers.FontChoiceWnd.markSeen()
         tutorialModule.saveVersion()

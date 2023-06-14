@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 let { activateShortcut, setAxisValue, setVirtualAxisValue, changeCruiseControl } = require("controls")
 
 local toggleShortcut = @(shortcutName) activateShortcut(shortcutName, true, true)

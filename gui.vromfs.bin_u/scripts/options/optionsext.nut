@@ -1,7 +1,4 @@
 //-file:plus-string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
@@ -4089,6 +4086,36 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.getValueLocText = @(val) $"{val}s"
     break
 
+    case ::USEROPT_LWS_IND_RADIUS:
+      descr.id = "lws_indicator_radius"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
+    case ::USEROPT_LWS_IND_ALPHA:
+      descr.id = "lws_indicator_alpha"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
+    case ::USEROPT_LWS_IND_SCALE:
+      descr.id = "lws_indicator_scale"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
     case ::USEROPT_LWS_IND_TIMEOUT:
       descr.id = "lws_indicator_timeout"
       descr.controlType = optionControlType.SLIDER
@@ -4107,6 +4134,36 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.step <- 1
       defaultValue = 2
       descr.getValueLocText = @(val) $"{val}s"
+    break
+
+    case ::USEROPT_LWS_IND_H_RADIUS:
+      descr.id = "lws_indicator_radius_helicopter"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
+    case ::USEROPT_LWS_IND_H_ALPHA:
+      descr.id = "lws_indicator_alpha_helicopter"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
+    break
+
+    case ::USEROPT_LWS_IND_H_SCALE:
+      descr.id = "lws_indicator_scale_helicopter"
+      descr.controlType = optionControlType.SLIDER
+      descr.min <- 50
+      descr.max <- 150
+      descr.step <- 10
+      defaultValue = 100
+      descr.getValueLocText = @(val) $"{val}%"
     break
 
     case ::USEROPT_LWS_IND_H_TIMEOUT:
@@ -5406,6 +5463,12 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_LWS_AZIMUTH_IND_TIMEOUT:
     case ::USEROPT_LWS_IND_H_TIMEOUT:
     case ::USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT:
+    case ::USEROPT_LWS_IND_RADIUS:
+    case ::USEROPT_LWS_IND_ALPHA:
+    case ::USEROPT_LWS_IND_SCALE:
+    case ::USEROPT_LWS_IND_H_RADIUS:
+    case ::USEROPT_LWS_IND_H_ALPHA:
+    case ::USEROPT_LWS_IND_H_SCALE:
       set_gui_option(optionId, value)
       break
 

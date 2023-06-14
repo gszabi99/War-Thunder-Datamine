@@ -1,7 +1,4 @@
 //checked for plus_string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Watched } = require("frp")
 let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")

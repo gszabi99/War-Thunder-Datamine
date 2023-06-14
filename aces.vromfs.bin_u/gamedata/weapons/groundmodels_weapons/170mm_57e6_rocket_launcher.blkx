@@ -209,20 +209,24 @@
             0.5
           ],
           "timeToGain8": [
-            7.0,
-            1.5
+            3.0,
+            1.75
           ],
           "timeToGain9": [
-            20.0,
-            1.5
+            7.0,
+            1.0
           ],
-          "crossDistToReqCrossVelMult": 10.0,
+          "timeToGain10": [
+            15.0,
+            0.75
+          ],
+          "crossDistToReqCrossVelMult": 8.0,
           "reqCrossVelRationMax": 0.75,
           "velDiffToReqAccelMult": 4.5,
           "accelControl": {
             "reqAccelMax": 32.0,
             "baseIndSpeed": 1800.0,
-            "accelControlProp": 0.0176,
+            "accelControlProp": 0.0175,
             "accelControlIntg": 0.0,
             "accelControlDiff": 0.0003,
             "accelControlIntgLim": 0.0
@@ -275,7 +279,8 @@
         "shellCaliberRange": [
           0.08,
           0.2
-        ]
+        ],
+        "armDistanceToTarget": 500.0
       },
       "collisions": {
         "default": {

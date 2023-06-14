@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
@@ -21,7 +19,7 @@ let { handlersManager } = require("baseGuiHandlerManager.nut")
   }
 */
 
-::gui_handlers.FramedMessageBox <- class extends ::BaseGuiHandler {
+::gui_handlers.FramedMessageBox <- class extends ::BaseGuiHandler { //-undefined-global
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/framedMessageBox.tpl"
 

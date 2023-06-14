@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")

@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -250,7 +247,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let curTabArmies = u.filter(
       armies,
-      (@(lastTabSelected) function(army) {
+      (@(lastTabSelected) function(army) { //-ident-hides-ident
         return army.getActionStatus() == lastTabSelected.status
       })(this.lastTabSelected)
     )

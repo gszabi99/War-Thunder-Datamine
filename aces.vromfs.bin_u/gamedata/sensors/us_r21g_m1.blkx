@@ -38,7 +38,7 @@
     }
   },
   "scanPatterns": {
-    "search": {
+    "searchWide": {
       "type": "pyramide",
       "azimuthLimits": [
         -60.0,
@@ -52,6 +52,25 @@
       "pitchStabLimit": 15.0,
       "period": 1.0,
       "width": 58.0,
+      "barHeight": 4.2,
+      "barsCount": 1,
+      "rowMajor": true,
+      "barsOneWay": false
+    },
+    "searchNarrow": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        15.0
+      ],
+      "rollStabLimit": 70.0,
+      "pitchStabLimit": 15.0,
+      "period": 0.333,
+      "width": 20.0,
       "barHeight": 4.2,
       "barsCount": 1,
       "rowMajor": true,
@@ -185,7 +204,8 @@
   },
   "scanPatternSets": {
     "search": {
-      "scanPattern1": "search"
+      "scanPattern1": "searchWide",
+      "scanPattern2": "searchNarrow"
     }
   },
   "scopeRangeSets": {
@@ -989,15 +1009,12 @@
           "event": "update",
           "actions": {
             "scan": {},
-            "setCenterElevation": [
-              {
-                "source": "constant",
-                "value": 0.0
-              },
-              {
-                "source": "designationCue"
-              }
-            ]
+            "setCenterAzimuth": {
+              "source": "designationCue"
+            },
+            "setCenterElevation": {
+              "source": "designationCue"
+            }
           }
         },
         "detect": {

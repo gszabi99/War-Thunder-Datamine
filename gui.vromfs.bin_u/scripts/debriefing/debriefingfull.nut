@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost, Money, money_type } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { fabs } = require("math")
 let DataBlock = require("DataBlock")

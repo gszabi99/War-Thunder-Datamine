@@ -1,6 +1,4 @@
 //checked for plus_string
-#explicit-this
-#no-root-fallback
 
 let function color4ToInt(color) {
   let a = clamp((255 * color.a + 0.5).tointeger(), 0, 255)

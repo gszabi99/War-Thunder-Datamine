@@ -68,7 +68,10 @@
     ],
     "explosionInAir": true,
     "rendinstDamageRadius": 8.0,
-    "fuseDelayDist": 0.4,
+    "fuseDelayDist": [
+      0.4,
+      0.3
+    ],
     "hasProximityFuse": true,
     "relativeVelArmorShift": [
       200.0,
@@ -166,6 +169,13 @@
       "onHitChanceMultFire": 40.0
     },
     "damage": {
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.15,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      },
       "explosive": {
         "radius": 0.4,
         "offset": 0.2
@@ -434,6 +444,15 @@
       },
       "stone_snow": {
         "fx": "hit_12_18mm_snow_dust_ap"
+      },
+      "tank_structural_steel": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "aluminum_armor": {
+        "fx": "hit_12_18mm_metal_ap"
+      },
+      "tank_rubber_screens": {
+        "fx": "hit_12_18mm_stone_dust_ap"
       }
     }
   },
@@ -470,7 +489,10 @@
       ],
       "explosionInAir": true,
       "rendinstDamageRadius": 8.0,
-      "fuseDelayDist": 0.4,
+      "fuseDelayDist": [
+        0.4,
+        0.3
+      ],
       "hasProximityFuse": true,
       "relativeVelArmorShift": [
         200.0,
@@ -568,6 +590,13 @@
         "onHitChanceMultFire": 40.0
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "explosive": {
           "radius": 0.4,
           "offset": 0.2
@@ -836,6 +865,15 @@
         },
         "stone_snow": {
           "fx": "hit_12_18mm_snow_dust_ap"
+        },
+        "tank_structural_steel": {
+          "fx": "hit_12_18mm_metal_ap"
+        },
+        "aluminum_armor": {
+          "fx": "hit_12_18mm_metal_ap"
+        },
+        "tank_rubber_screens": {
+          "fx": "hit_12_18mm_stone_dust_ap"
         }
       }
     }

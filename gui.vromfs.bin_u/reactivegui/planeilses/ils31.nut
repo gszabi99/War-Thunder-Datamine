@@ -810,6 +810,31 @@ let atgmLaunchPermitted = @() {
   : null
 }
 
+let aimLockPosMark = @() {
+  watch = AimLockValid
+  size = flex()
+  children = AimLockValid.value ? [
+    @(){
+      size = [pw(2), pw(2)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_LINE, -100, -100, -30, -30],
+        [VECTOR_LINE, -100, 100, -30, 30],
+        [VECTOR_LINE, 100, 100, 30, 30],
+        [VECTOR_LINE, 100, -100, 30, -30]
+      ]
+      behavior = Behaviors.RtPropUpdate
+      update = @() {
+        transform = {
+          translate = AimLockPos
+        }
+      }
+    }
+  ] : null
+}
+
 let function atgmGrid(width, height) {
   return @() {
     watch = [AtgmMode, IsRadarVisible]
@@ -823,7 +848,7 @@ let function atgmGrid(width, height) {
       },
       agmLaunchZone(width, height),
       atgmLaunchPermitted
-    ] : []
+    ] : [aimLockPosMark]
   }
 }
 

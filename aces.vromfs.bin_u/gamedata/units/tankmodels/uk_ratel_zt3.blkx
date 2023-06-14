@@ -233,6 +233,14 @@
         "hp": 50.0
       }
     },
+    "hull_turret_spaced_armor": {
+      "armorClass": "RHA_tank",
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInViewer": true,
+        "hidableInXrayViewer": true
+      }
+    },
     "optics": {
       "armorClass": "optics_tank",
       "optic_gun_dm": {
@@ -1647,6 +1655,16 @@
     "vertical": true,
     "horizontal": true
   },
+  "xray_viewer_data": {
+    "armorArrayHullTop": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
+    }
+  },
   "sound": {
     "EngineName": "engine_mctav6",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -1659,6 +1677,7 @@
   },
   "class_tags": {},
   "commonWeapons": {
+    "maxMissileSalvoTimeInterval": 3.0,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -2720,6 +2739,7 @@
       "modClass": "protection",
       "effects": {
         "commonWeapons": {
+          "maxMissileSalvoTimeInterval": 3.0,
           "Weapon": [
             {
               "trigger": "gunner0",

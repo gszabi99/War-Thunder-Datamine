@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 let ScriptReloaderStorage = class {
   contextWeak = null

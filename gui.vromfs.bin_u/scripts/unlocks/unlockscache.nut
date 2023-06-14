@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-#no-root-fallback
-#explicit-this
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let cacheById = persist("unlocksCacheById", @() {})

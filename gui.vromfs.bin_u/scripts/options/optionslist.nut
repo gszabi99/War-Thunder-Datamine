@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
@@ -139,6 +136,9 @@ let getMainOptions = function() {
       [::USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
       [::USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
+      [::USEROPT_LWS_IND_H_RADIUS, "slider"],
+      [::USEROPT_LWS_IND_H_ALPHA, "slider"],
+      [::USEROPT_LWS_IND_H_SCALE, "slider"],
       [::USEROPT_LWS_IND_H_TIMEOUT, "slider"],
       [::USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT, "slider"],
 
@@ -165,6 +165,9 @@ let getMainOptions = function() {
       [::USEROPT_HIT_INDICATOR_ALPHA, "slider", hasFeature("advancedHitIndicator")],
       [::USEROPT_HIT_INDICATOR_SCALE, "slider", hasFeature("advancedHitIndicator")],
       [::USEROPT_HIT_INDICATOR_FADE_TIME, "slider", hasFeature("advancedHitIndicator")],
+      [::USEROPT_LWS_IND_RADIUS, "slider"],
+      [::USEROPT_LWS_IND_ALPHA, "slider"],
+      [::USEROPT_LWS_IND_SCALE, "slider"],
       [::USEROPT_LWS_IND_TIMEOUT, "slider"],
       [::USEROPT_LWS_AZIMUTH_IND_TIMEOUT, "slider"],
 

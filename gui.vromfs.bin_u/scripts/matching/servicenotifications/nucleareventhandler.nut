@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_base_game_version } = require("app")
 let { is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak

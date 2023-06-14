@@ -1,9 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-#default:no-func-decl-sugar
-#default:no-class-decl-sugar
-#default:explicit-this
-#default:no-root-fallback
 
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 clear_vm_entity_systems()

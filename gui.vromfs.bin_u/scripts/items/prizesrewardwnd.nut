@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 

@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 ::SHORTCUT <- {
   MOUSE_LEFT_BUTTON   = { dev = [STD_MOUSE_DEVICE_ID], btn = [0] }

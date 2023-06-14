@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-#no-root-fallback
-#explicit-this
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { get_last_skin, set_last_skin } = require("unitCustomization")
 let skinLocations = require("%scripts/customization/skinLocations.nut")

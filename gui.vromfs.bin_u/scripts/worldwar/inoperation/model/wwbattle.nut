@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { abs, floor } = require("math")
 let { Point2 } = require("dagor.math")
@@ -473,7 +470,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
   function isStillInOperation() {
     let battles = ::g_world_war.getBattles(
-        (@(id) function(checkedBattle) {
+        (@(id) function(checkedBattle) { //-ident-hides-ident
           return checkedBattle.id == id
         })(this.id)
       )

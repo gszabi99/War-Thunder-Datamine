@@ -503,7 +503,8 @@
       "TChinese": "zh",
       "Finnish": "fi",
       "Australian": "en_au",
-      "SouthAfrican": "en_za"
+      "SouthAfrican": "en_za",
+      "USA": "en_us"
     }
   },
   "budget": {
@@ -17572,6 +17573,7 @@
     "crewDmgAbandonedThreshold": 0.05,
     "breachesCritThreshold": 4.5,
     "breachesSeriousThreshold": 3.5,
+    "reportBulletTypeTimeThreshold": 4.0,
     "aircraftDetectionRadius": 2000.0,
     "detectionReportSideCooldown": 25.0,
     "detectionReportGlobalCooldown": 25.0,
@@ -17644,6 +17646,13 @@
       },
       "Swedish": {
         "heavyVehicle": true
+      },
+      "USA": {
+        "warShip": true,
+        "heavyVehicle": true,
+        "remap": {
+          "warShip": "English"
+        }
       }
     },
     "targetEvents": {
@@ -17816,11 +17825,6 @@
           "event": "05_targeting/voice_message_commander_shot",
           "playerRole": "commander",
           "player": -1
-        },
-        "commanderTargetOnMove": {
-          "event": "05_targeting/voice_message_commander_target_on_the_move",
-          "playerRole": "commander",
-          "minSpeechInterval": 0.0
         },
         "driverObstacle": {
           "event": "05_targeting/voice_message_driver_obstacle",
@@ -18064,16 +18068,14 @@
           "radioNoiseType": "inner_driver",
           "playerRole": "driver",
           "player": -1,
-          "minSpeechInterval": 0.0,
-          "delayTime": 0.5
+          "minSpeechInterval": 0.0
         },
         "shotLeft": {
           "event": "06_shooting_results/voice_message_driver_correction_left",
           "radioNoiseType": "inner_driver",
           "playerRole": "driver",
           "player": -1,
-          "minSpeechInterval": 0.0,
-          "delayTime": 0.5
+          "minSpeechInterval": 0.0
         },
         "overShoot": {
           "event": "06_shooting_results/voice_message_driver_correction_retreat",
@@ -18532,6 +18534,23 @@
         "player": -1,
         "playerRole": "commander",
         "minSpeechInterval": 0.0
+      },
+      "angleCorrectionMetric": {
+        "event": "06_shooting_results/voice_message_commander_correction_<dist>",
+        "playerRole": "commander",
+        "minSpeechInterval": 0.0,
+        "distances": {
+          "val": [
+            "002",
+            "004",
+            "006",
+            "008",
+            "010",
+            "012",
+            "014",
+            "016"
+          ]
+        }
       },
       "distanceMetric": {
         "event": "05_targeting/voice_message_commander_target_<dist>_m",

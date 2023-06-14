@@ -1306,8 +1306,8 @@
     ]
   },
   "attach": {
-    "gunner1": "gunner_sit_su_500",
-    "pilot1": "pilot_su_500"
+    "pilot1": "pilot_su_500",
+    "gunner1": "gunner_sit_su_500"
   },
   "propellers": {
     "stage1": {
@@ -2682,30 +2682,35 @@
           {
             "iconType": "atgm_type2_x2",
             "name": "9m114_x2_left",
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m114_x2_ataka_laser.blk",
               "emitter": "9m114_pylon_001",
               "external": true,
-              "separate": true
+              "separate": true,
+              "order": 51
             }
           },
           {
             "iconType": "atgm_type1_x6",
-            "name": "9m120_x8",
+            "name": "9m120_x8_slot2",
             "reqModification": "ka_52_9m120_6",
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120_x6_ataka_laser.blk",
               "emitter": "9m114_pylon_001",
               "external": true,
-              "separate": true
+              "separate": true,
+              "order": 63
             }
           },
           {
             "iconType": "atgm_type_vihr_x6",
             "name": "9k127_x8_left",
             "reqModification": "ka_9K121",
+            "maxMissileSalvoTimeInterval": 3.0,
             "ShowNodes": {
               "node": [
                 "su_vyihr_apu6_tpk_lower_001",
@@ -2748,7 +2753,7 @@
             ],
             "Weapon": [
               {
-                "order": 100,
+                "order": 1,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_001",
@@ -2766,7 +2771,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 102,
+                "order": 3,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_002",
@@ -2784,7 +2789,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 104,
+                "order": 5,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_005",
@@ -2802,7 +2807,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 106,
+                "order": 7,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_006",
@@ -2820,7 +2825,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 108,
+                "order": 9,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_007",
@@ -2838,7 +2843,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 110,
+                "order": 11,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_008",
@@ -3150,30 +3155,35 @@
           {
             "iconType": "atgm_type2_x2",
             "name": "9m114_x2_right",
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m114_x2_ataka_laser.blk",
               "emitter": "9m114_pylon_002",
               "external": true,
-              "separate": true
+              "separate": true,
+              "order": 52
             }
           },
           {
             "iconType": "atgm_type1_x6",
-            "name": "9m120_x8",
+            "name": "9m120_x8_slot5",
             "reqModification": "ka_52_9m120_6",
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/9m120_x6_ataka_laser.blk",
               "emitter": "9m114_pylon_002",
               "external": true,
-              "separate": true
+              "separate": true,
+              "order": 64
             }
           },
           {
             "iconType": "atgm_type_vihr_x6",
             "name": "9k127_x8_right",
             "reqModification": "ka_9K121",
+            "maxMissileSalvoTimeInterval": 3.0,
             "ShowNodes": {
               "node": [
                 "su_vyihr_apu6_tpk_lower_002",
@@ -3216,7 +3226,7 @@
             ],
             "Weapon": [
               {
-                "order": 101,
+                "order": 2,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_004",
@@ -3234,7 +3244,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 103,
+                "order": 4,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_003",
@@ -3252,7 +3262,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 105,
+                "order": 6,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_012",
@@ -3270,7 +3280,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 107,
+                "order": 8,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_011",
@@ -3288,7 +3298,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 109,
+                "order": 10,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_010",
@@ -3306,7 +3316,7 @@
                 "dragCx": 0.001
               },
               {
-                "order": 111,
+                "order": 12,
                 "trigger": "atgm",
                 "blk": "gameData/Weapons/rocketGuns/su_9m127_1.blk",
                 "emitter": "su_vyhr_rocket_009",
@@ -4799,19 +4809,6 @@
     "fxType": "catapult_expl_ejection",
     "seat": [
       {
-        "part": "seat_02",
-        "hide": "seat_02_after_ejection",
-        "seatVel": [
-          7.0,
-          0.0,
-          -5.0
-        ],
-        "fxEmitter": [
-          "seat_02_jet1",
-          "seat_02_jet2"
-        ]
-      },
-      {
         "part": "seat_01",
         "hide": "seat_01_after_ejection",
         "seatVel": [
@@ -4822,6 +4819,19 @@
         "fxEmitter": [
           "seat_01_jet1",
           "seat_01_jet2"
+        ]
+      },
+      {
+        "part": "seat_02",
+        "hide": "seat_02_after_ejection",
+        "seatVel": [
+          7.0,
+          0.0,
+          -5.0
+        ],
+        "fxEmitter": [
+          "seat_02_jet1",
+          "seat_02_jet2"
         ]
       }
     ]

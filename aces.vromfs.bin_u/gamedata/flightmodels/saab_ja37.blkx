@@ -12,7 +12,6 @@
   "haveCCRPForGun": true,
   "ilsEP12": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "instructorCritMult": [
@@ -42,6 +41,7 @@
   "fireParamsPreset": "2000kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -207,6 +207,9 @@
       },
       "tank8_dm": {
         "hp": 51.1
+      },
+      "tank9_dm": {
+        "hp": 120.5
       }
     },
     "wood": {
@@ -1284,6 +1287,47 @@
         ]
       },
       {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -2252,6 +2296,9 @@
         "boy_401_container_r"
       ]
     },
+    "HideDmParts": {
+      "node": "tank9_dm"
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -2481,6 +2528,27 @@
       },
       {
         "index": 4,
+        "tier": 6,
+        "order": 7,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb",
+          "showInWeaponMenu": true,
+          "ShowDmParts": {
+            "node": "tank9_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/sw_1250l_late_saab_ja37d.blk",
+            "emitter": "sw_1250l_late_drop_tank",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 5,
         "tier": 5,
         "order": 6,
         "WeaponPreset": [
@@ -2531,7 +2599,7 @@
         ]
       },
       {
-        "index": 5,
+        "index": 6,
         "tier": 4,
         "order": 4,
         "WeaponPreset": [
@@ -2598,7 +2666,7 @@
         ]
       },
       {
-        "index": 6,
+        "index": 7,
         "tier": 3,
         "order": 2,
         "WeaponPreset": [
@@ -2835,6 +2903,28 @@
       "from": "saab_ja37_camo_c*",
       "to": "saab_ja37_camo_c_tomoe*"
     }
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister",
+    "seat": "seat_01",
+    "fxEmitter": "blister",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

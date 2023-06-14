@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-#no-root-fallback
-#explicit-this
 
 let function showPcStorePromo() {
   ::showUnlockWnd({

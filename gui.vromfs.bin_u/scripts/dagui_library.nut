@@ -1,7 +1,4 @@
 //checked for plus_string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { kwarg, memoize } = require("%sqstd/functools.nut")
 let { Computed, Watched } = require("frp")

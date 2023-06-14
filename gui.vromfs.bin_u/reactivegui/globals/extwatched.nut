@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 let { Watched } = require("frp")
 let eventbus = require("eventbus")
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")

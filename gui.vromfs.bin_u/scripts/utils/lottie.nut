@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let imageSource = "#ui/gameuiskin#render{lottie:t={image};canvasWidth:i={width};canvasHeight:i={height};loop:b={loop};play:b={play};}.render"
 

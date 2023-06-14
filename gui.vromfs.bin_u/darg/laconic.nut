@@ -1,7 +1,6 @@
 from "daRg" import *
 from "%sqstd/underscore.nut" import partition, flatten
 
-#explicit-this
 
 /*
 laconic framework

@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { sqrt, pow } = require("%sqstd/math.nut")
 let { MAX_DEADZONE, MAX_NONLINEARITY } = require("%scripts/controls/controlsConsts.nut")

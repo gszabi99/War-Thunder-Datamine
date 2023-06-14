@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")

@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let reminderGaijinPassModal = require("%scripts/mainmenu/reminderGaijinPassModal.nut")
 let { havePlayerTag } = require("%scripts/user/userUtils.nut")

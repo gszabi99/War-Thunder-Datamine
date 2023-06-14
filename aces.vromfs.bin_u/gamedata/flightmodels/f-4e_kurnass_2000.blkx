@@ -18,6 +18,7 @@
   "haveCCRPForGun": true,
   "ilsMarconiAvionics": true,
   "isBwOpticSight": true,
+  "haveOpticTurret": true,
   "hasMissileCommandLine": false,
   "havePointOfInterestDesignator": true,
   "type": "typeFighter",
@@ -2587,9 +2588,15 @@
       0.0
     ],
     "lightRadius3": 0.2,
-    "sightInFov": 1.5,
-    "sightOutFov": 6.5,
-    "sightFov": 1.0,
+    "targetingPodFov": [
+      12.0,
+      3.2
+    ],
+    "zoomOutFov": 24.7,
+    "zoomInFov": 7.7,
+    "sightInFov": 7.37,
+    "sightOutFov": 18.49,
+    "sightFov": 18.49,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2891,14 +2898,61 @@
       ]
     }
   },
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        800,
+        500
+      ],
+      "noiseFactor": 0.05,
+      "index": 2
+    }
+  },
   "gunnerOpticFps": {
+    "TV": [
+      {
+        "pos": [
+          -6.5,
+          0.0,
+          -2.0
+        ],
+        "head": "optic1_turret",
+        "crosshairPreset": "test_crosshair",
+        "angularLimits": [
+          -30.0,
+          30.0,
+          -30.0,
+          30.0
+        ],
+        "opticType": "",
+        "turretNo": 0
+      },
+      {
+        "pos": [
+          0.8,
+          -0.2,
+          0.0
+        ],
+        "head": "optic1_turret",
+        "crosshairPreset": "test_crosshair",
+        "angularLimits": [
+          -20.0,
+          20.0,
+          -20.0,
+          20.0
+        ],
+        "opticType": "tv",
+        "turretNo": 0,
+        "nvIndex": 2
+      }
+    ],
     "Target": {
       "pos": [
         0.0,
         -0.2,
         0.0
       ],
-      "head": "optic2_turret",
+      "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -160.0,
@@ -2907,23 +2961,6 @@
         15.0
       ],
       "opticType": "targeting",
-      "turretNo": 0
-    },
-    "TV": {
-      "pos": [
-        0.8,
-        -0.2,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -20.0,
-        20.0,
-        -20.0,
-        20.0
-      ],
-      "opticType": "tv",
       "turretNo": 0
     }
   },
@@ -3081,7 +3118,8 @@
         "cannon6_dm",
         "cover3_dm",
         "cannon7_dm",
-        "cover4_dm"
+        "cover4_dm",
+        "tank9_dm"
       ]
     },
     "WeaponSlot": [
@@ -3122,8 +3160,7 @@
                 "turret": {
                   "head": "optic1_turret",
                   "gun": "optic1_gun",
-                  "mainTurret": true,
-                  "playerControllable": false
+                  "mainTurret": true
                 },
                 "limits": {
                   "yaw": [
@@ -3172,8 +3209,7 @@
                 "turret": {
                   "head": "optic1_turret",
                   "gun": "optic1_gun",
-                  "mainTurret": true,
-                  "playerControllable": false
+                  "mainTurret": true
                 },
                 "limits": {
                   "yaw": [
@@ -3460,6 +3496,10 @@
               "emitter": "ter_001",
               "external": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           },
           {
@@ -3478,6 +3518,10 @@
               "emitter": "ter_001",
               "external": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           },
           {
@@ -3497,6 +3541,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           },
           {
@@ -3516,6 +3564,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           },
           {
@@ -3535,6 +3587,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           },
           {
@@ -3554,6 +3610,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           },
           {
@@ -3573,6 +3633,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           },
           {
@@ -3594,10 +3658,16 @@
               "slot": 5,
               "preset": "pave_spike"
             },
-            "BannedWeaponPreset": {
-              "slot": 10,
-              "preset": "agm_65d_x3"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 10,
+                "preset": "agm_65d_x3"
+              },
+              {
+                "slot": 3,
+                "preset": "python3"
+              }
+            ]
           },
           {
             "iconType": "guided_bomb_large_laser_x2",
@@ -3620,10 +3690,16 @@
               "slot": 5,
               "preset": "pave_spike"
             },
-            "BannedWeaponPreset": {
-              "slot": 10,
-              "preset": "agm_65d_x3"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 10,
+                "preset": "agm_65d_x3"
+              },
+              {
+                "slot": 3,
+                "preset": "python3"
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni_x3",
@@ -3638,6 +3714,10 @@
               "emitter": "lau_88a_1",
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "python3"
             }
           }
         ]
@@ -3698,10 +3778,6 @@
               "emitter": "aero_3b_001",
               "external": true,
               "separate": true
-            },
-            "BannedWeaponPreset": {
-              "slot": 2,
-              "preset": "agm_65d_x3"
             }
           }
         ]
@@ -3816,6 +3892,7 @@
             "name": "pave_spike",
             "reqModification": "us_gbu_12",
             "hasTargetingPod": true,
+            "removeGunnerOpticFps": 0,
             "ShowNodes": {
               "node": [
                 "f_4e_iaf_pylon1",
@@ -4200,10 +4277,6 @@
               "emitter": "aero_3b_002",
               "external": true,
               "separate": true
-            },
-            "BannedWeaponPreset": {
-              "slot": 2,
-              "preset": "agm_65d_x3"
             }
           }
         ]
@@ -4229,6 +4302,10 @@
               "emitter": "ter_002",
               "external": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           },
           {
@@ -4247,6 +4324,10 @@
               "emitter": "ter_002",
               "external": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           },
           {
@@ -4266,6 +4347,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           },
           {
@@ -4285,6 +4370,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           },
           {
@@ -4304,6 +4393,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           },
           {
@@ -4323,6 +4416,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           },
           {
@@ -4342,6 +4439,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.1
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           },
           {
@@ -4365,10 +4466,16 @@
               "slot": 5,
               "preset": "pave_spike"
             },
-            "BannedWeaponPreset": {
-              "slot": 2,
-              "preset": "agm_65d_x3"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "agm_65d_x3"
+              },
+              {
+                "slot": 9,
+                "preset": "python3"
+              }
+            ]
           },
           {
             "iconType": "guided_bomb_middle_laser",
@@ -4389,10 +4496,16 @@
               "slot": 5,
               "preset": "pave_spike"
             },
-            "BannedWeaponPreset": {
-              "slot": 2,
-              "preset": "agm_65d_x3"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "agm_65d_x3"
+              },
+              {
+                "slot": 9,
+                "preset": "python3"
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni_x3",
@@ -4407,6 +4520,10 @@
               "emitter": "lau_88a_2",
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 9,
+              "preset": "python3"
             }
           }
         ]

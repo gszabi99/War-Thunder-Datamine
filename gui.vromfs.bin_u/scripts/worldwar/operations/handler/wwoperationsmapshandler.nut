@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock  = require("DataBlock")
@@ -107,6 +104,8 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     )
     this.registerSubHandler(this.topMenuHandlerWeak)
     this.updateWwarUrlButton()
+
+    ::enableHangarControls(true)
 
     if (this.needToOpenBattles)
       this.openOperationsListModal()

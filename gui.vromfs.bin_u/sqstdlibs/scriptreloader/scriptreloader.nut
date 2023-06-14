@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 

@@ -163,6 +163,14 @@
         "armorThickness": 25.4
       }
     },
+    "hull_turret_spaced_armor": {
+      "armorClass": "RHA_tank",
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInViewer": true,
+        "hidableInXrayViewer": true
+      }
+    },
     "RHA_turret": {
       "armorClass": "RHA_tank",
       "turret_bottom_dm": {
@@ -1647,6 +1655,16 @@
     "defaultDistance": 800.0,
     "vertical": true,
     "horizontal": true
+  },
+  "xray_viewer_data": {
+    "armorArrayHullTop": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
+    }
   },
   "sound": {
     "EngineName": "engine_mctav6",

@@ -77,7 +77,7 @@ let function add_user_info(table) {
 
 let function bq_client_noa(event, uniqueId, table) {
   add_user_info(table)
-  let params  = json_to_string(table)
+  let params  = json_to_string(table, false)
   let request =
   {
     action = "noa_bigquery_client_noauth"

@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let FONT_CHOICE_SAVE_ID = "tutor/fontChange"
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")

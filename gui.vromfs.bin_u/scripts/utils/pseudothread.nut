@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 //!!FIX ME: replace by real threads after fix crash of datablock in sq thread
 let PT_STEP_STATUS = {

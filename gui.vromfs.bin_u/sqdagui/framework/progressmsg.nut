@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { loc } = require("dagor.localize")
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback

@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
@@ -345,7 +342,7 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
     ::events.requestSelfRow(
       this.newSelfRowRequest,
       "mini_lb_self",
-      (@(selectedEvent) function (_self_row) {
+      (@(selectedEvent) function (_self_row) { //-ident-hides-ident
         ::events.requestLeaderboard(::events.getMainLbRequest(selectedEvent),
         "mini_lb_self",
         function (lb_data) {

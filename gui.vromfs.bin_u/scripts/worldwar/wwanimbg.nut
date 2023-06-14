@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { rnd } = require("dagor.random")
 let { createBgData } = require("%scripts/loading/loadingBgData.nut")

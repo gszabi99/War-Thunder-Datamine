@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { registerBroadcastEvent } = require("%sqstd/ecs.nut")
 
 let broadcastEvents = {}

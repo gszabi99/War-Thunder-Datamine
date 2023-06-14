@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { split_by_chars } = require("string")
 let regexp2 = require("regexp2")
@@ -13,6 +10,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
+let { getGameModesByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
 
 let mapsListByEvent = {}
 
@@ -133,7 +131,7 @@ let function getMapsListImpl(curEvent) {
         }
 
   let missionList = {}
-  foreach (gm in ::g_matching_game_modes.getGameModesByEconomicName(::events.getEventEconomicName(curEvent)))
+  foreach (gm in getGameModesByEconomicName(::events.getEventEconomicName(curEvent)))
     missionList.__update(gm?.mission_decl.missions_list ?? {})
 
   let assertMisNames = []

@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Cost, Balance } = require("%scripts/money.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")

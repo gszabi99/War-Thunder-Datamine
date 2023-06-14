@@ -3,22 +3,13 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let DataBlock = require("DataBlock")
 let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-let { getLastWeapon, setLastWeapon, getWeaponDisabledMods
-} = require("%scripts/weaponry/weaponryInfo.nut")
-let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
@@ -36,6 +27,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/editWeaponryPreset.nut")
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
+let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
@@ -316,9 +308,8 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
         return this.onBuy(item)
       }
 
-      let disabledMods = getWeaponDisabledMods(this.unit, item)
-      if (disabledMods.len() > 0) {
-        this.showReqModsMsg(disabledMods)
+      if (needReqModInstall(this.unit, item)) {
+        promptReqModInstall(this.unit, item)
         return
       }
 
@@ -329,32 +320,10 @@ let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
     this.guiScene.performDelayed(this, @()this.goBack())
   }
 
-  function showReqModsMsg(disabledMods) {
-    let aUnit = this.unit
-    let modNames = disabledMods.map(@(n) colorize("userlogColoredText", getModificationName(aUnit, n)))
-    let text = loc("weaponry/require_mod_install", {
-      modNames = loc("ui/colon").join(modNames)
-      numMods = disabledMods.len()
-    })
-    let onOk = Callback(@() this.installMods(disabledMods), this)
-    ::scene_msg_box("activate_wager_message_box", null, text, [["yes", onOk], ["no"]], "yes")
-  }
-
-  function installMods(disabledMods) {
-    let aUnit = this.unit
-    let onSuccess = Callback(function() {
-      disabledMods.each(@(n) ::updateAirAfterSwitchMod(aUnit, n))
-      broadcastEvent("ModificationChanged")
-    }, this)
-
-    let taskId = ::enable_modifications(this.unit.name, disabledMods, true)
-    ::g_tasker.addTask(taskId, { showProgressBox = true }, onSuccess)
-  }
-
   function onBuy(item) {
     if (!::shop_is_weapon_available(this.unit.name, item.name, false, true))
       return
-    this.checkSaveBulletsAndDo(Callback((@(unit, item) function() {
+    this.checkSaveBulletsAndDo(Callback((@(unit, item) function() { //-ident-hides-ident
       weaponsPurchase(unit, { modItem = item, open = false })
     })(this.unit, item), this))
   }

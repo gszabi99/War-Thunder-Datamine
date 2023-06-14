@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
@@ -41,7 +39,7 @@ loadOnce("%sqDagui/daguiUtil.nut")
     if (!this.isDelayed)
       this.onTimeOut()
     else
-      this.guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(this.onTimeOut))
+      this.guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(this.onTimeOut)) //-ident-hides-ident
   }
 
   function setDelay(newDelay) {

@@ -14,14 +14,13 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   GuidedBombsCount, GuidedBombsSeconds, GuidedBombsMode, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
   FlaresCount, FlaresSeconds, FlaresMode, IsFlrEmpty,
   ChaffsCount, ChaffsSeconds, ChaffsMode, IsChaffsEmpty,
-  RocketsCount, RocketsSeconds, RocketsActualCount, RocketsSalvo, RocketsMode, RocketsName, RocketsSelected, IsRktEmpty,
-  IsSightHudVisible, DetectAllyProgress, DetectAllyState,
+  RocketsCount, RocketsSeconds, RocketsActualCount, RocketsSalvo, RocketsMode, RocketsName, RocketsSelected, IsRktEmpty, DetectAllyProgress, DetectAllyState,
   BombsCount, BombsSeconds, BombsActualCount, BombsSalvo, BombsMode, BombsName, BombsSelected, IsBmbEmpty,
   IsTrpEmpty, TorpedoesCount, TorpedoesSeconds, TorpedoesActualCount, TorpedoesSalvo, TorpedoesMode, TorpedoesName, TorpedoesSelected,
   IsHighRateOfFire, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
   AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
   AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, IsZoomedAgmLaunchZoneVisible,
-  IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsRangefinderEnabled, RangefinderDist,
+  IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsOutLaunchZone, LaunchZonePosX, LaunchZonePosY, IsRangefinderEnabled, RangefinderDist,
   Rpm, IsRpmVisible, IsRpmCritical, TrtMode, Trt, Spd, WaterAlert, HorAngle, AgmLaunchZoneDistMin,
   AlertColorLow, AlertColorMedium, AlertColorHigh, OilAlert,
   PassivColor, IsLaserDesignatorEnabled, IsInsideLaunchZoneDist, GunInDeadZone,
@@ -562,7 +561,7 @@ let function createParam(param, width, height, style, colorWatch, needCaption, f
 //Rpm
 let TrtModeForRpm = TrtMode[0]
 
-let agmBlinkComputed = Computed(@() (IsSightHudVisible.value && IsAgmLaunchZoneVisible.value &&
+let agmBlinkComputed = Computed(@() (IsAgmLaunchZoneVisible.value &&
   (!IsInsideLaunchZoneYawPitch.value || (IsRangefinderEnabled.value && !IsInsideLaunchZoneDist.value))))
 let agmBlinkTrigger = {}
 agmBlinkComputed.subscribe(@(v) v ? anim_start(agmBlinkTrigger) : anim_request_stop(agmBlinkTrigger))
@@ -1212,6 +1211,10 @@ let function agmLaunchZone(colorWatch, _w, _h) {
     else
       return []
   }
+  let blinkDuration = 0.5
+  let atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.value)
+  let atgmLaunchZoneTrigger = {}
+  atgmLaunchZoneBlinking.subscribe(@(v) v ? anim_start(atgmLaunchZoneTrigger) : anim_request_stop(atgmLaunchZoneTrigger))
 
   return @() styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1226,6 +1229,58 @@ let function agmLaunchZone(colorWatch, _w, _h) {
       colorWatch
     ]
     commands = IsZoomedAgmLaunchZoneVisible.value ? maxAngleBorder() : []
+    animations = [{
+      prop = AnimProp.opacity,
+      from = 1, to = 0,
+      duration = blinkDuration,
+      play = atgmLaunchZoneBlinking.value,
+      loop = true,
+      easing = InOutSine,
+      trigger = atgmLaunchZoneTrigger
+    }]
+  })
+}
+
+let function agmOutLaunchZone(colorWatch) {
+  let function maxAngleBorder() {
+    let left  = max(0.0, AgmLaunchZoneYawMin.value) * 100.0 - 50.0
+    let right = min(1.0, AgmLaunchZoneYawMax.value) * 100.0 - 50.0
+    let lower = 100.0 - max(0.0, AgmLaunchZonePitchMin.value) * 100.0 - 25.0
+    let upper = 100.0 - min(1.0, AgmLaunchZonePitchMax.value) * 100.0 - 25.0
+    return [
+      [VECTOR_LINE, left,  upper, right, upper],
+      [VECTOR_LINE, right, upper, right, lower],
+      [VECTOR_LINE, right, lower, left,  lower],
+      [VECTOR_LINE, left,  lower, left,  upper]
+    ]
+  }
+  let blinkDuration = 0.33
+
+  return @() styleLineForeground.__merge({
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpx(LINE_WIDTH)
+    size = [sw(100), sh(100)]
+    watch = [
+      IsOutLaunchZone,
+      LaunchZonePosX, LaunchZonePosY,
+      AgmLaunchZoneYawMax, AgmLaunchZoneYawMin,
+      AgmLaunchZonePitchMax, AgmLaunchZonePitchMin,
+      colorWatch,
+    ]
+    color = colorWatch.value
+    commands = IsOutLaunchZone.value ? maxAngleBorder() : null
+    transform = {
+      translate = [LaunchZonePosX.value, LaunchZonePosY.value]
+    }
+    animations = [{
+      prop = AnimProp.opacity,
+      from = 1,
+      to = 0,
+      duration = blinkDuration,
+      loop = true,
+      easing = InOutSine,
+      play = true
+    }]
   })
 }
 
@@ -1400,6 +1455,7 @@ return {
   horSpeed = HelicopterHorizontalSpeedComponent
   turretAngles = turretAnglesComponent
   agmLaunchZone = agmLaunchZone
+  agmOutLaunchZone = agmOutLaunchZone
   sight = sightComponent
   launchDistanceMax = launchDistanceMaxComponent
   rangeFinder = rangeFinderComponent

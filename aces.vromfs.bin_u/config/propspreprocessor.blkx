@@ -1,41 +1,5 @@
 {
   "damage": {
-    "extends": [
-      {
-        "source": "config/damageModel.blk:kineticEnergyToDamage",
-        "target": "damage/kinetic/energyToDamage"
-      },
-      {
-        "source": "config/damageModel.blk:defaultKineticDamageProps",
-        "target": "damage/kinetic",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
-        "target": "cumulativeDamage",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
-        "target": "damage/cumulative",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultSplashDamageProps",
-        "target": "damage/splash",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultShatterDamageProps",
-        "target": "damage/shatter",
-        "checkTargetExists": true
-      },
-      {
-        "source": "config/damageModel.blk:defaultSecondaryShatterDamageProps",
-        "target": "damage/secondaryShatter",
-        "checkTargetExists": true
-      }
-    ],
     "alias": [
       {
         "param": "hitPowerMult",
@@ -144,6 +108,38 @@
       {
         "param": "explodeTreshold",
         "alias": "damage/explosive/fuseArmorTreshold"
+      }
+    ],
+    "extends": [
+      {
+        "source": "config/damageModel.blk:defaultKineticDamageProps",
+        "target": "damage/kinetic",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
+        "target": "cumulativeDamage",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
+        "target": "damage/cumulative",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultSplashDamageProps",
+        "target": "damage/splash",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultShatterDamageProps",
+        "target": "damage/shatter",
+        "checkTargetExists": true
+      },
+      {
+        "source": "config/damageModel.blk:defaultSecondaryShatterDamageProps",
+        "target": "damage/secondaryShatter",
+        "checkTargetExists": true
       }
     ],
     "preset": [

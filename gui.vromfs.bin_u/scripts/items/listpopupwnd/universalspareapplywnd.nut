@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 ::gui_handlers.UniversalSpareApplyWnd <- class extends ::gui_handlers.ItemsListWndBase {
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"

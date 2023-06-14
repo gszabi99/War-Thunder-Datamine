@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -365,7 +362,7 @@ foreach (idx, item in clan_member_list) {
     if (showClanSeasonRewards) {
       let containerObj = this.scene.findObject("clan_awards_container")
       if (checkObj(containerObj))
-        this.guiScene.performDelayed(this, (@(clanData) function () {
+        this.guiScene.performDelayed(this, (@(clanData) function () { //-ident-hides-ident
           if (!this.isValid())
             return
 

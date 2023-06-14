@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format, split_by_chars } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -134,6 +131,13 @@ enum BATTLE_LOG_FILTER {
       [ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_EXITED",
       [ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_EXITED",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_EXITED",
+    }
+    air_defense = {
+      [ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
+      [ES_UNIT_TYPE_TANK]       = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
+      [ES_UNIT_TYPE_BOAT]       = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
+      [ES_UNIT_TYPE_SHIP]       = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
+      [ES_UNIT_TYPE_HELICOPTER] = "NET_PLAYER_SHOT_BY_AIR_DEFENCE",
     }
   }
 
@@ -371,7 +375,7 @@ enum BATTLE_LOG_FILTER {
     let whom = this.getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? ::my_user_name, msg?.victimTeam ?? Team.B)
 
     let msgAction = msg?.action ?? "kill"
-    let isCrash = msgAction == "crash" || msgAction == "exit"
+    let isCrash = msgAction == "crash" || msgAction == "exit" || msgAction == "air_defense"
     let sequence = isCrash ? [whom, what] : [who, what, whom]
     return " ".join(sequence, true)
   }

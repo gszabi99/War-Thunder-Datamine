@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")

@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 log($"onScriptLoadAfterLogin: wt")
 
@@ -108,7 +105,6 @@ foreach (fn in [
 
   "%scripts/onlineInfo/onlineInfo.nut"
   "%scripts/onlineInfo/clustersManagement.nut"
-  "%scripts/matching/matchingGameModes.nut"
 
   "%scripts/user/presenceType.nut"
   "%scripts/squads/msquadService.nut"

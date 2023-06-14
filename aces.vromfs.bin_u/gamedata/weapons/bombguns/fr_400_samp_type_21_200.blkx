@@ -11,6 +11,22 @@
     "antiShipBomb": true
   },
   "bomb": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "he_bomb",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "useEffectiveArmorThicknessForShatter": true,
+    "explodeOnRendinst": true,
     "mass": 400.0,
     "explosiveType": "tnt",
     "explosiveMass": 167.0,
@@ -75,7 +91,6 @@
       10.0
     ],
     "rendinstDamageRadius": 18.0,
-    "useDelayExplosion": false,
     "shutterDamage": true,
     "shutterDamageRadius": 80.0,
     "shutterAmount": 3000,
@@ -88,6 +103,20 @@
     ],
     "brakeCxK": 110.0,
     "brakeArm": 3.0,
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },

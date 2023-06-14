@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 let u = require("u.nut")
 local function isTable(v) {return type(v)=="table"}

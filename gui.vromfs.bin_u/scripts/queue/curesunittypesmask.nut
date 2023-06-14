@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let function getCurEsUnitTypesList(needRequiredOnly = false) {
   let gameModeId = ::game_mode_manager.getCurrentGameModeId()

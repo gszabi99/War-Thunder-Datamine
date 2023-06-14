@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { getPollIdByFullUrl, invalidateTokensCache } = require("%scripts/web/webpoll.nut")
 let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")

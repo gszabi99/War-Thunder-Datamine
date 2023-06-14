@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 import "%sqstd/ecs.nut" as ecs
 let { EventWindowActivated, EventWindowDeactivated } = require("os.window")
 let { send } = require("eventbus")

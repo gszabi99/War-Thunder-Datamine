@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
@@ -1774,6 +1771,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
 
 
 
+  ROCKET_LAUNCHER_IN_WATER = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/rocket_launcher_in_water"
+    showEvent = "hint:rocket_launcher_in_water"
+    lifeTime = 5.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()

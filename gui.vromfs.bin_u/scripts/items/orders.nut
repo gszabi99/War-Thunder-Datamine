@@ -4,9 +4,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { HUD_MSG_OBJECTIVE } = require("hudMessages")
 let { get_mplayer_by_id, get_game_type, get_local_mplayer } = require("mission")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { debug_dump_stack } = require("dagor.debug")

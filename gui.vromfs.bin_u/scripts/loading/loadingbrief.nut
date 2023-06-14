@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format, split_by_chars } = require("string")

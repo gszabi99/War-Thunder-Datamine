@@ -1,7 +1,4 @@
 //-file:plus-string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 let u = require("%sqStdLibs/helpers/u.nut")

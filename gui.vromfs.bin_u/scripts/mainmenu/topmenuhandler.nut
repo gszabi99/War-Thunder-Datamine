@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -307,6 +304,8 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
       else if (unitType)
         this.shopWeak.setUnitType(unitType)
     }
+
+    ::enableHangarControls(!shouldActivate)
   }
 
   function goBack() {
@@ -354,8 +353,10 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
     base.onSceneActivate(show)
     if (topMenuShopActive.value && this.shopWeak)
       this.shopWeak.onSceneActivate(show)
-    if (show)
+    if (show) {
       setShowUnit(this.getCurSlotUnit(), this.getHangarFallbackUnitParams())
+      ::enableHangarControls(!topMenuShopActive.value)
+    }
   }
 
   function onHelp() {

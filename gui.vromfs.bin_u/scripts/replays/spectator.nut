@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 

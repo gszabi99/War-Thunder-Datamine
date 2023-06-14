@@ -130,11 +130,11 @@
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 30.0,
-      "period": 0.5,
-      "width": 8.0,
-      "barHeight": 2.5,
-      "barsCount": 2,
-      "rowMajor": false,
+      "period": 1.0,
+      "width": 10.0,
+      "barHeight": 4.0,
+      "barsCount": 4,
+      "rowMajor": true,
       "indicate": true
     },
     "track": {
@@ -214,8 +214,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 15.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
+      "mainBeamNotchWidth": 50.0,
       "track": true,
       "distance": {
         "presents": true,
@@ -225,7 +224,7 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 25.0,
+        "minValue": -1500.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
         "width": 25.0

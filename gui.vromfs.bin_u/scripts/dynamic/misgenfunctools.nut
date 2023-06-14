@@ -1,7 +1,4 @@
 //checked for plus_string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { sqrt } = require("%sqstd/math.nut")
 let { debug_dump_stack } = require("dagor.debug")

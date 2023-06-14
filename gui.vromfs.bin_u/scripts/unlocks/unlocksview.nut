@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")

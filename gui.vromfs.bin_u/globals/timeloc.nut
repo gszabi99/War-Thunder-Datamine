@@ -1,8 +1,5 @@
 //checked for plus_string
 let { loc } = require("dagor.localize")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 /*
 !!!!!

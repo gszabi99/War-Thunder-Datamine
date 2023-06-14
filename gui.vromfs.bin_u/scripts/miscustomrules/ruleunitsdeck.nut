@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 ::mission_rules.UnitsDeck <- class extends ::mission_rules.Base {
   needLeftRespawnOnSlots = true

@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { stripTags } = require("%sqstd/string.nut")
 
 let getUnitShopPriceText = @(unit)

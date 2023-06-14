@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")

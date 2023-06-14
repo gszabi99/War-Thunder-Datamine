@@ -1,5 +1,3 @@
-#no-func-decl-sugar
-
 from "frp" import *
 from "daRg" import *
 

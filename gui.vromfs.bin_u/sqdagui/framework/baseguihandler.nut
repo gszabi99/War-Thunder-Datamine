@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { handlerType } = require("handlerType.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")

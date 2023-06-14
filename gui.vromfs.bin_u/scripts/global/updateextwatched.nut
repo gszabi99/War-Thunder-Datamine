@@ -1,7 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-#explicit-this
-#no-root-fallback
 let { send } = require("eventbus")
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
 

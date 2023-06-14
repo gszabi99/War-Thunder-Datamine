@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -242,7 +239,7 @@ let { stripTags } = require("%sqstd/string.nut")
 
     this.msgBox("question_delete_preset", msgText,
     [
-      ["delete", (@(chosenValue) function() { ::slotbarPresets.erase(chosenValue) })(this.chosenValue) ],
+      ["delete", (@(chosenValue) function() { ::slotbarPresets.erase(chosenValue) })(this.chosenValue) ], //-ident-hides-ident
       ["cancel", function() {} ]
     ], "cancel", { data_below_text = comment })
   }

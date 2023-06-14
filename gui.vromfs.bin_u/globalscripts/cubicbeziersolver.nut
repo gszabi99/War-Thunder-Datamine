@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 /**
  * Solver for cubic bezier curve with implicit control points at (0,0) and (1.0, 1.0).
  * Adjust at http://cubic-bezier.com/

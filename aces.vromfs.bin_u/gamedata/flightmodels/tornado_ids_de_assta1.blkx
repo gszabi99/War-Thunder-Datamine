@@ -21,7 +21,6 @@
   "hasOpticTurret": true,
   "havePointOfInterestDesignator": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -38,6 +37,7 @@
   "fightAiBehaviour": "assault",
   "laserDesignator": true,
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3494,7 +3494,7 @@
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_x2"
+                "preset": "1000lbs_mk83_x2_slot7"
               },
               {
                 "slot": 8,
@@ -3510,7 +3510,7 @@
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_air_x2"
+                "preset": "1000lbs_mk83_air_x2_slot7"
               },
               {
                 "slot": 8,
@@ -3555,7 +3555,7 @@
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_x2"
+                "preset": "1000lbs_mk83_x2_slot7"
               },
               {
                 "slot": 8,
@@ -3571,7 +3571,7 @@
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_air_x2"
+                "preset": "1000lbs_mk83_air_x2_slot7"
               },
               {
                 "slot": 8,
@@ -3620,7 +3620,7 @@
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_x2"
+                "preset": "1000lbs_mk83_x2_slot7"
               },
               {
                 "slot": 8,
@@ -3636,7 +3636,7 @@
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_air_x2"
+                "preset": "1000lbs_mk83_air_x2_slot7"
               },
               {
                 "slot": 8,
@@ -3654,7 +3654,7 @@
         "WeaponPreset": [
           {
             "iconType": "bombs_large",
-            "name": "1000lbs_mk83",
+            "name": "1000lbs_mk83_slot7",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
@@ -3669,11 +3669,15 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
               "emitter": "bomb10_ld",
               "bullets": 1
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "us_2000lb_gbu_24"
             }
           },
           {
             "iconType": "bombs_large",
-            "name": "1000lbs_mk83_default",
+            "name": "1000lbs_mk83_default_slot7",
             "ShowNodes": {
               "node": [
                 "pylon_bomb5",
@@ -3687,11 +3691,15 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_default.blk",
               "emitter": "bomb10_ld",
               "bullets": 1
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "us_2000lb_gbu_24"
             }
           },
           {
             "iconType": "bombs_large_group_x2",
-            "name": "1000lbs_mk83_x2",
+            "name": "1000lbs_mk83_x2_slot7",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": "pylon_bomb5"
@@ -3702,11 +3710,15 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_x2.blk",
               "emitter": "pylon_tsc_6"
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "us_2000lb_gbu_24"
             }
           },
           {
             "iconType": "bombs_large_high_drag",
-            "name": "1000lbs_mk83_air",
+            "name": "1000lbs_mk83_air_slot7",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": [
@@ -3721,11 +3733,15 @@
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp_air.blk",
               "emitter": "bomb10_ld",
               "bullets": 1
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "us_2000lb_gbu_24"
             }
           },
           {
             "iconType": "bombs_large_high_drag_group_x2",
-            "name": "1000lbs_mk83_air_x2",
+            "name": "1000lbs_mk83_air_x2_slot7",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
               "node": "pylon_bomb5"
@@ -3736,6 +3752,10 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
               "emitter": "pylon_tsc_6"
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "us_2000lb_gbu_24"
             }
           }
         ]
@@ -3857,11 +3877,11 @@
             "BannedWeaponPreset": [
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83"
+                "preset": "1000lbs_mk83_slot7"
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_x2"
+                "preset": "1000lbs_mk83_x2_slot7"
               }
             ]
           },
@@ -3894,11 +3914,23 @@
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83"
+                "preset": "1000lbs_mk83_slot7"
               },
               {
                 "slot": 7,
-                "preset": "1000lbs_mk83_x2"
+                "preset": "1000lbs_mk83_x2_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_air_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_air_x2_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_default_slot7"
               }
             ]
           }
@@ -4429,6 +4461,32 @@
         "from": "tornado_ids_de_assta1_n*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "seat": [
+      "seat_01",
+      "seat_02"
+    ],
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

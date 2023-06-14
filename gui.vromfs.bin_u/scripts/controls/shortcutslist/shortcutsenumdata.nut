@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { getShortcutGroupMask } = require("controls")
 let enums = require("%sqStdLibs/helpers/enums.nut")

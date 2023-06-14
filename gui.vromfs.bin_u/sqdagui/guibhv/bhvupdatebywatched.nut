@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")

@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let regexp2 = require("regexp2")
 let { apply_skin } = require("unitCustomization")
@@ -42,6 +39,8 @@ const PRESET_MIN_USAGE = 2
   }
 
   function initScreen() {
+    ::enableHangarControls(true)
+
     let objCombobox = this.scene.findObject("master_skin")
     let selIdx = this.getIndexBySkinId(this.masterSkinId)
     let markup = ::create_option_combobox(null, this.skinList.items, selIdx, null, false)

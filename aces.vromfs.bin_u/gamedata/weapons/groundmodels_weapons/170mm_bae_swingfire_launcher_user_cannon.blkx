@@ -91,31 +91,39 @@
       "statType": "hydra",
       "caliber": 0.17,
       "length": 1.07,
-      "CxK": 1.9,
+      "WdK": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "CxK": 2.23,
+      "CyK": 12.0,
+      "CyMaxAoA": 6.0,
       "wingAreaMult": 2.45,
-      "finsAoaHor": 0.0,
-      "finsAoaVer": 0.0,
-      "distFromCmToStab": 0.005,
-      "mass": 27.0,
-      "massEnd": 24.25,
-      "massEnd1": 21.5,
+      "distFromCmToStab": 0.05,
+      "mass": 25.0,
+      "massEnd": 22.6,
+      "massEnd1": 20.0,
       "timeFire": 6.0,
-      "timeFire1": 20.0,
-      "force": 870.0,
-      "force1": 275.0,
-      "timeLife": 26.0,
-      "thrustVectoringAngle": 0.01,
-      "thrustVectoringAngle1": 0.1,
+      "timeFire1": 19.0,
+      "force": 834.0,
+      "force1": 282.0,
+      "timeLife": 25.0,
+      "thrustVectoringAngle": 0.016,
+      "thrustVectoringAngle1": 0.05,
       "thrustDeviation": 0.01,
       "useStartSpeed": true,
       "startSpeed": 10.0,
       "endSpeed": 185.0,
       "maxDistance": 4000.0,
-      "minDistance": 30.0,
+      "minDistance": 150.0,
       "operatedDist": 4000.0,
       "visRotationFreqX": 0.6,
-      "autoAimingMaxAngle": 1.0,
-      "guidanceType": "saclos",
+      "operated": true,
+      "maxLateralAcceleration": 10.0,
+      "autoLeveling": true,
+      "autoAiming": true,
+      "maxAxisValues": 1.0,
       "maxDeltaAngle": 0.03,
       "explosiveType": "comp_b",
       "explosiveMass": 3.47,
@@ -179,53 +187,6 @@
         0.0
       ],
       "hasWireGuidanceEffect": true,
-      "guidance": {
-        "launchAngleMax": 5.0,
-        "controlConeFov": 60.0,
-        "breakLockMaxTime": 3.0,
-        "lineOfSightAutopilot": {
-          "timeToGain0": [
-            0.0,
-            1.0
-          ],
-          "timeToGain1": [
-            0.25,
-            0.8
-          ],
-          "timeToGain2": [
-            1.7,
-            0.1
-          ],
-          "timeToGain3": [
-            2.5,
-            0.1
-          ],
-          "timeToGain4": [
-            2.6,
-            0.3
-          ],
-          "timeToGain5": [
-            3.0,
-            0.7
-          ],
-          "timeToGain6": [
-            3.6,
-            1.0
-          ],
-          "crossDistToReqCrossVelMult": 2.0,
-          "reqCrossVelRationMax": 0.25,
-          "velDiffToReqAccelMult": 3.0,
-          "accelControl": {
-            "velFrameReference": true,
-            "baseIndSpeed": 1800.0,
-            "reqAccelMax": 7.0,
-            "accelControlProp": 0.016,
-            "accelControlIntg": 0.0,
-            "accelControlDiff": 0.00065,
-            "accelControlIntgLim": 0.0
-          }
-        }
-      },
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -422,6 +383,15 @@
         },
         "stone_snow": {
           "fx": "hit_12_18mm_snow_dust_ap"
+        },
+        "tank_structural_steel": {
+          "fx": "hit_12_18mm_metal_ap"
+        },
+        "aluminum_armor": {
+          "fx": "hit_12_18mm_metal_ap"
+        },
+        "tank_rubber_screens": {
+          "fx": "hit_12_18mm_stone_dust_ap"
         }
       },
       "hitpower": {
@@ -632,31 +602,39 @@
         "statType": "hydra",
         "caliber": 0.17,
         "length": 1.07,
-        "CxK": 1.9,
+        "WdK": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "CxK": 2.23,
+        "CyK": 12.0,
+        "CyMaxAoA": 6.0,
         "wingAreaMult": 2.45,
-        "finsAoaHor": 0.0,
-        "finsAoaVer": 0.0,
-        "distFromCmToStab": 0.005,
-        "mass": 27.0,
-        "massEnd": 24.25,
-        "massEnd1": 21.5,
+        "distFromCmToStab": 0.05,
+        "mass": 25.0,
+        "massEnd": 22.6,
+        "massEnd1": 20.0,
         "timeFire": 6.0,
-        "timeFire1": 20.0,
-        "force": 870.0,
-        "force1": 275.0,
-        "timeLife": 26.0,
-        "thrustVectoringAngle": 0.01,
-        "thrustVectoringAngle1": 0.1,
+        "timeFire1": 19.0,
+        "force": 834.0,
+        "force1": 282.0,
+        "timeLife": 25.0,
+        "thrustVectoringAngle": 0.016,
+        "thrustVectoringAngle1": 0.05,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
         "startSpeed": 10.0,
         "endSpeed": 185.0,
         "maxDistance": 4000.0,
-        "minDistance": 30.0,
+        "minDistance": 150.0,
         "operatedDist": 4000.0,
         "visRotationFreqX": 0.6,
-        "autoAimingMaxAngle": 1.0,
-        "guidanceType": "saclos",
+        "operated": true,
+        "maxLateralAcceleration": 10.0,
+        "autoLeveling": true,
+        "autoAiming": true,
+        "maxAxisValues": 1.0,
         "maxDeltaAngle": 0.03,
         "explosiveType": "comp_b",
         "explosiveMass": 3.47,
@@ -720,53 +698,6 @@
           0.0
         ],
         "hasWireGuidanceEffect": true,
-        "guidance": {
-          "launchAngleMax": 5.0,
-          "controlConeFov": 60.0,
-          "breakLockMaxTime": 3.0,
-          "lineOfSightAutopilot": {
-            "timeToGain0": [
-              0.0,
-              1.0
-            ],
-            "timeToGain1": [
-              0.25,
-              0.8
-            ],
-            "timeToGain2": [
-              1.7,
-              0.1
-            ],
-            "timeToGain3": [
-              2.5,
-              0.1
-            ],
-            "timeToGain4": [
-              2.6,
-              0.3
-            ],
-            "timeToGain5": [
-              3.0,
-              0.7
-            ],
-            "timeToGain6": [
-              3.6,
-              1.0
-            ],
-            "crossDistToReqCrossVelMult": 2.0,
-            "reqCrossVelRationMax": 0.25,
-            "velDiffToReqAccelMult": 3.0,
-            "accelControl": {
-              "velFrameReference": true,
-              "baseIndSpeed": 1800.0,
-              "reqAccelMax": 7.0,
-              "accelControlProp": 0.016,
-              "accelControlIntg": 0.0,
-              "accelControlDiff": 0.00065,
-              "accelControlIntgLim": 0.0
-            }
-          }
-        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -963,6 +894,15 @@
           },
           "stone_snow": {
             "fx": "hit_12_18mm_snow_dust_ap"
+          },
+          "tank_structural_steel": {
+            "fx": "hit_12_18mm_metal_ap"
+          },
+          "aluminum_armor": {
+            "fx": "hit_12_18mm_metal_ap"
+          },
+          "tank_rubber_screens": {
+            "fx": "hit_12_18mm_stone_dust_ap"
           }
         },
         "hitpower": {
@@ -1174,31 +1114,39 @@
         "statType": "hydra",
         "caliber": 0.17,
         "length": 1.07,
-        "CxK": 1.9,
+        "WdK": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "CxK": 2.23,
+        "CyK": 12.0,
+        "CyMaxAoA": 6.0,
         "wingAreaMult": 2.45,
-        "finsAoaHor": 0.0,
-        "finsAoaVer": 0.0,
-        "distFromCmToStab": 0.005,
-        "mass": 27.0,
-        "massEnd": 24.25,
-        "massEnd1": 21.5,
+        "distFromCmToStab": 0.05,
+        "mass": 25.0,
+        "massEnd": 22.6,
+        "massEnd1": 20.0,
         "timeFire": 6.0,
-        "timeFire1": 20.0,
-        "force": 870.0,
-        "force1": 275.0,
-        "timeLife": 26.0,
-        "thrustVectoringAngle": 0.01,
-        "thrustVectoringAngle1": 0.1,
+        "timeFire1": 19.0,
+        "force": 834.0,
+        "force1": 282.0,
+        "timeLife": 25.0,
+        "thrustVectoringAngle": 0.016,
+        "thrustVectoringAngle1": 0.05,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
         "startSpeed": 10.0,
         "endSpeed": 185.0,
         "maxDistance": 4000.0,
-        "minDistance": 30.0,
+        "minDistance": 150.0,
         "operatedDist": 4000.0,
         "visRotationFreqX": 0.6,
-        "autoAimingMaxAngle": 1.0,
-        "guidanceType": "saclos",
+        "operated": true,
+        "maxLateralAcceleration": 10.0,
+        "autoLeveling": true,
+        "autoAiming": true,
+        "maxAxisValues": 1.0,
         "maxDeltaAngle": 0.03,
         "explosiveType": "comp_b",
         "explosiveMass": 3.47,
@@ -1262,53 +1210,6 @@
           0.0
         ],
         "hasWireGuidanceEffect": true,
-        "guidance": {
-          "launchAngleMax": 5.0,
-          "controlConeFov": 60.0,
-          "breakLockMaxTime": 3.0,
-          "lineOfSightAutopilot": {
-            "timeToGain0": [
-              0.0,
-              1.0
-            ],
-            "timeToGain1": [
-              0.25,
-              0.8
-            ],
-            "timeToGain2": [
-              1.7,
-              0.1
-            ],
-            "timeToGain3": [
-              2.5,
-              0.1
-            ],
-            "timeToGain4": [
-              2.6,
-              0.3
-            ],
-            "timeToGain5": [
-              3.0,
-              0.7
-            ],
-            "timeToGain6": [
-              3.6,
-              1.0
-            ],
-            "crossDistToReqCrossVelMult": 2.0,
-            "reqCrossVelRationMax": 0.25,
-            "velDiffToReqAccelMult": 3.0,
-            "accelControl": {
-              "velFrameReference": true,
-              "baseIndSpeed": 1800.0,
-              "reqAccelMax": 7.0,
-              "accelControlProp": 0.016,
-              "accelControlIntg": 0.0,
-              "accelControlDiff": 0.00065,
-              "accelControlIntgLim": 0.0
-            }
-          }
-        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -1505,6 +1406,15 @@
           },
           "stone_snow": {
             "fx": "hit_12_18mm_snow_dust_ap"
+          },
+          "tank_structural_steel": {
+            "fx": "hit_12_18mm_metal_ap"
+          },
+          "aluminum_armor": {
+            "fx": "hit_12_18mm_metal_ap"
+          },
+          "tank_rubber_screens": {
+            "fx": "hit_12_18mm_stone_dust_ap"
           }
         },
         "hitpower": {

@@ -13140,7 +13140,8 @@
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk"
+              "blk": "gameData/sensors/it_ralm-101.blk",
+              "turretWeaponIndex": 0
             }
           ]
         }
@@ -13200,7 +13201,8 @@
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gameData/sensors/it_ralm-101.blk"
+              "blk": "gameData/sensors/it_ralm-101.blk",
+              "turretWeaponIndex": 0
             }
           ]
         }
@@ -13260,7 +13262,8 @@
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },
             {
-              "blk": "gameData/sensors/su_tshu_1_11.blk"
+              "blk": "gameData/sensors/su_tshu_1_11.blk",
+              "turretWeaponIndex": 0
             }
           ]
         }
@@ -17771,6 +17774,42 @@
         "additiveBulletMod": "37mm_fr_50_he"
       }
     },
+    "75mm_oea_mle1917_navy_he_nose_fuse": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "75mm_HE",
+      "effects": {
+        "additiveBulletMod": "75mm_oea_mle1917_navy_he_nose_fuse"
+      }
+    },
+    "75mm_opf_mle1917_navy_sap": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "75mm_opf_mle1917_navy_sap_ammo_pack",
+      "group": "75mm_SAP",
+      "effects": {
+        "additiveBulletMod": "75mm_opf_mle1917_navy_sap"
+      }
+    },
+    "75mm_opf_mle1917_navy_sap_ammo_pack": {
+      "image": "#ui/gameuiskin#he_frag_dist_fuse_ship",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "75mm_oea_mle1917_navy_he_time_fuse": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "75mm_oea_mle1917_navy_he_time_fuse_ammo_pack",
+      "group": "75mm_HE",
+      "effects": {
+        "additiveBulletMod": "75mm_oea_mle1917_navy_he_time_fuse"
+      }
+    },
+    "75mm_oea_mle1917_navy_he_time_fuse_ammo_pack": {
+      "image": "#ui/gameuiskin#he_frag_dist_fuse_ship",
+      "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "75mm_oea_mle1925_navy_he_nose_fuse": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -19070,6 +19109,14 @@
       "tier": 4,
       "modClass": "firepower",
       "deactivationIsAllowed": false
+    },
+    "81mm_sw_kan_HEAT": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "75mm_AP",
+      "effects": {
+        "additiveBulletMod": "81mm_sw_kan_HEAT"
+      }
     },
     "81mm_sw_kan_HE": {
       "image": "#ui/gameuiskin#tank_ammo",

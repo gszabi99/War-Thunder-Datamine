@@ -5,9 +5,9 @@
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
-      "power": 1000.0,
+      "power": 1200.0,
       "band": 8,
-      "rcs": 3.0,
+      "rcs": 5.0,
       "range": 40000.0,
       "rangeMax": 55000.0,
       "antenna": {
@@ -17,14 +17,14 @@
     },
     "hprf": {
       "sideLobesAttenuation": -20.0,
-      "power": 1000.0,
+      "power": 1200.0,
       "band": 8,
-      "rcs": 3.0,
+      "rcs": 5.0,
       "range": 80000.0,
       "rangeMax": 100000.0,
       "antenna": {
         "angleHalfSens": 3.5,
-        "sideLobesSensitivity": -34.0
+        "sideLobesSensitivity": -32.0
       }
     },
     "irst": {
@@ -62,8 +62,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -73,6 +73,24 @@
       "barsCount": 2,
       "rowMajor": true
     },
+    "radarSearchManualMedium": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        55.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 3.4,
+      "width": 30.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true
+    },
     "radarSearchManualWide": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -80,8 +98,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -98,8 +116,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -117,8 +135,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -136,8 +154,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
@@ -155,8 +173,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "period": 1.1,
       "width": 25.0,
@@ -173,8 +191,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "period": 0.2,
       "width": 0.75,
@@ -184,8 +202,8 @@
       "indicate": true,
       "hmd": true
     },
-    "radarTrack": {
-      "type": "no",
+    "radarBoresightLock": {
+      "type": "cone",
       "azimuthLimits": [
         -85.0,
         85.0
@@ -193,6 +211,39 @@
       "elevationLimits": [
         -45.0,
         60.0
+      ],
+      "period": 0.3,
+      "width": 1.75,
+      "indicate": true
+    },
+    "radarHudLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 1.8,
+      "width": 10.0,
+      "barHeight": 2.5,
+      "barsCount": 8,
+      "rowMajor": true,
+      "indicate": true
+    },
+    "radarTrack": {
+      "type": "no",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -40.0,
+        55.0
       ]
     },
     "radarHmdTrack": {
@@ -202,8 +253,8 @@
         85.0
       ],
       "elevationLimits": [
-        -45.0,
-        60.0
+        -40.0,
+        55.0
       ],
       "hmd": true
     },
@@ -443,8 +494,9 @@
   },
   "scanPatternSets": {
     "radarSearchManual": {
-      "scanPattern1": "radarSearchManualWide",
-      "scanPattern2": "radarSearchManualNarrow"
+      "scanPattern1": "radarSearchManualMedium",
+      "scanPattern2": "radarSearchManualNarrow",
+      "scanPattern3": "radarSearchManualWide"
     },
     "radarTws": {
       "scanPattern1": "radarTwsNarrow",
@@ -457,7 +509,9 @@
       ]
     },
     "radarAcmLock": {
-      "scanPattern1": "radarVerticalLock"
+      "scanPattern1": "radarVerticalLock",
+      "scanPattern2": "radarBoresightLock",
+      "scanPattern3": "radarHudLock"
     },
     "irstAcmLock": {
       "scanPattern1": "irstVerticalLock"

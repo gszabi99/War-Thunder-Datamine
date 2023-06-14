@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%sqDagui/daguiUtil.nut")

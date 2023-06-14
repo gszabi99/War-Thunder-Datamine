@@ -14,6 +14,7 @@
   "haveOpticTurret": true,
   "isBwOpticSight": true,
   "ils31": true,
+  "mfdCamShkval": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
   "type": "typeFighter",
@@ -2706,10 +2707,16 @@
             1.0,
             1.0
           ],
-          "page": {
-            "type": "target_tracking",
-            "turretIdx": 0
-          }
+          "page": [
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
+            }
+          ]
         },
         {
           "textureArea": [
@@ -3930,6 +3937,7 @@
             "iconType": "atgm_type1_x8",
             "name": "9k127_x8_left",
             "reqModification": "ka_9K121",
+            "maxMissileSalvoTimeInterval": 3.0,
             "ShowNodes": {
               "node": "pylon_a_3_holder"
             },
@@ -5006,6 +5014,7 @@
             "iconType": "atgm_type1_x8",
             "name": "9k127_x8_right",
             "reqModification": "ka_9K121",
+            "maxMissileSalvoTimeInterval": 3.0,
             "ShowNodes": {
               "node": "pylon_a_6_holder"
             },

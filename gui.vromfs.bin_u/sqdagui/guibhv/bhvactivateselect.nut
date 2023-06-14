@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 ::gui_bhv.ActivateSelect <- class extends ::gui_bhv.posNavigator {
   bhvId = "ActivateSelect"

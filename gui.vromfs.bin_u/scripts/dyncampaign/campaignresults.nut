@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { dynamicGetVisual } = require("dynamicMission")
 let DataBlock = require("DataBlock")

@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { startsWith, slice } = require("%sqstd/string.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")

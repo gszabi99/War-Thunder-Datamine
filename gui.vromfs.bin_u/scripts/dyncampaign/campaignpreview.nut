@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -285,7 +282,7 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 
     let handlerClass = class {
       function goBack(_obj) {
-        let delayedAction = (@(handler, guiScene, infoBoxObject) function() {
+        let delayedAction = (@(handler, guiScene, infoBoxObject) function() { //-ident-hides-ident
           guiScene.destroyElement(infoBoxObject)
           handler.isInInfo = false
           handler.showNav(true)

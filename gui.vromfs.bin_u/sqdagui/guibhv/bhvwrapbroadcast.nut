@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let mkWrap = @(notifyId) function(obj, is_down) {
   if (is_down && !obj.sendSceneEvent(notifyId))

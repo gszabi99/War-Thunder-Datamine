@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

@@ -4,9 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -814,9 +811,9 @@ let difficultyTypes = [
     let taskStatus = this.getTaskStatus(task)
 
     return {
-      id = id
-      title = title
-      taskStatus = taskStatus
+      id
+      title
+      taskStatus
       taskImage = (paramsCfg?.showUnlockImage ?? true) && (getTblValue("image", task) || getTblValue("image", config))
       taskPlayback = getTblValue("playback", task) || getTblValue("playback", config)
       isPlaybackDownloading = !::g_sound.canPlay(id)
@@ -831,7 +828,7 @@ let difficultyTypes = [
       canReroll = isInteractive && isTaskBattleTask && !isCanGetReward
       otherTasksNum = task && isPromo ? this.getTotalActiveTasksNum() : null
       isLowWidthScreen = isPromo ? ::is_low_width_screen() : null
-      isPromo = isPromo
+      isPromo
       isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
       needShowProgressValue = taskStatus == null && config?.curVal != null && config.curVal >= 0 && config?.maxVal != null && config.maxVal >= 0
       progressValue = config?.curVal
@@ -839,7 +836,7 @@ let difficultyTypes = [
       needShowProgressBar = progressData?.show
       progressBarValue = progressBarValue.tointeger()
       getTooltipId = (isPromo || isShortDescription) && isTaskBattleTask ? @() BATTLE_TASK.getTooltipId(id) : null
-      isShortDescription = isShortDescription
+      isShortDescription
       shouldRefreshTimer = config?.shouldRefreshTimer ?? false
     }
   }
@@ -887,8 +884,8 @@ let difficultyTypes = [
     let tasks = this.activeTasksArray.filter(@(t) ::g_battle_tasks.isTaskActual(t))
     let res = []
     foreach (diff in difficultyTypes) {
-      let canInteract = canPlayerInteractWithDifficulty(diff, tasks)
-      if (!canInteract)
+      let taskCanInteract = canPlayerInteractWithDifficulty(diff, tasks)
+      if (!taskCanInteract)
         continue
 
       let tasksByDiff = withdrawTasksArrayByDifficulty(diff, tasks)

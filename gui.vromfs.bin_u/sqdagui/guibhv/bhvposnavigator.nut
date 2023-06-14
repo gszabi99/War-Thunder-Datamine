@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { get_time_msec } = require("dagor.time")
 let { abs } = require("math")

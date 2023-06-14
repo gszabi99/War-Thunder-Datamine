@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { split_by_chars } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
@@ -470,7 +467,7 @@ local Unit = class {
     this.nvdSights = {}
     eachBlock(::get_full_unit_blk(this.name)?.modifications, function(mode, modeName) {
       this.nvdSights[modeName] <- []
-      eachBlock(mode?.effects.nightVision, @(_, name) this.nvdSights[modeName].append(name), this)
+      eachBlock(mode?.effects.nightVision, @(_, name) this.nvdSights[modeName].append(name), this) //-ident-hides-ident
     }, this)
   }
 

@@ -40,6 +40,7 @@ let function ilsHud(elemStyle) {
   let ilsStyle = elemStyle.__merge({
     lineWidth = LINE_WIDTH * 3
     color = HudColor.value
+    fontSize = getFontDefHt("hud") * 2
   })
   return @() {
     watch = [IsIlsEnabled, HudColor]

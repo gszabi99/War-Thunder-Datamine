@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { loading_is_finished, loading_press_apply, loading_get_briefing } = require("loading")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")

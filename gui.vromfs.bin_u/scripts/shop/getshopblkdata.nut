@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Point2 } = require("dagor.math")
 const COUNT_REQ_FOR_FAKE_UNIT = 2

@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -582,7 +579,7 @@ enum windowState {
       unitObj = this.scene.findObject("unit_nest").findObject(unitName)
       cellClass = "slotbarClone"
       isNewUnit = true
-      afterCloseFunc = (@(unit) function() {
+      afterCloseFunc = (@(unit) function() { //-ident-hides-ident
           if (::handlersManager.isHandlerValid(handler))
             handler.updateUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
         })(this.unit)

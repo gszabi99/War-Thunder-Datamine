@@ -63,7 +63,7 @@
     "bulletName": "76mm_howitzer_shell_he",
     "hitPowerMult": 2.0,
     "explodeTreshold": 0.1,
-    "fuseDelayDist": 0.0,
+    "fuseDelayDist": 0.2,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_59_80mm_metal_he",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -122,13 +122,20 @@
       ]
     },
     "damage": {
+      "kinetic": {
+        "damageType": "generic",
+        "demarrePenetrationK": 0.15,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
+      },
       "shatter": {
         "useRealShatters": true,
         "countPortion": 0.5,
         "segment": [
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.4,
+            "penetrationScale": 1.9,
             "damageScale": 1.0,
             "angles": [
               0.0,
@@ -138,7 +145,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 1.8,
             "damageScale": 1.0,
             "angles": [
               31.0,
@@ -148,7 +155,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.8,
+            "penetrationScale": 1.5,
             "damageScale": 1.5,
             "angles": [
               75.0,
@@ -158,7 +165,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 1.3,
             "damageScale": 1.0,
             "angles": [
               101.0,
@@ -168,7 +175,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 1.3,
             "damageScale": 1.0,
             "angles": [
               181.0,
@@ -178,7 +185,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.8,
+            "penetrationScale": 1.5,
             "damageScale": 1.5,
             "angles": [
               260.0,
@@ -188,7 +195,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.0,
+            "penetrationScale": 1.8,
             "damageScale": 1.0,
             "angles": [
               286.0,
@@ -198,7 +205,7 @@
           },
           {
             "radiusScale": 1.0,
-            "penetrationScale": 1.4,
+            "penetrationScale": 1.9,
             "damageScale": 1.0,
             "angles": [
               330.0,
@@ -412,7 +419,7 @@
       "bulletName": "76mm_howitzer_shell_he",
       "hitPowerMult": 2.0,
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.2,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
@@ -471,13 +478,20 @@
         ]
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "shatter": {
           "useRealShatters": true,
           "countPortion": 0.5,
           "segment": [
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.4,
+              "penetrationScale": 1.9,
               "damageScale": 1.0,
               "angles": [
                 0.0,
@@ -487,7 +501,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 1.8,
               "damageScale": 1.0,
               "angles": [
                 31.0,
@@ -497,7 +511,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.8,
+              "penetrationScale": 1.5,
               "damageScale": 1.5,
               "angles": [
                 75.0,
@@ -507,7 +521,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 1.3,
               "damageScale": 1.0,
               "angles": [
                 101.0,
@@ -517,7 +531,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 1.3,
               "damageScale": 1.0,
               "angles": [
                 181.0,
@@ -527,7 +541,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.8,
+              "penetrationScale": 1.5,
               "damageScale": 1.5,
               "angles": [
                 260.0,
@@ -537,7 +551,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.0,
+              "penetrationScale": 1.8,
               "damageScale": 1.0,
               "angles": [
                 286.0,
@@ -547,7 +561,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.4,
+              "penetrationScale": 1.9,
               "damageScale": 1.0,
               "angles": [
                 330.0,

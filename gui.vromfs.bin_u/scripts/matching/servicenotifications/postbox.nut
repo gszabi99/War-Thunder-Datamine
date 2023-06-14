@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 

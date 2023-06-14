@@ -1,6 +1,4 @@
 //this file should read version from version.txt, which is included in .cpp and set it to roo
-#explicit-this
-#no-root-fallback
 let { read_text_from_file } = require("dagor.fs")
 let f = read_text_from_file("%globalScripts/version.txt")
 local version = -1

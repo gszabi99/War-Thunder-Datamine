@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { loadIfExist } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { broadcastEvent, subscribe_handler, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")

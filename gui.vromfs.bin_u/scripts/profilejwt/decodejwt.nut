@@ -1,7 +1,4 @@
 //checked for plus_string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { decode } = require("jwt")
 let profilePublicKey = require("%scripts/profileJwt/profilePublicKey.nut")

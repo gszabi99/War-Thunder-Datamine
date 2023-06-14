@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { hangar_get_current_unit_name } = require("hangar")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

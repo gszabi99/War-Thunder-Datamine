@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")

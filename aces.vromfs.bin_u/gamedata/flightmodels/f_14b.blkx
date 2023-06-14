@@ -20,6 +20,7 @@
   "ilsF14": true,
   "isBwOpticSight": true,
   "haveOpticTurret": true,
+  "needTpsNightVision": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
   "type": "typeFighter",
@@ -2698,7 +2699,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_for_lau7a_1",
-                "lau_138_bol_001"
+                "lau_138_bol_002"
               ]
             },
             "Weapon": {
@@ -2718,7 +2719,7 @@
             "ShowNodes": {
               "node": [
                 "pylon_for_lau7a_1",
-                "lau_138_bol_001"
+                "lau_138_bol_002"
               ]
             },
             "Weapon": [
@@ -4332,12 +4333,13 @@
             "ghosting": 0.7,
             "noiseFactor": 0.15
           },
-          "sightThermal": {
+          "sightTPodThermal": {
             "resolution": [
               500,
               300
             ],
-            "noiseFactor": 0.05
+            "noiseFactor": 0.05,
+            "index": 2
           }
         }
       }
@@ -4443,10 +4445,32 @@
     }
   },
   "default_skin": {
-    "replace_tex": {
-      "from": "aero_7_olive_c*",
-      "to": "aero_7_white_c*"
-    }
+    "replace_tex": [
+      {
+        "from": "aero_7_olive_c*",
+        "to": "aero_7_white_c*"
+      },
+      {
+        "from": "f_14a_early_pylon_phoenix1_c*",
+        "to": "f_14b_pylon_phoenix1_c*"
+      },
+      {
+        "from": "f_14a_early_pylon_phoenix2_c*",
+        "to": "f_14b_pylon_phoenix2_c*"
+      },
+      {
+        "from": "f_14a_early_pylon_phoenix3_c*",
+        "to": "f_14b_pylon_phoenix3_c*"
+      },
+      {
+        "from": "f_14a_early_pylon_sparrow1_c*",
+        "to": "f_14b_pylon_sparrow1_c*"
+      },
+      {
+        "from": "pylon_phoenix_adapter_c*",
+        "to": "f_14b_pylon_phoenix_adapter_c*"
+      }
+    ]
   },
   "user_skin": {
     "name": "f_14b",

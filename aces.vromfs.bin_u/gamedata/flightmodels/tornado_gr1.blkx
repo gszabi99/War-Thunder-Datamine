@@ -16,12 +16,10 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ilsTornado": true,
-  "isBwOpticSight": true,
   "haveCCRPForGun": true,
   "hasOpticTurret": true,
   "havePointOfInterestDesignator": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -38,6 +36,7 @@
   "fightAiBehaviour": "assault",
   "laserDesignator": true,
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2913,6 +2912,23 @@
     }
   },
   "gunnerOpticFps": {
+    "TV": {
+      "pos": [
+        0.5,
+        -0.2,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0
+    },
     "Target": {
       "pos": [
         0.5,
@@ -3214,7 +3230,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
-              "emitter": "bomb1",
+              "emitter": "bomb1_ld",
               "bullets": 1
             }
           },
@@ -3409,7 +3425,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
-              "emitter": "bomb3",
+              "emitter": "bomb3_ld",
               "bullets": 1
             }
           },
@@ -3445,7 +3461,7 @@
           },
           {
             "iconType": "guided_bomb_yellow",
-            "name": "pgm_500",
+            "name": "pgm_500_fuse1",
             "reqModification": "fr_pgm_500",
             "ShowNodes": {
               "node": "pylon_bomb3"
@@ -3457,7 +3473,37 @@
               "separate": true,
               "emitter": "bomb_pgm_500_2",
               "bullets": 1
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_n117"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_default"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2"
+              }
+            ]
           },
           {
             "iconType": "guided_bomb_grey",
@@ -3474,10 +3520,40 @@
               "emitter": "bomb_pgm_2000_2",
               "bullets": 1
             },
-            "BannedWeaponPreset": {
-              "slot": 8,
-              "preset": "pgm_2000_fuse2"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2_n117"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_n117"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_default"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_x2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              }
+            ]
           }
         ]
       },
@@ -3576,7 +3652,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
-              "emitter": "bomb5",
+              "emitter": "bomb5_ld",
               "bullets": 1
             }
           },
@@ -3633,7 +3709,7 @@
               },
               {
                 "slot": 4,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse1"
               },
               {
                 "slot": 4,
@@ -3681,7 +3757,7 @@
               },
               {
                 "slot": 8,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse2"
               },
               {
                 "slot": 8,
@@ -3701,7 +3777,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
-              "emitter": "bomb7",
+              "emitter": "bomb7_ld",
               "bullets": 1
             },
             "BannedWeaponPreset": [
@@ -3719,7 +3795,7 @@
               },
               {
                 "slot": 4,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse1"
               },
               {
                 "slot": 4,
@@ -3767,7 +3843,7 @@
               },
               {
                 "slot": 8,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse2"
               },
               {
                 "slot": 8,
@@ -3805,7 +3881,7 @@
               },
               {
                 "slot": 4,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse1"
               },
               {
                 "slot": 4,
@@ -3853,7 +3929,7 @@
               },
               {
                 "slot": 8,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse2"
               },
               {
                 "slot": 8,
@@ -3895,7 +3971,7 @@
               },
               {
                 "slot": 4,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse1"
               },
               {
                 "slot": 4,
@@ -3943,7 +4019,7 @@
               },
               {
                 "slot": 8,
-                "preset": "pgm_500"
+                "preset": "pgm_500_fuse2"
               },
               {
                 "slot": 8,
@@ -4048,7 +4124,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
-              "emitter": "bomb6",
+              "emitter": "bomb6_ld",
               "bullets": 1
             }
           },
@@ -4164,7 +4240,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
-              "emitter": "bomb4",
+              "emitter": "bomb4_ld",
               "bullets": 1
             }
           },
@@ -4205,7 +4281,7 @@
           },
           {
             "iconType": "guided_bomb_yellow",
-            "name": "pgm_500",
+            "name": "pgm_500_fuse2",
             "reqModification": "fr_pgm_500",
             "ShowNodes": {
               "node": "pylon_bomb5"
@@ -4217,7 +4293,37 @@
               "separate": true,
               "emitter": "bomb_pgm_500_3",
               "bullets": 1
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_n117"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_default"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2"
+              }
+            ]
           },
           {
             "iconType": "guided_bomb_grey",
@@ -4233,7 +4339,37 @@
               "separate": true,
               "emitter": "bomb_pgm_2000_3",
               "bullets": 1
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_n117"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_default"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2"
+              }
+            ]
           },
           {
             "iconType": "guided_bomb_special_laser",
@@ -4261,6 +4397,14 @@
               },
               {
                 "slot": 7,
+                "preset": "1000lbs_default"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_n117"
+              },
+              {
+                "slot": 7,
                 "preset": "1000lbs_mk83"
               },
               {
@@ -4270,6 +4414,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_x2_n117"
               }
             ]
           }
@@ -4354,7 +4502,7 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp_n117.blk",
-              "emitter": "bomb2",
+              "emitter": "bomb2_ld",
               "bullets": 1
             }
           },
@@ -4866,6 +5014,32 @@
         "from": "tornado_gr1_n*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "seat": [
+      "seat_01",
+      "seat_02"
+    ],
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

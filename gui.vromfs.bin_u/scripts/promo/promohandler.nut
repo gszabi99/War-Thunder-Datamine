@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
@@ -189,7 +186,7 @@ let Promo = class {
     let objScene = obj.getScene()
     objScene.performDelayed(
       this,
-      (@(owner, obj, widgetsTable) function() {
+      (@(owner, obj, widgetsTable) function() { //-ident-hides-ident
         if (!checkObj(obj))
           return
 

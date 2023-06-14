@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { isPlayerFromXboxOne,
         isPlayerFromPS4,
@@ -138,14 +135,14 @@ subscribe("playerProfileDialogClosed", function(r) {
   function openXBoxFriendsEdit() {
     this.updateXboxIdAndDo(function() {
       if (this.xboxId)
-        show_profile_card(this.xboxId.tointeger())
+        show_profile_card(this.xboxId.tointeger(), null)
     })
   }
 
   function openXboxProfile() {
     this.updateXboxIdAndDo(function() {
       if (this.xboxId)
-        show_profile_card(this.xboxId.tointeger())
+        show_profile_card(this.xboxId.tointeger(), null)
     })
   }
 
@@ -319,5 +316,5 @@ subscribe("playerProfileDialogClosed", function(r) {
   isInFriendGroup = @() this.isInGroup(EPL_FRIENDLIST)
   isInPSNFriends = @() this.isInGroup(EPLX_PS4_FRIENDS)
   isInBlockGroup = @() this.isInGroup(EPL_BLOCKLIST)
-  setContactServiceGroup = @(name) this.contactServiceGroup = name
+  setContactServiceGroup = @(grp_name) this.contactServiceGroup = grp_name
 }

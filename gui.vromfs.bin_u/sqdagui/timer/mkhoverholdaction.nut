@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let DaguiSceneTimers = require("daguiSceneTimers.nut")
 

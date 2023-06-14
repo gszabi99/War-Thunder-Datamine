@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
@@ -147,6 +144,7 @@ const firstColumnWidth = 0.45
   }
 
   function initScreen() {
+    ::enableHangarControls(true)
     //change shader variables
     ::set_tonemappingMode(::get_tonemappingMode());
     if (::use_lense_flares())

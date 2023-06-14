@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let backToMainScene = require("%scripts/mainmenu/backToMainScene.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")

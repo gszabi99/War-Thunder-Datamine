@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { get_time_msec } = require("dagor.time")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")

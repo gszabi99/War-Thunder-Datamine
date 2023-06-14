@@ -1,5 +1,4 @@
 #no-plus-concat
-#explicit-this
 
 let { regexp, format, startswith, endswith, strip }=require("string")
 let math=require("math")

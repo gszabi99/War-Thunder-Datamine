@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { format } = require("string")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
@@ -111,6 +109,7 @@ let function get_text_urls_data(text) {
     return null
   msgbox.id = id
   println($"GuiManager: load msgbox = {id}")
+//  ::enableHangarControls(false, false) //to disable hangar controls need restore them on destroy msgBox
 
   let textObj = msgbox.findObject("msgText")
   if (options?.font == "fontNormal")

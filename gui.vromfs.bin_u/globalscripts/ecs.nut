@@ -1,8 +1,6 @@
 //set of functions to make life possible with very poor network messages and events native API
 // better to implement it native code and even not at daNetGame but in some gameLib
 
-#explicit-this
-#no-root-fallback
 let ecs = require("%sqstd/ecs.nut")
 let {
   server_send_net_sqevent, server_broadcast_net_sqevent,

@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { isBullets,
         getBulletGroupIndex } = require("%scripts/weaponry/bulletsInfo.nut")

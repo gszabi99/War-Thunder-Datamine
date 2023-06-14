@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { format } = require("string")
 let { toString } = require("%sqStdLibs/helpers/toString.nut")

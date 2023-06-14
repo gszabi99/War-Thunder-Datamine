@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 local cachedLoginData = persist("cachedLoginData", @() { use_tencent_login = null, use_dmm_login = null })

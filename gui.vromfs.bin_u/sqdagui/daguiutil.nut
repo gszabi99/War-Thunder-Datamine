@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { format } = require("string")
 let { Color4 } = require("dagor.math")

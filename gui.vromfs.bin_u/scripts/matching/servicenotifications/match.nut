@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { rnd } = require("dagor.random")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -27,8 +24,7 @@ let function notifyGameModesChanged(params) {
   }
 
   log("notify_game_modes_changed")
-  let { added = null, removed = null, changed = null } = params
-  ::g_matching_game_modes.onGameModesChangedNotify(added, removed, changed)
+  broadcastEvent("NotifyGameModesChanged", params)
 }
 
 let function onClustersChanged(params) {

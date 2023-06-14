@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 //call actions one by one by action callback.
 //each action must be a callable object or function with a single parameter - callback on finish

@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -140,7 +137,7 @@ let function getWeaponDescTbl(unit, params) {
 
   // Remove header with incorrect weapons amount from description
   let descArr = weaponInfoText.split(WEAPON_TEXT_PARAMS.newLine).slice(1)
-  let desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b), "")
+  let desc = WEAPON_TEXT_PARAMS.newLine.join(descArr)
   let res = { weapons, count, desc }
   if (TYPES_ARMOR_PIERCING.contains(tType)) {
     let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false))
@@ -174,7 +171,7 @@ let function getTierDescTbl(unit, params) {
     res.desc = $"{header}\n{weaponryDesc.desc}"
   } else {
     let header = buildWeaponDescHeader(params, weaponryDesc.count)
-    let addHeader = buildWeaponDescHeader(params, additionalWeaponryDesc.count)
+    let addHeader = buildWeaponDescHeader(params.addWeaponry, additionalWeaponryDesc.count)
     res.desc = $"{header}\n{weaponryDesc.desc}\n{addHeader}\n{additionalWeaponryDesc.desc}"
   }
 

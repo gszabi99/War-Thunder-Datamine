@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let callback = require("callback.nut")
 

@@ -1,6 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-#no-root-fallback
-#explicit-this
 let { ANY_CLICK } = require("%scripts/tutorials/tutorialActions.nut")
 let { isModMounted } = require("%scripts/weaponry/modificationInfo.nut")
 

@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 

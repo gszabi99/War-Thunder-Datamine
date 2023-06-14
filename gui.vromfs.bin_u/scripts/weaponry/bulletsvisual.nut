@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { file_exists } = require("dagor.fs")
@@ -306,6 +303,14 @@ let function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       if ("radarRange" in bulletsData)
         addProp(p, loc("missile/seekerRange"),
           ::g_measure_type.DISTANCE.getMeasureUnitsText(bulletsData.radarRange))
+    }
+    else if (bulletsData.guidanceType == "saclos") {
+      addProp(p, loc("missile/guidance"),
+        loc($"missile/guidance/{bulletsData?.isBeamRider ? "beamRiding" : "saclos"}"))
+      if ("irBeaconBand" in bulletsData) {
+        if (bulletsData.irBeaconBand != saclosMissileBeaconIRSourceBand.value)
+          addProp(p, loc("missile/eccm"), loc("options/yes"))
+      }
     }
     else {
       addProp(p, loc("missile/guidance"),

@@ -4,9 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format, split_by_chars } = require("string")
 let { addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -35,6 +32,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { toUpper } = require("%sqstd/string.nut")
+let { getGameModesByEconomicName, getModeById } = require("%scripts/matching/matchingGameModes.nut")
+let { debug_dump_stack } = require("dagor.debug")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -859,7 +858,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       return event._allCountriesSets
 
     let res = []
-    let mgmList = ::g_matching_game_modes.getGameModesByEconomicName(this.getEventEconomicName(event))
+    let mgmList = getGameModesByEconomicName(this.getEventEconomicName(event))
     mgmList.sort(function(a, b) { return a.gameModeId - b.gameModeId }) //same order on all clients
     foreach (mgm in mgmList) {
       if (this.isCustomGameMode(mgm))
@@ -1269,7 +1268,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
           continue
 
         foreach (gameModeId in countrySet.gameModeIds) {
-          let mgm = ::g_matching_game_modes.getModeById(gameModeId)
+          let mgm = getModeById(gameModeId)
           if (!mgm)
             continue
           let teamsData = this.getMembersFlyoutEventDataImpl(mgm, null, mgmTeams)
@@ -1776,9 +1775,10 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     if ("name" in rule) {
       let air = getAircraftByName(rule.name)
       if (!air) {
-        assert(false, "Wrong air name '" + rule.name + "'")
-        log("rule:")
+        log($"rule for unit {rule.name}:")
         debugTableData(rule)
+        debug_dump_stack()
+        logerr("Wrong unit name in event rule")
       }
       if (onlyText || !air)
         ruleString = ::getUnitName(air, true)
@@ -2543,7 +2543,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function getCustomGameMode(event) {
     return u.search(
-      ::g_matching_game_modes.getGameModesByEconomicName(this.getEventEconomicName(event)),
+      getGameModesByEconomicName(this.getEventEconomicName(event)),
       this.isCustomGameMode
     )
   }

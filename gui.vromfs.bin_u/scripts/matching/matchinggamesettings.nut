@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let logGM = log_with_prefix("[Matching_Game_Setting] ")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")

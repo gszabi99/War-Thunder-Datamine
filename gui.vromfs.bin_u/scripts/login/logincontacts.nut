@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { setChardToken } = require("chard")
 let { getPlayerToken } = require("auth_wt")

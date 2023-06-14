@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -51,7 +48,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   }
 
   function update() {
-    this.eventIds = ::events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) {
+    this.eventIds = ::events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) { //-ident-hides-ident
       return ::events.getEventsChapter(event) == name
              && ::events.isEventVisibleInEventsWindow(event)
     })(this.name))

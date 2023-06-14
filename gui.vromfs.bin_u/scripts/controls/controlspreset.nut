@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%scripts/controls/controlsPresets.nut")
@@ -531,7 +528,7 @@ let function isSameMapping(lhs, rhs) {
       let blkBasePresetPaths = blk["basePresetPaths"]
 
       if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0) {
-        blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("empty_ver1")
+        blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("keyboard_updates")
         log("ControlsPreset: Compatibility preset added to base presets")
       }
 

@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let { register_command } = require("console")

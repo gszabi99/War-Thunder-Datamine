@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { getRoleText, getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")

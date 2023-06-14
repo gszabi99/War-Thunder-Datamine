@@ -1,15 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { format } = require("string")
 let { fetchGameModesDigest, fetchGameModesInfo
 } = require("%scripts/matching/serviceNotifications/match.nut")
 
@@ -19,201 +14,216 @@ let { fetchGameModesDigest, fetchGameModesInfo
 
 const MAX_FETCH_RETRIES = 5
 
-let requestedGameModesTimeOut = 10000 //ms
-local lastRequestTimeMsec = -requestedGameModesTimeOut
-local requestedGameModes = []
+const MAX_GAME_MODES_FOR_REQUEST_INFO = 100
 
-::g_matching_game_modes <- {
-  __gameModes = {} // game-mode unique id -> mode info
+let gameModes = {} // game-mode unique id -> mode info
+local queueGameModesForRequest = []
+local fetching = false
+local fetchingInfo = false
+local fetch_counter = 0
 
-  __fetching = false
-  __fetch_counter = 0
-
-  function forceUpdateGameModes() {
-    if (!::is_online_available())
-      return
-
-    this.__fetching = false
-    this.__fetch_counter = 0
-    this.fetchGameModes()
+let function notifyGmChanged() {
+  let gameEventsOldFormat = {}
+  foreach (_gm_id, modeInfo in gameModes) {
+    if (::events.isCustomGameMode(modeInfo))
+      continue
+    if ("team" in modeInfo && !("teamA" in modeInfo) && !("teamB" in modeInfo))
+      modeInfo.teamA <- modeInfo.team
+    gameEventsOldFormat[modeInfo.name] <- modeInfo
   }
+  ::events.updateEventsData(gameEventsOldFormat)
+}
 
-  function fetchGameModes() {
-    if (this.__fetching)
-      return
-
-    this.__gameModes.clear()
-    this.__fetching = true
-    this.__fetch_counter++
-    fetchGameModesDigest({ timeout = 60 },
-      function (result) {
-        if (!this)
-          return
-
-        this.__fetching = false
-
-        let canRetry = this.__fetch_counter < MAX_FETCH_RETRIES
-        if (::checkMatchingError(result, false)) {
-          this.__loadGameModesFromList(result?.modes ?? [])
-          this.__fetch_counter = 0
-          return
-        }
-
-        if (!canRetry) {
-          if (!::is_dev_version)
-            startLogout()
-        }
-        else {
-          log("fetch gamemodes error, retry - " + this.__fetch_counter)
-          this.fetchGameModes()
-        }
-      }.bindenv(::g_matching_game_modes)
-    )
-  }
-
-  function getModeById(gameModeId) {
-    return this.__gameModes?[gameModeId]
-  }
-
-  function  onGameModesChangedNotify(added_list, removed_list, changed_list) {
-    local needNotify = false
-    let needToFetchGmList = []
-
-    if (removed_list) {
-      foreach (modeInfo in removed_list) {
-        let { gameModeId = -1, name = "" } = modeInfo
-        log($"matching game mode removed '{name}' [{gameModeId}]")
-        this.__removeGameMode(gameModeId)
-        needNotify = true
-      }
-    }
-
-    if (added_list) {
-      foreach (modeInfo in added_list) {
-        let { gameModeId = -1, name = "" } = modeInfo
-        log($"matching game mode added '{name}' [{gameModeId}]")
-        needToFetchGmList.append(gameModeId)
-      }
-    }
-
-    if (changed_list) {
-      foreach (modeInfo in changed_list) {
-        let gameModeId = modeInfo?.gameModeId
-        if (gameModeId == null)
-          continue
-
-        let name     = modeInfo?.name ?? ""
-        let disabled = modeInfo?.disabled
-        let visible  = modeInfo?.visible
-        let active   = modeInfo?.active
-
-        log($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
-
-        if (disabled && visible == false && active == false) {
-          needNotify = true
-          this.__removeGameMode(gameModeId)
-          continue
-        }
-
-        needToFetchGmList.append(gameModeId) //need refresh full mode-info because may updated mode params
-
-        if (disabled == null || visible == null || active == null
-            || !(gameModeId in this.__gameModes))
-          continue
-
-        needNotify = true
-        let fullModeInfo = this.__gameModes[gameModeId]
-        fullModeInfo.disabled = disabled
-        fullModeInfo.visible = visible
-      }
-    }
-
-    if (needToFetchGmList.len() > 0)
-      this.__loadGameModesFromList(needToFetchGmList)
-
-    if (needNotify)
-      this.__notifyGmChanged()
-  }
-
-// private section
-  function __notifyGmChanged() {
-    let gameEventsOldFormat = {}
-    foreach (_gm_id, modeInfo in this.__gameModes) {
-      if (::events.isCustomGameMode(modeInfo))
-        continue
-      if ("team" in modeInfo && !("teamA" in modeInfo) && !("teamB" in modeInfo))
-        modeInfo.teamA <- modeInfo.team
-      gameEventsOldFormat[modeInfo.name] <- modeInfo
-    }
-    ::events.updateEventsData(gameEventsOldFormat)
-  }
-
-  function __removeGameMode(game_mode_id) {
-    if (game_mode_id in this.__gameModes)
-      delete this.__gameModes[game_mode_id]
-  }
-
-  function __onGameModesUpdated(modes_list) {
-    foreach (modeInfo in modes_list) {
-      let gameModeId = modeInfo.gameModeId
-      let idx = requestedGameModes.indexof(gameModeId)
-      if (idx != null)
-        requestedGameModes.remove(idx)
-      log(format("matching game mode fetched '%s' [%d]",
-                         modeInfo.name, gameModeId))
-      this.__gameModes[gameModeId] <- modeInfo
-    }
-    this.__notifyGmChanged();
-  }
-
-  function __loadGameModesFromList(gm_list) {
-    fetchGameModesInfo({ byId = gm_list, timeout = 60 },
-      function (result) {
-        if (!::checkMatchingError(result, false) || ("modes" not in result))
-          return
-        ::g_matching_game_modes.__onGameModesUpdated(result.modes)
-      })
-  }
-
-  function onEventSignOut(_p) {
-    this.__gameModes.clear()
-    this.__fetching = false
-    this.__fetch_counter = 0
-  }
-
-  function onEventScriptsReloaded(_p) {
-    this.forceUpdateGameModes()
-  }
-
-  //no need to request gameModes before configs inited
-  function onEventLoginComplete(_p) {
-    this.forceUpdateGameModes()
-  }
-
-  function getGameModesByEconomicName(economicName) {
-    return u.filter(this.__gameModes,
-      (@(economicName) function(g) { return ::events.getEventEconomicName(g) == economicName })(economicName))
-  }
-
-  function requestGameModeById(gameModeId) {
-    let isRequested = isInArray(gameModeId, requestedGameModes)
-    if (isRequested
-      && (get_time_msec() - lastRequestTimeMsec <= requestedGameModesTimeOut))
-      return
-
-    if (!isRequested)
-      requestedGameModes.append(gameModeId)
-    lastRequestTimeMsec = get_time_msec()
-    this.__loadGameModesFromList([gameModeId])
-  }
-
-  function getGameModeIdsByEconomicName(economicName) {
-    let res = []
-    foreach (id, gm in this.__gameModes)
-      if (::events.getEventEconomicName(gm) == economicName)
-        res.append(id)
-    return res
+let function onGameModesUpdated(modes_list) {
+  foreach (modeInfo in modes_list) {
+    let gameModeId = modeInfo.gameModeId
+    log($"matching game mode fetched '{modeInfo.name}' [{gameModeId}]")
+    gameModes[gameModeId] <- modeInfo
   }
 }
 
-subscribe_handler(::g_matching_game_modes)
+let function addGmListToQueue(gmList) {
+  if (queueGameModesForRequest.len() == 0) {
+    queueGameModesForRequest = gmList
+    return
+  }
+  foreach (mode in gmList)
+    appendOnce(queueGameModesForRequest, mode)
+}
+
+let function getGmListFromQueue() {
+  let res = queueGameModesForRequest.slice(0, MAX_GAME_MODES_FOR_REQUEST_INFO)
+  queueGameModesForRequest = queueGameModesForRequest.slice(MAX_GAME_MODES_FOR_REQUEST_INFO)
+  return res
+}
+
+let function loadGameModesFromList(gm_list) {
+  if (fetchingInfo) {
+    addGmListToQueue(gm_list)
+    return
+  }
+  fetchingInfo = true
+  let self = callee()
+  if (gm_list.len() > MAX_GAME_MODES_FOR_REQUEST_INFO) {
+    addGmListToQueue(gm_list.slice(MAX_GAME_MODES_FOR_REQUEST_INFO))
+    gm_list = gm_list.slice(0, MAX_GAME_MODES_FOR_REQUEST_INFO)
+  }
+  fetchGameModesInfo({ byId = gm_list, timeout = 60 },
+    function (result) {
+      fetchingInfo = false
+      if (!::checkMatchingError(result, false)) {
+        queueGameModesForRequest.clear()
+        return
+      }
+
+      if ("modes" in result)
+        onGameModesUpdated(result.modes)
+      if (queueGameModesForRequest.len() == 0) {
+        notifyGmChanged()
+        return
+      }
+
+      self(getGmListFromQueue())
+    })
+}
+
+let function fetchGameModes() {
+  if (fetching)
+    return
+
+  gameModes.clear()
+  fetching = true
+  fetch_counter++
+  let self = callee()
+  fetchGameModesDigest({ timeout = 60 },
+    function (result) {
+      fetching = false
+      let canRetry = fetch_counter < MAX_FETCH_RETRIES
+      if (::checkMatchingError(result, false)) {
+        loadGameModesFromList(result?.modes ?? [])
+        fetch_counter = 0
+        return
+      }
+
+      if (!canRetry) {
+        if (!::is_dev_version)
+          startLogout()
+      }
+      else {
+        log($"fetch gamemodes error, retry - {fetch_counter}")
+        self()
+      }
+    }
+  )
+}
+
+let function forceUpdateGameModes() {
+  if (!::is_online_available())
+    return
+
+  fetching = false
+  fetch_counter = 0
+  fetchGameModes()
+}
+
+let function removeGameMode(game_mode_id) {
+  if (game_mode_id in gameModes)
+    delete gameModes[game_mode_id]
+}
+
+let function onGameModesChangedNotify(added_list, removed_list, changed_list) {
+  local needNotify = false
+  let needToFetchGmList = []
+
+  if (removed_list) {
+    foreach (modeInfo in removed_list) {
+      let { gameModeId = -1, name = "" } = modeInfo
+      log($"matching game mode removed '{name}' [{gameModeId}]")
+      removeGameMode(gameModeId)
+      needNotify = true
+    }
+  }
+
+  if (added_list) {
+    foreach (modeInfo in added_list) {
+      let { gameModeId = -1, name = "" } = modeInfo
+      log($"matching game mode added '{name}' [{gameModeId}]")
+      needToFetchGmList.append(gameModeId)
+    }
+  }
+
+  if (changed_list) {
+    foreach (modeInfo in changed_list) {
+      let gameModeId = modeInfo?.gameModeId
+      if (gameModeId == null)
+        continue
+
+      let name     = modeInfo?.name ?? ""
+      let disabled = modeInfo?.disabled
+      let visible  = modeInfo?.visible
+      let active   = modeInfo?.active
+
+      log($"matching game mode {disabled ? "disabled" : "enabled"} '{name}' [{gameModeId}]")
+
+      if (disabled && visible == false && active == false) {
+        needNotify = true
+        removeGameMode(gameModeId)
+        continue
+      }
+
+      needToFetchGmList.append(gameModeId) //need refresh full mode-info because may updated mode params
+
+      if (disabled == null || visible == null || active == null
+          || !(gameModeId in gameModes))
+        continue
+
+      needNotify = true
+      let fullModeInfo = gameModes[gameModeId]
+      fullModeInfo.disabled = disabled
+      fullModeInfo.visible = visible
+    }
+  }
+
+  if (needToFetchGmList.len() > 0)
+    loadGameModesFromList(needToFetchGmList)
+
+  if (needNotify)
+    notifyGmChanged()
+}
+
+let function getGameModesByEconomicName(economicName) {
+  return gameModes.filter(@(g) ::events.getEventEconomicName(g) == economicName).values()
+}
+
+let function getGameModeIdsByEconomicName(economicName) {
+  let res = []
+  foreach (id, gm in gameModes)
+    if (::events.getEventEconomicName(gm) == economicName)
+      res.append(id)
+  return res
+}
+
+let function getModeById(gameModeId) {
+  return gameModes?[gameModeId]
+}
+
+addListenersWithoutEnv({
+  function SignOut(_) {
+    gameModes.clear()
+    queueGameModesForRequest.clear()
+    fetching = false
+    fetchingInfo = false
+    fetch_counter = 0
+  }
+  ScriptsReloaded = @(_) forceUpdateGameModes()
+  //no need to request gameModes before configs inited
+  LoginComplete   = @(_) forceUpdateGameModes()
+  NotifyGameModesChanged = @(p) onGameModesChangedNotify(p?.added, p?.removed, p?.changed)
+})
+
+return {
+  forceUpdateGameModes
+  getModeById
+  getGameModesByEconomicName
+  getGameModeIdsByEconomicName
+}

@@ -537,6 +537,16 @@
           ],
           "sizeScale": 5.0
         },
+        "kinetic_ricochet": {
+          "tc": [
+            0.25,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 7.0,
+          "angleLimit": 10.0
+        },
         "explosive_penetration": {
           "tc": [
             0.5,
@@ -640,7 +650,7 @@
             0.75,
             0.5
           ],
-          "sizeScale": 1.0
+          "sizeScale": 3.0
         },
         "explosive_non_penetration_bombs": {
           "tc": [
@@ -649,7 +659,7 @@
             1.0,
             0.5
           ],
-          "sizeScale": 1.0
+          "sizeScale": 3.0
         }
       },
       "rendinstProps": {
@@ -910,6 +920,24 @@
             0.25
           ],
           "sizeScale": 2.5
+        },
+        "explosive_penetration_bombs": {
+          "tc": [
+            0.5,
+            0.0,
+            0.75,
+            0.25
+          ],
+          "sizeScale": 0.3
+        },
+        "explosive_non_penetration_bombs": {
+          "tc": [
+            0.75,
+            0.0,
+            1.0,
+            0.25
+          ],
+          "sizeScale": 0.3
         }
       },
       "rendinstProps": {
@@ -1079,18 +1107,18 @@
     },
     "proximityShrapnelRubber": {
       "shader": "explosion_patch_color",
-      "normalMap": "explosion_patch_ps_n",
-      "colorMap": "explosion_patch_ps_c",
-      "materialParamsMap": "explosion_patch_ps_m",
+      "normalMap": "shrapnel_ground_vehicles_atlas_n",
+      "colorMap": "shrapnel_ground_vehicles_atlas_a",
+      "materialParamsMap": "shrapnel_ground_vehicles_atlas_m",
       "props": {
         "shrapnel_penetration": {
           "tc": [
-            0.75,
             0.0,
-            1.0,
-            0.25
+            0.25,
+            0.25,
+            0.5
           ],
-          "sizeScale": 0.5
+          "sizeScale": 0.6
         }
       }
     },
@@ -1105,9 +1133,9 @@
             0.0,
             0.0,
             0.25,
-            1.0
+            0.25
           ],
-          "sizeScale": 1.0
+          "sizeScale": 0.5
         }
       }
     },
@@ -1119,12 +1147,12 @@
       "props": {
         "shrapnel_penetration": {
           "tc": [
+            0.5,
             0.0,
-            0.0,
-            0.25,
-            1.0
+            0.75,
+            0.25
           ],
-          "sizeScale": 1.0
+          "sizeScale": 0.5
         }
       }
     },
@@ -1139,9 +1167,9 @@
             0.25,
             0.0,
             0.5,
-            1.0
+            0.25
           ],
-          "sizeScale": 1.0
+          "sizeScale": 0.5
         }
       }
     },
@@ -1156,9 +1184,9 @@
             0.5,
             0.0,
             0.75,
-            1.0
+            0.25
           ],
-          "sizeScale": 1.0
+          "sizeScale": 0.5
         }
       }
     },
@@ -1173,9 +1201,9 @@
             0.75,
             0.0,
             1.0,
-            1.0
+            0.25
           ],
-          "sizeScale": 1.5
+          "sizeScale": 0.5
         }
       }
     },

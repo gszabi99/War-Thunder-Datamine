@@ -1,5 +1,3 @@
-#explicit-this
-#no-root-fallback
 
 let { memoize } = require("%sqstd/functools.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")

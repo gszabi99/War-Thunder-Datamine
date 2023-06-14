@@ -1,7 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 //!!!FIX ME: Need remove get_last_weapon and get_last_bullets at all. Currently they used for compatibility only.
 let { get_unit_option } = require("guiOptions")
 let { get_last_weapon, get_last_bullets } = require("unitCustomization")

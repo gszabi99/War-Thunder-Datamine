@@ -49,6 +49,9 @@ let AgmRotatedLaunchZonePitchMax = Watched(0.0)
 let AgmRotatedLaunchZonePitchMin = Watched(0.0)
 let AgmLaunchZoneDistMin         = Watched(0.0)
 let AgmLaunchZoneDistMax         = Watched(0.0)
+let IsOutLaunchZone              = Watched(false)
+let LaunchZonePosX               = Watched(0.0)
+let LaunchZonePosY               = Watched(0.0)
 
 let IRCMState                    = Watched(0)
 
@@ -289,6 +292,9 @@ let helicopterState = {
   AgmRotatedLaunchZonePitchMin,
   AgmLaunchZoneDistMin,
   AgmLaunchZoneDistMax,
+  IsOutLaunchZone,
+  LaunchZonePosX,
+  LaunchZonePosY,
   IlsAtgmLaunchEdge1X,
   IlsAtgmLaunchEdge1Y,
   IlsAtgmLaunchEdge2X,

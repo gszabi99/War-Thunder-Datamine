@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let psn = require("%sonyLib/webApi.nut")
 let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")

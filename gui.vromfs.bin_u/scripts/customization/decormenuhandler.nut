@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -140,6 +137,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.isOpened = isShown
     this.scene.show(isShown)
     this.scene.enable(isShown)
+    ::enableHangarControls(!this.scene.findObject("hangar_control_tracking").isHovered())
   }
 
   // private
@@ -343,6 +341,8 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     if (!this.moveMouseOnDecalsHeader(parentList, 1))
       ::set_dirpad_event_processed(false)
   }
+
+  onDecorMenuHoverChange = @(obj) ::enableHangarControls(!obj.isHovered())
 }
 
 ::gui_handlers.DecorMenuHandler <- DecorMenuHandler

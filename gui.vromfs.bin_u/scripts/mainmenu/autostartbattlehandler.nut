@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
@@ -30,6 +27,8 @@ let class AutoStartBattleHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     ::set_presence_to_player("menu")
+    ::enableHangarControls(true)
+
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(::OPTIONS_MODE_MP_DOMINATION)
 

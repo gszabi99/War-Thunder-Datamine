@@ -8,8 +8,8 @@
       "power": 350.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 56000.0,
-      "rangeMax": 150000.0,
+      "range": 60000.0,
+      "rangeMax": 130000.0,
       "timeGainControl": true,
       "antenna": {
         "azimuth": {
@@ -28,7 +28,7 @@
       "band": 8,
       "rcs": 3.0,
       "range": 45000.0,
-      "rangeMax": 150000.0,
+      "rangeMax": 100000.0,
       "timeGainControl": true,
       "antenna": {
         "azimuth": {
@@ -166,11 +166,11 @@
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 30.0,
-      "period": 0.5,
+      "period": 1.0,
       "width": 10.0,
       "barHeight": 4.0,
-      "barsCount": 1,
-      "rowMajor": false,
+      "barsCount": 4,
+      "rowMajor": true,
       "indicate": true
     },
     "track": {
@@ -250,8 +250,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 12.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
+      "mainBeamNotchWidth": 40.0,
       "track": true,
       "distance": {
         "presents": true,
@@ -261,7 +260,7 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": 20.0,
+        "minValue": -1500.0,
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
         "width": 20.0

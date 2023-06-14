@@ -5,6 +5,22 @@
   "sound": "weapon.bombgun",
   "mesh": "fr_50kg_gammn",
   "bomb": {
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "he_bomb",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "useEffectiveArmorThicknessForShatter": true,
+    "explodeOnRendinst": true,
     "mass": 53.0,
     "explosiveType": "mmn",
     "explosiveMass": 29.0,
@@ -75,6 +91,20 @@
     "shutterArmorPower": 10.0,
     "shutterHit": 10.0,
     "iconType": "bombs_small",
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },

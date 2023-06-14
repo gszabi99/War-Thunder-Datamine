@@ -3,9 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { frnd } = require("dagor.random")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { register_command } = require("console")
 let dbgHudObjectTypes = require("%scripts/debugTools/dbgHudObjectTypes.nut")

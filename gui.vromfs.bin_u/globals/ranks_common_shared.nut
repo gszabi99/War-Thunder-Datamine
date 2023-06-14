@@ -1,7 +1,4 @@
 //from "%globalScripts/logs.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let DataBlock = require("DataBlock")
 let { file_exists } = require("dagor.fs")

@@ -1,7 +1,4 @@
 //checked for plus_string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { genHeadToHeadMission } = require("%scripts/dynamic/headtohead.nut")
 let { genCombatPatrolMission } = require("%scripts/dynamic/combat_patrol.nut")

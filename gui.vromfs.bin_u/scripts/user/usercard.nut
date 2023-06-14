@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -1023,7 +1020,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
 
   function onOpenXboxProfile() {
     if (this.curPlayerExternalIds?.xboxId)
-      show_profile_card(this.curPlayerExternalIds?.xboxId.tointeger())
+      show_profile_card(this.curPlayerExternalIds?.xboxId.tointeger(), null)
   }
 
   function onOpenPSNProfile() {

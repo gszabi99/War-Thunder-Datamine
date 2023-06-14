@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -33,6 +30,7 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
   //custom functions
   function initScreen() {
     ::set_presence_to_player("menu")
+    ::enableHangarControls(true)
 
     if (::g_login.isAuthorized())
       base.initScreen()

@@ -1,8 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 const MAX_DEADZONE = 0.5
 const MAX_NONLINEARITY = 4

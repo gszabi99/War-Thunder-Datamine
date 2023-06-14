@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { assertf } = require("dagor.debug")

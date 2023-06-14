@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")

@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -101,7 +98,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     updateActionBar()
     this.scene.setValue(stashBhvValueConfig([{
       watch = actionBarItems
-      updateFunc = Callback(@(_obj, actionItems) this.updateActionBarItems(actionItems), this)
+      updateFunc = Callback(@(_obj, actionItems) this.updateActionBarItems(actionItems), this) //-ident-hides-ident
     }]))
   }
 

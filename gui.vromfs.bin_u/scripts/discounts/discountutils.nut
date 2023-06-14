@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 //checked for explicitness
-#no-root-fallback
 
 
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")

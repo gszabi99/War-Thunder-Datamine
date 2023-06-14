@@ -1,5 +1,3 @@
-#no-root-fallback
-#explicit-this
 
 /**
  * u is a set of utility functions, trashbin

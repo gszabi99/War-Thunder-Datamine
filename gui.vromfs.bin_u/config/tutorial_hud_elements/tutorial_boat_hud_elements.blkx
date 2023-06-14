@@ -266,28 +266,28 @@
     },
     {
       "id": "hud_tutorial_boat_auto_gunners_modes",
-      "flow": "vertical",
-      "width": "0.13pw",
-      "height": "0.21pw",
-      "pos": "55.5%pw-0%w, sh-60%h",
+      "width": "@hudActionBarItemSize",
+      "height": "@hudActionBarItemSize",
+      "pos": "pw/2+5@hudActionBarItemSize+5@hudActionBarItemOffset+10@dp, @actionBarBottomPos-h",
       "position": "root",
       "display": "show",
       "textareaNoTab": {
         "shadeStyle": "HudHeader3D",
         "position": "absolute",
-        "pos": "w, -2%ph",
+        "pos": "140/720@shHud-20@dp, -80/720@shHud-h-@hudActionBarItemSize/3",
+        "width": "140/720@shHud",
         "display": "show",
         "style": "font:@fontHudSmall; color:#ffffff;",
         "text": "#hud_tutorial_boat_auto_gunners_modes"
       },
       "img": {
         "position": "absolute",
-        "pos": "74%pw-0%w, 49%ph-100%h",
+        "pos": "-25/720@shHud, -80/720@shHud-@hudActionBarItemSize/3",
         "size": "50/720@shHud, 160/720@shHud",
         "re-type": "rotation",
-        "background-rotation": "60",
+        "background-rotation": "240",
+        "background-position": "0,80/720@shHud,0,-80/720@shHud",
         "display": "show",
-        "rotation": "180",
         "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow"
       }
     },

@@ -21,7 +21,6 @@
   "ilsHaveAVQ7CCIP": true,
   "ilsHaveAVQ7CCRP": true,
   "type": "typeFighter",
-  "paratrooper": "ally",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "instructorCritMult": [
@@ -47,6 +46,7 @@
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2059,8 +2059,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.27,
-              0.27
+              0.24,
+              0.24
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -3563,6 +3563,29 @@
         "from": "kfir_c7_n*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "ejectInterval": 0.7,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister",
+    "seat": "seat_01",
+    "fxEmitter": "blister",
+    "fxType": "catapult_expl_ejection"
   },
   "parachutes": {
     "emitterRange": [

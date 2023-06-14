@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let DataBlock  = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -113,12 +110,12 @@ local WorkshopSet = class {
   isVisibleSubsetId         = @(subsetId) this.subsetsList?[subsetId] != null && this.isVisibleSubset(this.subsetsList[subsetId])
 
   isItemInSet               = @(item) item.id in this.itemdefs
-  isItemIdInSet             = @(id) id in this.itemdefs
-  isItemIdHidden            = @(id) (this.itemdefs[id].blockNumber in this.hiddenItemsBlocks)
-                                || (this.hasSubsets && !this.isVisibleSubsetId(this.itemdefs[id].subsetId))
-  isVisibleOnlyInCraftTree  = @(id) this.itemsVisibleOnlyInCraftTree?[id] != null
-  isItemIdKnown             = @(id) this.initKnownItemsOnce() || id in this.knownItemdefs
-  isReqItemIdKnown          = @(id) id in this.knownReqItemdefs
+  isItemIdInSet             = @(item_id) item_id in this.itemdefs
+  isItemIdHidden            = @(item_id) (this.itemdefs[item_id].blockNumber in this.hiddenItemsBlocks)
+                                || (this.hasSubsets && !this.isVisibleSubsetId(this.itemdefs[item_id].subsetId))
+  isVisibleOnlyInCraftTree  = @(item_id) this.itemsVisibleOnlyInCraftTree?[item_id] != null
+  isItemIdKnown             = @(item_id) this.initKnownItemsOnce() || item_id in this.knownItemdefs
+  isReqItemIdKnown          = @(item_id) item_id in this.knownReqItemdefs
   shouldDisguiseItem        = @(item) !(item.id in this.alwaysVisibleItemdefs) && !this.isItemIdKnown(item.id)
     && !item?.itemDef?.tags?.alwaysKnownItem
 

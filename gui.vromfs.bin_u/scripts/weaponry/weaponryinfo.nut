@@ -1,9 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { Point2 } = require("dagor.math")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -420,6 +417,13 @@ let function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = nu
             item.timeLife <- itemBlk.timeLife
 
           if (itemBlk?.guidance != null) {
+            if (itemBlk.guidance?.lineOfSightAutopilot != null) {
+              if (itemBlk?.guidance.beamRider)
+                item.guidanceType <- "beamRiding"
+              if (itemBlk?.guidance.beaconBand)
+                if (itemBlk?.guidance.beaconBand != saclosMissileBeaconIRSourceBand.value)
+                  item.guidanceECCM <- true
+            }
             if (itemBlk.guidance?.irSeeker != null) {
               let targetSignatureType = itemBlk.guidance.irSeeker?.targetSignatureType != null ?
                 itemBlk.guidance.irSeeker?.targetSignatureType : itemBlk.guidance.irSeeker?.visibilityType

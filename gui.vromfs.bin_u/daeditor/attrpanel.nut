@@ -1076,10 +1076,14 @@ let function mkEntityRow(eid,_v,is_odd) {
     size = [flex(), gridHeight]
     behavior = Behaviors.Button
 
-    onClick = function() {
+    onClick = function(evt) {
       if (selectedEntities.value.len() > 1) {
-        selectedEntity(eid)
-        entity_editor?.get_instance()?.setFocusedEntity(eid)
+        if (evt.ctrlKey)
+          entity_editor?.get_instance()?.selectEntity(eid, false/*selected*/)
+        else {
+          selectedEntity(eid)
+          entity_editor?.get_instance()?.setFocusedEntity(eid)
+        }
       }
     }
     onHover = @(_on) null

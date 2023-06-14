@@ -1,7 +1,4 @@
 //checked for plus_string
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 from "%scripts/dagui_library.nut" import *
 let globalEnv = require("globalEnv")
 let { get_game_params } = require("gameparams")

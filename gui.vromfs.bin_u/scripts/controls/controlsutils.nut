@@ -2,9 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 from "modules" import on_module_unload
 
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")

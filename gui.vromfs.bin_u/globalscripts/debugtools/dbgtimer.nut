@@ -1,6 +1,3 @@
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let { DBGLEVEL } = require("dagor.system")
 let { register_command } = require("console")

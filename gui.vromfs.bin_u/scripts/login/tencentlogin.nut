@@ -1,8 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-//checked for explicitness
-#no-root-fallback
-#explicit-this
 
 let statsd = require("statsd")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
