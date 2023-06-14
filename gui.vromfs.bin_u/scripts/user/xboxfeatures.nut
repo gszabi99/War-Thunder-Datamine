@@ -4,26 +4,18 @@ from "%scripts/dagui_library.nut" import *
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { crossNetworkPlayStatus } = require("%scripts/social/crossplay.nut")
+let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/xbox/permissions.nut")
 
 let isMultiplayerPrivilegeAvailable = persist("isMultiplayerPrivilegeAvailable", @() Watched(true))
 
 local multiplayerPrivelegeCallback = null
 local crossplayPrivelegeCallback = null
 
-let function checkMultiplayerPrivilege(showWarning = false, cb = null) {
-  if (!isPlatformXboxOne) {
-    cb?()
-    return
-  }
 
-  multiplayerPrivelegeCallback = cb
-  ::check_multiplayer_sessions_privilege(showWarning)
-}
+let function multiplayer_sessions_privilege_callback(is_allowed) {
+  isMultiplayerPrivilegeAvailable(is_allowed)
 
-::check_multiplayer_sessions_privilege_callback <- function(isAllowed) {
-  isMultiplayerPrivilegeAvailable(isAllowed)
-
-  if (isAllowed)
+  if (is_allowed)
     multiplayerPrivelegeCallback?()
 
   multiplayerPrivelegeCallback = null
@@ -34,24 +26,38 @@ let function checkMultiplayerPrivilege(showWarning = false, cb = null) {
   broadcastEvent("XboxMultiplayerPrivilegeUpdated")
 }
 
-let function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
-  crossplayPrivelegeCallback = cb
 
-  if (isPlatformXboxOne)
-    ::check_crossnetwork_play_privilege(showWarning)
-  else
-    ::check_crossnetwork_play_privilege_callback(false) //Default value in code
+let function checkMultiplayerPrivilege(showWarning = false, cb = null) {
+  if (!isPlatformXboxOne) {
+    cb?()
+    return
+  }
+
+  multiplayerPrivelegeCallback = cb
+  check_multiplayer_sessions_privilege(showWarning, multiplayer_sessions_privilege_callback)
 }
 
-::check_crossnetwork_play_privilege_callback <- function(isAllowed) {
-  if (isPlatformXboxOne) //callback returns actual updated state
-    crossNetworkPlayStatus(isAllowed)
 
-  if (!isAllowed && !isPlatformXboxOne) //Xbox code will show warning message if isAllowed = false
+let function crossnetwork_play_privilege_callback(is_allowed) {
+  if (isPlatformXboxOne) //callback returns actual updated state
+    crossNetworkPlayStatus(is_allowed)
+
+  if (!is_allowed && !isPlatformXboxOne) //Xbox code will show warning message if isAllowed = false
     crossplayPrivelegeCallback?()
 
   crossplayPrivelegeCallback = null
 }
+
+
+let function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
+  crossplayPrivelegeCallback = cb
+
+  if (isPlatformXboxOne)
+    check_crossnetwork_play_privilege(showWarning, crossnetwork_play_privilege_callback)
+  else
+    crossnetwork_play_privilege_callback(false) //Default value in code
+}
+
 
 return {
   isMultiplayerPrivilegeAvailable
