@@ -29,7 +29,7 @@ enum userInfoEventName {
 }
 
 let MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
-let MAX_REQUESTED_UID_NUM = 4
+let MAX_REQUESTED_UID_NUM = 100
 let usersInfo = {}
 let usersForRequest = {}
 local haveRequest = false

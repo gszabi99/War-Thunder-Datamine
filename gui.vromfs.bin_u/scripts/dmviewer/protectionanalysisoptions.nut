@@ -479,65 +479,67 @@ options.addTypes({
       parentObj.display = isBulletAvailable() ? "show" : "hide"
     }
   }
-  OFFSET = {
-    sortId = sortIdCount++
-    labelLocId = "offset"
-    value = -1
-    defValue = -1
-    minValue = -1
-    maxValue = -1
-    step = 0
-    valueWidth = "@dmInfoTextWidth"
+  //
 
-    getControlMarkup = function() {
-      return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
-        containerId = "container_" + this.id
-        id = this.id
-        min = 0
-        max = 0
-        value = 0
-        step = 0
-        width = "fw"
-        btnOnDec = "onButtonDec"
-        btnOnInc = "onButtonInc"
-        onChangeSliderValue = "onChangeOption"
-      })
-    }
 
-    getValFromObj = @(obj) checkObj(obj) ? obj.getValue() : 0
 
-    afterChangeFunc = function(obj) {
-      let parentObj = obj.getParent().getParent()
-      parentObj.findObject("value_" + this.id).setValue(this.value + loc("measureUnits/mm"))
-      ::enableBtnTable(parentObj, {
-        buttonInc = this.value < this.maxValue
-        buttonDec = this.value > this.minValue
-      })
-      updateDistanceNativeUnitsText(options.nestObj)
-      updateArmorPiercingText(options.nestObj)
-    }
 
-    updateParams = function(_handler, _scene) {
-      this.minValue = options.UNIT.value?.isShipOrBoat() ? -10000 : 0
-      this.maxValue = options.UNIT.value?.isShipOrBoat() ? 50000 : 5000
-      this.step     = options.UNIT.value?.isShipOrBoat() ? 1000 : 100
-      let preferredDistance = this.value
-      this.value = clamp(preferredDistance, this.minValue, this.maxValue)
-    }
 
-    updateView = function(_handler, scene) {
-      let obj = scene.findObject(this.id)
-      if (!obj?.isValid())
-        return
-      let parentObj = obj.getParent().getParent()
-      if (isBulletAvailable()) {
-        obj.max = this.maxValue
-        obj.optionAlign = this.step
-        obj.setValue(this.value)
-      }
-      parentObj.display = isBulletAvailable() ? "show" : "hide"
-    }
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 })
 
 options.init <- function(handler, scene) {
@@ -555,8 +557,12 @@ options.init <- function(handler, scene) {
 options.setAnalysisParams <- function() {
   let bullet   = options.BULLET.value
   let distance = options.DISTANCE.value
-  let offset = options.OFFSET.value
-  ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, offset)
+  //
+
+
+
+  ::set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, 0)
+  //
 }
 
 options.get <- @(id) this?[id] ?? this.UNKNOWN
