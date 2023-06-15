@@ -155,10 +155,10 @@ def unit_rank_or_type_changed(unit_rank : int;
   return rankChanged || typeChanged;
 
 
-def update_hangar() : int
+def update_hangar(default_value : int) : int
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
-    return -1
+    return default_value
   return hero.unitCountryId
 
 
@@ -242,7 +242,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
   var hangarCountryId = -1
   var hangarTypeChanged = false
   if gameState == GameState HANGAR
-    hangarCountryId = update_hangar()
+    hangarCountryId = update_hangar(music__curHangarCountry_id)
     musicState = GameMusicState MUSIC_STATE_HANGAR
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (unitType : int)
       if music__curUnitType != unitType
@@ -279,7 +279,6 @@ def music_es(info : ParallelUpdateFrameDelayed;
                             curMusicState == int(GameMusicState MUSIC_STATE_LOOSE)) &&
                             is_track_playing())
   let hangarTrackEnded = curMusicState == int(GameMusicState MUSIC_STATE_HANGAR) && !is_track_playing()
-
   if musicState == GameMusicState MUSIC_STATE_HANGAR
     if !lockedHangar && !winOrLoosePlaying
       if music__useHangarMusicForUnitType
