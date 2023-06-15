@@ -12,9 +12,9 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
 let { update_presences_for_users } = require("%xboxLib/presence.nut")
-let { Permission, check_for_users } = require("%xboxLib/impl/permissions.nut")
+let { Permission, check_for_user } = require("%xboxLib/impl/permissions.nut")
 let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
-let { isEqual } = u
+let { isEqual, filter } = u
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
@@ -216,25 +216,6 @@ let function on_presences_update(success, presences) {
 
 subscribe_to_presence_update_events(on_presences_update)
 
-local request_unknown_ids = function(_unknown_list, _known_list, _current_idx, _callback) {} //fwd decl
-request_unknown_ids = function(unknown_list, known_list, current_idx, callback) {
-  if (unknown_list.len() == 0) {
-    callback(known_list)
-    return
-  }
-  local curContact = unknown_list[current_idx]
-  logX($"Requesting xuid for {curContact.uid}")
-  curContact.getXboxId(function() {
-    known_list.append(curContact)
-    let nextIdx = current_idx + 1
-    if (nextIdx < unknown_list.len())
-      request_unknown_ids(unknown_list, known_list, nextIdx, callback)
-    else
-      callback(known_list)
-  })
-}
-
-
 addListenersWithoutEnv({
   function SignOut(_) {
     pendingXboxContactsToUpdate.clear()
@@ -252,42 +233,22 @@ addListenersWithoutEnv({
     if (!is_platform_xbox)
       return
 
-    let xboxContactsToCheck = u.filter(::contacts_players, @(contact) contact.needCheckForceOffline())
-    local knownContacts = []
-    local unknownContacts = []
+    local function update_target_presence(xbox_id) {
+      check_for_user(Permission.ViewTargetPresence, xbox_id.tointeger(), function(success, xuid, allowed, _reasons) {
+        if (success)
+          updateContactXBoxPresence(xuid, allowed)
+      })
+    }
+
+    let xboxContactsToCheck = filter(::contacts_players, @(contact) contact.needCheckForceOffline())
     xboxContactsToCheck.each(function(contact) {
       if (contact.xboxId != "")
-        knownContacts.append(contact)
+        update_target_presence(contact.xboxId)
       else
-        unknownContacts.append(contact)
+        contact.getXboxId(@() update_target_presence(contact.xboxId))
     })
 
-    request_unknown_ids(unknownContacts, knownContacts, 0, function(result_contacts) {
-      local xuidsForRequest = []
-      foreach (contact in result_contacts) {
-        if (contact.xboxId == "") {
-          logX($"{contact.uid} doesn't have valid xuid, skipping it")
-          continue
-        }
-        xuidsForRequest.append(contact.xboxId.tointeger())
-      }
-      if (xuidsForRequest.len() > 0) {
-        check_for_users(Permission.ViewTargetPresence, xuidsForRequest, function(success, results) {
-          if (success) {
-            foreach (result in results) {
-              let xuid = result?.xuid ?? 0
-              let allowed = result?.allowed ?? false
-              updateContactXBoxPresence(xuid, allowed)
-            }
-          } else {
-            logX("Failed to check target presence for users")
-          }
-          updateContacts()
-        })
-      } else {
-        logX("No contacts to update, skipping")
-      }
-    })
+    updateContacts()
   }
 
   LoginComplete = @(_) setXboxPresence(isInBattleState.value)
