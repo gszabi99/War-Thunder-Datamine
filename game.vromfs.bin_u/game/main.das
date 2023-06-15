@@ -18,6 +18,7 @@ def load
 
   ok = load_wt_scripts("%game") && ok
   ok = load_optional_folder("%gameDev/game") && ok
+  ok = load_route_prober("%danetlibs/route_prober") && ok
 
   print("Das scripts are loaded")
   if !ok
