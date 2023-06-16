@@ -79,11 +79,12 @@ let function _requestDataCommonSuccessCallback(response) {
 let function _convertServerResponse(response) {
   let res = {}
   foreach (uid, userInfo in response) {
-    let pilotId = userInfo?.pilotId ?? ""
+    if (userInfo?.failed)
+      continue
     let convertedData = {
       uid = uid
       name = userInfo?.nick ?? ""
-      pilotIcon = avatars.getIconById(pilotId)
+      pilotIcon = avatars.getIconById(userInfo?.pilotId ?? "")
       title = userInfo?.title ?? ""
       clanTag =  userInfo?.clanTag ?? ""
       clanName =  userInfo?.clanName ?? ""

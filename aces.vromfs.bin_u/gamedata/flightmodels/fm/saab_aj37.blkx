@@ -1230,8 +1230,8 @@
         "OilTemperature": 98.0
       },
       "Load0": {
-        "WaterTemperature": 588.0,
-        "OilTemperature": 63.0
+        "WaterTemperature": 640.0,
+        "OilTemperature": 75.0
       },
       "Load1": {
         "WaterTemperature": 680.0,
@@ -1249,13 +1249,13 @@
         "WaterTemperature": 750.0,
         "OilTemperature": 96.0,
         "WorkTime": 600.0,
-        "RecoverTime": 90.0
+        "RecoverTime": 60.0
       },
       "Load4": {
         "WaterTemperature": 780.0,
         "OilTemperature": 102.0,
         "WorkTime": 300.0,
-        "RecoverTime": 100.0
+        "RecoverTime": 30.0
       }
     },
     "Compressor": {
@@ -1643,7 +1643,8 @@
   },
   "Mass": {
     "EmptyMass": 10900.0,
-    "MaxFuelMass0": 4420.0,
+    "MaxFuelMass0": 5440.0,
+    "MaxFuelMassExternal0": 1020.0,
     "FuelAccumulatorCapacity0": 60.0,
     "MinimalLoadFactor0": -2.2,
     "FuelAccumulatorFlowRate0": 15.0,
@@ -1652,7 +1653,7 @@
     "OilMass": 25.0,
     "AdvancedMass": false,
     "doesPayloadAffectCOG": false,
-    "SeparateFuelTanks": false,
+    "SeparateFuelTanks": true,
     "Takeoff": 19000.0,
     "CenterOfGravity": [
       -0.5,
@@ -1671,30 +1672,42 @@
     ],
     "Parts": {
       "engine1_dm": 1250.0,
-      "tank1_capacity": 400.0,
+      "tank1_capacity": 500.0,
       "tank1_system": 0,
       "tank1_external": false,
-      "tank1_priority": 0,
-      "tank2_capacity": 140.0,
+      "tank1_priority": 1,
+      "tank2_capacity": 1300.0,
       "tank2_system": 0,
       "tank2_external": false,
-      "tank2_priority": 1,
-      "tank3_capacity": 50.0,
+      "tank2_priority": 3,
+      "tank3_capacity": 700.0,
       "tank3_system": 0,
       "tank3_external": false,
-      "tank3_priority": 2,
-      "tank4_capacity": 500.0,
+      "tank3_priority": 1,
+      "tank4_capacity": 700.0,
       "tank4_system": 0,
       "tank4_external": false,
-      "tank4_priority": 0,
-      "tank5_capacity": 400.0,
+      "tank4_priority": 1,
+      "tank5_capacity": 300.0,
       "tank5_system": 0,
       "tank5_external": false,
-      "tank5_priority": 0,
-      "tank6_capacity": 140.0,
+      "tank5_priority": 1,
+      "tank6_capacity": 300.0,
       "tank6_system": 0,
       "tank6_external": false,
-      "tank6_priority": 1
+      "tank6_priority": 1,
+      "tank7_capacity": 300.0,
+      "tank7_system": 0,
+      "tank7_external": false,
+      "tank7_priority": 2,
+      "tank8_capacity": 300.0,
+      "tank8_system": 0,
+      "tank8_external": false,
+      "tank8_priority": 2,
+      "tank9_capacity": 1020.0,
+      "tank9_system": 0,
+      "tank9_external": true,
+      "tank9_priority": 0
     },
     "PartsWithSurface": {
       "fin_dm": 203.229,
