@@ -146,11 +146,11 @@ subscribe("playerProfileDialogClosed", function(r) {
     })
   }
 
-  function getXboxId(afterSuccessCb = null) {
+  function getXboxId(afterSuccessCb = null, show_progress = true) {
     if (this.xboxId != "")
       return this.xboxId
 
-    reqPlayerExternalIDsByUserId(this.uid, { showProgressBox = true }, afterSuccessCb)
+    reqPlayerExternalIDsByUserId(this.uid, { showProgressBox = show_progress }, afterSuccessCb)
     return null
   }
 

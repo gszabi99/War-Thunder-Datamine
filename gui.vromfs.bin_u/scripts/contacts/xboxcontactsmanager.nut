@@ -245,7 +245,9 @@ addListenersWithoutEnv({
       if (contact.xboxId != "")
         update_target_presence(contact.xboxId)
       else
-        contact.getXboxId(@() update_target_presence(contact.xboxId))
+        contact.getXboxId(function() {
+          update_target_presence(contact.xboxId)
+        }, false)
     })
 
     updateContacts()

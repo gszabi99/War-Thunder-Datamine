@@ -59,6 +59,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
 
   needHideSlotbar = false
   curUnit = null
+  isCrewUpgradeInProgress = false
 
   function initScreen() {
     if (!this.scene)
@@ -484,6 +485,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
       ::shop_upgrade_crew(this.crew.id, blk),
       { showProgressBox = true },
       function() {
+        curHandler.isCrewUpgradeInProgress = false
         broadcastEvent("CrewSkillsChanged",
           { crew = curHandler.crew, unit = curHandler.curUnit })
         if (curHandler.isValid() && curHandler.afterApplyAction) {
@@ -492,11 +494,16 @@ let { utf8ToLower } = require("%sqstd/string.nut")
         }
         ::g_crews_list.flushSlotbarUpdate()
       },
-      @(_err) ::g_crews_list.flushSlotbarUpdate()
+      function(_err) {
+        curHandler.isCrewUpgradeInProgress = false
+        ::g_crews_list.flushSlotbarUpdate()
+      }
     )
 
-    if (isTaskCreated)
+    if (isTaskCreated) {
+      this.isCrewUpgradeInProgress = true
       ::g_crews_list.suspendSlotbarUpdates()
+    }
   }
 
   function onSelect() {
@@ -504,6 +511,9 @@ let { utf8ToLower } = require("%sqstd/string.nut")
   }
 
   function checkSkillPointsAndDo(action, cancelAction = function() {}, updateAfterApply = true) {
+    if (this.isCrewUpgradeInProgress)
+      return
+
     let crewPoints = getTblValue("skillPoints", this.crew, 0)
     if (this.curPoints == crewPoints)
       return action()
