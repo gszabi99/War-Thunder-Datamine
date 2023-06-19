@@ -91,16 +91,17 @@ let LCOSSRadarRange = @() {
 
 let function LCOSS(width, height) {
   return @() {
+    watch = TargetPosValid
     size = [width, height]
-    children = [
+    children = TargetPosValid.value ? [
       LCOSSCrosshair,
       LCOSSRollMark,
       LCOSSRadarRange
-    ]
+    ] : null
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TargetPosValid.value ? (BombingMode.value ? [0, 0] : [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5]) : [0, 0]
+        translate = BombingMode.value ? [0, 0] : [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5]
       }
     }
   }
