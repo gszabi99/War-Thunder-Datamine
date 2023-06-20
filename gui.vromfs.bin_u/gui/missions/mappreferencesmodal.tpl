@@ -80,6 +80,14 @@ root {
                 mapId:t='<<mapId>>'
                 background-image:t = '<<image>>'
                 title:t='<<title>>'
+
+                textareaNoTab {
+                  padding:t='4@sf/@pf, 0'
+                  valign:t='bottom'
+                  style:t="color:@white"
+                  background-color:t='@blurBgrColor'
+                  text:t = '<<brRangeText>>'
+                }
               }
 
               tdiv{
@@ -155,14 +163,6 @@ root {
           position:t='relative'
           css-hier-invalidate:t='yes'
 
-          textAreaCentered {
-            id:t='title'
-            class:t='active'
-            width:t='1@mapPreferencePreviewSize'
-            padding-bottom:t='1@framePadding'
-            text:t=''
-          }
-
           img {
             id:t='img_preview'
             size:t='pw, 1@mapPreferencePreviewSize'
@@ -175,14 +175,14 @@ root {
           }
 
           tdiv{
-            size:t='pw, 1@mapPreferencePreviewSize+1@buttonHeight'
+            size:t='pw, 1@mapPreferencePreviewSize + 1@blockInterval'
             flow:t='vertical'
             tdiv {
               id:t='tactical-map'
               size:t='pw, 1@mapPreferencePreviewSize'
               max-width:t='h'
               max-height:t='w'
-              pos:t='0.5pw-0.5w, 1@blockInterval'
+              pos:t='0.5pw-0.5w, 0'
               position:t='relative'
               display:t='hide'
 
@@ -190,13 +190,30 @@ root {
                 size:t='pw, ph'
               }
             }
+          }
+
+          tdiv {
+            halign:t='center'
+            flow:t='vertical'
+
+            textAreaCentered {
+              id:t='title'
+              halign:t='center'
+              class:t='active'
+              text:t=''
+            }
+
+            textAreaCentered {
+              id:t='level_br_range'
+              halign:t='center'
+              class:t='active'
+              text:t=''
+            }
 
             tdiv {
               id:t='paginator'
-              pos:t='0.5pw-0.5w, 0'
-              position:t='relative'
               height:t='1@buttonHeight'
-              margin:t='0, 1@blockInterval'
+              halign:t='center'
               navMiddle{
                 id:t='paginator_place'
               }

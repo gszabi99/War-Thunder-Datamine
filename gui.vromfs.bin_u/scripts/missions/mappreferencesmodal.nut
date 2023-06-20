@@ -65,6 +65,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
       hasMaxLiked = this.hasMaxCount("liked") ? "yes" : "no"
       hasScroll = to_pixels("1@mapPreferenceListHeight") < (mapsRowsHeight + to_pixels("1@blockInterval"))
       banListHeight = banListHeight > textRowHeight ? banListHeight : 0
+      showLevelBrRange = this.curEvent.missionsBanMode == "level"
     }
   }
 
@@ -99,6 +100,12 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     this.currentPage = 0
     this.fillMapPreview()
     this.updatePreviewButtonsState()
+  }
+
+  function updateLevelBrRangeText() {
+    let { minMRank, maxMRank } = this.mapsList[this.currentMapId].missions[this.currentPage].ranksRange
+    let brRangeText = mapPreferencesParams.getBattleRatingsDescriptionText(minMRank, maxMRank)
+    this.scene.findObject("level_br_range").setValue(brRangeText)
   }
 
   function updatePreviewButtonsState() {
@@ -331,7 +338,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     let list = this.mapsList.filter(@(inst) inst.disliked || inst.banned || inst.liked).map(@(inst)
       {
         id = "cb_" + inst.mapId
-        text = inst.title
+        text = $"[{inst.brRangeText}] {inst.title}"
         value = true
         funcName = "onUpdateIcon"
         sortParam = inst.banned ? 0 : 1
@@ -433,6 +440,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
       ["paginator"]     = missionsList.len() > 1
     })
     this.updatePaginator()
+    this.updateLevelBrRangeText()
   }
 
   function goToPage(obj) {
