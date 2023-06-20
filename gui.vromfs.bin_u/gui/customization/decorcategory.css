@@ -81,3 +81,13 @@ decorCategory[selected=yes] > header > fullSizeCollapseBtn[selected=yes] > text 
 [show_console_buttons=yes] fullSizeCollapseBtn:hover {
   needFocusBorder:yes;
 }
+
+decorPanels[currentPanel = categories] > categoriesPanel,
+decorPanels[currentPanel = decorators] > decoratorsPanel {
+  display:show;
+}
+
+decorPanels[currentPanel = categories] > decoratorsPanel,
+decorPanels[currentPanel = decorators] > categoriesPanel {
+  display:hide;
+}

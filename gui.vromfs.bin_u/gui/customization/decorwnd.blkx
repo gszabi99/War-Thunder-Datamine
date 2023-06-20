@@ -15,11 +15,33 @@
               "caption": "yes"
             },
             "Button_close": {
-              "style": "_on_click:onBtnCloseDecalsMenu;"
+              "style": "_on_click:onBtnCloseDecalsMenu"
             }
           }
         },
         {
+          "id": "hangar_control_tracking",
+          "size": "pw, ph",
+          "position": "absolute",
+          "input-transparent": "yes",
+          "on_hover": "onDecorMenuHoverChange",
+          "on_unhover": "onDecorMenuHoverChange"
+        }
+      ],
+      "EditBox": {
+        "id": "filter_edit_box",
+        "width": "pw",
+        "on_change_value": "applyFilter",
+        "on_cancel_edit": "onFilterCancel",
+        "text": "",
+        "edit-hint": "#contacts/search_placeholder"
+      },
+      "decorPanels": {
+        "id": "panels",
+        "size": "pw, fh",
+        "currentPanel": "categories",
+        "css-hier-invalidate": "yes",
+        "categoriesPanel": {
           "id": "categories_list",
           "width": "pw",
           "margin": "@buttonMargin",
@@ -34,17 +56,20 @@
           "flow": "vertical",
           "class": "decalsList",
           "overflow-y": "auto",
-          "canSelectNone": "yes"
+          "canSelectNone": "yes",
+          "position": "absolute"
         },
-        {
-          "id": "hangar_control_tracking",
-          "size": "pw, ph",
+        "decoratorsPanel": {
+          "id": "filtered_decorators",
+          "behaviour": "flow",
+          "width": "pw",
+          "margin": "@buttonMargin",
+          "css-hier-invalidate": "yes",
+          "overflow-y": "auto",
           "position": "absolute",
-          "input-transparent": "yes",
-          "on_hover": "onDecorMenuHoverChange",
-          "on_unhover": "onDecorMenuHoverChange"
+          "display": "hide"
         }
-      ]
+      }
     }
   }
 }

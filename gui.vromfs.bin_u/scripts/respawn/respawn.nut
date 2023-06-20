@@ -265,6 +265,7 @@ enum ESwitchSpectatorTarget {
     this.updateControlsAllowMask()
     this.updateVoiceChatWidget(!this.isRespawn)
     checkInRoomMembers()
+    ::contacts_handler?.sceneShow(false)
   }
 
   function isModeWithFriendlyUnits(gt = null) {

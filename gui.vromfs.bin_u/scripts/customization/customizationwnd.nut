@@ -1225,6 +1225,7 @@ enum decalTwoSidedMode {
 
   onEventDecorMenuItemSelect = @(_) this.updateButtons(null, false)
   onEventDecorMenuListHoverChange = @(_) this.updateBackButton()
+  onEventDecorMenuFilterCancel = @(_) this.onBtnBack()
 
   function onDecoratorItemClick(obj) {
     let decorator = this.decorMenu?.getDecoratorByObj(obj, this.currentType)

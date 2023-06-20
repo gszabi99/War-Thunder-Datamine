@@ -39,7 +39,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
-  needShowGuestEmailRegistration, launchGuestEmailRegistration
+  needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnlockMainCondDescByCfg,
   getLocForBitValues } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -54,6 +54,7 @@ let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { getCachedDataByType, getDecorator, getDecoratorById, getCachedDecoratorsListByType, getPlaneBySkinId
 } = require("%scripts/customization/decorCache.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -1750,7 +1751,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function onBindEmail() {
     if (needShowGuestEmailRegistration())
-      launchGuestEmailRegistration()
+      getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
     else
       launchEmailRegistration()
     this.doWhenActiveOnce("updateButtons")

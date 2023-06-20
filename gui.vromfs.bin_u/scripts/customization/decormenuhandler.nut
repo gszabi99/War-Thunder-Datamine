@@ -3,14 +3,14 @@ from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
-
 let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCachedDataByType, getDecorator, getCachedOrderByType
 } = require("%scripts/customization/decorCache.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -24,6 +24,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   curDecorType = null
   curSlotDecorId = null
   preSelectDecorId = null
+  applyFilterTimer = null
 
   function updateHandlerData(decorType, unit, slotDecorId, preSelectDecoratorId) {
     this.curDecorType = decorType
@@ -56,6 +57,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let data = handyman.renderCached(this.categoryTpl, { categories })
     let listObj = this.scene.findObject("categories_list")
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    this.switchPanels("categories")
   }
 
   function updateSelectedCategory(_decorator) {
@@ -138,6 +140,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.scene.show(isShown)
     this.scene.enable(isShown)
     ::enableHangarControls(!this.scene.findObject("hangar_control_tracking").isHovered())
+    this.resetFilter()
   }
 
   // private
@@ -215,14 +218,10 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     ::saveLocalByAccount(localPath, "/".join([categoryId, groupId], true))
   }
 
-  function generateDecalCategoryContent(categoryId, groupId) {
-    let decors = this.getDecorCache().catToGroups?[categoryId][groupId]
-    if (!decors || decors.len() == 0)
-      return ""
-
+  function getDecorButtonsView(decors) {
     let slotDecorId = this.curSlotDecorId
     let unit = this.curUnit
-    let view = {
+    return {
       isTooltipByHold = ::show_console_buttons
       buttons = decors.map(@(decorator) getDecorButtonView(decorator, unit, {
         needHighlight = decorator.id == slotDecorId
@@ -233,6 +232,14 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
           : null
       }))
     }
+  }
+
+  function generateDecalCategoryContent(categoryId, groupId) {
+    let decors = this.getDecorCache().catToGroups?[categoryId][groupId]
+    if (!decors || decors.len() == 0)
+      return ""
+
+    let view = this.getDecorButtonsView(decors)
     return handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
   }
 
@@ -343,6 +350,63 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   onDecorMenuHoverChange = @(obj) ::enableHangarControls(!obj.isHovered())
+
+  function onFilterCancel(filterObj) {
+    if (filterObj.getValue() != "")
+      filterObj.setValue("")
+    else
+      broadcastEvent("DecorMenuFilterCancel")
+  }
+
+  function resetFilter() {
+    let filterEditBox = this.scene.findObject("filter_edit_box")
+    if(!filterEditBox?.isValid())
+      return
+
+    filterEditBox.setValue("")
+  }
+
+  function generateDecoratorsContentByName(name) {
+    let filteredDecors = []
+    let decorCache = this.getDecorCache()
+    foreach(cat in decorCache.categories) {
+      let groups = decorCache.catToGroups[cat]
+      foreach(decors in groups) {
+        filteredDecors.extend(decors.filter(@(v) utf8ToLower(v.getName()).indexof(name) != null))
+      }
+    }
+    if (filteredDecors.len() == 0)
+      return ""
+
+    let view = this.getDecorButtonsView(filteredDecors)
+    return handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+  }
+
+  function applyFilter(obj) {
+    clearTimer(this.applyFilterTimer)
+    let filterText = utf8ToLower(obj.getValue())
+    if(filterText == "") {
+      this.switchPanels("categories")
+      return
+    }
+
+    let applyCallback = Callback(@() this.applyFilterImpl(filterText), this)
+    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
+  }
+
+  function applyFilterImpl(filterText) {
+    let decoratorsObj = this.scene.findObject("filtered_decorators")
+    if(!decoratorsObj?.isValid())
+      return
+    let data = this.generateDecoratorsContentByName(filterText)
+    this.guiScene.replaceContentFromText(decoratorsObj, data, data.len(), this)
+    this.switchPanels("decorators")
+  }
+
+  function switchPanels(currentPanel) {
+    let panels = this.scene.findObject("panels")
+    panels.currentPanel = currentPanel
+  }
 }
 
 ::gui_handlers.DecorMenuHandler <- DecorMenuHandler

@@ -2414,8 +2414,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 }
 
 ::SessionLobby.getRoomEvent <- function getRoomEvent(room = null) {
-  let mGameMode = this.getMGameMode(room)
-  return mGameMode && ::events.getEvent(mGameMode.name)
+  return ::events.getEvent(this.getPublicData(room)?.game_mode_name)
 }
 
 ::SessionLobby.getMaxDisbalance <- function getMaxDisbalance() {
