@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+import "%sqstd/ecs.nut" as ecs
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
@@ -99,4 +100,20 @@ let { getConfigValueById } = require("%scripts/hud/hudTankStates.nut")
   function isValid() {
     return checkObj(this.scene)
   }
+
+  function onEngineOverheatDamage(start) {
+    if (!this.isValid())
+      return
+    this.scene.findObject("engine_state").overheat = start ? "yes" : "no"
+  }
 }
+
+ecs.register_es("engine_overheat_damage_es",
+  {
+    [["onInit", "onChange"]] = function(_, comp) {
+      ::g_hud_tank_debuffs.onEngineOverheatDamage(comp.tank_engine__overheat)
+    },
+  }, {
+    comps_track = [["tank_engine__overheat", ecs.TYPE_BOOL]],
+    comps_rq = ["controlledHero"]
+  })

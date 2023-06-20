@@ -27,6 +27,7 @@ icon {
 
 icon {
   id:t='engine_state';
+  overheat:t='no'
   hudTankDebuff:t='yes'
   state:t='ok';
   pos:t='pw/2 - (0.42pw) * 0.396 - w/2, ph/2 - (0.42ph) * 0.926 - h/2';
