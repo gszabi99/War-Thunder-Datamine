@@ -7,6 +7,7 @@ let { charRequestJwtFromServer } = require("chard")
 let { format } = require("string")
 let { subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
+let { isPlatformXboxOne, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
 
 loadIfExist("%scripts/framework/msgBox.nut")
 
@@ -161,6 +162,9 @@ let function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, 
     else
       taskData.onError()
   }
+
+  if (isPlatformXboxOne || isPlatformXboxScarlett)
+    logerr($"[TASKER] Task failed, see logs for details")
 
   if (taskData.showErrorMessageBox && isMsgBoxesAvailable())
     ::showInfoMsgBox(::getErrorText(taskResult), "char_connecting_error")
