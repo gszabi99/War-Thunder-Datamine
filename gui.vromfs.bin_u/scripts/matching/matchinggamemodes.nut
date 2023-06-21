@@ -48,7 +48,7 @@ let function addGmListToQueue(gmList) {
     return
   }
   foreach (mode in gmList)
-    appendOnce(queueGameModesForRequest, mode)
+    appendOnce(mode, queueGameModesForRequest)
 }
 
 let function getGmListFromQueue() {

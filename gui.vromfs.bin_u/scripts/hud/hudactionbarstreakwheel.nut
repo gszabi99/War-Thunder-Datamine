@@ -91,7 +91,7 @@ let cfgMenuShip = [
     EII_SUPPORT_PLANE_2,
     EII_SUPPORT_PLANE_3,
     EII_SUPPORT_PLANE_4,
-    null,
+    EII_WEAPON_LEAD,
     null,
     null,
     null,

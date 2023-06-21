@@ -411,6 +411,12 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   }
 
   function onTryCloseShop() {
+    if (!this.hasNextResearch()) {
+      this.onSpendExcessExp()
+      return
+    }
+
+    this.selectRequiredUnit()
     let unit = this.getCurAircraft(true, true)
     let unitName = ::getUnitName(unit.name)
     let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)

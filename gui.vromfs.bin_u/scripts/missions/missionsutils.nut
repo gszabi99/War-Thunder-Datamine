@@ -189,8 +189,11 @@ let function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
   if (urlMission != null)
     return urlMission.getMetaInfo()
 
-  if (gm != null)
-    return get_meta_mission_info_by_gm_and_name(gm, missionName)
+  if (gm != null) {
+    let misBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
+    if (misBlk != null)
+      return misBlk
+  }
 
   return get_meta_mission_info_by_name(missionName)
 }
