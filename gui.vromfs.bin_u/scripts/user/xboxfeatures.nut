@@ -5,6 +5,7 @@ let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { crossNetworkPlayStatus } = require("%scripts/social/crossplay.nut")
 let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/xbox/permissions.nut")
+let { crossnetworkPrivilege } = require("%xboxLib/crossnetwork.nut")
 
 let isMultiplayerPrivilegeAvailable = persist("isMultiplayerPrivilegeAvailable", @() Watched(true))
 
@@ -57,6 +58,11 @@ let function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
   else
     crossnetwork_play_privilege_callback(false) //Default value in code
 }
+
+
+crossnetworkPrivilege.subscribe(function(v) {
+  crossNetworkPlayStatus(v)
+})
 
 
 return {
