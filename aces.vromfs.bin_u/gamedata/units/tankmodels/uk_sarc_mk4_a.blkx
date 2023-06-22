@@ -42,6 +42,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "steeringAnimVar": "steering_param",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "ikGunner": [
@@ -2085,6 +2086,68 @@
         "wheel_l_02": 0.4,
         "wheel_r_02": 0.4
       }
+    }
+  },
+  "PhysSys": {
+    "find": "bone_suspension_(\\w)_(\\d+)$",
+    "points": {
+      "lever": {
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2"
+      },
+      "suspension_01_01": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_01"
+      },
+      "wheel": {
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            -1.0,
+            -1.0,
+            0.0
+          ],
+          "limitMax": [
+            1.0,
+            1.0,
+            0.0
+          ],
+          "find": "bone_wheel_",
+          "parent": "lever"
+        }
+      }
+    },
+    "constraints": {
+      "edge": [
+        {
+          "to": "wheel",
+          "from": "suspension_01_01"
+        },
+        {
+          "to": "lever",
+          "from": "suspension_01_01",
+          "moveSecond": false,
+          "moveOnly": true
+        }
+      ]
     }
   },
   "repairParts": {
