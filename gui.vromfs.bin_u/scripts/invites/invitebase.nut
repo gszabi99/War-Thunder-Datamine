@@ -22,7 +22,7 @@ let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts
   receivedTime = -1
 
   inviterName = ""
-  inviterUid = null
+  inviterUid  = null
 
   isSeen = false
   isDelayed = false //do not show it to player while delayed

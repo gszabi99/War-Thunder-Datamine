@@ -12,8 +12,8 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   }
 
   function updateCustomParams(params, initial = false) {
-    this.inviterName = getTblValue("inviterName", params, this.inviterName)
-    this.inviterUid = getTblValue("inviterUid", params, this.inviterUid)
+    this.inviterName = params?.inviterName ?? this.inviterName
+    this.inviterUid = params?.inviterUid ?? this.inviterUid
     this.isAutoAccepted = this.isAlreadyAccepted()
 
     if (initial)

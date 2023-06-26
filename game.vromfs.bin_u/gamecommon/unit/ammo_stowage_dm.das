@@ -301,7 +301,7 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
         let ammo_left = safediv(v.ammo_stowage__timeAmmoFire, v.ammo_stowage__combustionTime)
         if ammo_left > 0.0f && gfrnd() < v.ammo_stowage__detonateProb * evt.dt
           v.ammo_stowage__timeAmmoFire = -1.0f
-          sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=true]])
+          sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=false /* fatal explosion will set it */]])
           ammo_stowage_send_explosion_fatal(eid, ammo_left, grnd(), false) <| v
         else
           sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=true]])

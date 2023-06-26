@@ -220,23 +220,31 @@ let function removeContactImpl(contact, groupName) {
 }
 
 let removeContact = @(player, groupName) verifiedContactAndDoIfNeed(player, groupName, removeContactImpl)
+let function addInvitesToFriend(inviters) {
+  if (inviters == null)
+    return
+
+  foreach(ueser in inviters)
+    ::g_invites.addFriendInvite(ueser?.nick ?? "", ueser?.uid ?? "")
+
+  fetchContacts()
+}
 
 addListenersWithoutEnv({
   PostboxNewMsg = function(mail_obj) {
     if (mail_obj.mail?.subj == "notify_contacts_update")
       fetchContacts()
   }
+  LoginComplete = @(_) contactsClient.contacts_request("cln_get_contact_lists_ext", null,
+    @(res) addInvitesToFriend(res?["#warthunder#requestsToMe"]))
 })
 
 matchingRpcSubscribe("mpresence.notify_presence_update", onUpdateContactsCb)
-matchingRpcSubscribe("mpresence.on_added_to_contact_list", function (p) {
-  let userData = p?.user
-  if (userData == null)
-    return
-
-  ::g_invites.addFriendInvite(userData?.name ?? "", userData?.userId ?? "")
-  fetchContacts()
-})
+matchingRpcSubscribe("mpresence.on_added_to_contact_list", @(p) p?.user != null
+  ? addInvitesToFriend([{
+    nick = p.user?.name ?? ""
+    uid = p.user?.userId ?? ""
+  }]) : null)
 
 return {
   searchContactsResults
