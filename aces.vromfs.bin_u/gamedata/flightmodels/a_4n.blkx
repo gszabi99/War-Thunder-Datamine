@@ -2292,184 +2292,103 @@
     "WeaponSlot": [
       {
         "index": 0,
-        "WeaponPreset": [
-          {
-            "name": "defa_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -30.0,
-                    30.0
-                  ],
-                  "pitch": [
-                    -30.0,
-                    30.0
-                  ]
-                }
+        "WeaponPreset": {
+          "name": "defa_common",
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
               },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA553.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA553.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "cannon2_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_l.blk",
-                "emitter": "5ks_4500_jato_l",
-                "bullets": 1,
-                "external": true,
-                "airbrakeRange": [
-                  0.0,
-                  0.0
-                ]
-              },
-              {
-                "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_r.blk",
-                "emitter": "5ks_4500_jato_r",
-                "bullets": 1,
-                "external": true,
-                "airbrakeRange": [
-                  0.0,
-                  0.0
+              "limits": {
+                "yaw": [
+                  -30.0,
+                  30.0
+                ],
+                "pitch": [
+                  -30.0,
+                  30.0
                 ]
               }
-            ]
-          },
-          {
-            "name": "defa_ltc_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -30.0,
-                    30.0
-                  ],
-                  "pitch": [
-                    -30.0,
-                    30.0
-                  ]
-                }
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA553.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA553.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "cannon2_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_l.blk",
-                "emitter": "5ks_4500_jato_l",
-                "bullets": 1,
-                "external": true,
-                "airbrakeRange": [
-                  0.0,
-                  0.0
-                ]
-              },
-              {
-                "trigger": "boosters",
-                "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_r.blk",
-                "emitter": "5ks_4500_jato_r",
-                "bullets": 1,
-                "external": true,
-                "airbrakeRange": [
-                  0.0,
-                  0.0
-                ]
-              }
-            ]
-          }
-        ]
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_l.blk",
+              "emitter": "5ks_4500_jato_l",
+              "bullets": 1,
+              "external": true,
+              "airbrakeRange": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "trigger": "boosters",
+              "blk": "gameData/Weapons/payloadguns/a4b_rocket_booster_r.blk",
+              "emitter": "5ks_4500_jato_r",
+              "bullets": 1,
+              "external": true,
+              "airbrakeRange": [
+                0.0,
+                0.0
+              ]
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3872,15 +3791,7 @@
       "invertEnableLogic": false,
       "group": "countermeasures",
       "tier": 2,
-      "prevModification": "us_blu27_b",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "defa_ltc_common"
-          }
-        }
-      }
+      "prevModification": "us_blu27_b"
     },
     "fr_aam_shafrir_2": {
       "reqModification": "countermeasures_belt_pack",

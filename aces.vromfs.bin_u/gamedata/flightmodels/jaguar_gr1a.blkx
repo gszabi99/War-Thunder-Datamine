@@ -2382,139 +2382,82 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "aden_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "dm": "cannon2_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              }
-            ]
+        "WeaponPreset": {
+          "name": "aden_common",
+          "ShowNodes": {
+            "node": "fuse_2"
           },
-          {
-            "name": "aden_ltc_common",
-            "ShowNodes": {
-              "node": "fuse_2"
-            },
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
               },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "dm": "cannon2_dm",
-                "bullets": 150,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true,
-                "separate": false
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
               }
-            ]
-          }
-        ]
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3253,15 +3196,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "tier": 1,
-      "group": "q_5b_group",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "aden_ltc_common"
-          }
-        }
-      }
+      "group": "q_5b_group"
     },
     "uk_tiald": {
       "prevModification": "q_5b_ltc",

@@ -2208,86 +2208,54 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "defa552a_common",
-            "ShowNodes": {
-              "node": "fuse_cap"
-            },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA552A.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 140,
-                "spread": 1.1,
-                "traceOffset": 1,
-                "counterIndex": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA552A.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "dm": "cannon2_dm",
-                "bullets": 140,
-                "spread": 1.1,
-                "traceOffset": 2,
-                "counterIndex": 1
-              }
-            ]
+        "WeaponPreset": {
+          "name": "defa552a_common",
+          "ShowNodes": {
+            "node": "fuse_cap"
           },
-          {
-            "name": "defa552a_ltc_common",
-            "ShowNodes": {
-              "node": "fuse_cap"
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552A.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 140,
+              "spread": 1.1,
+              "traceOffset": 1,
+              "counterIndex": 1
             },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA552A.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 140,
-                "spread": 1.1,
-                "traceOffset": 1,
-                "counterIndex": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonDEFA552A.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "dm": "cannon2_dm",
-                "bullets": 140,
-                "spread": 1.1,
-                "traceOffset": 2,
-                "counterIndex": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 18,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 18,
-                "external": true,
-                "separate": true
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA552A.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 140,
+              "spread": 1.1,
+              "traceOffset": 2,
+              "counterIndex": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 18,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 18,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3158,15 +3126,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 1,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "defa552a_ltc_common"
-          }
-        }
-      }
+      "tier": 1
     },
     "f_4c_g_suit": {
       "tier": 2,

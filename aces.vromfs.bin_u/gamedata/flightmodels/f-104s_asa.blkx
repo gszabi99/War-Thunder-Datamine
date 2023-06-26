@@ -1977,12 +1977,9 @@
     ]
   },
   "commonWeapons": {
-    "hideDmParts": {
-      "node": [
-        "armor1_dm",
-        "armor2_dm",
-        "armor3_dm"
-      ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "f_104s_asa_common_ltc"
     }
   },
   "weapon_presets": {
@@ -2102,37 +2099,32 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "f_104s_asa_common"
+        "WeaponPreset": {
+          "name": "f_104s_asa_common_ltc",
+          "ShowNodes": {
+            "node": "fuse2"
           },
-          {
-            "name": "f_104s_asa_common_ltc",
-            "ShowNodes": {
-              "node": "fuse2"
+          "Weapon": [
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": false
             },
-            "Weapon": [
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,

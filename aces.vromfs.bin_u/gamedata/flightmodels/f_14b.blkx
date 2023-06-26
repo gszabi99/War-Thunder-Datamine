@@ -2506,101 +2506,57 @@
         "index": 0,
         "notUseforDisbalanceCalculation": true,
         "order": 9,
-        "WeaponPreset": [
-          {
-            "name": "m61a1_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
+        "WeaponPreset": {
+          "name": "m61a1_common",
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
               },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM61A1.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 676,
-                "spread": 1.0
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
               }
-            ]
-          },
-          {
-            "name": "m61a1_ltc_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM61A1.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 676,
-                "spread": 1.0
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 60,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonM61A1.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 676,
+              "spread": 1.0
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 60,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -4409,15 +4365,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 1,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "m61a1_ltc_common"
-          }
-        }
-      }
+      "tier": 1
     },
     "uk_ltc_bol": {
       "reqModification": "countermeasures_belt_pack",

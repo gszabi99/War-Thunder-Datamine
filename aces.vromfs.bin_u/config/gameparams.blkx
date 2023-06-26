@@ -6689,12 +6689,12 @@
         "armorPenetrationDispersionGauss": true,
         "brokenBarrelAllowShoot": true,
         "explodeBulletInMalfunctionBreech": false,
-        "brokenBarrelDispersionMult": 15.0,
+        "brokenBarrelDispersionMult": 5.0,
         "brokenBarrelBulletSpeedMult": 0.5,
         "brokenBarrelPenetrationMult": 0.5,
         "brokenHorTurretDriveSpeed": 4.0,
         "brokenHorTurretDriveJammedTime": 3.0,
-        "brokenVerTurretDriveAngle": 3.0,
+        "brokenVerTurretDriveAngle": 6.0,
         "brokenVerTurretDriveJammedTime": 3.0,
         "showDestroyedParts": false,
         "gunFreqRange": [
@@ -6711,9 +6711,9 @@
         ],
         "maxMisfires": 2,
         "destroyAircraftWithRocketHit": false,
-        "brokenEngineRedynessMult": 0.4,
+        "brokenEngineRedynessMult": 0.6,
         "brokenEngineCooldownTimer": 10.0,
-        "brokenTransmissionGearPenalty": 0.5,
+        "brokenTransmissionGearPenalty": 0.75,
         "brokenTransmissionCooldownTimer": 10.0,
         "brokenBarrelCooldownTime": 10.0,
         "brokenCannonBreachCooldownTime": 10.0,
@@ -6725,25 +6725,12 @@
         "crashDamagePlayers": false,
         "crashDamageBots": true,
         "simulateBattery": false,
-        "shipBrokenFunnelMaxRedynessMult": 0.5,
         "shipBrokenEngineRedynessMult": 0.5,
         "shipBrokenEngineCooldown": 30.0,
         "shipBrokenTransmissionCooldown": 30.0,
         "shipBrokenShaftCooldown": 30.0,
-        "shipBrokenRudderCooldownTimer": 10.0,
-        "shipBrokenRudderDeflectionMult": 0.85,
-        "shipBrokenRudderAreaMult": 0.85,
-        "shipBrokenHorTurretDriveJammedTime": [
-          10.0,
-          10.0,
-          10.0
-        ],
-        "shipBrokenHorTurretDriveSpeedMult": 0.85,
         "shipBrokenBarrelShotFreqMult": 1.2,
-        "shipBrokenBarrelDispersionMult": 1.05,
-        "shipBrokenPumpMaxWaterMassVelMult": 0.5,
-        "shipBrokenElevatorMult": 0.85,
-        "shipDamagedElevatorMult": 1.0
+        "shipBrokenBarrelDispersionMult": 1.05
       },
       "realistic": {
         "brokenBarrelAllowShoot": true,
@@ -6752,6 +6739,64 @@
         "showDestroyedParts": false,
         "destroyBreechInMalfunction": true,
         "brokenHorTurretDriveSpeed": 3.0,
+        "brokenHorTurretDriveJammedTime": 15.0,
+        "brokenVerTurretDriveAngle": 6.0,
+        "brokenVerTurretDriveJammedTime": 15.0,
+        "brokenEngineRedynessMult": 0.6,
+        "brokenEngineCooldownTimer": 30.0,
+        "brokenCannonBreachCooldownTime": 30.0,
+        "gunFreqRange": [
+          0.35,
+          0.03
+        ],
+        "misfireChance": [
+          0.2,
+          0.5
+        ],
+        "misfireTime": [
+          3.0,
+          6.0
+        ],
+        "maxMisfires": 3,
+        "brokenBarrelCooldownTime": 30.0,
+        "brokenBarrelDispersionMult": 5.0,
+        "brokenBarrelBulletSpeedMult": 0.5,
+        "brokenBarrelPenetrationMult": 0.5,
+        "brokenTransmissionGearPenalty": 0.75,
+        "brokenTransmissionCooldownTimer": 30.0,
+        "bombShatterDamageScaleForAircraft": [
+          0.5,
+          0.55,
+          0.6
+        ],
+        "crashDamagePlayers": true,
+        "crashDamageBots": true,
+        "simulateBattery": true,
+        "shipBrokenEngineRedynessMult": 0.5,
+        "shipBrokenEngineCooldown": 30.0,
+        "shipBrokenTransmissionCooldown": 30.0,
+        "shipBrokenShaftCooldown": 30.0,
+        "shipBrokenBarrelShotFreqMult": 1.15,
+        "shipBrokenBarrelDispersionMult": 1.05
+      },
+      "simulator": {
+        "brokenBarrelAllowShoot": true,
+        "explodeBulletInMalfunctionBreech": true,
+        "destroyAircraftWithRocketHit": false,
+        "showDestroyedParts": false,
+        "bombShatterDamageScaleForAircraft": [
+          0.5,
+          0.55,
+          0.6
+        ],
+        "crashDamagePlayers": true,
+        "crashDamageBots": true,
+        "shipBrokenFunnelMaxRedynessMult": 0.5,
+        "shipBrokenElevatorMult": 0.85,
+        "shipDamagedElevatorMult": 1.0,
+        "simulateBattery": true,
+        "destroyBreechInMalfunction": true,
+        "brokenHorTurretDriveSpeed": 1.0,
         "brokenHorTurretDriveJammedTime": 15.0,
         "brokenVerTurretDriveAngle": 3.0,
         "brokenVerTurretDriveJammedTime": 15.0,
@@ -6772,57 +6817,11 @@
         ],
         "maxMisfires": 3,
         "brokenBarrelCooldownTime": 30.0,
-        "brokenBarrelDispersionMult": 15.0,
+        "brokenBarrelDispersionMult": 10.0,
         "brokenBarrelBulletSpeedMult": 0.5,
         "brokenBarrelPenetrationMult": 0.5,
         "brokenTransmissionGearPenalty": 0.5,
-        "brokenTransmissionCooldownTimer": 30.0,
-        "bombShatterDamageScaleForAircraft": [
-          0.5,
-          0.55,
-          0.6
-        ],
-        "crashDamagePlayers": true,
-        "crashDamageBots": true,
-        "simulateBattery": true,
-        "shipBrokenFunnelMaxRedynessMult": 0.5,
-        "shipBrokenEngineRedynessMult": 0.5,
-        "shipBrokenEngineCooldown": 30.0,
-        "shipBrokenTransmissionCooldown": 30.0,
-        "shipBrokenShaftCooldown": 30.0,
-        "shipBrokenRudderCooldownTimer": 10.0,
-        "shipBrokenRudderDeflectionMult": 0.85,
-        "shipBrokenRudderAreaMult": 0.85,
-        "shipBrokenHorTurretDriveJammedTime": [
-          10.0,
-          10.0,
-          10.0
-        ],
-        "shipBrokenHorTurretDriveSpeedMult": 0.85,
-        "shipBrokenBarrelShotFreqMult": 1.2,
-        "shipBrokenBarrelDispersionMult": 1.05,
-        "shipBrokenPumpMaxWaterMassVelMult": 0.5,
-        "shipBrokenElevatorMult": 0.85,
-        "shipDamagedElevatorMult": 1.0
-      },
-      "simulator": {
-        "brokenBarrelAllowShoot": false,
-        "explodeBulletInMalfunctionBreech": true,
-        "destroyAircraftWithRocketHit": false,
-        "showDestroyedParts": false,
-        "brokenHorTurretDriveSpeed": 0.0,
-        "brokenVerTurretDriveAngle": 0.0,
-        "bombShatterDamageScaleForAircraft": [
-          0.5,
-          0.55,
-          0.6
-        ],
-        "crashDamagePlayers": true,
-        "crashDamageBots": true,
-        "shipBrokenFunnelMaxRedynessMult": 0.5,
-        "shipBrokenElevatorMult": 0.85,
-        "shipDamagedElevatorMult": 1.0,
-        "simulateBattery": true
+        "brokenTransmissionCooldownTimer": 30.0
       }
     },
     "bombAssaultFuseTimeOverride": {

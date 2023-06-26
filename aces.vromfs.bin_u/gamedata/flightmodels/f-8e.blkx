@@ -2413,116 +2413,69 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "cannon_common",
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "dm": "cannon2_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare3",
-                "flash": "flare3",
-                "dm": "cannon3_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare4",
-                "flash": "flare4",
-                "dm": "cannon4_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              }
-            ]
-          },
-          {
-            "name": "cannon_ltc_common",
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "dm": "cannon2_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare3",
-                "flash": "flare3",
-                "dm": "cannon3_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "machine gun",
-                "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
-                "emitter": "flare4",
-                "flash": "flare4",
-                "dm": "cannon4_dm",
-                "bullets": 144,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+        "WeaponPreset": {
+          "name": "cannon_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon3_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/cannonBrowning-Colt_Mk12_Mod3.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "bullets": 144,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -4011,15 +3964,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 1,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "cannon_ltc_common"
-          }
-        }
-      }
+      "tier": 1
     },
     "us_aim_9b": {
       "prevModification": "countermeasures_belt_pack",

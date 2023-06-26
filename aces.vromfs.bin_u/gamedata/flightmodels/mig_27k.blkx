@@ -12,8 +12,7 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
-  "haveOpticTurret": true,
-  "ilsIPP_2_53": true,
+  "ils31": true,
   "isBwOpticSight": true,
   "hasMissileCommandLine": false,
   "laserOpticSightColor": "//8A3A==",
@@ -2441,207 +2440,125 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "gsh_6_30_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true,
-                  "playerControllable": false
-                },
-                "limits": {
-                  "yaw": [
-                    -40.0,
-                    40.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
-              },
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic2_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic2_turret",
-                  "gun": "optic2_gun",
-                  "mainTurret": true,
-                  "playerControllable": false
-                },
-                "limits": {
-                  "yaw": [
-                    -40.0,
-                    40.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonGSh_6_30.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 300,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "gearLimit": [
-                  0.0,
-                  0.1
-                ],
-                "gearName": "gear_c",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shootingCharge": 5.5
-              }
-            ]
+        "WeaponPreset": {
+          "name": "gsh_6_30_common",
+          "ShowNodes": {
+            "node": "su_infrared_flare_bp_50_60"
           },
-          {
-            "name": "gsh_6_30_ltc",
-            "ShowNodes": {
-              "node": "su_infrared_flare_bp_50_60"
-            },
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true,
-                  "playerControllable": false
-                },
-                "limits": {
-                  "yaw": [
-                    -40.0,
-                    40.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true,
+                "playerControllable": false
               },
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic2_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 200.0,
-                "speedPitch": 200.0,
-                "parkInDeadzone": true,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic2_turret",
-                  "gun": "optic2_gun",
-                  "mainTurret": true,
-                  "playerControllable": false
-                },
-                "limits": {
-                  "yaw": [
-                    -40.0,
-                    40.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonGSh_6_30.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 300,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "gearLimit": [
-                  0.0,
-                  0.1
+              "limits": {
+                "yaw": [
+                  -40.0,
+                  40.0
                 ],
-                "gearName": "gear_c",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shootingCharge": 5.5
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 6,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 6,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-                "emitter": "emtr_flare3",
-                "bullets": 30,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-                "emitter": "emtr_flare4",
-                "bullets": 30,
-                "external": true,
-                "separate": true
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
               }
-            ]
-          }
-        ]
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
+                "mainTurret": true,
+                "playerControllable": false
+              },
+              "limits": {
+                "yaw": [
+                  -40.0,
+                  40.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonGSh_6_30.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 300,
+              "spread": 1.0,
+              "counterIndex": 1,
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "gearName": "gear_c",
+              "rotationAnimScale": "gun_rotate_01:CRS",
+              "shootingCharge": 5.5
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 6,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 6,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -4844,16 +4761,7 @@
       "tier": 1,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": {
-          "hasTargetingPod": true,
-          "Weapon": {
-            "slot": 0,
-            "preset": "gsh_6_30_ltc"
-          }
-        }
-      }
+      "group": "mi-24_EVU"
     },
     "mi_24_r_60m": {
       "reqModification": "countermeasures_belt_pack",

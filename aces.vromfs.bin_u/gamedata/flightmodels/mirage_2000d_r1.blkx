@@ -2478,34 +2478,62 @@
                 "chute2"
               ]
             },
-            "Weapon": {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 200.0,
-              "speedPitch": 200.0,
-              "parkInDeadzone": true,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 200.0,
+                "speedPitch": 200.0,
+                "parkInDeadzone": true,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -90.0,
+                    90.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    90.0
+                  ]
+                }
               },
-              "limits": {
-                "yaw": [
-                  -90.0,
-                  90.0
-                ],
-                "pitch": [
-                  -90.0,
-                  90.0
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 8,
+                "external": true,
+                "separate": true,
+                "brakeChuteRange": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 8,
+                "external": true,
+                "separate": true,
+                "brakeChuteRange": [
+                  0.0,
+                  0.0
                 ]
               }
-            }
+            ]
           },
           {
             "name": "ltc_common",

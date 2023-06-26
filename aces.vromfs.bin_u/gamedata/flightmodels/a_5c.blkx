@@ -2295,74 +2295,42 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "type23_common",
-            "ShowNodes": {
-              "node": "ltc_cap"
+        "WeaponPreset": {
+          "name": "type23_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannon_type23_2k.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 120,
+              "spread": 1.0,
+              "counterIndex": 1
             },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannon_type23_2k.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 120,
-                "spread": 1.0,
-                "counterIndex": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannon_type23_2k.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "cannon2_dm",
-                "bullets": 120,
-                "spread": 1.0,
-                "counterIndex": 3
-              }
-            ]
-          },
-          {
-            "name": "type23_ltc_common",
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannon_type23_2k.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 120,
-                "spread": 1.0,
-                "counterIndex": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannon_type23_2k.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "cannon2_dm",
-                "bullets": 120,
-                "spread": 1.0,
-                "counterIndex": 3
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 18,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannon_type23_2k.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon2_dm",
+              "bullets": 120,
+              "spread": 1.0,
+              "counterIndex": 3
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 18,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3026,15 +2994,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "tier": 1,
-      "group": "q_5b_group",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "type23_ltc_common"
-          }
-        }
-      }
+      "group": "q_5b_group"
     },
     "fr_matra_r_550_magic_1": {
       "tier": 2,

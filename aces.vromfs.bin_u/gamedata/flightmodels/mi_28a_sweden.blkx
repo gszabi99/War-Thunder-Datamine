@@ -2254,172 +2254,100 @@
     "WeaponSlot": [
       {
         "index": 0,
-        "WeaponPreset": [
-          {
-            "name": "2a42_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "parkInDeadzone": false,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 40.0,
-                "speedPitch": 40.0,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -110.0,
-                    110.0
-                  ],
-                  "pitch": [
-                    -40.0,
-                    13.0
-                  ]
-                }
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannon2A42.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "gunner1_dm",
-                "gunnerDm": "cannon1_dm",
-                "gunDm": "cannon1_dm",
-                "partsDP": "cannon1_dm",
-                "bullets": 250,
-                "parkInDeadzone": false,
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                },
-                "gunStabilizer": {
-                  "hasVerticalGunFreeMode": false,
-                  "hasHorizontal": true,
-                  "horizontalOmegaMult": 1.0,
-                  "horizontalSpeedLimitKPH": 300.0,
-                  "hasVertical": true,
-                  "verticalOmegaMult": 1.0,
-                  "verticalSpeedLimitKPH": 300.0,
-                  "speedFromVehicleVerticalMult": -1.0,
-                  "speedYaw": 25.0,
-                  "speedPitch": 25.0
-                },
-                "limits": {
-                  "yaw": [
-                    -110.0,
-                    110.0
-                  ],
-                  "pitch": [
-                    -40.0,
-                    13.0
-                  ]
-                }
-              }
-            ]
+        "WeaponPreset": {
+          "name": "2a42_common",
+          "ShowNodes": {
+            "node": "fuse2"
           },
-          {
-            "name": "2a42_ltc_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "parkInDeadzone": false,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 40.0,
-                "speedPitch": 40.0,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -110.0,
-                    110.0
-                  ],
-                  "pitch": [
-                    -40.0,
-                    13.0
-                  ]
-                }
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "parkInDeadzone": false,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 40.0,
+              "speedPitch": 40.0,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
               },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannon2A42.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "gunner1_dm",
-                "gunnerDm": "cannon1_dm",
-                "gunDm": "cannon1_dm",
-                "partsDP": "cannon1_dm",
-                "bullets": 250,
-                "parkInDeadzone": false,
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                },
-                "gunStabilizer": {
-                  "hasVerticalGunFreeMode": false,
-                  "hasHorizontal": true,
-                  "horizontalOmegaMult": 1.0,
-                  "horizontalSpeedLimitKPH": 300.0,
-                  "hasVertical": true,
-                  "verticalOmegaMult": 1.0,
-                  "verticalSpeedLimitKPH": 300.0,
-                  "speedFromVehicleVerticalMult": -1.0,
-                  "speedYaw": 25.0,
-                  "speedPitch": 25.0
-                },
-                "limits": {
-                  "yaw": [
-                    -110.0,
-                    110.0
-                  ],
-                  "pitch": [
-                    -40.0,
-                    13.0
-                  ]
-                }
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 64,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 64,
-                "external": true,
-                "separate": false
+              "limits": {
+                "yaw": [
+                  -110.0,
+                  110.0
+                ],
+                "pitch": [
+                  -40.0,
+                  13.0
+                ]
               }
-            ]
-          }
-        ]
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/cannon2A42.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "gunner1_dm",
+              "gunnerDm": "cannon1_dm",
+              "gunDm": "cannon1_dm",
+              "partsDP": "cannon1_dm",
+              "bullets": 250,
+              "parkInDeadzone": false,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1",
+                "mainTurret": true,
+                "ballisticTargeting": true
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 300.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 300.0,
+                "speedFromVehicleVerticalMult": -1.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0
+              },
+              "limits": {
+                "yaw": [
+                  -110.0,
+                  110.0
+                ],
+                "pitch": [
+                  -40.0,
+                  13.0
+                ]
+              }
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 64,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 64,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3836,15 +3764,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "tier": 1,
-      "group": "countermeasures",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "2a42_ltc_common"
-          }
-        }
-      }
+      "group": "countermeasures"
     },
     "heli_night_vision_system": {
       "tier": 3,

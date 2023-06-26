@@ -2238,10 +2238,19 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "gsh_23l_common",
-            "Weapon": {
+        "WeaponPreset": {
+          "name": "gsh_23l_common",
+          "ShowNodes": {
+            "node": [
+              "pylon_fueltank",
+              "su_infrared_flare_pkvp_23",
+              "su_infrared_flare_bp_50_60",
+              "chute3",
+              "chute4"
+            ]
+          },
+          "Weapon": [
+            {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonGSh_23L.blk",
               "emitter": "flare1",
@@ -2255,47 +2264,18 @@
                 0.1
               ],
               "gearName": "gear_c"
-            }
-          },
-          {
-            "name": "gsh_23l_ltc_common",
-            "ShowNodes": {
-              "node": [
-                "pylon_fueltank",
-                "su_infrared_flare_pkvp_23",
-                "su_infrared_flare_bp_50_60",
-                "chute3",
-                "chute4"
-              ]
             },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonGSh_23L.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 200,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "gearLimit": [
-                  0.0,
-                  0.1
-                ],
-                "gearName": "gear_c"
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 12,
-                "external": true,
-                "separate": true
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 12,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
       },
       {
         "index": 1,

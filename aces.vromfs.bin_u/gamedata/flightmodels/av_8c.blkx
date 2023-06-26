@@ -2271,106 +2271,64 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "aden_common",
-            "HideNodes": {
-              "node": "fuse2"
-            },
-            "ShowDmParts": {
-              "node": [
-                "cannon1_dm",
-                "cover4_dm",
-                "cannon2_dm",
-                "cover5_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 130,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "cannon2_dm",
-                "bullets": 130,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              }
+        "WeaponPreset": {
+          "name": "aden_common",
+          "HideNodes": {
+            "node": "fuse2"
+          },
+          "ShowDmParts": {
+            "node": [
+              "cannon1_dm",
+              "cover4_dm",
+              "cannon2_dm",
+              "cover5_dm"
             ]
           },
-          {
-            "name": "aden_ltc_common",
-            "HideNodes": {
-              "node": "fuse2"
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "bullets": 130,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
             },
-            "ShowDmParts": {
-              "node": [
-                "cannon1_dm",
-                "cover4_dm",
-                "cannon2_dm",
-                "cover5_dm"
-              ]
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonADEN_mk4.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon2_dm",
+              "bullets": 130,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
             },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 130,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonADEN_mk4.blk",
-                "emitter": "flare2",
-                "flash": "flare2",
-                "shell": "emtr_shellrejection2",
-                "dm": "cannon2_dm",
-                "bullets": 130,
-                "light": false,
-                "spread": 1.2,
-                "traceOffset": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3386,15 +3344,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 1,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "aden_ltc_common"
-          }
-        }
-      }
+      "tier": 1
     },
     "us_aim_9g": {
       "prevModification": "countermeasures_belt_pack",

@@ -1280,10 +1280,16 @@
     "WeaponSlot": [
       {
         "index": 0,
-        "WeaponPreset": [
-          {
-            "name": "default_common",
-            "Weapon": {
+        "WeaponPreset": {
+          "name": "default_common",
+          "ShowNodes": {
+            "node": [
+              "gear_l1",
+              "gear_r1"
+            ]
+          },
+          "Weapon": [
+            {
               "dummy": true,
               "trigger": "gunner0",
               "triggerGroup": "primary",
@@ -1311,67 +1317,27 @@
                   25.0
                 ]
               }
-            }
-          },
-          {
-            "name": "ltc_common",
-            "ShowNodes": {
-              "node": [
-                "gear_l1",
-                "gear_r1"
-              ]
             },
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "parkInDeadzone": false,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "playerControllable": false,
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -115.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -50.0,
-                    25.0
-                  ]
-                }
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 96,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 96,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 96,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 96,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -2963,15 +2929,7 @@
       "turn_it_off": false,
       "tier": 1,
       "invertEnableLogic": false,
-      "group": "countermeasures",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "ltc_common"
-          }
-        }
-      }
+      "group": "countermeasures"
     },
     "heli_night_vision_system": {
       "prevModification": "stinger_aam",

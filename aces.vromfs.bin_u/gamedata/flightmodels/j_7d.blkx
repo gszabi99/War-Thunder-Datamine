@@ -2313,10 +2313,13 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "gsh_23l_common",
-            "Weapon": {
+        "WeaponPreset": {
+          "name": "gsh_23l_common",
+          "ShowNodes": {
+            "node": "ltc"
+          },
+          "Weapon": [
+            {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonType_23_3.blk",
               "emitter": "flare1",
@@ -2330,50 +2333,27 @@
               "bullets": 200,
               "spread": 1.0,
               "counterIndex": 1
-            }
-          },
-          {
-            "name": "gsh_23l_ltc_common",
-            "ShowNodes": {
-              "node": "ltc"
             },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonType_23_3.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "gearLimit": [
-                  0.0,
-                  0.1
-                ],
-                "gearName": "gear_c",
-                "bullets": 200,
-                "spread": 1.0,
-                "counterIndex": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare3",
-                "bullets": 36,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare4",
-                "bullets": 36,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 36,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 36,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3203,15 +3183,7 @@
       "tier": 1,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "gsh_23l_ltc_common"
-          }
-        }
-      }
+      "group": "mi-24_EVU"
     },
     "f_4c_g_suit": {
       "prevModification": "countermeasures_belt_pack",

@@ -2336,6 +2336,9 @@
         "WeaponPreset": [
           {
             "name": "gsh_23l_common",
+            "ShowNodes": {
+              "node": "fuse4"
+            },
             "Weapon": [
               {
                 "dummy": true,
@@ -2404,87 +2407,39 @@
                     10.0
                   ]
                 }
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": [
+                  "",
+                  "flare_launch"
+                ],
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 96,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "dragCx": 0.01
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": [
+                  "",
+                  "flare_launch"
+                ],
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 96,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "dragCx": 0.01
               }
             ]
           },
           {
             "name": "gsh_23l_exhaust_common",
-            "ShowNodes": {
-              "node": "fuse2"
-            },
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "parkInDeadzone": false,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 40.0,
-                "speedPitch": 40.0,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -180.0,
-                    180.0
-                  ],
-                  "pitch": [
-                    -80.0,
-                    30.0
-                  ]
-                }
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannonGSh_23L.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "gunner1_dm",
-                "gunnerDm": "cannon1_dm",
-                "gunDm": "cannon1_dm",
-                "partsDP": "cannon1_dm",
-                "bullets": 450,
-                "parkInDeadzone": false,
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                },
-                "gunStabilizer": {
-                  "hasVerticalGunFreeMode": false,
-                  "hasHorizontal": true,
-                  "horizontalOmegaMult": 1.0,
-                  "horizontalSpeedLimitKPH": 300.0,
-                  "hasVertical": true,
-                  "verticalOmegaMult": 1.0,
-                  "verticalSpeedLimitKPH": 300.0,
-                  "speedFromVehicleVerticalMult": -1.0,
-                  "speedYaw": 25.0,
-                  "speedPitch": 25.0
-                },
-                "limits": {
-                  "yaw": [
-                    -60.0,
-                    60.0
-                  ],
-                  "pitch": [
-                    -40.0,
-                    10.0
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "name": "gsh_23l_ltc_common",
             "ShowNodes": {
               "node": [
                 "fuse2",
@@ -2511,8 +2466,8 @@
                 },
                 "limits": {
                   "yaw": [
-                    -125.0,
-                    125.0
+                    -180.0,
+                    180.0
                   ],
                   "pitch": [
                     -80.0,
@@ -4211,15 +4166,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 2,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "gsh_23l_ltc_common"
-          }
-        }
-      }
+      "tier": 2
     },
     "heli_counterMeasures": {
       "modClass": "weapon",

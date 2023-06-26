@@ -2149,298 +2149,175 @@
     "WeaponSlot": [
       {
         "index": 0,
-        "WeaponPreset": [
-          {
-            "name": "m230e1_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -115.0,
-                    115.0
-                  ],
-                  "pitch": [
-                    -50.0,
-                    25.0
-                  ]
-                }
+        "WeaponPreset": {
+          "name": "m230e1_common",
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
               },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannonM230E1.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "turret": [
-                  "turret1",
-                  {
-                    "head": "turret1",
-                    "gun": "gun1",
-                    "mainTurret": true,
-                    "ballisticTargeting": true
-                  }
+              "limits": {
+                "yaw": [
+                  -115.0,
+                  115.0
                 ],
-                "dm": "gunner1_dm",
-                "gunnerDm": "gunner1_dm",
-                "gunDm": "cannon1_dm",
-                "partsDP": "cannon1_dm",
-                "bullets": 1200,
-                "recoilOffset": 0.0,
-                "parkInDeadzone": false,
-                "limits": {
-                  "yaw": [
-                    -86.0,
-                    86.0
-                  ],
-                  "pitch": [
-                    -60.0,
-                    11.0
-                  ]
-                },
-                "limitsTable": {
-                  "lim1": [
-                    -86.0,
-                    -75.0,
-                    -50.0,
-                    19.0
-                  ],
-                  "lim2": [
-                    -75.0,
-                    -52.0,
-                    -50.0,
-                    24.0
-                  ],
-                  "lim3": [
-                    -52.0,
-                    -35.0,
-                    -50.0,
-                    25.0
-                  ],
-                  "lim4": [
-                    -35.0,
-                    -15.0,
-                    -50.0,
-                    23.0
-                  ],
-                  "lim5": [
-                    -15.0,
-                    15.0,
-                    -50.0,
-                    20.0
-                  ],
-                  "lim6": [
-                    15.0,
-                    35.0,
-                    -50.0,
-                    23.0
-                  ],
-                  "lim7": [
-                    35.0,
-                    52.0,
-                    -50.0,
-                    25.0
-                  ],
-                  "lim8": [
-                    52.0,
-                    75.0,
-                    -50.0,
-                    24.0
-                  ],
-                  "lim9": [
-                    75.0,
-                    86.0,
-                    -50.0,
-                    19.0
-                  ]
-                }
+                "pitch": [
+                  -50.0,
+                  25.0
+                ]
               }
-            ]
-          },
-          {
-            "name": "m230e1_ltc_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -115.0,
-                    115.0
-                  ],
-                  "pitch": [
-                    -50.0,
-                    25.0
-                  ]
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/cannonM230E1.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "turret": [
+                "turret1",
+                {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
                 }
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannonM230E1.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "turret": [
-                  "turret1",
-                  {
-                    "head": "turret1",
-                    "gun": "gun1",
-                    "mainTurret": true,
-                    "ballisticTargeting": true
-                  }
+              ],
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "cannon1_dm",
+              "partsDP": "cannon1_dm",
+              "bullets": 1200,
+              "recoilOffset": 0.0,
+              "parkInDeadzone": false,
+              "limits": {
+                "yaw": [
+                  -86.0,
+                  86.0
                 ],
-                "dm": "gunner1_dm",
-                "gunnerDm": "gunner1_dm",
-                "gunDm": "cannon1_dm",
-                "partsDP": "cannon1_dm",
-                "bullets": 1200,
-                "recoilOffset": 0.0,
-                "parkInDeadzone": false,
-                "limits": {
-                  "yaw": [
-                    -86.0,
-                    86.0
-                  ],
-                  "pitch": [
-                    -60.0,
-                    11.0
-                  ]
-                },
-                "limitsTable": {
-                  "lim1": [
-                    -86.0,
-                    -75.0,
-                    -50.0,
-                    19.0
-                  ],
-                  "lim2": [
-                    -75.0,
-                    -52.0,
-                    -50.0,
-                    24.0
-                  ],
-                  "lim3": [
-                    -52.0,
-                    -35.0,
-                    -50.0,
-                    25.0
-                  ],
-                  "lim4": [
-                    -35.0,
-                    -15.0,
-                    -50.0,
-                    23.0
-                  ],
-                  "lim5": [
-                    -15.0,
-                    15.0,
-                    -50.0,
-                    20.0
-                  ],
-                  "lim6": [
-                    15.0,
-                    35.0,
-                    -50.0,
-                    23.0
-                  ],
-                  "lim7": [
-                    35.0,
-                    52.0,
-                    -50.0,
-                    25.0
-                  ],
-                  "lim8": [
-                    52.0,
-                    75.0,
-                    -50.0,
-                    24.0
-                  ],
-                  "lim9": [
-                    75.0,
-                    86.0,
-                    -50.0,
-                    19.0
-                  ]
-                }
+                "pitch": [
+                  -60.0,
+                  11.0
+                ]
               },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare4",
-                "bullets": 30,
-                "external": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare6",
-                "bullets": 30,
-                "external": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare5",
-                "bullets": 30,
-                "external": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare3",
-                "bullets": 30,
-                "external": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true
+              "limitsTable": {
+                "lim1": [
+                  -86.0,
+                  -75.0,
+                  -50.0,
+                  19.0
+                ],
+                "lim2": [
+                  -75.0,
+                  -52.0,
+                  -50.0,
+                  24.0
+                ],
+                "lim3": [
+                  -52.0,
+                  -35.0,
+                  -50.0,
+                  25.0
+                ],
+                "lim4": [
+                  -35.0,
+                  -15.0,
+                  -50.0,
+                  23.0
+                ],
+                "lim5": [
+                  -15.0,
+                  15.0,
+                  -50.0,
+                  20.0
+                ],
+                "lim6": [
+                  15.0,
+                  35.0,
+                  -50.0,
+                  23.0
+                ],
+                "lim7": [
+                  35.0,
+                  52.0,
+                  -50.0,
+                  25.0
+                ],
+                "lim8": [
+                  52.0,
+                  75.0,
+                  -50.0,
+                  24.0
+                ],
+                "lim9": [
+                  75.0,
+                  86.0,
+                  -50.0,
+                  19.0
+                ]
               }
-            ]
-          }
-        ]
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
+              "external": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare6",
+              "bullets": 30,
+              "external": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare5",
+              "bullets": 30,
+              "external": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "external": true
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -2714,15 +2591,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "tier": 1,
-      "group": "countermeasures",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "m230e1_ltc_common"
-          }
-        }
-      }
+      "group": "countermeasures"
     },
     "heli_night_vision_system": {
       "prevModification": "countermeasures_belt_pack",

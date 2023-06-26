@@ -2377,16 +2377,36 @@
     "engine1": 2
   },
   "commonWeapons": {
-    "Weapon": {
-      "trigger": "cannon",
-      "blk": "gameData/Weapons/cannonNR23.blk",
-      "emitter": "flare1",
-      "flash": "flare1",
-      "shell": "emtr_shellrejection1",
-      "dm": "cannon1_dm",
-      "bullets": 50,
-      "spread": 1.0
-    }
+    "Weapon": [
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonNR23.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "shell": "emtr_shellrejection1",
+        "dm": "cannon1_dm",
+        "bullets": 50,
+        "spread": 1.0
+      },
+      {
+        "trigger": "countermeasures",
+        "startFx": "",
+        "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+        "emitter": "emtr_flare1",
+        "bullets": 32,
+        "external": true,
+        "separate": false
+      },
+      {
+        "trigger": "countermeasures",
+        "startFx": "",
+        "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+        "emitter": "emtr_flare2",
+        "bullets": 32,
+        "external": true,
+        "separate": false
+      }
+    ]
   },
   "weapon_presets": {
     "preset": [
@@ -2771,41 +2791,7 @@
       "tier": 1,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonNR23.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon1_dm",
-              "bullets": 50,
-              "spread": 1.0
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 32,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 32,
-              "external": true,
-              "separate": false
-            }
-          ]
-        }
-      }
+      "group": "mi-24_EVU"
     }
   },
   "user_skin": {

@@ -1774,52 +1774,11 @@
         "WeaponPreset": [
           {
             "name": "gsh_30_2k_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "playerControllable": false
-                },
-                "limits": {
-                  "yaw": [
-                    -50.0,
-                    50.0
-                  ],
-                  "pitch": [
-                    -40.0,
-                    20.0
-                  ]
-                }
-              },
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonGSh_30_2K.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 250,
-                "spread": 1.2,
-                "recoilMultiplier": 0.5
-              }
-            ]
-          },
-          {
-            "name": "gsh_30_2k_exhaust_common",
             "ShowNodes": {
-              "node": "fuse2"
+              "node": [
+                "fuse2",
+                "fuse4"
+              ]
             },
             "Weapon": [
               {
@@ -1860,16 +1819,31 @@
                 "bullets": 250,
                 "spread": 1.2,
                 "recoilMultiplier": 0.5
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 96,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "startFx": "",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 96,
+                "external": true,
+                "separate": false
               }
             ]
           },
           {
-            "name": "gsh_30_2k_ltc_common",
+            "name": "gsh_30_2k_exhaust_common",
             "ShowNodes": {
-              "node": [
-                "fuse4",
-                "fuse2"
-              ]
+              "node": "fuse2"
             },
             "Weapon": [
               {
@@ -3784,15 +3758,7 @@
       "invertEnableLogic": false,
       "reqModification": "heli_screen_exhaust_device",
       "group": "countermeasures",
-      "tier": 2,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "gsh_30_2k_ltc_common"
-          }
-        }
-      }
+      "tier": 2
     },
     "heli_counterMeasures": {
       "turn_it_off": false,

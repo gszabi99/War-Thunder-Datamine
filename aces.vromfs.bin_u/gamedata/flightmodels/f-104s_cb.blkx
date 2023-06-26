@@ -1960,12 +1960,9 @@
     }
   },
   "commonWeapons": {
-    "hideDmParts": {
-      "node": [
-        "armor1_dm",
-        "armor2_dm",
-        "armor3_dm"
-      ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "f_104s_cb_ltc_common"
     }
   },
   "sensors": {
@@ -2088,37 +2085,32 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "f_104s_cb_common"
+        "WeaponPreset": {
+          "name": "f_104s_cb_ltc_common",
+          "ShowNodes": {
+            "node": "fuse2"
           },
-          {
-            "name": "f_104s_cb_ltc_common",
-            "ShowNodes": {
-              "node": "fuse2"
+          "Weapon": [
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": true
             },
-            "Weapon": [
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true,
-                "separate": true
-              }
-            ]
-          }
-        ]
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -3477,22 +3469,7 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 1,
-      "effects": {
-        "commonWeapons": {
-          "hideDmParts": {
-            "node": [
-              "armor1_dm",
-              "armor2_dm",
-              "armor3_dm"
-            ]
-          },
-          "Weapon": {
-            "slot": 0,
-            "preset": "f_104s_cb_ltc_common"
-          }
-        }
-      }
+      "tier": 1
     },
     "f_4c_g_suit": {
       "tier": 2,

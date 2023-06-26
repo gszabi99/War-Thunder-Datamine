@@ -2284,10 +2284,10 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "type130_common",
-            "Weapon": {
+        "WeaponPreset": {
+          "name": "type130_common",
+          "Weapon": [
+            {
               "trigger": "cannon",
               "blk": "gameData/Weapons/cannonType30_1.blk",
               "emitter": "flare1",
@@ -2297,34 +2297,18 @@
               "bullets": 60,
               "spread": 1.0,
               "counterIndex": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 72,
+              "external": true,
+              "separate": false
             }
-          },
-          {
-            "name": "type130_ltc_common",
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonType30_1.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "shell": "emtr_shellrejection1",
-                "dm": "cannon1_dm",
-                "bullets": 60,
-                "spread": 1.0,
-                "counterIndex": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 72,
-                "external": true,
-                "separate": false
-              }
-            ]
-          }
-        ]
+          ]
+        }
       },
       {
         "index": 1,
@@ -3149,15 +3133,7 @@
       "tier": 1,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "type130_ltc_common"
-          }
-        }
-      }
+      "group": "mi-24_EVU"
     },
     "mig_19_pl2": {
       "tier": 2,

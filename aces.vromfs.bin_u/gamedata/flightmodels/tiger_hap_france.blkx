@@ -2103,294 +2103,158 @@
     "WeaponSlot": [
       {
         "index": 0,
-        "WeaponPreset": [
-          {
-            "name": "giat_cannon_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -115.0,
-                    115.0
-                  ],
-                  "pitch": [
-                    -53.0,
-                    25.0
-                  ]
-                }
+        "WeaponPreset": {
+          "name": "giat_cannon_common",
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
               },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannonGIAT_type_30_M781.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "turret": [
-                  "turret1",
-                  {
-                    "head": "turret1",
-                    "gun": "gun1",
-                    "mainTurret": true,
-                    "ballisticTargeting": true
-                  }
+              "limits": {
+                "yaw": [
+                  -115.0,
+                  115.0
                 ],
-                "shell": "emtr_shellrejection1",
-                "dm": "gunner1_dm",
-                "gunnerDm": "gunner1_dm",
-                "gunDm": "cannon1_dm",
-                "partsDP": "cannon1_dm",
-                "bullets": 450,
-                "recoilOffset": 0.0,
-                "parkInDeadzone": false,
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -25.0,
-                    28.0
-                  ]
-                },
-                "limitsTable": {
-                  "lim1": [
-                    -90.0,
-                    -85.0,
-                    -25.0,
-                    15.0
-                  ],
-                  "lim2": [
-                    -85.0,
-                    -75.0,
-                    -25.0,
-                    19.0
-                  ],
-                  "lim3": [
-                    -75.0,
-                    -52.0,
-                    -25.0,
-                    24.0
-                  ],
-                  "lim4": [
-                    -52.0,
-                    -35.0,
-                    -25.0,
-                    25.0
-                  ],
-                  "lim5": [
-                    -35.0,
-                    -15.0,
-                    -25.0,
-                    23.0
-                  ],
-                  "lim6": [
-                    -15.0,
-                    15.0,
-                    -25.0,
-                    20.0
-                  ],
-                  "lim7": [
-                    15.0,
-                    35.0,
-                    -25.0,
-                    23.0
-                  ],
-                  "lim8": [
-                    35.0,
-                    52.0,
-                    -25.0,
-                    25.0
-                  ],
-                  "lim9": [
-                    52.0,
-                    75.0,
-                    -25.0,
-                    24.0
-                  ],
-                  "lim10": [
-                    75.0,
-                    85.0,
-                    -25.0,
-                    19.0
-                  ],
-                  "lim11": [
-                    85.0,
-                    90.0,
-                    -25.0,
-                    15.0
-                  ]
-                }
+                "pitch": [
+                  -53.0,
+                  25.0
+                ]
               }
-            ]
-          },
-          {
-            "name": "giat_cannon_ltc_common",
-            "Weapon": [
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -115.0,
-                    115.0
-                  ],
-                  "pitch": [
-                    -53.0,
-                    25.0
-                  ]
+            },
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/cannonGIAT_type_30_M781.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "turret": [
+                "turret1",
+                {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
                 }
-              },
-              {
-                "trigger": "gunner0",
-                "blk": "gameData/Weapons/cannonGIAT_type_30_M781.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "turret": [
-                  "turret1",
-                  {
-                    "head": "turret1",
-                    "gun": "gun1",
-                    "mainTurret": true,
-                    "ballisticTargeting": true
-                  }
+              ],
+              "shell": "emtr_shellrejection1",
+              "dm": "gunner1_dm",
+              "gunnerDm": "gunner1_dm",
+              "gunDm": "cannon1_dm",
+              "partsDP": "cannon1_dm",
+              "bullets": 450,
+              "recoilOffset": 0.0,
+              "parkInDeadzone": false,
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
                 ],
-                "shell": "emtr_shellrejection1",
-                "dm": "gunner1_dm",
-                "gunnerDm": "gunner1_dm",
-                "gunDm": "cannon1_dm",
-                "partsDP": "cannon1_dm",
-                "bullets": 450,
-                "recoilOffset": 0.0,
-                "parkInDeadzone": false,
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -25.0,
-                    28.0
-                  ]
-                },
-                "limitsTable": {
-                  "lim1": [
-                    -90.0,
-                    -85.0,
-                    -25.0,
-                    15.0
-                  ],
-                  "lim2": [
-                    -85.0,
-                    -75.0,
-                    -25.0,
-                    19.0
-                  ],
-                  "lim3": [
-                    -75.0,
-                    -52.0,
-                    -25.0,
-                    24.0
-                  ],
-                  "lim4": [
-                    -52.0,
-                    -35.0,
-                    -25.0,
-                    25.0
-                  ],
-                  "lim5": [
-                    -35.0,
-                    -15.0,
-                    -25.0,
-                    23.0
-                  ],
-                  "lim6": [
-                    -15.0,
-                    15.0,
-                    -25.0,
-                    20.0
-                  ],
-                  "lim7": [
-                    15.0,
-                    35.0,
-                    -25.0,
-                    23.0
-                  ],
-                  "lim8": [
-                    35.0,
-                    52.0,
-                    -25.0,
-                    25.0
-                  ],
-                  "lim9": [
-                    52.0,
-                    75.0,
-                    -25.0,
-                    24.0
-                  ],
-                  "lim10": [
-                    75.0,
-                    85.0,
-                    -25.0,
-                    19.0
-                  ],
-                  "lim11": [
-                    85.0,
-                    90.0,
-                    -25.0,
-                    15.0
-                  ]
-                }
+                "pitch": [
+                  -25.0,
+                  28.0
+                ]
               },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 32,
-                "external": true,
-                "separate": false
-              },
-              {
-                "trigger": "countermeasures",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 32,
-                "external": true,
-                "separate": false
+              "limitsTable": {
+                "lim1": [
+                  -90.0,
+                  -85.0,
+                  -25.0,
+                  15.0
+                ],
+                "lim2": [
+                  -85.0,
+                  -75.0,
+                  -25.0,
+                  19.0
+                ],
+                "lim3": [
+                  -75.0,
+                  -52.0,
+                  -25.0,
+                  24.0
+                ],
+                "lim4": [
+                  -52.0,
+                  -35.0,
+                  -25.0,
+                  25.0
+                ],
+                "lim5": [
+                  -35.0,
+                  -15.0,
+                  -25.0,
+                  23.0
+                ],
+                "lim6": [
+                  -15.0,
+                  15.0,
+                  -25.0,
+                  20.0
+                ],
+                "lim7": [
+                  15.0,
+                  35.0,
+                  -25.0,
+                  23.0
+                ],
+                "lim8": [
+                  35.0,
+                  52.0,
+                  -25.0,
+                  25.0
+                ],
+                "lim9": [
+                  52.0,
+                  75.0,
+                  -25.0,
+                  24.0
+                ],
+                "lim10": [
+                  75.0,
+                  85.0,
+                  -25.0,
+                  19.0
+                ],
+                "lim11": [
+                  85.0,
+                  90.0,
+                  -25.0,
+                  15.0
+                ]
               }
-            ]
-          }
-        ]
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 32,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 32,
+              "external": true,
+              "separate": false
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -2666,12 +2530,6 @@
       "tier": 1,
       "invertEnableLogic": false,
       "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "giat_cannon_ltc_common"
-          }
-        },
         "sensors": {
           "sensor": [
             {
