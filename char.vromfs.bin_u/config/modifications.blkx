@@ -20613,16 +20613,27 @@
       "invertEnableLogic": false,
       "effects": {
         "repairAvailable": true
+      },
+      "disableModEffects": {
+        "repairAvailable": true,
+        "speedMultiplier": 0.75
       }
     },
     "manual_ship_extinguisher": {
       "image": "#ui/gameuiskin#manual_ship_extinguisher",
       "tier": 2,
       "modClass": "unsinkability",
+      "invertEnableLogic": false,
       "effects": {
         "extinguisherActivationCount": -1,
         "extinguisherMinTime": 10.0,
         "extinguisherMaxTime": 10.0,
+        "extinguisherCrewBusyTime": -1.0
+      },
+      "disableModEffects": {
+        "extinguisherActivationCount": -1,
+        "extinguisherMinTime": 13.0,
+        "extinguisherMaxTime": 15.0,
         "extinguisherCrewBusyTime": -1.0
       }
     },

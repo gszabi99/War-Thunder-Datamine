@@ -225,7 +225,7 @@ let function addInvitesToFriend(inviters) {
     return
 
   foreach(ueser in inviters)
-    ::g_invites.addFriendInvite(ueser?.nick ?? "", ueser?.uid ?? "")
+    ::g_invites.addFriendInvite(ueser?.name ?? "", ueser?.userId ?? "")
 
   fetchContacts()
 }
@@ -236,15 +236,14 @@ addListenersWithoutEnv({
       fetchContacts()
   }
   LoginComplete = @(_) contactsClient.contacts_request("cln_get_contact_lists_ext", null,
-    @(res) addInvitesToFriend(res?["#warthunder#requestsToMe"]))
+    @(res) addInvitesToFriend(res?["#warthunder#requestsToMe"].map(@(v) {
+      name = v?.nick ?? ""
+      userId = (v?.uid ?? "").tostring()
+    })))
 })
 
 matchingRpcSubscribe("mpresence.notify_presence_update", onUpdateContactsCb)
-matchingRpcSubscribe("mpresence.on_added_to_contact_list", @(p) p?.user != null
-  ? addInvitesToFriend([{
-    nick = p.user?.name ?? ""
-    uid = p.user?.userId ?? ""
-  }]) : null)
+matchingRpcSubscribe("mpresence.on_added_to_contact_list", @(p) addInvitesToFriend(p?.user))
 
 return {
   searchContactsResults
