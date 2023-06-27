@@ -36,6 +36,31 @@ let function changeUrl() {
   currentUrlIndex((currentUrlIndex.value + 1) % max(urls.value.len(), 1))
 }
 
+let function callbackRequest(res) {
+  let { status = -1, http_code = -1, context = null } = res
+  if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
+    logBQ($"Success send {context?.list.len()} events")
+    return
+  }
+
+  changeUrl()
+
+  if(currentUrlIndex.value == 0) {
+    logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
+    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
+    initUrl()
+  }
+  else {
+    logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
+    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
+  }
+
+  if (context != null) {
+    let { userId, list } = context
+    queueByUserId.mutate(@(v) v[userId] <- (clone list).extend(v?[userId] ?? []))
+  }
+}
+
 let function sendAll() {
   if (queue.value.len() == 0)
     return
@@ -78,35 +103,10 @@ let function sendAll() {
     headers
     waitable = true
     data = json_to_string(list)
-    respEventId = RESPONSE_EVENT
     context
+    callback = callbackRequest
   })
 }
-
-subscribe(RESPONSE_EVENT, function(res) {
-  let { status = -1, http_code = -1, context = null } = res
-  if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
-    logBQ($"Success send {context?.list.len()} events")
-    return
-  }
-
-  changeUrl()
-
-  if(currentUrlIndex.value == 0) {
-    logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
-    initUrl()
-  }
-  else {
-    logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
-  }
-
-  if (context != null) {
-    let { userId, list } = context
-    queueByUserId.mutate(@(v) v[userId] <- (clone list).extend(v?[userId] ?? []))
-  }
-})
 
 let function startSendTimer() {
   if (queue.value.len() == 0)
