@@ -62,6 +62,7 @@ let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { stripTags, toUpper } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -403,17 +404,16 @@ let statTooltipColumnParamByType = {
     this.handleNoAwardsCaption()
 
     if (!this.isSpectator && !this.isReplay)
-      ::add_big_query_record("show_debriefing_screen",
-        ::save_to_json({
-          gm = this.gm
-          economicName = ::events.getEventEconomicName(this.mGameMode)
-          difficulty = this.mGameMode?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
-          sessionId = this.debriefingResult?.sessionId ?? ""
-          sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
-          originalMissionName = ::SessionLobby.getMissionName(true)
-          missionsComplete = ::my_stats.getMissionsComplete()
-          result = resTheme
-        }))
+      sendBqEvent("CLIENT_BATTLE_2", "show_debriefing_screen", {
+        gm = this.gm
+        economicName = ::events.getEventEconomicName(this.mGameMode)
+        difficulty = this.mGameMode?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
+        sessionId = this.debriefingResult?.sessionId ?? ""
+        sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
+        originalMissionName = ::SessionLobby.getMissionName(true)
+        missionsComplete = ::my_stats.getMissionsComplete()
+        result = resTheme
+      })
     let sessionIdObj = this.scene.findObject("txt_session_id")
     if (sessionIdObj?.isValid())
       sessionIdObj.setValue(this.debriefingResult?.sessionId ?? "")

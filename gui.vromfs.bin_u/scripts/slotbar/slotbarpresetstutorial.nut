@@ -8,6 +8,7 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::SlotbarPresetsTutorial <- class {
   /** Total maximum times to show this tutorial. */
@@ -395,6 +396,6 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function sendLastStepsNameToBigQuery() {
     if (this.isNewUnitTypeToBattleTutorial)
-      ::add_big_query_record("new_unit_type_to_battle_tutorial_lastStepsName", this.currentStepsName)
+      sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_lastStepsName", { currentStepsName = this.currentStepsName })
   }
 }

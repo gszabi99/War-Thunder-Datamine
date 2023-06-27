@@ -17,6 +17,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let function getActiveTicketTxt(event) {
   if (!event)
@@ -327,10 +328,10 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     ::EventJoinProcess(this.curEvent, null,
-      @(_curEvent) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+      @(_curEvent) sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic),
       function() {
         configForStatistic.canIntoToBattle <- false
-        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
       })
   }
 

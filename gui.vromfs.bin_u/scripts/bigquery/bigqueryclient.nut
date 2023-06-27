@@ -9,6 +9,7 @@ let { format               } = require("string")
 let { json_to_string       } = require("json")
 let { getDistr             } = require("auth_wt")
 let { get_user_system_info } = require("sysinfo")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 local bqStat = persist("bqStat", @() { sendStartOnce = false })
 
@@ -56,10 +57,6 @@ let function add_user_info(table) {
   if (distr.len() > 0)
     table.distr <- distr
 
-  let userId = ::get_player_user_id_str().tointeger()
-  if (userId > 0)
-    table.uid <- userId
-
   if (::steam_is_running())
     table.steam <- true
 
@@ -75,9 +72,10 @@ let function add_user_info(table) {
 }
 
 
-let function bq_client_noa(event, uniqueId, table) {
+let function bq_client_no_auth(event, uniqueId, table) {
   add_user_info(table)
-  let params  = json_to_string(table, false)
+
+  let params = json_to_string(table, false)
   let request =
   {
     action = "noa_bigquery_client_noauth"
@@ -93,7 +91,7 @@ let function bq_client_noa(event, uniqueId, table) {
   }
 
   ww_leaderboard.request(request, function(_response) {})  // cloud-server
-  log($"BQ CLIENT_NOA {event} {params} [{uniqueId}]")
+  log($"BQ CLIENT_NO_AUTH {event} {params} [{uniqueId}]")
 }
 
 
@@ -119,7 +117,7 @@ let function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
   if (blk?.autologin == true)
     table.auto <- true
 
-  bq_client_noa("start", blk.uniqueId, table)
+  bq_client_no_auth("start", blk.uniqueId, table)
 
   bqStat.sendStartOnce = true
 }
@@ -136,7 +134,7 @@ let function bqSendLoginState(table) {
   add_user_info(table)
   let params = json_to_string(table)
 
-  ::add_big_query_record("login_state", params)
+  sendBqEvent("CLIENT_LOGIN_2", "login_state", table)
   log($"BQ CLIENT login_state {params}")
 }
 

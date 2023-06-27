@@ -41,6 +41,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::gui_handlers.InstantDomination <- class extends ::gui_handlers.BaseGuiHandlerWT {
   static keepLoaded = true
@@ -492,12 +493,12 @@ let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
 
     ::g_squad_utils.checkMembersMrankDiff(this, Callback(@()
       this.checkedNewFlight(function() {
-        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
         this.onStartAction()
       }.bindenv(this),
       function() {
         configForStatistic.canIntoToBattle <- false
-        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
       }.bindenv(this))
     , this))
   }
@@ -1129,8 +1130,8 @@ let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
 
     if (!gameModeForTutorial || !validPreset) {
       if (isNotFoundUnitTypeForTutorial || isNotFoundValidPresetForTutorial) {
-        ::add_big_query_record("new_unit_type_to_battle_tutorial_skipped",
-          isNotFoundUnitTypeForTutorial ? "isNotFoundUnitTypeForTutorial" : "isNotFoundValidPreset")
+        sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_skipped",
+          { result = isNotFoundUnitTypeForTutorial ? "isNotFoundUnitTypeForTutorial" : "isNotFoundValidPreset"})
         tutorialModule.saveShowedTutorial("newUnitTypetoBattle")
       }
       return
@@ -1140,7 +1141,7 @@ let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
       loc("msgBox/start_new_unit_type_to_battle_tutorial", { gameModeName = gameModeForTutorial.text }),
       [
         ["yes", function() {
-          ::add_big_query_record("new_unit_type_to_battle_tutorial_msgbox_btn", "yes")
+          sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_msgbox_btn", { result = "yes" })
           let tutorial = ::SlotbarPresetsTutorial()
           tutorial.currentCountry = currentCountry
           tutorial.tutorialGameMode = gameModeForTutorial
@@ -1154,7 +1155,7 @@ let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
             this.slotbarPresetsTutorial = tutorial
         }.bindenv(this)],
         ["no", function() {
-          ::add_big_query_record("new_unit_type_to_battle_tutorial_msgbox_btn", "no")
+          sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_msgbox_btn", { result = "no" })
         }.bindenv(this)]
       ], "yes")
 

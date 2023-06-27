@@ -4,6 +4,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let statsd = require("statsd")
 let { GUI } = require("%scripts/utils/configs.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 local EpicShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
@@ -133,11 +134,7 @@ local EpicShopPurchasableItem = class {
 
   showDetails = function(metricPlaceCall = "ingame_store") {
     statsd.send_counter($"sq.{metricPlaceCall}.open_product", 1)
-    ::add_big_query_record("open_product",
-      ::save_to_json({
-        itemId = this.id
-      })
-    )
+    sendBqEvent("CLIENT_POPUP_1", "open_product", { itemId = this.id })
     ::epic_buy_item(this.id)
   }
   showDescription = @() null

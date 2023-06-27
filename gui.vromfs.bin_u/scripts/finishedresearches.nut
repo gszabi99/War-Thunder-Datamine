@@ -5,6 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::researched_items_table <- null
 ::abandoned_researched_items_for_session <- []
@@ -99,9 +100,8 @@ let function removeResearchBlock(researchBlock) {
 
     if (isResearchForModification(research)) {
       let unit = getAircraftByName(getUnitNameFromResearchItem(research))
-      ::add_big_query_record("completed_new_research_modification",
-        ::save_to_json({ unit = unit.name
-          modification = research.name }))
+      sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_modification",{ unit = unit.name
+        modification = research.name })
       ::shop_set_researchable_unit_module(unit.name, "")
       prepareUnitsForPurchaseMods.addUnit(unit)
     }

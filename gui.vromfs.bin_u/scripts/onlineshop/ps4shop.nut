@@ -19,6 +19,7 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCountry.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let persistent = {
   sheetsArray = []
@@ -232,7 +233,7 @@ let function openIngameStore(params = {}) {
     && isChapterSuitable(params?.chapter)
     && ::g_language.getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
-    ::add_big_query_record("ingame_store_qr", targetPlatform)
+    sendBqEvent("CLIENT_POPUP_1", "ingame_store_qr", { targetPlatform })
     openQrWindow({
       headerText = params?.chapter == "eagles" ? loc("charServer/chapter/eagles") : ""
       infoText = loc("eagles/rechargeUrlNotification")

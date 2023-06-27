@@ -14,7 +14,7 @@ let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/playerCoun
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { show_marketplace, ProductKind } = require("%xboxLib/impl/store.nut")
-
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let sheetsArray = []
 shopData.xboxProceedItems.subscribe(function(val) {
@@ -105,12 +105,10 @@ shopData.xboxProceedItems.subscribe(function(val) {
       if (wasPurchasePerformed) {
         broadcastEvent("EntitlementStoreItemPurchased", { id = this.curItem.id })
         statsd.send_counter("sq.close_product.purchased", 1)
-        ::add_big_query_record("close_product",
-          ::save_to_json({
-            itemId = this.curItem.id,
-            action = "purchased"
-          })
-        )
+        sendBqEvent("CLIENT_POPUP_1", "close_product", {
+          itemId = this.curItem.id,
+          action = "purchased"
+        })
         ::g_tasker.addTask(::update_entitlements_limited(),
           {
             showProgressBox = true
@@ -210,7 +208,7 @@ let function openIngameStore(params = {}) {
   if (isChapterSuitable(params?.chapter)
     && ::g_language.getLanguageName() == "Russian"
     && isPlayerRecommendedEmailRegistration()) {
-    ::add_big_query_record("ingame_store_qr", targetPlatform)
+    sendBqEvent("CLIENT_POPUP_1", "ingame_store_qr", { targetPlatform })
     openQrWindow({
       headerText = params?.chapter == "eagles" ? loc("charServer/chapter/eagles") : ""
       infoText = loc("eagles/rechargeUrlNotification")

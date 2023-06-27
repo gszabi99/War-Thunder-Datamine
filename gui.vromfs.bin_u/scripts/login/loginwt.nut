@@ -26,7 +26,7 @@ let { havePlayerTag } = require("%scripts/user/userUtils.nut")
 let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
 let { get_meta_missions_info } = require("guiMission")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
-
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::my_user_id_str <- ""
 ::my_user_id_int64 <- -1
@@ -360,9 +360,9 @@ let function needAutoStartBattle() {
 
   if (isPlatformSony) {
     if (!::ps4_is_chat_enabled())
-      ::add_big_query_record("ps4.restrictions.chat", "")
+      sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.chat", {})
     if (!::ps4_is_ugc_enabled())
-      ::add_big_query_record("ps4.restrictions.ugc", "")
+      sendBqEvent("CLIENT_GAMEPLAY_1", "ps4.restrictions.ugc", {})
   }
 
   if (is_platform_windows) {

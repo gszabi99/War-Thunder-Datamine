@@ -7,6 +7,7 @@ let { is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
 let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { Version } = require("%sqstd/version.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
@@ -57,10 +58,11 @@ let function bigQuerryForNuclearEvent() {
   if (!needSendStatistic)
     return
 
-  ::add_big_query_record("nuclear_event", ::save_to_json({
+  sendBqEvent("CLIENT_GAMEPLAY_1", "nuclear_event", {
     user = ::my_user_id_str,
     seenInOldClient = is_seen_nuclear_event(),
-    seenInNewClient = is_seen_main_nuclear_event() }))
+    seenInNewClient = is_seen_main_nuclear_event()
+  })
   ::save_local_account_settings("sendNuclearStatistic", false)
 }
 

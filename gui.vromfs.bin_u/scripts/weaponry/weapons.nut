@@ -55,6 +55,7 @@ let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut
 let { isShipDamageControlEnabled } = require("%scripts/unit/unitParams.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 16
@@ -1519,18 +1520,16 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
   }
 
   function sendModResearchedStatistic(unit, modName) {
-    ::add_big_query_record("completed_new_research_modification",
-        ::save_to_json({ unit = unit.name
-          modification = modName }))
+    sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_modification", { unit = unit.name
+      modification = modName })
   }
 
   function sendModPurchasedStatistic(unit) {
     if (!unit || !this.purchasedModifications.len())
       return
 
-    ::add_big_query_record("modifications_purchased",
-        ::save_to_json({ unit = unit.name
-          modifications = this.purchasedModifications }))
+    sendBqEvent("CLIENT_GAMEPLAY_1", "modifications_purchased", { unit = unit.name
+      modifications = this.purchasedModifications })
     this.purchasedModifications.clear()
   }
 

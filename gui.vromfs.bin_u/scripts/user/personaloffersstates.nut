@@ -9,6 +9,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
 let checkedOffers = mkWatched(persist, "checkedOffers", {})
@@ -26,7 +27,7 @@ let hasSendToBq = @(offerName)
 let function sendDataToBqOnce(data) {
   if (hasSendToBq(data.offerName))
     return
-  ::add_big_query_record("personal_offer_restriction", ::save_to_json(data))
+  sendBqEvent("CLIENT_POPUP_1", "personal_offer_restriction", data)
   ::save_local_account_settings($"personalOffer/{data.offerName}/hasSendToBq", true)
 }
 

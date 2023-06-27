@@ -7,6 +7,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shell_launch, get_authenticated_url_sso } = require("url")
 let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -165,8 +166,7 @@ let function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = fa
   if (! u.isEmpty(biqQueryKey))
     bigQueryInfoObject["from"] <- biqQueryKey
 
-  ::add_big_query_record(forceExternal ? "player_opens_external_browser" : "player_opens_browser"
-    ::save_to_json(bigQueryInfoObject))
+  sendBqEvent("CLIENT_POPUP_1", forceExternal ? "player_opens_external_browser" : "player_opens_browser", bigQueryInfoObject)
 
   open(baseUrl, forceExternal, isAlreadyAuthenticated)
 }

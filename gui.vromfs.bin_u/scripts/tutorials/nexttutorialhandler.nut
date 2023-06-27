@@ -16,6 +16,7 @@ let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { set_game_mode } = require("mission")
 let { select_mission } = require("guiMission")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -104,7 +105,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
                   }
     if (obj != null)
       info["input"] <- this.getObjectUserInputType(obj)
-    ::add_big_query_record ("new_player_tutorial_choice", ::save_to_json(info))
+    sendBqEvent("CLIENT_GAMEPLAY_1", "new_player_tutorial_choice", info)
     ::saveLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, true)
   }
 

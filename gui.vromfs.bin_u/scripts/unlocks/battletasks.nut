@@ -36,6 +36,13 @@ let difficultyTypes = [
   HARD_TASK
 ]
 
+let function compareBattleTasks(a, b) {
+  if (a?._sort_order == null || b?._sort_order == null)
+    return 0
+
+  return b._sort_order <=> a._sort_order
+}
+
 ::g_battle_tasks <- null
 
 ::BattleTasks <- class {
@@ -108,15 +115,8 @@ let difficultyTypes = [
     this.updatedProposedTasks()
     this.updatedActiveTasks()
 
-    this.currentTasksArray.sort(function(a, b) {
-      if (a?._sort_order == null || b?._sort_order == null)
-        return 0
-
-      if (a._sort_order == b._sort_order)
-        return 0
-
-      return a._sort_order > b._sort_order ? 1 : -1
-    })
+    this.currentTasksArray.sort(compareBattleTasks)
+    this.activeTasksArray.sort(compareBattleTasks)
 
     if (::isInMenu())
       this.checkNewSpecialTasks()

@@ -10,6 +10,7 @@ let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 let { ProductKind, show_details, get_total_quantity, retrieve_product_info } = require("%xboxLib/impl/store.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
@@ -149,11 +150,7 @@ local XboxShopPurchasableItem = class {
   canBeUnseen = @() this.isBought
   showDetails = function(metricPlaceCall = "ingame_store") {
     statsd.send_counter($"sq.{metricPlaceCall}.open_product", 1)
-    ::add_big_query_record("open_product",
-      ::save_to_json({
-        itemId = this.id
-      })
-    )
+    sendBqEvent("CLIENT_POPUP_1", "open_product", { itemId = this.id })
     show_details(this.id, null)
   }
   showDescription = @() null

@@ -8,6 +8,7 @@ let { set_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
 let { subscribe_handler, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let Promo = class {
   owner = null
@@ -181,8 +182,10 @@ let Promo = class {
   }
 
   function performActionWithStatistics(obj, isFromCollapsed) {
-    ::add_big_query_record("promo_click",
-      ::save_to_json({ id = ::g_promo.cutActionParamsKey(obj.id), collapsed = isFromCollapsed }))
+    sendBqEvent("CLIENT_POPUP_1", "promo_click", {
+      id = ::g_promo.cutActionParamsKey(obj.id),
+      collapsed = isFromCollapsed
+    })
     let objScene = obj.getScene()
     objScene.performDelayed(
       this,

@@ -7,6 +7,7 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 global enum LOGIN_STATE { //bit mask
   AUTHORIZED               = 0x0001 //succesfully connected to auth
@@ -45,7 +46,7 @@ global enum LOGIN_STATE { //bit mask
     local params = platformId
     if (::getSystemConfigOption("launcher/bg_update", true))
       params += " bg_update"
-    ::add_big_query_record("login", params)
+    sendBqEvent("CLIENT_LOGIN_2", "login", { params = params })
   }
 }
 
@@ -95,6 +96,8 @@ global enum LOGIN_STATE { //bit mask
   if (wasLoggedIn != this.isLoggedIn())
     this.onLoggedInChanged()
 
+  broadcastEvent("LoginStateChanged")
+
   bqSendLoginState(
   {
     "was"  : wasState,
@@ -102,7 +105,6 @@ global enum LOGIN_STATE { //bit mask
     "auth" : this.isAuthorized(),
     "login" : this.isLoggedIn()
   })
-  broadcastEvent("LoginStateChanged")
 }
 
 ::g_login.addState <- function addState(statePart) {

@@ -14,6 +14,7 @@ let { fillUserNick, getFirstChosenUnitType,
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -451,9 +452,9 @@ enum CChoiceState {
 
   function sendFirstChooseStatistic() {
     if (this.state == CChoiceState.UNIT_TYPE_SELECT && this.selectedUnitType)
-      ::add_big_query_record("choose_unit_type_screen", this.selectedUnitType.lowerName)
+      sendBqEvent("CLIENT_GAMEPLAY_1", "choose_unit_type_screen", { selectedUnitType = this.selectedUnitType.lowerName })
     else if (this.state == CChoiceState.COUNTRY_SELECT)
-      ::add_big_query_record("choose_country_screen", this.selectedCountry)
+      sendBqEvent("CLIENT_GAMEPLAY_1", "choose_country_screen", { selectedCountry = this.selectedCountry })
   }
 
   function getCountriesByUnitType(unitType) {

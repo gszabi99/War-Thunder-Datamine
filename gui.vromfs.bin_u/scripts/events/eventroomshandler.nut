@@ -20,6 +20,7 @@ let { checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -215,10 +216,10 @@ const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
     }
 
     ::EventJoinProcess(this.event, this.getCurRoom(),
-      @(_event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+      @(_event) sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic),
       function() {
         configForStatistic.canIntoToBattle <- false
-        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
       })
   }
 

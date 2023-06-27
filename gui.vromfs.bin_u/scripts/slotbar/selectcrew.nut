@@ -14,6 +14,7 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSafearea } = require("%scripts/options/safeAreaMenu.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (CrewTakeUnitProcess.safeInterrupt())
@@ -307,9 +308,10 @@ let function getObjPosInSafeArea(obj) {
       return
 
     if (this.isNewUnit) {
-      ::add_big_query_record("choosed_crew_for_new_unit",
-        ::save_to_json({ unit = this.unit.name
-          crew = this.getCurCrew()?.id }))
+      sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_crew_for_new_unit", {
+        unit = this.unit.name
+        crew = this.getCurCrew()?.id
+      })
     }
     if (this.afterSuccessFunc)
       this.afterSuccessFunc()

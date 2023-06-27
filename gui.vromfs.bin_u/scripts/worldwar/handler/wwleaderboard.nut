@@ -11,6 +11,7 @@ let { getSeparateLeaderboardPlatformName,
         getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 let { stripTags } = require("%sqstd/string.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::ww_leaderboards_list <- [
   ::g_lb_category.UNIT_RANK
@@ -63,7 +64,7 @@ let { stripTags } = require("%sqstd/string.nut")
 
     this.platformFilter = getSeparateLeaderboardPlatformName()
     this.setRowsInPage()
-    ::add_big_query_record("ww_leaderboard.open", this.platformFilter)
+    sendBqEvent("CLIENT_POPUP_1", "ww_leaderboard.open", { platformFilter = this.platformFilter })
 
     this.initTable()
     this.fillMapsList()
@@ -262,7 +263,7 @@ let { stripTags } = require("%sqstd/string.nut")
     this.lbModeData = this.lbModesList[modeObjValue]
     this.lbMode = this.lbModeData.mode
     this.forClans = this.lbMode == "ww_clans"
-    ::add_big_query_record("ww_leaderboard.select_mode", this.lbMode);
+    sendBqEvent("CLIENT_POPUP_1", "ww_leaderboard.select_mode", { select_mode = this.lbMode })
 
     this.checkLbCategory()
 
@@ -297,7 +298,7 @@ let { stripTags } = require("%sqstd/string.nut")
       return
 
     this.lbDay = this.lbDaysList[dayObjValue]
-    ::add_big_query_record("ww_leaderboard.select_day", this.lbDay?.tostring() ?? "all")
+    sendBqEvent("CLIENT_POPUP_1", "ww_leaderboard.select_day", { select_day = this.lbDay?.tostring() ?? "all" })
 
     this.fetchLbData()
   }
@@ -308,7 +309,7 @@ let { stripTags } = require("%sqstd/string.nut")
       return
 
     this.lbMap = this.lbMapsList[mapObjValue]
-    ::add_big_query_record("ww_leaderboard.select_map", this.lbMap?.getId() ?? "all")
+    sendBqEvent("CLIENT_POPUP_1", "ww_leaderboard.select_map", { select_map = this.lbMap?.getId() ?? "all" })
 
     if (!this.isCountriesLeaderboard())
       this.updateCountriesComboBox(this.lbMap)
@@ -322,7 +323,7 @@ let { stripTags } = require("%sqstd/string.nut")
       return
 
     this.lbCountry = this.lbCountriesList[countryObjValue]
-    ::add_big_query_record("ww_leaderboard.select_country", this.lbCountry ?? "all")
+    sendBqEvent("CLIENT_POPUP_1", "ww_leaderboard.select_country", { select_country = this.lbCountry ?? "all" })
 
     if (!this.isCountriesLeaderboard())
       this.fetchLbData()

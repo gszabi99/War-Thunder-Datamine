@@ -14,6 +14,7 @@ let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { weaponItemTplPath } = require("%scripts/weaponry/getWeaponItemTplPath.nut")
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
+let { debug_dump_stack } = require("dagor.debug")
 
 ::dagui_propid.add_name_id("_iconBulletName")
 
@@ -140,9 +141,12 @@ let function getWeaponItemViewParams(id, unit, item, params = {}) {
   let bIcoItem = isBullets(visualItem) ? visualItem : getModifIconItem(unit, visualItem)
   if (bIcoItem) {
     let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
-    assert(unit?.isTank() || bulletsSet != null,
-          $"No bullets in bullets set {visualItem.name} for {unit.name}")
-
+    if (!unit?.isTank() && bulletsSet == null) {
+      let unitName = unit.name // warning disable: -declared-never-used
+      let bulletsSetName = visualItem.name // warning disable: -declared-never-used
+      debug_dump_stack()
+      logerr("No bullets in bullets set")
+    }
     res.iconBulletName = bIcoItem.name
     res.bulletImg = getBulletsIconView(bulletsSet)
   }

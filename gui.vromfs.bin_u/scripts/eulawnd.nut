@@ -7,6 +7,7 @@ let { getLocTextForLang } = require("dagor.localize")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::gui_start_eula <- function gui_start_eula(isForView = false) {
   ::gui_start_modal_wnd(::gui_handlers.EulaWndHandler, { isForView })
@@ -60,6 +61,6 @@ let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
   }
 
   function sendEulaStatistic(action) {
-    ::add_big_query_record("eula_screen", action)
+    sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", { action })
   }
 }

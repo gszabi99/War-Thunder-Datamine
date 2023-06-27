@@ -13,6 +13,7 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::gui_handlers.ShopCheckResearch <- class extends ::gui_handlers.ShopMenuHandler {
   wndType = handlerType.MODAL
@@ -332,7 +333,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
     let unit = this.getCurAircraft(true, true)
     this.flushItemExp(unit, @() this.setUnitOnResearch(unit, function() {
       this.hasSpendExpProcess = false
-      ::add_big_query_record("choosed_new_research_unit", unit.name)
+      sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_new_research_unit", { unitName = unit.name })
       this.sendUnitResearchedStatistic(unit)
     }))
   }
@@ -455,9 +456,8 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
   }
 
   function sendUnitResearchedStatistic(unit) {
-    ::add_big_query_record("completed_new_research_unit",
-        ::save_to_json({ unit = unit.name
-          howResearched = "earned_exp" }))
+    sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_unit", { unit = unit.name
+      howResearched = "earned_exp" })
   }
 }
 

@@ -21,6 +21,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config) {
@@ -245,8 +246,9 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
     }
 
     if (getTblValue("type", this.config) == "regionalPromoPopup")
-      ::add_big_query_record("promo_popup_click",
-        ::save_to_json({ id = this.config?.id ?? this.config?.link ?? this.config?.popupImage ?? -1 }))
+      sendBqEvent("CLIENT_POPUP_1", "promo_popup_click", {
+        id = this.config?.id ?? this.config?.link ?? this.config?.popupImage ?? -1
+      })
     openLinkWithSource([ obj?.link, this.config?.forceExternalBrowser ?? false ], "show_unlock")
   }
 

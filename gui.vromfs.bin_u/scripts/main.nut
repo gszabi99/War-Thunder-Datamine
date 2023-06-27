@@ -344,9 +344,6 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- require("g_listener_priority.nut")
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 
-::add_big_query_record <- require("chard")?.addBigQueryRecord
-  ?? ::add_big_query_record // Compatibility with 2.15.0.X
-
 foreach (fn in [
   "%scripts/debugTools/dbgToString.nut"
   "%sqDagui/framework/framework.nut"

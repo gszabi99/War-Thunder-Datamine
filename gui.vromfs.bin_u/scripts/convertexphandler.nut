@@ -16,6 +16,7 @@ let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 enum windowState {
   research,
@@ -178,9 +179,10 @@ enum windowState {
       this.currentState = windowState.research
 
     if (this.isRefreshingAfterConvert && oldState != this.currentState  && this.currentState == windowState.canBuy)
-      ::add_big_query_record("completed_new_research_unit",
-        ::save_to_json({ unit = this.unit.name
-          howResearched = "convert_exp" }))
+      sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_unit", {
+        unit = this.unit.name
+        howResearched = "convert_exp"
+      })
 
     this.updateData()
     this.fillContent()

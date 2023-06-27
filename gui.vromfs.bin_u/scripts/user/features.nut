@@ -106,6 +106,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   WorldWarCountryLeaderboard = false
 
   SpecialShip = false
+  Human = false
 
   GraphicsOptions = true
   Spectator = false

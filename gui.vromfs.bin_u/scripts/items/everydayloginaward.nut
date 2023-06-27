@@ -15,6 +15,7 @@ let { todayLoginExp, loginStreak, getExpRangeTextOfLoginStreak } = require("%scr
 let { GUI } = require("%scripts/utils/configs.nut")
 let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -631,10 +632,10 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
 
   function sendOpenTrophyStatistic(obj) {
     let objId = obj?.id
-    ::add_big_query_record("daily_trophy_screen",
-      objId == "btn_open" ? "main_get_reward"
+    sendBqEvent("CLIENT_GAMEPLAY_1", "daily_trophy_screen", {
+      result = objId == "btn_open" ? "main_get_reward"
         : objId == "btn_nav_open" ? "navbar_get_reward"
-        : "exit")
+        : "exit"})
   }
 
   function initExpTexts() {

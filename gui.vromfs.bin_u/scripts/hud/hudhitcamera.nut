@@ -232,6 +232,8 @@ let function showCrewCount() {
   unitInfo.crewLostCount = 0
   if (!isVisible || crewLostCount == 0)
     return
+  if (!(scene?.isValid() ?? false))
+    return
 
   let crewNestObj = scene.findObject("crew_nest")
   crewNestObj._blink = "yes"

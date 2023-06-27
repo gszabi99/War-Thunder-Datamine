@@ -29,6 +29,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { cutPrefix } = require("%sqstd/string.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -221,10 +222,10 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     }
 
     ::EventJoinProcess(event, null,
-      @(_event) ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic)),
+      @(_event) sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic),
       function() {
         configForStatistic.canIntoToBattle <- false
-        ::add_big_query_record("to_battle_button", ::save_to_json(configForStatistic))
+        sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
       })
   }
 

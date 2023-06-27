@@ -12,6 +12,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_time_msec } = require("dagor.time")
 let { rnd } = require("dagor.random")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 global enum queueStates {
   ERROR,
@@ -372,13 +373,14 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
     this.lastQueueReqParams = null
     this.showProgressBox(true, "wait/queueLeave")
 
-    ::add_big_query_record("exit_waiting_for_battle_screen",
-      ::save_to_json({ waitingTime = queue.getActiveTime()
-        queueType = queue.queueType.typeName
-        eventId = this.getQueueMode(queue)
-        country = this.getQueueCountry(queue)
-        rank = this.getMyRankInQueue(queue)
-        isCanceledByPlayer = params?.isCanceledByPlayer ?? false }))
+    sendBqEvent("CLIENT_GAMEPLAY_1", "exit_waiting_for_battle_screen", {
+      waitingTime = queue.getActiveTime()
+      queueType = queue.queueType.typeName
+      eventId = this.getQueueMode(queue)
+      country = this.getQueueCountry(queue)
+      rank = this.getMyRankInQueue(queue)
+      isCanceledByPlayer = params?.isCanceledByPlayer ?? false
+    })
 
     queue.leave(
       this.getOnLeaveQueueSuccessCallback(queue),

@@ -5,6 +5,8 @@ let { Cost } = require("%scripts/money.nut")
 
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+
 let function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   let blk = DataBlock()
   blk["name"] = unit.name
@@ -110,7 +112,7 @@ let function buy(unit, metric) {
 
 let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
   let unitName = unit.name
-  ::add_big_query_record("choosed_new_research_unit", unitName)
+  sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_new_research_unit", { unitName = unitName })
   if (!::canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
     return
 
@@ -136,7 +138,7 @@ let function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
 
 let function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() null) {
   let unitName = unit.name
-  ::add_big_query_record("choosed_new_research_unit", unitName)
+  sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_new_research_unit", { unitName = unitName })
   let prevUnitName = ::clan_get_researching_unit()
   let blk = DataBlock()
   blk.addStr("unit", unitName)

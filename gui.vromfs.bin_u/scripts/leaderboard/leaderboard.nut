@@ -15,6 +15,7 @@ let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.
 let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats
 } = require("%scripts/userstat/userstat.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::leaderboards_list <- [
   ::g_lb_category.PVP_RATIO
@@ -422,7 +423,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
     this.platformFilter = getSeparateLeaderboardPlatformName()
     this.setRowsInPage()
 
-    ::add_big_query_record("global_leaderboard.open", this.platformFilter)
+    sendBqEvent("CLIENT_POPUP_1", "global_leaderboard.open", { platformFilter = this.platformFilter })
 
     this.initTable()
     this.initModes()
@@ -591,7 +592,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
       this.afterLoadSelfRow = this.requestSelfPage
       this.fetchLbData()
 
-      ::add_big_query_record("global_leaderboard.select_mode", this.lbMode);
+      sendBqEvent("CLIENT_POPUP_1", "global_leaderboard.select_mode", { select_mode = this.lbMode })
     }
   }
 

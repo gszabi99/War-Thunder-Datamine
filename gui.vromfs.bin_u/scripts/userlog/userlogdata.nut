@@ -302,8 +302,10 @@ local logNameByType = {
             || unlockType == UNLOCKABLE_DECAL
             || unlockType == UNLOCKABLE_SKIN
             || unlockType == UNLOCKABLE_ATTACHABLE
-            || unlockType == UNLOCKABLE_PILOT )
+            || unlockType == UNLOCKABLE_PILOT) {
               unlocksRewards[blk.body.unlockId] <- true
+              seenIdsArray.append(blk?.id)
+            }
 
           // Don't stack unlocked units together with other ones.
           // It should look uniform with unit unlock in debriefing
@@ -312,9 +314,10 @@ local logNameByType = {
             let logObj = {}
             for (local n = 0, c = blk.body.paramCount(); n < c; n++)
               logObj[blk.body.getParamName(n)] <- blk.body.getParamValue(n)
+
             unlockUnits[blk.body.unlockId] <- logObj
+            seenIdsArray.append(blk?.id)
           }
-          seenIdsArray.append(blk?.id)
         }
 
         continue

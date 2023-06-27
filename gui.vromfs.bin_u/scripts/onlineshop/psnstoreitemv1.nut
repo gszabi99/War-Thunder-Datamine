@@ -14,6 +14,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
+let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let IMAGE_TYPE_INDEX = 1 //240x240
 let BQ_DEFAULT_ACTION_ERROR = -1
@@ -51,11 +52,9 @@ let function sendBqRecord(metric, itemId, result = null) {
 
   let path = ".".join(metric)
   statsd.send_counter($"sq.{path}", 1)
-  ::add_big_query_record(path,
-    ::save_to_json(sendStat.__merge({
-      itemId = itemId
-    }))
-  )
+  sendBqEvent("CLIENT_POPUP_1", path, sendStat.__merge({
+    itemId = itemId
+  }))
 }
 
 let function reportRecord(data, _record_name) {
