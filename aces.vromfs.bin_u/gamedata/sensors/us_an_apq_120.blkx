@@ -13,7 +13,7 @@
       "timeGainControl": true,
       "antenna": {
         "angleHalfSens": 6.7,
-        "sideLobesSensitivity": -30.0
+        "sideLobesSensitivity": -28.0
       }
     }
   },
@@ -32,8 +32,8 @@
         60.0
       ],
       "elevationLimits": [
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
@@ -51,8 +51,8 @@
         60.0
       ],
       "elevationLimits": [
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
@@ -70,11 +70,12 @@
         60.0
       ],
       "elevationLimits": [
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
-      "period": 1.0,
+      "period": 0.5,
       "width": 3.35,
+      "centerElevation": -2.0,
       "indicate": true
     },
     "designationLock": {
@@ -84,8 +85,8 @@
         60.0
       ],
       "elevationLimits": [
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
@@ -153,12 +154,12 @@
   },
   "scopeRangeSets": {
     "common": {
-      "range1": 18500.0,
-      "range2": 46250.0,
-      "range3": 92500.0,
-      "range4": 185000.0,
-      "range5": 370000.0,
-      "range6": 9250.0
+      "range1": 46250.0,
+      "range2": 92500.0,
+      "range3": 185000.0,
+      "range4": 370000.0,
+      "range5": 9250.0,
+      "range6": 18500.0
     },
     "boresightLock": {
       "range1": 18500.0
@@ -183,6 +184,7 @@
               -60.0,
               60.0
             ],
+            "azimuthWidth": 8.0,
             "elevationRange": [
               -60.0,
               60.0
@@ -618,6 +620,15 @@
           "event": "update",
           "actions": {
             "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
             "setCenterElevation": [
               {
                 "source": "constant",

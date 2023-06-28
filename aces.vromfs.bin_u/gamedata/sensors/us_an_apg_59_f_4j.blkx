@@ -11,7 +11,7 @@
       "range": 70000.0,
       "rangeMax": 150000.0,
       "antenna": {
-        "angleHalfSens": 4.7,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -30.0
       }
     },
@@ -23,7 +23,7 @@
       "range": 90000.0,
       "rangeMax": 150000.0,
       "antenna": {
-        "angleHalfSens": 4.7,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -30.0
       }
     }
@@ -48,7 +48,7 @@
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
-      "period": 0.5,
+      "period": 1.0,
       "width": 15.0,
       "barHeight": 2.5,
       "barsCount": 2,
@@ -68,7 +68,7 @@
       "pitchStabLimit": 60.0,
       "period": 3.0,
       "width": 60.0,
-      "barHeight": 2.6,
+      "barHeight": 2.67,
       "barsCount": 3,
       "rowMajor": true
     },
@@ -267,12 +267,12 @@
   },
   "scopeRangeSets": {
     "pulse": {
-      "range1": 18500.0,
-      "range2": 46250.0,
-      "range3": 92500.0,
-      "range4": 185000.0,
-      "range5": 370000.0,
-      "range6": 9250.0
+      "range1": 46250.0,
+      "range2": 92500.0,
+      "range3": 185000.0,
+      "range4": 370000.0,
+      "range5": 9250.0,
+      "range6": 18500.0
     },
     "pulseDopplerSearch": {
       "range1": 92500.0
@@ -1412,6 +1412,15 @@
           "event": "update",
           "actions": {
             "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
             "setCenterElevation": [
               {
                 "source": "constant",

@@ -24,7 +24,7 @@ local function getMyCrewUnitsState(country = null) {
 
     unitsStateCached.crewAirs[c.country] <- []
     foreach (crew in c.crews)
-      if (("aircraft" in crew) && crew.aircraft != "") {
+      if (("aircraft" in crew) && crew.aircraft != "" && crew.isLocked == 0) {
         let air = getAircraftByName(crew.aircraft)
         if (air) {
           unitsStateCached.crewAirs[c.country].append(crew.aircraft)

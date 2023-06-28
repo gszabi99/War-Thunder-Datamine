@@ -24,7 +24,7 @@
       "rangeMax": 85000.0,
       "antenna": {
         "angleHalfSens": 3.5,
-        "sideLobesSensitivity": -34.0
+        "sideLobesSensitivity": -32.0
       }
     },
     "irst": {
@@ -66,12 +66,13 @@
         60.0
       ],
       "rollStabLimit": 90.0,
-      "pitchStabLimit": 30.0,
+      "pitchStabLimit": 60.0,
       "period": 3.5,
       "width": 15.0,
       "barHeight": 2.4,
       "barsCount": 6,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "radarSearchAutoWide": {
       "type": "pyramide",
@@ -84,12 +85,13 @@
         60.0
       ],
       "rollStabLimit": 90.0,
-      "pitchStabLimit": 30.0,
+      "pitchStabLimit": 60.0,
       "period": 3.6,
       "width": 20.0,
       "barHeight": 3.0,
       "barsCount": 6,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "radarSearchManual": {
       "type": "pyramide",
@@ -102,12 +104,13 @@
         60.0
       ],
       "rollStabLimit": 90.0,
-      "pitchStabLimit": 30.0,
+      "pitchStabLimit": 60.0,
       "period": 3.7,
       "width": 25.0,
       "barHeight": 2.5,
       "barsCount": 4,
-      "rowMajor": true
+      "rowMajor": true,
+      "preciseMinor": true
     },
     "radarDesignationLockSearch": {
       "type": "pyramide",
@@ -120,7 +123,7 @@
         60.0
       ],
       "rollStabLimit": 90.0,
-      "pitchStabLimit": 30.0,
+      "pitchStabLimit": 60.0,
       "period": 0.8,
       "width": 4.0,
       "barHeight": 2.5,
@@ -138,9 +141,9 @@
         -45.0,
         60.0
       ],
-      "period": 1.1,
+      "period": 2.2,
       "width": 25.0,
-      "barHeight": 2.5,
+      "barHeight": 3.0,
       "barsCount": 2,
       "rowMajor": false,
       "centerElevation": 15.0,
@@ -197,7 +200,6 @@
         -15.0,
         15.0
       ],
-      "rollStabLimit": 90.0,
       "period": 2.5,
       "width": 15.0,
       "barHeight": 4.0,
@@ -216,7 +218,6 @@
         -15.0,
         15.0
       ],
-      "rollStabLimit": 90.0,
       "period": 1.25,
       "width": 15.0,
       "barHeight": 3.75,
@@ -235,7 +236,6 @@
         -15.0,
         15.0
       ],
-      "rollStabLimit": 90.0,
       "period": 0.3,
       "width": 3.0,
       "barHeight": 4.0,
@@ -309,10 +309,6 @@
   },
   "signals": {
     "mprfSearch": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -332,10 +328,6 @@
       }
     },
     "hprfSearch": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
@@ -355,10 +347,6 @@
       }
     },
     "mprfTrack": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -382,10 +370,6 @@
     "hprfTrack": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -407,10 +391,6 @@
       }
     },
     "acmTrack": {
-      "dynamicRange": [
-        40.0,
-        10.0
-      ],
       "groundClutter": false,
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
@@ -2317,7 +2297,9 @@
             "clearTargetsOfInterest": {
               "timeOut": 12.0
             },
-            "setCueToActiveTargetOfInterest": {},
+            "setCueToActiveTargetOfInterest": {
+              "elevation": false
+            },
             "setCenterAzimuth": [
               {
                 "source": "constant",
@@ -2363,7 +2345,9 @@
               "blend": 0.5
             },
             "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {}
+            "setCueToActiveTargetOfInterest": {
+              "elevation": false
+            }
           }
         },
         "switchSelectedTarget": {
@@ -2423,7 +2407,9 @@
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         }
       }
@@ -2464,7 +2450,9 @@
         "detect": {
           "event": "update",
           "actions": {
-            "detectTarget": {}
+            "detectTarget": {
+              "rangeMult": 1.0
+            }
           }
         },
         "track": {

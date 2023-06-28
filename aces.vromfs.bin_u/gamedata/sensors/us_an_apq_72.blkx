@@ -12,8 +12,8 @@
       "rangeMax": 100000.0,
       "timeGainControl": true,
       "antenna": {
-        "angleHalfSens": 4.7,
-        "sideLobesSensitivity": -27.0
+        "angleHalfSens": 6.7,
+        "sideLobesSensitivity": -28.0
       }
     }
   },
@@ -173,11 +173,11 @@
   },
   "scopeRangeSets": {
     "common": {
-      "range1": 18500.0,
+      "range1": 46250.0,
       "range2": 92500.0,
       "range3": 185000.0,
       "range4": 370000.0,
-      "range5": 9250.0
+      "range5": 18500.0
     },
     "boresightLock": {
       "range1": 18500.0
@@ -202,6 +202,7 @@
               -60.0,
               60.0
             ],
+            "azimuthWidth": 8.0,
             "elevationRange": [
               -60.0,
               60.0
@@ -637,6 +638,15 @@
           "event": "update",
           "actions": {
             "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
             "setCenterElevation": [
               {
                 "source": "constant",

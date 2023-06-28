@@ -12,62 +12,108 @@
       "rangeMax": 75000.0,
       "timeGainControl": true,
       "antenna": {
-        "angleHalfSens": 6.0,
-        "sideLobesSensitivity": -28.0
+        "azimuth": {
+          "angleHalfSens": 1.8,
+          "sideLobesSensitivity": -28.0
+        },
+        "elevation": {
+          "angleHalfSens": 2.8,
+          "sideLobesSensitivity": -28.0
+        }
       }
     }
   },
   "scanPatterns": {
-    "search": {
+    "searchNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -45.0,
-        45.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -45.0,
+        30.0
       ],
-      "rollStabLimit": 70.0,
+      "rollStabLimit": 60.0,
       "pitchStabLimit": 45.0,
-      "period": 1.0,
-      "width": 45.0,
-      "barHeight": 5.5,
+      "period": 0.5,
+      "width": 10.0,
+      "barHeight": 2.5,
       "barsCount": 2,
-      "rowMajor": true
+      "rowMajor": true,
+      "centerElevation": -3.0
+    },
+    "searchMedium": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        30.0
+      ],
+      "rollStabLimit": 60.0,
+      "pitchStabLimit": 45.0,
+      "period": 1.3,
+      "width": 30.0,
+      "barHeight": 2.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "centerElevation": -3.0
+    },
+    "searchWide": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        30.0
+      ],
+      "rollStabLimit": 60.0,
+      "pitchStabLimit": 45.0,
+      "period": 2.6,
+      "width": 60.0,
+      "barHeight": 2.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "centerElevation": -3.0
     },
     "boresightLock": {
       "type": "cone",
       "azimuthLimits": [
-        -45.0,
-        45.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -45.0,
+        30.0
       ],
-      "period": 1.0,
+      "period": 0.25,
       "width": 0.1,
       "indicate": true
     },
     "designationLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -45.0,
-        45.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -40.0,
-        45.0
+        -45.0,
+        30.0
       ],
-      "rollStabLimit": 70.0,
+      "rollStabLimit": 60.0,
       "pitchStabLimit": 45.0,
-      "period": 0.5,
+      "period": 0.35,
       "width": 4.0,
-      "barHeight": 5.0,
+      "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": false,
-      "indicate": true
+      "indicate": true,
+      "centerElevation": -3.0
     },
     "track": {
       "type": "no",
@@ -116,7 +162,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 30000.0,
+        "maxValue": 75000.0,
         "width": 300.0
       }
     },
@@ -141,19 +187,22 @@
     }
   },
   "scanPatternSets": {
-    "common": {
-      "scanPattern1": "search"
+    "search": {
+      "scanPattern1": "searchMedium",
+      "scanPattern2": "searchWide",
+      "scanPattern3": "searchNarrow"
     },
     "boresightLock": {
       "scanPattern1": "boresightLock"
     }
   },
   "scopeRangeSets": {
-    "common": {
-      "range1": 18500.0,
-      "range2": 37000.0,
-      "range3": 74000.0,
-      "range4": 9250.0
+    "search": {
+      "range1": 37000.0,
+      "range2": 74000.0,
+      "range3": 7400.0,
+      "range4": 18500.0,
+      "range5": 148000.0
     },
     "boresightLock": {
       "range1": 18500.0
@@ -175,16 +224,17 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -45.0,
-              45.0
+              -60.0,
+              60.0
             ],
+            "azimuthWidth": 3.0,
             "elevationRange": [
-              -40.0,
-              45.0
+              -45.0,
+              30.0
             ],
             "distanceRange": [
               0.0,
-              18500.0
+              74000.0
             ]
           }
         },
@@ -209,10 +259,10 @@
             "signal": "surfaceSearch"
           },
           "setScanPatternSet": {
-            "scanPatternSet": "common"
+            "scanPatternSet": "search"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "common"
+            "scopeRangeSet": "search"
           }
         },
         "setSearchMode": {
@@ -243,10 +293,10 @@
             "signal": "surfaceSearch"
           },
           "setScanPatternSet": {
-            "scanPatternSet": "common"
+            "scanPatternSet": "search"
           },
           "setScopeRangeSet": {
-            "scopeRangeSet": "common"
+            "scopeRangeSet": "search"
           }
         },
         "resetSearchMode": {
@@ -327,8 +377,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 9250.0,
-            "width": 18500.0
+            "pos": 37500.0,
+            "width": 75000.0
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"

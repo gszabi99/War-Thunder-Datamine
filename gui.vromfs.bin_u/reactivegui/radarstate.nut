@@ -300,7 +300,7 @@ interop.updateTarget <- function (index,
 
   let cvt = @(val, vmin, vmax, omin, omax) omin + ((omax - omin) * (val - vmin)) / (vmax - vmin)
 
-  let signalRel = signal_rel < 0.05
+  let signalRel = signal_rel < 0.01
     ? 0.0
     : cvt(signal_rel, 0.05, 1.0, 0.3, 1.0)
   let old_tgt = targets[index]

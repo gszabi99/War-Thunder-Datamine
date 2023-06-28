@@ -211,6 +211,25 @@
       "rowMajor": true,
       "indicate": true
     },
+    "designationLockTws": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
+      "period": 0.25,
+      "width": 5.0,
+      "barHeight": 4.0,
+      "barsCount": 2,
+      "rowMajor": true,
+      "indicate": true
+    },
     "track": {
       "type": "no",
       "azimuthLimits": [
@@ -511,7 +530,7 @@
             {
               "source": "constRange",
               "pos": 0.0,
-              "width": 1800.0
+              "width": 3000.0
             }
           ],
           "setFsmActive": {
@@ -577,7 +596,7 @@
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
+            "width": 3000.0
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
@@ -716,21 +735,36 @@
           }
         },
         "setTwsDesignationLockMode": {
-          "setDesignationLockModeCommon": {},
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "designationLockTws"
+          },
+          "resetScanPhase": {},
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "targetDesignation",
+            "width": 30.0
+          },
+          "clearTargets": {},
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
           "setModeName": {
-            "name": "TWS acquisition"
-          }
-        },
-        "setTwsBoresightLockMode": {
-          "setBoresightLockModeCommon": {},
-          "setModeName": {
-            "name": "TWS ACM"
-          }
-        },
-        "setTwsTrackMode": {
-          "setTrackModeCommon": {},
-          "setModeName": {
-            "name": "TWS track"
+            "name": "PD acquisition"
           }
         }
       },
@@ -804,6 +838,14 @@
           "stateTo": "pulseDopplerBoresightLock",
           "actions": {
             "setPulseDopplerBoresightLockMode": {}
+          }
+        },
+        "pulseDopplerToPulseBoresightLock": {
+          "stateFrom": "pulseDopplerBoresightLock",
+          "command": "modeSwitch",
+          "stateTo": "pulseBoresightLock",
+          "actions": {
+            "setPulseBoresightLockMode": {}
           }
         },
         "pulseDesignationLock": {
@@ -1158,7 +1200,9 @@
             "pulseBoresightLock",
             "pulseDopplerBoresightLock",
             "twsStandby",
-            "twsSearch"
+            "twsSearch",
+            "twsBoresightLock",
+            "twsPulseBoresightLock"
           ],
           "command": "scanPatternSwitch",
           "actions": {
@@ -1226,20 +1270,20 @@
             "setPulseSearchMode": {}
           }
         },
-        "pulseDopplerToTwsBoresightLock": {
-          "stateFrom": "pulseDopplerBoresightLock",
+        "twsToPulseTwsBoresightLock": {
+          "stateFrom": "twsBoresightLock",
+          "command": "modeSwitch",
+          "stateTo": "twsPulseBoresightLock",
+          "actions": {
+            "setPulseBoresightLockMode": {}
+          }
+        },
+        "pulseTwsToTwsBoresightLock": {
+          "stateFrom": "twsPulseBoresightLock",
           "command": "modeSwitch",
           "stateTo": "twsBoresightLock",
           "actions": {
             "setPulseDopplerBoresightLockMode": {}
-          }
-        },
-        "twsToPulseBoresightLock": {
-          "stateFrom": "twsBoresightLock",
-          "command": "modeSwitch",
-          "stateTo": "pulseBoresightLock",
-          "actions": {
-            "setPulseBoresightLockMode": {}
           }
         },
         "twsDesignationLock": {
@@ -1320,7 +1364,7 @@
           "stateTo": "twsBoresightLock",
           "actions": {
             "resetTwsMode": {},
-            "setTwsBoresightLockMode": {}
+            "setPulseDopplerBoresightLockMode": {}
           }
         },
         "twsBoresightLockFromTwsStandby": {
@@ -1332,7 +1376,7 @@
           "stateTo": "twsBoresightLock",
           "actions": {
             "resetTwsMode": {},
-            "setTwsBoresightLockMode": {}
+            "setPulseDopplerBoresightLockMode": {}
           }
         },
         "twsBoresightTrack": {
@@ -1344,7 +1388,7 @@
               "fsm": "lock",
               "active": false
             },
-            "setTwsTrackMode": {}
+            "setPulseDopplerTrackMode": {}
           }
         },
         "twsBoresightLockToTwsStandby": {
@@ -1380,7 +1424,7 @@
               "fsm": "track",
               "active": false
             },
-            "setTwsBoresightLockMode": {}
+            "setPulseDopplerBoresightLockMode": {}
           }
         },
         "twsBoresightTrackToTwsStandby": {
@@ -1405,6 +1449,78 @@
               "active": false
             },
             "setTwsSearchMode": {}
+          }
+        },
+        "twsPulseBoresightTrack": {
+          "stateFrom": "twsPulseBoresightLock",
+          "event": "targetDetected",
+          "stateTo": "twsPulseBoresightTrack",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setPulseTrackMode": {}
+          }
+        },
+        "twsPulseBoresightLockToTwsStandby": {
+          "stateFrom": "twsPulseBoresightLock",
+          "command": "selectTarget",
+          "stateTo": "pulseStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setPulseStandbyMode": {}
+          }
+        },
+        "twsPulseBoresightLockToTwsSearch": {
+          "stateFrom": "twsPulseBoresightLock",
+          "command": "acmSwitch",
+          "stateTo": "pulseSearch",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            },
+            "setPulseSearchMode": {}
+          }
+        },
+        "brokenTwsPulseBoresightTrack": {
+          "stateFrom": "twsPulseBoresightTrack",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "twsPulseBoresightLock",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setPulseBoresightLockMode": {}
+          }
+        },
+        "twsPulseBoresightTrackToTwsStandby": {
+          "stateFrom": "twsPulseBoresightTrack",
+          "command": "selectTarget",
+          "stateTo": "pulseStandby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setPulseStandbyMode": {}
+          }
+        },
+        "twsPulseBoresightTrackToTwsSearch": {
+          "stateFrom": "twsPulseBoresightTrack",
+          "command": "acmSwitch",
+          "stateTo": "pulseSearch",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            },
+            "setPulseSearchMode": {}
           }
         }
       }
