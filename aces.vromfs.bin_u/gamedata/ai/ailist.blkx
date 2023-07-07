@@ -5005,6 +5005,67 @@
       }
     },
     {
+      "name": "recon_micro",
+      "selectStrategy": "ordered",
+      "reaction": [
+        {
+          "event": "groundAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "collisionAhead",
+          "parallel": {
+            "turnToEvasiveDir": {},
+            "stayAtSpeed": {
+              "speedMode": "boostOn"
+            }
+          }
+        },
+        {
+          "event": "outsideBattleField",
+          "flyToPos": {
+            "speed": 550.0,
+            "dist": -1.0,
+            "minAlt": 100.0,
+            "destType": "battleField"
+          }
+        }
+      ],
+      "sequencer": {
+        "reaction": [
+          {
+            "event": "groundAhead"
+          },
+          {
+            "event": "outsideBattleField"
+          }
+        ],
+        "selector": {
+          "selectStrategy": "ordered",
+          "ifThenElse": {
+            "isPlayerOrbitActive": {},
+            "orbitHere": {
+              "speed": 100.0,
+              "rollFactor": 0.13,
+              "maxPitch": 30.0,
+              "maxRoll": 45.0
+            },
+            "parallel": {
+              "stayAtCurrentAlt": {},
+              "stayAtSpeed": {
+                "speedMode": "maxSpeed"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "quadcopter",
       "autopilotHover": {}
     },

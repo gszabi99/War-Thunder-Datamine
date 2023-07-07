@@ -328,7 +328,12 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     params.__merge({ showButtons = showButtons }))
   let { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
 
-  itemObj.findObject("name").setValue(viewParams.nameText)
+  // For single-line textareas, enforce non-breaking text to prevent line wrapping,
+  // ensuring maximum visibility of the displayed text.
+  let isSingleLine = !viewParams.hideBulletsChoiceBlock
+  itemObj.findObject("name").setValue(isSingleLine
+    ? ::stringReplace(viewParams.nameText, " ", ::nbsp)
+    : viewParams.nameText)
 
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId

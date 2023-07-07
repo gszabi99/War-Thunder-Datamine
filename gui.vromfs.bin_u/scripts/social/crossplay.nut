@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
@@ -11,7 +12,24 @@ let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
 let crossNetworkPlayStatus = persist("crossNetworkPlayStatus", @() Watched(null))
-crossNetworkPlayStatus.subscribe(@(v) v == null ? null : broadcastEvent("CrossPlayOptionChanged"))
+crossNetworkPlayStatus.subscribe(function(v) {
+  logX($"Status updated -> {crossNetworkPlayStatus.value}")
+  if (v) {
+    logX("Broadcasting CrossPlayOptionChanged event")
+    broadcastEvent("CrossPlayOptionChanged")
+  }
+})
+
+if (isPlatformXboxOne) {
+  logX("Registering for state change update")
+  crossnetworkPrivilege.subscribe(function(v) {
+    logX($"xboxLib.crossnetworkPrivilege updated -> {v}")
+    if (crossNetworkPlayStatus.value != v)
+      crossNetworkPlayStatus.update(v)
+    else
+      crossNetworkPlayStatus.trigger()
+  })
+}
 
 let crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))
 
@@ -19,19 +37,21 @@ let resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
 let resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
 
 let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
+  if (isPlatformXboxOne)
+    return
+
   if (!needOverrideValue && crossNetworkPlayStatus.value != null)
     return
 
-  if (isPlatformXboxOne)
-    crossNetworkPlayStatus(crossnetworkPrivilege.value)
-  else if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
+  if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     crossNetworkPlayStatus(::load_local_account_settings(PS4_CROSSPLAY_OPT_ID, true))
   else
     crossNetworkPlayStatus(true)
 }
 
 let isCrossNetworkPlayEnabled = function() {
-  updateCrossNetworkPlayStatus()
+  if (!isPlatformXboxOne)
+    updateCrossNetworkPlayStatus()
   return crossNetworkPlayStatus.value
 }
 

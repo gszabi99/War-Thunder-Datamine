@@ -141,7 +141,6 @@ let { stripTags } = require("%sqstd/string.nut")
     let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
-      canChangeBulletsAmount = true
       isForcedAvailable = isUnitSpecial && !isUnitUsable
       forceShowDefaultTorpedoes = !isUnitSpecial && !isUnitUsable
     })

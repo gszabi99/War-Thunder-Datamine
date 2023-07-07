@@ -145,17 +145,8 @@ let list = {
 
       if (::is_any_campaign_available())
         return handler.checkedNewFlight(@() ::gui_start_campaign())
-
-      if (!hasFeature("OnlineShopPacks"))
-        return ::show_not_available_msg_box()
-
-      ::scene_msg_box("question_buy_campaign", null, loc("mainmenu/questionBuyHistorical"),
-        [
-          ["yes", ::purchase_any_campaign],
-          ["no", function() {}]
-        ], "yes", { cancel_fn = function() {} })
     }
-    isHidden = @(...) !hasFeature("HistoricalCampaign")
+    isHidden = @(...) !hasFeature("HistoricalCampaign") || !::is_any_campaign_available()
     isVisualDisabled = @() contentStateModule.isHistoricalCampaignDownloading()
     isInactiveInQueue = true
   }

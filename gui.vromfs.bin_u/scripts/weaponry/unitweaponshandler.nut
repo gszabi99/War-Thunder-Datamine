@@ -19,7 +19,6 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
   unit = null
   canShowPrice = false
   canChangeWeaponry = true
-  canChangeBulletsAmount = true
 
   weaponItemId = "secondary_weapon"
   bulletsIdPrefix = "bullets_"
@@ -55,8 +54,8 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
     this.showItemParams = {
       canShowPrice = this.canShowPrice
       canShowStatusImage = false
-      selectBulletsByManager = (this.canChangeWeaponry && this.canChangeBulletsAmount) ? this.bulletsManager : null
-      needSliderButtons = this.canChangeBulletsAmount
+      selectBulletsByManager = this.canChangeWeaponry ? this.bulletsManager : null
+      needSliderButtons = true
       hasMenu = false
       isForceHidePlayerInfo = this.isForcedAvailable || this.forceShowDefaultTorpedoes
     }
@@ -280,8 +279,7 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
       return null
 
     let res = this.getEmptyColumnsConfig()
-    if (this.canChangeBulletsAmount)
-      res.itemWidth = 1.5
+    res.itemWidth = 1.5
     if (gunsCount == 1) {
       let totalMods = this.bulletsManager.getActiveBulGroupsAmount()
       local totalColumns = 0

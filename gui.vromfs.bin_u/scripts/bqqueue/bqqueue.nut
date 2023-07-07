@@ -16,6 +16,7 @@ let { myUserId } = require("%scripts/user/profileStates.nut")
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
 const RETRY_MSEC = 30000 //retry send on all servers down
 const RETRY_ON_URL_ERROR_MSEC = 3000
+const MAX_COUNT_MSG_IN_ONE_SEND = 150
 const RESPONSE_EVENT = "bq.requestResponse"
 let queueByUserId = mkHardWatched("bqQueue.queueByUserId", {})
 let queue = Computed(@() queueByUserId.value?[myUserId.value] ?? [])
@@ -36,10 +37,25 @@ let function changeUrl() {
   currentUrlIndex((currentUrlIndex.value + 1) % max(urls.value.len(), 1))
 }
 
+local sendAll = @() null
+
+let function startSendTimer() {
+  if (queue.value.len() == 0)
+    return
+  let timeLeft = nextCanSendMsec.value - get_time_msec()
+  if (timeLeft > 0)
+    resetTimeout(0.001 * timeLeft, sendAll)
+  else
+    defer(sendAll)
+}
+startSendTimer()
+
 let function callbackRequest(res) {
   let { status = -1, http_code = -1, context = null } = res
   if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
     logBQ($"Success send {context?.list.len()} events")
+    if (!(context?.isAllSent ?? true))
+      startSendTimer()
     return
   }
 
@@ -61,11 +77,13 @@ let function callbackRequest(res) {
   }
 }
 
-let function sendAll() {
+sendAll = function() {
   if (queue.value.len() == 0)
     return
 
   let list = {}
+  let remainingMsg = []
+  let sendedMsg = []
   local count = 0
   foreach(msg in queue.value) {
     let { tableId = null, data = null } = msg
@@ -73,17 +91,18 @@ let function sendAll() {
       logerr($"[BQ] Bad type of tableId or data for event: tableId = {tableId}, type of data = {type(data)}")
       continue
     }
+    if (count >= MAX_COUNT_MSG_IN_ONE_SEND) {
+      remainingMsg.append(msg)
+      continue
+    }
     if (tableId not in list)
       list[tableId] <- []
     list[tableId].append(data)
+    sendedMsg.append(msg)
     count++
   }
 
-  let context = {
-    userId = myUserId.value
-    list = queue.value
-  }
-  queueByUserId.mutate(@(v) v[myUserId.value] <- [])
+  queueByUserId.mutate(@(v) v[myUserId.value] <- remainingMsg)
   if (count == 0)
     return
 
@@ -96,28 +115,24 @@ let function sendAll() {
     withCircuit = true
   }
 
-  logBQ($"Request BQ events (total = {count})")
+  let remainingCount = remainingMsg.len()
+  logBQ($"Request BQ events (total = {count}, remainig = {remainingCount})")
+  if (remainingCount > 0)
+    logerr($"[BQ] Too many events piled up to send to BQ. More then {MAX_COUNT_MSG_IN_ONE_SEND}.")
 
   request({
     url = url.value
     headers
     waitable = true
     data = json_to_string(list)
-    context
     callback = callbackRequest
+    context = {
+      userId = myUserId.value
+      list = sendedMsg
+      isAllSent = remainingCount == 0
+    }
   })
 }
-
-let function startSendTimer() {
-  if (queue.value.len() == 0)
-    return
-  let timeLeft = nextCanSendMsec.value - get_time_msec()
-  if (timeLeft > 0)
-    resetTimeout(0.001 * timeLeft, sendAll)
-  else
-    defer(sendAll)
-}
-startSendTimer()
 
 local wasQueueLen = queue.value.len()
 queue.subscribe(function(v) {

@@ -23,7 +23,7 @@ global enum bulletsAmountState {
 ::UnitBulletsManager <- class {
   unit = null  //setUnit to change
   bulGroups = null //bulletsGroups
-  gunsInfo = null //bulletsInfo for primary guns (guns, total, catridge, groupIndex) //getBulletsInfoForPrimaryGuns
+  gunsInfo = null //bulletsInfo for primary guns (guns, total, cartridge, groupIndex) //getBulletsInfoForPrimaryGuns
   groupsActiveMask = 0
 
   checkPurchased = true

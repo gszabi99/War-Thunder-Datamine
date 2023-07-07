@@ -261,6 +261,7 @@ options.addTypes({
       local curGunIdx = -1
       let groupsCount = getBulletsGroupCount(unit)
 
+      // Offensive Armament
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
         let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
         if (gunIdx == curGunIdx)
@@ -350,8 +351,9 @@ options.addTypes({
         }
       }
 
-      // Collecting special shells
-      let specialBulletTypes = [ "rocket" ]
+      // Secondary weapons
+      let specialBulletTypes = [ "rocket", "bullet" ]
+
       let unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
       let weapons = getUnitWeapons(unitBlk)
       let knownWeapBlkArray = []
@@ -362,31 +364,50 @@ options.addTypes({
         knownWeapBlkArray.append(weap.blk)
 
         let { weaponBlk, weaponBlkPath } = getWeaponBlkParams(weap.blk, {})
-        local bulletBlk = null
+        local curBlk
+        local curType
 
         foreach (t in specialBulletTypes)
-          bulletBlk = bulletBlk ?? weaponBlk?[t]
+          if (weaponBlk?[t]) {
+            curBlk = weaponBlk?[t]
+            curType = t
+            break
+          }
 
+        let isBullet = curType == "bullet"
         let locName = utf8ToUpper(
           loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
-        if (!bulletBlk || isInArray(locName, bulletNamesSet))
+        if (!curBlk || isInArray(locName, bulletNamesSet))
           continue
 
         bulletNamesSet.append(locName)
+        let bulletParams = calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
         this.values.append({
-          bulletName = ""
+          bulletName = isBullet ? curBlk.bulletType : ""
           weaponBlkName = weaponBlkPath
-          bulletParams = calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
-          sortVal = bulletBlk?.caliber ?? 0
+          bulletParams
+          sortVal = curBlk?.caliber ?? 0
         })
 
         this.items.append({
           text = locName
-          addDiv = SINGLE_WEAPON.getMarkup(unit.name, {
-            blkPath = weaponBlkPath
-            tType = weap.trigger
-            presetName = weap.presetId
-          })
+          addDiv = isBullet
+            ? SINGLE_BULLET.getMarkup(unit.name, curBlk.bulletType, {
+              modName = "",
+              bSet = {
+                caliber = (curBlk?.caliber ?? 0) * 1000
+                bullets = weaponBlk % "bullet"
+                bulletAnimations = [curBlk?.shellAnimation ?? ""]
+                cartridge = 0
+              },
+              bulletParams
+            })
+            : SINGLE_WEAPON.getMarkup(unit.name, {
+              blkPath = weaponBlkPath
+              tType = weap.trigger
+              presetName = weap.presetId
+            })
+
         })
       }
 

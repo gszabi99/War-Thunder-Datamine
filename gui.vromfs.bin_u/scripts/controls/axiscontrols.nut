@@ -611,8 +611,10 @@ let { stripTags } = require("%sqstd/string.nut")
   }
 
   function afterModalDestroy() {
-    broadcastEvent("ControlsChangedShortcuts", { changedShortcuts = this.changedShortcuts })
-    broadcastEvent("ControlsChangedAxes", { changedAxes = this.changedAxes })
+    broadcastEvent("ControlsChangedShortcuts", { changedShortcuts = this.changedShortcuts,
+      updShortcuts = this.shortcuts })
+    broadcastEvent("ControlsChangedAxes", { changedAxes = this.changedAxes,
+      updShortcuts = this.shortcuts })
   }
 
   function goBack() {

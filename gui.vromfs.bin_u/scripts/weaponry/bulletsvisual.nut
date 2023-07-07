@@ -98,8 +98,8 @@ let function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = f
           ?? DEFAULT_BULLET_IMG_ASPECT_RATIO
         local maxAmountInView = (bulletsSet?.weaponType == WEAPON_TYPE.COUNTERMEASURES)
           ? 1 : min(MAX_BULLETS_ON_ICON, (1.0 / ratio).tointeger())
-        if (bulletsSet.catridge)
-          maxAmountInView = min(bulletsSet.catridge, maxAmountInView)
+        if (bulletsSet.cartridge)
+          maxAmountInView = min(bulletsSet.cartridge, maxAmountInView)
         count = length * max(1, floor(maxAmountInView / length))
       }
 

@@ -42,7 +42,7 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
       data.view.buttonImage <- this.getImage()
       data.template = "%gui/shortcutAxis.tpl"
     }
-    else if (this.deviceId == STD_MOUSE_DEVICE_ID) {
+    else if (this.deviceId == STD_MOUSE_DEVICE_ID && this.axisId < 0) {// Do not show mouse axis if joystick bound
       data.view.buttonImage <- this.getImage()
       data.template = "%gui/shortcutAxis.tpl"
     }

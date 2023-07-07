@@ -34,8 +34,8 @@ let BULLET_TYPE = {
 
 let DEFAULT_PRIMARY_BULLETS_INFO = {
   guns                      = 1
-  total                     = 0 //catridges total
-  catridge                  = 1
+  total                     = 0 //cartridges total
+  cartridge                 = 1
   groupIndex                = -1
   forcedMaxBulletsInRespawn = false
 }
@@ -248,7 +248,7 @@ let function getBulletsSetData(air, modifName, noModList = null) {
                   bullets = [],
                   bulletDataByType = {}
                   isBulletBelt = isBulletBelt
-                  catridge = wBlk?.bulletsCartridge ?? 0
+                  cartridge = wBlk?.bulletsCartridge ?? 0
                   weaponType = weaponType
                   useDefaultBullet = !wBlk?.notUseDefaultBulletInGui,
                   weaponBlkName = wBlkName
@@ -445,7 +445,7 @@ let function findIdenticalWeapon(weapon, weaponList, modsList) {
 
   foreach (blkName, info in weaponList) {
     if (info.groupIndex == groupIdx
-      && cartridgeSize == info.catridge)
+      && cartridgeSize == info.cartridge)
       return blkName
   }
 
@@ -487,9 +487,9 @@ let function getBulletsInfoForPrimaryGuns(air) {
         if (u.isEmpty(wBlk))
           continue
 
-        wpList[weapon.blk].catridge = wBlk?.bulletsCartridge || 1
+        wpList[weapon.blk].cartridge = wBlk?.bulletsCartridge || 1
         wpList[weapon.blk].total = ceil(wpList[weapon.blk].total * 1.0 /
-          wpList[weapon.blk].catridge).tointeger()
+          wpList[weapon.blk].cartridge).tointeger()
 
         wpList[weapon.blk].groupIndex = getWeaponModIdx(wBlk, modsList)
         wpList[weapon.blk].forcedMaxBulletsInRespawn = wBlk?.forcedMaxBulletsInRespawn ?? false

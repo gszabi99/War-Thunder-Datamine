@@ -662,17 +662,14 @@ local axisMappedOnMouse = {
     if (!checkObj(itemObj))
       return
 
-    let axis = item.axisIndex >= 0
-      ? this.curJoyParams.getAxis(item.axisIndex)
-      : ::ControlsPreset.getDefaultAxis()
     local data = ""
     let curPreset = ::g_controls_manager.getCurPreset()
-    if (axis.axisId >= 0) {
-      let activationShortcut = getAxisActivationShortcutData(item.id, curPreset)
-      if (activationShortcut != "")
-        data = $"{data}{getTextMarkup(this.getSymbol(""))}{activationShortcut}"
-    }
     if ("modifiersId" in item) {
+      if ("" in item.modifiersId && item.modifiersId[""] in this.shortcuts) {
+        let activationShortcut = getAxisActivationShortcutData(this.shortcuts, item, curPreset)
+        if (activationShortcut != "")
+          data = $"{getTextMarkup(this.getSymbol(""))}{activationShortcut}"
+      }
       //--- options controls list  ---
       foreach (modifier, id in item.modifiersId)
         if (modifier != "") {
@@ -1372,11 +1369,13 @@ local axisMappedOnMouse = {
   }
 
   function onEventControlsChangedShortcuts(p) {
+    this.shortcuts = p?.updShortcuts ?? this.shortcuts
     foreach (sc in (p?.changedShortcuts ?? []))
       this.updateShortcutText(sc)
   }
 
   function onEventControlsChangedAxes(p) {
+    this.shortcuts = p?.updShortcuts ?? this.shortcuts
     foreach (axis in p.changedAxes)
       this.updateAxisShortcuts(axis)
   }
@@ -1455,12 +1454,25 @@ local axisMappedOnMouse = {
     ], "backToControls")
   }
 
-  function onMouseWheel(obj) {
-    let item = this.getCurItem()
-    if (!item || !("values" in item) || !obj)
+  function updateMouseAxis(value, id) {
+    let curItem = shortcutsListModule.types.findvalue(@(v) v.id == id)
+    if (!curItem)
       return
 
+    let curValue = curItem.values?[value]
+    if (curValue == null)
+      return
+
+    this.curJoyParams.setMouseAxis(curItem.axis_num, curValue == "none" ? "" : curValue)
+    this.updateSceneOptions()
+  }
+
+  function onMouseWheel(obj) {
     let value = obj.getValue()
+    let item = this.getCurItem()
+    if (!item || !("values" in item) || !obj)
+      return this.updateMouseAxis(value, obj.id)
+
     let axisName = getTblValue(value, item.values)
     let zoomPostfix = "zoom"
     if (axisName && axisName.len() >= zoomPostfix.len() && axisName.slice(-4) == zoomPostfix) {

@@ -41,6 +41,12 @@
       "cannon2_dm": {
         "hp": 15.0
       },
+      "cannon3_dm": {
+        "hp": 15.0
+      },
+      "cannon4_dm": {
+        "hp": 15.0
+      },
       "gun1_dm": {
         "hp": 15.0
       }
@@ -169,6 +175,12 @@
       },
       "cover4_dm": {
         "hp": 19.5
+      },
+      "cover5_dm": {
+        "hp": 19.5
+      },
+      "cover6_dm": {
+        "hp": 19.5
       }
     },
     "dural90": {
@@ -191,7 +203,7 @@
         "hp": 110.5
       }
     },
-    "glass106": {
+    "glass102": {
       "armor10_dm": {
         "hp": 100.0
       }
@@ -377,6 +389,12 @@
         "name": "cannon2_dm"
       },
       {
+        "name": "cannon3_dm"
+      },
+      {
+        "name": "cannon4_dm"
+      },
+      {
         "name": "cover1_dm"
       },
       {
@@ -387,6 +405,12 @@
       },
       {
         "name": "cover4_dm"
+      },
+      {
+        "name": "cover5_dm"
+      },
+      {
+        "name": "cover6_dm"
       },
       {
         "name": "elevator0_dm",
@@ -2602,6 +2626,14 @@
         "rocket_engine_2"
       ]
     },
+    "HideDmParts": {
+      "node": [
+        "cover5_dm",
+        "cannon3_dm",
+        "cover6_dm",
+        "cannon4_dm"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,
@@ -3035,6 +3067,12 @@
                 "upk_23_250_b001"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover5_dm",
+                "cannon3_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
@@ -3044,7 +3082,8 @@
               "spread": 1.5,
               "traceOffset": 1,
               "counterIndex": 1,
-              "external": true
+              "external": true,
+              "dm": "cannon3_dm"
             }
           }
         ]
@@ -3353,6 +3392,12 @@
                 "upk_23_250_b002"
               ]
             },
+            "ShowDmParts": {
+              "node": [
+                "cover6_dm",
+                "cannon4_dm"
+              ]
+            },
             "Weapon": {
               "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGSh_23L_upk_23_250.blk",
@@ -3362,7 +3407,8 @@
               "spread": 1.5,
               "traceOffset": 1,
               "counterIndex": 1,
-              "external": true
+              "external": true,
+              "dm": "cannon4_dm"
             }
           }
         ]
