@@ -1,14 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -135,8 +132,8 @@ let function getObjPosInSafeArea(obj) {
   function updateObjectsPositions(tdClone, legendObj, headerObj) {
     let rootSize = this.guiScene.getRoot().getSize()
     let sh = rootSize[1]
-    let bh = ::g_dagui_utils.toPixels(this.guiScene, "@bh")
-    let interval = ::g_dagui_utils.toPixels(this.guiScene, "@itemsIntervalBig")
+    let bh = toPixels(this.guiScene, "@bh")
+    let interval = toPixels(this.guiScene, "@itemsIntervalBig")
 
     //count position by visual card obj. real td is higher and wider than a card.
     let visTdObj = tdClone.childrenCount() ? tdClone.getChild(0) : tdClone
@@ -189,7 +186,7 @@ let function getObjPosInSafeArea(obj) {
 
       if (isNearTd) { //else centered.
         let sw = rootSize[0]
-        let bw = ::g_dagui_utils.toPixels(this.guiScene, "@bw")
+        let bw = toPixels(this.guiScene, "@bw")
         local legendPosX = tdPos[0] + tdSize[0] + interval
         if (legendPosX + legendSize[0] > sw - bw)
           legendPosX = tdPos[0] - interval - legendSize[0]

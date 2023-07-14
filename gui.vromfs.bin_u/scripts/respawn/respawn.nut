@@ -1,12 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let { get_gui_option } = require("guiOptions")
@@ -27,16 +25,11 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getLastWeapon,
-        setLastWeapon,
-        isWeaponEnabled,
-        isWeaponVisible,
-        getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationName, getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
-let { AMMO,
-        getAmmoAmount,
-        getAmmoMaxAmountInSession,
-        getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
+let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData
+} = require("%scripts/weaponry/ammoInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkInRoomMembers } = require("%scripts/contacts/updateContactsStatus.nut")
@@ -2044,7 +2037,7 @@ enum ESwitchSpectatorTarget {
     this.guiScene.applyPendingChanges(false)
 
     let leftPanelObj = this.scene.findObject("panel-left")
-    let minChatHeight = ::g_dagui_utils.toPixels(this.guiScene, "1@minChatHeight")
+    let minChatHeight = toPixels(this.guiScene, "1@minChatHeight")
     let hOversize = unitOptionsObj.getSize()[1] + objectivesObj.getSize()[1] +
       minChatHeight - leftPanelObj.getSize()[1]
 
@@ -2055,9 +2048,9 @@ enum ESwitchSpectatorTarget {
       unitOptionsObj.height = unitOptionsHeight
     }
 
-    let maxChatHeight = ::g_dagui_utils.toPixels(this.guiScene, "1@maxChatHeight")
+    let maxChatHeight = toPixels(this.guiScene, "1@maxChatHeight")
     this.canSwitchChatSize = chatObj.getSize()[1] < maxChatHeight
-      && objectivesObj.getSize()[1] > ::g_dagui_utils.toPixels(this.guiScene, "1@minMisObjHeight")
+      && objectivesObj.getSize()[1] > toPixels(this.guiScene, "1@minMisObjHeight")
 
     this.showSceneBtn("mis_obj_text_header", !this.canSwitchChatSize)
     this.showSceneBtn("mis_obj_button_header", this.canSwitchChatSize)

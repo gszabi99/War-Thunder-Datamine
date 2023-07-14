@@ -11,7 +11,7 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
-let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
+let { setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { getDistr } = require("auth_wt")
@@ -352,13 +352,13 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
     return ::check_login_pass(no_dump_login,
-                              ::get_object_value(this.scene, "loginbox_password", ""),
+                              getObjValue(this.scene, "loginbox_password", ""),
                               this.check2StepAuthCode ? "" : this.stoken, //after trying use stoken it's set to "", but to be sure - use "" for 2stepAuth
                               code,
                               this.check2StepAuthCode
-                                ? ::get_object_value(this.scene, "loginbox_code_remember_this_device", false)
-                                : !::get_object_value(this.scene, "loginbox_disable_ssl_cert", false),
-                              ::get_object_value(this.scene, "loginbox_remote_comp", false)
+                                ? getObjValue(this.scene, "loginbox_code_remember_this_device", false)
+                                : !getObjValue(this.scene, "loginbox_disable_ssl_cert", false),
+                              getObjValue(this.scene, "loginbox_remote_comp", false)
                              )
   }
 
@@ -370,9 +370,9 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
         ::set_network_circuit(this.shardItems[this.scene.findObject("sharding_list").getValue()].item)
     }
 
-    let autoSaveLogin = ::get_object_value(this.scene, "loginbox_autosave_login", this.defaultSaveLoginFlagVal)
-    let autoSavePassword = ::get_object_value(this.scene, "loginbox_autosave_password", this.defaultSavePasswordFlagVal)
-    let disableSSLCheck = ::get_object_value(this.scene, "loginbox_disable_ssl_cert", false)
+    let autoSaveLogin = getObjValue(this.scene, "loginbox_autosave_login", this.defaultSaveLoginFlagVal)
+    let autoSavePassword = getObjValue(this.scene, "loginbox_autosave_password", this.defaultSavePasswordFlagVal)
+    let disableSSLCheck = getObjValue(this.scene, "loginbox_disable_ssl_cert", false)
     local autoSave = (autoSaveLogin     ? AUTO_SAVE_FLG_LOGIN     : 0) |
                      (autoSavePassword  ? AUTO_SAVE_FLG_PASS      : 0) |
                      (disableSSLCheck   ? AUTO_SAVE_FLG_NOSSLCERT : 0)
@@ -383,12 +383,12 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     if (this.isGuestLogin)
       ::save_local_shared_settings(GUEST_LOGIN_SAVE_ID, getGuestLoginId())
 
-    ::set_login_pass(no_dump_login.tostring(), ::get_object_value(this.scene, "loginbox_password", ""), autoSave)
+    ::set_login_pass(no_dump_login.tostring(), getObjValue(this.scene, "loginbox_password", ""), autoSave)
     if (!checkObj(this.scene)) //set_login_pass start onlineJob
       return
 
     let autoLogin = (autoSaveLogin && autoSavePassword) ?
-                ::get_object_value(this.scene, "loginbox_autologin", this.defaultSaveAutologinFlagVal)
+                getObjValue(this.scene, "loginbox_autologin", this.defaultSaveAutologinFlagVal)
                 : false
     ::set_autologin_enabled(autoLogin)
     if (this.initial_autologin != autoLogin)
@@ -413,7 +413,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
   function doLoginWaitJob() {
     ::disable_autorelogin_once <- false
-    let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
+    let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
     local result = this.requestLogin(no_dump_login)
     this.proceedAuthorizationResult(result, no_dump_login)
   }
@@ -431,7 +431,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
   onSteamAuthorization = @() this.steamAuthorization()
 
   function onSsoAuthorization() {
-    let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
+    let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
     let no_dump_url = ::webauth_get_url(no_dump_login)
     openUrl(no_dump_url)
     ::browser_set_external_url(no_dump_url)
@@ -441,7 +441,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
     ::close_browser_modal()
 
     if (params.success) {
-      let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
+      let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
       ::load_local_settings()
       this.continueLogin(no_dump_login);
     }
@@ -454,7 +454,7 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
     let result = data.status
     let code = data.code
-    let no_dump_login = ::get_object_value(this.scene, "loginbox_username", "")
+    let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
 
     if (result == YU2_TIMEOUT && this.requestGet2stepCodeAtempt-- > 0) {
       this.doLoginDelayed()
@@ -613,8 +613,8 @@ register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
       ], "no", { cancel_fn = @() null })
   }
 
-  isLoginEditsFilled = @() ::get_object_value(this.scene, "loginbox_username", "") != ""
-    && ::get_object_value(this.scene, "loginbox_password", "") != ""
+  isLoginEditsFilled = @() getObjValue(this.scene, "loginbox_username", "") != ""
+    && getObjValue(this.scene, "loginbox_password", "") != ""
 
   function setLoginBtnState () {
     let loginBtnObj = this.scene.findObject("login_action_button")

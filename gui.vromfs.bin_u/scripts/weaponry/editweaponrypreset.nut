@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let regexp2 = require("regexp2")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
@@ -165,7 +165,7 @@ let function openEditPresetName(name, okFunc) {
 
   function getCurrenTierObj() {
     let presetObj = this.presetNest.findObject("tiersNest_")
-    let value = ::get_obj_valid_index(presetObj)
+    let value = getObjValidIndex(presetObj)
     if (value < 0)
       return null
 

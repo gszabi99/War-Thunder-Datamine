@@ -8,7 +8,7 @@ let { format } = require("string")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
-let { WEAPON_TYPE,
+let { WEAPON_TYPE, TRIGGER_TYPE,
         getLinkedGunIdx,
         getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsList,
@@ -166,6 +166,12 @@ options.addTypes <- function(typesTable) {
   this.types.sort(@(a, b) a.sortId <=> b.sortId)
 }
 
+let function addParamsToBulletSet(bSet, bData) {
+  foreach (param in ["explosiveType", "explosiveMass"])
+    bSet[param] <- bData?[param]
+
+  return bSet
+}
 local sortIdCount = 0
 options.addTypes({
   UNKNOWN = {
@@ -321,12 +327,12 @@ options.addTypes({
             local addDiv = ""
 
             if (isBulletBelt) {
-              local bSet = bulletsSet.__merge({ bullets = [bulletName] })
               let bData = bulletsSet.bulletDataByType[bulletName]
-
-              foreach (param in ["explosiveType", "explosiveMass", "bulletAnimations"]) {
-                bSet[param] <- bData?[param]
-              }
+              local bSet = bulletsSet.__merge({
+                bullets = [bulletName]
+                bulletAnimations = bData.bulletAnimations
+              })
+              addParamsToBulletSet(bSet, bData)
 
               addDiv = SINGLE_BULLET.getMarkup(unit.name, bulletName, {
                 modName = value,
@@ -359,7 +365,8 @@ options.addTypes({
       let knownWeapBlkArray = []
 
       foreach (weap in weapons) {
-        if (!weap?.blk || weap?.dummy || isInArray(weap.blk, knownWeapBlkArray))
+        if (!weap?.blk || weap?.dummy || weap.trigger == TRIGGER_TYPE.COUNTERMEASURES
+          || isInArray(weap.blk, knownWeapBlkArray))
           continue
         knownWeapBlkArray.append(weap.blk)
 
@@ -389,17 +396,20 @@ options.addTypes({
           sortVal = curBlk?.caliber ?? 0
         })
 
+        local bSet
+        if (isBullet)
+          bSet = addParamsToBulletSet({}, curBlk).__merge({
+            caliber = (curBlk?.caliber ?? 0) * 1000
+            bullets = weaponBlk % "bullet"
+            cartridge = 0
+            bulletAnimations = [curBlk?.shellAnimation ?? ""]
+          })
+
         this.items.append({
           text = locName
           addDiv = isBullet
             ? SINGLE_BULLET.getMarkup(unit.name, curBlk.bulletType, {
-              modName = "",
-              bSet = {
-                caliber = (curBlk?.caliber ?? 0) * 1000
-                bullets = weaponBlk % "bullet"
-                bulletAnimations = [curBlk?.shellAnimation ?? ""]
-                cartridge = 0
-              },
+              bSet
               bulletParams
             })
             : SINGLE_WEAPON.getMarkup(unit.name, {

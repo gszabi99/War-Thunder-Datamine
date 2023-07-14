@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout, updateItemBulletsSlider
 } = require("%scripts/weaponry/weaponryVisual.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -44,7 +43,7 @@ let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.
     if (!this.needRecountWidth || !this.scene.isVisible() || this.scene.getSize()[0] <= 0)
       return
 
-    let sizes = ::g_dagui_utils.countSizeInItems(this.scene, "@modCellWidth", "@modCellHeight", 0, 0)
+    let sizes = countSizeInItems(this.scene, "@modCellWidth", "@modCellHeight", 0, 0)
     this.modsInRow = sizes.itemsCountX
     this.scene.width = this.modsInRow + "@modCellWidth"
     this.needRecountWidth = false

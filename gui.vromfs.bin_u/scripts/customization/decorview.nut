@@ -57,6 +57,7 @@ let function getDecorButtonView(decorator, unit, params = null) {
     unitLocked
     leftAmount
     lockCountryImg
+    unseenIcon = params?.unseenIcon
   }
 }
 

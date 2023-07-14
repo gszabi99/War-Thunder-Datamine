@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { show_obj } = require("%sqDagui/daguiUtil.nut")
 
 let getCurrentClustersInfo = function() {
   let clusterOpt = ::get_option(::USEROPT_RANDB_CLUSTER)
@@ -17,7 +18,7 @@ let getCurrentClustersInfo = function() {
 
 let updateClusters = function(btnObj) {
   local show = isMultiplayerPrivilegeAvailable.value
-  if (!::show_obj(btnObj, show) || !show)
+  if (!show_obj(btnObj, show) || !show)
     return
 
   let currentClustersInfo = getCurrentClustersInfo()

@@ -1,18 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
 let { abs, ceil, floor } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -24,7 +20,7 @@ let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, 
 } = require("shopUnitCellFill.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
-let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex, show_obj } = require("%sqDagui/daguiUtil.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
 let { hasMarkerByUnitName, getUnlockIdByUnitName,
@@ -1923,7 +1919,7 @@ shopData = [
             let hasObjective = ::isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(groupUnit) hasMarkerByUnitName(groupUnit.name, curEdiff))) != null
               : u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
-            ::show_obj(unitObj.findObject("unlockMarker"), hasObjective)
+            show_obj(unitObj.findObject("unlockMarker"), hasObjective)
           }
         }
       }

@@ -224,8 +224,8 @@ let function addInvitesToFriend(inviters) {
   if (inviters == null)
     return
 
-  foreach(ueser in inviters)
-    ::g_invites.addFriendInvite(ueser?.name ?? "", ueser?.userId ?? "")
+  foreach(user in inviters)
+    ::g_invites.addFriendInvite(user?.name ?? "", user?.userId ?? "")
 
   fetchContacts()
 }
@@ -243,7 +243,7 @@ addListenersWithoutEnv({
 })
 
 matchingRpcSubscribe("mpresence.notify_presence_update", onUpdateContactsCb)
-matchingRpcSubscribe("mpresence.on_added_to_contact_list", @(p) addInvitesToFriend(p?.user))
+matchingRpcSubscribe("mpresence.on_added_to_contact_list", @(p) addInvitesToFriend([p?.user]))
 
 return {
   searchContactsResults
@@ -255,4 +255,5 @@ return {
   addContact
   removeContact
   updatePresencesByList
+  execContactsCharAction
 }

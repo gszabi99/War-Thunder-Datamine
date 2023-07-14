@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -39,7 +38,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function updateWndAlign() {
     if (checkObj(this.alignObj))
-      this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("frame_obj"))
+      this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("frame_obj"))
   }
 
   function setCurItem(item) {

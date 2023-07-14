@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 
 ::gui_handlers.FramedOptionsWnd <- class extends ::gui_handlers.GenericOptions {
   wndType = handlerType.MODAL
@@ -25,7 +24,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     base.initScreen()
 
-    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
+    this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.initOpenAnimParams()
   }
 

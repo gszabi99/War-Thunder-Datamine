@@ -1,12 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { getTitleLogo } = require("%scripts/viewUtils/getTitleLogo.nut")
 
 return function(scene = null, logoHeight = -1) {
   let guiScene = ::get_cur_gui_scene()
   if (logoHeight == -1) {
-    let displayHeight = ::g_dagui_utils.toPixels(guiScene, "@titleLogoPlateHeight")
+    let displayHeight = toPixels(guiScene, "@titleLogoPlateHeight")
     logoHeight = min(max(displayHeight.tointeger(), 64), 128)
   }
 

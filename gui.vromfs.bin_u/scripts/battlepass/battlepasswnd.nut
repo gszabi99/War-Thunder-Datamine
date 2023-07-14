@@ -1,8 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { ceil } = require("math")
 let { rnd } = require("dagor.random")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -19,7 +17,7 @@ let { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
 } = require("%scripts/battlePass/watchObjInfoConfig.nut")
 let { openBattlePassShopWnd } = require("%scripts/battlePass/progressShop.nut")
 let { userstatStats, isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let { getSelectedChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { getSelectedChild, findChildIndex, adjustWindowSize } = require("%sqDagui/daguiUtil.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
@@ -98,7 +96,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       return
 
     let wndObj = this.scene.findObject("wnd_battlePass")
-    let sizes = ::g_dagui_utils.adjustWindowSize(wndObj, this.scene.findObject("battle_pass_sheet"),
+    let sizes = adjustWindowSize(wndObj, this.scene.findObject("battle_pass_sheet"),
       "@battlePassStageWidth", "@battlePassStageHeight", "@battlePassStageMargin",
       "@battlePassStageMargin", { windowSizeY = 0 })
     this.stagesPerPage = sizes.itemsCountX

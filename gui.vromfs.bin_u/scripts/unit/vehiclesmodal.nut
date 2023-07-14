@@ -1,13 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_time_msec } = require("dagor.time")
-
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
-let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { ceil } = require("%sqstd/math.nut")
 
@@ -240,7 +237,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function getCurSlotObj() {
     let listObj = this.scene.findObject("units_list")
-    let idx = ::get_obj_valid_index(listObj)
+    let idx = getObjValidIndex(listObj)
     if (idx < 0)
       return null
 

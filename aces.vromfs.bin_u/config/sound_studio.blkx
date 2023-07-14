@@ -70,7 +70,7 @@
   "banks": {
     "presets": {
       "master": {
-        "masterbank": {
+        "masterbank.strings": {
           "async": false,
           "preload": true
         },
@@ -78,7 +78,7 @@
           "async": false,
           "preload": true
         },
-        "masterbank.strings": {
+        "masterbank": {
           "async": false,
           "preload": true
         },
@@ -259,12 +259,22 @@
           "preload": false
         },
         "football": {
-          "async": false,
+          "async": true,
           "preload": false
         },
         "football.assets": {
-          "async": false,
+          "async": true,
           "preload": false
+        },
+        "event": {
+          "async": true,
+          "preload": false,
+          "path": "sound"
+        },
+        "event.assets": {
+          "async": true,
+          "preload": false,
+          "path": "sound"
         }
       },
       "dialogs": {
@@ -6131,6 +6141,26 @@
       "distSmooth": 0.9
     }
   },
+  "engine_uav_p": {
+    "effects": {
+      "path": "event/units/uav_p",
+      "eventStart": "engine_start",
+      "eventStop": "engine_stop",
+      "eventProp": "engine_prop"
+    },
+    "outside": {
+      "path": "event/units/uav_p",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "engine01_toon_ai": {
     "effects": {
       "path": "toon/engines",
@@ -6349,6 +6379,20 @@
       "eventBack": "engine_uav_mq1_ai",
       "eventSurround": "",
       "eventLod1": "engine_uav_mq1_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_uav_p_ai": {
+    "outside": {
+      "path": "event/units/uav_p",
+      "eventFront": "",
+      "eventBack": "engine_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_ai",
       "rpmSmooth": 0.014,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -17057,6 +17101,11 @@
       "ship": {
         "path": "naval/effects"
       }
+    },
+    "event_reload_rocket": {
+      "path": "event/units/hedge",
+      "event": "reload_rocket",
+      "time": 2.0
     },
     "grd_roland_reload": {
       "path": "ground/effects",

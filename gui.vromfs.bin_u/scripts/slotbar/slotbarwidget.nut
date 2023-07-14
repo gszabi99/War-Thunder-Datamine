@@ -1,14 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getObjValidIndex, toPixels } = require("%sqDagui/daguiUtil.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -498,7 +495,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     this.slotbarOninit = false
     this.guiScene.applyPendingChanges(false)
 
-    let countriesNestMaxWidth = ::g_dagui_utils.toPixels(this.guiScene, "1@slotbarCountriesMaxWidth")
+    let countriesNestMaxWidth = toPixels(this.guiScene, "1@slotbarCountriesMaxWidth")
     let countriesNestWithBtnsObj = this.scene.findObject("header_countries_nest")
     if (countriesNestWithBtnsObj.getSize()[0] > countriesNestMaxWidth)
       countriesNestObj.isShort = "yes"
@@ -619,7 +616,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       return res
     res.countryId = countryIdStr.tointeger()
 
-    let curValue = ::get_obj_valid_index(obj)
+    let curValue = getObjValidIndex(obj)
     if (curValue < 0)
       return res
 

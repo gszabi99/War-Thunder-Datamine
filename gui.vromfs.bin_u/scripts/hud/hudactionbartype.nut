@@ -974,6 +974,9 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = loc("hotkeys/ID_HUMAN_JUMP")
     _icon = "#ui/gameuiskin#exoskelet_jump"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_HUMAN_JUMP"
+    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      return actionItem?.weaponName ?? this._icon
+    }
   }
 
   SPRINT = {
@@ -982,6 +985,9 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = loc("hotkeys/ID_HUMAN_SPRINT")
     _icon = "#ui/gameuiskin#exoskelet_run"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_HUMAN_SPRINT"
+    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
+      return actionItem?.weaponName ?? this._icon
+    }
   }
 
   TOGGLE_VIEW  = {
@@ -991,15 +997,13 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#exoskelet_sight"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_VIEW_HUMAN"
   }
-  //
-
-
-
-
-
-
-
-
+  BURAV_CONTROL = {
+    code = EII_BURAV
+    _name = "burav_control"
+    _title = loc("hotkeys/ID_BOMBS")
+    _icon = "#ui/gameuiskin#atomic_burav_control"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_BOMBS"
+  }
 })
 
 ::g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code) {

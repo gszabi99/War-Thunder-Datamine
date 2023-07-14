@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let replayMetadata = require("%scripts/replays/replayMetadata.nut")
@@ -599,7 +597,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
   function calculateReplaysPerPage() {
     this.guiScene.applyPendingChanges(false)
     let replaysListObj = this.scene.findObject("items_list")
-    this.replaysPerPage = ::g_dagui_utils.countSizeInItems(replaysListObj, 1, "1@baseTrHeight", 0, 0).itemsCountY
+    this.replaysPerPage = countSizeInItems(replaysListObj, 1, "1@baseTrHeight", 0, 0).itemsCountY
   }
 }
 

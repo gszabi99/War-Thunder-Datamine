@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { show_obj, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -58,8 +58,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let titleObj = this.scene.findObject("wnd_title")
     titleObj.setValue(loc(this.titleLocId))
 
-    ::show_obj(this.getTabsListObj(), false)
-    ::show_obj(this.getSheetsListObj(), false)
+    show_obj(this.getTabsListObj(), false)
+    show_obj(this.getSheetsListObj(), false)
     this.hoverHoldAction = mkHoverHoldAction(this.scene.findObject("hover_hold_timer"))
 
     this.fillItemsList()
@@ -209,12 +209,12 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     let isEmptyList = data.len() == 0 || this.isLoadingInProgress
 
     this.showSceneBtn("sorting_block", !isEmptyList)
-    ::show_obj(listObj, !isEmptyList)
+    show_obj(listObj, !isEmptyList)
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     let emptyListObj = this.scene.findObject("empty_items_list")
-    ::show_obj(emptyListObj, isEmptyList)
-    ::show_obj(emptyListObj.findObject("loadingWait"), isEmptyList && this.needWaitIcon && this.isLoadingInProgress)
+    show_obj(emptyListObj, isEmptyList)
+    show_obj(emptyListObj.findObject("loadingWait"), isEmptyList && this.needWaitIcon && this.isLoadingInProgress)
 
     this.showSceneBtn("items_shop_to_marketplace_button", false)
     this.showSceneBtn("items_shop_to_shop_button", false)
@@ -325,7 +325,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function onChangeSortParam(obj) {
-    let val = ::get_obj_valid_index(obj)
+    let val = getObjValidIndex(obj)
     this.lastSorting = val < 0 ? 0 : val
     this.updateSorting()
     this.applyFilters()
@@ -474,7 +474,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getCurItemObj() {
     let itemListObj = this.getItemsListObj()
-    let value = ::get_obj_valid_index(itemListObj)
+    let value = getObjValidIndex(itemListObj)
     if (value < 0)
       return null
 

@@ -309,7 +309,7 @@ let radarTargetDist = @() {
     @() {
       watch = CCIPMode
       size = flex()
-      children = CCIPMode.value ? [
+      children = [
         @() {
           watch = [IlsColor, radarDistKm]
           size = SIZE_TO_CONTENT
@@ -320,9 +320,7 @@ let radarTargetDist = @() {
           font = Fonts.mirage_ils
           text = string.format("%.1fKM", RadarTargetDist.value / 1000.0)
         }
-      ] :
-      [
-        {
+        !CCIPMode.value ? @() {
           size = [pw(12), ph(5)]
           pos = [pw(70), ph(55)]
           rendObj = ROBJ_VECTOR_CANVAS
@@ -346,7 +344,7 @@ let radarTargetDist = @() {
               halign = ALIGN_RIGHT
             }
           ]
-        }
+        } : null
       ]
     }
   ] : null

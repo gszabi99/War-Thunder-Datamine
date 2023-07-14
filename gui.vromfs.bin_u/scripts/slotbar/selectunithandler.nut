@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
@@ -443,7 +442,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.guiScene.setUpdatesEnabled(true, true)
 
     let sizeChoosePopupMenu = objChoosePopupMenu.getSize()
-    let scrWidth = ::g_dagui_utils.toPixels(this.guiScene, "@bw + @rw")
+    let scrWidth = toPixels(this.guiScene, "@bw + @rw")
     objChoosePopupMenu.side = ((objChoosePopupMenu.getPosRC()[0] + sizeChoosePopupMenu[0]) > scrWidth) ? "left" : "right"
   }
 

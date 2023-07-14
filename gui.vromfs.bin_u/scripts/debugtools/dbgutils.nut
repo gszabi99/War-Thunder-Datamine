@@ -30,6 +30,7 @@ let { get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
+let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -333,7 +334,7 @@ let function debug_change_resolution(shouldIncrease = true) {
 }
 
 let function debug_multiply_color(colorStr, multiplier) {
-  let res = ::g_dagui_utils.multiplyDaguiColorStr(colorStr, multiplier)
+  let res = multiplyDaguiColorStr(colorStr, multiplier)
   ::copy_to_clipboard(res)
   return res
 }

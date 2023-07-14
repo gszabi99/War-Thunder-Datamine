@@ -1,11 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 
@@ -53,7 +51,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     this.recentItems = ::g_recent_items.getRecentItems()
     let isVisible = (!checkDefShow || this.defShow) && this.recentItems.len() > 0
       && ::ItemsManager.isEnabled() && ::isInMenu()
-    ::show_obj(this.scene, isVisible)
+    show_obj(this.scene, isVisible)
     this.wasShown = isVisible
     if (!isVisible)
       return
@@ -140,7 +138,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     let isVisible = !::handlersManager.findHandlerClassInScene(::gui_handlers.EveryDayLoginAward)
       && !::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd)
       && ::g_recent_items.getRecentItems().len()
-    ::show_obj(this.scene, isVisible)
+    show_obj(this.scene, isVisible)
   }
 
   onEventActiveHandlersChanged = @(_p) this.updateVisibility()

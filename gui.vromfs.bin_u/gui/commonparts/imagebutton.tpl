@@ -140,6 +140,13 @@ imgButton {
     <</onDeleteClick>>
   <</emptySlot>>
 
+  <<#unseenIcon>>
+  unseenIcon {
+    pos:t='pw-w - 2@dp, 2@dp'
+    position:t='absolute'
+    value:t='<<unseenIcon>>'
+  }
+  <</unseenIcon>>
   <<#tooltipId>>
   <<^isTooltipByHold>>
     tooltipObj {

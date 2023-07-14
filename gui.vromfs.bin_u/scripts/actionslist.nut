@@ -2,6 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getSelectedChild, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
+
 /*
   API
     ActionsList.create(parent, params)
@@ -30,11 +35,6 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
       }
 
 */
-let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
-
 ::gui_handlers.ActionsList <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
@@ -113,7 +113,7 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
   function updatePosition() {
     this.guiScene.applyPendingChanges(false)
     let defaultAlign = this.params?.orientation ?? ALIGN.TOP
-    ::g_dagui_utils.setPopupMenuPosAndAlign(this.parentObj, defaultAlign, this.scene)
+    setPopupMenuPosAndAlign(this.parentObj, defaultAlign, this.scene)
   }
 
   function goBack() {

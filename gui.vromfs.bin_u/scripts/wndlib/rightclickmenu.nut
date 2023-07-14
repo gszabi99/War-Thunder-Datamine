@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
-
+let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_time_msec } = require("dagor.time")
@@ -81,7 +79,7 @@ global enum RCLICK_MENU_ORIENT {
       actionData = {
         id = this.idPrefix + idx.tostring()
         text = text
-        textUncolored = text != null ? ::g_dagui_utils.removeTextareaTags(text) : ""
+        textUncolored = text != null ? removeTextareaTags(text) : ""
         tooltip = getTblValue("tooltip", item, "")
         enabled = enabled
         isVisualDisabled = item?.isVisualDisabled ?? false
@@ -146,7 +144,7 @@ global enum RCLICK_MENU_ORIENT {
   function updateBtnByTable(btnObj, data) {
     let text = getTblValue("text", data)
     if (!u.isEmpty(text)) {
-      btnObj.setValue(::g_dagui_utils.removeTextareaTags(text))
+      btnObj.setValue(removeTextareaTags(text))
       btnObj.findObject("text").setValue(text)
     }
 

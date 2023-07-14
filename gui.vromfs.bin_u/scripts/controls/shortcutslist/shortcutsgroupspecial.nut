@@ -152,11 +152,9 @@ return [
     id = "ID_SUPPORT_PLANE_ORBITING_HUMAN"
     checkAssign = false
   }
-  //
-
-
-
-
-
-
+  {
+    id = "ID_REPAIR_HUMAN"
+    needShowInHelp = true
+    checkAssign = false
+  }
 ]

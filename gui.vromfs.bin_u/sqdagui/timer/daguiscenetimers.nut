@@ -1,9 +1,8 @@
 
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { loadOnce, PERSISTENT_DATA_PARAMS, registerPersistentData
+let { PERSISTENT_DATA_PARAMS, registerPersistentData
 } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
-loadOnce("%sqDagui/daguiUtil.nut") //!!FIX ME: better to make this modules too
 
 const TIME_INTERVAL_SWITCH_OFF = 1000000.0
 

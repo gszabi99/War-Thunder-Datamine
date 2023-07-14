@@ -24,7 +24,7 @@ const PatchnoteReceived = "PatchnoteReceived"
 
 let ERROR_PAGE = {
   title = loc("matching/SERVER_ERROR_BAD_REQUEST")
-  content = { v = loc("matching/SERVER_ERROR_INTERNAL") }
+  content = [ { v = loc("matching/SERVER_ERROR_INTERNAL") } ]
 }
 let chosenPatchnote = Watched(null)
 let chosenPatchnoteLoaded = persist("chosenPatchnoteLoaded", @()Watched(false))
@@ -85,7 +85,7 @@ let function mkVersion(v) {
   let version = mkVersionFromString(tVersion)
   let title = v?.title ?? tVersion
   local titleshort = v?.titleshort ?? "undefined"
-  if (titleshort == "undefined" || titleshort.len() > 50)
+  if (titleshort == "undefined" || utf8(titleshort).charCount() > 50)
     titleshort = null
   let date = v?.date ?? ""
   return { version, title, tVersion, versionType, titleshort, iVersion = versionToInt(version), id = v.id, date }

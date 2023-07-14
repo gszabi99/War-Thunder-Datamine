@@ -5,7 +5,7 @@ let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -319,7 +319,7 @@ let function on_lost_psn() {
 
 ::showBtn <- function showBtn(id, status, scene = null) {
   let obj = checkObj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
-  return ::show_obj(obj, status)
+  return show_obj(obj, status)
 }
 
 ::enableBtnTable <- function enableBtnTable(obj, table, setInactive = false) {

@@ -5,7 +5,7 @@ let { GuidanceLockResult } = require("%rGui/guidanceConstants.nut")
 let opticWeaponAim = @(tracker_size, tracker_x, tracker_y, guidance_lock_state, tracker_visible, color_watched) function() {
   let tSize = tracker_size.value
 
-  let circleTracking =
+  let trackingMark =
     [
       [VECTOR_RECTANGLE, -tSize, -tSize, 2.0 * tSize, 2.0 * tSize],
       [VECTOR_LINE, 0, -0.33 * tSize, 0, -tSize],
@@ -14,7 +14,7 @@ let opticWeaponAim = @(tracker_size, tracker_x, tracker_y, guidance_lock_state, 
       [VECTOR_LINE,  0.33 * tSize, 0,  tSize, 0]
     ]
 
-  let circle =
+  let squareMark =
     [
       [VECTOR_RECTANGLE, -tSize, -tSize,
         2.0 * tSize, 2.0 * tSize]
@@ -30,8 +30,8 @@ let opticWeaponAim = @(tracker_size, tracker_x, tracker_y, guidance_lock_state, 
     color = color_watched.value
     fillColor = Color(0, 0, 0, 0)
     commands = !tracker_visible.value ? null
-      : guidance_lock_state.value == GuidanceLockResult.RESULT_TRACKING ? circleTracking
-      : circle
+      : guidance_lock_state.value == GuidanceLockResult.RESULT_TRACKING ? trackingMark
+      : squareMark
   }
 }
 

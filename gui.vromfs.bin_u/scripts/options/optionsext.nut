@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "soundOptions" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -1926,6 +1926,15 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       defaultValue = true
       break
 
+    case ::USEROPT_SHOW_ACTION_BAR:
+      descr.id = "hud_show_action_bar"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.optionCb <- "onChangedShowActionBar"
+      defaultValue = true
+      descr.value = get_gui_option(optionId)
+      break
+
     case ::USEROPT_HUD_SCREENSHOT_LOGO:
       descr.id = "hud_screenshot_logo"
       descr.controlType = optionControlType.CHECKBOX
@@ -3360,7 +3369,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         let config = ::crosshair_colors[nc]
         let item = { text = "#crosshairColor/" + config.name }
         if (config.color)
-          item.hueColor <- ::g_dagui_utils.color4ToDaguiString(config.color)
+          item.hueColor <- color4ToDaguiString(config.color)
         descr.items.append(item)
         if (c == nc)
           descr.value = descr.values.len() - 1
@@ -5273,6 +5282,10 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
 
 
+
+    case ::USEROPT_SHOW_ACTION_BAR:
+      set_gui_option(optionId, value)
+      break
 
     case ::USEROPT_AUTOLOGIN:
       ::set_autologin_enabled(value)

@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.navigationPanel <- class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -229,7 +229,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function getCurrentItem() {
-    let currentIdx = ::get_object_value(this.scene, this.navListObjId)
+    let currentIdx = getObjValue(this.scene, this.navListObjId)
     if (currentIdx == null)
       return null
 

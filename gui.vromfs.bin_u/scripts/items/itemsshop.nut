@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { show_obj, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
@@ -114,8 +113,8 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
     if (!checkEnableShop)
       this.scene.findObject("wnd_title").setValue(loc(this.getTabName(itemsTab.INVENTORY)))
 
-    ::show_obj(this.getTabsListObj(), checkEnableShop)
-    ::show_obj(this.getSheetsListObj(), ::isInMenu)
+    show_obj(this.getTabsListObj(), checkEnableShop)
+    show_obj(this.getSheetsListObj(), ::isInMenu)
     this.showSceneBtn("sorting_block", false)
 
     this.updateWarbondsBalance()
@@ -544,7 +543,7 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 
   function getCurItemObj() {
     let itemListObj = this.getItemsListObj()
-    let value = ::get_obj_valid_index(itemListObj)
+    let value = getObjValidIndex(itemListObj)
     if (value < 0)
       return null
 

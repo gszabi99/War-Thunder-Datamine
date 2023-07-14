@@ -229,7 +229,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
     "spectator", "isReady", "isInLobbySession", "team", "countryData", "myState",
     "isSpectatorSelectLocked", "crsSetTeamTo", "curEdiff",
     "needJoinSessionAfterMyInfoApply", "isLeavingLobbySession", "_syncedMyInfo",
-    "playersInfo", "lastEventName, isReadyInSetStateRoom"
+    "playersInfo", "isReadyInSetStateRoom"
   ]
 
   settings = {}
@@ -240,7 +240,6 @@ let allowed_mission_settings = { //only this settings are allowed in room
   isRoomByQueue = false
   isEventRoom = false
   roomId = INVALID_ROOM_ID
-  lastEventName = ""
   roomUpdated = false
   password = ""
 
@@ -926,10 +925,6 @@ let allowed_mission_settings = { //only this settings are allowed in room
   }
   if (this.status == lobbyStates.JOINING_SESSION)
     addRecentContacts(::g_squad_manager.getSquadMembersDataForContact())
-
-  if (this.status == lobbyStates.JOINING_SESSION ||
-    this.status == lobbyStates.IN_SESSION)
-    this.lastEventName = this.getRoomEvent()?.name ?? ""
 
   this.updateMyState()
 

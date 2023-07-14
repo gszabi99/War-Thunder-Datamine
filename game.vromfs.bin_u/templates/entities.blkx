@@ -1469,7 +1469,9 @@
     "destructed_model__names:list<t>": {
       "model": "tank_bottom"
     },
-    "destructed_model_res": {}
+    "destructed_model_res": {
+      "_tags": "render"
+    }
   },
   "level": {
     "isLocal": true,
@@ -1814,19 +1816,19 @@
     ],
     "_tracked": "sand_worm__victimUid",
     "_replicated": "sand_worm__victimUid",
+    "worm_visual__res": "shai_char",
+    "sand_worm__animTime": 10.0,
+    "sand_worm__animName": "shai_action",
+    "sand_worm__attackSfx": "desert/creature_attack",
+    "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
     "_group": [
       {
         "_tags": "render",
-        "worm_visual__res": "shai_char",
         "sand_worm__animVarId": -1,
         "sand_worm__animValue": -1.0,
-        "sand_worm__animTime": 10.0,
-        "sand_worm__animName": "shai_action",
         "sand_worm__linkNodeId": -1,
         "sand_worm__linkNodeName": "trigger",
-        "sand_worm__attackSfx": "desert/creature_attack",
         "sand_worm__attackFxId": -1,
-        "sand_worm__attackFxName": "duna_worm_dust_cmps_fx",
         "worm_visual": {}
       },
       {
@@ -2096,5 +2098,84 @@
       "_tags": "sound"
     },
     "destroyable_with_rendinst:tag": {}
+  },
+  "burav": {
+    "_extends": [
+      "root",
+      "replicating"
+    ],
+    "burav__position": [
+      0.0,
+      0.0
+    ],
+    "burav__delayed": true,
+    "burav__controlRadius": 150.0,
+    "_tracked": [
+      "burav__delayed",
+      "burav__position"
+    ],
+    "burav__needSync": false,
+    "burav__attackRadius": 10.0,
+    "burav__curArmy": 0,
+    "_group": [
+      {
+        "_tags": "server",
+        "burav__delayTimer": -1.0,
+        "burav__velocity": 15.0,
+        "burav__target": [
+          0.0,
+          0.0
+        ],
+        "burav__activateTime": [
+          30.0,
+          45.0
+        ],
+        "burav__respawnTimeout": [
+          20.0,
+          40.0
+        ],
+        "burav__spawnArea": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "burav__controllerUid": -1,
+        "burav__excludeAreas:list<t>": {},
+        "burav__excludeAreasId:list<i>": {}
+      },
+      {
+        "_tags": "gameClient",
+        "burav__near_dist": 150.0,
+        "burav__appearSound": "event/units/burav/appear",
+        "burav__nearSound": "event/units/burav/move",
+        "burav__nearSoundEvent:SoundEvent": {
+          "_tags": "sound"
+        }
+      },
+      {
+        "_tags": "render",
+        "burav__attackRadiusColor": "/x4A0g==",
+        "burav__controlRadiusAllyColor": "AB7/0g==",
+        "burav__controlRadiusEnemyColor": "/x4A0g==",
+        "burav__delayedHintActivated": false,
+        "burav__ctrlHintActivated": false
+      }
+    ]
+  },
+  "burav_controller": {
+    "can_control_burav:tag": {}
+  },
+  "ussr_atomic_hedgie": {
+    "_extends": [
+      "human",
+      "unit_repair"
+    ],
+    "mods:list<t>": {
+      "mod": "toolkit_ecs"
+    },
+    "modEids:list<eid>": {
+      "_replicate": true
+    }
   }
 }

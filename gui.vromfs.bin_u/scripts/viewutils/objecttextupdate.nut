@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { get_game_version_str } = require("app")
 
@@ -37,7 +37,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
 }
 
 let function setColoredDoubleTextToButton(nestObj, btnId, coloredText) {
-  return setDoubleTextToButton(nestObj, btnId, ::g_dagui_utils.removeTextareaTags(coloredText), coloredText)
+  return setDoubleTextToButton(nestObj, btnId, removeTextareaTags(coloredText), coloredText)
 }
 
 //instead of wpCost you can use direc Cost  (instance of money)

@@ -18,7 +18,7 @@ let {
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
 let gbuAim = require("gbuAim.nut")
-let { paramsTable, compassElem, lockSight, rangeFinder, agmOutLaunchZone }  = require("airHudElems.nut")
+let { paramsTable, compassElem, lockSight, rangeFinder, agmLaunchZoneTps }  = require("airHudElems.nut")
 let {
   aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
   laserPointComponent, bombSightComponent, laserDesignatorStatusComponent } = require("airSight.nut")
@@ -62,7 +62,7 @@ let function mkAircraftMainHud() {
         isCanonSightActivated.value ? fixedGunsDirection(crosshairColorOpt) : null
         isParamTableActivated.value ? aircraftParamsTable(HudParamColor) : null
         isBombSightActivated.value ? bombSightComponent(sh(10.0), sh(10.0), crosshairColorOpt) : null
-        agmOutLaunchZone(HudColor)
+        agmLaunchZoneTps(HudColor)
       ]
         : IsBomberViewHudVisible.value
     ? [

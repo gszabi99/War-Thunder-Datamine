@@ -1,0 +1,473 @@
+{
+  "model": "ezhiha",
+  "expClass": "exp_tank",
+  "type": "typeLightTank",
+  "subclass": "human",
+  "ecsTemplate": "ussr_atomic_hedgie",
+  "sprintStaminaDrain": 0.0,
+  "restStaminaRestore": 5.0,
+  "jumpStaminaDrain": 0.0,
+  "mass": 20000.0,
+  "walkSpeed": 7.0,
+  "runSpeed": 7.0,
+  "sprintSpeed": 23.0,
+  "acceleration": 10.0,
+  "frictionGroundCoeff": 1.0,
+  "frictionThresSpdMult": 8.0,
+  "rotateBodySpeed": [
+    0.0,
+    25.0,
+    60.0,
+    0.0
+  ],
+  "hasSniperView": false,
+  "airAccelerate": 0.0,
+  "jumpVertSpeed": 16.0,
+  "sprintJumpVertSpeed": 16.0,
+  "sprintJumpHorzSpeed": 0.0,
+  "jumpTopAdditionalImpulse": [
+    -35.0,
+    8.0
+  ],
+  "sprintActionBarIcon": "#ui/gameuiskin#atomic_hedgie_sprint",
+  "jumpCooldownTime": 10.0,
+  "jumpProgressAnimVar": "jump_progress",
+  "jumpActionBarIcon": "#ui/gameuiskin#atomic_hedgie_jump_attack",
+  "canSwim": false,
+  "invertSprintControl": false,
+  "isCantStrafe": true,
+  "simpleUnitSubsystems": false,
+  "updateAnimIfDead": true,
+  "moveType": "vehicle",
+  "maxFwdSpeed": 83.0,
+  "maxRevSpeed": 25.0,
+  "maxAngSpeed": 30.0,
+  "maxAccel": 4.0,
+  "maxDecel": 8.0,
+  "maxAngAccel0": 20.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 40.0,
+  "groundNormSmoothViscosity": 0.1,
+  "minDistBetween": 10.0,
+  "zOrientation": false,
+  "collisionRadius": 2.25,
+  "collisionHeight": 4.5,
+  "autoSightDistanceCorrection": [
+    true,
+    true
+  ],
+  "jumpOnlyInSprint": true,
+  "bodyTemperature": 76.6,
+  "rearmTimeOnField": 30.0,
+  "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
+  "drowningCheckHeightMultiplier": 0.925,
+  "customClassIco": "!#ui/gameuiskin#ussr_atomic_hedgie_ico.svg",
+  "customImage": "!#ui/unitskin#ussr_atomic_hedgie",
+  "customTooltipImage": "ui/tanks/ussr_atomic_hedgie",
+  "waterSprintEffect": "hedgie_water_move",
+  "sprintTrackType": 2,
+  "sprintTrackWidth": 0.75,
+  "spawn_count": {
+    "numSpawnsPerBattleHistorical": 2
+  },
+  "weapons": {
+    "primary": {
+      "blk": "gameData/weapons/gun_PPSH.blk",
+      "numSpareMagazines": 4,
+      "reloadTime": 4.0,
+      "name": "PPSH",
+      "shootNode": "rifle_Body",
+      "selWeaponVar": 1,
+      "increaseDevWithEachShot": 1.5,
+      "standingPosition": [
+        0.0,
+        1.6,
+        -0.15
+      ],
+      "standingAimingPosition": [
+        0.0,
+        1.6,
+        -0.05
+      ],
+      "crouchPosition": [
+        0.0,
+        1.2,
+        -0.15
+      ],
+      "crouchAimingPosition": [
+        0.0,
+        1.2,
+        -0.05
+      ],
+      "crawlPosition": [
+        0.7,
+        0.4,
+        -0.15
+      ],
+      "crawlAimingPosition": [
+        0.7,
+        0.45,
+        -0.05
+      ],
+      "walkMoveMagnitude": 0.0,
+      "predictTime": 0.1,
+      "targetSpdVisc": 0.4,
+      "gunSpdVisc": 0.25,
+      "gunSpdDeltaMult": 1.0,
+      "maxGunSpd": 4.5,
+      "moveToSpd": 1.5,
+      "vertOffsetRestoreVisc": 0.4,
+      "vertOffsetMoveDownVisc": 0.5
+    }
+  },
+  "cockpit": {
+    "zoomOutFov": 27.54,
+    "zoomInFov": 6.14,
+    "sightFov": 13.5,
+    "sightName": "1g_46",
+    "headPos": [
+      0.0,
+      5.5,
+      -10.0
+    ],
+    "headPosOnShooting": [
+      -2.5,
+      5.5,
+      0.0
+    ],
+    "detectionHeight": 5.6
+  },
+  "commonWeapons": {
+    "Weapon": {
+      "trigger": "gunner0",
+      "triggerGroup": "special",
+      "blk": "gameData/Weapons/groundModels_weapons/100mm_atomic_hedgie_rocket_launcher.blk",
+      "flash": "emtr_gun_flame_01",
+      "useEmitter": true,
+      "changeBulletTypeForSet": true,
+      "emitter": "bone_rocket_01",
+      "emitterGenRange": [
+        1,
+        1
+      ],
+      "emitterGenFmt": "bone_rocket_%02d",
+      "stopForFire": true,
+      "maxSpeedForFire": 40.0,
+      "createGunEffects": true,
+      "speedYaw": 250.0,
+      "speedPitch": 250.0,
+      "bullets": 20,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 0.0,
+      "DelayAfterShoot": 5.0,
+      "AttackMaxDistance": 1000.0,
+      "AttackMaxRadius": 1000.0,
+      "AttackMaxHeight": 1000.0,
+      "accuracyAir": 0.0,
+      "accuracyGnd": 1.5,
+      "errMeasureVel": 0.0,
+      "errMeasureVelFast": 0.0,
+      "errMeasureVelFwdShift": 0.0,
+      "errMeasureVelDir": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errTargetting": 3.0,
+      "errExplTime": 0.0,
+      "turret": {
+        "head": "bone_turret",
+        "gun": "bone_gun"
+      },
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -90.0,
+          90.0
+        ]
+      }
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "ussr_atomic_hedgie_default",
+      "blk": "gameData/units/tankModels/weaponPresets/ussr_atomic_hedgie_default.blk"
+    }
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "armorClass": "tank_structural_steel",
+    "hp": 10000.0,
+    "createSecondaryShatters": false,
+    "armorThickness": 2.0,
+    "body_armor": {
+      "armorClass": "RHA_tank_modern",
+      "genericEffectiveThicknessMax": 70.0,
+      "hp": 200.0,
+      "armorThickness": 30.0,
+      "stopChanceOnDeadPart": 0.0,
+      "restrainDamage": 0.85,
+      "body_armor_01_dm": {
+        "armorThickness": 60.0,
+        "hp": 10000.0
+      },
+      "body_armor_02_dm": {},
+      "body_armor_03_dm": {},
+      "body_armor_04_dm": {},
+      "body_armor_05_dm": {},
+      "body_armor_06_dm": {}
+    },
+    "radiator_armor": {
+      "armorClass": "RHA_tank_modern",
+      "hp": 100.0,
+      "armorThickness": 20.0,
+      "body_armor_14_dm": {
+        "hp": 500.0,
+        "armorThickness": 20.0
+      }
+    },
+    "machine_body": {
+      "armorClass": "RHA_tank_modern",
+      "armorThickness": 15.0,
+      "head_dm": {
+        "armorThickness": 500.0,
+        "hp": 50.0
+      },
+      "chest_dm": {
+        "hp": 100.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": [
+      {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.0,
+          "fire": 0.0
+        },
+        "onKill": {
+          "expl": 0.0
+        }
+      },
+      {
+        "name": "body_armor_14_dm",
+        "onKill": {
+          "head_dm": 0.25
+        }
+      }
+    ]
+  },
+  "irq": {
+    "step1": {
+      "event": "step_back_left",
+      "handler": "onStep",
+      "attachedNode": "FootF_R"
+    },
+    "step2": {
+      "event": "step_back_right",
+      "handler": "onStep",
+      "attachedNode": "FootF_L"
+    },
+    "step3": {
+      "event": "step_front_left",
+      "handler": "onStep",
+      "attachedNode": "FootF_L_001_R"
+    },
+    "step4": {
+      "event": "step_front_right",
+      "handler": "onStep",
+      "attachedNode": "FootF_L_001_L"
+    },
+    "gillOpen": [
+      {
+        "event": "gill_open_1",
+        "handler": "onSoundEvent",
+        "sfxName": "gill_open",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      },
+      {
+        "event": "gill_open_2",
+        "handler": "onSoundEvent",
+        "sfxName": "gill_open",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      }
+    ],
+    "gillClose": [
+      {
+        "event": "gill_close_1",
+        "handler": "onSoundEvent",
+        "sfxName": "gill_close",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      },
+      {
+        "event": "gill_close_2",
+        "handler": "onSoundEvent",
+        "sfxName": "gill_close",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      }
+    ],
+    "idle": [
+      {
+        "event": "idle_move_1",
+        "handler": "onSoundEvent",
+        "sfxName": "idle",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      },
+      {
+        "event": "idle_move_2",
+        "handler": "onSoundEvent",
+        "sfxName": "idle",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      },
+      {
+        "event": "idle_move_3",
+        "handler": "onSoundEvent",
+        "sfxName": "idle",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      },
+      {
+        "event": "idle_move_4",
+        "handler": "onSoundEvent",
+        "sfxName": "idle",
+        "sfxPath": "event/units/hedge",
+        "onlyForHero": true
+      }
+    ],
+    "death": {
+      "event": "death_01",
+      "handler": "onSoundEvent",
+      "sfxName": "destroy",
+      "sfxPath": "event/units/hedge"
+    }
+  },
+  "sound": {
+    "stepSfxPath": "event/units/hedge",
+    "stepSfx": "footsteps",
+    "stepSfxAi": "footsteps_ai",
+    "sprintSfx": "roll",
+    "sprintSfxAi": "roll_ai",
+    "sprintSfxPath": "event/units/hedge",
+    "playSprintSfxInAir": true
+  },
+  "footPrintsFx": {
+    "footPrintMat": {
+      "normalMap": "ezh_trail_tex_n",
+      "materialMap": "ezh_trail_tex_mat",
+      "colorMap": "ezh_trail_tex_d",
+      "props": {
+        "dirt": {
+          "sizeScale": 1.5,
+          "tc": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "fx": "foot_dust_dirt",
+          "sprintFx": "hedgie_track_move"
+        },
+        "sand": {
+          "sizeScale": 1.5,
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "fx": "foot_dust_sand"
+        },
+        "snow": {
+          "sizeScale": 1.5,
+          "tc": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "fx": "foot_dust_snow"
+        },
+        "concrete": {
+          "sizeScale": 1.5,
+          "tc": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "fx": "foot_dust_asphalt",
+          "sprintFx": "hedgie_concrete_move"
+        }
+      }
+    }
+  },
+  "modifications": {
+    "70mm_QN201_ATGM": {},
+    "new_tank_vertical_aiming": {},
+    "tank_new_gun": {},
+    "tank_camouflage": {},
+    "tank_additional_armor": {},
+    "manual_extinguisher": {},
+    "tank_tool_kit": {}
+  },
+  "gunConvergence": {
+    "defaultDistance": 800.0,
+    "vertical": true,
+    "horizontal": true
+  },
+  "jumpAttackExplosion": {
+    "fx": "hedgie_explosion",
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "explodeTreshold": 0.0001,
+    "explodeHitPower": 60.0,
+    "explodeArmorPower": 60.0,
+    "explodeRadius": [
+      5.0,
+      30.0
+    ]
+  }
+}

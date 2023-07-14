@@ -20,7 +20,8 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   IsHighRateOfFire, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
   AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
   AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, IsZoomedAgmLaunchZoneVisible,
-  IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsOutLaunchZone, LaunchZonePosX, LaunchZonePosY, IsRangefinderEnabled, RangefinderDist,
+  IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsOutLaunchZone, IsLaunchZoneOnTarget, LaunchZonePosX, LaunchZonePosY, LaunchZoneWatched,
+  IsRangefinderEnabled, RangefinderDist,
   Rpm, IsRpmVisible, IsRpmCritical, TrtMode, Trt, Spd, WaterAlert, HorAngle, AgmLaunchZoneDistMin,
   AlertColorLow, AlertColorMedium, AlertColorHigh, OilAlert,
   PassivColor, IsLaserDesignatorEnabled, IsInsideLaunchZoneDist, GunInDeadZone,
@@ -30,7 +31,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   DistanceToGround, IsMfdEnabled, VerticalSpeed, MfdColor,
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
-
+let { AimLocked } = require("%rGui/planeState/planeToolsState.nut")
 let { isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor } = require("style/airHudStyle.nut")
 
 let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
@@ -1241,47 +1242,83 @@ let function agmLaunchZone(colorWatch, _w, _h) {
   })
 }
 
-let function agmOutLaunchZone(colorWatch) {
-  let function maxAngleBorder() {
-    let left  = max(0.0, AgmLaunchZoneYawMin.value) * 100.0 - 50.0
-    let right = min(1.0, AgmLaunchZoneYawMax.value) * 100.0 - 50.0
-    let lower = 100.0 - max(0.0, AgmLaunchZonePitchMin.value) * 100.0 - 25.0
-    let upper = 100.0 - min(1.0, AgmLaunchZonePitchMax.value) * 100.0 - 25.0
-    return [
-      [VECTOR_LINE, left,  upper, right, upper],
-      [VECTOR_LINE, right, upper, right, lower],
-      [VECTOR_LINE, right, lower, left,  lower],
-      [VECTOR_LINE, left,  lower, left,  upper]
-    ]
-  }
-  let blinkDuration = 0.33
+let function targetAngleBorder(yawMin, yawMax, pitchMin, pitchMax) {
+  let left  = max(0.0, yawMin) * 100.0 - 50.0
+  let right = min(1.0, yawMax) * 100.0 - 50.0
+  let lower = 100.0 - max(0.0, pitchMin) * 100.0 - 25.0
+  let upper = 100.0 - min(1.0, pitchMax) * 100.0 - 25.0
+  return [
+    [VECTOR_LINE, left,  upper, right, upper],
+    [VECTOR_LINE, right, upper, right, lower],
+    [VECTOR_LINE, right, lower, left,  lower],
+    [VECTOR_LINE, left,  lower, left,  upper]
+  ]
+}
 
-  return @() styleLineForeground.__merge({
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(LINE_WIDTH)
-    size = [sw(100), sh(100)]
-    watch = [
-      IsOutLaunchZone,
-      LaunchZonePosX, LaunchZonePosY,
-      AgmLaunchZoneYawMax, AgmLaunchZoneYawMin,
-      AgmLaunchZonePitchMax, AgmLaunchZonePitchMin,
-      colorWatch,
-    ]
-    color = colorWatch.value
-    commands = IsOutLaunchZone.value ? maxAngleBorder() : null
-    transform = {
-      translate = [LaunchZonePosX.value, LaunchZonePosY.value]
-    }
-    animations = [{
-      prop = AnimProp.opacity,
-      from = 1,
-      to = 0,
-      duration = blinkDuration,
-      loop = true,
-      easing = InOutSine,
-      play = true
-    }]
+let function unitAngleBorder(launchZone, corner) {
+  let { x0, x1, x2, x3, y0, y1, y2, y3 } = launchZone
+  return [
+    [VECTOR_LINE, x0, y0, x0 + (x1 - x0)*corner, y0 + (y1 - y0)*corner],
+    [VECTOR_LINE, x0, y0, x0 + (x2 - x0)*corner, y0 + (y2 - y0)*corner],
+
+    [VECTOR_LINE, x1, y1, x1 + (x0 - x1)*corner, y1 + (y0 - y1)*corner],
+    [VECTOR_LINE, x1, y1, x1 + (x3 - x1)*corner, y1 + (y3 - y1)*corner],
+
+    [VECTOR_LINE, x2, y2, x2 + (x0 - x2)*corner, y2 + (y0 - y2)*corner],
+    [VECTOR_LINE, x2, y2, x2 + (x3 - x2)*corner, y2 + (y3 - y2)*corner],
+
+    [VECTOR_LINE, x3, y3, x3 + (x1 - x3)*corner, y3 + (y1 - y3)*corner],
+    [VECTOR_LINE, x3, y3, x3 + (x2 - x3)*corner, y3 + (y2 - y3)*corner],
+  ]
+}
+
+let zoneStyle = styleLineForeground.__merge({
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = hdpx(LINE_WIDTH)
+  size = [sw(100), sh(100)]
+})
+
+let blinking = [{
+  prop = AnimProp.opacity,
+  from = 1,
+  to = 0,
+  duration = 0.33,
+  loop = true,
+  easing = InOutSine,
+  play = true
+}]
+
+let function targetLaunchZone(color) {
+  return @() zoneStyle.__merge({
+    color = color
+    watch = [AgmLaunchZoneYawMin, AgmLaunchZoneYawMax,
+      AgmLaunchZonePitchMin, AgmLaunchZonePitchMax,
+      LaunchZonePosX, LaunchZonePosY]
+    commands = targetAngleBorder(AgmLaunchZoneYawMin.value, AgmLaunchZoneYawMax.value,
+      AgmLaunchZonePitchMin.value, AgmLaunchZonePitchMax.value)
+    transform = { translate = [LaunchZonePosX.value, LaunchZonePosY.value] }
+    animations = blinking
   })
+}
+
+let function unitLaunchZone(color, isBlinking) {
+  return @() zoneStyle.__merge({
+    color = color
+    watch = [LaunchZoneWatched, IsOutLaunchZone]
+    commands = unitAngleBorder(LaunchZoneWatched.value, IsOutLaunchZone.value ? 0.1 : 0.5)
+    key = isBlinking
+    animations = isBlinking ? blinking : null
+  })
+}
+
+let function agmLaunchZoneTps(colorWatch) {
+  return @() {
+    watch = [AimLocked, IsLaunchZoneOnTarget, IsOutLaunchZone]
+    children = AimLocked.value && IsLaunchZoneOnTarget.value && IsOutLaunchZone.value
+      ? targetLaunchZone(colorWatch.value)
+      : AimLocked.value && !IsLaunchZoneOnTarget.value ? unitLaunchZone(colorWatch.value, IsOutLaunchZone.value)
+      : null
+  }
 }
 
 let function sight(colorWatch, height) {
@@ -1455,7 +1492,7 @@ return {
   horSpeed = HelicopterHorizontalSpeedComponent
   turretAngles = turretAnglesComponent
   agmLaunchZone = agmLaunchZone
-  agmOutLaunchZone = agmOutLaunchZone
+  agmLaunchZoneTps = agmLaunchZoneTps
   sight = sightComponent
   launchDistanceMax = launchDistanceMaxComponent
   rangeFinder = rangeFinderComponent

@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
 let { updateModItem, createModItem } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -806,7 +804,7 @@ local armyIdByMask = {
     if (!this.hasPresetToChoose(unit))
       return
 
-    let value = ::get_obj_valid_index(obj)
+    let value = getObjValidIndex(obj)
     if (value < 0)
       return
 

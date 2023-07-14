@@ -1,6 +1,5 @@
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-loadOnce("%sqDagui/daguiUtil.nut")
 loadOnce("%sqstd/math.nut")
 
 if (!("gui_bhv" in getroottable()))

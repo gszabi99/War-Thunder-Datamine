@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -45,7 +44,7 @@ let class ClustersMenuWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
-    ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align,
+    setPopupMenuPosAndAlign(this.alignObj, this.align,
       this.scene.findObject("main_frame"))
     this.guiScene.applyPendingChanges(false)
     ::move_mouse_on_child(this.scene.findObject("multi_select"), 0)

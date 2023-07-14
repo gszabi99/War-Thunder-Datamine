@@ -1,8 +1,6 @@
 
 let Callback = require("%sqStdLibs/helpers/callback.nut").Callback
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-loadOnce("%sqDagui/daguiUtil.nut")
 
 ::Timer <- class {
   onTimeOut   = null

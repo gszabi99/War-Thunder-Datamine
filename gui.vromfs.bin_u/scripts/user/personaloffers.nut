@@ -1,9 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let DataBlock = require("DataBlock")
 let { charSendBlk } = require("chard")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -271,7 +270,7 @@ let PersonalOfferPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateHandler(offer) {
     let isVisible = offer != null
-    ::show_obj(this.scene, isVisible)
+    show_obj(this.scene, isVisible)
     this.scene.findObject("update_timer").setUserData(isVisible ? this : null)
     if (!isVisible)
       return

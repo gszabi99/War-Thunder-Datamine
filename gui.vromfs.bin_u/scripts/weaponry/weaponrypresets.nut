@@ -55,13 +55,13 @@ let function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
       let slotIdx = wp.slot
       let slot = slots.findvalue(@(s) s.index == slotIdx)
       if (!slot) {
-        ::script_net_assert_once("WeaponSlots", $"WeaponSlot index does not exist")
+        logerr($"[WeaponSlots] Unit {unitName}: WeaponSlot index {slotIdx} does not exist")
         continue
       }
       let presetName = wp.preset
       let curPreset = (slot % "WeaponPreset").findvalue(@(s) s.name == presetName)
       if (curPreset == null) {
-        ::script_net_assert_once("WeaponSlots", $"WeaponPreset does not exist")
+        logerr($"[WeaponSlots] Unit {unitName}, preset {presetName}: WeaponPreset does not exist")
         continue
       }
 

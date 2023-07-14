@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_handlers.ChooseAmountWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -36,7 +35,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function initScreen() {
     if (checkObj(this.parentObj))
-      this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.parentObj, this.align, this.scene.findObject("popup_frame"))
+      this.align = setPopupMenuPosAndAlign(this.parentObj, this.align, this.scene.findObject("popup_frame"))
     this.updateButtons()
     this.updateValueText()
   }

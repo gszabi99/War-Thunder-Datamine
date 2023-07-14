@@ -1,13 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let DataBlock = require("DataBlock")
 let { format, split_by_chars } = require("string")
 let { ceil, floor } = require("math")
@@ -23,9 +21,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isModResearched,
-        getModificationByName,
-        findAnyNotResearchedMod } = require("%scripts/weaponry/modificationInfo.nut")
+let { isModResearched, getModificationByName, findAnyNotResearchedMod
+} = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
@@ -235,7 +232,7 @@ let statTooltipColumnParamByType = {
   isSpectator = false
   gameType = null
   gm = null
-  mGameMode = null
+  roomEvent = null
   playersInfo = null //it is SessionLobby.playersInfo for debriefing statistics info
 
   pveRewardInfo = null
@@ -259,7 +256,7 @@ let statTooltipColumnParamByType = {
       this.debriefingResult = getDebriefingResult()
     }
     this.gm = this.debriefingResult.gm
-    this.mGameMode = this.debriefingResult.mGameMode
+    this.roomEvent = this.debriefingResult.roomEvent
     this.gameType = this.debriefingResult.gameType
     this.isTeamplay = this.debriefingResult.isTeamplay
     this.isSpectator = this.debriefingResult.isSpectator
@@ -406,8 +403,8 @@ let statTooltipColumnParamByType = {
     if (!this.isSpectator && !this.isReplay)
       sendBqEvent("CLIENT_BATTLE_2", "show_debriefing_screen", {
         gm = this.gm
-        economicName = ::events.getEventEconomicName(this.mGameMode)
-        difficulty = this.mGameMode?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
+        economicName = ::events.getEventEconomicName(this.roomEvent)
+        difficulty = this.roomEvent?.difficulty ?? ::SessionLobby.getMissionData()?.difficulty ?? ""
         sessionId = this.debriefingResult?.sessionId ?? ""
         sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
         originalMissionName = ::SessionLobby.getMissionName(true)
@@ -733,7 +730,7 @@ let statTooltipColumnParamByType = {
       return
     let obj = this.scene.findObject("inventory_gift_icon")
     let leftBlockHeight = this.scene.findObject("left_block").getSize()[1]
-    let itemHeight = ::g_dagui_utils.toPixels(this.guiScene, "1@itemHeight")
+    let itemHeight = toPixels(this.guiScene, "1@itemHeight")
 
     obj.smallItems = this.challengesAwardsList.len() > 0 ? "yes"
       : (itemHeight * this.giftItems.len() > leftBlockHeight / 2) ? "yes"
@@ -2214,10 +2211,10 @@ let statTooltipColumnParamByType = {
   }
 
   function loadBattleTasksList() {
-    if (!this.is_show_battle_tasks_list(false) || !this.mGameMode)
+    if (!this.is_show_battle_tasks_list(false) || !this.roomEvent)
       return
 
-    let filteredTasks = ::g_battle_tasks.getCurBattleTasksByGm(this.mGameMode?.name)
+    let filteredTasks = ::g_battle_tasks.getCurBattleTasksByGm(this.roomEvent?.name)
       .filter(@(t) !::g_battle_tasks.isTaskDone(t))
 
     let currentBattleTasksConfigs = {}
@@ -2677,9 +2674,8 @@ let statTooltipColumnParamByType = {
       return
     }
 
-    let lastEvent = ::events.getEvent(::SessionLobby.lastEventName)
-    if (lastEvent?.chapter == "competitive")
-      ::go_debriefing_next_func = @() openLastTournamentWnd(lastEvent)
+    if (this.roomEvent?.chapter == "competitive")
+      ::go_debriefing_next_func = @() openLastTournamentWnd(this.roomEvent)
     else
       ::go_debriefing_next_func = ::gui_start_mainmenu
   }
@@ -2780,7 +2776,7 @@ let statTooltipColumnParamByType = {
     this.goBack()
 
     if (needGoToBattle)
-      goToBattleAction()
+      goToBattleAction(this.roomEvent)
   }
 
   function isToBattleActionEnabled() {

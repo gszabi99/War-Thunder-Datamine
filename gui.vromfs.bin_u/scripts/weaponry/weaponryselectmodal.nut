@@ -1,6 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { ceil, sqrt } = require("math")
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
+let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultTorpedoes,
+  needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 
 /*
   config = {
@@ -25,14 +31,6 @@ from "%scripts/dagui_library.nut" import *
     ]
   }
 */
-let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { ceil, sqrt } = require("math")
-
-let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultTorpedoes,
-  needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config) {
   ::handlersManager.loadHandler(::gui_handlers.WeaponrySelectModal, config)
 }
@@ -61,7 +59,8 @@ local CHOOSE_WEAPON_PARAMS = {
   foreach (weapon in unit.getWeapons()) {
     let needShowDefTorpedoes = forceShowDefaultTorpedoes && isDefaultTorpedoes(weapon)
     if (!isForcedAvailable && !needShowDefTorpedoes
-        && !isWeaponVisible(unit, weapon, hasOnlySelectable))
+        && (!isWeaponVisible(unit, weapon, hasOnlySelectable)
+          || (hasOnlySelectable && !isWeaponEnabled(unit, weapon))))
       continue
 
     list.append({
@@ -150,7 +149,7 @@ local CHOOSE_WEAPON_PARAMS = {
     if (!this.list || !this.unit)
       return this.goBack()
 
-    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
+    this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.updateItems()
     this.updateOpenAnimParams()
     ::move_mouse_on_child_by_value(this.scene.findObject("weapons_list"))

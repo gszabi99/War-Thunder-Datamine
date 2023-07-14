@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
@@ -487,7 +486,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
   }
 
   function onGameModeActivate(obj) {
-    let value = ::get_obj_valid_index(obj)
+    let value = getObjValidIndex(obj)
     if (value < 0)
       return
 

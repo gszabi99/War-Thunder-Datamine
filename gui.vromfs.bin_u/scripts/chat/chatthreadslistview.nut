@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -210,7 +209,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       return
 
     //sellImg is bigger than item, so for correct view while selecting by gamepad need to scroll to selImg
-    let val = ::get_obj_valid_index(this.listObj)
+    let val = getObjValidIndex(this.listObj)
     local childObj = this.listObj.getChild(val < 0 ? 0 : val)
     if (!checkObj(childObj))
       childObj = this.listObj.getChild(0)

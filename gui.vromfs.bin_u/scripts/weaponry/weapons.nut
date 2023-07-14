@@ -1,16 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let DataBlock = require("DataBlock")
-
 let { getModsTreeSize, generateModsTree, generateModsBgElems,
   isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -20,32 +17,19 @@ let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPr
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
   getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
-let { getItemAmount,
-        getItemCost,
-        getAllModsCost,
-        getByCurBundle,
-        getItemStatusTbl,
-        isCanBeDisabled,
-        isModInResearch,
-        getBundleCurItem,
-        canResearchItem } = require("%scripts/weaponry/itemInfo.nut")
+let { getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl,
+  isCanBeDisabled, isModInResearch, getBundleCurItem, canResearchItem
+} = require("%scripts/weaponry/itemInfo.nut")
 let { getModItemName, getReqModsText, getBulletsListHeader
 } = require("%scripts/weaponry/weaponryDescription.nut")
 let { updateModItem, createModItem, createModBundle } = require("%scripts/weaponry/weaponryVisual.nut")
 let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
   getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("%scripts/weaponry/bulletsInfo.nut")
-let { WEAPON_TAG,
-        getLastWeapon,
-        validateLastWeapon,
-        setLastWeapon,
-        checkUnitBullets,
-        checkUnitSecondaryWeapons,
-        getLastPrimaryWeapon,
-        getPrimaryWeaponsList,
-        getSecondaryWeaponsList,
-        isUnitHaveAnyWeaponsTags,
-        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets,
+  checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList,
+  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setDoubleTextToButton, placePriceTextToButton
 } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -318,10 +302,10 @@ local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
     let frameObj = this.scene.findObject("mods_frame")
     if (checkObj(frameObj)) {
       let frameHeight = frameObj.getSize()[1]
-      let maxFrameHeight = ::g_dagui_utils.toPixels(this.guiScene, "@maxWeaponsWindowHeight")
+      let maxFrameHeight = toPixels(this.guiScene, "@maxWeaponsWindowHeight")
 
       if (frameHeight > maxFrameHeight) {
-        let frameHeaderHeight = ::g_dagui_utils.toPixels(this.guiScene, "@frameHeaderHeight")
+        let frameHeaderHeight = toPixels(this.guiScene, "@frameHeaderHeight")
         if (frameHeight - frameHeaderHeight < maxFrameHeight) {
           frameObj.isHeaderHidden = "yes"
           this.showSceneBtn("close_alt_btn", !this.researchMode)

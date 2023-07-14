@@ -1,7 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let stdMath = require("%sqstd/math.nut")
+let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 /*
   config = {
@@ -25,10 +27,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
     ]
   }
 */
-let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-
 ::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config) {
   ::handlersManager.loadHandler(::gui_handlers.MultiSelectMenu, config)
 }
@@ -67,7 +65,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!this.list)
       return this.goBack()
 
-    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
+    this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.guiScene.applyPendingChanges(false)
     ::move_mouse_on_child(this.scene.findObject("multi_select"), 0)
   }

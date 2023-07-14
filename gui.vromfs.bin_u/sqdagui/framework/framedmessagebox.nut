@@ -1,8 +1,8 @@
-
 let u = require("%sqStdLibs/helpers/u.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { check_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("handlerType.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
+
 /*
   FramedMessageBox is a message box, with visible frame.
   Config {
@@ -18,7 +18,6 @@ let { handlersManager } = require("baseGuiHandlerManager.nut")
     }
   }
 */
-
 ::gui_handlers.FramedMessageBox <- class extends ::BaseGuiHandler { //-undefined-global
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/framedMessageBox.tpl"
@@ -58,7 +57,7 @@ let { handlersManager } = require("baseGuiHandlerManager.nut")
     if (!obj?.isValid())
       return
 
-    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.pos || this.getDefaultPos(), this.align, obj, {
+    this.align = setPopupMenuPosAndAlign(this.pos || this.getDefaultPos(), this.align, obj, {
       screenBorders = [ "1@bw", "1@bottomBarHeight" ]
     })
     obj.animation = "show"

@@ -2,9 +2,8 @@
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
@@ -1168,7 +1167,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
     if (!checkObj(countriesContainerObj))
       return null
 
-    let value = ::get_obj_valid_index(countriesContainerObj)
+    let value = getObjValidIndex(countriesContainerObj)
     if (value < 0)
       return null
 

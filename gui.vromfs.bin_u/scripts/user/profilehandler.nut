@@ -365,9 +365,10 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   function updateButtons() {
     let sheet = this.getCurSheet()
     let isProfileOpened = sheet == "Profile"
+    let needHideChangeAccountBtn = ::steam_is_running() && ::load_local_account_settings("disabledReloginSteamAccount", false)
     let buttonsList = {
-      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !::is_vendor_tencent()
-      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !::is_vendor_tencent()
+      btn_changeAccount = ::isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
+      btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
       btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened && !::is_vendor_tencent()

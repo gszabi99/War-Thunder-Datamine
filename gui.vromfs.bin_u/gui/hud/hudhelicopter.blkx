@@ -1,10 +1,4 @@
 {
-  "tacticalMap": {
-    "id": "hud_air_tactical_map",
-    "size": "@sizeTacticalMap, @sizeTacticalMap",
-    "position": "absolute",
-    "pos": "pw - w, ph - h"
-  },
   "tdiv": [
     {
       "pos": "@hudPadding, ph - h - @hudPadding -1@hudMisObjIconsSize -1@blockInterval",
@@ -23,7 +17,7 @@
     },
     {
       "position": "absolute",
-      "pos": "pw - w, ph - h -1@hudMisObjIconsSize -1@blockInterval",
+      "pos": "pw - w, ph - h",
       "flow": "vertical",
       "tdiv": [
         {
@@ -50,7 +44,13 @@
             "flow": "vertical"
           }
         }
-      ]
+      ],
+      "tacticalMap": {
+        "id": "hud_air_tactical_map",
+        "size": "@sizeTacticalMap, @sizeTacticalMap",
+        "position": "relative",
+        "pos": "pw - w, 0"
+      }
     },
     {
       "id": "hud_enemy_damage_nest",

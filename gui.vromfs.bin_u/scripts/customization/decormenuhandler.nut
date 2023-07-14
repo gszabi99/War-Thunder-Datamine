@@ -11,6 +11,9 @@ let { getCachedDataByType, getDecorator, getCachedOrderByType
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
+let seenList = require("%scripts/seen/seenList.nut")
+let { needMarkSeenResource, disableMarkSeenResource } = require("%scripts/seen/markSeenResources.nut")
 
 let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -26,33 +29,75 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   preSelectDecorId = null
   applyFilterTimer = null
 
+  decoratorsCache = {}
+  decorsToMarkSeen = []
+
+  currentSeenListId = ""
+  currentSeenList = null
+
   function updateHandlerData(decorType, unit, slotDecorId, preSelectDecoratorId) {
     this.curDecorType = decorType
     this.curUnit = unit
     this.curSlotDecorId = slotDecorId
     this.preSelectDecorId = preSelectDecoratorId
+    this.currentSeenListId = this.curDecorType.name == "DECALS" ? SEEN.DECALS : SEEN.DECORATORS
+    this.currentSeenList = seenList.get(this.currentSeenListId)
+  }
+
+  function prepareDecoratorsCache(decorCache) {
+    let needMarkSeen = needMarkSeenResource(this.currentSeenListId)
+    this.decoratorsCache.clear()
+    let categories = this.getCategories()
+    foreach(categoryId in categories) {
+      let groups = decorCache.catToGroupNames[categoryId]
+      let hasGroups = groups.len() > 1 || groups[0] != "other"
+      local listSummaryId = ""
+      if(hasGroups) {
+        listSummaryId = $"{categoryId}.summary"
+        this.decoratorsCache[listSummaryId] <- []
+      }
+      foreach(groupId in groups) {
+        let listId = $"{categoryId}.{groupId}"
+        let decors = decorCache.catToGroups?[categoryId][groupId] ?? []
+        let unit = this.curUnit
+        let decorsListId = decors.filter(@(dec) dec.canUse(unit)).map(@(dec) dec.id)
+        this.decoratorsCache[listId] <- decorsListId
+        if(hasGroups)
+          this.decoratorsCache[listSummaryId].extend(decorsListId)
+        if(needMarkSeen)
+          this.currentSeenList.markSeen(decorsListId)
+      }
+    }
+    disableMarkSeenResource(this.currentSeenListId)
   }
 
   function createCategories() {
     if (!this.scene?.isValid())
       return
-
     let headerObj = this.scene.findObject("decals_wnd_header")
     headerObj.setValue(loc(this.curDecorType.listHeaderLocId))
 
     let decorType = this.curDecorType
     let decorCache = this.getDecorCache()
-    let categories = this.getCategories().map(function(categoryId) {
+    this.prepareDecoratorsCache(decorCache)
+
+    let categories = []
+    foreach(categoryId in this.getCategories()) {
       let groups = decorCache.catToGroupNames[categoryId]
       let hasGroups = groups.len() > 1 || groups[0] != "other"
-      return {
+      let groupId = hasGroups ? "summary" : "other"
+
+      let subListId = $"{categoryId}.{groupId}"
+      this.currentSeenList.setSubListGetter(subListId, Callback(@() this.decoratorsCache.filter(@(_val, key) key == subListId).values()?[0] ?? [], this))
+      categories.append({
         id = $"category_{categoryId}"
         headerText = $"#{decorType.categoryPathPrefix}{categoryId}"
         categoryId
-        groupId = hasGroups ? "" : "other"
+        groupId
         hasGroups
-      }
-    })
+        unseenIcon = bhvUnseen.makeConfigStr(this.currentSeenListId, subListId)
+      })
+    }
 
     let data = handyman.renderCached(this.categoryTpl, { categories })
     let listObj = this.scene.findObject("categories_list")
@@ -141,6 +186,8 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.scene.enable(isShown)
     ::enableHangarControls(!this.scene.findObject("hangar_control_tracking").isHovered())
     this.resetFilter()
+    if(!isShown)
+      this.markSeenDecors()
   }
 
   // private
@@ -153,14 +200,20 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   function generateGroupsCategoryContent(categoryId) {
     let groups = this.getDecorCache().catToGroupNames[categoryId]
     let decorType = this.curDecorType
-    let categories = groups.map(@(groupId) {
-      id = $"group_{groupId}"
-      headerText = $"#{decorType.groupPathPrefix}{groupId}"
-      categoryId
-      groupId
-      hasGroups = false
-      isGroup = true
-    })
+    let categories = []
+    foreach(groupId in groups) {
+      let subListId = $"{categoryId}.{groupId}"
+      this.currentSeenList.setSubListGetter(subListId, Callback(@() this.decoratorsCache.filter(@(_val, key) key == subListId).values()[0], this))
+      categories.append({
+        id = $"group_{groupId}"
+        headerText = $"#{decorType.groupPathPrefix}{groupId}"
+        categoryId
+        groupId
+        hasGroups = false
+        isGroup = true
+        unseenIcon = bhvUnseen.makeConfigStr(this.currentSeenListId, subListId)
+      })
+    }
     return handyman.renderCached(this.categoryTpl, { categories })
   }
 
@@ -178,7 +231,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   function fillDecalsCategoryContent(listObj) {
     if (!listObj?.isValid())
       return
-
+    this.markSeenDecors()
     let categoryObj = this.getSelectedObj(listObj)
     if (!categoryObj?.isValid()) {
       this.savePath("")
@@ -221,6 +274,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   function getDecorButtonsView(decors) {
     let slotDecorId = this.curSlotDecorId
     let unit = this.curUnit
+    let currentListId = this.currentSeenListId
     return {
       isTooltipByHold = ::show_console_buttons
       buttons = decors.map(@(decorator) getDecorButtonView(decorator, unit, {
@@ -230,6 +284,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
         onCollectionBtnClick = isCollectionItem(decorator)
           ? "onCollectionIconClick"
           : null
+        unseenIcon = decorator.canUse(unit) ? bhvUnseen.makeConfigStr(currentListId, decorator.id) : ""
       }))
     }
   }
@@ -240,7 +295,17 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       return ""
 
     let view = this.getDecorButtonsView(decors)
+    let unit = this.curUnit
+    this.storeSeenDecors(decors.filter(@(decor) decor.canUse(unit)).map(@(decor) decor.id))
     return handyman.renderCached("%gui/commonParts/imageButton.tpl", view)
+  }
+
+  storeSeenDecors = @(decors) this.decorsToMarkSeen.extend(decors)
+
+  function markSeenDecors() {
+    if(this.currentSeenList != null)
+      this.currentSeenList.markSeen(this.decorsToMarkSeen)
+    this.decorsToMarkSeen.clear()
   }
 
   function scrollDecalsCategory() {

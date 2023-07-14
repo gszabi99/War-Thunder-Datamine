@@ -1,6 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+let { show_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { getTooltipType } = require("genericTooltipTypes.nut")
 let { fillTooltip } = require("genericTooltip.nut")
@@ -25,18 +25,18 @@ let hasTooltip = @(obj) (obj?.tooltipId ?? "") != ""
 local validateTimerId = -1
 
 let function hideWaitIcon() {
-  ::show_obj(waitPlace, false)
+  show_obj(waitPlace, false)
   waitPlace = null
 }
 
 let function hideTooltip() {
-  ::show_obj(tooltipPlace, false)
+  show_obj(tooltipPlace, false)
   tooltipPlace = null
   tooltipData = null
 }
 
 let function hideHint() {
-  ::show_obj(hintPlace, false)
+  show_obj(hintPlace, false)
   hintPlace = null
 }
 
@@ -100,7 +100,7 @@ let function showWaitIconForObj(obj) {
   let pos = getObjCenteringPosRC(obj)
   wIcon.left = pos[0].tostring()
   wIcon.top = pos[1].tostring()
-  ::show_obj(wIcon, true)
+  show_obj(wIcon, true)
   wIcon.findObject("icon")["sector-angle-2"] = "0"
   waitPlace = wIcon
 }
@@ -127,7 +127,7 @@ let function showTooltipForObj(obj) {
     hideTooltip()
 
   let isSuccess = fillTooltipObj(tooltip, obj?.tooltipId ?? "")
-  ::show_obj(tooltip, isSuccess)
+  show_obj(tooltip, isSuccess)
   tooltipPlace = tooltip
 
   if (!isSuccess)
@@ -139,7 +139,7 @@ let function showTooltipForObj(obj) {
   }
   let align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT
   tooltip.getScene().applyPendingChanges(false)
-  ::g_dagui_utils.setPopupMenuPosAndAlign(obj, align, tooltip)
+  setPopupMenuPosAndAlign(obj, align, tooltip)
 }
 
 let function showHintForObj(obj) {
@@ -154,7 +154,7 @@ let function showHintForObj(obj) {
   let size = obj.getSize()
   hObj.left = (pos[0] + size[0] / 2).tostring()
   hObj.top = pos[1].tostring()
-  ::show_obj(hObj, true)
+  show_obj(hObj, true)
   hintPlace = hObj
 }
 

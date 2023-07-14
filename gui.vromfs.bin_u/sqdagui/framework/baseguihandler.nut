@@ -1,9 +1,8 @@
 
 let { handlerType } = require("handlerType.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
+let { check_obj, show_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let checkObj = @(obj) obj != null && obj?.isValid()
 
@@ -148,7 +147,7 @@ let checkObj = @(obj) obj != null && obj?.isValid()
 
   function showSceneBtn(id, status) {
     let obj = checkObj(this.scene) ? this.scene.findObject(id) : ::get_cur_gui_scene()[id]
-    return ::show_obj(obj, status)
+    return show_obj(obj, status)
   }
 
   function msgBox(id, text, buttons, def_btn, options = {}) {

@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
@@ -117,10 +116,10 @@ elemViewType.addTypes({
       obj.getScene().replaceContentFromText(obj, data, data.len(), this)
 
       let heightEnd = obj.getParent().getFinalProp("isSmall") == "yes"
-        ? ::g_dagui_utils.toPixels(::get_cur_gui_scene(), "1@gamercardHeight") /
+        ? toPixels(::get_cur_gui_scene(), "1@gamercardHeight") /
             MAX_VOICE_ELEMS_IN_GC
-        : ::g_dagui_utils.toPixels(::get_cur_gui_scene(), "1@voiceChatBaseIconHeight") +
-            ::g_dagui_utils.toPixels(::get_cur_gui_scene(), "1@blockInterval")
+        : toPixels(::get_cur_gui_scene(), "1@voiceChatBaseIconHeight") +
+            toPixels(::get_cur_gui_scene(), "1@blockInterval")
 
       for (local i = 0; i < obj.childrenCount(); i++)
         obj.getChild(i)["height-end"] = heightEnd.tointeger().tostring()

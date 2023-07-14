@@ -22,7 +22,7 @@ global enum bit_unit_status {
 let basicUnitRoles = {
   [ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
   [ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
-    "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv"],
+    "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv", "type_exoskeleton"],
   [ES_UNIT_TYPE_BOAT] = ["type_boat", "type_heavy_boat", "type_barge", "type_frigate"],
   [ES_UNIT_TYPE_SHIP] = ["type_ship", "type_destroyer", "type_light_cruiser",
     "type_heavy_cruiser", "type_battlecruiser", "type_battleship", "type_submarine"],
@@ -43,6 +43,7 @@ let unitRoleFontIcons = {
   lbv                      = loc("icon/unitclass/light_tank")
   mbv                      = loc("icon/unitclass/medium_tank")
   hbv                      = loc("icon/unitclass/heavy_tank")
+  exoskeleton              = loc("icon/unitclass/medium_tank"),
   ship                     = loc("icon/unitclass/ship"),
   boat                     = loc("icon/unitclass/gun_boat")
   heavy_boat               = loc("icon/unitclass/heavy_gun_boat")

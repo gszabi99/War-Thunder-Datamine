@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -92,6 +92,9 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     }, this)
     ::g_hud_event_manager.subscribe("LocalPlayerAlive", function (_data) {
       updateActionBar()
+    }, this)
+    add_event_listener("ChangedShowActionBar", function (_eventData) {
+      this.updateVisibility()
     }, this)
 
     this.updateParams()
@@ -405,8 +408,10 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   }
 
   function updateVisibility() {
-    if (checkObj(this.scene))
-      this.scene.show(!::g_hud_live_stats.isVisible())
+    if (checkObj(this.scene)) {
+      let showActionBarOption = ::get_gui_option_in_mode(::USEROPT_SHOW_ACTION_BAR, ::OPTIONS_MODE_GAMEPLAY, true)
+      this.scene.show(!::g_hud_live_stats.isVisible() && showActionBarOption)
+    }
   }
 
   function activateAction(obj) {

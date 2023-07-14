@@ -1,8 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 
 let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
@@ -31,7 +30,7 @@ let popupList = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initScreen() {
-    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(
+    this.align = setPopupMenuPosAndAlign(
       this.parentObj, this.align, this.scene.findObject("popup_list"))
   }
 

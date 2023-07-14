@@ -286,6 +286,8 @@ global enum SEEN {
   BATTLE_PASS_SHOP = "battle_pass_shop"
   UNLOCK_MARKERS = "unlock_markers"
   MANUAL_UNLOCKS = "manual_unlocks"
+  DECORATORS = "decorators"
+  DECALS = "decals"
 
   //sublists
   S_EVENTS_WINDOW = "##events_window##"
@@ -363,7 +365,6 @@ foreach (fn in [
   "%scripts/onlineShop/urlType.nut"
   "%scripts/onlineShop/url.nut"
 
-  "%sqDagui/daguiUtil.nut"
   "%scripts/viewUtils/layeredIcon.nut"
   "%scripts/viewUtils/projectAwards.nut"
 

@@ -16,6 +16,7 @@ let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { set_gui_option } = require("guiOptions")
 
 let function get_country_by_team(team_index) {
   local countries = null
@@ -318,6 +319,11 @@ let function get_country_by_team(team_index) {
 
   function onChangedPartHudVisible(_obj) {
     broadcastEvent("ChangedPartHudVisible")
+  }
+
+  function onChangedShowActionBar(obj) {
+    set_gui_option(::USEROPT_SHOW_ACTION_BAR, obj.getValue())
+    broadcastEvent("ChangedShowActionBar")
   }
 
   function onTankAltCrosshair(obj) {

@@ -1,8 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { Cost } = require("%scripts/money.nut")
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
@@ -69,7 +68,7 @@ let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlob
       vsText = loc("country/VS") + "\n "
     }
 
-    let lastSelectedValue = ::get_obj_valid_index(obj.findObject("countries_container"))
+    let lastSelectedValue = getObjValidIndex(obj.findObject("countries_container"))
     let data = handyman.renderCached("%gui/worldWar/wwOperationCountriesInfo.tpl", view)
     this.guiScene.replaceContentFromText(obj, data, data.len(), this)
     let isVisible = this.descItem.isMapActive()

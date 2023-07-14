@@ -10,12 +10,20 @@ decorCategory {
   header {
     <<#isGroup>>margin-left:t='3@blockInterval'<</isGroup>>
     fullSizeCollapseBtn {
+      flow:t='horizontal'
       id:t='btn_<<id>>'
       activeText {}
       text {
         id:t='txt_<<id>>'
         text:t='<<headerText>>'
       }
+      <<#unseenIcon>>
+      unseenIcon {
+        valign:t='center'
+        value:t='<<unseenIcon>>'
+        unseenText {}
+      }
+      <</unseenIcon>>
     }
   }
 

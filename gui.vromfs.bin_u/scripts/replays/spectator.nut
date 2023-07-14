@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -704,7 +703,7 @@ let weaponIconsReloadBits = {
 
     let curPlayer = this.getTargetPlayer()
     if (::get_is_console_mode_enabled() && u.isEqual(curPlayer, player)) {
-      let selIndex = ::get_obj_valid_index(obj)
+      let selIndex = getObjValidIndex(obj)
       let selectedPlayerBlock = obj.getChild(selIndex >= 0 ? selIndex : 0)
       ::session_player_rmenu(
         this,

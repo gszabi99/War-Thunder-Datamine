@@ -2,17 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { getPlayerName,
-        isPlayerFromPS4,
-        isPlayerFromXboxOne,
-        isPlatformSony,
-        isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { getPlayerName, isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXboxOne
+} = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
@@ -366,7 +362,7 @@ foreach (idx, item in clan_member_list) {
           if (!this.isValid())
             return
 
-          let count = ::g_dagui_utils.countSizeInItems(containerObj.getParent(), "@clanMedalSizeMin", 1, 0, 0).itemsCountX
+          let count = countSizeInItems(containerObj.getParent(), "@clanMedalSizeMin", 1, 0, 0).itemsCountX
           let medals = ::g_clans.getClanPlaceRewardLogData(clanData, count)
           local markup = ""
           local rest = min(medals.len(), ::get_warpoints_blk()?.maxClanBestRewards ?? 6)

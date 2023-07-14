@@ -890,7 +890,7 @@ let function gatherDebriefingResult() {
 
   let isInRoom = ::SessionLobby.isInRoom()
   debriefingResult.isInRoom <- isInRoom
-  debriefingResult.mGameMode <- isInRoom ? ::SessionLobby.getMGameMode() : null
+  debriefingResult.roomEvent <- isInRoom ? ::SessionLobby.getRoomEvent() : null
   debriefingResult.isSpectator <- isInRoom && ::SessionLobby.spectator
 
   debriefingResult.isMp <- ::is_multiplayer()

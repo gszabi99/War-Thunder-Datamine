@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getObjValue } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let statsd = require("statsd")
 let exitGame = require("%scripts/utils/exitGame.nut")
@@ -35,7 +35,7 @@ local authDataByTypes = {
       verStatusText = data.text
       authTypeImg = data.img
       isShowRestoreLink = isExt2StepAllowed
-      isRememberDevice = ::get_object_value(this.loginScene, "loginbox_code_remember_this_device", false)
+      isRememberDevice = getObjValue(this.loginScene, "loginbox_code_remember_this_device", false)
       timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", this.guiScene)
     }
   }
@@ -61,10 +61,10 @@ local authDataByTypes = {
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
     let result = ::check_login_pass(
-      ::get_object_value(this.loginScene, "loginbox_username", ""),
-      ::get_object_value(this.loginScene, "loginbox_password", ""), "",
-      ::get_object_value(this.scene, "loginbox_code", ""),
-      ::get_object_value(this.scene, "loginbox_code_remember_this_device", false),
+      getObjValue(this.loginScene, "loginbox_username", ""),
+      getObjValue(this.loginScene, "loginbox_password", ""), "",
+      getObjValue(this.scene, "loginbox_code", ""),
+      getObjValue(this.scene, "loginbox_code_remember_this_device", false),
       true)
     this.proceedAuth(result)
   }
@@ -87,7 +87,7 @@ local authDataByTypes = {
   function proceedAuth(result) {
     switch (result) {
       case YU2_OK:
-        this.continueLogin(::get_object_value(this.loginScene, "loginbox_username", ""))
+        this.continueLogin(getObjValue(this.loginScene, "loginbox_username", ""))
         break
 
       case YU2_2STEP_AUTH:

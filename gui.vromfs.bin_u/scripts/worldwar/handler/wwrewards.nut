@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let userstat = require("userstat")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -198,7 +197,7 @@ let fetchRewardsTimeData = function(cb) {
   function onItemSelect(_obj) {}
 
   function updateRewardsList() {
-    local val = ::get_obj_valid_index(this.rewardsListObj)
+    local val = getObjValidIndex(this.rewardsListObj)
     let markup = handyman.renderCached("%gui/worldWar/wwRewardItem.tpl", this.getRewardsView())
     this.guiScene.replaceContentFromText(this.rewardsListObj, markup, markup.len(), this)
 

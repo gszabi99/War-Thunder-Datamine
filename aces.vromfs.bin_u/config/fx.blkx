@@ -6788,6 +6788,102 @@
     "numReserved": 20,
     "onePointNumber": 40
   },
+  "electric_bee": {
+    "fx": "electric_bee_lightning_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2,
+    "onePointRadius": 1.0,
+    "sfxPathStudio": "event/units/uav_p",
+    "sfxEvent": "repair",
+    "soundEnableDistance": 100.0
+  },
+  "laser_bee_hit": {
+    "fx": "laser_bee_hit_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 50,
+    "onePointRadius": 1.0,
+    "sfxPathStudio": "event/units/uav_p",
+    "sfxEvent": "beam_hit",
+    "soundEnableDistance": 100.0
+  },
+  "hedgie_explosion": {
+    "fx": "hedgie_ground_fall_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "onePointRadius": 1.0,
+    "sfxPathStudio": "event/units/hedge",
+    "sfxEvent": "explosion_landing",
+    "soundEnableDistance": 1000.0
+  },
+  "burav_explosion": {
+    "fx": "burav_worm_ground_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "onePointRadius": 1.0,
+    "sfxPathStudio": "event/units/hedge",
+    "sfxEvent": "explosion_landing",
+    "soundEnableDistance": 1000.0
+  },
+  "hedgie_rocket": {
+    "fx": "hedgie_rocket_tail_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 1,
+    "onePointRadius": 1.0,
+    "sfxPathStudio": "event/units/hedge",
+    "sfxEvent": "rocket_fly"
+  },
+  "hedgie_track_move": {
+    "fx": "hedgie_track_move_dirt_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/effects"
+  },
+  "hedgie_concrete_move": {
+    "fx": "hedgie_move_concrete_move_ground_cmps_fx",
+    "numInstances": 50,
+    "numReserved": 8,
+    "onePointNumber": 0,
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "ground/effects"
+  },
+  "hedgie_water_move": {
+    "fx": "hedgie_move_water_cmps_fx",
+    "lifeTime": 3.0,
+    "numInstances": 30,
+    "numReserved": 10,
+    "onePointNumber": 25
+  },
+  "foot_dust_dirt": {
+    "fx": "foot_dust_dirt_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2
+  },
+  "foot_dust_asphalt": {
+    "fx": "foot_dust_asphalt_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2
+  },
+  "foot_dust_sand": {
+    "fx": "foot_dust_sand_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2
+  },
+  "foot_dust_snow": {
+    "fx": "foot_dust_snow_cmps_fx",
+    "numInstances": 70,
+    "numReserved": 20,
+    "onePointNumber": 2
+  },
   "repair_ground": {
     "fx": "misc_markers_repair_ground_cmps_fx",
     "group": "highres",
@@ -7466,19 +7562,6 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "rocket_fire_cruisemissile": {
-    "fx": "fires_rocket_tail_cruise_missile_cmps_fx",
-    "lifeTime": 10.0,
-    "numInstances": 80,
-    "numReserved": 5,
-    "isTrail": true,
-    "nonPlayerFadeDistScale": 2.0,
-    "playerFadeDistScale": 1.1,
-    "onePointNumber": 4,
-    "sortDistanceOffset": 0.2,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
-  },
   "aircraft_wheels_water_splashes": {
     "fx": "water_splash_ocean_wave_cmps_fx",
     "lifeTime": 10.0,
@@ -7571,6 +7654,17 @@
   },
   "ad_dust_stucco": {
     "fx": "dust_destruction_base_small_cmps_fx",
+    "numInstances": 20,
+    "numReserved": 5,
+    "softnessDepth": 5.0,
+    "onePointNumber": 15,
+    "sfxPath": "tanks/object_crash",
+    "sfxPathStudio": "ground/object_crash",
+    "sfxEvent": "dirt_small",
+    "soundEnableDistance": 50.0
+  },
+  "ad_dust_big_fence": {
+    "fx": "dust_destruction_concrete_fence_cmps_fx",
     "numInstances": 20,
     "numReserved": 5,
     "softnessDepth": 5.0,

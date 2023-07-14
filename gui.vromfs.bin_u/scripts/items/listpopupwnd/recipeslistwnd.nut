@@ -1,15 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let ExchangeRecipes = require("%scripts/items/exchangeRecipes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil } = require("math")
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 
@@ -84,7 +81,7 @@ local MIN_ITEMS_IN_ROW = 7
   }
 
   function initScreen() {
-    this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
+    this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, this.scene.findObject("main_frame"))
     this.needMarkRecipes = ExchangeRecipes.hasFakeRecipes(this.recipesList)
     let recipesListObj = this.scene.findObject("recipes_list")
     if (this.recipesList.len() > 0)

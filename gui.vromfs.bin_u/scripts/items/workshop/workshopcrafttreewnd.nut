@@ -1,15 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { abs } = require("math")
 let { Point2 } = require("dagor.math")
-
-
-let { findChild } = require("%sqDagui/daguiUtil.nut")
+let { findChild, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 
@@ -966,7 +962,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
   doAltAction = @(item, obj) item?.doAltAction(this.getActionParams(item, obj))
 
   function getCurItemParam() {
-    let value = ::get_obj_valid_index(this.itemsListObj)
+    let value = getObjValidIndex(this.itemsListObj)
     if (value < 0)
       return {
         obj = null
@@ -1041,7 +1037,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
       this.itemsListObj.setValue(i)
       return
     }
-    let curIdx = ::get_obj_valid_index(this.itemsListObj)
+    let curIdx = getObjValidIndex(this.itemsListObj)
     if (curIdx >= 0 && this.itemsListObj.getChild(curIdx).isEnabled())
       this.itemsListObj.setValue(curIdx)
     else if (enabledValue != null)

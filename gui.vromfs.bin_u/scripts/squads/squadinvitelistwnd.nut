@@ -1,9 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil } = require("math")
@@ -160,7 +159,7 @@ let { ceil } = require("math")
   function updatePosition() {
     let nestObj = this.scene.findObject(this.NEST_OBJ_ID)
     if (checkObj(nestObj))
-      this.align = ::g_dagui_utils.setPopupMenuPosAndAlign(this.alignObj, this.align, nestObj)
+      this.align = setPopupMenuPosAndAlign(this.alignObj, this.align, nestObj)
   }
 
   function checkActiveForDelayedAction() {

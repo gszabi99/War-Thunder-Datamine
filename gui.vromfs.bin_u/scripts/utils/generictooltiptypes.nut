@@ -1,6 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
@@ -280,7 +280,7 @@ let exportTypes = addTooltipTypes({
       ::showAirInfo(unit, true, contentObj, handler, params)
       guiScene.setUpdatesEnabled(true, true)
 
-      if (obj.getSize()[1] < ::g_dagui_utils.toPixels(obj.getScene(), "1@rh"))
+      if (obj.getSize()[1] < toPixels(obj.getScene(), "1@rh"))
         return true
 
       contentObj.height = "1@rh - 2@framePadding"
