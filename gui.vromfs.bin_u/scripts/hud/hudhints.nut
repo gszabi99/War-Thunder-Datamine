@@ -325,6 +325,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
   missionCount = -1
   maskId = -1
   mask = 0
+  disabledByUnitTags = null
 
   isShowedInVR = false
 
@@ -651,6 +652,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = 5.0
     delayTime = 10.0
     maskId = 0
+    disabledByUnitTags = ["type_robot"]
   }
 
   F1_CONTROLS_HINT_SCRIPTED = {
@@ -661,6 +663,7 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:f1_controls_scripted:show"
     hideEvent = "helpOpened"
     lifeTime = 30.0
+    disabledByUnitTags = ["type_robot"]
   }
 
   FULL_THROTTLE_HINT = {

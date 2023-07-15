@@ -14,6 +14,7 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -21,6 +22,17 @@ enum HintShowState {
   NOT_MATCH = 0
   SHOW_HINT = 1
   DISABLE   = 2
+}
+
+let function isHintDisabledByUnitTags(hint) {
+  if (hint.disabledByUnitTags == null)
+    return false
+
+  let unit = getPlayerCurUnit()
+  if (unit == null)
+    return false
+
+  return hint.disabledByUnitTags.findvalue(@(v) unit.tags.contains(v)) != null
 }
 
 ::g_hud_hints_manager <- {
@@ -159,7 +171,7 @@ enum HintShowState {
       let hint = hintType
       if (!u.isNull(hint.showEvent))
         ::g_hud_event_manager.subscribe(hint.showEvent, function (eventData) {
-          if (this.isHintShowCountExceeded(hint))
+          if (this.isHintShowCountExceeded(hint) || isHintDisabledByUnitTags(hint))
             return
 
           if (hint.delayTime > 0)
