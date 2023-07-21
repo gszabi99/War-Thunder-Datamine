@@ -353,10 +353,10 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
   let imgObj = itemObj.findObject("image")
   imgObj["background-image"] = viewParams.iconBulletName != "" ? "" : viewParams.itemImg
 
-  ::showBtn("status_image", viewParams.isShowStatusImg, itemObj)
-  ::showBtn("status_radio", !viewParams.hideStatusRadio, itemObj)
-  ::showBtn("modItem_statusBlock", !viewParams.hideStatus, itemObj)
-  ::showBtn("modItem_discount", viewParams.isShowDiscount, itemObj)
+  showObjById("status_image", viewParams.isShowStatusImg, itemObj)
+  showObjById("status_radio", !viewParams.hideStatusRadio, itemObj)
+  showObjById("modItem_statusBlock", !viewParams.hideStatus, itemObj)
+  showObjById("modItem_discount", viewParams.isShowDiscount, itemObj)
 
   if (viewParams.isShowDiscount) {
     let dObj = itemObj.findObject("discount")
@@ -402,10 +402,10 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     amountObject.overlayTextColor = viewParams.amountTextColor
   }
 
-  ::showBtn("warning_icon", !viewParams.hideWarningIcon, itemObj)
+  showObjById("warning_icon", !viewParams.hideWarningIcon, itemObj)
 
   if (!viewParams.hideBulletsChoiceBlock) {
-    let holderObj = ::showBtn("bullets_amount_choice_block", true, itemObj)
+    let holderObj = showObjById("bullets_amount_choice_block", true, itemObj)
     let textObj = holderObj.findObject("bulletsCountText")
     if (checkObj(textObj))
       textObj.setValue(viewParams.bulletsCountText)
@@ -433,7 +433,7 @@ let function updateModItem(unit, item, itemObj, showButtons, handler, params = {
     }
   }
 
-  ::showBtn("modItem_visualHasMenu", !viewParams.hideVisualHasMenu, itemObj)
+  showObjById("modItem_visualHasMenu", !viewParams.hideVisualHasMenu, itemObj)
 
   let upgradesObj = itemObj.findObject("upgrade_img")
   if (checkObj(upgradesObj))
@@ -534,7 +534,7 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
 
 let function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   let show = bulGroup != null && bulletsManager != null && bulletsManager.canChangeBulletsCount()
-  let holderObj = ::showBtn("bullets_amount_choice_block", show, itemObj)
+  let holderObj = showObjById("bullets_amount_choice_block", show, itemObj)
   if (!show || !holderObj)
     return
 

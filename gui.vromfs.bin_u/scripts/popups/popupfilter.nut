@@ -104,7 +104,7 @@ local popupFilter = class extends ::gui_handlers.BaseGuiHandlerWT {
         isResetShow = value || isResetShow
       }
     }
-    ::showBtn(RESET_ID, isResetShow, columnObj)
+    showObjById(RESET_ID, isResetShow, columnObj)
   }
 
   function onResetFilters(obj) {

@@ -24,7 +24,7 @@ let initEncyclopediaData = function() {
     let blkChapter = blk.getBlock(chapterNo)
     let name = blkChapter.getBlockName()
 
-    if (::is_vendor_tencent() && name == "history")
+    if (::is_chinese_harmonized() && name == "history")
       continue
 
     let chapterDesc = {}
@@ -100,7 +100,7 @@ let open = function() {
     chaptersObj.setValue(0)
     this.onChapterSelect(chaptersObj)
 
-    let canShowLinkButtons = !::is_vendor_tencent() && hasFeature("AllowExternalLink")
+    let canShowLinkButtons = !::is_chinese_harmonized() && hasFeature("AllowExternalLink")
     foreach (btn in ["faq", "support", "wiki"])
       this.showSceneBtn("button_" + btn, canShowLinkButtons)
     ::move_mouse_on_child_by_value(this.scene.findObject("items_list"))

@@ -38,7 +38,7 @@ let function fillItemTableInfo(item, holderObj) {
     obj.setValue(text)
   hasItemAdditionalDescTable = hasItemAdditionalDescTable || text != ""
 
-  ::showBtn("item_additional_desc_table", hasItemAdditionalDescTable, holderObj)
+  showObjById("item_additional_desc_table", hasItemAdditionalDescTable, holderObj)
 }
 
 let function getDescTextAboutDiv(item, preferMarkup = true) {
@@ -251,7 +251,7 @@ let function updateExpireAlarmIcon(item, itemObj) {
   if (!expireType)
     return
 
-  ::showBtn("alarm_icon", true, itemObj)
+  showObjById("alarm_icon", true, itemObj)
   let borderObj = itemObj.findObject("rarity_border")
   if (!borderObj?.isValid())
     return

@@ -77,17 +77,17 @@ local popupOptList = class extends ::gui_handlers.BaseGuiHandlerWT {
   getActionBtn = @() this.scene.findObject(ACTION_BTN)
 
   function onUnderPopupClick() {
-    ::showBtn(SELECTOR_OBJ, false, this.scene)
+    showObjById(SELECTOR_OBJ, false, this.scene)
   }
 
   function onAction() {
     this.tmpStates = u.copy(this.stateList)
     this.updateSelectorView()
-    ::showBtn(SELECTOR_OBJ, true, this.scene)
+    showObjById(SELECTOR_OBJ, true, this.scene)
   }
 
   function onCancel() {
-    ::showBtn(SELECTOR_OBJ, false, this.scene)
+    showObjById(SELECTOR_OBJ, false, this.scene)
   }
 
   function onSelect(obj) {
@@ -123,7 +123,7 @@ local popupOptList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
       res.append(clusterOpt.values[state.val])
     }
-    ::showBtn(SELECTOR_OBJ, false, this.scene)
+    showObjById(SELECTOR_OBJ, false, this.scene)
     if (this.onActionFn)
       this.onActionFn(res)
   }

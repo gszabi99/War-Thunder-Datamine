@@ -28,7 +28,7 @@ local dbgStartCheck = 0
 
   let handler = ::handlersManager.loadHandler(::gui_handlers.MainMenu)
   ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu)
-  ::showBtn("gamercard_center", !topMenuShopActive.value)
+  showObjById("gamercard_center", !topMenuShopActive.value)
 
   if (allowMainmenuActions)
     onMainMenuReturnActions.value?.onMainMenuReturn(handler, false)

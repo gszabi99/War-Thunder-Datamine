@@ -60,7 +60,7 @@ let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 
   function updateMap() {
     if (!this.descItem && !this.map) {
-      ::showBtn("world_war_map_block", false, this.scene)
+      showObjById("world_war_map_block", false, this.scene)
       return
     }
 

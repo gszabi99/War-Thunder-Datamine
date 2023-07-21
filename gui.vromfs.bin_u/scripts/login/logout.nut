@@ -6,7 +6,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let needLogoutAfterSession = persist("needLogoutAfterSession", @() Watched(false))
 
 let function canLogout() {
-  return !::disable_network() && !::is_vendor_tencent()
+  return !::disable_network()
 }
 
 let function startLogout() {

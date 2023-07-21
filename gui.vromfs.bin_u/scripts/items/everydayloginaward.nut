@@ -83,7 +83,7 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
       return
     local imageSectionName = "image"
     let imageSectionNameAlt = "tencent_image"
-    if (::is_vendor_tencent() && u.isDataBlock(data[imageSectionNameAlt]))
+    if (::is_chinese_harmonized() && u.isDataBlock(data[imageSectionNameAlt]))
       imageSectionName = imageSectionNameAlt
 
     this.savePeriodAwardData(data)

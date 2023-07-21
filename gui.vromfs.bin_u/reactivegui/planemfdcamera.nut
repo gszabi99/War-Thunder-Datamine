@@ -35,7 +35,7 @@ let planeMfdCamera = @(width, height) function() {
     watch = mfdCameraSetting
     children = [
       (isShkval ? shkval(width, height, lineWidthScale, fontScale) :
-      (hudUnitType.isHelicopter() ? heliStockCamera() : opticAtgmSight(width, height, 0, 0)))
+      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)))
     ]
   }
 }

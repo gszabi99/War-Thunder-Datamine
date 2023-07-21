@@ -213,7 +213,7 @@ let function afterCloseTrophyWnd(configsTable) {
     if (this.isRouletteStarted())
       this.useSingleAnimation = false
 
-    ::showBtn(this.useSingleAnimation ? "reward_roullete" : "open_chest_animation", false, this.scene) //hide not used animation
+    showObjById(this.useSingleAnimation ? "reward_roullete" : "open_chest_animation", false, this.scene) //hide not used animation
     let animId = this.useSingleAnimation ? "open_chest_animation" : "reward_roullete"
     let animObj = this.scene.findObject(animId)
     if (checkObj(animObj)) {

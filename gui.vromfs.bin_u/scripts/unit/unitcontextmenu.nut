@@ -95,7 +95,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#slot_crew.svg"
       haveWarning = isInArray(::get_crew_status(crew, unit), [ "ready", "full" ])
       haveDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo) > 0
-      showAction = inMenu && hasFeature("CrewInfo")
+      showAction = inMenu
       let params = {
         countryId = crew.idCountry,
         idInCountry = crew.idInCountry,
@@ -243,7 +243,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
             : isInResearch && setResearchManually && !isSquadronVehicle
               ? loc("mainmenu/btnConvert")
               : loc("mainmenu/btnResearch")
-      showAction = inMenu && (!isInResearch || (hasFeature("SpendGold") && hasFeature("SpendFreeRP")))
+      showAction = inMenu && (!isInResearch || hasFeature("SpendGold"))
         && (::isUnitFeatureLocked(unit) || ::canResearchUnit(unit)
           || canFlushSquadronExp || (isSquadronVehicle && !::is_in_clan()))
       disabled = !showAction

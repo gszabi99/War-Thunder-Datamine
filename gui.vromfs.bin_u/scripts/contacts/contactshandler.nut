@@ -369,15 +369,15 @@ let { searchContactsResults, searchContacts, addContact, removeContact
                                      || platformModule.isPlayerFromPS4(contactName)
                                      || isPlayerFromXboxOne
 
-    ::showBtn("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
-    ::showBtn("btn_friendRemove", isFriend, contact_buttons_holder)
-    ::showBtn("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
-    ::showBtn("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
-    ::showBtn("btn_message", this.owner
+    showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
+    showObjById("btn_friendRemove", isFriend, contact_buttons_holder)
+    showObjById("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
+    showObjById("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
+    showObjById("btn_message", this.owner
                            && !isBlock
                            && isChatEnabled()
                            && canChat, contact_buttons_holder)
-    ::showBtn("btn_ww_invite", ::is_worldwar_enabled()
+    showObjById("btn_ww_invite", ::is_worldwar_enabled()
       && ::g_world_war.isWwOperationInviteEnable(), contact_buttons_holder)
 
     let showSquadInvite = hasFeature("SquadInviteIngame")
@@ -391,12 +391,12 @@ let { searchContactsResults, searchContacts, addContact, removeContact
       && canInvite
       && ::g_squad_utils.canSquad()
 
-    let btnObj = ::showBtn("btn_squadInvite", showSquadInvite, contact_buttons_holder)
+    let btnObj = showObjById("btn_squadInvite", showSquadInvite, contact_buttons_holder)
     if (btnObj && showSquadInvite && contact?.uidInt64)
       this.updateButtonInviteText(btnObj, contact.uidInt64)
 
-    ::showBtn("btn_usercard", hasFeature("UserCards"), contact_buttons_holder)
-    ::showBtn("btn_squadInvite_bottom", false, contact_buttons_holder)
+    showObjById("btn_usercard", hasFeature("UserCards"), contact_buttons_holder)
+    showObjById("btn_squadInvite_bottom", false, contact_buttons_holder)
   }
 
   searchGroupActiveTextInclude = @"

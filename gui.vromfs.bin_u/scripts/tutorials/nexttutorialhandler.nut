@@ -224,10 +224,10 @@ addPromoButtonConfig({
     local buttonObj = null
     local show = this.isShowAllCheckBoxEnabled()
     if (show)
-      buttonObj = ::showBtn(id, show, this.scene)
+      buttonObj = showObjById(id, show, this.scene)
     else {
       show = tutorialMission != null && ::g_promo.getVisibilityById(id)
-      buttonObj = ::showBtn(id, show, this.scene)
+      buttonObj = showObjById(id, show, this.scene)
     }
 
     if (!show || !checkObj(buttonObj))

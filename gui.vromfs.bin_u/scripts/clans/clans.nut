@@ -317,10 +317,6 @@ registerPersistentData("ClansGlobals", getroottable(),
   return isInArray("WW_REGISTER", myRights)
 }
 
-::g_clans.isNonLatinCharsAllowedInClanName <- function isNonLatinCharsAllowedInClanName() {
-  return ::is_vendor_tencent()
-}
-
 ::g_clans.stripClanTagDecorators <- function stripClanTagDecorators(clanTag) {
   let uftClanTag = utf8(clanTag)
   let length = uftClanTag.charCount()

@@ -73,7 +73,6 @@ let function getSkillCategoryView(crewData, unit) {
         discountId = "unit_lb_discount",
         contentId = "air_info_content",
         fillerFunction = function() { this.updateAirInfo(true) }
-        reqFeature = ""
       },
       {
         tooltip = "#slotInfoPanel/crewInfo/tooltip",
@@ -82,7 +81,6 @@ let function getSkillCategoryView(crewData, unit) {
         discountId = "crew_lb_discount",
         contentId = "crew_info_content",
         fillerFunction = function() { this.updateCrewInfo(true) }
-        reqFeature = "CrewInfo"
       },
       {
         tooltip = "#mainmenu/btnFavoritesUnlockAchievement",
@@ -91,7 +89,6 @@ let function getSkillCategoryView(crewData, unit) {
         discountId = "",
         contentId = "unlockachievement_content",
         fillerFunction = function() { this.showUnlockAchievementInfo() }
-        reqFeature = "Profile"
       }
     ]
 
@@ -108,10 +105,6 @@ let function getSkillCategoryView(crewData, unit) {
       let data = "".join(slotInfoPanelButtons.value.map(@(view) handyman.renderCached("%gui/commonParts/button.tpl", view)))
       this.guiScene.replaceContentFromText(buttonsPlace, data, data.len(), this)
     }
-
-    for (local i = this.tabsInfo.len() - 1; i >= 0; i--)
-      if (this.tabsInfo[i].reqFeature != "" && !hasFeature(this.tabsInfo[i].reqFeature))
-        this.tabsInfo.remove(i)
 
     let showTabsCount = this.showTabs ? this.tabsInfo.len() : 1
 
@@ -265,7 +258,7 @@ let function getSkillCategoryView(crewData, unit) {
     this.updateTestDriveButtonText(unit)
     this.updateWeaponryDiscounts(unit)
     ::showAirInfo(unit, true, contentObj, null, { showRewardsInfoOnlyForPremium = true })
-    ::showBtn("aircraft-name", false, this.scene)
+    showObjById("aircraft-name", false, this.scene)
     this.updateHeader(::getUnitName(unit), ::isUnitSpecial(unit))
   }
 

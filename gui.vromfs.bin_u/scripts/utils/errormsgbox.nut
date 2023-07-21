@@ -99,8 +99,7 @@ let function get_error_data(header, error_code) {
 
   if (!isPlatformXboxOne) {
     errData.text += "\n\n" + (isPlatformSony ? "" : (loc("msgbox/error_link_format_game") + loc("ui/colon")))
-    let knoledgebaseSuffix = ::is_vendor_tencent() ? "/Tencent" : ""
-    let link = loc($"url/knowledgebase{knoledgebaseSuffix}") + errData.errCode
+    let link = loc($"url/knowledgebase{errData.errCode}")
     let linkText = isPlatformSony ? loc("msgbox/error_link_format_game") : link
     errData.text += $"<url={link}>{linkText}</url>"
   }

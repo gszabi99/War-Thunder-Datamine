@@ -155,7 +155,7 @@ const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
     let curEntry = this.getSelectedEntry()
     let isLoadedEntry = this.isEntryLoaded(curEntry)
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_delete = this.doDelete && isFileTableFocused && isLoadedEntry,
       btn_load = this.doLoad && isFileTableFocused && isLoadedEntry
       btn_save = isNewFileSelected

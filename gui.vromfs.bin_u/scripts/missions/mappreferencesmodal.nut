@@ -83,7 +83,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
       return
 
     let isMapSelected = this.mapsList?[this.currentMapId] != null
-    ::showBtnTable(previewObj, {
+    showObjectsByTable(previewObj, {
       title             = isMapSelected,
       img_preview       = false,
       ["tactical-map"]  = false,
@@ -200,7 +200,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
   function updateBanListPartsVisibility() {
     let isBanListFilled = this.getBanList().len() > 0
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       listTitle = isBanListFilled,
       btnReset  = isBanListFilled,
     })
@@ -434,7 +434,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
     else
       previewObj.findObject("img_preview")["background-image"] = this.mapsList[this.currentMapId].image
 
-    ::showBtnTable(previewObj, {
+    showObjectsByTable(previewObj, {
       img_preview       = !curMission,
       ["tactical-map"]  = curMission,
       ["paginator"]     = missionsList.len() > 1

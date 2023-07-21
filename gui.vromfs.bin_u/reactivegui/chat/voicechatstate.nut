@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-
+let { clearTimer, setTimeout } = require("dagor.workcycle")
 let { subscribe } = require("eventbus")
 
 let VOICE_CHAT_MEMBER_PARAMS = {
@@ -37,16 +37,15 @@ let function showVoiceChatMember(config) {
   voiceChatMember = VOICE_CHAT_MEMBER_PARAMS.__merge(config)
   voiceChatMember.id <- counter++
 
+  let removeMember = @() removeVoiceChatMember(voiceChatMember.id)
+
   voiceChatMember.needShow <- Watched(true)
   voiceChatMember.needShow.subscribe(function(newVal) {
+    clearTimer(removeMember)
     if (newVal)
       return
 
-    gui_scene.setInterval(voiceChatMember.animTime,
-      function() {
-        gui_scene.clearTimer(callee())
-        removeVoiceChatMember(voiceChatMember.id)
-      })
+    setTimeout(voiceChatMember.animTime, removeMember)
   })
 
   voiceChatMembers.value.append(voiceChatMember)
@@ -71,6 +70,5 @@ let function updateVoiceChatStatus(config) {
 subscribe("updateVoiceChatStatus", updateVoiceChatStatus)
 
 return {
-  voiceChatMembers = voiceChatMembers
-  removeVoiceChatMember = removeVoiceChatMember
+  voiceChatMembers
 }

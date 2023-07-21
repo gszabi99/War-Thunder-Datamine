@@ -333,6 +333,19 @@ let function show_obj(obj, status) {
   return obj
 }
 
+let function showObjById(id, status, scene = null) {
+  let obj = check_obj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
+  return show_obj(obj, status)
+}
+
+let function showObjectsByTable(obj, table) {
+  if (!check_obj(obj))
+    return
+
+  foreach (id, status in table)
+    showObjById(id, status, obj)
+}
+
 let function setFocusToNextObj(scene, objIdsList, increment) {
   let objectsList = objIdsList.map(@(id) id != null ? scene.findObject(id) : null)
     .filter(@(obj) check_obj(obj) && obj.isVisible() && obj.isEnabled())
@@ -410,6 +423,8 @@ return {
   findChild
   check_obj
   show_obj
+  showObjById
+  showObjectsByTable
   getObjValue
   getObjValidIndex
   setObjPosition

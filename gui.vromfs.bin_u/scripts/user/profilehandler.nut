@@ -70,9 +70,6 @@ let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
 ::gui_start_profile <- function gui_start_profile(params = {}) {
-  if (!hasFeature("Profile"))
-    return
-
   ::gui_start_modal_wnd(::gui_handlers.Profile, params)
 }
 
@@ -318,7 +315,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
   function updateDecalButtons(decor) {
     if (!decor) {
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         btn_buy_decorator              = false
         btn_fav                        = false
         btn_preview                    = false
@@ -352,7 +349,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
     let canUse = decor.isUnlocked() && canStartPreviewScene(false)
     let canPreview = !canUse && decor.canPreview()
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_preview                    = ::isInMenu() && canPreview
       btn_use_decorator              = ::isInMenu() && canUse
       btn_store                      = ::isInMenu() && canFindInStore
@@ -371,15 +368,15 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       btn_changeName = ::isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
       btn_getLink = !::is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
       btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
-        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened && !::is_vendor_tencent()
+        !havePlayerTag("gjpass") && ::isInMenu() && isProfileOpened
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration())
       paginator_place = (sheet == "Statistics") && this.airStatsList && (this.airStatsList.len() > this.statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
-        && hasFeature("AllowExternalLink") && !::is_vendor_tencent()
+        && hasFeature("AllowExternalLink")
       btn_SkinPreview = ::isInMenu() && sheet == "UnlockSkin"
     }
 
-    ::showBtnTable(this.scene, buttonsList)
+    showObjectsByTable(this.scene, buttonsList)
 
     if (buttonsList.btn_EmailRegistration)
       this.scene.findObject("btn_EmailRegistration").tooltip = needShowGuestEmailRegistration()

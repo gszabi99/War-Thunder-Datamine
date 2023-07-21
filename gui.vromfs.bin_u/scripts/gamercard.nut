@@ -25,7 +25,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   }
   let isGamercard = prefix == "gc_"
   let isShowGamercard = ::g_login.isLoggedIn()
-  let div = ::showBtn("gamercard_div", isShowGamercard, scene)
+  let div = showObjById("gamercard_div", isShowGamercard, scene)
   let isValidGamercard = checkObj(div)
   if (isGamercard && !isValidGamercard)
     return
@@ -211,7 +211,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
   let buttonsShowTable = {
     gc_clanTag = showClanTag
-    gc_profile = hasFeature("Profile")
+    gc_profile = true
     gc_contacts = canHaveFriends
     gc_chat_btn = hasMenuChat.value
     gc_shop = is_in_menu && canSpendGold
@@ -222,7 +222,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     gc_BattlePassProgress = hasFeature("BattlePass")
     gc_dropdown_premium_button = featureEnablePremiumPurchase
     gc_dropdown_shop_eagles_button = canSpendGold
-    gc_free_exp = hasFeature("SpendGold") && hasFeature("SpendFreeRP")
+    gc_free_exp = hasFeature("SpendGold")
     gc_items_shop_button = ::ItemsManager.isEnabled() && ::isInMenu()
       && hasFeature("ItemsShop")
     gc_online_shop_button = hasFeature("OnlineShopPacks")
@@ -244,15 +244,15 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   }
 
   let buttonsEnableTable = {
-                                gc_clanTag = showClanTag && is_in_menu
-                                gc_contacts = canHaveFriends
-                                gc_chat_btn = hasMenuChat.value && isChatEnabled()
-                                gc_free_exp = canSpendGold && is_in_menu
-                                gc_warpoints = canSpendGold && is_in_menu
-                                gc_eagles = canSpendGold && is_in_menu
-                                gc_PremiumAccount = canSpendGold && featureEnablePremiumPurchase && is_in_menu
-                                gc_BattlePassProgress = canSpendGold && is_in_menu
-                              }
+    gc_clanTag = showClanTag && is_in_menu
+    gc_contacts = canHaveFriends
+    gc_chat_btn = hasMenuChat.value && isChatEnabled()
+    gc_free_exp = canSpendGold && is_in_menu
+    gc_warpoints = canSpendGold && is_in_menu
+    gc_eagles = canSpendGold && is_in_menu
+    gc_PremiumAccount = canSpendGold && featureEnablePremiumPurchase && is_in_menu
+    gc_BattlePassProgress = canSpendGold && is_in_menu
+  }
 
   foreach (id, status in buttonsEnableTable) {
     let pObj = getObj(id)
@@ -340,7 +340,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
   if (tooltip)
     obj.tooltip = tooltip
 
-  ::showBtnTable(obj, {
+  showObjectsByTable(obj, {
     icon    = !isNew
     iconNew = isNew
   })
@@ -359,7 +359,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 ::update_clan_alert_icon <- function update_clan_alert_icon() {
   let needAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
   ::do_with_all_gamercards(function(scene) {
-      ::showBtn("gc_clanAlert", needAlert, scene)
+      showObjById("gc_clanAlert", needAlert, scene)
     })
 }
 
@@ -386,7 +386,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 let function updateGamercardChatButton() {
   let canChat = ::gchat_is_enabled() && hasMenuChat.value
-  ::do_with_all_gamercards(@(scene) ::showBtn("gc_chat_btn", canChat, scene))
+  ::do_with_all_gamercards(@(scene) showObjById("gc_chat_btn", canChat, scene))
 }
 
 hasMenuChat.subscribe(@(_) updateGamercardChatButton())

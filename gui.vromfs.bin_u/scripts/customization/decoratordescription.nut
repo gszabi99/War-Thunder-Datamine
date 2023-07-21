@@ -80,7 +80,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   if (!hasDecor) {
     let cost = decorator.getCost()
     let hasPrice = !isTrophyContent && !isReceivedPrizes && !cost.isZero()
-    let aObj = ::showBtn("price", hasPrice, obj)
+    let aObj = showObjById("price", hasPrice, obj)
     if (hasPrice) {
       canBuy = true
       if (checkObj(aObj))
@@ -88,7 +88,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
     }
   }
   else
-    ::showBtn("price", false, obj)
+    showObjById("price", false, obj)
 
   local canConsumeCoupon = false
   local canFindOnMarketplace = false
@@ -137,12 +137,12 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   let canShowProgressBar = !hasDecor && canShowUnlockDesc && config
   if (canShowProgressBar) {
     let progressData = config.getProgressBarData()
-    let pObj = ::showBtn("progress", progressData.show, cObj)
+    let pObj = showObjById("progress", progressData.show, cObj)
     if (progressData.show)
       pObj.setValue(progressData.value)
   }
   else
-    ::showBtn("progress", false, cObj)
+    showObjById("progress", false, cObj)
 
   let iconName = isDefSkin ? ""
     : hasDecor ? "#ui/gameuiskin#favorite"
@@ -150,7 +150,7 @@ let function updateDecoratorDescription(obj, handler, decoratorType, decorator, 
   cObj.findObject("state")["background-image"] = iconName
 
   let markup = params?.additionalDescriptionMarkup
-  let dObj = ::showBtn("additional_description", markup != null, obj)
+  let dObj = showObjById("additional_description", markup != null, obj)
   if (markup != null)
     dObj.getScene().replaceContentFromText(dObj, markup, markup.len(), handler)
 }

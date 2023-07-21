@@ -29,6 +29,7 @@ if (isPlatformXboxOne) {
     else
       crossNetworkPlayStatus.trigger()
   })
+  crossNetworkPlayStatus.update(crossnetworkPrivilege.value)
 }
 
 let crossNetworkChatStatus = persist("crossNetworkChatStatus", @() Watched(null))

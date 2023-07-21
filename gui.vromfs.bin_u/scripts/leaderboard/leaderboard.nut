@@ -496,7 +496,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
     let showPlayer = rowData != null && !this.forClans && !isCountriesLb
     let showClan = rowData != null && this.forClans
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_usercard = showPlayer && hasFeature("UserCards")
       btn_clan_info = showClan
       btn_membership_req = showClan && !::is_in_clan() && ::clan_get_requested_clan_id() != this.getLbClanUid(rowData)

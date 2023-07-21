@@ -786,7 +786,7 @@ enum decalTwoSidedMode {
 
     let usableSkinsCount = u.filter(this.skinList?.access ?? [], @(a) a.isOwn).len()
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
           btn_go_to_collection = ::show_console_buttons && !isInEditMode && this.decorMenu?.isOpened
             && isCollectionItem(this.decorMenu?.getSelectedDecor())
 
@@ -823,8 +823,8 @@ enum decalTwoSidedMode {
     let isVisibleSuggestedSkin = needSuggestSkin(this.unit.name, this.previewSkinId)
     let suggestedSkinObj = this.showSceneBtn("suggested_skin", isVisibleSuggestedSkin)
     if (isVisibleSuggestedSkin) {
-      ::showBtn("btn_suggested_skin_find", canFindSkinOnMarketplace, suggestedSkinObj)
-      ::showBtn("btn_suggested_skin_exchange", canConsumeSkinCoupon, suggestedSkinObj)
+      showObjById("btn_suggested_skin_find", canFindSkinOnMarketplace, suggestedSkinObj)
+      showObjById("btn_suggested_skin_exchange", canConsumeSkinCoupon, suggestedSkinObj)
       let textArr = [loc("suggested_skin/info")]
       if (canFindSkinOnMarketplace)
         textArr.append(loc("suggested_skin/find"))
@@ -880,7 +880,7 @@ enum decalTwoSidedMode {
   function updateDecoratorActions(show, decoratorType) {
     let hintsObj = this.showSceneBtn("decals_hint", show)
     if (show && checkObj(hintsObj)) {
-      ::showBtnTable(hintsObj, {
+      showObjectsByTable(hintsObj, {
         decals_hint_rotate = decoratorType.canRotate()
         decals_hint_resize = decoratorType.canResize()
       })
@@ -922,7 +922,7 @@ enum decalTwoSidedMode {
     let showAttachableSlotsDiv = this.access_Attachables
       && (inBasicMode || (decoratorType == ::g_decorator_type.ATTACHABLES && (this.currentState & decoratorEditState.SELECT)))
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       decalslots_div = showDecalsSlotDiv
       attachable_div = showAttachableSlotsDiv
     })

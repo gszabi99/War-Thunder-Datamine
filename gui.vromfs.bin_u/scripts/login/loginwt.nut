@@ -82,8 +82,6 @@ let function go_to_account_web_page(bqKey = "") {
     hClass = ::gui_handlers.LoginWndHandlerPs4
   else if (is_platform_xbox)
     hClass = ::gui_handlers.LoginWndHandlerXboxOne
-  else if (::use_tencent_login())
-    hClass = ::gui_handlers.LoginWndHandlerTencent
   else if (::use_dmm_login())
     hClass = ::gui_handlers.LoginWndHandlerDMM
   else if (::steam_is_running())
@@ -307,10 +305,8 @@ let function needAutoStartBattle() {
       ::setControlTypeByID("ct_mouse")
     else if (::is_platform_shield_tv())
       ::setControlTypeByID("ct_xinput")
-    else if (!isPlatformSteamDeck) {
-      let onlyDevicesChoice = !hasFeature("Profile")
-      handler.doWhenActive(function() { ::gui_start_controls_type_choice(onlyDevicesChoice) })
-    }
+    else if (!isPlatformSteamDeck)
+      handler.doWhenActive(function() { ::gui_start_controls_type_choice(false) })
   }
   else if (!::fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })

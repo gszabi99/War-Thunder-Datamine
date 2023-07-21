@@ -543,7 +543,7 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
   function onEventXboxMultiplayerPrivilegeUpdated(_p) { this.updateContent() }
 
   function updateButtons() {
-    ::showBtn("wiki_link", hasFeature("AllowExternalLink") && !::is_vendor_tencent(), this.scene)
+    showObjById("wiki_link", hasFeature("AllowExternalLink"), this.scene)
   }
 
   function setGameModesTimer() {

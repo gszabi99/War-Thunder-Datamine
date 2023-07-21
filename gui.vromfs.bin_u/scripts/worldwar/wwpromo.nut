@@ -36,7 +36,7 @@ addPromoButtonConfig({
     let isVisible = ::g_promo.getShowAllPromoBlocks()
       || (isWwEnabled && ::g_world_war.isWWSeasonActive())
 
-    let buttonObj = ::showBtn(id, isVisible, this.scene)
+    let buttonObj = showObjById(id, isVisible, this.scene)
     if (!isVisible || !checkObj(buttonObj))
       return
 

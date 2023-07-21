@@ -27,8 +27,8 @@
   "bullet": {
     "bulletCount": 30,
     "mass": 0.4,
-    "explosiveType": "comp_b",
-    "explosiveMass": 0.027,
+    "explosiveType": "hmx",
+    "explosiveMass": 0.03,
     "caliber": 0.03,
     "speed": 670.56,
     "maxDistance": 7000.0,
@@ -58,6 +58,8 @@
       200.0,
       1000.0
     ],
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
     "explodeTreshold": 0.1,
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "explosionEffect": "hit_28_38mm_metal_he",
@@ -192,6 +194,9 @@
       "stone_snow": {
         "fx": "hit_28_38mm_snow_he"
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "visual": {
       "range_percent_of_ammo": [

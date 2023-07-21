@@ -1684,7 +1684,7 @@ enum ESwitchSpectatorTarget {
 
     let crew = this.getCurCrew()
     let slotObj = crew && ::get_slot_obj(this.scene, crew.idCountry, crew.idInCountry)
-    ::showBtn("buttonsDiv", show && this.isRespawn, slotObj)
+    showObjById("buttonsDiv", show && this.isRespawn, slotObj)
   }
 
   function updateCountdown(countdown) {

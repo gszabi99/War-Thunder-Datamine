@@ -6,7 +6,7 @@
       "pos": "50%(pw-w), 50%(ph-h)",
       "position": "absolute",
       "class": "wndNav",
-      "size": "0.8@sf, 0.3@sf",
+      "size": "0.8@sf, 0.35@sf",
       "flow": "vertical",
       "frame_header": {
         "activeText": {
@@ -61,10 +61,25 @@
               {
                 "width": "pw",
                 "margin-bottom": "0.005@scrn_tgt",
-                "textarea": {
+                "margin-left": "0.02@scrn_tgt",
+                "textareaNoTab": {
                   "width": "pw",
                   "text": "#gpuBenchmark/resultsTitle"
                 }
+              },
+              {
+                "width": "pw",
+                "margin-top": "0.02@scrn_tgt",
+                "textarea": [
+                  {
+                    "text": "#gpuBenchmark/resultsEffect"
+                  },
+                  {
+                    "position": "absolute",
+                    "left": "50%pw+3@blockInterval",
+                    "text": "#gpuBenchmark/resultsPresetName"
+                  }
+                ]
               },
               {
                 "id": "resultsList",
@@ -72,7 +87,8 @@
                 "padding": "0.01@scrn_tgt, 0.01@scrn_tgt",
                 "flow": "vertical"
               }
-            ]
+            ],
+            "rowSeparator": {}
           }
         ]
       },
@@ -86,13 +102,22 @@
           }
         },
         "navRight": {
-          "Button_text": {
-            "id": "btnStart",
-            "text": "#gpuBenchmark/btnStart",
-            "btnName": "A",
-            "on_click": "onBenchmarkStart",
-            "ButtonImg": {}
-          }
+          "Button_text": [
+            {
+              "id": "btnStart",
+              "text": "#gpuBenchmark/btnStart",
+              "btnName": "EnterX",
+              "on_click": "onBenchmarkStart",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btnApply",
+              "text": "#mainmenu/btnApply",
+              "btnName": "EnterX",
+              "on_click": "onPresetApply",
+              "ButtonImg": {}
+            }
+          ]
         }
       }
     }

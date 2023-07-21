@@ -54,14 +54,14 @@ let function fillPromUnitInfo(holderObj, unit) {
     return false
 
   if (!isPromUnit(unit)) {
-    ::showBtn("aircraft-remainingTimeBuyInfo", false, holderObj)
+    showObjById("aircraft-remainingTimeBuyInfo", false, holderObj)
     return false
   }
   let timeEnd = promoteUnits.value[unit.name].timeEnd
   let t = timeEnd - ::get_charserver_time_sec()
 
   if (t <= 0) {
-    ::showBtn("aircraft-remainingTimeBuyInfo", false, holderObj)
+    showObjById("aircraft-remainingTimeBuyInfo", false, holderObj)
     return false
   }
 
@@ -70,7 +70,7 @@ let function fillPromUnitInfo(holderObj, unit) {
     : loc("mainmenu/dataRemaningTime", { time = buildDateStr(timeEnd) })
 
   let remTimeBuyText = colorize("goodTextColor", locStr)
-  let remTimeBuyObj = ::showBtn("aircraft-remainingTimeBuyInfo", true, holderObj)
+  let remTimeBuyObj = showObjById("aircraft-remainingTimeBuyInfo", true, holderObj)
   remTimeBuyObj.setValue(remTimeBuyText)
   return true
 }

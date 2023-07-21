@@ -347,8 +347,8 @@ global enum BattleTasksWndTab {
     if (!checkObj(taskObj))
       return
 
-    ::showBtn("btn_reroll", showRerollButton, taskObj)
-    ::showBtn("btn_recieve_reward", canGetReward, taskObj)
+    showObjById("btn_reroll", showRerollButton, taskObj)
+    showObjById("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
       placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
     this.showSceneBtn("btn_requirements_list", ::show_console_buttons && getTblValue("names", config, []).len() != 0)

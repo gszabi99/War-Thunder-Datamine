@@ -272,7 +272,7 @@ let Promo = class {
 
     let showByLocalConditions = !isPollVoted(pollId) && ::g_promo.getVisibilityById(objectId)
     if (!showByLocalConditions) {
-      ::showBtn(objectId, false, this.scene)
+      showObjById(objectId, false, this.scene)
       return
     }
 
@@ -281,7 +281,7 @@ let Promo = class {
       return
     set_blk_value_by_path(this.sourceDataBlock, objectId + "/link", link)
     ::g_promo.generateBlockView(this.sourceDataBlock[objectId])
-    ::showBtn(objectId, true, this.scene)
+    showObjById(objectId, true, this.scene)
   }
 
   //----------------- </WEB POLL> -------------------------

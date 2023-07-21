@@ -5,7 +5,6 @@ let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -317,11 +316,6 @@ let function on_lost_psn() {
   return air?.shopCountry ?? ""
 }
 
-::showBtn <- function showBtn(id, status, scene = null) {
-  let obj = checkObj(scene) ? scene.findObject(id) : ::get_cur_gui_scene()[id]
-  return show_obj(obj, status)
-}
-
 ::enableBtnTable <- function enableBtnTable(obj, table, setInactive = false) {
   if (!checkObj(obj))
     return
@@ -335,14 +329,6 @@ let function on_lost_psn() {
         idObj.enable(status)
     }
   }
-}
-
-::showBtnTable <- function showBtnTable(obj, table) {
-  if (!checkObj(obj))
-    return
-
-  foreach (id, status in table)
-    ::showBtn(id, status, obj)
 }
 
 ::getAmountAndMaxAmountText <- function getAmountAndMaxAmountText(amount, maxAmount, showMaxAmount = false) {
@@ -1071,8 +1057,8 @@ let function startCreateWndByGamemode(_handler, _obj) {
   return func()
 }
 
-::is_vendor_tencent <- function is_vendor_tencent() {
-  return ::get_current_language() == "HChinese" || ::use_tencent_login() //we need to check language too early when get_language from profile not work
+::is_chinese_harmonized <- function is_chinese_harmonized() {
+  return ::get_current_language() == "HChinese" //we need to check language too early when get_language from profile not work
 }
 
 ::is_vietnamese_version <- function is_vietnamese_version() {

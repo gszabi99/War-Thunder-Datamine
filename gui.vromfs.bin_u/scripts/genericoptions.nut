@@ -305,7 +305,7 @@ let function get_country_by_team(team_index) {
 
   function onPTTChange(obj) {
     set_option_ptt(::get_option(::USEROPT_PTT).value ? 0 : 1);
-    ::showBtn("ptt_buttons_block", obj.getValue(), this.scene)
+    showObjById("ptt_buttons_block", obj.getValue(), this.scene)
   }
 
   function onVoicechatChange(_obj) {

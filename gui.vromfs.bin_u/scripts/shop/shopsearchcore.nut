@@ -49,11 +49,11 @@ let function findUnitsByLocName(searchStrRaw, needIncludeHidden = false, needInc
   let searchStr = comparePrep(searchStrRaw)
   if (searchStr == "")
     return []
-  return u.keys(searchTokensCache.filter(@(tokens, unit)
+  return searchTokensCache.filter(@(tokens, unit)
     ((::is_dev_version && needIncludeNotInShop) || unit.isInShop)
-      && ((::is_dev_version && needIncludeHidden)    || unit.isVisibleInShop())
-      && (tokensMatch(tokens, searchStr) || unit.name == searchStrRaw)
-  ))
+      && ((::is_dev_version && needIncludeHidden) || unit.isVisibleInShop())
+      && (tokensMatch(tokens, searchStr) || unit.name.contains(searchStrRaw))
+    ).keys()
 }
 
 add_event_listener("GameLocalizationChanged", @(_p) rebuildCache(),

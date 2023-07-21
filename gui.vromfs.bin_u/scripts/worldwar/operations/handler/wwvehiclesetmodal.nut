@@ -156,7 +156,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT {
       let hasChangeInPreset = bestPresetData?.hasChangeInPreset ?? false
       btnAutoPreset.inactiveColor = hasChangeInPreset ? "no" : "yes"
       btnAutoPreset.hasUnseenIcon = hasChangeInPreset ? "yes" : "no"
-      ::showBtn("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset)
+      showObjById("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset)
     }
     let warningTextObj = this.showSceneBtn("cant_join_reason_txt", wData.warningText != "")
     warningTextObj.setValue(wData.warningText)

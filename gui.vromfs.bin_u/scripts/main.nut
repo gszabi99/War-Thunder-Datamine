@@ -504,6 +504,7 @@ local isFullScriptsLoaded = false
   require("%scripts/controls/controlsPseudoAxes.nut")
   require("%scripts/utils/delayedTooltip.nut")
   require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
+  require("%scripts/hangar/hangarEvent.nut")
 
   if (platform.isPlatformXboxOne)
     require("%scripts/global/xboxCallbacks.nut")

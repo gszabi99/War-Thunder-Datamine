@@ -521,7 +521,6 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     let isTrained = (unit.name in this.crew?.trainedSpec) || unit.trainCost == 0
     let isEnabled = ::is_unit_enabled_for_slotbar(unit, this.config)
-    let canShowCrewSpec = hasFeature("CrewInfo")
     let isLockedUnit = this.isSelectByGroups && !canAssignInSlot(unit, this.config.unitsGroupsByCountry, this.country)
 
     let unitItemParams = {
@@ -529,7 +528,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
         : !isEnabled ? "disabled"
         : isTrained ? "mounted"
         : "canBuy"
-      showWarningIcon = !this.isSelectByGroups && canShowCrewSpec && this.haveMoreQualifiedCrew(unit)
+      showWarningIcon = !this.isSelectByGroups && this.haveMoreQualifiedCrew(unit)
       showBR = hasFeature("SlotbarShowBattleRating")
       getEdiffFunc = this.getCurrentEdiff.bindenv(this)
       fullBlock = false
@@ -541,7 +540,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
       unitItemParams.overlayPrice <- unit.trainCost
 
     let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, unit)
-    if (canShowCrewSpec && specType != ::g_crew_spec_type.UNKNOWN)
+    if (specType != ::g_crew_spec_type.UNKNOWN)
       unitItemParams.specType <- specType
 
     let id = unit.name

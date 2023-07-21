@@ -193,11 +193,6 @@ let function set_asked_pack(pack, askTag = null) {
     return true
   }
 
-  if (continueFunc && !::can_download_package()) {
-    ::call_for_handler(owner, continueFunc)
-    return true
-  }
-
   local _msg = msg
   let isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
   if (isPlatformSony || isPlatformXboxOne) {
@@ -206,17 +201,13 @@ let function set_asked_pack(pack, askTag = null) {
   }
   else {
     if (u.isEmpty(_msg)) {
-      local ending = ""
-      if (!::can_download_package())
-        ending = "/info"
-      else if (continueFunc)
-        ending = "/continue"
-      _msg = loc("msgbox/no_package" + ending)
+      let ending = continueFunc ? "/continue" : ""
+      _msg = loc($"msgbox/no_package{ending}")
     }
     _msg = format(_msg, colorize("activeTextColor", ::get_pkg_loc_name(pack)))
   }
 
-  local defButton = ::can_download_package() ? "cancel" : "ok"
+  local defButton = "cancel"
   let buttons = [[defButton, (@(cancelFunc, owner) function() {
                      if (cancelFunc)
                        ::call_for_handler(owner, cancelFunc)
@@ -229,7 +220,7 @@ let function set_asked_pack(pack, askTag = null) {
       defButton = "apply"
     }
   }
-  else if (::can_download_package() && !is_platform_xbox) {
+  else if (!is_platform_xbox) {
     buttons.insert(0, ["download", (@(pack) function() {
                        request_packages_and_restart([pack])
                      })(pack)])
@@ -244,10 +235,6 @@ let function set_asked_pack(pack, askTag = null) {
   ::scene_msg_box("req_new_content", null, _msg, buttons, defButton)
   set_asked_pack(pack, askTag)
   return false
-}
-
-::can_download_package <- function can_download_package() {
-  return !::is_vendor_tencent()
 }
 
 ::check_package_and_ask_download_once <- function check_package_and_ask_download_once(pack, askTag = null, msg = null) {

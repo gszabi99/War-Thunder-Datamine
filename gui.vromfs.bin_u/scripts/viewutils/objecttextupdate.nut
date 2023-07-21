@@ -20,7 +20,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
     return null
 
   local hasTextBlock = textBlock != null
-  let textBlockObj = ::showBtn($"{firstBtnId}_text_block", hasTextBlock, fObj)
+  let textBlockObj = showObjById($"{firstBtnId}_text_block", hasTextBlock, fObj)
   hasTextBlock = hasTextBlock && checkObj(textBlockObj)
   if (hasTextBlock) {
     let guiScene = ::get_cur_gui_scene()
@@ -29,7 +29,7 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
   }
 
   fObj.setValue(hasTextBlock ? "" : firstText)
-  let sObj = ::showBtn($"{firstBtnId}_text", !hasTextBlock, fObj)
+  let sObj = showObjById($"{firstBtnId}_text", !hasTextBlock, fObj)
   if (!hasTextBlock && checkObj(sObj))
     sObj.setValue(secondText)
 

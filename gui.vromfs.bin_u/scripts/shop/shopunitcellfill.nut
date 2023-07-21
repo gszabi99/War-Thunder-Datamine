@@ -422,7 +422,7 @@ let function getGroupStatusTbl(group, params) {
 
   let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
   let unitImage = ::get_unit_preset_img(group.name)
-    ?? (::is_tencent_unit_image_reqired(primaryUnit)
+    ?? (::is_harmonized_unit_image_reqired(primaryUnit)
         ? ::get_tomoe_unit_icon(group.name, !group.name.endswith("_group"))
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group.ddsx"))
 

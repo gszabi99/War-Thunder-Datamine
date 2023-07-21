@@ -141,7 +141,7 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
     let prevState = clone this.tourStatesList?[tour.id]
     let timeTxtObj = tObj.findObject("time_txt")
     this.tourStatesList[tour.id] <- tourParams
-    let ratingObj = ::showBtn("rating_nest", rating > 0, tObj)
+    let ratingObj = showObjById("rating_nest", rating > 0, tObj)
     if (rating > 0)
       ratingObj.findObject("rating_txt")?.setValue(rating.tostring())
     if (!timeTxtObj?.isValid())
@@ -162,10 +162,10 @@ local ESportList = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     tObj.findObject("battle_day").setValue(battleDay)
     let isTourWndAvailable = isTournamentWndAvailable(dayNum)
-    let battlesObj = ::showBtn("battle_nest", isTourWndAvailable, tObj)
-    let sesObj = ::showBtn("session_obj", isTourWndAvailable, tObj)
-    ::showBtn("leaderboard_obj", isFinished, tObj)
-    ::showBtn("my_tournament_img", isMyTournament, tObj)
+    let battlesObj = showObjById("battle_nest", isTourWndAvailable, tObj)
+    let sesObj = showObjById("session_obj", isTourWndAvailable, tObj)
+    showObjById("leaderboard_obj", isFinished, tObj)
+    showObjById("my_tournament_img", isMyTournament, tObj)
 
     if (!isTourWndAvailable)
       return

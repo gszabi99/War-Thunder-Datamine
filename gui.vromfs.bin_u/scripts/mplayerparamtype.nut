@@ -22,7 +22,8 @@ let expEventLocIds = {
   [EXP_EVENT_SCOUT_KILL]         = "expEventScore/scoutKill",
   [EXP_EVENT_SCOUT_KILL_UNKNOWN] = "expEventScore/scoutKillUnknown",
   [EXP_EVENT_DEATH]              = "expEventScore/death",
-  [EXP_EVENT_MISSION_ACTION]     = "expEventScore/missionAction"
+  [EXP_EVENT_MISSION_ACTION]     = "expEventScore/missionAction",
+  [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies"
 }
 
 ::g_mplayer_param_type <- {

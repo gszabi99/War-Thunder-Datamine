@@ -1826,6 +1826,25 @@ enums.addTypesByGlobalName("g_hud_hints", {
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
+
+  PLANE_CAN_REPAIR_ASSIST = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/plane_can_repair_assist"
+    showEvent = "hint:plane_can_repair_assist"
+    lifeTime = 10.0
+    totalCount = 5
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
+  PLANE_HAVE_POTENTIAL_ASSISTEE = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId     = "hints/plane_have_potential_assistee"
+    showEvent = "hint:plane_have_potential_assistee"
+    lifeTime = 3.0
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()

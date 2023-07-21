@@ -28,7 +28,6 @@ let { format } = require("string")
       hasClanNameSelect = true
       hasClanSloganSelect = true
       hasClanRegionSelect = true
-      isNonLatinCharsAllowedInClanName = ::g_clans.isNonLatinCharsAllowedInClanName()
     }
   }
 

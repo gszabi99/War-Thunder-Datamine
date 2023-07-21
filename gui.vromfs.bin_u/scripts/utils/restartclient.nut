@@ -1,14 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let isClientRestartable = @() !::is_vendor_tencent()
-
-let canRestartClient = @() isClientRestartable()
-  && !(::is_in_loading_screen() || ::SessionLobby.isInRoom())
+let canRestartClient = @() !(::is_in_loading_screen() || ::SessionLobby.isInRoom())
 
 let function applyRestartClient() {
-  if (!isClientRestartable())
-    return
 
   if (!canRestartClient()) {
     ::showInfoMsgBox(loc("msgbox/client_restart_rejected"), "sysopt_restart_rejected")
@@ -23,6 +18,5 @@ let function applyRestartClient() {
 
 return {
   applyRestartClient
-  isClientRestartable
   canRestartClient
 }

@@ -305,7 +305,7 @@ local unitImagesCheckCfgs = [
       local img = ::image_for_air(unit)
       return "".concat(img.slice(lastIndexOf(img, "#") + 1), ".tga")
     }
-    filterUnits = @(unit) ::is_tencent_unit_image_reqired(unit)
+    filterUnits = @(unit) ::is_harmonized_unit_image_reqired(unit)
     onStart  = function() {
     }
     onFinish = function() {

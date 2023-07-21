@@ -48,13 +48,13 @@ enum wwClanSquadInviteColors {
 
   function updateSquadButtons(obj, squad) {
     base.updateSquadButtons(obj, squad)
-    ::showBtn("btn_ww_battle_invite", this.canWwBattleInvite(squad), obj)
+    showObjById("btn_ww_battle_invite", this.canWwBattleInvite(squad), obj)
   }
 
   function updateSquadDummyButtons() {
     if (!this.selectedSquad)
       return
-    ::showBtn("btn_ww_battle_invite", this.canWwBattleInvite(this.selectedSquad), this.dummyButtonsListObj)
+    showObjById("btn_ww_battle_invite", this.canWwBattleInvite(this.selectedSquad), this.dummyButtonsListObj)
   }
 
   function canWwBattleInvite(squad) {

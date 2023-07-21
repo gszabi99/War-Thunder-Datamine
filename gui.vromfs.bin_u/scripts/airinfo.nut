@@ -878,7 +878,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
     let unlockTime = ::isInMenu() ? getCrewUnlockTimeByUnit(air) : 0
     let needShowUnlockTime = unlockTime > 0
-    let lockObj = ::showBtn("aircraft-lockedCrew", needShowUnlockTime, obj)
+    let lockObj = showObjById("aircraft-lockedCrew", needShowUnlockTime, obj)
     if (needShowUnlockTime && lockObj)
       lockObj.findObject("time").setValue(time.secondsToString(unlockTime))
     isActive = isActive || needShowUnlockTime
@@ -1006,7 +1006,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     }
   }
 
-  obj = ::showBtn("aircraft-countryImg", !showShortestUnitInfo, holderObj)
+  obj = showObjById("aircraft-countryImg", !showShortestUnitInfo, holderObj)
   if (checkObj(obj) && !showShortestUnitInfo) {
     obj["background-image"] = ::get_unit_country_icon(air, true)
     obj["tooltip"] = "".concat(loc("shop/unitCountry/operator"), loc("ui/colon"), loc(air.getOperatorCountry()),
@@ -1022,8 +1022,8 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (showShortestUnitInfo)
     return
 
-  ::showBtn("aircraft-country_and_level-tr", true, holderObj)
-  ::showBtn("aircraft-tooltip-info", true, holderObj)
+  showObjById("aircraft-country_and_level-tr", true, holderObj)
+  showObjById("aircraft-tooltip-info", true, holderObj)
 
   let ageObj = holderObj.findObject("aircraft-age")
   if (checkObj(ageObj)) {
@@ -1038,7 +1038,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   //count unit ratings
   let showBr = !air.hideBrForVehicle
   let battleRating = air.getBattleRating(ediff)
-  let brObj = ::showBtn("aircraft-battle_rating", showBr, holderObj)
+  let brObj = showObjById("aircraft-battle_rating", showBr, holderObj)
   if (showBr) {
     brObj.findObject("aircraft-battle_rating-header").setValue($"{loc("shop/battle_rating")}{loc("ui/colon")}")
     brObj.findObject("aircraft-battle_rating-value").setValue(format("%.1f", air.getBattleRating(ediff)))
@@ -1362,9 +1362,9 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     }
 
   let showRewardsInfo = !(params?.showRewardsInfoOnlyForPremium ?? false) || special
-  let rpRewardObj = ::showBtn("aircraft-reward_rp-tr", showRewardsInfo, holderObj)
-  let wpRewardObj = ::showBtn("aircraft-reward_wp-tr", showRewardsInfo, holderObj)
-  let wpTimedRewardObj = ::showBtn("aircraft-reward_wp_timed-tr", showRewardsInfo, holderObj)
+  let rpRewardObj = showObjById("aircraft-reward_rp-tr", showRewardsInfo, holderObj)
+  let wpRewardObj = showObjById("aircraft-reward_wp-tr", showRewardsInfo, holderObj)
+  let wpTimedRewardObj = showObjById("aircraft-reward_wp_timed-tr", showRewardsInfo, holderObj)
   if (showRewardsInfo && (rpRewardObj != null || wpRewardObj != null || wpTimedRewardObj != null)) {
     let hasPremium  = havePremium.value
     let hasTalisman = special || ::shop_is_modification_enabled(air.name, "premExpMul")
@@ -1625,7 +1625,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
   let showPriceText = rentTimeHours == -1 && showLocalState && !::isUnitBought(air)
     && ::isUnitResearched(air) && !::canBuyUnitOnline(air) && ::canBuyUnit(air)
-  let priceObj = ::showBtn("aircraft_price", showPriceText, holderObj)
+  let priceObj = showObjById("aircraft_price", showPriceText, holderObj)
   if (showPriceText && checkObj(priceObj) && ::g_discount.getUnitDiscountByName(air.name) > 0) {
     placePriceTextToButton(holderObj, "aircraft_price",
       colorize("userlogColoredText", loc("events/air_can_buy")), ::getUnitCost(air), 0, ::getUnitRealCost(air))
@@ -1636,7 +1636,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   }
 
 
-  let infoObj = ::showBtn("aircraft-addInfo", !showShortestUnitInfo, holderObj)
+  let infoObj = showObjById("aircraft-addInfo", !showShortestUnitInfo, holderObj)
   if (checkObj(infoObj))
     infoObj.setValue("\n".join(addInfoTextsList, true))
 
@@ -1680,11 +1680,11 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
   if (needShopInfo && !isRented) {
     let reason = ::getCantBuyUnitReason(air, true)
-    let addTextObj = ::showBtn("aircraft-cant_buy_info", !showShortestUnitInfo, holderObj)
+    let addTextObj = showObjById("aircraft-cant_buy_info", !showShortestUnitInfo, holderObj)
     if (checkObj(addTextObj) && !u.isEmpty(reason)) {
       addTextObj.setValue(colorize("redMenuButtonColor", reason))
 
-      let unitNest = ::showBtn("prev_unit_nest", !showShortestUnitInfo, holderObj)
+      let unitNest = showObjById("prev_unit_nest", !showShortestUnitInfo, holderObj)
       if (checkObj(unitNest) && (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
         ::is_era_available(air.shopCountry, air?.rank ?? -1, unitType)) {
         let prevUnit = ::getPrevUnit(air)
@@ -1734,7 +1734,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
   let weaponsInfoText = getWeaponInfoText(air,
     { weaponPreset = showLocalState ? -1 : 0, ediff = ediff, isLocalState = showLocalState })
-  obj = ::showBtn("weaponsInfo", !showShortestUnitInfo, holderObj)
+  obj = showObjById("weaponsInfo", !showShortestUnitInfo, holderObj)
   if (obj)
     obj.setValue(weaponsInfoText)
 
@@ -1749,7 +1749,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (checkObj(obj))
     obj.show(massPerSecValue != 0)
 
-  obj = ::showBtn("aircraft-research-efficiency-tr", showRewardsInfo, holderObj)
+  obj = showObjById("aircraft-research-efficiency-tr", showRewardsInfo, holderObj)
   if (obj != null) {
     let minAge = ::getMinBestLevelingRank(air)
     let maxAge = ::getMaxBestLevelingRank(air)
@@ -1763,7 +1763,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (checkObj(obj))
     obj.setValue(wPresets.tostring())
 
-  obj = ::showBtn("current_game_mode_footnote_text", !showShortestUnitInfo, holderObj)
+  obj = showObjById("current_game_mode_footnote_text", !showShortestUnitInfo, holderObj)
   if (checkObj(obj)) {
     let battleType = ::get_battle_type_by_ediff(ediff)
     let fonticon = !::CAN_USE_EDIFF ? "" :

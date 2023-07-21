@@ -124,7 +124,7 @@ registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
     local title = ""
     if (this.isCoop) {
       if (hasFeature("ModeDynamic")) {
-        ::showBtn("btn_dynamic", true)
+        showObjById("btn_dynamic", true)
         let dynBtn = this.guiScene["btn_dynamic"]
         if (checkObj(dynBtn)) {
           dynBtn.inactiveColor = havePremium.value ? "no" : "yes"
@@ -132,12 +132,12 @@ registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
         }
       }
 
-      ::showBtn("btn_coop", true)
-      ::showBtn("btn_builder", hasFeature("ModeBuilder"))
+      showObjById("btn_coop", true)
+      showObjById("btn_builder", hasFeature("ModeBuilder"))
       title = loc("mainmenu/btnMissions")
     }
     else {
-      ::showBtn("btn_skirmish", true)
+      showObjById("btn_skirmish", true)
       title = loc("mainmenu/btnCustomMatch")
     }
 

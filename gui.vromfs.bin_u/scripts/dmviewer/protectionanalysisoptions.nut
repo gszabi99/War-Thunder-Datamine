@@ -1,9 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { format } = require("string")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -25,6 +23,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 
 local options = {
   types = []
@@ -103,6 +102,8 @@ let function updateArmorPiercingText(obj) {
 
 local isBulletAvailable = @() options?.BULLET.value != null
 
+let create_empty_combobox = @() "option{pare-text:t='yes' selected:t = 'yes' optiontext{text:t = '#shop/search/global/notFound'}}"
+
 options.template <- {
   id = "" //used from type name
   sortId = 0
@@ -128,7 +129,10 @@ options.template <- {
     options.setAnalysisParams()
   }
 
+  filterByName = @(_handler, _scene, _name) null
+
   isVisible = @() true
+  needDisabledOnSearch = @() false
   getValFromObj = @(obj) checkObj(obj) ? this.values?[obj.getValue()] : null
   afterChangeFunc = null
 
@@ -182,12 +186,13 @@ options.addTypes({
     sortId = sortIdCount++
     labelLocId = "mainmenu/threat"
     isVisible = @() getThreatEsUnitTypes().len() > 1
+    needDisabledOnSearch = @() this.isVisible()
 
     updateParams = function(_handler, _scene) {
       let esUnitTypes = getThreatEsUnitTypes()
       let types = esUnitTypes.map(@(e) unitTypes.getByEsUnitType(e))
       this.values = esUnitTypes
-      this.items  = u.map(types, @(t) { text = "{0} {1}".subst(t.fontIcon, t.getArmyLocName()) })
+      this.items  = types.map(@(t) { text = "{0} {1}".subst(t.fontIcon, t.getArmyLocName()) })
       let preferredEsUnitType = this.value ?? options.targetUnit.esUnitType
       this.value = this.values.indexof(preferredEsUnitType) != null ? preferredEsUnitType
         : (this.values?[0] ?? ES_UNIT_TYPE_INVALID)
@@ -197,11 +202,12 @@ options.addTypes({
     sortId = sortIdCount++
     controlStyle = "iconType:t='small';"
     getLabel = @() options.UNITTYPE.isVisible() ? null : loc("mainmenu/threat")
+    needDisabledOnSearch = @() this.isVisible()
 
     updateParams = function(_handler, _scene) {
       let unitType = options.UNITTYPE.value
-      this.values = u.filter(shopCountriesList, @(c) isCountryHaveUnitType(c, unitType))
-      this.items  = u.map(this.values, @(c) { text = loc(c), image = ::get_country_icon(c) })
+      this.values = shopCountriesList.filter(@(c) isCountryHaveUnitType(c, unitType))
+      this.items  = this.values.map(@(c) { text = loc(c), image = ::get_country_icon(c) })
       let preferredCountry = this.value ?? options.targetUnit.shopCountry
       this.value = this.values.indexof(preferredCountry) != null ? preferredCountry
         : (this.values?[0] ?? "")
@@ -209,6 +215,7 @@ options.addTypes({
   }
   RANK = {
     sortId = sortIdCount++
+    needDisabledOnSearch = @() this.isVisible()
 
     updateParams = function(_handler, _scene) {
       let unitType = options.UNITTYPE.value
@@ -217,7 +224,7 @@ options.addTypes({
       for (local rank = 1; rank <= ::max_country_rank; rank++)
         if (hasUnitAtRank(rank, unitType, country, true, false))
           this.values.append(rank)
-      this.items = u.map(this.values, @(r) {
+      this.items = this.values.map(@(r) {
         text = format(loc("conditions/unitRank/format"), ::get_roman_numeral(r))
       })
       let preferredRank = this.value ?? options.targetUnit.rank
@@ -234,10 +241,10 @@ options.addTypes({
       let ediff = ::get_current_ediff()
       local list = ::get_units_list(@(unit) unit.esUnitType == unitType
         && unit.shopCountry == country && unit.rank == rank && unit.isVisibleInShop())
-      list = u.map(list, @(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
+      list = list.map(@(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)
-      this.values = u.map(list, @(v) v.unit)
-      this.items = u.map(list, @(v) {
+      this.values = list.map(@(v) v.unit)
+      this.items = list.map(@(v) {
         text  = format("[%.1f] %s", v.br, ::getUnitName(v.id))
         image = ::image_for_air(v.unit)
         addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
@@ -250,6 +257,40 @@ options.addTypes({
 
       if (this.value == null) // This combination of unitType/country/rank shouldn't be selectable
         ::script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
+    }
+
+    filterByName = function(handler, scene, searchStr) {
+      let threats = options.UNITTYPE.values
+      let list = shopSearchCore.findUnitsByLocName(searchStr)
+        .filter(@(unit) threats.contains(unit.esUnitType))
+        .map(@(unit) { unit, id = unit.name, unitType = unit.unitType,
+          br = unit.getBattleRating(::get_current_ediff()) })
+        .sort(@(a, b) a.unitType <=> b.unitType || a.br <=> b.br)
+      this.values = list.map(@(v) v.unit)
+      this.items = list.map(@(v) {
+        text = format("[%.1f] %s", v.br, ::getUnitName(v.id))
+        image = ::image_for_air(v.unit)
+        addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
+      })
+      let targetUnitId = options.targetUnit.name
+      let preferredUnitId = this.value?.name ?? targetUnitId
+      this.value = this.values.findvalue(@(v) v.name == preferredUnitId) ??
+        this.values.findvalue(@(v) v.name == targetUnitId) ??
+        this.values?[0]
+
+      this.updateView(handler, scene)
+      this.updateDependentOptions(handler, scene)
+      options.setAnalysisParams()
+    }
+
+    updateView = function(handler, scene) {
+      let obj = scene.findObject(this.id)
+      if (!checkObj(obj))
+        return
+      let idx = this.values.indexof(this.value) ?? -1
+      let markup = this.items.len() > 0 ? ::create_option_combobox(null, this.items, idx, null, false)
+        : create_empty_combobox()
+      obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)
     }
   }
   BULLET = {

@@ -191,13 +191,13 @@ let weaponIconsReloadBits = {
 
     this.loadGameChat()
     if (!this.isMultiplayer)
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
           btn_tab_chat  = false
           target_stats  = false
       })
 
     let objReplayControls = this.scene.findObject("controls_div")
-    ::showBtnTable(objReplayControls, {
+    showObjectsByTable(objReplayControls, {
         ID_FLIGHTMENU               = useTouchscreen
         ID_MPSTATSCREEN             = this.mode != SPECTATOR_MODE.REPLAY
         controls_mpstats_replays    = this.mode == SPECTATOR_MODE.REPLAY
@@ -252,7 +252,7 @@ let weaponIconsReloadBits = {
     }
 
     if (this.canControlCameras) {
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
           ID_CAMERA_DEFAULT           = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
           ID_TOGGLE_FOLLOWING_CAMERA  = this.mode == SPECTATOR_MODE.REPLAY || this.gotRefereeRights
           ID_REPLAY_CAMERA_OPERATOR   = this.mode == SPECTATOR_MODE.REPLAY && !this.gotRefereeRights
@@ -338,7 +338,7 @@ let weaponIconsReloadBits = {
                                      { selfHideInput = true, hiddenInput = !this.canSendChatMessages })
 
       let objGameChat = this.scene.findObject("gamechat")
-      ::showBtnTable(objGameChat, {
+      showObjectsByTable(objGameChat, {
           chat_input_div         = this.canSendChatMessages
           chat_input_placeholder = this.canSendChatMessages
       })

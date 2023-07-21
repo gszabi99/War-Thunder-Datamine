@@ -1237,11 +1237,13 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
         curSlotIdInCountry = crew.idInCountry
         curSlotCountryId = crew.idCountry
         unlocked = crewData.isUnlocked
-        tooltipParams = { needCrewInfo = hasFeature("CrewInfo") && !::g_crews_list.isCrewListOverrided
+        tooltipParams = {
+          needCrewInfo = !::g_crews_list.isCrewListOverrided
           showLocalState = isLocalState
           needCrewModificators = true
           needShopInfo = this.needCheckUnitUnlock
-          crewId = crew?.id }
+          crewId = crew?.id
+        }
         missionRules = this.missionRules
         forceCrewInfoUnit = this.unitForSpecType
         isLocalState = isLocalState

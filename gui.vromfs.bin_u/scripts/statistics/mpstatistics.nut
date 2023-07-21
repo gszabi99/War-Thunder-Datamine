@@ -168,7 +168,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!checkObj(teamObj))
       return
 
-    let countryFlagObj = ::showBtn(OVERRIDE_COUNTRY_ID, countryIcon != null, teamObj)
+    let countryFlagObj = showObjById(OVERRIDE_COUNTRY_ID, countryIcon != null, teamObj)
     if (checkObj(countryFlagObj))
       countryFlagObj["background-image"] = ::get_country_icon(countryIcon)
   }

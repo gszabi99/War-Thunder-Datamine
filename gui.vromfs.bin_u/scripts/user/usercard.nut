@@ -383,7 +383,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
   function fillAwardsBlock(pl) {
     if (hasFeature("ProfileMedals"))
       this.fillMedalsBlock(pl)
-    else // Tencent
+    else
       this.fillTitlesBlock(pl)
   }
 
@@ -976,7 +976,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
     let showStatBar = this.infoReady && sheet == "Statistics"
     let showProfBar = this.infoReady && !showStatBar
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       paginator_place = showStatBar && (this.airStatsList != null) && (this.airStatsList.len() > this.statsPerPage)
       btn_friendAdd = showProfBar && hasFeatureFriends && canInteractCC && !isMe && !isFriend && !isBlock
       btn_friendRemove = showProfBar && hasFeatureFriends && isFriend && (contact?.isInFriendlist() ?? false)
@@ -985,7 +985,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
       btn_moderatorBan = showProfBar && ::is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
       btn_achievements_url = showProfBar && hasFeature("AchievementsUrl")
-        && hasFeature("AllowExternalLink") && !::is_vendor_tencent()
+        && hasFeature("AllowExternalLink")
     })
   }
 

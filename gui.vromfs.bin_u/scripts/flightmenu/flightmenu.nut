@@ -72,7 +72,7 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
 
     foreach (btn in this.menuButtonsCfg) {
       let isShow = btn.isVisible()
-      let btnObj = ::showBtn(btn.buttonId, isShow, this.scene)
+      let btnObj = showObjById(btn.buttonId, isShow, this.scene)
       if (!isShow)
         continue
       let txt = btn.getUpdatedLabelText()
@@ -80,7 +80,7 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
         btnObj.setValue(txt)
     }
 
-    ::showBtn("btn_back", !this.isMissionFailed, this.scene)
+    showObjById("btn_back", !this.isMissionFailed, this.scene)
   }
 
   function restoreFocus(isInitial = false) {

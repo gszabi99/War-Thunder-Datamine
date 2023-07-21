@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { get_time_msec } = require("dagor.time")
+let { resetTimeout } = require("dagor.workcycle")
 let { fabs } = require("math")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -82,6 +83,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
           return "#ui/gameuiskin#ship_crew_gunner.svg"
         return "#ui/gameuiskin#crew_gunner_indicator.svg"
       }
+      needSecondTimebar=true
     },
     {
       id = "healing_status"
@@ -254,6 +256,7 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
   function onGunnerState(newStateData) {
     this.onCrewMemberState("gunner", newStateData)
+    this.onAvailableMemberState("gunner", newStateData)
   }
 
 
@@ -273,6 +276,39 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
     let timebarObj = placeObj.findObject("timer")
     ::g_time_bar.setPeriod(timebarObj, newStateData.totalTakePlaceTime)
     ::g_time_bar.setCurrentTime(timebarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
+  }
+
+
+  function hideAvailableTimer(memberId) {
+    let placeObj = this.scene.findObject($"{memberId}_status")
+    if (!placeObj?.isValid())
+      return
+    showObjById("available_timer_nest", false, placeObj )
+  }
+
+  function onAvailableMemberState(memberId, newStateData) {
+    if (!("state" in newStateData))
+      return
+
+    let placeObj = this.scene.findObject(memberId + "_status")
+    if (!checkObj(placeObj))
+      return
+
+    let showTimer = newStateData.state == "takingPlace"
+    placeObj.animation = showTimer ? "show" : "hide"
+    let timeToAvailable = newStateData?.timeToAvailable ?? -1.0
+    let timerNestObj = placeObj.findObject("available_timer_nest")
+    if (!showTimer || timeToAvailable < 0.0) {
+      timerNestObj.show(false)
+      return
+    }
+    timerNestObj.show(true)
+
+    let timebarObj = placeObj.findObject("available_timer")
+    ::g_time_bar.setPeriod(timebarObj, newStateData.availableTime)
+    ::g_time_bar.setCurrentTime(timebarObj, newStateData.availableTime - timeToAvailable)
+
+    resetTimeout(newStateData.availableTime,  @()::g_hud_display_timers.hideAvailableTimer(memberId))
   }
 
 

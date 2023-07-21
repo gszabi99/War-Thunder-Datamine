@@ -120,7 +120,7 @@ register_command(
   }
 
   function startOpening() {
-    ::showBtn("reward_roullete", false, this.scene)
+    showObjById("reward_roullete", false, this.scene)
     let animObj = this.scene.findObject("open_chest_animation")
     if (checkObj(animObj)) {
       animObj.animation = "show"

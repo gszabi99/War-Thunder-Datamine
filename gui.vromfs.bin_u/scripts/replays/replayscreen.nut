@@ -256,7 +256,7 @@ registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay",
     let hoveredReplay = this.isMouseMode ? null : this.replays?[this.hoveredIdx]
     let isCurItemInFocus = curReplay != null && (this.isMouseMode || hoveredReplay == curReplay)
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
         btn_view_replay   = isCurItemInFocus && canPlayReplay(curReplay)
         btn_rename_replay = isCurItemInFocus
         btn_del_replay    = isCurItemInFocus

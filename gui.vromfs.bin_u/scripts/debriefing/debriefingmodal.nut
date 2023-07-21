@@ -243,7 +243,6 @@ let statTooltipColumnParamByType = {
   isAllGiftItemsKnown = false
 
   isFirstWinInMajorUpdate = false
-  isForceShowMyStatsRightBlock = false
 
   debugUnlocks = 0  //show at least this amount of unlocks received from userlogs even disabled.
   debriefingResult = null
@@ -263,12 +262,9 @@ let statTooltipColumnParamByType = {
     this.playersInfo = this.debriefingResult.playersInfo
     this.isMp = this.debriefingResult.isMp
     this.isReplay = this.debriefingResult.isReplay
-    this.isForceShowMyStatsRightBlock = hasFeature("Profile")
 
     if (::disable_network()) //for correct work in disable_menu mode
       ::update_gamercards()
-
-    this.scene.findObject("content_frame").width = this.isForceShowMyStatsRightBlock ? "1.4@sf" : "1.0@sf"
 
     this.showTab("") //hide all tabs
 
@@ -430,7 +426,7 @@ let statTooltipColumnParamByType = {
     this.challengesAwardsList = this.getAwardsList(this.awardsListsConfig.challenges.filter)
     this.unlocksAwardsList = this.getAwardsList(this.awardsListsConfig.unlocks.filter)
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       [this.awardsListsConfig.streaks.listObjId] = this.streakAwardsList.len() > 0,
       [this.awardsListsConfig.challenges.listObjId] = this.challengesAwardsList.len() > 0,
       [this.awardsListsConfig.unlocks.listObjId] = this.unlocksAwardsList.len() > 0,
@@ -533,8 +529,8 @@ let statTooltipColumnParamByType = {
         loc("multiplayer/reason"), loc("ui/colon"),
         colorize("activeTextColor", this.debriefingResult.exp.eacKickMessage))
 
-      if (hasFeature("AllowExternalLink") && !::is_vendor_tencent())
-        ::showBtn("btn_no_awards_info", true, this.scene)
+      if (hasFeature("AllowExternalLink"))
+        showObjById("btn_no_awards_info", true, this.scene)
       else
         text = "".concat(text, "\n",
           loc("msgbox/error_link_format_game"), loc("ui/colon"), loc("url/support/easyanticheat"))
@@ -549,7 +545,7 @@ let statTooltipColumnParamByType = {
     if (text == "")
       return
 
-    let blockObj = ::showBtn("no_awards_block", true, this.scene)
+    let blockObj = showObjById("no_awards_block", true, this.scene)
     let captionObj = blockObj && blockObj.findObject("no_awards_caption")
     if (!checkObj(captionObj))
       return
@@ -1026,7 +1022,7 @@ let statTooltipColumnParamByType = {
 
       this.showTab("my_stats")
       this.skipAnim = this.skipAnim && debriefingSkipAllAtOnce
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         left_block              = this.is_show_left_block()
         inventory_gift_block    = this.is_show_inventory_gift()
         my_stats_awards_block   = this.is_show_awards_list()
@@ -1105,7 +1101,7 @@ let statTooltipColumnParamByType = {
       }
     }
     else if (this.state == debrState.done) {
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         btn_skip = false
         skip_button   = false
         start_bonus_place = false
@@ -2280,8 +2276,8 @@ let statTooltipColumnParamByType = {
     let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
 
     let showRerollButton = isBattleTask && !isDone && !canGetReward && !u.isEmpty(::g_battle_tasks.rerollCost)
-    ::showBtn("btn_reroll", showRerollButton, taskObj)
-    ::showBtn("btn_recieve_reward", canGetReward, taskObj)
+    showObjById("btn_reroll", showRerollButton, taskObj)
+    showObjById("btn_recieve_reward", canGetReward, taskObj)
     if (showRerollButton)
       placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
   }
@@ -2495,7 +2491,7 @@ let statTooltipColumnParamByType = {
   }
 
   function is_show_right_block() {
-    return this.isForceShowMyStatsRightBlock || this.is_show_research_list() || this.is_show_battle_tasks_list()
+    return this.is_show_research_list() || this.is_show_battle_tasks_list()
   }
 
   function onChangeTab(obj) {
@@ -2825,7 +2821,7 @@ let statTooltipColumnParamByType = {
     let showWorldWarOperationBtn = this.needShowWorldWarOperationBtn()
     let isToBattleBtnVisible = this.isToBattleActionEnabled() && !showWorldWarOperationBtn
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_next = true
       btn_back = isToBattleBtnVisible
     })

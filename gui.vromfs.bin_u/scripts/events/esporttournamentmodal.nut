@@ -139,7 +139,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateLbObjects(lbData) {
     let isLbEnable = lbData.rows.len() > 0
-    let lbObj = ::showBtn("leaderboard_obj", isLeaderboardsAvailable(), this.scene)
+    let lbObj = showObjById("leaderboard_obj", isLeaderboardsAvailable(), this.scene)
     if (!lbObj?.isValid())
       return
 
@@ -200,7 +200,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
           obj["background-saturate"] = 0
       }
 
-    let descObj = ::showBtn("item_desc", !isFinished)
+    let descObj = showObjById("item_desc", !isFinished)
     if (!descObj?.isValid() || isFinished)
       return
 
@@ -208,12 +208,12 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     let eventDescTextObj = descObj.findObject("event_desc_text")
     if (eventDescTextObj?.isValid())
       eventDescTextObj.setValue(descTxt)
-    ::showBtn("rewards_btn", hasRewardBtn, this.scene)
+    showObjById("rewards_btn", hasRewardBtn, this.scene)
   }
 
   function updateApplyButton() {
     if (this.curTourParams.dayNum == DAY.FINISH) {
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         action_btn = false
         leave_btn = false
       })
@@ -221,7 +221,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     local startText = "events/join_event"
-    let btnObj = ::showBtn("action_btn", !this.curTourParams.isMyTournament, this.scene)
+    let btnObj = showObjById("action_btn", !this.curTourParams.isMyTournament, this.scene)
     if (!this.curTourParams.isMyTournament) {
       btnObj.setValue(loc(startText))
       btnObj.inactiveColor = "no"
@@ -297,7 +297,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onEventTourRegistrationComplete(_param) {
     this.curTourParams.isMyTournament = true
-    ::showBtn("my_tournament_img", true, this.scene)
+    showObjById("my_tournament_img", true, this.scene)
     this.updateContentView()
   }
 
@@ -376,7 +376,7 @@ local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function updateQueueView() {
     let isInQueue = this.isInEventQueue()
-    let timerObj = ::showBtn("wait_time_block", isInQueue)
+    let timerObj = showObjById("wait_time_block", isInQueue)
     if (!isInQueue)
       return
 

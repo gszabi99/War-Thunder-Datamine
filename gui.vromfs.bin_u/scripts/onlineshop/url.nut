@@ -27,7 +27,7 @@ let function getUrlWithQrRedirect(url) {
   return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))
 }
 
-let canAutoLogin = @() !::is_vendor_tencent() && ::g_login.isAuthorized()
+let canAutoLogin = @() ::g_login.isAuthorized()
 
 let function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
   if (baseUrl == null || baseUrl == "") {

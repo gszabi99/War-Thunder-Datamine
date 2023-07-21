@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-local cachedLoginData = persist("cachedLoginData", @() { use_tencent_login = null, use_dmm_login = null })
+local cachedLoginData = persist("cachedLoginData", @() { use_dmm_login = null })
 
 foreach (fn in [
                  "login.nut"
@@ -10,20 +10,12 @@ foreach (fn in [
                  "epicLogin.nut"
                  "ps4Login.nut"
                  "xboxOneLogin.nut"
-                 "tencentLogin.nut"
                  "dmmLogin.nut"
                  "waitForLoginWnd.nut"
                  "updaterModal.nut"
                  "loginWT.nut"
                ])
   loadOnce($"%scripts/login/{fn}")
-
-::use_tencent_login <- function use_tencent_login() {
-  if (cachedLoginData.use_tencent_login == null) {
-    cachedLoginData.use_tencent_login = is_platform_windows && ::getFromSettingsBlk("yunetwork/useTencentLogin", false)
-  }
-  return cachedLoginData.use_tencent_login
-}
 
 ::use_dmm_login <- function use_dmm_login() {
   if (cachedLoginData.use_dmm_login == null) {

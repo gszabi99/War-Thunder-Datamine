@@ -343,7 +343,7 @@ foreach (idx, item in clan_member_list) {
       btn_clanActivity = hasFeature("ClanVehicles") && this.isMyClan
       btn_clanVehicles = hasFeature("ClanVehicles") && this.isMyClan
     }
-    ::showBtnTable(this.scene, buttonsList)
+    showObjectsByTable(this.scene, buttonsList)
 
     this.showSceneBtn("clan_actions", buttonsList.btn_showRequests
       || buttonsList.btn_clanSquads
@@ -387,7 +387,7 @@ foreach (idx, item in clan_member_list) {
   }
 
   function updateUserOptionButton() {
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_usercard      = this.curPlayer != null && hasFeature("UserCards")
       btn_user_options  = this.curPlayer != null && ::show_console_buttons
     })

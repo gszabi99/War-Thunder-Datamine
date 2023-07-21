@@ -259,7 +259,7 @@ local MP_CHAT_PARAMS = {
     let show = this.isVisibleChatInput(sceneData)
     let scene = sceneData.scene
 
-    ::showBtnTable(scene, {
+    showObjectsByTable(scene, {
         chat_input_back           = show
         chat_input_placeholder    = !show && this.canEnableChatInput()
         show_chat_input_accesskey = !show && sceneData.isInSpectateMode

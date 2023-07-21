@@ -11,7 +11,7 @@ let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSet
 let { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { get_primary_screen_info } = require("dagor.system")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
-let { applyRestartClient, isClientRestartable, canRestartClient
+let { applyRestartClient, canRestartClient
 } = require("%scripts/utils/restartClient.nut")
 let { stripTags } = require("%sqstd/string.nut")
 
@@ -291,10 +291,10 @@ let function updateGuiNavbar(show = true) {
   let showRestartButton = showText && canRestartClient()
   let applyText = loc((show && !showRestartButton && isHotReloadPending()) ? "mainmenu/btnApply" : "mainmenu/btnOk")
 
-  ::showBtn("btn_reset", show && isSavePending(), scene)
-  ::showBtn("restart_suggestion", showText, scene)
-  ::showBtn("btn_restart", showRestartButton, scene)
-  ::showBtn("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
+  showObjById("btn_reset", show && isSavePending(), scene)
+  showObjById("restart_suggestion", showText, scene)
+  showObjById("btn_restart", showRestartButton, scene)
+  showObjById("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
 
   let objNavbarApplyButton = scene.findObject("btn_apply")
   if (checkObj(objNavbarApplyButton))
@@ -738,11 +738,9 @@ mSettings = {
   }
   mode = { widgetType = "list" def = "fullscreenwindowed" blk = "video/mode" restart = true
     init = function(_blk, desc) {
-      desc.values <- ["windowed"]
-      if (is_platform_windows)
-        desc.values.append("fullscreenwindowed")
-      if (!::is_vendor_tencent())
-        desc.values.append("fullscreen")
+      desc.values <- is_platform_windows
+        ? ["windowed", "fullscreenwindowed", "fullscreen"]
+        : ["windowed", "fullscreen"]
       desc.def = desc.values.top()
       desc.restart <- !is_platform_windows
     }
@@ -1285,7 +1283,7 @@ let function hotReloadOrRestart() {
 
   configFree()
 
-  if (restartPending && isClientRestartable()) {
+  if (restartPending) {
     let func_restart = function() {
       applyRestartClient()
     }

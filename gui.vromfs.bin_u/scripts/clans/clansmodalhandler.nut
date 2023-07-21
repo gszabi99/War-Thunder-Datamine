@@ -88,8 +88,7 @@ local leaderboardFilterArray = [
   function initSearchBox() {
     let searchObj = this.scene.findObject("filter_edit_box")
     searchObj["max-len"] = "32"
-    searchObj["char-mask"] = ::g_clans.isNonLatinCharsAllowedInClanName()
-      ? null : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 _-"
+    searchObj["char-mask"] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 _-"
   }
 
   function initTabs() {
@@ -166,7 +165,7 @@ local leaderboardFilterArray = [
       clan_container = false
     }
     foreach (pageId, status in myClanPages)
-      ::showBtn(pageId, status, this.scene)
+      showObjById(pageId, status, this.scene)
 
 
     if (::my_clan_info != null) {
@@ -185,7 +184,7 @@ local leaderboardFilterArray = [
     this.curPageObj.enable(true)
 
     let isLeaderboardPage = this.curPage == "clans_leaderboards"
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       clans_battle_season         = isLeaderboardPage
       modes_list                  = isLeaderboardPage
       leaderboard_filter_place    = !isLeaderboardPage
@@ -367,7 +366,7 @@ local leaderboardFilterArray = [
     if (!checkObj(lbPageObj))
       return
 
-    ::showBtn("btn_back_to_clanlist", this.isSearchMode, lbPageObj)
+    showObjById("btn_back_to_clanlist", this.isSearchMode, lbPageObj)
 
     if (this.isSearchMode && !("clan" in lbBlk)) {
       this.showEmptySearchResult(true)
@@ -619,7 +618,7 @@ local leaderboardFilterArray = [
   }
 
   function updateButtons() {
-    ::showBtnTable(this.curPageObj, {
+    showObjectsByTable(this.curPageObj, {
       btn_clan_info       = this.curClanId != null
       btn_clan_actions    = this.curClanId != null && ::show_console_buttons
       btn_membership_req  = this.curClanId != null && !::is_in_clan() && ::clan_get_requested_clan_id() != this.curClanId

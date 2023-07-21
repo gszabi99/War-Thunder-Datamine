@@ -430,7 +430,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     let mainChallengeOfSeason = challenges.findvalue(@(challenge) challenge.id == mainChallengeOfSeasonId.value)
     let hasMainChallenge = mainChallengeOfSeason != null
-    let mainChallengeProgressObj = ::showBtn("main_challenge_progress", hasMainChallenge, obj)
+    let mainChallengeProgressObj = showObjById("main_challenge_progress", hasMainChallenge, obj)
     if (!hasMainChallenge)
       return
 
@@ -559,7 +559,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_wiki_link", hasFeature("AllowExternalLink") && !::is_vendor_tencent())
+    this.showSceneBtn("btn_wiki_link", hasFeature("AllowExternalLink"))
   }
 }
 

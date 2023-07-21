@@ -13,7 +13,8 @@ let { hangar_protection_map_update, set_protection_analysis_editing,
   set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test } = require("hangarEventCommand")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
+let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 local switch_damage = false
 local allow_cutting = false
@@ -29,6 +30,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
   protectionAnalysisMode = DM_VIEWER_PROTECTION
   hintHandler = null
   unit = null
+  applyFilterTimer = null
 
   getSceneTplContainerObj = @() this.scene.findObject("options_container")
   function getSceneTplView() {
@@ -52,8 +54,8 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     ::dmViewer.init(this)
     hangar_focus_model(true)
     this.guiScene.performDelayed(this, @() hangar_set_dm_viewer_mode(this.protectionAnalysisMode))
-    this.setSceneTitle(loc("mainmenu/btnProtectionAnalysis") + " " +
-      loc("ui/mdash") + " " + ::getUnitName(this.unit.name))
+    this.setSceneTitle(" ".concat(loc("mainmenu/btnProtectionAnalysis"),
+      loc("ui/mdash"), ::getUnitName(this.unit.name)))
 
     this.onUpdateActionsHint()
 
@@ -73,9 +75,9 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     this.scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
 
     let isShowProtectionMapOptions = hasFeature("ProtectionMap") && this.unit.isTank()
-    ::showBtn("btnProtectionMap", isShowProtectionMapOptions)
-    let cbVerticalAngleObj = ::showBtn("checkboxVerticalAngle", isShowProtectionMapOptions)
-    ::showBtn("rowSeparator", isShowProtectionMapOptions)
+    showObjById("btnProtectionMap", isShowProtectionMapOptions)
+    let cbVerticalAngleObj = showObjById("checkboxVerticalAngle", isShowProtectionMapOptions)
+    showObjById("rowSeparator", isShowProtectionMapOptions)
     if (isShowProtectionMapOptions) {
       let value = ::load_local_account_settings(CB_VERTICAL_ANGLE, true)
       cbVerticalAngleObj.setValue(value)
@@ -89,6 +91,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
       this.onAllowSimulation(obj)
 
     ::allowCuttingInHangar(false)
+    this.resetFilter()
   }
 
   onSave = @(obj) protectionAnalysisOptions.isSaved = obj?.getValue()
@@ -179,14 +182,14 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
       return
 
     cbVerticalAngleObj.enable = "no"
-    ::showBtn("pa_info_block", true)
+    showObjById("pa_info_block", true)
     hangar_protection_map_update()
     SecondsUpdater(waitTextObj, function(timerObj, p) {
         let progress = get_protection_map_progress()
         if (progress < 100)
           timerObj.setValue($"{progress.tostring()}%")
         else {
-          ::showBtn("pa_info_block", false)
+          showObjById("pa_info_block", false)
           p.cbVerticalAngleObj.enable = "yes"
         }
       }, false, { cbVerticalAngleObj })
@@ -197,6 +200,45 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     let value = obj.getValue()
     ::save_local_account_settings(CB_VERTICAL_ANGLE, value)
     set_protection_map_y_nulling(!value)
+  }
+
+  function applyFilter(obj) {
+    clearTimer(this.applyFilterTimer)
+    let filterText = utf8ToLower(obj.getValue())
+    if(filterText == "") {
+      this.showTypes(true)
+      protectionAnalysisOptions.init(this, this.scene)
+      return
+    }
+
+    let applyCallback = Callback(@() this.applyFilterImpl(filterText), this)
+    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
+  }
+
+  function showTypes(status) {
+    let needHideOnSearch = protectionAnalysisOptions.types.filter(@(t) t.needDisabledOnSearch())
+      .map(@(t) t.id)
+    foreach(typeId in needHideOnSearch)
+      this.scene.findObject($"tr_{typeId}")?.show(status)
+  }
+
+  function applyFilterImpl(filterText) {
+    this.showTypes(false)
+    protectionAnalysisOptions.get("UNIT").filterByName(this, this.scene, filterText)
+  }
+
+  function onFilterCancel(filterObj) {
+    if (filterObj.getValue() != "")
+      filterObj.setValue("")
+    else
+      this.guiScene.performDelayed(this, this.goBack)
+  }
+
+  function resetFilter() {
+    let filterEditBox = this.scene.findObject("filter_edit_box")
+    if(!filterEditBox?.isValid())
+      return
+    filterEditBox.setValue("")
   }
 }
 

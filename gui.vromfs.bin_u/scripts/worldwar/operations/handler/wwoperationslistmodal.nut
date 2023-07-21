@@ -237,11 +237,11 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 
   function updateButtons() {
-    ::showBtn("operation_join_block", this.selOperation, this.scene)
+    showObjById("operation_join_block", this.selOperation, this.scene)
 
     if (!this.selOperation) {
       let isListEmpty = this.opListObj.getValue() < 0
-      let collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, this.scene)
+      let collapsedChapterBtnObj = showObjById("btn_collapsed_chapter", !isListEmpty, this.scene)
       if (!isListEmpty && collapsedChapterBtnObj != null) {
         let rowObj = this.opListObj.getChild(this.opListObj.getValue())
         if (rowObj?.isValid())

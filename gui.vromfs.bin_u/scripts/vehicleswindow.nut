@@ -38,7 +38,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 }
 
 ::update_vehicle_info_button <- function update_vehicle_info_button(scene, room) {
-  ::showBtn("vehicles_info_button_block",
+  showObjById("vehicles_info_button_block",
     !isSlotbarOverrided(::SessionLobby.getMissionName(true, room))
       && !::events.isEventAllUnitAllowed(::SessionLobby.getPublicData(room)),
     scene

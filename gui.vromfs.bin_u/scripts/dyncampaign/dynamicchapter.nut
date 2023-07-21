@@ -34,7 +34,7 @@ let { get_cur_game_mode_name } = require("mission")
     this.guiScene.replaceContent(this.scene.findObject("mission_desc"), "%gui/missionDescr.blk", null)
     let headerTitle = this.scene.findObject("chapter_name")
     headerTitle.setValue(loc("mainmenu/btnDynamic"))
-    ::showBtn("btn_back", false, this.scene.findObject("nav-help"))
+    showObjById("btn_back", false, this.scene.findObject("nav-help"))
     this.yearsArray = ::get_option(::USEROPT_YEAR).values
 
     this.scene.findObject("optionlist-container").mislist = "yes"
@@ -216,7 +216,7 @@ let { get_cur_game_mode_name } = require("mission")
     this.showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
 
     let canStart = isCurItemInFocus && (selectedMission?.descConfig.canStart ?? false)
-    ::showBtn("btn_start", isCurItemInFocus && selectedMission != null, this.scene)
+    showObjById("btn_start", isCurItemInFocus && selectedMission != null, this.scene)
     this.scene.findObject("btn_start").enable(canStart)
   }
 

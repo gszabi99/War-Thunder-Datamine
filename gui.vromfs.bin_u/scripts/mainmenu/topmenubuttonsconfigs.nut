@@ -264,7 +264,7 @@ let list = {
     link = "#url/tss"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || ::is_vendor_tencent() || ::is_me_newbie()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || ::is_me_newbie()
   }
   REPORT_AN_ISSUE = {
     text = @() loc("topmenu/reportAnIssue")
@@ -280,7 +280,7 @@ let list = {
     link = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
     isLink = @() isPlatformPC
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || ::is_vendor_tencent() || !::isInMenu()
+    isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !::isInMenu()
   }
   STREAMS_AND_REPLAYS = {
     text = @() "#topmenu/streamsAndReplays"
@@ -296,7 +296,7 @@ let list = {
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) !hasFeature("ServerReplay") || (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
-       || ::is_vendor_tencent() || !::isInMenu()
+       || !::isInMenu()
   }
   EAGLES = {
     text = @() "#charServer/chapter/eagles"
@@ -394,7 +394,7 @@ let list = {
     link = "#url/faq"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !::isInMenu()
   }
   SUPPORT = {
     text = @() "#mainmenu/support"
@@ -409,7 +409,7 @@ let list = {
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
-      || ::is_vendor_tencent() || !::isInMenu()
+      || !::isInMenu()
   }
   WIKI = {
     text = @() "#mainmenu/wiki"
@@ -418,16 +418,16 @@ let list = {
     link = "#url/wiki"
     isLink = @() true
     isFeatured = @() true
-    isHidden = @(...) !hasFeature("AllowExternalLink") || ::is_vendor_tencent() || !::isInMenu()
+    isHidden = @(...) !hasFeature("AllowExternalLink") || !::isInMenu()
   }
   EULA = {
     text = @() "#mainmenu/licenseAgreement"
-    onClickFunc = @(obj, _handler) (hasFeature("AllowExternalLink") && !::is_vendor_tencent())
+    onClickFunc = @(obj, _handler) (hasFeature("AllowExternalLink"))
       ? openUrlByObj(obj)
       : ::gui_start_eula(true)
     isDelayed = false
     link = "#url/eula"
-    isLink = @() hasFeature("AllowExternalLink") && !::is_vendor_tencent()
+    isLink = @() hasFeature("AllowExternalLink")
     isFeatured = true
     isHidden = @(...) !hasFeature("EulaInMenu") || !::isInMenu()
   }

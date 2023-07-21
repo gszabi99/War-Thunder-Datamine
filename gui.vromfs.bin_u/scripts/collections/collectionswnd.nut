@@ -191,7 +191,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (canBuy && checkObj(bObj))
       placePriceTextToButton(this.scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decorator?.getCost())
 
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
       btn_preview = decorator?.canPreview() ?? false
       btn_marketplace_consume_coupon = canConsumeCoupon
       btn_marketplace_find_coupon = canFindOnMarketplace

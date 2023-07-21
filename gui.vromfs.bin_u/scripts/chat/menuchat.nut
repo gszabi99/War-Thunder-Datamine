@@ -108,8 +108,6 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
 ::MenuChatHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
-  needLocalEcho = true
-  skipMyMessages = false //to skip local echo from code events
   presenceDetectionTimer = 0
   static roomRegexp = regexp2("^#[^\\s]")
 
@@ -194,8 +192,6 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   function initChat(obj, resetList = true) {
     if (obj != null && obj == this.scene)
       return
-
-    this.needLocalEcho = !::is_vendor_tencent()
 
     set_gchat_event_cb(null, ::menuChatCb)
     this.chatSceneShow(false)
@@ -1371,9 +1367,6 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!db || !db.from)
       return
 
-    if (this.skipMyMessages && db?.sender.nick == ::my_user_name)
-      return
-
     if (db?.type == "xpost") {
       if ((db?.message.len() ?? 0) > 0)
         foreach (room in ::g_chat.rooms)
@@ -2056,9 +2049,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (::g_chat.isSystemChatRoom(roomId))
           this.addRoomMsg(roomId, "", loc("chat/cantWriteInSystem"))
         else {
-          this.skipMyMessages = !this.needLocalEcho
           ::gchat_chat_message(::gchat_escape_target(roomId), msg)
-          this.skipMyMessages = false
           this.guiScene.playSound("chat_send")
         }
       }
@@ -2094,8 +2085,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!::gchat_chat_private_message(::gchat_escape_target(this.curRoom.id), ::gchat_escape_target(data.user), data.msg))
       return
 
-    if (this.needLocalEcho)
-      this.addRoomMsg(this.curRoom.id, ::my_user_name, data.msg, true, true)
+    this.addRoomMsg(this.curRoom.id, ::my_user_name, data.msg, true, true)
 
     let blocked = ::isPlayerNickInContacts(data.user, EPL_BLOCKLIST)
     if (blocked)
@@ -2113,8 +2103,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         this.addRoom(data.user)
         this.updateRoomsList()
       }
-      if (this.needLocalEcho)
-        this.addRoomMsg(data.user, ::my_user_name, data.msg, true, true)
+      this.addRoomMsg(data.user, ::my_user_name, data.msg, true, true)
     }
   }
 

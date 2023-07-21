@@ -22,7 +22,6 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
       hasClanNameSelect = true
       hasClanSloganSelect = true
       hasClanRegionSelect = true
-      isNonLatinCharsAllowedInClanName = ::g_clans.isNonLatinCharsAllowedInClanName()
     }
   }
 

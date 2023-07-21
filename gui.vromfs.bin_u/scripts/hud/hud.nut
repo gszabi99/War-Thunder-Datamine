@@ -343,7 +343,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
     })
 
     this.guiScene.setUpdatesEnabled(false, false)
-    ::showBtnTable(this.scene, objsToShow)
+    showObjectsByTable(this.scene, objsToShow)
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
@@ -638,7 +638,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   function updateDamageIndicatorBackground() {
     let visMode = ::g_hud_vis_mode.getCurMode()
     let isDmgPanelVisible = isDmgIndicatorVisible() && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
-    ::showBtn("tank_background", isDmgPanelVisible, this.scene)
+    showObjById("tank_background", isDmgPanelVisible, this.scene)
   }
 
   function updateShowHintsNest() {

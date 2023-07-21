@@ -171,18 +171,18 @@ let squadApplications = require("%scripts/squads/squadApplications.nut")
 
   function updateSquadButtons(obj, squad) {
     let show = this.canApplyForMembership(squad)
-    let btnObj = ::showBtn("btn_application", show, obj)
+    let btnObj = showObjById("btn_application", show, obj)
     if (checkObj(btnObj) && show)
       btnObj.tooltip = this.getInvitationInSquad(squad) ? loc("squad/join") : loc("squad/membership_request")
 
-    ::showBtn("btn_revoke_application", this.canRevokeApplication(squad), obj)
+    showObjById("btn_revoke_application", this.canRevokeApplication(squad), obj)
   }
 
   function updateSquadDummyButtons() {
     if (!this.selectedSquad)
       return
-    ::showBtn("btn_application", this.canApplyForMembership(this.selectedSquad), this.dummyButtonsListObj)
-    ::showBtn("btn_revoke_application", this.canRevokeApplication(this.selectedSquad), this.dummyButtonsListObj)
+    showObjById("btn_application", this.canApplyForMembership(this.selectedSquad), this.dummyButtonsListObj)
+    showObjById("btn_revoke_application", this.canRevokeApplication(this.selectedSquad), this.dummyButtonsListObj)
   }
 
   function canApplyForMembership(squad) {

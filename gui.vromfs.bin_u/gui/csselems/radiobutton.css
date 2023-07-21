@@ -88,3 +88,11 @@ RadioButton > RadioButtonDescImg {
   background-svg-size:@dIco, @dIco;
   background-repeat:aspect-ratio;
 }
+
+RadioButtonList.gpuBenchmark {
+  flow: vertical;
+}
+
+RadioButtonList.gpuBenchmark[highlightSelected=yes] > RadioButton[selected=yes] > textareaNoTab {
+  color:@activeTextColor;
+}

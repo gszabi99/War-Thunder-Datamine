@@ -30,9 +30,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
     let txt = this.scene.findObject("txt_icon")
     txt.show(!this.onlyDevicesChoice)
-    ::showBtn("btn_pref_img", !this.onlyDevicesChoice)
-    ::showBtn("btn_back", this.onlyDevicesChoice)
-    ::showBtn("btn_cancel", this.onlyDevicesChoice)
+    showObjById("btn_pref_img", !this.onlyDevicesChoice)
+    showObjById("btn_back", this.onlyDevicesChoice)
+    showObjById("btn_cancel", this.onlyDevicesChoice)
 
     if (!this.onlyDevicesChoice)
       this.updateProfileIcon(true)

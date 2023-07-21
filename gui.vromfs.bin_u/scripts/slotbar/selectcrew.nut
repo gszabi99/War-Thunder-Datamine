@@ -348,9 +348,6 @@ let function getObjPosInSafeArea(obj) {
   }
 
   function fillLegendData() {
-    if (!hasFeature("CrewInfo"))
-      return null
-
     let legendData = []
     foreach (_idx, crew in ::get_crews_list_by_country(this.country)) {
       let specType = ::g_crew_spec_type.getTypeByCode(::g_crew_spec_type.getTrainedSpecCode(crew, this.unit))

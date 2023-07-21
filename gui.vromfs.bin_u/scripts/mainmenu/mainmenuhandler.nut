@@ -65,7 +65,7 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
   }
 
   function showOnlineInfo() {
-    if (::is_vietnamese_version() || ::is_vendor_tencent() || topMenuHandler.value == null)
+    if (::is_vietnamese_version() || topMenuHandler.value == null)
       return
 
     let text = loc("mainmenu/online_info", {
@@ -131,11 +131,8 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 
   function updateLowQualityModelWarning() {
     let lowQuality = !::is_loaded_model_high_quality()
-    let warningObj = this.showSceneBtn("low-quality-model-warning", lowQuality)
-    let canDownloadPackage = ::can_download_package()
-    ::showBtn("low_quality_model_download_button", canDownloadPackage, warningObj)
-
-    if (lowQuality && canDownloadPackage && this.isSceneActive() && ::isInMenu())
+    this.showSceneBtn("low-quality-model-warning", lowQuality)
+    if (lowQuality && this.isSceneActive() && ::isInMenu())
       ::check_package_and_ask_download_once("pkg_main", "air_in_hangar")
   }
 
@@ -224,7 +221,7 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
         placePriceTextToButton(obj, "btn_unlock_crew", loc("mainmenu/btn_crew_unlock"), crewCost, 0)
         placePriceTextToButton(obj, "btn_unlock_crew_gold", loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)
       }
-      ::showBtnTable(obj, {
+      showObjectsByTable(obj, {
         btn_unlock_crew = showButtons && crewCost > 0
         btn_unlock_crew_gold = showButtons && crewCostGold > 0
         crew_unlock_buttons = showButtons && (crewCost > 0 || crewCostGold > 0)

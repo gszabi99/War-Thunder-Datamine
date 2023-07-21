@@ -6,9 +6,33 @@ let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReload
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+
+let function getCrewInfo(isInBattle) {
+  let crewInfo = ::get_crew_info()
+  if (!isInBattle)
+    return crewInfo
+  //In a battle after a profile update, the crew list may contain crews for multiple countries instead one.
+  //In this case, a bug may occur when the slotbar points to a country that does not match in the crewList.
+  //It is necessary to filter them by player's country, so that the interface does not break.
+  if (crewInfo.len() <= 1)
+    return crewInfo
+  let curCountry = ::get_profile_country()
+  let res = crewInfo.filter(@(v) v.country == curCountry)
+  if (res.len() == 1)
+    return res.map(
+      @(countryInfo) countryInfo.__merge({
+        crews = countryInfo.crews.map(@(crew) crew.__merge({idCountry = 0}))
+      })
+    )
+
+  debugTableData(crewInfo)
+  logerr("[CREW_LIST] Not found crews for selected country")
+  return crewInfo
+}
 
 ::g_crews_list <- {
-  crewsList = !::g_login.isLoggedIn() ? [] : ::get_crew_info()
+  crewsList = !::g_login.isLoggedIn() ? [] : getCrewInfo(isInBattleState.value)
   isCrewListOverrided = false
   version = 0
 
@@ -24,8 +48,6 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   ]
   isSlotbarUpdateSuspended = false
   isSlotbarUpdateRequired = false
-
-  onEventPlayerQuitMission = @(_p) this.invalidate()
 }
 
 ::g_crews_list.get <- function get() {
@@ -53,7 +75,7 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
   //we don't know about slotbar refresh in flight,
   //but we know than out of flight it refresh only with profile,
   //so can optimize it updates, and remove some direct refresh calls from outside
-  this.crewsList = ::get_crew_info()
+  this.crewsList = getCrewInfo(isInBattleState.value)
   this.isCrewListOverrided = false
 }
 
@@ -126,6 +148,8 @@ let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 ::reinitAllSlotbars <- function reinitAllSlotbars() {
   ::g_crews_list.reinitSlotbars()
 }
+
+isInBattleState.subscribe(@(_v) ::g_crews_list.invalidate())
 
 subscribe_handler(::g_crews_list, ::g_listener_priority.DEFAULT_HANDLER)
 registerPersistentData("g_crews_list", ::g_crews_list, [ "isCrewListOverrided" ])

@@ -210,7 +210,7 @@ const ITEMS_PER_PAGE = 8
 
     let { shortcutText = "", name = "", additionalText = "", chatMode = "" } = item
     contentObj.findObject("shortcutText").setValue(shortcutText)
-    ::showBtn("shortcutTextSeparator", shortcutText!= "", contentObj)
+    showObjById("shortcutTextSeparator", shortcutText!= "", contentObj)
     let nameObj = contentObj.findObject("name")
     nameObj.chatMode = chatMode
     nameObj.setValue(name)

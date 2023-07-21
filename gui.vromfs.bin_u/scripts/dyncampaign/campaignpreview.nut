@@ -110,7 +110,7 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
       this.guiScene["briefing-flag"]["background-image"] = ::get_country_flag_img("bgflag_country_" + country)
 
     if (this.isFinal) {
-      ::showBtn("btn_back", false, this.scene)
+      showObjById("btn_back", false, this.scene)
       setDoubleTextToButton(this.scene, "btn_apply", loc("mainmenu/btnOk"))
     }
     else if (!::first_generation)
@@ -271,9 +271,9 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
   }
 
   function showNav(is_show) {
-    ::showBtn("btn_apply", is_show)
-    ::showBtn("btn_back", is_show && !this.isFinal)
-    ::showBtn("btn_battlelog", is_show)
+    showObjById("btn_apply", is_show)
+    showObjById("btn_back", is_show && !this.isFinal)
+    showObjById("btn_battlelog", is_show)
     this.guiScene["scene-title"].show(is_show)
   }
 

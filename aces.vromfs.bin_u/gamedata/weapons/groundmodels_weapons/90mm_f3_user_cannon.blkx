@@ -37,7 +37,7 @@
   "notUseDefaultBulletInGui": true,
   "bullet": {
     "bulletCount": 40,
-    "mass": 10.6,
+    "mass": 10.735,
     "caliber": 0.09,
     "speed": 1000.0,
     "Cx": 0.26,
@@ -51,7 +51,7 @@
     "stabilityReductionAfterPenetration": 0.0,
     "stucking": 0.7,
     "stuckingAngle": 45.0,
-    "bulletType": "apc_solid_medium_caliber_tank",
+    "bulletType": "apcbc_solid_medium_caliber_tank",
     "slopeEffectPreset": "apc",
     "fresnel": [
       0.23,
@@ -111,7 +111,7 @@
     "damage": {
       "kinetic": {
         "damageType": "generic",
-        "demarrePenetrationK": 0.9,
+        "demarrePenetrationK": 1.0,
         "demarreSpeedPow": 1.43,
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
@@ -210,7 +210,7 @@
   "90mm_SA45_APC": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 10.6,
+      "mass": 10.735,
       "caliber": 0.09,
       "speed": 1000.0,
       "Cx": 0.26,
@@ -224,7 +224,7 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apc_solid_medium_caliber_tank",
+      "bulletType": "apcbc_solid_medium_caliber_tank",
       "slopeEffectPreset": "apc",
       "fresnel": [
         0.23,
@@ -284,7 +284,7 @@
       "damage": {
         "kinetic": {
           "damageType": "generic",
-          "demarrePenetrationK": 0.9,
+          "demarrePenetrationK": 1.0,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
@@ -409,6 +409,8 @@
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "90mm_sa45_he",
       "hitPowerMult": 2.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.2,
       "selfDestructionFx": "explosion_air_selfexplosion_med",

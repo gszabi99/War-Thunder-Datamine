@@ -65,7 +65,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
     let config = this.getCurrentConfig()
     let taskObj = this.getCurrentTaskObj()
 
-    ::showBtn("btn_reroll", false, taskObj)
+    showObjById("btn_reroll", false, taskObj)
     this.showSceneBtn("btn_requirements_list", ::show_console_buttons && this.isConfigHaveConditions(config))
   }
 

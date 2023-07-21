@@ -192,7 +192,7 @@ addPromoButtonConfig({
   updateFunctionInHandler = function() {
     let isVisible = this.isShowAllCheckBoxEnabled()
       || (canEmailRegistration() && ::g_promo.getVisibilityById(promoButtonId))
-    ::showBtn(promoButtonId, isVisible, this.scene)
+    showObjById(promoButtonId, isVisible, this.scene)
   }
 })
 

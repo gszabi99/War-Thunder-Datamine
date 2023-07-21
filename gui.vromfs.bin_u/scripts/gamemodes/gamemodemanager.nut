@@ -60,7 +60,7 @@ let { isShowGoldBalanceWarning, hasMultiplayerRestritionByBalance
     isWide = false
     image = @() "#ui/images/game_modes_tiles/tss_" + (this.isWide ? "wide" : "thin") + "?P1"
     videoPreview = null
-    isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
+    isVisible = @() !::is_me_newbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())

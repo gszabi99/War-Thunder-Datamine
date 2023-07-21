@@ -11,8 +11,6 @@ let is_platform_windows = ["win32", "win64"].contains(platformId)
 let defaults = Watched({  //def value when feature not found in game_settings.blk
              // not in this list are false
   SpendGold = true
-  SpendFreeRP = true
-  CrewInfo = true
   CrewSkills = true
   CrewBuyAllSkills = false
   UserLog = true
@@ -184,7 +182,6 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   streakVoiceovers = ::disable_network()
   SpectatorUnitDmgIndicator = ::disable_network()
 
-  Profile = true
   ProfileMedals = true
   UserCards = true
   SlotbarShowBattleRating = true

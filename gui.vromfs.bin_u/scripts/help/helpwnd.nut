@@ -621,7 +621,7 @@ require("%scripts/viewUtils/bhvHelpFrame.nut")
       medicalkit_label = !isGamepadPreset
     }
 
-    ::showBtnTable(this.scene, buttonsList)
+    showObjectsByTable(this.scene, buttonsList)
 
   }
 

@@ -133,7 +133,7 @@ let function updateAnimTimer() {
   if (!obj)
     return
 
-  ::showBtn("streak_content", this.state == hudStreakState.ACTIVE, obj)
+  showObjById("streak_content", this.state == hudStreakState.ACTIVE, obj)
 }
 
 ::g_streaks.updatePlaceObj <- function updatePlaceObj() {

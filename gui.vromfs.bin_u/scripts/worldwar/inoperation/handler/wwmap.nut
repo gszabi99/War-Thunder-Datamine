@@ -321,7 +321,7 @@ let { LEADER_OPERATION_STATES,
     local showAny = false
     foreach (buttonView in ::g_ww_map_controls_buttons.types) {
       let showButton = hasAccess && !buttonView.isHidden()
-      let buttonObj = ::showBtn(buttonView.id, showButton, btnBlockObj)
+      let buttonObj = showObjById(buttonView.id, showButton, btnBlockObj)
       if (showButton && checkObj(buttonObj)) {
         buttonObj.enable(buttonView.isEnabled())
         buttonObj.setValue(buttonView.text())
@@ -341,7 +341,7 @@ let { LEADER_OPERATION_STATES,
     if (!::show_console_buttons || !::g_world_war.haveManagementAccessForAnyGroup())
       return
 
-    ::showBtn("ww_army_select", show)
+    showObjById("ww_army_select", show)
   }
 
   function initToBattleButton() {
@@ -751,7 +751,7 @@ let { LEADER_OPERATION_STATES,
     }
 
     this.updateArmyActionButtons()
-    ::showBtn("ww_army_select", false)
+    showObjById("ww_army_select", false)
   }
 
   function onSecondsUpdate(_obj, dt) {
@@ -1273,7 +1273,7 @@ let { LEADER_OPERATION_STATES,
     objStartBox.show(true)
     objStartBox.animation = "show"
 
-    let objStart = ::showBtn("objective_anim_start_text", true, objStartBox)
+    let objStart = showObjById("objective_anim_start_text", true, objStartBox)
     objStart.setValue(objTarget.getValue())
 
     let animationFunc = function() {

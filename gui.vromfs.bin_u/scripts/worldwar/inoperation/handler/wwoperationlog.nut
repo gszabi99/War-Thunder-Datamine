@@ -204,7 +204,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   }
 
   function fillLogBattleObject(bodyObj, battleData) {
-    let battleObj = ::showBtn("battle", battleData != null, bodyObj)
+    let battleObj = showObjById("battle", battleData != null, bodyObj)
     if (!battleObj || !battleData)
       return
 
@@ -239,7 +239,7 @@ const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
   function fillLogArmyContainer(wwArmy, armyObjId, bodyObj,
     idx = WW_LOG_BATTLE.DEFAULT_ARMY_INDEX,
     amount = WW_LOG_BATTLE.MIN_ARMIES_PER_SIDE) {
-    let armyTextObj = ::showBtn(armyObjId, wwArmy != null, bodyObj)
+    let armyTextObj = showObjById(armyObjId, wwArmy != null, bodyObj)
     if (!armyTextObj || !wwArmy)
       return
 

@@ -15,17 +15,14 @@ let gpuBenchmarkPresets = [
   {
     presetId = "presetMaxQuality"
     getPresetNameFunc = getPresetForMaxQuality
-    shortcut = "A"
   }
   {
     presetId = "presetMaxFPS"
     getPresetNameFunc = getPresetForMaxFPS
-    shortcut = "X"
   }
   {
     presetId = "preset60Fps"
     getPresetNameFunc = getPresetFor60Fps
-    shortcut = "Y"
   }
 ]
 
@@ -34,10 +31,12 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/options/gpuBenchmark.blk"
   needUiUpdate = false
   timeEndBenchmark = -1
+  selectedPresetName = ""
 
   function initScreen() {
     ::save_local_account_settings("gpuBenchmark/seen", true)
     initGraphicsAutodetect()
+    this.showSceneBtn("btnApply", false)
   }
 
   function updateProgressText() {
@@ -54,11 +53,10 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
 
   function getPresetsView() {
     return gpuBenchmarkPresets.map(function(cfg) {
-      let { presetId, getPresetNameFunc, shortcut } = cfg
+      let { presetId, getPresetNameFunc } = cfg
       let presetName = getPresetNameFunc()
       return {
         presetName
-        shortcut
         label = $"gpuBenchmark/{presetId}"
         presetText = localizaQualityPreset(presetName)
       }
@@ -79,6 +77,14 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     startGpuBenchmark()
   }
 
+  function onSelectPreset(obj) {
+    let index = obj.getValue()
+    if (index < 0 || index >= obj.childrenCount())
+      return
+    this.selectedPresetName = obj.getChild(index)?.presetName
+    this.scene.findObject("btnApply").enable(true)
+  }
+
   function onUpdate(_, __) {
     if (this.timeEndBenchmark <= ::get_charserver_time_sec() && !isGpuBenchmarkRunning()) {
       this.scene.findObject("progress_timer").setUserData(null)
@@ -92,6 +98,7 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
   function onBenchmarkComplete() {
     this.showSceneBtn("waitAnimation", false)
     this.showSceneBtn("presetSelection", true)
+    this.showSceneBtn("btnApply", true).enable(false)
 
     let view = { presets = this.getPresetsView() }
     let blk = handyman.renderCached("%gui/options/gpuBenchmarkPreset.tpl", view)
@@ -106,17 +113,16 @@ local class GpuBenchmarkWnd extends ::gui_handlers.BaseGuiHandlerWT {
     this.goBack()
   }
 
-  function onPresetApply(obj) {
-    let presetName = obj.presetName
-    if (presetName != "ultralow") {
-      this.presetApplyImpl(presetName)
+  function onPresetApply() {
+    if (this.selectedPresetName != "ultralow") {
+      this.presetApplyImpl(this.selectedPresetName)
       return
     }
 
     ::scene_msg_box("msg_sysopt_compatibility", null,
       loc("msgbox/compatibilityMode"),
       [
-        ["yes", Callback(@() this.presetApplyImpl(presetName), this)],
+        ["yes", Callback(@() this.presetApplyImpl(this.selectedPresetName), this)],
         ["no", @() null],
       ], "no",
       { cancel_fn = @() null, checkDuplicateId = true })

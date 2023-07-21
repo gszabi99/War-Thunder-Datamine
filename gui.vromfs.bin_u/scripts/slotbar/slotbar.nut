@@ -144,7 +144,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     let rentInfo = ::get_unit_item_rent_info(air, params)
     let spareCount = isLocalState ? ::get_spare_aircrafts_count(air.name) : 0
 
-    let hasCrewInfo = hasFeature("CrewInfo") && crewId >= 0
+    let hasCrewInfo = crewId >= 0
     let crew = hasCrewInfo ? ::get_crew_by_id(crewId) : null
 
     let forceCrewInfoUnit = params?.forceCrewInfoUnit
@@ -429,7 +429,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     //
 
     let shopAirImage = ::get_unit_preset_img(air.name)
-      ?? (::is_tencent_unit_image_reqired(nextAir)
+      ?? (::is_harmonized_unit_image_reqired(nextAir)
           ? ::get_tomoe_unit_icon(air.name, !air.name.endswith("_group"))
           : "!{0}".subst(air?.image ?? "#ui/unitskin#planes_group.ddsx"))
 
@@ -523,7 +523,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 
         let crewLevelInfoView = {
           hasExtraInfoBlock = true
-          hasCrewInfo       = hasFeature("CrewInfo")
+          hasCrewInfo       = true
           crewLevel         = crewLevelText
           crewSpecIcon      = crewSpecIcon
         }

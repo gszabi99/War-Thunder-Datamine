@@ -169,11 +169,11 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
     if (!this.rootHandlerWeak)
       return
 
-    let centeredPlaceObj = ::showBtn("gamercard_center", true, this.rootHandlerWeak.scene)
+    let centeredPlaceObj = showObjById("gamercard_center", true, this.rootHandlerWeak.scene)
     if (!centeredPlaceObj)
       return
 
-    let toBattleNest = ::showBtn("gamercard_tobattle", true, this.rootHandlerWeak.scene)
+    let toBattleNest = showObjById("gamercard_tobattle", true, this.rootHandlerWeak.scene)
     if (toBattleNest) {
       this.rootHandlerWeak.scene.findObject("top_gamercard_bg").needRedShadow = "no"
       let toBattleBlk = handyman.renderCached("%gui/mainmenu/toBattleButton.tpl", {

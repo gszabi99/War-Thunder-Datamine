@@ -84,7 +84,7 @@ const PRESET_MIN_USAGE = 2
   }
 
   function updateButtons() {
-    ::showBtnTable(this.scene, {
+    showObjectsByTable(this.scene, {
         btn_rename = this.isPreset
         btn_apply  = this.linkedSkinsCurrent != this.linkedSkinsInitial
     })

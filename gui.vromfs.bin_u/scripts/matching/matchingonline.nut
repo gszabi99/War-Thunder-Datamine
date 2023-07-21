@@ -81,18 +81,6 @@ let function checkShowMatchingConnect(successCb, errorCb, needProgressBox = true
     showConnectProgress()
 }
 
-// special handlers for char errors that require more complex actions than
-// showing message box and logout
-let function checkSpecialCharErrors(errorCode) {
-  if (errorCode == ::ERRCODE_EMPTY_NICK) {
-    if (::is_vendor_tencent()) {
-      ::change_nickname(@() checkShowMatchingConnect(onConnectCb, onDisconnectCb))
-      return true
-    }
-  }
-  return false
-}
-
 let function doLogout() {
   if (!canLogout())
     return false
@@ -101,11 +89,7 @@ let function doLogout() {
   return true
 }
 
-let function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
-  if (reasonDomain == REASON_DOMAIN.CHAR)
-    if (checkSpecialCharErrors(reason))
-      return
-
+let function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false) {
   onFailToReconnect()
 
   local needExit = forceExit

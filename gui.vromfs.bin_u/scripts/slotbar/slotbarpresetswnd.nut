@@ -158,7 +158,7 @@ let { stripTags } = require("%sqstd/string.nut")
     if (::show_console_buttons) {
       let isAnyPresetHovered = this.hoveredValue != -1
       let isShowContextActions = ::is_mouse_last_time_used() || (isAnyPresetHovered && this.hoveredValue == this.chosenValue)
-      ::showBtnTable(this.scene, {
+      showObjectsByTable(this.scene, {
         btn_preset_rename   = isShowContextActions
         btn_preset_delete   = isShowContextActions
         btn_preset_load     = isShowContextActions

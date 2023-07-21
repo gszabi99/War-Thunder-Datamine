@@ -338,7 +338,7 @@ let function openOptionsWnd(group = null) {
       data = "<color=@hotkeyColor>" + ::hackTextAssignmentForR2buttonOnPS4(data) + "</color>"
 
     this.scene.findObject("ptt_shortcut").setValue(data)
-    ::showBtn("ptt_buttons_block", ::get_option(::USEROPT_PTT).value, this.scene)
+    showObjById("ptt_buttons_block", ::get_option(::USEROPT_PTT).value, this.scene)
 
     let echoButton = this.scene.findObject("joinEchoButton");
     if (echoButton)

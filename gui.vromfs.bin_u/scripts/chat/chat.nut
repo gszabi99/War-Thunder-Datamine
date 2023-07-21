@@ -87,7 +87,7 @@ global enum chatErrorName {
 
 
 //to test filters - use console "chat_filter_for_myself=true"
-::chat_filter_for_myself <- ::is_vendor_tencent()
+::chat_filter_for_myself <- false
 ::g_chat.filterMessageText <- function filterMessageText(text, isMyMessage) {
   if (::get_option(::USEROPT_CHAT_FILTER).value &&
     (!isMyMessage || ::chat_filter_for_myself))

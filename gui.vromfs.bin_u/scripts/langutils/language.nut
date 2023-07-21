@@ -89,7 +89,7 @@ let function checkInitList() {
   let existingLangs = ttBlk % "lang"
 
   let guiBlk = GUI.get()
-  let blockName = ::is_vendor_tencent() ? "tencent" : ::is_vietnamese_version() ? "vietnam" : "default"
+  let blockName = ::is_vietnamese_version() ? "vietnam" : "default"
   let preset = guiBlk?.game_localization[blockName] ?? DataBlock()
   for (local l = 0; l < preset.blockCount(); l++) {
     let lang = preset.getBlock(l)
@@ -186,7 +186,7 @@ saveLanguage(::get_settings_blk()?.language ?? ::get_settings_blk()?.game_start?
 }
 
 ::canSwitchGameLocalization <- function canSwitchGameLocalization() {
-  return !isPlatformSony && !isPlatformXboxOne && !::is_vendor_tencent() && !::is_vietnamese_version()
+  return !isPlatformSony && !isPlatformXboxOne && !::is_chinese_harmonized() && !::is_vietnamese_version()
 }
 
 ::g_language.getEmptyLangInfo <- function getEmptyLangInfo() {

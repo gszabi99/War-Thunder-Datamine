@@ -11,7 +11,7 @@ let isInArray = @(v, arr) arr.contains(v)
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
 let { platformId }  = require("%sqstd/platform.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { toPixels, showObjById, showObjectsByTable } = require("%sqDagui/daguiUtil.nut")
 
 let checkObj = @(obj) obj != null && obj?.isValid()
 
@@ -46,6 +46,8 @@ return log.__merge({
   isInArray
   getTblValue
   checkObj
+  showObjById
+  showObjectsByTable
   Callback
   colorize
   to_pixels

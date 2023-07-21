@@ -217,7 +217,7 @@ local Unit = class {
       this.needBuyToOpenNextInTier.append(uWpCost?[$"needBuyToOpenNextInTier{i}"] ?? 0)
 
     this.customImage = uWpCost?.customImage ?? ::get_unit_preset_img(this.name)
-    if (!this.customImage && ::is_tencent_unit_image_reqired(this))
+    if (!this.customImage && ::is_harmonized_unit_image_reqired(this))
       this.customImage = ::get_tomoe_unit_icon(this.name)
     if (this.customImage && !isInArray(this.customImage.slice(0, 1), ["#", "!"]))
       this.customImage = ::get_unit_icon_by_unit(this, this.customImage)

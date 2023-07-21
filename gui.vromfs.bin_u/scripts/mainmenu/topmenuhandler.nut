@@ -253,7 +253,7 @@ local class TopMenu extends ::gui_handlers.BaseGuiHandlerWT {
   function onShopWndAnimStarted(obj) {
     this.onHoverSizeMove(obj)
     this.updateOnShopWndAnim(!topMenuShopActive.value)
-    ::showBtn("gamercard_center", !topMenuShopActive.value)
+    showObjById("gamercard_center", !topMenuShopActive.value)
   }
 
   function onShopWndAnimFinished(_obj) {

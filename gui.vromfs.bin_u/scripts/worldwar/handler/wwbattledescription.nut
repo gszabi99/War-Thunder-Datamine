@@ -785,7 +785,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
       let hasChangeInPreset = bestPresetData?.hasChangeInPreset ?? false
       btnAutoPreset.inactiveColor = hasChangeInPreset ? "no" : "yes"
       btnAutoPreset.hasUnseenIcon = hasChangeInPreset ? "yes" : "no"
-      ::showBtn("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset)
+      showObjById("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset)
     }
   }
 

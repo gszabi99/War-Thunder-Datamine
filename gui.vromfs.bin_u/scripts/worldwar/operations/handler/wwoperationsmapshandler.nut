@@ -553,29 +553,29 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
       let sideObj = this.scene.findObject($"side_{side}")
       let sideCountry = sideObj.countryId
 
-      let joinQueueBtn = ::showBtn("btn_join_queue", !isSquadMember && isClanQueueAvaliable
+      let joinQueueBtn = showObjById("btn_join_queue", !isSquadMember && isClanQueueAvaliable
         && isQueueJoiningEnabled && !isInQueue, sideObj)
       joinQueueBtn.inactiveColor = (cantJoinAnyQueues.canJoin && this.clustersList != null) ? "no" : "yes"
 
-      ::showBtn("btn_find_operation", this.selMap.isActive()
+      showObjById("btn_find_operation", this.selMap.isActive()
         && !isInQueue && !isSquadMember, sideObj)
 
-      let backOperBtn = ::showBtn("btn_back_operation", isBackOperBtnVisible, sideObj)
+      let backOperBtn = showObjById("btn_back_operation", isBackOperBtnVisible, sideObj)
       if (isBackOperBtnVisible) {
         backOperBtn.inactiveColor = ::g_world_war.lastPlayedOperationCountry == sideCountry ? "no" : "yes"
         backOperBtn.findObject("btn_back_operation_text")?.setValue(
           $"{loc("worldwar/backOperation")}{myLastOperation.getNameText(false)}")
       }
-      let joinBtn = ::showBtn("btn_join_clan_operation", isJoinBtnVisible, sideObj)
+      let joinBtn = showObjById("btn_join_clan_operation", isJoinBtnVisible, sideObj)
       if (isJoinBtnVisible) {
         let myCountryId = myClanOperation.getMyClanCountry() ?? ""
         let isMyClanSide = myCountryId == sideCountry
         joinBtn.inactiveColor = isMyClanSide ? "no" : "yes"
         joinBtn.findObject("btn_join_operation_text")?.setValue(
           $"{loc("worldwar/joinOperation")}{myClanOperation.getNameText(false)}")
-        ::showBtn("is_clan_participate_img", isMyClanSide, joinBtn)
+        showObjById("is_clan_participate_img", isMyClanSide, joinBtn)
       }
-      ::showBtn("btn_leave_queue",
+      showObjById("btn_leave_queue",
         (this.hasClanOperation || isInQueue) && this.hasRightsToQueueClan && isInQueue
           && isInArray(sideCountry, this.selMap.getQueue().getMyClanCountries()), sideObj)
     }
@@ -613,7 +613,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
   function updateQueueElementsInList() {
     foreach (mapId, map in this.mapsTbl) {
-      ::showBtn("wait_icon_" + mapId, map.getQueue().isMyClanJoined(), this.mapsListObj)
+      showObjById("wait_icon_" + mapId, map.getQueue().isMyClanJoined(), this.mapsListObj)
       let membersIconObj = this.scene.findObject("queue_members_" + mapId)
       if (checkObj(membersIconObj))
         membersIconObj.show(map.getQueue().getArmyGroupsAmountTotal() > 0)
@@ -1098,7 +1098,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
   }
 
   function updateWwarUrlButton() {
-    if (!hasFeature("AllowExternalLink") || ::is_vendor_tencent())
+    if (!hasFeature("AllowExternalLink"))
       return
 
     let worldWarUrlBtnKey = ::get_gui_regional_blk()?.worldWarUrlBtnKey ?? ""

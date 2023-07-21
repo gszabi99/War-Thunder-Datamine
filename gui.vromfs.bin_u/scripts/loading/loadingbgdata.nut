@@ -18,17 +18,6 @@ loading_bg
     login_layer_r1:r = 2.0
   }
 
-  tencent {  //override chances for tencent. applied after languages
-    //default_chance:r=2.0
-    login_layer_g1:r = 0
-    login_layer_k1:r = 0
-
-    beforeLogin {
-      default_chance:r=0
-      login_layer_q1:r = 2.0
-    }
-  }
-
   language {  //override chances by languages
     langsInclude  {
       lang:t="English"

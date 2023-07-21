@@ -335,9 +335,9 @@ shopData = [
   }
 
   function showNavButton(id, show) {
-    ::showBtn(id, show, this.navBarObj)
+    showObjById(id, show, this.navBarObj)
     if (checkObj(this.navBarGroupObj))
-      ::showBtn(id, show, this.navBarGroupObj)
+      showObjById(id, show, this.navBarGroupObj)
   }
 
   function updateRepairAllButton() {

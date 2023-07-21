@@ -34,7 +34,7 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 
     this.isInitialized = true
     this.isBgVisible = shouldBgVisible
-    ::showBtn("bg_picture_container", this.isBgVisible, this.scene)
+    showObjById("bg_picture_container", this.isBgVisible, this.scene)
     if (this.isBgVisible)
       animBgLoad("", this.scene.findObject("animated_bg_picture"))
   }

@@ -139,7 +139,7 @@ addPromoButtonConfig({
   updateFunctionInHandler = function() {
     let id = promoButtonId
     let show = !::is_me_newbie() && ::g_promo.getVisibilityById(id)
-    let buttonObj = ::showBtn(id, show, this.scene)
+    let buttonObj = showObjById(id, show, this.scene)
     if (!show || !checkObj(buttonObj))
       return
 

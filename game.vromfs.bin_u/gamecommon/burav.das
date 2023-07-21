@@ -48,10 +48,11 @@ def burav_update_es(act : UpdateStageInfoAct;
     burav__delayTimer -= act.dt
     if burav__delayTimer <= 0.
       burav__delayed = false
-      var spawnPos = float2(0., 0.)
-      spawnPos.x = rnd_float(burav__spawnArea.x, burav__spawnArea.z)
-      spawnPos.y = rnd_float(burav__spawnArea.y, burav__spawnArea.w)
-      burav__position = spawnPos
+      if length_sq(burav__position) <= 0.0
+        var spawnPos = float2(0., 0.)
+        spawnPos.x = rnd_float(burav__spawnArea.x, burav__spawnArea.z)
+        spawnPos.y = rnd_float(burav__spawnArea.y, burav__spawnArea.w)
+        burav__position = spawnPos
       burav__curArmy = 0
       burav__needSync = true
     return

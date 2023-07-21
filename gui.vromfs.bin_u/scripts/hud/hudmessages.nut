@@ -481,7 +481,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
     }
 
     showNewRewardMessage = function (newRewardMessage) {
-      let messageObj = ::showBtn("reward_message", true, this.nest)
+      let messageObj = showObjById("reward_message", true, this.nest)
       let textObj = messageObj.findObject("reward_message_text")
       let rewardType = ::g_hud_reward_message.getMessageByCode(newRewardMessage.messageCode)
 
@@ -504,7 +504,7 @@ enums.addTypesByGlobalName("g_hud_messages", {
 
     clearRewardMessage = function () {
       if (checkObj(this.nest)) {
-        ::showBtn("reward_message", false, this.nest)
+        showObjById("reward_message", false, this.nest)
         this.nest.findObject("reward_message_text").setValue("")
         this.nest.findObject("reward_message_text").view_class = ""
         this.nest.findObject("reward_total").setValue("")

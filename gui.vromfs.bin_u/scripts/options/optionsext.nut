@@ -5692,7 +5692,7 @@ local unitsImgPreset = null
   return unitsImgPreset?[unitName]
 }
 
-::is_tencent_unit_image_reqired <- function is_tencent_unit_image_reqired(unit) {
+::is_harmonized_unit_image_reqired <- function is_harmonized_unit_image_reqired(unit) {
   return unit.shopCountry == "country_japan" && unit.unitType == unitTypes.AIRCRAFT
-    && ::is_vendor_tencent()
+    && ::is_chinese_harmonized()
 }

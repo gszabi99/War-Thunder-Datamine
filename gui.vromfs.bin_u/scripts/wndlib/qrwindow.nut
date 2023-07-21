@@ -34,7 +34,7 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
     urlWithoutTags = this.urlWithoutTags
     buttons = this.buttons
     needShowUrlLink = this.needShowUrlLink
-    isAllowExternalLink = hasFeature("AllowExternalLink") && !::is_vendor_tencent()
+    isAllowExternalLink = hasFeature("AllowExternalLink")
     infoText = this.infoText ?? $"{loc("qrWindow/info")} {this.additionalInfoText}"
   }
 

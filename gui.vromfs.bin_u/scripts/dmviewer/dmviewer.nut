@@ -417,7 +417,7 @@ let descByPartId = {
     if (!handler)
       return
 
-    local obj = ::showBtn("air_info_dmviewer_listbox", this.canUse(), handler.scene)
+    local obj = showObjById("air_info_dmviewer_listbox", this.canUse(), handler.scene)
     if (!checkObj(obj))
       return
 
