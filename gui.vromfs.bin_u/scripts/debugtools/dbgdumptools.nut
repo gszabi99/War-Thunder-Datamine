@@ -16,7 +16,8 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let g_path = require("%sqstd/path.nut")
 let dagor_fs = require("dagor.fs")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getDebriefingResult, getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
+let { getDebriefingResult, getDynamicResult, gatherDebriefingResult
+} = require("%scripts/debriefing/debriefingFull.nut")
 let { getPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
 let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -169,6 +170,7 @@ let function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   ::g_mis_custom_state.getCurMissionRules()
   ::is_in_flight = _is_in_flight
 
+  gatherDebriefingResult()
   ::gui_start_debriefingFull()
   ::checkNonApprovedResearches(true)
   ::go_debriefing_next_func = function() { dbg_dump.unload(); ::gui_start_mainmenu(); onUnloadFunc?() }

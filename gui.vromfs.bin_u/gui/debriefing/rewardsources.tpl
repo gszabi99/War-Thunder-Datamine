@@ -21,7 +21,9 @@ tdiv {
   <<#hasPlus>>
   activeText {
     style:t='color:@minorTextColor'
+    <<^regularFont>>
     smallFont:t='yes'
+    <</regularFont>>
     text:t='+'
   }
   <</hasPlus>>
@@ -39,7 +41,9 @@ tdiv {
   <</icon>>
   activeText {
     style:t='color:<<#textColor>><<textColor>><</textColor>><<^textColor>>@commonTextColor<</textColor>>'
+    <<^regularFont>>
     smallFont:t='yes'
+    <</regularFont>>
     parseTags:t='yes'
     text:t='<<text>>'
   }

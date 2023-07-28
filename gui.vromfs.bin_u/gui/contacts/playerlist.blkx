@@ -1,0 +1,153 @@
+{
+  "contact_buttons_contact_uid": "",
+  "on_click": "onPlayerRClick",
+  "on_r_click": "onPlayerRClick",
+  "title": "$tooltipObj",
+  "contactStatusImg": {
+    "id": "statusImg",
+    "background-image": "",
+    "background-color": "@transparent",
+    "pos": "pw - w, ph/2 - h/2",
+    "position": "absolute"
+  },
+  "cardAvatar": {
+    "id": "pilotIconImg",
+    "value": ""
+  },
+  "tdiv": {
+    "flow": "vertical",
+    "position": "relative",
+    "top": "ph/2 - h/2",
+    "text": {
+      "id": "contactName",
+      "input-transparent": "yes",
+      "playerName": "yes"
+    },
+    "textareaNoTab": {
+      "id": "contactPresence",
+      "input-transparent": "yes",
+      "contact_presence": "yes",
+      "playerPresence": "yes",
+      "padding-left": "6"
+    }
+  },
+  "contact_buttons_holder": {
+    "id": "contact_buttons_holder",
+    "position": "absolute",
+    "pos": "pw - w - @sIco, 0.5ph-0.5h",
+    "display": "hide",
+    "Button_text": [
+      {
+        "id": "btn_friendAdd",
+        "tooltip": "#contacts/friendlist/add",
+        "on_click": "onFriendAdd",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_friend_add.svg"
+        }
+      },
+      {
+        "id": "btn_friendRemove",
+        "tooltip": "#contacts/friendlist/remove",
+        "on_click": "onFriendRemove",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_friend_remove.svg"
+        }
+      },
+      {
+        "id": "btn_blacklistAdd",
+        "tooltip": "#contacts/blacklist/add",
+        "on_click": "onBlacklistAdd",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_blacklist_add.svg"
+        }
+      },
+      {
+        "id": "btn_blacklistRemove",
+        "tooltip": "#contacts/blacklist/remove",
+        "on_click": "onBlacklistRemove",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_blacklist_remove.svg"
+        }
+      },
+      {
+        "id": "btn_message",
+        "tooltip": "#contacts/message",
+        "on_click": "onPlayerMsg",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "enable": "no",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_send_private_message.svg"
+        }
+      },
+      {
+        "id": "btn_squadInvite",
+        "tooltip": "#contacts/invite",
+        "on_click": "onSquadInvite",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "enable": "no",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_invite.svg"
+        }
+      },
+      {
+        "id": "btn_usercard",
+        "tooltip": "#mainmenu/btnUserCard",
+        "on_click": "onUsercard",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "enable": "no",
+        "img": {
+          "background-image": "#ui/gameuiskin#btn_usercard.svg"
+        }
+      },
+      {
+        "id": "btn_ww_invite",
+        "tooltip": "#worldwar/inviteToOperation",
+        "on_click": "onWwOperationInvite",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "enable": "no",
+        "display": "hide",
+        "btnText": {
+          "style": "font:@fontSmall",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "position": "absolute",
+          "text": "#icon/worldWar"
+        }
+      }
+    ]
+  },
+  "tooltipObj": {
+    "id": "tooltip",
+    "uid": "",
+    "on_tooltip_open": "onContactTooltipOpen",
+    "on_tooltip_close": "onTooltipObjClose",
+    "display": "hide"
+  }
+}

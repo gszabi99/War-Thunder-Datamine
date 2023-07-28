@@ -17,9 +17,12 @@ let { register_command } = require("console")
 let { set_game_mode, get_game_mode } = require("mission")
 
 register_command(
-  function () {
+  function (misName) {
+
+    if(checkTutorialsList.filter(@(t) t.tutorial == misName).len() == 0)
+      return
+
     let dataBlk = ::get_pve_awards_blk()?[::get_game_mode_name(GM_TRAINING)]
-    let misName = "tutorial_destroyer_basics_arcade"
     let rewardsConfig = [{
       rewardMoney = getMoneyFromDebriefingResult()
       hasRewardImage = false
@@ -29,7 +32,7 @@ register_command(
     return ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
       {
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
-        misName = misName
+        misName
         afterRewardText = dataBlk?[misName].rewardWndInfoText ?? ""
         decorator = null
       })

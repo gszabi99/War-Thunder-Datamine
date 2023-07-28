@@ -151,12 +151,14 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
     }
 }
 
-let function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null) {
+let function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null, plainText = false) {
   if (!boostersArray || boostersArray.len() == 0)
     return ""
 
   let getColoredNumByType = (@(effectType) function(num) {
-    return "".concat(colorize("activeTextColor", $"+{num.tointeger()}%"), effectType.currencyMark)
+    let value = plainText ? $"+{num.tointeger()}%" : colorize("activeTextColor", $"+{num.tointeger()}%")
+    let currency = effectType.getCurrencyMark(plainText)
+    return "".concat(value, currency)
   })(effectType)
 
   let separateBoosters = []
@@ -164,7 +166,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
   let itemsArray = []
   foreach (booster in boostersArray) {
     if (booster.showBoosterInSeparateList)
-      separateBoosters.append($"{booster.getName()}{loc("ui/colon")}{booster.getEffectDesc(true, effectType)}")
+      separateBoosters.append($"{booster.getName()}{loc("ui/colon")}{booster.getEffectDesc(true, effectType, plainText)}")
     else
       itemsArray.append(booster)
   }
@@ -219,7 +221,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
         let effNew = personal ? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
 
         local string = arr.len() == 1 ? "" : $"{idx+1}) "
-        string = $"{string}{item.getEffectDesc(false)}{loc("ui/comma")}"
+        string = $"{string}{item.getEffectDesc(false, null, plainText)}{loc("ui/comma")}"
         string = $"{string}{loc("items/booster/giveRealBonus", {realBonus = getColoredNumByType(format("%.02f", effNew - effOld).tofloat())})}"
         string = $"{string}{idx == arr.len()-1 ? loc("ui/dot") : loc("ui/semicolon")}"
 
@@ -239,7 +241,7 @@ let function getActiveBoostersDescription(boostersArray, effectType, selectedIte
     detailedDescription.append("\n".join(detailedArray, true))
   }
 
-  let description = $"{loc("mainmenu/boostersTooltip", effectType)}{loc("ui/colon")}\n"
+  let description = $"{loc("mainmenu/boostersTooltip", { currencyMark = effectType.getCurrencyMark(plainText) })}{loc("ui/colon")}\n"
   return $"{description}{"\n".join(separateBoosters, true)}{"\n\n".join(detailedDescription, true)}"
 }
 

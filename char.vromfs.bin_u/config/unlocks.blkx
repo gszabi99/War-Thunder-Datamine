@@ -3611,6 +3611,16 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "cardicon_david_currie",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "cardicon_bundeswehr_infantryman",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
       "id": "hardcoded_initial_warpoints",
       "type": "award",
       "amount_warpoints": 10000,
@@ -10126,6 +10136,94 @@
         "premium": true,
         "country": "country_ussr",
         "unitClass": "aircraft_only"
+      }
+    },
+    {
+      "id": "germ_spz_12_3/lederbraun",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 300,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_spz_12_3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "germ_spz_12_3/winter",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "tanks_germany",
+      "mode": {
+        "type": "killedPlayersScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 430,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "germ_spz_12_3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "it_mc_485/it_camo_navy_turquoise",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "ships_italy",
+      "mode": {
+        "type": "awardDamage",
+        "mulArcade": 1,
+        "mulRealistic": 1,
+        "mulHardcore": 1,
+        "num": 94500,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "it_mc_485"
+          }
+        ]
+      }
+    },
+    {
+      "id": "it_mc_485/it_camo_twocolors_spots",
+      "type": "skin",
+      "chapter": "skins",
+      "group": "ships_italy",
+      "mode": {
+        "type": "awardDamage",
+        "mulArcade": 1,
+        "mulRealistic": 1,
+        "mulHardcore": 1,
+        "num": 135000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "it_mc_485"
+          }
+        ]
       }
     },
     {
@@ -150983,12 +151081,12 @@
         "condition": [
           {
             "type": "battlepassSeason",
-            "season": 10
+            "season": 11
           },
           {
             "type": "char_time_range",
-            "beginDate": "2023-04-26 12:00:00",
-            "endDate": "2023-07-26 11:59:00"
+            "beginDate": "2023-07-26 12:00:00",
+            "endDate": "2023-10-25 11:59:00"
           }
         ]
       }
@@ -151779,6 +151877,67 @@
             "type": "char_time_range",
             "beginDate": "2023-05-24 12:00:00",
             "endDate": "2023-07-26 12:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season12_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    },
+    {
+      "id": "battlepass_season12_purchased_entitlement",
+      "userLogId": "battlepass_season12_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season12_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season12_purchased_item",
+      "type": "inventory",
+      "userLogId": "730010",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season12_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    },
+    {
+      "id": "battlepass_season12_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season12_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_always_progress",
+        "condition": [
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season12_allow_skip_all_stages",
+            "invertResult": true
+          },
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassSeason12Purchased"
+          },
+          {
+            "type": "char_time_range",
+            "beginDate": "2023-08-24 12:00:00",
+            "endDate": "2023-10-25 12:00:00"
           }
         ]
       }

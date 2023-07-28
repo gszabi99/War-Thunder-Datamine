@@ -16,7 +16,7 @@ let { subscribe } = require("eventbus")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let psnSocial = require("sony.social")
 let { EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
-let { replace } = require("%sqstd/string.nut")
+let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 
@@ -59,6 +59,7 @@ subscribe("playerProfileDialogClosed", function(r) {
 
   isBlockedMe = false
   contactServiceGroup = ""
+  lowerName = ""
 
   constructor(contactData) {
     let newName = contactData?["name"] ?? ""
@@ -82,6 +83,7 @@ subscribe("playerProfileDialogClosed", function(r) {
         this[key] = val
 
     this.uidInt64 = this.uid != "" ? this.uid.tointeger() : null
+    this.lowerName = utf8ToLower(this.name)
 
     this.refreshClanTagsTable()
     if (this.name.len())

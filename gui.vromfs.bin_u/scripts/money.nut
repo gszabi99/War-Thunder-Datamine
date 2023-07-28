@@ -158,6 +158,10 @@ let Money = class {
     return this.__impl_get_text(params)
   }
 
+  function toPlainText(params = null) {
+    return this.__impl_get_plain_text(params)
+  }
+
   function getTextAccordingToBalance() {
     return this.__impl_get_text({ needCheckBalance = true })
   }
@@ -187,31 +191,31 @@ let Money = class {
   function __impl_get_wp_text(colored = true, checkBalance = false, needIcon = true) {
     let color_id = (checkBalance && colored) ? this.__get_wp_color_id() : money_color.NEUTRAL
     let sign = needIcon ? loc(colored ? "warpoints/short/colored" : "warpoints/short") : ""
-    return __check_color(decimalFormat(this.wp), color_id) + sign
+    return "".concat(__check_color(decimalFormat(this.wp), color_id), sign)
   }
 
   function __impl_get_gold_text(colored = true, checkBalance = false, needIcon = true) {
     let color_id = (checkBalance && colored) ? this.__get_gold_color_id() : money_color.NEUTRAL
     let sign = needIcon ? loc(colored ? "gold/short/colored" : "gold/short") : ""
-    return __check_color(decimalFormat(this.gold), color_id) + sign
+    return "".concat(__check_color(decimalFormat(this.gold), color_id), sign)
   }
 
   function __impl_get_frp_text(colored = true, checkBalance = false, needIcon = true) {
     let color_id = (checkBalance && colored) ? this.__get_frp_color_id() : money_color.NEUTRAL
     let sign = needIcon ? loc(colored ? "currency/freeResearchPoints/sign/colored" : "currency/freeResearchPoints/sign") : ""
-    return __check_color(decimalFormat(this.frp), color_id) + sign
+    return "".concat(__check_color(decimalFormat(this.frp), color_id), sign)
   }
 
   function __impl_get_rp_text(colored = true, checkBalance = false, needIcon = true) {
     let color_id = (checkBalance && colored) ? this.__get_rp_color_id() : money_color.NEUTRAL
     let sign = needIcon ? loc(colored ? "currency/researchPoints/sign/colored" : "currency/researchPoints/sign") : ""
-    return __check_color(decimalFormat(this.rp), color_id) + sign
+    return "".concat(__check_color(decimalFormat(this.rp), color_id), sign)
   }
 
   function __impl_get_sap_text(colored = true, checkBalance = false, needIcon = true) {
     let color_id = (checkBalance && colored) ? this.__get_sap_color_id() : money_color.NEUTRAL
     let sign = needIcon ? loc(colored ? "currency/squadronActivity/colored" : "currency/squadronActivity") : ""
-    return __check_color(decimalFormat(this.sap), color_id) + sign
+    return "".concat(__check_color(decimalFormat(this.sap), color_id), sign)
   }
 
   function __impl_get_text(params = null) {
@@ -219,23 +223,34 @@ let Money = class {
     let isColored = params?.isColored ?? true
     let needCheckBalance = params?.needCheckBalance ?? false
     let needIcon = params?.needIcon ?? true
-
     if (this.gold != 0 || params?.isGoldAlwaysShown)
-      text += this.__impl_get_gold_text(isColored, needCheckBalance, needIcon)
+      text = "".concat(text, this.__impl_get_gold_text(isColored, needCheckBalance, needIcon))
     if (this.wp != 0 || params?.isWpAlwaysShown)
-      text += ((text == "") ? "" : ", ") + this.__impl_get_wp_text(isColored, needCheckBalance, needIcon)
+      text = ((text == "") ? "" : ", ").concat(text, this.__impl_get_wp_text(isColored, needCheckBalance, needIcon))
     if (this.frp != 0 || params?.isFrpAlwaysShown)
-      text += ((text == "") ? "" : ", ") + this.__impl_get_frp_text(isColored, needCheckBalance, needIcon)
+      text = ((text == "") ? "" : ", ").concat(text, this.__impl_get_frp_text(isColored, needCheckBalance, needIcon))
     if (this.rp != 0 || params?.isRpAlwaysShown)
-      text += ((text == "") ? "" : ", ") + this.__impl_get_rp_text(isColored, needCheckBalance, needIcon)
+      text = ((text == "") ? "" : ", ").concat(text, this.__impl_get_rp_text(isColored, needCheckBalance, needIcon))
     if (this.sap != 0 || params?.isSapAlwaysShown)
-      text += ((text == "") ? "" : ", ") + this.__impl_get_sap_text(isColored, needCheckBalance, needIcon)
+      text = ((text == "") ? "" : ", ").concat(text, this.__impl_get_sap_text(isColored, needCheckBalance, needIcon))
     return text
   }
 
+  function __impl_get_plain_text(params = null) {
+    local text = ""
+    if (this.gold != 0 || params?.isGoldAlwaysShown)
+      text = "".concat(text, " ".concat(this.gold, loc("money/goldText")))
+    if (this.wp != 0 || params?.isWpAlwaysShown)
+      text = ((text == "") ? "" : ", ").concat(text, " ".concat(this.wp, loc("money/wpText")))
+    if (this.frp != 0 || params?.isFrpAlwaysShown)
+      text = ((text == "") ? "" : ", ").concat(text, " ".concat(this.frp, loc("money/frpText")))
+    if (this.rp != 0 || params?.isRpAlwaysShown)
+      text = ((text == "") ? "" : ", ").concat(text, " ".concat(this.rp, loc("money/rpText")))
+    if (this.sap != 0 || params?.isSapAlwaysShown)
+      text = ((text == "") ? "" : ", ").concat(text, " ".concat(this.sap, loc("money/sapText")))
+    return text
+  }
 }
-
-
 
 let Balance = class extends Money {
   mType = money_type.balance

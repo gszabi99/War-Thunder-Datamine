@@ -342,8 +342,9 @@ let { getFullUnlockCondsDesc,
     return layersArray
   }
 
-  function getEffectDesc(colored = true, _effectType = null) {
-    local desc = this.getEffectText(this.wpRate, this.xpRate, colored)
+  function getEffectDesc(colored = true, _effectType = null, plainText = false) {
+    local desc = plainText ? this.getEffectPlainText(this.wpRate, this.xpRate)
+      : this.getEffectText(this.wpRate, this.xpRate, colored)
 
     if (!this.personal)
       desc += format(" (%s)", loc("boostEffect/group"))
@@ -368,6 +369,15 @@ let { getFullUnlockCondsDesc,
       else
         text.append(::getRpPriceText("+" + xpRateNum + "%", true))
 
+    return ", ".join(text, true)
+  }
+
+  function getEffectPlainText(wpRateNum = 0, xpRateNum = 0) {
+    let text = []
+    if (wpRateNum > 0.0)
+      text.append($"+{wpRateNum}%{loc("money/wpText")}")
+    if (xpRateNum > 0.0)
+      text.append($"+{xpRateNum}%{loc("money/rpText")}")
     return ", ".join(text, true)
   }
 
@@ -566,14 +576,17 @@ let { getFullUnlockCondsDesc,
     return desc
   }
 
-  function getEffectDesc(colored = true, effectType = null) {
+  function getEffectDesc(colored = true, effectType = null, plainText = false) {
     local desc = ""
     if (effectType == boosterEffectType.WP)
-      desc = this.getEffectText(this.wpRate, 0, colored)
+      desc = plainText ? this.getEffectPlainText(this.wpRate, 0)
+        : this.getEffectText(this.wpRate, 0, colored)
     else if (effectType == boosterEffectType.RP)
-      desc = this.getEffectText(0, this.xpRate, colored)
+      desc = plainText ? this.getEffectPlainText(0, this.xpRate)
+        : this.getEffectText(0, this.xpRate, colored)
     else
-      desc = this.getEffectText(this.wpRate, this.xpRate, colored)
+      desc = plainText ? this.getEffectPlainText(this.wpRate, this.xpRate)
+        : this.getEffectText(this.wpRate, this.xpRate, colored)
 
     if (!this.personal)
       desc += format(" (%s)", loc("boostEffect/group"))

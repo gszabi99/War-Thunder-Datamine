@@ -10,6 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 } = require("guiOptions")
 let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -131,6 +132,7 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
   haveNext = false
 
   selectedIndex = 0
+  currentLog = null
 
   slotbarActions = [ "take", "showroom", "testflight", "sec_weapons", "weapons", "info" ]
 
@@ -213,6 +215,13 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
     msgObj.show(this.logs.len() == 0)
     if (this.logs.len() == 0)
       msgObj.setValue(loc("userlog/noMessages"))
+    this.setCurrentLogForCopy()
+  }
+
+  function setCurrentLogForCopy() {
+    this.currentLog = this.logs?[this.selectedIndex]
+    if(this.currentLog != null && ![EULT_EARLY_SESSION_LEAVE, EULT_SESSION_RESULT].contains(this.currentLog.type))
+      this.currentLog = null
   }
 
   function addLogsPage() {
@@ -251,7 +260,9 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
 
     this.guiScene.replaceContentFromText(rowObj, viewBlk, viewBlk.len(), this)
 
-    rowObj.tooltip = rowData.tooltip
+    if (logObj.type != EULT_SESSION_RESULT) // for this case tooltip setted inside userLogRow.tpl
+      rowObj.tooltip = rowData.tooltip
+
     if (logObj.enabled)
       rowObj.status = "owned"
   }
@@ -362,6 +373,9 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
       this.addLogsPage()
       obj.setValue(this.selectedIndex)
     }
+
+    this.setCurrentLogForCopy()
+
     this.guiScene.applyPendingChanges(false)
     let childObj = obj.getChild(this.selectedIndex)
     if (!checkObj(childObj))
@@ -422,5 +436,11 @@ let { actionByLogType, saveOnlineJob } = require("%scripts/userLog/userlogUtils.
       return
 
     actionByLogType?[logObj.type](logObj)
+  }
+
+  function copyToClipboard() {
+    if(this.currentLog == null)
+      return
+    ::copy_to_clipboard(get_userlog_plain_text(this.currentLog))
   }
 }

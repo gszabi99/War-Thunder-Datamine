@@ -117,11 +117,10 @@
         "unitSetProperties": [
           {
             "object": [
-              "germ_artillery_01_01",
-              "germ_artillery_01_02",
-              "germ_artillery_02_01",
+              "germ_artillery_01_squad",
+              "germ_artillery_02_squad",
               "germ_pz_vi_01",
-              "germ_artillery_03_01",
+              "germ_artillery_03_squad",
               "pziv_01",
               "germ_artillery_04_01",
               "germ_tiger_01",
@@ -236,7 +235,7 @@
         }
       },
       "actions": {
-        "missionDestroyArea": {
+        "__missionDestroyArea": {
           "target_type": "ALL",
           "area": [
             "waypoint_01_area_01",
@@ -248,10 +247,7 @@
         },
         "unitSetProperties": [
           {
-            "object": [
-              "germ_artillery_01_01",
-              "germ_artillery_01_02"
-            ],
+            "object": "germ_artillery_01_squad",
             "targetableByAi": true,
             "stealthRadius": 4500.0,
             "attack_type": "fire_at_will"
@@ -270,10 +266,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "target": [
-            "germ_artillery_01_01",
-            "germ_artillery_01_02"
-          ]
+          "target": "germ_artillery_01_squad"
         },
         "triggerEnable": {
           "target": [
@@ -285,10 +278,7 @@
         },
         "unitMark": {
           "target_marking": 1,
-          "target": [
-            "germ_artillery_01_01",
-            "germ_artillery_01_02"
-          ]
+          "target": "germ_artillery_01_squad"
         }
       },
       "else_actions": {}
@@ -314,10 +304,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": [
-            "germ_artillery_01_01",
-            "germ_artillery_01_02"
-          ]
+          "object": "germ_artillery_01_squad"
         }
       },
       "actions": {
@@ -519,9 +506,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "object": [
-            "germ_artillery_01_01",
-            "germ_artillery_01_02",
-            "germ_artillery_02_01",
+            "germ_artillery_01_squad",
+            "germ_artillery_02_squad",
             "germ_pz_vi_01",
             "germ_artillery_03_01",
             "pziv_01",
@@ -595,9 +581,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": [
-              "germ_artillery_01_02",
-              "germ_artillery_01_01",
-              "germ_artillery_02_01",
+              "germ_artillery_01_squad",
+              "germ_artillery_02_squad",
               "germ_artillery_03_01",
               "germ_artillery_04_01"
             ]
@@ -698,7 +683,7 @@
         }
       },
       "actions": {
-        "missionDestroyArea": {
+        "__missionDestroyArea": {
           "target_type": "ALL",
           "area": "waypoint_02_area_01"
         },
@@ -707,7 +692,7 @@
         },
         "unitSetProperties": [
           {
-            "object": "germ_artillery_02_01",
+            "object": "germ_artillery_02_squad",
             "targetableByAi": true,
             "stealthRadius": 4500.0,
             "attack_type": "fire_at_will"
@@ -726,7 +711,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "target": "germ_artillery_02_01"
+          "target": "germ_artillery_02_squad"
         },
         "triggerEnable": {
           "target": [
@@ -763,7 +748,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "germ_artillery_02_01"
+          "object": "germ_artillery_02_squad"
         }
       },
       "actions": {
@@ -1015,7 +1000,7 @@
       "actions": {
         "unitSetProperties": [
           {
-            "object": "germ_artillery_03_01",
+            "object": "germ_artillery_03_squad",
             "targetableByAi": true,
             "stealthRadius": 4500.0,
             "attack_type": "fire_at_will"
@@ -1034,7 +1019,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "target": "germ_artillery_03_01"
+          "target": "germ_artillery_03_squad"
         },
         "triggerEnable": {
           "target": [
@@ -1071,7 +1056,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "germ_artillery_03_01"
+          "object": "germ_artillery_03_squad"
         }
       },
       "actions": {
@@ -1802,7 +1787,7 @@
       },
       "conditions": {
         "unitDistanceBetween": {
-          "value": 50.0,
+          "value": 150.0,
           "math": "2D",
           "object_type": "isAlive",
           "target_type": "isAlive",
@@ -1863,6 +1848,20 @@
         "unitMark": {
           "target_marking": 1,
           "target": "final_germ_squad"
+        },
+        "moSetObjectiveStatus": {
+          "target": "dlc_surgical_strike_main",
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
+          "extendedEnding": true
+        },
+        "wait": {
+          "time": 3.0
+        },
+        "moAddMissionObjective": {
+          "target": "dlc_surgical_strike_final"
         }
       },
       "else_actions": {}
@@ -1974,14 +1973,15 @@
       },
       "actions": {
         "moSetObjectiveStatus": {
-          "target": "dlc_surgical_strike_main",
+          "target": "dlc_surgical_strike_final",
           "status": 2,
           "object_marking": 0,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "extendedEnding": true
         },
         "wait": {
-          "time": 3.0
+          "time": 5.0
         },
         "missionCompleted": {
           "timer": false,
@@ -2629,6 +2629,19 @@
     "isCategory": true,
     "is_enabled": true,
     "dlc_surgical_strike_main": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 2100,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    },
+    "dlc_surgical_strike_final": {
       "is_enabled": false,
       "comments": "",
       "type": "abstractMissionObjective",
@@ -4222,9 +4235,9 @@
             -0.461748
           ],
           [
-            3266.0,
-            48.5,
-            7522.5
+            3256.4,
+            43.35,
+            7522.95
           ]
         ],
         "unit_class": "germ_88mm_pak43_noground",
@@ -4244,11 +4257,11 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 2,
+          "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [
-            3.0,
+            2.4,
             1.0
           ],
           "formation_noise": [
@@ -4279,9 +4292,9 @@
             0.5
           ],
           [
-            3185.5,
-            51.15,
-            7395.7
+            3181.05,
+            45.3,
+            7393.6
           ]
         ],
         "unit_class": "germ_88mm_pak43_noground",
@@ -4301,11 +4314,11 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 2,
+          "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [
-            3.0,
+            2.3,
             1.0
           ],
           "formation_noise": [
@@ -4336,9 +4349,9 @@
             -0.866025
           ],
           [
-            2903.45,
-            61.85,
-            7606.5
+            2921.5,
+            59.85,
+            7601.8
           ]
         ],
         "unit_class": "germ_88mm_pak43_noground",
@@ -4358,16 +4371,16 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 4,
+          "count": 1,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [
-            1.5,
-            3.0
+            0.8,
+            4.0
           ],
           "formation_noise": [
             0.3,
-            0.5
+            0.4
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -4451,9 +4464,9 @@
             -0.173648
           ],
           [
-            2466.25,
-            74.1,
-            7972.7
+            2461.05,
+            64.2,
+            7991.65
           ]
         ],
         "unit_class": "germ_88mm_pak43_noground",
@@ -4473,11 +4486,11 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 6,
+          "count": 1,
           "formation_type": "rows",
-          "formation_div": 2,
+          "formation_div": 3,
           "formation_step": [
-            2.5,
+            1.6,
             2.0
           ],
           "formation_noise": [
@@ -4540,6 +4553,348 @@
           "formation_noise": [
             1.0,
             1.0
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "germ_artillery_01_03",
+        "tm": [
+          [
+            -0.461748,
+            0.0,
+            -0.887011
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887011,
+            0.0,
+            -0.461748
+          ],
+          [
+            3272.55,
+            43.35,
+            7529.75
+          ]
+        ],
+        "unit_class": "germ_88mm_pak43_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [
+            2.4,
+            1.0
+          ],
+          "formation_noise": [
+            0.1,
+            1.0
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "germ_artillery_01_04",
+        "tm": [
+          [
+            0.5,
+            0.0,
+            0.866025
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            3185.3,
+            45.3,
+            7376.2
+          ]
+        ],
+        "unit_class": "germ_88mm_pak43_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.3,
+            1.0
+          ],
+          "formation_noise": [
+            1.0,
+            1.0
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "germ_artillery_02_02",
+        "tm": [
+          [
+            -0.866025,
+            0.0,
+            0.5
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.5,
+            0.0,
+            -0.866025
+          ],
+          [
+            2914.1,
+            59.85,
+            7568.1
+          ]
+        ],
+        "unit_class": "germ_88mm_pak43_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [
+            0.8,
+            4.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "germ_artillery_02_03",
+        "tm": [
+          [
+            -0.898948,
+            0.0,
+            -0.438054
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.438054,
+            0.0,
+            -0.898948
+          ],
+          [
+            2936.0,
+            59.85,
+            7701.7
+          ]
+        ],
+        "unit_class": "germ_88mm_pak43_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [
+            0.8,
+            4.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "germ_artillery_03_02",
+        "tm": [
+          [
+            -0.173648,
+            0.0,
+            0.984808
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.984808,
+            0.0,
+            -0.173648
+          ],
+          [
+            2496.35,
+            64.2,
+            8005.25
+          ]
+        ],
+        "unit_class": "germ_88mm_pak43_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            1.6,
+            2.0
+          ],
+          "formation_noise": [
+            1.0,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "germ_artillery_03_03",
+        "tm": [
+          [
+            -0.173648,
+            0.0,
+            0.984808
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.984808,
+            0.0,
+            -0.173648
+          ],
+          [
+            2478.95,
+            64.2,
+            7954.65
+          ]
+        ],
+        "unit_class": "germ_88mm_pak43_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            1.6,
+            2.0
+          ],
+          "formation_noise": [
+            1.0,
+            0.1
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -4621,6 +4976,103 @@
             "final_germ_tank_05",
             "final_germ_tank_06",
             "germ_tigers_wave"
+          ]
+        }
+      },
+      {
+        "name": "germ_artillery_01_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3254.6,
+            44.3,
+            7394.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "germ_artillery_01_01",
+            "germ_artillery_01_02",
+            "germ_artillery_01_03",
+            "germ_artillery_01_04"
+          ]
+        }
+      },
+      {
+        "name": "germ_artillery_02_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2948.8,
+            59.85,
+            7715.9
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "germ_artillery_02_01",
+            "germ_artillery_02_02",
+            "germ_artillery_02_03"
+          ]
+        }
+      },
+      {
+        "name": "germ_artillery_03_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2502.55,
+            64.2,
+            7882.7
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "germ_artillery_03_01",
+            "germ_artillery_03_02",
+            "germ_artillery_03_03"
           ]
         }
       }
@@ -5311,19 +5763,19 @@
       "type": "Sphere",
       "tm": [
         [
-          64.8,
+          103.951,
           0.0,
           0.0
         ],
         [
           0.0,
-          80.0,
+          128.334,
           0.0
         ],
         [
           0.0,
           0.0,
-          80.0
+          128.334
         ],
         [
           3233.4,
@@ -5389,7 +5841,7 @@
       "type": "Sphere",
       "tm": [
         [
-          60.0,
+          163.688,
           0.0,
           0.0
         ],
@@ -5401,12 +5853,12 @@
         [
           0.0,
           0.0,
-          60.0
+          163.688
         ],
         [
-          2869.15,
-          59.5821,
-          7626.7
+          2885.35,
+          70.15,
+          7648.95
         ]
       ],
       "props": {}
@@ -5571,24 +6023,24 @@
       "type": "Sphere",
       "tm": [
         [
-          160.6,
+          217.003,
           0.0,
           0.0
         ],
         [
           0.0,
-          160.6,
+          217.003,
           0.0
         ],
         [
           0.0,
           0.0,
-          160.6
+          217.003
         ],
         [
-          2443.45,
+          2462.45,
           71.95,
-          8079.95
+          8070.9
         ]
       ],
       "props": {}
@@ -5727,19 +6179,19 @@
       "type": "Sphere",
       "tm": [
         [
-          128.48,
+          161.886,
           0.0,
           0.0
         ],
         [
           0.0,
-          128.48,
+          161.886,
           0.0
         ],
         [
           0.0,
           0.0,
-          128.48
+          161.886
         ],
         [
           1996.4,
@@ -5872,9 +6324,9 @@
           1.0
         ],
         [
-          529.0,
-          63.35,
-          8894.3
+          1041.8,
+          81.2,
+          8857.9
         ]
       ],
       "props": {}
@@ -5883,23 +6335,23 @@
       "type": "Sphere",
       "tm": [
         [
-          848.8,
+          1978.11,
           0.0,
           0.0
         ],
         [
           0.0,
-          848.8,
+          1978.11,
           0.0
         ],
         [
           0.0,
           0.0,
-          848.8
+          1978.11
         ],
         [
           361.6,
-          66.0,
+          79.35,
           8639.35
         ]
       ],

@@ -151,6 +151,8 @@ enums.addTypesByGlobalName("g_wb_award_type", {
         hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",
         showAsTrophyContent = true
+        isLocalState = false
+        tooltipParams = { showLocalState = false }
       }))
     }
 

@@ -751,8 +751,15 @@
       ]
     }
   },
-  "DummyButton": {
-    "btnName": "A",
-    "on_click": "onUserLogAction"
-  }
+  "DummyButton": [
+    {
+      "btnName": "A",
+      "on_click": "onUserLogAction"
+    },
+    {
+      "on_click": "copyToClipboard",
+      "behavior": "accesskey",
+      "accessKey": "Ctrl C"
+    }
+  ]
 }

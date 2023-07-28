@@ -24,6 +24,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
+let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
+let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRewardTooltip.nut")
 
 let tooltipTypes = {
   types = []
@@ -548,6 +550,24 @@ let exportTypes = addTooltipTypes({
       else
         return false
 
+      return true
+    }
+  }
+
+  USER_LOG_REWARD = {
+    isCustomTooltipFill = true
+    getTooltipId = function(logIdx, rewardId) {
+      return this._buildId($"{logIdx}_{rewardId}", {logIdx, rewardId})
+    }
+    fillTooltip = function(obj, handler, _id, params) {
+      if (!obj?.isValid())
+        return false
+
+      let { logIdx, rewardId } = params
+      let foundReward = handler.logs.findvalue(@(l) l.idx == logIdx.tointeger()).container[rewardId]
+      let view = getUserLogBattleRewardTooltip(getBattleRewardDetails(foundReward), rewardId)
+      let blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
+      obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
       return true
     }
   }

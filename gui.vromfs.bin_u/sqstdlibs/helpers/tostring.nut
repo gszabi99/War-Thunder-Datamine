@@ -4,7 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let g_string = require("%sqstd/string.nut")
 let {format} = require("string")
 
-
+let hexNumbers = "0123456789abcdef"
 local toString //forward declaration
 
 let function tableKeyToString(k) {
@@ -207,7 +207,20 @@ toString = function (val, recursion = 1, addStr = "") {
   return isArray ? ("[ " + str + " ]") : ("{ " + str + " }")
 }
 
+local function intToHexString(number) {
+  if (number == 0)
+    return "0"
+  local res = ""
+  while (number != 0) {
+    let index = number & 0xF
+    res = "".concat(hexNumbers.slice(index, index + 1), res)
+    number = number >>> 4
+  }
+  return res
+}
+
 return {
   debugTableData
   toString
+  intToHexString
 }

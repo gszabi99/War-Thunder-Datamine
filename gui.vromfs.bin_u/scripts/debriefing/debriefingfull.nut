@@ -249,6 +249,12 @@ debriefingRows = [
     icon = ""
     isCountedInUnits = false
   }
+  { id = "ExpensesCompensation"
+    icon = ""
+    getName = @() loc("userlog/expenses_compensation")
+    tooltipComment = function() { return loc("userlog/expenses_compensation_tooltip") }
+    isCountedInUnits = false
+  }
   { id = "FriendlyKills"
     showByModes = isGameModeVersus
   }

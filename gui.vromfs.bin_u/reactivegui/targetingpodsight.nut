@@ -3,6 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { bw } = require("style/screenState.nut")
 let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax } = require("airHudElems.nut")
 let { TargetPodMask, EmptyMask, HudColor, HudParamColor } = require("airState.nut")
+let missileSalvoTimer = require("missileSalvoTimer.nut")
 
 let paramsTableWidthAircraft = hdpx(330)
 let paramsTableHeightAircraft = hdpx(22)
@@ -17,6 +18,7 @@ let function Root(width, height) {
   return {
     size = [width, height]
     children = [
+      missileSalvoTimer(HudColor, sw(50) - hdpx(150), sh(90) - hdpx(174))
       turretAngles(HudColor, hdpx(150), hdpx(150), sw(50), sh(90), 0.22)
       sight(HudColor, sw(50), sh(50), hdpx(500))
       targetSize(HudColor, sw(100), sh(100))

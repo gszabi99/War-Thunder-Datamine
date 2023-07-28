@@ -280,6 +280,8 @@ let REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
 
   function hideAvailableTimer(memberId) {
+    if (!this.scene?.isValid())
+      return
     let placeObj = this.scene.findObject($"{memberId}_status")
     if (!placeObj?.isValid())
       return

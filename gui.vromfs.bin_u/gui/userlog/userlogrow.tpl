@@ -2,13 +2,17 @@ highlightedRowLine {}
 selImg {
   tdiv {
     size:t='pw, 5.5*@sf/100.0<<#buttonName>>+ 1@blockInterval<</buttonName>>'
+    <<#isUserLogBattles>>
+    tooltip:t=<<tooltip>>
+    <</isUserLogBattles>>
     tdiv {
       size:t='pw, 5.5*@sf/100.0'
       padding-left:t='8.0*@scrn_tgt/100.0'
       padding-right:t='1*@scrn_tgt/100.0'
 
       tdiv {
-        pos:t='4*@scrn_tgt/100.0-50%w, 50%ph-50%h'; position:t='absolute'
+        pos:t='4*@scrn_tgt/100.0-50%w, 50%ph-50%h'
+        position:t='absolute'
         cardImg { id:t='log_image'
           <<#logImg>>
           background-image:t='<<logImg>>'
@@ -24,7 +28,8 @@ selImg {
 
       <<#logBonus>>
       tdiv {
-        pos:t='-1, -2'; position:t='absolute'
+        pos:t='-1, -2'
+        position:t='absolute'
         bonus {
           id:t='log_bonus'
           bonusType:t='<<bonusType>>'
@@ -33,9 +38,14 @@ selImg {
         }
       }
       <</logBonus>>
-      textAreaNoScroll { id:t='name';
-        width:t='fw'; max-height:t='ph'; pare-text:t='yes'
-        valign:t='center'; class:t='active'; overflow:t='hidden'
+      textAreaNoScroll {
+        id:t='name'
+        width:t='fw'
+        max-height:t='ph'
+        pare-text:t='yes'
+        valign:t='center'
+        class:t='active'
+        overflow:t='hidden'
         padding-top:t='-0.5*@scrn_tgt/100.0'
         text:t=<<#name>>'<<name>>'<</name>><<^name>>''<</name>>
       }
@@ -48,11 +58,19 @@ selImg {
         <<#buttonName>>
         margin-top:t='1*@scrn_tgt/100.0 - 1@selImgBottomPadding'
         <</buttonName>>
-        text-align:t='right'; smallFont:t='yes'
+        text-align:t='right'
+        smallFont:t='yes'
       }
 
       <<#middle>>
-      text { id:t='middle'; text:t='<<middle>>'; top:t='50%ph-50%h'; position:t='absolute'; width:t='pw'; text-align:t='center' }
+      text {
+        id:t='middle'
+        text:t='<<middle>>'
+        top:t='50%ph-50%h'
+        position:t='absolute'
+        width:t='pw'
+        text-align:t='center'
+      }
       <</middle>>
     }
     <<#hasExpandImg>>
@@ -60,7 +78,8 @@ selImg {
       id:t='expandImg'
       height:t='1*@scrn_tgt/100.0'
       width:t='2h'
-      pos:t='50%pw-50%w, ph-h'; position:t='absolute'
+      pos:t='50%pw-50%w, ph-h'
+      position:t='absolute'
       background-image:t='#ui/gameuiskin#expand_info'
       background-color:t='@premiumColor'
     }
@@ -72,7 +91,7 @@ selImg {
     id:t='hiddenDiv'
     width:t='pw'
     padding:t='8*@scrn_tgt/100.0, 0, 1*@scrn_tgt/100.0, 0'
-    flow:t='vertical';
+    flow:t='vertical'
     <<@descriptionBlk>>
   }
   <</descriptionBlk>>

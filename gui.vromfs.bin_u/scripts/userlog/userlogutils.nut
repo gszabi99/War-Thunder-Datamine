@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
+let { isArray } = require("%sqstd/underscore.nut")
 
 let saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
 
@@ -79,9 +80,18 @@ let function getTournamentRewardData(logObj) {
   return res
 }
 
+let function getBattleRewardDetails(reward) {
+  let toArray = @(v) isArray(v) ? v : [v]
+  let rewards = isArray(reward) ? reward.map(@(v) v?.event ? v.event : v)
+    : toArray(reward?.event ?? reward?.unit ?? [])
+
+  return rewards.filter(@(r) !!r?.expNoBonus || !!r?.wpNoBonus)
+}
+
 return {
   disableSeenUserlogs
   actionByLogType
   saveOnlineJob
   getTournamentRewardData
+  getBattleRewardDetails
 }

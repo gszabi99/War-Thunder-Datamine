@@ -161,10 +161,12 @@ groupList {
   flow:vertical;
   smallFont:yes;
 }
-group > groupList {
+group > groupList,
+group > groupBottom {
   display:hide;
 }
-group:current > groupList {
+group:current > groupList,
+group:current > groupBottom {
   display:show;
 }
 

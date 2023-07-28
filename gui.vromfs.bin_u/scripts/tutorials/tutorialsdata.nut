@@ -20,16 +20,19 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     canSkipByFeature = "AllowedToSkipBaseTutorials"
     suitableForUnit = @(unit) (unit?.isAir() ?? false) || (unit?.isHelicopter() ?? false)
     isNeedAskInMainmenu = true
+    isShowInPromoBlock = true
   }
   {
     id = "assaulter"
     tutorial = "tutorialB_assaulter"
     suitableForUnit = @(unit) unit?.isAir() ?? false
+    isShowInPromoBlock = true
   }
   {
     id = "bomber"
     tutorial = "tutorialB_bomber"
     suitableForUnit = @(unit) unit?.isAir() ?? false
+    isShowInPromoBlock = true
   }
   {
     id = "lightTank"
@@ -38,6 +41,7 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     requiresFeature = "!TestTankActionTutorial"
     suitableForUnit = @(unit) unit?.isTank() ?? false
     isNeedAskInMainmenu = true
+    isShowInPromoBlock = true
   }
   {
     id = "lightTank_action"
@@ -46,11 +50,13 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     requiresFeature = "TestTankActionTutorial"
     suitableForUnit = @(unit) unit?.isTank() ?? false
     isNeedAskInMainmenu = true
+    isShowInPromoBlock = true
   }
   {
     id = "lightTank_part2"
     tutorial = "tutorial_tank_basics_arcade_part2"
     suitableForUnit = @(unit) unit?.isTank() ?? false
+    isShowInPromoBlock = true
   }
   {
     id = "boat"
@@ -58,6 +64,7 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     canSkipByFeature = "AllowedToSkipBaseTutorials"
     suitableForUnit = @(unit) unit?.isBoat() ?? false
     isNeedAskInMainmenu = true
+    isShowInPromoBlock = true
   }
   {
     id = "ship"
@@ -65,13 +72,38 @@ let checkTutorialsList = [ //idx in this array used for local profile option ski
     canSkipByFeature = "AllowedToSkipBaseTutorials"
     suitableForUnit = @(unit) unit?.isShip() ?? false
     isNeedAskInMainmenu = true
+    isShowInPromoBlock = true
   }
   {
     id = "fighter"
     tutorial = "tutorialB_takeoff_and_landing"
     canSkipByFeature = "AllowedToSkipBaseTutorials"
-    suitableForUnit = @(unit) (unit?.isAir() ?? false) || (unit?.isHelicopter() ?? false)
-    isNeedAskInMainmenu = false
+    suitableForUnit = @(unit) unit?.isAir() ?? false
+    isShowInPromoBlock = true
+  }
+  {
+    id = "fighter"
+    tutorial = "tutorial01"
+    canSkipByFeature = "AllowedToSkipBaseTutorials"
+    suitableForUnit = @(unit) unit?.isAir() ?? false
+  }
+  {
+    id = "fighter"
+    tutorial = "tutorial02"
+    canSkipByFeature = "AllowedToSkipBaseTutorials"
+    suitableForUnit = @(unit) unit?.isAir() ?? false
+  }
+  {
+    id = "bomber"
+    tutorial = "tutorial03"
+    canSkipByFeature = "AllowedToSkipBaseTutorials"
+    suitableForUnit = @(unit) unit?.isAir() ?? false
+  }
+  {
+    id = "bomber"
+    tutorial = "tutorial04"
+    canSkipByFeature = "AllowedToSkipBaseTutorials"
+    suitableForUnit = @(unit) unit?.isAir() ?? false
   }
 ]
 
@@ -247,7 +279,9 @@ let function getSuitableUncompletedTutorialData(unit, diff = -1) {
   let tutorialsTbl = getTutorialsTblWithMissions(diff)
   local tutorialData = null
   foreach (tutorial in checkTutorialsList) {
-    if (isRequireFeature(tutorial, "requiresFeature") || tutorialsTbl?[tutorial.tutorial].mission == null)
+    if (isRequireFeature(tutorial, "requiresFeature")
+      || tutorialsTbl?[tutorial.tutorial].mission == null
+      || !(tutorial?.isShowInPromoBlock ?? false))
       continue
 
     if (tutorial.suitableForUnit(unit))

@@ -124,9 +124,6 @@
         },
         "conditions": {},
         "actions": {
-          "comment": {
-            "value": "wake up only 01 and 02 aa guns (without damage)"
-          },
           "unitSetProperties": [
             {
               "object": "t1_helipad_aaa_squad",
@@ -135,7 +132,9 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "army": 1,
-              "stealthRadius": 3000.0
+              "stealthRadius": 3000.0,
+              "ChainfireTime": 0.3,
+              "DelayAfterShoot": 0.0
             },
             {
               "object": "t2_helipad_aaa_squad",
@@ -144,7 +143,9 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "army": 2,
-              "stealthRadius": 3000.0
+              "stealthRadius": 3000.0,
+              "ChainfireTime": 0.3,
+              "DelayAfterShoot": 0.0
             }
           ],
           "triggerEnable": {
@@ -152,6 +153,17 @@
               "t1_restore_heli_defence",
               "t2_restore_heli_defence"
             ]
+          },
+          "unitSetGunProperties": {
+            "target": [
+              "t1_helipad_defence_03",
+              "t1_helipad_defence_04",
+              "t2_helipad_defence_03",
+              "t2_helipad_defence_04"
+            ],
+            "aimMinDist": 10.0,
+            "aimMaxDist": 1000.0,
+            "attackMaxDist": 500.0
           }
         },
         "else_actions": {}
@@ -522,7 +534,7 @@
             -1399.42
           ]
         ],
-        "unit_class": "germ_20mm_flak38_helipad",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -580,7 +592,7 @@
             -1529.87
           ]
         ],
-        "unit_class": "germ_20mm_flak38_helipad",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -754,7 +766,7 @@
             6105.63
           ]
         ],
-        "unit_class": "germ_20mm_flak38_helipad",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -812,7 +824,7 @@
             5865.91
           ]
         ],
-        "unit_class": "germ_20mm_flak38_helipad",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

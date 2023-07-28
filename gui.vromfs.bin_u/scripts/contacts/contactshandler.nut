@@ -27,11 +27,34 @@ let { searchContactsResults, searchContacts, addContact, removeContact
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
 
+let sortContacts = @(a, b)
+  b.presence.sortOrder <=> a.presence.sortOrder
+    || a.lowerName <=> b.lowerName
+
+let searchListInfoTextBlk = @"
+groupBottom {
+  size:t='pw, ph'
+  padding:t='0, @blockInterval'
+  animated_wait_icon {
+    id:t='search_list_animated_wait_icon'
+    pos:t='0.5(pw-w),0.03sh'
+    position:t='absolute'
+    background-rotation:t='0'
+    display:t='hide'
+  }
+
+  textAreaCentered {
+    id:t='search_list_info_text'
+    width:t='pw'
+    text:t='#contacts/searchNotFound'
+    enable:t='no'
+    display:t='hide'
+  }
+}"
+
 ::ContactsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   searchText = ""
-
-  listNotPlayerChildsByGroup = null
 
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
 
@@ -51,11 +74,14 @@ let { searchContactsResults, searchContacts, addContact, removeContact
   searchShowDefaultOnReset = false
   searchGroupLastShowState = false
 
+  isFillContactsListProcess = false
+
+  visibleContactsByGroup = null
 
   constructor(gui_scene, params = {}) {
     base.constructor(gui_scene, params)
     subscribe_handler(this, ::g_listener_priority.DEFAULT_HANDLER)
-    this.listNotPlayerChildsByGroup = {}
+    this.visibleContactsByGroup = {}
   }
 
   function initScreen(obj, resetList = true) {
@@ -63,7 +89,7 @@ let { searchContactsResults, searchContacts, addContact, removeContact
       return
 
     foreach (group in ::contacts_groups)
-      ::contacts[group].sort(::sortContacts)
+      ::contacts[group].sort(sortContacts)
 
     this.sceneShow(false)
     this.scene = obj
@@ -230,45 +256,45 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     }
   }
 
-  function needRebuildPlayersList(gName, listObj) {
-    if (gName == EPLX_SEARCH)
-      return true //this group often refilled by other objects
-    let count = ::contacts[gName].len() + getTblValue(gName, this.listNotPlayerChildsByGroup, -100000)
-    return listObj.childrenCount() != count
-  }
-
   needShowContactHoverButtons = @() !::show_console_buttons
 
-  function buildPlayersList(gName, _showOffline = true) {
-    let playerListView = {
-      playerListItem = []
+  function createPlayersObjInList(gObj, count) {
+    this.guiScene.createMultiElementsByObject(gObj, "%gui/contacts/playerList.blk", "contactItem", count, this)
+  }
+
+  getContactsTotalText = @(gName) loc("contacts/total", {
+    contactsCount = ::contacts[gName].len(),
+    contactsCountMax = EPL_MAX_PLAYERS_IN_LIST
+  })
+
+  function getFilteredPlayerListData(gName) {
+    local playerList = ::contacts?[gName]
+    if (playerList == null || playerList.len() <= EPL_MAX_PLAYERS_IN_LIST)
+      return playerList
+    let filterText = this.searchText
+    playerList = playerList.filter(function(contact) {
+      if (filterText == "")
+        return true
+      let contactName = platformModule.getPlayerName(contact.lowerName)
+      return contactName.indexof(filterText) != null
+    })
+    return playerList
+  }
+
+  function buildPlayersListInfo(gName) {
+    if (gName == EPLX_SEARCH)
+      return searchListInfoTextBlk
+
+    let view = {
       playerButton = []
-      needHoverButtons = this.needShowContactHoverButtons()
-      hasMenuChatPrivate = hasMenuChatPrivate.value
-    }
-    this.listNotPlayerChildsByGroup[gName] <- 0
-    if (gName != EPLX_SEARCH) {
-      playerListView.searchAdviceID <- $"group_{gName}_search_advice"
-      playerListView.totalContacts <- loc("contacts/total", {
-        contactsCount = ::contacts[gName].len(),
-        contactsCountMax = EPL_MAX_PLAYERS_IN_LIST
-      })
-      this.listNotPlayerChildsByGroup[gName] = 2
-    }
-    foreach (idx, contactData in ::contacts[gName]) {
-      playerListView.playerListItem.append({
-        blockID = "player_" + gName + "_" + idx
-        contactUID = contactData.uid
-        pilotIcon = contactData.pilotIcon
-      })
+      totalContacts = this.getContactsTotalText(gName)
+      groupName = gName
     }
     if (gName == EPL_FRIENDLIST && ::isInMenu()) {
       if (hasFeature("Invites") && !isGuestLogin.value)
-        playerListView.playerButton.append(this.createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend", "onInviteFriend"))
+        view.playerButton.append(this.createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend", "onInviteFriend"))
     }
-
-    this.listNotPlayerChildsByGroup[gName] = this.listNotPlayerChildsByGroup[gName] + playerListView.playerButton.len()
-    return handyman.renderCached(("%gui/contacts/playerList.tpl"), playerListView)
+    return handyman.renderCached(("%gui/contacts/playerListBottomInfo.tpl"), view)
   }
 
   function createPlayerButtonView(gId, gIcon, callback) {
@@ -288,20 +314,51 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     local sel = -1
     let selUid = (this.curPlayer && this.curGroup == gName) ? this.curPlayer.uid : ""
 
-    let gObj = this.scene.findObject("contacts_groups")
-    foreach (fIdx, f in ::contacts[gName]) {
-      let obj = gObj.findObject("player_" + gName + "_" + fIdx)
-      if (!checkObj(obj))
+    let gObj = this.scene.findObject("contacts_groups").findObject($"group_{gName}")
+    if (!(gObj?.isValid() ?? false))
+      return sel
+    this.guiScene.setUpdatesEnabled(false, false)
+    let playerList = this.getFilteredPlayerListData(gName)
+    local visibleContactsCount = this.visibleContactsByGroup?[gName]
+      ?? EPL_MAX_PLAYERS_IN_LIST
+    let isNotFullListVisible = visibleContactsCount < playerList.len()
+    if (isNotFullListVisible)
+     visibleContactsCount++
+    let childrenCount = gObj.childrenCount()
+    if (gName != EPLX_SEARCH)
+      this.scene.findObject($"group_{gName}_total_text").setValue(this.getContactsTotalText(gName))
+    if (visibleContactsCount > childrenCount)
+      this.createPlayersObjInList(gObj, visibleContactsCount - childrenCount)
+    let hasHoverButtons = this.needShowContactHoverButtons()
+    let lastIdx = gObj.childrenCount() - 1
+    for (local fIdx = 0; fIdx <= lastIdx; fIdx++) {
+      let obj = gObj.getChild(fIdx)
+      let f = playerList?[fIdx]
+      if (f == null || visibleContactsCount <= fIdx ) {
+        obj.show(false)
         continue
-
-      let fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
-      let contactNameObj = obj.findObject("contactName")
-      contactNameObj.setValue(fullName)
-      let contactPresenceObj = obj.findObject("contactPresence")
-      if (checkObj(contactPresenceObj)) {
-        contactPresenceObj.setValue(f.getPresenceText())
-        contactPresenceObj["color-factor"] = f.presence.iconTransparency
       }
+
+      obj.show(true)
+      obj.id = $"player_{gName}_{fIdx}"
+      if (isNotFullListVisible && ((visibleContactsCount - 1) == fIdx)) {
+        obj.findObject("contactName").setValue(loc("mainmenu/showMore"))
+        obj.findObject("contactPresence").setValue("")
+        obj.findObject("tooltip").uid = ""
+        let imgObj = obj.findObject("statusImg")
+        imgObj["background-image"] = ""
+        imgObj["background-color"] = ""
+        obj.findObject("pilotIconImg").setValue("")
+        obj.findObject("contact_buttons_holder").hasContactButtons = "no"
+        continue
+      }
+      obj.contact_buttons_contact_uid = f.uid
+      let fullName = ::g_contacts.getPlayerFullName(f.getName(), f.clanTag)
+      obj.findObject("contactName").setValue(fullName)
+      let contactPresenceObj = obj.findObject("contactPresence")
+      contactPresenceObj.setValue(f.getPresenceText())
+      contactPresenceObj["color-factor"] = f.presence.iconTransparency
+
       obj.findObject("tooltip").uid = f.uid
       if (selUid == f.uid)
         sel = fIdx
@@ -309,37 +366,18 @@ let { searchContactsResults, searchContacts, addContact, removeContact
       let imgObj = obj.findObject("statusImg")
       imgObj["background-image"] = f.presence.getIcon()
       imgObj["background-color"] = f.presence.getIconColor()
-
       obj.findObject("pilotIconImg").setValue(f.pilotIcon)
+      if (hasHoverButtons)
+        this.updateContactButtonsVisibility(f, obj.findObject("contact_buttons_holder"))
     }
+    this.guiScene.setUpdatesEnabled(true, true)
     return sel
   }
 
   function fillPlayersList(gName) {
-    let listObj = this.scene.findObject("contacts_groups").findObject("group_" + gName)
-    if (!listObj)
-      return
-
-    if (this.needRebuildPlayersList(gName, listObj)) {
-      let data = this.buildPlayersList(gName)
-      this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
-    }
-    this.updateContactButtonsForGroup(gName)
-    this.applyContactFilter()
+    if (this.isFillContactsListProcess)
+      return -1
     return this.updatePlayersList(gName)
-  }
-
-  function updateContactButtonsForGroup(gName) {
-    foreach (idx, contact in ::contacts[gName]) {
-      let contactObject = this.scene.findObject(format("player_%s_%s", gName.tostring(), idx.tostring()))
-      contactObject.contact_buttons_contact_uid = contact.uid
-
-      let contactButtonsHolder = contactObject.findObject("contact_buttons_holder")
-      if (!checkObj(contactButtonsHolder))
-        continue
-
-      this.updateContactButtonsVisibility(contact, contactButtonsHolder)
-    }
   }
 
   function onWwOperationInvite(obj) {
@@ -355,6 +393,7 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     if (!this.checkScene())
       return
 
+    contact_buttons_holder.hasContactButtons = "yes"
     let isFriend = contact ? contact.isInFriendGroup() : false
     let isBlock = contact ? contact.isInBlockGroup() : false
     let isMe = contact ? contact.isMe() : false
@@ -362,7 +401,7 @@ let { searchContactsResults, searchContacts, addContact, removeContact
 
     let isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
     let canBlock = !isPlayerFromXboxOne
-    let canChat = contact ? contact.canChat() : true
+    let canChat = hasMenuChatPrivate.value && (contact ? contact.canChat() : true)
     let canInvite = contact ? contact.canInvite() : true
     let canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
     let canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
@@ -415,7 +454,6 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     }
     groupList {
       id:t='%s';
-      %s
       on_select:t='onPlayerSelect';
       on_dbl_click:t='%s';
       on_cancel_edit:t='onPlayerCancel';
@@ -423,16 +461,16 @@ let { searchContactsResults, searchContacts, addContact, removeContact
       on_unhover:t='onContactsFocus';
       contacts_group_list:t='yes';
     }
+    %s
   }"
 
   function getIndexOfGroup(group_name) {
     let contactsGroups = this.scene.findObject("contacts_groups")
     for (local idx = contactsGroups.childrenCount() - 1; idx >= 0; --idx) {
       let childObject = contactsGroups.getChild(idx)
-      let groupListObject = childObject.getChild(childObject.childrenCount() - 1)
-      if (groupListObject?.id == "group_" + group_name) {
+      let groupListObject = childObject.findObject($"group_{group_name}")
+      if (groupListObject != null)
         return idx
-      }
     }
     return -1
   }
@@ -527,14 +565,17 @@ let { searchContactsResults, searchContacts, addContact, removeContact
         || !(this.curGroup in ::contacts))
       return
 
+    if (::contacts[this.curGroup].len() > EPL_MAX_PLAYERS_IN_LIST) {
+      this.fillPlayersList(this.curGroup)
+      return
+    }
     foreach (idx, contact_data in ::contacts[this.curGroup]) {
       let contactObjectName = "player_" + this.curGroup + "_" + idx
       let contactObject = this.scene.findObject(contactObjectName)
       if (!checkObj(contactObject))
         continue
 
-      local contactName = utf8ToLower(contact_data.name)
-      contactName = platformModule.getPlayerName(contactName)
+      let contactName = platformModule.getPlayerName(contact_data.lowerName)
       let searchResult = this.searchText == "" || contactName.indexof(this.searchText) != null
       contactObject.show(searchResult)
       contactObject.enable(searchResult)
@@ -548,33 +589,28 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     let gObj = this.scene.findObject("contacts_groups")
     if (!gObj)
       return
+    this.isFillContactsListProcess = true
     this.guiScene.setUpdatesEnabled(false, false)
 
     local data = ""
     let groups_array = this.getContactsGroups()
     foreach (_gIdx, gName in groups_array) {
-      ::contacts[gName].sort(::sortContacts)
+      ::contacts[gName].sort(sortContacts)
       local activateEvent = "onPlayerMsg"
       if (::show_console_buttons || !isChatEnabled())
         activateEvent = "onPlayerMenu"
-      let gData = this.buildPlayersList(gName)
       data += format(this.groupFormat, "#contacts/" + gName,
         gName == EPLX_SEARCH ? this.searchGroupActiveTextInclude : "",
-        "group_" + gName, gData, activateEvent)
+        "group_" + gName, activateEvent, this.buildPlayersListInfo(gName))
     }
     this.guiScene.replaceContentFromText(gObj, data, data.len(), this)
-    foreach (gName in groups_array) {
-      this.updateContactButtonsForGroup(gName)
-      if (gName == EPLX_SEARCH)
-        this.setSearchGroupVisibility(this.searchGroupLastShowState)
-    }
-
-    this.applyContactFilter()
-
     let selected = [-1, -1]
     foreach (gIdx, gName in groups_array) {
-      if (gName == EPLX_SEARCH && !this.searchGroupLastShowState)
-        continue
+      if (gName == EPLX_SEARCH) {
+        this.setSearchGroupVisibility(this.searchGroupLastShowState)
+        if (!this.searchGroupLastShowState)
+          continue
+      }
 
       if (selected[0] < 0)
         selected[0] = gIdx
@@ -587,14 +623,18 @@ let { searchContactsResults, searchContacts, addContact, removeContact
         selected[1] = sel
     }
 
-    if (::contacts[groups_array[selected[0]]].len() > 0)
-      gObj.findObject("group_" + groups_array[selected[0]]).setValue(
-              (selected[1] >= 0) ? selected[1] : 0)
+    this.applyContactFilter()
+
+    let gName = groups_array[selected[0]]
+    let playerList = this.getFilteredPlayerListData(gName)
+    if (playerList.len() > 0)
+      gObj.findObject($"group_{gName}").setValue((selected[1] >= 0) ? selected[1] : 0)
 
     this.guiScene.setUpdatesEnabled(true, true)
 
     gObj.setValue(selected[0])
     this.onGroupSelectImpl(gObj)
+    this.isFillContactsListProcess = false
   }
 
   function isGroupListChanged() {
@@ -633,14 +673,16 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     }
 
     if (groupName && groupName in ::contacts) {
-      ::contacts[groupName].sort(::sortContacts)
+      ::contacts[groupName].sort(sortContacts)
       this.fillPlayersList(groupName)
+      this.applyContactFilter()
     }
     else
       foreach (group in this.getContactsGroups())
         if (group in ::contacts) {
-          ::contacts[group].sort(::sortContacts)
+          ::contacts[group].sort(sortContacts)
           this.fillPlayersList(group)
+          this.applyContactFilter()
         }
   }
 
@@ -736,10 +778,11 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     if (!checkObj(listObj))
       return
 
-    if (::contacts[this.curGroup].len() == 0)
+    let playerList = this.getFilteredPlayerListData(this.curGroup)
+    if (playerList.len() == 0)
       return
 
-    if (listObj.getValue() < 0 && ::contacts[this.curGroup].len() > 0)
+    if (listObj.getValue() < 0)
       listObj.setValue(0)
 
     this.onPlayerSelect(listObj)
@@ -753,7 +796,29 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     if (!obj)
       return
 
-    this.curPlayer = ::contacts?[this.curGroup][obj.getValue()]
+    let curValue = obj.getValue()
+    let visibleCount = this.visibleContactsByGroup?[this.curGroup]
+      ?? EPL_MAX_PLAYERS_IN_LIST
+    if (curValue >= visibleCount) {
+      this.curPlayer = null
+      return
+    }
+    this.curPlayer = this.getFilteredPlayerListData(this.curGroup)?[curValue]
+  }
+
+  function activateObjInCurGroupList(obj, value) {
+    let visibleCount = this.visibleContactsByGroup?[this.curGroup]
+      ?? EPL_MAX_PLAYERS_IN_LIST
+    if (value >= visibleCount) { //it is show more button
+      this.showMorePlayers()
+      return
+    }
+
+    if ((obj?.contact_buttons_contact_uid ?? "") == "")
+      return
+
+    this.updateCurPlayerByUid(obj.contact_buttons_contact_uid)
+    this.showCurPlayerRClickMenu(obj.getPosRC())
   }
 
   function onPlayerMenu(obj) {
@@ -765,41 +830,29 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     if (!checkObj(childObj))
       return
 
-    if (childObj?.contact_buttons_contact_uid) {
-      this.updateCurPlayerByUid(childObj.contact_buttons_contact_uid)
-      this.showCurPlayerRClickMenu(childObj.getPosRC())
-    }
-    else if (childObj?.isButton == "yes")
-      this.sendClickButton(childObj)
-  }
-
-  function sendClickButton(obj) {
-    let clickName = obj?.on_click
-    if (!clickName || !(clickName in this))
-      return
-
-    this[clickName]()
+    this.activateObjInCurGroupList(childObj, value)
   }
 
   function onPlayerRClick(obj) {
-    if (!this.checkScene() || !checkObj(obj))
+    if (!this.checkScene() || !checkObj(obj) || (this.curGroup not in ::contacts))
+      return
+
+    let listObj = this.scene.findObject($"group_{this.curGroup}")
+    if (!listObj)
       return
 
     let id = obj.id
-    let prefix = "player_" + this.curGroup + "_"
+    let prefix = $"player_{this.curGroup}_"
     if (id.len() <= prefix.len() || id.slice(0, prefix.len()) != prefix)
       return
 
     let idx = id.slice(prefix.len()).tointeger()
-    if ((this.curGroup in ::contacts) && (idx in ::contacts[this.curGroup])) {
-      let listObj = this.scene.findObject("group_" + this.curGroup)
-      if (!listObj)
-        return
+    let playerList = this.getFilteredPlayerListData(this.curGroup)
+    if (idx not in playerList)
+     return
 
-      listObj.setValue(idx)
-      this.updateCurPlayerByUid(listObj.getChild(idx)?.contact_buttons_contact_uid)
-      this.showCurPlayerRClickMenu()
-    }
+    listObj.setValue(idx)
+    this.activateObjInCurGroupList(listObj.getChild(idx), idx)
   }
 
   function onCloseSearchGroupClicked(_obj) {
@@ -811,16 +864,16 @@ let { searchContactsResults, searchContacts, addContact, removeContact
       return
 
     let contactsGroups = this.scene.findObject("contacts_groups")
-    if (checkObj(contactsGroups)) {
-      this.setSearchGroupVisibility(false)
-      let searchGroupIndex = this.getIndexOfGroup(EPLX_SEARCH)
-      if (contactsGroups.getValue() == searchGroupIndex) {
-        this.setSearchText("")
-        let friendsGroupIndex = this.getIndexOfGroup(EPL_FRIENDLIST)
-        contactsGroups.setValue(friendsGroupIndex)
-      }
-    }
-    this.applyContactFilter()
+    if (!(contactsGroups?.isValid() ?? false))
+      return
+
+    this.setSearchGroupVisibility(false)
+    if (contactsGroups.getValue() != this.getIndexOfGroup(EPLX_SEARCH))
+      return
+
+    this.setSearchText("")
+    let friendsGroupIndex = this.getIndexOfGroup(EPL_FRIENDLIST)
+    contactsGroups.setValue(friendsGroupIndex)
   }
 
   function setSearchAdviceVisibility(value) {
@@ -887,8 +940,12 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     let contact = ::getContact(contactUID)
     this.curPlayer = contact
 
-    let idx = ::contacts[this.curGroup].indexof(contact)
-    if (!this.checkScene() || idx == null)
+    if (!this.checkScene())
+      return
+
+    let playerList = this.getFilteredPlayerListData(this.curGroup)
+    let idx = playerList.indexof(contact)
+    if (idx == null)
       return
 
     let groupObject = this.scene.findObject("contacts_groups")
@@ -1042,34 +1099,22 @@ let { searchContactsResults, searchContacts, addContact, removeContact
     if (!listObj)
       return
 
-    this.guiScene.setUpdatesEnabled(false, false)
-    local sel = -1
+    let isShowPlayersList = ::contacts[EPLX_SEARCH].len() > 0
+      || (!this.searchInProgress && !this.searchShowNotFound)
+    showObjById("search_list_animated_wait_icon",
+      !isShowPlayersList && this.searchInProgress, gObj)
+    showObjById("search_list_info_text",
+      !isShowPlayersList && !this.searchInProgress, gObj)
+    let sel = this.fillPlayersList(EPLX_SEARCH)
+    if (!isShowPlayersList)
+      this.searchShowNotFound = true
+
+    if (this.curGroup != EPLX_SEARCH)
+      return
+
     if (::contacts[EPLX_SEARCH].len() > 0)
-      sel = this.fillPlayersList(EPLX_SEARCH)
-    else {
-      local data = ""
-      if (this.searchInProgress)
-        data = "animated_wait_icon { pos:t='0.5(pw-w),0.03sh'; position:t='absolute'; background-rotation:t='0' }"
-      else if (this.searchShowNotFound)
-        data = "textAreaCentered { text:t='#contacts/searchNotFound'; enable:t='no' }"
-      else {
-        this.fillDefaultSearchList()
-        sel = this.fillPlayersList(EPLX_SEARCH)
-        data = null
-      }
-
-      if (data) {
-        this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
-        this.searchShowNotFound = true
-      }
-    }
-    this.guiScene.setUpdatesEnabled(true, true)
-
-    if (this.curGroup == EPLX_SEARCH) {
-      if (::contacts[EPLX_SEARCH].len() > 0)
-        listObj.setValue(sel > 0 ? sel : 0)
-      this.onPlayerSelect(listObj)
-    }
+      listObj.setValue(sel > 0 ? sel : 0)
+    this.onPlayerSelect(listObj)
   }
 
   function fillDefaultSearchList() {
@@ -1118,4 +1163,18 @@ let { searchContactsResults, searchContacts, addContact, removeContact
   }
 
   getContactsGroups = @() ::contacts_groups
+
+  function showMorePlayers() {
+    let gName = this.curGroup
+    let playerList = this.getFilteredPlayerListData(gName)
+    let contactsCount = playerList?.len() ?? 0
+    let visibleContactsCount = this.visibleContactsByGroup?[gName]
+      ?? EPL_MAX_PLAYERS_IN_LIST
+    if (contactsCount <= visibleContactsCount)
+      return
+
+    this.visibleContactsByGroup[gName] <-
+      min(visibleContactsCount + EPL_MAX_PLAYERS_IN_LIST, contactsCount)
+    this.fillPlayersList(gName)
+  }
 }

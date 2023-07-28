@@ -39,17 +39,25 @@ let function on_logout(updated) {
   shutdown()
 }
 
+let function updateStatesIfLoggedIn() {
+  if (!is_logged_in())
+    return
 
-let function application_constrain_event_handler(active) {
-  if (active && is_logged_in()) {
-    crossnetwork.update_state()
-    update_relationships()
-  }
+  crossnetwork.update_state()
+  update_relationships()
 }
 
+let function application_constrain_event_handler(active) {
+  if (!active)
+    return
+
+  updateStatesIfLoggedIn()
+}
 
 subscribe_to_login(on_login)
 subscribe_to_logout(on_logout)
 
 register_constrain_callback(application_constrain_event_handler)
 register_for_user_change_event(user_change_event_handler)
+
+updateStatesIfLoggedIn()

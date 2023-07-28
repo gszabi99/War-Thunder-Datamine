@@ -29,6 +29,8 @@ let { stripTags, cutPrefix, split, startsWith, endsWith } = require("%sqstd/stri
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
 let { getDifficultyTypeByTask, getDifficultyTypeById, EASY_TASK, HARD_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
+let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -150,6 +152,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     logBonus = null
     logIdx = logObj.idx
     buttonName = null
+    isUserLogBattles = logObj.type == EULT_SESSION_RESULT
   }
   local logName = ::getLogNameByType(logObj.type)
   local priceText = Cost(("wpCost" in logObj) ? logObj.wpCost : 0,
@@ -186,6 +189,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     res.name = format(loc(nameLoc), mission)
 
     local desc = ""
+    local descBottom = ""
     local wp = getTblValue("wpEarned", logObj, 0) + getTblValue("baseTournamentWp", logObj, 0)
     local gold = getTblValue("goldEarned", logObj, 0) + getTblValue("baseTournamentGold", logObj, 0)
     let xp = getTblValue("xpEarned", logObj, 0)
@@ -197,7 +201,7 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
 
     if (logObj.type == EULT_SESSION_RESULT && ("activity" in logObj)) {
       let activity = ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(logObj.activity)
-      desc += "\n" + loc("conditions/activity") + loc("ui/colon") + activity
+      desc += "\n" + loc("debriefing/Activity") + loc("ui/colon") + activity
     }
 
     if (("friendlyFirePenalty" in logObj) && logObj.friendlyFirePenalty != 0) {
@@ -214,14 +218,31 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       wp += logObj.nRespawnsWp
     }
 
+    let damagedVehicles = []
     if ("aircrafts" in logObj) {
-      local aText = ""
       foreach (air in logObj.aircrafts)
         if (air.value < 1.0)
-          aText += ((aText != "") ? ", " : "") + ::getUnitName(air.name) // + format(" (%d%%)", (100.0*air.value).tointeger())
-      if (aText != "")
-        desc += "\n" + loc("userlog/broken_airs") + loc("ui/colon") + aText
+        damagedVehicles.append(air.name)
     }
+
+    if ("manuallySpentRepairCost" in logObj) {
+      local idx = 0
+      while ($"aname{idx}" in logObj.manuallySpentRepairCost) {
+        let name = getTblValue($"aname{idx}", logObj.manuallySpentRepairCost)
+        if (name && !damagedVehicles.contains(name))
+          damagedVehicles.append(name)
+        idx++
+      }
+    }
+
+    if (damagedVehicles.len() > 0)
+      desc = "".concat(
+        desc
+        "\n"
+        loc("userlog/broken_airs")
+        loc("ui/colon")
+        ", ".join(damagedVehicles.map(@(v) ::getUnitName(v)))
+      )
 
     if ("spare" in logObj) {
       local aText = ""
@@ -273,6 +294,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       gold -= wRefillGold
     }
 
+    let expensesCompensation = containerLog?.wpExpensesCompensation ?? 0
+    if (expensesCompensation > 0) {
+      res.compensation <- "".concat(loc("userlog/expenses_compensation"), colon,
+        "<color=@activeTextColor>", Cost(expensesCompensation), "</color>")
+      wp += expensesCompensation
+    }
+
     local rp = 0
     if ("rpEarned" in logObj) {
       local descUnits = ""
@@ -307,13 +335,13 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       }
 
       if (descUnits.len())
-        desc += "\n\n<color=@activeTextColor>" + loc("debriefing/researched_unit") + loc("ui/colon") + "</color>" + descUnits
+        descBottom = "".concat(descBottom, "\n<color=@activeTextColor>", loc("debriefing/researched_unit"), loc("ui/colon"), "</color>", descUnits)
       if (descMods.len())
-        desc += "\n\n<color=@activeTextColor>" + loc("debriefing/research_list") + loc("ui/colon") + "</color>" + descMods
+        descBottom = "".concat(descBottom, "\n<color=@activeTextColor>", loc("debriefing/research_list"), loc("ui/colon"), "</color>", descMods)
     }
 
     if (getTblValue("haveTeamkills", logObj, false))
-      desc += ((desc != "") ? "\n\n" : "") + "<color=@activeTextColor>" + loc("debriefing/noAwardsCaption") + "</color>"
+      descBottom = "".concat(descBottom, ((descBottom != "") ? "\n\n" : ""), "<color=@activeTextColor>", loc("debriefing/noAwardsCaption"), "</color>")
 
     let usedItems = []
 
@@ -342,8 +370,9 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
         }
 
       if (usedItems.len())
-        desc += "\n\n" + colorize("activeTextColor", loc("debriefing/used_items") + loc("ui/colon")) +
-          "\n" + "\n".join(usedItems, true)
+        descBottom = "".concat(descBottom, "\n\n",
+          colorize("activeTextColor", "".concat(loc("debriefing/used_items"), loc("ui/colon"))),
+          "\n", "\n".join(usedItems, true))
     }
 
     if (("tournamentResult" in logObj) && (::events.getEvent(eventId)?.leaderboardEventTable == null)) {
@@ -366,6 +395,10 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
       res.descriptionBlk += format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk)
     }
 
+    let roomId = logObj?.roomId ?? 0
+    if (roomId > 0)
+      descBottom = "".concat(descBottom, "\n\n", loc("options/session"), colon, intToHexString(roomId))
+
     res.tooltip = (logObj.type == EULT_SESSION_RESULT) ? loc("debriefing/total") : loc("userlog/interimResults");
     local totalText = res.tooltip
     totalText = "<color=@userlogColoredText>" + totalText + loc("ui/colon") + "</color>"
@@ -373,24 +406,25 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     let total = Cost(wp, gold, xp, rp).toStringWithParams({ isWpAlwaysShown = true })
     totalText += "<color=@activeTextColor>" + total + "</color>"
 
-    desc += "\n\n" + totalText
+    descBottom = "".concat(descBottom, "\n", totalText)
     res.tooltip += loc("ui/colon") + "<color=@activeTextColor>" + total + "</color>"
 
     if (logObj.type == EULT_SESSION_RESULT || logObj.type == EULT_EARLY_SESSION_LEAVE) {
       let ecSpawnScore = getTblValue("ecSpawnScore", logObj, 0)
       if (ecSpawnScore > 0)
-        desc += "\n" + "<color=@userlogColoredText>" + loc("debriefing/total/ecSpawnScore") +  loc("ui/colon") + "</color>"
-                + "<color=@activeTextColor>" + ecSpawnScore + "</color>"
+      descBottom = "".concat(descBottom, "\n<color=@userlogColoredText>", loc("debriefing/total/ecSpawnScore"), loc("ui/colon"), "</color>",
+        "<color=@activeTextColor>", ecSpawnScore, "</color>")
       let wwSpawnScore = logObj?.wwSpawnScore ?? 0
       if (wwSpawnScore > 0)
-        desc += "\n"
-          + colorize("@userlogColoredText", loc("debriefing/total/wwSpawnScore")
-            + loc("ui/colon"))
-          + colorize("@activeTextColor", wwSpawnScore)
+        descBottom = "".concat(descBottom, "\n",
+          colorize("@userlogColoredText", "".concat(loc("debriefing/total/wwSpawnScore"), loc("ui/colon")),
+          colorize("@activeTextColor", wwSpawnScore)))
     }
 
     if (desc != "")
       res.description <- desc
+    if (descBottom != "")
+      res.descriptionBottom <- descBottom
 
     let expMul = logObj?.xpFirstWinInDayMul ?? 1.0
     let wpMul = logObj?.wpFirstWinInDayMul ?? 1.0
@@ -1605,9 +1639,30 @@ let function getLinkMarkup(text, url, acccessKeyName = null) {
     if (!("descriptionBlk" in res))
       res.descriptionBlk <- ""
 
+    let battleRewards = logObj.type == EULT_SESSION_RESULT ? getBattleRewards(logObj) : []
+    let blk = battleRewards.len()
+      ? handyman.renderCached("%gui/userLog/userLogBattleRewardsTable.tpl", {battleRewards})
+      : ""
+
     res.descriptionBlk = "".concat(res.descriptionBlk,
+      blk,
       "textareaNoTab { id:t='description'; width:t='pw'; text:t='",
-      stripTags(res.description), "';}")
+      stripTags(res.description), "';}",
+    )
+
+    if ("compensation" in res) {
+      let compensationBlk = handyman.renderCached("%gui/userLog/userLogCompensation.tpl", {compensation = res.compensation})
+      res.descriptionBlk = "".concat(res.descriptionBlk, compensationBlk)
+    }
+
+    if ("descriptionBottom" in res) {
+      res.descriptionBlk = "".concat(res.descriptionBlk, "textareaNoTab { id:t='descriptionBottom'; width:t='pw'; text:t='",
+        stripTags(res.descriptionBottom), "';}")
+    }
+
+    if (logObj.type == EULT_SESSION_RESULT && is_platform_pc)
+      res.descriptionBlk = "".concat(res.descriptionBlk,
+        "textareaNoTab { position:t='absolute';pos:t='pw-w, ph-h'; text:t='#userlog/copyToClipboard' }")
   }
 
   //------------- when userlog not found or not full filled -------------//

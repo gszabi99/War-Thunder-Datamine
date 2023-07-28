@@ -20,7 +20,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   IsHighRateOfFire, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
   AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
   AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, IsZoomedAgmLaunchZoneVisible,
-  IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsOutLaunchZone, IsLaunchZoneOnTarget, LaunchZonePosX, LaunchZonePosY, LaunchZoneWatched,
+  IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsLaunchZoneAvailable, IsOutLaunchZone, IsLaunchZoneOnTarget, LaunchZonePosX, LaunchZonePosY, LaunchZoneWatched,
   IsRangefinderEnabled, RangefinderDist,
   Rpm, IsRpmVisible, IsRpmCritical, TrtMode, Trt, Spd, WaterAlert, HorAngle, AgmLaunchZoneDistMin,
   AlertColorLow, AlertColorMedium, AlertColorHigh, OilAlert,
@@ -31,7 +31,6 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   DistanceToGround, IsMfdEnabled, VerticalSpeed, MfdColor,
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
-let { AimLocked } = require("%rGui/planeState/planeToolsState.nut")
 let { isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor } = require("style/airHudStyle.nut")
 
 let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
@@ -1212,10 +1211,6 @@ let function agmLaunchZone(colorWatch, _w, _h) {
     else
       return []
   }
-  let blinkDuration = 0.5
-  let atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.value)
-  let atgmLaunchZoneTrigger = {}
-  atgmLaunchZoneBlinking.subscribe(@(v) v ? anim_start(atgmLaunchZoneTrigger) : anim_request_stop(atgmLaunchZoneTrigger))
 
   return @() styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1230,15 +1225,6 @@ let function agmLaunchZone(colorWatch, _w, _h) {
       colorWatch
     ]
     commands = IsZoomedAgmLaunchZoneVisible.value ? maxAngleBorder() : []
-    animations = [{
-      prop = AnimProp.opacity,
-      from = 1, to = 0,
-      duration = blinkDuration,
-      play = atgmLaunchZoneBlinking.value,
-      loop = true,
-      easing = InOutSine,
-      trigger = atgmLaunchZoneTrigger
-    }]
   })
 }
 
@@ -1313,10 +1299,10 @@ let function unitLaunchZone(color, isBlinking) {
 
 let function agmLaunchZoneTps(colorWatch) {
   return @() {
-    watch = [AimLocked, IsLaunchZoneOnTarget, IsOutLaunchZone]
-    children = AimLocked.value && IsLaunchZoneOnTarget.value && IsOutLaunchZone.value
+    watch = [IsLaunchZoneAvailable, IsLaunchZoneOnTarget, IsOutLaunchZone]
+    children = IsLaunchZoneAvailable.value && IsLaunchZoneOnTarget.value && IsOutLaunchZone.value
       ? targetLaunchZone(colorWatch.value)
-      : AimLocked.value && !IsLaunchZoneOnTarget.value ? unitLaunchZone(colorWatch.value, IsOutLaunchZone.value)
+      : IsLaunchZoneAvailable.value && !IsLaunchZoneOnTarget.value ? unitLaunchZone(colorWatch.value, IsOutLaunchZone.value)
       : null
   }
 }

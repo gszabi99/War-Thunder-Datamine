@@ -1052,10 +1052,11 @@ let prizeViewConfig = {
   let isShowLocalState = receivedPrizes || rentTimeHours > 0
   let buttons = this.getPrizeActionButtonsView({ unit = unitName }, params)
   let receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
-
   local infoText = ""
   if (rentTimeHours > 0)
     infoText = this._getUnitRentComment(rentTimeHours, numSpares)
+  else if (rentTimeHours == 0 && numSpares > 0)
+    infoText = this._getUnitSparesComment(numSpares)
   if (!receivedPrizes && isBought)
     infoText += (infoText.len() ? "\n" : "") + colorize("badTextColor", loc(receiveOnce))
 
@@ -1071,6 +1072,7 @@ let prizeViewConfig = {
       isReceivedPrizes = receivedPrizes
       showLocalState = isShowLocalState
       relatedItem = params?.relatedItem
+      numSpares
     }
   })
   return {
@@ -1092,14 +1094,19 @@ let prizeViewConfig = {
 }
 
 ::PrizesView._getUnitRentComment <- function _getUnitRentComment(rentTimeHours = 0, numSpares = 0, short = false) {
-  if (!rentTimeHours)
+  if (rentTimeHours == 0)
     return ""
   let timeStr = colorize("userlogColoredText", time.hoursToString(rentTimeHours))
   local text = short ? timeStr :
     colorize("activeTextColor", loc("shop/rentFor", { time =  timeStr }))
-  if (numSpares)
-    text += colorize("grayOptionColor", " + " + loc("multiAward/name/count/singleType", { awardType = loc("multiAward/type/spare") awardCount = numSpares }))
+  if (numSpares > 0)
+    text = "".concat(text, this._getUnitSparesComment(numSpares))
   return short ? loc("ui/parentheses/space", { text = text }) : text
+}
+
+::PrizesView._getUnitSparesComment <- function _getUnitSparesComment(numSpares) {
+  return colorize("grayOptionColor", "".concat(" + ", loc("multiAward/name/count/singleType",
+    { awardType = loc("multiAward/type/spare") awardCount = numSpares })))
 }
 
 ::PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params) {
@@ -1254,11 +1261,12 @@ let prizeViewConfig = {
     return this.getViewDataMultiAward(prize, params)
 
   let unitName = prize?.unit
+
   if (unitName)
     if (prize?.mod)
       return this.getViewDataMod(unitName, prize?.mod, params)
     else
-      return this.getViewDataUnit(unitName, params)
+      return this.getViewDataUnit(unitName, params, prize?.timeHours ?? 0, prize?.numSpares ?? 0)
   if (prize?.rentedUnit)
     return this.getViewDataRentedUnit(prize?.rentedUnit, params, prize?.timeHours, prize?.numSpares)
   if (prize?.spare)

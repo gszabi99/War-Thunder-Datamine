@@ -16,6 +16,7 @@ let {
   laserDesignatorStatusComponent, laserDesignatorComponent, agmTrackZoneComponent } = require("airSight.nut")
 let { radarElement, twsElement } = require("airHudComponents.nut")
 let leftPanel = require("airHudLeftPanel.nut")
+let missileSalvoTimer = require("missileSalvoTimer.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -74,6 +75,7 @@ let function helicopterSightHud() {
     children = IsSightHudVisible.value ?
     [
       vertSpeed(sh(4.0), sh(30), sw(50) + hdpx(325), sh(35), HudParamColor.value)
+      missileSalvoTimer(HudParamColor, sw(50) - hdpx(150), sh(90) - hdpx(174))
       turretAngles(HudParamColor, hdpx(150), hdpx(150), sw(50), sh(90))
       agmLaunchZone(HudParamColor, sw(100), sh(100))
       launchDistanceMax(HudParamColor, hdpx(150), hdpx(150), sw(50), sh(90))
