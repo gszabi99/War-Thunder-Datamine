@@ -76,7 +76,7 @@ let visibleRewards = [
 
 return function(logObj) {
   let rewards = visibleRewards
-    .map(@(reward) logObj.container?[reward.id]?.__merge({
+    .map(@(reward) logObj?.container[reward.id].__merge({
       name = loc(reward.locId)
       locId = reward.locId
       id = reward.id
