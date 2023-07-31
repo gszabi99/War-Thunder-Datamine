@@ -95,6 +95,15 @@ let function getFirstActiveSubBlockIndex(block) {
   return -1
 }
 
+let function checkMultiVisibleBlocks(block) {
+  local countVisible = 0
+  let blocksCount = block.blockCount()
+  for (local i = 0; i < blocksCount; i++)
+    if(this.checkBlockTime(::buildTableFromBlk(block.getBlock(i))))
+      countVisible++
+  return countVisible > 1
+}
+
 ::g_promo.checkOldRecordsOnInit <- function checkOldRecordsOnInit() {
   let blk = ::loadLocalByAccount("seen")
   if (!blk)
@@ -235,7 +244,8 @@ let function getFirstActiveSubBlockIndex(block) {
   let isDebugModeEnabled = this.getShowAllPromoBlocks()
   let blocksCount = block.blockCount()
   let isMultiblock = block?.multiple ?? false
-  view.isMultiblock <- isMultiblock
+  let hasMultiVisibleBlocks = isMultiblock ? checkMultiVisibleBlocks(block) : false
+  view.isMultiblock <- hasMultiVisibleBlocks
   view.radiobuttons <- []
 
   if (isMultiblock) {
@@ -264,7 +274,7 @@ let function getFirstActiveSubBlockIndex(block) {
     if (isMultiblock && !isVisibleSubBlock)
       continue
 
-    let blockId = view.id + (isMultiblock ? ($"_{counter}") : "")
+    let blockId = view.id + (hasMultiVisibleBlocks ? ($"_{counter}") : "")
     let actionParamsKey = this.getActionParamsKey(blockId)
     fillBlock.blockId <- actionParamsKey
 
