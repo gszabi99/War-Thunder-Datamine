@@ -870,7 +870,7 @@
           "object": "player",
           "move_type": "teleport",
           "speed": 200.0,
-          "lookat": "bombing_point",
+          "lookat": "target_truck01",
           "velocity": 200.0
         },
         "missionKillEffects": {
@@ -1178,7 +1178,7 @@
             "time": 1.0
           },
           {
-            "time": 3.0
+            "time": 4.0
           },
           {
             "time": 0.5
@@ -1186,7 +1186,7 @@
         ],
         "missionSetTimeSpeed": [
           {
-            "speed": 0.2,
+            "speed": 0.4,
             "realtimeTriggers": true
           },
           {
@@ -1259,44 +1259,60 @@
             "time": 0.1
           },
           {
-            "time": 9.0
+            "time": 0.5
+          },
+          {
+            "time": 1.0
           },
           {
             "time": 3.5
           }
         ],
-        "showSmartCutscene": {
-          "sceneType": "follow_bomb",
-          "startSubTypeOnTheMarch": "",
-          "startSubTypeGroundUnits": "",
-          "startSubTypeArea": "",
-          "startSubTypeUnitAttackUnit": "",
-          "startSubTypeUnitMoveToUnit": "",
-          "startSubTypeTwoUnits": "",
-          "startSubTypeTakeoff": "",
-          "startSubTypeFlyBy": "",
-          "duration": 12.0,
-          "wait": false,
-          "changeCameras": false,
-          "teleportAllAttackers": false,
-          "allowTeleportAttackers": false,
-          "inverseCameraDirection": false,
-          "delayPlayer": true,
-          "fadeIn": true,
-          "fadeOut": true,
-          "allowDeadUnits": false,
-          "object": "player"
-        },
-        "triggerEnable": [
+        "showSmartCutscene": [
           {
-            "target": "dialogue_bombing_p08"
+            "sceneType": "follow_bomb",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 5.0,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": false,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": true,
+            "fadeOut": false,
+            "allowDeadUnits": false,
+            "object": "player"
           },
           {
-            "target": [
-              "bombing_climb_hint",
-              "bombing_climb_hint_MA",
-              "bombing_climb_hint_Thrustmaster"
-            ]
+            "sceneType": "area",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "a1",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 5.0,
+            "wait": false,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": false,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "bombing_area_cutscene",
+            "zoom": 1.25
           }
         ],
         "unitDamage": {
@@ -1320,6 +1336,18 @@
           "target": "target_truck01",
           "doExplosion": true
         },
+        "triggerEnable": [
+          {
+            "target": "dialogue_bombing_p08"
+          },
+          {
+            "target": [
+              "bombing_climb_hint",
+              "bombing_climb_hint_MA",
+              "bombing_climb_hint_Thrustmaster"
+            ]
+          }
+        ],
         "playerCenterMouseAim": {},
         "playerOptions": {
           "currentView": "3rdperson"
@@ -3374,9 +3402,9 @@
           -0.461748
         ],
         [
-          -5035.35,
+          -5270.0,
           -1.55,
-          -12111.1
+          -12090.5
         ]
       ],
       "unit_class": "germ_stugIII",
@@ -3604,9 +3632,9 @@
           358.9
         ],
         [
-          -4666.3,
-          900.0,
-          -11980.2
+          -5078.3,
+          800.0,
+          -11979.0
         ]
       ],
       "props": {
@@ -3800,9 +3828,9 @@
           1200.0
         ],
         [
-          -5035.5,
+          -5270.15,
           -1.1,
-          -12111.5
+          -12090.9
         ]
       ],
       "props": {
@@ -3831,6 +3859,34 @@
           -5731.1,
           700.0,
           -13090.5
+        ]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "bombing_area_cutscene": {
+      "type": "Sphere",
+      "tm": [
+        [
+          200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          200.0
+        ],
+        [
+          -5270.15,
+          2.45,
+          -12090.9
         ]
       ],
       "props": {
