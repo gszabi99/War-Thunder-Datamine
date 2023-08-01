@@ -148,7 +148,8 @@ let function searchContactsOnline(request, callback = null) {
   )
 }
 
-let sendFriendAddedEvent = @(friendId)
+//!!!FIX ME: A dirty hack to use the same matching notification for accepted and rejected friend request
+let sendFriendCahngedEvent = @(friendId)
   matchingApiNotify("mpresence.notify_friend_added", { friendId })
 
 let function verifiedContactAndDoIfNeed(player, groupName, cb) {
@@ -182,8 +183,7 @@ let function addContactImpl(contact, groupName) {
     return
 
   let function successCb() {
-    if (groupName == EPL_FRIENDLIST)
-      sendFriendAddedEvent(contact.uidInt64)
+    sendFriendCahngedEvent(contact.uidInt64)
     ::g_popups.add(null, format(loc($"msg/added_to_{groupName}"), contact.getName()))
   }
   execContactsCharAction(contact.uid, action, successCb)
@@ -219,7 +219,6 @@ let function removeContactImpl(contact, groupName) {
   )
 }
 
-let removeContact = @(player, groupName) verifiedContactAndDoIfNeed(player, groupName, removeContactImpl)
 let function addInvitesToFriend(inviters) {
   if (inviters == null)
     return
@@ -229,6 +228,12 @@ let function addInvitesToFriend(inviters) {
 
   fetchContacts()
 }
+
+let removeContact = @(player, groupName)
+  verifiedContactAndDoIfNeed(player, groupName, removeContactImpl)
+
+let rejectContact = @(player) execContactsCharAction(player.uid, "contacts_reject_request",
+  @() sendFriendCahngedEvent(player.uid.tointeger()))
 
 addListenersWithoutEnv({
   PostboxNewMsg = function(mail_obj) {
@@ -254,6 +259,7 @@ return {
   fetchContacts
   addContact
   removeContact
+  rejectContact
   updatePresencesByList
   execContactsCharAction
 }

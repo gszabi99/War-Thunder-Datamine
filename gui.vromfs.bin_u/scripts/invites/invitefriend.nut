@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-let { addContact, execContactsCharAction } = require("%scripts/contacts/contactsState.nut")
+let { addContact, rejectContact } = require("%scripts/contacts/contactsState.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 ::g_invites_classes.Friend <- class extends ::BaseInvite {
@@ -57,7 +57,8 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
   }
 
   function reject() {
+    if (this.isValid())
+      rejectContact({ uid = this.inviterUid, name = this.inviterName })
     this.remove()
-    execContactsCharAction(this.inviterUid, "contacts_reject_request")
   }
 }
