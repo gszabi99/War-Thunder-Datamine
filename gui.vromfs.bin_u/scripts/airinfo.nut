@@ -44,7 +44,7 @@ let { getUnitFileName } = require("vehicleModel")
 let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
 let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skins.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let getGiftSparesCount = require("%scripts/shop/giftSpares.nut")
+let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -906,6 +906,8 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (!show || !air)
     return
 
+  let spare_cost = getGiftSparesCost(air)
+
   let tableObj = holderObj.findObject("air_info_panel_table")
   if (checkObj(tableObj)) {
     let isShowProgress = isInArray(air.esUnitType, [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ])
@@ -1597,6 +1599,8 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       addInfoTextsList.extend(award.getAdditionalTextsArray())
   }
 
+  let spare_count = getGiftSparesCount(air)
+
   if (rentTimeHours != -1) {
     if (rentTimeHours > 0) {
       let rentTimeStr = colorize("activeTextColor", time.hoursToString(rentTimeHours))
@@ -1605,7 +1609,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     else
       addInfoTextsList.append(colorize("userlogColoredText", loc("trophy/unlockables_names/trophy")))
     if(numSpares > 0)
-      addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSpares", { num = numSpares })))
+      addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSpares", { num = numSpares, cost = Cost().setGold(spare_cost * numSpares) })))
     if (isOwn && !isReceivedPrizes) {
       let text = loc("mainmenu/itemReceived") + loc("ui/dot") + " " +
         loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce")
@@ -1616,11 +1620,9 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (::canBuyUnitOnline(air)) {
       addInfoTextsList.append(colorize("userlogColoredText",
         format(loc("shop/giftAir/" + air.gift + "/info"), air.giftParam ? loc(air.giftParam) : "")))
-      if(showLocalState) {
-        let spare_count = getGiftSparesCount(air)
+      if(showLocalState)
         if(spare_count > 0)
-          addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSpares", { num = spare_count })))
-      }
+          addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSpares", { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
     }
     if (::isUnitDefault(air))
       addInfoTextsList.append(loc("shop/reserve/info"))
@@ -1634,14 +1636,16 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (showPriceText && checkObj(priceObj) && ::g_discount.getUnitDiscountByName(air.name) > 0) {
     placePriceTextToButton(holderObj, "aircraft_price",
       colorize("userlogColoredText", loc("events/air_can_buy")), ::getUnitCost(air), 0, ::getUnitRealCost(air))
+
+    if(spare_count > 0)
+      addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSpares", { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
   }
   else if (showPriceText && warbondId == null && showLocalState) {
     let priceText = colorize("activeTextColor", ::getUnitCost(air).getTextAccordingToBalance())
     addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/canBuyThisVehicle", { price = priceText })))
 
-    let spare_count = getGiftSparesCount(air)
     if(spare_count > 0)
-      addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSpares", { num = spare_count })))
+      addInfoTextsList.append(colorize("userlogColoredText", loc("mainmenu/giftSpares", { num = spare_count, cost = Cost().setGold(spare_cost * spare_count) })))
   }
 
   let infoObj = showObjById("aircraft-addInfo", !showShortestUnitInfo, holderObj)

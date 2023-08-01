@@ -94,6 +94,12 @@ let Money = class {
     this.sap = value
     return this
   }
+
+  function setGold(value) {
+    this.gold = value
+    return this
+  }
+
   function setFromTbl(tbl = null) {
     this.wp = tbl?.wp ?? 0
     this.gold = tbl?.gold ?? 0

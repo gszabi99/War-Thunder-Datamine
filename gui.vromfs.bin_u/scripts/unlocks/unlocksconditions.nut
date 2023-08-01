@@ -507,6 +507,10 @@ let function loadCondition(blk, unlockBlk) {
     res.values = blk.progress
     res.season <- unlockBlk?.battlePassSeason ?? -1
   }
+  else if (t == "battlepassLevel") {
+    res.values = blk.level
+    res.season <- unlockBlk?.battlePassSeason ?? -1
+  }
   else if (t == "eventMode") {
     res.values = (blk % "event_name")
     if (res.values.len())

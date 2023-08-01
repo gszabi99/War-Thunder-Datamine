@@ -25,7 +25,7 @@ let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/season
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
 let conditionsOrder = [
-  "beginDate", "endDate", "battlepassProgress",
+  "beginDate", "endDate", "battlepassProgress", "battlepassLevel",
   "missionsWon", "mission", "char_mission_completed",
   "missionType", "atLeastOneUnitsRankOnStartMission", "maxUnitsRankOnStartMission",
   "unitExists", "additional", "unitClass",
@@ -370,6 +370,9 @@ let function addValueToGroup(groupsList, group, value) {
 }
 
 let function addTextToCondTextList(condTextsList, group, valuesData, params = null) {
+  if(group == "battlepassLevel")
+    group = "battlepassProgress"
+
   local valuesText = loc("ui/comma").join(valuesData, true)
   if (valuesText != "") {
     let isExpired = group == "endDate" && params?.isExpired
@@ -461,6 +464,13 @@ let function getUsualCondValueText(condType, v, condition) {
       return reqLevel <= seasonLevel.value
         ? $"{reqLevel} {curLevelText}"
         : $"{reqLevel} {colorize("red" ,curLevelText)}"
+    case "battlepassLevel":
+      if (condition.season != season.value)
+        return $"{v}"
+      let curLevelText = loc("conditions/battlepassProgress/currentLevel", { level = seasonLevel.value })
+      return v <= seasonLevel.value
+        ? $"{v} {curLevelText}"
+        : $"{v} {colorize("red" ,curLevelText)}"
     default:
       return loc($"{condType}/{v}")
   }
@@ -597,7 +607,6 @@ let function getUnlockCondsDesc(conditions, isExpired = false) {
 let function getUnlockCondsDescByCfg(cfg) {
   if (!cfg?.conditions)
     return ""
-
   return getUnlockCondsDesc(cfg.conditions, cfg.isExpired)
 }
 

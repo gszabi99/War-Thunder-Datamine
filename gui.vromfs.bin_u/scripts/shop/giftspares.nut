@@ -23,4 +23,12 @@ let function getGiftSparesCount(unit) {
   return spare_count
 }
 
-return getGiftSparesCount
+let function getGiftSparesCost(unit) {
+  let unitName = typeof(unit) == "string" ? unit : unit.name
+  return get_wpcost_blk()?[unitName].spare.costGold ?? 0
+}
+
+return {
+  getGiftSparesCount
+  getGiftSparesCost
+}

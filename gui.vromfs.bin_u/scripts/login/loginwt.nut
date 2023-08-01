@@ -72,8 +72,8 @@ registerPersistentData("LoginWTGlobals", getroottable(),
 }
 
 let function go_to_account_web_page(bqKey = "") {
-  let urlBase = format("/user.php?skin_lang=%s", ::g_language.getShortName())
-  openUrl(get_authenticated_url_sso(urlBase).url, false, false, bqKey)
+  let urlBase = format("https://store.gaijin.net/user.php?skin_lang=%s", ::g_language.getShortName())
+  openUrl(get_authenticated_url_sso(urlBase, "any").url, false, true, bqKey)
 }
 
 ::g_login.loadLoginHandler <- function loadLoginHandler() {

@@ -81,6 +81,9 @@ sendAll = function() {
   if (queue.value.len() == 0)
     return
 
+  if(!::g_login.isLoggedIn())
+    return
+
   let list = {}
   let remainingMsg = []
   let sendedMsg = []

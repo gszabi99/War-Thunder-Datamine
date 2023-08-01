@@ -60,6 +60,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { stripTags, toUpper } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -158,6 +159,7 @@ let statTooltipColumnParamByType = {
      return
   }
   if (gm == GM_TEST_FLIGHT) {
+    sendFinishTestFlightToBq()
     if (::last_called_gui_testflight)
       ::last_called_gui_testflight()
     else

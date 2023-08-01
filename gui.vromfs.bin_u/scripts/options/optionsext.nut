@@ -1633,7 +1633,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_COMPLAINT_CATEGORY:
       descr.id = "complaint_category"
-      descr.values = ["FOUL", "ABUSE", "TEAMKILL", "BOT", "SPAM", "OTHER"]
+      descr.values = ["FOUL", "ABUSE", "TEAMKILL", "BOT", "BOT2", "SPAM", "OTHER"]
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
         descr.items.append("#charServer/ban/reason/" + descr.values[i])

@@ -566,7 +566,7 @@ let function addRemovedDependetWeaponsParams(preset, tierId, availableWeapons, e
   let dependentWeapons = preset.dependentWeaponPreset[presetId].filter(@(w) w.slot == slot) ?? []
   let weaponsToRemove = []
   foreach (dependentWeapon in dependentWeapons) {
-    if(!editSlotParams.slots.filter(@(v) v.tierId == dependentWeapon.reqForTier))
+    if(editSlotParams.slots.filter(@(v) v.tierId == dependentWeapon.reqForTier).len() == 0)
       editSlotParams.slots.append({ tierId = dependentWeapon.reqForTier })
     let dependWeaponName = getAvailableWeaponName(availableWeapons, dependentWeapon.reqForPresetId,
       dependentWeapon.reqForTier, editSlotParams.weaponBlkCache)

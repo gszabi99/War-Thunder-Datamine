@@ -276,7 +276,9 @@ let chatLogToString = function(chatLog) {
 
     let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
     let cValue = this.scene.findObject(option.id).getValue()
-    let category = (cValue in option.values) ? option.values[cValue] : option.values[0]
+    local category = (cValue in option.values) ? option.values[cValue] : option.values[0]
+    if(category == "BOT2") //2 different reasons for the complaint are sent under the same BOT category
+      category = "BOT"
     let details = ::save_to_json({
       own      = this.collectUserDetailsForTribunal(get_local_mplayer()),
       offender = this.collectUserDetailsForTribunal(this.pInfo),

@@ -42,6 +42,11 @@ let premiumAccountDescriptionArr = [
     color = "@userlogColoredText"
   },
   {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_9"
+    isBold = false
+    color = "@highlightedTextColor"
+  },
+  {
     locId = "charServer/entitlement/PremiumAccount/desc/string_6"
     isBold = false
     color = "@highlightedTextColor"
