@@ -12,6 +12,7 @@ let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { shuffle } = require("%sqStdLibs/helpers/u.nut")
 let DataBlock = require("DataBlock")
 let { myUserId } = require("%scripts/user/profileStates.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
 const RETRY_MSEC = 30000 //retry send on all servers down
@@ -153,6 +154,10 @@ let function sendBqEvent(tableId, event, data = {}) {
   let msg = { tableId, data = { clientTime = ::get_charserver_time_sec(), event, params = json_to_string(data) } }
   addToQueue(msg)
 }
+
+addListenersWithoutEnv({
+  LoginComplete = @(_p) startSendTimer()
+})
 
 return {
   sendBqEvent
