@@ -24135,6 +24135,573 @@
       }
     },
     {
+      "id": "type98_shin_gunto_seven_gift",
+      "userLogId": "type98_shin_gunto_seven_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "ija_7th_air_combat_group",
+          "ija_7th_tank_regiment",
+          "hull_number_7",
+          "jmsdf_air_patrol_squadron7",
+          "jasdf_7th_fighter_squadron",
+          "jgsdf_7th_reconnaissance_unit",
+          "7th_anniversary_emblem_7th_equipment_unit"
+        ]
+      }
+    },
+    {
+      "id": "7th_anniversary_emblem_7th_equipment_unit",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "7th_anniversary_emblem_7th_equipment_unit_dmm",
+          "7th_anniversary_emblem_7th_equipment_unit_scej"
+        ]
+      }
+    },
+    {
+      "id": "7th_anniversary_emblem_7th_equipment_unit_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-09 07:00:00",
+        "endDate": "2023-11-01 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "7th_anniversary_emblem_7th_equipment_unit_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-09 07:00:00",
+        "endDate": "2023-11-01 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "ija_7th_tank_regiment",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 7,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-08-09 07:00:00",
+            "endDate": "2023-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ija_7th_air_combat_group",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 7,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-08-09 07:00:00",
+            "endDate": "2023-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "hull_number_7",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 7,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-08-09 07:00:00",
+            "endDate": "2023-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jgsdf_7th_reconnaissance_unit",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 7,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-08-09 07:00:00",
+            "endDate": "2023-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jasdf_7th_fighter_squadron",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 7,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 7,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-08-09 07:00:00",
+            "endDate": "2023-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jmsdf_air_patrol_squadron7",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 7,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 5,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-08-09 07:00:00",
+            "endDate": "2023-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_dmm_lottery_numbers_trophy_1",
+      "userLogId": "dmm_lottery_numbers_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "09_08_lottery_numbers_login_dmm",
+          "09_08_lottery_numbers_login_scej"
+        ]
+      }
+    },
+    {
+      "id": "09_08_lottery_numbers_login_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-09 15:00:00",
+        "endDate": "2023-08-14 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "09_08_lottery_numbers_login_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-09 15:00:00",
+        "endDate": "2023-08-14 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "gift_dmm_lottery_numbers_trophy_2",
+      "userLogId": "dmm_lottery_numbers_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "14_08_lottery_numbers_login_dmm",
+          "14_08_lottery_numbers_login_scej"
+        ]
+      }
+    },
+    {
+      "id": "14_08_lottery_numbers_login_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-14 15:00:00",
+        "endDate": "2023-08-19 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "14_08_lottery_numbers_login_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-14 15:00:00",
+        "endDate": "2023-08-19 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "gift_dmm_lottery_numbers_trophy_3",
+      "userLogId": "dmm_lottery_numbers_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "19_08_lottery_numbers_login_dmm",
+          "19_08_lottery_numbers_login_scej"
+        ]
+      }
+    },
+    {
+      "id": "19_08_lottery_numbers_login_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-19 15:00:00",
+        "endDate": "2023-08-24 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "19_08_lottery_numbers_login_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-19 15:00:00",
+        "endDate": "2023-08-24 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "gift_dmm_lottery_numbers_trophy_4",
+      "userLogId": "dmm_lottery_numbers_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "24_08_lottery_numbers_login_dmm",
+          "24_08_lottery_numbers_login_scej"
+        ]
+      }
+    },
+    {
+      "id": "24_08_lottery_numbers_login_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-24 15:00:00",
+        "endDate": "2023-08-29 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "24_08_lottery_numbers_login_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-24 15:00:00",
+        "endDate": "2023-08-29 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "gift_dmm_lottery_numbers_trophy_5",
+      "userLogId": "dmm_lottery_numbers_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "29_08_lottery_numbers_login_dmm",
+          "29_08_lottery_numbers_login_scej"
+        ]
+      }
+    },
+    {
+      "id": "29_08_lottery_numbers_login_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-29 15:00:00",
+        "endDate": "2023-09-03 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "29_08_lottery_numbers_login_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-08-29 15:00:00",
+        "endDate": "2023-09-03 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "gift_dmm_lottery_numbers_trophy_6",
+      "userLogId": "dmm_lottery_numbers_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "03_09_lottery_numbers_login_dmm",
+          "03_09_lottery_numbers_login_scej"
+        ]
+      }
+    },
+    {
+      "id": "03_09_lottery_numbers_login_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-09-03 15:00:00",
+        "endDate": "2023-09-08 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "03_09_lottery_numbers_login_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2023-09-03 15:00:00",
+        "endDate": "2023-09-08 14:59:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
       "id": "gift_centipede_decal_trophy",
       "userLogId": "centipede_decal_trophy",
       "type": "trophy",
@@ -36479,6 +37046,7 @@
       "chapter": "holidays",
       "group": "vdv",
       "costGold": 199,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -36517,6 +37085,7 @@
       "chapter": "holidays",
       "group": "cn_pla_day",
       "costGold": 199,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -36599,6 +37168,64 @@
       }
     },
     {
+      "id": "2023_08_04_lizard_technology_decal",
+      "locDescId": "2023_08_04_lizard_technology_decal/desc",
+      "userLogId": "2023_08_04_lizard_technology_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "lizard_technology",
+      "shouldMarkUnits": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "germ_pz_IV_L70_A",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2023-08-04 12:00:00",
+            "endDate": "2023-08-11 12:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2023_08_04_cardicon_lizard",
+      "userLogId": "2023_08_04_cardicon_lizard",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2023_08_04_lizard_technology_decal"
+      }
+    },
+    {
+      "id": "2023_08_04_title_lizard",
+      "userLogId": "2023_08_04_title_lizard",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2023_08_04_lizard_technology_decal"
+      }
+    },
+    {
       "id": "2023_07_21_baikal_water_decal",
       "locDescId": "2023_07_21_baikal_water_decal/desc",
       "userLogId": "2023_07_21_baikal_water_decal",
@@ -36607,6 +37234,7 @@
       "chapter": "holidays",
       "group": "feat_of_the_ancestors",
       "shouldMarkUnits": true,
+      "hidden": true,
       "mode": {
         "type": "missionsWonScore",
         "num": 10,
@@ -80743,7 +81371,7 @@
       "hidden": true,
       "mode": {
         "type": "unlockOpenCount",
-        "typeLocID": "conditions/upgradePointsRecieved",
+        "typeLocID": "conditions/upgradePointsReceived",
         "num": 240,
         "unlock": "craft_2022_spring_1st_place_award",
         "condition": {

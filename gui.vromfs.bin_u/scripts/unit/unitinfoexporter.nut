@@ -19,8 +19,11 @@ const COMMON_PARAMS_GROUP = "common"
 const BASE_GROUP = "base"
 const EXTENDED_GROUP = "extended"
 
+let EXCLUDED_TAGS = ["type_exoskeleton"]
+
 let class UnitInfoExporter {
   static EXPORT_TIME_OUT = 20000
+  static FRAME_TIME_OUT = 2000
   static activeUnitInfoExporters = []
   lastActiveTime = -1
 
@@ -87,7 +90,11 @@ let class UnitInfoExporter {
   }
 
   function isStuck() {
-    return get_time_msec() - this.lastActiveTime < this.EXPORT_TIME_OUT
+    return get_time_msec() - this.lastActiveTime > this.EXPORT_TIME_OUT
+  }
+
+  function isNeedFrame() {
+    return get_time_msec() - this.lastActiveTime > this.FRAME_TIME_OUT
   }
 
   function updateActive() {
@@ -116,7 +123,7 @@ let class UnitInfoExporter {
     this.debugLog("Exporter: start fetching calculation parameters")
     try {
       let shopUnitsNames = ::all_units
-        .filter(@(unit) unit.isInShop)
+        .filter(this.filterUnit)
         .map(@(unit) unit.name)
         .values()
       let instance = this
@@ -220,6 +227,11 @@ let class UnitInfoExporter {
       fBlk[COMMON_PARAMS_GROUP][infoType.id] = infoType.exportCommonToDataBlock()
   }
 
+  function onFrameRedrawnWhileExporting() {
+    this.updateActive()
+    this.processUnits()
+  }
+
   function onEventUnitModsRecount(_params) {
     this.processUnits()
   }
@@ -240,8 +252,13 @@ let class UnitInfoExporter {
   }
 
   function exportCurUnit(fBlk, curUnit) {
-    if (!curUnit.isInShop)
+    if (!this.filterUnit(curUnit))
       return true
+
+    if (this.isNeedFrame()) {
+      ::get_main_gui_scene().performDelayed(this, this.onFrameRedrawnWhileExporting)
+      return false
+    }
 
     this.debugLog($"Exporter: process unit {curUnit.name}; {this.unitsList.len()} left")
     if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars) {
@@ -277,6 +294,13 @@ let class UnitInfoExporter {
       targetBlk[curUnit.name] = unitBlk
     }
     return true
+  }
+
+  function filterUnit(unit) {
+    foreach (tag in EXCLUDED_TAGS)
+      if (unit?.tags.contains(tag))
+        return false
+    return unit.isInShop
   }
 }
 

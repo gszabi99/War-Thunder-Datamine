@@ -197,11 +197,11 @@
   },
   "randomGrass": {
     "useGrassMaskBiomes": true,
-    "density": 2.0,
-    "maxRadius": 120.0,
+    "density": 3.0,
+    "maxRadius": 300.0,
     "sowPerlinFreq": 0.1,
     "fadeDelta": 100.0,
-    "lodFadeDelta": 10.0,
+    "lodFadeDelta": 11.0,
     "minLodDensity": 0.18,
     "blendToLandDelta": 100.0,
     "texSize": 1024,
@@ -224,7 +224,7 @@
     "helicopterFalloff": 0.001,
     "small_grass": {
       "grass_grid_size": 0.75,
-      "grass_distance": 200.0,
+      "grass_distance": 250.0,
       "hor_size_mul": 1.5,
       "alphaSuffix": "_a",
       "grass_types": {
@@ -395,15 +395,35 @@
     },
     "layer": [
       {
+        "id": 35,
+        "res": "grass_cane_a",
+        "density": 2.0,
+        "horScale": 1.7,
+        "horMinScale": 0.7,
+        "verScale": 1.7,
+        "verMinScale": 0.7,
+        "windMul": 0.05,
+        "color_mask_r_from": "snNX4Q==",
+        "color_mask_r_to": "qlZG/w==",
+        "color_mask_b_from": "RZY2/w==",
+        "color_mask_b_to": "Tno6/w==",
+        "color_mask_g_from": "Hy8r/w==",
+        "color_mask_g_to": "9/K6/w=="
+      },
+      {
         "id": [
           0,
           1,
           3,
           8,
+          9,
+          10,
+          11,
           23,
           27,
           34,
-          36
+          36,
+          40
         ],
         "res": "grass_fill_a",
         "density": 2.0,
@@ -425,7 +445,11 @@
           3,
           7,
           8,
-          23
+          9,
+          10,
+          11,
+          23,
+          40
         ],
         "res": "grass_reed_a",
         "density": 0.5,
@@ -447,7 +471,11 @@
           1,
           7,
           8,
-          23
+          9,
+          10,
+          11,
+          23,
+          40
         ],
         "res": "grass_daisies_a",
         "density": 0.5,
@@ -472,10 +500,14 @@
           3,
           4,
           8,
+          9,
+          10,
+          11,
           23,
           27,
           34,
-          36
+          36,
+          40
         ],
         "res": "grass_heather_a",
         "density": 2.0,
@@ -500,7 +532,11 @@
           3,
           7,
           8,
-          23
+          9,
+          10,
+          11,
+          23,
+          40
         ],
         "res": "grass_tulip_a",
         "density": 2.0,
@@ -522,7 +558,8 @@
           0,
           2,
           3,
-          4
+          4,
+          40
         ],
         "res": "grass_sedge_a",
         "density": 4.0,
@@ -546,7 +583,11 @@
           2,
           7,
           8,
-          23
+          9,
+          10,
+          11,
+          23,
+          40
         ],
         "res": "grass_simple_a",
         "density": 2.0,
@@ -567,23 +608,23 @@
   },
   "overrideRiLodRange": {
     "tree_palm_large_a": {
-      "lod0": 150.0,
+      "lod0": 450.0,
       "lod1": 8000.0
     },
     "tree_palm_large_b": {
-      "lod0": 150.0,
+      "lod0": 450.0,
       "lod1": 8000.0
     },
     "tree_palm_large_c": {
-      "lod0": 150.0,
+      "lod0": 450.0,
       "lod1": 8000.0
     },
     "tree_palm_large_d": {
-      "lod0": 150.0,
+      "lod0": 450.0,
       "lod1": 8000.0
     },
     "tree_palm_medium_a": {
-      "lod0": 150.0,
+      "lod0": 450.0,
       "lod1": 8000.0
     },
     "tree_burnt_lush_a": {
@@ -627,91 +668,91 @@
       "lod1": 8000.0
     },
     "tree_banana_plant_big_a": {
-      "lod0": 100.0,
+      "lod0": 500.0,
       "lod1": 2500.0
     },
     "tree_banana_plant_bigtwo_a": {
-      "lod0": 100.0,
+      "lod0": 500.0,
       "lod1": 2500.0
     },
     "tree_banana_plant_small_a": {
-      "lod0": 100.0,
+      "lod0": 300.0,
       "lod1": 2500.0
     },
     "tree_banana_plant_small2_a": {
-      "lod0": 100.0,
+      "lod0": 300.0,
       "lod1": 2500.0
     },
     "tree_banana_plant_minismall_d": {
-      "lod0": 100.0,
+      "lod0": 300.0,
       "lod1": 2500.0
     },
     "tree_banana_plant_minismall_a": {
-      "lod0": 100.0,
+      "lod0": 300.0,
       "lod1": 2500.0
     },
     "tree_banana_plant_minismall_b": {
-      "lod0": 100.0,
+      "lod0": 300.0,
       "lod1": 2500.0
     },
     "tree_banana_plant_minismall_c": {
-      "lod0": 100.0,
+      "lod0": 300.0,
       "lod1": 2500.0
     },
     "monstera_bush_a": {
-      "lod0": 150.0,
+      "lod0": 90.0,
       "lod1": 1500.0
     },
     "monstera_bush_b": {
-      "lod0": 150.0,
+      "lod0": 90.0,
       "lod1": 1500.0
     },
     "monstera_bush_c": {
-      "lod0": 150.0,
+      "lod0": 90.0,
       "lod1": 1500.0
     },
     "monstera_fern_a": {
-      "lod0": 150.0,
+      "lod0": 90.0,
       "lod1": 400.0
     },
     "monstera_fern_b": {
-      "lod0": 150.0,
+      "lod0": 90.0,
       "lod1": 400.0
     },
     "monstera_tree_a": {
-      "lod0": 150.0,
+      "lod0": 120.0,
       "lod1": 700.0
     },
     "monstera_tree_b": {
-      "lod0": 150.0,
+      "lod0": 120.0,
       "lod1": 700.0
     },
     "tropical_arctium_a": {
-      "lod0": 150.0,
+      "lod0": 70.0,
       "lod1": 400.0
     },
     "tropical_arctium_b": {
-      "lod0": 150.0,
+      "lod0": 70.0,
       "lod1": 400.0
     },
     "tropical_arctium_c": {
-      "lod0": 150.0,
+      "lod0": 70.0,
       "lod1": 400.0
     },
     "tropical_fern_a": {
-      "lod0": 150.0,
+      "lod0": 70.0,
       "lod1": 400.0
     },
     "tropical_fern_b": {
-      "lod0": 150.0,
+      "lod0": 70.0,
       "lod1": 400.0
     },
     "tropical_fern_c": {
-      "lod0": 150.0,
+      "lod0": 90.0,
       "lod1": 400.0
     },
     "tropical_fern_all": {
-      "lod0": 150.0,
+      "lod0": 90.0,
       "lod1": 400.0
     },
     "tree_asian_bamboo_langer_low_a": {
@@ -759,35 +800,35 @@
       "lod1": 10000.0
     },
     "tree_mangrove_large_a": {
-      "lod0": 150.0,
+      "lod0": 700.0,
       "lod1": 10000.0
     },
     "tree_mangrove_large_b": {
-      "lod0": 150.0,
+      "lod0": 700.0,
       "lod1": 10000.0
     },
     "tree_mangrove_large_c": {
-      "lod0": 150.0,
+      "lod0": 700.0,
       "lod1": 10000.0
     },
     "tree_mangrove_large_d": {
-      "lod0": 150.0,
+      "lod0": 700.0,
       "lod1": 10000.0
     },
     "tree_palm_bush_a": {
-      "lod0": 150.0,
+      "lod0": 250.0,
       "lod1": 1500.0
     },
     "tree_palm_bush_b": {
-      "lod0": 150.0,
+      "lod0": 250.0,
       "lod1": 1500.0
     },
     "tree_palm_bush_c": {
-      "lod0": 150.0,
+      "lod0": 250.0,
       "lod1": 1500.0
     },
     "tree_palm_bush_d": {
-      "lod0": 150.0,
+      "lod0": 250.0,
       "lod1": 1500.0
     },
     "tree_oak_medium_b": {
@@ -795,7 +836,7 @@
       "lod1": 10000.0
     },
     "tree_tropic_larger_a": {
-      "lod0": 500.0,
+      "lod0": 300.0,
       "lod1": 10000.0
     },
     "tree_burnt_bush_a": {
@@ -910,19 +951,19 @@
       "lod2": 5000.0
     },
     "vietnam_town_building_2_floor_a_courtyard": {
-      "lod0": 150.0,
-      "lod1": 200.0,
-      "lod2": 600.0
+      "lod0": 10.0,
+      "lod1": 70.0,
+      "lod2": 3000.0
     },
     "vietnam_town_building_2_floor_c_courtyard": {
-      "lod0": 150.0,
-      "lod1": 200.0,
-      "lod2": 600.0
+      "lod0": 10.0,
+      "lod1": 70.0,
+      "lod2": 3000.0
     },
     "vietnam_town_building_2_floor_f_courtyard": {
-      "lod0": 150.0,
-      "lod1": 200.0,
-      "lod2": 600.0
+      "lod0": 10.0,
+      "lod1": 70.0,
+      "lod2": 3000.0
     },
     "vietnam_myson_column_a_a": {
       "lod0": 100.0,
@@ -1210,9 +1251,9 @@
       "lod3": 1500.0
     },
     "wood_pier_e": {
-      "lod0": 100.0,
-      "lod1": 200.0,
-      "lod2": 500.0,
+      "lod0": 350.0,
+      "lod1": 500.0,
+      "lod2": 700.0,
       "lod3": 1500.0
     },
     "wood_pier_d": {
@@ -1475,14 +1516,14 @@
       "lod3": 6000.0
     },
     "vietnam_soil_erosion_cliff_a_grass": {
-      "lod0": 1.0,
-      "lod1": 70.0,
+      "lod0": 100.0,
+      "lod1": 400.0,
       "lod2": 1200.0,
       "lod3": 3000.0
     },
     "vietnam_soil_erosion_cliff_b_grass": {
-      "lod0": 1.0,
-      "lod1": 70.0,
+      "lod0": 100.0,
+      "lod1": 400.0,
       "lod2": 1200.0,
       "lod3": 3000.0
     },
@@ -1660,9 +1701,6 @@
     ]
   },
   "technicsSkins": {
-    "groundSkin": [
-      "forest",
-      "default"
-    ]
+    "groundSkin": "forest"
   }
 }

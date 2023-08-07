@@ -80,8 +80,6 @@
     "mission": {
       "level": "levels/avg_sector_montmedy_snow.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_Conq1;sector_montmedy/name;missions/winter",
@@ -95,14 +93,16 @@
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
       "battleAreaColorPreset": "battleArea",
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,
-        "isHelicoptersAllowed": true,
-        "isShipsAllowed": false
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": true
       },
       "mission": [
         {
@@ -171,17 +171,17 @@
               {
                 "icontype": "tank",
                 "side": "ally",
-                "target": "briefing_t1_spawn_01"
+                "target": "briefing_t1_tankSpawn_Rb_01"
               },
               {
                 "icontype": "tank",
                 "side": "enemy",
-                "target": "briefing_t2_spawn_01"
+                "target": "briefing_t2_tankSpawn_Rb_01"
               },
               {
                 "icontype": "basezone_A",
                 "side": "neutral",
-                "target": "briefing_captureZone01"
+                "target": "briefing_captureZone_Rb01"
               }
             ],
             "battleArea": {
@@ -296,6 +296,20 @@
       },
       {
         "file": "gameData/missions/templates/tank_templates/conq_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/tanks/sector_montmedy/battleareas/template_sector_montmedy_exclude_battleareas.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
