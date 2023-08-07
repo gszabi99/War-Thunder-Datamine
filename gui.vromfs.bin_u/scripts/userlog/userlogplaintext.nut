@@ -345,7 +345,7 @@ let function get_userlog_plain_text(logObj) {
 
   let battleRewards = logObj.type == EULT_SESSION_RESULT ? getBattleRewards(logObj) : []
   let rewards = battleRewards.map(@(reward) { name = reward.name, count = reward?.count.tostring() ?? "",
-    wp = Cost(reward.totalRewardWp).toPlainText(), exp = Cost().setRp(reward.totalRewardExp).toPlainText(),
+    wp = reward.wp.toPlainText(), exp = Cost().setRp(reward.totalRewardExp).toPlainText(),
     battleRewardDetails = reward?.battleRewardDetails, id = reward?.id })
   res.battleRewards = formatRewards(rewards)
 

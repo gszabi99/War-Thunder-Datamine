@@ -22,7 +22,7 @@ let visibleRewards = [
   }
   {
     id = "eventHit"
-    locId = "expEventScore/kill"
+    locId = "expEventScore/hit"
   }
   {
     id = "eventTakeoff"
@@ -88,7 +88,7 @@ return function(logObj) {
       let totalRewardWp = rewardDetails
         .reduce(@(total, e) total + (e?.wpNoBonus ?? 0) + (e?.wpPremAcc ?? 0) + (e?.wpBooster ?? 0), 0)
       let totalRewardExp = rewardDetails
-        .reduce(@(total, e) total + (e?.expNoBonus ?? 0)  + (e?.expPremAcc ?? 0) + (e?.expBooster ?? 0) + (e?.expPremMod ?? 0), 0)
+        .reduce(@(total, e) total + (e?.expNoBonus ?? 0) + (e?.expPremAcc ?? 0) + (e?.expBooster ?? 0) + (e?.expPremMod ?? 0), 0)
 
       return acc.append({  // -unwanted-modification
         battleRewardTooltipId = USER_LOG_REWARD.getTooltipId(logObj.idx, reward.id)
@@ -102,6 +102,15 @@ return function(logObj) {
         battleRewardDetails = rewardDetails
       })
     }, [])
+
+    let wpMissionEndAward = logObj?.container.wpMissionEndAward ?? 0
+    if(wpMissionEndAward > 0)
+      rewards.append({
+        name = loc(logObj.win ? "debriefing/MissionWinReward" : "debriefing/MissionLoseReward")
+        wp = Cost(wpMissionEndAward)
+        totalRewardWp = wpMissionEndAward
+        totalRewardExp = 0
+      })
 
   let allRewardsWp = rewards.reduce(@(total, reward) total + reward.totalRewardWp, 0)
   let allRewardsExp = rewards.reduce(@(total, reward) total + reward.totalRewardExp, 0)
