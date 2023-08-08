@@ -1,11 +1,23 @@
 {
   "model": "unit_vaz_2101_b",
   "subclass": "fortification",
-  "dynCollisionGeom": true,
-  "hasExpl": false,
-  "expClass": "exp_zero",
-  "toGround": true,
-  "timeToFire": 0.0,
+  "hasDmg": true,
+  "damageableByGun": true,
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "useDestrPhysObj": [
+    true,
+    true
+  ],
+  "damageCollisionMultiplier": [
+    100.0,
+    0.001
+  ],
+  "explosionImpulse": [
+    100.0,
+    1.0
+  ],
+  "timeToFire": 1.0,
   "maxFwdSpeed": 0.0,
   "maxRevSpeed": 0.0,
   "maxAngSpeed": 0.0,
@@ -15,27 +27,24 @@
   "maxAngAccelV": 0.0,
   "maxAngAccel": 0.0,
   "groundNormSmoothViscosity": 0.1,
-  "useDestrPhysObj": true,
-  "damageCollisionMultiplier": 0.001,
-  "explosionImpulse": 1.0,
   "explosionFx": "crash_loudspeaker",
   "explosionSound": false,
   "DamageParts": {
-    "steel": {
+    "formatVersion": 2,
+    "vaz_2101_b": {
+      "armorClass": "RHA_tank",
       "body_dm": {
-        "hp": 150.0
+        "armorThickness": 10.0,
+        "armorThrough": 1.0,
+        "hp": 100.0
       }
     }
   },
   "DamageEffects": {
     "part": {
       "name": "body_dm",
-      "onHit": {
-        "smoke": 0.0,
-        "fire": 0.0
-      },
       "onKill": {
-        "expl": 0.0
+        "expl": 0.1
       }
     }
   },
