@@ -1,6 +1,7 @@
 {
   "model": "unit_vaz_2101_b",
   "subclass": "fortification",
+  "dynCollisionGeom": true,
   "hasDmg": true,
   "damageableByGun": true,
   "renderInWaterReflection": true,
@@ -9,13 +10,14 @@
     true,
     true
   ],
-  "damageCollisionMultiplier": [
-    100.0,
-    0.001
-  ],
+  "substRI": true,
   "explosionImpulse": [
     100.0,
     1.0
+  ],
+  "damageCollisionMultiplier": [
+    1.0,
+    0.001
   ],
   "timeToFire": 1.0,
   "maxFwdSpeed": 0.0,
@@ -36,7 +38,7 @@
       "body_dm": {
         "armorThickness": 10.0,
         "armorThrough": 1.0,
-        "hp": 100.0
+        "hp": 150.0
       }
     }
   },
