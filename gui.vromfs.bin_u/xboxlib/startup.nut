@@ -1,7 +1,7 @@
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_STARTUP] ")
 let {register_constrain_callback} = require("%xboxLib/impl/app.nut")
 let {register_for_user_change_event, EventType} = require("%xboxLib/impl/user.nut")
-let {logout, subscribe_to_login, subscribe_to_logout, isLoggedIn} = require("%xboxLib/loginState.nut")
+let {logout, subscribe_to_login, subscribe_to_logout, is_logged_in} = require("%xboxLib/loginState.nut")
 let {initialize_relationships, shutdown_relationships, update_relationships} = require("%xboxLib/relationships.nut")
 let {shutdown} = require("%xboxLib/user.nut")
 let achievements = require("%xboxLib/impl/achievements.nut")
@@ -40,7 +40,7 @@ let function on_logout(updated) {
 }
 
 let function updateStatesIfLoggedIn() {
-  if (!isLoggedIn.value)
+  if (!is_logged_in())
     return
 
   crossnetwork.update_state()
