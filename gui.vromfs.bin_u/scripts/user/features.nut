@@ -276,6 +276,8 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   MachineGunsAmmoIndicator = false
 
   DamageControl = false
+
+  ResearchHelicopterOnGroundVehicle = false
 })
 
 let override = Watched({})

@@ -41,6 +41,7 @@ let getEmptyConditionsConfig = @() {
   forceExternalBrowser = false
   iconStyle = ""
   iconParams = null
+  userLogId = null
   image = ""
   lockStyle = ""
   imgRatio = 1.0
@@ -214,7 +215,7 @@ let function setRewardIconCfg(cfg, blk, unlocked) {
   let config = getEmptyConditionsConfig()
   config.id = id
   config.imgRatio = blk.getReal("aspect_ratio", 1.0)
-
+  config.userLogId = blk?.userLogId
   config.unlockType = ::get_unlock_type(blk?.type ?? "")
   config.locId = blk.getStr("locId", "")
   config.locDescId = blk.getStr("locDescId", "")

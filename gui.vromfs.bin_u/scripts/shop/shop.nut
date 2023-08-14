@@ -32,6 +32,8 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { buildDateStr } = require("%scripts/time.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { stripTags, cutPrefix } = require("%sqstd/string.nut")
+let { getDestinationRPUnitType = null, charSendBlk } = require("chard")
+let DataBlock = require("DataBlock")
 
 local lastUnitType = null
 
@@ -136,6 +138,41 @@ shopData = [
   function isSceneActive() {
     return base.isSceneActive()
            && (this.wndType != handlerType.CUSTOM || topMenuShopActive.value)
+  }
+
+  function canResearchHelicoptersOfCurCountry() {
+    foreach (unit in ::all_units)
+      if (unit.isHelicopter()
+          && !unit.isSquadronVehicle()
+          && ::getUnitCountry(unit) == this.curCountry
+          && ::canResearchUnit(unit))
+        return true
+    return false
+  }
+
+  function isAllCurCountryHelicoptersResearched() {
+    foreach (unit in ::all_units)
+      if (unit.isHelicopter()
+          && unit.isVisibleInShop()
+          && !unit.isSquadronVehicle()
+          && ::getUnitCountry(unit) == this.curCountry
+          && !::isUnitGift(unit)
+          && !::isUnitSpecial(unit)
+          && !::isUnitResearched(unit))
+        return false
+    return true
+  }
+
+  function initMoveExpToHelicoptersCheckbox() {
+    if (getDestinationRPUnitType == null || !hasFeature("ResearchHelicopterOnGroundVehicle"))
+      return
+
+    let checkBoxObj = this.scene.findObject("move_exp_to_helicopters")
+    checkBoxObj.setValue(this.isMoveExpToHelicoptersEnabled())
+    checkBoxObj.show(this.curPage == "army" || this.curPage == "helicopters")
+    checkBoxObj.inactiveColor = this.canResearchHelicoptersOfCurCountry()
+      ? "no"
+      : "yes"
   }
 
   function loadFullAircraftsTable(selAirName = "") {
@@ -367,6 +404,8 @@ shopData = [
         || p.transactionType == EATT_BUY_ENTITLEMENT
         || p.transactionType == EATT_BUYING_UNLOCK)
       this.doWhenActiveOnce("fullReloadAircraftsList")
+
+    this.initMoveExpToHelicoptersCheckbox()
   }
 
   function onEventItemsShopUpdate(_p) {
@@ -1031,6 +1070,7 @@ shopData = [
       this.curPage = pagesObj.getChild(pageIdx).id
     }
     this.fillAircraftsList()
+    this.initMoveExpToHelicoptersCheckbox()
   }
 
   function goBack() {
@@ -1802,7 +1842,42 @@ shopData = [
     this.doWhenActiveOnce("fillPagesListBoxNoOpenGroup")
   }
 
+  function onMoveExpToHelicoptersChange(checkBoxObj) {
+    let isCheckboxSelected = checkBoxObj.getValue()
+    if (isCheckboxSelected == this.isMoveExpToHelicoptersEnabled())
+      return
+
+    if (isCheckboxSelected && !this.canResearchHelicoptersOfCurCountry()) {
+      checkBoxObj.setValue(false)
+      let cannotResearchReason = this.isAllCurCountryHelicoptersResearched()
+        ? loc("shop/all_helicopters_researched")
+        : loc("shop/no_helicopters_to_research")
+
+      this.msgBox(
+        "cannot_research_helicopters",
+        cannotResearchReason,
+        [["ok", function() {} ]],
+        "ok",
+        { cancel_fn = function() {} }
+      )
+      return
+    }
+
+    let destType = isCheckboxSelected ? ES_UNIT_TYPE_HELICOPTER : ES_UNIT_TYPE_INVALID
+    let blk = DataBlock()
+    blk.addStr("country", this.curCountry);
+    blk.setInt("destType", destType);
+    blk.setInt("srcType", ES_UNIT_TYPE_TANK);
+
+    ::g_tasker.addTask(charSendBlk("cln_set_dest_rp_unit_type", blk), { showProgressBox = true })
+
+  }
+
   hasModeList = @() (this.showModeList?.len() ?? 0) > 2
+
+  function isMoveExpToHelicoptersEnabled() {
+    return getDestinationRPUnitType?(this.curCountry, ES_UNIT_TYPE_TANK) == ES_UNIT_TYPE_HELICOPTER
+  }
 
   function initShowMode(tgtNavBar) {
     let obj = tgtNavBar.findObject("show_mode")

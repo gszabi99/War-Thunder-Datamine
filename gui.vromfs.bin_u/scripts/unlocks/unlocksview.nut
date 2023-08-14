@@ -1,8 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
-
 let { format } = require("string")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
@@ -19,7 +17,7 @@ let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost, debugLogVisibleByTi
 let { isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
-let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { getDecoratorById, getDecorator } = require("%scripts/customization/decorCache.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 
@@ -38,6 +36,43 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     ? UNLOCK.getMarkup(subunlockId, { showProgress = true })
     : ""
 }
+
+let function findPreviewablePrize(unlockCfg) {
+  if (unlockCfg.userLogId == null)
+    return null
+
+  let itemId = unlockCfg.unlockType == UNLOCKABLE_INVENTORY
+    ? unlockCfg.userLogId.tointeger()
+    : unlockCfg.userLogId
+  let item = ::ItemsManager.findItemById(itemId)
+  if (item == null)
+    return null
+
+  switch (item.iType) {
+    case itemType.VEHICLE:
+    case itemType.ATTACHABLE:
+    case itemType.SKIN:
+    case itemType.DECAL:
+      return item
+
+    case itemType.TROPHY:
+      if (item.getContent().len() != 1)
+        return null
+
+      let prize = item.getTopPrize()
+      if (prize?.unit != null)
+        return getAircraftByName(prize.unit)
+
+      if (prize?.resourceType != null && prize?.resource != null) {
+        let decType = ::g_decorator_type.getTypeByResourceType(prize.resourceType)
+        return getDecorator(prize.resource, decType)
+      }
+  }
+  return null
+}
+
+let canPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.canPreview() ?? false
+let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPreview()
 
 ::g_unlock_view <- {
   function fillUnlockManualOpenButton(cfg, obj) {
@@ -313,6 +348,10 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
   let showPrizesBtnObj = unlockObj.findObject("show_prizes_btn")
   showPrizesBtnObj.show(unlockConfig?.trophyId != null)
   showPrizesBtnObj.trophyId = unlockConfig?.trophyId
+
+  let previewPrizeBtnObj = unlockObj.findObject("preview_prize_btn")
+  previewPrizeBtnObj.show(canPreviewUnlockPrize(unlockConfig))
+  previewPrizeBtnObj.unlockId = unlockConfig.id
 }
 
 ::g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj) {
@@ -423,4 +462,8 @@ let function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
       log($"{cantPurchase} not purchase time. see time before.")
     }
   }
+}
+
+return {
+  doPreviewUnlockPrize
 }

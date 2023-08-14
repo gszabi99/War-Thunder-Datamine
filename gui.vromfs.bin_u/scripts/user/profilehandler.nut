@@ -4,7 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { deferOnce } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByType
@@ -55,6 +55,7 @@ let { getCachedDataByType, getDecorator, getDecoratorById, getCachedDecoratorsLi
 } = require("%scripts/customization/decorCache.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
+let { doPreviewUnlockPrize } = require("%scripts/unlocks/unlocksView.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -129,6 +130,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
   uncollapsedChapterName = null
   curAchievementGroupName = ""
   initialUnlockId = ""
+  previewUnlockId = ""
   filterCountryName = null
   filterUnitTag = ""
   initSkinId = ""
@@ -1319,6 +1321,12 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
       this.fillUnlockInfo(unlock, unlockObj)
   }
 
+  function onPrizePreview(obj) {
+    this.previewUnlockId = obj.unlockId
+    let unlockCfg = ::build_conditions_config(getUnlockById(obj.unlockId))
+    deferOnce(@() doPreviewUnlockPrize(unlockCfg))
+  }
+
   function showUnlockPrizes(obj) {
     let trophy = ::ItemsManager.findItemById(obj.trophyId)
     let content = trophy.getContent()
@@ -1511,6 +1519,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
      openData = {
         initialSheet = this.getCurSheet()
         initSkinId = this.initSkinId
+        initialUnlockId = this.previewUnlockId
         initDecalId = this.getCurDecal()?.id ?? ""
         filterCountryName = this.curFilter
         filterUnitTag = this.filterUnitTag
