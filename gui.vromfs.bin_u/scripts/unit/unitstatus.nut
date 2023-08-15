@@ -80,6 +80,8 @@ let function getBitStatus(unit, params = {}) {
     bitStatus = bit_unit_status.canResearch
   else if (unit.isRented())
     bitStatus = bit_unit_status.inRent
+  else if (unit.isCrossPromo)
+    return bitStatus
   else
     bitStatus = bit_unit_status.locked
 

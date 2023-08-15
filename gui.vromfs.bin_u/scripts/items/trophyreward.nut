@@ -25,6 +25,9 @@ let { getDecorator } = require("%scripts/customization/decorCache.nut")
       prize.timeHours <- getTblValue("timeHours", config)
       prize.numSpares <- getTblValue("numSpares", config)
     }
+    unit = function(config, prize) {
+      prize.numSpares <- config?.numSpares ?? 0
+    }
     resource = function(config, prize) {
       prize.resourceType <- getTblValue("resourceType", config)
     }

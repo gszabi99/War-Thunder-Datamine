@@ -34,7 +34,7 @@
             {
               "id": "complain_target",
               "text": "",
-              "style": "paragraph-indent:0;",
+              "style": "paragraph-indent:0",
               "overlayTextColor": "userlog"
             }
           ]
@@ -63,18 +63,31 @@
               "on_cancel_edit": "onTypeChange"
             }
           }
+        },
+        {
+          "size": "pw, 0.3@scrn_tgt",
+          "flow": "vertical",
+          "margin-top": "1@framePadding",
+          "EditBox": {
+            "id": "complaint_text",
+            "size": "pw, fh",
+            "multiline": "yes",
+            "max-len": "500",
+            "text": "",
+            "on_cancel_edit": "goBack",
+            "navigatorShortcuts": "yes"
+          },
+          "textareaNoTab": {
+            "id": "complaint_messages",
+            "margin-top": "1@framePadding",
+            "margin-bottom": "1@framePadding",
+            "size": "pw, 0.15@scrn_tgt",
+            "display": "hide",
+            "overflow-y": "auto",
+            "text": ""
+          }
         }
       ],
-      "EditBox": {
-        "id": "complaint_text",
-        "size": "pw, 0.3@scrn_tgt",
-        "margin-top": "1@framePadding",
-        "multiline": "yes",
-        "max-len": "500",
-        "text": "",
-        "on_cancel_edit": "goBack",
-        "navigatorShortcuts": "yes"
-      },
       "navBar": {
         "navRight": {
           "animated_wait_icon": {

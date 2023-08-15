@@ -493,7 +493,7 @@ global enum AIR_MOUSE_USAGE {
 ::USEROPT_LWS_IND_H_SCALE <- 420
 
 ::USEROPT_SHOW_ACTION_BAR <- 421
-
+::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG <- 422
 
 ::user_option_name_by_idx <- {}
 

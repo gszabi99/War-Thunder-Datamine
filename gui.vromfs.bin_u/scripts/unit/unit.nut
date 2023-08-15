@@ -79,6 +79,8 @@ local Unit = class {
    reqFeature = null //"" or null
    hideFeature = null //"" or null
    reqUnlock = null //"" or null
+   isCrossPromo = false
+   crossPromoBanner = null
 
    customImage = null //""
    customClassIco = null //""
@@ -248,6 +250,8 @@ local Unit = class {
 
     this.showOnlyWhenBought = !isVisibleUnbought
     this.showOnlyWhenResearch = shopUnitBlk?.showOnlyWhenResearch ?? false
+    this.isCrossPromo = !!shopUnitBlk?.isCrossPromo
+    this.crossPromoBanner = shopUnitBlk?.crossPromoBanner
 
     if (isVisibleUnbought && isString(shopUnitBlk?.hideForLangs))
       this.hideForLangs = split_by_chars(shopUnitBlk?.hideForLangs, "; ")

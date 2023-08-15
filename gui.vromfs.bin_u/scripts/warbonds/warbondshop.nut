@@ -236,8 +236,7 @@ let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nu
   }
 
   function updateButtons() {
-    if (hasFeature("BattlePass"))
-      this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
+    this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
 
     if (!this.updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return

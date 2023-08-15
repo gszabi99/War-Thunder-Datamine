@@ -9,6 +9,7 @@ let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode, get_local_mplayer } = require("mission")
+let time = require("%scripts/time.nut")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
   ::handlersManager.loadHandler(::gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
@@ -183,6 +184,7 @@ let chatLogToString = function(chatLog) {
   task = ""
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/complain.blk"
+  compliantCategory = ""
 
   function initScreen() {
     if (!this.scene || !this.pInfo || type(this.pInfo) != "table")
@@ -199,7 +201,7 @@ let chatLogToString = function(chatLog) {
     else
       this.chatLog = {}
 
-    local pName = platformModule.getPlayerName(this.pInfo.name)
+    local pName = platformModule.getPlayerName(this.pInfo?.playerName ?? this.pInfo.name)
     local clanTag
     if ("clanData" in this.pInfo) {
       let clanData = this.pInfo.clanData
@@ -234,10 +236,35 @@ let chatLogToString = function(chatLog) {
     this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
     typeObj.id = option.id
 
+    this.fillComplaintText()
     this.onTypeChange()
   }
 
-  onTypeChange = @() ::select_editbox(this.scene.findObject("complaint_text"))
+  function fillComplaintText() {
+    let complaint_messages = this.scene.findObject("complaint_messages")
+    let pi = this.pInfo
+    if(this.chatLog?.chatLog == null)
+      return
+    let messages = this.chatLog.chatLog
+      .filter(@(l) ::to_integer_safe(l.fromUid, 0, false) == pi.userId.tointeger())
+      .map(function(l) {
+        let fullName = ::g_contacts.getPlayerFullName(l.from, ::get_player_tag(l.from))
+        let messageTime = l?.time ?? 0
+        return "\n".join(l.msgs.map(@(msg) $"{messageTime > 0 ? time.secondsToString(messageTime, false) : ""} {fullName}: {msg}"))
+      })
+    complaint_messages.setValue("\n".join(messages, true))
+  }
+
+  function onTypeChange() {
+    ::select_editbox(this.scene.findObject("complaint_text"))
+
+    let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
+    let cValue = this.scene.findObject(option.id).getValue()
+    this.compliantCategory = (cValue in option.values) ? option.values[cValue] : option.values[0]
+    let complaint_messages = this.scene.findObject("complaint_messages")
+    let messages = complaint_messages.getValue()
+    complaint_messages.show(messages != "" && ["FOUL", "ABUSE", "HATE", "SPAM"].contains(this.compliantCategory))
+  }
 
   function collectThreadListForTribunal() {
     let threads = []
@@ -268,17 +295,14 @@ let chatLogToString = function(chatLog) {
       return
 
     let user_comment = clearBorderSymbolsMultiline(this.scene.findObject("complaint_text").getValue())
-    if (user_comment.len() < 10) {
+    if (user_comment.len() < 10 && !["FOUL", "ABUSE", "HATE", "SPAM"].contains(this.compliantCategory)) {
       this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return
     }
 
-    let option = ::get_option(::USEROPT_COMPLAINT_CATEGORY)
-    let cValue = this.scene.findObject(option.id).getValue()
-    local category = (cValue in option.values) ? option.values[cValue] : option.values[0]
-    if(category == "BOT2") //2 different reasons for the complaint are sent under the same BOT category
-      category = "BOT"
+    if(this.compliantCategory == "BOT2") //2 different reasons for the complaint are sent under the same BOT category
+      this.compliantCategory = "BOT"
     let details = ::save_to_json({
       own      = this.collectUserDetailsForTribunal(get_local_mplayer()),
       offender = this.collectUserDetailsForTribunal(this.pInfo),
@@ -289,17 +313,17 @@ let chatLogToString = function(chatLog) {
     this.chatLog.clanInfo <- this.clanInfo
     let strChatLog = chatLogToString(this.chatLog)
 
-    log("Send complaint " + category + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
+    log("Send complaint " + this.compliantCategory + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
     log("pInfo:")
     debugTableData(this.pInfo)
 
     this.taskId = -1
     if (("userId" in this.pInfo) && this.pInfo.userId)
-      this.taskId = ::send_complaint_by_uid(this.pInfo.userId, category, user_comment, strChatLog, details)
+      this.taskId = ::send_complaint_by_uid(this.pInfo.userId, this.compliantCategory, user_comment, strChatLog, details)
     else if ("name" in this.pInfo)
-      this.taskId = ::send_complaint_by_nick(this.pInfo.name, category, user_comment, strChatLog, details)
+      this.taskId = ::send_complaint_by_nick(this.pInfo.name, this.compliantCategory, user_comment, strChatLog, details)
     else
-      this.taskId = ::send_complaint(this.pInfo.id, category, user_comment, strChatLog, details)
+      this.taskId = ::send_complaint(this.pInfo.id, this.compliantCategory, user_comment, strChatLog, details)
     if (this.taskId >= 0) {
       ::set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))

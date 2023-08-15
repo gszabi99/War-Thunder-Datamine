@@ -50,6 +50,9 @@ local compareWeaponFunc = @(w1, w2) u.isEqual(w1?.trigger ?? "", w2?.trigger ?? 
   && u.isEqual(w1?.breechDP ?? "", w2?.breechDP ?? "")
   && u.isEqual(w1?.ammoDP ?? "", w2?.ammoDP ?? "")
   && u.isEqual(w1?.dm ?? "", w2?.dm ?? "")
+  && u.isEqual(w1?.turret?.head ?? "", w2?.turret?.head ?? "")
+  && u.isEqual(w1?.flash ?? "", w2?.flash ?? "")
+  && u.isEqual(w1?.emitter ?? "", w2?.emitter ?? "")
 
 const AFTERBURNER_CHAMBER = 3
 
@@ -1937,6 +1940,10 @@ let descByPartId = {
       }
       return result
     }
+    else if (partId == "gun" && weaponInfoBlk?.turret)
+      return this.getUnitWeaponList()
+        .filter(@(weapon) weapon?.turret?.head && weapon?.turret?.head == weaponInfoBlk?.turret?.head)
+        .reduce(@(bulletCount, weapon) bulletCount + getTblValue("bullets", weapon, 0), 0)
     else
       return getTblValue("bullets", weaponInfoBlk, 0)
   }

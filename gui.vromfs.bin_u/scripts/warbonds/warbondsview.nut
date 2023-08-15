@@ -59,16 +59,9 @@ enum WARBOND_SHOP_LEVEL_STATUS {
   getBattlePassStageByShopLevel = @(level) warbondsShopLevelByStages.value.findindex(
     @(l) level == l) ?? -1
 
-  function getLevelItemTooltipKey(status) {
-    if (!hasFeature("BattlePass"))
-      return "warbonds/shop/level/" + status + "/tooltip"
-
-    if (status == WARBOND_SHOP_LEVEL_STATUS.LOCKED)
-      return "warbonds/shop/level/locked/tooltip_battlepass"
-
-    return "warbonds/shop/level/current/tooltip"
-  }
-
+  getLevelItemTooltipKey = @(status) status == WARBOND_SHOP_LEVEL_STATUS.LOCKED
+    ? "warbonds/shop/level/locked/tooltip_battlepass"
+    : "warbonds/shop/level/current/tooltip"
 }
 
 ::g_warbonds_view.createProgressBox <- function createProgressBox(wbClass, placeObj, handler, needForceHide = false) {
@@ -125,8 +118,7 @@ enum WARBOND_SHOP_LEVEL_STATUS {
 
 ::g_warbonds_view.getLevelItemData <- function getLevelItemData(wbClass, level, forcePosX = null, params = {}) {
   let status = this.getLevelStatus(wbClass, level)
-  let reqTasks = hasFeature("BattlePass") ? this.getBattlePassStageByShopLevel(level)
-    : wbClass.getShopLevelTasks(level)
+  let reqTasks = this.getBattlePassStageByShopLevel(level)
 
   local posX = forcePosX
   if (!posX) {

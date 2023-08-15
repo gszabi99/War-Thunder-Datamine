@@ -969,7 +969,7 @@ let prizeViewConfig = {
     let color = ::getUnitClassColor(unitId)
     local name = colorize(color, ::getUnitName(unitId))
     if (isRent)
-      name += this._getUnitRentComment(p.timeHours, p.numSpares, true, getGiftSparesCost(unitId))
+      name = "".concat(name, this._getUnitRentComment(getAircraftByName(unitId), p.timeHours, p.numSpares, true))
     units.append(name)
   }
 
@@ -1055,9 +1055,9 @@ let prizeViewConfig = {
   let receiveOnce = params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"
   local infoText = ""
   if (rentTimeHours > 0)
-    infoText = this._getUnitRentComment(rentTimeHours, numSpares, false, getGiftSparesCost(unitName))
+    infoText = this._getUnitRentComment(unit, rentTimeHours, numSpares, false)
   else if (rentTimeHours == 0 && numSpares > 0)
-    infoText = this._getUnitSparesComment(numSpares, getGiftSparesCost(unit))
+    infoText = this._getUnitSparesComment(unit, numSpares)
   if (!receivedPrizes && isBought)
     infoText += (infoText.len() ? "\n" : "") + colorize("badTextColor", loc(receiveOnce))
 
@@ -1094,19 +1094,21 @@ let prizeViewConfig = {
   return this.getViewDataUnit(unitName, params, timeHours, numSpares)
 }
 
-::PrizesView._getUnitRentComment <- function _getUnitRentComment(rentTimeHours = 0, numSpares = 0, short = false, spareCost = 0) {
+::PrizesView._getUnitRentComment <- function _getUnitRentComment(unit, rentTimeHours = 0, numSpares = 0, short = false) {
   if (rentTimeHours == 0)
     return ""
   let timeStr = colorize("userlogColoredText", time.hoursToString(rentTimeHours))
   local text = short ? timeStr :
     colorize("activeTextColor", loc("shop/rentFor", { time =  timeStr }))
   if (numSpares > 0)
-    text = "".concat(text, this._getUnitSparesComment(numSpares, spareCost))
+    text = "".concat(text, this._getUnitSparesComment(unit, numSpares))
   return short ? loc("ui/parentheses/space", { text = text }) : text
 }
 
-::PrizesView._getUnitSparesComment <- function _getUnitSparesComment(numSpares, spareCost) {
-  return colorize("grayOptionColor", loc("mainmenu/giftSpares", { num = numSpares, cost = Cost().setGold(spareCost * numSpares) }))
+::PrizesView._getUnitSparesComment <- function _getUnitSparesComment(unit, numSpares) {
+  let spareCost = getGiftSparesCost(unit)
+  let giftSparesLoc = unit.isUsable() ? "mainmenu/giftSparesAdded" : "mainmenu/giftSpares"
+  return colorize("grayOptionColor", loc(giftSparesLoc, { num = numSpares, cost = Cost().setGold(spareCost * numSpares) }))
 }
 
 ::PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params) {

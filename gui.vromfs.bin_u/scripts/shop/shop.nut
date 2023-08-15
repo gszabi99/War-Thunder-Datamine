@@ -91,7 +91,7 @@ shopData = [
 
   shopData = null
   slotbarActions = [
-    "research", "find_in_market", "buy", "take", "sec_weapons", "weapons",
+    "research", "researchCrossPromo", "find_in_market", "buy", "take", "sec_weapons", "weapons",
     "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
   ]
   needUpdateSlotbar = false

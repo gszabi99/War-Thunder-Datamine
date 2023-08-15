@@ -766,16 +766,13 @@ let function compareBattleTasks(a, b) {
 
     local reward = getUnlockRewardsText(config)
     let difficulty = getDifficultyTypeByTask(task)
-    if (hasFeature("BattlePass")) {
-      let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
-
-      reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
-      rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
-    }
+    let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
+    reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
+    rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
 
     if (difficulty == MEDIUM_TASK) {
       let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
-      if (specialTaskAward?.awardType.hasIncreasingLimit()) {
+      if (specialTaskAward?.awardType.hasIncreasingLimit) {
         let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
         reward = reward != "" ? $"{reward}\n{rewardText}" : rewardText
       }

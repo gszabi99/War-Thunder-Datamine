@@ -279,6 +279,7 @@ let function get_text_urls_data(text) {
         gui_scene.appendWithBlk(holderObj, blkText, handlerObj)
 
         if (delayedButtons > 0) {
+          msgbox.findObject("msg_box_timer").setUserData(handlerObj)
           holderObj.show(false)
           holderObj.enable(false)
           handlerObj.showButtonsTimer = delayedButtons

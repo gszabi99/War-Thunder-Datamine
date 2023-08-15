@@ -8,6 +8,9 @@ let { updateContactsGroups, predefinedContactsGroupToWtGroup, GAME_GROUP_NAME
 } = require("%scripts/contacts/contactsManager.nut")
 let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
 } = require("%scripts/matching/api.nut")
+let { register_command } = require("console")
+let { get_time_msec } = require("dagor.time")
+let { chooseRandom } = require("%sqstd/rand.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -249,6 +252,42 @@ addListenersWithoutEnv({
 
 matchingRpcSubscribe("mpresence.notify_presence_update", onUpdateContactsCb)
 matchingRpcSubscribe("mpresence.on_added_to_contact_list", @(p) addInvitesToFriend([p?.user]))
+
+//----------- Debug Block -----------------
+let fakeList = Watched([])
+fakeList.subscribe(function(f) {
+  updatePresencesByList(f)
+  updateContactsGroups({ [$"#{GAME_GROUP_NAME}#approved"] = f })
+  broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_FRIENDLIST })
+})
+let function genFake(count) {
+  let fake = array(count)
+    .map(@(_, i) {
+      nick = $"stranger{i}",
+      userId = (2000000000 + i).tostring(),
+      presences = { online = (i % 2) == 0 }
+    })
+  let startTime = get_time_msec()
+  fakeList(fake)
+  logC($"Friends update time: {get_time_msec() - startTime}")
+}
+register_command(genFake, "contacts.generate_fake")
+
+let function changeFakePresence(count) {
+  if (fakeList.value.len() == 0) {
+    logC("No fake contacts yet. Generate them first")
+    return
+  }
+  let startTime = get_time_msec()
+  for(local i = 0; i < count; i++) {
+    let f = chooseRandom(fakeList.value)
+    f.presences.online = !f.presences.online
+    updatePresencesByList([f])
+  }
+  broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = EPL_FRIENDLIST })
+  logC($"{count} friends presence update by separate events time: {get_time_msec() - startTime}")
+}
+register_command(changeFakePresence, "contacts.change_fake_presence")
 
 return {
   searchContactsResults

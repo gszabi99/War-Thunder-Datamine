@@ -448,6 +448,7 @@ let getActions = function(contact, params) {
         let config = {
           userId = uid,
           name = name,
+          playerName = params.playerName,
           clanTag = clanTag,
           roomId = roomId,
           roomName = roomData ? roomData.getRoomName() : ""

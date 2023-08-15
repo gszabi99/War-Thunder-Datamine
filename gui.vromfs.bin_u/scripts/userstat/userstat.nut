@@ -152,7 +152,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 
-let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && hasFeature("BattlePass") // userstat used only for battle pass.
+let canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight()
 
 local validateTaskTimer = -1
 let function validateUserstatData(_dt = 0) {

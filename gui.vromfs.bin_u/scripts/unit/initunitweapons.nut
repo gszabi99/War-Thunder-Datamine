@@ -5,6 +5,7 @@ let { split_by_chars } = require("string")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
 let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { getWeaponsByTypes } = require("%scripts/weaponry/weaponryPresets.nut")
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",
@@ -49,10 +50,14 @@ let function initPresetParams(weapon, blk = null) {
 }
 
 let function initCustomPresetParams(unit, weapon) {
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  let hasUnitCountermeasures = unitBlk?.commonWeapons == null ? false
+    : getWeaponsByTypes(unitBlk, unitBlk.commonWeapons).findvalue (@(w) w.trigger == "countermeasures") != null
+
   let { weapons = null, defaultCommonPresetMassPerSec = 0 } = ::get_wpcost_blk()?[unit.name]
   local bombsNbr = 0
   local massPerSecValue = defaultCommonPresetMassPerSec
-  foreach (w in  (weapon?.weaponsBlk ? weapon.weaponsBlk % "Weapon" : [])) {
+  foreach (w in (weapon?.weaponsBlk ? weapon.weaponsBlk % "Weapon" : [])) {
     let pWeapons = (weapons?.custom_presets ? weapons.custom_presets % "slot" : [])
       .findvalue(@(v) v.index == w.slot)[w.preset]
     if (pWeapons)
@@ -63,6 +68,7 @@ let function initCustomPresetParams(unit, weapon) {
           massPerSecValue += blk.mass_per_sec * count
         foreach (p in weaponWpCostProperties)
           weapon[p] <- weapon?[p] ?? blk?[p]
+        weapon["hasCountermeasures"] = hasUnitCountermeasures
         if ((weapon.weaponmask & WeaponMask.ALL_BOMBS_MASK) != 0)
           bombsNbr += (blk?.totalBombCount ?? 0) * count
       })

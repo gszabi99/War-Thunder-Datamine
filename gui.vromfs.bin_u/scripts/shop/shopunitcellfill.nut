@@ -252,7 +252,7 @@ let getUnitStatusTbl = function(unit, params) {
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = ::isUnitBroken(unit)
     isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
-      && !::isUnitsEraUnlocked(unit)
+      && !::isUnitsEraUnlocked(unit) && !unit.isCrossPromo
     needInService       = isUsable
     isMounted           = isUsable && ::isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)

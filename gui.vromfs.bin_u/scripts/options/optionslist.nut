@@ -207,6 +207,7 @@ let getMainOptions = function() {
       [::USEROPT_HUD_VISIBLE_ORDERS, "switchbox"],
       [::USEROPT_HUD_VISIBLE_REWARDS_MSG, "switchbox"],
       [::USEROPT_HUD_VISIBLE_KILLLOG, "switchbox"],
+      [::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, "switchbox"],
       [::USEROPT_HUD_VISIBLE_STREAKS, "switchbox"],
       [::USEROPT_HUD_VISIBLE_CHAT_PLACE, "switchbox"],
       [::USEROPT_SHOW_ACTION_BAR, "switchbox"],

@@ -53,6 +53,7 @@ local mpChatModel = {
       msgColor = message.msgColor != "" ? ::get_main_gui_scene().getConstantValue(cutPrefix(message.msgColor, "@")) : ""
       mode = message.mode
       sTime = message.sTime
+      time = message.time
     })
     return chatLogFormatForBanhammer().__merge({ chatLog = logObj })
   }

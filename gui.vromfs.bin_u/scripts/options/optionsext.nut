@@ -1633,7 +1633,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
     case ::USEROPT_COMPLAINT_CATEGORY:
       descr.id = "complaint_category"
-      descr.values = ["FOUL", "ABUSE", "TEAMKILL", "BOT", "BOT2", "SPAM", "OTHER"]
+      descr.values = ["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "SPAM", "OTHER"]
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++)
         descr.items.append("#charServer/ban/reason/" + descr.values[i])
@@ -1915,6 +1915,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.optionCb <- "onChangedPartHudVisible"
+      defaultValue = true
+      break
+
+      case ::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG:
+      descr.id = "hud_show_names_in_killlog"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
       defaultValue = true
       break
 
@@ -3252,7 +3259,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           text = loc("options/auto")
           name = "auto"
           image = null
-          tooltip = null
+          tooltip = loc("options/auto/tooltip", {
+            clusters = ", ".join(::g_clusters.clusters_info.map(@(c) ::g_clusters.getClusterLocName(c.name)))
+          })
           isUnstable = false
           isDefault = false
           isAuto = true
@@ -5262,6 +5271,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_HUD_VISIBLE_REWARDS_MSG:
     case ::USEROPT_HUD_VISIBLE_STREAKS:
     case ::USEROPT_HUD_VISIBLE_KILLLOG:
+    case ::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG:
     case ::USEROPT_HUD_VISIBLE_CHAT_PLACE:
       if (descr.controlType == optionControlType.LIST) {
         if (type(descr.values) != "array")

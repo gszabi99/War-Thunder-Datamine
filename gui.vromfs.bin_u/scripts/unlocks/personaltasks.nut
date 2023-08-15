@@ -16,15 +16,18 @@ let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlo
 const NUM_SUBUNLOCK_COLUMNS = 3
 
 let function getBattleTasksView() {
-  let gmName = ::game_mode_manager.getCurrentGameModeId()
-  let items = []
+  let view = { items = [] }
+  let gmName = ::SessionLobby.getRoomEvent()?.name
+  if (gmName == null)
+    return view
+
   foreach (task in ::g_battle_tasks.getCurBattleTasksByGm(gmName)) {
     let cfg = ::g_battle_tasks.generateUnlockConfigByTask(task)
     let item = ::g_battle_tasks.generateItemView(cfg, { isInteractive = false })
     item.isSelected <- !::g_battle_tasks.isTaskDone(task)
-    items.append(item)
+    view.items.append(item)
   }
-  return { items }
+  return view
 }
 
 local isBpTasksUpdated = false
@@ -62,7 +65,7 @@ let function getFavUnlocksView() {
     let progressData = cfg.getProgressBarData()
     let mainCondition = getUnlockMainCondDescByCfg(cfg)
     let hasProgressBar = progressData.show && mainCondition != ""
-    let snapshot = getUnlockSnapshotText(cfg)
+    let snapshot = hasProgressBar ? getUnlockSnapshotText(cfg) : ""
     let hasLock = ::g_unlock_view.needShowLockIcon(cfg)
     let imageCfg = ::g_unlock_view.getUnlockImageConfig(cfg)
     let image = LayersIcon.getIconData(imageCfg.style, imageCfg.image,
@@ -135,9 +138,10 @@ let class PersonalTasksModal extends ::gui_handlers.BaseGuiHandlerWT {
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", getTabsView())
     this.guiScene.replaceContentFromText(tabList, data, data.len(), this)
 
-    let gmName = ::game_mode_manager.getCurrentGameModeId()
-    let hasBattleTasks = ::g_battle_tasks.getCurBattleTasksByGm(gmName).len() > 0
-    tabList.setValue(hasBattleTasks ? 0 : 1) // if no tasks select next one
+    let gmName = ::SessionLobby.getRoomEvent()?.name
+    let hasBattleTasks = gmName != null
+      && ::g_battle_tasks.getCurBattleTasksByGm(gmName).len() > 0
+    tabList.setValue(hasBattleTasks ? 0 : 1) // if no tasks select next tab
   }
 
   function onTabChange(obj) {

@@ -172,7 +172,7 @@ let WarbondAward = class {
       return false
 
     let maxBoughtCount = this.awardType.getMaxBoughtCount(this.warbondWeak, this.blk)
-    return !this.awardType.hasIncreasingLimit() && maxBoughtCount > 0
+    return !this.awardType.hasIncreasingLimit && maxBoughtCount > 0
       && this.getLeftBoughtCount() == 0
   }
 
@@ -181,7 +181,7 @@ let WarbondAward = class {
       return ""
 
     let maxBoughtCount = this.awardType.getMaxBoughtCount(this.warbondWeak, this.blk)
-    let hasIncreasingLimit = this.awardType.hasIncreasingLimit()
+    let hasIncreasingLimit = this.awardType.hasIncreasingLimit
     if (!hasIncreasingLimit && maxBoughtCount <= 0)
       return ""
     let leftAmount = this.getLeftBoughtCount()

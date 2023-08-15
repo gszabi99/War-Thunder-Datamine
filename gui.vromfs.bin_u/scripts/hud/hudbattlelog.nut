@@ -312,14 +312,30 @@ enum BATTLE_LOG_FILTER {
     return "\n".join(lines, true)
   }
 
+  function buildPlayerUnitName(player, unitNameLoc = "") {
+    if (unitNameLoc == "") {
+      let unitId = player.aircraftName
+      if (unitId != "")
+        unitNameLoc = loc($"{unitId}_1")
+    }
+    return colorize(::get_mplayer_color(player), unitNameLoc)
+  }
+
   function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0) {
     let player = get_mplayer_by_id(playerId)
-    if (player && is_replay_playing()) {
+    if(player == null)
+      return colorize(::get_team_color(teamId), unitNameLoc)
+
+    if (is_replay_playing()) {
       player.isLocal = spectatorWatchedHero.id == player.id
       player.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
-    return player ? ::build_mplayer_name(player, true, true, true, unitNameLoc) : // Player
-      colorize(::get_team_color(teamId), unitNameLoc) // AI
+
+    let showNamesInKilllog = ::get_gui_option_in_mode(::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, ::OPTIONS_MODE_GAMEPLAY, true)
+    if(showNamesInKilllog)
+      return ::build_mplayer_name(player, true, true, true, unitNameLoc)
+
+    return this.buildPlayerUnitName(player, unitNameLoc)
   }
 
   function getUnitTypeEx(msg, isVictim = false) {
@@ -371,7 +387,7 @@ enum BATTLE_LOG_FILTER {
 
   function msgMultiplayerDmgToText(msg, iconic = false) {
     let what = iconic ? this.getActionTextIconic(msg) : this.getActionTextVerbal(msg)
-    let who  = this.getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? ::my_user_name, msg?.team ?? Team.A)
+    let who = this.getUnitNameEx(msg?.playerId ?? ::my_user_id_int64, msg?.unitNameLoc ?? ::my_user_name, msg?.team ?? Team.A)
     let whom = this.getUnitNameEx(msg?.victimPlayerId ?? ::my_user_id_int64, msg?.victimUnitNameLoc ?? ::my_user_name, msg?.victimTeam ?? Team.B)
 
     let msgAction = msg?.action ?? "kill"

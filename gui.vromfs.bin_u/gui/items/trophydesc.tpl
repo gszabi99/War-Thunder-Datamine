@@ -251,6 +251,11 @@ tdiv {
     <</tooltipId>>
     <</isTooltipByHold>>
   }
+  <<#isCrossPromo>>
+  textareaNoTab {
+    text:t='#mainmenu/trophyReward/crossPromoComment'
+  }
+  <</isCrossPromo>>
   <<#commentText>>
   _newline{ size:t='0' }
   textareaNoTab {

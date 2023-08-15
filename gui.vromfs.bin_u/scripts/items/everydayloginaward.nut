@@ -639,9 +639,6 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function initExpTexts() {
-    if (!hasFeature("BattlePass"))
-      return
-
     this.scene.findObject("today_login_exp").setValue(stashBhvValueConfig([{
       watch = todayLoginExp
       updateFunc = Callback(@(obj, value) this.updateTodayLoginExp(obj, value), this)
@@ -653,9 +650,6 @@ let class EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateExpTexts() {
-    if (!hasFeature("BattlePass"))
-      return
-
     this.updateTodayLoginExp(this.scene.findObject("today_login_exp"), todayLoginExp.value)
     this.updateLoginStreakExp(this.scene.findObject("login_streak_exp"), loginStreak.value)
   }

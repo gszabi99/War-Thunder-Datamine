@@ -106,7 +106,7 @@ let function getStageViewData(stageData, idxOnPage) {
     previewButton = getPreviewBtnView(item)
     isFree = isFree
     isFirst = idxOnPage == 0
-    warbondShopLevelImage = currentWarbond != null && warbondsShopLevel != null
+    warbondShopLevelImage = currentWarbond != null && (warbondsShopLevel ?? 0) > 0
       ? ::g_warbonds_view.getLevelItemMarkUp(currentWarbond, warbondsShopLevel, "0", {
         hasOverlayIcon = false })
       : ""

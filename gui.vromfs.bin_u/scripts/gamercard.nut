@@ -219,7 +219,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
     gc_warpoints = hasFeature("WarpointsInMenu")
     gc_PremiumAccount = hasFeature("showPremiumAccount")
       && ((canSpendGold && featureEnablePremiumPurchase) || hasPremiumAccount)
-    gc_BattlePassProgress = hasFeature("BattlePass")
+    gc_BattlePassProgress = true
     gc_dropdown_premium_button = featureEnablePremiumPurchase
     gc_dropdown_shop_eagles_button = canSpendGold
     gc_free_exp = hasFeature("SpendGold")

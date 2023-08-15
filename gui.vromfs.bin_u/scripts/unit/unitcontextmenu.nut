@@ -25,6 +25,7 @@ let { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("%scripts/unit
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
+let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -206,7 +207,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
                         : isSpecial || canBuyNotResearchedUnit ? "#ui/gameuiskin#shop_warpoints_premium.svg"
                             : "#ui/gameuiskin#shop_warpoints.svg"
 
-      showAction = inMenu && (canBuyIngame || canBuyOnline || forceShowBuyButton)
+      showAction = inMenu && !unit.isCrossPromo && (canBuyIngame || canBuyOnline || forceShowBuyButton)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
         actionFunc = @() ::OnlineShopModel.showUnitGoods(unit.name, "unit_context_menu")
@@ -273,6 +274,11 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         ::queues.checkAndStart(@() ::gui_start_testflight({ unit, shouldSkipUnitCheck }),
           null, "isCanNewflight")
       }
+    }
+    else if (action == "researchCrossPromo") {
+      actionText = loc("mainmenu/btnResearch")
+      actionFunc = @() openCrossPromoWnd(unit.crossPromoBanner)
+      showAction = inMenu && unit.isCrossPromo && !unit.isUsable()
     }
     else if (action == "info") {
       actionText = loc("mainmenu/btnAircraftInfo")

@@ -42,6 +42,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
   showDropChance = false
   showTillValue = false
   showNameAsSingleAward = false
+  isCrossPromo = false
 
   beginDate = null
   endDate = null
@@ -61,6 +62,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     this.showDropChance = blk?.showDropChance ?? false
     this.showTillValue = blk?.showTillValue ?? false
     this.showNameAsSingleAward = blk?.showNameAsSingleAward ?? false
+    this.isCrossPromo = blk?.isCrossPromo
 
     if (blk?.beginDate && blk?.endDate) {
       let { startTime, endTime } = calculateCorrectTimePeriodYears(

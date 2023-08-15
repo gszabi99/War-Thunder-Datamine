@@ -65,7 +65,7 @@ local getBoughtCountByAmount = @(warbond, blk)
   showAvailableAmount = true
 
   isReqSpecialTasks = false
-  hasIncreasingLimit = @() false
+  hasIncreasingLimit = false
   canBuyReasonLocId = @(_warbond, _blk) this.isReqSpecialTasks ? "item/specialTasksPersonalUnlocks/purchaseRestriction" : ""
   userlogResourceTypeText = ""
   getUserlogBuyText = function(blk, priceText) {
@@ -295,22 +295,21 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getLayeredImage = @(_blk, warbond) warbond.getLayeredIconStyle()
     getNameText = @(blk) loc("item/" + blk.name)
     getDescText = @(blk) loc("item/" + blk.name + "/desc")
-    hasIncreasingLimit = @() hasFeature("BattlePass")
+    hasIncreasingLimit = true
     canBuy = @(warbond, blk) ::warbonds_can_buy_battle_task(blk.name)
-      && (!this.hasIncreasingLimit() || getPurchaseLimitWb(warbond) > this.getBoughtCount(warbond, blk))
-    getMaxBoughtCount = @(warbond, blk) this.hasIncreasingLimit() ? getPurchaseLimitWb(warbond) : blk?.maxBoughtCount ?? 0
+      && (getPurchaseLimitWb(warbond) > this.getBoughtCount(warbond, blk))
+    getMaxBoughtCount = @(warbond, _blk) getPurchaseLimitWb(warbond)
     isReqSpecialTasks = true
     canBuyReasonLocId = @(warbond, blk)
       ::g_battle_tasks.hasInCompleteHardTask.value
         ? "item/specialTasksPersonalUnlocks/purchaseRestriction"
-        : this.hasIncreasingLimit() && (getPurchaseLimitWb(warbond) <= this.getBoughtCount(warbond, blk))
+        : (getPurchaseLimitWb(warbond) <= this.getBoughtCount(warbond, blk))
            ? "item/specialTasksPersonalUnlocks/limitRestriction"
            : ""
-    getTooltipId = @(blk, warbond) SPECIAL_TASK.getTooltipId(blk.name,
-                                                                              {
-                                                                                wbId = warbond.id,
-                                                                                wbListId = warbond.listId
-                                                                              })
+    getTooltipId = @(blk, warbond) SPECIAL_TASK.getTooltipId(blk.name, {
+      wbId = warbond.id,
+      wbListId = warbond.listId
+    })
   },
 },
 null, "id")

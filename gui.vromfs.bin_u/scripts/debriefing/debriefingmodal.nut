@@ -2519,7 +2519,7 @@ let statTooltipColumnParamByType = {
     let isReplayReady = hasFeature("ClientReplay") && is_replay_present() && is_replay_turned_on()
     let player = this.getSelectedPlayer()
     let buttonsList = {
-      btn_view_replay = isAnimDone && isReplayReady && !this.isMp
+      btn_view_replay = isAnimDone && isReplayReady
       btn_save_replay = isAnimDone && isReplayReady && !is_replay_saved()
       btn_user_options = isAnimDone && (this.curTab == "players_stats") && player && !player.isBot && ::show_console_buttons
       btn_view_highlights = isAnimDone && ::is_highlights_inited()
