@@ -106,6 +106,88 @@
       "hidden": true
     },
     {
+      "id": "promo_quest_end_battle_1",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 5
+      }
+    },
+    {
+      "id": "promo_quest_end_battle_2",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 10
+      }
+    },
+    {
+      "id": "promo_quest_win",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 3
+      }
+    },
+    {
+      "id": "promo_quest_first_place_score",
+      "type": "award",
+      "loadFromLinkedAccount": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 3
+      }
+    },
+    {
+      "id": "gift_cardicon_tanker_us_p_trophy",
+      "userLogId": "cardicon_tanker_us_p_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "locId": "item/gift_wtm_crosspromo_avatar_trophy",
+      "locDescId": "gift_wtm_crosspromo_avatar_trophy/desc",
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_end_battle_1"
+      }
+    },
+    {
+      "id": "gift_promo_decal_trophy",
+      "userLogId": "promo_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_end_battle_2"
+      }
+    },
+    {
+      "id": "gift_us_m4_sherman_promo_trophy",
+      "userLogId": "us_m4_sherman_promo_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_first_place_score"
+      }
+    },
+    {
+      "id": "gift_jp_destroyer_hatsuzuki_trophy",
+      "userLogId": "jp_destroyer_hatsuzuki_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "promo_quest_win"
+      }
+    },
+    {
       "id": "title_high_roller",
       "type": "title",
       "chapter": "title",
@@ -3634,6 +3716,11 @@
     },
     {
       "id": "cardicon_tanker_us_p",
+      "type": "pilot",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "cardicon_dobrinya",
       "type": "pilot",
       "hideUntilUnlocked": true
     },
