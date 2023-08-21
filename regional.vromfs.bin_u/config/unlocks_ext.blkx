@@ -20251,18 +20251,16 @@
             "hideValue": "tank_random_battles_simulation_1",
             "locParamName": "conditions/missionType",
             "locValuePrefix": "missions/short/"
-          }
-        ],
-        "condition": [
+          },
           {
             "type": "battlepassLevel",
             "level": 60
-          },
-          {
-            "type": "battlepassSeason",
-            "season": 12
           }
-        ]
+        ],
+        "condition": {
+          "type": "battlepassSeason",
+          "season": 12
+        }
       }
     },
     {
@@ -32697,6 +32695,35 @@
       }
     },
     {
+      "id": "store_boosters_universal_spare",
+      "type": "challenge",
+      "hidden": true
+    },
+    {
+      "id": "shop_universal_spare_20_trophy_gift",
+      "userLogId": "shop_universal_spare_20_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "store_boosters_universal_spare"
+      }
+    },
+    {
+      "id": "shop_boosters_50_5mp_trophy_gift",
+      "userLogId": "shop_boosters_50_5mp_trophy",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "store_boosters_universal_spare"
+      }
+    },
+    {
       "id": "lp_wt_bonus_100k_sl_store",
       "type": "challenge",
       "hidden": true
@@ -37093,6 +37120,7 @@
       "group": "pl_armed_forces",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -37135,6 +37163,7 @@
       "group": "airborne_day",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
