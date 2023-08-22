@@ -44,7 +44,7 @@ local function getSlotActionFunctionName(unit, params) {
     && (::canResearchUnit(unit) || isInResearch))
     return "mainmenu/btnResearch"
   if(unit.isCrossPromo && !unit.isUsable())
-    return "mainmenu/btnResearch"
+    return "sm_conditions"
   if (isInResearch && hasFeature("SpendGold") && !isSquadronVehicle)
     return "mainmenu/btnConvert"
 

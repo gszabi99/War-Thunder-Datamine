@@ -276,7 +276,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       }
     }
     else if (action == "researchCrossPromo") {
-      actionText = loc("mainmenu/btnResearch")
+      actionText = loc("sm_conditions")
       actionFunc = @() openCrossPromoWnd(unit.crossPromoBanner)
       showAction = inMenu && unit.isCrossPromo && !unit.isUsable()
     }
