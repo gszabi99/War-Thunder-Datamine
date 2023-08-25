@@ -374,7 +374,7 @@
     "hp": 1000.0,
     "hull": {
       "body_front_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 7.0
       },
       "body_top_dm": {
         "armorThickness": 7.0
@@ -546,7 +546,7 @@
       "hp": 40.0,
       "genericDamageMult": 3.0,
       "pressureDamageMult": 1.0,
-      "napalmDamageMult": 0.0,
+      "napalmDamageMult": 1.0,
       "ignoreSolidDimension": true,
       "driver_dm": {},
       "loader_dm": {},
@@ -1734,6 +1734,22 @@
     ]
   },
   "MetaParts": {
+    "open_fightning_compartment": {
+      "part": [
+        "driver_dm",
+        "loader_dm",
+        "gunner_dm",
+        "commander_dm",
+        "machine_gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
+        "loader_01_dm",
+        "loader_02_dm"
+      ],
+      "effect": {
+        "pressureOpen": true
+      }
+    },
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
@@ -1748,14 +1764,6 @@
         "loader_01_dm",
         "loader_02_dm",
         "cannon_breech_dm",
-        "radio_station_dm",
-        "drive_turret_v_dm",
-        "drive_turret_h_dm",
-        "drive_turret_v_01_dm",
-        "drive_turret_h_01_dm",
-        "drive_turret_v_02_dm",
-        "drive_turret_h_02_dm",
-        "transmission_dm",
         "ammo_turret_dm",
         "ammo_turret_01_dm",
         "ammo_turret_02_dm",
@@ -1867,6 +1875,21 @@
         "ammo_body_53_dm",
         "ammo_body_54_dm",
         "ammo_body_55_dm",
+        "ammo_body_56_dm",
+        "ammo_body_57_dm",
+        "ammo_body_58_dm",
+        "ammo_body_59_dm",
+        "ammo_body_60_dm",
+        "ammo_body_61_dm",
+        "ammo_body_62_dm",
+        "ammo_body_63_dm",
+        "ammo_body_64_dm",
+        "ammo_body_65_dm",
+        "ammo_body_66_dm",
+        "ammo_body_67_dm",
+        "ammo_body_68_dm",
+        "ammo_body_69_dm",
+        "ammo_body_70_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",
@@ -1906,7 +1929,35 @@
         "ammo_body_r_17_dm",
         "ammo_body_r_18_dm",
         "ammo_body_r_19_dm",
-        "ammo_body_r_20_dm"
+        "ammo_body_r_20_dm",
+        "radiator_dm",
+        "radiator_l_dm",
+        "radiator_r_dm",
+        "radio_station_dm",
+        "drive_turret_v_dm",
+        "drive_turret_h_dm",
+        "drive_turret_v_01_dm",
+        "drive_turret_h_01_dm",
+        "drive_turret_v_02_dm",
+        "drive_turret_h_02_dm",
+        "engine_dm",
+        "transmission_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm"
       ],
       "effect": [
         {
@@ -2023,8 +2074,15 @@
       "trackPhysMat": "wheel"
     },
     "collisionProps": {
-      "cls_turret": "convex_hull",
-      "cls_body": "convex_hull"
+      "cls_turret_01": "convex_hull",
+      "cls_turret_02": "convex_hull",
+      "cls_turret_03": "convex_hull",
+      "cls_body_01": "convex_hull",
+      "cls_body_02": "convex_hull",
+      "cls_body_03": "convex_hull",
+      "cls_body_04": "convex_hull",
+      "cls_body_05": "convex_hull",
+      "cls_body_06": "convex_hull"
     },
     "engine": {
       "horsePowers": 105.0,
