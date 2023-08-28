@@ -153,11 +153,13 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
 
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   var hit_slot_id = -1
+  var cluster_center_pos = float3(0.0f);
   for slot_id in slots_range.x..slots_range.y
     set_slot_enabled(unit, stowage_id, slot_id, AmmoSlotEnabledState DISABLED_SIMPLE) <| v
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE, false)
+    cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
     canLoadToBreach=true,
@@ -180,7 +182,7 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
     penetration = powder_mass_to_splash.penetration |> interpolate_tab_float_interpolate(explosion_params.powderMass),
     damage = powder_mass_to_splash.damage |> interpolate_tab_float_interpolate(explosion_params.powderMass),
     damageTypeId = explosion_params.splashDamageTypeId,
-    pos = calc_slot_pos(hit_slot_id) <| v
+    pos = cluster_center_pos / float(slots_range.y - slots_range.x)
   ]])
 
   sendEvent(eid, [[EventFireSystemStartBurnWithOffender
@@ -211,11 +213,13 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
 
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   var hit_slot_id = -1
+  var cluster_center_pos = float3(0.0f);
   for slot_id in slots_range.x..slots_range.y
     set_slot_enabled(unit, stowage_id, slot_id, AmmoSlotEnabledState DISABLED_SIMPLE) <| v
     if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE)
       hit_slot_id = slot_id
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE, false)
+    cluster_center_pos += calc_slot_pos(slot_id) <| v
   sendEventImmediate(eid, [[EventAmmoStowageSetup
     netSyncIfRequired=false,
     canLoadToBreach=true,
@@ -238,7 +242,7 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
     packedPartId=hit_slot_part_id.packed,
     stowageId=stowage_id,
     clusterId=cluster_id,
-    pos=calc_slot_pos(hit_slot_id) <| v,
+    pos=cluster_center_pos / float(slots_range.y - slots_range.x),
     strengthEquivalent=explosion_params.strengthEquivalent,
     brisanceEquivalent=explosion_params.brisanceEquivalent,
     shellMass=explosion_params.shellMass,

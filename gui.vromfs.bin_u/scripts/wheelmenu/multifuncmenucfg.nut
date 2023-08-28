@@ -283,6 +283,7 @@ let cfg = {
       { shortcut = [ "ID_BAY_DOOR" ], enable = hasBayDoor }
       { shortcut = [ "ID_SCHRAEGE_MUSIK" ], enable = hasSchraegeMusik }
       { section = "flares" }
+      { shortcut = [ "ID_IRCM_SWITCH_PLANE" ], enable = hasCountermeasureSystemIRCM }
     ]
   },
 

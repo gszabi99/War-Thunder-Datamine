@@ -381,6 +381,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_IRCM_SWITCH_PLANE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_FLARES"
     checkAssign = false
   }

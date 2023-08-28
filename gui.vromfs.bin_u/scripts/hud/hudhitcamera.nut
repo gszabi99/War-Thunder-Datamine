@@ -125,7 +125,7 @@ let function updateFadeAnimation() {
 }
 
 let getHitCameraAABB = @() ::get_dagui_obj_aabb(scene)
-let isKillingHitResult = @(result) result >= DM_HIT_RESULT_KILL
+let isKillingHitResult = @(result) result >= DM_HIT_RESULT_KILL && result != DM_HIT_RESULT_INVULNERABLE
 
 let function reset() {
   isVisible = false
