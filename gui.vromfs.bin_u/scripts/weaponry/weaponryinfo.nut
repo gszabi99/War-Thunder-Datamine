@@ -701,7 +701,7 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon?.distToLive)))
 
     if (weapon?.diveDepth) {
-      let diveDepth = unit.unitType == unitTypes.SHIP && !::get_option_torpedo_dive_depth_auto()
+      let diveDepth = [unitTypes.SHIP, unitTypes.BOAT].contains(unit.unitType) && !::get_option_torpedo_dive_depth_auto()
           ? ::get_option_torpedo_dive_depth()
           : weapon?.diveDepth
       res.append("".concat(loc("bullet_properties/diveDepth"), colon,

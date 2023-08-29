@@ -657,9 +657,7 @@ let weaponIconsReloadBits = {
       ::session_player_rmenu(
         this,
         player,
-        {
-          chatLog = ::get_game_chat_handler()?.getChatLogForBanhammer() ?? ""
-        }
+        ::get_game_chat_handler()?.getChatLogForBanhammer() ?? ""
       )
   }
 
@@ -708,9 +706,7 @@ let weaponIconsReloadBits = {
       ::session_player_rmenu(
         this,
         player,
-        {
-          chatLog = ::get_game_chat_handler()?.getChatLogForBanhammer() ?? ""
-        },
+        ::get_game_chat_handler()?.getChatLogForBanhammer() ?? "",
         [
           selectedPlayerBlock.getPosRC()[0] + selectedPlayerBlock.getSize()[0] / 2,
           selectedPlayerBlock.getPosRC()[1]

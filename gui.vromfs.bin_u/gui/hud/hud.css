@@ -450,7 +450,7 @@ hitCameraCrew textareaNoTab {
 hitCameraCritAnim {
   position:absolute;
   pos:0.5pw-0.5w, 0;
-  background-svg-size:1@hitCameraWidth, 1@hitCameraHeight;
+  background-svg-size:@hitCameraWidth/4, @hitCameraHeight/4;
   background-image: #ui/gameuiskin#hit_camera_critical_gradient.svg;
   background-repeat:expand-svg;
   background-color:#EB2014;
@@ -575,9 +575,9 @@ hitCameraTitle {
   font:@fontHudNormal;
   text-align:center;
   text-shade:"smooth:24";
-  text-shade-x:0;
-  text-shade-y:0;
-  text-shade-color:#19000000;
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#AA000000;
   width:pw;
 }
 
@@ -589,22 +589,17 @@ hitCameraInfo {
 
 hitCamera[result=none] hitCameraTitle, hitCamera[result=ricochet] hitCameraTitle,
 hitCamera[result=bounce] hitCameraTitle, hitCamera[result=invulnerable] hitCameraTitle {
-  color:#A0A0A0;
-  text-shade-color:#10000000;
-}
-
-hitCamera[result=hit] hitCameraTitle {
   color:#9EE000;
 }
 
-hitCamera[result=burn] hitCameraTitle, hitCamera[result=critical] hitCameraTitle {
+hitCamera[result=burn] hitCameraTitle, hitCamera[result=critical] hitCameraTitle,
+hitCamera[result=hit] hitCameraTitle {
   color:#FFC000;
 }
 
 hitCamera[result=kill] hitCameraTitle, hitCamera[result=hull] hitCameraTitle, hitCamera[result=ammo] hitCameraTitle,
 hitCamera[result=fuel] hitCameraTitle, hitCamera[result=crew] hitCameraTitle, hitCamera[result=torpedo] hitCameraTitle {
   color:#ff4040;
-  text-shade-color:#32000000;
 }
 
 hitCamDebuff {

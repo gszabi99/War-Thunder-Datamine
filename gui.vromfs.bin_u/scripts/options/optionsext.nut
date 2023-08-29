@@ -2136,11 +2136,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.value = (val & HUD_INDICATORS_SELECT) ? 0 : ((val & HUD_INDICATORS_CENTER) ? 1 : 2);
       break
 
-    case ::USEROPT_SHOW_INDICATORS_NICK:
+      case ::USEROPT_SHOW_INDICATORS_NICK:
       descr.id = "show_indicators_nick"
-      descr.controlType = optionControlType.CHECKBOX
-      descr.controlName <- "switchbox"
-      descr.value = (::get_option_indicators_mode() & HUD_INDICATORS_TEXT_NICK) != 0
+      descr.items = ["#options/show_indicators_nick_all", "#options/show_indicators_nick_squad", "#options/show_indicators_nick_none"]
+      descr.values = [HUD_INDICATORS_TEXT_NICK_ALL, HUD_INDICATORS_TEXT_NICK_SQUAD, 0]
+      defaultValue = HUD_INDICATORS_TEXT_NICK_ALL
+      let val = ::get_option_indicators_mode() & (HUD_INDICATORS_TEXT_NICK_ALL | HUD_INDICATORS_TEXT_NICK_SQUAD)
+      descr.value = descr.values.indexof(val)
       break
 
     case ::USEROPT_SHOW_INDICATORS_TITLE:
@@ -4811,10 +4813,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       ::set_option_indicators_mode(val);
       break
     case ::USEROPT_SHOW_INDICATORS_NICK:
-      if (value)
-        ::set_option_indicators_mode(::get_option_indicators_mode() | HUD_INDICATORS_TEXT_NICK);
-      else
-        ::set_option_indicators_mode(::get_option_indicators_mode() & ~HUD_INDICATORS_TEXT_NICK);
+      local val = ::get_option_indicators_mode() & ~(HUD_INDICATORS_TEXT_NICK_ALL | HUD_INDICATORS_TEXT_NICK_SQUAD);
+      val = val | descr.values[value];
+      ::set_option_indicators_mode(val);
       break
     case ::USEROPT_SHOW_INDICATORS_TITLE:
       if (value)

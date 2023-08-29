@@ -13,6 +13,7 @@ let { get_mission_difficulty_int } = require("guiMission")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitPresets } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { hasRocketsBallisticComputer = @() false , hasCannonsBallisticComputer = @() false } = vehicleModel
 
 let getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
@@ -36,7 +37,8 @@ let hasCollimatorSight = memoize(@(_unitId) vehicleModel.hasCollimatorSight())
 let hasSightStabilization = memoize(@(_unitId) vehicleModel.hasSightStabilization())
 let hasCCIPSightMode = memoize(@(_unitId) vehicleModel.hasCCIPSightMode())
 let hasCCRPSightMode = memoize(@(_unitId) vehicleModel.hasCCRPSightMode())
-let hasBallisticComputer = memoize(@(_unitId) vehicleModel.hasBallisticComputer())
+let hasRocketsBallisticComputer_ = @(_unitId) hasRocketsBallisticComputer()
+let hasCannonsBallisticComputer_ = @(_unitId) hasCannonsBallisticComputer()
 let hasLaserDesignator = memoize(@(_unitId) vehicleModel.hasLaserDesignator())
 let hasNightVision = memoizeByMission(@(_unitId) vehicleModel.hasNightVision())
 let hasInfraredProjector = memoize(@(_unitId) vehicleModel.hasInfraredProjector())
@@ -275,8 +277,8 @@ let cfg = {
   ["weapons_air"] = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
-      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasBallisticComputer }
+      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasCannonsBallisticComputer_ }
+      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER" ], enable = hasRocketsBallisticComputer_ }
       { shortcut = [ "ID_FUEL_TANKS" ], enable = hasExternalFuelTanks }
       { shortcut = [ "ID_TOGGLE_GUNNERS" ], enable = hasAiGunners }
       { section = "weapon_selector" }
@@ -290,8 +292,8 @@ let cfg = {
   ["weapons_heli"] = {
     title = "hotkeys/ID_PLANE_FIRE_HEADER"
     items = [
-      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasBallisticComputer }
-      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasBallisticComputer }
+      { shortcut = [ "ID_TOGGLE_CANNONS_AND_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasCannonsBallisticComputer_ }
+      { shortcut = [ "ID_TOGGLE_ROCKETS_BALLISTIC_COMPUTER_HELICOPTER" ], enable = hasRocketsBallisticComputer_ }
       { shortcut = [ "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER" ], enable = hasLaserDesignator }
       { shortcut = [ "ID_CHANGE_SHOT_FREQ_HELICOPTER" ], enable = hasAlternativeShotFrequency }
       { section = "weapon_selector" }

@@ -351,13 +351,14 @@ options.addTypes({
               let bulletType = bulletName
               bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
               // Find bullet dub by params
-              isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType && p.mass == bulletParams.mass
-                && p.speed == bulletParams.speed)
+              isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType
+                && p.mass == bulletParams.mass && p.speed == bulletParams.speed
+                && p.armorPiercing[0][0] == bulletParams.armorPiercing[0][0])
               if (!isDub)
                 bulletSetData.append(bulletParams)
               // Need change name for the same bullet type but different params
               if (isInArray(locName, bulletNamesSet))
-                locName = $"{locName}{bulletsList.items[i].text}"
+                locName = "".concat(loc($"{bulletName}/name/short"), bulletsList.items[i].text)
             }
             else
               isDub = isInArray(locName, bulletNamesSet)

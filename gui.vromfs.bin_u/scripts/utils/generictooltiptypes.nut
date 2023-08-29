@@ -566,8 +566,18 @@ let exportTypes = addTooltipTypes({
       let { logIdx, rewardId } = params
       let foundReward = handler.logs.findvalue(@(l) l.idx == logIdx.tointeger()).container[rewardId]
       let view = getUserLogBattleRewardTooltip(getBattleRewardDetails(foundReward), rewardId)
-      let blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
+      local blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
       obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
+      let objHeight = obj.getSize()[1]
+      let rh = toPixels(obj.getScene(), "1@rh")
+      if(objHeight > rh) {
+        let k = 1.0 * objHeight / rh
+        view.rows.resize(floor(view.rows.len() / k) - 3)
+        view.isLongTooltip <- true
+        view.allowToCopy <- is_platform_pc
+        blk = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
+        obj.getScene().replaceContentFromText(obj, blk, blk.len(), handler)
+      }
       return true
     }
   }
