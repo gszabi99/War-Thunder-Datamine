@@ -14,7 +14,6 @@ let { getGameModesByEconomicName } = require("%scripts/matching/matchingGameMode
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 
 const MIN_AVAILABLE_VEHICLE_BR   = 1.0
-const VEHICLE_TO_MAP_MIN_BR_DIFF = -1.0
 
 let mapsListByEvent = {}
 
@@ -105,7 +104,7 @@ let function getInactiveMaps(curEvent, mapsList) {
 
 let function getBattleRatingsRangeText(minRank, maxRank) {
   let minVehicleBr = max(
-    ::calc_battle_rating_from_rank(minRank) + VEHICLE_TO_MAP_MIN_BR_DIFF
+    ::calc_battle_rating_from_rank(minRank)
     MIN_AVAILABLE_VEHICLE_BR
   )
   let maxVehicleBr = ::calc_battle_rating_from_rank(maxRank)
