@@ -1,12 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { Timer } = require("%sqDagui/timer/timer.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-::gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
+gui_handlers.WwReinforcements <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapReinforcementsList.tpl"
   sceneBlkName = null
@@ -23,8 +26,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
   function getSceneTplView() {
     return {
-      consoleButtonsIconName = ::show_console_buttons ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
-      controlHelpText = ::show_console_buttons ? null : loc("key/RMB")
+      consoleButtonsIconName = showConsoleButtons.value ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
+      controlHelpText = showConsoleButtons.value ? null : loc("key/RMB")
       controlHelpDesc = loc("worldwar/state/reinforcement_control")
     }
   }
@@ -243,7 +246,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     if (!checkObj(placeObj))
       return
 
-    this.timerHandler = ::Timer(
+    this.timerHandler = Timer(
       placeObj,
       this.updateDelay,
       function() {

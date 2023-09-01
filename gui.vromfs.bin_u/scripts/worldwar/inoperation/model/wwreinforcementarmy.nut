@@ -1,13 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let {WwFormation} = require("wwFormation.nut")
 
-
-::WwReinforcementArmy <- class extends ::WwFormation {
+::WwReinforcementArmy <- class extends WwFormation {
   suppliesEndMillisec = 0
   entrenchEndMillisec = 0
   availableAtMillisec = 0
@@ -114,7 +112,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
   }
 
   function getUnitsMapFullName() {
-    return u.map(this.getUnits(), function(unit) { return unit.getFullName() })
+    return this.getUnits().map(@(unit) unit.getFullName())
   }
 
   function secondsLeftToEntrench() {

@@ -1,11 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let DataBlock = require("DataBlock")
-let { charSendBlk } = require("chard")
+let { charSendBlk, get_charserver_time_sec } = require("chard")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { format }  = require("string")
 let { getUnitRoleIcon, getFullUnitRoleText } = require("%scripts/unit/unitInfoTexts.nut")
@@ -18,6 +20,7 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let prizesRewardWnd = require("%scripts/items/prizesRewardWnd.nut")
+let { performPromoAction } = require("%scripts/promo/promo.nut")
 
 let offerTypes = {
   unit = "shop/section/premium"
@@ -27,7 +30,7 @@ let offerTypes = {
   item = "item"
 }
 
-let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
+let class PersonalOfferHandler extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/personalOfferWnd.blk"
 
@@ -164,7 +167,7 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateTimeLeftText() {
-    let timeLeftSec = this.timeExpired - ::get_charserver_time_sec()
+    let timeLeftSec = this.timeExpired - get_charserver_time_sec()
     let timeDiscountExpiredObj = this.showSceneBtn("time_discount_expired_text", timeLeftSec > 0)
     let timeExpiredObj = this.showSceneBtn("time_expired_value", timeLeftSec > 0)
     this.showSceneBtn("time_expired_text", timeLeftSec > 0)
@@ -230,7 +233,7 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onEventBeforeStartShowroom(_p) {
     markSeenPersonalOffer(this.offerName)
-    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
   }
 
   function goBack() {
@@ -239,7 +242,7 @@ let class PersonalOfferHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-let PersonalOfferPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
+let PersonalOfferPromoHandler = class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/promo/promoPersonalOffer.blk"
 
@@ -254,7 +257,7 @@ let PersonalOfferPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateTimeLeftText() {
-    let timeLeftSec = this.timeExpired - ::get_charserver_time_sec()
+    let timeLeftSec = this.timeExpired - get_charserver_time_sec()
     let timeExpiredObj = this.showSceneBtn("time_expired_value", timeLeftSec > 0)
     this.showSceneBtn("time_expired_text", timeLeftSec > 0)
     if (timeLeftSec <= 0)
@@ -279,11 +282,11 @@ let PersonalOfferPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.updateTimeLeftText()
   }
 
-  function performAction(obj) { ::g_promo.performAction(this, obj) }
+  function performAction(obj) { performPromoAction(this, obj) }
 }
 
 let openCurPersonalOfferWnd = @()
-  ::handlersManager.loadHandler(PersonalOfferHandler, curPersonalOffer.value)
+  handlersManager.loadHandler(PersonalOfferHandler, curPersonalOffer.value)
 
 let function checkShowPersonalOffers() {
   cachePersonalOfferIfNeed()
@@ -291,8 +294,8 @@ let function checkShowPersonalOffers() {
     openCurPersonalOfferWnd()
 }
 
-::gui_handlers.PersonalOfferHandler <- PersonalOfferHandler
-::gui_handlers.PersonalOfferPromoHandler <- PersonalOfferPromoHandler
+gui_handlers.PersonalOfferHandler <- PersonalOfferHandler
+gui_handlers.PersonalOfferPromoHandler <- PersonalOfferPromoHandler
 
 addPromoAction("personal_offer", @(_handler, _params, _obj) openCurPersonalOfferWnd())
 
@@ -302,7 +305,7 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "imageButton"
   function updateFunctionInHandler() {
-    let handlerWeak = ::handlersManager.loadHandler(PersonalOfferPromoHandler,
+    let handlerWeak = handlersManager.loadHandler(PersonalOfferPromoHandler,
       { scene = this.scene.findObject(promoButtonId) })
     this.owner.registerSubHandler(handlerWeak)
   }

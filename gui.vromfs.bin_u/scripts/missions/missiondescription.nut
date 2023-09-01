@@ -1,12 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { get_game_mode } = require("mission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
@@ -30,7 +32,7 @@ let { getMissionRewardsMarkup, getMissionLocName } = require("%scripts/missions/
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 
-::gui_handlers.MissionDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MissionDescription <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missionDescr.blk"
 
@@ -54,7 +56,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
       scene = nest
       curMission = mission
     }
-    return ::handlersManager.loadHandler(::gui_handlers.MissionDescription, params)
+    return handlersManager.loadHandler(gui_handlers.MissionDescription, params)
   }
 
   function initScreen() {

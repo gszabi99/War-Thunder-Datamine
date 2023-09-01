@@ -7,6 +7,7 @@ let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nu
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { is_replay_playing } = require("replays")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
+let { get_mission_restore_type, get_num_attempts_left, get_mission_status } = require("guiMission")
 
 let buttons = {
   types = []
@@ -20,7 +21,7 @@ let buttons = {
     brAfter = false
     isAvailableInMission = @() true
     canShowOnMissionFailed = false
-    isVisible = @() this.canShowOnMissionFailed || ::get_mission_status() != MISSION_STATUS_FAIL
+    isVisible = @() this.canShowOnMissionFailed || get_mission_status() != MISSION_STATUS_FAIL
     getUpdatedLabelText = @() "" // Unchangable buttons returns empty string.
   }
 }
@@ -70,9 +71,9 @@ enums.addTypes(buttons, {
     isVisible = canBailout
     getUpdatedLabelText = function getUpdatedLabelText() {
       local txt = getPlayerCurUnit()?.unitType.getBailoutButtonText() ?? ""
-      if (!::is_multiplayer() && ::get_mission_restore_type() == ERT_ATTEMPTS) {
+      if (!::is_multiplayer() && get_mission_restore_type() == ERT_ATTEMPTS) {
         local attemptsTxt
-        let numLeft = ::get_num_attempts_left()
+        let numLeft = get_num_attempts_left()
         if (numLeft < 0)
           attemptsTxt = loc("options/attemptsUnlimited")
         else {
@@ -91,7 +92,7 @@ enums.addTypes(buttons, {
     getUpdatedLabelText = function getUpdatedLabelText() {
       return loc(
         is_replay_playing() ? "flightmenu/btnQuitReplay"
-        : (::get_mission_status() == MISSION_STATUS_SUCCESS
+        : (get_mission_status() == MISSION_STATUS_SUCCESS
             && get_game_mode() == GM_DYNAMIC) ? "flightmenu/btnCompleteMission"
         : "flightmenu/btnQuitMission"
       )

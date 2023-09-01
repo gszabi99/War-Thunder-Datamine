@@ -8,7 +8,7 @@
       "pulsePower": 70000.0,
       "pulseWidth": 4E-06,
       "prf": 1000.0,
-      "band": 8,
+      "band": 9,
       "rcs": 3.0,
       "range": 54000.0,
       "rangeMax": 100000.0,
@@ -23,7 +23,7 @@
       "power": 70000.0,
       "pulseWidth": 4E-06,
       "prf": 1000.0,
-      "band": 8,
+      "band": 9,
       "rcs": 3.0,
       "range": 19000.0,
       "rangeMax": 30000.0,
@@ -354,7 +354,7 @@
       ],
       "groundClutter": false,
       "aircraftAsTarget": true,
-      "friendFoeId": false,
+      "friendFoeId": true,
       "absDopplerSpeed": true,
       "mainBeamDopplerSpeed": true,
       "distance": {
@@ -542,8 +542,9 @@
           },
           "clearTargets": {},
           "clearTargetsOfInterest": {},
-          "setIllumination": {
-            "illumination": false
+          "setFsmActive": {
+            "fsm": "illumination",
+            "active": false
           }
         },
         "setBSVStandbyMode": {
@@ -655,10 +656,16 @@
           "setEnabled": {
             "value": true
           },
-          "setFsmActive": {
-            "fsm": "search",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "search",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -670,9 +677,6 @@
           },
           "setScanPatternSet": {
             "scanPatternSet": "searchUp"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setBSVSearchMode": {
@@ -824,6 +828,10 @@
               "active": true
             },
             {
+              "fsm": "illumination",
+              "active": false
+            },
+            {
               "fsm": "checkRaltLess",
               "active": false
             },
@@ -831,10 +839,7 @@
               "fsm": "checkRaltGreater",
               "active": false
             }
-          ],
-          "setIllumination": {
-            "illumination": false
-          }
+          ]
         },
         "setBSVDesignationLockMode": {
           "setDesignationLockModeCommon": {},
@@ -952,8 +957,9 @@
           "setScanPattern": {
             "scanPattern": "track"
           },
-          "setIllumination": {
-            "illumination": true
+          "setFsmActive": {
+            "fsm": "illumination",
+            "active": true
           }
         },
         "setOLSTrackModeCommon": {
@@ -961,8 +967,9 @@
           "setScanPattern": {
             "scanPattern": "trackOLS"
           },
-          "setIllumination": {
-            "illumination": false
+          "setFsmActive": {
+            "fsm": "illumination",
+            "active": false
           }
         },
         "setBSVTrackMode": {
@@ -1958,6 +1965,45 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            }
+          }
+        }
+      }
+    },
+    "illumination": {
+      "stateInit": "init",
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "stateTo": "active",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
+            }
+          }
+        },
+        "deactivate": {
+          "event": "fsmDeactivate",
+          "stateTo": "inactive",
+          "actions": {
+            "setIllumination": {
+              "transiver": false
+            }
+          }
+        },
+        "activateIllumination": {
+          "event": "sarhMissileLaunch",
+          "actions": {
+            "setIlluminationTimeOut": {
+              "timeOut": 60.0
+            }
+          }
+        },
+        "updateIllumination": {
+          "event": "update",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
             }
           }
         }

@@ -112,8 +112,7 @@ let class TrophyMultiAward {
       if (skipUnconditional)
         return ""
 
-      let uTypes = u.map(awardBlk % "type",
-                                 function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
+      let uTypes = (awardBlk % "type").map(function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
       return this.listDiv.join(uTypes, true)
     }
 
@@ -130,8 +129,7 @@ let class TrophyMultiAward {
       if (skipUnconditional)
         return ""
 
-      let uTypes = u.map(awardBlk % "resourceType",
-                                 function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
+      let uTypes = (awardBlk % "resourceType").map(function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
       return this.listDiv.join(uTypes, true)
     }
 
@@ -184,8 +182,7 @@ let class TrophyMultiAward {
       return
 
     local text = loc("options/country") + loc("ui/colon")
-    countries = u.map(countries,
-                            function(val) { return colorize(this.condColor loc(val)) }.bindenv(this))
+    countries = countries.map(function(val) { return colorize(this.condColor loc(val)) }.bindenv(this))
     text += ", ".join(countries, true)
     condList.append(text)
   }
@@ -196,18 +193,17 @@ let class TrophyMultiAward {
       return
 
     local text = loc("shop/age") + loc("ui/colon")
-    ranks = u.map(ranks,
-      function(val) {
-        if (!isIPoint2(val))
-          return ""
+    ranks = ranks.map(function(val) {
+      if (!isIPoint2(val))
+        return ""
 
-        let res = colorize(this.condColor, ::get_roman_numeral(val.x))
-        if (val.x == val.y)
-          return res
+      let res = colorize(this.condColor, ::get_roman_numeral(val.x))
+      if (val.x == val.y)
+        return res
 
-        let div = (val.y - val.x == 1) ? ", " : "-"
-        return res + div + colorize(this.condColor, ::get_roman_numeral(val.y))
-      }.bindenv(this))
+      let div = (val.y - val.x == 1) ? ", " : "-"
+      return res + div + colorize(this.condColor, ::get_roman_numeral(val.y))
+    }.bindenv(this))
 
     text += ", ".join(ranks, true)
     condList.append(text)
@@ -219,14 +215,13 @@ let class TrophyMultiAward {
       return
 
     local text = loc("unit_type") + loc("ui/colon")
-    classes = u.map(classes,
-                          function(val) {
-                            local role = val.tolower()
-                            role = cutPrefix(role, "exp_", role)
-                            if (role == "aircraft")
-                              return colorize(this.condColor, loc("unlockTag/unit_aircraft"))
-                            return colorize(this.condColor, getRoleText(role))
-                          }.bindenv(this))
+    classes = classes.map(function(val) {
+      local role = val.tolower()
+      role = cutPrefix(role, "exp_", role)
+      if (role == "aircraft")
+        return colorize(this.condColor, loc("unlockTag/unit_aircraft"))
+      return colorize(this.condColor, getRoleText(role))
+    }.bindenv(this))
 
     text += ", ".join(classes, true)
     condList.append(text)

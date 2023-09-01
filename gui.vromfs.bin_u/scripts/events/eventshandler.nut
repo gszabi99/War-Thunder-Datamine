@@ -1,16 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { getTextWithCrossplayIcon,
-        isCrossPlayEnabled,
-        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { getTextWithCrossplayIcon, isCrossPlayEnabled, needShowCrossPlayInfo
+} = require("%scripts/social/crossplay.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -30,6 +29,8 @@ let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { setPromoButtonText, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -74,14 +75,14 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
     chapterId = ::events.getEventsChapter(::events.getEvent(eventId))
   }
 
-  ::gui_start_modal_wnd(::gui_handlers.EventsHandler, {
+  ::gui_start_modal_wnd(gui_handlers.EventsHandler, {
     curEventId = eventId
     curChapterId = chapterId
     autoJoin = options?.autoJoin ?? false
   })
 }
 
-::gui_handlers.EventsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   eventsListObj  = null
@@ -259,7 +260,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       return
 
     this.canAskAboutRoomsList = false
-    ::gui_handlers.InfoWnd.openChecked({
+    gui_handlers.InfoWnd.openChecked({
       checkId = "askOpenRoomsList"
       header = loc("multiplayer/hint")
       message = loc("multiplayer/rooms_list/askToOpen")
@@ -315,7 +316,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   function onEventAfterJoinEventRoom(_event) {
-    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
   }
 
   function onOpenClusterSelect(obj) {
@@ -365,7 +366,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   function onItemDblClick() {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
 
     if (this.curEventId == "") {
@@ -377,7 +378,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   function onItemHover(obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -394,7 +395,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
   }
 
   function onEventSquadStatusChanged(_params) {
@@ -421,7 +422,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   function onRoomsList() {
-    ::gui_handlers.EventRoomsHandler.open(::events.getEvent(this.curEventId), true)
+    gui_handlers.EventRoomsHandler.open(::events.getEvent(this.curEventId), true)
     this.canAskAboutRoomsList = false
     ::save_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID,
       ::load_local_account_settings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0) + 1)
@@ -445,7 +446,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
       alignObj = obj
       columnsRatio = 0.6
     }
-    ::handlersManager.loadHandler(::gui_handlers.FramedOptionsWnd, params)
+    handlersManager.loadHandler(gui_handlers.FramedOptionsWnd, params)
   }
 
   function onCreateRoom() {}
@@ -468,13 +469,13 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
   }
 
   function checkQueueInfoBox() {
-    if (!this.queueToShow || ::handlersManager.isHandlerValid(this.queueInfoHandlerWeak))
+    if (!this.queueToShow || handlersManager.isHandlerValid(this.queueInfoHandlerWeak))
       return
 
     let queueObj = this.showSceneBtn("div_before_chapters_list", true)
     queueObj.height = "ph"
     let queueHandlerClass = this.queueToShow && ::queues.getQueuePreferredViewClass(this.queueToShow)
-    let queueHandler = ::handlersManager.loadHandler(queueHandlerClass, {
+    let queueHandler = handlersManager.loadHandler(queueHandlerClass, {
       scene = queueObj,
       leaveQueueCb = Callback(this.onLeaveEvent, this)
     })
@@ -593,7 +594,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
           id = eventName
           itemText = this.getEventNameForListBox(event)
           unseenIcon = bhvUnseen.makeConfigStr(SEEN.EVENTS, eventName)
-          isNeedOnHover = ::show_console_buttons
+          isNeedOnHover = showConsoleButtons.value
         })
       }
 
@@ -603,7 +604,7 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
           id = chapter.name
           itemText = chapter.getLocName()
           isCollapsable = true
-          isNeedOnHover = ::show_console_buttons
+          isNeedOnHover = showConsoleButtons.value
         })
 
       view.items.extend(eventItems)
@@ -714,10 +715,10 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 }
 
 ::get_events_handler <- function get_events_handler() {
-  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
+  local handler = handlersManager.findHandlerClassInScene(gui_handlers.EventsHandler)
   if (!handler) {
     ::gui_start_modal_events(null)
-    handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.EventsHandler)
+    handler = handlersManager.findHandlerClassInScene(gui_handlers.EventsHandler)
   }
   return handler
 }
@@ -751,14 +752,14 @@ addPromoButtonConfig({
       show = hasFeature("Events")
         && ::events.getEventsVisibleInEventsWindowCount()
         && isMultiplayerPrivilegeAvailable.value
-        && ::g_promo.getVisibilityById(id)
+        && getPromoVisibilityById(id)
       buttonObj = showObjById(id, show, this.scene)
     }
 
     if (!show || !checkObj(buttonObj))
       return
 
-    ::g_promo.setButtonText(buttonObj, id, getEventsPromoText())
+    setPromoButtonText(buttonObj, id, getEventsPromoText())
   }
   updateByEvents = ["EventsDataUpdated", "MyStatsUpdated", "UnlockedCountriesUpdate"]
 })

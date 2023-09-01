@@ -2,11 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_start_voicemenu <- function gui_start_voicemenu(config) {
   if (::isPlayerDedicatedSpectator())
@@ -22,21 +24,21 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
     axisEnabled  = true
   }
 
-  local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.voiceMenuHandler)
+  local handler = handlersManager.findHandlerClassInScene(gui_handlers.voiceMenuHandler)
   if (handler)
     handler.reinitScreen(params)
   else
-    handler = ::handlersManager.loadHandler(::gui_handlers.voiceMenuHandler, params)
+    handler = handlersManager.loadHandler(gui_handlers.voiceMenuHandler, params)
   return handler
 }
 
 ::close_cur_voicemenu <- function close_cur_voicemenu() {
-  let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.voiceMenuHandler)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.voiceMenuHandler)
   if (handler && handler.isActive)
     handler.showScene(false)
 }
 
-::gui_handlers.voiceMenuHandler <- class extends ::gui_handlers.wheelMenuHandler {
+gui_handlers.voiceMenuHandler <- class extends gui_handlers.wheelMenuHandler {
   wndType = handlerType.CUSTOM
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -66,7 +68,7 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
       objTitle.setValue(text)
     }
 
-    let canUseButtons = this.mouseEnabled || ::show_console_buttons
+    let canUseButtons = this.mouseEnabled || showConsoleButtons.value
     this.showSceneBtn("btnSwitchChannel", canUseButtons && ::g_squad_manager.isInSquad(true))
   }
 

@@ -1,45 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-let exitGame = require("%scripts/utils/exitGame.nut")
-let { getLocalLanguage } = require("language")
+let { OPERATION_COMPLETE } = require("matching.errors")
 let { replace } = require("%sqstd/string.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
-
-let function addLineBreaks(text) {
-  if (getLocalLanguage() != "HChinese")
-    return text
-  local resArr = []
-  let total = utf8(text).charCount()
-  for (local i = 0; i < total; i++) {
-    let nextChar = utf8(text).slice(i, i + 1)
-    if (nextChar == "\t")
-      continue
-    resArr.append(nextChar, (i < total - 1 ? "\t" : ""))
-  }
-  return "".join(resArr)
-}
-
-::punish_show_tips <- function punish_show_tips(params) {
-  log("punish_show_tips")
-  if ("reason" in params)
-    ::showInfoMsgBox(params.reason)
-}
-
-::punish_close_client <- function punish_close_client(params) {
-  log("punish_close_client")
-  let message = ("reason" in params) ? addLineBreaks(params.reason) : loc("matching/hacker_kicked_notice")
-
-  let needFlightMenu = ::is_in_flight() && !::get_is_in_flight_menu() && !::is_flight_menu_disabled()
-  if (needFlightMenu)
-    ::gui_start_flight_menu()
-
-  ::scene_msg_box(
-      "info_msg_box",
-      null,
-      message,
-      [["exit", exitGame ]], "exit")
-}
 
 /**
 requestOptions:

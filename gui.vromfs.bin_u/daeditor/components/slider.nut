@@ -3,14 +3,14 @@ let {colors} = require("style.nut")
 
 let math = require("math")
 
-let calcFrameColor = @(sf) (sf & S_KB_FOCUS) ? colors.TextActive
-                           : (sf & S_HOVER)    ? colors.TextHover
-                                               : colors.comboboxBorderColor
+let calcFrameColor = @(sf) sf & S_KB_FOCUS ? colors.TextActive
+  : sf & S_HOVER ? colors.TextHover
+  : colors.comboboxBorderColor
 
 let opaque = Color(0,0,0,255)
-let calcKnobColor =  @(sf) (sf & S_KB_FOCUS) ? (colors.TextActive | opaque)
-                           : (sf & S_HOVER)    ? (colors.TextHover | opaque)
-                                               : (colors.TextDefault | opaque)
+let calcKnobColor =  @(sf) sf & S_KB_FOCUS ? (colors.TextActive | opaque)
+  : sf & S_HOVER ? (colors.TextHover | opaque)
+  : (colors.TextDefault | opaque)
 
 let scales = {}
 scales.linear <- {

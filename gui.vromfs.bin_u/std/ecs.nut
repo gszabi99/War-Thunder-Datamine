@@ -11,7 +11,6 @@ let { DBGLEVEL } = require("dagor.system")
 let ecs = require("ecs")
 
 
-global const INVALID_ENTITY_ID = 0//ecs.INVALID_ENTITY_ID
 let unicastSqEvents = {}
 //local broadcastNativeEvents = ["onUpdate", ecs.EventComponentChanged, ecs.EventComponentsAppear, ecs.EventComponentsDisappear, ecs.EventEntityCreated, ecs.EventEntityDestroyed]
 
@@ -124,7 +123,7 @@ local function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     let comps_ro_optional_num = comps_ro.filter(@(v) type(v)=="array" && v.len() > 2).len()
     let comps_rw = comps?.comps_rw ?? []
     assert(
-      comps_len == 0 || !(comps_ro_optional_num == comps_ro.len() && ((comps_rw.len() ?? 0) + (comps?.comps_rq.len() ?? 0))==0),
+      comps_len == 0 || !(comps_ro_optional_num == comps_ro.len() && (comps_rw.len() + (comps?.comps_rq.len() ?? 0))==0),
       @() $"es {name} registered with all optional components"
     )
     assert(
@@ -173,7 +172,7 @@ let function makeTemplate(params={}){
           )
 }
 
-let recreateEntityWithTemplates = kwarg(function(eid=INVALID_ENTITY_ID, removeTemplates=null, addTemplates=null, comps={}, callback=null, checkComps = DBGLEVEL > 0){
+let recreateEntityWithTemplates = kwarg(function(eid=ecs.INVALID_ENTITY_ID, removeTemplates=null, addTemplates=null, comps={}, callback=null, checkComps = DBGLEVEL > 0){
   let resRemoveTemplates = []
   if (removeTemplates != null && removeTemplates.len() > 0){
     foreach (templN in removeTemplates){
@@ -224,7 +223,7 @@ let recreateEntityWithTemplates = kwarg(function(eid=INVALID_ENTITY_ID, removeTe
     }
   }
   resRemoveTemplates.extend(resAddTemplates)
-  if (eid == INVALID_ENTITY_ID || !ecs.g_entity_mgr.doesEntityExist(eid))
+  if (eid == ecs.INVALID_ENTITY_ID || !ecs.g_entity_mgr.doesEntityExist(eid))
     return
   let curTemplate = ecs.g_entity_mgr.getEntityFutureTemplateName(eid)
   // curTemplate is null when destroyEntity() is called right before recreateEntityWithTemplates

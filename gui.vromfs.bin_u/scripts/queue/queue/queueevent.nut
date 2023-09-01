@@ -56,7 +56,7 @@ let { matchingApiFunc } = require("%scripts/matching/api.nut")
 
   function removeQueueByUid(queueUid) {
     let cluster = this.queueUidsList[queueUid].cluster
-    if (u.filter(this.queueUidsList, @(q) q.cluster == cluster).len() <= 1) {
+    if (this.queueUidsList.filter(@(q) q.cluster == cluster).len() <= 1) {
       let idx = this.params.clusters.indexof(cluster)
       if (idx != null)
         this.params.clusters.remove(idx)

@@ -1,12 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 // warning disable: -file:forbidden-function
 
 let fonts = require("fonts")
 let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let function debug_change_font_size(shouldIncrease = true) {
   let availableFonts = ::g_font.getAvailableFonts()
@@ -14,7 +14,7 @@ let function debug_change_font_size(shouldIncrease = true) {
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
   idx = clamp(idx + (shouldIncrease ? 1 : -1), 0, availableFonts.len() - 1)
   if (::g_font.setCurrent(availableFonts[idx]))
-    ::handlersManager.getActiveBaseHandler().fullReloadScene()
+    handlersManager.getActiveBaseHandler().fullReloadScene()
   dlog($"Loaded fonts: {availableFonts[idx].id}")
 }
 
@@ -28,12 +28,7 @@ let function debug_fonts_list(isActiveColor = true, needBorder = true) {
     needBorder = needBorder
     fontsAdditionalText = fontsAdditionalText
 
-    textsList = u.map(fonts.getFontsList(),
-      @(name) {
-        id = name
-        font = name
-        text = name + fontsAdditionalText
-      })
+    textsList = fonts.getFontsList().map(@(name) { id = name font = name text = "".concat(name, fontsAdditionalText) })
   }
 
   local handler = {

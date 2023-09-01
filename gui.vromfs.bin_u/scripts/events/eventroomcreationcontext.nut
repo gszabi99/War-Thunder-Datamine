@@ -210,7 +210,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   function saveChosenMissions() {
-    let names = u.map(this.chosenMissionsList, @(m) m.id)
+    let names = this.chosenMissionsList.map(@(m) m.id)
     ::save_local_account_settings(this.getMissionsSaveId(), ::array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
   }
 
@@ -292,7 +292,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       res.cluster = ::g_clusters.clusters_info.filter(@(info) info.isDefault)[0].name
 
     if (!this.isAllMissionsSelected())
-      res.missions <- u.map(this.chosenMissionsList, @(m) m.id)
+      res.missions <- this.chosenMissionsList.map(@(m) m.id)
 
     return res
   }

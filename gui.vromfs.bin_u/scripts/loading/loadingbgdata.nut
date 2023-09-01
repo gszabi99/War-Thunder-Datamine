@@ -52,7 +52,7 @@ loading_bg
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
+let { canDoUnlock, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 let createBgData = @() {
   list = {}
@@ -178,7 +178,7 @@ let function removeLoadingBgFromLists(name) {
 }
 
 let isBgUnlockable = @(id) id in bgUnlocks
-let isBgUnlocked = @(id) (id not in bgUnlocks) || ::is_unlocked_scripted(-1, bgUnlocks[id])
+let isBgUnlocked = @(id) (id not in bgUnlocks) || isUnlockOpened(bgUnlocks[id])
 let isBgUnlockableByUser = @(id) isBgUnlockable(id) && canDoUnlock(getUnlockById(bgUnlocks[id]))
 
 local function filterLoadingBgData(bgData) {

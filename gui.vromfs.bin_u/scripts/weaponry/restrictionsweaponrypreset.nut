@@ -1,10 +1,12 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-::gui_handlers.RestrictionsWeaponryPresetModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RestrictionsWeaponryPresetModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneBlkName         = "%gui/weaponry/restrictionsWeaponryPresetModal.blk"
   presets              = null
@@ -35,7 +37,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
       tiersView = preset.tiersView.map(@(t) {
         tierId        = t.tierId
         img           = t?.img ?? ""
-        tierTooltipId = !::show_console_buttons ? t?.tierTooltipId : null
+        tierTooltipId = !showConsoleButtons.value ? t?.tierTooltipId : null
         isActive      = t?.isActive || "img" in t
       })
     })
@@ -56,7 +58,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   }
 }
 
-let openRestrictionsWeaponryPreset = @(params) ::handlersManager.loadHandler(::gui_handlers.RestrictionsWeaponryPresetModal, params)
+let openRestrictionsWeaponryPreset = @(params) handlersManager.loadHandler(gui_handlers.RestrictionsWeaponryPresetModal, params)
 
 return {
   openRestrictionsWeaponryPreset

@@ -26,7 +26,7 @@ let hasAvailableMapToBattle = @()
 let getNearestMapToBattle = @()
   getNearestMap(::g_ww_global_status_type.MAPS.getList())
 
-let isRecievedGlobalStatusMaps = @() ::g_ww_global_status_type.MAPS.getList().len() > 0
+let isReceivedGlobalStatusMaps = @() ::g_ww_global_status_type.MAPS.getList().len() > 0
 
 let function getOperationById(operationId) {
   return u.search(::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(),
@@ -64,5 +64,5 @@ return {
   getOperationGroupByMapId
   isMyClanInQueue
   getOperationById
-  isRecievedGlobalStatusMaps
+  isReceivedGlobalStatusMaps
 }

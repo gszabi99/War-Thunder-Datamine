@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-::WwFormation <- class {
+let WwFormation = class {
   name = ""
   owner = null
   units = null
@@ -50,9 +50,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
   function getUnits(excludeInfantry = false) {
     this.updateUnits()
     if (excludeInfantry)
-      return u.filter(this.units, function (unit) {
-        return !::g_ww_unit_type.isInfantry(unit.getWwUnitType().code)
-      })
+      return this.units.filter(@(unit) !::g_ww_unit_type.isInfantry(unit.getWwUnitType().code))
     return this.units
   }
 
@@ -205,3 +203,5 @@ let u = require("%sqStdLibs/helpers/u.nut")
     return count
   }
 }
+
+return {WwFormation}

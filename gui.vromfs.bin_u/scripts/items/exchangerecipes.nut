@@ -360,7 +360,7 @@ local ExchangeRecipes = class {
     if (!hasFakeRecipesInList)
       recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
     if (!isFullRecipesList) {
-      recipesToShow = u.filter(recipes, @(r) r.isUsable && !r.isRecipeLocked())
+      recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
       if (recipesToShow.len() > maxRecipes)
         recipesToShow = recipesToShow.slice(0, maxRecipes)
       else if (recipesToShow.len() < maxRecipes)
@@ -618,7 +618,7 @@ local ExchangeRecipes = class {
     if (params?.cb)
       params.cb()
 
-    let resultItemsShowOpening  = u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
+    let resultItemsShowOpening = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
     let parentGen = componentItem.getParentGen()
     let isHasFakeRecipes = parentGen && this.hasFakeRecipes(parentGen.getRecipes())
     let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
@@ -714,7 +714,7 @@ local ExchangeRecipes = class {
     : this.getLocIdsList().rewardTitle
 
   getRecipeStr = @() ",".join(
-    u.map(this.initedComponents, @(component) component.itemdefid.tostring()
+    this.initedComponents.map(@(component) component.itemdefid.tostring()
       + (component.quantity > 1 ? ("x" + component.quantity) : "")),
     true)
 

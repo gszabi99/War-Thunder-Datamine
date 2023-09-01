@@ -743,18 +743,25 @@ let function getTimeRangeCondition(unlockBlk) {
   return conds.findvalue(@(c) isTimeRangeCondition(c.type))
 }
 
+let function isStreak(id) {
+  let unlockType = getUnlockById(id)?.type ?? ""
+  if (unlockType == "")
+    return false
+
+  return ::get_unlock_type(unlockType) == UNLOCKABLE_STREAK
+}
+
 let function getMainConditionListPrefix(conditions) {
   let mainCondition = getMainProgressCondition(conditions)
-  if (mainCondition == null)
-    return ""
-  if (!mainCondition.values)
+  let values = mainCondition?.values
+  if (values == null)
     return ""
 
   let modeType = mainCondition.modeType
 
-  if (mainCondition.hasCustomUnlockableList ||
-      (isNestedUnlockMode(modeType) && mainCondition.values.len() > 1))
-    return loc("ui/awards") + loc("ui/colon")
+  if (mainCondition.hasCustomUnlockableList
+      || (isNestedUnlockMode(modeType) && (values.len() > 1 || isStreak(values[0]))))
+    return "".concat(loc("ui/awards"), loc("ui/colon"))
 
   return ""
 }
@@ -792,6 +799,7 @@ return {
   isNestedUnlockMode
   isTimeRangeCondition
   isBitModeType
+  isStreak
   addToText
   getDiffNameByInt
 }

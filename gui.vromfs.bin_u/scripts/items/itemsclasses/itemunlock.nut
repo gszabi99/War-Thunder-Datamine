@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
@@ -14,7 +13,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
   function canReceivePrize() {
     let unlockId = this.getUnlockId()
-    return unlockId != null && !::is_unlocked_scripted(-1, unlockId)
+    return unlockId != null && !isUnlockOpened(unlockId)
   }
 
   function getSmallIconName() {

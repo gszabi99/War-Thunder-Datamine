@@ -15,6 +15,7 @@ let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { hasChat, hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 //-----------------------------
 // params keys:
@@ -417,7 +418,7 @@ let getActions = function(contact, params) {
         }
         {
           text = loc("contacts/copyNickToEditbox")
-          show = !isMe && ::show_console_buttons && ::menu_chat_handler
+          show = !isMe && showConsoleButtons.value && ::menu_chat_handler
           action = @() ::menu_chat_handler ? ::menu_chat_handler.addNickToEdit(name) : null
         }
       )

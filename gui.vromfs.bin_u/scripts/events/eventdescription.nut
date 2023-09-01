@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
@@ -26,11 +28,11 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
     selectedEvent = event
     needEventHeader = needEventHeader
   }
-  local handler = ::handlersManager.loadHandler(::gui_handlers.EventDescription, params)
+  local handler = handlersManager.loadHandler(gui_handlers.EventDescription, params)
   return handler
 }
 
-::gui_handlers.EventDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.EventDescription <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
 
@@ -490,14 +492,14 @@ let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
       })
     }
     else
-      ::gui_handlers.EventRewardsWnd.open([{
+      gui_handlers.EventRewardsWnd.open([{
           header = loc("tournaments/rewards")
           event = this.selectedEvent
         }])
   }
 
   function onPlayersList() {
-    ::gui_handlers.MRoomMembersWnd.open(this.room)
+    gui_handlers.MRoomMembersWnd.open(this.room)
   }
 
   function hideEventLeaderboard(showWaitBox = true) {

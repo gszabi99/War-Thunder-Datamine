@@ -1,11 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID, INVALID_SQUAD_ID
+} = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let ecs = require("%sqstd/ecs.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { abs, floor } = require("math")
 let { EventOnConnectedToServer } = require("net")
 let { MatchingRoomExtraParams = null } = require_optional("dasevents")
@@ -47,6 +48,7 @@ let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPasswo
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
 
 /*
 SessionLobby API
@@ -2425,7 +2427,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 }
 
 ::SessionLobby.onEventLoadingStateChange <- function onEventLoadingStateChange(_p) {
-  if (::handlersManager.isInLoading)
+  if (handlersManager.isInLoading)
     return
 
   if (::is_in_flight())
@@ -2520,7 +2522,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
   this.checkUpdateMatchingSlots()
 }
 
-::web_rpc.register_handler("join_battle", ::SessionLobby.rpcJoinBattle)
+web_rpc.register_handler("join_battle", ::SessionLobby.rpcJoinBattle)
 registerPersistentDataFromRoot("SessionLobby")
 subscribe_handler(::SessionLobby, ::g_listener_priority.DEFAULT_HANDLER)
 

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
@@ -1178,7 +1179,7 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
     if (::is_numeric(newSquadId)) //bad squad data
       this.squadData.id = newSquadId.tostring() //!!FIX ME: why this convertion to string?
     else if (!alreadyInSquad) {
-      ::script_net_assert_once("no squad id", "Error: received squad data without squad id")
+      script_net_assert_once("no squad id", "Error: received squad data without squad id")
       ::msquad.leave() //leave broken squad
       this.setState(squadState.NOT_IN_SQUAD)
       return

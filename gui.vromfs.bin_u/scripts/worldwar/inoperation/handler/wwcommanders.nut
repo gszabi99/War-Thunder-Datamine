@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
@@ -8,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-::gui_handlers.WwCommanders <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwCommanders <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarCommandersInfo.tpl"
   sceneBlkName = null

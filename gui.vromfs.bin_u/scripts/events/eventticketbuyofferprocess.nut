@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let time = require("%scripts/time.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -64,7 +65,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
         tickets = availableTickets
         activeTicket = activeTicket
       }
-      ::gui_start_modal_wnd(::gui_handlers.TicketBuyWindow, windowParams)
+      ::gui_start_modal_wnd(gui_handlers.TicketBuyWindow, windowParams)
     }
   }
 }

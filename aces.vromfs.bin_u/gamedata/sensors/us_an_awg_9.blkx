@@ -265,7 +265,7 @@
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
-      "friendFoeId": false,
+      "friendFoeId": true,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
       "dopplerSpeed": {
@@ -871,25 +871,31 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": true
-          },
-          "setIllumination": {
-            "illumination": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": true
+            }
+          ],
           "setTrackModeNameTrack": {},
           "enableTrackModes": {}
         },
         "resetTrackMode": {
           "clearTargetsOfInterest": {},
-          "setIllumination": {
-            "illumination": false
-          },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": false
-          }
+          "setFsmActive": [
+            {
+              "fsm": "illumination",
+              "active": false
+            },
+            {
+              "fsm": "track",
+              "active": false
+            }
+          ]
         },
         "setPulseTrackParams": {
           "setTransiver": {
@@ -1736,6 +1742,45 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            }
+          }
+        }
+      }
+    },
+    "illumination": {
+      "stateInit": "init",
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "stateTo": "active",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
+            }
+          }
+        },
+        "deactivate": {
+          "event": "fsmDeactivate",
+          "stateTo": "inactive",
+          "actions": {
+            "setIllumination": {
+              "transiver": false
+            }
+          }
+        },
+        "activateIllumination": {
+          "event": "sarhMissileLaunch",
+          "actions": {
+            "setIlluminationTimeOut": {
+              "timeOut": 60.0
+            }
+          }
+        },
+        "updateIllumination": {
+          "event": "update",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
             }
           }
         }

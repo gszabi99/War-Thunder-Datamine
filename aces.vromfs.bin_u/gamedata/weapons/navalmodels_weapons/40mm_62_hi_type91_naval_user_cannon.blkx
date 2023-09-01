@@ -33,6 +33,22 @@
     "type_barge": true,
     "type_frigate": true
   },
+  "visualOverheat": {
+    "shotsToMax": 60,
+    "cooldownTime": 9.0,
+    "cooldownDelay": 2.4,
+    "fxType": "smoke_overheat_big",
+    "decalOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "decalSize": [
+      3.0,
+      4.5,
+      4.5
+    ]
+  },
   "bullet": {
     "bulletCount": 300,
     "mass": 0.79,
@@ -43,6 +59,7 @@
     "maxDistance": 11000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
+    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -385,6 +402,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -725,6 +743,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -954,6 +973,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1294,6 +1314,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1527,6 +1548,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1867,6 +1889,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2207,6 +2230,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2547,6 +2571,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2780,6 +2805,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3009,6 +3035,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3238,6 +3265,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3467,6 +3495,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3811,6 +3840,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.4,
         "stabilityCaliberToArmorThreshold": 10.0,
@@ -3824,6 +3854,14 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "fuseOnWater": [
+          true,
+          true
+        ],
+        "fuseOnWaterProbability": [
+          1.0,
+          1.0
+        ],
         "shellAnimation": "video/shells_animations/he_tf.ivf",
         "timeFuseDistanceError": 50.0,
         "explosionInAir": true,
@@ -3838,8 +3876,6 @@
         ],
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -4147,6 +4183,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.4,
         "stabilityCaliberToArmorThreshold": 10.0,
@@ -4160,6 +4197,14 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "fuseOnWater": [
+          true,
+          true
+        ],
+        "fuseOnWaterProbability": [
+          1.0,
+          1.0
+        ],
         "shellAnimation": "video/shells_animations/he_tf.ivf",
         "timeFuseDistanceError": 50.0,
         "explosionInAir": true,
@@ -4174,8 +4219,6 @@
         ],
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -4483,6 +4526,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.4,
         "stabilityCaliberToArmorThreshold": 10.0,
@@ -4496,6 +4540,14 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "fuseOnWater": [
+          true,
+          true
+        ],
+        "fuseOnWaterProbability": [
+          1.0,
+          1.0
+        ],
         "shellAnimation": "video/shells_animations/he_tf.ivf",
         "timeFuseDistanceError": 50.0,
         "explosionInAir": true,
@@ -4510,8 +4562,6 @@
         ],
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -4819,6 +4869,7 @@
         "maxDistance": 11000.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.4,
         "stabilityCaliberToArmorThreshold": 10.0,
@@ -4832,6 +4883,14 @@
           2.0
         ],
         "explodeOnRendinst": true,
+        "fuseOnWater": [
+          true,
+          true
+        ],
+        "fuseOnWaterProbability": [
+          1.0,
+          1.0
+        ],
         "shellAnimation": "video/shells_animations/he_tf.ivf",
         "timeFuseDistanceError": 50.0,
         "explosionInAir": true,
@@ -4846,8 +4905,6 @@
         ],
         "explodeTreshold": 0.1,
         "fuseDelay": 0.0,
-        "fuseOnWater": true,
-        "fuseOnWaterProbability": 1.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",

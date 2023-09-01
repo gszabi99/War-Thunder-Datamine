@@ -1,11 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { hangar_is_model_loaded } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
@@ -18,6 +18,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { getDecorator, getDecoratorByResource, getPlaneBySkinId, getSkinNameBySkinId
 } = require("%scripts/customization/decorCache.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -37,7 +38,7 @@ let function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = 
       || (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
       || ::SessionLobby.hasSessionInLobby())
     return "temporarily_forbidden"
-  let customizationScene = ::handlersManager.findHandlerClassInScene(::gui_handlers.DecalMenuHandler)
+  let customizationScene = handlersManager.findHandlerClassInScene(gui_handlers.DecalMenuHandler)
   if (customizationScene && (!shouldAllowFromCustomizationScene || !customizationScene.canRestartSceneNow()))
     return "temporarily_forbidden"
   return  ""
@@ -81,7 +82,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
       }
     })
   }
-  ::handlersManager.animatedSwitchScene(startFunc())
+  handlersManager.animatedSwitchScene(startFunc())
 
   return true
 }
@@ -167,18 +168,16 @@ let function showUnitDecorator(unitId, resource, resourceType) {
   let hangarUnit = getPlayerCurUnit()
   broadcastEvent("BeforeStartShowroom")
   showedUnit(unit)
-  let startFunc = function() {
-    ::gui_start_decals({
-      previewMode = PREVIEW_MODE.DECORATOR
-      initialUnitId = hangarUnit?.name
-      previewParams = {
-        unitName = unit.name
-        decorator = decorator
-      }
-    })
+  let params = {
+    previewMode = PREVIEW_MODE.DECORATOR
+    initialUnitId = hangarUnit?.name
+    previewParams = {
+      unitName = unit.name
+      decorator = decorator
+    }
   }
-  startFunc()
-  ::handlersManager.setLastBaseHandlerStartFunc(startFunc)
+  ::gui_start_decals(params)
+  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_decals", params })
 
   return true
 }
@@ -248,7 +247,7 @@ let function onSkinDownloaded(unitId, skinId, result) {
 let function marketViewItem(params) {
   if (::to_integer_safe(params?.appId, 0, false) != APP_ID)
     return
-  let assets = u.filter(params?.assetClass ?? [], @(asset) asset?.name == "__itemdefid")
+  let assets = (params?.assetClass ?? []).filter(@(asset) asset?.name == "__itemdefid")
   if (!assets.len())
     return
   let itemDefId = ::to_integer_safe(assets?[0]?.value)
@@ -420,9 +419,9 @@ globalCallbacks.addTypes({
 let rootTable = getroottable()
 rootTable["on_live_skin_data_loaded"] <- @(unitId, skinGuid, result) onSkinDownloaded(unitId, skinGuid, result)
 rootTable["live_start_unit_preview"]  <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)
-::web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))
-::web_rpc.register_handler("market_view_item", @(params) marketViewItem(params))
-::web_rpc.register_handler("request_view_unit", @(params) requestUnitPreview(params))
+web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))
+web_rpc.register_handler("market_view_item", @(params) marketViewItem(params))
+web_rpc.register_handler("request_view_unit", @(params) requestUnitPreview(params))
 
 subscriptions.addListenersWithoutEnv({
   ItemsShopUpdate = @(p) onEventItemsShopUpdate(p)

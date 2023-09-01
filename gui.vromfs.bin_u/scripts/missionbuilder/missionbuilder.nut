@@ -2,10 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { rnd } = require("dagor.random")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option, getCdBaseDifficulty } = require("guiOptions")
 let { dynamicInit, dynamicGetList, dynamicTune, dynamicSetTakeoffMode,
 } = require("dynamicMission")
@@ -13,10 +16,10 @@ let { select_mission_full } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 
 ::gui_start_builder <- function gui_start_builder(params = {}) {
-  ::gui_start_modal_wnd(::gui_handlers.MissionBuilder, params)
+  ::gui_start_modal_wnd(gui_handlers.MissionBuilder, params)
 }
 
-::gui_handlers.MissionBuilder <- class extends ::gui_handlers.GenericOptionsModal {
+gui_handlers.MissionBuilder <- class extends gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/navBuilderOptions.blk"
@@ -29,7 +32,7 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
   needSlotbar = true
 
   function initScreen() {
-    ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
+    gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
     this.guiScene.setUpdatesEnabled(false, false)
     this.init_builder_map()
@@ -280,7 +283,7 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
       let slotbarUnit = ::get_cur_slotbar_unit()?.name // warning disable: -declared-never-used
       let optId = desc.id                              // warning disable: -declared-never-used
       let values = toString(desc.values)             // warning disable: -declared-never-used
-      ::script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")
+      script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")
       return
     }
 
@@ -448,7 +451,7 @@ let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
   }
 
   function onEventBeforeStartMissionBuilder(_p) {
-    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
   }
 
   onEventShowedUnitChanged = @(_p) this.reinitOptionsList()

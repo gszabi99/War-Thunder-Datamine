@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
+let { setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBlocks
+} = require("%scripts/promo/promo.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
@@ -33,20 +33,20 @@ addPromoButtonConfig({
   updateFunctionInHandler = function() {
     let id = promoButtonId
     let isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
-    let isVisible = ::g_promo.getShowAllPromoBlocks()
+    let isVisible = getShowAllPromoBlocks()
       || (isWwEnabled && ::g_world_war.isWWSeasonActive())
 
     let buttonObj = showObjById(id, isVisible, this.scene)
     if (!isVisible || !checkObj(buttonObj))
       return
 
-    ::g_promo.setButtonText(buttonObj, id, getWorldWarPromoText(isWwEnabled))
+    setPromoButtonText(buttonObj, id, getWorldWarPromoText(isWwEnabled))
 
-    if ((!::should_disable_menu() && !::g_login.isProfileReceived()) || !::g_promo.isCollapsed(id))
+    if ((!::should_disable_menu() && !::g_login.isProfileReceived()) || !isPromoCollapsed(id))
       return
 
     if (::g_world_war.hasNewNearestAvailableMapToBattle())
-      ::g_promo.toggleItem(buttonObj.findObject(id + "_toggle"))
+      togglePromoItem(buttonObj.findObject(id + "_toggle"))
   }
   updateByEvents = ["WWLoadOperation", "WWStopWorldWar",
     "WWGlobalStatusChanged", "CrossPlayOptionChanged"]

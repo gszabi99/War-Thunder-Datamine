@@ -2,8 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -11,6 +13,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let function getUnitsData(unlockId) {
   let data = {}
@@ -54,7 +57,7 @@ let function getCountriesView(unlockId) {
 
       armyTypes.append({
         armyName = colorize("fadedTextColor", unitType.getArmyLocName())
-        isTooltipByHold = ::show_console_buttons
+        isTooltipByHold = showConsoleButtons.value
         units = unitsList.map(@(u) {
           id = u.name
           ico = ::getUnitClassIco(u)
@@ -88,7 +91,7 @@ let function getWndTitle(unlockId) {
   })
 }
 
-let class UnlockUnitListWnd extends ::gui_handlers.BaseGuiHandlerWT {
+let class UnlockUnitListWnd extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 
@@ -116,10 +119,10 @@ let class UnlockUnitListWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.UnlockUnitListWnd <- UnlockUnitListWnd
+gui_handlers.UnlockUnitListWnd <- UnlockUnitListWnd
 
 let function openUnlockUnitListWnd(unlockId, onUnitSelectCb) {
-  ::handlersManager.loadHandler(UnlockUnitListWnd, {
+  handlersManager.loadHandler(UnlockUnitListWnd, {
     unlockId
     onUnitSelectCb
   })

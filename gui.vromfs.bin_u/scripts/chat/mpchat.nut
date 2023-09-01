@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let ingame_chat = require("%scripts/chat/mpChatModel.nut")
@@ -138,7 +139,7 @@ local MP_CHAT_PARAMS = {
     this.scenes.append(sceneData)
     this.validateCurMode()
     send("setHasEnableChatMode", { hasEnableChatMode = this.hasEnableChatMode })
-    ::handlersManager.updateControlsAllowMask()
+    handlersManager.updateControlsAllowMask()
     return sceneData
   }
 
@@ -242,7 +243,7 @@ local MP_CHAT_PARAMS = {
 
     this.doForAllScenes(this.updateChatInput)
     broadcastEvent("MpChatInputToggled", { active = this.isActive })
-    ::handlersManager.updateControlsAllowMask()
+    handlersManager.updateControlsAllowMask()
   }
 
   isVisibleChatInput = @(sceneData)
@@ -739,7 +740,7 @@ local MP_CHAT_PARAMS = {
 ::detachGameChatSceneData <- function detachGameChatSceneData(sceneData) {
   sceneData.scene = null
   ::get_game_chat_handler().cleanScenesList()
-  ::handlersManager.updateControlsAllowMask()
+  handlersManager.updateControlsAllowMask()
 }
 
 ::enable_game_chat_input <- function enable_game_chat_input(value) { // called from client

@@ -1,13 +1,14 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView, getEntitlementLayerIcons } = require("%scripts/onlineShop/entitlementView.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::gui_handlers.EntitlementRewardWnd <- class extends ::gui_handlers.trophyRewardWnd {
+gui_handlers.EntitlementRewardWnd <- class extends gui_handlers.trophyRewardWnd {
   wndType = handlerType.MODAL
 
   entitlementConfig = null
@@ -97,7 +98,7 @@ return {
       return
     }
 
-    ::handlersManager.loadHandler(::gui_handlers.EntitlementRewardWnd, {
+    handlersManager.loadHandler(gui_handlers.EntitlementRewardWnd, {
       entitlementConfig = config
       viewParams = params
     })

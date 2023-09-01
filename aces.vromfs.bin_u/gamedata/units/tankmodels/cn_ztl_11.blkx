@@ -112,6 +112,30 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
       }
     ]
   },
@@ -178,6 +202,10 @@
         "armorThickness": 35.0
       },
       "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_02_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
       },
@@ -1016,7 +1044,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1654,16 +1686,28 @@
     "horizontal": true
   },
   "xray_viewer_data": {
-    "armorArrayHull": {
-      "xrayDmPart": "composite_armor_hull_01_dm",
-      "titleLoc": "RHA_tank_modern",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "composite_armor_hull_01_dm",
-          "xrayTextThickness": 5.0
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm",
+            "xrayTextThickness": 5.0
+          }
         }
       }
-    }
+    ]
   },
   "sound": {
     "EngineName": "engine_t64a",

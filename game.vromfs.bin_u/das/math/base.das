@@ -159,9 +159,9 @@ def pos_tm(pos : float3) : float3x4
 [generic]
 def is_inside_tm(pos : float3; tm : float3x4) : bool
   let p = pos - tm[3]
-  return (abs(dot(p, tm[0])) < dot(tm[0], tm[0]) &&
-          abs(dot(p, tm[1])) < dot(tm[1], tm[1]) &&
-          abs(dot(p, tm[2])) < dot(tm[2], tm[2]))
+  return (abs(dot(p, tm[0])) < dot(tm[0], tm[0]) * 0.5 &&
+          abs(dot(p, tm[1])) < dot(tm[1], tm[1]) * 0.5 &&
+          abs(dot(p, tm[2])) < dot(tm[2], tm[2]) * 0.5)
 
 
 [generic]

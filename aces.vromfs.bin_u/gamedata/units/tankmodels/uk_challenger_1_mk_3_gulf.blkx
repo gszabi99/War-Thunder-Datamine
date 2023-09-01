@@ -450,6 +450,14 @@
       "ex_decor_15_dm": {
         "armorThickness": 5.0,
         "armorClass": "tank_structural_steel"
+      },
+      "ex_decor_r_11_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "t_90_rubber_fabric_screens"
+      },
+      "ex_decor_l_09_dm": {
+        "armorThickness": 4.0,
+        "armorClass": "t_90_rubber_fabric_screens"
       }
     },
     "optics": {
@@ -1381,7 +1389,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -2283,11 +2295,12 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 1200.0,
+      "horsePowers": 1217.0,
       "maxRPM": 2300.0,
       "minRPM": 660.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 280000.0,
       "driveGearRadius": 0.299,
       "mainGearRatio": 4.3,

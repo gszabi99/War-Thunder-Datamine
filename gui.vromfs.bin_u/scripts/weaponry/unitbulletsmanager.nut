@@ -2,6 +2,8 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
@@ -111,7 +113,7 @@ global enum bulletsAmountState {
       return
 
     if (this._bulletsSetValueRecursion) {
-      ::script_net_assert_once("bullets set value recursion",
+      script_net_assert_once("bullets set value recursion",
                                 format("Bullets Manager: set bullet recursion detected!! (unit = %s)\nbullet groups =\n%s",
                                   this.unit.name, toString(this.bulGroups)
                                 )
@@ -192,7 +194,7 @@ global enum bulletsAmountState {
     else
       msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
 
-    ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
+    ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
       {
         parentHandler = this
         message = msg

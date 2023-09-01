@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Point2 } = require("dagor.math")
 let { split_by_chars } = require("string")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
@@ -119,7 +120,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
       let mapCell = ::ww_get_map_cell_by_coords(clickPos.x, clickPos.y)
       if (::ww_is_cell_generally_passable(mapCell))
-        ::gui_handlers.WwAirfieldFlyOut.open(
+        gui_handlers.WwAirfieldFlyOut.open(
           airfieldIdx, clickPos, armyTargetName, Callback(checkFlewOutArmy, this))
       else
         ::g_popups.add("", loc("worldwar/charError/MOVE_REJECTED"),

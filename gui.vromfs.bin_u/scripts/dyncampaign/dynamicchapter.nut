@@ -1,23 +1,25 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { dynamicInit, dynamicGetList } = require("dynamicMission")
 let { get_cur_game_mode_name } = require("mission")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::dynamic_req_country_rank <- 1
 
 ::gui_start_dynamic_layouts <- function gui_start_dynamic_layouts() {
-  ::handlersManager.loadHandler(::gui_handlers.DynamicLayouts)
+  handlersManager.loadHandler(gui_handlers.DynamicLayouts)
 }
 
-::gui_handlers.DynamicLayouts <- class extends ::gui_handlers.CampaignChapter {
+gui_handlers.DynamicLayouts <- class extends gui_handlers.CampaignChapter {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
@@ -92,14 +94,14 @@ let { get_cur_game_mode_name } = require("mission")
       local lockReason = ""
       foreach (_idx, country in misDescr.countries) {
         let countryId = misDescr.id + "_" + country
-        local isCountryUnlocked = ::is_unlocked_scripted(UNLOCKABLE_DYNCAMPAIGN, countryId)
+        local isCountryUnlocked = isUnlockOpened(countryId, UNLOCKABLE_DYNCAMPAIGN)
         if (!isCountryUnlocked)
           lockReason += (lockReason.len() ? "\n" : "") + getFullUnlockDescByName(countryId) + "\n"
         else {
           foreach (year in this.yearsArray) {
             local is_unlocked = false
             let yearId = "country_" + country + "_" + year
-            if (::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)) {
+            if (isUnlockOpened(yearId, UNLOCKABLE_YEAR)) {
               isAnyYearUnlocked = true
               is_unlocked = true
             }
@@ -157,7 +159,7 @@ let { get_cur_game_mode_name } = require("mission")
         id = mission.id
         isSelected = idx == 0
         itemText = "#" + nameId
-        isNeedOnHover = ::show_console_buttons
+        isNeedOnHover = showConsoleButtons.value
       })
     }
 

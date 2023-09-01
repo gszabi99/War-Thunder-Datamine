@@ -1,19 +1,21 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 
 ::gui_start_invites <- function gui_start_invites() {
-  ::handlersManager.loadHandler(::gui_handlers.InvitesWnd)
+  handlersManager.loadHandler(gui_handlers.InvitesWnd)
 }
 
-::gui_handlers.InvitesWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.InvitesWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/invitesWnd.blk"
 
@@ -27,8 +29,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
   function updateList() {
     let listObj = this.scene.findObject("invites_list")
     let selInvite = this.getInviteByObj()
-    let list = u.filter(::g_invites.list,
-      function (invite) { return invite.isVisible() })
+    let list = ::g_invites.list.filter(@(invite) invite.isVisible())
 
     list.sort(function(a, b) {
       if (a.receivedTime != b.receivedTime)

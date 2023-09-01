@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { AxisDirection } = require("%scripts/controls/controlsConsts.nut")
 
 local blockNameByDirection = {
   [AxisDirection.X] = {

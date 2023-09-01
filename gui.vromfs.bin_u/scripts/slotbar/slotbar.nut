@@ -32,6 +32,8 @@ let { getReserveAircraftName } = require("%scripts/tutorials.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 /*
 if need - put commented in array above
@@ -120,9 +122,9 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
     // Bottom button view
     //
 
-    let mainButtonAction = ::show_console_buttons ? "onOpenActionsList" : (params?.mainActionFunc ?? "")
-    let mainButtonText = ::show_console_buttons ? "" : (params?.mainActionText ?? "")
-    let mainButtonIcon = ::show_console_buttons ? "#ui/gameuiskin#slot_menu.svg" : (params?.mainActionIcon ?? "")
+    let mainButtonAction = showConsoleButtons.value ? "onOpenActionsList" : (params?.mainActionFunc ?? "")
+    let mainButtonText = showConsoleButtons.value ? "" : (params?.mainActionText ?? "")
+    let mainButtonIcon = showConsoleButtons.value ? "#ui/gameuiskin#slot_menu.svg" : (params?.mainActionIcon ?? "")
     let checkTexts = mainButtonAction.len() > 0 && (mainButtonText.len() > 0 || mainButtonIcon.len() > 0)
     let checkButton = !isVehicleInResearch || hasFeature("SpendGold")
     let bottomButtonView = {
@@ -257,7 +259,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
       hasTalismanIcon     = isLocalState && (special || ::shop_is_modification_enabled(air.name, "premExpMul"))
       itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
       tooltipId           = ::g_tooltip.getIdUnit(air.name, params?.tooltipParams)
-      isTooltipByHold     = ::show_console_buttons
+      isTooltipByHold     = showConsoleButtons.value
       bottomButton        = handyman.renderCached("%gui/slotbar/slotbarItemBottomButton.tpl", bottomButtonView)
       extraInfoBlock      = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", extraInfoView)
       refuseOpenHoverMenu = !hasActions
@@ -378,7 +380,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 
     let bottomButtonView = {
       holderId            = id
-      hasButton           = ::show_console_buttons
+      hasButton           = showConsoleButtons.value
       mainButtonAction    = "onAircraftClick"
       mainButtonText      = ""
       mainButtonIcon      = "#ui/gameuiskin#slot_unfold.svg"
@@ -461,7 +463,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
       bonusId             = id
       primaryUnitId       = nextAir.name
       tooltipId           = ::g_tooltip.getIdUnit(nextAir.name, params?.tooltipParams)
-      isTooltipByHold     = ::show_console_buttons
+      isTooltipByHold     = showConsoleButtons.value
       bottomButton        = handyman.renderCached("%gui/slotbar/slotbarItemBottomButton.tpl", bottomButtonView)
       hasFullGroupBlock   = params?.fullGroupBlock ?? true
       fullGroupBlockId    = "td_" + id
@@ -492,7 +494,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
       isItemDisabled      = bitStatus == bit_unit_status.disabled
       needMultiLineName   = params?.needMultiLineName
       tooltipId           = params?.tooltipId ?? ""
-      isTooltipByHold     = ::show_console_buttons
+      isTooltipByHold     = showConsoleButtons.value
       bottomLineText      = params?.bottomLineText
       isElite             = params?.isElite
       hasTalismanIcon     = params?.hasTalismanIcon
@@ -1086,7 +1088,7 @@ registerPersistentData("SlotbarGlobals", getroottable(), ["selected_crews", "unl
 
 ::checkUnlockedCountriesByAirs <- function checkUnlockedCountriesByAirs() { //starter packs
   local haveUnlocked = false
-  foreach (air in ::all_units)
+  foreach (air in getAllUnits())
     if (!::isUnitDefault(air)
         && ::isUnitUsable(air)
         && !::isCountryAvailable(air.shopCountry)) {

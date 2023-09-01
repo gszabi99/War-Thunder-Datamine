@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let DataBlock = require("DataBlock")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"
@@ -23,7 +24,7 @@ let function getSeenSuggestedSkins(unitName) {
     return seenSkinsList
 
   let skinCount = oldSeenSkinsList.paramCount()
-  let currentTime = ::get_charserver_time_sec()
+  let currentTime = get_charserver_time_sec()
   let validSkinsCfg = DataBlock()
   for (local i = 0; i < skinCount; i++)
     validSkinsCfg[oldSeenSkinsList.getParamName(i)] = currentTime
@@ -38,7 +39,7 @@ let function isSeenSkin(skinId, seenSkinsList) {
   if (seenTime == null)
     return false
 
-  return seenTime + SKIN_DELAY_TIME_SEC > ::get_charserver_time_sec()
+  return seenTime + SKIN_DELAY_TIME_SEC > get_charserver_time_sec()
 }
 
 let function needSuggestSkin(unitName, skinId) {
@@ -56,7 +57,7 @@ let function getSuggestedSkin(unitName) {
   if (skinIds.len() == 0)
     return null
   let seenSuggestedSkins = getSeenSuggestedSkins(unitName)
-  let curTime = ::get_charserver_time_sec()
+  let curTime = get_charserver_time_sec()
   let lastTime = seenSuggestedSkins?[UNIT_DATE_SAVE_ID]
   if (lastTime != null && (lastTime + UNIT_DELAY_TIME_SEC > curTime))
     return null
@@ -73,7 +74,7 @@ let function saveSeenSuggestedSkin(unitName, skinId) {
     return
 
   let seenSuggestedSkins = getSeenSuggestedSkins(unitName) ?? DataBlock()
-  let curTime = ::get_charserver_time_sec()
+  let curTime = get_charserver_time_sec()
   seenSuggestedSkins[skinId] = curTime
   seenSuggestedSkins[UNIT_DATE_SAVE_ID] = curTime
   ::save_local_account_settings(getSaveId(unitName), seenSuggestedSkins)

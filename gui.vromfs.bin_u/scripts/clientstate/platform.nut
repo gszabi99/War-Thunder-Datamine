@@ -22,6 +22,7 @@ let {
 
 let remapNick = require("%scripts/user/remapNick.nut")
 let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
+let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 let PS4_REGION_NAMES = {
   [SCE_REGION_SCEE]  = "scee",
@@ -70,6 +71,10 @@ let canInteractCrossConsole = function(name) {
   return hasFeature("XboxCrossConsoleInteraction")
 }
 
+let function isPlatformShieldTv() {
+  return is_platform_android && getFromSettingsBlk("deviceType", "") == "shieldTv"
+}
+
 return {
   targetPlatform = platformId
   consoleRevision
@@ -99,4 +104,6 @@ return {
   canSpendRealMoney = canSpendRealMoney
 
   ps4RegionName = @() PS4_REGION_NAMES[::ps4_get_region()]
+
+  isPlatformShieldTv
 }

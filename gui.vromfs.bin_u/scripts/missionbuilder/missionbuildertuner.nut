@@ -1,5 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -17,12 +18,13 @@ let { dynamicGetUnits, dynamicSetUnits } = require("dynamicMission")
 let { select_mission_full, get_mission_difficulty } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 ::gui_start_builder_tuner <- function gui_start_builder_tuner() {
-  ::gui_start_modal_wnd(::gui_handlers.MissionBuilderTuner)
+  ::gui_start_modal_wnd(gui_handlers.MissionBuilderTuner)
 }
 
-::gui_handlers.MissionBuilderTuner <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.MissionBuilderTuner <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
@@ -134,7 +136,7 @@ let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut"
 
   function getSuitableUnits(excludeTag, fmTags, weapTags) {
     let suitableUnits = []
-    foreach (unit in ::all_units) {
+    foreach (unit in getAllUnits()) {
       if (isInArray(excludeTag, unit.tags))
         continue
       if (isInArray("aux", unit.tags))

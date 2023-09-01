@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let statsd = require("statsd")
@@ -7,7 +8,7 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 
-::gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerDMM <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {

@@ -1,14 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { is_running } = require("steam")
+let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 
-::gui_handlers.LoginWndHandlerSteam <- class extends ::gui_handlers.LoginWndHandler {
+gui_handlers.LoginWndHandlerSteam <- class extends gui_handlers.LoginWndHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
@@ -42,7 +45,7 @@ let { is_running } = require("steam")
         break
       case YU2_OK:
         if (is_running())
-          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
+          saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
           // no break!
       default:  // warning disable: -missed-break
         base.proceedAuthorizationResult(result, no_dump_login)
@@ -56,7 +59,7 @@ let { is_running } = require("steam")
   function goToLoginWnd(disableAutologin = true) {
     if (disableAutologin)
       ::disable_autorelogin_once <- true
-    ::handlersManager.loadHandler(::gui_handlers.LoginWndHandler)
+    handlersManager.loadHandler(gui_handlers.LoginWndHandler)
   }
 
   function goBack(_obj) {

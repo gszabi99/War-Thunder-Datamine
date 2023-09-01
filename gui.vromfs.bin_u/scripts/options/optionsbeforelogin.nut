@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { get_gui_option } = require("guiOptions")
+let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 
 const AUTOLOGIN_SAVE_ID = "autologin"
 
@@ -16,5 +17,5 @@ const AUTOLOGIN_SAVE_ID = "autologin"
 }
 
 ::set_autologin_enabled <- function set_autologin_enabled(isEnabled) {
-  ::save_local_shared_settings(AUTOLOGIN_SAVE_ID, isEnabled)
+  saveLocalSharedSettings(AUTOLOGIN_SAVE_ID, isEnabled)
 }

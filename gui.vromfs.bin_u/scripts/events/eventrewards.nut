@@ -79,7 +79,7 @@ let rewardConditionsList = {
 
   /**
    * Same as reach_value condition, but reward with this condition can be
-   * recieved multiple times. For exapmle for each 10 wictories
+   * received multiple times. For exapmle for each 10 wictories
    */
   field_number = {
     id = "field_number"
@@ -120,7 +120,7 @@ let rewardConditionsList = {
   }
 
   /**
-   * Simmilar to position condition, but reward recieved when player in best
+   * Simmilar to position condition, but reward received when player in best
    * 50% of all tournaments competitors.
    */
   percent = {

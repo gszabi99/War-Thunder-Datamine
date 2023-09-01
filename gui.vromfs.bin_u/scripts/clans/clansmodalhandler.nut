@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -14,6 +15,7 @@ let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByP
 let time = require("%scripts/time.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { floor } = require("%sqstd/math.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -34,7 +36,7 @@ local leaderboardFilterArray = [
   }
 ]
 
-::gui_handlers.ClansModalHandler <- class extends ::gui_handlers.clanPageModal {
+gui_handlers.ClansModalHandler <- class extends gui_handlers.clanPageModal {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/clans/ClansModal.blk"
   pages          = ["clans_search", "clans_leaderboards", "my_clan"]
@@ -588,7 +590,7 @@ local leaderboardFilterArray = [
   function onFilterEditBoxChangeValue() {}
 
   function onSelectClan(obj) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
     if (!checkObj(obj))
       return
@@ -598,7 +600,7 @@ local leaderboardFilterArray = [
   }
 
   function onRowHoverClan(obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
     if (!checkObj(obj))
       return
@@ -620,7 +622,7 @@ local leaderboardFilterArray = [
   function updateButtons() {
     showObjectsByTable(this.curPageObj, {
       btn_clan_info       = this.curClanId != null
-      btn_clan_actions    = this.curClanId != null && ::show_console_buttons
+      btn_clan_actions    = this.curClanId != null && showConsoleButtons.value
       btn_membership_req  = this.curClanId != null && !::is_in_clan() && ::clan_get_requested_clan_id() != this.curClanId
       mid_nav_bar         = this.clanByRow.len() > 0
     })
@@ -850,7 +852,7 @@ local leaderboardFilterArray = [
   }
 
   function onHelp() {
-    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {

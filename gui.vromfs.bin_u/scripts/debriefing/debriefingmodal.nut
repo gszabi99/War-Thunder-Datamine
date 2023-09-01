@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let DataBlock = require("DataBlock")
 let { format, split_by_chars } = require("string")
@@ -61,6 +63,13 @@ let { stripTags, toUpper } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
+let { isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
+  getBattleTaskRerollCost, canGetBattleTaskReward, canGetAnyBattleTaskReward,
+  getBattleTaskById, mkUnlockConfigByBattleTask, getCurBattleTasksByGm, requestBattleTaskReward,
+  rerollBattleTask, rerollSpecialTask, setBattleTasksUpdateTimer, getBattleTaskNameById, getBattleTaskView
+} = require("%scripts/unlocks/battleTasks.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -99,7 +108,7 @@ let statTooltipColumnParamByType = {
 ::go_debriefing_next_func <- null
 
 ::gui_start_debriefingFull <- function gui_start_debriefingFull(params = {}) {
-  ::handlersManager.loadHandler(::gui_handlers.DebriefingModal, params)
+  handlersManager.loadHandler(gui_handlers.DebriefingModal, params)
 }
 
 ::gui_start_debriefing_replay <- function gui_start_debriefing_replay() {
@@ -151,7 +160,7 @@ let statTooltipColumnParamByType = {
     let title = ::loc_current_mission_name()
     let benchmark_data = stat_get_benchmark()
     ::gui_start_mainmenu()
-    ::gui_start_modal_wnd(::gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
+    ::gui_start_modal_wnd(gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
     return
   }
   if (gm == GM_CREDITS || gm == GM_TRAINING) {
@@ -161,7 +170,7 @@ let statTooltipColumnParamByType = {
   if (gm == GM_TEST_FLIGHT) {
     sendFinishTestFlightToBq()
     if (::last_called_gui_testflight)
-      ::last_called_gui_testflight()
+      handlersManager.callStartFunc(::last_called_gui_testflight)
     else
       ::gui_start_decals();
     ::update_gamercards()
@@ -176,7 +185,7 @@ let statTooltipColumnParamByType = {
   ::gui_start_debriefingFull()
 }
 
-::gui_handlers.DebriefingModal <- class extends ::gui_handlers.MPStatistics {
+gui_handlers.DebriefingModal <- class extends gui_handlers.MPStatistics {
   sceneBlkName = "%gui/debriefing/debriefing.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
@@ -239,6 +248,7 @@ let statTooltipColumnParamByType = {
 
   pveRewardInfo = null
   battleTasksConfigs = {}
+  battleTasksConfigsSorted = []
   shouldBattleTasksListUpdate = false
 
   giftItems = null
@@ -252,7 +262,7 @@ let statTooltipColumnParamByType = {
   function initScreen() {
     this.debriefingResult = getDebriefingResult()
     if (this.debriefingResult == null) {
-      ::script_net_assert_once("not inited debriefing result", "try to get debriefing data")
+      script_net_assert_once("not inited debriefing result", "try to get debriefing data")
       gatherDebriefingResult()
       this.debriefingResult = getDebriefingResult()
     }
@@ -277,7 +287,7 @@ let statTooltipColumnParamByType = {
 
     // Debriefing shows on on_hangar_loaded event, but looks like DoF resets in this frame too.
     // DoF changing works unstable on this frame, but works 100% good on next guiscene act.
-    this.guiScene.performDelayed(this, function() { ::handlersManager.updateSceneBgBlur(true) })
+    this.guiScene.performDelayed(this, function() { handlersManager.updateSceneBgBlur(true) })
 
     if (this.isInited)
       this.scene.findObject("debriefing_timer").setUserData(this)
@@ -1496,7 +1506,7 @@ let statTooltipColumnParamByType = {
       modTooltipId =  mod
         ? MODIFICATION.getTooltipId(unit.name, mod.name, { diffExp = diffExp, curEdiff = this.getCurrentEdiff() })
         : ""
-      isTooltipByHold = ::show_console_buttons
+      isTooltipByHold = showConsoleButtons.value
     }
 
     let markup = handyman.renderCached("%gui/debriefing/modificationProgress.tpl", view)
@@ -2212,12 +2222,12 @@ let statTooltipColumnParamByType = {
     if (!this.is_show_battle_tasks_list(false) || !this.roomEvent)
       return
 
-    let filteredTasks = ::g_battle_tasks.getCurBattleTasksByGm(this.roomEvent?.name)
-      .filter(@(t) !::g_battle_tasks.isTaskDone(t))
+    this.battleTasksConfigsSorted = getCurBattleTasksByGm(this.roomEvent?.name)
+      .filter(@(t) !isBattleTaskDone(t))
+      .map(@(t) mkUnlockConfigByBattleTask(t))
 
     let currentBattleTasksConfigs = {}
-    let configsArray = filteredTasks.map(@(task) ::g_battle_tasks.generateUnlockConfigByTask(task))
-    foreach (config in configsArray)
+    foreach (config in this.battleTasksConfigsSorted)
       currentBattleTasksConfigs[config.id] <- config
 
     if (!u.isEqual(currentBattleTasksConfigs, this.battleTasksConfigs)) {
@@ -2246,8 +2256,8 @@ let statTooltipColumnParamByType = {
 
     let curSelected = listObj.getValue()
     let battleTasksArray = []
-    foreach (config in this.battleTasksConfigs) {
-      battleTasksArray.append(::g_battle_tasks.generateItemView(config, { showUnlockImage = false }))
+    foreach (config in this.battleTasksConfigsSorted) {
+      battleTasksArray.append(getBattleTaskView(config, { showUnlockImage = false }))
     }
     let data = handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", { items = battleTasksArray })
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
@@ -2259,7 +2269,7 @@ let statTooltipColumnParamByType = {
   function updateBattleTasksStatusImg() {
     let tabObjStatus = this.scene.findObject("battle_tasks_list_icon")
     if (checkObj(tabObjStatus))
-      tabObjStatus.show(::g_battle_tasks.canGetAnyReward())
+      tabObjStatus.show(canGetAnyBattleTaskReward())
   }
 
   function onSelectTask(obj) {
@@ -2268,20 +2278,21 @@ let statTooltipColumnParamByType = {
     let val = obj.getValue()
     let taskObj = obj.getChild(val)
     let taskId = taskObj?.task_id
-    let task = ::g_battle_tasks.getTaskById(taskId)
+    let task = getBattleTaskById(taskId)
     if (!task)
       return
 
-    let isBattleTask = ::g_battle_tasks.isBattleTask(taskId)
+    let isTask = isBattleTask(taskId)
 
-    let isDone = ::g_battle_tasks.isTaskDone(task)
-    let canGetReward = isBattleTask && ::g_battle_tasks.canGetReward(task)
+    let isDone = isBattleTaskDone(task)
+    let canGetReward = isTask && canGetBattleTaskReward(task)
 
-    let showRerollButton = isBattleTask && !isDone && !canGetReward && !u.isEmpty(::g_battle_tasks.rerollCost)
+    let showRerollButton = isTask && !isDone && !canGetReward
+      && !u.isEmpty(getBattleTaskRerollCost())
     showObjById("btn_reroll", showRerollButton, taskObj)
-    showObjById("btn_recieve_reward", canGetReward, taskObj)
+    showObjById("btn_receive_reward", canGetReward, taskObj)
     if (showRerollButton)
-      placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), ::g_battle_tasks.rerollCost)
+      placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), getBattleTaskRerollCost())
   }
 
   function updateBattleTasksRequirementsList() {
@@ -2291,7 +2302,7 @@ let statTooltipColumnParamByType = {
       config = this.battleTasksConfigs?[taskId]
     }
 
-    this.showSceneBtn("btn_requirements_list", ::show_console_buttons && (config?.names ?? []).len() != 0)
+    this.showSceneBtn("btn_requirements_list", showConsoleButtons.value && (config?.names ?? []).len() != 0)
   }
 
   function onTaskReroll(obj) {
@@ -2303,22 +2314,22 @@ let statTooltipColumnParamByType = {
     if (!task)
       return
 
-    if (::check_balance_msgBox(::g_battle_tasks.rerollCost))
+    if (::check_balance_msgBox(getBattleTaskRerollCost()))
       this.msgBox("reroll_perform_action",
              loc("msgbox/battleTasks/reroll",
-                  { cost = ::g_battle_tasks.rerollCost.tostring(),
-                    taskName = ::g_battle_tasks.getLocalizedTaskNameById(task)
+                  { cost = getBattleTaskRerollCost().tostring(),
+                    taskName = getBattleTaskNameById(task)
                   }),
       [
-        ["yes", @() ::g_battle_tasks.isSpecialBattleTask(task)
-          ? ::g_battle_tasks.rerollSpecialTask(task)
-          : ::g_battle_tasks.rerollTask(task) ],
+        ["yes", @() isSpecialBattleTask(task)
+          ? rerollSpecialTask(task)
+          : rerollBattleTask(task) ],
         ["no", @() null ]
       ], "yes", { cancel_fn = @() null })
   }
 
   function onGetRewardForTask(obj) {
-    ::g_battle_tasks.requestRewardForTask(obj?.task_id)
+    requestBattleTaskReward(obj?.task_id)
   }
 
   function getCurrentBattleTaskId() {
@@ -2434,11 +2445,11 @@ let statTooltipColumnParamByType = {
       return
 
     let battleTasksArray = []
-    foreach (config in this.battleTasksConfigs) {
-      battleTasksArray.append(::g_battle_tasks.generateItemView(config, { isShortDescription = true }))
+    foreach (config in this.battleTasksConfigsSorted) {
+      battleTasksArray.append(getBattleTaskView(config, { isShortDescription = true }))
     }
     if (u.isEmpty(battleTasksArray))
-      battleTasksArray.append(::g_battle_tasks.generateItemView({
+      battleTasksArray.append(getBattleTaskView({
         id = "current_battle_tasks"
         text = "#mainmenu/btnBattleTasks"
         shouldRefreshTimer = true
@@ -2446,7 +2457,7 @@ let statTooltipColumnParamByType = {
 
     let data = handyman.renderCached("%gui/unlocks/battleTasksShortItem.tpl", { items = battleTasksArray })
     this.guiScene.replaceContentFromText(buttonObj, data, data.len(), this)
-    ::g_battle_tasks.setUpdateTimer(null, buttonObj)
+    setBattleTasksUpdateTimer(null, buttonObj)
   }
   //------------- </CURRENT BATTLE TASK --------------------
 
@@ -2488,7 +2499,7 @@ let statTooltipColumnParamByType = {
   }
 
   function is_show_battle_tasks_list(isNeedBattleTasksList = true) {
-    return (hasFeature("DebriefingBattleTasks") && ::g_battle_tasks.isAvailableForUser()) &&
+    return (hasFeature("DebriefingBattleTasks") && isBattleTasksAvailable()) &&
       (!isNeedBattleTasksList || this.battleTasksConfigs.len() > 0)
   }
 
@@ -2521,7 +2532,7 @@ let statTooltipColumnParamByType = {
     let buttonsList = {
       btn_view_replay = isAnimDone && isReplayReady
       btn_save_replay = isAnimDone && isReplayReady && !is_replay_saved()
-      btn_user_options = isAnimDone && (this.curTab == "players_stats") && player && !player.isBot && ::show_console_buttons
+      btn_user_options = isAnimDone && (this.curTab == "players_stats") && player && !player.isBot && showConsoleButtons.value
       btn_view_highlights = isAnimDone && ::is_highlights_inited()
     }
 
@@ -2595,7 +2606,7 @@ let statTooltipColumnParamByType = {
     if (this.needShowWorldWarOperationBtn()) {
       if (!::g_squad_manager.isInSquad() || ::g_squad_manager.isSquadLeader())
         ::go_debriefing_next_func = function() {
-          ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu) //do not need to back to debriefing
+          handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mainmenu" }) //do not need to back to debriefing
           ::g_world_war.openOperationsOrQueues(true)
         }
       return
@@ -2811,7 +2822,7 @@ let statTooltipColumnParamByType = {
     }
 
     ::go_debriefing_next_func = function() {
-      ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu)
+      handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mainmenu" })
       ::g_world_war.openMainWnd()
     }
   }

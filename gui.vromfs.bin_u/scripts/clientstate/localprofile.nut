@@ -52,7 +52,7 @@ subscribe("onUpdateProfile", onUpdateProfileImpl)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
-::save_local_shared_settings <- function save_local_shared_settings(path, value) {
+let function saveLocalSharedSettings(path, value) {
   let blk = ::get_common_local_settings_blk()
   if (set_blk_value_by_path(blk, path, value))
     saveProfile()
@@ -158,4 +158,8 @@ let getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
   let id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
   if (set_blk_value_by_path(cdb, "accounts/" + id + "/" + path, value))
     saveFunc()
+}
+
+return {
+  saveLocalSharedSettings
 }

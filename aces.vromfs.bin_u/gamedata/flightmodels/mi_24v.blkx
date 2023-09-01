@@ -8,6 +8,7 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
+  "ilsASP17": true,
   "hasPointOfInterestMemory": false,
   "gearSinkRangeLR": 0.316,
   "gearSinkRangeC": 0.25,
@@ -1326,6 +1327,7 @@
   },
   "Sound": {
     "Engine": "engine_mi24",
+    "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "turretTurnSfxPath": "tanks/effects_tanks",
     "turretTurnSfxPathStudio": "aircraft/effects",
@@ -1597,6 +1599,26 @@
         0.0
       ]
     },
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "page": {
+          "type": "plane_ils",
+          "ilsSize": [
+            0.2,
+            0.2
+          ],
+          "ilsOffsetForce": 0.2,
+          "brightnessMult": 3.5,
+          "ilsColor": "ymUKtA=="
+        }
+      }
+    },
     "parts_holes_dmg": {
       "part": "fuse"
     },
@@ -1735,11 +1757,7 @@
         "lipa",
         "lipa_off",
         "ub_57_16_b001",
-        "ub_57_16_b002",
-        "fuse2",
-        "fuse4",
-        "lipa",
-        "lipa_off"
+        "ub_57_16_b002"
       ]
     },
     "HideDmParts": {
@@ -1761,7 +1779,7 @@
           {
             "name": "gun_yak_b_common",
             "ShowNodes": {
-              "node": "fuse2"
+              "node": "fuse4"
             },
             "Weapon": [
               {
@@ -1848,7 +1866,10 @@
           {
             "name": "gun_yak_b_exhaust_common",
             "ShowNodes": {
-              "node": "fuse2"
+              "node": [
+                "fuse2",
+                "fuse4"
+              ]
             },
             "Weapon": [
               {
@@ -3891,6 +3912,7 @@
       "tier": 3,
       "group": "countermeasures",
       "effects": {
+        "enginesInfraRedBrightnessMult": 0.7,
         "counterMeasures": {
           "counterMeasure": {
             "blk": "gameData/counterMeasures/l_166.blk"

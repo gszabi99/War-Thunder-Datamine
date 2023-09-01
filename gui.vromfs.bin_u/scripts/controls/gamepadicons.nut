@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
+
 let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
 let ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
 let SVG_EXT = ".svg"

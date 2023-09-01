@@ -1,8 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 
 let function checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt) {
   for (local i = 0; i < clusterOpt.values.len(); ++i)
@@ -19,7 +22,7 @@ let function isAutoSelected(clusterOpt) {
     : false
 }
 
-let class ClustersMenuWnd extends ::gui_handlers.BaseGuiHandlerWT {
+let class ClustersMenuWnd extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false
@@ -57,7 +60,7 @@ let class ClustersMenuWnd extends ::gui_handlers.BaseGuiHandlerWT {
     if (curVal == prevVal)
       return
 
-    ::set_option(::USEROPT_RANDB_CLUSTER, curVal, clusterOpt)
+    set_option(::USEROPT_RANDB_CLUSTER, curVal, clusterOpt)
     checkShowUnstableSelectedMsg(curVal, prevVal, clusterOpt)
   }
 
@@ -82,10 +85,10 @@ let class ClustersMenuWnd extends ::gui_handlers.BaseGuiHandlerWT {
   close = @() this.goBack()
 }
 
-::gui_handlers.ClustersMenuWnd <- ClustersMenuWnd
+gui_handlers.ClustersMenuWnd <- ClustersMenuWnd
 
 let function openClustersMenuWnd(alignObj, align = ALIGN.TOP) {
-  ::handlersManager.loadHandler(ClustersMenuWnd, { alignObj, align })
+  handlersManager.loadHandler(ClustersMenuWnd, { alignObj, align })
 }
 
 return openClustersMenuWnd

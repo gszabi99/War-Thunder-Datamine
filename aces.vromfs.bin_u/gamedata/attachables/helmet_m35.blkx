@@ -1,5 +1,21 @@
 {
   "model": "helmet_m35",
   "collision": "helmet_m35_collision",
-  "bboxMult": 0.1
+  "bboxMult": 0.1,
+  "mass": 15.0,
+  "DamageParts": {
+    "body": {
+      "hp": 50.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 0.01
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "cut": 1.0
+      }
+    }
+  }
 }

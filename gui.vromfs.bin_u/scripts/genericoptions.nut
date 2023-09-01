@@ -1,12 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 from "soundOptions" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
@@ -17,6 +17,9 @@ let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { set_gui_option } = require("guiOptions")
+let { set_option } = require("%scripts/options/optionsExt.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let function get_country_by_team(team_index) {
   local countries = null
@@ -25,7 +28,7 @@ let function get_country_by_team(team_index) {
   return countries?[team_index] ?? ""
 }
 
-::gui_handlers.GenericOptions <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GenericOptions <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/options/genericOptions.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -98,12 +101,12 @@ let function get_country_by_team(team_index) {
 
         let obj = this.getObj(option.id)
         if (!checkObj(obj)) {
-          ::script_net_assert_once("Bad option",
+          script_net_assert_once("Bad option",
             "Error: not found obj for option " + option.id + ", type = " + option.type)
           continue
         }
 
-        if (!::set_option(option.type, obj.getValue(), option))
+        if (!set_option(option.type, obj.getValue(), option))
           return false
       }
     }
@@ -168,7 +171,7 @@ let function get_country_by_team(team_index) {
   function setOptionValueByControlObj(obj) {
     let option = this.get_option_by_id(obj?.id)
     if (option)
-      ::set_option(option.type, obj.getValue(), option)
+      set_option(option.type, obj.getValue(), option)
     return option
   }
 
@@ -309,7 +312,7 @@ let function get_country_by_team(team_index) {
   }
 
   function onVoicechatChange(_obj) {
-    ::set_option(::USEROPT_VOICE_CHAT, !::get_option(::USEROPT_VOICE_CHAT).value)
+    set_option(::USEROPT_VOICE_CHAT, !::get_option(::USEROPT_VOICE_CHAT).value)
     broadcastEvent("VoiceChatOptionUpdated")
   }
 
@@ -354,7 +357,7 @@ let function get_country_by_team(team_index) {
 
     let val = obj.getValue()
     if (val == false) {
-      ::set_option(::USEROPT_PS4_ONLY_LEADERBOARD, true)
+      set_option(::USEROPT_PS4_ONLY_LEADERBOARD, true)
       this.updateOption(::USEROPT_PS4_ONLY_LEADERBOARD)
     }
     let opt = this.findOptionInContainers(::USEROPT_PS4_ONLY_LEADERBOARD)
@@ -401,7 +404,7 @@ let function get_country_by_team(team_index) {
         if (voiceOpt.value == true && voiceOpt?.cb != null) // onVoicechatChange toggles value
           this[voiceOpt.cb](null)
         else
-          ::set_option(::USEROPT_VOICE_CHAT, false)
+          set_option(::USEROPT_VOICE_CHAT, false)
       }
 
       let listObj = this.scene.findObject("groups_list")
@@ -474,7 +477,7 @@ let function get_country_by_team(team_index) {
     local country = ""
     if (checkObj(cobj)) {
       country = get_country_by_team(cobj.getValue())
-      ::set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
+      set_option(::USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
     let yearOption = ::get_option(::USEROPT_YEAR)
     let unitsByYears = ::get_number_of_units_by_years(country, yearOption.valuesInt)
@@ -497,7 +500,7 @@ let function get_country_by_team(team_index) {
         let yearId = $"{country}_{yearOption.values[i]}"
         let unlockBlk = getUnlockById(yearId)
         if (unlockBlk) {
-          enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
+          enabled = isUnlockOpened(yearId, UNLOCKABLE_YEAR)
           tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))
         }
       }
@@ -529,7 +532,7 @@ let function get_country_by_team(team_index) {
     if (!option)
       return
 
-    ::set_option(option.type, obj.getValue(), option)
+    set_option(option.type, obj.getValue(), option)
 
     ::update_volume_for_music();
     this.updateInternerRadioButtons()
@@ -624,7 +627,7 @@ let function get_country_by_team(team_index) {
   function onDifficultyChange(_obj) {}
 }
 
-::gui_handlers.GenericOptionsModal <- class extends ::gui_handlers.GenericOptions {
+gui_handlers.GenericOptionsModal <- class extends gui_handlers.GenericOptions {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
@@ -646,8 +649,8 @@ let function get_country_by_team(team_index) {
   }
 
   function initNavigation() {
-    let handler = ::handlersManager.loadHandler(
-      ::gui_handlers.navigationPanel,
+    let handler = handlersManager.loadHandler(
+      gui_handlers.navigationPanel,
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
         panelWidth        = "0.4@sf, ph"
@@ -687,7 +690,7 @@ let function get_country_by_team(team_index) {
   function onTblSelect(_obj) {
     this.checkCurrentNavigationSection()
 
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
 
     let option = this.getSelectedOption()

@@ -27,7 +27,7 @@ subscriptions.addListenersWithoutEnv({
       link = format(loc("url/wiki_objects"), unit.name)
     }
 
-    let reciever = isPlatformSony ? bit_activity.PS4_ACTIVITY_FEED : bit_activity.NONE
-    activityFeedPostFunc(config, customFeedParams, reciever)
+    let receiver = isPlatformSony ? bit_activity.PS4_ACTIVITY_FEED : bit_activity.NONE
+    activityFeedPostFunc(config, customFeedParams, receiver)
   }
 })

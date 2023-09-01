@@ -1,6 +1,5 @@
 module component_bundle_macro shared private
 options no_aot
-options strict_smart_pointers
 
 require daslib/ast_boost
 require daslib/templates_boost

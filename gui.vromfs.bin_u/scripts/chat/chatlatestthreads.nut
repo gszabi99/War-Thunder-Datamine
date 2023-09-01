@@ -28,13 +28,11 @@ let { get_time_msec } = require("dagor.time")
 
 //refresh for usual players
 ::g_chat_latest_threads.refresh <- function refresh() {
-  let langTags = u.map(this.getSearchLangsList(),
-                           function(l) { return ::g_chat_thread_tag.LANG.prefix + l.chatId })
+  let langTags = this.getSearchLangsList().map(@(l) ::g_chat_thread_tag.LANG.prefix + l.chatId)
 
   local categoryTagsText = ""
   if (!::g_chat_categories.isSearchAnyCategory()) {
-    local categoryTags = u.map(::g_chat_categories.getSearchCategoriesLList(),
-                                function(cName) { return ::g_chat_thread_tag.CATEGORY.prefix + cName })
+    local categoryTags = ::g_chat_categories.getSearchCategoriesLList().map(@(cName) ::g_chat_thread_tag.CATEGORY.prefix + cName)
     categoryTagsText = ",".join(categoryTags, true)
   }
   this.refreshAdvanced("hidden", ",".join(langTags, true), categoryTagsText)
@@ -134,7 +132,7 @@ let { get_time_msec } = require("dagor.time")
 ::g_chat_latest_threads.saveCurLangs <- function saveCurLangs() {
   if (!this.langsInited || !this.isCustomLangsList)
     return
-  let chatIds = u.map(this.langsList, function (l) { return l.chatId })
+  let chatIds = this.langsList.map(@(l) l.chatId)
   ::saveLocalByAccount("chat/latestThreadsLangs", ",".join(chatIds, true))
 }
 

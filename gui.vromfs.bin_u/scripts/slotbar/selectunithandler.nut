@@ -1,14 +1,19 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 global enum SEL_UNIT_BUTTON {
   EMPTY_CREW
@@ -58,7 +63,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
     let busyUnits = ::get_crews_list_by_country(country)
       .map(@(cc) cc?.aircraft ?? "").filter(@(id) id != "" && id != crewUnitId)
     busyUnitsCount = busyUnits.len()
-    unitsArray = ::all_units.filter(@(unit) busyUnits.indexof(unit.name) == null
+    unitsArray = getAllUnits().filter(@(unit) busyUnits.indexof(unit.name) == null
       && unit.canAssignToCrew(country)).values()
   }
   else {
@@ -83,7 +88,7 @@ let function getParamsFromSlotbarConfig(crew, slotbar) {
   }
 }
 
-local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
+local class SelectUnitHandler extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarChooseAircraft.blk"
   slotbarWeak = null
@@ -132,7 +137,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let tdObj = this.slotObj.getParent()
     let tdPos = tdObj.getPosRC()
 
-    ::gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
+    gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
 
     let tdClone = tdObj.getClone(this.scene, this.slotbarWeak)
     tdClone.pos = tdPos[0] + ", " + tdPos[1]
@@ -145,7 +150,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     let curUnitCloneObj = ::get_slot_obj(tdClone, this.countryId, this.idInCountry)
     ::fill_unit_item_timers(curUnitCloneObj, this.getCrewUnit())
-    ::gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
+    gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
 
     this.scene.findObject("tablePlace").pos = tdPos[0] + ", " + tdPos[1]
 
@@ -164,7 +169,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.updateUnitsList()
     ::move_mouse_on_obj(curUnitCloneObj)
     this.updateOptionShowUnsupportedForCustomList()
-    this.showSceneBtn("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && ::show_console_buttons) || this.hasGroupText())
+    this.showSceneBtn("choose_popup_menu", !this.isEmptyOptionsList || (needEmptyCrewButton && showConsoleButtons.value) || this.hasGroupText())
   }
 
   function reinitScreen(params = {}) {
@@ -391,12 +396,12 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
       if (singleOption) {
         // All bits but first are set to 1.
         maskOption.value = maskOption.value | ~1
-        ::set_option(userOpt, maskOption.value)
+        set_option(userOpt, maskOption.value)
       }
       let maskStorage = getTblValue(idx, this.curOptionsMasks, 0)
       if ((maskOption.value & maskStorage) == 0) {
         maskOption.value = maskStorage
-        ::set_option(userOpt, maskOption.value)
+        set_option(userOpt, maskOption.value)
       }
       let hideTitle = getTblValue("hideTitle", maskOption, false)
       let row = {
@@ -490,7 +495,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     let oldOption = ::get_option((obj.uid).tointeger())
     let value = (oldOption.value.tointeger() & (~maskOptions)) | (obj.getValue() & maskOptions)
-    ::set_option((obj.uid).tointeger(), value)
+    set_option((obj.uid).tointeger(), value)
     this.curVisibleSlots = this.firstPageSlots
     this.updateUnitsList()
   }
@@ -561,7 +566,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
 
     let tblObj = this.scene.findObject("airs_table")
     let total = tblObj.childrenCount()
-    let lenghtOptions = optionMasks.len()
+    let lengthOptions = optionMasks.len()
     local selected = 0
     let crewUnitId = getTblValue("aircraft", this.crew, "")
 
@@ -583,7 +588,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
       let masksUnit = this.optionsMaskByUnits?[unit.name]
       local isVisible = true
       if (masksUnit)
-        for (local j = 0; j < lenghtOptions; j++)
+        for (local j = 0; j < lengthOptions; j++)
           if ((masksUnit[j] & optionMasks[j]) == 0)
             isVisible = false
 
@@ -679,7 +684,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.SelectUnitHandler <- SelectUnitHandler
+gui_handlers.SelectUnitHandler <- SelectUnitHandler
 
 return {
   open = @(crew, slotbar) ::get_cur_gui_scene().performDelayed({},
@@ -689,7 +694,7 @@ return {
       if (params == null)
         return broadcastEvent("ModalWndDestroy")
 
-      ::handlersManager.destroyPrevHandlerAndLoadNew(SelectUnitHandler, params)
+      handlersManager.destroyPrevHandlerAndLoadNew(SelectUnitHandler, params)
     })
   getParamsFromSlotbarConfig = getParamsFromSlotbarConfig
 }

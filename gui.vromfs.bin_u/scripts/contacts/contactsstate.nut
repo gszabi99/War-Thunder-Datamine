@@ -11,6 +11,7 @@ let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
 let { register_command } = require("console")
 let { get_time_msec } = require("dagor.time")
 let { chooseRandom } = require("%sqstd/rand.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -39,7 +40,7 @@ let function updatePresencesByList(presences) {
     if (type(player.uid) != "string") {
       let presence = toString(p) // warning disable: -declared-never-used
       let playerData = toString(player) // warning disable: -declared-never-used
-      ::script_net_assert_once("on_presences_update_error", "on_presences_update cant update presence for player")
+      script_net_assert_once("on_presences_update_error", "on_presences_update cant update presence for player")
       continue
     }
 

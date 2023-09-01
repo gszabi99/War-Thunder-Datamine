@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -17,11 +18,12 @@ let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadI
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode, get_game_type } = require("mission")
-let { get_mission_difficulty_int } = require("guiMission")
+let { get_mission_difficulty_int, get_mp_tbl_teams } = require("guiMission")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
-local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
+local MPStatistics = class extends gui_handlers.BaseGuiHandlerWT {
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
                          | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
 
@@ -572,7 +574,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
 
     if (playerTeam > 0)
-      this.updateTeams(customTblTeams || ::get_mp_tbl_teams(), playerTeam, friendlyTeam)
+      this.updateTeams(customTblTeams || get_mp_tbl_teams(), playerTeam, friendlyTeam)
 
     if (this.checkRaceDataOnStart && ::is_race_started()) {
       let chObj = this.scene.findObject("gc_race_checkpoints")
@@ -710,7 +712,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
     this.setPlayerInfo()
 
     let player = this.getSelectedPlayer()
-    this.showSceneBtn("btn_user_options", this.isOnline && player && !player.isBot && !this.isSpectate && ::show_console_buttons)
+    this.showSceneBtn("btn_user_options", this.isOnline && player && !player.isBot && !this.isSpectate && showConsoleButtons.value)
     updateListLabelsSquad()
   }
 
@@ -751,7 +753,7 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function onStatTblFocus(obj) {
-    if (::show_console_buttons && !obj.isHovered())
+    if (showConsoleButtons.value && !obj.isHovered())
       obj.setValue(-1)
   }
 
@@ -985,4 +987,4 @@ local MPStatistics = class extends ::gui_handlers.BaseGuiHandlerWT {
   getMplayersList = @(t = GET_MPLAYERS_LIST) getMplayersList(t)
 }
 
-::gui_handlers.MPStatistics <- MPStatistics
+gui_handlers.MPStatistics <- MPStatistics

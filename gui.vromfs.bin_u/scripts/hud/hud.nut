@@ -1,10 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { isXInputDevice } = require("controls")
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { send } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -23,6 +24,7 @@ let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut"
 let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::dagui_propid.add_name_id("fontSize")
 
@@ -46,7 +48,7 @@ let function maybeOfferControlsHelp() {
 
 let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
 
-::gui_handlers.Hud <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.Hud <- class extends gui_handlers.BaseGuiHandlerWT {
   sceneBlkName         = "%gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -115,7 +117,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
     ::set_hud_width_limit(safeAreaHud.getSafearea()[0])
     ::set_option_hud_screen_safe_area(safeAreaHud.getValue())
 
-    this.isXinput = ::is_xinput_device()
+    this.isXinput = isXInputDevice()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
     send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
@@ -153,7 +155,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
         | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
       : CtrlsInGui.CTRL_ALLOW_FULL
 
-    if (::show_console_buttons && ::is_cursor_visible_in_gui())
+    if (showConsoleButtons.value && ::is_cursor_visible_in_gui())
       mask = mask & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
 
     this.switchControlsAllowMask(mask)
@@ -226,10 +228,10 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
       return false
 
     if (newHudType == this.hudType) {
-      if (this.isXinput == ::is_xinput_device())
+      if (this.isXinput == isXInputDevice())
         return false
 
-      this.isXinput = ::is_xinput_device()
+      this.isXinput = isXInputDevice()
     }
 
     let hudObj = this.scene.findObject("hud_obj")
@@ -239,17 +241,17 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
     this.guiScene.replaceContentFromText(hudObj, "", 0, this)
 
     if (newHudType == HUD_TYPE.CUTSCENE)
-      this.currentHud = ::handlersManager.loadHandler(::HudCutscene, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(::HudCutscene, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SPECTATOR)
-      this.currentHud = ::handlersManager.loadHandler(::Spectator, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(::Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
-      this.currentHud = ::handlersManager.loadHandler(::HudAir, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(::HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)
-      this.currentHud = ::handlersManager.loadHandler(::HudTank, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(::HudTank, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SHIP)
-      this.currentHud = ::handlersManager.loadHandler(::HudShip, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(::HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
-      this.currentHud = ::handlersManager.loadHandler(::HudHelicopter, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(::HudHelicopter, { scene = hudObj })
     else //newHudType == HUD_TYPE.NONE
       this.currentHud = null
 
@@ -263,7 +265,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   }
 
   function onHudSwitched() {
-    ::handlersManager.updateWidgets()
+    handlersManager.updateWidgets()
     this.updateHudVisMode(::FORCE_UPDATE)
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
@@ -275,7 +277,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   }
 
   function onEventChangedCursorVisibility(_params) {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       this.updateControlsAllowMask()
   }
 
@@ -378,7 +380,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
     if (!checkObj(warningObj))
       return
 
-    let unmappedLocalized = u.map(unmapped, loc)
+    let unmappedLocalized = unmapped.map(@(v) loc(v))
     let text = loc("controls/warningUnmapped") + loc("ui/colon") + "\n" + loc("ui/comma").join(unmappedLocalized, true)
     warningObj.setValue(text)
     warningObj.show(true)
@@ -552,11 +554,11 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   }
 }
 
-::HudCutscene <- class extends ::gui_handlers.BaseUnitHud {
+::HudCutscene <- class extends gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudCutscene.blk"
 }
 
-::HudAir <- class extends ::gui_handlers.BaseUnitHud {
+::HudAir <- class extends gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudAir.blk"
 
   function initScreen() {
@@ -602,7 +604,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   }
 }
 
-::HudTank <- class extends ::gui_handlers.BaseUnitHud {
+::HudTank <- class extends gui_handlers.BaseUnitHud {
   sceneBlkName = mpTankHudBlkPath.value
 
   function initScreen() {
@@ -655,7 +657,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   }
 }
 
-::HudHelicopter <- class extends ::gui_handlers.BaseUnitHud {
+::HudHelicopter <- class extends gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
   function initScreen() {
@@ -694,7 +696,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
   }
 }
 
-::HudShip <- class extends ::gui_handlers.BaseUnitHud {
+::HudShip <- class extends gui_handlers.BaseUnitHud {
   sceneBlkName = "%gui/hud/hudShip.blk"
   widgetsList = [
     {
@@ -721,7 +723,7 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
 }
 
 ::gui_start_hud <- function gui_start_hud() {
-  ::handlersManager.loadHandler(::gui_handlers.Hud)
+  handlersManager.loadHandler(gui_handlers.Hud)
 }
 
 ::gui_start_hud_no_chat <- function gui_start_hud_no_chat() {
@@ -731,5 +733,5 @@ let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProg
 }
 
 ::gui_start_spectator <- function gui_start_spectator() {
-  ::handlersManager.loadHandler(::gui_handlers.Hud, { spectatorMode = true })
+  handlersManager.loadHandler(gui_handlers.Hud, { spectatorMode = true })
 }

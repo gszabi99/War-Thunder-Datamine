@@ -8,6 +8,7 @@ let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_unit_option, set_unit_option, set_gui_option, get_gui_option,
   setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption, getCdBaseDifficulty
 } = require("guiOptions")
@@ -65,7 +66,7 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { debug_dump_stack } = require("dagor.debug")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { dynamicGetZones, getDynamicLayoutsBlk } = require("dynamicMission")
 let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
@@ -74,7 +75,8 @@ let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
   set_option_voicechat, get_option_chat_messages_filter,
   set_option_chat_messages_filter } = require("chat")
 let { get_game_mode } = require("mission")
-let { get_meta_missions_info } = require("guiMission")
+let { get_meta_missions_info, get_mp_session_info,
+  get_mission_set_difficulty_int } = require("guiMission")
 let { crosshairColorOpt } = require("%scripts/options/dargOptionsSync.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -300,9 +302,7 @@ local isWaitMeasureEvent = false
   })
 })
 
-::create_option_switchbox <- function create_option_switchbox(config) {
-  return handyman.renderCached(("%gui/options/optionSwitchbox.tpl"), config)
-}
+let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/optionSwitchbox.tpl"), config)
 
 ::create_option_row_listbox <- function create_option_row_listbox(id, items, value, cb, isFull, listClass = "options") {
   if (!checkArgument(id, items, "array"))
@@ -792,7 +792,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "hud"
       descr.items = []
       descr.values = []
-      let diffCode = ::get_mission_set_difficulty_int()
+      let diffCode = get_mission_set_difficulty_int()
       let total = ::g_hud_vis_mode.types.len()
       for (local i = 0; i < total; i++) {
         let visType = ::g_hud_vis_mode.types[i]
@@ -1371,6 +1371,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_VOLUME_GUNS:
       fillSoundDescr(descr, SND_TYPE_GUNS, "volume_guns")
       break
+    case ::USEROPT_VOLUME_VWS:
+      fillSoundDescr(descr, SND_TYPE_VWS, "volume_vws")
+      break
     case ::USEROPT_VOLUME_TINNITUS:
       fillSoundDescr(descr, SND_TYPE_TINNITUS, "volume_tinnitus")
       break
@@ -1482,7 +1485,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       descr.id = "time"
       descr.values = ["Dawn", "Morning", "Noon", "Day", "Evening", "Dusk", "Night",
                       "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18"]
-      descr.items = u.map(descr.values, ::get_mission_time_text)
+      descr.items = descr.values.map(::get_mission_time_text)
       defaultValue = "Day"
       if (::SessionLobby.isInRoom())
         prevValue = ::SessionLobby.getMissionParam("environment", null)
@@ -2869,7 +2872,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           let yearId = "country_" + ::current_campaign.countries[teamIdx] + "_" + descr.values[i]
           let blk = getUnlockById(yearId)
           if (blk) {
-            enabled = ::is_unlocked_scripted(UNLOCKABLE_YEAR, yearId)
+            enabled = isUnlockOpened(yearId, UNLOCKABLE_YEAR)
             tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(blk))
           }
           descr.items.append({
@@ -2910,7 +2913,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       prevValue = get_gui_option(::USEROPT_MP_TEAM)
 
       local countries = null
-      let sessionInfo = ::get_mp_session_info()
+      let sessionInfo = get_mp_session_info()
       if (sessionInfo)
         countries = ["country_" + sessionInfo.alliesCountry,
                      "country_" + sessionInfo.axisCountry]
@@ -2942,7 +2945,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
             else {
               text = "#country_" + ::current_campaign.countries[i]
               image = ::get_country_icon("country_" + ::current_campaign.countries[i], true)
-              enabled = ::is_unlocked_scripted(UNLOCKABLE_DYNCAMPAIGN, countryId)
+              enabled = isUnlockOpened(countryId, UNLOCKABLE_DYNCAMPAIGN)
               tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlock))
             }
           }
@@ -3326,7 +3329,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
       for (local nc = 0; nc < icons.len(); nc++) {
         let unlockId = icons[nc]
         let unlockItem = getUnlockById(unlockId)
-        let isShown = ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId) || isUnlockVisible(unlockItem)
+        let isShown = isUnlockOpened(unlockId, UNLOCKABLE_PILOT) || isUnlockVisible(unlockItem)
           || (unlockItem?.hideFeature != null && !hasFeature(unlockItem.hideFeature))
         let marketplaceItemdefId = unlockItem?.marketplaceItemdefId
         if (marketplaceItemdefId != null)
@@ -3336,7 +3339,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           unlockId
           image = $"#ui/images/avatars/{unlockId}"
           show = isShown
-          enabled = ::is_unlocked_scripted(UNLOCKABLE_PILOT, unlockId)
+          enabled = isUnlockOpened(unlockId, UNLOCKABLE_PILOT)
           tooltipId = ::g_tooltip.getIdUnlock(unlockId, { showProgress = true })
           marketplaceItemdefId
         }
@@ -4306,7 +4309,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   return descr
 }
 
-::set_option <- function set_option(optionId, value, descr = null) {
+let function set_option(optionId, value, descr = null) {
   if (!descr)
     descr = ::get_option(optionId)
 //  log($"DD: set option {optionId}", value, "name", ::user_option_name_by_idx[optionId])
@@ -4564,7 +4567,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
           break
 
         isWaitMeasureEvent = true
-        ::handlersManager.doDelayed(function() {
+        handlersManager.doDelayed(function() {
           isWaitMeasureEvent = false
           broadcastEvent("MeasureUnitsChanged")
         })
@@ -4682,6 +4685,9 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_VOLUME_GUNS:
       set_sound_volume(SND_TYPE_GUNS, value / 100.0, true)
       break
+    case ::USEROPT_VOLUME_VWS:
+      set_sound_volume(SND_TYPE_VWS, value / 100.0, true)
+      break
     case ::USEROPT_VOLUME_TINNITUS:
       set_sound_volume(SND_TYPE_TINNITUS, value / 100.0, true)
       break
@@ -4751,13 +4757,13 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_MENU_SCREEN_SAFE_AREA:
       if (value >= 0 && value < descr.values.len()) {
         safeAreaMenu.setValue(descr.values[value])
-        ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+        handlersManager.checkPostLoadCssOnBackToBaseHandler()
       }
       break
     case ::USEROPT_HUD_SCREEN_SAFE_AREA:
       if (value >= 0 && value < descr.values.len()) {
         safeAreaHud.setValue(descr.values[value])
-        ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+        handlersManager.checkPostLoadCssOnBackToBaseHandler()
       }
       break;
     case ::USEROPT_AUTOPILOT_ON_BOMBVIEW:
@@ -4870,42 +4876,42 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_FONTS_CSS:
       let selFont = getTblValue(value, descr.values)
       if (selFont && ::g_font.setCurrent(selFont))
-        ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+        handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_SQUAD:
       ::set_hue(TARGET_HUE_SQUAD, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_ALLY:
       ::set_hue(TARGET_HUE_ALLY, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_ENEMY:
       ::set_hue(TARGET_HUE_ENEMY, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_SPECTATOR_ALLY:
       ::set_hue(TARGET_HUE_SPECTATOR_ALLY, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_SPECTATOR_ENEMY:
       ::set_hue(TARGET_HUE_SPECTATOR_ENEMY, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_RELOAD:
       ::set_hue(TARGET_HUE_RELOAD, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_HUE_RELOAD_DONE:
       ::set_hue(TARGET_HUE_RELOAD_DONE, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break
 
     case ::USEROPT_STROBE_ALLY:
@@ -4927,37 +4933,37 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
     case ::USEROPT_HUE_AIRCRAFT_HUD:
       let { sat = 1.0, val = 1.0 } = descr.items[value]
       setHsb(TARGET_HUE_AIRCRAFT_HUD, descr.values[value], sat, val);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_AIRCRAFT_PARAM_HUD:
       let { sat = 1.0, val = 1.0 } = descr.items[value]
       setHsb(TARGET_HUE_AIRCRAFT_PARAM_HUD, descr.values[value], sat, val);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_AIRCRAFT_HUD_ALERT:
       let [ v1, v2, v3 ] = descr.values[value]
       setAlertAircraftHues(v1, v2, v3, value);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_CROSSHAIR:
       let { sat = 1.0, val = 1.0 } = descr.items[value]
       setHsb(TARGET_HUE_HELICOPTER_CROSSHAIR, descr.values[value], sat, val);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_HUD:
       let { sat = 1.0, val = 1.0 } = descr.items[value]
       setHsb(TARGET_HUE_HELICOPTER_HUD, descr.values[value], sat, val);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_PARAM_HUD:
       let { sat = 1.0, val = 1.0 } = descr.items[value]
       setHsb(TARGET_HUE_HELICOPTER_PARAM_HUD, descr.values[value], sat, val);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HORIZONTAL_SPEED:
@@ -4977,23 +4983,23 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value);
       else
         ::set_hue(TARGET_HUE_HELICOPTER_HUD_ALERT_HIGH, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_HELICOPTER_MFD:
       ::set_hue(TARGET_HUE_HELICOPTER_MFD, descr.values[value]);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_ARBITER_HUD:
       let { sat = 0.0, val = 1.0 } = descr.items[value]
       setHsb(TARGET_HUE_ARBITER_HUD, descr.values[value], sat, val);
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       break;
 
     case ::USEROPT_HUE_TANK_THERMOVISION:
       setHSVOption_ThermovisionColor(descr, descr.values[value])
-      ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
+      handlersManager.checkPostLoadCssOnBackToBaseHandler()
       set_gui_option(optionId, value)
       break;
 
@@ -5577,7 +5583,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
         break
 
       case "switchbox":
-        elemTxt = ::create_option_switchbox(optionData)
+        elemTxt = create_option_switchbox(optionData)
         break
 
       case "editbox":
@@ -5706,4 +5712,9 @@ local unitsImgPreset = null
 ::is_harmonized_unit_image_reqired <- function is_harmonized_unit_image_reqired(unit) {
   return unit.shopCountry == "country_japan" && unit.unitType == unitTypes.AIRCRAFT
     && ::is_chinese_harmonized()
+}
+
+return {
+  set_option
+  create_option_switchbox
 }

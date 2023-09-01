@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let DataBlock  = require("DataBlock")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let time = require("%scripts/time.nut")
@@ -26,6 +28,8 @@ let { openWwOperationRewardPopup
 } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { get_current_mission_desc } = require("guiMission")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -193,7 +197,7 @@ registerPersistentDataFromRoot("g_world_war")
     return false
 
   let minRankRequired = this.getSetting("minCraftRank", 0)
-  let unit = u.search(::all_units, @(unit)
+  let unit = u.search(getAllUnits(), @(unit)
     unit.canUseByPlayer() && unit.rank >= minRankRequired
   )
 
@@ -249,7 +253,7 @@ registerPersistentDataFromRoot("g_world_war")
       ::showInfoMsgBox(loc("worldwar/cantUpdateOperation"))
     }
   )
-  ::handlersManager.loadHandler(::gui_handlers.WwMap)
+  handlersManager.loadHandler(gui_handlers.WwMap)
 }
 
 ::g_world_war.checkPlayWorldwarAccess <- function checkPlayWorldwarAccess() {
@@ -277,8 +281,8 @@ registerPersistentDataFromRoot("g_world_war")
 
   ::ww_get_configurable_values(this.configurableValues)
 
-  if (!::handlersManager.findHandlerClassInScene(::gui_handlers.WwOperationsMapsHandler))
-    ::handlersManager.loadHandler(::gui_handlers.WwOperationsMapsHandler,
+  if (!handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler))
+    handlersManager.loadHandler(gui_handlers.WwOperationsMapsHandler,
       { needToOpenBattles = needToOpenBattles
         autoOpenMapOperation = map })
 }
@@ -507,9 +511,7 @@ registerPersistentDataFromRoot("g_world_war")
 }
 
 ::g_world_war.getSelectedArmies <- function getSelectedArmies() {
-  return u.map(::ww_get_selected_armies_names(), function(name) {
-    return ::g_world_war.getArmyByName(name)
-  })
+  return ::ww_get_selected_armies_names().map(@(name) ::g_world_war.getArmyByName(name))
 }
 
 ::g_world_war.getSidesStrenghtInfo <- function getSidesStrenghtInfo() {
@@ -564,7 +566,7 @@ registerPersistentDataFromRoot("g_world_war")
 }
 
 ::g_world_war.filterArmiesByManagementAccess <- function filterArmiesByManagementAccess(armiesArray) {
-  return u.filter(armiesArray, function(army) { return army.hasManageAccess() })
+  return armiesArray.filter(@(army) army.hasManageAccess())
 }
 
 ::g_world_war.haveManagementAccessForSelectedArmies <- function haveManagementAccessForSelectedArmies() {
@@ -614,7 +616,7 @@ registerPersistentDataFromRoot("g_world_war")
 ::g_world_war.getArmyGroups <- function getArmyGroups(filterFunc = null) {
   this.updateArmyGroups()
 
-  return filterFunc ? u.filter(this.armyGroups, filterFunc) : this.armyGroups
+  return filterFunc ? this.armyGroups.filter(filterFunc) : this.armyGroups
 }
 
 
@@ -699,7 +701,7 @@ registerPersistentDataFromRoot("g_world_war")
 
 ::g_world_war.getBattles <- function getBattles(filterFunc = null, forced = false) {
   this.updateBattles(forced)
-  return filterFunc ? u.filter(this.battles, filterFunc) : this.battles
+  return filterFunc ? this.battles.filter(filterFunc) : this.battles
 }
 
 ::g_world_war.getBattleForArmy <- function getBattleForArmy(army, _playerSide = SIDE_NONE) {
@@ -824,13 +826,11 @@ registerPersistentDataFromRoot("g_world_war")
 }
 
 ::g_world_war.getMyReinforcementsArray <- function getMyReinforcementsArray() {
-  return u.filter(this.getReinforcementsArrayBySide(::ww_get_player_side()),
-    function(reinf) { return reinf.hasManageAccess() }
-  )
+  return this.getReinforcementsArrayBySide(::ww_get_player_side()).filter(@(reinf) reinf.hasManageAccess())
 }
 
 ::g_world_war.getMyReadyReinforcementsArray <- function getMyReadyReinforcementsArray() {
-  return u.filter(this.getMyReinforcementsArray(), function(reinf) { return reinf.isReady() })
+  return this.getMyReinforcementsArray().filter(@(reinf) reinf.isReady())
 }
 
 ::g_world_war.hasSuspendedReinforcements <- function hasSuspendedReinforcements() {
@@ -954,7 +954,7 @@ registerPersistentDataFromRoot("g_world_war")
     return
   }
 
-  ::gui_handlers.FramedMessageBox.open({
+  gui_handlers.FramedMessageBox.open({
     title = loc("worldwar/armyAskDigout")
     message = loc("worldwar/armyAskDigoutText")
     onOpenSound = "ww_unit_entrench_move_notify"
@@ -1031,7 +1031,7 @@ registerPersistentDataFromRoot("g_world_war")
   if (!filteredArray.len())
     return
 
-  let entrenchedArmies = u.filter(filteredArray, function(army) { return !army.isEntrenched() })
+  let entrenchedArmies = filteredArray.filter(@(army) !army.isEntrenched())
   if (!entrenchedArmies.len())
     return
 
@@ -1203,7 +1203,7 @@ registerPersistentDataFromRoot("g_world_war")
 
 ::g_world_war.getCurMissionWWBattleName <- function getCurMissionWWBattleName() {
   let misBlk = DataBlock()
-  ::get_current_mission_desc(misBlk)
+  get_current_mission_desc(misBlk)
 
   let battleId = misBlk?.customRules?.battleId
   if (!battleId)
@@ -1215,7 +1215,7 @@ registerPersistentDataFromRoot("g_world_war")
 
 ::g_world_war.getCurMissionWWOperationName <- function getCurMissionWWOperationName() {
   let misBlk = DataBlock()
-  ::get_current_mission_desc(misBlk)
+  get_current_mission_desc(misBlk)
 
   let operationId = misBlk?.customRules?.operationId
   if (!operationId)

@@ -2,10 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { bombNbr, hasCountermeasures, getCurrentPreset } = require("%scripts/unit/unitStatus.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
@@ -17,14 +18,16 @@ let { select_training_mission, get_meta_mission_info_by_name } = require("guiMis
 let { isPreviewingLiveSkin, setCurSkinToHangar
 } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
+
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
 
 ::gui_start_testflight <- function gui_start_testflight(params = {}) {
-  ::gui_start_modal_wnd(::gui_handlers.TestFlight, params)
-  ::last_called_gui_testflight = ::handlersManager.getLastBaseHandlerStartFunc()
+  ::gui_start_modal_wnd(gui_handlers.TestFlight, params)
+  ::last_called_gui_testflight = handlersManager.getLastBaseHandlerStartParams()
 }
 
 ::mergeToBlk <- function mergeToBlk(sourceTable, blk) {  //!!FIX ME: this used only for missionBuilderVehicleConfigForBlk and better to remove this also
@@ -32,7 +35,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
     blk[idx] = val
 }
 
-::gui_handlers.TestFlight <- class extends ::gui_handlers.GenericOptionsModal {
+gui_handlers.TestFlight <- class extends gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
@@ -55,7 +58,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
     if (!this.unit)
       return this.goBack()
 
-    ::gui_handlers.GenericOptions.initScreen.bindenv(this)()
+    gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
     let btnBuilder = this.showSceneBtn("btn_builder", this.hasMissionBuilder)
     if (this.hasMissionBuilder)
@@ -139,7 +142,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
     let isUnitUsable = this.unit.isUsable()
     let isUnitSpecial = ::isUnitSpecial(this.unit)
 
-    let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler, {
+    let handler = handlersManager.loadHandler(gui_handlers.unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
       isForcedAvailable = isUnitSpecial && !isUnitUsable
@@ -278,7 +281,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
           loc(::get_cur_slotbar_unit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
-        ::gui_start_modal_wnd(::gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
+        ::gui_start_modal_wnd(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
       return
     }
 
@@ -412,14 +415,14 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
         count = bulGroup.bulletsCount * bulGroup.guns
       }
       set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, name)
-      ::set_option(::USEROPT_BULLETS0 + bulIdx, name)
+      set_option(::USEROPT_BULLETS0 + bulIdx, name)
       set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, count)
     }
     ++bulIdx
 
     while (bulIdx < BULLETS_SETS_QUANTITY) {
       set_unit_option(updUnit.name, ::USEROPT_BULLETS0 + bulIdx, "")
-      ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
+      set_option(::USEROPT_BULLETS0 + bulIdx, "")
       set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
       ++bulIdx
     }
@@ -430,7 +433,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
     this.updateSceneDifficulty()
 
     let diffOptionCont = this.findOptionInContainers(::USEROPT_DIFFICULTY)
-    ::set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
+    set_option(::USEROPT_DIFFICULTY, obj.getValue(), diffOptionCont)
     this.optionsConfig.diffCode <- diffOptionCont.diffCode[obj.getValue()]
     this.updateOption(::USEROPT_LOAD_FUEL_AMOUNT)
     this.updateOption(::USEROPT_BOMB_ACTIVATION_TIME)
@@ -500,7 +503,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
 
     if (option.value != obj.getValue()) {
       this.guiScene.performDelayed(this, function() {
-        ::set_option(option.type, obj.getValue())
+        set_option(option.type, obj.getValue())
         this.updateOption(option.type)
       })
     }
@@ -514,7 +517,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
     if (!option)
       return
 
-    ::set_option(option.type, obj.getValue(), option)
+    set_option(option.type, obj.getValue(), option)
     if ("hints" in option)
       obj.tooltip = option.hints[ obj.getValue() ]
     else if ("hint" in option)
@@ -528,7 +531,7 @@ let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQI
     if (!option)
       return
 
-    ::set_option(option.type, obj.getValue(), option)
+    set_option(option.type, obj.getValue(), option)
     this.updateTripleAerobaticsSmokeOptions()
   }
 

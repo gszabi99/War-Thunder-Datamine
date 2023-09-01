@@ -189,7 +189,7 @@
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
-      "friendFoeId": false,
+      "friendFoeId": true,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
       "zeroDopplerNotchWidth": 50.0,
@@ -339,8 +339,9 @@
           "setScanPatternSet": {
             "scanPatternSet": "common"
           },
-          "setIllumination": {
-            "illumination": false
+          "setFsmActive": {
+            "fsm": "illumination",
+            "active": false
           }
         },
         "setPulseStandbyMode": {
@@ -377,10 +378,16 @@
           "setEnabled": {
             "value": true
           },
-          "setFsmActive": {
-            "fsm": "search",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "search",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -396,9 +403,6 @@
           },
           "setScanPatternSet": {
             "scanPatternSet": "common"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setPulseSearchMode": {
@@ -464,14 +468,17 @@
             "source": "targetDesignation",
             "width": 65.0
           },
-          "setFsmActive": {
-            "fsm": "lock",
-            "active": true
-          },
-          "clearTargets": {},
-          "setIllumination": {
-            "illumination": false
-          }
+          "setFsmActive": [
+            {
+              "fsm": "lock",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
+          "clearTargets": {}
         },
         "setPulseDesignationLockMode": {
           "setDesignationLockModeCommon": {},
@@ -519,10 +526,16 @@
             "source": "constant",
             "value": -2.0
           },
-          "setFsmActive": {
-            "fsm": "lock",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "lock",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
           "setDistGatePos": {
             "source": "constRange",
             "pos": 9250.0,
@@ -535,9 +548,6 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "pulseBoresightLock"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setPulseBoresightLockMode": {
@@ -596,13 +606,16 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": true
-          },
-          "setIllumination": {
-            "illumination": true
-          }
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": true
+            }
+          ]
         },
         "setPulseTrackMode": {
           "setTrackModeCommon": {},
@@ -655,15 +668,18 @@
             "pos": 675.0,
             "width": 1950.0
           },
-          "setFsmActive": {
-            "fsm": "helmetDesignation",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "helmetDesignation",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
           "setScopeRangeSet": {
             "scopeRangeSet": "pulseBoresightLock"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setPulseHmdStandbyMode": {
@@ -711,15 +727,18 @@
             "pos": 675.0,
             "width": 1950.0
           },
-          "setFsmActive": {
-            "fsm": "lock",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "lock",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ],
           "setScopeRangeSet": {
             "scopeRangeSet": "pulseBoresightLock"
-          },
-          "setIllumination": {
-            "illumination": false
           }
         },
         "setPulseHmdLockMode": {
@@ -772,13 +791,16 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": true
-          },
-          "setIllumination": {
-            "illumination": true
-          }
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": true
+            }
+          ]
         },
         "setPulseHmdTrackMode": {
           "setHmdTrackModeCommon": {},
@@ -1556,6 +1578,45 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            }
+          }
+        }
+      }
+    },
+    "illumination": {
+      "stateInit": "init",
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "stateTo": "active",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
+            }
+          }
+        },
+        "deactivate": {
+          "event": "fsmDeactivate",
+          "stateTo": "inactive",
+          "actions": {
+            "setIllumination": {
+              "transiver": false
+            }
+          }
+        },
+        "activateIllumination": {
+          "event": "sarhMissileLaunch",
+          "actions": {
+            "setIlluminationTimeOut": {
+              "timeOut": 60.0
+            }
+          }
+        },
+        "updateIllumination": {
+          "event": "update",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true
             }
           }
         }

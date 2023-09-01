@@ -1,14 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 //show info about WwMap, WwOperation or WwOperationgroup
-::gui_handlers.WwMapDescription <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwMapDescription <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
 
   descItem = null //WwMap, WwQueue, WwOperation, WwOperationGroup
@@ -28,9 +29,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
     }
 
     if ((!v_descItem && v_map) || (v_descItem instanceof ::WwOperation))
-      return ::handlersManager.loadHandler(::gui_handlers.WwOperationDescriptionCustomHandler, params)
+      return handlersManager.loadHandler(gui_handlers.WwOperationDescriptionCustomHandler, params)
     else if (v_descItem instanceof ::WwQueue)
-      return ::handlersManager.loadHandler(::gui_handlers.WwQueueDescriptionCustomHandler, params)
+      return handlersManager.loadHandler(gui_handlers.WwQueueDescriptionCustomHandler, params)
   }
 
   function initScreen() {

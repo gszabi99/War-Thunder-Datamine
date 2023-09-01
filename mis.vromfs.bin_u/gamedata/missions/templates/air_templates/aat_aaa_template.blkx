@@ -32,18 +32,47 @@
       },
       "conditions": {},
       "actions": {
-        "comment": {
-          "value": ""
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "unitSetVar": {
+          "object_var_name": "visible_for_aaa",
+          "object": [
+            "t1_players_squad",
+            "t2_players_squad"
+          ],
+          "object_var_value": 0
         },
         "unitSetProperties": {
-          "object": "all_players_squad",
-          "targetableByAi": false
+          "object": [
+            "t1_all_aaa_squad",
+            "t2_all_aaa_squad"
+          ],
+          "attack_type": "hold_fire"
+        },
+        "triggerEnable": {
+          "target": [
+            "aat_t1_player_spawned",
+            "aat_t2_player_spawned",
+            "aat_t1_player_has_bomb",
+            "aat_t2_player_has_bomb",
+            "aat_t1_player_killed_ai",
+            "aat_t2_player_killed_ai"
+          ]
         }
       },
       "else_actions": {}
     },
-    "aat_player_died": {
-      "is_enabled": true,
+    "aat_t1_player_spawned": {
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -56,26 +85,68 @@
         }
       },
       "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isKilled",
-          "object_marking": 0,
-          "object_var_name": "",
+        "unitWhenRespawn": {
+          "object_var_name": "visible_for_aaa",
           "object_var_comp_op": "equal",
-          "func": "more",
-          "value": 0,
-          "object": "all_players_squad"
+          "object": "t1_players_squad",
+          "object_var_value": 1
         }
       },
       "actions": {
-        "unitSetProperties": {
-          "object": "all_players_squad",
-          "targetableByAi": false
+        "unitSetVar": {
+          "object_var_name": "visible_for_aaa",
+          "object": "t1_players_squad",
+          "useForTriggerFiltered": true,
+          "object_var_value": 0
+        },
+        "comment": {
+          "value": ""
+        },
+        "triggerEnable": {
+          "target": "aat_t2_check_aaa"
         }
       },
       "else_actions": {}
     },
-    "aat_player_has_bomb": {
-      "is_enabled": true,
+    "aat_t2_player_spawned": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenRespawn": {
+          "object_var_name": "visible_for_aaa",
+          "object_var_comp_op": "equal",
+          "object": "t2_players_squad",
+          "object_var_value": 1
+        }
+      },
+      "actions": {
+        "unitSetVar": {
+          "object_var_name": "visible_for_aaa",
+          "object": "t2_players_squad",
+          "useForTriggerFiltered": true,
+          "object_var_value": 0
+        },
+        "comment": {
+          "value": ""
+        },
+        "triggerEnable": {
+          "target": "aat_t1_check_aaa"
+        }
+      },
+      "else_actions": {}
+    },
+    "aat_t1_player_has_bomb": {
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -95,19 +166,65 @@
           "object_var_comp_op": "equal",
           "func": "more",
           "value": 0,
-          "object": "all_players_squad"
+          "object": "t1_players_squad"
         }
       },
       "actions": {
-        "unitSetProperties": {
-          "object": "all_players_squad",
-          "targetableByAi": true
+        "unitSetVar": {
+          "object_var_name": "visible_for_aaa",
+          "object": "t1_players_squad",
+          "object_var_value": 1
+        },
+        "comment": {
+          "value": ""
+        },
+        "triggerEnable": {
+          "target": "aat_t2_check_aaa"
+        }
+      },
+      "else_actions": {}
+    },
+    "aat_t2_player_has_bomb": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "canBomb",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "t2_players_squad"
+        }
+      },
+      "actions": {
+        "unitSetVar": {
+          "object_var_name": "visible_for_aaa",
+          "object": "t2_players_squad",
+          "object_var_value": 1
+        },
+        "comment": {
+          "value": ""
+        },
+        "triggerEnable": {
+          "target": "aat_t1_check_aaa"
         }
       },
       "else_actions": {}
     },
     "aat_t1_player_killed_ai": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -126,16 +243,23 @@
         }
       },
       "actions": {
-        "unitSetProperties": {
+        "unitSetVar": {
+          "object_var_name": "visible_for_aaa",
           "object": "t1_players_squad",
           "useForTriggerFiltered": true,
-          "targetableByAi": true
+          "object_var_value": 1
+        },
+        "comment": {
+          "value": ""
+        },
+        "triggerEnable": {
+          "target": "aat_t2_check_aaa"
         }
       },
       "else_actions": {}
     },
     "aat_t2_player_killed_ai": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -154,13 +278,106 @@
         }
       },
       "actions": {
-        "unitSetProperties": {
+        "unitSetVar": {
+          "object_var_name": "visible_for_aaa",
           "object": "t2_players_squad",
           "useForTriggerFiltered": true,
-          "targetableByAi": true
+          "object_var_value": 1
+        },
+        "comment": {
+          "value": ""
+        },
+        "triggerEnable": {
+          "target": "aat_t1_check_aaa"
         }
       },
       "else_actions": {}
+    },
+    "aat_t1_check_aaa": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isUnitVar",
+          "object_marking": 0,
+          "object_var_name": "visible_for_aaa",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "t2_players_squad",
+          "object_var_value": 1
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "t1_all_aaa_squad",
+          "target": "t2_players_squad",
+          "useForTriggerFiltered": true,
+          "filterWhom": "target",
+          "fireRandom": true,
+          "targetDistMax": 4000.0
+        }
+      },
+      "else_actions": {
+        "unitSetProperties": {
+          "object": "t1_all_aaa_squad",
+          "attack_type": "hold_fire"
+        }
+      }
+    },
+    "aat_t2_check_aaa": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isUnitVar",
+          "object_marking": 0,
+          "object_var_name": "visible_for_aaa",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "t1_players_squad",
+          "object_var_value": 1
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": false,
+          "object": "t2_all_aaa_squad",
+          "target": "t1_players_squad",
+          "useForTriggerFiltered": true,
+          "filterWhom": "target",
+          "fireRandom": true,
+          "targetDistMax": 4000.0
+        }
+      },
+      "else_actions": {
+        "unitSetProperties": {
+          "object": "t2_all_aaa_squad",
+          "attack_type": "hold_fire"
+        }
+      }
     }
   },
   "mission_objectives": {

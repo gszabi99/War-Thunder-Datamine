@@ -2,19 +2,21 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let stdMath = require("%sqstd/math.nut")
 let { UNLOCK_SHORT } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 
-::gui_handlers.ChooseTitle <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ChooseTitle <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/profile/chooseTitle.tpl"
 
@@ -26,7 +28,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
     if (!::isInMenu() || !::my_stats.getStats())
       return
 
-    ::handlersManager.loadHandler(::gui_handlers.ChooseTitle)
+    handlersManager.loadHandler(gui_handlers.ChooseTitle)
   }
 
   function getSceneTplView() {

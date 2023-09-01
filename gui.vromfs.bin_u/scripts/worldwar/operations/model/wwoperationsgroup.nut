@@ -102,7 +102,7 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
   }
 
   function join(country) {
-    let opList = u.filter(this.getOperationsList(), (@(country) function(op) { return op.canJoinByCountry(country) })(country))
+    let opList = this.getOperationsList().filter((@(country) function(op) { return op.canJoinByCountry(country) })(country))
     if (!opList.len()) {
       ::showInfoMsgBox(this.getCantJoinReasonData(country).reasonText)
       return false

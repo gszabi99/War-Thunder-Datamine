@@ -3426,8 +3426,29 @@
     "SendUnlocksToUserstatToLinkedAccount": {
       "condition": ""
     },
+    "PaymentMethods": {
+      "condition": [
+        "!PSNAccount",
+        "PS4Access"
+      ]
+    },
     "ResearchHelicopterOnGroundVehicle": {
       "condition": ""
+    },
+    "repairCostUsesPlayTime": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER",
+        "role_ALPHA_TESTER"
+      ]
+    },
+    "CaptchaAllowed": {
+      "condition": [
+        "role_GAIJIN",
+        "role_DEVELOPER",
+        "role_TESTER"
+      ]
     }
   }
 }

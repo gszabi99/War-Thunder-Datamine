@@ -345,8 +345,7 @@ local summaryNameArray = [
     if (!pvpSummary)
       return res
 
-    let roles = u.map(getUnitClassTypesByEsUnitType(filter?.unitType),
-       @(t) t.expClassName)
+    let roles = getUnitClassTypesByEsUnitType(filter?.unitType).map(@(t) t.expClassName)
 
     foreach (_idx, diffData in pvpSummary)
       foreach (unitRole, data in diffData) {

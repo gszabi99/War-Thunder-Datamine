@@ -7,6 +7,7 @@ let { TIME_DAY_IN_SECONDS, buildDateStr } = require("%scripts/time.nut")
 let timeBase = require("%appGlobals/timeLoc.nut")
 let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
+let { get_charserver_time_sec } = require("chard")
 
 let promoteUnits = persist("promoteUnits", @() Watched({}))
 let clearPromUnitListCache = @() promoteUnits({})
@@ -20,7 +21,7 @@ let function updatePromoteUnits() {
   if (shopPromoteUnits.value.len() == 0)
     return
 
-  let currentTime = ::get_charserver_time_sec()
+  let currentTime = get_charserver_time_sec()
   local nextChangeTime = null
 
   foreach (promoteUnit in shopPromoteUnits.value) {
@@ -58,7 +59,7 @@ let function fillPromUnitInfo(holderObj, unit) {
     return false
   }
   let timeEnd = promoteUnits.value[unit.name].timeEnd
-  let t = timeEnd - ::get_charserver_time_sec()
+  let t = timeEnd - get_charserver_time_sec()
 
   if (t <= 0) {
     showObjById("aircraft-remainingTimeBuyInfo", false, holderObj)

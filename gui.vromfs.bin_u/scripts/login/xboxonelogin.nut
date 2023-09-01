@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
@@ -11,7 +12,7 @@ let { get_gamertag } = require("%xboxLib/impl/user.nut")
 let { init_with_ui } = require("%xboxLib/user.nut")
 let { login } = require("%scripts/xbox/auth.nut")
 
-::gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
+gui_handlers.LoginWndHandlerXboxOne <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   needAutoLogin = false
   isLoginInProcess = false
@@ -86,7 +87,7 @@ let { login } = require("%scripts/xbox/auth.nut")
         ::close_wait_screen()
         if (err_code == 0) { // YU2_OK
           forceHideCursor(false)
-          ::gui_start_modal_wnd(::gui_handlers.UpdaterModal,
+          ::gui_start_modal_wnd(gui_handlers.UpdaterModal,
               {
                 configPath = "updater.blk"
                 onFinishCallback = ::xbox_complete_login

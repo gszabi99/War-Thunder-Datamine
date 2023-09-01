@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { Cost } = require("%scripts/money.nut")
@@ -11,6 +12,8 @@ let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
 let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears,
   TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
+let { get_charserver_time_sec } = require("chard")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 ::items_classes.Trophy <- class extends ::BaseItem {
   static iType = itemType.TROPHY
@@ -81,7 +84,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
       let addContent = (datablock % "d").map(function(item) {
         let prize = DataBlock()
         prize.setFrom(item)
-        prize.availableIfAllPrizesRecieved = true
+        prize.availableIfAllPrizesReceived = true
         return prize
       })
 
@@ -111,7 +114,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     if (!this.hasLifetime())
       return true
 
-    let curTime = ::get_charserver_time_sec()
+    let curTime = get_charserver_time_sec()
     return this.beginDate <= curTime && curTime < this.endDate
   }
 
@@ -119,7 +122,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     if (!this.hasLifetime())
       return -1
 
-    let curTime = ::get_charserver_time_sec()
+    let curTime = get_charserver_time_sec()
     return curTime < this.beginDate || curTime >= this.endDate
       ? 0
       : this.endDate - curTime
@@ -176,7 +179,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     if (isInArray(this.id, recursionUsedIds)) {
       log("id = " + this.id)
       debugTableData(recursionUsedIds)
-      ::script_net_assert_once("trophy recursion",
+      script_net_assert_once("trophy recursion",
                                "Infinite recursion detected in trophy: " + this.id + ". Array " + toString(recursionUsedIds))
       return null
     }
@@ -226,7 +229,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     if (isInArray(this.id, recursionUsedIds)) {
       log("id = " + this.id)
       debugTableData(recursionUsedIds)
-      ::script_net_assert_once("trophy recursion",
+      script_net_assert_once("trophy recursion",
                                "Infinite recursion detected in trophy: " + this.id + ". Array " + toString(recursionUsedIds))
       return
     }
@@ -348,8 +351,8 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
     params.needShowDropChance <- this.needShowDropChance()
 
     let prizesList = this.getContent()
-    let mainPrizes = prizesList.filter(@(prize) !prize?.availableIfAllPrizesRecieved)
-    let additionalPrizes = prizesList.filter(@(prize) !!prize?.availableIfAllPrizesRecieved)
+    let mainPrizes = prizesList.filter(@(prize) !prize?.availableIfAllPrizesReceived)
+    let additionalPrizes = prizesList.filter(@(prize) !!prize?.availableIfAllPrizesReceived)
     local additionalPrizesMarkup = ""
     if (additionalPrizes.len() > 0) {
       let getHeader = @(...) colorize("grayOptionColor", loc("items/ifYouHaveAllItemsAbove"))
@@ -414,7 +417,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
   }
 
   function needOpenTrophyGroupOnBuy() {
-    return this.isGroupTrophy && !::isHandlerInScene(::gui_handlers.TrophyGroupShopWnd)
+    return this.isGroupTrophy && !::isHandlerInScene(gui_handlers.TrophyGroupShopWnd)
   }
 
   function getOpeningCaption() {

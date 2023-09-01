@@ -6,6 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let inventory = require("inventory")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format, split_by_chars } = require("string")
 let { get_time_msec } = require("dagor.time")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
@@ -16,6 +17,7 @@ let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { TASK_CB_TYPE } = require("%scripts/tasker.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -210,7 +212,7 @@ let function _validate(data, name) {
     itemsBroken = ";".join(itemsBroken, true) // warning disable: -assigned-never-used
     keysMissing = ";".join(keysMissing.keys(), true) // warning disable: -assigned-never-used
     keysWrongType = ";".join(keysWrongType.topairs().map(@(i) i[0] + "=" + i[1])) // warning disable: -assigned-never-used
-    ::script_net_assert_once("inventory client bad response", $"InventoryClient: Response has errors: {name}")
+    script_net_assert_once("inventory client bad response", $"InventoryClient: Response has errors: {name}")
   }
 
   return data
@@ -422,7 +424,7 @@ let class InventoryClient {
           && (this._lastDelayedItemdefsRequestTime + LOST_DELAYED_ACTION_MSEC > get_time_msec())))
       return
     this._lastDelayedItemdefsRequestTime = get_time_msec()
-    ::handlersManager.doDelayed(function() {
+    handlersManager.doDelayed(function() {
       this._lastDelayedItemdefsRequestTime = 0
       this.requestItemDefsImpl()
     }.bindenv(this))

@@ -1,6 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { web_rpc } = require("%scripts/webRPC.nut")
 
 ::g_missions_manager <- {
   isRemoteMission = false
@@ -16,14 +19,14 @@ from "%scripts/dagui_library.nut" import *
 
   ::prepare_start_skirmish()
   this.isRemoteMission = true
-  ::handlersManager.loadHandler(::gui_handlers.RemoteMissionModalHandler, params)
+  handlersManager.loadHandler(gui_handlers.RemoteMissionModalHandler, params)
 }
 
 ::g_missions_manager.startRemoteMission <- function startRemoteMission(params) {
   let url = params.url
   let name = params.name || "remote_mission"
 
-  if (!::isInMenu() || ::handlersManager.isAnyModalHandlerActive())
+  if (!::isInMenu() || handlersManager.isAnyModalHandlerActive())
     return
 
   let urlMission = ::UrlMission(name, url)
@@ -58,4 +61,4 @@ from "%scripts/dagui_library.nut" import *
   ::g_missions_manager.startRemoteMission(params)
 }
 
-::web_rpc.register_handler("start_remote_mission", ::on_start_remote_mission)
+web_rpc.register_handler("start_remote_mission", ::on_start_remote_mission)

@@ -7,8 +7,9 @@ let { get_option_multiplier, set_option_multiplier,
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { ActionGroup } = require("controls")
+let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
+let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
 
 return [
   {
@@ -24,7 +25,7 @@ return [
   {
     id = "ID_SHIP_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_SHIP_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -33,13 +34,13 @@ return [
       ActionGroup.SHIP,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
   {
     id = "ID_SHIP_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON,
     onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.SHIP)
-    showFunc = @() ::have_xinput_device()
+    showFunc = @() hasXInputDevice()
   }
 //-------------------------------------------------------
   {
@@ -95,13 +96,13 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = ::USEROPT_WHEEL_CONTROL_SHIP
     onChangeValue = "doControlsGroupChangeDelayed"
-    showFunc = @() (::is_xinput_device() || isPlatformSony || isPlatformXboxOne)
+    showFunc = @() (isXInputDevice() || isPlatformSony || isPlatformXboxOne)
   }
   {
     id = "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
     checkAssign = false
     showFunc = @() checkOptionValue(::USEROPT_WHEEL_CONTROL_SHIP, true)
-      && (::is_xinput_device() || isPlatformSony || isPlatformXboxOne)
+      && (isXInputDevice() || isPlatformSony || isPlatformXboxOne)
   }
   {
     id = "ID_SHIP_WEAPON_PRIMARY"
@@ -359,7 +360,7 @@ return [
   {
     id = "ID_SHIP_KILLSTREAK_WHEEL_MENU"
     checkAssign = false
-    showFunc = ::have_xinput_device
+    showFunc = hasXInputDevice
   }
   {
     id = "ID_SHIP_ACTION_BAR_ITEM_6"
@@ -419,16 +420,16 @@ return [
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
-    checkAssign = @() ::is_xinput_device()
+    showFunc = hasXInputDevice
+    checkAssign = @() isXInputDevice()
   }
   {
     id = "ship_wheelmenu_y"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = ::have_xinput_device
-    checkAssign = @() ::is_xinput_device()
+    showFunc = hasXInputDevice
+    checkAssign = @() isXInputDevice()
   }
   {
     id = "ID_EVENT_ACTION"
@@ -443,6 +444,10 @@ return [
     checkAssign = false
   }
   //
+
+
+
+
 
 
 

@@ -1,14 +1,14 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
-local { emulateShortcut } = require("controls")
+let { emulateShortcut, isXInputDevice } = require("controls")
 
 //--------------------------------------------------------------------------------------------------
 
-::gui_handlers.multifuncMenuHandler <- class extends ::gui_handlers.wheelMenuHandler {
+gui_handlers.multifuncMenuHandler <- class extends gui_handlers.wheelMenuHandler {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -38,12 +38,12 @@ local { emulateShortcut } = require("controls")
   }
 
   function toggleShortcut(shortcutId) {
-    if (::is_xinput_device())
+    if (isXInputDevice())
       this.switchControlsAllowMask(this.wndControlsAllowMaskWhenInactive)
 
     emulateShortcut(shortcutId)
 
-    if (::is_xinput_device() && this.isActive)
+    if (isXInputDevice() && this.isActive)
       this.switchControlsAllowMask(this.wndControlsAllowMaskWhenActive)
   }
 

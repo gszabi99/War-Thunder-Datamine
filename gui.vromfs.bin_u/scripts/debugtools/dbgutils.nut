@@ -1,8 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let userstat = require("userstat")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format, split_by_chars } = require("string")
 // warning disable: -file:forbidden-function
 
@@ -31,7 +33,8 @@ let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
-
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { get_charserver_time_sec } = require("chard")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 let function reload_dagui() {
@@ -259,7 +262,7 @@ let function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china
       briefingClone["part"] <- part
   }
 
-  ::handlersManager.loadHandler(::gui_handlers.LoadingBrief, { briefing = briefingClone })
+  handlersManager.loadHandler(gui_handlers.LoadingBrief, { briefing = briefingClone })
 }
 
 
@@ -267,7 +270,7 @@ let function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = fa
   let units = shopSearchCore.findUnitsByLocName(unitLocName, true, needIncludeNotInShop)
   units.sort(function(a, b) { return a.name == b.name ? 0 : a.name < b.name ? -1 : 1 })
 
-  let res = u.map(units, function(unit) {
+  let res = units.map(function(unit) {
     let locName = ::getUnitName(unit)
     let army = unit.unitType.getArmyLocName()
     let country = loc(::getUnitCountry(unit))
@@ -293,7 +296,7 @@ let function debug_show_unit(unitId) {
 
 let function debug_show_weapon(weaponName) {
   weaponName = getWeaponNameByBlkPath(weaponName)
-  foreach (unit in ::all_units) {
+  foreach (unit in getAllUnits()) {
     if (!unit.isInShop)
       continue
     let unitBlk = ::get_full_unit_blk(unit.name)
@@ -385,7 +388,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
     ::rented_units_get_expired_time_sec = function(id) {
       if (!::_debug_unit_rent?[id])
         return ::_rented_units_get_expired_time_sec(id)
-      let remain = ::_debug_unit_rent[id].expire - ::get_charserver_time_sec()
+      let remain = ::_debug_unit_rent[id].expire - get_charserver_time_sec()
       if (remain <= 0)
         delete ::_debug_unit_rent[id]
       return remain
@@ -393,7 +396,7 @@ let function debug_unit_rent(unitId = null, seconds = 60) {
   }
 
   if (unitId) {
-    ::_debug_unit_rent[unitId] <- { time = seconds, expire = ::get_charserver_time_sec() + seconds }
+    ::_debug_unit_rent[unitId] <- { time = seconds, expire = get_charserver_time_sec() + seconds }
     broadcastEvent("UnitRented", { unitName = unitId })
   }
   else

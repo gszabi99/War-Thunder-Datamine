@@ -2,13 +2,16 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan,
   hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -67,7 +70,7 @@ enum chatRoomTabOrder {
   inviteLocIdFull = "chat/receiveInvite"
   inviteIcon = "#ui/gameuiskin#chat.svg"
   getInviteClickNameText = function(roomId) {
-    let locId = ::show_console_buttons ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
+    let locId = showConsoleButtons.value ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
     return format(loc(locId), this.getRoomName(roomId))
   }
 
@@ -149,7 +152,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
 
     canBeClosed = function(roomId) { return !::g_squad_manager.isInSquad() || roomId != ::g_chat.getMySquadRoomId() }
     getInviteClickNameText = function(_roomId) {
-      return loc(::show_console_buttons ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
+      return loc(showConsoleButtons.value ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
     isVisible = @() hasMenuChatSquad.value
   }
@@ -254,7 +257,7 @@ enums.addTypesByGlobalName("g_chat_room_type", {
 
     hasChatHeader = true
     fillChatHeader = function(obj, roomData) {
-      let handler = ::handlersManager.loadHandler(::gui_handlers.ChatThreadHeader,
+      let handler = handlersManager.loadHandler(gui_handlers.ChatThreadHeader,
                                                     {
                                                       scene = obj
                                                       roomId = roomData.id
@@ -282,8 +285,8 @@ enums.addTypesByGlobalName("g_chat_room_type", {
 
 
     hasCustomViewHandler = true
-    loadCustomHandler = @(scene, roomId, backFunc) ::handlersManager.loadHandler(
-      ::gui_handlers.ChatThreadsListView, {
+    loadCustomHandler = @(scene, roomId, backFunc) handlersManager.loadHandler(
+      gui_handlers.ChatThreadsListView, {
         scene = scene,
         roomId = roomId,
         backFunc = backFunc

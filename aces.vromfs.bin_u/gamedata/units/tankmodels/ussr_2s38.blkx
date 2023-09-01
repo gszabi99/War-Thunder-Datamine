@@ -145,6 +145,12 @@
       },
       "turret_01_back_dm": {
         "armorThickness": 5.0
+      },
+      "turret_05_back_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_05_top_dm": {
+        "armorThickness": 10.0
       }
     },
     "main_turret_armor": {
@@ -520,6 +526,26 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
+      "ammo_turret_56_dm": {},
+      "ammo_turret_57_dm": {},
+      "ammo_turret_58_dm": {},
+      "ammo_turret_59_dm": {},
+      "ammo_turret_60_dm": {},
+      "ammo_turret_61_dm": {},
+      "ammo_turret_62_dm": {},
+      "ammo_turret_63_dm": {},
+      "ammo_turret_64_dm": {},
+      "ammo_turret_65_dm": {},
+      "ammo_turret_66_dm": {},
+      "ammo_turret_67_dm": {},
+      "ammo_turret_68_dm": {},
+      "ammo_turret_69_dm": {},
+      "ammo_turret_70_dm": {},
+      "ammo_turret_71_dm": {},
+      "ammo_turret_72_dm": {},
+      "ammo_turret_73_dm": {},
+      "ammo_turret_74_dm": {},
+      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1059,7 +1085,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1699,12 +1729,12 @@
         "shellCasingEmitter": "emtr_shell",
         "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
-        "openHatchTime": 0.5,
+        "openHatchTime": 0.4,
         "shellCasingLifeTime": 5.0,
         "shellCasingImpulse": [
           1.0,
-          1.0,
-          2.0
+          -3.0,
+          3.0
         ],
         "linkShellCasingToGun": true,
         "recoilOffset": 0.2,
@@ -1988,6 +2018,30 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
       }
     ]
   },
@@ -2031,6 +2085,7 @@
       "model": "utd_29"
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.35,
       "mainGearRatio": 1.357,
@@ -3095,12 +3150,12 @@
               "shellCasingEmitter": "emtr_shell",
               "shellCasingMesh": "auto_cannon_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
-              "openHatchTime": 0.5,
+              "openHatchTime": 0.4,
               "shellCasingLifeTime": 5.0,
               "shellCasingImpulse": [
                 1.0,
-                1.0,
-                2.0
+                -3.0,
+                3.0
               ],
               "linkShellCasingToGun": true,
               "recoilOffset": 0.2,

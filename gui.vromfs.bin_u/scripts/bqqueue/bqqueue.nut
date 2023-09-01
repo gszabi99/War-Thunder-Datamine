@@ -8,21 +8,22 @@ let { json_to_string } = require("json")
 let { getPlayerToken } = require("auth_wt")
 let { get_cur_circuit_block } = require("blkGetters")
 let logBQ = log_with_prefix("[BQ] ")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { shuffle } = require("%sqStdLibs/helpers/u.nut")
 let DataBlock = require("DataBlock")
 let { myUserId } = require("%scripts/user/profileStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
 const RETRY_MSEC = 30000 //retry send on all servers down
 const RETRY_ON_URL_ERROR_MSEC = 3000
 const MAX_COUNT_MSG_IN_ONE_SEND = 150
 const RESPONSE_EVENT = "bq.requestResponse"
-let queueByUserId = mkHardWatched("bqQueue.queueByUserId", {})
+let queueByUserId = hardPersistWatched("bqQueue.queueByUserId", {})
 let queue = Computed(@() queueByUserId.value?[myUserId.value] ?? [])
-let nextCanSendMsec = mkHardWatched("bqQueue.nextCanSendMsec", -1)
-let currentUrlIndex = mkHardWatched("bqQueue.currentUrlIndex", 0)
+let nextCanSendMsec = hardPersistWatched("bqQueue.nextCanSendMsec", -1)
+let currentUrlIndex = hardPersistWatched("bqQueue.currentUrlIndex", 0)
 
 let urls = Watched([])
 let url = Computed(@() urls.value?[currentUrlIndex.value] ?? urls.value?[0])
@@ -38,47 +39,7 @@ let function changeUrl() {
   currentUrlIndex((currentUrlIndex.value + 1) % max(urls.value.len(), 1))
 }
 
-local sendAll = @() null
-
-let function startSendTimer() {
-  if (queue.value.len() == 0)
-    return
-  let timeLeft = nextCanSendMsec.value - get_time_msec()
-  if (timeLeft > 0)
-    resetTimeout(0.001 * timeLeft, sendAll)
-  else
-    defer(sendAll)
-}
-startSendTimer()
-
-let function callbackRequest(res) {
-  let { status = -1, http_code = -1, context = null } = res
-  if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
-    logBQ($"Success send {context?.list.len()} events")
-    if (!(context?.isAllSent ?? true))
-      startSendTimer()
-    return
-  }
-
-  changeUrl()
-
-  if(currentUrlIndex.value == 0) {
-    logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
-    initUrl()
-  }
-  else {
-    logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
-    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
-  }
-
-  if (context != null) {
-    let { userId, list } = context
-    queueByUserId.mutate(@(v) v[userId] <- (clone list).extend(v?[userId] ?? []))
-  }
-}
-
-sendAll = function() {
+let function sendAll() {
   if (queue.value.len() == 0)
     return
 
@@ -129,7 +90,7 @@ sendAll = function() {
     headers
     waitable = true
     data = json_to_string(list)
-    callback = callbackRequest
+    respEventId = RESPONSE_EVENT
     context = {
       userId = myUserId.value
       list = sendedMsg
@@ -137,6 +98,44 @@ sendAll = function() {
     }
   })
 }
+
+let function startSendTimer() {
+  if (queue.value.len() == 0)
+    return
+  let timeLeft = nextCanSendMsec.value - get_time_msec()
+  if (timeLeft > 0)
+    resetTimeout(0.001 * timeLeft, sendAll)
+  else
+    defer(sendAll)
+}
+startSendTimer()
+
+subscribe(RESPONSE_EVENT, function(res) {
+  let { status = -1, http_code = -1, context = null } = res
+  if (status == HTTP_SUCCESS && http_code >= 200 && http_code < 300) {
+    logBQ($"Success send {context?.list.len()} events")
+    if (!(context?.isAllSent ?? true))
+      startSendTimer()
+    return
+  }
+
+  changeUrl()
+
+  if(currentUrlIndex.value == 0) {
+    logerr($"[BQ] Failed to send data. All servers down. Retry after {0.001 * RETRY_MSEC} sec")
+    nextCanSendMsec(get_time_msec() + RETRY_MSEC)
+    initUrl()
+  }
+  else {
+    logBQ($"Failed to send {context?.list.len()} events to BQ. status = {status}, http_code = {http_code}. Retry after {0.001 * RETRY_ON_URL_ERROR_MSEC} sec")
+    nextCanSendMsec(get_time_msec() + RETRY_ON_URL_ERROR_MSEC)
+  }
+
+  if (context != null) {
+    let { userId, list } = context
+    queueByUserId.mutate(@(v) v[userId] <- (clone list).extend(v?[userId] ?? []))
+  }
+})
 
 local wasQueueLen = queue.value.len()
 queue.subscribe(function(v) {
@@ -151,7 +150,7 @@ let addToQueue = @(msg) queueByUserId.mutate(
   @(v) v[myUserId.value] <- (clone (v?[myUserId.value] ?? [])).append(msg))
 
 let function sendBqEvent(tableId, event, data = {}) {
-  let msg = { tableId, data = { clientTime = ::get_charserver_time_sec(), event, params = json_to_string(data) } }
+  let msg = { tableId, data = { clientTime = get_charserver_time_sec(), event, params = json_to_string(data) } }
   addToQueue(msg)
 }
 

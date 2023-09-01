@@ -33,6 +33,22 @@
   "sfxReloadBullet": "grd_cannon_belt_reload",
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": false,
+  "visualOverheat": {
+    "shotsToMax": 120,
+    "cooldownTime": 8.0,
+    "cooldownDelay": 1.8,
+    "fxType": "smoke_overheat_med",
+    "decalOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "decalSize": [
+      1.8,
+      2.2,
+      2.2
+    ]
+  },
   "overheat": {
     "overheat": [
       [
@@ -58,6 +74,7 @@
       "maxDistance": 2000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -300,6 +317,7 @@
       "caliber": 0.02,
       "normalizationPreset": "default",
       "ricochetPreset": "defaultExt",
+      "groundRicochetPreset": "defaultExt",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,

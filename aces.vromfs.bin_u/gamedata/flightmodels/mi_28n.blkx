@@ -9,6 +9,7 @@
   "haveCCIPForTurret": true,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "ils28K": true,
   "gearSinkRangeLR": 0.287,
   "gearSinkRangeC": 0.237,
   "tpsCameraTargetOffsetAtZoom": [
@@ -1311,6 +1312,7 @@
   },
   "Sound": {
     "Engine": "engine_mi24",
+    "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "turretTurnSfxPath": "sounds/effects",
     "turretTurnSfxPathStudio": "aircraft/effects",
@@ -2116,20 +2118,14 @@
           "textureArea": [
             0.0,
             0.0,
-            0.8,
-            0.8
+            1.0,
+            1.0
           ],
           "page": {
-            "type": "pilot_hud",
-            "ilsNode": "ils",
+            "type": "plane_ils",
             "ilsSize": [
               0.25,
               0.25
-            ],
-            "ilsProjSize": [
-              0.176,
-              0.176,
-              0.023
             ],
             "ilsOffsetForce": 0.2,
             "brightnessMult": 3.5

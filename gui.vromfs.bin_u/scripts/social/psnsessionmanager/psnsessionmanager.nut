@@ -6,6 +6,7 @@ let psnNotify = require("%sonyLib/notifications.nut")
 let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
+let { subscribe } = require("eventbus")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
@@ -298,6 +299,8 @@ let proceedInvite = function(p) {
   )
 }
 
+subscribe("psnEventGameIntentJoinSession", proceedInvite)
+
 addListenersWithoutEnv({
   SquadStatusChanged = function(_p) {
     switch (::g_squad_manager.state) {
@@ -371,14 +374,10 @@ addListenersWithoutEnv({
       }, this)
     ) })
   }
-  GameIntentJoinSession = proceedInvite
   MainMenuReturn = function(_p) {
     let invites = copy(postponedInvitations.value)
     postponedInvitations([])
 
     invites.each(@(p) proceedInvite(p))
   }
-
-  GameIntentLaunchActivity = function(_p) { }
-  GameIntentLaunchMultiplayerActivity = function(_p) { }
 })

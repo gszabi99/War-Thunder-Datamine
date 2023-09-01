@@ -2,12 +2,12 @@
 from "%scripts/dagui_library.nut" import *
 
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 
 let function mkUseroptHardWatched(id, defValue = null) {
-  let opt = mkHardWatched(id, defValue)
+  let opt = hardPersistWatched(id, defValue)
   opt.subscribe(@(v) updateExtWatched({ [id] = v }))
   return opt
 }

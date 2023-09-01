@@ -26,6 +26,7 @@
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
   "fxWaterShockWave": "dust_waterwave_big",
+  "fxTypeEjector": "smoke_gunpowder_ejector",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -46,6 +47,7 @@
     "maxDistance": 10000.0,
     "normalizationPreset": "apcr",
     "ricochetPreset": "apds",
+    "groundRicochetPreset": "apds",
     "secondaryShattersPreset": "apds",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -292,6 +294,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds",
+      "groundRicochetPreset": "apds",
       "secondaryShattersPreset": "apds",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -503,6 +506,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",
+      "groundRicochetPreset": "hesh",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -946,6 +950,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1379,6 +1384,7 @@
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1467,6 +1473,11 @@
         0.8
       ],
       "explosionPatchRadius": 1.5,
+      "waterRicochetEffect": "hit_81_105mm_water_ap",
+      "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+      "destructionBreakFx": "smoke_shell_explosion",
+      "destructionFireFx": "fire_thermite",
+      "destructionExplosionFx": "explosion_tank_ammunition_smoke",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -1483,7 +1494,8 @@
       },
       "collisions": {
         "steel": {
-          "fx": "smoke_shell_explosion"
+          "fx": "smoke_shell_explosion",
+          "ricochetFx": "hit_59_80mm_stone_ap"
         }
       },
       "visual": {

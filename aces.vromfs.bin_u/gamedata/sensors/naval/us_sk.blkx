@@ -3,21 +3,21 @@
   "name": "SK",
   "transivers": {
     "search": {
-      "pulsePower": 200000.0,
-      "pulseWidth": 5E-06,
-      "prf": 60.0,
-      "band": 1,
-      "rcs": 3.0,
-      "range": 140000.0,
-      "rangeMax": 200000.0,
+      "pulsePower": 50000.0,
+      "pulseWidth": 10.0,
+      "prf": 300.0,
+      "band": 0,
+      "rcs": 5.0,
+      "range": 120000.0,
+      "rangeMax": 150000.0,
       "antenna": {
         "azimuth": {
-          "angleHalfSens": 10.0,
-          "sideLobesSensitivity": -25.0
+          "angleHalfSens": 7.5,
+          "sideLobesSensitivity": -40.0
         },
         "elevation": {
-          "angleHalfSens": 15.0,
-          "sideLobesSensitivity": -25.0
+          "angleHalfSens": 25.0,
+          "sideLobesSensitivity": -40.0
         }
       }
     }
@@ -30,13 +30,13 @@
         180.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -15.0,
+        75.0
       ],
       "yawStabLimit": 180.0,
-      "pitchStabLimit": 20.0,
+      "pitchStabLimit": 50.0,
       "rollStabLimit": 20.0,
-      "period": 13.0,
+      "period": 2.0,
       "barHeight": 15.0,
       "barsCount": 1,
       "rowMajor": true
@@ -47,22 +47,25 @@
       "aircraftAsTarget": true,
       "groundVehiclesAsTarget": false,
       "groundClutter": false,
+      "friendFoeId": true,
       "distance": {
         "presents": true,
-        "minValue": 550.0,
-        "maxValue": 500000.0
+        "minValue": 1000.0,
+        "maxValue": 150000.0
       }
     }
   },
   "scopeRanges": {
-    "scopeRange1": 5000.0,
-    "scopeRange2": 37000.0,
-    "scopeRange3": 140000.0,
-    "scopeRange4": 370000.0
+    "range1": 10000.0,
+    "range2": 20000.0,
+    "range3": 50000.0
   },
   "fsms": {
     "main": {
-      "stateInit": "init",
+      "stateInit": [
+        "init",
+        "init"
+      ],
       "actionsTemplates": {
         "init": {
           "setEnabled": {
@@ -76,6 +79,20 @@
           },
           "setScanPattern": {
             "scanPattern": "search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 7.5
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -180.0,
+              180.0
+            ],
+            "distanceRange": [
+              0.0,
+              150000.0
+            ]
           }
         },
         "setStandbyMode": {
@@ -102,12 +119,21 @@
           "setFsmActive": {
             "fsm": "search",
             "active": true
+          },
+          "setCueEnabled": {
+            "value": true
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
           }
         },
         "resetSearchMode": {
           "setFsmActive": {
             "fsm": "search",
             "active": false
+          },
+          "setCueEnabled": {
+            "value": false
           }
         }
       },
@@ -184,13 +210,51 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {}
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
           }
         },
         "setCueElevation": {
           "command": "cueAxisZ",
           "actions": {
             "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": 0,
+              "sensorIndex": 1
+            },
+            "designateTargetUnderCue": {
+              "type": 0,
+              "sensorIndex": 1
+            }
           }
         }
       }

@@ -4,7 +4,7 @@ let { get_option_multiplier, set_option_multiplier,
   OPTION_CAMERA_SMOOTH, OPTION_CAMERA_MOUSE_SPEED
 } = require("gameOptions")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
+let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [
 //-------------------------------------------------------

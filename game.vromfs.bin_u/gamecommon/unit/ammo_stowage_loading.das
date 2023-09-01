@@ -167,7 +167,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
   blk |> read_flag(ammo_clusters__state, AmmoClusterState FIRE_FATAL, "fatalFire")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState EXPLOSION_FATAL, "fatalExplosion")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState ELEVATOR_DESTROY_BLOCK_SHOOT, "dstrElevatorDisablesShooting")
-  blk |> read_flag(ammo_clusters__state, AmmoClusterState RESTORE_AFTER_DEAD, "restoreAfterDead")
+  blk |> read_flag(ammo_clusters__state, AmmoClusterState RESTORE_AFTER_DEAD, "restoreAfterDead", true)
   ammo_clusters__reloadTimeMult = blk |> datablock_getReal("reloadTimeMult", ammo_clusters__reloadTimeMult)
   ammo_clusters__splashConstraints.x = blk |> datablock_getReal("splashRadiusConstraint", ammo_clusters__splashConstraints.x)
   ammo_clusters__splashConstraints.y = blk |> datablock_getReal("splashDamageConstraint", ammo_clusters__splashConstraints.y)

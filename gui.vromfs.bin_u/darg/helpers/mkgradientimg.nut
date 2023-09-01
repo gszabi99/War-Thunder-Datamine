@@ -53,11 +53,12 @@ let function mkLinearGradSvgTxtImpl(points, width, height, x1=0, y1=0, x2=null, 
   return $"{header}\n    {body}\n{footer}"
 }
 
-let mkLinearGradientImg = kwarg(function(points, width, height, x1=0, y1=0, x2=null, y2=0, spreadMethod=GRADSPREAD.PAD, transform=null, blendMode=BLEND_MODE_PREMULTIPLIED) {
+let mkLinearGradientImg = kwarg(function(points, width, height, x1=0, y1=0, x2=null, y2=0, spreadMethod=GRADSPREAD.PAD, transform=null, blendMode=BLEND_MODE_PREMULTIPLIED, immediate=false) {
   let svg = mkLinearGradSvgTxtImpl(points, width, height, x1,y1,x2,y2, spreadMethod, transform)
   let text = encodeString(svg)
   let prefix = blendModesPrefix?[blendMode] ?? ""
-  return Picture($"{prefix}b64://{text}.svg:{width}:{height}?Ac")
+  let pic = immediate ? PictureImmediate : Picture
+  return pic($"{prefix}b64://{text}.svg:{width}:{height}?Ac")
 })
 
 let function mkRadialGradSvgTxtImpl(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null){

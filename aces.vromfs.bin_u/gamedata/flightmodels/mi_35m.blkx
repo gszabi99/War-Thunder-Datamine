@@ -1322,6 +1322,7 @@
   },
   "Sound": {
     "Engine": "engine_mi24",
+    "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "turretTurnSfxPath": "tanks/effects_tanks",
     "turretTurnSfxPathStudio": "aircraft/effects",
@@ -2156,20 +2157,14 @@
           "textureArea": [
             0.0,
             0.0,
-            0.8,
-            0.8
+            1.0,
+            1.0
           ],
           "page": {
-            "type": "pilot_hud",
-            "ilsNode": "ils",
+            "type": "plane_ils",
             "ilsSize": [
               0.2,
               0.2
-            ],
-            "ilsProjSize": [
-              0.169,
-              0.169,
-              0.02
             ],
             "ilsOffsetForce": 0.2,
             "brightnessMult": 3.5
@@ -2204,7 +2199,7 @@
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/su_spo-15.blk"
+        "blk": "gameData/sensors/su_spo-15lm.blk"
       }
     ]
   },
@@ -4166,7 +4161,16 @@
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 2
+      "tier": 2,
+      "effects": {
+        "enginesInfraRedBrightnessMult": 0.7,
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "gsh_23l_exhaust_common"
+          }
+        }
+      }
     },
     "heli_counterMeasures": {
       "modClass": "weapon",

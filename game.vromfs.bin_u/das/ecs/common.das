@@ -62,10 +62,10 @@ def is_point_in_poly(pt : float2; points : ecs::Point2List)
 def eid_frnd(eid : EntityId)
   var x = uint(eid)
   // Magic consts taken from https://github.com/skeeto/hash-prospector#discovered-hash-functions
+  x ^= x >> 16u
+  x *= 0x21f0aaadu
   x ^= x >> 15u
-  x *= 0xd168aaadu
-  x ^= x >> 15u
-  x *= 0xaf723597u
+  x *= 0xd35a2d97u
   x ^= x >> 15u
   return float(x & 16777215u) / 16777216.f // float values are int uniform only within low 24 bits
 

@@ -1,14 +1,16 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
-::gui_handlers.debugWndHandler <- class extends ::BaseGuiHandler {
+gui_handlers.debugWndHandler <- class extends ::BaseGuiHandler {
   sceneBlkName = "%gui/debugFrame.blk"
   wndType = handlerType.MODAL
 
@@ -99,7 +101,7 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
 }
 
 let function debugWnd(blkName = null, tplParams = {}, callbacksContext = null) {
-  ::handlersManager.loadHandler(::gui_handlers.debugWndHandler,
+  handlersManager.loadHandler(gui_handlers.debugWndHandler,
     { blkName = blkName, tplParams = tplParams, callbacksContext = callbacksContext })
 }
 

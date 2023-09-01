@@ -2,9 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
@@ -16,10 +17,10 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 ::init_squad_widget_handler <- function init_squad_widget_handler(nestObj) {
   if (!hasFeature("Squad") || !hasFeature("SquadWidget") || !checkObj(nestObj))
     return null
-  return ::handlersManager.loadCustomHandler(::gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
+  return handlersManager.loadCustomHandler(gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
 }
 
-::gui_handlers.SquadWidgetCustomHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SquadWidgetCustomHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/squads/squadWidget.tpl"
@@ -130,7 +131,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
     this.showSceneBtn("txt_squad_title", ::g_squad_manager.canManageSquad()
       && ::g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE)
 
-    this.showSceneBtn("btn_squadInvites", ::gui_handlers.squadInviteListWnd.canOpen())
+    this.showSceneBtn("btn_squadInvites", gui_handlers.squadInviteListWnd.canOpen())
     this.updateVisibleNewApplications()
 
     let btnSquadLeave = this.showSceneBtn("btn_squadLeave", ::g_squad_manager.canLeaveSquad())
@@ -176,7 +177,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
   function onSquadInvitesClick(obj) {
     if (checkObj(obj))
-      ::gui_handlers.squadInviteListWnd.open(obj.findObject("invite_widget"))
+      gui_handlers.squadInviteListWnd.open(obj.findObject("invite_widget"))
   }
 
   function onSquadLeave() {
@@ -200,7 +201,7 @@ const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
   function updateVisibleNewApplications() {
     let objGlow = this.scene.findObject("iconGlow")
     if (checkObj(objGlow))
-      objGlow.wink = (::gui_handlers.squadInviteListWnd.canOpen() &&
+      objGlow.wink = (gui_handlers.squadInviteListWnd.canOpen() &&
         ::g_squad_manager.hasNewApplication) ? "yes" : "no"
   }
 

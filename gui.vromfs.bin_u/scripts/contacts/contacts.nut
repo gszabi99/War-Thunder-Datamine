@@ -8,11 +8,11 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let xboxContactsManager = require("%scripts/contacts/xboxContactsManager.nut")
 let { getPlayerName } = require("%scripts/clientState/platform.nut")
 let { isEqual } = u
 let { clear_contacts, EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
 let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 ::contacts_handler <- null
 ::contacts_groups <- []
@@ -258,7 +258,7 @@ registerPersistentData("ContactsGlobals", getroottable(),
 ::updateContact <- function updateContact(config) {
   let configIsContact = u.isInstance(config) && config instanceof ::Contact
   if (u.isInstance(config) && !configIsContact) { //Contact no need update by instances because foreach use function as so constructor
-    ::script_net_assert_once("strange config for contact update", "strange config for contact update")
+    script_net_assert_once("strange config for contact update", "strange config for contact update")
     return null
   }
 
@@ -434,5 +434,3 @@ if (!::contacts)
   clear_contacts()
 
 subscribe_handler(::g_contacts, ::g_listener_priority.DEFAULT_HANDLER)
-
-::xbox_on_add_remove_friend_closed <- xboxContactsManager.xboxOverlayContactClosedCallback

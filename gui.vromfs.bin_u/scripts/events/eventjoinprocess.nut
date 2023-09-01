@@ -9,6 +9,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -16,6 +17,16 @@ let activeEventJoinProcess = []
 
 let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   && (get_time_msec() - activeEventJoinProcess[0].processStartTime) < PROCESS_TIME_OUT
+
+let function setSquadReadyFlag(event) {
+  //Don't allow to change ready status, leader don't know about members balance
+  if (!::events.haveEventAccessByCost(event))
+    ::showInfoMsgBox(loc("events/notEnoughMoney"))
+  else if (::events.eventRequiresTicket(event) && ::events.getEventActiveTicket(event) == null)
+    ::events.checkAndBuyTicket(event)
+  else
+    ::g_squad_manager.setReadyFlag()
+}
 
 ::EventJoinProcess <- class {
   event = null // Event to join.
@@ -26,9 +37,14 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   processStartTime = -1
   processStepName = ""
 
-  constructor (v_event, v_room = null, v_onComplete = null, v_cancelFunc = null) {
+  constructor(v_event, v_room = null, v_onComplete = null, v_cancelFunc = null) {
     if (!v_event)
       return
+
+    this.event = v_event
+    this.room = v_room
+    this.onComplete = v_onComplete
+    this.cancelFunc = v_cancelFunc
 
     if (activeEventJoinProcess.len()) {
       let prevProcessStartTime = activeEventJoinProcess[0].processStartTime
@@ -40,14 +56,8 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
       else
         activeEventJoinProcess[0].remove()
     }
-
     activeEventJoinProcess.append(this)
     this.processStartTime = get_time_msec()
-
-    this.event = v_event
-    this.room = v_room
-    this.onComplete = v_onComplete
-    this.cancelFunc = v_cancelFunc
     this.joinStep1_squadMember()
   }
 
@@ -68,26 +78,30 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
   function joinStep1_squadMember() {
     this.processStepName = "joinStep1_squadMember"
+
     if (::g_squad_manager.isSquadMember()) {
-      //Don't allow to change ready status, leader don't know about members balance
-      if (!::events.haveEventAccessByCost(this.event))
-        ::showInfoMsgBox(loc("events/notEnoughMoney"))
-      else if (::events.eventRequiresTicket(this.event) && ::events.getEventActiveTicket(this.event) == null)
-        ::events.checkAndBuyTicket(this.event)
+      if (!::g_squad_manager.isMeReady()) {
+        let handler = this
+        tryOpenCaptchaHandler(@() setSquadReadyFlag(handler.event))
+      }
       else
-        ::g_squad_manager.setReadyFlag()
+        this.setSquadReadyFlag(this.event)
       return this.remove()
     }
+
     if (!antiCheat.showMsgboxIfEacInactive(this.event) ||
         !showMsgboxIfSoundModsNotAllowed(this.event))
       return this.remove()
-    // Same as checkedNewFlight in gui_handlers.BaseGuiHandlerWT.
-    ::queues.checkAndStart(
-                    Callback(this.joinStep2_external, this),
-                    Callback(this.remove, this),
-                    "isCanNewflight",
-                    { isSilentLeaveQueue = !!this.room }
-                   )
+
+    let handler = this
+    tryOpenCaptchaHandler(
+      @() ::queues.checkAndStart(
+        Callback(handler.joinStep2_external, handler),
+        Callback(handler.remove, handler),
+        "isCanNewflight",
+        { isSilentLeaveQueue = !!handler.room }
+      ),
+      @() handler.remove())
   }
 
   function joinStep2_external() {

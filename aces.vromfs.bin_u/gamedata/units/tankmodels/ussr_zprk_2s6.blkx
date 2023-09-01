@@ -25,6 +25,7 @@
   "radarAnimVar": "radar_drive",
   "radarDeployTime": 3.0,
   "radarAntenaSpeed": 720.0,
+  "radarParkingAngle": 180.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",
@@ -193,7 +194,7 @@
         "armorThickness": 9.0
       },
       "turret_03_front_dm": {
-        "armorThickness": 9.0
+        "armorThickness": 10.0
       },
       "turret_01_bottom_dm": {
         "armorThickness": 9.0
@@ -1054,7 +1055,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -2135,6 +2140,7 @@
       "model": "v_46_2s1"
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 220000.0,
       "driveGearRadius": 0.27,
       "mainGearRatio": 1.0,
@@ -3599,46 +3605,65 @@
             "turret_add_01",
             "optic_turret_06",
             "optic_turret_06_dm",
-            "antenna_02"
+            "antenna_02",
+            "turret_03_front",
+            "turret_03_front_dm"
           ]
         }
       }
     }
   },
-  "ammoLoadDistribution": {
-    "removeLoadedAmmo": false,
-    "primaryShells": {
-      "ammo_turret_10_dm": {
-        "count": 968
-      },
-      "ammo_turret_09_dm": {
-        "count": 968
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_10_dm": {
+          "count": 968
+        },
+        "ammo_turret_09_dm": {
+          "count": 968
+        }
       }
     },
-    "special": {
-      "ammo_turret_01_dm": {
-        "count": 1
-      },
-      "ammo_turret_02_dm": {
-        "count": 1
-      },
-      "ammo_turret_03_dm": {
-        "count": 1
-      },
-      "ammo_turret_04_dm": {
-        "count": 1
-      },
-      "ammo_turret_05_dm": {
-        "count": 1
-      },
-      "ammo_turret_06_dm": {
-        "count": 1
-      },
-      "ammo_turret_07_dm": {
-        "count": 1
-      },
-      "ammo_turret_08_dm": {
-        "count": 1
+    "ammo2": {
+      "weaponTrigger": "gunner1",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_turret_01_dm": {
+          "count": 1
+        },
+        "ammo_turret_02_dm": {
+          "count": 1
+        },
+        "ammo_turret_03_dm": {
+          "count": 1
+        },
+        "ammo_turret_04_dm": {
+          "count": 1
+        },
+        "ammo_turret_05_dm": {
+          "count": 1
+        },
+        "ammo_turret_06_dm": {
+          "count": 1
+        },
+        "ammo_turret_07_dm": {
+          "count": 1
+        },
+        "ammo_turret_08_dm": {
+          "count": 1
+        }
       }
     }
   },

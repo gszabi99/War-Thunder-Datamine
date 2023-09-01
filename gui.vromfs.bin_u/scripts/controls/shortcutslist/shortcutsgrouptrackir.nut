@@ -1,14 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-
+let { isTrackerJoystick } = require("controls")
 let { is_stereo_mode } = require("vr")
 let { isPlatformPS4, isPlatformPS5, isPlatformPC } = require("%scripts/clientState/platform.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let function isHeadTrackerAvailable() {
   return isPlatformPC
       || (::ps4_headtrack_is_attached()
         && (isPlatformPS4 || (isPlatformPS5 && hasFeature("PS5HeadTracking"))))
-      || ::is_tracker_joystick()
+      || isTrackerJoystick()
 }
 
 
@@ -42,13 +43,13 @@ return [
     id = "tracker_camx"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() ::is_tracker_joystick()
+    showFunc = @() isTrackerJoystick()
   }
   {
     id = "tracker_camy"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    showFunc = @() ::is_tracker_joystick()
+    showFunc = @() isTrackerJoystick()
   }
   {
     id = "trackIrZoom"

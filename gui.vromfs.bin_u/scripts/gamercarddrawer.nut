@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
@@ -12,7 +13,7 @@ enum GamercardDrawerState {
   STATE_CLOSING
 }
 
-::gui_handlers.GamercardDrawer <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.GamercardDrawer <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/gamercardDrawer.blk"
   heightPID = ::dagui_propid.add_name_id("height")

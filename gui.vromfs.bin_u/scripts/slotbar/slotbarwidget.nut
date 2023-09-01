@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValidIndex, toPixels } = require("%sqDagui/daguiUtil.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
@@ -25,10 +27,12 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getUnlockIdsByCountry } = require("%scripts/unlocks/unlockMarkers.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { startsWith } = require("%sqstd/string.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
-::gui_handlers.SlotbarWidget <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.SlotbarWidget <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotbar/slotbar.blk"
   ownerWeak = null
@@ -49,7 +53,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
   showNewSlot = null //bool
   showEmptySlot = null //bool
   emptyText = "#shop/chooseAircraft" //text to show on empty slot
-  alwaysShowBorder = false //should show focus border when no show_console_buttons
+  alwaysShowBorder = false //should show focus border when no showConsoleButtons.value
   checkRespawnBases = false //disable slot when no available respawn bases for unit
   hasExtraInfoBlock = null //bool
   unitForSpecType = null //unit to show crew specializations
@@ -125,7 +129,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       params.scene = nest.findObject("nav-slotbar")
     }
 
-    return ::handlersManager.loadHandler(::gui_handlers.SlotbarWidget, params)
+    return handlersManager.loadHandler(gui_handlers.SlotbarWidget, params)
   }
 
   function destroy() {
@@ -399,7 +403,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (!::g_login.isLoggedIn())
       return
     if (this.slotbarOninit) {
-      ::script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
+      script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
       return
     }
 
@@ -425,7 +429,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let hObj = this.scene.findObject("slotbar_background")
     hObj.show(isFullSlotbar)
     hObj.hasPresetsPanel = this.needPresetsPanel ? "yes" : "no"
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       this.updateConsoleButtonsVisible(hasCountryTopBar)
 
     let countriesView = {
@@ -768,7 +772,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     if (tblObj?.id != "airs_table_" + this.curSlotCountryId) {
       let tblObjId = tblObj?.id         // warning disable: -declared-never-used
       let countryId = this.curSlotCountryId  // warning disable: -declared-never-used
-      ::script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
+      script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
       return -1
     }
     let prefix = "td_slot_" + this.curSlotCountryId + "_"
@@ -776,7 +780,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
       let id = ::getObjIdByPrefix(tblObj.getChild(i), prefix)
       if (!id) {
         let objId = tblObj.getChild(i).id // warning disable: -declared-never-used
-        ::script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
+        script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
         continue
       }
 
@@ -991,7 +995,7 @@ const SLOT_NEST_TAG = "unitItemContainer { {0} }"
     let shadeObj = this.scene.findObject("slotbar_shade")
     if (checkObj(shadeObj))
       shadeObj.animation = this.isShaded ? "show" : "hide"
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       this.updateConsoleButtonsVisible(!this.isShaded)
   }
 

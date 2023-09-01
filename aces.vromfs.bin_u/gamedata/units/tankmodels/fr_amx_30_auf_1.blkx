@@ -111,6 +111,30 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
       }
     ]
   },
@@ -1138,7 +1162,11 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm"
+          "fuel_tank_l_05_dm",
+          "fuel_tank_exterior_r_01_dm",
+          "fuel_tank_exterior_r_02_dm",
+          "fuel_tank_exterior_l_01_dm",
+          "fuel_tank_exterior_l_02_dm"
         ],
         "onHit": [
           {
@@ -1855,7 +1883,7 @@
         "turret": {
           "head": "bone_mg_aa_h_01",
           "gun": "bone_mg_aa_v_01",
-          "gunnerDm": "commander_dm",
+          "gunnerDm": "loader_dm",
           "rotatedTurret": "bone_mg_aa_h_01",
           "hasNightVision": false
         },
@@ -1958,6 +1986,7 @@
       "minRPM": 600.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 150000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 7.4,
@@ -3152,7 +3181,7 @@
               "turret": {
                 "head": "bone_mg_aa_h_01",
                 "gun": "bone_mg_aa_v_01",
-                "gunnerDm": "commander_dm",
+                "gunnerDm": "loader_dm",
                 "rotatedTurret": "bone_mg_aa_h_01",
                 "hasNightVision": false
               },

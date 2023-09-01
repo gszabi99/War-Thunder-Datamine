@@ -1,6 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 //!!FIX ME: replace by real threads after fix crash of datablock in sq thread
 let PT_STEP_STATUS = {
   NEXT_STEP = 0  //default status
@@ -10,7 +12,7 @@ let PT_STEP_STATUS = {
 
 let function startPseudoThread(actionsList, onCrash = null, step = 0) {
   let self = callee()
-  ::handlersManager.doDelayed(function() {
+  handlersManager.doDelayed(function() {
     local curStep = step
     while (curStep in actionsList) {
       local stepStatus = PT_STEP_STATUS.NEXT_STEP

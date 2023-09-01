@@ -2786,11 +2786,7 @@
       ],
       "fuel": [
         0.0,
-        1050.0
-      ],
-      "fuel1": [
-        0.0,
-        1050.0
+        4536.0
       ],
       "g_meter": [
         -5.0,
@@ -2962,6 +2958,10 @@
       {
         "name": "f_4e_gbu_15",
         "blk": "gameData/flightModels/weaponPresets/f_4e_gbu_15.blk"
+      },
+      {
+        "name": "f_4e_bomb_mk84_air",
+        "blk": "gameData/flightModels/weaponPresets/f_4e_bomb_mk84_air.blk"
       }
     ]
   },
@@ -3255,6 +3255,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "us_2000lb_gbu_8_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "us_mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": "pylon_l_out"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
               "emitter": "us_2000lb_gbu_8_001",
               "bullets": 1,
               "external": true,
@@ -3896,6 +3913,23 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "us_mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": "pylon_centr"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          },
+          {
             "iconType": "multibarrel_box",
             "name": "suu_23a_gunpod",
             "reqModification": "f4c_suu_23a",
@@ -4509,6 +4543,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "us_2000lb_gbu_8_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "us_mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": "pylon_r_out"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
               "emitter": "us_2000lb_gbu_8_004",
               "bullets": 1,
               "external": true,

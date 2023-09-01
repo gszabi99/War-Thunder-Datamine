@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock  = require("DataBlock")
 let { Point2 } = require("dagor.math")
 let { format } = require("string")
@@ -13,6 +14,7 @@ let avatars = require("%scripts/user/avatars.nut")
 let dagor_fs = require("dagor.fs")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 
 enum avatarPlace { //higher index has more priority to show icon when same icons in the different places
@@ -28,14 +30,14 @@ let function debugAvatars(filePath) {
   if (!blk.tryLoad(filePath))
     return $"Failed to load avatars config from {filePath}"
 
-  ::handlersManager.loadHandler(::gui_handlers.DbgAvatars, { savePath = filePath, configBlk = blk })
+  handlersManager.loadHandler(gui_handlers.DbgAvatars, { savePath = filePath, configBlk = blk })
   return "Done"
 }
 
 register_command(@() debugAvatars("../develop/gameBase/config/avatars.blk"), "debug.avatars")
 register_command(debugAvatars, "debug.avatars_by_file_path")
 
-::gui_handlers.DbgAvatars <- class extends ::BaseGuiHandler {
+gui_handlers.DbgAvatars <- class extends ::BaseGuiHandler {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/debugTools/dbgAvatars.tpl"
 

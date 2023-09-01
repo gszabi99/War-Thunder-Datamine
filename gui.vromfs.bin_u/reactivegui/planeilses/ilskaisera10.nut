@@ -149,7 +149,7 @@ let function generatePitchLine(num) {
 
 let maverickDist = Computed(@() (AtgmTargetDist.value < 0 ? -1 : AtgmTargetDist.value * metrToMile * 10.0).tointeger())
 let maverickAimMark = @() {
-  watch = IlsAtgmLocked
+  watch = [IlsAtgmLocked, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = [pw(4), ph(4)]
   color = IlsColor.value
@@ -238,7 +238,7 @@ let maverickAim = @() {
 
 let function impactLine(_width, height) {
   return @() {
-    watch = [TargetPosValid, BombCCIPMode, BombingMode, RocketMode]
+    watch = [TargetPosValid, BombCCIPMode, BombingMode, RocketMode, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
     size = flex()
@@ -317,7 +317,7 @@ let modeTxt = @() {
 }
 
 let shellCntText = @() {
-  watch = [CannonMode, ShellCnt]
+  watch = [CannonMode, ShellCnt, IlsColor]
   rendObj = ROBJ_TEXT
   pos = [pw(10), ph(77)]
   size = flex()
@@ -354,7 +354,8 @@ let function KaiserA10(width, height) {
       a10Tangage,
       a10BarAltitude,
       compassWrap(width, height, 0.85, generateCompassMarkShim, 1.0, 5.0, false, 20),
-      {
+      @() {
+        watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
         color = IlsColor.value

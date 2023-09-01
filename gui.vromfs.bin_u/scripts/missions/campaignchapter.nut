@@ -1,11 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -23,18 +25,18 @@ let { select_mission, select_mission_full } = require("guiMission")
 let { get_game_mode, get_game_type } = require("mission")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { split, utf8ToLower } = require("%sqstd/string.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
 registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
-::gui_handlers.CampaignChapter <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.CampaignChapter <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.BASE
   applyAtClose = false
 
   missions = []
-  return_func = null
   curMission = null
   curMissionIdx = -1
   missionDescWeak = null
@@ -81,7 +83,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
   }
 
   function initDescHandler() {
-    let descHandler = ::gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
+    let descHandler = gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
     this.registerSubHandler(descHandler)
     this.missionDescWeak = descHandler.weakref()
   }
@@ -179,7 +181,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
           id = mission.id
           itemText = this.misListType.getMissionNameText(mission)
           isCollapsable = (mission.isCampaign && this.canCollapseCampaigns) || this.canCollapseChapters
-          isNeedOnHover = ::show_console_buttons
+          isNeedOnHover = showConsoleButtons.value
         })
         continue
       }
@@ -209,7 +211,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
           itemIcon = medalIcon
           id = mission.id
           itemText = this.misListType.getMissionNameText(mission)
-          isNeedOnHover = ::show_console_buttons
+          isNeedOnHover = showConsoleButtons.value
         })
         continue
       }
@@ -249,7 +251,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
         itemIcon = medalIcon
         id = mission.id
         itemText = this.misListType.getMissionNameText(mission)
-        isNeedOnHover = ::show_console_buttons
+        isNeedOnHover = showConsoleButtons.value
       })
     }
 
@@ -341,14 +343,14 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
   }
 
   function onItemDblClick() {
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       return
 
     this.onStart()
   }
 
   function onItemHover(obj) {
-    if (!::show_console_buttons)
+    if (!showConsoleButtons.value)
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -365,7 +367,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
+    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
   }
 
   function onEventSquadDataUpdated(_params) {
@@ -596,7 +598,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     this.showSceneBtn("btn_inviteSquad", isShowSquadBtn)
 
     this.showSceneBtn("btn_refresh", this.misListType.canRefreshList)
-    this.showSceneBtn("btn_refresh_console", this.misListType.canRefreshList && ::show_console_buttons)
+    this.showSceneBtn("btn_refresh_console", this.misListType.canRefreshList && showConsoleButtons.value)
     this.showSceneBtn("btn_add_mission", this.misListType.canAddToList)
     this.showSceneBtn("btn_modify_mission", isCurItemInFocus && isMission && this.misListType.canModify(this.curMission))
     this.showSceneBtn("btn_delete_mission", isCurItemInFocus && isMission && this.misListType.canDelete(this.curMission))
@@ -746,7 +748,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
     let cb = Callback(this.afterMissionOptionsApply, this)
     let misBlk = this.missionBlk
     this.createModalOptions(optionItems, function() {
-      ::gui_handlers.Briefing.finalApply.call(this, misBlk) //!!FIX ME: DIRTY HACK - called brifing function in modalOptions enviroment
+      gui_handlers.Briefing.finalApply.call(this, misBlk) //!!FIX ME: DIRTY HACK - called brifing function in modalOptions enviroment
       cb()
     })
   }
@@ -766,7 +768,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 
   function createModalOptions(optionItems, applyFunc) {
     let params = this.getModalOptionsParam(optionItems, applyFunc)
-    let handler = ::handlersManager.loadHandler(::gui_handlers.GenericOptionsModal, params)
+    let handler = handlersManager.loadHandler(gui_handlers.GenericOptionsModal, params)
 
     if (!optionItems.len())
       handler.applyOptions()
@@ -944,7 +946,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
   }
 }
 
-::gui_handlers.SingleMissions <- class extends ::gui_handlers.CampaignChapter {
+gui_handlers.SingleMissions <- class extends gui_handlers.CampaignChapter {
   sceneBlkName = "%gui/chapter.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -955,7 +957,7 @@ const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
   }
 }
 
-::gui_handlers.SingleMissionsModal <- class extends ::gui_handlers.SingleMissions {
+gui_handlers.SingleMissionsModal <- class extends gui_handlers.SingleMissions {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"

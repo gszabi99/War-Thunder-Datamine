@@ -14,6 +14,7 @@ let { getUnitShopPriceText } = require("unitCardPkg.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
 
@@ -58,7 +59,7 @@ let function initCell(cell, initData) {
   cell.id = $"unitCell_{id}"
   let cardObj = cell.findObject(prevId)
   cardObj.id = id
-  cardObj.title = ::show_console_buttons ? "" : "$tooltipObj"
+  cardObj.title = showConsoleButtons.value ? "" : "$tooltipObj"
   cardObj.findObject("mainActionButton").holderId = id
 }
 
@@ -119,7 +120,7 @@ let function updateCardStatus(obj, _id, statusTbl) {
 
   obj.findObject("unitImage")["foreground-image"] = unitImage
   obj.findObject("unitTooltip").tooltipId = tooltipId
-  if (::show_console_buttons)
+  if (showConsoleButtons.value)
     obj.tooltipId = tooltipId
   setBool(showInObj(obj, "talisman", hasTalismanIcon), "incomplete", !isTalismanComplete)
   setBool(showInObj(obj, "inServiceMark", needInService), "mounted", isMounted)
@@ -204,7 +205,7 @@ let function updateCellStatus(cell, statusTbl) {
   if (!isVisible)
     return
 
-  if (::show_console_buttons)
+  if (showConsoleButtons.value)
     cell.tooltipId = tooltipId
   let id = cell.holderId
   let cardObj = cell.findObject(id)
@@ -267,7 +268,7 @@ let getUnitStatusTbl = function(unit, params) {
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
   }
   if (forceNotInResearch || !::isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
     else
       res.mainButtonText <- mainActionText
@@ -432,7 +433,7 @@ let function getGroupStatusTbl(group, params) {
     hasActionsMenu      = true
     isPkgDev,
     isRecentlyReleased,
-    mainButtonIcon      = ::show_console_buttons ? "#ui/gameuiskin#slot_unfold.svg" : "",
+    mainButtonIcon      = showConsoleButtons.value ? "#ui/gameuiskin#slot_unfold.svg" : "",
 
     //primary unit params
     primaryUnitId       = primaryUnit.name,

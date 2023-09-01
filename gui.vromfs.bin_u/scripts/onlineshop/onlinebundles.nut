@@ -1,6 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -18,7 +19,7 @@ clearCache()
 let function getBundlesList(blockName) {
   if (!cache[blockName].len()) {
     if (!(blockName in cache)) {
-      ::script_net_assert_once($"not exist bundles block {blockName} in cache", $"Don't exist requested bundles block {blockName} in cache")
+      script_net_assert_once($"not exist bundles block {blockName} in cache", $"Don't exist requested bundles block {blockName} in cache")
       return ""
     }
 

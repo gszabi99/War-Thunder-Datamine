@@ -1,12 +1,14 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { findChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCachedDataByType, getDecorator, getCachedOrderByType
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -14,8 +16,9 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { needMarkSeenResource, disableMarkSeenResource } = require("%scripts/seen/markSeenResources.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
+let class DecorMenuHandler extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/customization/decorWnd.blk"
 
@@ -130,7 +133,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let prevValue = listObj.getValue()
     listObj.setValue(-1)
     this.guiScene.applyPendingChanges(false)
-    if (::show_console_buttons)
+    if (showConsoleButtons.value)
       ::move_mouse_on_child(listObj, prevValue)
   }
 
@@ -184,7 +187,6 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     this.isOpened = isShown
     this.scene.show(isShown)
     this.scene.enable(isShown)
-    ::enableHangarControls(!this.scene.findObject("hangar_control_tracking").isHovered())
     this.resetFilter()
     if(!isShown)
       this.markSeenDecors()
@@ -276,7 +278,7 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
     let unit = this.curUnit
     let currentListId = this.currentSeenListId
     return {
-      isTooltipByHold = ::show_console_buttons
+      isTooltipByHold = showConsoleButtons.value
       buttons = decors.map(@(decorator) getDecorButtonView(decorator, unit, {
         needHighlight = decorator.id == slotDecorId
         onClick = "onDecorItemClick"
@@ -414,8 +416,6 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
       ::set_dirpad_event_processed(false)
   }
 
-  onDecorMenuHoverChange = @(obj) ::enableHangarControls(!obj.isHovered())
-
   function onFilterCancel(filterObj) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
@@ -474,11 +474,11 @@ let class DecorMenuHandler extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.DecorMenuHandler <- DecorMenuHandler
+gui_handlers.DecorMenuHandler <- DecorMenuHandler
 
 return function(scene) {
   if (!scene?.isValid())
     return null
 
-  return ::handlersManager.loadHandler(DecorMenuHandler, { scene })
+  return handlersManager.loadHandler(DecorMenuHandler, { scene })
 }

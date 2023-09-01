@@ -1,13 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
+let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById,
+  togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
+} = require("%scripts/promo/promo.nut")
 
-::gui_handlers.RecentItemsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.RecentItemsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
 
   scene = null
@@ -59,18 +64,18 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     this.scene.type = "recentItems"
     this.numOtherItems = ::g_recent_items.getNumOtherItems()
 
-    let promoView = getTblValue(this.scene.id, ::g_promo.getConfig(), {})
+    let promoView = getTblValue(this.scene.id, getPromoConfig(), {})
     let otherItemsText = this.createOtherItemsText(this.numOtherItems)
     let view = {
-      id = ::g_promo.getActionParamsKey(this.scene.id)
+      id = getPromoActionParamsKey(this.scene.id)
       items = handyman.renderCached("%gui/items/item.tpl", this.createItemsView(this.recentItems))
       otherItemsText = otherItemsText
       needAutoScroll = getStringWidthPx(otherItemsText, "fontNormal", this.guiScene)
         > to_pixels("1@arrowButtonWidth") ? "yes" : "no"
-      action = ::g_promo.PERFORM_ACTON_NAME
-      collapsedAction = ::g_promo.PERFORM_ACTON_NAME
-      collapsedText = ::g_promo.getCollapsedText(promoView, this.scene.id)
-      collapsedIcon = ::g_promo.getCollapsedIcon(promoView, this.scene.id)
+      action = PERFORM_PROMO_ACTION_NAME
+      collapsedAction = PERFORM_PROMO_ACTION_NAME
+      collapsedText = getPromoCollapsedText(promoView, this.scene.id)
+      collapsedIcon = getPromoCollapsedIcon(promoView, this.scene.id)
     }
     let blk = handyman.renderCached("%gui/items/recentItemsHandler.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, blk, blk.len(), this)
@@ -127,16 +132,16 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
     return text
   }
 
-  function performAction(obj) { ::g_promo.performAction(this, obj) }
+  function performAction(obj) { performPromoAction(this, obj) }
   function performActionCollapsed(obj) {
     let buttonObj = obj.getParent()
-    this.performAction(buttonObj.findObject(::g_promo.getActionParamsKey(buttonObj.id)))
+    this.performAction(buttonObj.findObject(getPromoActionParamsKey(buttonObj.id)))
   }
-  function onToggleItem(obj) { ::g_promo.toggleItem(obj) }
+  function onToggleItem(obj) { togglePromoItem(obj) }
 
   function updateVisibility() {
-    let isVisible = !::handlersManager.findHandlerClassInScene(::gui_handlers.EveryDayLoginAward)
-      && !::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd)
+    let isVisible = !handlersManager.findHandlerClassInScene(gui_handlers.EveryDayLoginAward)
+      && !handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd)
       && ::g_recent_items.getRecentItems().len()
     show_obj(this.scene, isVisible)
   }
@@ -150,7 +155,7 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   updateFunctionInHandler = function() {
     let id = promoButtonId
-    let show = this.isShowAllCheckBoxEnabled() || ::g_promo.getVisibilityById(id)
+    let show = this.isShowAllCheckBoxEnabled() || getPromoVisibilityById(id)
     let handlerWeak = ::g_recent_items.createHandler(this, this.scene.findObject(id), show)
     this.owner.registerSubHandler(handlerWeak)
   }

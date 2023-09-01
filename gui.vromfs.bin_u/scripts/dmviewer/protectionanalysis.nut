@@ -2,10 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hangar_focus_model, hangar_set_dm_viewer_mode } = require("hangar")
 let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
@@ -15,6 +16,7 @@ let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local switch_damage = false
 local allow_cutting = false
@@ -22,7 +24,7 @@ local explosionTest = false
 
 const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
-::gui_handlers.ProtectionAnalysis <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.ProtectionAnalysis <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/dmViewer/protectionAnalysis.blk"
   sceneTplName = "%gui/options/verticalOptions.tpl"
@@ -50,7 +52,6 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
   }
 
   function initScreen() {
-    ::enableHangarControls(true)
     ::dmViewer.init(this)
     hangar_focus_model(true)
     this.guiScene.performDelayed(this, @() hangar_set_dm_viewer_mode(this.protectionAnalysisMode))
@@ -167,7 +168,7 @@ const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
     let bObj = this.showSceneBtn("analysis_hint_shot", showHint)
     if (showHint && checkObj(bObj)) {
       let shortcuts = []
-      if (::show_console_buttons)
+      if (showConsoleButtons.value)
         shortcuts.append(getAxisTextOrAxisName("fire"))
       if (controllerState?.is_mouse_connected())
         shortcuts.append(loc("key/LMB"))
@@ -253,6 +254,6 @@ return {
   open = function (unit) {
     if (!this.canOpen(unit))
         return
-    ::handlersManager.loadHandler(::gui_handlers.ProtectionAnalysis, { unit = unit })
+    handlersManager.loadHandler(gui_handlers.ProtectionAnalysis, { unit = unit })
   }
 }

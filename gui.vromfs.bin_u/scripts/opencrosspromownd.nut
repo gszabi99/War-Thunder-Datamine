@@ -1,4 +1,6 @@
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 
 const CROSSPROMO_LANDING_RU_URL = "http://warthunder.ru/ru/crosspromo"
@@ -6,7 +8,7 @@ const CROSSPROMO_LANDING_DEFAULT_URL = "http://warthunder.com/crosspromo"
 
 let supportedComLanguages = ["pl", "de", "cz", "fr", "es", "pt", "ko", "zh"]
 
-let class CrossPromoWnd extends ::gui_handlers.BaseGuiHandlerWT {
+let class CrossPromoWnd extends gui_handlers.BaseGuiHandlerWT {
   sceneTplName = "%gui/crossPromoWnd.tpl"
   wndType = handlerType.MODAL
 
@@ -28,6 +30,6 @@ let class CrossPromoWnd extends ::gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-::gui_handlers.CrossPromoWnd <- CrossPromoWnd
+gui_handlers.CrossPromoWnd <- CrossPromoWnd
 
-return @(bannerSrc) ::handlersManager.loadHandler(CrossPromoWnd, { bannerSrc })
+return @(bannerSrc) handlersManager.loadHandler(CrossPromoWnd, { bannerSrc })

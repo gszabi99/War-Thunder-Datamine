@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -7,7 +8,7 @@ let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
-::gui_handlers.WwQueueDescriptionCustomHandler <- class extends ::gui_handlers.WwMapDescription {
+gui_handlers.WwQueueDescriptionCustomHandler <- class extends gui_handlers.WwMapDescription {
   function mapCountriesToView(side, _amountByCountry, joinedCountries) {
     let countriesByTeams = this.descItem.getCountriesByTeams()
     let countries = countriesByTeams?[side] ?? []

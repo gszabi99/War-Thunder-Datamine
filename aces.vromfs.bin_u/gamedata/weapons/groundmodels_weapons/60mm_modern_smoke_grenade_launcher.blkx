@@ -30,17 +30,18 @@
     "massEnd": 2.5,
     "timeFire": 0.0,
     "force": 20.0,
-    "timeLife": 1.0,
+    "timeLife": 0.7,
     "thrustDeviation": 0.01,
     "useStartSpeed": true,
-    "startSpeed": 16.0,
-    "endSpeed": 16.0,
-    "maxDistance": 12.0,
+    "startSpeed": 25.0,
+    "endSpeed": 25.0,
+    "maxDistance": 15.0,
     "minDistance": 12.0,
     "maxDeltaAngle": 20.0,
     "maxDeltaAngleVertical": 2.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
+    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -55,6 +56,8 @@
       2.0
     ],
     "explodeOnRendinst": true,
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
     "dragCx": 0.027,
     "explosionEffect": "smoke_shell_explosion",
     "defFxScale": [
@@ -80,6 +83,11 @@
       0.7
     ],
     "explosionPatchRadius": 1.1,
+    "waterRicochetEffect": "hit_81_105mm_water_ap",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+    "destructionBreakFx": "smoke_shell_explosion",
+    "destructionFireFx": "fire_thermite",
+    "destructionExplosionFx": "explosion_tank_ammunition_smoke",
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
     "explosionOffset": 0.05,
@@ -137,9 +145,41 @@
         0.99
       ]
     },
+    "DamageParts": {
+      "body": {
+        "hp": 20.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "expl": 0.1,
+            "fire": 0.9,
+            "damage": 5.0,
+            "fHitCritical": true
+          },
+          {
+            "expl": 0.5,
+            "fire": 0.5,
+            "damage": 15.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": {
+          "expl": 0.5,
+          "fire": 0.5,
+          "fHitCritical": true
+        }
+      }
+    },
     "collisions": {
       "steel": {
-        "fx": "smoke_shell_explosion"
+        "fx": "smoke_shell_explosion",
+        "ricochetFx": "hit_59_80mm_stone_ap"
       }
     }
   }

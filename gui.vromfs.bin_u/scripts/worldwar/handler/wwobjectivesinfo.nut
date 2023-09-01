@@ -2,12 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
-::gui_handlers.WwObjectivesInfo <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.WwObjectivesInfo <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/objectivesInfoWindow.tpl"
@@ -18,7 +19,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
   teamObjectiveHandlersArray = null
 
   static function open() {
-    ::handlersManager.loadHandler(::gui_handlers.WwObjectivesInfo)
+    handlersManager.loadHandler(gui_handlers.WwObjectivesInfo)
   }
 
   function getSceneTplView() {
@@ -50,7 +51,7 @@ let { getOperationById } = require("%scripts/worldWar/operations/model/wwActions
     if (!checkObj(operationBlockObj))
       return
 
-    let objectiveHandler = ::handlersManager.loadHandler(::gui_handlers.wwObjective, {
+    let objectiveHandler = handlersManager.loadHandler(gui_handlers.wwObjective, {
       scene = operationBlockObj,
       side = side,
       needShowOperationDesc = false,

@@ -1,14 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let time = require("%scripts/time.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-
+let { get_charserver_time_sec } = require("chard")
 
 ::g_partner_unlocks <- {
   [PERSISTENT_DATA_PARAMS] = ["partnerExectutedUnlocks", "lastUpdateTime", "lastRequestTime"]
@@ -55,7 +54,7 @@ let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStd
     return null
 
   if (!(unlockId in this.partnerExectutedUnlocks)) {
-    if (::is_unlocked_scripted(-1, unlockId))
+    if (isUnlockOpened(unlockId))
       this.requestPartnerUnlocks()
     return null
   }
@@ -88,7 +87,7 @@ let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStd
 
   let durationSec = time.minutesToSeconds(durationMin)
   let endSec = startSec + durationSec
-  return endSec > ::get_charserver_time_sec()
+  return endSec > get_charserver_time_sec()
 }
 
 ::g_partner_unlocks.onEventSignOut <- function onEventSignOut(_p) {

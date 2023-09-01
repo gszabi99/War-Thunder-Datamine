@@ -1,6 +1,4 @@
 //checked for plus_string
-from "%scripts/dagui_library.nut" import *
-
 const MAX_DEADZONE = 0.5
 const MAX_NONLINEARITY = 4
 const MAX_CAMERA_SMOOTH = 0.9
@@ -10,7 +8,7 @@ const MAX_CAMERA_SPEED = 8
 
 const MAX_SHORTCUTS = 3
 
-global enum CONTROL_TYPE {
+enum CONTROL_TYPE {
   HEADER
   SECTION
   SHORTCUT
@@ -28,22 +26,14 @@ global enum CONTROL_TYPE {
   BUTTON
 }
 
-global enum AXIS_DEVICES {
-  STICK,
-  THROTTLE,
-  GAMEPAD,
-  MOUSE,
-  UNKNOWN
-}
-
-global enum AXIS_MODIFIERS {
+enum AXIS_MODIFIERS {
   NONE = 0x0,
   MIN = 0x8000,
   MAX = 0x4000,
 }
 
 //gamepad axes bitmask
-global enum GAMEPAD_AXIS {
+enum GAMEPAD_AXIS {
   NOT_AXIS = 0
 
   LEFT_STICK_HORIZONTAL = 0x1
@@ -61,7 +51,7 @@ global enum GAMEPAD_AXIS {
 }
 
 //mouse axes bitmask
-global enum MOUSE_AXIS {
+enum MOUSE_AXIS {
   NOT_AXIS = 0x0
 
   HORIZONTAL_AXIS = 0x1
@@ -73,7 +63,7 @@ global enum MOUSE_AXIS {
   TOTAL = 3
 }
 
-global enum CONTROL_HELP_PATTERN {
+enum CONTROL_HELP_PATTERN {
   NONE,
   SPECIAL_EVENT,
   MISSION,
@@ -84,12 +74,12 @@ global enum CONTROL_HELP_PATTERN {
   RADAR,
 }
 
-global enum AxisDirection {
+enum AxisDirection {
   X,
   Y
 }
 
-global enum ConflictGroups {
+enum ConflictGroups {
   PLANE_FIRE,
   HELICOPTER_FIRE,
   TANK_FIRE
@@ -104,4 +94,12 @@ return {
   MAX_CAMERA_SPEED
 
   MAX_SHORTCUTS
+
+  CONTROL_TYPE
+  AXIS_MODIFIERS
+  GAMEPAD_AXIS
+  MOUSE_AXIS
+  CONTROL_HELP_PATTERN
+  AxisDirection
+  ConflictGroups
 }

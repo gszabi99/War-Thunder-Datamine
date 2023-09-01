@@ -1,8 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
-
-let isAllClanUnitsResearched = @() ::all_units.findvalue(
+let isAllClanUnitsResearched = @() getAllUnits().findvalue(
   @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && ::canResearchUnit(unit)
 ) == null
 

@@ -1,10 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
@@ -29,8 +31,10 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
-let { hangar_enable_controls } = require("hangar")
 let { stripTags, cutPrefix, isStringFloat } = require("%sqstd/string.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
@@ -42,7 +46,6 @@ const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 ::current_campaign_id <- null
 ::current_campaign_mission <- null
 ::current_wait_screen <- null
-::msg_box_selected_elem <- null
 
 ::mp_stat_handler <- null
 ::statscreen_handler <- null
@@ -85,19 +88,12 @@ foreach (i, v in ::cssColorsMapDark)
 ::global_max_players_versus <- 64
 ::global_max_players_coop <- 4
 
-::getFromSettingsBlk <- function getFromSettingsBlk(path, defVal = null) {
-  // Important: On production, settings blk does NOT contain all variables from config.blk, use getSystemConfigOption() instead.
-  let blk = ::get_settings_blk()
-  let val = get_blk_value_by_path(blk, path)
-  return (val != null) ? val : defVal
-}
-
 ::locOrStrip <- function locOrStrip(text) {
   return (text.len() && text.slice(0, 1) != "#") ? stripTags(text) : text
 }
 
 let function get_gamepad_specific_localization(locId) {
-  if (!::show_console_buttons)
+  if (!showConsoleButtons.value)
     return loc(locId)
 
   return loc(locId + "/gamepad_specific", locId)
@@ -230,8 +226,8 @@ let function on_lost_psn() {
   ::flight_menu_handler = null
   ::postfx_settings_handler = null
 
-  ::handlersManager.clearScene()
-  ::handlersManager.loadHandler(::gui_handlers.Hud)
+  handlersManager.clearScene()
+  handlersManager.loadHandler(gui_handlers.Hud)
 
   require("%scripts/chat/mpChatModel.nut").init()
 }
@@ -491,16 +487,6 @@ let function getPriceText(wp, gold = 0, colored = true, showWp = false, showGold
 
 ::getTooltipObjId <- function getTooltipObjId(obj) {
   return obj?.tooltipId ?? ::getObjIdByPrefix(obj, "tooltip_")
-}
-
-local is_hangar_controls_enabled = false
-::enableHangarControls <- function enableHangarControls(value, save = true) {
-  hangar_enable_controls(value)
-  if (save)
-    is_hangar_controls_enabled = value
-}
-::restoreHangarControls <- function restoreHangarControls() {
-  hangar_enable_controls(is_hangar_controls_enabled)
 }
 
 ::array_to_blk <- function array_to_blk(arr, id) {
@@ -765,7 +751,7 @@ const MAX_ROMAN_DIGIT = 3
 //Function from http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
 ::get_roman_numeral <- function get_roman_numeral(num) {
   if (!::is_numeric(num) || num < 0) {
-    ::script_net_assert_once("get_roman_numeral", "get_roman_numeral(" + num + ")")
+    script_net_assert_once("get_roman_numeral", "get_roman_numeral(" + num + ")")
     return ""
   }
 
@@ -801,7 +787,7 @@ const MAX_ROMAN_DIGIT = 3
     result["beforeyear" + year] <- 0
   }
 
-  foreach (air in ::all_units) {
+  foreach (air in getAllUnits()) {
     if (::get_es_unit_type(air) != ES_UNIT_TYPE_AIRCRAFT)
       continue
     if (!("tags" in air) || !air.tags)
@@ -1072,10 +1058,6 @@ let function startCreateWndByGamemode(_handler, _obj) {
     || language == "Korean"
 }
 
-::is_platform_shield_tv <- function is_platform_shield_tv() {
-  return is_platform_android && ::getFromSettingsBlk("deviceType", "") == "shieldTv"
-}
-
 ::is_worldwar_enabled <- function is_worldwar_enabled() {
   return hasFeature("WorldWar")
     && ("g_world_war" in getroottable())
@@ -1243,7 +1225,7 @@ local server_message_end_time = 0
 ::to_integer_safe <- function to_integer_safe(value, defValue = 0, needAssert = true) {
   if (!::is_numeric(value) && (!u.isString(value) || !isStringFloat(value))) {
     if (needAssert)
-      ::script_net_assert_once("to_int_safe", $"can't convert '{value}' to integer")
+      script_net_assert_once("to_int_safe", $"can't convert '{value}' to integer")
     return defValue
   }
   return value.tointeger()
@@ -1253,7 +1235,7 @@ local server_message_end_time = 0
   if (!::is_numeric(value)
     && (!u.isString(value) || !isStringFloat(value))) {
     if (needAssert)
-      ::script_net_assert_once("to_float_safe", "can't convert '" + value + "' to float")
+      script_net_assert_once("to_float_safe", "can't convert '" + value + "' to float")
     return defValue
   }
   return value.tofloat()
@@ -1340,7 +1322,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   destroy_session(sourceInfo)
   if (needEvent)
     //need delay after destroy session before is_multiplayer become false
-    ::handlersManager.doDelayed(@() broadcastEvent("SessionDestroyed"))
+    handlersManager.doDelayed(@() broadcastEvent("SessionDestroyed"))
 }
 
 ::show_not_available_msg_box <- function show_not_available_msg_box() {

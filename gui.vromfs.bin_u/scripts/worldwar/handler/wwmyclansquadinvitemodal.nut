@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 
 enum wwClanSquadInviteColors {
@@ -10,7 +11,7 @@ enum wwClanSquadInviteColors {
   MATCH_GAME = "successTextColor"
 }
 
-::gui_handlers.WwMyClanSquadInviteModal <- class extends ::gui_handlers.MyClanSquadsListModal {
+gui_handlers.WwMyClanSquadInviteModal <- class extends gui_handlers.MyClanSquadsListModal {
   operationId = null
   battleId = null
   country = null
@@ -42,7 +43,7 @@ enum wwClanSquadInviteColors {
   ]
 
   static function open(operationId, battleId, country) {
-    ::gui_start_modal_wnd(::gui_handlers.WwMyClanSquadInviteModal,
+    ::gui_start_modal_wnd(gui_handlers.WwMyClanSquadInviteModal,
       { operationId = operationId, battleId = battleId, country = country })
   }
 

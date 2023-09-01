@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let cross_call = require("%rGui/globals/cross_call.nut")
+let { send } = require("eventbus")
 let { mkRadar } = require("radarComponent.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
@@ -14,6 +15,7 @@ let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 let { bw, bh } = require("style/screenState.nut")
 //
+
 
 
 
@@ -32,16 +34,6 @@ let tankXrayIndicator = @() {
   rendObj = ROBJ_XRAYDOLL
   rotateWithCamera = true
   size = [pw(62), ph(62)]
-  behavior = Behaviors.RecalcHandler
-  function onRecalcLayout(_initial, elem) {
-    if (elem.getWidth() > 1 && elem.getHeight() > 1) {
-      cross_call.update_damage_panel_state({
-        pos = [elem.getScreenPosX(), elem.getScreenPosY()]
-        size = [elem.getWidth(), elem.getHeight()]
-        visible = true
-      })
-    }
-  }
 }
 
 let xraydoll = {
@@ -68,7 +60,7 @@ let function tankDmgIndicator() {
     children.append(tws({
       colorWatched = colorWacthed,
       posWatched = Watched([0, 0]),
-      sizeWatched = Watched([pw(80), ph(80)]),
+      sizeWatched = Computed(@() dmgIndicatorStates.value.size.map(@(v) 0.8*v)),
       relativCircleSize = 49,
       needDrawCentralIcon = false
     }))
@@ -81,6 +73,18 @@ let function tankDmgIndicator() {
     valign = ALIGN_CENTER
     image = Picture($"ui/gameuiskin/bg_dmg_board.svg:{dmgIndicatorStates.value.size[0]}:{dmgIndicatorStates.value.size[1]}")
     children
+    behavior = Behaviors.RecalcHandler
+    function onRecalcLayout(_initial, elem) {
+      if (elem.getWidth() > 1 && elem.getHeight() > 1) {
+        send("update_damage_panel_state", {
+          pos = [elem.getScreenPosX(), elem.getScreenPosY()]
+          size = [elem.getWidth(), elem.getHeight()]
+          visible = isVisibleDmgIndicator.value
+        })
+      }
+      else
+        send("update_damage_panel_state", {})
+    }
   }
 }
 
@@ -100,6 +104,9 @@ let function Root() {
       agmAim(colorWacthed)
       tankDmgIndicator
       isTankGunsAmmoVisible ? tankGunsAmmo : null
+      //
+
+
       IndicatorsVisible.value
         ? @() {
             children = [

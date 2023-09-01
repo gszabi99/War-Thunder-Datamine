@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { round } = require("math")
 let { format } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -17,14 +18,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   if (!memberData)
     return
 
-  ::gui_start_modal_wnd(::gui_handlers.clanActivityModal,
+  ::gui_start_modal_wnd(gui_handlers.clanActivityModal,
   {
     clanData = clanData
     memberData = memberData
   })
 }
 
-::gui_handlers.clanActivityModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
+gui_handlers.clanActivityModal <- class extends gui_handlers.BaseGuiHandlerWT {
   wndType           = handlerType.MODAL
   sceneBlkName      = "%gui/clans/clanActivityModal.blk"
   clanData          = null

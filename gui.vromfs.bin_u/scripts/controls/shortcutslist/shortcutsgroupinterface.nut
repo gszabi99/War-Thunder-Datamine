@@ -2,6 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [
 //-------------------------------------------------------

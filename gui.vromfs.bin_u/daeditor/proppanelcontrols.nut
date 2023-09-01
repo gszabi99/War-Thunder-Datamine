@@ -14,6 +14,7 @@ let perSqTypeCtors = {
   IPoint2 = fieldEditText
   IPoint3 = fieldEditText
   E3DCOLOR= fieldEditText
+  TMatrix = fieldEditText
   bool    = fieldBoolCheckbox
 }
 
