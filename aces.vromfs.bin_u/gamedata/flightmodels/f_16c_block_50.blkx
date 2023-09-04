@@ -1900,8 +1900,6 @@
   },
   "Sound": {
     "Engine": "engine05_f110_WEP",
-    "eventAOAAlarm": "alarm_attack_angle_us",
-    "eventStallAlarm": "alarm_stall",
     "voiceWarningSystem": "betty",
     "gun": "gun_default",
     "nozzleMoveSfx": "nozzle_moving",
@@ -2804,7 +2802,7 @@
             }
           },
           {
-            "iconType": "napalm_large",
+            "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot3",
             "reqModification": "us_blu27_b",
             "ShowNodes": {
@@ -2815,9 +2813,8 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_blu_27_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/bru_57_blu_27.blk",
               "emitter": "ter_001",
-              "bullets": 1,
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -2943,7 +2940,7 @@
             }
           },
           {
-            "iconType": "napalm_large",
+            "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot4",
             "reqModification": "us_blu27_b",
             "ShowNodes": {
@@ -2954,9 +2951,8 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_blu_27_x2_left_wing.blk",
+              "blk": "gameData/Weapons/containers/bru_57_blu_27.blk",
               "emitter": "ter_002",
-              "bullets": 1,
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -3023,7 +3019,25 @@
               "blk": "gameData/sensors/ir_tracker_tgp.blk",
               "node": "optic2_gun"
             }
-          }
+          },
+          "DependentWeaponPreset": [
+            {
+              "slot": 3,
+              "preset": "gbu12_slot3"
+            },
+            {
+              "slot": 3,
+              "preset": "gbu24"
+            },
+            {
+              "slot": 8,
+              "preset": "gbu12_slot8"
+            },
+            {
+              "slot": 8,
+              "preset": "gbu24"
+            }
+          ]
         }
       },
       {
@@ -3144,7 +3158,7 @@
             }
           },
           {
-            "iconType": "napalm_large",
+            "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot6",
             "reqModification": "us_blu27_b",
             "ShowNodes": {
@@ -3155,9 +3169,8 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_blu_27_x2_right_wing.blk",
+              "blk": "gameData/Weapons/containers/bru_57_blu_27.blk",
               "emitter": "ter_003",
-              "bullets": 1,
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -3389,7 +3402,7 @@
             }
           },
           {
-            "iconType": "napalm_large",
+            "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot7",
             "reqModification": "us_blu27_b",
             "ShowNodes": {
@@ -3400,9 +3413,8 @@
             },
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gameData/Weapons/containers/ter_us_blu_27_x2_right_wing.blk",
+              "blk": "gameData/Weapons/containers/bru_57_blu_27.blk",
               "emitter": "ter_004",
-              "bullets": 1,
               "external": true,
               "separate": true,
               "machLimit": 1.01

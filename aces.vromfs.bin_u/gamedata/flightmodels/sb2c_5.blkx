@@ -2137,10 +2137,10 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
+    "maxloadMass": 2260.0,
+    "maxloadMassLeftConsoles": 1130.0,
+    "maxloadMassRightConsoles": 1130.0,
+    "maxDisbalance": 850.0,
     "HideNodes": {
       "node": [
         "pylon_rocket1",
@@ -2786,7 +2786,21 @@
             "name": "2000lbs",
             "reqModification": "us_2000lb_m66",
             "ShowNodes": {
-              "node": "bomb_launcher1"
+              "node": [
+                "bomb_launcher1",
+                "hatch1_open",
+                "hatch2_open"
+              ]
+            },
+            "HideNodes": {
+              "node": [
+                "hatch1",
+                "hatch2",
+                "hatch3",
+                "hatch4",
+                "hatch5",
+                "hatch6"
+              ]
             },
             "Weapon": {
               "trigger": "bombs",
@@ -2794,6 +2808,7 @@
               "emitter": "bomb1",
               "bullets": 1,
               "launcher": true,
+              "external": true,
               "separate": true
             },
             "Bombing": {
@@ -2991,8 +3006,8 @@
             "reqModification": "dgp-1_gunpod",
             "ShowNodes": {
               "node": [
-                "pylon_dgp_1",
-                "dgp_1_l"
+                "pylon_dgp_2",
+                "dgp_1_r"
               ]
             },
             "Weapon": [

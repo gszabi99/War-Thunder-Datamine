@@ -371,6 +371,10 @@ let cmdsRwrTarget = [
 
 let function createRwrTarget(index, colorWatched) {
   let target = rwrTargets[index]
+
+  if (!target.valid)
+    return @() { }
+
   let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)) *
     (target.launch && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) *
     (target.show ? 1.0 : 0.2))
@@ -410,7 +414,7 @@ let function createRwrTarget(index, colorWatched) {
 
   local targetComponent = null
   local targetType = null
-  if (rwrSetting.value.direction.len() > 0)
+  if (target.groupId != null)
     targetType = @()
       styleText.__merge({
         watch = [colorWatched, RwrForMfd]
@@ -420,7 +424,7 @@ let function createRwrTarget(index, colorWatched) {
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = RwrForMfd.value ? 2.0 * hudFontHgt : hudFontHgt
-        text = target.groupId != null && target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
+        text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
         color = isColorOrWhite(colorWatched.value)
       })
   else
@@ -549,7 +553,7 @@ let rwrTargetsComponent = function(colorWatched) {
   return @() {
     watch = [rwrTargetsTriggers, RwrForMfd]
     size = flex()
-    children = rwrTargets.filter(@(t) t.valid).map(@(_, i) createRwrTarget(i, colorWatched))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched))
   }
 }
 

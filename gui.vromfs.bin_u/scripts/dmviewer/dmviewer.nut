@@ -86,6 +86,10 @@ let descByPartId = {
   }
 }
 
+let function distanceToStr(val) {
+  return ::g_measure_type.DISTANCE.getMeasureUnitsText(val)
+}
+
 ::dmViewer <- {
   [PERSISTENT_DATA_PARAMS] = [ "active", "view_mode", "_currentViewMode", "isDebugMode",
     "isVisibleExternalPartsArmor", "isVisibleExternalPartsXray" ]
@@ -887,6 +891,76 @@ let descByPartId = {
     return false
   }
 
+  function addRwrDescription(sensorPropsBlk, indent, desc) {
+    local bands = indent + loc("radar_freq_band") + loc("ui/colon")
+    for (local band = 0; band < 16; ++band) {
+      if (sensorPropsBlk.getBool(format("band%d", band), false))
+        bands = bands + loc(format("radar_freq_band_%d", band)) + " "
+    }
+    desc.append(bands)
+
+    let rangeMax = sensorPropsBlk.getReal("range", 0.0)
+    desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
+
+    let mandatoryRecognition = sensorPropsBlk.getBool("mandatoryRecognition", false)
+    let detectTracking = sensorPropsBlk.getBool("detectTracking", true)
+    let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
+
+    local threatTypes = {}
+    local trackingThreatTypes = {}
+    local launchingThreatTypes = {}
+    let groupsBlk = sensorPropsBlk.getBlockByName("groups")
+    if (mandatoryRecognition || !detectTracking || !detectLaunch)
+      for (local g = 0; g < (groupsBlk?.blockCount() ?? 0); g++) {
+        let groupBlk = groupsBlk.getBlock(g)
+        let detectGroupTracking = !detectTracking && groupBlk.getBool("detectTracking", false)
+        let detectGroupLaunching = !detectLaunch && groupBlk.getBool("detectLaunch", false)
+        for (local t = 0; t < groupBlk.paramCount(); ++t)
+          if (groupBlk.getParamName(t) == "type") {
+            let threatType = groupBlk.getParamValue(t)
+            if (mandatoryRecognition)
+              if (!threatTypes?[threatType])
+                threatTypes[threatType] <- true
+            if (detectGroupTracking)
+              if (!trackingThreatTypes?[threatType])
+                trackingThreatTypes[threatType] <- true
+            if (detectGroupLaunching)
+              if (!launchingThreatTypes?[threatType])
+                launchingThreatTypes[threatType] <- true
+          }
+      }
+
+    desc.append(indent + loc("rwr_threats_types") + loc("ui/colon") +
+      (!mandatoryRecognition ? loc("rwr_threats_unlimited") : format("%d", threatTypes.len())))
+
+    if (sensorPropsBlk.getBool("targetTracking", false))
+      desc.append(indent + loc("rwr_tracked_threats_max") + loc("ui/colon") + format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16)))
+
+    if (detectTracking || trackingThreatTypes.len() > 0)
+      desc.append(indent + loc("rwr_tracking_threats_types") + loc("ui/colon") +
+        (detectTracking ? loc("rwr_threats_unlimited") : format("%d", trackingThreatTypes.len())))
+
+    if (detectLaunch || launchingThreatTypes.len() > 0)
+      desc.append(indent + loc("rwr_launching_threats_types") + loc("ui/colon") +
+        (detectLaunch ? loc("rwr_threats_unlimited") : format("%d", launchingThreatTypes.len())))
+
+    local targetsDirectionGroups = {}
+    let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")
+    for (local d = 0; d < (targetsDirectionGroupsBlk?.blockCount() ?? 0); d++) {
+      let targetsDirectionGroupBlk = targetsDirectionGroupsBlk.getBlock(d)
+      let targetsDirectionGroupText = targetsDirectionGroupBlk.getStr("text", "")
+      if (!targetsDirectionGroups?[targetsDirectionGroupText])
+        targetsDirectionGroups[targetsDirectionGroupText] <- true
+    }
+    if (targetsDirectionGroups.len() > 1)
+      desc.append(indent + loc("rwr_scope_id_threats_types") + loc("ui/colon") + format("%d", targetsDirectionGroups.len()))
+
+    let targetsPresenceGroupsBlk = sensorPropsBlk.getBlockByName("targetsPresenceGroups")
+    let targetsPresenceGroupsCount = targetsPresenceGroupsBlk?.blockCount() ?? 0
+    if (targetsPresenceGroupsCount > 1)
+      desc.append(indent + loc("rwr_present_id_threats_types") + loc("ui/colon") + format("%d", targetsPresenceGroupsCount))
+  }
+
   function addRadarDescription(sensorPropsBlk, indent, desc) {
 
     local isRadar = false
@@ -957,6 +1031,7 @@ let descByPartId = {
     let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
     let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
     let hasSARH = this.findBlockByName(sensorPropsBlk, "setIllumination")
+    let hasMG = this.findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
 
     local radarType = ""
     if (isRadar)
@@ -984,7 +1059,7 @@ let descByPartId = {
     desc.append(indent + loc("plane_engine_type") + loc("ui/colon") + loc(radarType))
     if (isRadar)
       desc.append(indent + loc("radar_freq_band") + loc("ui/colon") + loc(format("radar_freq_band_%d", radarFreqBand)))
-    desc.append(indent + loc("radar_range_max") + loc("ui/colon") + ::g_measure_type.DISTANCE.getMeasureUnitsText(rangeMax))
+    desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
 
     let scanPatternsBlk = sensorPropsBlk.getBlockByName("scanPatterns")
     for (local p = 0; p < (scanPatternsBlk?.blockCount() ?? 0); p++) {
@@ -1045,6 +1120,8 @@ let descByPartId = {
         desc.append(indent + loc("radar_acm_mode"))
       if (hasSARH)
         desc.append(indent + loc("radar_sarh"))
+      if (hasMG)
+        desc.append(indent + loc("radar_mg"))
     }
   }
 
@@ -1442,6 +1519,8 @@ let descByPartId = {
             this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
           if (sensorType == "radar" || sensorType == "radar_irst")
             this.addRadarDescription(sensorPropsBlk, "  ", desc)
+          else if (sensorType == "rwr")
+            this.addRwrDescription(sensorPropsBlk, "  ", desc)
         }
 
         if (this.unitBlk.getBool("hasHelmetDesignator", false))

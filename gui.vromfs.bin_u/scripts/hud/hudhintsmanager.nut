@@ -128,19 +128,22 @@ let function isHintDisabledByUnitTags(hint) {
 
     let {pos = [0, 0], size = [0, 0]} = value
 
-    local dmgPanelRightSide = size[0] + pos[0]
+    local dmgPanelRightSide = size[0] + pos[0]// its global coords
+    let hintContainerScreenBorder = to_pixels($"1/6@rwHud + 1@bwHud - 0.015@shHud")
+    let screenWidth = to_pixels($"sw")
+
     if(dmgPanelRightSide == 0)
-      dmgPanelRightSide = to_pixels("1@bwHud")
-    local leftOffset = to_pixels($"{dmgPanelRightSide} + 0.015@shHud")
-    let mapLeft = getHudElementAabb("map")?.pos[0] ?? to_pixels("sw - 1@bwHud")
-    local rightOffset = to_pixels($"sw - {mapLeft} + 0.015@shHud")
+      dmgPanelRightSide = hintContainerScreenBorder
+
+    local leftOffset = dmgPanelRightSide
+
+    let mapLeft = getHudElementAabb("map")?.pos[0] ?? screenWidth
+    local rightOffset = screenWidth - mapLeft
 
     let maxOffset = max(leftOffset, rightOffset)
-    leftOffset = maxOffset
-    rightOffset = maxOffset
 
-    common_priority_hints["left"] = $"{leftOffset} - 1/6@rwHud"
-    common_priority_hints["width"] = $"sw - {leftOffset + rightOffset}"
+    common_priority_hints["left"] = $"{maxOffset} - {hintContainerScreenBorder}"
+    common_priority_hints["width"] = $"sw - {maxOffset}*2"
   }
 
   function changeMissionHintsPosition(value) {

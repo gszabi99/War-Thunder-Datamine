@@ -614,7 +614,7 @@
       "hp": 40.0,
       "genericDamageMult": 3.0,
       "pressureDamageMult": 1.0,
-      "napalmDamageMult": 0.0,
+      "napalmDamageMult": 1.0,
       "ignoreSolidDimension": true,
       "driver_dm": {},
       "loader_dm": {},
@@ -3204,8 +3204,8 @@
   "cockpit": {
     "headPos": [
       0.0,
-      4.1,
-      -6.8
+      3.9,
+      -8.0
     ],
     "headPosOnShooting": [
       -0.6,
@@ -3216,7 +3216,63 @@
     "zoomInFov": 12.2,
     "sightFov": 5.9,
     "sightName": "periscope_m411",
-    "detectionHeight": 2.07
+    "detectionHeight": 2.8
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "removeLoadedAmmo": false,
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fatalFire": false,
+        "fatalExplosion": false,
+        "ammo_body_01_dm": {
+          "count": 1
+        },
+        "ammo_body_02_dm": {
+          "count": 1
+        },
+        "ammo_body_05_dm": {
+          "count": 1
+        },
+        "ammo_body_06_dm": {
+          "count": 1
+        },
+        "ammo_body_03_dm": {
+          "count": 1
+        },
+        "ammo_body_04_dm": {
+          "count": 1
+        },
+        "ammo_body_07_dm": {
+          "count": 1
+        },
+        "ammo_body_08_dm": {
+          "count": 1
+        },
+        "ammo_turret_01_dm": {
+          "count": 1,
+          "fatalFire": false,
+          "fatalExplosion": false
+        },
+        "ammo_turret_02_dm": {
+          "count": 1,
+          "fatalFire": false,
+          "fatalExplosion": false
+        },
+        "ammo_turret_03_dm": {
+          "count": 1,
+          "fatalFire": false,
+          "fatalExplosion": false
+        },
+        "ammo_turret_04_dm": {
+          "count": 1,
+          "fatalFire": false,
+          "fatalExplosion": false
+        }
+      }
+    }
   },
   "modifications": {
     "new_tank_tracks": {},

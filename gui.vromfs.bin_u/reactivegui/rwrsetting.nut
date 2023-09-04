@@ -9,7 +9,8 @@ let rwrSetting = Computed(function() {
     direction = [],
     directionMap = [],
     presence = [],
-    presenceMap = []
+    presenceMap = [],
+    presenceDefault = []
   }
   if (BlkFileName.value == "")
     return res
@@ -78,6 +79,23 @@ let rwrSetting = Computed(function() {
     }
   }
 
+  let noTargetsDirectionGroup = rwrBlk.getBlockByName("noTargetsDirectionGroup")
+  if (noTargetsDirectionGroup != null) {
+    print($"noTargetsDirectionGroup")
+    for (local j = 0; j < noTargetsDirectionGroup.paramCount(); j++) {
+      if (noTargetsDirectionGroup.getParamName(j) != "group")
+        continue
+      let noDirectionGroupName = noTargetsDirectionGroup.getParamValue(j)
+      local groupIndex = groupNames.findindex(@(groupName) groupName == noDirectionGroupName)
+      assert(groupIndex != null, $"RWR target direction group \"{noDirectionGroupName}\" not found for noTargetsDirectionGroup")
+      if (groupIndex != null) {
+        res.directionMap.resize(max(res.directionMap.len(), groupIndex + 1))
+        print($"Dont show direction of {noDirectionGroupName} {groupIndex}")
+        res.directionMap[groupIndex] = -1
+      }
+    }
+  }
+
   let targetsPresenceGroupsBlk = rwrBlk.getBlockByName("targetsPresenceGroups")
   if (targetsPresenceGroupsBlk != null) {
     for (local i = 0; i < targetsPresenceGroupsBlk.blockCount(); i++) {
@@ -106,6 +124,8 @@ let rwrSetting = Computed(function() {
           res.presenceMap[groupIndex].append(presenceIndex)
         }
       }
+      if (targetsPresenceGroupBlk.getBool("default", false))
+        res.presenceDefault.append(presenceIndex)
     }
   }
 

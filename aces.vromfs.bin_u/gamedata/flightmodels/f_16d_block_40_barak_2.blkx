@@ -1963,8 +1963,6 @@
   },
   "Sound": {
     "Engine": "engine05_f110_WEP",
-    "eventAOAAlarm": "alarm_attack_angle_us",
-    "eventStallAlarm": "alarm_stall",
     "voiceWarningSystem": "betty",
     "gun": "gun_default",
     "nozzleMoveSfx": "nozzle_moving",
@@ -3239,7 +3237,25 @@
             "blk": "gameData/Weapons/equipment/gr_litening_pod_targeting_pod.blk",
             "emitter": "litening_2_pod",
             "bullets": 1
-          }
+          },
+          "DependentWeaponPreset": [
+            {
+              "slot": 3,
+              "preset": "gbu12"
+            },
+            {
+              "slot": 3,
+              "preset": "gbu16"
+            },
+            {
+              "slot": 8,
+              "preset": "gbu12"
+            },
+            {
+              "slot": 8,
+              "preset": "gbu16"
+            }
+          ]
         }
       },
       {

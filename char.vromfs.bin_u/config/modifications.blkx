@@ -1416,6 +1416,46 @@
         "weaponMod": "aden_25_new_gun"
       }
     },
+    "gau_12_ground_targets": {
+      "reqModification": "gau_12_belt_pack",
+      "group": "gau_12",
+      "effects": {
+        "bulletMod": "gau_12_ground_targets"
+      }
+    },
+    "gau_12_air_targets": {
+      "reqModification": "gau_12_belt_pack",
+      "group": "gau_12",
+      "effects": {
+        "bulletMod": "gau_12_air_targets"
+      }
+    },
+    "gau_12_stealth": {
+      "reqModification": "gau_12_belt_pack",
+      "group": "gau_12",
+      "effects": {
+        "bulletMod": "gau_12_stealth"
+      }
+    },
+    "gau_12_belt_pack": {
+      "image": "#ui/gameuiskin#ammo",
+      "modClass": "weapon",
+      "tier": 3,
+      "caliber": 25.0,
+      "deactivationIsAllowed": false
+    },
+    "gau_12_new_gun": {
+      "image": "#ui/gameuiskin#weapon",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": true,
+      "caliber": 25.0,
+      "modOverdriveType": "new_gun",
+      "modUpgradeType": "new_gun",
+      "effects": {
+        "weaponMod": "gau_12_new_gun"
+      }
+    },
     "GAU_13A_ground_targets": {
       "reqModification": "GAU_13A_belt_pack",
       "group": "GAU_13A",
@@ -12789,6 +12829,7 @@
       "tier": 1,
       "requiresModelReload": true,
       "modClass": "mobility",
+      "animation": "video/unitModifications/winterketten_tank_tracks.ivf",
       "invertEnableLogic": false,
       "turn_it_off": false,
       "effects": {
@@ -13080,6 +13121,7 @@
       "image": "#ui/gameuiskin#art_support",
       "tier": 4,
       "modClass": "firepower",
+      "animation": "video/unitModifications/art_support.ivf",
       "effects": {
         "rcostAddParam": 0.9595,
         "supportUnitClass": "structures/ussr_122mm_m30",
@@ -13458,7 +13500,7 @@
       "reqModification": "night_vision_system",
       "tier": 4,
       "modClass": "firepower",
-      "animation": "video/unitModifications/night_vision_system.ivf",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "group": "NVS",
       "requiresModelReload": true,
       "effects": {
@@ -13543,6 +13585,7 @@
       "tier": 2,
       "group": "art_support_mods",
       "modClass": "firepower",
+      "animation": "video/unitModifications/art_support.ivf",
       "effects": {
         "rcostAddParam": 0.9595,
         "supportUnitClass": "structures/germ_105mm_lefh18",
@@ -13554,6 +13597,7 @@
       "tier": 2,
       "group": "art_support_mods",
       "modClass": "firepower",
+      "animation": "video/unitModifications/art_support.ivf",
       "effects": {
         "rcostAddParam": 0.9595,
         "supportUnitClass": "structures/ussr_122mm_m30",
@@ -13565,6 +13609,7 @@
       "tier": 3,
       "group": "art_support_mods",
       "modClass": "firepower",
+      "animation": "video/unitModifications/art_support.ivf",
       "effects": {
         "rcostAddParam": 0.9595,
         "supportUnitClass": "structures/germ_150mm_sfh18",
@@ -13576,6 +13621,7 @@
       "tier": 3,
       "group": "art_support_mods",
       "modClass": "firepower",
+      "animation": "video/unitModifications/art_support.ivf",
       "effects": {
         "rcostAddParam": 0.9595,
         "supportUnitClass": "structures/ussr_152mm_d1",
@@ -20015,6 +20061,7 @@
     },
     "tank_smoke_screen_system_mod": {
       "modClass": "firepower",
+      "animation": "video/unitModifications/smoke_grenade.ivf",
       "requiresModelReload": true,
       "image": "#ui/gameuiskin#smoke_screen",
       "group": "smoke_mod"
@@ -20389,6 +20436,7 @@
       "requiresModelReload": true,
       "tier": 3,
       "modClass": "firepower",
+      "animation": "video/unitModifications/turret_improvement_bmp.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20398,6 +20446,7 @@
       "requiresModelReload": true,
       "tier": 3,
       "modClass": "firepower",
+      "animation": "video/unitModifications/turret_improvement_bmp.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20435,6 +20484,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20444,6 +20494,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20453,6 +20504,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20462,6 +20514,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement_East.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20471,6 +20524,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/additional_era_packege.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20480,6 +20534,7 @@
       "requiresModelReload": true,
       "tier": 1,
       "modClass": "protection",
+      "animation": "video/unitModifications/side_skirts_up.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20489,6 +20544,7 @@
       "requiresModelReload": true,
       "tier": 3,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20498,6 +20554,7 @@
       "requiresModelReload": true,
       "tier": 3,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20507,6 +20564,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20525,6 +20583,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement_East.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20536,6 +20595,7 @@
       "tier": 4,
       "group": "NVS",
       "modClass": "protection",
+      "animation": "video/unitModifications/2s6_upgrade_modification.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20566,6 +20626,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20575,6 +20636,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20593,6 +20655,7 @@
       "requiresModelReload": true,
       "tier": 3,
       "modClass": "protection",
+      "animation": "video/unitModifications/mine_protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20602,6 +20665,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement_East.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20622,6 +20686,7 @@
       "requiresModelReload": true,
       "tier": 3,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement_East.ivf",
       "group": "smoke_mod",
       "effects": {
         "fakeParam": 1.01
@@ -20632,6 +20697,7 @@
       "requiresModelReload": true,
       "tier": 4,
       "modClass": "protection",
+      "animation": "video/unitModifications/protection_improvement.ivf",
       "effects": {
         "fakeParam": 1.01
       }
@@ -20686,6 +20752,7 @@
       "requiresModelReload": true,
       "tier": 3,
       "modClass": "firepower",
+      "animation": "video/unitModifications/hydra_70.ivf",
       "effects": {
         "fakeParam": 1.01
       }

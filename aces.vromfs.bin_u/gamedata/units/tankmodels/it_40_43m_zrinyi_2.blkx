@@ -1871,31 +1871,134 @@
     }
   },
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)$",
-    "points": {
-      "suspension": {
-        "name": "bone_suspension_$1"
+    "group": [
+      {
+        "find": "^suspension_(._\\d\\d)$",
+        "points": {
+          "lever": {
+            "name": "bone_suspension_$1",
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "suspension_01_01": {
+            "name": "bone_suspension_$1_01",
+            "limitMin": [
+              -0.5,
+              -0.5,
+              0.0
+            ],
+            "limitMax": [
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          "wheel_01": {
+            "searchChildren": {
+              "parent": "suspension_01_01",
+              "find": "bone_wheel_",
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ]
+            }
+          },
+          "wheel_02": {
+            "searchChildren": {
+              "parent": "suspension_01_01",
+              "find": "bone_wheel_",
+              "occurence": 2,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ]
+            }
+          }
+        },
+        "constraints": {
+          "projection": {
+            "point": "suspension_01_01",
+            "from": "wheel_01",
+            "to": "wheel_02",
+            "moveEdge": true
+          },
+          "edge": {
+            "from": "lever",
+            "to": "suspension_01_01",
+            "moveSecond": false
+          },
+          "direction": {
+            "moveNodes": true,
+            "rotateSecond": false,
+            "from": "wheel_01",
+            "to": "wheel_02",
+            "point": "suspension_01_01"
+          }
+        }
       },
-      "wheel": {
-        "name": "bone_wheel_$1",
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ]
+      {
+        "find": "^suspension_(\\w)$",
+        "points": {
+          "suspension": {
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "name": "bone_suspension_$1_03"
+          },
+          "wheelBack": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "parent": "suspension",
+              "find": "wheel_"
+            }
+          }
+        },
+        "constraints": {
+          "edge": {
+            "from": "suspension",
+            "to": "wheelBack"
+          }
+        }
       }
-    },
-    "constraints": {
-      "edge": {
-        "from": "suspension",
-        "to": "wheel"
-      }
-    }
+    ]
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -2607,9 +2710,9 @@
       -6.5
     ],
     "headPosOnShooting": [
-      -0.1,
-      2.9,
-      -0.6
+      1.3,
+      2.4,
+      -0.7
     ],
     "bone_turret": "",
     "detectionHeight": 1.9
