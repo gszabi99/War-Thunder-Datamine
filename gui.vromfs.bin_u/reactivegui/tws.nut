@@ -1,10 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let math = require("math")
-let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, lwsTargetsTriggers, mlwsTargetsTriggers, mlwsTargets, lwsTargets, rwrTargets, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
-let rwrSetting = require("rwrSetting.nut")
+let { rwrTargetsTriggers, lwsTargetsTriggers, mlwsTargetsTriggers, mlwsTargets, lwsTargets, rwrTargets, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
 let { MlwsLwsForMfd, RwrForMfd } = require("airState.nut");
-let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
+let { isColorOrWhite } = require("style/airHudStyle.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
 const RADAR_LINES_OPACITY = 0.42
@@ -12,15 +11,6 @@ const RADAR_LINES_OPACITY = 0.42
 let indicatorRadius = 70.0
 let trackRadarsRadius = 0.04
 let azimuthMarkLength = 50 * 3 * trackRadarsRadius
-
-let styleText = {
-  color = greenColor
-  font = Fonts.hud
-  fontFxColor = fontOutlineColor
-  fontFxFactor = fontOutlineFxFactor
-  fontFx = FFT_GLOW
-  fontSize = hudFontHgt
-}
 
 let styleLineBackground = {
   fillColor = Color(0, 0, 0, 0)
@@ -371,23 +361,18 @@ let cmdsRwrTarget = [
 
 let function createRwrTarget(index, colorWatched) {
   let target = rwrTargets[index]
-
-  if (!target.valid)
-    return @() { }
-
-  let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)) *
-    (target.launch && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) *
-    (target.show ? 1.0 : 0.2))
+  let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)))
 
   local trackLine = null
-  if (target.track || target.launch) {
+  if (target.track) {
     trackLine = @() {
-      watch = [colorWatched]
+      watch = [targetOpacityRwr, colorWatched]
       color = isColorOrWhite(colorWatched.value)
       rendObj = ROBJ_VECTOR_CANVAS
       size = [pw(50), ph(50)]
       pos = [pw(100), ph(100)]
       lineWidth = hdpx(1)
+      opacity = targetOpacityRwr.value
       commands = [
         [VECTOR_LINE_DASHED, -135, -135, -80, -80, hdpx(5), hdpx(3)]
       ]
@@ -412,121 +397,40 @@ let function createRwrTarget(index, colorWatched) {
     }
   }
 
-  local targetComponent = null
-  local targetType = null
-  if (target.groupId != null)
-    targetType = @()
-      styleText.__merge({
-        watch = [colorWatched, RwrForMfd]
-        rendObj = ROBJ_TEXT
-        pos = [pw(target.x * 100.0), ph(target.y * 100.0)]
-        size = flex()
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        fontSize = RwrForMfd.value ? 2.0 * hudFontHgt : hudFontHgt
-        text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
-        color = isColorOrWhite(colorWatched.value)
-      })
-  else
-    targetComponent = @() {
-      watch = [colorWatched]
-      color = isColorOrWhite(colorWatched.value)
-      rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(1)
-      fillColor = Color(0, 0, 0, 0)
-      size = [pw(50), ph(50)]
-      pos = [pw(85), ph(85)]
-      commands = cmdsRwrTarget
-      transform = rwrTargetTransform
-      children = target.enemy ? null
-        : {
-            color = isColorOrWhite(colorWatched.value)
-            rendObj = ROBJ_VECTOR_CANVAS
-            lineWidth = hdpx(1)
-            size = flex()
-            commands = [[VECTOR_LINE, -20, -40, -20, 40]]
-          }
-      }
-
-  local newTarget = null
-  local age0 = target.age0
-  let age0Rel = age0 * RwrNewTargetHoldTimeInv.value
-  if (RwrNewTargetHoldTimeInv.value < 10.0 && age0Rel < 1.0) {
-    newTarget = @() {
-      watch = [colorWatched]
-      color = isColorOrWhite(colorWatched.value)
-      rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(1)
-      fillColor = Color(0, 0, 0, 0)
-      size = [pw(100), ph(100)]
-      pos = [pw(0), ph(0)]
-      commands = [ [VECTOR_ELLIPSE, 100.0, 0.0, 20, 20] ]
-      transform = rwrTargetTransform
-    }
-  }
-
-  return @() {
-    watch = [targetOpacityRwr]
-    size = flex()
-    opacity = targetOpacityRwr.value
-    children = [
-      {
-        pos = [pw(50), ph(50)]
-        size = flex()
-        transform = {
-          pivot = [0.0, 0.0]
-          rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
-        }
-        children = [
-          trackLine,
-          sector,
-          targetComponent,
-          newTarget
-        ]
-      },
-      targetType
-    ]
-  }
-}
-
-let function createRwrTargetPresence(index, colorWatched) {
-  let targetPresence = rwrTargetsPresence[index]
-
-  let targetOpacityRwr = Computed(@() max(0.0, targetPresence.presents ? 1.0 - min(targetPresence.age * RwrSignalHoldTimeInv.value, 0.9) : 0.1))
-
-  local targetPresenceType = @()
-    styleText.__merge({
-      watch = [rwrSetting, colorWatched]
-      rendObj = ROBJ_TEXT
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      text = index < rwrSetting.value.presence.len() ? rwrSetting.value.presence[index].text : ""
-      color = isColorOrWhite(colorWatched.value)
-    })
-  local targetPresenceBorder = @() {
-    watch = [colorWatched]
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
-    lineWidth = hdpx(3)
+  let targetComponent = @() {
+    watch = [targetOpacityRwr, colorWatched]
     color = isColorOrWhite(colorWatched.value)
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpx(1)
     fillColor = Color(0, 0, 0, 0)
-    commands = [
-      [VECTOR_RECTANGLE, 25, 30, 50, 40]
-    ]
-  }
-
-  let row = index / 4
-  let col = index - row * 4
-
-  return @() {
-    watch = [targetOpacityRwr]
-    pos = [pw(-85 + col * 55), ph(150 + row * 50)]
-    size = flex()
     opacity = targetOpacityRwr.value
+    size = [pw(50), ph(50)]
+    pos = [pw(85), ph(85)]
+    commands = cmdsRwrTarget
+    transform = rwrTargetTransform
+
+    children = target.enemy ? null
+      : {
+          color = isColorOrWhite(colorWatched.value)
+          rendObj = ROBJ_VECTOR_CANVAS
+          lineWidth = hdpx(1)
+          opacity = targetOpacityRwr.value
+          size = flex()
+          commands = [[VECTOR_LINE, -20, -40, -20, 40]]
+        }
+    }
+
+  return {
+    size = flex()
+    pos = [pw(50), ph(50)]
+    transform = {
+      pivot = [0.0, 0.0]
+      rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
+    }
     children = [
-      targetPresenceType,
-      targetPresenceBorder
+      targetComponent,
+      trackLine,
+      sector
     ]
   }
 }
@@ -550,27 +454,15 @@ let function lwsTargetsComponent(colorWatched, isForTank = false) {
 }
 
 let rwrTargetsComponent = function(colorWatched) {
+
   return @() {
-    watch = [rwrTargetsTriggers, RwrForMfd]
+    watch = rwrTargetsTriggers
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched))
+    children = rwrTargets.filter(@(t) t != null).map(@(_, i) createRwrTarget(i, colorWatched))
   }
 }
 
-let rwrTargetsPresenceComponent = function(colorWatched) {
-  if (RwrForMfd.value)
-    return @() {
-      watch = [RwrForMfd]
-    }
-  else
-    return @() {
-      watch = [rwrTargetsPresenceTriggers, RwrForMfd]
-      size = flex()
-      children = rwrTargetsPresence.filter(@(t) t != null).map(@(_, i) createRwrTargetPresence(i, colorWatched))
-    }
-}
-
-let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale, ratio, needDrawBackground) {
+let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale, needDrawBackground) {
   return {
     size = flex()
     children = [
@@ -578,14 +470,13 @@ let function scope(colorWatched, relativCircleRadius, needDrawCentralIcon, scale
       needDrawBackground ? rwrBackground(colorWatched, scale) : null,
       needDrawCentralIcon ? centeredAircraftIcon(colorWatched) : null,
       {
-        size = [pw(relativCircleRadius * ratio * scale), ph(relativCircleRadius * scale)]
+        size = [pw(relativCircleRadius * scale), ph(relativCircleRadius * scale)]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         children = [
           mlwsTargetsComponent(colorWatched)
           lwsTargetsComponent(colorWatched, !needDrawCentralIcon)
           rwrTargetsComponent(colorWatched)
-          rwrTargetsPresenceComponent(colorWatched)
         ]
       }
     ]
@@ -599,7 +490,7 @@ let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSiz
     pos = posWatched.value
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorWatched, relativCircleSize, needDrawCentralIcon, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0, needDrawBackground)
+    children = scope(colorWatched, relativCircleSize, needDrawCentralIcon, scale, needDrawBackground)
   }
 })
 

@@ -1,19 +1,18 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+
 let { format } = require("string")
 let { Balance } = require("%scripts/money.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%appGlobals/ranks_common_shared.nut")
+
 let { get_time_msec } = require("dagor.time")
 let avatars = require("%scripts/user/avatars.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getNumUnlocked } = require("unlocks")
-let { get_mp_session_info } = require("guiMission")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 ::max_player_rank <- 100
 ::max_country_rank <- 8
@@ -148,7 +147,7 @@ registerPersistentData("RanksGlobals", getroottable(),
 
 let function get_cur_session_country() {
   if (::is_multiplayer()) {
-    let sessionInfo = get_mp_session_info()
+    let sessionInfo = ::get_mp_session_info()
     let team = ::get_mp_local_team()
     if (team == 1)
       return sessionInfo.alliesCountry
@@ -260,7 +259,7 @@ let function haveCountryRankAir(country, rank) {
 ::update_aircraft_warpoints <- function update_aircraft_warpoints(maxCallTimeMsec = 0) {
   let startTime = get_time_msec()
   let errorsTextArray = []
-  foreach (unit in getAllUnits()) {
+  foreach (unit in ::all_units) {
     if (unit.isInited)
       continue
 
@@ -332,7 +331,7 @@ let function haveCountryRankAir(country, rank) {
   }
 
   if ("unlock" in tbl)
-    if (!isUnlockOpened(tbl.unlock, UNLOCKABLE_SINGLEMISSION) && !::is_debug_mode_enabled) {
+    if (!::is_unlocked_scripted(UNLOCKABLE_SINGLEMISSION, tbl.unlock) && !::is_debug_mode_enabled) {
       if (!silent) {
         let msg = loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(tbl.unlock, 1)
         ::showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")

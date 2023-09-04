@@ -26,11 +26,6 @@
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
   "fxWaterShockWave": "dust_waterwave_big",
-  "fxTypeEjector": "smoke_gunpowder_ejector",
-  "ejectionFxSpeedRange": [
-    20.0,
-    45.0
-  ],
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -50,7 +45,6 @@
     "Cx": 0.52416,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
-    "groundRicochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -531,7 +525,6 @@
       "Cx": 0.69212,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",
-      "groundRicochetPreset": "hesh",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -975,7 +968,6 @@
       "maxDistance": 20000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
-      "groundRicochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
       "bulletType": "apds_fs_tungsten_l10_l15_tank",
       "slopeEffectPreset": "apds_fs_long",
@@ -1239,7 +1231,6 @@
       "maxDistance": 9000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.4,
       "stabilityCaliberToArmorThreshold": 10.0,
@@ -1667,7 +1658,6 @@
       "mass": 18.8,
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
-      "groundRicochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1734,11 +1724,10 @@
         "autoAimingMaxAngle": 1.0,
         "guidanceType": "saclos",
         "maxDeltaAngle": 0.02,
-        "explosiveType": "ocfol",
+        "explosiveType": "a_ix_1",
         "explosiveMass": 3.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",
-        "groundRicochetPreset": "atgm",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1837,7 +1826,7 @@
         },
         "DamageParts": {
           "body": {
-            "hp": 50.0,
+            "hp": 5.0,
             "armorClass": "tank_structural_steel",
             "armorThickness": 1.0
           }
@@ -1845,45 +1834,11 @@
         "DamageEffects": {
           "part": {
             "name": "body",
-            "onHit": [
-              {
-                "damageType": "generic",
-                "expl": 0.05,
-                "fire": 0.45,
-                "break": 0.5,
-                "damage": 3.0,
-                "fHitCritical": true
-              },
-              {
-                "damageType": "generic",
-                "expl": 0.5,
-                "fire": 0.3,
-                "break": 0.2,
-                "damage": 30.0,
-                "fHitCritical": true
-              },
-              {
-                "damageType": "explosion",
-                "expl": 0.45,
-                "fire": 0.45,
-                "break": 0.1,
-                "damage": 50.0,
-                "fHitCritical": true
-              },
-              {
-                "damageType": "cumulative",
-                "expl": 0.4,
-                "fire": 0.4,
-                "break": 0.1,
-                "damage": 100.0,
-                "fHitCritical": true
-              }
-            ],
+            "onHit": {
+              "expl": 1.0
+            },
             "onKill": {
-              "expl": 0.05,
-              "fire": 0.05,
-              "break": 0.9,
-              "fHitCritical": true
+              "destruction": 1.0
             }
           }
         },
@@ -2180,7 +2135,7 @@
         },
         "damage": {
           "explosive": {
-            "radius": 0.25,
+            "radius": 0.4,
             "offset": 0.2
           },
           "shatter": {

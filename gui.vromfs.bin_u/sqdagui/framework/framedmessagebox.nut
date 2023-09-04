@@ -2,7 +2,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { check_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("handlerType.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
-let { gui_handlers, register_gui_handler } = require("gui_handlers.nut")
 
 /*
   FramedMessageBox is a message box, with visible frame.
@@ -19,7 +18,7 @@ let { gui_handlers, register_gui_handler } = require("gui_handlers.nut")
     }
   }
 */
-let FramedMessageBox = class extends ::BaseGuiHandler { //-undefined-global
+::gui_handlers.FramedMessageBox <- class extends ::BaseGuiHandler { //-undefined-global
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/framedMessageBox.tpl"
 
@@ -38,7 +37,7 @@ let FramedMessageBox = class extends ::BaseGuiHandler { //-undefined-global
   }]
 
   function open(config = {}) {
-    handlersManager.loadHandler(gui_handlers.FramedMessageBox, config)
+    handlersManager.loadHandler(::gui_handlers.FramedMessageBox, config)
   }
 
   function getSceneTplView() {
@@ -96,5 +95,3 @@ let FramedMessageBox = class extends ::BaseGuiHandler { //-undefined-global
     func()
   }
 }
-
-register_gui_handler("FramedMessageBox", FramedMessageBox)

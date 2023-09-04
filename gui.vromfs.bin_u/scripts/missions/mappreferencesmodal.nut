@@ -1,14 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { ceil, floor } = require("math")
 let { rnd } = require("dagor.random")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let mapPreferences    = require("mapPreferences")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -23,7 +22,7 @@ const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 ::dagui_propid.add_name_id("hasMaxDisliked")
 ::dagui_propid.add_name_id("hasMaxLiked")
 
-gui_handlers.mapPreferencesModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.mapPreferencesModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType             = handlerType.MODAL
   sceneTplName        = "%gui/missions/mapPreferencesModal.tpl"
   curEvent            = null
@@ -455,6 +454,6 @@ return {
     if (!mapPreferencesParams.hasPreferences(params.curEvent))
       return
 
-    handlersManager.loadHandler(gui_handlers.mapPreferencesModal, params)
+    ::handlersManager.loadHandler(::gui_handlers.mapPreferencesModal, params)
   }
 }

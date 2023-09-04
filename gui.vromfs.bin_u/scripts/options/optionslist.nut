@@ -295,7 +295,6 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
     [::USEROPT_VOLUME_GUNS, "slider"],
     [::USEROPT_VOLUME_RADIO, "slider"],
     [::USEROPT_VOLUME_DIALOGS, "slider"],
-    [::USEROPT_VOLUME_VWS, "slider"],
     [::USEROPT_VOLUME_TINNITUS, "slider"],
     [::USEROPT_HANGAR_SOUND, "spinner"],
     [::USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", is_platform_pc],

@@ -1,5 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
+
 
 /*
  API:
@@ -16,11 +18,9 @@ from "%scripts/dagui_library.nut" import *
 */
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.MRoomPlayersListWidget <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/playersList.tpl"
@@ -45,7 +45,7 @@ gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandler
       assert(false, "cant create playersListWidget - no teams or scene")
       return null
     }
-    return handlersManager.loadHandler(gui_handlers.MRoomPlayersListWidget, config)
+    return ::handlersManager.loadHandler(::gui_handlers.MRoomPlayersListWidget, config)
   }
 
   function getSceneTplView() {
@@ -126,7 +126,7 @@ gui_handlers.MRoomPlayersListWidget <- class extends gui_handlers.BaseGuiHandler
       return
 
     let teamList = team == ::g_team.ANY ? playersList
-      : playersList.filter(@(p) p.team.tointeger() == team.code)
+      : u.filter(playersList, @(p) p.team.tointeger() == team.code)
     ::set_mp_table(objTbl, teamList)
     ::update_team_css_label(objTbl)
 

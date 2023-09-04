@@ -4,9 +4,8 @@ from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let {WwAirfieldFormation} = require("wwAirfieldFormation.nut")
 
-let WwAirfieldCooldownFormation = class extends WwAirfieldFormation {
+::WwAirfieldCooldownFormation <- class extends ::WwAirfieldFormation {
   cooldownFinishedMillis = 0
 
   constructor(blk, airfield) {
@@ -38,5 +37,3 @@ let WwAirfieldCooldownFormation = class extends WwAirfieldFormation {
     return time.secondsToString(time.millisecondsToSeconds(cooldownTime), false)
   }
 }
-
-return {WwAirfieldCooldownFormation}

@@ -504,8 +504,6 @@ let function mkTemplateTooltip(templName) {
     }
   }
 
-  let displayDelay = 0.2
-
   return {
     rendObj = ROBJ_WORLD_BLUR_PANEL
     fillColor = Color(30, 30, 30, 200)
@@ -527,10 +525,6 @@ let function mkTemplateTooltip(templName) {
         allOther
       ]
     }
-    animations = [
-      { prop = AnimProp.opacity, from = 0, to = 0, duration = displayDelay, play = true }
-      { prop = AnimProp.opacity, from = 0, to = 1, delay = displayDelay, duration = 0.1, play = true }
-    ]
   }
 }
 

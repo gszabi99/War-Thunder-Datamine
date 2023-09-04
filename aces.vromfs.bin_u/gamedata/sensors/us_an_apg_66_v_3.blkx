@@ -403,9 +403,8 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
-          "setFsmActive": {
-            "fsm": "illumination",
-            "active": false
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setPulseStandbyMode": {
@@ -452,9 +451,8 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
-          "setFsmActive": {
-            "fsm": "illumination",
-            "active": false
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setPulseSearchMode": {
@@ -535,17 +533,14 @@
               "width": 3000.0
             }
           ],
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": false
-            }
-          ],
-          "clearTargets": {}
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
+          "clearTargets": {},
+          "setIllumination": {
+            "illumination": false
+          }
         },
         "setPulseDesignationLockMode": {
           "setDesignationLockModeCommon": {},
@@ -589,16 +584,10 @@
             "source": "constant",
             "value": 0.0
           },
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": false
-            }
-          ],
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
           "setDistGatePos": {
             "source": "constRange",
             "pos": 9250.0,
@@ -611,6 +600,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setPulseBoresightLockMode": {
@@ -663,16 +655,13 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": [
-            {
-              "fsm": "track",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": true
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
+          },
+          "setIllumination": {
+            "illumination": true
+          }
         },
         "setPulseTrackMode": {
           "setTrackModeCommon": {},
@@ -1797,45 +1786,6 @@
             "designateTargetUnderCue": {
               "type": 0,
               "sensorIndex": 1
-            }
-          }
-        }
-      }
-    },
-    "illumination": {
-      "stateInit": "init",
-      "transitions": {
-        "activate": {
-          "event": "fsmActivate",
-          "stateTo": "active",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true
-            }
-          }
-        },
-        "deactivate": {
-          "event": "fsmDeactivate",
-          "stateTo": "inactive",
-          "actions": {
-            "setIllumination": {
-              "transiver": false
-            }
-          }
-        },
-        "activateIllumination": {
-          "event": "sarhMissileLaunch",
-          "actions": {
-            "setIlluminationTimeOut": {
-              "timeOut": 60.0
-            }
-          }
-        },
-        "updateIllumination": {
-          "event": "update",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true
             }
           }
         }

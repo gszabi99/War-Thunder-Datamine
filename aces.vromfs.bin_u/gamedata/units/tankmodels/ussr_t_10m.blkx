@@ -152,9 +152,6 @@
       },
       "turret_02_top_dm": {
         "armorThickness": 30.0
-      },
-      "turret_04_top_dm": {
-        "armorThickness": 10.0
       }
     },
     "body_shields": {
@@ -205,16 +202,6 @@
         "hidableInViewer": true,
         "ex_decor_r_07_dm": {}
       }
-    },
-    "body_screens": {
-      "armorClass": "t_90_rubber_fabric_screens",
-      "hp": 100.0,
-      "armorThickness": 5.0,
-      "hidableInViewer": true,
-      "ex_decor_l_16_dm": {},
-      "ex_decor_l_17_dm": {},
-      "ex_decor_r_15_dm": {},
-      "ex_decor_r_16_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -287,7 +274,7 @@
       "wheel_r_top_01_dm": {},
       "wheel_r_top_02_dm": {},
       "wheel_r_top_03_dm": {},
-      "wheel_support_dm": {},
+      "suspension_dm": {},
       "submodule": {
         "armorClass": "tank_traks",
         "armorThickness": 30.0,
@@ -566,26 +553,6 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
-      "ammo_turret_56_dm": {},
-      "ammo_turret_57_dm": {},
-      "ammo_turret_58_dm": {},
-      "ammo_turret_59_dm": {},
-      "ammo_turret_60_dm": {},
-      "ammo_turret_61_dm": {},
-      "ammo_turret_62_dm": {},
-      "ammo_turret_63_dm": {},
-      "ammo_turret_64_dm": {},
-      "ammo_turret_65_dm": {},
-      "ammo_turret_66_dm": {},
-      "ammo_turret_67_dm": {},
-      "ammo_turret_68_dm": {},
-      "ammo_turret_69_dm": {},
-      "ammo_turret_70_dm": {},
-      "ammo_turret_71_dm": {},
-      "ammo_turret_72_dm": {},
-      "ammo_turret_73_dm": {},
-      "ammo_turret_74_dm": {},
-      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1305,7 +1272,6 @@
       "minRPM": 500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.37,
       "mainGearRatio": 1.83,
@@ -3152,11 +3118,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -3306,102 +3268,6 @@
         "name": "wheel_l_front_dm",
         "onKill": {
           "track_l_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_l_01_dm",
-        "onKill": {
-          "ex_decor_l_16_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_r_01_dm",
-        "onKill": {
-          "ex_decor_r_15_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_r_09_dm",
-        "onKill": {
-          "ex_decor_r_16_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_l_03_dm",
-        "onKill": {
-          "ex_decor_l_17_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_r_03_dm",
-        "onKill": {
-          "ex_decor_r_04_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_r_06_dm",
-        "onKill": {
-          "ex_decor_r_14_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_r_05_dm",
-        "onKill": {
-          "ex_decor_r_12_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_r_03_dm",
-        "onKill": {
-          "ex_decor_r_05_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_r_11_dm",
-        "onKill": {
-          "ex_decor_r_02_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_l_04_dm",
-        "onKill": {
-          "ex_decor_l_15_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_l_06_dm",
-        "onKill": {
-          "ex_decor_l_13_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_l_04_dm",
-        "onKill": {
-          "ex_decor_l_08_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_l_03_dm",
-        "onKill": {
-          "ex_decor_l_05_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_decor_l_06_dm",
-        "onKill": {
-          "ex_decor_l_02_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_l_05_dm",
-        "onKill": {
-          "ex_decor_l_11_dm": 1.0
-        }
-      },
-      {
-        "name": "ex_armor_body_r_04_dm",
-        "onKill": {
-          "ex_decor_r_10_dm": 1.0
         }
       }
     ]

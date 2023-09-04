@@ -1,13 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { set_gui_option } = require("guiOptions")
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
@@ -29,37 +28,37 @@ let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompati
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
-let function getOptionsWndOpenParams(group) {
+let function openOptionsWnd(group = null) {
   let isInFlight = ::is_in_flight()
   if (isInFlight)
     ::init_options()
 
   let options = optionsListModule.getOptionsList()
+
   if (group != null)
     foreach (o in options)
       if (o.name == group)
         o.selected <- true
 
-  return {
+  let params = {
     titleText = isInFlight
       ? ::is_multiplayer() ? null : loc("flightmenu/title")
       : loc("mainmenu/btnGameplay")
     optGroups = options
     wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
     sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
-    function cancelFunc() {
-      ::set_option_gamma(::get_option_gamma(), false)
-      for (local i = 0; i < SND_NUM_TYPES; i++)
-        set_sound_volume(i, get_sound_volume(i), false)
-    }
   }
+
+  params.cancelFunc <- function() {
+    ::set_option_gamma(::get_option_gamma(), false)
+    for (local i = 0; i < SND_NUM_TYPES; i++)
+      set_sound_volume(i, get_sound_volume(i), false)
+  }
+
+  return ::handlersManager.loadHandler(::gui_handlers.Options, params)
 }
 
-let function openOptionsWnd(group = null) {
-  return handlersManager.loadHandler(gui_handlers.Options, getOptionsWndOpenParams(group))
-}
-
-gui_handlers.Options <- class extends gui_handlers.GenericOptionsModal {
+::gui_handlers.Options <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/options/optionsWnd.blk"
   sceneNavBlkName = "%gui/options/navOptions.blk"
@@ -126,7 +125,7 @@ gui_handlers.Options <- class extends gui_handlers.GenericOptionsModal {
     let groupName = this.optGroups[newGroup].name
     this.setupSearch()
     this.joinEchoChannel(false)
-    handlersManager.setLastBaseHandlerStartParams({ handlerName = "Options", params = getOptionsWndOpenParams(groupName) })
+    ::handlersManager.setLastBaseHandlerStartFunc(@() openOptionsWnd(groupName))
   }
 
   function fillOptions(group) {

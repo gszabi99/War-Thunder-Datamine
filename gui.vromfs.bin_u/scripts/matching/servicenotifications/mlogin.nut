@@ -10,7 +10,7 @@ let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let function onOnlineInfoUpdated(params) {
   if ("utc_time" in params) {
     ::online_info_server_time_param = params.utc_time.tointeger()
-    ::online_info_server_time_received = get_time_msec() / 1000
+    ::online_info_server_time_recieved = get_time_msec() / 1000
   }
 
   if ("online_stats" in params)

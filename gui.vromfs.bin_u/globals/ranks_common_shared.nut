@@ -6,7 +6,7 @@ let { pow, floor } = require("math")
 let { format } = require("string")
 let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { interpolateArray } = require("%sqstd/math.nut")
-let { get_selected_mission, get_mission_type } = require("mission")
+let { get_selected_mission } = require("mission")
 
 let log = @(...) print(" ".join(vargv))
 
@@ -113,7 +113,7 @@ global const EDIFF_SHIFT = 3
   if (::cur_mission_mode >= 0)
     return ::cur_mission_mode
   let mission_name = get_selected_mission()
-  let mission_mode = (mission_name && get_mission_type(mission_name)) || 0
+  let mission_mode = (mission_name && ::get_mission_type(mission_name)) || 0
   log($"get_mission_mode {mission_name} mission_mode {mission_mode}")
   ::cur_mission_mode = mission_mode
   return mission_mode

@@ -2,12 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
 
-gui_handlers.helpPreviewHandler <- class extends gui_handlers.helpWndModalHandler {
+::gui_handlers.helpPreviewHandler <- class extends ::gui_handlers.helpWndModalHandler {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/help/helpPreview.blk"
   contentSet = HELP_CONTENT_SET.CONTROLS
@@ -34,6 +32,6 @@ gui_handlers.helpPreviewHandler <- class extends gui_handlers.helpWndModalHandle
 
 return {
   function getHelpPreviewHandler(params) {
-    return handlersManager.loadHandler(gui_handlers.helpPreviewHandler, params)
+    return ::handlersManager.loadHandler(::gui_handlers.helpPreviewHandler, params)
   }
 }

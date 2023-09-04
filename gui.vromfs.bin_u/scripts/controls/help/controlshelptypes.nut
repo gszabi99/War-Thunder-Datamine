@@ -1,7 +1,7 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { hasXInputDevice } = require("controls")
+
 let { abs, round } = require("math")
 let DataBlock  = require("DataBlock")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -20,7 +20,6 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_TOOLKIT,
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { get_game_mode } = require("mission")
 let { get_mission_difficulty_int } = require("guiMission")
-let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 
 let isKeyboardOrMouseConnected = @() is_keyboard_connected() || is_mouse_connected()
 
@@ -521,7 +520,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
-    specificCheck = @() hasXInputDevice()
+    specificCheck = @() ::have_xinput_device()
     checkFeature = unitTypes.AIRCRAFT.isAvailable
     pageUnitTypeBit = unitTypes.AIRCRAFT.bit
 
@@ -534,7 +533,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
-    specificCheck = @() hasXInputDevice()
+    specificCheck = @() ::have_xinput_device()
     checkFeature = unitTypes.TANK.isAvailable
     pageUnitTypeBit = unitTypes.TANK.bit
 
@@ -547,7 +546,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
-    specificCheck = @() hasXInputDevice()
+    specificCheck = @() ::have_xinput_device()
     checkFeature = unitTypes.SHIP.isAvailable
     pageUnitTypeBit = unitTypes.SHIP.bit
 
@@ -560,7 +559,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
-    specificCheck = @() hasXInputDevice()
+    specificCheck = @() ::have_xinput_device()
     checkFeature = unitTypes.HELICOPTER.isAvailable
     pageUnitTypeBit = unitTypes.HELICOPTER.bit
 
@@ -573,7 +572,7 @@ enums.addTypes(result, {
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
     helpPattern = CONTROL_HELP_PATTERN.GAMEPAD
 
-    specificCheck = @() hasXInputDevice()
+    specificCheck = @() ::have_xinput_device()
     checkFeature = @() unitTypes.SHIP.isAvailable() && hasFeature("SpecialShips")
     pageUnitTypeBit = unitTypes.SHIP.bit
     pageUnitTag = "submarine"

@@ -1,10 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 /*
   config = {
@@ -29,10 +28,10 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
   }
 */
 ::gui_start_multi_select_menu <- function gui_start_multi_select_menu(config) {
-  handlersManager.loadHandler(gui_handlers.MultiSelectMenu, config)
+  ::handlersManager.loadHandler(::gui_handlers.MultiSelectMenu, config)
 }
 
-gui_handlers.MultiSelectMenu <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.MultiSelectMenu <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false
@@ -87,7 +86,7 @@ gui_handlers.MultiSelectMenu <- class extends gui_handlers.BaseGuiHandlerWT {
 
   function getCurValuesArray() {
     let selOptions = ::get_array_by_bit_value(this.currentBitMask, this.list)
-    return selOptions.map(@(o) getTblValue("value", o))
+    return u.map(selOptions, function(o) { return getTblValue("value", o) })
   }
 
   function onChangeValue(obj) {

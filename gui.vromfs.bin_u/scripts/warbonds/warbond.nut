@@ -9,7 +9,6 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let Warbond = class {
   id = ""
@@ -127,11 +126,11 @@ let Warbond = class {
   }
 
   function getExpiredTimeLeft() {
-    return this.expiredTime > 0 ? this.expiredTime - get_charserver_time_sec() : 0
+    return this.expiredTime > 0 ? this.expiredTime - ::get_charserver_time_sec() : 0
   }
 
   function getCanEarnTimeLeft() {
-    return this.canEarnTime > 0 ? this.canEarnTime - get_charserver_time_sec() : 0
+    return this.canEarnTime > 0 ? this.canEarnTime - ::get_charserver_time_sec() : 0
   }
 
   function getChangeStateTimeLeft() {

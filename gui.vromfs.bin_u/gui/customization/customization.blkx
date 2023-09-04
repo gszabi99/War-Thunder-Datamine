@@ -6,7 +6,6 @@
     "background-rotation": "0",
     "display": "hide"
   },
-  "hangarControlTracking": {},
   "div": {
     "id": "screen_button",
     "behaviour": "button",
@@ -587,18 +586,6 @@
               }
             },
             {
-              "id": "btn_goto_skin_unlock",
-              "text": "#mainmenu/btnGotoSkinUnlock",
-              "showButtonImageOnConsole": "no",
-              "btnName": "Y",
-              "skip-navigation": "yes",
-              "_on_click": "onGotoSkinUnlock",
-              "visualStyle": "secondary",
-              "display": "hide",
-              "buttonWink": {},
-              "ButtonImg": {}
-            },
-            {
               "id": "btn_marketplace_find_skin",
               "text": "#msgbox/btn_find_on_marketplace",
               "btnName": "X",
@@ -814,59 +801,6 @@
             "position": "relative",
             "pos": "50%pw-50%w,0",
             "input-transparent": "yes"
-          }
-        },
-        {
-          "flow": "vertical",
-          "pos": "50%(pw-w), 0",
-          "position": "relative",
-          "textAreaCentered": {
-            "id": "skin_hint_text",
-            "pos": "0.5pw-0.5w, 0",
-            "position": "relative",
-            "max-width": "@rw-2@maxPromoButtonWidth",
-            "input-transparent": "yes",
-            "overlayTextColor": "active",
-            "textShade": "yes",
-            "hideEmptyText": "yes"
-          },
-          "tdiv": {
-            "pos": "0.5pw-0.5w, 0",
-            "position": "relative",
-            "Button_text": [
-              {
-                "id": "hint_btn_buy_skin",
-                "margin-top": "@blockInterval",
-                "text": "#mainmenu/btnOrder",
-                "btnName": "X",
-                "_on_click": "onBuySkin",
-                "hideText": "yes",
-                "display": "hide",
-                "showButtonImageOnConsole": "no",
-                "visualStyle": "purchase",
-                "skip-navigation": "yes",
-                "buttonWink": {},
-                "buttonGlance": {},
-                "ButtonImg": {},
-                "textarea": {
-                  "id": "hint_btn_buy_skin_text",
-                  "class": "buttonText"
-                }
-              },
-              {
-                "id": "hint_btn_goto_skin_unlock",
-                "margin-top": "@blockInterval",
-                "text": "#mainmenu/btnGotoSkinUnlock",
-                "showButtonImageOnConsole": "no",
-                "btnName": "Y",
-                "skip-navigation": "yes",
-                "_on_click": "onGotoSkinUnlock",
-                "visualStyle": "secondary",
-                "display": "hide",
-                "buttonWink": {},
-                "ButtonImg": {}
-              }
-            ]
           }
         },
         {

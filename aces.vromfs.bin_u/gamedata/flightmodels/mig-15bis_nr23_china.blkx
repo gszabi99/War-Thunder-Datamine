@@ -1802,6 +1802,40 @@
       ]
     }
   },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonN37D.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "shell": "emtr_shellrejection1",
+        "dm": "cannon1_dm",
+        "bullets": 40,
+        "spread": 1.0
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/cannonNR23.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "shell": "emtr_shellrejection2",
+        "dm": "cannon2_dm",
+        "bullets": 80,
+        "spread": 1.0
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/cannonNR23.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "shell": "emtr_shellrejection3",
+        "dm": "cannon3_dm",
+        "bullets": 80,
+        "spread": 1.0
+      }
+    ]
+  },
   "weapon_presets": {
     "preset": [
       {
@@ -1811,6 +1845,11 @@
       {
         "name": "mig_15bis_nr23_100lb_bombs",
         "blk": "gameData/FlightModels/weaponPresets/mig_15bis_nr23_100lb_bombs.blk",
+        "reqModification": "bd-2-48"
+      },
+      {
+        "name": "mig_15bis_nr23_200lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_nr23_200lb_bombs.blk",
         "reqModification": "bd-2-48"
       },
       {
@@ -2296,40 +2335,6 @@
   },
   "attach": {
     "pilot1": "pilot_china_500"
-  },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType37_1.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "bullets": 40,
-        "spread": 1.0
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/cannonType_23_1_plane.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon2_dm",
-        "bullets": 80,
-        "spread": 1.0
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/cannonType_23_1_plane.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection3",
-        "dm": "cannon3_dm",
-        "bullets": 80,
-        "spread": 1.0
-      }
-    ]
   },
   "default_skin": {
     "name": "china",

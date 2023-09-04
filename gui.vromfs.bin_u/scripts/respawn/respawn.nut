@@ -1,11 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
@@ -47,14 +45,11 @@ let { onSpectatorMode, switchSpectatorTarget,
 } = require("guiSpectator")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
-let { quit_to_debriefing, get_mission_difficulty_int,
-  get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status } = require("guiMission")
+let { quit_to_debriefing, get_mission_difficulty_int, get_unit_wp_to_respawn } = require("guiMission")
 let { setCurSkinToHangar, getRealSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -74,11 +69,11 @@ enum ESwitchSpectatorTarget {
 }
 
 ::gui_start_respawn <- function gui_start_respawn(_is_match_start = false) {
-  ::mp_stat_handler = handlersManager.loadHandler(gui_handlers.RespawnHandler)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_respawn" })
+  ::mp_stat_handler = ::handlersManager.loadHandler(::gui_handlers.RespawnHandler)
+  ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_respawn)
 }
 
-gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
+::gui_handlers.RespawnHandler <- class extends ::gui_handlers.MPStatistics {
   sceneBlkName = "%gui/respawn/respawn.blk"
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true
@@ -330,7 +325,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (!this.missionRules.hasCustomUnitRespawns())
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.teamUnitsLeftView,
+    let handler = ::handlersManager.loadHandler(::gui_handlers.teamUnitsLeftView,
       { scene = this.scene.findObject("team_units_left_respawns"), missionRules = this.missionRules })
     this.registerSubHandler(handler)
     this.teamUnitsLeftWeak = handler?.weakref()
@@ -786,7 +781,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
       return
     }
 
-    let handler = handlersManager.loadHandler(gui_handlers.unitWeaponsHandler,
+    let handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler,
                                        { scene = weaponsSelectorObj
                                          unit = unit
                                          canShowPrice = true
@@ -834,7 +829,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
 
   function updateTacticalMapHint() {
     local hint = ""
-    local hintIcon = showConsoleButtons.value ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
+    local hintIcon = ::show_console_buttons ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
     local highlightSpawnMapId = -1
     if (!this.isRespawn)
       hint = colorize("activeTextColor", loc("voice_message_attention_to_point_2"))
@@ -916,7 +911,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (option.userOption != -1) {
       let userOpt = ::get_option(option.userOption)
       let value = obj.getValue()
-      set_option(userOpt.type, value, userOpt)
+      ::set_option(userOpt.type, value, userOpt)
     }
   }
 
@@ -1426,7 +1421,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
       return true
 
     if (textArr.len() && (zero || !get_gui_option(::USEROPT_SKIP_WEAPON_WARNING))) { //skip warning only
-      ::gui_start_modal_wnd(gui_handlers.WeaponWarningHandler,
+      ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
         {
           parentHandler = this
           message = loc(zero ? "msgbox/zero_ammo_warning" : "controls/no_ammo_left_warning")
@@ -1458,7 +1453,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (contentPreset.isAgreed(diffCode, newPresetId))
       return true // User already agreed to set this or higher preset.
 
-  ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox, {
+  ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox, {
       parentHandler = this
       onStartPressed = function() {
         contentPreset.setPreset(diffCode, newPresetId, true)
@@ -1503,7 +1498,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
 
     this.autostartTimer += dt;
 
-    let countdown = get_mp_respawn_countdown()
+    let countdown = ::get_mp_respawn_countdown()
     this.updateCountdown(countdown)
 
     this.updateTimeToKick(dt)
@@ -1535,7 +1530,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     if (this.isRespawn && this.isSpectate)
       this.updateSpectatorName()
 
-    if (this.isRespawn && get_mission_status() > MISSION_STATUS_RUNNING)
+    if (this.isRespawn && ::get_mission_status() > MISSION_STATUS_RUNNING)
       quit_to_debriefing()
   }
 
@@ -1681,7 +1676,7 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
       btn_mpStat =          this.showButtons && this.isRespawn && is_has_multiplayer()
       btn_QuitMission =     this.showButtons && this.isRespawn && this.isNoRespawns && ::g_mis_loading_state.isReadyToShowRespawn()
       btn_back =            this.showButtons && useTouchscreen && !this.isRespawn
-      btn_activateorder =   this.showButtons && this.isRespawn && ::g_orders.showActivateOrderButton() && (!this.isSpectate || !showConsoleButtons.value)
+      btn_activateorder =   this.showButtons && this.isRespawn && ::g_orders.showActivateOrderButton() && (!this.isSpectate || !::show_console_buttons)
       btn_personal_tasks =  this.showButtons && this.isRespawn && canUseUnlocks
     }
     foreach (id, value in buttons)
@@ -1772,10 +1767,10 @@ gui_handlers.RespawnHandler <- class extends gui_handlers.MPStatistics {
     this.updateSpectatorRotationForced()
 
     this.shouldBlurSceneBg = !this.isSpectate ? needUseHangarDof() : false
-    handlersManager.updateSceneBgBlur()
+    ::handlersManager.updateSceneBgBlur()
 
     this.shouldFadeSceneInVr = !this.isSpectate
-    handlersManager.updateSceneVrParams()
+    ::handlersManager.updateSceneVrParams()
 
     this.updateTacticalMapUnitType()
 

@@ -110,30 +110,6 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_l_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_l_02",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_r_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_r_02",
-        "absoluteValue": true
       }
     ]
   },
@@ -1118,11 +1094,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -3177,23 +3149,6 @@
     "improved_optics": {
       "tier": 3
     },
-    "camouflage_net": {
-      "invertEnableLogic": false,
-      "turn_it_off": false,
-      "effects": {
-        "rcostAddParam": 0.98
-      },
-      "disableModEffects": {
-        "hideNodes": {
-          "node": [
-            "body_net",
-            "turret_net",
-            "gun_net",
-            "mg_net"
-          ]
-        }
-      }
-    },
     "105mm_NATO_APDS_FS": {},
     "105mm_NATO_APDS_FS_ammo_pack": {
       "tier": 1
@@ -3201,7 +3156,8 @@
     "105mm_usa_M900_APDS_FS": {},
     "105mm_usa_M900_APDS_FS_ammo_pack": {},
     "tank_smoke_screen_system_mod": {
-      "tier": 2,
+      "tier": 4,
+      "modClass": "protection",
       "effects": {
         "commonWeapons": {
           "Weapon": [

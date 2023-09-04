@@ -1,11 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hasXInputDevice } = require("controls")
+
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let { read_text_from_file } = require("dagor.fs")
@@ -113,7 +112,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
   }
 
   function updateParams() {
-    this.useWheelmenu = hasXInputDevice()
+    this.useWheelmenu = ::have_xinput_device()
   }
 
   function isValid() {
@@ -132,7 +131,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     this.curActionBarUnitName = getActionBarUnitName()
 
     let view = {
-      items = this.actionItems.map((@(a) this.buildItemView(a, true)).bindenv(this))
+      items = u.map(this.actionItems, (@(a) this.buildItemView(a, true)).bindenv(this))
     }
 
     let partails = {
@@ -514,7 +513,7 @@ let function needFullUpdate(item, prevItem, hudUnitType) {
     if (!this.useWheelmenu)
       return
 
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
+    let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.wheelMenuHandler)
     if (!(handler?.isActive ?? false))
       return
 

@@ -2,11 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 ::gui_modal_comment <- function gui_modal_comment(owner = null, titleText = null, buttonText = null, callbackFunc = null, isCommentRequired = false) {
-  ::gui_start_modal_wnd(gui_handlers.commentModalHandler, {
+  ::gui_start_modal_wnd(::gui_handlers.commentModalHandler, {
     titleText = titleText
     buttonText = buttonText
     callbackFunc = callbackFunc
@@ -15,7 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   })
 }
 
-gui_handlers.commentModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.commentModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   function initScreen() {
     if (this.titleText && this.titleText.len())
       this.scene.findObject("comment_wnd_title").setValue(this.titleText)

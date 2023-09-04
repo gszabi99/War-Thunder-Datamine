@@ -1,13 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
   getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor,
   getMatchingEventId, fetchLbData } = require("%scripts/events/eSport.nut")
@@ -37,7 +35,7 @@ let function getActiveTicketTxt(event) {
     : ""
 }
 
-local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
+local ESportTournament = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/events/eSportTournamentModal.tpl"
   slotbarActions       = []
@@ -365,7 +363,7 @@ local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
     })
 
   function onReward() {
-    gui_handlers.EventRewardsWnd.open([{
+    ::gui_handlers.EventRewardsWnd.open([{
         header = loc("tournaments/rewards")
         event = this.curEvent
         tourId = this.tournament.id
@@ -443,6 +441,6 @@ local ESportTournament = class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.ESportTournament <- ESportTournament
+::gui_handlers.ESportTournament <- ESportTournament
 
-return @(params) handlersManager.loadHandler(ESportTournament, params)
+return @(params) ::handlersManager.loadHandler(ESportTournament, params)

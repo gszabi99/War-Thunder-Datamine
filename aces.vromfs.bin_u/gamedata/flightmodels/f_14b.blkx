@@ -1900,8 +1900,8 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      5.87,
-      1.65
+      12.0,
+      3.2
     ],
     "headPos": [
       7.15,
@@ -2447,10 +2447,6 @@
       {
         "name": "f_14b_lau_10a",
         "blk": "gameData/FlightModels/weaponPresets/f_14b_lau_10a.blk"
-      },
-      {
-        "name": "f_14b_mk84_air",
-        "blk": "gameData/FlightModels/weaponPresets/f_14b_mk84_air.blk"
       }
     ]
   },
@@ -2602,7 +2598,7 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
+            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": "lau_138_bol_001"
             },
@@ -2620,7 +2616,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
                 "emitter": "aim_9_1",
                 "bullets": 1
               }
@@ -2675,7 +2671,7 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
+            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
                 "pylon_for_lau7a_1",
@@ -2696,7 +2692,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
                 "emitter": "aim_9_2",
                 "bullets": 1
               }
@@ -2840,14 +2836,6 @@
               {
                 "slot": 5,
                 "preset": "us_mk84_x2"
-              },
-              {
-                "slot": 5,
-                "preset": "us_gbu_12_x2"
-              },
-              {
-                "slot": 5,
-                "preset": "us_gbu_16_x2"
               },
               {
                 "slot": 5,
@@ -3075,37 +3063,6 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
-                "emitter": "2000lb_mk_84_004",
-                "bullets": 1,
-                "external": true,
-                "separate": true
-              }
-            ]
-          },
-          {
-            "iconType": "bombs_large_high_drag_group_x2",
-            "name": "us_mk84_air_x2",
-            "reqModification": "us_2000lb_mk84",
-            "ShowNodes": {
-              "node": [
-                "pylon_phoenix3",
-                "pylon_phoenix5",
-                "pylon_mk84_3",
-                "pylon_mk84_4"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
-                "emitter": "2000lb_mk_84_003",
-                "bullets": 1,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
                 "emitter": "2000lb_mk_84_004",
                 "bullets": 1,
                 "external": true,
@@ -3541,37 +3498,6 @@
             ]
           },
           {
-            "iconType": "bombs_large_high_drag_group_x2",
-            "name": "us_mk84_air_x2",
-            "reqModification": "us_2000lb_mk84",
-            "ShowNodes": {
-              "node": [
-                "pylon_phoenix2",
-                "pylon_phoenix4",
-                "pylon_mk84_1",
-                "pylon_mk84_2"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
-                "emitter": "2000lb_mk_84_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
-                "emitter": "2000lb_mk_84_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true
-              }
-            ]
-          },
-          {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "us_gbu_12_x2",
             "reqModification": "us_gbu_12",
@@ -3864,7 +3790,7 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
+            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
                 "pylon_for_lau7a_2",
@@ -3885,7 +3811,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
                 "emitter": "aim_9_3",
                 "bullets": 1
               }
@@ -4030,7 +3956,7 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
+            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": "lau_138_bol_004"
             },
@@ -4048,7 +3974,7 @@
                 "trigger": "aam",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
                 "emitter": "aim_9_4",
                 "bullets": 1
               }

@@ -1,0 +1,62 @@
+{
+  "model": "unit_vaz_2101_b",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasDmg": true,
+  "damageableByGun": true,
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "useDestrPhysObj": [
+    true,
+    true
+  ],
+  "substRI": true,
+  "explosionImpulse": [
+    100.0,
+    1.0
+  ],
+  "damageCollisionMultiplier": [
+    1.0,
+    0.001
+  ],
+  "timeToFire": 1.0,
+  "maxFwdSpeed": 0.0,
+  "maxRevSpeed": 0.0,
+  "maxAngSpeed": 0.0,
+  "maxAccel": 0.0,
+  "maxDecel": 0.0,
+  "maxAngAccel0": 0.0,
+  "maxAngAccelV": 0.0,
+  "maxAngAccel": 0.0,
+  "groundNormSmoothViscosity": 0.1,
+  "explosionFx": "crash_loudspeaker",
+  "explosionSound": false,
+  "DamageParts": {
+    "formatVersion": 2,
+    "vaz_2101_b": {
+      "armorClass": "RHA_tank",
+      "body_dm": {
+        "armorThickness": 10.0,
+        "armorThrough": 1.0,
+        "hp": 150.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onKill": {
+        "expl": 0.1
+      }
+    }
+  },
+  "attachedSfx": {
+    "pathStudio": "ground/ambient",
+    "name": "radio_station",
+    "pos": [
+      0.0,
+      5.0,
+      0.0
+    ]
+  }
+}

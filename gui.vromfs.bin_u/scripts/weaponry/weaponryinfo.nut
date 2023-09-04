@@ -23,7 +23,6 @@ let { getTntEquivalentText, getDestructionInfoTexts } = require("%scripts/weapon
 let { set_unit_option } = require("guiOptions")
 let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -933,7 +932,7 @@ let function checkUnitWeapons(unit, isCheckAll = false) {
 }
 
 let function checkBadWeapons() {
-  foreach (unit in getAllUnits()) {
+  foreach (unit in ::all_units) {
     if (!unit.isUsable())
       continue
 

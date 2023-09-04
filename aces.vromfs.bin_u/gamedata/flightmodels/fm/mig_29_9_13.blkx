@@ -297,7 +297,7 @@
       },
       "FlapsPolar0": {
         "Flaps": 0.0,
-        "OswaldsEfficiencyNumber": 0.62,
+        "OswaldsEfficiencyNumber": 0.64,
         "lineClCoeff": 0.065,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.01,
@@ -380,13 +380,13 @@
         "Cl0": 0.03,
         "alphaCritHigh": 30.0,
         "alphaCritLow": -20.0,
-        "ClCritHigh": 1.45,
+        "ClCritHigh": 1.55,
         "ClCritLow": -0.7,
         "CdMin": 0.0074
       },
       "FlapsPolar1": {
         "Flaps": 1.0,
-        "OswaldsEfficiencyNumber": 0.6,
+        "OswaldsEfficiencyNumber": 0.768,
         "lineClCoeff": 0.072,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.02,
@@ -469,7 +469,7 @@
         "Cl0": 0.28,
         "alphaCritHigh": 29.0,
         "alphaCritLow": -22.0,
-        "ClCritHigh": 1.7,
+        "ClCritHigh": 1.75,
         "ClCritLow": -0.45,
         "CdMin": 0.04
       },
@@ -2252,13 +2252,13 @@
       ],
       "RateMax3": [
         1100.0,
-        -60.0,
-        60.0
+        -50.0,
+        50.0
       ],
       "RateMax4": [
         1300.0,
-        -50.0,
-        50.0
+        -40.0,
+        40.0
       ],
       "AngleMax": [
         -50.0,
@@ -2280,42 +2280,15 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
-      "RateMaxLoadFactorMax": [
-        -5.0,
-        11.0
-      ],
-      "AoaLimits": [
-        -15.0,
-        24.0
-      ],
-      "AoaLimitsMult0": [
-        0.5,
-        1.0,
-        1.0
-      ],
-      "AoaLimitsMult1": [
-        0.9,
-        0.5,
-        0.5
-      ],
-      "AoaLimitsMargin": 10.0,
-      "AoaLimiterPushBackRateMult": [
-        -0.9,
-        -0.9
-      ],
-      "AoAAntiHangRateDecline": -1000.0,
-      "UseAoAGLimits": true,
-      "LoadFactorFilterSmoothCoeff": 0.7,
-      "LoadFactorLimiterStrengthMax": 0.85,
       "RatePID": {
-        "Kp": 3.0,
-        "Ki": 3.0,
-        "Imax": 0.1,
-        "Kd": 0.001,
+        "Kp": 1.0,
+        "Ki": 0.0,
+        "Imax": 0.0,
+        "Kd": 0.0,
         "dTau": 0.0208333,
         "Lim": [
-          -0.95,
-          0.95
+          -0.85,
+          0.85
         ]
       },
       "AnglePID": {

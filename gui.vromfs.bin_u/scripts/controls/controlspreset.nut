@@ -9,7 +9,6 @@ let { blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { copyParamsToTable, eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { startsWith } = require("%sqstd/string.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4
@@ -168,7 +167,7 @@ let function isSameMapping(lhs, rhs) {
   function getAxis(name) {
     if (!u.isString(name)) { // Workaround to fix SQ critical asserts
       let message = "Error: ControlsPreset.getAxis(name), name must be string"
-      script_net_assert_once("ControlsPreset.getAxis() failed", message)
+      ::script_net_assert_once("ControlsPreset.getAxis() failed", message)
       return this.getDefaultAxis("")
     }
     if (!(name in this.axes))
@@ -529,7 +528,7 @@ let function isSameMapping(lhs, rhs) {
       let blkBasePresetPaths = blk["basePresetPaths"]
 
       if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0) {
-        blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("empty_ver1")
+        blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("keyboard_updates")
         log("ControlsPreset: Compatibility preset added to base presets")
       }
 
@@ -787,7 +786,9 @@ let function isSameMapping(lhs, rhs) {
     if (!::g_login.isLoggedIn())
       return {} // Because g_controls_presets loads after login.
 
-    return this.basePresetPaths.map(@(path) ::g_controls_presets.parsePresetFileName(path).name)
+    return u.map(this.basePresetPaths, function(path) {
+      return ::g_controls_presets.parsePresetFileName(path).name
+    })
   }
 
   getBasePresetInfo = @(groupName = "default")

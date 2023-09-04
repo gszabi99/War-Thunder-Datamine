@@ -1,17 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let results = require("%scripts/dmViewer/protectionAnalysisHintResults.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { round } = require("math")
 
 let { set_protection_analysis_editing } = require("hangarEventCommand")
 
-gui_handlers.ProtectionAnalysisHint <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ProtectionAnalysisHint <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/dmViewer/protectionAnalysisHint.blk"
 
@@ -130,7 +128,7 @@ gui_handlers.ProtectionAnalysisHint <- class extends gui_handlers.BaseGuiHandler
     let getValue = this.getValueByResultCfg
     let printValue = this.printValueByParam
     let title = colorize(resultCfg.color, loc(resultCfg.loc))
-    local desc = resultCfg.params.map(function(id) {
+    local desc = u.map(resultCfg.params, function(id) {
       let gFunc = getValue?[id]
       let val = gFunc ? gFunc(params, id, resultCfg) : 0
       let pFunc = printValue?[id]
@@ -158,6 +156,6 @@ gui_handlers.ProtectionAnalysisHint <- class extends gui_handlers.BaseGuiHandler
 return {
   open = function (scene) {
     if (checkObj(scene))
-      handlersManager.loadHandler(gui_handlers.ProtectionAnalysisHint, { scene = scene })
+      ::handlersManager.loadHandler(::gui_handlers.ProtectionAnalysisHint, { scene = scene })
   }
 }

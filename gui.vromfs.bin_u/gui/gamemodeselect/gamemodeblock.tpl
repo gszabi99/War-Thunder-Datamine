@@ -121,12 +121,12 @@ gameModeBlock {
       position:t='relative'
       text:t="#reward/everyDay"
       <<^inactiveColor>>
-        <<#isTrophyReceived>>
+        <<#isTrophyRecieved>>
           overlayTextColor:t='silver'
-        <</isTrophyReceived>>
-        <<^isTrophyReceived>>
+        <</isTrophyRecieved>>
+        <<^isTrophyRecieved>>
           overlayTextColor:t='active'
-        <</isTrophyReceived>>
+        <</isTrophyRecieved>>
       <</inactiveColor>>
     }
 
@@ -135,7 +135,7 @@ gameModeBlock {
       position:t='relative'
       <<@eventTrophyImage>>
 
-      <<#isTrophyReceived>>
+      <<#isTrophyRecieved>>
         img {
           pos:t='50%pw-20%w, 50%ph-50%h'
           position:t='absolute'
@@ -144,7 +144,7 @@ gameModeBlock {
           background-svg-size:t='1@mIco, 1@mIco'
           input-transparent:t='yes'
         }
-      <</isTrophyReceived>>
+      <</isTrophyRecieved>>
     }
   }
   <</eventTrophyImage>>

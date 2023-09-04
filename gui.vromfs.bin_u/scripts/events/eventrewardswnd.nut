@@ -1,18 +1,16 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { getRewardConditionId, getRewardConditionById, getConditionValue, getConditionField,
   getBaseVictoryReward, getSortedRewardsByConditions, getRewardRowIcon, getRewardDescText,
   getRewardTooltipId, getConditionText, isRewardReceived
 } = require("%scripts/events/eventRewards.nut")
 
-gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.EventRewardsWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/events/eventRewardsWnd.tpl"
@@ -41,7 +39,7 @@ gui_handlers.EventRewardsWnd <- class extends gui_handlers.BaseGuiHandlerWT {
     if (tabsList.len() == 0)
       return
 
-    handlersManager.loadHandler(gui_handlers.EventRewardsWnd, { tabsList })
+    ::handlersManager.loadHandler(::gui_handlers.EventRewardsWnd, { tabsList })
   }
 
   function initScreen() {

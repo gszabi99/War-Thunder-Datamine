@@ -7,13 +7,12 @@ let DataBlock  = require("DataBlock")
 loadOnce("%scripts/controls/controlsPreset.nut")
 loadOnce("%scripts/controls/controlsGlobals.nut")
 loadOnce("%scripts/controls/controlsCompatibility.nut")
+
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { getCurrentPreset, hasXInputDevice, isXInputDevice } = require("controls")
+let { getCurrentPreset } = require("controls")
 let { startsWith } = require("%sqstd/string.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let function getLoadedPresetBlk() {
   let presetBlk = DataBlock()
@@ -58,7 +57,7 @@ let function getLoadedPresetBlk() {
     {
       target = "ID_CONTINUE"
       valueFunction = function() {
-        return [[isXInputDevice() ? {
+        return [[::is_xinput_device() ? {
           deviceId = ::GAMEPAD_ENTER_SHORTCUT.dev[0]
           buttonId = ::GAMEPAD_ENTER_SHORTCUT.btn[0] // used in mission hints
         } :
@@ -172,7 +171,7 @@ let function getLoadedPresetBlk() {
       let value = "valueFunction" in fixData ?
         fixData.valueFunction() : fixData.value
       if (getTblValue("isAppend", fixData)) {
-        let isGamepadExpected =  isXInputDevice() || hasXInputDevice()
+        let isGamepadExpected =  ::is_xinput_device() || ::have_xinput_device()
         if (this.curPreset.isHotkeyShortcutBinded(fixData.source, value)
             || (fixData.shouldAppendIfEmptyOnXInput
                 && isGamepadExpected
@@ -217,7 +216,7 @@ let function getLoadedPresetBlk() {
     foreach (oType, value in this.curPreset.params)
       if (startsWith(oType, prefix))
         if (oType in getroottable())
-          set_option(getroottable()[oType], value)
+          ::set_option(getroottable()[oType], value)
     setGuiOptionsMode(mainOptionsMode)
   }
 

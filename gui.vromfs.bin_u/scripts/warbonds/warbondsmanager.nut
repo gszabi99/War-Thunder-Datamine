@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
+
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { PRICE } = require("%scripts/utils/configs.nut")
 let { Warbond } = require("%scripts/warbonds/warbond.nut")
@@ -30,7 +29,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   function getList(filterFunc = null) {
     this.validateList()
     if (filterFunc)
-      return this.list.filter(filterFunc)
+      return u.filter(this.list, filterFunc)
     return this.list
   }
 
@@ -136,7 +135,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   if (!this.isShopAvailable())
     return ::showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  handlersManager.loadHandler(gui_handlers.WarbondsShop, params)
+  ::handlersManager.loadHandler(::gui_handlers.WarbondsShop, params)
 }
 
 ::g_warbonds.isShopAvailable <- function isShopAvailable() {

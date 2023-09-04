@@ -12,9 +12,9 @@ let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unloc
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { isBitModeType, getSubunlockCfg, getProgressBarData } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost, debugLogVisibleByTimeInfo,
-  canClaimUnlockReward, isUnlockOpened
+let { isUnlockVisible, isUnlockVisibleByTime, getUnlockCost, debugLogVisibleByTimeInfo
 } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockReadyToOpen } = require("chard")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
 let { getDecoratorById, getDecorator } = require("%scripts/customization/decorCache.nut")
@@ -80,7 +80,7 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
     if (!btnObj?.isValid())
       return
 
-    let needShow = cfg.manualOpen && canClaimUnlockReward(cfg.id)
+    let needShow = cfg.manualOpen && isUnlockReadyToOpen(cfg.id)
     btnObj.unlockId = cfg.id
     btnObj.show(needShow)
   }
@@ -150,7 +150,7 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
       if (!isUnlockVisible(unlockBlk) && !(unlockBlk?.showInDesc ?? false))
         continue
 
-      let isUnlocked = isBitMode ? is_bit_set(cfg.curVal, idx) : isUnlockOpened(unlockId)
+      let isUnlocked = isBitMode ? is_bit_set(cfg.curVal, idx) : ::is_unlocked_scripted(-1, unlockId)
       let tooltipMarkup = includeTooltip ? getSubunlockTooltipMarkup(cfg, unlockId) : null
       subunlocks.append({ title, isUnlocked, numColumns, tooltipMarkup })
     }
@@ -188,7 +188,7 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
 
   function getUnlockImageConfig(unlockConfig) {
     let unlockType = this.getUnlockType(unlockConfig)
-    let isUnlocked = isUnlockOpened(unlockConfig.id, unlockType)
+    let isUnlocked = ::is_unlocked_scripted(unlockType, unlockConfig.id)
     local iconStyle = unlockConfig?.iconStyle ?? ""
     let image = unlockConfig?.image ?? ""
 
@@ -231,7 +231,7 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
   }
 
   function updateUnseenIcon(cfg, obj) {
-    let unseenCfg = cfg.manualOpen && canClaimUnlockReward(cfg.id)
+    let unseenCfg = cfg.manualOpen && isUnlockReadyToOpen(cfg.id)
       ? makeConfigStr(SEEN.MANUAL_UNLOCKS, cfg.id)
       : ""
     obj.findObject("unseen_icon").setValue(unseenCfg)
@@ -239,7 +239,7 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
 
   function updateProgress(unlockCfg, unlockObj) {
     let progressData = unlockCfg.getProgressBarData()
-    let hasProgress = progressData.show && !isUnlockOpened(unlockCfg.id)
+    let hasProgress = progressData.show && !::is_unlocked_scripted(-1, unlockCfg.id)
 
     let snapshot = getUnlockProgressSnapshot(unlockCfg.id)
     let hasSnapshot = (snapshot != null) && hasProgress
@@ -274,7 +274,7 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
       return true
 
     let unlockType = this.getUnlockType(cfg)
-    let isUnlocked = isUnlockOpened(cfg.id, unlockType)
+    let isUnlocked = ::is_unlocked_scripted(unlockType, cfg.id)
     if (isUnlocked)
       return false
 
@@ -311,7 +311,7 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
       if (unlock && !isUnlockVisible(unlock) && !(unlock?.showInDesc ?? false))
         continue
 
-      let isUnlocked = isBitMode ? is_bit_set(unlockConfig.curVal, i) : isUnlockOpened(unlockId)
+      let isUnlocked = isBitMode ? is_bit_set(unlockConfig.curVal, i) : ::is_unlocked_scripted(-1, unlockId)
       hiddenContent += "unlockCondition {"
       hiddenContent += format("textarea {text:t='%s' } \n %s \n",
                                 stripTags(names[i]),
@@ -433,12 +433,12 @@ let doPreviewUnlockPrize = @(unlockCfg) findPreviewablePrize(unlockCfg)?.doPrevi
 
   let unlockId = unlockData.id
   purchButtonObj.unlockId = unlockId
-  let isUnlocked = isUnlockOpened(unlockId)
+  let isUnlocked = ::is_unlocked_scripted(-1, unlockId)
   let haveStages = getTblValue("stages", unlockData, []).len() > 1
   let cost = getUnlockCost(unlockId)
   let canSpendGold = cost.gold == 0 || hasFeature("SpendGold")
   let isPurchaseTime = isUnlockVisibleByTime(unlockId, false)
-  let canOpenManually = unlockData.manualOpen && canClaimUnlockReward(unlockId)
+  let canOpenManually = unlockData.manualOpen && isUnlockReadyToOpen(unlockId)
 
   let show = isPurchaseTime && canSpendGold && !haveStages && !isUnlocked
     && !canOpenManually && !cost.isZero()

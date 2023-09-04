@@ -8,7 +8,6 @@ let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { get_charserver_time_sec } = require("chard")
 
 ::g_invites_classes <- {}
 
@@ -72,7 +71,7 @@ let { get_charserver_time_sec } = require("chard")
       return true
     if (this.receivedTime + this.lifeTimeMsec < get_time_msec())
       return true
-    if (this.timedExpireStamp > 0 && this.timedExpireStamp <= get_charserver_time_sec())
+    if (this.timedExpireStamp > 0 && this.timedExpireStamp <= ::get_charserver_time_sec())
       return true
     return false
   }
@@ -121,7 +120,7 @@ let { get_charserver_time_sec } = require("chard")
   function setTimedParams(timedShowStamp_, timedExpireStamp_) {
     this.timedShowStamp = timedShowStamp_
     this.timedExpireStamp  = timedExpireStamp_
-    if (this.timedShowStamp > 0 && this.timedShowStamp > get_charserver_time_sec())
+    if (this.timedShowStamp > 0 && this.timedShowStamp > ::get_charserver_time_sec())
       this.setDelayed(true)
   }
 

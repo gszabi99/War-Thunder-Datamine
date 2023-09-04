@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { fatal } = require("dagor.debug")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let function getReqAirPosInArray(reqName, arr) {
   foreach (r, row in arr)
@@ -433,7 +432,7 @@ let function generatePageTreeByRankPosXY(page) {
                              page.name,
                              "\n".join(unitsWithWrongPositions, true)
                             )
-    script_net_assert_once("Wrong rank position in shop config", message)
+    ::script_net_assert_once("Wrong rank position in shop config", message)
   }
 }
 

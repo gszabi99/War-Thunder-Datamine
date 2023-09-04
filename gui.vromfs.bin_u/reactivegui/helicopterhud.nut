@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let mfdHud = require("mfd.nut")
-let planeIls = require("planeIls.nut")
+let heliIlsHud = require("heliIls.nut")
 let { bw, bh, rw, rh } = require("style/screenState.nut")
 let {
   IndicatorsVisible, MainMask, SecondaryMask, SightMask, EmptyMask, IsArbiterHudVisible,
@@ -175,7 +175,7 @@ let helicopterRoot = {
 
   function onAttach() {
     gui_scene.addPanel(0, mfdHud)
-    gui_scene.addPanel(1, planeIls)
+    gui_scene.addPanel(1, heliIlsHud)
   }
   function onDetach() {
     gui_scene.removePanel(0)

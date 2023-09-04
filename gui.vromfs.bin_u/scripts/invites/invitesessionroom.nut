@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -176,7 +175,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
     let room = ::g_mroom_info.get(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
     if (event)
-      gui_handlers.EventRoomsHandler.open(event, false, this.roomId)
+      ::gui_handlers.EventRoomsHandler.open(event, false, this.roomId)
     else
       ::SessionLobby.joinRoom(this.roomId, this.inviterUid, this.password)
   }

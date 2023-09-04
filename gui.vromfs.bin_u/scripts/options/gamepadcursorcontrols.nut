@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 const GAMEPAD_CURSOR_CONTROL_CONFIG_NAME = "use_gamepad_cursor_control"
@@ -29,7 +28,7 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
       )
     this.currentOptionValue = newValue
     ::setSystemConfigOption(GAMEPAD_CURSOR_CONTROL_CONFIG_NAME, this.currentOptionValue)
-    handlersManager.checkPostLoadCssOnBackToBaseHandler()
+    ::handlersManager.checkPostLoadCssOnBackToBaseHandler()
     updateExtWatched({ gamepadCursorControl = newValue })
   }
 

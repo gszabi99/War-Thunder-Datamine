@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -28,10 +27,10 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
     tier = config?.tier ?? []
     expReward = Cost().setRp(config?.expToInvUnit ?? 0)
   }
-  ::gui_start_modal_wnd(gui_handlers.ModificationsTierResearched, wndParams)
+  ::gui_start_modal_wnd(::gui_handlers.ModificationsTierResearched, wndParams)
 }
 
-gui_handlers.ModificationsTierResearched <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ModificationsTierResearched <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 

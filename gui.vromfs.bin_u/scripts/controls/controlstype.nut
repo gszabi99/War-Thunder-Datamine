@@ -1,25 +1,22 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { hasXInputDevice } = require("controls")
+
 let globalEnv = require("globalEnv")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let avatars = require("%scripts/user/avatars.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck, isPlatformShieldTv
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true) {
   if (!hasFeature("ControlsDeviceChoice"))
     return
 
-  ::gui_start_modal_wnd(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
+  ::gui_start_modal_wnd(::gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
 }
 
-gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ControlType <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlTypeChoice.blk"
 
@@ -40,7 +37,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.onlyDevicesChoice)
       this.updateProfileIcon(true)
 
-    this.showSceneBtn("ct_xinput", hasXInputDevice())
+    this.showSceneBtn("ct_xinput", ::have_xinput_device())
   }
 
   function onChangePilotIcon() {
@@ -48,7 +45,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onIconChoosen(option) {
-    set_option(::USEROPT_PILOT, option.idx)
+    ::set_option(::USEROPT_PILOT, option.idx)
     ::save_profile(false)
     this.updateProfileIcon()
   }
@@ -100,7 +97,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
 }
 
 ::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { //setGuiOptionsMode required
-  set_option(::USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
+  ::set_option(::USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
   ::set_control_helpers_mode(mode); //instant
 }
 
@@ -118,7 +115,7 @@ gui_handlers.ControlType <- class extends gui_handlers.BaseGuiHandlerWT {
   }
   else if (ct_id == "ct_xinput") {
     ct_preset = "pc_xinput_ma"
-    if (is_platform_android || isPlatformShieldTv())
+    if (is_platform_android || ::is_platform_shield_tv())
       ct_preset = "tegra4_gamepad"
     ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
   }

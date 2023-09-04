@@ -1,4 +1,3 @@
-let { isXInputDevice } = require("controls")
 
 local gestureInProgress = false
 
@@ -127,7 +126,7 @@ local gestureInProgress = false
       return RETCODE_HALT
 
     // Gamepad START btn is reserved for toggling the input listening mode off/on.
-    if (btn_idx == 4 && isXInputDevice())
+    if (btn_idx == 4 && ::is_xinput_device())
       return RETCODE_NOTHING
 
     if (!is_up) {

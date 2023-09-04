@@ -1,9 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { debug_dump_stack } = require("dagor.debug")
@@ -18,7 +15,7 @@ local dbgStartCheck = 0
     let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
     log(msg)
     debug_dump_stack()
-    script_net_assert_once("mainmenu recursion", msg)
+    ::script_net_assert_once("mainmenu recursion", msg)
   }
 
   ::back_from_replays = null
@@ -27,8 +24,10 @@ local dbgStartCheck = 0
   mission_desc_clear()
   ::mission_settings.dynlist <- []
 
-  let handler = handlersManager.loadHandler(gui_handlers.MainMenu)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_mainmenu" })
+  ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu)
+
+  let handler = ::handlersManager.loadHandler(::gui_handlers.MainMenu)
+  ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_mainmenu)
   showObjById("gamercard_center", !topMenuShopActive.value)
 
   if (allowMainmenuActions)
@@ -44,10 +43,10 @@ local dbgStartCheck = 0
     let msg = "Error: recursive start mainmenu call. loginState = " + ::g_login.curState
     log(msg)
     debug_dump_stack()
-    script_net_assert_once("mainmenu recursion", msg)
+    ::script_net_assert_once("mainmenu recursion", msg)
   }
 
-  handlersManager.clearScene()
+  ::handlersManager.clearScene()
   topMenuShopActive(showShop)
   ::gui_start_mainmenu()
 }

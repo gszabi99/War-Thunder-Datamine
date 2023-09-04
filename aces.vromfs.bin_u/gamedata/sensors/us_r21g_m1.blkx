@@ -158,7 +158,7 @@
       ],
       "groundClutter": false,
       "aircraftAsTarget": true,
-      "friendFoeId": true,
+      "friendFoeId": false,
       "absDopplerSpeed": true,
       "mainBeamDopplerSpeed": true,
       "distance": {
@@ -292,9 +292,8 @@
           "setScanPatternSet": {
             "scanPatternSet": "search"
           },
-          "setFsmActive": {
-            "fsm": "illumination",
-            "active": false
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setMediumAltStandbyMode": {
@@ -325,16 +324,10 @@
           "setEnabled": {
             "value": true
           },
-          "setFsmActive": [
-            {
-              "fsm": "search",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": false
-            }
-          ],
+          "setFsmActive": {
+            "fsm": "search",
+            "active": true
+          },
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -350,6 +343,9 @@
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setMediumAltSearchMode": {
@@ -410,16 +406,13 @@
           "setScanPatternSet": {},
           "resetScanPhase": {},
           "clearTargets": {},
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": false
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
+          "setIllumination": {
+            "illumination": false
+          }
         },
         "setDesignationLockModeCommon": {
           "setLockModeCommon": {},
@@ -521,14 +514,13 @@
             {
               "fsm": "checkRaltGreater",
               "active": false
-            },
-            {
-              "fsm": "illumination",
-              "active": true
             }
           ],
           "setScanPattern": {
             "scanPattern": "track"
+          },
+          "setIllumination": {
+            "illumination": true
           }
         },
         "setMediumAltTrackMode": {
@@ -1150,45 +1142,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            }
-          }
-        }
-      }
-    },
-    "illumination": {
-      "stateInit": "init",
-      "transitions": {
-        "activate": {
-          "event": "fsmActivate",
-          "stateTo": "active",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true
-            }
-          }
-        },
-        "deactivate": {
-          "event": "fsmDeactivate",
-          "stateTo": "inactive",
-          "actions": {
-            "setIllumination": {
-              "transiver": false
-            }
-          }
-        },
-        "activateIllumination": {
-          "event": "sarhMissileLaunch",
-          "actions": {
-            "setIlluminationTimeOut": {
-              "timeOut": 60.0
-            }
-          }
-        },
-        "updateIllumination": {
-          "event": "update",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true
             }
           }
         }

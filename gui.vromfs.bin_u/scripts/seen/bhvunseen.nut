@@ -33,9 +33,9 @@ let BhvUnseen = class {
     if (!u.isArray(seenData))
       return [this.getConfig(seenData)]
 
-    seenData = seenData.map((@(s) this.getVerifiedData(s)).bindenv(this))
+    seenData = u.map(seenData, (@(s) this.getVerifiedData(s)).bindenv(this))
 
-    return seenData.map((@(s) this.getConfig(s)).bindenv(this))
+    return u.map(seenData, (@(s) this.getConfig(s)).bindenv(this))
   }
 
   function getVerifiedData(value) {

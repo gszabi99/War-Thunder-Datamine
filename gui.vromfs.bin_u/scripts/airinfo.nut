@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
 let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_decorators,
@@ -47,8 +45,6 @@ let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
 let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skins.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -154,7 +150,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   if (!isInShop)
     return false
 
-  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
+  if (unit.reqUnlock && !::is_unlocked_scripted(-1, unit.reqUnlock))
     return false
 
   let status = ::shop_unit_research_status(unit.name)
@@ -165,7 +161,7 @@ let function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   if (::isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
     return false           // if vehicle could be bought in game, but it became a gift vehicle.
 
-  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
+  if (unit.reqUnlock && !::is_unlocked_scripted(-1, unit.reqUnlock))
     return false
 
   let status = ::shop_unit_research_status(unit.name)
@@ -211,7 +207,7 @@ let isEventUnit = @(unit) unit.event != null
 
 ::findUnitNoCase <- function findUnitNoCase(unitName) {
   unitName = unitName.tolower()
-  foreach (name, unit in getAllUnits())
+  foreach (name, unit in ::all_units)
     if (name.tolower() == unitName)
       return unit
   return null
@@ -370,7 +366,7 @@ let isEventUnit = @(unit) unit.event != null
     unit = unit
   }
 
-  ::gui_start_modal_wnd(gui_handlers.VehicleRequireFeatureWindow, params)
+  ::gui_start_modal_wnd(::gui_handlers.VehicleRequireFeatureWindow, params)
   return false
 }
 
@@ -440,7 +436,7 @@ let isEventUnit = @(unit) unit.event != null
 
     for (local prevRank = rank - 1; prevRank > 0; prevRank--) {
       local unitsCount = 0
-      foreach (un in getAllUnits())
+      foreach (un in ::all_units)
         if (::isUnitBought(un) && (un?.rank ?? -1) == prevRank && ::getUnitCountry(un) == countryId && ::get_es_unit_type(un) == unitType)
           unitsCount++
       let unitsNeed = ::getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
@@ -518,7 +514,7 @@ let isEventUnit = @(unit) unit.event != null
 //return true when modificators already valid.
 ::check_unit_mods_update <- function check_unit_mods_update(air, callBack = null, forceUpdate = false, needMinMaxEffectsForAllUnitTypes = false) {
   if (!air.isInited) {
-    script_net_assert_once("not inited unit request", "try to call check_unit_mods_update for not inited unit")
+    ::script_net_assert_once("not inited unit request", "try to call check_unit_mods_update for not inited unit")
     return false
   }
 
@@ -896,7 +892,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 }
 
 ::showAirInfo <- function showAirInfo(air, show, holderObj = null, handler = null, params = null) {
-  handler = handler || handlersManager.getActiveRootHandler()
+  handler = handler || ::handlersManager.getActiveRootHandler()
   if (!checkObj(holderObj)) {
     if (holderObj != null)
       return
@@ -1507,15 +1503,6 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       ::showAirDiscount(fullRepairTd.findObject(objName), air.name, "repair", modeName)
 
     if (!freeRepairsUnlimited) {
-      if (hasFeature("repairCostUsesPlayTime")) {
-        let repairCostPerMin = air.getCostRepairPerMin(difficulty)
-        if (repairCostPerMin) {
-          holderObj.findObject("aircraft-repair_cost_per_min-tr").show(true)
-          holderObj.findObject("aircraft-repair_cost_per_min").setValue(
-            "".concat(repairCostPerMin.getColoredWpText(), loc("measureUnits/perMinute")))
-        }
-      }
-
       let hours = showLocalState || needCrewModificators ? ::shop_get_full_repair_time_by_mode(air.name, egdCode)
         : (air[$"repairTimeHrs{::get_name_by_gamemode(egdCode, true)}"] ?? 0)
       let repairTimeText = time.hoursToString(hours, true)
@@ -1536,6 +1523,8 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     else {
       holderObj.findObject("aircraft-full_repair_time_crew-tr").show(false)
       holderObj.findObject("aircraft-free_repairs-tr").show(false)
+//        if (holderObj.findObject("aircraft-full_repair_time-tr"))
+//          holderObj.findObject("aircraft-full_repair_time-tr").show(false)
       ::hideBonus(holderObj.findObject("aircraft-full_repair_cost-discount"))
     }
   }
@@ -1824,7 +1813,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   foreach (country in shopCountriesList)
     ::__types_for_coutries[country] <- clone defaultCountryData
 
-  foreach (unit in getAllUnits()) {
+  foreach (unit in ::all_units) {
     if (!unit.unitType.isAvailable())
       continue
     let esUnitType = unit.unitType.esUnitType
@@ -1845,7 +1834,7 @@ let function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
 ::get_units_list <- function get_units_list(filterFunc) {
   let res = []
-  foreach (unit in getAllUnits())
+  foreach (unit in ::all_units)
     if (filterFunc(unit))
       res.append(unit)
   return res
@@ -1860,7 +1849,7 @@ let function isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank,
 }
 
 let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true) {
-  foreach (unit in getAllUnits())
+  foreach (unit in ::all_units)
     if (isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought))
       return true
   return false
@@ -1868,7 +1857,7 @@ let function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = t
 
 ::get_units_count_at_rank <- function get_units_count_at_rank(rank, esUnitType, country, exact_rank, needBought = true) {
   local count = 0
-  foreach (unit in getAllUnits())
+  foreach (unit in ::all_units)
     if (isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought))
       count++
   return count

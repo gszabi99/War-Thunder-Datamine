@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
@@ -17,9 +16,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 //}
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.HelpInfoHandlerModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
@@ -29,7 +27,7 @@ gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT
   objContainer = null
 
   static function openHelp(handler) {
-    gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
+    ::gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene)
   }
 
   static function open(wndInfoConfig, wndScene) {
@@ -40,7 +38,7 @@ gui_handlers.HelpInfoHandlerModal <- class extends gui_handlers.BaseGuiHandlerWT
       config = wndInfoConfig
       ownerScene = wndScene
     }
-    return handlersManager.loadHandler(gui_handlers.HelpInfoHandlerModal, params)
+    return ::handlersManager.loadHandler(::gui_handlers.HelpInfoHandlerModal, params)
   }
 
   function initScreen() {

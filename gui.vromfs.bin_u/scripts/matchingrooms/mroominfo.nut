@@ -1,7 +1,8 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
+
+
 let { get_time_msec } = require("dagor.time")
-let { SERVER_ERROR_ROOM_NOT_FOUND } = require("matching.errors")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
 

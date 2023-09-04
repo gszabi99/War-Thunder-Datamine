@@ -12,11 +12,10 @@ let { isLoadingBgUnlock, getLoadingBgName,
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode, isTimeRangeCondition,
-  getRangeString, getUnlockConditions, getDiffNameByInt, isStreak
-} = require("%scripts/unlocks/unlocksConditions.nut")
+  getRangeString, getUnlockConditions, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockTypeById } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened
-} = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecoratorById, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
@@ -133,10 +132,10 @@ let function getDifficultyLocalizationText(difficulty) {
 // unlockType = -1 finds type by id, so better to use correct unlock type if it's already known
 let function getUnlockNameText(unlockType, id) {
   if (::g_battle_tasks.isBattleTask(id))
-    return ::g_battle_tasks.getBattleTaskNameById(id)
+    return ::g_battle_tasks.getLocalizedTaskNameById(id)
 
   if (unlockType == -1)
-    unlockType = getUnlockType(id)
+    unlockType = getUnlockTypeById(id)
 
   switch (unlockType) {
     case UNLOCKABLE_AIRCRAFT:
@@ -260,9 +259,9 @@ let function getUnlockTitle(unlockConfig) {
   if (name == "")
     name = getUnlockTypeText(unlockConfig.unlockType, unlockConfig.id)
 
-  let hasStages = unlockConfig.stages.len() > 0
+  let hasStages = (unlockConfig.stages.len() ?? 0) > 0
   let stage = (unlockConfig.needToAddCurStageToName && hasStages && (unlockConfig.curStage >= 0))
-    ? unlockConfig.curStage + (isUnlockOpened(unlockConfig.id) ? 0 : 1)
+    ? unlockConfig.curStage + (::is_unlocked_scripted(-1, unlockConfig.id) ? 0 : 1)
     : 0
   return $"{name} {::roman_numerals[stage]}"
 }
@@ -313,7 +312,7 @@ let function getUnlockStagesDesc(cfg) {
   if (cfg == null)
     return ""
 
-  let hasStages = cfg.stages.len() > 1
+  let hasStages = (cfg.stages.len() ?? 0) > 1
   let hideDesc = isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
   if (!hasStages || hideDesc)
     return ""
@@ -688,8 +687,7 @@ let function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, 
   if (isCheckedBySingleAttachment(modeType)
       && !haveModeTypeLocID
       && condition.values
-      && condition.values.len() == 1
-      && !isStreak(condition.values[0]))
+      && condition.values.len() == 1)
     return getSingleAttachmentConditionText(condition, curValue, maxValue)
 
   local textId = $"conditions/{modeType}"

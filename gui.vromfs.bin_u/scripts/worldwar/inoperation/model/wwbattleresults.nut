@@ -286,7 +286,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
     foreach (side in sidesOrder) {
       let teamName = teamBySide[side]
       let teamSide = side
-      let teamArmiesList = wwArmies.filter((@(army) army.side == teamSide))
+      let teamArmiesList = u.filter(wwArmies, (@(army) army.side == teamSide))
       teamArmiesList.sort(function (a, b) { return a.unitType - b.unitType })
 
       local teamCountry = ""
@@ -319,11 +319,11 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
         armies          = teamArmiesList
         armyStates      = teamArmyStates
         unitsInitial    = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(
-          teamUnitStats.map(@(stats) stats.initial))
+          u.map(teamUnitStats, function(stats) { return stats.initial }))
         unitsCasualties = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(
-          teamUnitStats.map(@(stats) stats.casualties))
+          u.map(teamUnitStats, function(stats) { return stats.casualties }))
         unitsRemain     = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(
-          teamUnitStats.map(@(stats) stats.remain))
+          u.map(teamUnitStats, function(stats) { return stats.remain }))
       })
     }
 

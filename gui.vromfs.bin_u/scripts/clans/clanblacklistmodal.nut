@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local clanBlackList = [
   { id = "nick", type = lbDataType.NICK },
@@ -18,10 +16,10 @@ local clanBlackList = [
   if (!clanData)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.clanBlacklistModal, { clanData = clanData })
+  ::gui_start_modal_wnd(::gui_handlers.clanBlacklistModal, { clanData = clanData })
 }
 
-gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanBlacklistModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/clans/clanRequests.blk"
   wndType = handlerType.MODAL
 
@@ -128,7 +126,7 @@ gui_handlers.clanBlacklistModal <- class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     this.showSceneBtn("btn_removeBlacklist", this.curCandidate != null && isInArray("MEMBER_BLACKLIST", this.myRights))
-    this.showSceneBtn("btn_user_options", this.curCandidate != null && showConsoleButtons.value)
+    this.showSceneBtn("btn_user_options", this.curCandidate != null && ::show_console_buttons)
   }
 
   function onUserCard() {

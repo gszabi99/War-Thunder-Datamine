@@ -4,7 +4,6 @@ let { set_game_mode } = require("mission")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { set_unit_option, set_gui_option, setGuiOptionsMode } = require("guiOptions")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 
 const MIS_NAME = "tutorial_destroyer_battle_arcade"
 
@@ -53,14 +52,14 @@ let function updateBulletCountOptions(unit) {
     bulIdx = idx
     let name = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
     let count = bulGroup.active ? (bulGroup.bulletsCount * bulGroup.guns) : 0
-    set_option(::USEROPT_BULLETS0 + bulIdx, name)
+    ::set_option(::USEROPT_BULLETS0 + bulIdx, name)
     set_unit_option(unit.name, ::USEROPT_BULLETS0 + bulIdx, name)
     set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, count)
   }
   ++bulIdx
 
   while (bulIdx < BULLETS_SETS_QUANTITY) {
-    set_option(::USEROPT_BULLETS0 + bulIdx, "")
+    ::set_option(::USEROPT_BULLETS0 + bulIdx, "")
     set_unit_option(unit.name, ::USEROPT_BULLETS0 + bulIdx, "")
     set_gui_option(::USEROPT_BULLET_COUNT0 + bulIdx, 0)
     ++bulIdx

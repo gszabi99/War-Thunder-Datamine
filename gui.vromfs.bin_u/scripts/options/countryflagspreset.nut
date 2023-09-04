@@ -4,7 +4,6 @@ from "%scripts/dagui_library.nut" import *
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 loadOnce("%scripts/options/bhvHarmonizedImage.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -35,7 +34,7 @@ let DataBlock = require("DataBlock")
     return
   let texBlk = blk?.texture_presets
   if (!texBlk || type(texBlk) != "instance" || !(texBlk instanceof DataBlock)) {
-    script_net_assert_once("flags_presets", "Error: not texture_presets block in gui.blk")
+    ::script_net_assert_once("flags_presets", "Error: not texture_presets block in gui.blk")
     return
   }
 

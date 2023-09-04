@@ -135,7 +135,7 @@ let function validateLink(link) {
 
   if (!u.isString(link)) {
     log("CHECK LINK result: " + toString(link))
-    assert(false, "CHECK LINK: Link received not as text")
+    assert(false, "CHECK LINK: Link recieved not as text")
     return null
   }
 

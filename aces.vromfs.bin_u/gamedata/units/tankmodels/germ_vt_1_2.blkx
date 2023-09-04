@@ -110,30 +110,6 @@
         "node": "body_shutter_r",
         "absoluteValue": true,
         "progressive": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_l_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_l_02",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.5,
-        "node": "bone_roll_driver_r_01",
-        "absoluteValue": true
-      },
-      {
-        "type": "steeringWheel",
-        "turnSpeed": -0.2,
-        "node": "bone_roll_driver_r_02",
-        "absoluteValue": true
       }
     ]
   },
@@ -234,9 +210,6 @@
       },
       "body_bottom_dm": {
         "armorThickness": 10.0
-      },
-      "turret_05_front_dm": {
-        "armorThickness": 11.0
       },
       "superstructure_back_dm": {
         "armorThickness": 15.0
@@ -619,26 +592,6 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
-      "ammo_turret_56_dm": {},
-      "ammo_turret_57_dm": {},
-      "ammo_turret_58_dm": {},
-      "ammo_turret_59_dm": {},
-      "ammo_turret_60_dm": {},
-      "ammo_turret_61_dm": {},
-      "ammo_turret_62_dm": {},
-      "ammo_turret_63_dm": {},
-      "ammo_turret_64_dm": {},
-      "ammo_turret_65_dm": {},
-      "ammo_turret_66_dm": {},
-      "ammo_turret_67_dm": {},
-      "ammo_turret_68_dm": {},
-      "ammo_turret_69_dm": {},
-      "ammo_turret_70_dm": {},
-      "ammo_turret_71_dm": {},
-      "ammo_turret_72_dm": {},
-      "ammo_turret_73_dm": {},
-      "ammo_turret_74_dm": {},
-      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -1175,11 +1128,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -1992,6 +1941,61 @@
           "horizontal": true,
           "maxAllowedRoll": 37.0
         }
+      },
+      {
+        "trigger": "gunner5",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_commander_sight_v",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 120.0,
+        "speedPitch": 90.0,
+        "turret": {
+          "head": "bone_commander_sight_h",
+          "gun": "bone_commander_sight_v",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "forceEnabled": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": {
+            "row": [
+              [
+                5.0,
+                0.0
+              ],
+              [
+                45.0,
+                0.00015
+              ],
+              [
+                80.0,
+                0.0002
+              ]
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -15.0,
+            60.0
+          ]
+        }
       }
     ]
   },
@@ -2058,7 +2062,6 @@
       "electricDriveMoment": 4500.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.37,
       "mainGearRatio": 1.8,
@@ -2220,6 +2223,16 @@
       "rotation": 0.5,
       "collisionNode": "cls_gun"
     }
+  },
+  "commanderView": {
+    "aimModeAvailable": true,
+    "optics": "commander_optics_square",
+    "zoomOutFov": 30.0,
+    "zoomInFov": 7.4,
+    "sightSize": [
+      0.57,
+      0.4
+    ]
   },
   "unitFx": {
     "event": [

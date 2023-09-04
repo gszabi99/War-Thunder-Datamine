@@ -7,9 +7,8 @@ let { get_option_multiplier, set_option_multiplier,
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
+let { ActionGroup } = require("controls")
 let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
-let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
 
 return [
   {
@@ -22,7 +21,7 @@ return [
   {
     id = "ID_TANK_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_TANK_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -31,7 +30,7 @@ return [
       ActionGroup.TANK,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_TANK_SWAP_GAMEPAD_STICKS"
@@ -39,7 +38,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ActionGroup.TANK
     )
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
   {
@@ -440,7 +439,7 @@ return [
   {
     id = "ID_ACTION_BAR_ITEM_5"
     checkAssign = false
-    showFunc = @() !isXInputDevice()
+    showFunc = @() !::is_xinput_device()
     needShowInHelp = true
   }
   {
@@ -476,7 +475,7 @@ return [
   {
     id = "ID_KILLSTREAK_WHEEL_MENU"
     checkAssign = false
-    showFunc = hasXInputDevice
+    showFunc = ::have_xinput_device
   }
   {
     id = "ID_SCOUT"
@@ -540,15 +539,15 @@ return [
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = hasXInputDevice
-    checkAssign = @() isXInputDevice()
+    showFunc = ::have_xinput_device
+    checkAssign = @() ::is_xinput_device()
   }
   {
     id = "gm_wheelmenu_y"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = hasXInputDevice
-    checkAssign = @() isXInputDevice()
+    showFunc = ::have_xinput_device
+    checkAssign = @() ::is_xinput_device()
   }
 ]

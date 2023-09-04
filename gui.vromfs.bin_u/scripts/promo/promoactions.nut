@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let performActionTable = {}
 let visibilityByAction = {}
 
-let function addPromoAction(actionId, actionFunc, visibilityFunc = null) {
+let addPromoAction = function(actionId, actionFunc, visibilityFunc = null) {
   performActionTable[actionId] <- actionFunc
   if (visibilityFunc != null)
     visibilityByAction[actionId] <- visibilityFunc

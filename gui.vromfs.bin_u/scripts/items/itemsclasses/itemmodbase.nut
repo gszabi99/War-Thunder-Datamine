@@ -55,7 +55,8 @@ local ModificationBase = class extends ::BaseItem {
       textParts.append(expireText)
 
     if (this.modsList) {
-      let locMods = this.modsList.map(function(mod) {
+      let locMods = u.map(this.modsList,
+        function(mod) {
           local res = loc("modification/" + mod + "/short", "")
           if (!res.len())
             res = loc("modification/" + mod)
@@ -66,13 +67,13 @@ local ModificationBase = class extends ::BaseItem {
     }
 
     if (this.countries) {
-      let locCountries = this.countries.map(@(country) loc("unlockTag/" + country))
+      let locCountries = u.map(this.countries, @(country) loc("unlockTag/" + country))
       textParts.append(loc("trophy/unlockables_names/country") + loc("ui/colon")
           + colorize("activeTextColor", ", ".join(locCountries, true)))
     }
     if (this.unitTypes) {
       let processedUnitTypes = processUnitTypeArray(this.unitTypes)
-      let locUnitTypes = processedUnitTypes.map(@(unitType) loc($"mainmenu/type_{unitType}"))
+      let locUnitTypes = u.map(processedUnitTypes, @(unitType) loc($"mainmenu/type_{unitType}"))
       textParts.append(loc("mainmenu/btnUnits") + loc("ui/colon")
           + colorize("activeTextColor", ", ".join(locUnitTypes, true)))
     }

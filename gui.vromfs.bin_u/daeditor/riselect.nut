@@ -1018,7 +1018,6 @@ let riSelectWindow = function() {
           Flex()
           Gap(hdpx(10))
           @() {
-            watch = [riGroup, riEditGroupName, riEditGroupNameMode]
             flow = FLOW_HORIZONTAL
             size = [flex(), SIZE_TO_CONTENT]
             padding = 0
@@ -1039,7 +1038,6 @@ let riSelectWindow = function() {
             ]
           }
           @() {
-            watch = [riTagsShown]
             flow = FLOW_HORIZONTAL
             size = [flex(), SIZE_TO_CONTENT]
             padding = 0

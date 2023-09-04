@@ -1,19 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { hasXInputDevice } = require("controls")
-
-let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
 ::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled() {
   return isPlatformSony
          || isPlatformXboxOne
          || is_platform_android
-         || isPlatformShieldTv()
-         || (::is_steam_big_picture() && hasXInputDevice())
+         || ::is_platform_shield_tv()
+         || (::is_steam_big_picture() && ::have_xinput_device())
 }
 
 ::get_is_console_mode_enabled <- function get_is_console_mode_enabled() {
@@ -29,10 +25,10 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 ::switch_show_console_buttons <- function switch_show_console_buttons(showCB) {
   if (::get_is_console_mode_force_enabled() && !showCB)
     return false
-  if (showCB == showConsoleButtons.value)
+  if (showCB == ::show_console_buttons)
     return false
 
-  showConsoleButtons(showCB)
+  ::show_console_buttons = showCB
   updateExtWatched({ showConsoleButtons = showCB })
   ::set_dagui_mouse_last_time_used(!showCB)
 
@@ -41,10 +37,6 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
   ::set_gui_option_in_mode(::USEROPT_ENABLE_CONSOLE_MODE, showCB, ::OPTIONS_MODE_GAMEPLAY)
   ::setSystemConfigOption("use_gamepad_interface", showCB)
-  handlersManager.markfullReloadOnSwitchScene()
+  ::handlersManager.markfullReloadOnSwitchScene()
   return true
-}
-
-return {
-  showConsoleButtons
 }

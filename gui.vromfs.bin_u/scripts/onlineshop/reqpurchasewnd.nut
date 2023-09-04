@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+
 
 let { get_blk_by_path_array } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 
@@ -20,7 +19,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
   }
 */
 
-gui_handlers.ReqPurchaseWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ReqPurchaseWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 
@@ -35,7 +34,7 @@ gui_handlers.ReqPurchaseWnd <- class extends gui_handlers.BaseGuiHandlerWT {
   static function open(config) {
     if (!("purchaseData" in config) || !config.purchaseData.canBePurchased)
       return
-    handlersManager.loadHandler(gui_handlers.ReqPurchaseWnd, config)
+    ::handlersManager.loadHandler(::gui_handlers.ReqPurchaseWnd, config)
   }
 
   function initScreen() {

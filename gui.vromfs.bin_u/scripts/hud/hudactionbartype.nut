@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isXInputDevice } = require("controls")
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
@@ -15,7 +15,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SMOKE_SCREEN, EII_SCOUT, EII_SUBMARINE_SONAR, EII_TORPEDO_SENSOR, EII_SPEED_BOOSTER,
   EII_SHIP_CURRENT_TRIGGER_GROUP, EII_AI_GUNNERS, EII_AUTO_TURRET, EII_SUPPORT_PLANE, EII_SUPPORT_PLANE_2,
   EII_SUPPORT_PLANE_3, EII_SUPPORT_PLANE_4, EII_SUPPORT_PLANE_ORBITING, EII_SUPPORT_PLANE_CHANGE,
-  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_SUPPORT_PLANE_RETURN, EII_STEALTH, EII_LOCK, EII_WEAPON_LEAD, EII_FORCED_GUN,
+  EII_SUPPORT_PLANE_GROUP_ATTACK, EII_STEALTH, EII_LOCK, EII_WEAPON_LEAD, EII_FORCED_GUN,
   WEAPON_PRIMARY, WEAPON_SECONDARY, WEAPON_MACHINEGUN, AI_GUNNERS_DISABLED, AI_GUNNERS_ALL_TARGETS,
   AI_GUNNERS_AIR_TARGETS, AI_GUNNERS_GROUND_TARGETS, AI_GUNNERS_SHELL, EII_TERRAFORM, EII_DIVING_LOCK,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION,
@@ -551,7 +551,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "ship_current_trigger_group"
     getShortcut = @(_actionItem, _hudUnitType = null)
       ::get_option(::USEROPT_WHEEL_CONTROL_SHIP)?.value
-        && (isXInputDevice() || isPlatformSony || isPlatformXboxOne)
+        && (::is_xinput_device() || isPlatformSony || isPlatformXboxOne)
           ? "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
           : null
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
@@ -826,15 +826,6 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_ATTACK")
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_ATTACK"
-  }
-
-  SUPPORT_PLANE_RETURN = {
-    code = EII_SUPPORT_PLANE_RETURN
-    _name = "support_plane_return"
-    _icon = "#ui/gameuiskin#support_plane_return"
-    _title = loc("hotkeys/ID_SUPPORT_PLANE_RETURN_SHIP")
-    isForWheelMenu = @() true
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_RETURN_SHIP"
   }
 
   NIGHT_VISION = {

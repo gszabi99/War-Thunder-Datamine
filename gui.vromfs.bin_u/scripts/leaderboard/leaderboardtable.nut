@@ -2,14 +2,11 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.LeaderboardTable <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/leaderboard/leaderboardTable.tpl"
@@ -31,7 +28,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   onRowRClickCb = null
 
   static function create(config) {
-    return handlersManager.loadHandler(gui_handlers.LeaderboardTable, config)
+    return ::handlersManager.loadHandler(::gui_handlers.LeaderboardTable, config)
   }
 
   function getSceneTplView() {
@@ -173,7 +170,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onRowSelect(obj) {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       return
     if (!checkObj(obj))
       return
@@ -183,7 +180,7 @@ gui_handlers.LeaderboardTable <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onRowHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     if (!checkObj(obj))
       return

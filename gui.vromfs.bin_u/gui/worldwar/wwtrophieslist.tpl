@@ -38,7 +38,7 @@ ww_map_item {
 
         <<@wwTrophyMarkup>>
 
-        <<#isTrophyReceived>>
+        <<#isTrophyRecieved>>
         img {
           size:t='1@cIco, 1@cIco'
           pos:t='50%pw-20%w, 50%ph-50%h'
@@ -47,7 +47,7 @@ ww_map_item {
           background-svg-size:t='1@cIco, 1@cIco'
           input-transparent:t='yes'
         }
-        <</isTrophyReceived>>
+        <</isTrophyRecieved>>
       }
     }
   }

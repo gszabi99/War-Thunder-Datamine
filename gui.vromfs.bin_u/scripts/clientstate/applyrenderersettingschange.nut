@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 let { reloadDargUiScript } = require("reactiveGuiCommand")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local isRequestedReloadScene = false
 local isRequestedOnSceneSwitch = false
@@ -35,19 +34,19 @@ let function applyRendererSettingsChange(shouldReloadScene = false, shouldDoItOn
  */
 
 ::on_renderer_settings_applied <- function on_renderer_settings_applied(forceReloadGuiScene) {
-  handlersManager.updateSceneBgBlur(true)
-  handlersManager.updateSceneVrParams()
+  ::handlersManager.updateSceneBgBlur(true)
+  ::handlersManager.updateSceneVrParams()
 
-  handlersManager.doDelayed(function() {
+  ::handlersManager.doDelayed(function() {
     isRequestedReloadScene = isRequestedReloadScene || forceReloadGuiScene
 
     if (isRequestedReloadScene) {
       reloadDargUiScript(false)
-      let handler = isRequestedOnSceneSwitch ? null : handlersManager.getActiveBaseHandler()
+      let handler = isRequestedOnSceneSwitch ? null : ::handlersManager.getActiveBaseHandler()
       if (handler)
         handler.fullReloadScene()
       else
-        handlersManager.markfullReloadOnSwitchScene()
+        ::handlersManager.markfullReloadOnSwitchScene()
     }
 
     cbFunc?()

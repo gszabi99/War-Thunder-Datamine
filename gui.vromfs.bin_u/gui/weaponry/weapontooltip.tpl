@@ -46,19 +46,6 @@ tdiv {
     }
     <</bulletActions>>
   }
-
-  <<#modificationAnimation>>
-  tdiv {
-    margin-top:t='1@blockInterval'
-    movie {
-      size:t='1@modificationAnimationWidth , 1@modificationAnimationHeight'
-      movie-load:t='<<modificationAnimation>>'
-      movie-autoStart:t='yes'
-      movie-loop:t='yes'
-    }
-  }
-  <</modificationAnimation>>
-
   tooltipDesc {
     pos:t='0, @blockInterval'
     position:t='relative'

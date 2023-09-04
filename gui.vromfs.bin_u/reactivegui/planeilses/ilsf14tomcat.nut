@@ -267,8 +267,7 @@ let compass = function(width, height) {
     children = ShellMode.value || CannonMode.value ?
     [
       compassWrap(width, height, 0.2, generateCompassMarkF14, 1.2),
-      @() {
-        watch = IlsColor
+      {
         size = [pw(2), ph(4)]
         pos = [pw(50), ph(30)]
         rendObj = ROBJ_VECTOR_CANVAS

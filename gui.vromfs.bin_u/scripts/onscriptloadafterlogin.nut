@@ -371,6 +371,7 @@ foreach (fn in [
 
   "%scripts/statsd/missionStats.nut"
   "%scripts/utils/popupMessages.nut"
+  "%scripts/utils/soundManager.nut"
   "%scripts/fileDialog/fileDialog.nut"
   "%scripts/fileDialog/saveDataDialog.nut"
   "%scripts/controls/controlsBackupManager.nut"
@@ -394,8 +395,6 @@ require("%scripts/mainmenu/hideMainMenuUi.nut")
 require("%scripts/wheelmenu/chooseVehicleWheelMenu.nut")
 require("%scripts/login/loginContacts.nut")
 require("%scripts/mainmenu/onMainMenuReturn.nut")
-require("%scripts/unlocks/regionalUnlocksPromo.nut")
-require("%scripts/user/suggestionEmailRegistrationPromo.nut")
 
 require("%scripts/debugTools/dbgCheckContent.nut")
 require("%scripts/debugTools/dbgUnlocks.nut")

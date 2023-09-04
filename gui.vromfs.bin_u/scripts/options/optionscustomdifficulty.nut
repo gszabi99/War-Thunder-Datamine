@@ -2,16 +2,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isGameModeCoop, isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { reload_cd } = require("guiMission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 
-gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericOptionsModal {
+::gui_handlers.OptionsCustomDifficultyModal <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   titleText = loc("profile/difficulty")
@@ -112,7 +109,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
     let option = this.get_option_by_id(obj.id)
     if (!option)
       return
-    set_option(option.type, obj.getValue(), option)
+    ::set_option(option.type, obj.getValue(), option)
     this.updateCurBaseDifficulty()
   }
 
@@ -120,8 +117,8 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
     if (!checkObj(obj))
       return
 
-    if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) {
-      gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
+    if (::gui_handlers.ActionsList.hasActionsListOnObject(obj)) {
+      ::gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
       return
     }
 
@@ -140,7 +137,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
         action      = @() this.applyCdPreset(cdPresetValue)
       })
     }
-    gui_handlers.ActionsList.open(obj, menu)
+    ::gui_handlers.ActionsList.open(obj, menu)
   }
 
   function applyCdPreset(cdValue) {
@@ -201,7 +198,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class extends gui_handlers.GenericO
       set_cd_preset(curDiff)
   }
 
-  handlersManager.loadHandler(gui_handlers.OptionsCustomDifficultyModal, {
+  ::handlersManager.loadHandler(::gui_handlers.OptionsCustomDifficultyModal, {
     owner = owner
     afterApplyFunc = Callback(afterApplyFunc, owner)
   })

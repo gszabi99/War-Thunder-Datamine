@@ -27,7 +27,6 @@ let { select_training_mission, get_meta_mission_info_by_name } = require("guiMis
 let { getDecorator, buildLiveDecoratorFromResource
 } = require("%scripts/customization/decorCache.nut")
 let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let emptyBlk = DataBlock()
 
@@ -132,7 +131,7 @@ local ItemExternal = class extends ::BaseItem {
 
     this.expireTimestamp = this.getExpireTimestamp(itemDefDesc, itemDesc)
     if (this.expireTimestamp != -1)
-      this.expiredTimeSec = (get_time_msec() * 0.001) + (this.expireTimestamp - get_charserver_time_sec())
+      this.expiredTimeSec = (get_time_msec() * 0.001) + (this.expireTimestamp - ::get_charserver_time_sec())
 
     let meta = getTblValue("meta", this.itemDef)
     if (meta && meta.len()) {
@@ -153,7 +152,7 @@ local ItemExternal = class extends ::BaseItem {
     if (!hasFeature("Marketplace"))
       return 0
     let res = ::to_integer_safe(itemDesc?.tradable_after_timestamp || 0)
-    return res > get_charserver_time_sec() ? res : 0
+    return res > ::get_charserver_time_sec() ? res : 0
   }
 
   function updateShopFilterMask() {
@@ -227,7 +226,7 @@ local ItemExternal = class extends ::BaseItem {
 
     local tags = this.getTagsLoc()
     if (tags.len()) {
-      tags = tags.map(@(txt) colorize("activeTextColor", txt))
+      tags = u.map(tags, @(txt) colorize("activeTextColor", txt))
       desc.append(loc("ugm/tags") + loc("ui/colon") + loc("ui/comma").join(tags, true))
     }
 

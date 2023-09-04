@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { WEAPON_TAG,
         isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -14,7 +13,7 @@ let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHan
   function canAct() {
     if (!::isInMenu())
       return false
-    if (::isHandlerInScene(gui_handlers.ShopCheckResearch))
+    if (::isHandlerInScene(::gui_handlers.ShopCheckResearch))
       return false
     return true
   }

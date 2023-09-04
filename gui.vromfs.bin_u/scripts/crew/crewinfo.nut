@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { get_charserver_time_sec } = require("chard")
 
 local isCrewUnlockErrorShowed = false
 
@@ -9,7 +8,7 @@ let function getCrewUnlockTime(crew) {
   if (lockTime <= 0)
     return 0
 
-  local timeLeft = lockTime - get_charserver_time_sec()
+  local timeLeft = lockTime - ::get_charserver_time_sec()
   if (timeLeft <= 0)
     return 0
 
@@ -17,7 +16,7 @@ let function getCrewUnlockTime(crew) {
   if (timeLeft > lockTimeMaxLimitSec) {
     timeLeft = lockTimeMaxLimitSec
     log("crew.lockedTillSec " + lockTime)
-    log("get_charserver_time_sec() " + get_charserver_time_sec())
+    log("::get_charserver_time_sec() " + ::get_charserver_time_sec())
     if (!isCrewUnlockErrorShowed)
       debugTableData(::g_crews_list.get())
     assert(isCrewUnlockErrorShowed, "Too big locked crew wait time")

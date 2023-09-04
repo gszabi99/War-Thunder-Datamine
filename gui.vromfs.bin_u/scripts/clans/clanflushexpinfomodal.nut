@@ -1,16 +1,15 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { format } = require("string")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
-let handlerClass = class extends gui_handlers.clanVehiclesModal {
+let handlerClass = class extends ::gui_handlers.clanVehiclesModal {
   sceneTplName  = "%gui/clans/clanFlushExpInfoModal.tpl"
   maxSlotCountY = 2
   userlog = null
@@ -79,9 +78,9 @@ let handlerClass = class extends gui_handlers.clanVehiclesModal {
   }
 }
 
-gui_handlers.clanFlushExpInfoModal <- handlerClass
+::gui_handlers.clanFlushExpInfoModal <- handlerClass
 
 return {
   SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID
-  showClanFlushExpInfo = @(p) handlersManager.loadHandler(handlerClass, p)
+  showClanFlushExpInfo = @(p) ::handlersManager.loadHandler(handlerClass, p)
 }

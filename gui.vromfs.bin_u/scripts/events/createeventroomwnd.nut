@@ -2,10 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.CreateEventRoomWnd <- class extends gui_handlers.GenericOptionsModal {
+::gui_handlers.CreateEventRoomWnd <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.MODAL
   sceneNavBlkName = null
   wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
@@ -134,7 +133,7 @@ gui_handlers.CreateEventRoomWnd <- class extends gui_handlers.GenericOptionsModa
     if (!this.roomCreationContext.fullMissionsList.len())
       return
 
-    gui_handlers.ChooseMissionsListWnd.open({
+    ::gui_handlers.ChooseMissionsListWnd.open({
       missionsList = this.roomCreationContext.fullMissionsList
       selMissions = this.roomCreationContext.chosenMissionsList
       onApplyListCb = Callback(function(selList) {

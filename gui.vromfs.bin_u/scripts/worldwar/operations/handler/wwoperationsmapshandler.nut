@@ -1,7 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -12,7 +10,7 @@ let time = require("%scripts/time.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { getAllUnlocks, unlocksChapterName } = require("%scripts/worldWar/unlocks/wwUnlocks.nut")
-let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isReceivedGlobalStatusMaps,
+let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isRecievedGlobalStatusMaps,
   getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { refreshGlobalStatusData,
   actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
@@ -27,8 +25,6 @@ let { getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.n
 let { isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
 let wwVehicleSetModal = require("%scripts/worldWar/operations/handler/wwVehicleSetModal.nut")
-let { get_charserver_time_sec } = require("chard")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -38,7 +34,7 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 ::dagui_propid.add_name_id("countryId")
 ::dagui_propid.add_name_id("mapId")
 
-gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwOperationsMapsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName   = "%gui/worldWar/wwOperationsMaps.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "mainmenu/btnWorldwar"
@@ -75,7 +71,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
   autoselectOperationTimeout    = 0
 
   function initScreen() {
-    this.backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
+    this.backSceneFunc = ::gui_start_mainmenu
     this.mapsTbl = {}
     this.mapsListObj = this.scene.findObject("maps_list")
     this.mapsListNestObj = this.showSceneBtn("operation_list", this.isDeveloperMode)
@@ -99,7 +95,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
     this.reinitScreen()
     let seenEntity = this.selMap?.name
     seenWWOperationAvailable.setListGetter(@() seenEntity ? [seenEntity] : [])
-    this.topMenuHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
+    this.topMenuHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
       this.scene.findObject("topmenu_menu_panel"),
       this,
       ::g_ww_top_menu_operation_map,
@@ -107,6 +103,8 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
     )
     this.registerSubHandler(this.topMenuHandlerWeak)
     this.updateWwarUrlButton()
+
+    ::enableHangarControls(true)
 
     if (this.needToOpenBattles)
       this.openOperationsListModal()
@@ -135,7 +133,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
   function findMapForSelection() {
     let priorityConfigMapsArray = []
     foreach (map in this.mapsTbl) {
-      let changeStateTime = map.getChangeStateTime() - get_charserver_time_sec()
+      let changeStateTime = map.getChangeStateTime() - ::get_charserver_time_sec()
       priorityConfigMapsArray.append({
         hasActiveOperations = map.getOpGroup().hasActiveOperations()
         isActive = map.isActive()
@@ -497,7 +495,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
     if (!item)
       return
 
-    this.mapDescrObj = gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), item, item,
+    this.mapDescrObj = ::gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), item, item,
       isCreateOperationMode ? {
         onJoinQueueCb = this.onJoinQueue.bindenv(this)
         onLeaveQueueCb = this.onLeaveQueue.bindenv(this)
@@ -529,7 +527,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
     this.updateBeginMapWaitTime()
     this.updateWwarUrlButton()
 
-    if (showConsoleButtons.value) {
+    if (::show_console_buttons) {
       let selectedMapObj = this.getSelectedMapObj()
       let isMapActionVisible = !hasMap ||
         (this.selMap.isActive() && isQueueJoiningEnabled && !isInQueue)
@@ -608,7 +606,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
     if (!checkObj(queueInfoobj))
       return
 
-    let timeInQueue = get_charserver_time_sec() - this.queuesJoinTime
+    let timeInQueue = ::get_charserver_time_sec() - this.queuesJoinTime
     queueInfoobj.setValue(loc("worldwar/mapStatus/yourClanInQueue")
       + loc("ui/colon") + time.secondsToString(timeInQueue, false))
   }
@@ -869,7 +867,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
   }
 
   function openOperationsListByMap(map) {
-    ::gui_start_modal_wnd(gui_handlers.WwOperationsListModal,
+    ::gui_start_modal_wnd(::gui_handlers.WwOperationsListModal,
       { map = map, isDescrOnly = !hasFeature("WWOperationsList") })
   }
 
@@ -928,7 +926,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
                            newClanOperation.id,
                            toString(newClanOperation.getMyClanGroup())
                           )
-      script_net_assert_once("badClanCountry/" + newClanOperation.id, msg)
+      ::script_net_assert_once("badClanCountry/" + newClanOperation.id, msg)
     }
   }
 
@@ -1044,7 +1042,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    ::gui_handlers.HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -1210,7 +1208,7 @@ gui_handlers.WwOperationsMapsHandler <- class extends gui_handlers.BaseGuiHandle
   }
 
   function checkSeasonIsOverNotice() {
-    if (!isReceivedGlobalStatusMaps())
+    if (!isRecievedGlobalStatusMaps())
       return
 
     this.needCheckSeasonIsOverNotice = false

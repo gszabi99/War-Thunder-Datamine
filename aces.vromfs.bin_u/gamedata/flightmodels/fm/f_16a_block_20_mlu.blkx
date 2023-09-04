@@ -328,17 +328,17 @@
         "ClToCmByMach0": [
           0.0,
           0.04,
-          -0.03
+          0.0
         ],
         "ClToCmByMach1": [
           0.5,
           0.03,
-          -0.02
+          0.01
         ],
         "ClToCmByMach2": [
           0.8,
           0.0,
-          0.05
+          0.08
         ],
         "ClToCmByMach3": [
           1.8,
@@ -401,18 +401,18 @@
         "CombinedCl": false,
         "ClToCmByMach0": [
           0.0,
-          0.05,
-          -0.03
+          0.01,
+          0.02
         ],
         "ClToCmByMach1": [
           0.5,
           0.05,
-          -0.02
+          0.05
         ],
         "ClToCmByMach2": [
           0.8,
           0.05,
-          0.05
+          0.08
         ],
         "ClToCmByMach3": [
           1.8,
@@ -994,7 +994,7 @@
       "ShaftRPMMax": 16500.0,
       "ShaftRpmController": false,
       "Power": 1200.0,
-      "ConsumptionOmegaMax": 0.74,
+      "ConsumptionOmegaMax": 1.05,
       "TorqueZeroOmegaMult": 3.0,
       "TurbineTimeConstant": 1.1,
       "ThrustMax": {
@@ -1751,7 +1751,7 @@
     "SinkRateMult": 1.6028,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
-    "GearOffset": -0.0,
+    "GearOffset": -0.2,
     "UseCenterOfGravity": true,
     "HasWheels": true,
     "Height": 1.01,
@@ -2101,8 +2101,8 @@
   "Autopilot": {
     "Roll": {
       "RateMax": [
-        -200.0,
-        200.0
+        -240.0,
+        240.0
       ],
       "AngleMax": [
         -60.0,
@@ -2176,15 +2176,14 @@
       }
     },
     "Pitch": {
+      "RateMaxLoadFactorMax": [
+        -24.0,
+        28.0
+      ],
       "RateMax0": [
         500.0,
         -60.0,
         60.0
-      ],
-      "RateMax1": [
-        1000.0,
-        -35.0,
-        35.0
       ],
       "AngleMax": [
         -50.0,
@@ -2206,38 +2205,11 @@
         0.0
       ],
       "ClimbAngleToLoadFactor": 0.7,
-      "RateMaxLoadFactorMax": [
-        -5.0,
-        10.0
-      ],
-      "AoaLimits": [
-        -15.0,
-        21.0
-      ],
-      "AoaLimitsMult0": [
-        0.5,
-        1.0,
-        1.0
-      ],
-      "AoaLimitsMult1": [
-        0.9,
-        0.5,
-        0.5
-      ],
-      "AoaLimitsMargin": 10.0,
-      "AoaLimiterPushBackRateMult": [
-        -0.9,
-        -0.9
-      ],
-      "AoAAntiHangRateDecline": -1000.0,
-      "UseAoAGLimits": true,
-      "LoadFactorFilterSmoothCoeff": 0.7,
-      "LoadFactorLimiterStrengthMax": 1.0,
       "RatePID": {
-        "Kp": 3.0,
-        "Ki": 3.0,
-        "Imax": 0.1,
-        "Kd": 0.001,
+        "Kp": 1.0,
+        "Ki": 0.0,
+        "Imax": 0.0,
+        "Kd": 0.0,
         "dTau": 0.0208333,
         "Lim": [
           -0.95,

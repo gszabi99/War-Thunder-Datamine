@@ -1,30 +1,29 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isXInputDevice } = require("controls")
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { MAX_SHORTCUTS, CONTROL_TYPE, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
+let { MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let globalEnv = require("globalEnv")
 let controllerState = require("controllerState")
 let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
-let { TRIGGER_TYPE, getLastWeapon, getCommonWeapons, getLastPrimaryWeapon
-} = require("%scripts/weaponry/weaponryInfo.nut")
+let { TRIGGER_TYPE,
+        getLastWeapon,
+        getCommonWeapons,
+        getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isBulletGroupActive } = require("%scripts/weaponry/bulletsInfo.nut")
 let { resetFastVoiceMessages } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC, isPlatformShieldTv
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { blkOptFromPath, blkFromPath } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let vehicleModel = require("vehicleModel")
@@ -44,9 +43,6 @@ let { recomendedControlPresets, getControlsPresetBySelectedType
 } = require("%scripts/controls/controlsUtils.nut")
 let { joystickSetCurSettings, setShortcutsAndSaveControls
 } = require("%scripts/controls/controlsCompatibility.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { set_option, create_option_switchbox } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -115,7 +111,7 @@ let function resetDefaultControlSettings() {
     if (::getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
       ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
   }
-  else if (isPlatformSony || isPlatformXboxOne || isPlatformShieldTv())
+  else if (isPlatformSony || isPlatformXboxOne || ::is_platform_shield_tv())
     ::set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
   else if (::getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
     ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
@@ -197,7 +193,7 @@ local axisMappedOnMouse = {
 }
 
 ::gui_start_controls <- function gui_start_controls() {
-  if (isPlatformSony || isPlatformXboxOne || isPlatformShieldTv()) {
+  if (isPlatformSony || isPlatformXboxOne || ::is_platform_shield_tv()) {
     if (::load_local_account_settings(PS4_CONTROLS_MODE_ACTIVATE, true)) {
       ::gui_start_controls_console()
       return
@@ -210,10 +206,10 @@ local axisMappedOnMouse = {
 ::gui_start_advanced_controls <- function gui_start_advanced_controls() {
   if (!hasFeature("ControlsAdvancedSettings"))
     return
-  ::gui_start_modal_wnd(gui_handlers.Hotkeys)
+  ::gui_start_modal_wnd(::gui_handlers.Hotkeys)
 }
 
-gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
+::gui_handlers.Hotkeys <- class extends ::gui_handlers.GenericOptions {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/controls.blk"
   sceneNavBlkName = null
@@ -313,8 +309,8 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
   }
 
   function initNavigation() {
-    let handler = handlersManager.loadHandler(
-      gui_handlers.navigationPanel,
+    let handler = ::handlersManager.loadHandler(
+      ::gui_handlers.navigationPanel,
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
         panelWidth        = "0.35@sf, ph"
@@ -416,8 +412,8 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
     this.showSceneBtn("btn_exportToFile", isImportExportAllowed)
     this.showSceneBtn("btn_importFromFile", isImportExportAllowed)
-    this.showSceneBtn("btn_switchMode", isPlatformSony || isPlatformXboxOne || isPlatformShieldTv())
-    this.showSceneBtn("btn_backupManager", gui_handlers.ControlsBackupManager.isAvailable())
+    this.showSceneBtn("btn_switchMode", isPlatformSony || isPlatformXboxOne || ::is_platform_shield_tv())
+    this.showSceneBtn("btn_backupManager", ::gui_handlers.ControlsBackupManager.isAvailable())
     this.showSceneBtn("btn_controlsWizard", hasFeature("ControlsPresets"))
     this.showSceneBtn("btn_clearAll", !isTutorial)
     this.showSceneBtn("btn_controlsHelp", hasFeature("ControlsHelp"))
@@ -720,14 +716,14 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
   getScById = @(scId) ::shortcutsList?[(scId ?? "-1").tointeger()]
 
   function onScHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     this.curShortcut = this.getScById(obj?.scId)
     this.updateButtonsChangeValue()
   }
 
   function onScUnHover(obj) {
-    if (!showConsoleButtons.value || this.curShortcut != this.getScById(obj?.scId))
+    if (!::show_console_buttons || this.curShortcut != this.getScById(obj?.scId))
       return
     this.curShortcut = null
     this.updateButtonsChangeValue()
@@ -775,7 +771,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
           break
         }
       if (item != null && "optionType" in item)
-        set_option(item.optionType, valueIdx)
+        ::set_option(item.optionType, valueIdx)
     }
 
     let options = u.values(::g_aircraft_helpers.controlHelpersOptions)
@@ -1148,7 +1144,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     if (!this.curJoyParams || !axisItem || axisItem.axisIndex < 0)
       return
 
-    let handler = handlersManager.loadHandler(gui_handlers.AxisControls,
+    let handler = ::handlersManager.loadHandler(::gui_handlers.AxisControls,
       this.getAxisHandlerParams().__update({ axisItem = axisItem }))
     this.axisControlsHandlerWeak = handler.weakref()
   }
@@ -1337,7 +1333,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
       if ("optionType" in item) {
         let value = obj.getValue()
-        set_option(item.optionType, value)
+        ::set_option(item.optionType, value)
         continue
       }
 
@@ -1416,7 +1412,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
     this.changeControlsMode = value
     if (value)
-      this.backSceneParams = { globalFunctionName = "gui_start_controls_console" }
+      this.backSceneFunc = ::gui_start_controls_console
     ::switchControlsMode(value)
   }
 
@@ -1548,8 +1544,6 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     ::gui_modal_controlsWizard()
   }
 
-  onControlsWorkshop = @() openUrl(loc("url/workshop/controls"), true, false, "internal_browser")
-
   function saveShortcutsAndAxes() {
     this.doApplyJoystick()
     setShortcutsAndSaveControls(this.shortcuts, this.shortcutNames)
@@ -1576,7 +1570,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     if (!this.isValid()) //updateCurPresetForExport use scene objects, and no need open backup manager, if controls window is not valid
       return
     this.updateCurPresetForExport()
-    gui_handlers.ControlsBackupManager.open()
+    ::gui_handlers.ControlsBackupManager.open()
   }
 
   function onExportToFile() {
@@ -1585,7 +1579,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
     this.updateCurPresetForExport()
 
     if (this.isScriptOpenFileDialogAllowed()) {
-      ::gui_start_modal_wnd(gui_handlers.FileDialog, {
+      ::gui_start_modal_wnd(::gui_handlers.FileDialog, {
         isSaveFile = true
         dirPath = ::get_save_load_path()
         pathTag = "controls"
@@ -1606,7 +1600,7 @@ gui_handlers.Hotkeys <- class extends gui_handlers.GenericOptions {
 
   function onImportFromFile() {
     if (this.isScriptOpenFileDialogAllowed()) {
-      ::gui_start_modal_wnd(gui_handlers.FileDialog, {
+      ::gui_start_modal_wnd(::gui_handlers.FileDialog, {
         isSaveFile = false
         dirPath = ::get_save_load_path()
         pathTag = "controls"
@@ -1775,7 +1769,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
       }
     }
     config.cb <- getTblValue("onChangeValue", item)
-    elemTxt = create_option_switchbox(config)
+    elemTxt = ::create_option_switchbox(config)
   }
   else if (item.type == CONTROL_TYPE.MOUSE_AXIS && (item.values.len() > 0) && ("axis_num" in item)) {
     let value = params.getMouseAxis(item.axis_num)
@@ -1876,7 +1870,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 
 ::applySelectedPreset <- function applySelectedPreset(presetName) {
   if (isInArray(presetName, ["keyboard", "keyboard_shooter"]))
-    set_option(::USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
+    ::set_option(::USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
   return ($"{controlsPresetConfigPath.value}config/hotkeys/hotkey." + presetName + ".blk")
 }
 
@@ -2016,7 +2010,7 @@ let tutorialSkipControl = {
   if (!missionBlk?.triggers)
     return res
 
-  let isXinput = isXInputDevice()
+  let isXinput = ::is_xinput_device()
   let isAllowedCondition = @(condition) condition?.gamepadControls == null || condition.gamepadControls == isXinput
 
   let conditionsList = []
@@ -2259,7 +2253,7 @@ let function getWeaponFeatures(weaponsList) {
     if (w.gotSchraegeMusik)
       controls.append("ID_SCHRAEGE_MUSIK")
 
-    if (hasControllableRadar && !isXInputDevice()) {
+    if (hasControllableRadar && !::is_xinput_device()) {
       controls.append("ID_SENSOR_SWITCH")
       controls.append("ID_SENSOR_TARGET_SWITCH")
       controls.append("ID_SENSOR_TARGET_LOCK")
@@ -2268,7 +2262,7 @@ let function getWeaponFeatures(weaponsList) {
   else if (unitType == unitTypes.HELICOPTER) {
     controls = [ "helicopter_collective", "helicopter_climb", "helicopter_cyclic_roll" ]
 
-    if (isXInputDevice())
+    if (::is_xinput_device())
       controls.append("helicopter_mouse_aim_x", "helicopter_mouse_aim_y")
 
     let w = getWeaponFeatures([ commonWeapons, weaponPreset ])
@@ -2301,7 +2295,7 @@ let function getWeaponFeatures(weaponsList) {
   else if (unitType == unitTypes.TANK) {
     controls = [ "gm_throttle", "gm_steering", "gm_mouse_aim_x", "gm_mouse_aim_y", "ID_TOGGLE_VIEW_GM", "ID_FIRE_GM", "ID_REPAIR_TANK" ]
 
-    if (is_platform_pc && !isXInputDevice()) {
+    if (is_platform_pc && !::is_xinput_device()) {
       if (::shop_is_modification_enabled(unitId, "manual_extinguisher"))
         controls.append("ID_ACTION_BAR_ITEM_6")
       if (::shop_is_modification_enabled(unitId, "art_support")) {
@@ -2310,7 +2304,7 @@ let function getWeaponFeatures(weaponsList) {
       }
     }
 
-    if (hasControllableRadar && !isXInputDevice()) {
+    if (hasControllableRadar && !::is_xinput_device()) {
       controls.append("ID_SENSOR_TARGET_SWITCH_TANK")
       controls.append("ID_SENSOR_TARGET_LOCK_TANK")
     }
@@ -2402,7 +2396,7 @@ let function getWeaponFeatures(weaponsList) {
   }
 
   if (actionBarShortcutFormat) {
-    if (is_platform_pc && !isXInputDevice()) {
+    if (is_platform_pc && !::is_xinput_device()) {
       local bulletsChoice = 0
       for (local groupIndex = 0; groupIndex < unitType.bulletSetsQuantity; groupIndex++) {
         if (isBulletGroupActive(unit, groupIndex)) {
@@ -2419,7 +2413,7 @@ let function getWeaponFeatures(weaponsList) {
 
   if (unitType.wheelmenuAxis.len()) {
     controls.append("ID_SHOW_MULTIFUNC_WHEEL_MENU")
-    if (isXInputDevice())
+    if (::is_xinput_device())
       controls.extend(unitType.wheelmenuAxis)
   }
 

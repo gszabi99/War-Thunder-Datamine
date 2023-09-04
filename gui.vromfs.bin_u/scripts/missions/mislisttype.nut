@@ -276,9 +276,9 @@ enum mislistTabsOrder {
   }
 
   sortMissionsByName = function(missions) {
-    let sortData = missions.map((@(m) { locName = this.getMissionNameText(m), mission = m }).bindenv(this))
+    let sortData = u.map(missions, (@(m) { locName = this.getMissionNameText(m), mission = m }).bindenv(this))
     sortData.sort(@(a, b) a.locName <=> b.locName)
-    return sortData.map(@(d) d.mission)
+    return u.map(sortData, @(d) d.mission)
   }
 }
 

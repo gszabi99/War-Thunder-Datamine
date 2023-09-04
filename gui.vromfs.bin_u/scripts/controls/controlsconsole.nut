@@ -2,20 +2,18 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_game_mode } = require("mission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 
 ::gui_start_controls_console <- function gui_start_controls_console() {
   if (!hasFeature("ControlsAdvancedSettings"))
     return
 
-  ::gui_start_modal_wnd(gui_handlers.ControlsConsole)
+  ::gui_start_modal_wnd(::gui_handlers.ControlsConsole)
 }
 
-gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {
+::gui_handlers.ControlsConsole <- class extends ::gui_handlers.GenericOptionsModal {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/controlsConsole.blk"
   sceneNavBlkName = null
@@ -68,7 +66,7 @@ gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {
     if (!option)
       return
 
-    set_option(option.type, obj.getValue(), option)
+    ::set_option(option.type, obj.getValue(), option)
     this.checkHeadtrackRows()
   }
 
@@ -81,7 +79,7 @@ gui_handlers.ControlsConsole <- class extends gui_handlers.GenericOptionsModal {
 
   function onSwitchModeButton() {
     this.changeControlsMode = true
-    this.backSceneParams = { globalFunctionName = "gui_start_advanced_controls" }
+    this.backSceneFunc = ::gui_start_advanced_controls
     ::switchControlsMode(false)
     this.goBack()
   }

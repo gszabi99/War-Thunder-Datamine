@@ -6,12 +6,10 @@ let DataBlock = require("DataBlock")
 let { parse_json } = require("json")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
 let checkedOffers = mkWatched(persist, "checkedOffers", {})
@@ -36,13 +34,13 @@ let function sendDataToBqOnce(data) {
 let function markSeenPersonalOffer(offerName) {
   let seenCountId = $"personalOffer/{offerName}/visibleOfferCount"
   ::save_local_account_settings(seenCountId, (::load_local_account_settings(seenCountId) ?? 0) + 1)
-  sendDataToBqOnce({ offerName, serverTime = get_charserver_time_sec(), reason = "personal_offer_window_is_show" })
+  sendDataToBqOnce({ offerName, serverTime = ::get_charserver_time_sec(), reason = "personal_offer_window_is_show" })
 }
 
 let isSeenOffer = @(offerName)
   (::load_local_account_settings($"personalOffer/{offerName}/visibleOfferCount") ?? 0) > 0
 
-let function getReceivedOfferContent(offerContent) {
+let function getRecievedOfferContent(offerContent) {
   let res = []
   foreach(offer in offerContent) {
     let contentType = ::trophyReward.getType(offer)
@@ -68,7 +66,7 @@ let function getReceivedOfferContent(offerContent) {
 let function checkCompletedSuccessfully(currentOfferData) {
   curPersonalOffer(currentOfferData)
   ::save_local_account_settings($"personalOffer/{currentOfferData.offerName}/finishTime", currentOfferData.timeExpired)
-  setTimeout(currentOfferData.timeExpired - get_charserver_time_sec(), clearOfferCache)
+  setTimeout(currentOfferData.timeExpired - ::get_charserver_time_sec(), clearOfferCache)
 }
 
 let function validatePersonalOffer(personalOffer, currentOfferData) {
@@ -83,7 +81,7 @@ let function validatePersonalOffer(personalOffer, currentOfferData) {
   catch(e) {
   }
 
-  let serverTime = get_charserver_time_sec()
+  let serverTime = ::get_charserver_time_sec()
   if (data == null) {
     sendDataToBqOnce({ offerName, serverTime, reason = "can_not_parse_json", desc = personalOffer.text })
     return false
@@ -117,9 +115,9 @@ let function validatePersonalOffer(personalOffer, currentOfferData) {
     return false
   }
 
-  let receivedOfferContent = getReceivedOfferContent(offerBlk % "i")
-  if(receivedOfferContent.len() > 0) {
-    sendDataToBqOnce({ offerName, serverTime, reason = "has_content", desc = ";".join(receivedOfferContent) })
+  let recievedOfferContent = getRecievedOfferContent(offerBlk % "i")
+  if(recievedOfferContent.len() > 0) {
+    sendDataToBqOnce({ offerName, serverTime, reason = "has_content", desc = ";".join(recievedOfferContent) })
     return false
   }
 
@@ -145,7 +143,7 @@ let function checkExternalItemsComplete(notExistedItems, currentOfferData) {
   if(notExistedItems.len() > 0)
     sendDataToBqOnce({
       offerName = currentOfferData.offerName
-      serverTime = get_charserver_time_sec()
+      serverTime = ::get_charserver_time_sec()
       reason = "content_not_exists"
       desc = ";".join(notExistedItems)
     })
@@ -240,7 +238,7 @@ let function cachePersonalOfferIfNeed() {
     if(notExistedItems.len() > 0) {
       sendDataToBqOnce({
         offerName = currentOfferData.offerName
-        serverTime = get_charserver_time_sec()
+        serverTime = ::get_charserver_time_sec()
         reason = "content_not_exists"
         desc = ";".join(notExistedItems)
       })
@@ -260,7 +258,7 @@ let function cachePersonalOfferIfNeed() {
 
 isInProgressOfferValidation.subscribe(function(v) {
   if(!v)
-    handlersManager.doDelayed(cachePersonalOfferIfNeed)
+    ::handlersManager.doDelayed(cachePersonalOfferIfNeed)
 })
 
 addListenersWithoutEnv({

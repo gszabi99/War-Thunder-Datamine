@@ -1,14 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 
-local handlerClass = class extends gui_handlers.SlotbarWidget {
+local handlerClass = class extends ::gui_handlers.SlotbarWidget {
   unitsGroupsByCountry = null
   countryPresets = null
   emptyText = "#mainmenu/changeUnitsGroup"
@@ -170,7 +169,7 @@ local handlerClass = class extends gui_handlers.SlotbarWidget {
   getDefaultDblClickFunc = @() @(_crew) null
 }
 
-gui_handlers.slotbarWidgetByVehiclesGroups <- handlerClass
+::gui_handlers.slotbarWidgetByVehiclesGroups <- handlerClass
 
 let function create(params) {
   let nest = params?.scene
@@ -183,7 +182,7 @@ let function create(params) {
     params.scene = nest.findObject("nav-slotbar")
   }
 
-  return handlersManager.loadHandler(handlerClass, params)
+  return ::handlersManager.loadHandler(handlerClass, params)
 }
 
 return {

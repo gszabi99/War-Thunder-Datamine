@@ -2,9 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost, Balance } = require("%scripts/money.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
@@ -178,8 +176,8 @@ local handlerClass = class extends vehiclesModal.handlerClass {
 
 }
 
-gui_handlers.clanVehiclesModal <- handlerClass
+::gui_handlers.clanVehiclesModal <- handlerClass
 
 return {
-  open = @() handlersManager.loadHandler(handlerClass)
+  open = @() ::handlersManager.loadHandler(handlerClass)
 }

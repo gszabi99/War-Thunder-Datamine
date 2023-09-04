@@ -166,16 +166,6 @@
       }
     }
   },
-  "transmitters": {
-    "rc": {
-      "power": 50.0,
-      "band": 9,
-      "antenna": {
-        "angleHalfSens": 10.0,
-        "sideLobesSensitivity": -20.0
-      }
-    }
-  },
   "fsms": {
     "main": {
       "stateInit": "init",
@@ -671,22 +661,6 @@
               "name": "track"
             },
             "setRadar": {}
-          }
-        },
-        "activateWeaponTracking": {
-          "event": "updateWeaponTracking",
-          "actions": {
-            "setWeaponRcTransmissionTimeOut": {
-              "timeOut": 2.0
-            }
-          }
-        },
-        "deactivateWeaponTracking": {
-          "event": "update",
-          "actions": {
-            "checkWeaponRcTransmissionTimeOut": {
-              "transmitter": "rc"
-            }
           }
         }
       }

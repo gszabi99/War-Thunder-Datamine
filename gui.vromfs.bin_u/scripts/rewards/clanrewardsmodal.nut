@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
+
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { json_to_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
@@ -30,7 +29,7 @@ let function isRewardVisible (medal, clanData) {
   return false
 }
 
-gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanRewardsModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType            = handlerType.MODAL
   sceneTplName       = "%gui/rewards/clanRewardsModal.tpl"
   rewards            = null
@@ -138,7 +137,7 @@ gui_handlers.clanRewardsModal <- class extends gui_handlers.BaseGuiHandlerWT {
 
 return {
   open = function(params = null) {
-    handlersManager.loadHandler(gui_handlers.clanRewardsModal, params)
+    ::handlersManager.loadHandler(::gui_handlers.clanRewardsModal, params)
   }
   isRewardVisible = isRewardVisible
 }

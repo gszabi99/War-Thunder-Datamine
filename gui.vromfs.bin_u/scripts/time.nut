@@ -10,11 +10,10 @@ let dagor_iso8601 = require("dagor.iso8601")
 let { get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime,
   unixtime_to_utc_timetbl, utc_timetbl_to_unixtime
 } = require("dagor.time")
-let { get_charserver_time_sec } = require("chard")
 
 /**
  * Native API:
- * int get_charserver_time_sec() - gets UTC_posix_timestamp from char server clock.
+ * int ::get_charserver_time_sec() - gets UTC_posix_timestamp from char server clock.
  * int utc_timetbl_to_unixtime(timeTbl) - converts UTC_timeTable to UTC_posix_timestamp.
  * timeTbl unixtime_to_utc_timetbl(int) - converts UTC_posix_timestamp to UTC_timeTable.
  * int (get_local_unixtime() - charToLocalUtcDiff()) - gets UTC_posix_timestamp from client machine clock.
@@ -30,7 +29,7 @@ let getCurrentYear = function() {
 }
 
 let charToLocalUtcDiff = function() {
-  return get_local_unixtime() - get_charserver_time_sec()
+  return get_local_unixtime() - ::get_charserver_time_sec()
 }
 
 
@@ -46,7 +45,7 @@ local getFullTimeTable = function(time, fillMissedByTimeTable = null) {
   return time
 }
 
-let getUtcDays = @() timeBase.DAYS_TO_YEAR_1970 + get_charserver_time_sec() / timeBase.TIME_DAY_IN_SECONDS
+let getUtcDays = @() timeBase.DAYS_TO_YEAR_1970 + ::get_charserver_time_sec() / timeBase.TIME_DAY_IN_SECONDS
 
 let buildTabularDateTimeStr = function(t, showSeconds = false) {
   let tm = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
@@ -95,7 +94,7 @@ let getCurTimeMillisecStr = function() {
 
 
 let getUtcMidnight = function() {
-  return get_charserver_time_sec() / timeBase.TIME_DAY_IN_SECONDS * timeBase.TIME_DAY_IN_SECONDS
+  return ::get_charserver_time_sec() / timeBase.TIME_DAY_IN_SECONDS * timeBase.TIME_DAY_IN_SECONDS
 }
 
 
@@ -165,7 +164,7 @@ let function getTimeFromString(str, fillMissedByTimeTable = null) {
 }
 
 let function getTimestampFromStringUtc(str) {
-  return utc_timetbl_to_unixtime(getTimeFromString(str, unixtime_to_utc_timetbl(get_charserver_time_sec())))
+  return utc_timetbl_to_unixtime(getTimeFromString(str, unixtime_to_utc_timetbl(::get_charserver_time_sec())))
 }
 
 let function getTimestampFromStringLocal(str, fillMissedByTimestamp) {
@@ -176,10 +175,10 @@ let function getTimestampFromStringLocal(str, fillMissedByTimestamp) {
 
 let function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
   if (!u.isEmpty(beginDateStr) &&
-    getTimestampFromStringUtc(beginDateStr) > get_charserver_time_sec())
+    getTimestampFromStringUtc(beginDateStr) > ::get_charserver_time_sec())
     return false
   if (!u.isEmpty(endDateStr) &&
-    getTimestampFromStringUtc(endDateStr) < get_charserver_time_sec())
+    getTimestampFromStringUtc(endDateStr) < ::get_charserver_time_sec())
     return false
   return true
 }
@@ -193,7 +192,7 @@ let function calculateCorrectTimePeriodYears(startTime, endTime) {
     return { startTime, endTime }
 
   // time period starts in the prev year
-  if (get_charserver_time_sec() <= endTime) {
+  if (::get_charserver_time_sec() <= endTime) {
     let date = unixtime_to_utc_timetbl(startTime)
     --date.year
     startTime = utc_timetbl_to_unixtime(date)
@@ -235,7 +234,7 @@ local function processTimeStamps(text) {
 
       local textTime = ""
       if (time == "{time_countdown=") {
-        textTime = timeBase.hoursToString(max(0, t - get_charserver_time_sec()) / timeBase.TIME_HOUR_IN_SECONDS_F, true, true)
+        textTime = timeBase.hoursToString(max(0, t - ::get_charserver_time_sec()) / timeBase.TIME_HOUR_IN_SECONDS_F, true, true)
       }
       else {
         textTime = buildDateTimeStr(t)

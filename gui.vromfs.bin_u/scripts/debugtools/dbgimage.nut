@@ -65,7 +65,7 @@ let function debug_svg_list(fileMask = null, size = null, bgColor = null) {
   let filesList = []
   foreach (dir in dirs) {
     let filePaths = dagor_fs.scan_folder({ root = dir, files_suffix = fileMask, vromfs = false, realfs = true, recursive = true })
-    filesList.extend(filePaths.map(@(path) g_path.fileName(path)))
+    filesList.extend(u.map(filePaths, @(path) g_path.fileName(path)))
   }
   filesList.sort()
 

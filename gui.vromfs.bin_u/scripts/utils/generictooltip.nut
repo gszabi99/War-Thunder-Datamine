@@ -1,13 +1,15 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+
+
 let { parse_json } = require("json")
+
 let { getTooltipType, UNLOCK, ITEM, INVENTORY, SUBTROPHY, UNIT,
   CREW_SPECIALIZATION, BUY_CREW_SPEC, DECORATION
 } = require("genericTooltipTypes.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 local openedTooltipObjs = []
 let function removeInvalidTooltipObjs() {
@@ -58,7 +60,7 @@ let function fillTooltip(obj, handler, tooltipType, id, params) {
     return
   obj["class"] = "empty"
 
-  if (!handlersManager.isHandlerValid(handler))
+  if (!::handlersManager.isHandlerValid(handler))
     return
   let tooltipId = ::getTooltipObjId(obj)
   if (!tooltipId || tooltipId == "")

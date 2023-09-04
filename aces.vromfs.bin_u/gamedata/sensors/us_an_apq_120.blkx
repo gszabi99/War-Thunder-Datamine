@@ -223,9 +223,8 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
-          "setFsmActive": {
-            "fsm": "illumination",
-            "active": false
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setSearchMode": {
@@ -235,16 +234,10 @@
           "setEnabled": {
             "value": true
           },
-          "setFsmActive": [
-            {
-              "fsm": "search",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": false
-            }
-          ],
+          "setFsmActive": {
+            "fsm": "search",
+            "active": true
+          },
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -266,6 +259,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "resetSearchMode": {
@@ -304,20 +300,17 @@
             "source": "targetDesignation",
             "width": 30.0
           },
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": false
-            }
-          ],
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
           "setSignal": {
             "signal": "track"
           },
-          "clearTargets": {}
+          "clearTargets": {},
+          "setIllumination": {
+            "illumination": false
+          }
         },
         "setBoresightLockMode": {
           "setModeName": {
@@ -343,16 +336,10 @@
             "source": "constant",
             "value": -2.0
           },
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": false
-            }
-          ],
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          },
           "setSignal": {
             "signal": "track"
           },
@@ -363,6 +350,9 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "boresightLock"
+          },
+          "setIllumination": {
+            "illumination": false
           }
         },
         "setTrackMode": {
@@ -394,18 +384,15 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": [
-            {
-              "fsm": "track",
-              "active": true
-            },
-            {
-              "fsm": "illumination",
-              "active": true
-            }
-          ],
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
+          },
           "setSignal": {
             "signal": "track"
+          },
+          "setIllumination": {
+            "illumination": true
           }
         }
       },
@@ -776,45 +763,6 @@
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
-            }
-          }
-        }
-      }
-    },
-    "illumination": {
-      "stateInit": "init",
-      "transitions": {
-        "activate": {
-          "event": "fsmActivate",
-          "stateTo": "active",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true
-            }
-          }
-        },
-        "deactivate": {
-          "event": "fsmDeactivate",
-          "stateTo": "inactive",
-          "actions": {
-            "setIllumination": {
-              "transiver": false
-            }
-          }
-        },
-        "activateIllumination": {
-          "event": "sarhMissileLaunch",
-          "actions": {
-            "setIlluminationTimeOut": {
-              "timeOut": 60.0
-            }
-          }
-        },
-        "updateIllumination": {
-          "event": "update",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true
             }
           }
         }

@@ -1,11 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { format } = require("string")
@@ -15,7 +13,7 @@ let { abs } = require("math")
 let { find_files } = require("dagor.fs")
 let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/string.nut")
 
-gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.FileDialog <- class extends ::gui_handlers.BaseGuiHandlerWT {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
 
@@ -142,7 +140,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
         return getTblValue("name", file)
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
+        return ::gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
       }
       width = "fw"
       getView = function(value) {
@@ -161,7 +159,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
         return getTblValue("modifyTime", file)
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
+        return ::gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -216,7 +214,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
         return utf8ToUpper(filename.slice(fileExtIdx))
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
+        return ::gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -243,7 +241,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
         return getTblValue("size", file)
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
+        return ::gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -276,7 +274,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
         }
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareObjOrNull(lhs, rhs) ||
+        return ::gui_handlers.FileDialog.compareObjOrNull(lhs, rhs) ||
           (lhs != null ? lhs.column.comparator(lhs.value, rhs.value) * lhs.multiplier : 0)
       }
     }
@@ -413,14 +411,14 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
       (isInArray(this.allFilesFilter, this.filters) ? this.allFilesFilter : this.filters[0])
 
     if (this.extension && this.currentFilter != this.allFilesFilter && this.extension != this.currentFilter) {
-      script_net_assert_once("FileDialog: extension not same as currentFilter",
+      ::script_net_assert_once("FileDialog: extension not same as currentFilter",
         "FileDialog: specified extension is not same as currentFilter")
       this.goBack()
       return
     }
 
     if (this.onSelectCallback == null) {
-      script_net_assert_once("FileDialog: null onSelectCallback",
+      ::script_net_assert_once("FileDialog: null onSelectCallback",
         "FileDialog: onSelectCallback not specified")
       this.goBack()
       return
@@ -698,7 +696,7 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
         let column = columnInfo.column
         foreach (attr in requiredAttributes)
           if (!(attr in column)) {
-            script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format(
+            ::script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format(
               "ERROR: FileDialog column " +
               getTblValue("name", column, "[UNDEFINED name]") +
               " has not attribute " + attr + " but it is required!"))
@@ -1195,12 +1193,12 @@ gui_handlers.FileDialog <- class extends gui_handlers.BaseGuiHandlerWT {
 
   static function compareStringOrNull(lhs, rhs) {
     return lhs == rhs ? 0
-      : (gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
+      : (::gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
         || (lhs > rhs ? 1 : lhs < rhs ? -1 : 0))
   }
 
   static function compareIntOrNull(lhs, rhs) {
-    return gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
+    return ::gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
       || (lhs != null ? lhs - rhs : 0)
   }
 }

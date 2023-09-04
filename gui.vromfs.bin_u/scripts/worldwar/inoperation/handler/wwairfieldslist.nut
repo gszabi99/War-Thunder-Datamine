@@ -1,16 +1,14 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
+
+::gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/airfieldObject.tpl"
   sceneBlkName = null
@@ -28,8 +26,8 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
   function getSceneTplView() {
     return {
       isControlHelpCentered = true
-      consoleButtonsIconName = showConsoleButtons.value ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
-      controlHelpText = showConsoleButtons.value ? null : loc("key/RMB")
+      consoleButtonsIconName = ::show_console_buttons ? WW_MAP_CONSPLE_SHORTCUTS.MOVE : null
+      controlHelpText = ::show_console_buttons ? null : loc("key/RMB")
       controlHelpDesc = loc("worldwar/state/air_fly_out_control")
     }
   }
@@ -83,7 +81,7 @@ gui_handlers.WwAirfieldsList <- class extends ::BaseGuiHandler {
     if (this.updateTimer)
       this.updateTimer.destroy()
 
-    this.updateTimer = Timer(placeObj, this.updateDelay,
+    this.updateTimer = ::Timer(placeObj, this.updateDelay,
       function() {
         this.onUpdateTimer(placeObj, airfieldIdx, cooldownView)
       }, this, true)

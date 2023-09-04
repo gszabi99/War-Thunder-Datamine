@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
@@ -14,8 +13,6 @@ let { register_command } = require("console")
 let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 let { multiStageLocIdConfig, hasMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
 let { saveJson } = require("%sqstd/json.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
 
 let function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!::is_dev_version)
@@ -133,7 +130,7 @@ let function exportUnlockInfo(params) {
   return "ok"
 }
 
-web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
+::web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
 
 let function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, showValue = false, all_langs = true) {
   if (!all_langs)
@@ -167,9 +164,9 @@ let function debug_show_debriefing_trophy(trophyItemId) {
 let function debug_new_unit_unlock(needTutorial = false, unitName = null) {
   local unit = getAircraftByName(unitName)
   if (!unit)
-    unit = u.search(getAllUnits(), @(un) un.isBought())
+    unit = u.search(::all_units, @(un) un.isBought())
 
-  ::gui_start_modal_wnd(gui_handlers.ShowUnlockHandler,
+  ::gui_start_modal_wnd(::gui_handlers.ShowUnlockHandler,
     {
       config = {
          type = UNLOCKABLE_AIRCRAFT

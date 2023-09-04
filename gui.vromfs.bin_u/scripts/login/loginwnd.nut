@@ -1,12 +1,10 @@
 //-file:plus-string
 
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 //checked for explicitness
 
 let statsd = require("statsd")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -24,8 +22,6 @@ let { register_command } = require("console")
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { validateEmail } = require("%sqstd/string.nut")
 let { subscribe } = require("eventbus")
-let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -45,7 +41,7 @@ let function setDbgGuestLoginIdPrefix(prefix) {
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
-gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
+::gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   sceneBlkName = loginWndBlkPath.value
 
   check2StepAuthCode = false
@@ -114,7 +110,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       spObj.setValue(lp.autoSave & AUTO_SAVE_FLG_PASS)
       spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 && !isVietnamese)
       local text = loc("mainmenu/savePassword")
-      if (!isPlatformShieldTv())
+      if (!::is_platform_shield_tv())
         text += " " + loc("mainmenu/savePassword/unsecure")
       spObj.findObject("loginbox_autosave_password_text").setValue(text)
     }
@@ -139,7 +135,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       autoLoginObj.setValue(autoLogin)
     }
 
-    this.showSceneBtn("links_block", !isPlatformShieldTv())
+    this.showSceneBtn("links_block", !::is_platform_shield_tv())
 
     if ("dgs_get_argv" in getroottable()) {
       let s = ::dgs_get_argv("stoken")
@@ -286,7 +282,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
   }
 
   function onPopupLanguages(obj) {
-    if (gui_handlers.ActionsList.hasActionsListOnObject(obj))
+    if (::gui_handlers.ActionsList.hasActionsListOnObject(obj))
       return this.onClosePopups()
 
     this.localizationInfo = this.localizationInfo || ::g_language.getGameLocalizationInfo()
@@ -309,13 +305,13 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
         selected    = lang.id == curLangId
       })
     }
-    gui_handlers.ActionsList.open(obj, menu)
+    ::gui_handlers.ActionsList.open(obj, menu)
   }
 
   function onClosePopups() {
     let obj = this.scene.findObject("btn_language")
     if (checkObj(obj))
-      gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
+      ::gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
   }
 
   function onChangeLanguage(langId) {
@@ -331,7 +327,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 
     ::g_language.setGameLocalization(langId, true, true)
 
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
+    let handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
     this.scene = handler ? handler.scene : null
     if (!checkObj(this.scene))
       return
@@ -385,7 +381,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
       autoSave = autoSave | AUTO_SAVE_FLG_DISABLE
 
     if (this.isGuestLogin)
-      saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, getGuestLoginId())
+      ::save_local_shared_settings(GUEST_LOGIN_SAVE_ID, getGuestLoginId())
 
     ::set_login_pass(no_dump_login.tostring(), getObjValue(this.scene, "loginbox_password", ""), autoSave)
     if (!checkObj(this.scene)) //set_login_pass start onlineJob
@@ -472,12 +468,6 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     }
   }
 
-  function showConnectionErrorMessageBox(errorMsg) {
-    let onTryAgain = Callback(this.onLoginErrorTryAgain, this)
-    ::error_message_box("yn1/connect_error", errorMsg,
-      [["exit", exitGame], ["tryAgain", onTryAgain]], "tryAgain", { cancel_fn = onTryAgain })
-  }
-
   function proceedAuthorizationResult(result, no_dump_login) {
     this.isLoginRequestInprogress = false
     if (!checkObj(this.scene)) //check_login_pass is not instant
@@ -488,7 +478,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     switch (result) {
       case YU2_OK:
         if (::steam_is_running())
-          saveLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
+          ::save_local_shared_settings(USE_STEAM_LOGIN_AUTO_SETTING_ID, this.isSteamAuth)
         this.continueLogin(no_dump_login)
         break
 
@@ -544,21 +534,14 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
         ::showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
         break
 
-      case YU2_NOT_FOUND:
-        if (!this.isGuestLogin) {
-          this.showConnectionErrorMessageBox(result)
-          return
-        }
-
-        saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
-        this.onGuestAuthorization()
-        break
-
       default:
         if (this.was_using_stoken)
-          return
-
-        this.showConnectionErrorMessageBox(result)
+          return;
+        ::error_message_box("yn1/connect_error", result,
+        [
+          ["exit", exitGame],
+          ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
+        ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
     }
   }
 
@@ -592,7 +575,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     local urlLocId
     if (::steam_is_running())
       urlLocId = "url/signUpSteam"
-    else if (isPlatformShieldTv())
+    else if (::is_platform_shield_tv())
       urlLocId = "url/signUpShieldTV"
     else
       urlLocId = "url/signUp"
@@ -645,20 +628,20 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
     this.onExit()
   }
 
-  function guestProceedAuthorization(guestLoginId, nick = "", known = false) {
+  function guestProceedAuthorization(guestLoginId, nick = "") {
     this.isGuestLogin = true
     this.isLoginRequestInprogress = true
     ::disable_autorelogin_once <- false
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
     log("Guest Login: check_login_pass")
-    let result = ::check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
+    let result = ::check_login_pass(guestLoginId, nick, "guest", "guest", false, false)
     this.proceedAuthorizationResult(result, "")
   }
 
   function onGuestAuthorization() {
     let guestLoginId = getGuestLoginId()
     if (guestLoginId == ::load_local_shared_settings(GUEST_LOGIN_SAVE_ID)) {
-      this.guestProceedAuthorization(guestLoginId, "", true)
+      this.guestProceedAuthorization(guestLoginId)
       return
     }
 
@@ -683,7 +666,7 @@ gui_handlers.LoginWndHandler <- class extends ::BaseGuiHandler {
 }
 
 subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
-  let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
+  let loginWnd = ::handlersManager.findHandlerClassInScene(::gui_handlers.LoginWndHandler)
   if (loginWnd == null)
     return
   loginWnd.proceedGetTwoStepCode(p)

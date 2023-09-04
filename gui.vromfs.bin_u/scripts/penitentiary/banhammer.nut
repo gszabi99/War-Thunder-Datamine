@@ -1,34 +1,30 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode, get_local_mplayer } = require("mission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 let time = require("%scripts/time.nut")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
-  handlersManager.loadHandler(gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
+  ::handlersManager.loadHandler(::gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
 }
 
 ::gui_modal_complain <- function gui_modal_complain(playerInfo, cLog = null) {
   if (!::tribunal.canComplaint())
     return
 
-  handlersManager.loadHandler(gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })
+  ::handlersManager.loadHandler(::gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })
 }
 
 let chatLogToString = function(chatLog) {
   if (!u.isTable(chatLog)) {
-    script_net_assert_once("Chatlog value is not a table", "Invalid type of chatlog")
+    ::script_net_assert_once("Chatlog value is not a table", "Invalid type of chatlog")
     return ""
   }
 
@@ -44,7 +40,7 @@ let chatLogToString = function(chatLog) {
   return res
 }
 
-gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.BanHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/complain.blk"
   wndType = handlerType.MODAL
 
@@ -155,7 +151,7 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
 
     foreach (opt in this.optionsList) {
       let obj = this.scene.findObject(opt.id)
-      set_option(opt.type, obj.getValue(), opt)
+      ::set_option(opt.type, obj.getValue(), opt)
     }
 
     let duration = get_gui_option(::USEROPT_BAN_TIME)
@@ -178,7 +174,7 @@ gui_handlers.BanHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.ComplainHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ComplainHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   optionsList = null
   location = ""
   clanInfo = ""

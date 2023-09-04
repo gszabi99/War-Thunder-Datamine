@@ -8,7 +8,6 @@ let { format } = require("string")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { endsWith, slice, cutPrefix } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -174,7 +173,7 @@ let function newMessage(from, msg, privateMsg = false, myPrivate = false, overla
 
     text = text
 
-    sTime = get_charserver_time_sec()
+    sTime = ::get_charserver_time_sec()
 
     messageIndex = 0
   }

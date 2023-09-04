@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 global enum WW_MAP_CONSPLE_SHORTCUTS {
   LMB_IMITATION = "A"
@@ -38,7 +37,7 @@ enum ORDER {
   shortcut = null
   keyboardShortcut = ""
   getActionName = @() ""
-  getKeyboardShortcut = @() showConsoleButtons.value
+  getKeyboardShortcut = @() ::show_console_buttons
     ? ""
     : loc("ui/parentheses/space", { text = this.keyboardShortcut })
   text = @() $"{this.getActionName()}{this.getKeyboardShortcut()}"
@@ -61,7 +60,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
 
       return loc("worldWar/armyMove")
     }
-    isHidden = @() !showConsoleButtons.value
+    isHidden = @() !::show_console_buttons
   }
   ENTRENCH = {
     id = "army_entrench_button"

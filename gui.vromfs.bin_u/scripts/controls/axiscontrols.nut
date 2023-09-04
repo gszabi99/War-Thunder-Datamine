@@ -1,18 +1,17 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { abs, fabs, pow } = require("math")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
-let { MAX_DEADZONE, MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { MAX_DEADZONE, MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getShortcutData } = require("%scripts/controls/shortcutsUtils.nut")
 let { stripTags } = require("%sqstd/string.nut")
 
-gui_handlers.AxisControls <- class extends gui_handlers.Hotkeys {
+::gui_handlers.AxisControls <- class extends ::gui_handlers.Hotkeys {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/joystickAxisInput.blk"
   sceneNavBlkName = null

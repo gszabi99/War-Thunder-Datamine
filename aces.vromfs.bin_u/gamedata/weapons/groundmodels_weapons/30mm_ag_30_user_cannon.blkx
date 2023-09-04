@@ -34,22 +34,6 @@
   "soundLoop": true,
   "sfxReloadBullet": "grd_cannon_belt_reload",
   "isBulletBelt": true,
-  "visualOverheat": {
-    "shotsToMax": 120,
-    "cooldownTime": 8.0,
-    "cooldownDelay": 1.8,
-    "fxType": "smoke_overheat_med",
-    "decalOffset": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "decalSize": [
-      1.8,
-      2.2,
-      2.2
-    ]
-  },
   "overheat": {
     "overheat": [
       [
@@ -77,7 +61,6 @@
     "selfDestructionInAir": true,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -91,17 +74,11 @@
       2.0
     ],
     "explodeOnRendinst": true,
-    "fuseOnWater": [
-      true,
-      true
-    ],
-    "fuseOnWaterProbability": [
-      1.0,
-      1.0
-    ],
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "30mm_vog_30",
     "hitPowerMult": 2.0,
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
     "ricochetTimeToLive": 0.085,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,

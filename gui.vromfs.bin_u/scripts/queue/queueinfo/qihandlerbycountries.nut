@@ -1,11 +1,10 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-gui_handlers.QiHandlerByCountries <- class extends gui_handlers.QiHandlerBase {
+::gui_handlers.QiHandlerByCountries <- class extends ::gui_handlers.QiHandlerBase {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
 
   timerUpdateObjId = "queue_box"
@@ -51,13 +50,15 @@ gui_handlers.QiHandlerByCountries <- class extends gui_handlers.QiHandlerBase {
 
     let view = {
       isCentered = true
-      countriesSets = sortedSets.map(function(cSet) {
+      countriesSets = u.map(sortedSets, function(cSet) {
         let res = {}
         let teams = ::g_team.getTeams()
         foreach (idx, team in teams)
           if (idx in cSet.countries) {
             res[team.name] <- {
-              countries = cSet.countries[idx].map(@(c) { countryIcon = ::get_country_icon(c) })
+              countries = u.map(cSet.countries[idx], function(c) {
+                return { countryIcon = ::get_country_icon(c) }
+              })
             }
           }
 

@@ -81,6 +81,30 @@ expandable {
         background-image:t='<<taskImage>>'
         border:t='yes';
         border-color:t='@black' //Not a forgotten string, by design.
+
+        <<#taskPlayback>>
+        ShadowPlate {
+          pos:t='pw-w, ph-h'
+          position:t='absolute'
+          padding:t='1@framePadding'
+          playbackCheckbox {
+            id:t='<<id>>_sound'
+            task_id:t='<<id>>'
+            on_change_value:t='switchPlaybackMode'
+            playback:t='<<taskPlayback>>'
+            downloading:t='<<#isPlaybackDownloading>>yes<</isPlaybackDownloading>><<^isPlaybackDownloading>>no<</isPlaybackDownloading>>'
+            btnName:t='LB'
+            ButtonImg{}
+            descImg {
+              background-image:t='#ui/gameuiskin#sound_on.svg'
+            }
+            animated_wait_icon {
+              background-rotation:t = '0'
+            }
+            playbackImg{}
+          }
+        }
+        <</taskPlayback>>
       }
       <</taskImage>>
 
@@ -104,7 +128,7 @@ expandable {
         width:t='pw'
 
         //Suppose that at a moment will be shown only one of two below buttons
-        //So pos pw-w would not move receive_reward button outside of window
+        //So pos pw-w would not move recieve_reward button outside of window
         <<#canReroll>>
         Button_text {
           id:t = 'btn_reroll'
@@ -126,7 +150,7 @@ expandable {
 
         <<#canGetReward>>
         Button_text {
-          id:t = 'btn_receive_reward'
+          id:t = 'btn_recieve_reward'
           task_id:t='<<id>>'
           pos:t='pw-w, 0'
           position:t='relative'

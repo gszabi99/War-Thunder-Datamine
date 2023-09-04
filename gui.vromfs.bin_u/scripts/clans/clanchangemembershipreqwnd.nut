@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
@@ -11,9 +10,8 @@ let { format } = require("string")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { debug_dump_stack } = require("dagor.debug")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
-gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanChangeMembershipReqWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL;
   sceneBlkName = "%gui/clans/clanChangeMembershipReqWnd.blk";
   wndOptionsMode = ::OPTIONS_MODE_GAMEPLAY
@@ -185,7 +183,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class extends gui_handlers.BaseGuiHan
 
     let errText = format("ERROR: [ClanMembershipReq] validation error '%s'", validateResult)
     debug_dump_stack()
-    script_net_assert_once("bad clan requirements", errText)
+    ::script_net_assert_once("bad clan requirements", errText)
     return false
   }
 

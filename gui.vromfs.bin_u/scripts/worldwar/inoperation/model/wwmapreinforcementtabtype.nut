@@ -2,9 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 ::g_ww_map_reinforcement_tab_type <- {
   types = []
@@ -33,8 +31,8 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
     tabIcon = "worldWar/iconCommander"
     tabText = "worldwar/commanders"
     getHandler = function (placeObj) {
-      return handlersManager.loadHandler(
-        gui_handlers.WwCommanders,
+      return ::handlersManager.loadHandler(
+        ::gui_handlers.WwCommanders,
         { scene = placeObj }
       )
     }
@@ -54,8 +52,8 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
       return ""
     }
     getHandler = function (placeObj) {
-      return handlersManager.loadHandler(
-        gui_handlers.WwReinforcements,
+      return ::handlersManager.loadHandler(
+        ::gui_handlers.WwReinforcements,
         { scene = placeObj }
       )
     }
@@ -68,8 +66,8 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
     tabIcon = "worldwar/iconAir"
     tabText = "worldWar/airfieldsList"
     getHandler = function (placeObj) {
-      return handlersManager.loadHandler(
-        gui_handlers.WwAirfieldsList,
+      return ::handlersManager.loadHandler(
+        ::gui_handlers.WwAirfieldsList,
         {
           scene = placeObj
           side = ::ww_get_player_side()
@@ -98,8 +96,8 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
       return loc("ui/parentheses/space", { text = countText })
     }
     getHandler = function (placeObj) {
-      return handlersManager.loadHandler(
-        gui_handlers.WwArmiesList,
+      return ::handlersManager.loadHandler(
+        ::gui_handlers.WwArmiesList,
         {
           scene = placeObj
         }

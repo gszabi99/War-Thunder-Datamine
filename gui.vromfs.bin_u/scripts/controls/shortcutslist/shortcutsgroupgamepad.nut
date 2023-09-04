@@ -2,8 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
-let { ActionGroup, hasXInputDevice } = require("controls")
-let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { ActionGroup } = require("controls")
 
 return [
   {
@@ -14,7 +13,7 @@ return [
   {
     id = "ID_COMMON_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_COMMON_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -23,7 +22,7 @@ return [
       ActionGroup.ONLY_COMMON | ActionGroup.HANGAR | ActionGroup.REPLAY,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_COMMON_SWAP_GAMEPAD_STICKS"
@@ -31,6 +30,6 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ActionGroup.ONLY_COMMON | ActionGroup.HANGAR | ActionGroup.REPLAY
     )
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
 ]

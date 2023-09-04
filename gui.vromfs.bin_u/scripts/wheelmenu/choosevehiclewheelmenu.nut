@@ -1,15 +1,13 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isXInputDevice } = require("controls")
+
 let { subscribe } = require("eventbus")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 
 //--------------------------------------------------------------------------------------------------
 
-gui_handlers.chooseVehicleMenuHandler <- class extends gui_handlers.wheelMenuHandler {
+::gui_handlers.chooseVehicleMenuHandler <- class extends ::gui_handlers.wheelMenuHandler {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_UNLIM_CTRL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -45,7 +43,7 @@ gui_handlers.chooseVehicleMenuHandler <- class extends gui_handlers.wheelMenuHan
   }
 }
 
-let getMenuHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.chooseVehicleMenuHandler)
+let getMenuHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.chooseVehicleMenuHandler)
 
 let function makeMenuView(cfg) {
   let menu = cfg.map(function(item) {
@@ -78,14 +76,14 @@ local function openMenu(cfg) {
     menu = makeMenuView(cfg)
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
     axisEnabled  = true
-    shouldShadeBackground = isXInputDevice()
+    shouldShadeBackground = ::is_xinput_device()
   }
 
   let handler = getMenuHandler()
   if (handler)
     handler.reinitScreen(params)
   else
-    handlersManager.loadHandler(gui_handlers.chooseVehicleMenuHandler, params)
+    ::handlersManager.loadHandler(::gui_handlers.chooseVehicleMenuHandler, params)
 }
 
 //--------------------------------------------------------------------------------------------------

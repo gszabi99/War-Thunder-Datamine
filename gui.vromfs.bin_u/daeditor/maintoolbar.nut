@@ -7,14 +7,13 @@ let {showEntitySelect, propPanelVisible, propPanelClosed, showHelp, de4editMode,
 let pictureButton = require("components/pictureButton.nut")
 let combobox = require("%daeditor/components/combobox.nut")
 let cursors =  require("components/cursors.nut")
-let {showLogsWindow, hasNewLogerr} = require("%daeditor/state/logsWindow.nut")
 
 let daEditor4 = require("daEditor4")
 let {DE4_MODE_CREATE_ENTITY, get_instance} = require("entity_editor")
 let {DE4_MODE_MOVE, DE4_MODE_ROTATE, DE4_MODE_SCALE, DE4_MODE_MOVE_SURF, DE4_MODE_SELECT,
      DE4_MODE_POINT_ACTION, getEditMode, setEditMode} = daEditor4
 
-let function toolbarButton(image, action, tooltip_text, checked=null, styles = {}) {
+let function toolbarButton(image, action, tooltip_text, checked=null) {
   let function onHover(on) {
     cursors.setTooltip(on ? tooltip_text : null)
   }
@@ -23,7 +22,6 @@ let function toolbarButton(image, action, tooltip_text, checked=null, styles = {
     action
     checked
     onHover
-    styles
   }
   let params = (type(image)=="table") ? defParams.__merge(image) : defParams.__merge({image})
   return pictureButton(params)
@@ -64,9 +62,6 @@ let function mainToolbar() {
       setEditMode(DE4_MODE_SELECT)
     showEntitySelect.update(!showEntitySelect.value);
   }
-  let function toggleLogsWindows() {
-    showLogsWindow(!showLogsWindow.value)
-  }
   let function toggleCreateEntityMode() {
     showEntitySelect.update(false)
     local mode = DE4_MODE_CREATE_ENTITY
@@ -80,7 +75,6 @@ let function mainToolbar() {
   }
   let toggleTime = @() editorTimeStop(!editorTimeStop.value)
   let toggleHelp = @() showHelp.update(!showHelp.value)
-  let save = @() get_instance().saveObjects("")
 
   return {
     cursor = cursors.normal
@@ -88,7 +82,7 @@ let function mainToolbar() {
     flow = FLOW_HORIZONTAL
     rendObj = ROBJ_WORLD_BLUR
     color = Color(150, 150, 150, 255)
-    watch = [de4editMode, propPanelVisible, de4workMode, de4workModes, showUIinEditor, editorTimeStop, showLogsWindow, hasNewLogerr]
+    watch = [de4editMode, propPanelVisible, de4workMode, de4workModes, showUIinEditor, editorTimeStop]
     valign = ALIGN_CENTER
     padding =hdpx(4)
 
@@ -118,8 +112,7 @@ let function mainToolbar() {
       toolbarButton(svg("gui_toggle"), @() showUIinEditor(!showUIinEditor.value), "Show UI", showUIinEditor.value)
       toolbarButton(svg("time_toggle"), toggleTime, "Toggle time (Ctrl+T)", !editorTimeStop.value)
       separator
-      toolbarButton(svg("save"), save, "Save")
-      toolbarButton(svg("logs"), toggleLogsWindows, "Show errors (Ctrl+L)", showLogsWindow.value, hasNewLogerr.value ? { defColor=Color(251,78,58,250) } : {})
+      toolbarButton(svg("save"), @() get_instance().saveObjects(""), "Save")
       toolbarButton(svg("help"), toggleHelp, "Help (F1)", showHelp.value)
 
       de4workModes.value.len() <= 1 ? null : separator
@@ -136,8 +129,6 @@ let function mainToolbar() {
       ["F1", toggleHelp],
       ["P", togglePropPanel],
       ["L.Ctrl !L.Alt T", toggleTime],
-      ["L.Ctrl !L.Alt S", { action = save, ignoreConsumerCallback = true }], // ignoreConsumerCallback so that freecamera moevement with s works
-      ["L.Ctrl !L.Alt L", toggleLogsWindows],
       ["Esc", @() daEditor4.setEditMode(DE4_MODE_SELECT)]
     ]
   }

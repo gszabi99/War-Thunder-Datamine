@@ -2,10 +2,8 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -20,7 +18,9 @@ let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.n
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 
-let backFromBriefingParams = persist("backFromBriefingParams", @() Watched({ globalFunctionName = "gui_start_mainmenu"}))
+::back_from_briefing <- ::gui_start_mainmenu
+
+registerPersistentData("BriefingGlobals", getroottable(), ["back_from_briefing"])
 
 ::mission_settings <- {
   name = null
@@ -61,13 +61,14 @@ let backFromBriefingParams = persist("backFromBriefingParams", @() Watched({ glo
 
 ::gui_start_briefing <- function gui_start_briefing() { //Is this function can be called from code atm?
   //FIX ME: Check below really can be in more easier way.
-  let startParams = handlersManager.getLastBaseHandlerStartParams()
-  if (startParams != null && !isInArray(handlersManager.lastLoadedBaseHandlerName,
-      ["MPLobby", "SessionsList", "DebriefingModal"]))
-    backFromBriefingParams(startParams)
+  if (::handlersManager.getLastBaseHandlerStartFunc()
+      && !isInArray(::handlersManager.lastLoadedBaseHandlerName,
+                      ["MPLobby", "SessionsList", "DebriefingModal"])
+     )
+    ::back_from_briefing = ::handlersManager.getLastBaseHandlerStartFunc()
 
   let params = {
-    backSceneParams = backFromBriefingParams.value
+    backSceneFunc = ::back_from_briefing
     isRestart = false
   }
   params.applyFunc <- function() {
@@ -76,7 +77,7 @@ let backFromBriefingParams = persist("backFromBriefingParams", @() Watched({ glo
     else
       ::briefing_options_apply.call(this)
   }
-  handlersManager.loadHandler(gui_handlers.Briefing)
+  ::handlersManager.loadHandler(::gui_handlers.Briefing)
 }
 
 ::gui_start_briefing_restart <- function gui_start_briefing_restart() {
@@ -93,7 +94,7 @@ let backFromBriefingParams = persist("backFromBriefingParams", @() Watched({ glo
 
   let params = {
     isRestart = true
-    backSceneParams = { globalFunctionName = "gui_start_flight_menu" }
+    backSceneFunc = ::gui_start_flight_menu
   }
 
   let finalApplyFunc = function() {
@@ -107,8 +108,8 @@ let backFromBriefingParams = persist("backFromBriefingParams", @() Watched({ glo
       finalApplyFunc()
   }
 
-  handlersManager.loadHandler(gui_handlers.Briefing, params)
-  handlersManager.setLastBaseHandlerStartParams({ globalFunctionName = "gui_start_briefing_restart" })
+  ::handlersManager.loadHandler(::gui_handlers.Briefing, params)
+  ::handlersManager.setLastBaseHandlerStartFunc(::gui_start_briefing_restart)
 }
 
 ::briefing_options_apply <- function briefing_options_apply() {
@@ -355,7 +356,7 @@ let function get_mission_desc_text(missionBlk) {
   return descrAdd
 }
 
-gui_handlers.Briefing <- class extends gui_handlers.GenericOptions {
+::gui_handlers.Briefing <- class extends ::gui_handlers.GenericOptions {
   sceneBlkName = "%gui/briefing.blk"
   sceneNavBlkName = "%gui/navBriefing.blk"
 

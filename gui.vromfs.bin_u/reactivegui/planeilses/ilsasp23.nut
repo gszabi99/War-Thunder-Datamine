@@ -17,7 +17,7 @@ let { cvt } = require("dagor.math")
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let ASPSpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
 let ASPSpeed = @() {
-  watch = [ASPSpeedValue, IlsColor]
+  watch = ASPSpeedValue
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(21), ph(30)]
@@ -29,7 +29,7 @@ let ASPSpeed = @() {
 
 let ASPAltValue = Computed(@() (Altitude.value).tointeger())
 let ASPAltitude = @() {
-  watch = [ASPAltValue, IlsColor]
+  watch = ASPAltValue
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(70), ph(30)]
@@ -40,7 +40,6 @@ let ASPAltitude = @() {
 }
 
 let ASPRoll = @() {
-  watch = IlsColor
   size = [pw(15), ph(15)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -64,7 +63,6 @@ let ASPRoll = @() {
 }
 
 let ASPCompassMark = @() {
-  watch = IlsColor
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
@@ -163,7 +161,7 @@ let ASPLRGrid = @() {
 
 let function ASPRadarDist(is_ru, w_pos) {
   return @() {
-    watch = [DistanceMax, IlsColor]
+    watch = DistanceMax
     size = SIZE_TO_CONTENT
     rendObj = ROBJ_TEXT
     pos = [pw(w_pos), ph(0)]
@@ -175,7 +173,7 @@ let function ASPRadarDist(is_ru, w_pos) {
 }
 
 let ASPRadarMode = @() {
-  watch = [RadarModeNameId, IsRadarVisible, Irst, IlsColor]
+  watch = [RadarModeNameId, IsRadarVisible, Irst]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
   pos = [pw(-7),  Irst.value ? ph(50) : ph(15)]
@@ -186,7 +184,6 @@ let ASPRadarMode = @() {
 }
 
 let ASPRadarRoll = @() {
-  watch = IlsColor
   size = flex()
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
@@ -214,8 +211,7 @@ let function createTargetDistASP23(index) {
   let angleLeft = angleRel - 0.5 * angularWidthRel
   let angleRight = angleRel + 0.5 * angularWidthRel
 
-  return @() {
-    watch = IlsColor
+  return {
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
@@ -264,7 +260,7 @@ let function createTargetDistASP23(index) {
 
 let function ASP23LongRange(width, height) {
   return @() {
-    watch = [Irst, IlsColor]
+    watch = Irst
     size = [width * 0.5, height * 0.35]
     pos = [width * 0.25, height * 0.4]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -325,8 +321,7 @@ let ASPCCIPDistanceMark = @() {
   watch = DistMarkPos
   size = [pw(3), ph(2)]
   pos = [pw(27), ph(DistMarkPos.value)]
-  children = @() {
-    watch = IlsColor
+  children = {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
     size = flex()
@@ -344,7 +339,7 @@ let ASPCCIPDistanceMark = @() {
 
 let function IPPCCRPLine(_width, height) {
   return @() {
-    watch = [TargetPosValid, BombCCIPMode, BombingMode, IlsColor]
+    watch = [TargetPosValid, BombCCIPMode, BombingMode]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
     size = flex()
@@ -377,7 +372,6 @@ let function ASP23CCIP(width, height, isIpp) {
 
 let IPPAccelWatch = Computed(@() clamp((50.0 - Accel.value * mpsToKmh), 0, 100).tointeger())
 let IPPAcceleration = @() {
-  watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
   size = [pw(10), ph(5)]
@@ -406,7 +400,6 @@ let IPPAcceleration = @() {
 
 let IPPClimbWatch = Computed(@() clamp((3.0 - ClimbSpeed.value) / 6.0 * 100.0, 0, 100).tointeger())
 let IPPClimb = @() {
-  watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
   size = [pw(5), ph(30)]
@@ -531,7 +524,7 @@ let createTargetDistJ7E = @(index) function() {
   let angleRight = angleRel + 0.15 * angularWidthRel
 
   return {
-    watch = [HasAzimuthScale, HasDistanceScale, IlsColor]
+    watch = [HasAzimuthScale, HasDistanceScale]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
     lineWidth = baseLineWidth * 0.6 * IlsLineScale.value

@@ -112,7 +112,7 @@ let function memoizeByProfile(func, hashFunc = null) {
           return false
 
       if (!this.isPlayerHaveDecorator(decorator.id)) {
-        local isVisibleOnlyUnlocked = block?.hideUntilUnlocked || !decorator.canReceive()
+        local isVisibleOnlyUnlocked = block?.hideUntilUnlocked || !decorator.canRecieve()
         if (block?.beginDate || block?.endDate)
           isVisibleOnlyUnlocked = !time.isInTimerangeByUtcStrings(block?.beginDate, block?.endDate)
         if (isVisibleOnlyUnlocked)

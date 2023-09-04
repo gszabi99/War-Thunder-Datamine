@@ -1,6 +1,5 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getObjValidIndex, adjustWindowSize } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
@@ -8,15 +7,13 @@ let { getCollectionsList } = require("%scripts/collections/collections.nut")
 let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const MAX_COLLECTION_ITEMS = 10
 const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"
 
-local collectionsWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
   sceneBlkName     = "%gui/collections/collectionsWnd.blk"
 
@@ -143,7 +140,7 @@ local collectionsWnd = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getCurDecoratorObj() {
-    if (showConsoleButtons.value && !this.collectionsListObj.isHovered())
+    if (::show_console_buttons && !this.collectionsListObj.isHovered())
       return null
 
     let value = getObjValidIndex(this.collectionsListObj)
@@ -247,7 +244,7 @@ local collectionsWnd = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventBeforeStartShowroom(_p) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function onBuyDecorator() {
@@ -285,9 +282,9 @@ local collectionsWnd = class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.collectionsWnd <- collectionsWnd
+::gui_handlers.collectionsWnd <- collectionsWnd
 
 return {
-  openCollectionsWnd = @(params = {}) handlersManager.loadHandler(collectionsWnd, params)
+  openCollectionsWnd = @(params = {}) ::handlersManager.loadHandler(collectionsWnd, params)
   hasAvailableCollections = @() hasFeature("Collection") && getCollectionsList().len() > 0
 }

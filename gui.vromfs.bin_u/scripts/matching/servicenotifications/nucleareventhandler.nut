@@ -8,7 +8,6 @@ let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { Version } = require("%sqstd/version.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
@@ -71,7 +70,7 @@ addListenersWithoutEnv({
   ProfileReceived = @(_p) bigQuerryForNuclearEvent()
 })
 
-web_rpc.register_handler("new_client_version", onNewClientVersion)
+::web_rpc.register_handler("new_client_version", onNewClientVersion)
 
 return {
   checkNuclearEvent

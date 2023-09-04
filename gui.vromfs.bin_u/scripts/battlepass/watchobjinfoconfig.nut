@@ -9,8 +9,6 @@ let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopStat
 let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isMediumTaskComplete, isEasyTaskComplete, getCurrentBattleTasks, getBattleTaskDifficultyImage
-} = require("%scripts/unlocks/battleTasks.nut")
 
 let seasonLvlWatchObj = [{
   watch = seasonLevel
@@ -64,7 +62,7 @@ let tomorowLoginExpWatchObj = {
 }
 
 let easyDailyTaskProgressWatchObj = {
-  watch = isEasyTaskComplete
+  watch = ::g_battle_tasks.isCompleteEasyTask
   updateFunc = function(obj, value) {
     let statusText = loc($"battlePass/info/task_status/{value ? "done" : "notDone"}")
     obj.status = value ? "done" : "notDone"
@@ -72,13 +70,13 @@ let easyDailyTaskProgressWatchObj = {
       { status = statusText }))
     let imgObj = obj.findObject("task_img")
     if (imgObj?.isValid())
-      imgObj["background-image"] = getBattleTaskDifficultyImage(
-        getCurrentBattleTasks().findvalue(@(v) v._puType == "Easy"))
+      imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
+        ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"))
   }
 }
 
 let mediumDailyTaskProgressWatchObj = {
-  watch = isMediumTaskComplete
+  watch = ::g_battle_tasks.isCompleteMediumTask
   updateFunc = function(obj, value) {
     let statusText = loc($"battlePass/info/task_status/{value ? "done" : "notDone"}")
     obj.status = value ? "done" : "notDone"
@@ -86,8 +84,8 @@ let mediumDailyTaskProgressWatchObj = {
       { status = statusText }))
     let imgObj = obj.findObject("task_img")
     if (imgObj?.isValid())
-      imgObj["background-image"] = getBattleTaskDifficultyImage(
-        getCurrentBattleTasks().findvalue(@(v) v._puType == "Medium"))
+      imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
+        ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Medium"))
   }
 }
 
@@ -126,8 +124,8 @@ let leftSpecialTasksBoughtCountWatchObj = {
       { tasksNum = colorize("@goodTextColor", value) }))
     let imgObj = obj.findObject("task_img")
     if (imgObj?.isValid())
-      imgObj["background-image"] = getBattleTaskDifficultyImage(
-        getCurrentBattleTasks().findvalue(@(v) v._puType == "Hard"))
+      imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
+        ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Hard"))
   }
 }
 

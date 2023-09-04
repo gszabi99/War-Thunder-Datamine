@@ -7,7 +7,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { get_game_version_str } = require("app")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
   if (!checkObj(nestObj) || firstBtnId == "")
@@ -73,7 +72,7 @@ let function setHelpTextOnLoading(nestObj = null) {
   if (!checkObj(nestObj))
     return
 
-  let text = showConsoleButtons.value ? "" : loc("loading/help_tip01")
+  let text = ::show_console_buttons ? "" : loc("loading/help_tip01")
   nestObj.setValue(text)
 }
 

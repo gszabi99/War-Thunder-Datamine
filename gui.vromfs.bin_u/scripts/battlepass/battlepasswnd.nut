@@ -1,11 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { ceil } = require("math")
 let { rnd } = require("dagor.random")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
 let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("%scripts/battlePass/seasonStages.nut")
 let { receiveRewards, unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
@@ -28,10 +26,7 @@ let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { unlockToFavorites } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getCurrentBattleTasks, isBattleTasksAvailable, setBattleTasksUpdateTimer
-} = require("%scripts/unlocks/battleTasks.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let watchObjInfoConfig = {
   season_lvl = seasonLvlWatchObj
@@ -48,7 +43,7 @@ let watchObjInfoBattleTasksConfig = {
   left_special_tasks_bought_count = leftSpecialTasksBoughtCountWatchObj
 }
 
-local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
+local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
   sceneBlkName     = "%gui/battlePass/battlePassWnd.blk"
 
@@ -150,7 +145,7 @@ local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
       this.calculateCurPage()
       this.needCalculateCurPage = false
     }
-    let view = { battlePassStage = [], skipButtonNavigation = showConsoleButtons.value }
+    let view = { battlePassStage = [], skipButtonNavigation = ::show_console_buttons }
     let curPageOffset = this.stageIndexOffset > 0 ? -1 : 0
     local pageStartIndex = max((this.curPage + curPageOffset) * this.stagesPerPage  + this.stageIndexOffset, 0)
     let doubleStagesCount = doubleWidthStagesIcon.value.reduce(@(res, value) res + (value < (pageStartIndex - res) ? 1 : 0), 0)
@@ -244,19 +239,19 @@ local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function initBattleTasksInfo() {
-    if (!isBattleTasksAvailable())
+    if (!::g_battle_tasks.isAvailableForUser())
       return
 
     foreach (objId, config in watchObjInfoBattleTasksConfig)
       this.scene.findObject(objId).setValue(stashBhvValueConfig(config))
 
     this.showSceneBtn("btn_warbondsShop",
-      ::g_warbonds.isShopAvailable() && !::isHandlerInScene(gui_handlers.WarbondsShop))
+      ::g_warbonds.isShopAvailable() && !::isHandlerInScene(::gui_handlers.WarbondsShop))
     this.showSceneBtn("btn_battleTask", true)
     this.showSceneBtn("battle_tasks_info_nest", true)
 
-    setBattleTasksUpdateTimer(
-      getCurrentBattleTasks().findvalue(@(v) v._puType == "Easy"),
+    ::g_battle_tasks.setUpdateTimer(
+      ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"),
       this.scene.findObject("task_timer_nest"),
       { addText = $"{loc("mainmenu/btnBattleTasks")}{loc("ui/colon")}" })
   }
@@ -341,7 +336,7 @@ local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventBeforeStartShowroom(_p) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function onOpenBattlePassWnd() {
@@ -568,7 +563,7 @@ local BattlePassWnd = class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.BattlePassWnd <- BattlePassWnd
+::gui_handlers.BattlePassWnd <- BattlePassWnd
 
 let function openBattlePassWnd(params = {}) {
   if (isUserstatMissingData.value) {
@@ -576,7 +571,7 @@ let function openBattlePassWnd(params = {}) {
     return
   }
 
-  handlersManager.loadHandler(BattlePassWnd, params)
+  ::handlersManager.loadHandler(BattlePassWnd, params)
 }
 
 addPromoAction("battle_pass", @(_handler, _params, _obj) openBattlePassWnd())

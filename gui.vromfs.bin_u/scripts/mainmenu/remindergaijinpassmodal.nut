@@ -1,11 +1,9 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.reminderGPModal <- class extends ::BaseGuiHandler {
+::gui_handlers.reminderGPModal <- class extends ::BaseGuiHandler {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/mainmenu/reminderGaijinPassModal.blk"
 
@@ -15,5 +13,5 @@ gui_handlers.reminderGPModal <- class extends ::BaseGuiHandler {
 }
 
 return {
-  open = @() handlersManager.loadHandler(gui_handlers.reminderGPModal)
+  open = @() ::handlersManager.loadHandler(::gui_handlers.reminderGPModal)
 }

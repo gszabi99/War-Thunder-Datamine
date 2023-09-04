@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { AXIS_MODIFIERS, GAMEPAD_AXIS } = require("%scripts/controls/controlsConsts.nut")
+
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 ::Input.Axis <- class extends ::Input.InputBase {

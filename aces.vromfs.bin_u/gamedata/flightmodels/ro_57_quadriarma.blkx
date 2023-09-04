@@ -2086,10 +2086,46 @@
     }
   },
   "commonWeapons": {
-    "Weapon": {
-      "slot": 0,
-      "preset": "default_common"
-    }
+    "Weapon": [
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "dm": "mgun1_dm",
+        "bullets": 350,
+        "spread": 1.0,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "mgun2_dm",
+        "bullets": 350,
+        "spread": 1.0,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonHispano404.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "dm": "cannon1_dm",
+        "bullets": 60,
+        "spread": 1.0
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonHispano404.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "dm": "cannon2_dm",
+        "bullets": 60,
+        "spread": 1.0
+      }
+    ]
   },
   "weapon_presets": {
     "preset": [
@@ -2099,279 +2135,203 @@
       },
       {
         "name": "ro_57_2x50kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x50kg_t.blk"
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x50kg_t.blk",
+        "reqModification": "it50_mod"
       },
       {
         "name": "ro_57_2x100kg_m",
-        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x100kg_m.blk"
-      },
-      {
-        "name": "ro_57_2x100kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x100kg_t.blk"
-      },
-      {
-        "name": "ro_57_2x160kg_ap",
-        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x160kg_ap.blk"
-      },
-      {
-        "name": "ro_57_250kg_gp",
-        "blk": "gameData/FlightModels/weaponPresets/ro_57_250kg_gp.blk"
-      },
-      {
-        "name": "ro_57_500kg",
-        "blk": "gameData/FlightModels/weaponPresets/ro_57_500kg.blk"
-      }
-    ]
-  },
-  "WeaponSlots": {
-    "maxloadMass": 570.0,
-    "maxloadMassLeftConsoles": 285.0,
-    "maxloadMassRightConsoles": 285.0,
-    "maxDisbalance": 190.0,
-    "HideNodes": {
-      "node": [
-        "pylon_bomb1",
-        "pylon_bomb2",
-        "pylon_bomb4",
-        "bomb_launcher1"
-      ]
-    },
-    "WeaponSlot": [
-      {
-        "index": 0,
-        "WeaponPreset": {
-          "name": "default_common",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x100kg_m.blk",
+        "reqModification": "it100_mod",
+        "weaponConfig": {
           "Weapon": [
             {
-              "trigger": "machine gun",
-              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "mgun1_dm",
-              "bullets": 350,
-              "spread": 1.0,
-              "traceOffset": 1
+              "blk": "gameData/weapons/bombguns/it_250kg_gp_stuka.blk",
+              "iconType": "bombs_special",
+              "amountPerTier": 1.0,
+              "tier": {
+                "idx": 6
+              }
             },
             {
-              "trigger": "machine gun",
-              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "mgun2_dm",
-              "bullets": 350,
-              "spread": 1.0,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispano404.blk",
-              "emitter": "flare3",
-              "flash": "flare3",
-              "dm": "cannon1_dm",
-              "bullets": 60,
-              "spread": 1.0
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonHispano404.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "dm": "cannon2_dm",
-              "bullets": 60,
-              "spread": 1.0
+              "blk": "gameData/Weapons/BombGuns/it_100kg_m.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 5
+                },
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 7
+                }
+              ]
             }
           ]
         }
       },
       {
-        "index": 1,
-        "tier": 7,
-        "order": 1,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg_m",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_m.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg_t",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it250_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 2,
-        "tier": 6,
-        "order": 3,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_heavy_middle",
-            "name": "250kg",
-            "reqModification": "it250_mod",
-            "ShowNodes": {
-              "node": [
-                "pylon_bomb4",
-                "bomb_launcher1"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
+        "name": "ro_57_2x100kg_t",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x100kg_t.blk",
+        "reqModification": "it100_mod",
+        "weaponConfig": {
+          "Weapon": [
+            {
               "blk": "gameData/weapons/bombguns/it_250kg_gp_stuka.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true,
-              "launcher": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_heavy",
-            "name": "500kg",
-            "reqModification": "it500_mod",
-            "ShowNodes": {
-              "node": [
-                "pylon_bomb4",
-                "bomb_launcher1"
-              ]
+              "iconType": "bombs_special",
+              "amountPerTier": 1.0,
+              "tier": {
+                "idx": 6
+              }
             },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/weapons/bombguns/it_500kg_gp_stuka.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true,
-              "launcher": true,
-              "separate": true
+            {
+              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 5
+                },
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 7
+                }
+              ]
             }
-          }
-        ]
+          ]
+        }
       },
       {
-        "index": 3,
-        "tier": 5,
-        "order": 2,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg_m",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_m.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg_t",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
+        "name": "ro_57_2x160kg_ap",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_2x160kg_ap.blk",
+        "reqModification": "it250_mod",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
             "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it250_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
+            "amountPerTier": 1.0,
+            "tier": [
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "ro_57_250kg_2x100kg_m",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_250kg_2x100kg_m.blk",
+        "reqModification": [
+          "it100_mod",
+          "it250_mod"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/weapons/bombguns/it_250kg_gp_stuka.blk",
+              "iconType": "bombs_special",
+              "amountPerTier": 1.0,
+              "tier": {
+                "idx": 6
+              }
             },
-            "Weapon": {
-              "trigger": "bombs",
+            {
+              "blk": "gameData/Weapons/BombGuns/it_100kg_m.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 5
+                },
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "ro_57_250kg_2x100kg_t",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_250kg_2x100kg_t.blk",
+        "reqModification": [
+          "it100_mod",
+          "it250_mod"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/weapons/bombguns/it_250kg_gp_stuka.blk",
+              "iconType": "bombs_special",
+              "amountPerTier": 1.0,
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 5
+                },
+                {
+                  "iconType": "bombs_middle",
+                  "idx": 7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "ro_57_250kg_2x160kg_ap",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_250kg_2x160kg_ap.blk",
+        "reqModification": "it250_mod",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/weapons/bombguns/it_250kg_gp_stuka.blk",
+              "iconType": "bombs_special",
+              "amountPerTier": 1.0,
+              "tier": {
+                "idx": 6
+              }
+            },
+            {
               "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
+              "iconType": "bombs_large",
+              "amountPerTier": 1.0,
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "ro_57_500kg",
+        "blk": "gameData/FlightModels/weaponPresets/ro_57_500kg.blk",
+        "reqModification": "it500_mod",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/weapons/bombguns/it_500kg_gp_stuka.blk",
+            "iconType": "bombs_heavy",
+            "amountPerTier": 1.0,
+            "tier": {
+              "idx": 6
             }
           }
-        ]
+        }
       }
     ]
   },

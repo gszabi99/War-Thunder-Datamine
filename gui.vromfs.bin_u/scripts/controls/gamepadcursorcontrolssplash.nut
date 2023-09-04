@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
@@ -9,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
-gui_handlers.GampadCursorControlsSplash <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.GampadCursorControlsSplash <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controls/gamepadCursorControlsSplash.blk"
 
@@ -83,7 +82,7 @@ gui_handlers.GampadCursorControlsSplash <- class extends gui_handlers.BaseGuiHan
   bubblesList = [ "dirpad", "lstick", "rstick", "actionx" ]
 
   static function open() {
-    ::gui_start_modal_wnd(gui_handlers.GampadCursorControlsSplash)
+    ::gui_start_modal_wnd(::gui_handlers.GampadCursorControlsSplash)
   }
 
   static function shouldDisplay() {

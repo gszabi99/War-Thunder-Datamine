@@ -26,7 +26,6 @@ Del - Delete selected
 
 Ctrl+Z - Undo
 Ctrl+Y - Redo
-Ctrl+S - Save scene
 
 Ctrl+Alt+D - Drop objects
 Ctrl+Alt+E - Drop objects on normal
@@ -40,6 +39,7 @@ Middle Mouse Button - Canned camera pan
 Alt + Middle Mouse Button - Canned camera rotate (around selected entity)
 Mouse Wheel (Ctrl faster, Alt slower) - Canned camera move forward/backward
 
+Alt+H - Find entity
 F1 - Help
 "
 

@@ -267,6 +267,10 @@
       "turret_side_dm": {
         "armorThickness": 250.0
       },
+      "turret_02_bottom_dm": {
+        "armorThickness": 19.0,
+        "hidableInViewer": true
+      },
       "turret_03_back_dm": {
         "armorThickness": 174.0
       },
@@ -295,43 +299,19 @@
       "ex_armor_body_r_01_dm": {},
       "ex_armor_body_r_02_dm": {},
       "ex_armor_body_r_03_dm": {},
-      "ex_armor_body_r_04_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
-      "ex_armor_body_r_05_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
-      "ex_armor_body_r_06_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
-      "ex_armor_body_r_07_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
+      "ex_armor_body_r_04_dm": {},
+      "ex_armor_body_r_05_dm": {},
+      "ex_armor_body_r_06_dm": {},
+      "ex_armor_body_r_07_dm": {},
       "ex_armor_body_r_08_dm": {},
       "ex_armor_body_r_09_dm": {},
       "ex_armor_body_l_01_dm": {},
       "ex_armor_body_l_02_dm": {},
       "ex_armor_body_l_03_dm": {},
-      "ex_armor_body_l_04_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
-      "ex_armor_body_l_05_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
-      "ex_armor_body_l_06_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
-      "ex_armor_body_l_07_dm": {
-        "armorThickness": 19.0,
-        "armorClass": "aluminium"
-      },
+      "ex_armor_body_l_04_dm": {},
+      "ex_armor_body_l_05_dm": {},
+      "ex_armor_body_l_06_dm": {},
+      "ex_armor_body_l_07_dm": {},
       "ex_decor_02_dm": {},
       "ex_decor_14_dm": {},
       "ex_decor_r_01_dm": {},
@@ -341,8 +321,7 @@
       "ex_decor_l_01_dm": {},
       "ex_decor_l_02_dm": {},
       "ex_decor_l_03_dm": {},
-      "ex_decor_l_04_dm": {},
-      "turret_02_bottom_dm": {}
+      "ex_decor_l_04_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -1268,11 +1247,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -1998,18 +1973,7 @@
         0.0,
         0.55,
         0.3
-      ],
-      "tracksTensionK": [
-        5.0,
-        9.0,
-        5.0
-      ],
-      "trackMesh": "uk_chieftain_mk_5_phys_track",
-      "trackLen": 0.167,
-      "trackCount": 94,
-      "trackFadeTime": 1.5,
-      "trackEmitSparks": false,
-      "trackStartOffset": 0.06
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2021,7 +1985,6 @@
       "minRPM": 850.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 228800.0,
       "driveGearRadius": 0.299,
       "mainGearRatio": 3.93,

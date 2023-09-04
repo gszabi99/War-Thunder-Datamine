@@ -1,7 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getOperationById, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
@@ -10,7 +11,7 @@ let { actionWithGlobalStatusRequest,
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
-gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WwOperationsListModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
 
@@ -40,7 +41,8 @@ gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerW
   }
 
   function getSortedOperationsData() {
-    let opDataList = this.getOpGroup().getOperationsList().map(@(o) { operation = o, priority = o.getPriority() })
+    let opDataList = u.map(this.getOpGroup().getOperationsList(),
+                               function(o) { return { operation = o, priority = o.getPriority() } })
 
     opDataList.sort(
       @(a, b) b.operation.isAvailableToJoin() <=> a.operation.isAvailableToJoin()
@@ -229,7 +231,7 @@ gui_handlers.WwOperationsListModal <- class extends gui_handlers.BaseGuiHandlerW
     if (this.descHandlerWeak)
       return this.descHandlerWeak.setDescItem(this.selOperation)
 
-    let handler = gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), this.selOperation, this.map)
+    let handler = ::gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), this.selOperation, this.map)
     this.descHandlerWeak = handler.weakref()
     this.registerSubHandler(handler)
   }

@@ -8,7 +8,6 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { startsWith } = require("%sqstd/string.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let changedOptionReqRestart = persist("changedOptionReqRestart", @() Watched({}))
 
@@ -20,7 +19,7 @@ let checkArgument = function(id, arg, varType) {
   msg += "Value = " + toString(arg) + ".\n"
   msg += "Expected '" + varType + "' found '" + type(arg) + "'."
 
-  script_net_assert_once(id, msg)
+  ::script_net_assert_once(id, msg)
   return false
 }
 

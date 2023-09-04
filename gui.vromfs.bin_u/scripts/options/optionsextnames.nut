@@ -494,7 +494,6 @@ global enum AIR_MOUSE_USAGE {
 
 ::USEROPT_SHOW_ACTION_BAR <- 421
 ::USEROPT_HUD_SHOW_NAMES_IN_KILLLOG <- 422
-::USEROPT_VOLUME_VWS <- 423
 
 ::user_option_name_by_idx <- {}
 

@@ -1,12 +1,13 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+let u = require("%sqStdLibs/helpers/u.nut")
+
 
 let { get_blk_value_by_path } = require("%sqStdLibs/helpers/datablockUtils.nut")
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WW_MAP_TOOLTIP_TYPE_ARMY } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let DataBlock  = require("DataBlock")
-let {WwFormation} = require("wwFormation.nut")
 
 local transportTypeByTextCode = {
   TT_NONE      = TT_NONE
@@ -17,7 +18,7 @@ local transportTypeByTextCode = {
   TT_TOTAL     = TT_TOTAL
 }
 
-::WwArmy <- class extends WwFormation {
+::WwArmy <- class extends ::WwFormation {
   suppliesEndMillisec = 0
   entrenchEndMillisec = 0
   stoppedAtMillisec = 0
@@ -169,7 +170,7 @@ local transportTypeByTextCode = {
   }
 
   function getUnitsFullNamesList() {
-    return this.getUnits().map(@(unit) unit.getFullName())
+    return u.map(this.getUnits(), function(unit) { return unit.getFullName() })
   }
 
   function getSuppliesFinishTime() {

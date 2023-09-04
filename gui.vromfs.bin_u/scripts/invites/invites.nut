@@ -7,7 +7,6 @@ let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentDataFromRoot, PERSISTENT_DATA_PARAMS } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { startsWith } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 
 ::g_invites <- {
   [PERSISTENT_DATA_PARAMS] = ["list", "newInvitesAmount"]
@@ -172,7 +171,7 @@ let { get_charserver_time_sec } = require("chard")
 }
 
 ::g_invites._timedInvitesUpdate <- function _timedInvitesUpdate(_dt = 0) {
-  let now = get_charserver_time_sec()
+  let now = ::get_charserver_time_sec()
   this.checkCleanList()
 
   foreach (invite in this.list)
@@ -203,7 +202,7 @@ let { get_charserver_time_sec } = require("chard")
   if (nextTriggerTimestamp < 0)
     return
 
-  local triggerDelay = nextTriggerTimestamp - get_charserver_time_sec();
+  local triggerDelay = nextTriggerTimestamp - ::get_charserver_time_sec();
   if (triggerDelay < 1)
     triggerDelay = 1  //  in case we have some timed outs
 
@@ -241,7 +240,7 @@ let { get_charserver_time_sec } = require("chard")
 }
 
 ::g_invites.onEventScriptsReloaded <- function onEventScriptsReloaded(_p) {
-  this.list = this.list.map(function(invite) {
+  this.list = u.map(this.list, function(invite) {
     let params = invite.reloadParams
     foreach (inviteClass in ::g_invites_classes)
       if (inviteClass.getUidByParams(params) == invite.uid) {

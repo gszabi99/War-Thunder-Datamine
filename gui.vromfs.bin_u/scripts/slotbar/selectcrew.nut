@@ -1,13 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -17,7 +15,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config) {
   if (CrewTakeUnitProcess.safeInterrupt())
-    handlersManager.destroyPrevHandlerAndLoadNew(gui_handlers.SelectCrew, config)
+    ::handlersManager.destroyPrevHandlerAndLoadNew(::gui_handlers.SelectCrew, config)
 }
 
 let function getObjPosInSafeArea(obj) {
@@ -29,7 +27,7 @@ let function getObjPosInSafeArea(obj) {
   return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
 
-gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.SelectCrew <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/shop/shopTakeAircraft.blk"
 
@@ -66,7 +64,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
     let tdObj = this.unitObj.getParent()
     let tdPos = getObjPosInSafeArea(tdObj)
 
-    gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
+    ::gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
 
     let tdClone = tdObj.getClone(this.scene, this)
     tdClone.pos = tdPos[0] + ", " + tdPos[1]
@@ -129,7 +127,7 @@ gui_handlers.SelectCrew <- class extends gui_handlers.BaseGuiHandlerWT {
 
   createSlotbarHandler = @(params) this.isSelectByGroups
     ? slotbarWidget.create(params)
-    : gui_handlers.SlotbarWidget.create(params)
+    : ::gui_handlers.SlotbarWidget.create(params)
 
   function updateObjectsPositions(tdClone, legendObj, headerObj) {
     let rootSize = this.guiScene.getRoot().getSize()

@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let regexp2 = require("regexp2")
@@ -23,7 +21,6 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -49,7 +46,7 @@ enum eRoomFlags { //bit enum. sorted by priority
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.EventRoomsHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   wndOptionsMode = ::OPTIONS_MODE_MP_DOMINATION
@@ -95,7 +92,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
         !::check_package_and_ask_download("pkg_main"))
       return
 
-    handlersManager.loadHandler(gui_handlers.EventRoomsHandler,
+    ::handlersManager.loadHandler(::gui_handlers.EventRoomsHandler,
     {
       event = event
       hasBackToEventsButton = hasBackToEventsButton
@@ -433,7 +430,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
       let rankText = ::events.getBrTextByRules(reqUnits)
-      let ruleTexts = reqUnits.map(this.getRuleText)
+      let ruleTexts = u.map(reqUnits, this.getRuleText)
       let rulesText = colorize(color, loc("ui/comma").join(ruleTexts, true))
 
       text = colorize(color, rankText) + " " + text
@@ -536,7 +533,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       let listRow = {
         id = chapter.name
         isCollapsable = true
-        isNeedOnHover = showConsoleButtons.value
+        isNeedOnHover = ::show_console_buttons
       }.__update(chapter.itemView)
       view.items.append(listRow)
 
@@ -558,7 +555,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           isBattle = ::SessionLobby.isSessionStartedInRoom(room)
           itemText = nameView.text
           isLocked = nameView.isLocked
-          isNeedOnHover = showConsoleButtons.value
+          isNeedOnHover = ::show_console_buttons
         })
       }
     }
@@ -589,7 +586,12 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function getFlagsArrayByCountriesArray(countriesArray) {
-    return countriesArray.map(@(country) { image = ::get_country_icon(country) })
+    return u.map(
+              countriesArray,
+              function(country) {
+                return { image = ::get_country_icon(country) }
+              }
+            )
   }
 
   function onCollapsedChapter() {
@@ -708,7 +710,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventAfterJoinEventRoom(_ev) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.EventsHandler)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.EventsHandler)
   }
 
   function onEventEventsDataUpdated(_p) {
@@ -746,7 +748,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onItemDblClick() {
-    if (showConsoleButtons.value)
+    if (::show_console_buttons)
       return
 
     if (this.curRoomId == "") {
@@ -758,7 +760,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let isHover = obj.isHovered()
     let idx = obj.getIntProp(this.listIdxPID, -1)
@@ -775,7 +777,7 @@ gui_handlers.EventRoomsHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateMouseMode() {
-    this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+    this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
   function goBackShortcut() { this.goBack() }

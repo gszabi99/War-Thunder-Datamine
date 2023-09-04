@@ -97,22 +97,21 @@
       1000.0
     ],
     "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
-    "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.05,
+    "ricochetPreset": "heat_fs",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "rocket_tank",
-    "slopeEffectPreset": "ap",
+    "bulletType": "heat_fs_tank",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "explodeOnRendinst": true,
-    "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/heat_fs.ivf",
     "damage": {
       "explosive": {
         "offset": 0.2
@@ -245,9 +244,23 @@
         "fx": "hit_12_18mm_metal_ap"
       }
     },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
     "DamageParts": {
       "body": {
-        "hp": 50.0,
+        "hp": 5.0,
         "armorClass": "tank_structural_steel",
         "armorThickness": 1.0
       }
@@ -255,61 +268,16 @@
     "DamageEffects": {
       "part": {
         "name": "body",
-        "onHit": [
-          {
-            "damageType": "generic",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "explosion",
-            "expl": 0.45,
-            "fire": 0.45,
-            "break": 0.1,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "cumulative",
-            "expl": 0.4,
-            "fire": 0.4,
-            "break": 0.1,
-            "damage": 100.0,
-            "fHitCritical": true
-          }
-        ],
+        "onHit": {
+          "break_fuse": 1.0
+        },
         "onKill": {
-          "expl": 0.05,
-          "fire": 0.05,
-          "break": 0.9,
-          "fHitCritical": true
+          "destruction": 1.0
         }
       }
     },
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        20.0,
-        0.6
-      ],
-      "mod3": [
-        30.0,
-        1.0
-      ]
+    "pressureDamage": {
+      "damageType": "pressure"
     }
   }
 }

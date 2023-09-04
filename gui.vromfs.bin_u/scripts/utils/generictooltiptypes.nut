@@ -26,7 +26,6 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator, getPlaneBySkinId } = require("%scripts/customization/decorCache.nut")
 let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
 let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRewardTooltip.nut")
-let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 let tooltipTypes = {
   types = []
@@ -113,7 +112,7 @@ let exportTypes = addTooltipTypes({
       let mainCond = getUnlockMainCondDescByCfg(subunlockCfg ?? config)
       let hasMainCond = mainCond != ""
       let progressData = subunlockCfg?.getProgressBarData() ?? config.getProgressBarData()
-      let isUnlocked = isUnlockOpened(unlockId)
+      let isUnlocked = ::is_unlocked_scripted(-1, unlockId)
       let hasProgressBar = hasMainCond && progressData.show && !isUnlocked
       let snapshot = hasProgressBar && (params?.showSnapshot ?? false)
         ? getUnlockSnapshotText(subunlockCfg ?? config)
@@ -478,12 +477,12 @@ let exportTypes = addTooltipTypes({
       if (!checkObj(obj))
         return false
 
-      let battleTask = ::g_battle_tasks.getBattleTaskById(id)
+      let battleTask = ::g_battle_tasks.getTaskById(id)
       if (!battleTask)
         return false
 
-      let config = ::g_battle_tasks.mkUnlockConfigByBattleTask(battleTask)
-      let view = ::g_battle_tasks.getBattleTaskView(config, { isOnlyInfo = true })
+      let config = ::g_battle_tasks.generateUnlockConfigByTask(battleTask)
+      let view = ::g_battle_tasks.generateItemView(config, { isOnlyInfo = true })
       let data = handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", { items = [view], isSmallText = true })
 
       let guiScene = obj.getScene()

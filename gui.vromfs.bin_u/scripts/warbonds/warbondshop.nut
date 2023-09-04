@@ -1,10 +1,8 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -13,9 +11,8 @@ let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpd
 let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.WarbondsShop <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 
@@ -227,7 +224,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
     this.markAwardSeen(award)
     this.fillItemDesc(award)
     this.fillCommonDesc(award)
-    this.showSceneBtn("jumpToDescPanel", showConsoleButtons.value && award != null)
+    this.showSceneBtn("jumpToDescPanel", ::show_console_buttons && award != null)
     this.updateButtons()
   }
 
@@ -239,7 +236,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateButtons() {
-    this.showSceneBtn("btn_battlePass", !::isHandlerInScene(gui_handlers.BattlePassWnd))
+    this.showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
 
     if (!this.updateButtonsBar()) //buttons below are hidden if item action bar is hidden
       return
@@ -247,7 +244,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
     let award = this.getCurAward()
     this.showSceneBtn("btn_specialTasks", award != null
       && award.isRequiredSpecialTasksComplete()
-      && !::isHandlerInScene(gui_handlers.BattleTasksWnd)
+      && !::isHandlerInScene(::gui_handlers.BattleTasksWnd)
     )
 
     this.showSceneBtn("btn_preview", (award?.canPreview() ?? false) && ::isInMenu())
@@ -421,11 +418,11 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventBeforeStartShowroom(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function onEventBeforeStartTestFlight(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function getHandlerRestoreData() {
@@ -456,7 +453,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onJumpToDescPanelAccessKey(_obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let containerObj = this.scene.findObject("item_info_nest")
     if (checkObj(containerObj) && containerObj.isHovered())
@@ -466,7 +463,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let wasMouseMode = this.isMouseMode
     this.updateMouseMode()
@@ -502,7 +499,7 @@ gui_handlers.WarbondsShop <- class extends gui_handlers.BaseGuiHandlerWT {
   function onAltAction(_obj) {}
   function onChangeSortOrder(_obj) {}
   onChangeSortParam = @(_obj) null
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

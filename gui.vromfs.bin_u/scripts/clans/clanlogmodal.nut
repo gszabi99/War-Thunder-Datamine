@@ -1,7 +1,6 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -14,12 +13,12 @@ let { cutPrefix } = require("%sqstd/string.nut")
 ::CLAN_LOG_ROWS_IN_PAGE <- 10
 ::show_clan_log <- function show_clan_log(clanId) {
   ::gui_start_modal_wnd(
-    gui_handlers.clanLogModal,
+    ::gui_handlers.clanLogModal,
     { clanId = clanId }
   )
 }
 
-gui_handlers.clanLogModal <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.clanLogModal <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanLogModal.blk"
 

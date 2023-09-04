@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { show_obj, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
@@ -23,8 +21,6 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { fillDescTextAboutDiv, updateExpireAlarmIcon,
   fillItemDescUnderTable } = require("%scripts/items/itemVisual.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null) {
   ::gui_start_items_list(itemsTab.SHOP, params)
@@ -42,10 +38,10 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
   if (params != null)
     handlerParams = ::inherit_table(handlerParams, params)
   ::get_cur_gui_scene().performDelayed({},
-    @() handlersManager.loadHandler(gui_handlers.ItemsList, handlerParams))
+    @() ::handlersManager.loadHandler(::gui_handlers.ItemsList, handlerParams))
 }
 
-gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.ItemsList <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/items/itemsShop.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -136,8 +132,8 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
     if (this.navigationHandlerWeak)
       return
 
-    let handler = handlersManager.loadHandler(
-      gui_handlers.navigationPanel,
+    let handler = ::handlersManager.loadHandler(
+      ::gui_handlers.navigationPanel,
       { scene                  = this.scene.findObject("control_navigation")
         onSelectCb             = Callback(this.doNavigateToSection, this)
         onClickCb              = Callback(this.onNavItemClickCb, this)
@@ -299,7 +295,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
 
     if (childsTotal < this.navItems.len()) {
       let navItemsTotal = this.navItems.len() // warning disable: -declared-never-used
-      script_net_assert_once("Bad count on update unseen tabs",
+      ::script_net_assert_once("Bad count on update unseen tabs",
         "ItemsShop: Not all sheets exist on update sheets list unseen icon")
     }
 
@@ -569,7 +565,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
     let item = this.getCurItem()
     this.markItemSeen(item)
     this.infoHandler?.updateHandlerData(item, true, true)
-    this.showSceneBtn("jumpToDescPanel", showConsoleButtons.value && item != null)
+    this.showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
     this.updateButtons()
   }
 
@@ -733,7 +729,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onJumpToDescPanelAccessKey(_obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let containerObj = this.scene.findObject("item_info")
     if (checkObj(containerObj) && containerObj.isHovered())
@@ -851,11 +847,11 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventBeforeStartShowroom(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function onEventBeforeStartTestFlight(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function onEventItemLimitsUpdated(_params) {
@@ -884,7 +880,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventActiveHandlersChanged(_p) {
-    this.showSceneBtn("black_screen", handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null)
+    this.showSceneBtn("black_screen", ::handlersManager.findHandlerClassInScene(::gui_handlers.trophyRewardWnd) != null)
   }
 
   function updateWarbondsBalance() {
@@ -907,7 +903,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
   onShowBattlePass = @(_obj) null
 
   function onEventBeforeStartCustomMission(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    ::handlersManager.requestHandlerRestore(this, ::gui_handlers.MainMenu)
   }
 
   function updateInventoryItemsList() {
@@ -953,7 +949,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onItemHover(obj) {
-    if (!showConsoleButtons.value)
+    if (!::show_console_buttons)
       return
     let wasMouseMode = this.isMouseMode
     this.updateMouseMode()
@@ -972,7 +968,7 @@ gui_handlers.ItemsList <- class extends gui_handlers.BaseGuiHandlerWT {
     }.bindenv(this))
   }
 
-  updateMouseMode = @() this.isMouseMode = !showConsoleButtons.value || ::is_mouse_last_time_used()
+  updateMouseMode = @() this.isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   function updateShowItemButton() {
     let listObj = this.getItemsListObj()
     if (listObj?.isValid())

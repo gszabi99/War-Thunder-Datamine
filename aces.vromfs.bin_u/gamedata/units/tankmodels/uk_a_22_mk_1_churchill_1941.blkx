@@ -397,11 +397,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -1083,7 +1079,6 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "steerType": "clutch_braking",
       "maxBrakeForce": 156000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 5.77,
@@ -2435,26 +2430,6 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
-      "ammo_turret_56_dm": {},
-      "ammo_turret_57_dm": {},
-      "ammo_turret_58_dm": {},
-      "ammo_turret_59_dm": {},
-      "ammo_turret_60_dm": {},
-      "ammo_turret_61_dm": {},
-      "ammo_turret_62_dm": {},
-      "ammo_turret_63_dm": {},
-      "ammo_turret_64_dm": {},
-      "ammo_turret_65_dm": {},
-      "ammo_turret_66_dm": {},
-      "ammo_turret_67_dm": {},
-      "ammo_turret_68_dm": {},
-      "ammo_turret_69_dm": {},
-      "ammo_turret_70_dm": {},
-      "ammo_turret_71_dm": {},
-      "ammo_turret_72_dm": {},
-      "ammo_turret_73_dm": {},
-      "ammo_turret_74_dm": {},
-      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -2628,69 +2603,51 @@
       }
     }
   },
-  "ammoStowages": {
-    "ammo1": {
-      "weaponTrigger": "gunner0",
-      "removeLoadedAmmo": false,
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_turret_01_dm": {
-          "count": 14
-        },
-        "ammo_turret_02_dm": {
-          "count": 14
-        },
-        "ammo_turret_03_dm": {
-          "count": 13
-        },
-        "ammo_turret_09_dm": {
-          "count": 15
-        },
-        "ammo_turret_10_dm": {
-          "count": 15
-        },
-        "ammo_turret_04_dm": {
-          "count": 22
-        },
-        "ammo_turret_05_dm": {
-          "count": 22
-        },
-        "ammo_turret_08_dm": {
-          "count": 10
-        },
-        "ammo_turret_07_dm": {
-          "count": 10
-        },
-        "ammo_turret_06_dm": {
-          "count": 15
-        }
+  "ammoLoadDistribution": {
+    "primaryShells": {
+      "ammo_turret_01_dm": {
+        "count": 14
+      },
+      "ammo_turret_02_dm": {
+        "count": 14
+      },
+      "ammo_turret_03_dm": {
+        "count": 13
+      },
+      "ammo_turret_09_dm": {
+        "count": 15
+      },
+      "ammo_turret_10_dm": {
+        "count": 15
+      },
+      "ammo_turret_04_dm": {
+        "count": 22
+      },
+      "ammo_turret_05_dm": {
+        "count": 22
+      },
+      "ammo_turret_08_dm": {
+        "count": 10
+      },
+      "ammo_turret_07_dm": {
+        "count": 10
+      },
+      "ammo_turret_06_dm": {
+        "count": 15
       }
     },
-    "ammo2": {
-      "weaponTrigger": "gunner1",
-      "removeLoadedAmmo": false,
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_body_03_dm": {
-          "count": 14
-        },
-        "ammo_body_02_dm": {
-          "count": 14
-        },
-        "ammo_body_04_dm": {
-          "count": 15
-        },
-        "ammo_body_01_dm": {
-          "count": 15
-        }
+    "secondaryShells": {
+      "ammo_body_03_dm": {
+        "count": 14
+      },
+      "ammo_body_02_dm": {
+        "count": 14
+      },
+      "ammo_body_04_dm": {
+        "count": 15
+      },
+      "ammo_body_01_dm": {
+        "count": 15
       }
     }
   },

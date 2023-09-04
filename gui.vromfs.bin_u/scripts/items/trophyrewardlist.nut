@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -12,10 +11,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
   if (!rewardsArray || !rewardsArray.len())
     return
 
-  ::gui_start_modal_wnd(gui_handlers.trophyRewardsList, params)
+  ::gui_start_modal_wnd(::gui_handlers.trophyRewardsList, params)
 }
 
-gui_handlers.trophyRewardsList <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.trophyRewardsList <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyRewardsList.blk"
 

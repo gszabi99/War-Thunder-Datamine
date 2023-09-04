@@ -11,7 +11,6 @@
   "haveCCIPForTurret": true,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
-  "ils28K": true,
   "gearSinkRangeLR": 0.22,
   "gearSinkRangeC": 0.25,
   "tpsCameraTargetOffsetAtZoom": [
@@ -388,14 +387,6 @@
             "smoke": 0.2
           },
           {
-            "damage": 20.0,
-            "tail_dm": 0.2
-          },
-          {
-            "damage": 30.0,
-            "tail_dm": 0.4
-          },
-          {
             "damage": 50.0,
             "tail_dm": 0.6
           },
@@ -405,16 +396,7 @@
           },
           {
             "damage": 100.0,
-            "tail_dm": 0.9
-          },
-          {
-            "damage": 200.0,
             "tail_dm": 1.0
-          },
-          {
-            "damage": 300.0,
-            "tail_dm": 1.0,
-            "expl": 1.0
           }
         ],
         "onKill": [
@@ -445,32 +427,21 @@
           {
             "damage": 30.0,
             "tail_dm": 1.0,
-            "expl": 0.3
+            "nothing": 5.0
           },
           {
             "damage": 50.0,
             "tail_dm": 1.0,
-            "expl": 0.4
+            "nothing": 4.0
           },
           {
             "damage": 70.0,
             "tail_dm": 1.0,
-            "expl": 0.5
+            "nothing": 3.0
           },
           {
             "damage": 100.0,
-            "tail_dm": 1.0,
-            "expl": 0.5
-          },
-          {
-            "damage": 200.0,
-            "tail_dm": 1.0,
-            "expl": 0.5
-          },
-          {
-            "damage": 300.0,
-            "tail_dm": 1.0,
-            "expl": 1.0
+            "tail_dm": 1.0
           }
         ]
       },
@@ -1375,7 +1346,6 @@
   },
   "Sound": {
     "Engine": "engine_ka50",
-    "voiceWarningSystem": "rita",
     "gun": "gun_default",
     "turretTurnSfxPath": "sounds/effects",
     "turretTurnSfxPathStudio": "aircraft/effects",
@@ -1400,8 +1370,8 @@
     ],
     "mirrorNorm": [
       0.0,
-      -0.2,
-      1.0
+      0.0,
+      3.4
     ],
     "mirrorNode": [
       "blister11",
@@ -2182,14 +2152,20 @@
           "textureArea": [
             0.0,
             0.0,
-            1.0,
-            1.0
+            0.8,
+            0.8
           ],
           "page": {
-            "type": "plane_ils",
+            "type": "pilot_hud",
+            "ilsNode": "ils",
             "ilsSize": [
-              0.24,
-              0.24
+              0.28,
+              0.28
+            ],
+            "ilsProjSize": [
+              0.184,
+              0.176,
+              0.02
             ],
             "ilsOffsetForce": 0.2,
             "brightnessMult": 3.5
@@ -2490,18 +2466,16 @@
           },
           {
             "name": "2a42_exhaust_common",
-            "ShowNodes": [
-              {
-                "node": "exhaust_shield"
-              },
-              {
-                "node": [
-                  "fuse2",
-                  "fuse4",
-                  "exhaust"
-                ]
-              }
-            ],
+            "ShowNodes": {
+              "node": "exhaust_shield"
+            },
+            "HideNodes": {
+              "node": [
+                "fuse2",
+                "fuse4",
+                "exhaust"
+              ]
+            },
             "Weapon": [
               {
                 "dummy": true,
@@ -4652,13 +4626,6 @@
       "group": "countermeasures",
       "tier": 2,
       "effects": {
-        "enginesInfraRedBrightnessMult": 0.7,
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "2a42_exhaust_common"
-          }
-        },
         "sensors": {
           "sensor": [
             {

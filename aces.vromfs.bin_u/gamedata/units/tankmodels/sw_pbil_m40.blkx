@@ -439,26 +439,6 @@
       "ammo_turret_53_dm": {},
       "ammo_turret_54_dm": {},
       "ammo_turret_55_dm": {},
-      "ammo_turret_56_dm": {},
-      "ammo_turret_57_dm": {},
-      "ammo_turret_58_dm": {},
-      "ammo_turret_59_dm": {},
-      "ammo_turret_60_dm": {},
-      "ammo_turret_61_dm": {},
-      "ammo_turret_62_dm": {},
-      "ammo_turret_63_dm": {},
-      "ammo_turret_64_dm": {},
-      "ammo_turret_65_dm": {},
-      "ammo_turret_66_dm": {},
-      "ammo_turret_67_dm": {},
-      "ammo_turret_68_dm": {},
-      "ammo_turret_69_dm": {},
-      "ammo_turret_70_dm": {},
-      "ammo_turret_71_dm": {},
-      "ammo_turret_72_dm": {},
-      "ammo_turret_73_dm": {},
-      "ammo_turret_74_dm": {},
-      "ammo_turret_75_dm": {},
       "ammo_body_dm": {},
       "ammo_body_01_dm": {},
       "ammo_body_02_dm": {},
@@ -970,11 +950,7 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
@@ -1395,8 +1371,7 @@
       "substitute": [
         "machine_gunner",
         "machine_gunner_02",
-        "commander",
-        "machine_gunner_01"
+        "commander"
       ]
     },
     "driver": {
@@ -1820,12 +1795,6 @@
       "dampeningRelaxationRatio": 0.18,
       "dampeningCompressionRatio": 0.23,
       "brokenWheelSteeringDeflection": -15.0,
-      "steeringNodes": {
-        "wheel_r_01": "bone_wheel_r_01",
-        "wheel_l_01": "bone_wheel_l_01",
-        "wheel_r_02": "bone_wheel_r_02",
-        "wheel_l_02": "bone_wheel_l_02"
-      },
       "steeringDeflection": {
         "wheel_l_01": 30.0,
         "wheel_r_01": 30.0,
@@ -1905,111 +1874,6 @@
       "speed": 1.7,
       "completely": true,
       "modRequired": false
-    }
-  },
-  "PhysSys": {
-    "find": "bone_suspension_(\\w)_(\\d+)$",
-    "points": {
-      "lever": {
-        "limitMin": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "limitMax": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2"
-      },
-      "suspension_01_02": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2_02"
-      },
-      "suspension_01_03": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2_03"
-      },
-      "suspension_01_04": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2_04"
-      },
-      "suspension_01_05": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2_05"
-      },
-      "wheel": {
-        "searchChildren": {
-          "occurence": 1,
-          "limitMin": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "parent": "lever",
-          "find": "bone_wheel_"
-        }
-      }
-    },
-    "constraints": {
-      "edge": [
-        {
-          "from": "lever",
-          "to": "wheel"
-        },
-        {
-          "from": "suspension_01_05",
-          "to": "wheel",
-          "moveNodes": false
-        },
-        {
-          "from": "suspension_01_03",
-          "to": "wheel",
-          "moveNodes": false
-        }
-      ]
     }
   },
   "ammo": {

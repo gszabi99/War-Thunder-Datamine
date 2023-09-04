@@ -1,5 +1,5 @@
 from "%sqstd/ecs.nut" import *
-from "state.nut" import selectedEntity, selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey, selectedCompName
+from "state.nut" import selectedEntity, selectedEntities, selectedCompName
 from "%darg/ui_imports.nut" import *
 
 
@@ -14,29 +14,17 @@ selectedEntity.subscribe(function(_eid) {
   selectedCompName(null)
 })
 
+let function addEntitySelection(eid, _comp) {
+  selectedEntities.mutate(@(val) val[eid] <- true)
+}
+
+let function removeEntitySelection(eid, _comp) {
+  selectedEntities.mutate(@(val) delete val[eid])
+}
+
 register_es("update_selected_entities", {
-    onInit = @(eid, _comp) selectedEntitiesSetKeyVal(eid, true)
-    onDestroy = @(eid, _comp) selectedEntitiesDeleteKey(eid)
+    onInit = addEntitySelection,
+    onDestroy = removeEntitySelection
   },
   { comps_rq = ["daeditor__selected"]}
 )
-
-let getEntityExtraNameQuery = SqQuery("getEntityExtraNameQuery", {
-  comps_ro = [
-    ["ri_extra__name", TYPE_STRING, null],
-    ["floatingRiGroup__resName", TYPE_STRING, null],
-    ["ri_gpu_object__name", TYPE_STRING, null],
-    ["groupName", TYPE_STRING, null],
-  ]
-})
-
-let function getEntityExtraName(eid) {
-  let extraName = getEntityExtraNameQuery(eid,
-    @(_eid, comp) comp.ri_extra__name ?? comp.floatingRiGroup__resName ?? comp.ri_gpu_object__name ?? comp.groupName) ?? ""
-
-  return extraName.strip() == "" ? null : extraName
-}
-
-return {
-  getEntityExtraName
-}

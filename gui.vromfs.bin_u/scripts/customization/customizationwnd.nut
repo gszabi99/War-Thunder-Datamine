@@ -1,12 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
 let time = require("%scripts/time.nut")
@@ -50,10 +48,7 @@ let { getDecorator, getSkinId, getPlaneBySkinId, getSkinNameBySkinId
 let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin,
   previewedLiveSkinIds, approversUnitToPreviewLiveResource, getSkinsOption
 } = require("%scripts/customization/skins.nut")
-let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
-let { set_option, create_option_switchbox } = require("%scripts/options/optionsExt.nut")
-let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -97,8 +92,8 @@ enum decalTwoSidedMode {
     return
 
   params = params || {}
-  params.backSceneParams <- { globalFunctionName = "gui_start_mainmenu" }
-  handlersManager.loadHandler(gui_handlers.DecalMenuHandler, params)
+  params.backSceneFunc <- ::gui_start_mainmenu
+  ::handlersManager.loadHandler(::gui_handlers.DecalMenuHandler, params)
 }
 
 ::hangar_add_popup <- function hangar_add_popup(text) { // called from client
@@ -110,12 +105,12 @@ enum decalTwoSidedMode {
     return
   let skip = ::load_local_account_settings("skipped_msg/delayedDownloadContent", false)
   if (!skip) {
-    ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox,
+    ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
     {
-      parentHandler = handlersManager.getActiveBaseHandler()
+      parentHandler = ::handlersManager.getActiveBaseHandler()
       message = loc("msgbox/delayedDownloadContent")
+      ableToStartAndSkip = true
       startBtnText = loc("msgbox/confirmDelayedDownload")
-      defaultBtnId = "btn_select"
       onStartPressed = function() {
         ::set_option_delayed_download_content(true)
         ::save_local_account_settings("delayDownloadContent", true)
@@ -135,7 +130,7 @@ enum decalTwoSidedMode {
   }
 }
 
-gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.DecalMenuHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/customization/customization.blk"
   unit = null
   owner = null
@@ -198,11 +193,12 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     this.initialAppliedSkinId   = get_last_skin(this.unit.name)
     this.initialUserSkinId      = ::get_user_skins_profile_blk()?[this.unit.name] ?? ""
 
+    ::enableHangarControls(true)
     this.scene.findObject("timer_update").setUserData(this)
 
     hangar_focus_model(true)
 
-    let unitInfoPanel = createSlotInfoPanel(this.scene, false, "showroom")
+    let unitInfoPanel = ::create_slot_info_panel(this.scene, false, "showroom")
     this.registerSubHandler(unitInfoPanel)
     this.unitInfoPanelWeak = unitInfoPanel.weakref()
     if (this.needForceShowUnitInfoPanel)
@@ -372,7 +368,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   function switchUnit(unitName) {
     this.unit = getAircraftByName(unitName)
     if (this.unit == null) {
-      script_net_assert_once("not found loaded model unit", "customization: not found unit after model loaded")
+      ::script_net_assert_once("not found loaded model unit", "customization: not found unit after model loaded")
       return this.goBack()
     }
     ::cur_aircraft_name = this.unit.name
@@ -416,7 +412,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     }
 
     let placeObj = this.scene.findObject("auto_skin_place")
-    let markup = create_option_switchbox({
+    let markup = ::create_option_switchbox({
       id = autoSkinId
       value = isAutoSkinOn(this.unit.name)
       cb = "onAutoSkinchange"
@@ -440,7 +436,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     let skinItems = []
     foreach (i, decorator in this.skinList.decorators) {
       let access = this.skinList.access[i]
+      let canBuy = !this.previewMode && decorator.canBuyUnlock(this.unit)
       let canFindOnMarketplace = !this.previewMode && decorator.canBuyCouponOnMarketplace(this.unit)
+      let priceText = canBuy ? decorator.getCost().getTextAccordingToBalance() : ""
       let isUnlocked = decorator.isUnlocked()
       local text = this.skinList.items[i].text
       let image = this.skinList.items[i].image ?? ""
@@ -450,7 +448,9 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       if (!isUnlocked)
         images.append({ image = "#ui/gameuiskin#locked.svg", imageNoMargin = true })
 
-      if (canFindOnMarketplace)
+      if (canBuy)
+        text = loc("ui/parentheses", { text = priceText }) + " " + text
+      else if (canFindOnMarketplace)
         text = "".concat(loc("currency/gc/sign"), " ", text)
 
       if (!access.isVisible)
@@ -504,7 +504,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (hasFeature("SpendGold"))
       options.insert(0, ::USEROPT_TANK_SKIN_CONDITION)
 
-    let view = { isTooltipByHold = showConsoleButtons.value, rows = [] }
+    let view = { isTooltipByHold = ::show_console_buttons, rows = [] }
     foreach (optType in options) {
       let option = ::get_option(optType)
       view.rows.append({
@@ -633,7 +633,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (!this.access_Attachables)
       return
 
-    let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
+    let view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
     for (local i = 0; i < ::g_decorator_type.ATTACHABLES.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, ::g_decorator_type.ATTACHABLES)
       button.id = "slot_attach_" + i
@@ -659,7 +659,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateDecalSlots() {
-    let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
+    let view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
     for (local i = 0; i < ::g_decorator_type.DECALS.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, ::g_decorator_type.DECALS)
       button.id = "slot_" + i
@@ -759,23 +759,11 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       (::ItemsManager.getInventoryItemById(skinCouponItemdefId)?.canConsume() ?? false)
     let canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
-    this.showSceneBtn("btn_buy_skin", canBuySkin)
-    this.showSceneBtn("hint_btn_buy_skin", canBuySkin)
-    if (canBuySkin) {
+    bObj = this.showSceneBtn("btn_buy_skin", canBuySkin)
+    if (canBuySkin && checkObj(bObj)) {
       let price = skinDecorator.getCost()
       placePriceTextToButton(this.scene, "btn_buy_skin", loc("mainmenu/btnOrder"), price)
-      placePriceTextToButton(this.scene, "hint_btn_buy_skin", loc("mainmenu/btnOrder"), price)
     }
-
-    let canDoSkinUnlock = skinDecorator != null && !skinDecorator.isUnlocked()
-      && canDoUnlock(skinDecorator.unlockBlk)
-    this.showSceneBtn("btn_goto_skin_unlock", canDoSkinUnlock)
-    this.showSceneBtn("hint_btn_goto_skin_unlock", canDoSkinUnlock)
-    let skinHint = (canBuySkin && canDoSkinUnlock) ? loc("mainmenu/skinHintCanBuyOrUnlock")
-      : canBuySkin ? loc("mainmenu/skinHintCanBuy")
-      : canDoSkinUnlock ? loc("mainmenu/skinHintCanUnlock")
-      : ""
-    this.scene.findObject("skin_hint_text").setValue(skinHint)
 
     let can_testflight = ::isTestFlightAvailable(this.unit) && !this.decoratorPreview
     let can_createUserSkin = can_save_current_skin_template()
@@ -796,10 +784,10 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     bObj = this.scene.findObject("btn_toggle_damaged")
     let isDmgSkinPreviewMode = checkObj(bObj) && bObj.getValue()
 
-    let usableSkinsCount = (this.skinList?.access ?? []).filter(@(a) a.isOwn).len()
+    let usableSkinsCount = u.filter(this.skinList?.access ?? [], @(a) a.isOwn).len()
 
     showObjectsByTable(this.scene, {
-          btn_go_to_collection = showConsoleButtons.value && !isInEditMode && this.decorMenu?.isOpened
+          btn_go_to_collection = ::show_console_buttons && !isInEditMode && this.decorMenu?.isOpened
             && isCollectionItem(this.decorMenu?.getSelectedDecor())
 
           btn_apply = this.currentState & decoratorEditState.EDITING
@@ -810,8 +798,8 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           btn_sec_weapons    = !isInEditMode && !this.decorMenu?.isOpened &&
             needSecondaryWeaponsWnd(this.unit) && isUnitHaveSecondaryWeapons(this.unit)
 
-          btn_decal_edit   = showConsoleButtons.value && !isInEditMode && !this.decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
-          btn_decal_delete = showConsoleButtons.value && !isInEditMode && !this.decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
+          btn_decal_edit   = ::show_console_buttons && !isInEditMode && !this.decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
+          btn_decal_delete = ::show_console_buttons && !isInEditMode && !this.decorMenu?.isOpened && !focusedSlot.isEmpty && focusedSlot.unlocked
 
           btn_marketplace_consume_coupon_skin = !this.previewMode && canConsumeSkinCoupon
           btn_marketplace_find_skin = !this.previewMode && canFindSkinOnMarketplace
@@ -873,7 +861,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
     }
 
-    if ((this.currentState & decoratorEditState.SELECT) && showConsoleButtons.value) {
+    if ((this.currentState & decoratorEditState.SELECT) && ::show_console_buttons) {
       if (this.decorMenu?.isCurCategoryListObjHovered()) {
         bObj.text = loc("mainmenu/btnCollapse")
         bObj["skip-navigation"] = "no"
@@ -984,7 +972,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
           : null
       }
       let view = {
-        isTooltipByHold = showConsoleButtons.value,
+        isTooltipByHold = ::show_console_buttons,
         buttons = [ getDecorButtonView(this.decoratorPreview, this.unit, params) ]
       }
       let slotsObj = obj.findObject("decorator_preview_div")
@@ -1591,7 +1579,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
     if (prevValue == value)
       return
 
-    set_option(::USEROPT_USER_SKIN, value)
+    ::set_option(::USEROPT_USER_SKIN, value)
     hangar_force_reload_model()
   }
 
@@ -1600,7 +1588,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       return
 
     this.initialUserSkinId = ""
-    set_option(::USEROPT_USER_SKIN, 0)
+    ::set_option(::USEROPT_USER_SKIN, 0)
 
     if (needReloadModel)
       hangar_force_reload_model()
@@ -1649,14 +1637,6 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
       show_model_damaged(obj.getValue() ? MDS_DAMAGED : MDS_UNDAMAGED)
 
     this.updateButtons()
-  }
-
-  function onGotoSkinUnlock() {
-    let skinId = getSkinId(this.unit.name, this.previewSkinId)
-    ::gui_start_profile({
-      initialSheet = "UnlockSkin"
-      initSkinId = skinId
-    })
   }
 
   function onBuySkin() {
@@ -2032,7 +2012,7 @@ gui_handlers.DecalMenuHandler <- class extends gui_handlers.BaseGuiHandlerWT {
   }
 
   function onEventBeforeStartTestFlight(_params) {
-    handlersManager.requestHandlerRestore(this, this.getclass())
+    ::handlersManager.requestHandlerRestore(this, this.getclass())
   }
 
   function onEventItemsShopUpdate(_params) {

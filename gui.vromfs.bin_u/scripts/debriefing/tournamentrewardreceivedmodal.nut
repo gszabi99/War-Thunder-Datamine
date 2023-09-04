@@ -1,15 +1,14 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+  let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-gui_handlers.TournamentRewardReceivedWnd <- class extends gui_handlers.BaseGuiHandlerWT {
+
+::gui_handlers.TournamentRewardReceivedWnd <- class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   wndType = handlerType.MODAL
 
@@ -29,7 +28,7 @@ gui_handlers.TournamentRewardReceivedWnd <- class extends gui_handlers.BaseGuiHa
       rewardBlk = config
       eventEconomicName = config.eventId
     }
-    return handlersManager.loadHandler(gui_handlers.TournamentRewardReceivedWnd, params)
+    return ::handlersManager.loadHandler(::gui_handlers.TournamentRewardReceivedWnd, params)
   }
 
   function initScreen() {

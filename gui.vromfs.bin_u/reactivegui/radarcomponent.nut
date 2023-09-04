@@ -386,7 +386,7 @@ let distanceGateWidthMult = 1.0
 let iffDistRelMult = 0.5
 
 let function createTargetOnRadarSquare(index, radius, size, color) {
-  let watches = freeze([HasAzimuthScale, HasDistanceScale, IsRadar2Visible, AzimuthHalfWidth2, AzimuthHalfWidth, DistanceGateWidthRel, VelocitySearch])
+  let watches = freeze([HasAzimuthScale, HasDistanceScale, IsRadar2Visible, AzimuthHalfWidth2, AzimuthHalfWidth, DistanceGateWidthRel])
 
   return function() {
     let res = { watch = watches }
@@ -443,7 +443,7 @@ let function createTargetOnRadarSquare(index, radius, size, color) {
       )
     }
     if (!target.isEnemy) {
-      let iffMarkDistanceRel = VelocitySearch.value ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
+      let iffMarkDistanceRel = distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
       frameCommands.append(
         [ VECTOR_LINE,
           100 * angleLeft,
@@ -691,7 +691,7 @@ let function makeRadar2ModeText(textConfig, color) {
 
 let offsetScaleFactor = 1.3
 
-let function B_ScopeSquareMarkers(size, color, font_size) {
+let function B_ScopeSquareMarkers(size, color, fontScale) {
   let fontFxFactor = calcFontFxFactor(color)
   let fontFxColor = calcFontFxColor(color)
 
@@ -702,7 +702,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       color
       fontFxFactor
       fontFxColor
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), deg, "x",
               floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), deg,
               (ScanPatternsMax.value > 1 ? "*" : " "))
@@ -718,7 +718,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       color
       fontFxFactor
       fontFxColor
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       text = "".concat(VelocitySearch.value
               ? cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false)
               : cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
@@ -734,7 +734,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       color
       fontFxFactor
       fontFxColor
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       size = [size[0], SIZE_TO_CONTENT]
       text = VelocitySearch.value
         ? cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false)
@@ -752,7 +752,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       color
       fontFxFactor
       fontFxColor
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       pos = [0, (-ElevationMin.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
       text = "".concat(floor((ElevationMin.value) * radToDeg + 0.5), deg)
     })
@@ -768,7 +768,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       color
       fontFxFactor
       fontFxColor
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       pos = [0, (-ElevationMax.value * elevMaxInv * elevMaxScreenRelSize + 0.5) * size[1]]
       text = "".concat(floor((ElevationMax.value) * radToDeg + 0.5), deg)
     })
@@ -783,7 +783,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       fontFxColor = Color(0, 0, 0, 120)
       size
       padding = hdpx(4)
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       text = "".concat(floor(AzimuthMin.value * radToDeg + 0.5), deg)
     })
   }
@@ -797,7 +797,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       fontFxFactor = fontOutlineFxFactor
       fontFxColor = Color(0, 0, 0, 120)
       size
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       padding = hdpx(4)
       text = "".concat(floor(AzimuthMax.value * radToDeg + 0.5), deg)
     })
@@ -812,7 +812,7 @@ let function B_ScopeSquareMarkers(size, color, font_size) {
       color = isColorOrWhite(color)
       fontFxFactor = fontOutlineFxFactor
       fontFxColor = Color(0, 0, 0, 120)
-      fontSize = font_size
+      fontSize = hudFontHgt * fontScale
       margin = [hdpx(4), 0, 0, 0]
       text = "".concat(floor((AzimuthMax.value - AzimuthMin.value) * radToDeg + 0.5), deg)
     })
@@ -1266,7 +1266,7 @@ let function calcAngularGateWidthPolar(distance_rel, azimuth_half_width) {
 
 let createTargetOnRadarPolar = @(index, radius, size, color) function() {
 
-  let res = { watch = [HasAzimuthScale, AzimuthMin, AzimuthRange, HasDistanceScale, VelocitySearch] }
+  let res = { watch = [HasAzimuthScale, AzimuthMin, AzimuthRange, HasDistanceScale] }
 
   let target = targets[index]
 
@@ -1323,7 +1323,7 @@ let createTargetOnRadarPolar = @(index, radius, size, color) function() {
   local cosa = cos(angle)
 
   if (!target.isEnemy) {
-    let iffMarkDistanceRel = VelocitySearch.value ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
+    let iffMarkDistanceRel = distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
     frameCommands.append(
       [ VECTOR_SECTOR, 50, 50, 50 * iffMarkDistanceRel, 50 * iffMarkDistanceRel, angleLeftDeg, angleRightDeg ]
     )
@@ -1728,7 +1728,7 @@ let B_ScopeHalfCircleTopMarkers = @(size, color) function() {
   }
 }
 
-let B_ScopeHalfCircleMarkers = @(size, color, font_size) function() {
+let B_ScopeHalfCircleMarkers = @(size, color, fontScale) function() {
   let res = { watch = [IsRadarVisible, IsRadar2Visible, HasDistanceScale,
                          HasAzimuthScale, ScanAzimuthMax, ScanAzimuthMin] }
 
@@ -1755,7 +1755,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, font_size) function() {
             color
             fontFxFactor = calcFontFxFactor(color)
             fontFxColor = calcFontFxColor(color)
-            fontSize = font_size
+            fontSize = hudFontHgt * fontScale
             pos = [scanRangeX, scanRangeY]
             hplace = ALIGN_CENTER
             text = "".concat(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), deg, "x",
@@ -1771,7 +1771,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, font_size) function() {
           color
           fontFxFactor = calcFontFxFactor(color)
           fontFxColor = calcFontFxColor(color)
-          fontSize = font_size
+          fontSize = hudFontHgt * fontScale
           pos = [scanYaw, scanPitch]
           text =  "".concat(VelocitySearch.value
                     ? cross_call.measureTypes.SPEED.getMeasureUnitsText(
@@ -2897,7 +2897,7 @@ let function azimuthMarkStrike(styleColor) {
   }
 }
 
-let mkRadarBase = @(posWatch, size, _isAir, color, mode, font_size = hudFontHgt, hide_back = false, need_shift = true) function() {
+let mkRadarBase = @(posWatch, size, _isAir, color, mode, fontScale = 1.0, hide_back = false, need_shift = true) function() {
 
   let isSquare = mode.value == RadarViewMode.B_SCOPE_SQUARE
   let azimuthRange = AzimuthRange.value
@@ -2910,13 +2910,13 @@ let mkRadarBase = @(posWatch, size, _isAir, color, mode, font_size = hudFontHgt,
       if (azimuthRange > PI)
         scopeChild = B_Scope(size, color)
       else
-        scopeChild = B_ScopeSquare(squareSize, color, hide_back, font_size)
+        scopeChild = B_ScopeSquare(squareSize, color, hide_back, fontScale)
     }
     else if (mode.value == RadarViewMode.B_SCOPE_ROUND) {
       if (azimuthRange > PI)
         scopeChild = B_Scope(size, color)
       else
-        scopeChild = B_ScopeHalf(size, color, font_size)
+        scopeChild = B_ScopeHalf(size, color, fontScale)
     }
   }
 
@@ -3028,7 +3028,7 @@ let mkRadarForMfd = @(radarColorWatched) function() {
       MfdRadarEnabled.value
        ? mkRadarBase(radarPos,
           [radarPosSizeW.value, radarPosSizeH.value],
-          true, color, MfdViewMode, (MfdRadarFontScale.value > 0 ? MfdRadarFontScale.value : radarPosSizeH.value / 512.0) * 30, MfdRadarHideBkg.value, false)
+          true, color, MfdViewMode, MfdRadarFontScale.value > 0 ? MfdRadarFontScale.value : radarPosSizeH.value / 512.0, MfdRadarHideBkg.value, false)
        : null
     ]
   }

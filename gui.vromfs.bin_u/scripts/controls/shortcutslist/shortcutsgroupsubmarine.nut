@@ -7,8 +7,7 @@ let { get_option_multiplier, set_option_multiplier,
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { ActionGroup, hasXInputDevice } = require("controls")
-let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
+let { ActionGroup } = require("controls")
 
 return [
   {
@@ -23,7 +22,7 @@ return [
   {
     id = "ID_SUBMARINE_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -32,7 +31,7 @@ return [
       ActionGroup.SUBMARINE,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_SUBMARINE_SWAP_GAMEPAD_STICKS"
@@ -40,7 +39,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(
       ActionGroup.SUBMARINE
     )
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
   {
@@ -185,7 +184,7 @@ return [
   }
   {
     id = "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
-    showFunc = hasXInputDevice
+    showFunc = ::have_xinput_device
     checkAssign = false
   }
   {

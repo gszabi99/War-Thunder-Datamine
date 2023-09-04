@@ -1,7 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
@@ -69,10 +68,10 @@ let open = function() {
   if (persistent.encyclopediaData.len() == 0)
     return
 
-  ::gui_start_modal_wnd(gui_handlers.Encyclopedia)
+  ::gui_start_modal_wnd(::gui_handlers.Encyclopedia)
 }
 
-gui_handlers.Encyclopedia <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.Encyclopedia <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   menuConfig = null

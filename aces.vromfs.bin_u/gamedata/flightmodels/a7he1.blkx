@@ -2142,6 +2142,55 @@
       ]
     }
   },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunMG17.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "dm": "mgun1_dm",
+        "bullets": 500,
+        "spread": 1.0,
+        "counterIndex": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunMG17.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "mgun2_dm",
+        "bullets": 500,
+        "spread": 1.0
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMGFF.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "dm": "cannon1_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 60,
+        "spread": 1.5,
+        "counterIndex": 2
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMGFF.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "dm": "cannon2_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 60,
+        "spread": 1.5
+      }
+    ],
+    "hideDmParts": {
+      "node": "armor1_dm"
+    }
+  },
   "weapon_presets": {
     "preset": {
       "name": "he_112b_0_default",
@@ -2319,55 +2368,6 @@
         ]
       }
     ]
-  },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunMG17.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 500,
-        "spread": 1.0,
-        "counterIndex": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunMG17.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 500,
-        "spread": 1.0
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMGFF.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 60,
-        "spread": 1.5,
-        "counterIndex": 2
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonMGFF.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon2_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 60,
-        "spread": 1.5
-      }
-    ],
-    "hideDmParts": {
-      "node": "armor1_dm"
-    }
   },
   "modifications": {
     "cd_98": {},

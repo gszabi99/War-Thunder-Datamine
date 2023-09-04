@@ -1,6 +1,5 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
@@ -72,9 +71,10 @@ systemMsg.registerLocTags(locTags)
         "".concat(colorize("userlogColoredText", getPlayerName(k)), loc("ui/colon"), format("%.1f", v))), []))
     })
 
-    ::gui_start_modal_wnd(gui_handlers.SkipableMsgBox, {
+    ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox, {
       parentHandler = handler
       message = message
+      ableToStartAndSkip = true
       startBtnText = loc("msgbox/btn_yes")
       onStartPressed = okFunc
       skipFunc = function(value) {
@@ -382,7 +382,7 @@ systemMsg.registerLocTags(locTags)
 
   local text = loc("squad/has_offline_members") + loc("ui/colon")
   text += loc("ui/comma").join(
-                            offlineMembers.map(@(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
+                            u.map(offlineMembers, @(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
                             true
                           )
 
@@ -470,7 +470,7 @@ systemMsg.registerLocTags(locTags)
     return res
 
   let mText = ", ".join(
-    notAvailableMemberNames.map(@(name) colorize("userlogColoredText", getPlayerName(name)))
+    u.map(notAvailableMemberNames, @(name) colorize("userlogColoredText", getPlayerName(name)))
     true
   )
   let msg = loc("msg/members_no_access_to_mode", {  members = mText  })

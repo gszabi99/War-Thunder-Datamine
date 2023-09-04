@@ -2,14 +2,12 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
 let { buildTimeStr } = require("%appGlobals/timeLoc.nut")
 let { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
 point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
 let { get_time_msec } = require("dagor.time")
 let exitGame = require("%scripts/utils/exitGame.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const TIME_TO_EXPLOSION = 11000
 const TIME_TO_SERENA_ACTIVATION = 1000
@@ -19,7 +17,7 @@ const TIME_TO_POINT_CAMERA_TO_EVENT = 1000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT = 5000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT_END = 10000
 
-local class airRaidWndScene extends gui_handlers.BaseGuiHandlerWT {
+local class airRaidWndScene extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "%gui/wndLib/airRaidTimerScene.blk"
 
   countdownStartedTime = 0
@@ -28,6 +26,7 @@ local class airRaidWndScene extends gui_handlers.BaseGuiHandlerWT {
   hasVisibleNuclearTimer = true
 
   function initScreen() {
+    ::enableHangarControls(this.hasVisibleNuclearTimer)
     this.showSceneBtn("window", this.hasVisibleNuclearTimer)
     if (this.hasVisibleNuclearTimer)
       this.initTimer()
@@ -104,6 +103,6 @@ local class airRaidWndScene extends gui_handlers.BaseGuiHandlerWT {
     ::g_delayed_actions.add(Callback(@() this.goForward(::gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
   }
 }
-gui_handlers.airRaidWndScene <- airRaidWndScene
+::gui_handlers.airRaidWndScene <- airRaidWndScene
 
-return @(params) handlersManager.loadHandler(airRaidWndScene, params)
+return @(params) ::handlersManager.loadHandler(airRaidWndScene, params)

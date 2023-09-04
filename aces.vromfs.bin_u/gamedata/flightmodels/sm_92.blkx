@@ -2312,10 +2312,108 @@
     "wingStrainLimitDown": 1.0
   },
   "commonWeapons": {
-    "Weapon": {
-      "slot": 0,
-      "preset": "default_common"
-    }
+    "Weapon": [
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "shell": "emtr_shellrejection1",
+        "dm": "cannon1_dm",
+        "bullets": 300,
+        "spread": 1.0
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "cannon2_dm",
+        "bullets": 300,
+        "spread": 1.0
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonMG15120.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "dm": "cannon3_dm",
+        "bullets": 300,
+        "spread": 1.0
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "shell": "emtr_shellrejection4",
+        "dm": "mgun4_dm",
+        "bullets": 350,
+        "spread": 1.0,
+        "traceOffset": 2
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "emitter": "flare5",
+        "flash": "flare5",
+        "shell": "emtr_shellrejection5",
+        "dm": "mgun5_dm",
+        "bullets": 350,
+        "spread": 1.0,
+        "traceOffset": 2
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "emitter": "flare6",
+        "flash": "flare6",
+        "shell": "emtr_shellrejection6",
+        "dm": "mgun6_dm",
+        "bullets": 350,
+        "spread": 1.0,
+        "traceOffset": 2
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+        "emitter": "flare7",
+        "flash": "flare7",
+        "shell": "emtr_shellrejection7",
+        "dm": "mgun7_dm",
+        "bullets": 350,
+        "spread": 1.0,
+        "traceOffset": 2
+      },
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/gunBredaSAFAT127_turret.blk",
+        "emitter": "gun1",
+        "flash": "flare8",
+        "turret": [
+          "turret1",
+          {
+            "head": "turret1",
+            "gun": "gun1"
+          }
+        ],
+        "dm": "gunner1_dm",
+        "gunnerDm": "gunner1_dm",
+        "gunDm": "gun1_dm",
+        "partsDP": "gun1_dm",
+        "bullets": 350,
+        "limits": {
+          "yaw": [
+            -2.0,
+            2.0
+          ],
+          "pitch": [
+            -2.0,
+            2.0
+          ]
+        }
+      }
+    ]
   },
   "weapon_presets": {
     "preset": [
@@ -2325,579 +2423,23 @@
       },
       {
         "name": "sm_91_6x50kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/sm_92_6x50kg_t.blk"
+        "blk": "gameData/FlightModels/weaponPresets/sm_92_6x50kg_t.blk",
+        "reqModification": "it50_mod"
       },
       {
         "name": "sm_91_6x100kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/sm_92_6x100kg_t.blk"
-      },
-      {
-        "name": "sm_92_6x160kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/sm_92_6x160kg_t.blk"
+        "blk": "gameData/FlightModels/weaponPresets/sm_92_6x100kg_t.blk",
+        "reqModification": "it100_mod"
       },
       {
         "name": "sm_91_2x250kg_gp",
-        "blk": "gameData/FlightModels/weaponPresets/sm_92_2x250kg_gp.blk"
+        "blk": "gameData/FlightModels/weaponPresets/sm_92_2x250kg_gp.blk",
+        "reqModification": "it250_mod"
       },
       {
         "name": "sm_91_2x500kg_gp",
-        "blk": "gameData/FlightModels/weaponPresets/sm_92_2x500kg_gp.blk"
-      }
-    ]
-  },
-  "WeaponSlots": {
-    "maxloadMass": 1650.0,
-    "maxloadMassLeftConsoles": 825.0,
-    "maxloadMassRightConsoles": 825.0,
-    "maxDisbalance": 700.0,
-    "HideNodes": {
-      "node": [
-        "bomb_pylon1",
-        "bomb_pylon2",
-        "bomb_pylon3",
-        "bomb_pylon4",
-        "bomb_pylon5",
-        "bomb_pylon6",
-        "bomb_pylon7",
-        "bomb_pylon8",
-        "bomb_pylon9",
-        "bomb_pylon10",
-        "pylon_cap1",
-        "pylon_cap2",
-        "pylon_cap3",
-        "pylon_cap4",
-        "pylon_cap5",
-        "pylon_cap6"
-      ]
-    },
-    "WeaponSlot": [
-      {
-        "index": 0,
-        "WeaponPreset": {
-          "name": "default_common",
-          "ShowNodes": {
-            "node": [
-              "pylon_cap1",
-              "pylon_cap2",
-              "pylon_cap3",
-              "pylon_cap4",
-              "pylon_cap5",
-              "pylon_cap6"
-            ]
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMG15120.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "shell": "emtr_shellrejection1",
-              "dm": "cannon1_dm",
-              "bullets": 300,
-              "spread": 1.0
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMG15120.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "cannon2_dm",
-              "bullets": 300,
-              "spread": 1.0
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMG15120.blk",
-              "emitter": "flare3",
-              "flash": "flare3",
-              "dm": "cannon3_dm",
-              "bullets": 300,
-              "spread": 1.0
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "shell": "emtr_shellrejection4",
-              "dm": "mgun4_dm",
-              "bullets": 350,
-              "spread": 1.0,
-              "traceOffset": 2
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-              "emitter": "flare5",
-              "flash": "flare5",
-              "shell": "emtr_shellrejection5",
-              "dm": "mgun5_dm",
-              "bullets": 350,
-              "spread": 1.0,
-              "traceOffset": 2
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-              "emitter": "flare6",
-              "flash": "flare6",
-              "shell": "emtr_shellrejection6",
-              "dm": "mgun6_dm",
-              "bullets": 350,
-              "spread": 1.0,
-              "traceOffset": 2
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-              "emitter": "flare7",
-              "flash": "flare7",
-              "shell": "emtr_shellrejection7",
-              "dm": "mgun7_dm",
-              "bullets": 350,
-              "spread": 1.0,
-              "traceOffset": 2
-            },
-            {
-              "trigger": "gunner0",
-              "blk": "gameData/Weapons/gunBredaSAFAT127_turret.blk",
-              "emitter": "gun1",
-              "flash": "flare8",
-              "turret": [
-                "turret1",
-                {
-                  "head": "turret1",
-                  "gun": "gun1"
-                }
-              ],
-              "dm": "gunner1_dm",
-              "gunnerDm": "gunner1_dm",
-              "gunDm": "gun1_dm",
-              "partsDP": "gun1_dm",
-              "bullets": 350,
-              "limits": {
-                "yaw": [
-                  -2.0,
-                  2.0
-                ],
-                "pitch": [
-                  -2.0,
-                  2.0
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "index": 1,
-        "tier": 10,
-        "order": 1,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb6",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb6",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb6",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 2,
-        "tier": 9,
-        "order": 3,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb5",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb5",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb5",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 3,
-        "tier": 8,
-        "order": 5,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 4,
-        "tier": 7,
-        "order": 7,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_heavy_middle",
-            "name": "250kg",
-            "reqModification": "it250_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb4"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_gp.blk",
-              "emitter": "bomb10",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_special",
-            "name": "500kg",
-            "reqModification": "it500_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb4"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_500kg_gp.blk",
-              "emitter": "bomb12",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 5,
-        "tier": 5,
-        "order": 8,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_heavy_middle",
-            "name": "250kg",
-            "reqModification": "it250_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_250kg_gp.blk",
-              "emitter": "bomb9",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_special",
-            "name": "500kg",
-            "reqModification": "it500_mod",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_500kg_gp.blk",
-              "emitter": "bomb11",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 6,
-        "tier": 4,
-        "order": 6,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon4"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon4"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon4"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 7,
-        "tier": 3,
-        "order": 4,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
-      },
-      {
-        "index": 8,
-        "tier": 2,
-        "order": 2,
-        "WeaponPreset": [
-          {
-            "iconType": "bombs_small",
-            "name": "50kg",
-            "reqModification": "it50_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon6"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_middle",
-            "name": "100kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon6"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "160kg",
-            "reqModification": "it100_mod",
-            "ShowNodes": {
-              "node": "bomb_pylon6"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          }
-        ]
+        "blk": "gameData/FlightModels/weaponPresets/sm_92_2x500kg_gp.blk",
+        "reqModification": "it500_mod"
       }
     ]
   },
@@ -3170,44 +2712,14 @@
     "turnTime": 15.0
   },
   "modifications": {
-    "CdMin_Fuse": {
-      "tier": 1,
-      "modClass": "lth"
-    },
-    "structure_str": {
-      "prevModification": "CdMin_Fuse",
-      "tier": 2,
-      "modClass": "lth"
-    },
-    "cd_98": {
-      "prevModification": "structure_str",
-      "tier": 3,
-      "modClass": "lth"
-    },
-    "new_cover": {
-      "prevModification": "cd_98",
-      "tier": 4,
-      "modClass": "lth"
-    },
-    "new_radiator": {
-      "tier": 1,
-      "modClass": "lth"
-    },
-    "new_compressor": {
-      "prevModification": "new_radiator",
-      "tier": 2,
-      "modClass": "lth"
-    },
-    "hp_105": {
-      "prevModification": "new_compressor",
-      "tier": 3,
-      "modClass": "lth"
-    },
-    "new_engine_injection": {
-      "prevModification": "hp_105",
-      "tier": 4,
-      "modClass": "lth"
-    },
+    "cd_98": {},
+    "CdMin_Fuse": {},
+    "new_cover": {},
+    "structure_str": {},
+    "hp_105": {},
+    "new_radiator": {},
+    "new_compressor": {},
+    "new_engine_injection": {},
     "breda12_7_universal": {},
     "breda12_7_air_targets": {},
     "breda12_7_all_tracers": {},

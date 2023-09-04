@@ -469,15 +469,9 @@
             "flow": "vertical",
             "tdiv": [
               {
-                "id": "common_priority_hints_holder",
-                "position": "relative",
-                "tdiv": {
-                  "id": "common_priority_hints",
-                  "width": "pw",
-                  "position": "relative",
-                  "pos": "0, ph-h",
-                  "flow": "vertical"
-                }
+                "id": "common_priority_hints",
+                "width": "pw",
+                "flow": "vertical"
               },
               {
                 "id": "ship_obstacle_rf",
@@ -485,6 +479,7 @@
               },
               {
                 "width": "pw",
+                "min-height": "0.1@shHud",
                 "tdiv": {
                   "id": "mission_hints",
                   "width": "pw",
@@ -558,6 +553,7 @@
           {
             "id": "hud_message_zone_capture_notification",
             "width": "pw",
+            "height": "0.065@shHud",
             "pos": "0.5pw-0.5w, -@tankGunsAmmoBlockHeight",
             "message_style": "zone_capture_notification",
             "input-transparent": "yes"

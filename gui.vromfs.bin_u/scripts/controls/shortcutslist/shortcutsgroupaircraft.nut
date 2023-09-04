@@ -14,9 +14,8 @@ let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { MAX_CAMERA_SPEED, MIN_CAMERA_SPEED, CONTROL_TYPE, AxisDirection, ConflictGroups
-} = require("%scripts/controls/controlsConsts.nut")
-let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
+let { MAX_CAMERA_SPEED, MIN_CAMERA_SPEED } = require("%scripts/controls/controlsConsts.nut")
+let { ActionGroup } = require("controls")
 let { getMouseUsageMask, checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
@@ -39,7 +38,7 @@ return [
   {
     id = "ID_PLANE_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_PLANE_SWAP_GAMEPAD_STICKS_WITHOUT_MODIFIERS"
@@ -48,13 +47,13 @@ return [
       ActionGroup.AIRPLANE,
       controlsOperations.Flags.WITHOUT_MODIFIERS
     )
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
   {
     id = "ID_PLANE_SWAP_GAMEPAD_STICKS"
     type = CONTROL_TYPE.BUTTON
     onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.AIRPLANE)
-    showFunc = @() hasXInputDevice()
+    showFunc = @() ::have_xinput_device()
   }
 //-------------------------------------------------------
   {
@@ -714,23 +713,23 @@ return [
   {
     id = "ID_PLANE_KILLSTREAK_WHEEL_MENU"
     checkAssign = false
-    showFunc = hasXInputDevice
+    showFunc = ::have_xinput_device
   }
   {
     id = "wheelmenu_x"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = hasXInputDevice
-    checkAssign = @() isXInputDevice()
+    showFunc = ::have_xinput_device
+    checkAssign = @() ::is_xinput_device()
   }
   {
     id = "wheelmenu_y"
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = hasXInputDevice
-    checkAssign = @() isXInputDevice()
+    showFunc = ::have_xinput_device
+    checkAssign = @() ::is_xinput_device()
   }
 //-------------------------------------------------------
   {

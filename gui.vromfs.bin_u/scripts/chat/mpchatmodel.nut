@@ -10,7 +10,6 @@ let { send } = require("eventbus")
 let { CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_mplayers_list } = require("mission")
-let { get_charserver_time_sec } = require("chard")
 
 let mpChatState = {
   log = [],
@@ -86,7 +85,7 @@ local mpChatModel = {
       isAutomatic = automatic
       mode = mode
       time = ::get_usefull_total_time()
-      sTime = get_charserver_time_sec()
+      sTime = ::get_charserver_time_sec()
 
       team = player ? player.team : 0
     }

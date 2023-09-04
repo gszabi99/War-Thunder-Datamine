@@ -1,12 +1,11 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let { MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { MAX_SHORTCUTS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
 let { abs, ceil, fabs, floor } = require("math")
 let globalEnv = require("globalEnv")
@@ -19,9 +18,6 @@ let { recomendedControlPresets, getControlsPresetBySelectedType
 } = require("%scripts/controls/controlsUtils.nut")
 let { joystickSetCurSettings, setShortcutsAndSaveControls
 } = require("%scripts/controls/controlsCompatibility.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 ::aircraft_controls_wizard_config <- [
   { id = "helpers_mode"
@@ -312,7 +308,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 ::gui_modal_controlsWizard <- function gui_modal_controlsWizard() {
   if (!hasFeature("ControlsPresets"))
     return
-  ::gui_start_modal_wnd(gui_handlers.controlsWizardModalHandler)
+  ::gui_start_modal_wnd(::gui_handlers.controlsWizardModalHandler)
 }
 
 let function isInArrayRecursive(v, arr) {
@@ -325,7 +321,7 @@ let function isInArrayRecursive(v, arr) {
   return false
 }
 
-gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHandlerWT {
+::gui_handlers.controlsWizardModalHandler <- class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsWizard.blk"
   sceneNavBlkName = null
@@ -817,7 +813,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
     let isInListenWnd = this.curDivName == "shortcut-wnd"
     let isListening   = isInListenWnd && (this.isListenAxis || this.isListenButton)
 
-    if (showConsoleButtons.value) {
+    if (::show_console_buttons) {
       foreach (name in ["keep_assign_btn", "btn_prevItem", "btn_controlsWizard", "btn_selectPreset"]) {
         let btnObj = this.scene.findObject(name)
         if (checkObj(btnObj)) {
@@ -1508,7 +1504,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
     else if (esUnitType == ES_UNIT_TYPE_AIRCRAFT)
       this.controls_wizard_config = ::aircraft_controls_wizard_config
     else
-      script_net_assert_once("unsupported unit type", "Given unit type has not wizard config")
+      ::script_net_assert_once("unsupported unit type", "Given unit type has not wizard config")
 
     ::initControlsWizardConfig(this.controls_wizard_config)
     this.initShortcutsNames()
@@ -1529,7 +1525,7 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
 
   function doApply() {
     foreach (option in this.optionsToSave)
-      set_option(option.type, option.value)
+      ::set_option(option.type, option.value)
     joystickSetCurSettings(this.curJoyParams)
     setShortcutsAndSaveControls(this.shortcuts, this.shortcutNames)
     this.save(false)
@@ -1540,15 +1536,15 @@ gui_handlers.controlsWizardModalHandler <- class extends gui_handlers.BaseGuiHan
       this.msgBox("ask_save", loc("hotkeys/msg/wizardSaveUnfinished"),
         [
           ["yes", function() { this.doApply() } ],
-          ["no", function() { gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],
+          ["no", function() { ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],
           ["cancel", @() null ],
         ], "yes", { cancel_fn = function() {} })
     else
-      gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+      ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function afterSave() {
-    gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+    ::gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function onEventActiveHandlersChanged(_p) {

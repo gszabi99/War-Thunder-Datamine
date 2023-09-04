@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 
 
 let { get_time_msec } = require("dagor.time")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
@@ -102,7 +101,7 @@ local ClanSquadsList = class {
     if (squads.len() > MAX_SQUADS_LIST_LEN) {
       let message = format("Error in clanSquads::updateClanSquadsList:\nToo long clan squads list - %d",
                                 squads.len())
-      script_net_assert_once("too long clan squads list", message)
+      ::script_net_assert_once("too long clan squads list", message)
 
       squads.resize(MAX_SQUADS_LIST_LEN)
     }

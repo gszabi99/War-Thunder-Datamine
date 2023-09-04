@@ -1,11 +1,15 @@
 module soa_template shared private
 options no_aot
+options strict_smart_pointers
 
 require ecs
+require ECSGlobalTags
 require strings
 require daslib/ast_boost
+require daslib/templates_boost
+require daslib/strings_boost
+require daslib/macro_boost
 require daslib/remove_call_args
-require DagorSystem
 
 
 let
@@ -282,19 +286,6 @@ struct MakeFuncArg
   argT : TypeDeclPtr
   argField : bool
 
-def should_check_sizes() : bool
-  // we aot compile scripts with the same dev aot compiler to reduce amount of possible configurations
-  // for aot compiler to know what kind of build it is compiling we pass -sConfig with the value of the $(config) of the game build
-  // this way we can have dev builds with debug checks aoted and release builds with no checks
-  if is_in_aot()
-    let cmdArgs <- get_command_line_arguments()
-    for idx in range(length(cmdArgs) - 1)
-      if cmdArgs[idx] == "-sConfig"
-        return cmdArgs[idx + 1] == "dev"
-    return false
-  else
-    return get_DAGOR_DBGLEVEL() > 0
-
 [structure_macro(name=soa_template)]
 class SoaTemplateStructMacro : AstStructureAnnotation
 
@@ -327,7 +318,7 @@ class SoaTemplateStructMacro : AstStructureAnnotation
     if length(errors) > 0
       return false
 
-    let checkSizes = should_check_sizes()
+    let checkSizes = !is_in_aot() && ecs_has_tag("dev")
 
     // push
     var inscope push_op <- make_named_call(st, stype, "push", "push", /*isConst*/true, checkSizes)

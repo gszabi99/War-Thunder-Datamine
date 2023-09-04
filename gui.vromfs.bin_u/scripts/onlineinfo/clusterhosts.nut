@@ -2,8 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
 let regexp2 = require("regexp2")
 let { resetTimeout } = require("dagor.workcycle")
-let { OPERATION_COMPLETE } = require("matching.errors")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let mkHardWatched = require("%globalScripts/mkHardWatched.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
 
@@ -11,8 +10,8 @@ const MAX_FETCH_RETRIES = 5
 const MAX_FETCH_DELAY_SEC = 60
 const OUT_OF_RETRIES_DELAY_SEC = 300
 
-let clusterHosts = hardPersistWatched("clusterHosts", {})
-let clusterHostsChangePending = hardPersistWatched("clusterHostsChangePending", {})
+let clusterHosts = mkHardWatched("clusterHosts", {})
+let clusterHostsChangePending = mkHardWatched("clusterHostsChangePending", {})
 let canFetchHosts = Computed(@() isMatchingOnline.value && !isInBattleState.value)
 local isFetching = false
 local failedFetches = 0

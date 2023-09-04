@@ -1,10 +1,9 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { sessionsListBlkPath } = require("%scripts/matchingRooms/getSessionsListBlkPath.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
@@ -21,24 +20,29 @@ let { get_game_mode } = require("mission")
 
 ::match_search_gm <- -1
 
+::back_sessions_func <- ::gui_start_mainmenu
+
 registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
 
-::gui_start_session_list <- function gui_start_session_list() {
-  handlersManager.loadHandler(gui_handlers.SessionsList,
+::gui_start_session_list <- function gui_start_session_list(prev_scene_func = null) {
+  if (prev_scene_func)
+    ::back_sessions_func = prev_scene_func
+
+  ::handlersManager.loadHandler(::gui_handlers.SessionsList,
                   {
                     wndOptionsMode = ::get_options_mode(get_game_mode())
-                    backSceneParams = { globalFunctionName = "gui_start_mainmenu" }
+                    backSceneFunc = ::back_sessions_func
                   })
 }
 
 ::gui_start_missions <- function gui_start_missions() { //!!FIX ME: is it really used in some cases?
   ::match_search_gm = -1
-  ::gui_start_session_list()
+  ::gui_start_session_list(::gui_start_mainmenu)
 }
 
 ::gui_start_skirmish <- function gui_start_skirmish() {
   ::prepare_start_skirmish()
-  ::gui_start_session_list()
+  ::gui_start_session_list(::gui_start_mainmenu)
 }
 
 ::prepare_start_skirmish <- function prepare_start_skirmish() {
@@ -70,7 +74,7 @@ registerPersistentData("SessionsList", getroottable(), ["match_search_gm"])
   return ret
 }
 
-gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
+::gui_handlers.SessionsList <- class extends ::gui_handlers.GenericOptions {
   sceneBlkName = sessionsListBlkPath.value
   sceneNavBlkName = "%gui/navSessionsList.blk"
   optionsContainer = "mp_coop_options"
@@ -195,7 +199,7 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
   function onSkirmish(_obj) { ::checkAndCreateGamemodeWnd(this, GM_SKIRMISH) }
 
   function onSessionsUpdate(_obj = null, _dt = 0.0) {
-    if (handlersManager.isAnyModalHandlerActive()
+    if (::handlersManager.isAnyModalHandlerActive()
         || ::is_multiplayer()
         || ::SessionLobby.status != lobbyStates.NOT_IN_ROOM)
       return
@@ -417,7 +421,7 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
   }
 
   function onVehiclesInfo(_obj) {
-    ::gui_start_modal_wnd(gui_handlers.VehiclesWindow, {
+    ::gui_start_modal_wnd(::gui_handlers.VehiclesWindow, {
       teamDataByTeamName = getTblValue("public", this.getCurRoom())
     })
   }
@@ -429,9 +433,12 @@ gui_handlers.SessionsList <- class extends gui_handlers.GenericOptions {
 
   if (obj.childrenCount() != shopCountriesList.len()) {
     let view = {
-      countries = shopCountriesList.map(@(countryName) { countryName = countryName
+      countries = u.map(shopCountriesList, function (countryName) {
+        return {
+          countryName = countryName
           countryIcon = ::get_country_icon(countryName)
-        })
+        }
+      })
     }
     let markup = handyman.renderCached("%gui/countriesList.tpl", view)
     obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)

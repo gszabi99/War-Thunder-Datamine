@@ -1,11 +1,11 @@
 //checked for plus_string
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
+
+
 let { rnd } = require("dagor.random")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
 let { register_command } = require("console")
@@ -27,7 +27,7 @@ let MANAGER_STATS_FIELDS = [
   ::g_lb_category.ACTIVITY
 ]
 
-local WwOperationRewardPopup = class extends gui_handlers.BaseGuiHandlerWT {
+local WwOperationRewardPopup = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/worldWar/wwOperationRewardPopup.tpl"
   logObj       = null
@@ -117,9 +117,9 @@ local WwOperationRewardPopup = class extends gui_handlers.BaseGuiHandlerWT {
   }
 }
 
-gui_handlers.WwOperationRewardPopup <- WwOperationRewardPopup
+::gui_handlers.WwOperationRewardPopup <- WwOperationRewardPopup
 let openWwOperationRewardPopup = @(p)
-  handlersManager.loadHandler(WwOperationRewardPopup, { logObj = p.body, logId = p.id })
+  ::handlersManager.loadHandler(WwOperationRewardPopup, { logObj = p.body, logId = p.id })
 
 register_command(
   function() {
