@@ -154,12 +154,15 @@ const COMPARE_NO_COMPARE = "no"
   addToBlkFromParams = function(blk, unit, item, unitConfiguration) {
     blk.value = DataBlock()
     blk.valueText = DataBlock()
+    blk.cppValue = DataBlock()
     foreach (diff in ::g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
         let mode = diff.getEgdName()
         let characteristicArr = ::getCharacteristicActualValue(unit, [item.id, item.id2], function(_value) { return "" }, diff.crewSkillName, false)
         blk.value[mode] = unitConfiguration == UNIT_CONFIGURATION_MIN ? characteristicArr[2] : characteristicArr[3]
         blk.valueText[mode] = item.prepareTextFunc(characteristicArr[2])
+        let cppUnitChars = unitConfiguration == UNIT_CONFIGURATION_MIN ? unit.minChars : unit.maxChars
+        blk.cppValue[mode] = cppUnitChars?[diff.crewSkillName][item.id2] ?? 0
       }
   }
 
